@@ -1,0 +1,3 @@
+<apex:page standardController="LASERCA__Trade_Accounts__c">
+    <c:PaymentPattern startDate="{!LASERCA__Trade_Accounts__c.LASERCA__Payment_Pattern_Start_Date__c}" data="{!LASERCA__Trade_Accounts__c.LASERCA__Payment_Pattern_Data__c}"/>
+</apex:page>

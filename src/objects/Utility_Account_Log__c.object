@@ -1,0 +1,618 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableChangeDataCapture>false</enableChangeDataCapture>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>false</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>Private</externalSharingModel>
+    <fields>
+        <fullName>Account_ID__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account__r.Id</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Account ID</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Utility Account Logs</relationshipLabel>
+        <relationshipName>Utility_Account_Logs</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Annual_Cost_of_Electricity__c</fullName>
+        <description>This is used for the SREC CS Product sizing. It is the total dollar amount a customer spends annually on their electric utility bill for this account. It is initially filled in with an estimate from the customer/partner during the CS application process, then filled in by Ops with the QCed amount.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Used for SREC CS Product sizing. It&apos;s the total dollar amount spent annually on the electric utility bill. It is initially filled in with an estimate from the customer/partner during the CS application process, then filled in by Ops with the QCed amount.</inlineHelpText>
+        <label>Annual Cost of Electricity</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Annual_kWh__c</fullName>
+        <description>Used for customer sizing on SMART contracts.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Used for customer sizing on SMART contracts.</inlineHelpText>
+        <label>Annual kWh</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Anticipated_NMC_Alloaction_kWh__c</fullName>
+        <externalId>false</externalId>
+        <formula>calculated_subscription_size_kw_dc__c *  Opportunity__r.Shared_System_Yield_kWh_kW__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Unrounded NMC Allocation (kWh)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Anticipated_NMC_Allocation_kWh__c</fullName>
+        <externalId>false</externalId>
+        <formula>Customer_Subscription_KW_DC__c  *  Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Anticipated NMC Allocation (kWh)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Calculated_Subscription_KW_DC_Rounded__c</fullName>
+        <externalId>false</externalId>
+        <formula>ROUND( calculated_subscription_size_kw_dc__c * 2 , 0 ) / 2</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Calculated Subscription (KW DC) Rounded</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Comments_About_Sizings__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>From webform: Is there anything else that you would like to mention that may impact your annual cost of electricity over the next year?</inlineHelpText>
+        <label>Comments About Sizing</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Cost_not_yet_Allocated__c</fullName>
+        <externalId>false</externalId>
+        <label>Cost not yet Allocated</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Create_Online_Account__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Create Online Account?</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Customer_Subscription_KW_DC__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(  calculated_subscription_size_kw_dc__c &gt;=  Max_Capacity_of_System__c , Max_Capacity_of_System__c,  ROUND( calculated_subscription_size_kw_dc__c * 2 , 0 ) / 2)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Customer Subscription (KW DC)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Date_Utility_Account_Cancelled__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Triggers all related UAS&apos;s to go to Inactive; Creates Customer Care case</inlineHelpText>
+        <label>Date Utility Account Cancelled</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Estimated_LIfetime_Savings__c</fullName>
+        <description>Annual cost 80% (accounts for degradation and undersizing) * 10% Savings  * 20 Years</description>
+        <externalId>false</externalId>
+        <formula>Annual_Cost_of_Electricity__c *0.8*0.1*20</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Annual cost 80% (accounts for degradation and undersizing) * 10% Savings  * 20 Years</inlineHelpText>
+        <label>Estimated LIfetime Savings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Lead__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Lead</label>
+        <referenceTo>Lead</referenceTo>
+        <relationshipLabel>Utility Account Logs</relationshipLabel>
+        <relationshipName>Utility_Account_Logs</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Max_Capacity_of_System__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Shared_Solar_System__r.Assemblage_Count__c * 25</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Max Capacity of System</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Max_Electricity_Cost_KW_DC__c</fullName>
+        <externalId>false</externalId>
+        <formula>Max_Capacity_of_System__c *  Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c *  Opportunity__r.NMC_Tariff__r.Value_of_Net_Metering_Credit__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Max Electricity Cost (KW DC)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Multiple_Copies__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Multiple Copies?</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Name_on_Account__c</fullName>
+        <externalId>false</externalId>
+        <label>Name on Utility Account</label>
+        <length>120</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Num_Cancelled_OR_Enacted_Removed_UAS__c</fullName>
+        <externalId>false</externalId>
+        <label>Num Cancelled OR Enacted: Removed UAS</label>
+        <summaryFilterItems>
+            <field>Utility_Account_Subscription__c.Next_Schedule_Z_Status__c</field>
+            <operation>equals</operation>
+            <value>Inactive Subscription</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Utility_Account_Subscription__c.Utility_Account_Log__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Number_of_Non_Cancelled_UASes__c</fullName>
+        <externalId>false</externalId>
+        <label>Number of Non-Cancelled UASes</label>
+        <summaryFilterItems>
+            <field>Utility_Account_Subscription__c.Current_Schedule_Z_Status__c</field>
+            <operation>notEqual</operation>
+            <value>Cancelled</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Utility_Account_Subscription__c.Utility_Account_Log__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Opportunity__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Opportunity</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipLabel>Utility Account Logs</relationshipLabel>
+        <relationshipName>Utility_Account_Logs</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Partner__c</fullName>
+        <externalId>false</externalId>
+        <label>Partner</label>
+        <length>20</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Password__c</fullName>
+        <externalId>false</externalId>
+        <label>Password</label>
+        <length>25</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Premise_Number__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Xcel (MN) Requirement</inlineHelpText>
+        <label>Premise Number</label>
+        <length>15</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Previous_BW_CL_Applicant__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>From CS Application. To see if they have applied for a BW Solar Loan Before.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>From CS Application. To see if they have applied for a BW Solar Loan Before.</inlineHelpText>
+        <label>Previous BW CL Applicant?</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Service_Address_Formula__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account__r.Street_Address__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Service Address (Formula)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Service_Address__c</fullName>
+        <externalId>false</externalId>
+        <label>Service Address</label>
+        <length>60</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Service_Apt_Suit_Formula__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account__r.Apt_Suite__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Service Apt/Suit (Formula)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Service_Apt_Suite__c</fullName>
+        <externalId>false</externalId>
+        <label>Service Apt/Suite</label>
+        <length>15</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Service_City_Formula__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account__r.City__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Service City (Formula)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Service_City__c</fullName>
+        <externalId>false</externalId>
+        <label>Service City</label>
+        <length>25</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Service_State_Formula__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account__r.State__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Service State (Formula)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Service_State__c</fullName>
+        <externalId>false</externalId>
+        <label>Service State</label>
+        <length>25</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Service_Zip_Code_Formula__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account__r.Zip_Code__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Service Zip Code (Formula)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Service_Zip_Code__c</fullName>
+        <externalId>false</externalId>
+        <label>Service Zip Code</label>
+        <length>15</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Solar_System_Size_kW_DC__c</fullName>
+        <description>From CS Application. If they have a solar system, what size is it.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>From CS Application. If they have a solar system, what size is it.</inlineHelpText>
+        <label>Solar System Size(kW DC)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Subscribed_Annual_Cost_of_Electricity__c</fullName>
+        <description>Used for SREC CS Product sizing. It&apos;s the sum of the Annual Cost of Electricity (future) field on all related Utility Account Subscriptions.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Used for SREC CS Product sizing. It&apos;s the sum of the Annual Cost of Electricity (future) field on all related Utility Account Subscriptions.</inlineHelpText>
+        <label>Subscribed Annual Cost of Electricity</label>
+        <summarizedField>Utility_Account_Subscription__c.Subscribed_Annual_Cost_of_Electricity__c</summarizedField>
+        <summaryForeignKey>Utility_Account_Subscription__c.Utility_Account_Log__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Subscribed_Annual_kWhs__c</fullName>
+        <description>This sums the Future kWh subscription fields from all related utility account subscriptions.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This sums the Future kWh subscription fields from all related utility account subscriptions.</inlineHelpText>
+        <label>Subscribed Annual kWhs</label>
+        <summarizedField>Utility_Account_Subscription__c.Annual_kwh_subscription_future__c</summarizedField>
+        <summaryForeignKey>Utility_Account_Subscription__c.Utility_Account_Log__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>UAS_Count__c</fullName>
+        <externalId>false</externalId>
+        <label>UAS Count</label>
+        <summaryForeignKey>Utility_Account_Subscription__c.Utility_Account_Log__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Username__c</fullName>
+        <externalId>false</externalId>
+        <label>Username</label>
+        <length>50</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Utility__c</fullName>
+        <externalId>false</externalId>
+        <formula>Lead__r.Electricity_Provider__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Utility</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>calculated_subscription_size_kw_dc__c</fullName>
+        <externalId>false</externalId>
+        <formula>( Annual_Cost_of_Electricity__c /   Opportunity__r.NMC_Tariff__r.Value_of_Net_Metering_Credit__c  )/ Opportunity__r.Shared_System_Yield_kWh_kW__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Calculated Subscription Size (kW DC)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <label>Utility Account Log</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>Utility__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>Utility Account Number</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Utility Account Logs</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>Read</sharingModel>
+    <visibility>Public</visibility>
+    <webLinks>
+        <fullName>New_Customer_Care_Case</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>New Customer Care Case</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>https://na16.salesforce.com/500/e?&amp;RecordType=012j00000000HA8&amp;ent=Case&amp;cas14=Customer Care Case&amp;CF00Nj000000BVHR9_lkid={!Utility_Account_Log__c.Id}&amp;CF00Nj000000BVHR9={!Utility_Account_Log__c.Name}&amp;CF00Nj000000ARyea_lktp={!Utility_Account_Log__c.OpportunityId__c}&amp;CF00Nj000000ARyea={!Utility_Account_Log__c.Opportunity__c}&amp;00Nj000000BVAYr=Utility Account Data Inaccurate or Missing&amp;cas11=Web</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Recalculate_Subscriptions</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Recalculate Subscriptions</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>window.location = &apos;/apex/RecalculateUALCost?id={!Utility_Account_Log__c.Id}&apos;;</url>
+    </webLinks>
+</CustomObject>

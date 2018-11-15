@@ -1,0 +1,455 @@
+<apex:page showChat="false" sidebar="false" showHeader="false" standardStylesheets="false" docType="html-5.0" applyHtmlTag="false" applyBodyTag="false" contentType="text/html" controller="rcsfl.RingCentralController999">
+
+  <apex:outputText escape="false" value="{!" <!DOCTYPE html>"}"/>
+
+    <html class="no-js">
+
+    <head>
+      <meta charset="utf-8"></meta>
+      <meta name="format-detection" content="telephone=no" />
+
+
+      <base></base>
+      <apex:includeScript value="/support/console/32.0/integration.js" />
+      <script type="application/javascript">
+        if (typeof Visualforce !== 'undefined') {
+          if (Visualforce && Visualforce.remoting) {
+            Visualforce.remoting.timeout = 120000; // Set timeout at page level
+          }
+        }
+        var isLightning = window.location.href.indexOf('lightning') >= 0;;
+        var element = document.getElementsByTagName('base')[0];
+        console.log('isLightning = ' + isLightning);
+        var attrValue;
+        if (isLightning) {
+          attrValue = "{!URLFOR($Resource.OpenCTIQAResource999,'dist/lightning/')}";
+        } else {
+          attrValue = "{!URLFOR($Resource.OpenCTIQAResource999,'dist/classic/')}";
+        }
+        element.setAttribute('href', attrValue);
+
+        console.log("Theme = " + "{!$User.UIThemeDisplayed}");
+      </script>
+
+      <!--<base href="{!URLFOR($Resource.OpenCTIQAResource999,'dist/')}"></base>-->
+
+      <title>RC Open CTI</title>
+      <meta name="description" content="RingCentral Salesforce CTI"></meta>
+      <meta name="viewport" content="width=device-width"></meta>
+
+      <link rel="stylesheet" class="custom-style" />
+      <script>
+        var style = document.getElementsByClassName('custom-style')[0];
+        var cssFileName = isLightning ? "6f319714.main.css" : "ae838981.main.css";
+        style.setAttribute('href', 'styles/' + cssFileName);
+
+        // bring back the original XMLHttpRequest after SF's apex override it
+        if (typeof Sarissa !== "undefined" && Sarissa.originalXMLHttpRequest) {
+          window.XMLHttpRequest = Sarissa.originalXMLHttpRequest;
+        }
+
+        function decode(str) {
+          return decodeURIComponent(str.trim().replace(/\+/g, " "));
+        }
+
+        function convertPicklistOptions(picklistOptions) {
+          var options = [];
+          for (var i = 0; i < picklistOptions.length - 1; i += 2) {
+            options.push({
+              value: picklistOptions[i],
+              label: picklistOptions[i + 1]
+            });
+          }
+          return options;
+
+        }
+
+        var locale = navigator.languages && navigator.languages.length && navigator.languages.length >= 1 ?
+          navigator.languages[0] //navigator.languages should represent language, preferred by user
+          :
+          navigator.language || navigator.userLanguage; //this should represent browser interface language
+
+        var EnMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+        var FrMonths = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+
+        var EnDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+        var FrDays = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+
+        function convertToCalendayString(date) {
+          // quick but dirty hack to support date localization
+          locale = typeof(locale) === 'string' ? locale.toLowerCase() : 'en-us';
+          var months = EnMonths;
+          var days = EnDays;
+          var index = 0;
+          if (/fr/.test(locale)) {
+            months = FrMonths;
+            days = FrDays;
+          }
+
+          var year = date.getFullYear();
+          var day = days[date.getDate() % 7];
+          var month = months[date.getMonth()];
+          var date = date.getDate();
+
+          return index === 1 ? day + ' ' + date + ' ' + month + ' ' + year : day + ', ' + month + ' ' + date + ', ' + year;
+        }
+
+        var sfActivityLogSubjects = (function() {
+          // this code is fetching the list of Activity Log subjects (using Apex class RingCentralController999)
+          var sfActivityLogSubjectsStr = "{!taskSubjectValues}";
+          sfActivityLogSubjectsStr = sfActivityLogSubjectsStr.replace("[", "").replace("]", "");
+          var sfActivityLogSubjectsArr = sfActivityLogSubjectsStr.split(",");
+          var sfActivityLogSubjectsResult = [];
+          for (var i = 0; i < sfActivityLogSubjectsArr.length; i++) {
+            var subject = decode(sfActivityLogSubjectsArr[i]);
+
+            if (sfActivityLogSubjectsResult.indexOf(subject) === -1) {
+              sfActivityLogSubjectsResult.push(subject);
+            }
+          }
+          return sfActivityLogSubjectsResult;
+        })();
+
+
+        var lookupFields = [];
+        var requiredFields = [];
+        var sfCustomLogFields = [];
+        var isDataFetched = false;
+
+        window.Visualforce && Visualforce.remoting.Manager.invokeAction(
+          '{!$RemoteAction.RingCentralController999.getCustomLogFields}',
+          function(fieldsObjs, event) {
+            if (fieldsObjs && Array.isArray(fieldsObjs)) {
+              fieldsObjs.forEach(function(fieldObj) {
+                if (fieldObj.fieldType === 'date' && fieldObj.defaultValue) {
+                  var defaultDate = new Date(fieldObj.defaultValue);
+                  if (isNaN(defaultDate.getTime())) {
+                    defaultDate = new Date();
+                  }
+                  fieldObj.defaultValue = convertToCalendayString(defaultDate);
+                }
+
+                sfCustomLogFields.push({
+                  type: fieldObj.fieldType,
+                  label: fieldObj.fieldLabel,
+                  value: fieldObj.fieldValue,
+                  picklistOptions: convertPicklistOptions(fieldObj.picklistOptions),
+                  referenceObjs: fieldObj.referenceObjs,
+                  isRequired: fieldObj.isRequired,
+                  fieldOrder: fieldObj.fieldOrder,
+                  maxLength: fieldObj.maxLength,
+                  defaultValue: fieldObj.defaultValue && ['subject', 'whoid', 'whatid', 'description'].indexOf(fieldObj.fieldValue) === -1 ? fieldObj.defaultValue : ""
+                });
+
+                if (fieldObj.fieldType === 'reference') {
+                  lookupFields.push(fieldObj.fieldValue);
+                }
+
+                if (fieldObj.isRequired) {
+                  requiredFields.push(fieldObj.fieldValue);
+                }
+              });
+              sfCustomLogFields.sort(function(fieldA, fieldB) {
+                return fieldA.fieldOrder - fieldB.fieldOrder;
+              });
+            }
+            isDataFetched = true;
+          }, {
+            escape: false
+          }
+        );
+
+        var isAdminAutoSave = ("{!isAutoSave}" === "true" ? true : false);
+        var saveOnRinging = ("{!saveOnRinging}" === "true" ? true : false);
+        var popOnRinging = ("{!popOnRinging}" === "true" ? true : false);
+        var accountRelatedTo = ("{!accountRelatedTo}" === "true" ? true : false);
+        var userInfoLocale = "{!userInfoLocale}";
+        var userLocale = userInfoLocale.split('_')[1] || 'US';
+        var autoSelect = ("{!autoSelect}" === "true" ? true : false) || false;
+        var organizationId = "{!organizationId}";
+        var userId = "{!userId}";
+        console.log("adminUI isAdminAutoSave: ", isAdminAutoSave);
+
+        function Task() {}
+
+        function normalizeDate(mydate) {
+          mydate = new Date(mydate);
+          mydate = new Date(mydate - mydate.getTimezoneOffset() * 60000);
+          return mydate;
+        }
+
+        function loadContacts(query, callback) {
+          window.Visualforce && Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.RingCentralController999.getSfdcContacts450}',
+            query,
+            function(rawContacts) {
+              callback(rawContacts);
+            }, {
+              escape: false
+            }
+          );
+        }
+
+        function sfSaveLog(activityRecord, call, _call, done, fail) {
+          if (typeof Visualforce === "undefined") {
+            console.log("DEVELOPER! Please install index.html as Visualforce page to make this feature work");
+            done(new Error('Please install index.html as Visualforce page to make this feature work'));
+            return;
+          }
+          var callDuration = call.duration;
+          var callResult = call.result;
+          var activitydate = normalizeDate(new Date(call.startTime).toISOString()).getTime();
+
+          // When saving a call log for an active call just dont put duration to the activity record
+          if (callDuration === -1) {
+            if (callResult !== "Ringing") {
+              var now = new Date();
+              callDuration = Math.floor((now.getTime() - new Date(call.startTime).getTime()) / 1000);
+            } else {
+              callDuration = null;
+            }
+          }
+
+          var internalKey = call.getInternalKey();
+          var recordingInfo = call.hasRecording() ? call.id + "&recordingId=" + call.recording.id +
+            "&from=" + encodeURIComponent(call.fromNumber) + "&to=" + encodeURIComponent(call.toNumber) +
+            "&date=" + call.startTime.toISOString() : '';
+          if (_call) {
+            if (_call.duration) {
+              callDuration = _call.duration;
+            }
+            if (_call.result) {
+              callResult = _call.result;
+            }
+            if (_call.startTime) {
+              activitydate = normalizeDate(new Date(_call.startTime).toISOString()).getTime();
+            }
+            if (
+              _call.direction === 'Outbound' &&
+              (['RingOut Web', 'VoIP Call'].indexOf(_call.action) !== -1) &&
+              (['CallConnected', 'Call connected'].indexOf(_call.result) !== -1)
+            ) {
+              callResult = 'Accepted';
+            }
+            if (_call.recording && _call.recording.id) {
+              recordingInfo = _call.id + "&recordingId=" + _call.recording.id +
+                "&from=" + encodeURIComponent(_call.fromNumber || _call.from.phoneNumber) + "&to=" + encodeURIComponent(_call.toNumber || _call.to.phoneNumber) +
+                "&date=" + call.startTime.toISOString();
+            }
+          }
+          var task = new Task();
+          task.callobject = internalKey;
+          task.calltype = call.direction;
+          task.calldisposition = callResult;
+          task.calldurationinseconds = callDuration;
+          task.status = 'Completed';
+          task.RC_Logging_Type__c = 'call';
+
+          sfCustomLogFields.forEach(function(sfCustomLogField) {
+            var logFieldVal = sfCustomLogField && sfCustomLogField.value;
+
+            if (lookupFields.indexOf(logFieldVal) !== -1) {
+              if (logFieldVal === 'whoid' && activityRecord.whoid && activityRecord.whoid.personAccount) {
+                task[logFieldVal] = (activityRecord[logFieldVal] && activityRecord[logFieldVal].contactId) || null;
+              } else {
+                task[logFieldVal] = (activityRecord[logFieldVal] && activityRecord[logFieldVal].Id) || null;
+              }
+
+            } else {
+              if (sfCustomLogField && sfCustomLogField.type.toLowerCase() === 'date') {
+                if (!activityRecord[logFieldVal]) {
+                  task[logFieldVal] = normalizeDate(new Date().getTime()).getTime();
+                } else {
+                  if (/fr/.test(locale)) {
+                    var theDateString = activityRecord[logFieldVal];
+                    theDateString = theDateString.replace(/dimanche|lundi|mardi|mercredi|jeudi|vendredi|samedi/g, '');
+                    FrMonths.forEach(function(frMonth, index) {
+                      if (theDateString.indexOf(frMonth) !== -1) {
+                        theDateString = theDateString.replace(frMonth, EnMonths[index]);
+                      }
+                    })
+                    task[logFieldVal] = normalizeDate(theDateString).getTime();
+                  } else {
+                    task[logFieldVal] = normalizeDate(activityRecord[logFieldVal]).getTime();
+                  }
+                }
+              } else {
+                if (activityRecord[logFieldVal]) {
+                  task[logFieldVal] = activityRecord[logFieldVal];
+                }
+              }
+            }
+          });
+          if (!task.activitydate) {
+            task.activitydate = activitydate;
+          }
+
+          if (!task.subject) {
+            task.subject = activityRecord['subject'];
+          }
+
+          if (recordingInfo !== "") {
+            task.recording_information__c = recordingInfo;
+          }
+
+          if (activityRecord['whoid'] && activityRecord['whoid'].Id && activityRecord['whoid'].Id.indexOf('00Q') > -1) {
+            task['whatid'] = 'force-overwrite-with-empty-value';
+          }
+          if (activityRecord['whatid'] && !activityRecord['whoid'] && activityRecord['prevLoggedWhoid'] &&
+            activityRecord['prevLoggedWhoid'].Id && activityRecord['prevLoggedWhoid'].Id.indexOf('00Q') > -1) {
+            task['whoid'] = 'force-overwrite-with-empty-value';
+          }
+          window.console.log('adminUI open CTI virsualforce task:', task);
+          Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.RingCentralController999.upsertCustomTaskNew}',
+            task,
+            internalKey,
+            function(result, event) {
+              if (result !== null) {
+                done(result);
+              } else {
+                fail(event);
+              }
+            }, {
+              escape: false
+            }
+          );
+        }
+
+        function smsSaveLog(smsLogEntry, done, fail) {
+          var task = new Task();
+          task.callobject = smsLogEntry.identifier;
+          task.description = smsLogEntry.message;
+          task.status = 'Completed';
+          task.subject = smsLogEntry.subject;
+          task.activitydate = smsLogEntry.creationDate;
+          task.RC_Logging_Type__c = 'sms';
+          var linkedWithId = smsLogEntry.linkedWithId;
+          if (linkedWithId) {
+            if (/^003|^00Q/.test(linkedWithId)) {
+              task.whoid = smsLogEntry.linkedWithId;
+            } else {
+              task.whatid = smsLogEntry.linkedWithId;
+            }
+          }
+          window.Visualforce && Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.RingCentralController999.upsertCustomTaskNew}',
+            task,
+            smsLogEntry.identifier,
+            function(result, event) {
+              if (result !== null) {
+                done(result);
+              } else {
+                fail(event);
+              }
+            }, {
+              escape: false
+            }
+          );
+        }
+
+        function getPhoneFields() {
+          return new Promise(function(resolve, reject) {
+            window.Visualforce && Visualforce.remoting.Manager.invokeAction(
+              '{!$RemoteAction.RingCentralController999.getPhoneFields}',
+              function(res, err) {
+                if (res === null) {
+                  reject(err);
+                } else {
+                  resolve(res);
+                }
+              });
+          });
+
+        }
+
+        function smsSaveLogs(smsLogEntries, done, fail) {
+          var taskArr = [];
+          var internalKeyArr = [];
+          smsLogEntries.forEach(function(smsLogEntry, index) {
+            var task = new Task();
+            task.callobject = smsLogEntry.identifier;
+            task.description = smsLogEntry.message;
+            task.status = 'Completed';
+            task.subject = smsLogEntry.subject;
+            task.activitydate = smsLogEntry.creationDate;
+            task.RC_Logging_Type__c = 'sms';
+            var linkedWithId = smsLogEntry.linkedWithId;
+            if (linkedWithId) {
+              if (/^003|^00Q/.test(linkedWithId)) {
+                task.whoid = smsLogEntry.linkedWithId;
+              } else {
+                task.whatid = smsLogEntry.linkedWithId;
+              }
+            }
+            if (internalKeyArr.indexOf(task.callobject) === -1) {
+              taskArr.push(task);
+              internalKeyArr.push(task.callobject);
+            }
+          });
+          window.Visualforce && Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.RingCentralController999.upsertCustomTaskNew480}',
+            taskArr,
+            internalKeyArr,
+            function(result, event) {
+              if (result !== null) {
+                done(result);
+              } else {
+                fail(event);
+              }
+            }, {
+              escape: false
+            }
+          );
+        }
+      </script>
+
+      <script>
+        function getReports(done, fail) {
+          window.Visualforce && Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.RingCentralController999.getReports}',
+            function(result, event) {
+              if (result !== null) {
+                done(result);
+              } else {
+                fail(event);
+              }
+            }, {
+              escape: false
+            }
+          );
+        }
+      </script>
+    </head>
+
+    <body ng-app="openCtiApp" class="rc-brand-{{ brand | lowercase}}" id="main-container">
+      <div id="header" ng-include="'views/header.html'" ng-show="isConfigReady"></div>
+      <aside id="sidebar" ng-include="'views/sidebar.html'" ng-click="sidebarClick($event);" ng-show="isConfigReady" ng-controller="SidebarCtrl"></aside>
+      <div id="mainBody" ng-include="'views/main.html'"></div>
+      <div class="notification-container" ng-show="showNotification" ng-style="{display: 'block'}" style="display: none">
+        <div class="notification" ng-show="showNotification" ng-class="{'isErrorNotification': isErrorMsg}">
+          <div class="notification-text"> {{ notification }} </div>
+        </div>
+      </div>
+
+      <error-overlay></error-overlay>
+      <script>
+        if (isLightning) {
+          document.write("<script src='scripts/6d17c61a.vendor.js'><\/script>");
+          document.write("<script src='scripts/4fb348a0.scripts.js'><\/script>");
+        } else {
+          document.write("<script src='scripts/6d17c61a.vendor.js'><\/script>");
+          document.write("<script src='scripts/0918ea0f.scripts.js'><\/script>");
+        }
+      </script>
+
+
+
+    </body>
+
+    </html>
+
+
+</apex:page>

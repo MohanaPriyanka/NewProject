@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>ClickToDial__EnableAutoCallLog__c</fullName>
+        <defaultValue>&quot;No&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>&quot;Yes&quot; for auto call log and &quot;No&quot; for user confirmation.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>&quot;Yes&quot; for auto call log and &quot;No&quot; for user confirmation.</inlineHelpText>
+        <label>Enable Auto Call Log</label>
+        <length>3</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ClickToDial__Global_Country_Code__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Specify the country code to automatically add country code to your Click-to-Call links. Leave this field blank if your phone numbers already have country code. Example: +1 for US and Canada, +91 for India.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Specify the country code to automatically add country code to your Click-to-Call links. Leave this field blank if your phone numbers already have country code. Example: +1 for US and Canada, +91 for India.</inlineHelpText>
+        <label>Global Country Code</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Click-to-Call Configuration Manager</label>
+    <visibility>Public</visibility>
+</CustomObject>

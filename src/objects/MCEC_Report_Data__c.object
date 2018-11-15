@@ -1,0 +1,865 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>This object pulls from both leads and opportunities to compile all data needed for  reporting across both object types.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableChangeDataCapture>false</enableChangeDataCapture>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>Read</externalSharingModel>
+    <fields>
+        <fullName>Applicant_Elligible_for_IBLS__c</fullName>
+        <externalId>false</externalId>
+        <formula>if(isblank( text(Manual_IBLS_Category__c) )=false,text(Manual_IBLS_Category__c) ,
+
+if(isblank(Income_based_Loan_Support_Opportunity__c )=true, Income_based_Loan_Support_lead__c ,Income_based_Loan_Support_Opportunity__c))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Applicant Elligible for IBLS?</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Application_Date_Lead__c</fullName>
+        <externalId>false</externalId>
+        <formula>Lead__r.CreatedDate</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Application Date_Lead</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Application_Date_Opportunity__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Application_Date__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Application Date_Opportunity</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Application_Date_Report__c</fullName>
+        <externalId>false</externalId>
+        <formula>if(isblank( Application_Date_Opportunity__c )=true, Application_Date_Lead__c , Application_Date_Opportunity__c )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Application Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Credit_Report_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>if(isnull(Opportunity__r.Personal_Credit_Report2__r.CreatedDate)= True,  Lead__r.Personal_Credit_Report__r.CreatedDate , Opportunity__r.Personal_Credit_Report2__r.CreatedDate)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Credit Report Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Cumulative_Loan_to_Value_Lead__c</fullName>
+        <externalId>false</externalId>
+        <formula>Lead__r.Cumulative_Loan_to_Value_if_Applicable__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Cumulative Loan to Value (Lead)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Cumulative_Loan_to_Value_Opportunity__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Cumulative_Loan_to_Value__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Cumulative Loan to Value (Opportunity)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Cumulative_Loan_to_Value_Report__c</fullName>
+        <externalId>false</externalId>
+        <formula>if(isblank( Cumulative_Loan_to_Value_Opportunity__c )=true,Cumulative_Loan_to_Value_Lead__c , Cumulative_Loan_to_Value_Opportunity__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Cumulative Loan to Value if Applicable</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>DOER_Lead__c</fullName>
+        <externalId>false</externalId>
+        <formula>Lead__r.DOER_Solar_Loan__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>DOER Lead</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>DOER_Loan_REference__c</fullName>
+        <externalId>false</externalId>
+        <formula>Loan__r.DOER_Solar_Loann__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>DOER Loan REference</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>DOER_Loan__c</fullName>
+        <externalId>false</externalId>
+        <formula>or( DOER_Lead__c , DOER_Opportunity__c )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>DOER Loan?</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>DOER_Opportunity__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.DOER_Solar_Loan__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>DOER Opportunity?</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Date_Contract_Signature_Disbursed__c</fullName>
+        <description>This is a formula field that pulls from a field of the same name on the loan, which gets it&apos;s data from the Contract Signature Disbursal record.</description>
+        <externalId>false</externalId>
+        <formula>Loan__r.Date_Contract_Signature_Disbursed__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>This is a formula field that pulls from a field of the same name on the loan, which gets it&apos;s data from the Contract Signature Disbursal record.</inlineHelpText>
+        <label>Date Contract Signature Disbursed</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Date_Interconnection_Disbursed__c</fullName>
+        <description>Formula field that gets info from the disbursal record via the loan lookup field.</description>
+        <externalId>false</externalId>
+        <formula>Loan__r.Date_Interconnection_Disbursed__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Formula field that gets info from the disbursal record via the loan lookup field.</inlineHelpText>
+        <label>Date Interconnection Disbursed</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Income_based_Loan_Support_Opportunity__c</fullName>
+        <externalId>false</externalId>
+        <formula>if(isblank( Opportunity__c )=false,Opportunity__r.IBLS_Category__c,null)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Income-based Loan Support (Opportunity)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Income_based_Loan_Support_lead__c</fullName>
+        <externalId>false</externalId>
+        <formula>Lead__r.Income_Support__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Income-based Loan Support (lead)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Lead_Partner__c</fullName>
+        <description>Links to Partner  (installer) from related lead record.</description>
+        <externalId>false</externalId>
+        <formula>Lead__r.Partner_Lookup__r.Name</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Lead Partner</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Lead__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>This is the lead from which the MCEC Report Data object pulls its data</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the lead from which the MCEC Report Data object pulls its data</inlineHelpText>
+        <label>Lead</label>
+        <referenceTo>Lead</referenceTo>
+        <relationshipLabel>Loan Pipeline Report Data</relationshipLabel>
+        <relationshipName>MCEC_Report_Data</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Loan_Amount_Lead__c</fullName>
+        <externalId>false</externalId>
+        <formula>Lead__r.Loan_Amount__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Loan Amount (Lead)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Loan_Amount_Opportunity__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Loan_Amount_Financed__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Loan Amount (Opportunity)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Loan_Amount_Report__c</fullName>
+        <externalId>false</externalId>
+        <formula>if( Loan_Amount_Opportunity__c=0, Loan_Amount_Lead__c , Loan_Amount_Opportunity__c )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Loan Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Loan_Identifier_Lead__c</fullName>
+        <description>Record ID of related Lead</description>
+        <externalId>false</externalId>
+        <formula>Lead__r.Id</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Record ID of related Lead</inlineHelpText>
+        <label>Loan Identifier (Lead)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Loan_Identifier_Opportunity__c</fullName>
+        <description>Record ID of related Opportunity</description>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Id</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Record ID of related Opportunity</inlineHelpText>
+        <label>Loan Identifier (Opportunity)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Loan_Identifier_for_Report__c</fullName>
+        <externalId>false</externalId>
+        <formula>if( isblank(Loan_Identifier_Opportunity__c )=true, Loan_Identifier_Lead__c ,Loan_Identifier_Opportunity__c )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Loan Identifier</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Loan_Number__c</fullName>
+        <externalId>false</externalId>
+        <formula>Loan__r.Loan_Number__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Loan Number</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Loan_Partner__c</fullName>
+        <externalId>false</externalId>
+        <formula>Loan__r.Partner__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Loan Partner</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Loan_Program_Class_Lead__c</fullName>
+        <externalId>false</externalId>
+        <formula>if(isblank( Lead__c )=true,null,Lead__r.Loan_Program_Class__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Loan Program Class (Lead)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Loan_Program_Class_Opportunity__c</fullName>
+        <description>Loan program class from Opportunity</description>
+        <externalId>false</externalId>
+        <formula>IF(ISBLANK(Opportunity__r.Loan_Program_Class__c)=true,  text(Opportunity__r.DOER_Loan_Program__c ),Opportunity__r.Loan_Program_Class__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Loan Program Class (Opportunity)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Loan_Program_Class_Report__c</fullName>
+        <description>Grabs the opportunity value if it exists, or defaults to lead value.</description>
+        <externalId>false</externalId>
+        <formula>if(isblank( Loan_Program_Class_Opportunity__c )=true,  Loan_Program_Class_Lead__c  ,  Loan_Program_Class_Opportunity__c  )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Loan Program Class</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Loan_Status_from_Loan__c</fullName>
+        <externalId>false</externalId>
+        <formula>text( Loan__r.Loan_Status__c )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Loan Status from Loan</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Loan__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>The Loan record which the report gets information from.</description>
+        <externalId>false</externalId>
+        <label>Loan</label>
+        <referenceTo>Loan__c</referenceTo>
+        <relationshipLabel>Loan Pipeline Report Data</relationshipLabel>
+        <relationshipName>Loan_Pipeline_Report_Data</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>MCEC_Project_ID_Lead__c</fullName>
+        <description>MCEC Project ID (from Lead)</description>
+        <externalId>false</externalId>
+        <formula>Lead__r.Project_Identification_Number__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>MCEC Project ID (from Lead)</inlineHelpText>
+        <label>MCEC Project ID (Lead)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>MCEC_Project_ID_Opportunity__c</fullName>
+        <description>MCEC Project ID (From Opportunity)</description>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.project_identification_number__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>MCEC Project ID (From Opportunity)</inlineHelpText>
+        <label>MCEC Project ID (Opportunity)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>MCEC_Project_ID_Report__c</fullName>
+        <externalId>false</externalId>
+        <formula>if(isblank( MCEC_Project_ID_Opportunity__c )=true, MCEC_Project_ID_Lead__c , MCEC_Project_ID_Opportunity__c )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Solar Loan Program - Project ID</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>MCEC_Status_Lead__c</fullName>
+        <externalId>false</externalId>
+        <formula>Lead__r.Status_for_MCEC_Report__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>MCEC Status (Lead)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>MCEC_Status_Opportunity__c</fullName>
+        <externalId>false</externalId>
+        <formula>if(isblank( Opportunity__c),&quot;&quot;,
+
+if( Repayment_Period_MCEC__c = &quot;Null&quot;, 
+
+if ( or(text( Opportunity__r.StageName ) = &quot;Cancelled&quot;,text(Opportunity__r.StageName)=&quot;Expired&quot;),&quot;Withdrawn&quot;, 
+
+if (text(Opportunity__r.StageName) = &quot;Unqualified&quot;, &quot;Denied&quot;, &quot;Pending&quot;)), 
+
+Repayment_Period_MCEC__c ))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>MCEC Status (Opportunity)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Manual_IBLS_Category__c</fullName>
+        <description>Manual IBLS Category to Override the formula if the formula is wrong</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Manual IBLS Category to Override the opportunity and lead.  Populate ONLY if Avidia tells you to.</inlineHelpText>
+        <label>Manual IBLS Category</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>No</fullName>
+                    <default>false</default>
+                    <label>No</label>
+                </value>
+                <value>
+                    <fullName>Category 1</fullName>
+                    <default>false</default>
+                    <label>Category 1</label>
+                </value>
+                <value>
+                    <fullName>Category 2</fullName>
+                    <default>false</default>
+                    <label>Category 2</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Manual_Status_Date__c</fullName>
+        <description>Manual input if the workflow has not populated a status date for the record.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Manual input ONLY  if the workflow has not populated a status date for the record.</inlineHelpText>
+        <label>Manual Status Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Number_of_Borrowers_Lead__c</fullName>
+        <externalId>false</externalId>
+        <formula>Lead__r.Lead_Number_of_Applicants__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Number of Borrowers (Lead)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Number_of_Borrowers_Opportunity__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Opportunity_Number_of_Applicants__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Number of Borrowers (Opportunity)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Number_of_Borrowers_on_Application_Repor__c</fullName>
+        <externalId>false</externalId>
+        <formula>blankvalue( Number_of_Borrowers_Opportunity__c , Number_of_Borrowers_Lead__c )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Number of Borrowers on Application</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Opportunity_Partner__c</fullName>
+        <description>Links to partner (installer) from related opportunity.</description>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Partner_tag_lookup__r.Name</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Opportunity Partner</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Opportunity__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>This is the opportunity from which the MCEC Report Object Pulls its Data</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the opportunity from which the MCEC Report Object Pulls its Data</inlineHelpText>
+        <label>Opportunity</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipLabel>Loan Pipeline Report Data</relationshipLabel>
+        <relationshipName>MCEC_Report_Data</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Partner__c</fullName>
+        <externalId>false</externalId>
+        <formula>if(isblank(Loan_Partner__c) = True,
+if(isblank( Opportunity_Partner__c )=true, Lead_Partner__c ,Opportunity_Partner__c), Loan_Partner__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Partner</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Program_Loan_is_120__c</fullName>
+        <externalId>false</externalId>
+        <formula>FALSE</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Program Loan is 120 Days Past Due</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Reason_for_Decline_1__c</fullName>
+        <externalId>false</externalId>
+        <formula>if(Status_for_MCEC_Report__c = &quot;Denied&quot;, Lead__r.Adverse_Credit_Notice_1__c,null)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Reason for Decline 1</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Reason_for_Decline_2__c</fullName>
+        <externalId>false</externalId>
+        <formula>if(Status_for_MCEC_Report__c = &quot;Denied&quot;, Lead__r.Adverse_Credit_Notice_2__c,null)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Reason for Decline 2</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Repayment_Period_MCEC__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+AND(Loan__r.Total_Funds_Disbursed__c &gt;0, Loan__r.Total_Funds_Not_Yet_Disbursed__c =0),&quot;In Payment - Full Term Period&quot;,
+IF(
+AND(Loan__r.Total_Funds_Disbursed__c &gt;0, Loan__r.Total_Funds_Not_Yet_Disbursed__c !=0),&quot;In Payment - Interest Only Period&quot;,&quot;Null&quot;))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Repayment Period MCEC</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Security_Type_Lead__c</fullName>
+        <externalId>false</externalId>
+        <formula>Lead__r.Security_Type__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Security Type (Lead)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Security_Type_Opportunity__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Security_Type__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Security Type (Opportunity)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Security_Type_Report__c</fullName>
+        <externalId>false</externalId>
+        <formula>if(isblank( Security_Type_Opportunity__c )=true, Security_Type_Lead__c , Security_Type_Opportunity__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Security Type - If Applicable</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Status_Date_Lead__c</fullName>
+        <externalId>false</externalId>
+        <formula>Lead__r.MCEC_Status_Last_Modified__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Status Date (Lead)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Status_Date_Opportunity__c</fullName>
+        <description>Grabs last modified date for MCEC status or if the Opportunity is Complete, the close date.</description>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.MCEC_Status_Last_Modified__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Status Date (Opportunity)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Status_Date_Report__c</fullName>
+        <externalId>false</externalId>
+        <formula>if(isblank( Manual_Status_Date__c )=false,Manual_Status_Date__c ,
+
+if(isblank( Loan__r.Date_Interconnection_Disbursed__c )=false, Loan__r.Date_Interconnection_Disbursed__c,
+
+if(isblank(Loan__r.Date_Contract_Signature_Disbursed__c)=false,
+Loan__r.Date_Contract_Signature_Disbursed__c,
+
+if(isblank( Status_Date_Opportunity__c ), Status_Date_Lead__c ,Status_Date_Opportunity__c))))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Status Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Status_Override__c</fullName>
+        <description>Select one of these to override the MCEC status from the opportunity or lead.  ONly used to correct status for edge cases.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Select one of these to override the MCEC status from the opportunity or lead.  ONly used to correct status for edge cases.</inlineHelpText>
+        <label>Status Override</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Pending</fullName>
+                    <default>false</default>
+                    <label>Pending</label>
+                </value>
+                <value>
+                    <fullName>Denied</fullName>
+                    <default>false</default>
+                    <label>Denied</label>
+                </value>
+                <value>
+                    <fullName>Withdrawn</fullName>
+                    <default>false</default>
+                    <label>Withdrawn</label>
+                </value>
+                <value>
+                    <fullName>Complete</fullName>
+                    <default>false</default>
+                    <label>Complete</label>
+                </value>
+                <value>
+                    <fullName>In Payment - Interest Only Period</fullName>
+                    <default>false</default>
+                    <label>In Payment - Interest Only Period</label>
+                </value>
+                <value>
+                    <fullName>In Payment - Full Term Period</fullName>
+                    <default>false</default>
+                    <label>In Payment - Full Term Period</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Status_for_MCEC_Report__c</fullName>
+        <externalId>false</externalId>
+        <formula>if(isblank( text(Status_Override__c) )=true, 
+
+if( Loan_Status_from_Loan__c = &quot;Paid Off&quot;, &quot;Complete&quot;, 
+
+if(isblank(  MCEC_Status_Opportunity__c  )=true,  MCEC_Status_Lead__c ,MCEC_Status_Opportunity__c)), text(Status_Override__c ))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Unadvanced_Funds__c</fullName>
+        <externalId>false</externalId>
+        <formula>Loan__r.Total_Funds_Not_Yet_Disbursed__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Unadvanced Funds</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Unpaid_Principal_Balance__c</fullName>
+        <externalId>false</externalId>
+        <formula>Loan__r.Principal_Balance__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Unpaid Principal Balance</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <label>Loan Pipeline Report Data</label>
+    <listViews>
+        <fullName>StatusOverrideView</fullName>
+        <columns>NAME</columns>
+        <columns>Status_Override__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>Status Override View</label>
+    </listViews>
+    <nameField>
+        <label>Loan Pipeline Report Data Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Loan Pipeline Report Data</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>Read</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

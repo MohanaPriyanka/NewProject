@@ -1,0 +1,1971 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ComposeGmail</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>LogCall</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>MailMerge</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>RequestUpdate</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SendEmail</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ViewAll</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>Actual_Complete_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Actual Complete Date</label>
+        <required>false</required>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Anticipated_Complete_Date__c</fullName>
+        <defaultValue>TODAY()+7</defaultValue>
+        <externalId>false</externalId>
+        <label>Anticpated Complete Date</label>
+        <required>false</required>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Application_Status__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Application Status</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Assignee_if_Different__c</fullName>
+        <externalId>false</externalId>
+        <label>Assignee if Different</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Aly Garvin</fullName>
+                    <default>false</default>
+                    <label>Aly Garvin</label>
+                </value>
+                <value>
+                    <fullName>Alex Schulte</fullName>
+                    <default>false</default>
+                    <label>Alex Schulte</label>
+                </value>
+                <value>
+                    <fullName>Reg Schonborn</fullName>
+                    <default>false</default>
+                    <label>Reg Schonborn</label>
+                </value>
+                <value>
+                    <fullName>Lucy Alexander</fullName>
+                    <default>false</default>
+                    <label>Lucy Alexander</label>
+                </value>
+                <value>
+                    <fullName>Vanessa Coloma</fullName>
+                    <default>false</default>
+                    <label>Vanessa Coloma</label>
+                </value>
+                <value>
+                    <fullName>Dean Smithyman</fullName>
+                    <default>false</default>
+                    <label>Dean Smithyman</label>
+                </value>
+                <value>
+                    <fullName>Lee-Anne Roodt</fullName>
+                    <default>false</default>
+                    <label>Lee-Anne Roodt</label>
+                </value>
+                <value>
+                    <fullName>Wells Howe</fullName>
+                    <default>false</default>
+                    <label>Wells Howe</label>
+                </value>
+                <value>
+                    <fullName>Jordan Pentaleri</fullName>
+                    <default>false</default>
+                    <label>Jordan Pentaleri</label>
+                </value>
+                <value>
+                    <fullName>Trevor Lennox</fullName>
+                    <default>false</default>
+                    <label>Trevor Lennox</label>
+                </value>
+                <value>
+                    <fullName>Olivia Love</fullName>
+                    <default>false</default>
+                    <label>Olivia Love</label>
+                </value>
+                <value>
+                    <fullName>Jennifer Matchett</fullName>
+                    <default>false</default>
+                    <label>Jennifer Matchett</label>
+                </value>
+                <value>
+                    <fullName>Chris Gosline</fullName>
+                    <default>false</default>
+                    <label>Chris Gosline</label>
+                </value>
+                <value>
+                    <fullName>Allison Rand</fullName>
+                    <default>false</default>
+                    <label>Allison Rand</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Barrett_Billing_Blitz__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Barrett Billing Blitz</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Call_Duration_in_Minutes__c</fullName>
+        <externalId>false</externalId>
+        <formula>CallDurationInSeconds/60</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Call Duration in Minutes</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Cancellation__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Cancellation</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Case__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Case</label>
+        <referenceTo>Case</referenceTo>
+        <relationshipLabel>Activities</relationshipLabel>
+        <relationshipName>Activities</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Category__c</fullName>
+        <externalId>false</externalId>
+        <label>Category</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Accounting - ERP System Implementation</fullName>
+                    <default>false</default>
+                    <label>Accounting - ERP System Implementation</label>
+                </value>
+                <value>
+                    <fullName>Accounting - Executive Request</fullName>
+                    <default>false</default>
+                    <label>Accounting - Executive Request</label>
+                </value>
+                <value>
+                    <fullName>Accounting - Financial Tracking &amp; Reporting</fullName>
+                    <default>false</default>
+                    <label>Accounting - Financial Tracking &amp; Reporting</label>
+                </value>
+                <value>
+                    <fullName>Accounting - HR Policy</fullName>
+                    <default>false</default>
+                    <label>Accounting - HR Policy</label>
+                </value>
+                <value>
+                    <fullName>Accounting - IT Support</fullName>
+                    <default>false</default>
+                    <label>Accounting - IT Support</label>
+                </value>
+                <value>
+                    <fullName>Accounting - Legacy Clean-up</fullName>
+                    <default>false</default>
+                    <label>Accounting - Legacy Clean-up</label>
+                </value>
+                <value>
+                    <fullName>Business Development - Community Solar</fullName>
+                    <default>false</default>
+                    <label>Business Development - Community Solar</label>
+                </value>
+                <value>
+                    <fullName>Business Development - Executive Request</fullName>
+                    <default>false</default>
+                    <label>Business Development - Executive Request</label>
+                </value>
+                <value>
+                    <fullName>Business Development - Large offtake &amp; anchor</fullName>
+                    <default>false</default>
+                    <label>Business Development - Large offtake &amp; anchor</label>
+                </value>
+                <value>
+                    <fullName>Business Development - Residential Loan</fullName>
+                    <default>false</default>
+                    <label>Business Development - Residential Loan</label>
+                </value>
+                <value>
+                    <fullName>Executive - Business Development</fullName>
+                    <default>false</default>
+                    <label>Executive - Business Development</label>
+                </value>
+                <value>
+                    <fullName>Executive - Corporate Finance &amp; Accounting</fullName>
+                    <default>false</default>
+                    <label>Executive - Corporate Finance &amp; Accounting</label>
+                </value>
+                <value>
+                    <fullName>Executive - Development</fullName>
+                    <default>false</default>
+                    <label>Executive - Development</label>
+                </value>
+                <value>
+                    <fullName>Executive - External Affairs</fullName>
+                    <default>false</default>
+                    <label>Executive - External Affairs</label>
+                </value>
+                <value>
+                    <fullName>Executive - General Executive</fullName>
+                    <default>false</default>
+                    <label>Executive - General Executive</label>
+                </value>
+                <value>
+                    <fullName>Executive - Operations</fullName>
+                    <default>false</default>
+                    <label>Executive - Operations</label>
+                </value>
+                <value>
+                    <fullName>Executive - Project &amp; Platform Finance</fullName>
+                    <default>false</default>
+                    <label>Executive - Project &amp; Platform Finance</label>
+                </value>
+                <value>
+                    <fullName>External Affairs - B-Corp</fullName>
+                    <default>false</default>
+                    <label>External Affairs - B-Corp</label>
+                </value>
+                <value>
+                    <fullName>External Affairs - Community Service</fullName>
+                    <default>false</default>
+                    <label>External Affairs - Community Service</label>
+                </value>
+                <value>
+                    <fullName>External Affairs - Conferences/Events</fullName>
+                    <default>false</default>
+                    <label>External Affairs - Conferences/Events</label>
+                </value>
+                <value>
+                    <fullName>External Affairs - Executive Request</fullName>
+                    <default>false</default>
+                    <label>External Affairs - Executive Request</label>
+                </value>
+                <value>
+                    <fullName>External Affairs - Government / Regulatory Affairs</fullName>
+                    <default>false</default>
+                    <label>External Affairs - Government / Regulatory Affairs</label>
+                </value>
+                <value>
+                    <fullName>External Affairs - Newsletters</fullName>
+                    <default>false</default>
+                    <label>External Affairs - Newsletters</label>
+                </value>
+                <value>
+                    <fullName>External Affairs - Press Releases</fullName>
+                    <default>false</default>
+                    <label>External Affairs - Press Releases</label>
+                </value>
+                <value>
+                    <fullName>External Affairs - Social Media</fullName>
+                    <default>false</default>
+                    <label>External Affairs - Social Media</label>
+                </value>
+                <value>
+                    <fullName>External Affairs - Team Support</fullName>
+                    <default>false</default>
+                    <label>External Affairs - Team Support</label>
+                </value>
+                <value>
+                    <fullName>Marketing</fullName>
+                    <default>false</default>
+                    <label>Marketing</label>
+                </value>
+                <value>
+                    <fullName>Operations</fullName>
+                    <default>false</default>
+                    <label>Operations</label>
+                </value>
+                <value>
+                    <fullName>EC - Business Operations</fullName>
+                    <default>false</default>
+                    <label>Operations - Business Operations</label>
+                </value>
+                <value>
+                    <fullName>EC - Executive Request</fullName>
+                    <default>false</default>
+                    <label>Operations - Executive Request</label>
+                </value>
+                <value>
+                    <fullName>EC - Product Engineering</fullName>
+                    <default>false</default>
+                    <label>Operations - Product Engineering</label>
+                </value>
+                <value>
+                    <fullName>EC - Product Marketing</fullName>
+                    <default>false</default>
+                    <label>Operations - Product Marketing</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <label>Other</label>
+                </value>
+                <value>
+                    <fullName>Partnership Relations</fullName>
+                    <default>false</default>
+                    <label>Partnership Relations</label>
+                </value>
+                <value>
+                    <fullName>Product Team</fullName>
+                    <default>false</default>
+                    <label>Product Team</label>
+                </value>
+                <value>
+                    <fullName>Project Finance - 1603 Compliance / Loan Support</fullName>
+                    <default>false</default>
+                    <label>Project Finance - 1603 Compliance / Loan Support</label>
+                </value>
+                <value>
+                    <fullName>BlueWave Capital Raising</fullName>
+                    <default>false</default>
+                    <label>Project Finance - BlueWave Capital Raising</label>
+                </value>
+                <value>
+                    <fullName>BlueWave Solar Loan Sales Process</fullName>
+                    <default>false</default>
+                    <label>Project Finance - BlueWave Solar Loan Sales Process</label>
+                </value>
+                <value>
+                    <fullName>Project Finance - Corporate Finance</fullName>
+                    <default>false</default>
+                    <label>Project Finance - Corporate Finance</label>
+                </value>
+                <value>
+                    <fullName>Project Finance - Debt Capital Markets / Structured Transactions</fullName>
+                    <default>false</default>
+                    <label>Project Finance - Debt Capital Markets / Structured Transactions</label>
+                </value>
+                <value>
+                    <fullName>Project Finance - Equity Capital Markets / Strategic Partnerships</fullName>
+                    <default>false</default>
+                    <label>Project Finance - Equity Capital Markets / Strategic Partnerships</label>
+                </value>
+                <value>
+                    <fullName>Project Finance - Executive Request</fullName>
+                    <default>false</default>
+                    <label>Project Finance - Executive Request</label>
+                </value>
+                <value>
+                    <fullName>Offtake Sales</fullName>
+                    <default>false</default>
+                    <label>Project Finance - Offtake Sales</label>
+                </value>
+                <value>
+                    <fullName>Project Finance - Platform Finance</fullName>
+                    <default>false</default>
+                    <label>Project Finance - Platform Finance</label>
+                </value>
+                <value>
+                    <fullName>Strategic Capital Raise</fullName>
+                    <default>false</default>
+                    <label>Project Finance - Strategic Capital Raise</label>
+                </value>
+                <value>
+                    <fullName>Project Management - Asset Management</fullName>
+                    <default>false</default>
+                    <label>Project Management - Asset Management</label>
+                </value>
+                <value>
+                    <fullName>Project Management - Construction</fullName>
+                    <default>false</default>
+                    <label>Project Management - Construction</label>
+                </value>
+                <value>
+                    <fullName>Project Management - Executive/Corporate</fullName>
+                    <default>false</default>
+                    <label>Project Management - Executive Request</label>
+                </value>
+                <value>
+                    <fullName>Project Management - Interconnection</fullName>
+                    <default>false</default>
+                    <label>Project Management - Interconnection</label>
+                </value>
+                <value>
+                    <fullName>Project Management - Project Development</fullName>
+                    <default>false</default>
+                    <label>Project Management - Project Development</label>
+                </value>
+                <value>
+                    <fullName>Project Management - Site Acquisition</fullName>
+                    <default>false</default>
+                    <label>Project Management - Site Acquisition</label>
+                </value>
+                <value>
+                    <fullName>Sales Operations - Executive Request</fullName>
+                    <default>false</default>
+                    <label>Sales Operations - Executive Request</label>
+                </value>
+                <value>
+                    <fullName>Project Management - Site Acquisition - Engagement</fullName>
+                    <default>false</default>
+                    <label>Project Management - Site Acquisition - Engagement</label>
+                </value>
+                <value>
+                    <fullName>Sales Operations - Project Management</fullName>
+                    <default>false</default>
+                    <label>Sales Operations - Project Management</label>
+                </value>
+                <value>
+                    <fullName>Sales Operations - Quality Control</fullName>
+                    <default>false</default>
+                    <label>Sales Operations - Quality Control</label>
+                </value>
+                <value>
+                    <fullName>Sales Operations - Partner Support</fullName>
+                    <default>false</default>
+                    <label>Sales Operations - Partner Support</label>
+                </value>
+                <value>
+                    <fullName>Sales Operations - Innovation</fullName>
+                    <default>false</default>
+                    <label>Sales Operations - Innovation</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>ClickToDial__ClickToCallPhone__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Click-to-Call Phone</label>
+        <length>50</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Cost__c</fullName>
+        <description>Cost field for PM Tasks</description>
+        <externalId>false</externalId>
+        <label>Cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Customer_Care_Case__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Select this checkbox to be able to create a new customer care case linked to this task</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Select this checkbox to be able to create a new customer care case linked to this task</inlineHelpText>
+        <label>Customer Care Case</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Customer_Case_Unique_ID__c</fullName>
+        <description>Unique ID for most recently created Customer Case. Populated by Trigger/Handler</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Unique ID for most recently created Customer Case. Populated by Trigger/Handler</inlineHelpText>
+        <label>Customer Case Unique ID</label>
+        <length>18</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Customer_Reached__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Customer Reached</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Disbursal__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Disbursal</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Do_Not_Fire_Triggers__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Do Not Fire Triggers</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Due_Date_HIDDEN__c</fullName>
+        <externalId>false</externalId>
+        <formula>ActivityDate</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Due Date</label>
+        <required>false</required>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Engagement_Task__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Only select this option if it is an Engagement Task that is related to an Account</inlineHelpText>
+        <label>Engagement Task</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Estimated_Completion_Time__c</fullName>
+        <externalId>false</externalId>
+        <label>Time Spent on Task</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Is_Regeneration__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF ( OR( AND(CONTAINS(Subject, &apos;MN&apos;), 
+             AND(Day(DATEVALUE(CreatedDate))&gt;16, 
+                 Day(DATEVALUE(CreatedDate))&lt;=22)),
+         AND(NOT(CONTAINS(Subject, &apos;MN&apos;)), 
+             AND(Day(DATEVALUE(CreatedDate))&gt;11, 
+                 Day(DATEVALUE(CreatedDate))&lt;=17))), 
+    &apos;on Bill Date&apos;, 
+    &apos;after Bill Day&apos;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Is Regeneration</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Late_Payment_Call__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Late Payment Call</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Lead_Lookup__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Lead</label>
+        <referenceTo>Lead</referenceTo>
+        <relationshipLabel>Activities</relationshipLabel>
+        <relationshipName>Activities</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Loan_Partner_Sequence__c</fullName>
+        <description>SLPCustomerPageHandler</description>
+        <externalId>false</externalId>
+        <label>Loan Partner Sequence</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Loan_Sale__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Loan Sale</description>
+        <externalId>false</externalId>
+        <label>Loan Sale</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Loan__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Loan</label>
+        <referenceTo>Loan__c</referenceTo>
+        <relationshipLabel>Activities</relationshipLabel>
+        <relationshipName>Tasks</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>MPM4_BASE__Project_Task_ID__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>true</externalId>
+        <label>Project Task ID</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>New_Customer_Outreach__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>New Customer Outreach</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Opportunity_Lookup__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Opportunity</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipLabel>Activities</relationshipLabel>
+        <relationshipName>Related_Tasks</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Partner_Call__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Partner Call</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Power_of_One__c</fullName>
+        <externalId>false</externalId>
+        <formula>1</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Count</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Product_Inquiry__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Product Inquiry</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Product_Line__c</fullName>
+        <externalId>false</externalId>
+        <label>Product Line</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Community Solar</fullName>
+                    <default>false</default>
+                    <label>Community Solar</label>
+                </value>
+                <value>
+                    <fullName>Solar Loan</fullName>
+                    <default>false</default>
+                    <label>Solar Loan</label>
+                </value>
+                <value>
+                    <fullName>Both</fullName>
+                    <default>false</default>
+                    <label>Both</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <label>Other</label>
+                </value>
+                <value>
+                    <fullName>Large Offtake</fullName>
+                    <default>false</default>
+                    <label>Large Offtake</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Queue_Duration__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( ISNULL(  Actual_Complete_Date__c  ) ,  TODAY() -   Start_Date__c  ,    Actual_Complete_Date__c  -   Start_Date__c   )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Queue Duration</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Related_Utility_Account_Log__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Related To: UAL</description>
+        <externalId>false</externalId>
+        <label>Related Utility Account Log</label>
+        <referenceTo>Utility_Account_Log__c</referenceTo>
+        <relationshipLabel>Activities</relationshipLabel>
+        <relationshipName>Activities</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Requested_By__c</fullName>
+        <description>Input from Webform on who requested the work.</description>
+        <externalId>false</externalId>
+        <label>Requested By:</label>
+        <required>false</required>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Start_Date__c</fullName>
+        <defaultValue>Today()</defaultValue>
+        <externalId>false</externalId>
+        <label>Start Date</label>
+        <required>false</required>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Task_Category__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Select all of the topics that best describe the reason for the interaction and the topics covered.</inlineHelpText>
+        <label>Topic</label>
+        <required>false</required>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Billing</fullName>
+                    <default>false</default>
+                    <label>Billing</label>
+                </value>
+                <value>
+                    <fullName>Cancellation</fullName>
+                    <default>false</default>
+                    <label>Cancellation</label>
+                </value>
+                <value>
+                    <fullName>Fairhaven and Clara Barton Call-a-thon</fullName>
+                    <default>false</default>
+                    <label>Fairhaven and Clara Barton Call-a-thon</label>
+                </value>
+                <value>
+                    <fullName>Fairhaven and Clara Barton Fiasco</fullName>
+                    <default>false</default>
+                    <label>Fairhaven and Clara Barton Fiasco</label>
+                </value>
+                <value>
+                    <fullName>General CS</fullName>
+                    <default>false</default>
+                    <label>General CS</label>
+                </value>
+                <value>
+                    <fullName>How much will I save</fullName>
+                    <default>false</default>
+                    <label>How much will I save</label>
+                </value>
+                <value>
+                    <fullName>How to Pay Bill</fullName>
+                    <default>false</default>
+                    <label>How to Pay Bill</label>
+                </value>
+                <value>
+                    <fullName>Payment Plan</fullName>
+                    <default>false</default>
+                    <label>Payment Plan</label>
+                </value>
+                <value>
+                    <fullName>Portal Log In</fullName>
+                    <default>false</default>
+                    <label>Portal Log In</label>
+                </value>
+                <value>
+                    <fullName>Subscription Size Change</fullName>
+                    <default>false</default>
+                    <label>Subscription Size Change</label>
+                </value>
+                <value>
+                    <fullName>When will I see credits on my account</fullName>
+                    <default>false</default>
+                    <label>When will I see credits on my account</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>5</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Task_Performed__c</fullName>
+        <description>Used by Project Management tasks</description>
+        <externalId>false</externalId>
+        <label>Task Performed</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <controllingField>Category__c</controllingField>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Acquisition</fullName>
+                    <default>false</default>
+                    <label>Acquisition</label>
+                </value>
+                <value>
+                    <fullName>Admin (Salesforce, organization, planning, management)</fullName>
+                    <default>false</default>
+                    <label>Admin (Salesforce, organization, planning, management)</label>
+                </value>
+                <value>
+                    <fullName>Blast Letter</fullName>
+                    <default>false</default>
+                    <label>Blast Letter</label>
+                </value>
+                <value>
+                    <fullName>Budget/Cashflow review</fullName>
+                    <default>false</default>
+                    <label>Budget/Cashflow review</label>
+                </value>
+                <value>
+                    <fullName>Budgets</fullName>
+                    <default>false</default>
+                    <label>Budgets</label>
+                </value>
+                <value>
+                    <fullName>Community Service</fullName>
+                    <default>false</default>
+                    <label>Community Service</label>
+                </value>
+                <value>
+                    <fullName>Community Solar</fullName>
+                    <default>false</default>
+                    <label>Community Solar</label>
+                </value>
+                <value>
+                    <fullName>Compliance</fullName>
+                    <default>false</default>
+                    <label>Compliance</label>
+                </value>
+                <value>
+                    <fullName>Construction Administration</fullName>
+                    <default>false</default>
+                    <label>Construction Administration</label>
+                </value>
+                <value>
+                    <fullName>Construction Budget</fullName>
+                    <default>false</default>
+                    <label>Construction Budget</label>
+                </value>
+                <value>
+                    <fullName>Contract Review</fullName>
+                    <default>false</default>
+                    <label>Contract Review</label>
+                </value>
+                <value>
+                    <fullName>Corporate Finance</fullName>
+                    <default>false</default>
+                    <label>Corporate Finance</label>
+                </value>
+                <value>
+                    <fullName>Draft</fullName>
+                    <default>false</default>
+                    <label>Draft</label>
+                </value>
+                <value>
+                    <fullName>Due Diligence</fullName>
+                    <default>false</default>
+                    <label>Due Diligence</label>
+                </value>
+                <value>
+                    <fullName>Engagement</fullName>
+                    <default>false</default>
+                    <label>Engagement</label>
+                </value>
+                <value>
+                    <fullName>EPC</fullName>
+                    <default>false</default>
+                    <label>EPC</label>
+                </value>
+                <value>
+                    <fullName>Event</fullName>
+                    <default>false</default>
+                    <label>Event</label>
+                </value>
+                <value>
+                    <fullName>Exec Committee</fullName>
+                    <default>false</default>
+                    <label>Exec Committee</label>
+                </value>
+                <value>
+                    <fullName>Finance</fullName>
+                    <default>false</default>
+                    <label>Finance</label>
+                </value>
+                <value>
+                    <fullName>Finance Committee</fullName>
+                    <default>false</default>
+                    <label>Finance Committee</label>
+                </value>
+                <value>
+                    <fullName>Financial Modeling</fullName>
+                    <default>false</default>
+                    <label>Financial Modeling</label>
+                </value>
+                <value>
+                    <fullName>HR</fullName>
+                    <default>false</default>
+                    <label>HR</label>
+                </value>
+                <value>
+                    <fullName>Impact Study</fullName>
+                    <default>false</default>
+                    <label>Impact Study</label>
+                </value>
+                <value>
+                    <fullName>Incentives</fullName>
+                    <default>false</default>
+                    <label>Incentives</label>
+                </value>
+                <value>
+                    <fullName>Interconnection</fullName>
+                    <default>false</default>
+                    <label>Interconnection</label>
+                </value>
+                <value>
+                    <fullName>Interconnection - Application Stage</fullName>
+                    <default>false</default>
+                    <label>Interconnection - Application Stage</label>
+                </value>
+                <value>
+                    <fullName>Interconnection - Net Metering</fullName>
+                    <default>false</default>
+                    <label>Interconnection - Net Metering</label>
+                </value>
+                <value>
+                    <fullName>Interconnection - Utility Construction</fullName>
+                    <default>false</default>
+                    <label>Interconnection - Utility Construction</label>
+                </value>
+                <value>
+                    <fullName>Interview</fullName>
+                    <default>false</default>
+                    <label>Interview</label>
+                </value>
+                <value>
+                    <fullName>Investor Relations</fullName>
+                    <default>false</default>
+                    <label>Investor Relations</label>
+                </value>
+                <value>
+                    <fullName>ISA</fullName>
+                    <default>false</default>
+                    <label>ISA</label>
+                </value>
+                <value>
+                    <fullName>ISO NE</fullName>
+                    <default>false</default>
+                    <label>ISO NE</label>
+                </value>
+                <value>
+                    <fullName>IX Applications</fullName>
+                    <default>false</default>
+                    <label>IX Applications</label>
+                </value>
+                <value>
+                    <fullName>IX Meetings</fullName>
+                    <default>false</default>
+                    <label>IX Meetings</label>
+                </value>
+                <value>
+                    <fullName>Lobbying</fullName>
+                    <default>false</default>
+                    <label>Lobbying</label>
+                </value>
+                <value>
+                    <fullName>Mailer</fullName>
+                    <default>false</default>
+                    <label>Mailer</label>
+                </value>
+                <value>
+                    <fullName>Meeting</fullName>
+                    <default>false</default>
+                    <label>Meeting</label>
+                </value>
+                <value>
+                    <fullName>Metering</fullName>
+                    <default>false</default>
+                    <label>Metering</label>
+                </value>
+                <value>
+                    <fullName>Modeling</fullName>
+                    <default>false</default>
+                    <label>Modeling</label>
+                </value>
+                <value>
+                    <fullName>Net-Metering</fullName>
+                    <default>false</default>
+                    <label>Net-Metering</label>
+                </value>
+                <value>
+                    <fullName>Off-site meetings</fullName>
+                    <default>false</default>
+                    <label>Off-site meetings</label>
+                </value>
+                <value>
+                    <fullName>Ongoing Tasks</fullName>
+                    <default>false</default>
+                    <label>Ongoing Tasks</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <label>Other</label>
+                </value>
+                <value>
+                    <fullName>Partnerships</fullName>
+                    <default>false</default>
+                    <label>Partnerships</label>
+                </value>
+                <value>
+                    <fullName>Permitting</fullName>
+                    <default>false</default>
+                    <label>Permitting</label>
+                </value>
+                <value>
+                    <fullName>Physical Plant</fullName>
+                    <default>false</default>
+                    <label>Physical Plant</label>
+                </value>
+                <value>
+                    <fullName>Platform Development</fullName>
+                    <default>false</default>
+                    <label>Platform Development</label>
+                </value>
+                <value>
+                    <fullName>Policy Development</fullName>
+                    <default>false</default>
+                    <label>Policy Development</label>
+                </value>
+                <value>
+                    <fullName>Press Release</fullName>
+                    <default>false</default>
+                    <label>Press Release</label>
+                </value>
+                <value>
+                    <fullName>Project Considerations (Risk Summary &amp; IC)</fullName>
+                    <default>false</default>
+                    <label>Project Considerations (Risk Summary &amp; IC)</label>
+                </value>
+                <value>
+                    <fullName>Project Finance</fullName>
+                    <default>false</default>
+                    <label>Project Finance</label>
+                </value>
+                <value>
+                    <fullName>Project Management Summary</fullName>
+                    <default>false</default>
+                    <label>Project Management Summary</label>
+                </value>
+                <value>
+                    <fullName>Project Partners</fullName>
+                    <default>false</default>
+                    <label>Project Partners</label>
+                </value>
+                <value>
+                    <fullName>Real Estate</fullName>
+                    <default>false</default>
+                    <label>Real Estate</label>
+                </value>
+                <value>
+                    <fullName>Revenue and OpEx</fullName>
+                    <default>false</default>
+                    <label>Revenue and OpEx</label>
+                </value>
+                <value>
+                    <fullName>Review</fullName>
+                    <default>false</default>
+                    <label>Review</label>
+                </value>
+                <value>
+                    <fullName>RFP</fullName>
+                    <default>false</default>
+                    <label>RFP</label>
+                </value>
+                <value>
+                    <fullName>Sales</fullName>
+                    <default>false</default>
+                    <label>Sales</label>
+                </value>
+                <value>
+                    <fullName>Sent to Scout</fullName>
+                    <default>false</default>
+                    <label>Sent to Scout</label>
+                </value>
+                <value>
+                    <fullName>Site Origination</fullName>
+                    <default>false</default>
+                    <label>Site Origination</label>
+                </value>
+                <value>
+                    <fullName>Site Visit</fullName>
+                    <default>false</default>
+                    <label>Site Visit</label>
+                </value>
+                <value>
+                    <fullName>Social Media</fullName>
+                    <default>false</default>
+                    <label>Social Media</label>
+                </value>
+                <value>
+                    <fullName>SREC (and other Incentive Programs)</fullName>
+                    <default>false</default>
+                    <label>SREC (and other Incentive Programs)</label>
+                </value>
+                <value>
+                    <fullName>SRECS</fullName>
+                    <default>false</default>
+                    <label>SRECS</label>
+                </value>
+                <value>
+                    <fullName>Stage 1 Pre-Development - DD Stage and Site Acq</fullName>
+                    <default>false</default>
+                    <label>Stage 1 Pre-Development - DD Stage and Site Acq</label>
+                </value>
+                <value>
+                    <fullName>Stage 1 Pre-Development - Interconnection Strategy &amp; App</fullName>
+                    <default>false</default>
+                    <label>Stage 1 Pre-Development - Interconnection Strategy &amp; App</label>
+                </value>
+                <value>
+                    <fullName>Stage 2 Development - Design</fullName>
+                    <default>false</default>
+                    <label>Stage 2 Development - Design</label>
+                </value>
+                <value>
+                    <fullName>Stage 2 Development - Permitting</fullName>
+                    <default>false</default>
+                    <label>Stage 2 Development - Permitting</label>
+                </value>
+                <value>
+                    <fullName>Stage 2 Development - Real Estate</fullName>
+                    <default>false</default>
+                    <label>Stage 2 Development - Real Estate</label>
+                </value>
+                <value>
+                    <fullName>Stage 2 Development - Tax Agreement &amp; Ch. 61/A/B</fullName>
+                    <default>false</default>
+                    <label>Stage 2 Development - Tax Agreement &amp; Ch. 61/A/B</label>
+                </value>
+                <value>
+                    <fullName>Stage 3 - Pre-Construction</fullName>
+                    <default>false</default>
+                    <label>Stage 3 - Pre-Construction</label>
+                </value>
+                <value>
+                    <fullName>Stage 4 - Construction</fullName>
+                    <default>false</default>
+                    <label>Stage 4 - Construction</label>
+                </value>
+                <value>
+                    <fullName>Structure/Strategy</fullName>
+                    <default>false</default>
+                    <label>Structure/Strategy</label>
+                </value>
+                <value>
+                    <fullName>System Operations</fullName>
+                    <default>false</default>
+                    <label>System Operations</label>
+                </value>
+                <value>
+                    <fullName>Telcom Construction</fullName>
+                    <default>false</default>
+                    <label>Telcom Construction</label>
+                </value>
+                <value>
+                    <fullName>Third Party Interests (Scouts &amp; Offtake)</fullName>
+                    <default>false</default>
+                    <label>Third Party Interests (Scouts &amp; Offtake)</label>
+                </value>
+                <value>
+                    <fullName>Utility Construction</fullName>
+                    <default>false</default>
+                    <label>Utility Construction</label>
+                </value>
+                <value>
+                    <fullName>Payment/Deadline</fullName>
+                    <default>false</default>
+                    <label>Payment/Deadline</label>
+                </value>
+            </valueSetDefinition>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Site Acquisition - Engagement</controllingFieldValue>
+                <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
+                <valueName>Blast Letter</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Site Acquisition - Engagement</controllingFieldValue>
+                <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
+                <valueName>Engagement</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Site Acquisition - Engagement</controllingFieldValue>
+                <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
+                <valueName>Mailer</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Site Acquisition - Engagement</controllingFieldValue>
+                <controllingFieldValue>Project Management - Executive/Corporate</controllingFieldValue>
+                <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
+                <controllingFieldValue>Project Management - Construction</controllingFieldValue>
+                <valueName>Meeting</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Site Acquisition - Engagement</controllingFieldValue>
+                <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
+                <valueName>Sent to Scout</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Executive/Corporate</controllingFieldValue>
+                <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
+                <valueName>Admin (Salesforce, organization, planning, management)</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
+                <valueName>Acquisition</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
+                <valueName>Due Diligence</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
+                <valueName>HR</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
+                <valueName>Site Origination</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Site Acquisition</controllingFieldValue>
+                <controllingFieldValue>Project Management - Construction</controllingFieldValue>
+                <valueName>Site Visit</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+                <valueName>Community Solar</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+                <valueName>Construction Budget</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+                <valueName>Finance</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+                <valueName>Interconnection - Application Stage</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+                <valueName>Interconnection - Net Metering</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+                <valueName>Interconnection - Utility Construction</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+                <valueName>Project Considerations (Risk Summary &amp; IC)</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+                <valueName>Project Management Summary</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+                <valueName>Project Partners</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+                <valueName>SREC (and other Incentive Programs)</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+                <valueName>Stage 1 Pre-Development - DD Stage and Site Acq</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+                <valueName>Stage 1 Pre-Development - Interconnection Strategy &amp; App</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+                <valueName>Stage 2 Development - Design</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+                <valueName>Stage 2 Development - Permitting</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+                <valueName>Stage 2 Development - Real Estate</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+                <valueName>Stage 2 Development - Tax Agreement &amp; Ch. 61/A/B</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+                <valueName>Stage 3 - Pre-Construction</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+                <valueName>Stage 4 - Construction</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+                <valueName>Third Party Interests (Scouts &amp; Offtake)</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+                <valueName>Impact Study</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+                <valueName>ISA</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+                <valueName>ISO NE</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+                <valueName>IX Applications</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+                <valueName>IX Meetings</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+                <valueName>Metering</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+                <valueName>Net-Metering</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+                <valueName>Ongoing Tasks</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+                <valueName>SRECS</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+                <valueName>System Operations</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+                <valueName>Telcom Construction</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+                <valueName>Utility Construction</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+                <valueName>Payment/Deadline</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Construction</controllingFieldValue>
+                <valueName>Construction Administration</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Construction</controllingFieldValue>
+                <valueName>EPC</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Construction</controllingFieldValue>
+                <valueName>RFP</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Asset Management</controllingFieldValue>
+                <valueName>Compliance</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Asset Management</controllingFieldValue>
+                <valueName>Other</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Asset Management</controllingFieldValue>
+                <valueName>Physical Plant</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Asset Management</controllingFieldValue>
+                <valueName>Revenue and OpEx</valueName>
+            </valueSettings>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Task_Size__c</fullName>
+        <description>1 - Basic - e.g. Unconnected Field
+2 - Moderate - e.g. Formula Field
+3 - Advanced non-Apex - e.g. Workflow
+5 - Basic Apex Edit, Complex Workflow/Formula
+8 - New Apex
+13 - New Apex With Test Class</description>
+        <externalId>false</externalId>
+        <inlineHelpText>1 - Basic - e.g. Unconnected Field
+2 - Moderate - e.g. Formula Field
+3 - Advanced non-Apex - e.g. Workflow
+5 - Basic Apex Edit, Complex Workflow/Formula
+8 - New Apex
+13 - New Apex With Test Class</inlineHelpText>
+        <label>Task Size</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>1</fullName>
+                    <default>false</default>
+                    <label>1</label>
+                </value>
+                <value>
+                    <fullName>2</fullName>
+                    <default>false</default>
+                    <label>2</label>
+                </value>
+                <value>
+                    <fullName>3</fullName>
+                    <default>false</default>
+                    <label>3</label>
+                </value>
+                <value>
+                    <fullName>5</fullName>
+                    <default>false</default>
+                    <label>5</label>
+                </value>
+                <value>
+                    <fullName>8</fullName>
+                    <default>false</default>
+                    <label>8</label>
+                </value>
+                <value>
+                    <fullName>13</fullName>
+                    <default>false</default>
+                    <label>13</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Task_Subject__c</fullName>
+        <description>Select the Subject that applies to the task. If none apply, choose &quot;Other&quot; and explain the task in the Comment section.</description>
+        <externalId>false</externalId>
+        <label>Task Subject</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Adjust subscription, &gt;25kW</fullName>
+                    <default>false</default>
+                    <label>Adjust subscription, &gt;25kW</label>
+                </value>
+                <value>
+                    <fullName>Change account # on contract</fullName>
+                    <default>false</default>
+                    <label>Change account # on contract</label>
+                </value>
+                <value>
+                    <fullName>Change load zone</fullName>
+                    <default>false</default>
+                    <label>Change load zone</label>
+                </value>
+                <value>
+                    <fullName>Change to commercial</fullName>
+                    <default>false</default>
+                    <label>Change to commercial</label>
+                </value>
+                <value>
+                    <fullName>Check Comments About Sizing section</fullName>
+                    <default>false</default>
+                    <label>Check Comments About Sizing section</label>
+                </value>
+                <value>
+                    <fullName>Check contract, handwritten</fullName>
+                    <default>false</default>
+                    <label>Check contract, handwritten</label>
+                </value>
+                <value>
+                    <fullName>Credit report did not match customer&apos;s name, attach credit check for right customer</fullName>
+                    <default>false</default>
+                    <label>Credit report did not match customer&apos;s name, attach credit check for right customer</label>
+                </value>
+                <value>
+                    <fullName>Credit report is missing, Upload correct credit report</fullName>
+                    <default>false</default>
+                    <label>Credit report is missing, Upload correct credit report</label>
+                </value>
+                <value>
+                    <fullName>Custom&apos;s credit was denied , change stage to unqualified</fullName>
+                    <default>false</default>
+                    <label>Custom&apos;s credit was denied , change stage to unqualified</label>
+                </value>
+                <value>
+                    <fullName>Customer email missing</fullName>
+                    <default>false</default>
+                    <label>Customer email missing</label>
+                </value>
+                <value>
+                    <fullName>Load zone missing on utility bill</fullName>
+                    <default>false</default>
+                    <label>Load zone missing on utility bill</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <label>Other</label>
+                </value>
+                <value>
+                    <fullName>Subscription adjustment needed</fullName>
+                    <default>false</default>
+                    <label>Subscription adjustment needed</label>
+                </value>
+                <value>
+                    <fullName>Too few years at location</fullName>
+                    <default>false</default>
+                    <label>Too few years at location</label>
+                </value>
+                <value>
+                    <fullName>Too few years in business</fullName>
+                    <default>false</default>
+                    <label>Too few years in business</label>
+                </value>
+                <value>
+                    <fullName>Upload complete contract</fullName>
+                    <default>false</default>
+                    <label>Upload complete contract</label>
+                </value>
+                <value>
+                    <fullName>Upload complete utility bill to utility Account Log</fullName>
+                    <default>false</default>
+                    <label>Upload complete utility bill to utility Account Log</label>
+                </value>
+                <value>
+                    <fullName>Upload Green Button Data</fullName>
+                    <default>false</default>
+                    <label>Upload Green Button Data</label>
+                </value>
+                <value>
+                    <fullName>Upload utility bill without overdue payments</fullName>
+                    <default>false</default>
+                    <label>Upload utility bill without overdue payments</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Technical_Assisstance__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Technical Assistance</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Topic_Billing__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Billing</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Tracking__c</fullName>
+        <description>Field created 3/27/17 by Nick Speyer to accomodate Product Roadmap Reporting</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Field created 3/27/17 by Nick Speyer to accomodate Product Roadmap Reporting</inlineHelpText>
+        <label>Tracking</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>On Time</fullName>
+                    <default>false</default>
+                    <label>On Time</label>
+                </value>
+                <value>
+                    <fullName>Adjusted Schedule</fullName>
+                    <default>false</default>
+                    <label>Adjusted Schedule</label>
+                </value>
+                <value>
+                    <fullName>Behind Schedule</fullName>
+                    <default>false</default>
+                    <label>Behind Schedule</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Unique_ID__c</fullName>
+        <description>Designed to support the scenario in which we were creating Tasks for all of the actions we needed the partner to take during the lending process. Since we have moved over to a separate object, Partner_Task__c, this field can be retired.</description>
+        <externalId>true</externalId>
+        <label>Unique ID</label>
+        <length>100</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>rcsfl__CALL_UNIQUE_ID__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <deprecated>false</deprecated>
+        <externalId>true</externalId>
+        <label>CALL_UNIQUE_ID</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>rcsfl__CALL_UUID__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>true</externalId>
+        <label>CALL_UUID</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>rcsfl__Call_Recording__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>IF(NOT(ISBLANK(rcsfl__Recording_Information__c)),HYPERLINK(&quot;http://apps.ringcentral.com/integrations/recording/test/index.html?id=&quot;+ rcsfl__Recording_Information__c, &quot;http://apps.ringcentral.com/integrations/recording/test/index.html?id=&quot; + rcsfl__Recording_Information__c),NULL)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Call Recording</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>rcsfl__RC_Logging_Type__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>RC Logging Type</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>rcsfl__Recording_Information__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Recording Information</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>rcsfl__key__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>key</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>truly_callDurationMinutes__c</fullName>
+        <externalId>false</externalId>
+        <label>Call Duration (Minutes)</label>
+        <precision>14</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>truly_callDuration__c</fullName>
+        <description>duration of a call formatted</description>
+        <externalId>false</externalId>
+        <label>Call Duration</label>
+        <length>50</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>truly_callerNumber__c</fullName>
+        <externalId>false</externalId>
+        <label>Caller Number</label>
+        <length>50</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>truly_caller__c</fullName>
+        <externalId>false</externalId>
+        <label>Caller</label>
+        <length>50</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>truly_customCallDisposition__c</fullName>
+        <externalId>false</externalId>
+        <label>Custom Call Disposition</label>
+        <length>250</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>truly_dayOfWeek__c</fullName>
+        <externalId>false</externalId>
+        <label>Day of Week</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>truly_direction__c</fullName>
+        <externalId>false</externalId>
+        <label>Direction</label>
+        <length>25</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>truly_hourOfDay__c</fullName>
+        <externalId>false</externalId>
+        <label>Hour of Day</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>truly_id__c</fullName>
+        <externalId>false</externalId>
+        <label>Truly Id</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>truly_missed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Missed</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>truly_queueDropOff__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Queue Drop Off</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>truly_queued__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Queued</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>truly_recipientNumber__c</fullName>
+        <externalId>false</externalId>
+        <label>Recipient Number</label>
+        <length>50</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>truly_recipient__c</fullName>
+        <externalId>false</externalId>
+        <label>Recipient</label>
+        <length>50</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>truly_recording__c</fullName>
+        <externalId>false</externalId>
+        <label>Recording</label>
+        <required>false</required>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>truly_startTime__c</fullName>
+        <externalId>false</externalId>
+        <label>Start Time</label>
+        <required>false</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>truly_target__c</fullName>
+        <externalId>false</externalId>
+        <label>Target</label>
+        <length>250</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>truly_timeInQueue__c</fullName>
+        <externalId>false</externalId>
+        <label>Time in Queue</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>truly_timeToPickup__c</fullName>
+        <externalId>false</externalId>
+        <label>Time To Pickup</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <listViews>
+        <fullName>Internal_Users1</fullName>
+        <columns>TASK.SUBJECT</columns>
+        <columns>TASK.WHO_NAME</columns>
+        <columns>TASK.WHAT_NAME</columns>
+        <columns>TASK.DUE_DATE</columns>
+        <columns>TASK.STATUS</columns>
+        <columns>TASK.PRIORITY</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>TASK.LAST_UPDATE</columns>
+        <columns>UPDATEDBY_USER.ALIAS</columns>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>ACTIVITY.TASK</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <filters>
+            <field>TASK.SUBJECT</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </filters>
+        <label>Internal Users</label>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>MyDelegatedActivities</fullName>
+        <filterScope>Delegated</filterScope>
+        <label>My Delegated Activities</label>
+    </listViews>
+    <listViews>
+        <fullName>MyTeamsActivities</fullName>
+        <filterScope>Team</filterScope>
+        <label>My Team&apos;s Activities</label>
+    </listViews>
+    <listViews>
+        <fullName>TodaysTasks</fullName>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>TASK.CLOSED</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </filters>
+        <filters>
+            <field>ACTIVITY.TASK</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <filters>
+            <field>TASK.DUE_DATE</field>
+            <operation>lessThan</operation>
+            <value>TOMORROW</value>
+        </filters>
+        <label>Today&apos;s Tasks</label>
+    </listViews>
+    <listViews>
+        <fullName>UpcomingEvents</fullName>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>ACTIVITY.TASK</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </filters>
+        <filters>
+            <field>TASK.DUE_DATE</field>
+            <operation>greaterThan</operation>
+            <value>YESTERDAY</value>
+        </filters>
+        <label>Upcoming Events</label>
+    </listViews>
+    <searchLayouts>
+        <searchResultsAdditionalFields>TASK.SUBJECT</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>TASK.WHO_NAME</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>TASK.WHAT_NAME</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>TASK.DUE_DATE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CORE.USERS.ALIAS</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>TASK.CREATED_DATE</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>Private</sharingModel>
+</CustomObject>

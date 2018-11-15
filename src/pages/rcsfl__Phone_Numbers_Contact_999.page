@@ -1,0 +1,81 @@
+<apex:page rendered="true" standardController="Contact" extensions="rcsfl.PhoneNumbersContactController" showHeader="false" standardStylesheets="false" applyHtmlTag="false" 
+  applyBodyTag="false" contentType="text/html">
+<apex:outputText escape="false" value="{!"<!DOCTYPE html>"}"/>
+<html>
+    <head>
+        <meta charset="utf-8"></meta>
+        <base href="{!URLFOR($Resource.Salesforce1,'app/')}"></base>
+        <link rel="stylesheet" type="text/css" href="styles/sf1-numbers-table.css"/>
+        <link rel="stylesheet" type="text/css" href="styles/sf1-call.css"/>
+        <style type="text/css">     
+            #hiddenInformation {        
+                display: none;      
+            }       
+        </style>
+    </head>
+    
+    <body>
+        <table class="rc-phones-table">
+            <apex:repeat value="{!nonEmptyPhoneFieldNameList}" var="phoneFieldName">
+                <tr>
+                    <td>
+                        <span class="rc-phone-field"> {!phoneFieldNameToLabel[phoneFieldName]} </span> 
+                        <span class="rc-phone-number"> {!phoneFieldNameToPhoneNumber[phoneFieldName]} </span>
+                    </td>
+                </tr>
+            </apex:repeat>
+        </table>
+
+        <div id="hiddenInformation">        
+            <table class="rc-phones-allPhoneFields">        
+            <apex:repeat value="{!allPhoneFields}" var="phoneFieldName">        
+                <tr>        
+                    <td>        
+                        <span class="rc-phone-phone"> {!phoneFieldName} </span>         
+                                
+                                
+                    </td>       
+                </tr>       
+            </apex:repeat>      
+        </table>        
+        <apex:variable var="c" value="{!contact}" />        
+        <p>Greetings, {!c}.</p>     
+        <apex:variable var="c" value="{!isAccessible}" />       
+        <p>isAccessible, {!c}.</p>      
+                
+        <apex:variable var="c" value="{!selectAllowed}" />      
+        <p>selectAllowed, {!c}.</p>     
+                
+                
+        <apex:variable var="c" value="{!queryString}" />        
+        <p>queryString, {!c}.</p>       
+        </div>      
+                
+        <div id="rc-phones-modal">
+            <div class="rc-popover-calls">
+                <div class="rc-popover-row" id="rc-popover-phone">
+                    <div class="rc-call-option-wrapper">
+                        <img src="images/phone-icon.png" class="rc-call-icon" />
+                        <span class="rc-popover-option"> Phone Call </span>
+                    </div>
+                </div>
+                
+                <div class="rc-popover-row" id="rc-popover-app">
+                    <div class="rc-call-option-wrapper">
+                        <img src="images/ringcentral-icon.png" class="rc-call-icon" />
+                        <span class="rc-popover-option"> RingCentral Call </span>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="rc-popover-cancel-button">
+                <div class="rc-popover-row rc-cancel-row">
+                    <span class="rc-popover-option"> Cancel </span>
+                </div>
+            </div>
+        </div>
+        <script src='scripts/sf1-call.js'> </script>
+    </body>
+</html>
+</apex:page>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>BFG_Access</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>BFG Access</label>
+        <sharedTo>
+            <group>BFG</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>LASERCA__Name__c</field>
+            <operation>notEqual</operation>
+            <value>0</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>External_BFG_User</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>External BFG User</label>
+        <sharedTo>
+            <group>External_BFG</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>LASERCA__Name__c</field>
+            <operation>notEqual</operation>
+            <value>0</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+</SharingRules>

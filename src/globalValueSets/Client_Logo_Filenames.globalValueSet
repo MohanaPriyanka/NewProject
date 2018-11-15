@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>AmpBlack</fullName>
+        <default>false</default>
+        <label>AmpBlack</label>
+    </customValue>
+    <customValue>
+        <fullName>BluewaveLogo</fullName>
+        <default>true</default>
+        <label>BluewaveLogo</label>
+    </customValue>
+    <customValue>
+        <fullName>AmpRed</fullName>
+        <default>false</default>
+        <label>AmpRed</label>
+    </customValue>
+    <masterLabel>Client Logo Filenames</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

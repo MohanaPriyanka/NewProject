@@ -1,0 +1,77 @@
+<apex:page controller="dsfs.DocuSignEnvelopeController"
+           showHeader="true"
+           sidebar="false"
+           action="{!SetTagFrameUrl}">
+    <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"/>
+    <apex:includeScript value="{!$Resource.dsfs__modernizrjs}"/>
+    <apex:includeScript value="{!$Resource.dsfs__html5shivjs}"/>
+    <apex:includeScript value="{!$Resource.dsfs__UtilJS}"/>
+    <script type="text/javascript">
+        jQuery.noConflict();
+        jQuery(document).ready(function ($) {
+            if (!Modernizr.svg) {
+                $('.dsLogo').attr('src', '{!$Resource.dsfs__DocuSignPNG}');
+            }
+            var inIFrame = DSUtil.isInIFrame();
+            var iFrame = $('#ds-iframe');
+            var iFrameSrc = '{!TaggerUrl}?DSEnvGUID={!MyEnvGUID}&DSEID={!MyDSEID}&SourceID={!MyStartingPageObjectID}&NW=' + DSUtil.booleanToParameter({!NewWindow});
+            var isIFrameSrcSet = false;
+            var isClassic = {!isClassic};
+            var isNewWindow = {!NewWindow};
+
+            if (inIFrame) {
+                $('#ds-header').remove();
+                // Remove Classic stuff when in IFrame
+                var appBodyHeader = $('#AppBodyHeader');
+                if (DSUtil.isDefined(appBodyHeader)) {
+                    appBodyHeader.remove();
+                }
+                $(document.body).removeClass('hasMotif homeTab sfdcBody brandQuaternaryBgr');
+                // Ensure we don't get deeply nested iframes
+                var parentIFrame = $('#ds-iframe', window.parent.document);
+                if (DSUtil.isDefined(parentIFrame)) {
+                    iFrame.remove();
+                    parentIFrame.attr('src', iFrameSrc);
+                    isIFrameSrcSet = true;
+                }
+            }
+
+            if (!isIFrameSrcSet) {
+                iFrame.attr('src', iFrameSrc);
+                if (isNewWindow) {
+                    iFrame.css('height', '100vh');
+                } else if (!isClassic) {
+                    iFrame.css('height', '93vh');
+                } else {
+                    resizeIFrame();
+                }
+            }
+
+            function resizeIFrame() {
+                iFrame.css('height', $(window).height() - 190);
+            }
+
+            if (isClassic && !isNewWindow && !inIFrame) {
+                $(window).on('resize', resizeIFrame);
+            }
+        });
+    </script>
+    <apex:form >
+        <table id="ds-header" cellpadding="0" cellspacing="0" style="padding-bottom: 5px">
+            <tr>
+                <td style="vertical-align: top">
+                    <img class="dsLogo" src="{!$Resource.DocuSign}" title="{!$Label.DocuSignInc}."/>
+                </td>
+                <td style="vertical-align: top; padding-left: 5px">
+                    <h1>
+                        <apex:outputText value="{!mySource}"/>
+                    </h1>
+                    <br/>{!$Label.Envelope}:&nbsp;<apex:outputField value="{!DSEnvelope.name}"/>
+                </td>
+            </tr>
+        </table>
+        <div id="ds-iframe-container" style="height: 100%; width: 100%">
+            <iframe id="ds-iframe" style="width: 100%; border: 0"></iframe>
+        </div>
+    </apex:form>
+</apex:page>

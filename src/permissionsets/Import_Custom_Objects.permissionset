@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Created 4/24 by Nick Speyer.  Allows &apos;Import Custom Objects&apos; to user.  This was created to allow Trevor Lennox to use Data Import Wizard to import data from Lease dimensions.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Import Custom Objects</label>
+    <license>Salesforce</license>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>ImportCustomObjects</name>
+    </userPermissions>
+</PermissionSet>

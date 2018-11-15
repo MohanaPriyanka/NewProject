@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
     <labels>
+        <fullName>CAP_Contract_Sent</fullName>
+        <categories>Customer Application Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Locked page because of contract</shortDescription>
+        <value>{0} can&apos;t be updated because we&apos;ve already sent you a contract, but if you need to change this, please contact Customer Care using the details below.</value>
+    </labels>
+    <labels>
         <fullName>CC_Confirmation</fullName>
         <categories>Customer Application Portal</categories>
         <language>en_US</language>
@@ -479,6 +487,14 @@
         <value>Complete</value>
     </labels>
     <labels>
+        <fullName>NAV_Confirmations</fullName>
+        <categories>Customer Application Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Confirmations</shortDescription>
+        <value>Confirmations</value>
+    </labels>
+    <labels>
         <fullName>NAV_Credit_Check</fullName>
         <categories>Customer Application Portal</categories>
         <language>en_US</language>
@@ -511,12 +527,12 @@
         <value>Personal Information</value>
     </labels>
     <labels>
-        <fullName>NAV_Confirmations</fullName>
+        <fullName>NAV_SREC_and_Disbursals</fullName>
         <categories>Customer Application Portal</categories>
         <language>en_US</language>
         <protected>false</protected>
-        <shortDescription>Confirmations</shortDescription>
-        <value>Confirmations</value>
+        <shortDescription>SREC and Disbursals</shortDescription>
+        <value>Finishing Up</value>
     </labels>
     <labels>
         <fullName>NY_Credit_Disclosure</fullName>
@@ -656,12 +672,20 @@
         <value>The information provided in this application is all we need to make a pre-qualification decision. In order to complete a full application you will need to provide your MassCEC Technical Approval for your solar system, proof of your stated income, and driver&apos;s license information, as well as additional personal information. You will be able to return to the full application after your pre-qualification application has been processed.</value>
     </labels>
     <labels>
+        <fullName>START_Disclosure_MA_SREC</fullName>
+        <categories>Customer Application Portal</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>MA SREC Disclosure</shortDescription>
+        <value>For our customers in Massachusetts, BlueWave requires that solar loan customers sell their SRECs through BlueWave&apos;s long-term SREC purchase program, if you receive SRECs. Our SREC purchase program offers competitive rates and both fixed price and variable market price options. This program ensures maximum revenue to our customers over time.</value>
+    </labels>
+    <labels>
         <fullName>START_Disclosure_MSLP_SREC</fullName>
         <categories>Customer Application Portal</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>MA SREC Disclosure</shortDescription>
-        <value>Avidia and BlueWave require that solar loan customers sell their SRECs through BlueWave's long term SREC purchase program, if you receive SRECs. Our SREC purchase program offers competitive rates and both fixed price and variable market price options. This program ensures maximum revenue to our customers over time.</value>
+        <value>Avidia and BlueWave require that solar loan customers sell their SRECs through BlueWave&apos;s long term SREC purchase program, if you receive SRECs. Our SREC purchase program offers competitive rates and both fixed price and variable market price options. This program ensures maximum revenue to our customers over time.</value>
     </labels>
     <labels>
         <fullName>START_Disclosure_PreQual</fullName>
@@ -703,13 +727,5 @@
         <protected>false</protected>
         <shortDescription>Type</shortDescription>
         <value>Site Acquisition, Community Solar Offtaker - Large, Community Solar Offtaker - Small, Residential Solar</value>
-    </labels>
-    <labels>
-        <fullName>CAP_Contract_Sent</fullName>
-        <categories>Customer Application Portal</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>Locked page because of contract</shortDescription>
-        <value>{0} can't be updated because we've already sent you a contract, but if you need to change this, please contact Customer Care using the details below.</value>
     </labels>
 </CustomLabels>

@@ -13,5 +13,4 @@
                 updateOn="keyup"
                 disabled="{!v.disabled}"
                 required="{!v.required}"/>
-</aura:component> 
-
+</aura:component>

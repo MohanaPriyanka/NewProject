@@ -1,0 +1,108 @@
+<apex:page standardController="LASERCA__Personal_Credit_Report__c" showHeader="false" sidebar="false">
+<!-- extensions="PCR_PaymentPatternExtension"  -->
+    <style>
+        tr.dataRow {
+           background-color:white;
+        }
+        tr.dataRow:hover {
+           background-color: #e3f3ff;
+        };
+        tr.dataHeader{
+            background-color: grey;
+        }
+        td.dataCell{
+            text-align: center;
+            text-transform: uppercase;
+        }
+        tr.dataHeader th{
+            text-align: center;
+            text-transform: uppercase;
+        }
+        tr.dataRow th{
+            text-transform: uppercase;
+        }
+
+    </style>
+
+    <table width="100%" cellspacing="0" cellpadding="2" border="1">
+        <thead>
+            <tr class="dataHeader">
+                <th style="text-align: left;">Type</th>
+                <th>Count</th>
+                <th>Balance</th>
+                <th>High Credit</th>
+                <th>Payments</th>
+                <th>Past Due</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th class="dataCell" style="text-align:right;">TOTAL</th>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__TotalLiabilityCount__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__TotalLiabilityBalance__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__TotalLiabilityHighCredit__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__TotalLiabilityPayment__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__TotalLiabilityPastDue__c}" /></td>
+            </tr>
+        </tfoot>
+
+        <tbody>
+            <tr class="dataRow">
+                <th>Mortgage</th>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__MortgageCount__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__MortgageBalance__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__MortgageHighCredit__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__MortgagePayment__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__MortgagePastDue__c}" /></td>
+            </tr>
+            <tr class="dataRow">
+                <th>Auto</th>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__AutoCount__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__AutoBalance__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__AutoHighCredit__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__AutoPayment__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__AutoPastDue__c}" /></td>
+            </tr>
+            <tr class="dataRow">
+                <th>Education</th>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__EducationCount__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__EducationBalance__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__EducationHighCredit__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__EducationPayment__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__EducationPastDue__c}" /></td>
+            </tr>
+            <tr class="dataRow">
+                <th>Other Installment</th>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__InstallmentOtherCount__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__InstallmentOtherBalance__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__InstallmentOtherHighCredit__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__InstallmentOtherPayment__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__InstallmentOtherPastDue__c}" /></td>
+            </tr>
+            <tr class="dataRow">
+                <th>Open</th>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__OpenCount__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__OpenBalance__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__OpenHighCredit__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__OpenPayment__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__OpenPastDue__c}" /></td>
+            </tr>
+            <tr class="dataRow">
+                <th>Revolving</th>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__RevolvingCount__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__Revolving_Balance__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__RevolvingHighCredit__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__RevolvingPayment__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__RevolvingPastDue__c}" /></td>
+            </tr>
+            <tr class="dataRow">
+                <th>Other</th>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__UnknownCount__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__UnknownBalance__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__UnknownHighCredit__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__UnknownPayment__c}" /></td>
+                <td class="dataCell"><apex:outputField value="{!LASERCA__Personal_Credit_Report__c.LASERCA__UnknownPastDue__c}" /></td>
+            </tr>
+        </tbody>
+    </table>
+</apex:page>

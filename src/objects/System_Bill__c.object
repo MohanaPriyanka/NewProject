@@ -1,0 +1,1320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>true</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableChangeDataCapture>false</enableChangeDataCapture>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <fields>
+        <fullName>Account_Bill_Number__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account_Bill__r.Bill_Number__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Account Bill Number</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Account_Bill__c</fullName>
+        <externalId>false</externalId>
+        <label>Account Bill</label>
+        <referenceTo>Account_Bill__c</referenceTo>
+        <relationshipLabel>System Bills</relationshipLabel>
+        <relationshipName>System_Bills</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Adjusted_Total_Billed__c</fullName>
+        <description>This is the total a customer was billed this month, including due this month, adjustments, and late fees.</description>
+        <externalId>false</externalId>
+        <formula>Due_This_Month__c +  Adjustments__c + Late_Fees__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>This is the total a customer was billed this month, including due this month, adjustments, and late fees.</inlineHelpText>
+        <label>Adjusted Total Billed This Month</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Adjustments_UASB__c</fullName>
+        <externalId>false</externalId>
+        <label>Adjustments UASB</label>
+        <summarizedField>UASB__c.Adjustment_Amount__c</summarizedField>
+        <summaryForeignKey>UASB__c.System_Bill__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Adjustments__c</fullName>
+        <externalId>false</externalId>
+        <label>Adjustments</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Amount_Due__c</fullName>
+        <externalId>false</externalId>
+        <label>Amount Due</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Amount_to_Add__c</fullName>
+        <externalId>false</externalId>
+        <label>XX Amount to Add</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Amount_to_Deduct__c</fullName>
+        <externalId>false</externalId>
+        <label>XX Amount to Deduct</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Balance_Adjustment__c</fullName>
+        <externalId>false</externalId>
+        <label>Balance Adjustments</label>
+        <summarizedField>Adjustment_Application__c.Adjustment_Amount__c</summarizedField>
+        <summaryForeignKey>Adjustment_Application__c.System_Bill__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Balance_Adjustments__c</fullName>
+        <externalId>false</externalId>
+        <label>XXBalance Adjustments</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Balance_Net_Late_Payments__c</fullName>
+        <defaultValue>0</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Used for collections and days past due. Calculated when bills are generated as Due This Month - Payments Applied</inlineHelpText>
+        <label>Balance Net Late Payments</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Balance_Outstanding_1_to_30_Days__c</fullName>
+        <description>For AR Aging Report.</description>
+        <externalId>false</externalId>
+        <formula>IF(AND(Days_Past_Due__c&gt;0,Days_Past_Due__c&lt;31),Total_Balance_Net_Late_Payments__c ,0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>For AR Aging Report.</inlineHelpText>
+        <label>Balance Outstanding 1 to 30 Days</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Balance_Outstanding_31_to_60_Days__c</fullName>
+        <description>For AR Aging Report.</description>
+        <externalId>false</externalId>
+        <formula>IF(AND(Days_Past_Due__c&gt;30,Days_Past_Due__c&lt;61),Total_Balance_Net_Late_Payments__c,0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>For AR Aging Report.</inlineHelpText>
+        <label>Balance Outstanding 31 to 60 Days</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Balance_Outstanding_61_to_90_Days__c</fullName>
+        <description>For AR Aging Report</description>
+        <externalId>false</externalId>
+        <formula>IF(AND(Days_Past_Due__c&gt;60,Days_Past_Due__c&lt;91),Total_Balance_Net_Late_Payments__c,0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>For AR Aging Report</inlineHelpText>
+        <label>Balance Outstanding 61 to 90 Days</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Balance_Outstanding_Current__c</fullName>
+        <description>For AR Aging Report</description>
+        <externalId>false</externalId>
+        <formula>IF(Days_Past_Due__c=0,Total_Balance_Net_Late_Payments__c,0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>For AR Aging Report</inlineHelpText>
+        <label>Balance Outstanding Current</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Balance_Outstanding_Over_90_Days__c</fullName>
+        <description>For AR Aging Report</description>
+        <externalId>false</externalId>
+        <formula>IF(Days_Past_Due__c&gt;90,Total_Balance_Net_Late_Payments__c,0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>For AR Aging Report</inlineHelpText>
+        <label>Balance Outstanding Over 90 Days</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Bill_Date__c</fullName>
+        <description>Billing Dates on SB: 
+Used in Conga: Bill_Date__c and Due_Date__c are set by roll up fields
+Date__c and Bill_Due_Date__c are set on creation by the PU. Can be used in formulas for days past due</description>
+        <externalId>false</externalId>
+        <label>Bill Date</label>
+        <summarizedField>UASB__c.Bill_Date__c</summarizedField>
+        <summaryForeignKey>UASB__c.System_Bill__c</summaryForeignKey>
+        <summaryOperation>min</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Bill_Due_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(Days_in_Bill_Period__c = 0, Date__c + 20, Date__c +  Days_in_Bill_Period__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Bill Due Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Bill_Number__c</fullName>
+        <externalId>false</externalId>
+        <label>Bill Number</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Billing_Period_End_DateRollup__c</fullName>
+        <externalId>false</externalId>
+        <label>Billing Period End Date</label>
+        <summarizedField>UASB__c.Billing_Period_End_Date__c</summarizedField>
+        <summaryForeignKey>UASB__c.System_Bill__c</summaryForeignKey>
+        <summaryOperation>max</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Billing_Period_End_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>Shared_Solar_System__r.Billing_Period_End_Date__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Billing Period End Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Billing_Period_Start_Date_Rollup__c</fullName>
+        <externalId>false</externalId>
+        <label>Billing Period Start Date</label>
+        <summarizedField>UASB__c.Billing_Period_Start_Date__c</summarizedField>
+        <summaryForeignKey>UASB__c.System_Bill__c</summaryForeignKey>
+        <summaryOperation>min</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Billing_Period_Start_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>Shared_Solar_System__r.Billing_Period_Start_Date__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Billing Period Start Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Carry_Forward_Adjustments__c</fullName>
+        <defaultValue>0</defaultValue>
+        <externalId>false</externalId>
+        <label>XX Carry Forward Adjustments</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Carry_Forward_Payments__c</fullName>
+        <externalId>false</externalId>
+        <label>XX Carry Forward Payments</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Carry_Over_Balance__c</fullName>
+        <defaultValue>0</defaultValue>
+        <externalId>false</externalId>
+        <label>Carry Over Balance</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Client_ID__c</fullName>
+        <externalId>false</externalId>
+        <formula>Shared_Solar_System__r.Client_Account__r.Id</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Client ID</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Comments__c</fullName>
+        <externalId>false</externalId>
+        <label>Comments</label>
+        <length>15</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Date_Refunded__c</fullName>
+        <externalId>false</externalId>
+        <label>Date Refunded</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The Production Update date, set when creating the System Bill</inlineHelpText>
+        <label>Bill Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Date_of_Last_Payment__c</fullName>
+        <externalId>false</externalId>
+        <label>Date of Last Payment</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Days_Past_Due__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(TODAY() - Bill_Due_Date__c &lt;= 0, 0, 
+IF( Balance_Net_Late_Payments__c &gt; 1, (TODAY() - Bill_Due_Date__c), 0))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Days Past Due</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Days_in_Bill_Period__c</fullName>
+        <externalId>false</externalId>
+        <label>Days in Bill Period</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Delete_this_del__c</fullName>
+        <externalId>false</externalId>
+        <formula>Carry_Over_Balance__c * 10000000</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Delete this</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>16</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Discounted_Bill__c</fullName>
+        <externalId>false</externalId>
+        <label>Discounted Bill</label>
+        <summarizedField>UASB__c.Discounted_Bill__c</summarizedField>
+        <summaryForeignKey>UASB__c.System_Bill__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Distribute_This_Balance_12mo__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Distribute as Payment Plan? (12 months)</label>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Distribute_This_Balance_as_Payment_Plan__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Distribute as Payment Plan? (6 months)</label>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Due_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>XXDue Date</label>
+        <summarizedField>UASB__c.Due_Date__c</summarizedField>
+        <summaryForeignKey>UASB__c.System_Bill__c</summaryForeignKey>
+        <summaryOperation>min</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Due_This_Month__c</fullName>
+        <defaultValue>0</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>New charges calculated this month (not including late fees, adjustments, etc.)</inlineHelpText>
+        <label>Due This Month</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Early_Payments__c</fullName>
+        <externalId>false</externalId>
+        <label>XXEarly Payments</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Entity_ID__c</fullName>
+        <externalId>false</externalId>
+        <formula>Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Id</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Entity ID</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Entity_id_18_digit__c</fullName>
+        <externalId>false</externalId>
+        <formula>CASESAFEID( Entity_ID__c )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Entity ID (18 digit)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Flag_Nearing_Annual_kWH_Cap__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF (YTD_kWh_Production__c - Opportunity__r.Product__r.Annual_kWh_Maximum__c &gt; 0, &apos;OVER ANNUAL kWH CAP&apos;,
+IF (YTD_kWh_Production__c/Opportunity__r.Product__r.Annual_kWh_Maximum__c &gt; 0.90, &apos;90%-100% of Annual kWh Cap&apos;, 
+IF (YTD_kWh_Production__c/Opportunity__r.Product__r.Annual_kWh_Maximum__c &gt; 0.80, &apos;80% - 90% of Annual kWh Cap&apos;,&apos;No Warning&apos;)))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Flag: Nearing Annual kWH Cap</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>FormAssembly_Order_Helper__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(Carry_Over_Balance__c &gt; 0, 1, 0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>FormAssembly Order Helper</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Form_ID_Helper__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( Shared_Solar_System__r.Name == &quot;Fairhaven Mill Rd&quot;, &quot;381491&quot;, IF( Shared_Solar_System__r.Name == &quot;Oxford Clara Barton&quot; , &quot;381520&quot; , null))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Form ID Helper</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Late_Fee_Payments__c</fullName>
+        <defaultValue>0</defaultValue>
+        <externalId>false</externalId>
+        <label>Late Fee Payments</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Late_Fees__c</fullName>
+        <defaultValue>0</defaultValue>
+        <externalId>false</externalId>
+        <label>Late Fees</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Late_Payments__c</fullName>
+        <defaultValue>0</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Payments applied after this bill was due.</inlineHelpText>
+        <label>Late Payments</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Month__c</fullName>
+        <externalId>false</externalId>
+        <formula>MONTH(Date__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Month</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Monthly_Late_Fee_Interest__c</fullName>
+        <externalId>false</externalId>
+        <label>Monthly Late Fee Interest</label>
+        <precision>16</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>NMC_Rate__c</fullName>
+        <externalId>false</externalId>
+        <label>NMC Rate</label>
+        <summarizedField>UASB__c.NMC_Rate__c</summarizedField>
+        <summaryForeignKey>UASB__c.System_Bill__c</summaryForeignKey>
+        <summaryOperation>min</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Net_Metering_Credits_Allocated__c</fullName>
+        <externalId>false</externalId>
+        <label>Net Metering Credits Allocated</label>
+        <summarizedField>UASB__c.Net_Metering_Credits_Allocated__c</summarizedField>
+        <summaryForeignKey>UASB__c.System_Bill__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Opportunity_Id__c</fullName>
+        <externalId>false</externalId>
+        <formula>Opportunity__r.Id</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Opportunity Id</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Opportunity__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Opportunity</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipLabel>System Bills</relationshipLabel>
+        <relationshipName>System_Bills</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Outstanding_Balance_Rollup__c</fullName>
+        <externalId>false</externalId>
+        <formula>(Due_This_Month__c + Late_Fees__c + Adjustments__c + Previous_Overpayment__c ) - Total_Payments_This_Month__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Outstanding Balance Rollup</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Past_Bill_Amount__c</fullName>
+        <defaultValue>0</defaultValue>
+        <externalId>false</externalId>
+        <label>Past Bill Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Past_Bill_Payment__c</fullName>
+        <defaultValue>0</defaultValue>
+        <externalId>false</externalId>
+        <label>Past Bill Payment</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Past_Due_Status__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(OR(Balance_Net_Late_Payments__c&lt;1, Account_Bill__r.Parent_Account__r.Recurring_Billing__c = TRUE), &quot;Current or Autopay&quot;, IF(Days_Past_Due__c =0, &quot;Current or Autopay&quot;, IF(Days_Past_Due__c &lt;= 30 , &quot;0-30 Days Late&quot;, IF(Days_Past_Due__c &lt;= 60, &quot;31-60 Days Late&quot;, &quot;61-90 Days Late&quot;))))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Past Due Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Payment_Plan_Balance__c</fullName>
+        <defaultValue>0</defaultValue>
+        <externalId>false</externalId>
+        <label>Payment Plan Balance</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Payment_Plan_Balance_to_Distribute__c</fullName>
+        <defaultValue>0</defaultValue>
+        <externalId>false</externalId>
+        <label>Payment Plan Balance to Distribute</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Payment_Plan__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF (Payment_Plan_Balance__c &gt; 0, True, False)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Payment Plan</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Payment_is_Pending_Until__c</fullName>
+        <externalId>false</externalId>
+        <formula>Date_of_Last_Payment__c+2</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Payment is Pending Until</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Payments_Net_Previous_Balances__c</fullName>
+        <defaultValue>0</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Total payments applied this period - Late Payments</inlineHelpText>
+        <label>Payments Net Previous Balances</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Previous_Month_Overdue_Balance__c</fullName>
+        <defaultValue>0</defaultValue>
+        <externalId>false</externalId>
+        <label>Previous Month Overdue Balance</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Previous_Overpayment__c</fullName>
+        <externalId>false</externalId>
+        <label>Previous Overpayments</label>
+        <summarizedField>Overpayment_Application__c.Overpayment_Amount__c</summarizedField>
+        <summaryForeignKey>Overpayment_Application__c.System_Bill__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Production_kWH__c</fullName>
+        <externalId>false</externalId>
+        <label>Production (kWH)</label>
+        <summarizedField>UASB__c.Subscription_Production_kWh__c</summarizedField>
+        <summaryForeignKey>UASB__c.System_Bill__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Project_Entity__c</fullName>
+        <externalId>false</externalId>
+        <formula>Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Name</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Project Entity</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Property_Account_ID__c</fullName>
+        <externalId>false</externalId>
+        <formula>Property_Account__r.Id</formula>
+        <label>Property Account ID</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Property_Account_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>Property_Account__r.Name</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Property Account Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Property_Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Property Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>System Bills</relationshipLabel>
+        <relationshipName>System_Bills</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Published__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account_Bill__r.Published__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Published</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Recurring_Billing__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Recurring Billing</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Recurring_Payment_ID__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account_Bill__r.Parent_Account__c + &apos; &apos; + Shared_Solar_System__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Recurring Payment ID</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Refund_this_Balance__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>XX Add Adjustment</label>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Savings__c</fullName>
+        <externalId>false</externalId>
+        <label>Savings</label>
+        <summarizedField>UASB__c.Savings__c</summarizedField>
+        <summaryForeignKey>UASB__c.System_Bill__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Servicing_on_Behalf_of__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT( Shared_Solar_System__r.Picklist__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Servicing on Behalf of</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Shared_Solar_System_ID2__c</fullName>
+        <externalId>false</externalId>
+        <label>Shared Solar System ID2</label>
+        <length>25</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Shared_Solar_System_ID__c</fullName>
+        <externalId>false</externalId>
+        <formula>LEFT(Shared_Solar_System_ID2__c,15)</formula>
+        <label>Shared Solar System ID</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Shared_Solar_System_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>Shared_Solar_System__r.Name</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Shared Solar System Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Shared_Solar_System__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Shared Solar System</label>
+        <referenceTo>Shared_Solar_System__c</referenceTo>
+        <relationshipLabel>System Bills</relationshipLabel>
+        <relationshipName>System_Bills</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>TD_Formula__c</fullName>
+        <externalId>false</externalId>
+        <formula>Total_Due__c - (Due_This_Month__c + Late_Fees__c +  Payment_Plan_Balance__c + Adjustments__c + Previous_Month_Overdue_Balance__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>TD Formula</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_Balance_Net_Late_Payments__c</fullName>
+        <description>Total Balance Net Previous Balance. This takes into account late fees.</description>
+        <externalId>false</externalId>
+        <formula>Total_Due_This_Month__c - Payments_Net_Previous_Balances__c - Late_Fee_Payments__c - Late_Payments__c+ Previous_Overpayment__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Total Balance Net Previous Balance. This takes into account late fees.</inlineHelpText>
+        <label>Total Balance Net Late Payments</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_Due_Minus_Payment_Plan__c</fullName>
+        <externalId>false</externalId>
+        <formula>Due_This_Month__c + Adjustments__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Total Due Minus Payment Plan</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_Due_This_Month__c</fullName>
+        <externalId>false</externalId>
+        <formula>Due_This_Month__c + Late_Fees__c+ Adjustments__c</formula>
+        <label>Total Due This Month</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_Due__c</fullName>
+        <defaultValue>0</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Due This Month + Previous Month&apos;s Overdue Balance + Late Fees and Adjustments</inlineHelpText>
+        <label>Total Due</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_Funds_Applied_to_Balance__c</fullName>
+        <externalId>false</externalId>
+        <formula>Payments_Net_Previous_Balances__c +  Late_Payments__c + (-1*Previous_Overpayment__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Total Funds Applied to Balance</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_Payments_This_Month__c</fullName>
+        <defaultValue>0</defaultValue>
+        <externalId>false</externalId>
+        <label>Total Payments This Month</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>UASB_Count__c</fullName>
+        <externalId>false</externalId>
+        <label>UASB Count</label>
+        <summaryForeignKey>UASB__c.System_Bill__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Unique_ID__c</fullName>
+        <externalId>true</externalId>
+        <label>Unique ID</label>
+        <length>80</length>
+        <required>true</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Update_DUmmy__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Update DUmmy</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Waive_Late_Fees__c</fullName>
+        <defaultValue>true</defaultValue>
+        <externalId>false</externalId>
+        <label>Waive Late Fees</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>XXBalance_Adjustments_Formula__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF (
+AND( Adjustments_UASB__c&lt;0, ABS(Adjustments_UASB__c) &gt; Due_This_Month__c)
+, -1 * Due_This_Month__c , 
+Adjustments_UASB__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>XXBalance Adjustments Formula</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>YTD_Billed__c</fullName>
+        <externalId>false</externalId>
+        <label>YTD Billed</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>YTD_Payments__c</fullName>
+        <externalId>false</externalId>
+        <label>YTD Payments</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>YTD_kWh_Production__c</fullName>
+        <externalId>false</externalId>
+        <label>YTD kWh Production</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <label>System Bill</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Due_This_Month__c</columns>
+        <columns>Carry_Over_Balance__c</columns>
+        <columns>Bill_Date__c</columns>
+        <columns>Bill_Due_Date__c</columns>
+        <columns>Shared_Solar_System__c</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>System Bill Name</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>System Bills</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+    <validationRules>
+        <fullName>Published_Bill_Adjustments</fullName>
+        <active>true</active>
+        <description>Cannot update Adjustments on an already published bill.</description>
+        <errorConditionFormula>AND(
+ISCHANGED(Adjustments__c), 
+Account_Bill__r.Published__c)</errorConditionFormula>
+        <errorMessage>Cannot update Adjustments on an already published bill.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Published_Bill_Due_This_Month</fullName>
+        <active>true</active>
+        <description>Cannot update Due This Month on an already published bill.</description>
+        <errorConditionFormula>AND(
+ISCHANGED(Due_This_Month__c), 
+Account_Bill__r.Published__c)</errorConditionFormula>
+        <errorMessage>Cannot update Due This Month on an already published bill.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Published_Bill_Late_Fees</fullName>
+        <active>true</active>
+        <description>Cannot update Late Fees on an already published bill.</description>
+        <errorConditionFormula>AND(
+OR(
+ISCHANGED(Late_Fees__c), 
+ISCHANGED(Waive_Late_Fees__c)
+),
+Account_Bill__r.Published__c)</errorConditionFormula>
+        <errorMessage>Cannot update Late Fees on an already published bill.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Published_Bill_Payment_Plan</fullName>
+        <active>true</active>
+        <description>Cannot update Payment Plan Balance on an already published bill.</description>
+        <errorConditionFormula>AND(
+ISCHANGED(Payment_Plan_Balance__c),
+Account_Bill__r.Published__c)</errorConditionFormula>
+        <errorMessage>Cannot update Payment Plan Balance on an already published bill.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Published_Bill_Previous_Overdue</fullName>
+        <active>true</active>
+        <description>Cannot update Previous Overdue Balance on an already published bill.</description>
+        <errorConditionFormula>AND(
+ISCHANGED(Previous_Month_Overdue_Balance__c), 
+Account_Bill__r.Published__c)</errorConditionFormula>
+        <errorMessage>Cannot update Previous Month Overdue Balance on an already published bill.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Published_Bill_Previous_Overpayments</fullName>
+        <active>true</active>
+        <description>Cannot update Previous Overpayments on an already published bill.</description>
+        <errorConditionFormula>AND(
+ISCHANGED(Previous_Overpayment__c), 
+Account_Bill__r.Published__c)</errorConditionFormula>
+        <errorMessage>Cannot update Previous Month Overpayments on an already published bill.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Published_Bill_Total_Due</fullName>
+        <active>true</active>
+        <description>Cannot update Total Due on an already published bill.</description>
+        <errorConditionFormula>AND(
+ISCHANGED(Total_Due__c), 
+Account_Bill__r.Published__c)</errorConditionFormula>
+        <errorMessage>Cannot update Total Due on an already published bill.</errorMessage>
+    </validationRules>
+    <visibility>Public</visibility>
+</CustomObject>

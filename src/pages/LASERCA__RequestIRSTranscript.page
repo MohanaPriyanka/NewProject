@@ -1,0 +1,49 @@
+<apex:page controller="LASERCA.RequestIRSTranscriptController">
+    <apex:form >
+        <apex:sectionHeader title="Request IRS Transcript"/>
+        <apex:pagemessage severity="warning" strength="3" summary="Please make sure to verify all that all of the data below is exactly the same as the tax return. Incorrect information may cause a delay in getting the transcript." />
+        <apex:pageBlock mode="edit">
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!sendIRSRequest}" value="Save data and Send IRS Transcript request" onclick="return confirm('Are you sure you want to request the IRS transcript? Please note that corresponding fees apply.');" />
+                <apex:commandButton value="Cancel" />
+            </apex:pageBlockButtons>
+            <apex:outputpanel id="responsePanel">
+              <apex:pagemessages ></apex:pagemessages>
+            </apex:outputpanel>
+            <apex:pageBlockSection title="Tax years to be requested" columns="1">
+                <apex:selectCheckboxes value="{!taxReturnYears}">
+                    <apex:selectOption itemValue="{!YEAR(TODAY())-3}" itemLabel="{!YEAR(TODAY())-3}"/>
+                    <apex:selectOption itemValue="{!YEAR(TODAY())-2}" itemLabel="{!YEAR(TODAY())-2}"/>
+                    <apex:selectOption itemValue="{!YEAR(TODAY())-1}" itemLabel="{!YEAR(TODAY())-1}"/>
+                    <apex:selectOption itemValue="{!YEAR(TODAY())}" itemLabel="{!YEAR(TODAY())}"/>
+                </apex:selectCheckboxes>                
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="Account Data to be sent to the 4506-T" columns="1" rendered="{!objName == 'Account'}">                
+                <apex:inputField value="{!account.Name}"/> 
+                <!-- apex:inputField value="{!account.LASER4B__Federal_Tax_ID__c}"/--> 
+                <apex:inputField value="{!account.BillingStreet}"/> 
+                <apex:inputField value="{!account.BillingCity}"/> 
+                <apex:inputField value="{!account.BillingState}"/> 
+                <apex:inputField value="{!account.BillingPostalCode}"/> 
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="Contact Data to be sent to the 4506-T" columns="1" rendered="{!objName == 'Contact'}">                
+                <apex:inputField value="{!contact.Email}"/>
+                <apex:inputField value="{!contact.FirstName}"/>
+                <apex:inputField value="{!contact.LastName}"/>
+                <apex:inputField value="{!contact.LASERCA__Social_Security_Number__c}"/>
+                <apex:inputField value="{!contact.LASERCA__Co_Applicant_Name__c}"/>
+                <apex:inputField value="{!contact.LASERCA__Co_Applicant_SSN__c}"/>
+                <!--  
+                <apex:inputField value="{!contact.Co_Applicatant_Social_Security_Number__c}"/>
+                -->
+                <apex:inputField value="{!contact.LASERCA__Home_Address__c}"/>
+                <apex:inputField value="{!contact.LASERCA__Home_City__c}"/>
+                <apex:inputField value="{!contact.LASERCA__Home_State__c}"/>
+                <apex:inputField value="{!contact.LASERCA__Home_Zip__c}"/>
+                <apex:inputField value="{!contact.LASERCA__TIN__c}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

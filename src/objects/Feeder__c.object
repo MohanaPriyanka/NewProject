@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Feeder Object is associated with Projects through the junction object FeederProjectAssociation.
+
+If a new Feeder Utility and Voltage needs to be added:
+
+1) Edit the &apos;Field Feeder Utility and Voltage&apos; to include the new utility and voltage in the picklist
+
+2) Edit the field &apos;Assumed Remaining Capacity&apos; by editing the formula and adding an additional line for the &apos;if&apos; scenario related to the new utility and voltage that was added in step one, and enter an assumed total distributed generation capacity for that specific utility and voltage line in kW</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableChangeDataCapture>false</enableChangeDataCapture>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>Assumed_Remaining_Capacity_per_DOER_DG__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( ISNULL(  Date_of_DG_Database__c ) , null, (Feeder_Rating_2016_MVA__c*1000) -  (DG_Database_Applied_kW__c +  DG_Database_Interconnected_kW__c ))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Assumed Remaining Capacity per DOER DG</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Assumed_Remaining_Capacity_per_NGrid_DG__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( ISNULL( NGrid_DG_Database_Date__c ) , null, (Feeder_Rating_2016_MVA__c *1000)- (NGrid_DG_Database_Applied_kW__c + NGrid_DG_Database_Interconnected_kW__c))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Assumed Remaining Capacity per NGrid DG</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Circuit_Sub_Transformer_ID__c</fullName>
+        <externalId>false</externalId>
+        <label>Circuit Sub Transformer ID</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>DG_Database_Applied_kW__c</fullName>
+        <externalId>false</externalId>
+        <label>DOER DG Database Applied kW</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>DG_Database_Interconnected_kW__c</fullName>
+        <externalId>false</externalId>
+        <label>DOER DG Database Interconnected kW</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Date_of_DG_Database__c</fullName>
+        <externalId>false</externalId>
+        <label>DOER DG Database Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Date_of_Most_Recent_Preapp__c</fullName>
+        <externalId>false</externalId>
+        <label>Date of Most Recent Preapp</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Dynamic_Remaining_Capacity__c</fullName>
+        <externalId>false</externalId>
+        <formula>(If(OR(ISBLANK( Feeder_Rating_2016_MVA__c),ISBLANK( Date_of_Most_Recent_Preapp__c )),
+    0, (Feeder_Rating_2016_MVA__c *1000))
+
+    -( kw_Applied__c + Interconnected_kW_AC__c )
+    )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Pre App Assumed Remaining Capacity</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Feeder_Rating_2016_MVA__c</fullName>
+        <externalId>false</externalId>
+        <label>Latest Feeder Rating (MVA)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Feeder_Utility_and_Voltage__c</fullName>
+        <externalId>false</externalId>
+        <label>Feeder Utility and Voltage</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Utility/Voltage Not Specified</fullName>
+                    <default>true</default>
+                    <label>Utility/Voltage Not Specified</label>
+                </value>
+                <value>
+                    <fullName>Eversource 4 kV</fullName>
+                    <default>false</default>
+                    <label>Eversource 4 kV</label>
+                </value>
+                <value>
+                    <fullName>Eversource 13 kV</fullName>
+                    <default>false</default>
+                    <label>Eversource 13 kV</label>
+                </value>
+                <value>
+                    <fullName>Eversource 23 kV</fullName>
+                    <default>false</default>
+                    <label>Eversource 23 kV</label>
+                </value>
+                <value>
+                    <fullName>National Grid 4 kV</fullName>
+                    <default>false</default>
+                    <label>National Grid 4 kV</label>
+                </value>
+                <value>
+                    <fullName>National Grid 13 kV</fullName>
+                    <default>false</default>
+                    <label>National Grid 13 kV</label>
+                </value>
+                <value>
+                    <fullName>National Grid 23 kV</fullName>
+                    <default>false</default>
+                    <label>National Grid 23 kV</label>
+                </value>
+                <value>
+                    <fullName>WMECO 13 kV</fullName>
+                    <default>false</default>
+                    <label>WMECO 13 kV</label>
+                </value>
+                <value>
+                    <fullName>WMECO 23 kV</fullName>
+                    <default>false</default>
+                    <label>WMECO 23 kV</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Interconnected_kW_AC__c</fullName>
+        <externalId>false</externalId>
+        <label>Interconnected (kW AC)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>NGrid_DG_Database_Applied_kW__c</fullName>
+        <externalId>false</externalId>
+        <label>NGrid DG Database Applied kW</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>NGrid_DG_Database_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>NGrid DG Database Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>NGrid_DG_Database_Interconnected_kW__c</fullName>
+        <externalId>false</externalId>
+        <label>NGrid DG Database Interconnected kW</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Project__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>AB aiming to associate a Project with a Feeder via the Project Name lookup field</description>
+        <externalId>false</externalId>
+        <label>Project</label>
+        <referenceTo>MPM4_BASE__Milestone1_Project__c</referenceTo>
+        <relationshipLabel>Feeders</relationshipLabel>
+        <relationshipName>Feeders</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Substation__c</fullName>
+        <description>This is the substation to which the feeder is connected</description>
+        <externalId>false</externalId>
+        <label>Substation</label>
+        <length>250</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Unique_Feeder_Name__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <externalId>false</externalId>
+        <label>Unique Feeder Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>kw_Applied__c</fullName>
+        <externalId>false</externalId>
+        <label>Applied (kW AC)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <label>Feeder</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Feeder_Utility_and_Voltage__c</columns>
+        <columns>kw_Applied__c</columns>
+        <columns>Interconnected_kW_AC__c</columns>
+        <columns>Dynamic_Remaining_Capacity__c</columns>
+        <columns>Date_of_Most_Recent_Preapp__c</columns>
+        <columns>Substation__c</columns>
+        <columns>Circuit_Sub_Transformer_ID__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>Projects_and_Feeders</fullName>
+        <columns>Project__c</columns>
+        <columns>Date_of_Most_Recent_Preapp__c</columns>
+        <columns>NAME</columns>
+        <columns>Dynamic_Remaining_Capacity__c</columns>
+        <columns>Interconnected_kW_AC__c</columns>
+        <columns>kw_Applied__c</columns>
+        <columns>Feeder_Utility_and_Voltage__c</columns>
+        <columns>Substation__c</columns>
+        <columns>Circuit_Sub_Transformer_ID__c</columns>
+        <columns>OBJECT_ID</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <label>Projects and Feeders</label>
+    </listViews>
+    <nameField>
+        <label>Feeder Designation</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Feeders</pluralLabel>
+    <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
+    <recordTypeTrackHistory>true</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>Feeder</fullName>
+        <active>true</active>
+        <label>Feeder</label>
+        <picklistValues>
+            <picklist>Feeder_Utility_and_Voltage__c</picklist>
+            <values>
+                <fullName>Eversource 13 kV</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Eversource 23 kV</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Eversource 4 kV</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>National Grid 13 kV</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>National Grid 23 kV</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>National Grid 4 kV</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Utility%2FVoltage Not Specified</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>WMECO 13 kV</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WMECO 23 kV</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

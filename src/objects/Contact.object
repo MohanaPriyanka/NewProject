@@ -1,0 +1,4056 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>AddCampaign</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>AddToCampaign</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CallHighlightAction</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>EmailHighlightAction</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>EnableCustomerPortal</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>EnablePartnerPortalUser</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>EnableSelfService</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ListClean</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Merge</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>NewContact</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>RequestUpdate</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SmsHighlightAction</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ViewCustomerPortal</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ViewPartnerPortalUser</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ViewSelfService</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <externalSharingModel>Private</externalSharingModel>
+    <fieldSets>
+        <fullName>MC4SF__Contact_Filter_Fields</fullName>
+        <description>used on the MailChimp query builder</description>
+        <displayedFields>
+            <field>AssistantName</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>AssistantPhone</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Birthdate</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Fax</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Phone</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Description</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>CreatedDate</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Department</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>DoNotCall</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Email</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>HasOptedOutOfFax</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>FirstName</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Name</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>HomePhone</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>LastActivityDate</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>LastModifiedDate</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>LastName</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>LastCURequestDate</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>LastCUUpdateDate</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>LeadSource</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>MailingCity</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>MailingCountry</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>MailingState</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>MailingStreet</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>MailingPostalCode</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>MobilePhone</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>OtherCity</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>OtherCountry</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>OtherPhone</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>OtherState</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>OtherStreet</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>OtherPostalCode</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Salutation</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Title</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>OwnerId</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <label>Contact Filter Fields</label>
+    </fieldSets>
+    <fields>
+        <fullName>AccountId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Account_ID__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account.Id</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Account ID</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Account_Product_Line__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account.Product_Line_Formula__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Account Product Line</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Active_Communities_User__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>This field has one hour delay from when the user is activated.</inlineHelpText>
+        <label>Active Communities User</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Additional_Email__c</fullName>
+        <externalId>false</externalId>
+        <label>Additional Email</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Application_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Application Type</label>
+        <length>15</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>AssistantName</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>AssistantPhone</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Auto_Number__c</fullName>
+        <externalId>false</externalId>
+        <label>Auto Number</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </fields>
+    <fields>
+        <fullName>Avidia_Service_Provider__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Reg O question. Is borrower or co-borrower a service provider of Avidia Bank?</inlineHelpText>
+        <label>Avidia Service Provider?</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Birthdate</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Capital_Raising__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Bank Relationship</label>
+        <referenceTo>Solar_Loan_Syndication__c</referenceTo>
+        <relationshipLabel>Contacts</relationshipLabel>
+        <relationshipName>Contacts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>ClickToDial__Click_to_Call_Mobile__c</fullName>
+        <deprecated>false</deprecated>
+        <description>You must dial + then the country code and number you wish to call. Example: +12125551313.
+Specify the global country code setting or record level country code to automatically add &quot;+country code&quot; to your Click-to-Call links. GoTo App Setup| Customize| Develop| Custom Settings| Click-to-Call Configuration Manager.</description>
+        <externalId>false</externalId>
+        <formula>IF(MobilePhone != null, HYPERLINK(&quot;skype:&quot;+IF( ClickToDial__Country_Code__c != null,ClickToDial__Country_Code__c, $Setup.ClickToDial__ConfigurationManager__c.ClickToDial__Global_Country_Code__c ) &amp; SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(MobilePhone, &apos;-&apos;, &apos;&apos;),&apos; &apos; ,&apos;&apos;),&apos;)&apos;,&apos;&apos;),&apos;(&apos;,&apos;&apos;),&apos;.&apos;,&apos;&apos;),&apos;,&apos;,&apos;&apos;) +&quot;?call&quot;, IF( ClickToDial__Country_Code__c != null,ClickToDial__Country_Code__c, $Setup.ClickToDial__ConfigurationManager__c.ClickToDial__Global_Country_Code__c ) &amp; SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(MobilePhone, &apos;-&apos;, &apos;&apos;),&apos; &apos; ,&apos;&apos;),&apos;)&apos;,&apos;&apos;),&apos;(&apos;,&apos;&apos;),&apos;.&apos;,&apos;&apos;),&apos;,&apos;,&apos;&apos;) , &quot;_self\&quot; onclick=\&quot;createTask(&apos;&quot;+ MobilePhone+&quot;&apos;, &apos;&quot;+ Id +&quot;&apos;,&apos;&quot;+ $Api.Session_ID +&quot;&apos;,true,&apos;&quot;+ $User.Id +&quot;&apos;,&apos;&quot;+$Setup.ClickToDial__ConfigurationManager__c.ClickToDial__EnableAutoCallLog__c+&quot;&apos;);\&quot; &quot;),&apos;&apos;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>You must dial + then the country code and number you wish to call. Example: +12125551313.
+Specify the global country code setting or record level country code to automatically add &quot;+country code&quot; to your Click-to-Call links.</inlineHelpText>
+        <label>Click-to-Call Mobile</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ClickToDial__Click_to_Call_Phone__c</fullName>
+        <deprecated>false</deprecated>
+        <description>You must dial + then the country code and number you wish to call. Example: +12125551313.
+Specify the global country code setting or record level country code to automatically add &quot;+country code&quot; to your Click-to-Call links. GoTo App Setup| Customize| Develop| Custom Settings| Click-to-Call Configuration Manager.</description>
+        <externalId>false</externalId>
+        <formula>IF(Phone != null, HYPERLINK(&quot;skype:&quot;+IF( ClickToDial__Country_Code__c != null,ClickToDial__Country_Code__c, $Setup.ClickToDial__ConfigurationManager__c.ClickToDial__Global_Country_Code__c ) &amp; SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(Phone, &apos;-&apos;, &apos;&apos;),&apos; &apos; ,&apos;&apos;),&apos;)&apos;,&apos;&apos;),&apos;(&apos;,&apos;&apos;),&apos;.&apos;,&apos;&apos;),&apos;,&apos;,&apos;&apos;) +&quot;?call&quot;, IF( ClickToDial__Country_Code__c != null,ClickToDial__Country_Code__c, $Setup.ClickToDial__ConfigurationManager__c.ClickToDial__Global_Country_Code__c ) &amp; SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(Phone, &apos;-&apos;, &apos;&apos;),&apos; &apos; ,&apos;&apos;),&apos;)&apos;,&apos;&apos;),&apos;(&apos;,&apos;&apos;),&apos;.&apos;,&apos;&apos;),&apos;,&apos;,&apos;&apos;) , &quot;_self\&quot; onclick=\&quot;createTask(&apos;&quot;+ Phone +&quot;&apos;, &apos;&quot;+ Id +&quot;&apos;,&apos;&quot;+ $Api.Session_ID +&quot;&apos;,true,&apos;&quot;+ $User.Id +&quot;&apos;,&apos;&quot;+$Setup.ClickToDial__ConfigurationManager__c.ClickToDial__EnableAutoCallLog__c+&quot;&apos;);\&quot; &quot;),&apos;&apos;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>You must dial + then the country code and number you wish to call. Example: +12125551313.
+Specify the global country code setting or record level country code to automatically add &quot;+country code&quot; to your Click-to-Call links.</inlineHelpText>
+        <label>Click-to-Call Phone</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ClickToDial__Click_to_Call_Skype__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>IF( LEN(ClickToDial__Skype_Username__c) &gt; 0, HYPERLINK(&quot;skype:&quot; &amp; ClickToDial__Skype_Username__c &amp; &quot;?call&quot;, ClickToDial__Skype_Username__c , &quot;_self\&quot; onclick=\&quot;createTask(&apos;&quot;+ ClickToDial__Skype_Username__c +&quot;&apos;, &apos;&quot;+ Id +&quot;&apos;,&apos;&quot;+ $Api.Session_ID +&quot;&apos;,false,&apos;&quot;+ $User.Id +&quot;&apos;,&apos;&quot;+$Setup.ClickToDial__ConfigurationManager__c.ClickToDial__EnableAutoCallLog__c+&quot;&apos;);\&quot; &quot;), &quot;No Skype ID&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Click-to-Call Skype</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ClickToDial__Country_Code__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Specify the record level country code to override global country code setting. Value from this field will be added to your Click-to-Call links(only this record). Leave this field blank if your phone numbers already have country code. Example Value: +1</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Specify the record level country code to override global country code setting. Value from this field will be added to your Click-to-Call links(only this record). Leave this field blank if your phone numbers already have country code. Example Value: +1</inlineHelpText>
+        <label>Country Code</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ClickToDial__Skype_Username__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Skype Username</label>
+        <length>60</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Client_Brand_Key_from_Account__c</fullName>
+        <description>Formula field for us in email templates</description>
+        <externalId>false</externalId>
+        <formula>TEXT(Account.Client_Brand_Key__c)</formula>
+        <inlineHelpText>Formula field for us in email templates</inlineHelpText>
+        <label>Client Brand Key (from Account)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contatct_ID_18_digit__c</fullName>
+        <description>Converts contact ID from 15-digit to 18-digit. Created for Marketing Cloud integration.</description>
+        <externalId>false</externalId>
+        <formula>CASESAFEID(Id)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Converts contact ID from 15-digit to 18-digit. Created for Marketing Cloud integration.</inlineHelpText>
+        <label>Contatct ID (18 digit)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Credit_Check_Acknowledged__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Credit Check Acknowledged</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Credit_Score_2__c</fullName>
+        <externalId>false</externalId>
+        <formula>Credit_Score__r.LASERCA__Credit_Score__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>FICO Score</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Credit_Score__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Personal Credit Report Link</label>
+        <referenceTo>LASERCA__Personal_Credit_Report__c</referenceTo>
+        <relationshipLabel>Contacts</relationshipLabel>
+        <relationshipName>Contacts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Custom_ID__c</fullName>
+        <externalId>false</externalId>
+        <label>Custom ID</label>
+        <length>40</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Customer_Opp_ID__c</fullName>
+        <externalId>false</externalId>
+        <formula>Id</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Customer Opp ID</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Delete_This_Checkbox__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Delete This Checkbox</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Department</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Description</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>DoNotCall</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Email</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Email_Archive__c</fullName>
+        <externalId>false</externalId>
+        <label>Email Archive</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Employed_less_than_a_year__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>This checkbox serves as the false value to the Employed longer than a year checkbox. It allows the CAP UI to show blank checkboxes without having to default to false.</inlineHelpText>
+        <label>Employed less than a year</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Express_Consent__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Set by applicants with the CAP during a loan application</inlineHelpText>
+        <label>Express Consent</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Fax</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>First_Letter_First_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>left(FirstName,1)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>First Letter First Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>HasOptedOutOfEmail</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+    </fields>
+    <fields>
+        <fullName>HasOptedOutOfFax</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>HomePhone</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Home_Apt_Suite__c</fullName>
+        <externalId>false</externalId>
+        <label>Home Apt/Suite</label>
+        <length>10</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Income__c</fullName>
+        <externalId>false</externalId>
+        <label>Income</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Jigsaw</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>LASERCA__Co_Applicant_DOB__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Co-Applicant DOB</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>LASERCA__Co_Applicant_Last_Name__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Co-Applicant Last Name</label>
+        <length>100</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LASERCA__Co_Applicant_Name__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Co-Applicant First Name</label>
+        <length>100</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LASERCA__Co_Applicant_SSN__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>**Deprecated</label>
+        <length>12</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LASERCA__Co_Applicant_Social_Security_Number__c</fullName>
+        <deprecated>false</deprecated>
+        <description>xxx-xx-xxxx</description>
+        <externalId>false</externalId>
+        <inlineHelpText>xxx-xx-xxxx</inlineHelpText>
+        <label>Co-Applicant Social Security Number</label>
+        <length>11</length>
+        <maskChar>asterisk</maskChar>
+        <maskType>lastFour</maskType>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>EncryptedText</type>
+    </fields>
+    <fields>
+        <fullName>LASERCA__Credit_Bureau__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>**Deprecated</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Equifax</fullName>
+                    <default>false</default>
+                    <label>Equifax</label>
+                </value>
+                <value>
+                    <fullName>TransUnion</fullName>
+                    <default>false</default>
+                    <label>TransUnion</label>
+                </value>
+                <value>
+                    <fullName>Experian</fullName>
+                    <default>false</default>
+                    <label>Experian</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>LASERCA__File_Number__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>File Number</label>
+        <length>8</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LASERCA__Home_Address__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Home Address</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LASERCA__Home_City__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Home City</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LASERCA__Home_Country__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Home Country</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LASERCA__Home_State__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Home State</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LASERCA__Home_Zip__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Home Zip</label>
+        <length>10</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LASERCA__Middle_Initial__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Middle Initial</label>
+        <length>1</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LASERCA__Pull_Credit_Report__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Pull Credit Report</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LASERCA__Request_Credit_Bureau__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Select the credit Bureaus for the request. Caution, you must have access to the bureau (s) requested.</inlineHelpText>
+        <label>Request Credit Bureau</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Experian</fullName>
+                    <default>false</default>
+                    <label>Experian</label>
+                </value>
+                <value>
+                    <fullName>Equifax</fullName>
+                    <default>false</default>
+                    <label>Equifax</label>
+                </value>
+                <value>
+                    <fullName>Transunion</fullName>
+                    <default>false</default>
+                    <label>Transunion</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>LASERCA__Social_Security_Number__c</fullName>
+        <deprecated>false</deprecated>
+        <description>xxx-xx-xxxx</description>
+        <externalId>false</externalId>
+        <inlineHelpText>xxx-xx-xxxx</inlineHelpText>
+        <label>Social Security Number</label>
+        <length>11</length>
+        <maskChar>asterisk</maskChar>
+        <maskType>lastFour</maskType>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>EncryptedText</type>
+    </fields>
+    <fields>
+        <fullName>LASERCA__Special_Option__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Special Option</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Upgrade</fullName>
+                    <default>false</default>
+                    <label>Upgrade</label>
+                </value>
+                <value>
+                    <fullName>Downgrade</fullName>
+                    <default>false</default>
+                    <label>Downgrade</label>
+                </value>
+                <value>
+                    <fullName>Downgrade Applicant Only</fullName>
+                    <default>false</default>
+                    <label>Downgrade Applicant Only</label>
+                </value>
+                <value>
+                    <fullName>Downgrade Co-Applicant Only</fullName>
+                    <default>false</default>
+                    <label>Downgrade Co-Applicant Only</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>LASERCA__TIN__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>TIN</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LastCURequestDate</fullName>
+    </fields>
+    <fields>
+        <fullName>LastCUUpdateDate</fullName>
+    </fields>
+    <fields>
+        <fullName>LeadSource</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Lead__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Lead</label>
+        <referenceTo>Lead</referenceTo>
+        <relationshipLabel>Co-Applicants</relationshipLabel>
+        <relationshipName>Contacts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Link_to_Recurring_Payment_Form__c</fullName>
+        <externalId>false</externalId>
+        <formula>&quot;https://forms.bluewaverenewables.com/381548&amp;tfa_364=&quot;&amp;AccountId</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Link to Recurring Payment Form</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>MC4SF__MC_Subscriber__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>MC Subscriber</label>
+        <referenceTo>MC4SF__MC_Subscriber__c</referenceTo>
+        <relationshipLabel>Contacts</relationshipLabel>
+        <relationshipName>Contacts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>MailingAddress</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>MobilePhone</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>NABCEP_Certification_Number__c</fullName>
+        <externalId>false</externalId>
+        <label>NABCEP Certification Number</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Name</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Opportunity__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Opportunity</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipLabel>Co-Applicants</relationshipLabel>
+        <relationshipName>Contacts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>OtherAddress</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>OtherPhone</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Other_Bank_Executive__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Reg O question: I am an executive officer or director at a financial institution</inlineHelpText>
+        <label>Other Bank Executive?</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>OwnerId</fullName>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Parent_Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Parent Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Contacts</relationshipLabel>
+        <relationshipName>Contacts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Parent_Contact__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Parent Contact</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Partner_Lookup__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Link to the Partner Object related to this contact</inlineHelpText>
+        <label>Partner Lookup</label>
+        <referenceTo>Partner__c</referenceTo>
+        <relationshipLabel>Contacts</relationshipLabel>
+        <relationshipName>Contacts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Percent_Ownership__c</fullName>
+        <description>From installer online application.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>From installer online application.</inlineHelpText>
+        <label>Percent Ownership</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Phone</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Plain_Text_Phone__c</fullName>
+        <externalId>false</externalId>
+        <formula>LEFT( 
+
+SUBSTITUTE( 
+SUBSTITUTE( 
+SUBSTITUTE( 
+SUBSTITUTE(Phone, &quot;(&quot;, &quot;&quot;), &quot;)&quot;, &quot;&quot;), &quot; &quot;, &quot;&quot;), &quot;-&quot;, &quot;&quot;)
+
+, 10)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Plain Text Phone</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Privacy_Policy_Acknowledged__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Privacy Policy Acknowledged</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Product_Line__c</fullName>
+        <externalId>false</externalId>
+        <label>Product Line</label>
+        <length>25</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Project_Finance__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Project Finance</label>
+        <referenceTo>Project_Finance__c</referenceTo>
+        <relationshipLabel>Contacts</relationshipLabel>
+        <relationshipName>Contacts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Referral_Code__c</fullName>
+        <externalId>false</externalId>
+        <formula>Custom_ID__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Referral Code</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ReportsToId</fullName>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Sales_Representative__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <description>This is the relationship to the Sales Team object. It allow the portal to show records unique to each Sales Rep.</description>
+        <externalId>false</externalId>
+        <label>Sales Representative</label>
+        <referenceTo>BSST__c</referenceTo>
+        <relationshipLabel>Contacts</relationshipLabel>
+        <relationshipName>PartnerContacts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Title</fullName>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Town_Contacts__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Town Contacts</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>$Source.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Project Management Contact</value>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Town__c</referenceTo>
+        <relationshipLabel>Contacts</relationshipLabel>
+        <relationshipName>Contacts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Type_of_Avidia_Service_Provider__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Reg O question</inlineHelpText>
+        <label>Type of Avidia Service Provider</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Real Estate Appraiser</fullName>
+                    <default>false</default>
+                    <label>Real Estate Appraiser</label>
+                </value>
+                <value>
+                    <fullName>Attorney</fullName>
+                    <default>false</default>
+                    <label>Attorney</label>
+                </value>
+                <value>
+                    <fullName>Accountant</fullName>
+                    <default>false</default>
+                    <label>Accountant</label>
+                </value>
+                <value>
+                    <fullName>Consultant</fullName>
+                    <default>false</default>
+                    <label>Consultant</label>
+                </value>
+                <value>
+                    <fullName>None of the above</fullName>
+                    <default>false</default>
+                    <label>None of the above</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>User__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>User record associated to a contact. Only applicable to internal users</inlineHelpText>
+        <label>User</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>User.UserType</field>
+                <operation>equals</operation>
+                <value>Standard</value>
+            </filterItems>
+            <infoMessage>This lookup is for internal users.</infoMessage>
+            <isOptional>true</isOptional>
+        </lookupFilter>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Contacts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Year_Employment__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Contact has been employed by current employer for more than a year</inlineHelpText>
+        <label>Employed longer than a year</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>et4ae5__HasOptedOutOfMobile__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Mobile Opt Out</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>et4ae5__Mobile_Country_Code__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Mobile Country Code</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>US</fullName>
+                    <default>true</default>
+                    <label>US</label>
+                </value>
+                <value>
+                    <fullName>AC</fullName>
+                    <default>false</default>
+                    <label>AC</label>
+                </value>
+                <value>
+                    <fullName>AD</fullName>
+                    <default>false</default>
+                    <label>AD</label>
+                </value>
+                <value>
+                    <fullName>AE</fullName>
+                    <default>false</default>
+                    <label>AE</label>
+                </value>
+                <value>
+                    <fullName>AF</fullName>
+                    <default>false</default>
+                    <label>AF</label>
+                </value>
+                <value>
+                    <fullName>AG</fullName>
+                    <default>false</default>
+                    <label>AG</label>
+                </value>
+                <value>
+                    <fullName>AI</fullName>
+                    <default>false</default>
+                    <label>AI</label>
+                </value>
+                <value>
+                    <fullName>AL</fullName>
+                    <default>false</default>
+                    <label>AL</label>
+                </value>
+                <value>
+                    <fullName>AM</fullName>
+                    <default>false</default>
+                    <label>AM</label>
+                </value>
+                <value>
+                    <fullName>AO</fullName>
+                    <default>false</default>
+                    <label>AO</label>
+                </value>
+                <value>
+                    <fullName>AQ</fullName>
+                    <default>false</default>
+                    <label>AQ</label>
+                </value>
+                <value>
+                    <fullName>AR</fullName>
+                    <default>false</default>
+                    <label>AR</label>
+                </value>
+                <value>
+                    <fullName>AS</fullName>
+                    <default>false</default>
+                    <label>AS</label>
+                </value>
+                <value>
+                    <fullName>AT</fullName>
+                    <default>false</default>
+                    <label>AT</label>
+                </value>
+                <value>
+                    <fullName>AU</fullName>
+                    <default>false</default>
+                    <label>AU</label>
+                </value>
+                <value>
+                    <fullName>AW</fullName>
+                    <default>false</default>
+                    <label>AW</label>
+                </value>
+                <value>
+                    <fullName>AX</fullName>
+                    <default>false</default>
+                    <label>AX</label>
+                </value>
+                <value>
+                    <fullName>AZ</fullName>
+                    <default>false</default>
+                    <label>AZ</label>
+                </value>
+                <value>
+                    <fullName>BA</fullName>
+                    <default>false</default>
+                    <label>BA</label>
+                </value>
+                <value>
+                    <fullName>BB</fullName>
+                    <default>false</default>
+                    <label>BB</label>
+                </value>
+                <value>
+                    <fullName>BD</fullName>
+                    <default>false</default>
+                    <label>BD</label>
+                </value>
+                <value>
+                    <fullName>BE</fullName>
+                    <default>false</default>
+                    <label>BE</label>
+                </value>
+                <value>
+                    <fullName>BF</fullName>
+                    <default>false</default>
+                    <label>BF</label>
+                </value>
+                <value>
+                    <fullName>BG</fullName>
+                    <default>false</default>
+                    <label>BG</label>
+                </value>
+                <value>
+                    <fullName>BH</fullName>
+                    <default>false</default>
+                    <label>BH</label>
+                </value>
+                <value>
+                    <fullName>BI</fullName>
+                    <default>false</default>
+                    <label>BI</label>
+                </value>
+                <value>
+                    <fullName>BJ</fullName>
+                    <default>false</default>
+                    <label>BJ</label>
+                </value>
+                <value>
+                    <fullName>BL</fullName>
+                    <default>false</default>
+                    <label>BL</label>
+                </value>
+                <value>
+                    <fullName>BM</fullName>
+                    <default>false</default>
+                    <label>BM</label>
+                </value>
+                <value>
+                    <fullName>BN</fullName>
+                    <default>false</default>
+                    <label>BN</label>
+                </value>
+                <value>
+                    <fullName>BO</fullName>
+                    <default>false</default>
+                    <label>BO</label>
+                </value>
+                <value>
+                    <fullName>BQ</fullName>
+                    <default>false</default>
+                    <label>BQ</label>
+                </value>
+                <value>
+                    <fullName>BR</fullName>
+                    <default>false</default>
+                    <label>BR</label>
+                </value>
+                <value>
+                    <fullName>BS</fullName>
+                    <default>false</default>
+                    <label>BS</label>
+                </value>
+                <value>
+                    <fullName>BT</fullName>
+                    <default>false</default>
+                    <label>BT</label>
+                </value>
+                <value>
+                    <fullName>BV</fullName>
+                    <default>false</default>
+                    <label>BV</label>
+                </value>
+                <value>
+                    <fullName>BW</fullName>
+                    <default>false</default>
+                    <label>BW</label>
+                </value>
+                <value>
+                    <fullName>BY</fullName>
+                    <default>false</default>
+                    <label>BY</label>
+                </value>
+                <value>
+                    <fullName>BZ</fullName>
+                    <default>false</default>
+                    <label>BZ</label>
+                </value>
+                <value>
+                    <fullName>CA</fullName>
+                    <default>false</default>
+                    <label>CA</label>
+                </value>
+                <value>
+                    <fullName>CC</fullName>
+                    <default>false</default>
+                    <label>CC</label>
+                </value>
+                <value>
+                    <fullName>CD</fullName>
+                    <default>false</default>
+                    <label>CD</label>
+                </value>
+                <value>
+                    <fullName>CF</fullName>
+                    <default>false</default>
+                    <label>CF</label>
+                </value>
+                <value>
+                    <fullName>CG</fullName>
+                    <default>false</default>
+                    <label>CG</label>
+                </value>
+                <value>
+                    <fullName>CH</fullName>
+                    <default>false</default>
+                    <label>CH</label>
+                </value>
+                <value>
+                    <fullName>CI</fullName>
+                    <default>false</default>
+                    <label>CI</label>
+                </value>
+                <value>
+                    <fullName>CK</fullName>
+                    <default>false</default>
+                    <label>CK</label>
+                </value>
+                <value>
+                    <fullName>CL</fullName>
+                    <default>false</default>
+                    <label>CL</label>
+                </value>
+                <value>
+                    <fullName>CM</fullName>
+                    <default>false</default>
+                    <label>CM</label>
+                </value>
+                <value>
+                    <fullName>CN</fullName>
+                    <default>false</default>
+                    <label>CN</label>
+                </value>
+                <value>
+                    <fullName>CO</fullName>
+                    <default>false</default>
+                    <label>CO</label>
+                </value>
+                <value>
+                    <fullName>CR</fullName>
+                    <default>false</default>
+                    <label>CR</label>
+                </value>
+                <value>
+                    <fullName>CU</fullName>
+                    <default>false</default>
+                    <label>CU</label>
+                </value>
+                <value>
+                    <fullName>CV</fullName>
+                    <default>false</default>
+                    <label>CV</label>
+                </value>
+                <value>
+                    <fullName>CW</fullName>
+                    <default>false</default>
+                    <label>CW</label>
+                </value>
+                <value>
+                    <fullName>CX</fullName>
+                    <default>false</default>
+                    <label>CX</label>
+                </value>
+                <value>
+                    <fullName>CY</fullName>
+                    <default>false</default>
+                    <label>CY</label>
+                </value>
+                <value>
+                    <fullName>CZ</fullName>
+                    <default>false</default>
+                    <label>CZ</label>
+                </value>
+                <value>
+                    <fullName>DE</fullName>
+                    <default>false</default>
+                    <label>DE</label>
+                </value>
+                <value>
+                    <fullName>DJ</fullName>
+                    <default>false</default>
+                    <label>DJ</label>
+                </value>
+                <value>
+                    <fullName>DK</fullName>
+                    <default>false</default>
+                    <label>DK</label>
+                </value>
+                <value>
+                    <fullName>DM</fullName>
+                    <default>false</default>
+                    <label>DM</label>
+                </value>
+                <value>
+                    <fullName>DO</fullName>
+                    <default>false</default>
+                    <label>DO</label>
+                </value>
+                <value>
+                    <fullName>DZ</fullName>
+                    <default>false</default>
+                    <label>DZ</label>
+                </value>
+                <value>
+                    <fullName>EC</fullName>
+                    <default>false</default>
+                    <label>EC</label>
+                </value>
+                <value>
+                    <fullName>EE</fullName>
+                    <default>false</default>
+                    <label>EE</label>
+                </value>
+                <value>
+                    <fullName>EG</fullName>
+                    <default>false</default>
+                    <label>EG</label>
+                </value>
+                <value>
+                    <fullName>ER</fullName>
+                    <default>false</default>
+                    <label>ER</label>
+                </value>
+                <value>
+                    <fullName>ES</fullName>
+                    <default>false</default>
+                    <label>ES</label>
+                </value>
+                <value>
+                    <fullName>ET</fullName>
+                    <default>false</default>
+                    <label>ET</label>
+                </value>
+                <value>
+                    <fullName>FI</fullName>
+                    <default>false</default>
+                    <label>FI</label>
+                </value>
+                <value>
+                    <fullName>FJ</fullName>
+                    <default>false</default>
+                    <label>FJ</label>
+                </value>
+                <value>
+                    <fullName>FK</fullName>
+                    <default>false</default>
+                    <label>FK</label>
+                </value>
+                <value>
+                    <fullName>FM</fullName>
+                    <default>false</default>
+                    <label>FM</label>
+                </value>
+                <value>
+                    <fullName>FO</fullName>
+                    <default>false</default>
+                    <label>FO</label>
+                </value>
+                <value>
+                    <fullName>FR</fullName>
+                    <default>false</default>
+                    <label>FR</label>
+                </value>
+                <value>
+                    <fullName>GA</fullName>
+                    <default>false</default>
+                    <label>GA</label>
+                </value>
+                <value>
+                    <fullName>GB</fullName>
+                    <default>false</default>
+                    <label>GB</label>
+                </value>
+                <value>
+                    <fullName>GD</fullName>
+                    <default>false</default>
+                    <label>GD</label>
+                </value>
+                <value>
+                    <fullName>GE</fullName>
+                    <default>false</default>
+                    <label>GE</label>
+                </value>
+                <value>
+                    <fullName>GF</fullName>
+                    <default>false</default>
+                    <label>GF</label>
+                </value>
+                <value>
+                    <fullName>GG</fullName>
+                    <default>false</default>
+                    <label>GG</label>
+                </value>
+                <value>
+                    <fullName>GH</fullName>
+                    <default>false</default>
+                    <label>GH</label>
+                </value>
+                <value>
+                    <fullName>GI</fullName>
+                    <default>false</default>
+                    <label>GI</label>
+                </value>
+                <value>
+                    <fullName>GL</fullName>
+                    <default>false</default>
+                    <label>GL</label>
+                </value>
+                <value>
+                    <fullName>GM</fullName>
+                    <default>false</default>
+                    <label>GM</label>
+                </value>
+                <value>
+                    <fullName>GN</fullName>
+                    <default>false</default>
+                    <label>GN</label>
+                </value>
+                <value>
+                    <fullName>GP</fullName>
+                    <default>false</default>
+                    <label>GP</label>
+                </value>
+                <value>
+                    <fullName>GQ</fullName>
+                    <default>false</default>
+                    <label>GQ</label>
+                </value>
+                <value>
+                    <fullName>GR</fullName>
+                    <default>false</default>
+                    <label>GR</label>
+                </value>
+                <value>
+                    <fullName>GS</fullName>
+                    <default>false</default>
+                    <label>GS</label>
+                </value>
+                <value>
+                    <fullName>GT</fullName>
+                    <default>false</default>
+                    <label>GT</label>
+                </value>
+                <value>
+                    <fullName>GU</fullName>
+                    <default>false</default>
+                    <label>GU</label>
+                </value>
+                <value>
+                    <fullName>GW</fullName>
+                    <default>false</default>
+                    <label>GW</label>
+                </value>
+                <value>
+                    <fullName>GY</fullName>
+                    <default>false</default>
+                    <label>GY</label>
+                </value>
+                <value>
+                    <fullName>HK</fullName>
+                    <default>false</default>
+                    <label>HK</label>
+                </value>
+                <value>
+                    <fullName>HM</fullName>
+                    <default>false</default>
+                    <label>HM</label>
+                </value>
+                <value>
+                    <fullName>HN</fullName>
+                    <default>false</default>
+                    <label>HN</label>
+                </value>
+                <value>
+                    <fullName>HR</fullName>
+                    <default>false</default>
+                    <label>HR</label>
+                </value>
+                <value>
+                    <fullName>HT</fullName>
+                    <default>false</default>
+                    <label>HT</label>
+                </value>
+                <value>
+                    <fullName>HU</fullName>
+                    <default>false</default>
+                    <label>HU</label>
+                </value>
+                <value>
+                    <fullName>ID</fullName>
+                    <default>false</default>
+                    <label>ID</label>
+                </value>
+                <value>
+                    <fullName>IE</fullName>
+                    <default>false</default>
+                    <label>IE</label>
+                </value>
+                <value>
+                    <fullName>IL</fullName>
+                    <default>false</default>
+                    <label>IL</label>
+                </value>
+                <value>
+                    <fullName>IM</fullName>
+                    <default>false</default>
+                    <label>IM</label>
+                </value>
+                <value>
+                    <fullName>IN</fullName>
+                    <default>false</default>
+                    <label>IN</label>
+                </value>
+                <value>
+                    <fullName>IO</fullName>
+                    <default>false</default>
+                    <label>IO</label>
+                </value>
+                <value>
+                    <fullName>IQ</fullName>
+                    <default>false</default>
+                    <label>IQ</label>
+                </value>
+                <value>
+                    <fullName>IR</fullName>
+                    <default>false</default>
+                    <label>IR</label>
+                </value>
+                <value>
+                    <fullName>IS</fullName>
+                    <default>false</default>
+                    <label>IS</label>
+                </value>
+                <value>
+                    <fullName>IT</fullName>
+                    <default>false</default>
+                    <label>IT</label>
+                </value>
+                <value>
+                    <fullName>JE</fullName>
+                    <default>false</default>
+                    <label>JE</label>
+                </value>
+                <value>
+                    <fullName>JM</fullName>
+                    <default>false</default>
+                    <label>JM</label>
+                </value>
+                <value>
+                    <fullName>JO</fullName>
+                    <default>false</default>
+                    <label>JO</label>
+                </value>
+                <value>
+                    <fullName>JP</fullName>
+                    <default>false</default>
+                    <label>JP</label>
+                </value>
+                <value>
+                    <fullName>KE</fullName>
+                    <default>false</default>
+                    <label>KE</label>
+                </value>
+                <value>
+                    <fullName>KG</fullName>
+                    <default>false</default>
+                    <label>KG</label>
+                </value>
+                <value>
+                    <fullName>KH</fullName>
+                    <default>false</default>
+                    <label>KH</label>
+                </value>
+                <value>
+                    <fullName>KI</fullName>
+                    <default>false</default>
+                    <label>KI</label>
+                </value>
+                <value>
+                    <fullName>KM</fullName>
+                    <default>false</default>
+                    <label>KM</label>
+                </value>
+                <value>
+                    <fullName>KN</fullName>
+                    <default>false</default>
+                    <label>KN</label>
+                </value>
+                <value>
+                    <fullName>KP</fullName>
+                    <default>false</default>
+                    <label>KP</label>
+                </value>
+                <value>
+                    <fullName>KR</fullName>
+                    <default>false</default>
+                    <label>KR</label>
+                </value>
+                <value>
+                    <fullName>KW</fullName>
+                    <default>false</default>
+                    <label>KW</label>
+                </value>
+                <value>
+                    <fullName>KY</fullName>
+                    <default>false</default>
+                    <label>KY</label>
+                </value>
+                <value>
+                    <fullName>KZ</fullName>
+                    <default>false</default>
+                    <label>KZ</label>
+                </value>
+                <value>
+                    <fullName>LA</fullName>
+                    <default>false</default>
+                    <label>LA</label>
+                </value>
+                <value>
+                    <fullName>LB</fullName>
+                    <default>false</default>
+                    <label>LB</label>
+                </value>
+                <value>
+                    <fullName>LC</fullName>
+                    <default>false</default>
+                    <label>LC</label>
+                </value>
+                <value>
+                    <fullName>LI</fullName>
+                    <default>false</default>
+                    <label>LI</label>
+                </value>
+                <value>
+                    <fullName>LK</fullName>
+                    <default>false</default>
+                    <label>LK</label>
+                </value>
+                <value>
+                    <fullName>LR</fullName>
+                    <default>false</default>
+                    <label>LR</label>
+                </value>
+                <value>
+                    <fullName>LS</fullName>
+                    <default>false</default>
+                    <label>LS</label>
+                </value>
+                <value>
+                    <fullName>LT</fullName>
+                    <default>false</default>
+                    <label>LT</label>
+                </value>
+                <value>
+                    <fullName>LU</fullName>
+                    <default>false</default>
+                    <label>LU</label>
+                </value>
+                <value>
+                    <fullName>LV</fullName>
+                    <default>false</default>
+                    <label>LV</label>
+                </value>
+                <value>
+                    <fullName>LY</fullName>
+                    <default>false</default>
+                    <label>LY</label>
+                </value>
+                <value>
+                    <fullName>MA</fullName>
+                    <default>false</default>
+                    <label>MA</label>
+                </value>
+                <value>
+                    <fullName>MC</fullName>
+                    <default>false</default>
+                    <label>MC</label>
+                </value>
+                <value>
+                    <fullName>MD</fullName>
+                    <default>false</default>
+                    <label>MD</label>
+                </value>
+                <value>
+                    <fullName>ME</fullName>
+                    <default>false</default>
+                    <label>ME</label>
+                </value>
+                <value>
+                    <fullName>MF</fullName>
+                    <default>false</default>
+                    <label>MF</label>
+                </value>
+                <value>
+                    <fullName>MG</fullName>
+                    <default>false</default>
+                    <label>MG</label>
+                </value>
+                <value>
+                    <fullName>MH</fullName>
+                    <default>false</default>
+                    <label>MH</label>
+                </value>
+                <value>
+                    <fullName>MK</fullName>
+                    <default>false</default>
+                    <label>MK</label>
+                </value>
+                <value>
+                    <fullName>ML</fullName>
+                    <default>false</default>
+                    <label>ML</label>
+                </value>
+                <value>
+                    <fullName>MM</fullName>
+                    <default>false</default>
+                    <label>MM</label>
+                </value>
+                <value>
+                    <fullName>MN</fullName>
+                    <default>false</default>
+                    <label>MN</label>
+                </value>
+                <value>
+                    <fullName>MO</fullName>
+                    <default>false</default>
+                    <label>MO</label>
+                </value>
+                <value>
+                    <fullName>MP</fullName>
+                    <default>false</default>
+                    <label>MP</label>
+                </value>
+                <value>
+                    <fullName>MQ</fullName>
+                    <default>false</default>
+                    <label>MQ</label>
+                </value>
+                <value>
+                    <fullName>MR</fullName>
+                    <default>false</default>
+                    <label>MR</label>
+                </value>
+                <value>
+                    <fullName>MS</fullName>
+                    <default>false</default>
+                    <label>MS</label>
+                </value>
+                <value>
+                    <fullName>MT</fullName>
+                    <default>false</default>
+                    <label>MT</label>
+                </value>
+                <value>
+                    <fullName>MU</fullName>
+                    <default>false</default>
+                    <label>MU</label>
+                </value>
+                <value>
+                    <fullName>MV</fullName>
+                    <default>false</default>
+                    <label>MV</label>
+                </value>
+                <value>
+                    <fullName>MW</fullName>
+                    <default>false</default>
+                    <label>MW</label>
+                </value>
+                <value>
+                    <fullName>MX</fullName>
+                    <default>false</default>
+                    <label>MX</label>
+                </value>
+                <value>
+                    <fullName>MY</fullName>
+                    <default>false</default>
+                    <label>MY</label>
+                </value>
+                <value>
+                    <fullName>MZ</fullName>
+                    <default>false</default>
+                    <label>MZ</label>
+                </value>
+                <value>
+                    <fullName>NA</fullName>
+                    <default>false</default>
+                    <label>NA</label>
+                </value>
+                <value>
+                    <fullName>NC</fullName>
+                    <default>false</default>
+                    <label>NC</label>
+                </value>
+                <value>
+                    <fullName>NE</fullName>
+                    <default>false</default>
+                    <label>NE</label>
+                </value>
+                <value>
+                    <fullName>NF</fullName>
+                    <default>false</default>
+                    <label>NF</label>
+                </value>
+                <value>
+                    <fullName>NG</fullName>
+                    <default>false</default>
+                    <label>NG</label>
+                </value>
+                <value>
+                    <fullName>NI</fullName>
+                    <default>false</default>
+                    <label>NI</label>
+                </value>
+                <value>
+                    <fullName>NL</fullName>
+                    <default>false</default>
+                    <label>NL</label>
+                </value>
+                <value>
+                    <fullName>NO</fullName>
+                    <default>false</default>
+                    <label>NO</label>
+                </value>
+                <value>
+                    <fullName>NP</fullName>
+                    <default>false</default>
+                    <label>NP</label>
+                </value>
+                <value>
+                    <fullName>NR</fullName>
+                    <default>false</default>
+                    <label>NR</label>
+                </value>
+                <value>
+                    <fullName>NU</fullName>
+                    <default>false</default>
+                    <label>NU</label>
+                </value>
+                <value>
+                    <fullName>NZ</fullName>
+                    <default>false</default>
+                    <label>NZ</label>
+                </value>
+                <value>
+                    <fullName>OM</fullName>
+                    <default>false</default>
+                    <label>OM</label>
+                </value>
+                <value>
+                    <fullName>PA</fullName>
+                    <default>false</default>
+                    <label>PA</label>
+                </value>
+                <value>
+                    <fullName>PE</fullName>
+                    <default>false</default>
+                    <label>PE</label>
+                </value>
+                <value>
+                    <fullName>PF</fullName>
+                    <default>false</default>
+                    <label>PF</label>
+                </value>
+                <value>
+                    <fullName>PG</fullName>
+                    <default>false</default>
+                    <label>PG</label>
+                </value>
+                <value>
+                    <fullName>PH</fullName>
+                    <default>false</default>
+                    <label>PH</label>
+                </value>
+                <value>
+                    <fullName>PK</fullName>
+                    <default>false</default>
+                    <label>PK</label>
+                </value>
+                <value>
+                    <fullName>PL</fullName>
+                    <default>false</default>
+                    <label>PL</label>
+                </value>
+                <value>
+                    <fullName>PM</fullName>
+                    <default>false</default>
+                    <label>PM</label>
+                </value>
+                <value>
+                    <fullName>PN</fullName>
+                    <default>false</default>
+                    <label>PN</label>
+                </value>
+                <value>
+                    <fullName>PR</fullName>
+                    <default>false</default>
+                    <label>PR</label>
+                </value>
+                <value>
+                    <fullName>PS</fullName>
+                    <default>false</default>
+                    <label>PS</label>
+                </value>
+                <value>
+                    <fullName>PT</fullName>
+                    <default>false</default>
+                    <label>PT</label>
+                </value>
+                <value>
+                    <fullName>PW</fullName>
+                    <default>false</default>
+                    <label>PW</label>
+                </value>
+                <value>
+                    <fullName>PY</fullName>
+                    <default>false</default>
+                    <label>PY</label>
+                </value>
+                <value>
+                    <fullName>QA</fullName>
+                    <default>false</default>
+                    <label>QA</label>
+                </value>
+                <value>
+                    <fullName>RE</fullName>
+                    <default>false</default>
+                    <label>RE</label>
+                </value>
+                <value>
+                    <fullName>RO</fullName>
+                    <default>false</default>
+                    <label>RO</label>
+                </value>
+                <value>
+                    <fullName>RS</fullName>
+                    <default>false</default>
+                    <label>RS</label>
+                </value>
+                <value>
+                    <fullName>RU</fullName>
+                    <default>false</default>
+                    <label>RU</label>
+                </value>
+                <value>
+                    <fullName>RW</fullName>
+                    <default>false</default>
+                    <label>RW</label>
+                </value>
+                <value>
+                    <fullName>SA</fullName>
+                    <default>false</default>
+                    <label>SA</label>
+                </value>
+                <value>
+                    <fullName>SB</fullName>
+                    <default>false</default>
+                    <label>SB</label>
+                </value>
+                <value>
+                    <fullName>SC</fullName>
+                    <default>false</default>
+                    <label>SC</label>
+                </value>
+                <value>
+                    <fullName>SD</fullName>
+                    <default>false</default>
+                    <label>SD</label>
+                </value>
+                <value>
+                    <fullName>SE</fullName>
+                    <default>false</default>
+                    <label>SE</label>
+                </value>
+                <value>
+                    <fullName>SG</fullName>
+                    <default>false</default>
+                    <label>SG</label>
+                </value>
+                <value>
+                    <fullName>SH</fullName>
+                    <default>false</default>
+                    <label>SH</label>
+                </value>
+                <value>
+                    <fullName>SI</fullName>
+                    <default>false</default>
+                    <label>SI</label>
+                </value>
+                <value>
+                    <fullName>SJ</fullName>
+                    <default>false</default>
+                    <label>SJ</label>
+                </value>
+                <value>
+                    <fullName>SK</fullName>
+                    <default>false</default>
+                    <label>SK</label>
+                </value>
+                <value>
+                    <fullName>SL</fullName>
+                    <default>false</default>
+                    <label>SL</label>
+                </value>
+                <value>
+                    <fullName>SM</fullName>
+                    <default>false</default>
+                    <label>SM</label>
+                </value>
+                <value>
+                    <fullName>SN</fullName>
+                    <default>false</default>
+                    <label>SN</label>
+                </value>
+                <value>
+                    <fullName>SO</fullName>
+                    <default>false</default>
+                    <label>SO</label>
+                </value>
+                <value>
+                    <fullName>SR</fullName>
+                    <default>false</default>
+                    <label>SR</label>
+                </value>
+                <value>
+                    <fullName>SS</fullName>
+                    <default>false</default>
+                    <label>SS</label>
+                </value>
+                <value>
+                    <fullName>ST</fullName>
+                    <default>false</default>
+                    <label>ST</label>
+                </value>
+                <value>
+                    <fullName>SV</fullName>
+                    <default>false</default>
+                    <label>SV</label>
+                </value>
+                <value>
+                    <fullName>SX</fullName>
+                    <default>false</default>
+                    <label>SX</label>
+                </value>
+                <value>
+                    <fullName>SY</fullName>
+                    <default>false</default>
+                    <label>SY</label>
+                </value>
+                <value>
+                    <fullName>SZ</fullName>
+                    <default>false</default>
+                    <label>SZ</label>
+                </value>
+                <value>
+                    <fullName>TA</fullName>
+                    <default>false</default>
+                    <label>TA</label>
+                </value>
+                <value>
+                    <fullName>TC</fullName>
+                    <default>false</default>
+                    <label>TC</label>
+                </value>
+                <value>
+                    <fullName>TD</fullName>
+                    <default>false</default>
+                    <label>TD</label>
+                </value>
+                <value>
+                    <fullName>TG</fullName>
+                    <default>false</default>
+                    <label>TG</label>
+                </value>
+                <value>
+                    <fullName>TH</fullName>
+                    <default>false</default>
+                    <label>TH</label>
+                </value>
+                <value>
+                    <fullName>TJ</fullName>
+                    <default>false</default>
+                    <label>TJ</label>
+                </value>
+                <value>
+                    <fullName>TK</fullName>
+                    <default>false</default>
+                    <label>TK</label>
+                </value>
+                <value>
+                    <fullName>TL</fullName>
+                    <default>false</default>
+                    <label>TL</label>
+                </value>
+                <value>
+                    <fullName>TM</fullName>
+                    <default>false</default>
+                    <label>TM</label>
+                </value>
+                <value>
+                    <fullName>TN</fullName>
+                    <default>false</default>
+                    <label>TN</label>
+                </value>
+                <value>
+                    <fullName>TO</fullName>
+                    <default>false</default>
+                    <label>TO</label>
+                </value>
+                <value>
+                    <fullName>TR</fullName>
+                    <default>false</default>
+                    <label>TR</label>
+                </value>
+                <value>
+                    <fullName>TT</fullName>
+                    <default>false</default>
+                    <label>TT</label>
+                </value>
+                <value>
+                    <fullName>TV</fullName>
+                    <default>false</default>
+                    <label>TV</label>
+                </value>
+                <value>
+                    <fullName>TW</fullName>
+                    <default>false</default>
+                    <label>TW</label>
+                </value>
+                <value>
+                    <fullName>TZ</fullName>
+                    <default>false</default>
+                    <label>TZ</label>
+                </value>
+                <value>
+                    <fullName>UA</fullName>
+                    <default>false</default>
+                    <label>UA</label>
+                </value>
+                <value>
+                    <fullName>UG</fullName>
+                    <default>false</default>
+                    <label>UG</label>
+                </value>
+                <value>
+                    <fullName>UY</fullName>
+                    <default>false</default>
+                    <label>UY</label>
+                </value>
+                <value>
+                    <fullName>UZ</fullName>
+                    <default>false</default>
+                    <label>UZ</label>
+                </value>
+                <value>
+                    <fullName>VA</fullName>
+                    <default>false</default>
+                    <label>VA</label>
+                </value>
+                <value>
+                    <fullName>VC</fullName>
+                    <default>false</default>
+                    <label>VC</label>
+                </value>
+                <value>
+                    <fullName>VE</fullName>
+                    <default>false</default>
+                    <label>VE</label>
+                </value>
+                <value>
+                    <fullName>VG</fullName>
+                    <default>false</default>
+                    <label>VG</label>
+                </value>
+                <value>
+                    <fullName>VI</fullName>
+                    <default>false</default>
+                    <label>VI</label>
+                </value>
+                <value>
+                    <fullName>VN</fullName>
+                    <default>false</default>
+                    <label>VN</label>
+                </value>
+                <value>
+                    <fullName>VU</fullName>
+                    <default>false</default>
+                    <label>VU</label>
+                </value>
+                <value>
+                    <fullName>WF</fullName>
+                    <default>false</default>
+                    <label>WF</label>
+                </value>
+                <value>
+                    <fullName>WS</fullName>
+                    <default>false</default>
+                    <label>WS</label>
+                </value>
+                <value>
+                    <fullName>YE</fullName>
+                    <default>false</default>
+                    <label>YE</label>
+                </value>
+                <value>
+                    <fullName>YT</fullName>
+                    <default>false</default>
+                    <label>YT</label>
+                </value>
+                <value>
+                    <fullName>ZA</fullName>
+                    <default>false</default>
+                    <label>ZA</label>
+                </value>
+                <value>
+                    <fullName>ZM</fullName>
+                    <default>false</default>
+                    <label>ZM</label>
+                </value>
+                <value>
+                    <fullName>ZW</fullName>
+                    <default>false</default>
+                    <label>ZW</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>rcsfl__SMS_Number__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>SMS Number</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Phone</type>
+    </fields>
+    <fields>
+        <fullName>rcsfl__SendSMS__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>HYPERLINK(&quot;javascript:sendCTIMessage(&apos;/CLICK_TO_DIAL?OBJECT_NAME=SMS&amp;DN=&quot; + rcsfl__SMS_Number__c + &quot;&apos;)&quot;, rcsfl__SMS_Number__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>SendSMS</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>test__c</fullName>
+        <externalId>false</externalId>
+        <label>test</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <listViews>
+        <fullName>Active_Communities_User</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>CONTACT.TITLE</columns>
+        <columns>CONTACT.PHONE1</columns>
+        <columns>CONTACT.EMAIL</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Active_Communities_User__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>Active Communities User</label>
+    </listViews>
+    <listViews>
+        <fullName>AllContacts</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>CONTACT.TITLE</columns>
+        <columns>CONTACT.PHONE1</columns>
+        <columns>CONTACT.EMAIL</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>CONTACT.LAST_UPDATE</columns>
+        <columns>CONTACT.RECORDTYPE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CONTACT.LAST_NAME</field>
+            <operation>contains</operation>
+            <value>kanzer</value>
+        </filters>
+        <label>All Contacts</label>
+    </listViews>
+    <listViews>
+        <fullName>Dover_Update</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>CONTACT.EMAIL</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CONTACT.FIRST_NAME</field>
+            <operation>contains</operation>
+            <value>jared</value>
+        </filters>
+        <label>Dover Project Update</label>
+    </listViews>
+    <listViews>
+        <fullName>Invaleon_CS_Welcome</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>CONTACT.TITLE</columns>
+        <columns>CONTACT.PHONE1</columns>
+        <columns>CONTACT.EMAIL</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>ACCOUNT.NAME</field>
+            <operation>contains</operation>
+            <value>Invaleon</value>
+        </filters>
+        <filters>
+            <field>ACCOUNT.NAME</field>
+            <operation>notContain</operation>
+            <value>Duplicate</value>
+        </filters>
+        <label>Invaleon CS Welcome</label>
+    </listViews>
+    <listViews>
+        <fullName>MyContacts</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>CONTACT.TITLE</columns>
+        <columns>CONTACT.PHONE1</columns>
+        <columns>CONTACT.EMAIL</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Mine</filterScope>
+        <label>My Contacts</label>
+    </listViews>
+    <listViews>
+        <fullName>NYSERDA_Cold_Contacts</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>CONTACT.TITLE</columns>
+        <columns>CONTACT.PHONE1</columns>
+        <columns>CONTACT.EMAIL</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CORE.USERS.ALIAS</field>
+            <operation>equals</operation>
+            <value>lalex</value>
+        </filters>
+        <label>NYSERDA Cold Contacts</label>
+    </listViews>
+    <listViews>
+        <fullName>Nils_Contacts</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>CONTACT.TITLE</columns>
+        <columns>CONTACT.PHONE1</columns>
+        <columns>CONTACT.EMAIL</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CORE.USERS.FIRST_NAME</field>
+            <operation>equals</operation>
+            <value>Nils</value>
+        </filters>
+        <label>Nils_Contacts</label>
+    </listViews>
+    <listViews>
+        <fullName>Portal_Outage_Partners</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>CONTACT.PHONE1</columns>
+        <columns>CONTACT.EMAIL</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <label>Portal Outage Partners</label>
+    </listViews>
+    <listViews>
+        <fullName>SE_Installers</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>CONTACT.PHONE1</columns>
+        <columns>CONTACT.EMAIL</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CONTACT.EMAIL</field>
+            <operation>notEqual</operation>
+        </filters>
+        <filters>
+            <field>FULL_NAME</field>
+            <operation>notContain</operation>
+            <value>?</value>
+        </filters>
+        <label>SE Installers</label>
+    </listViews>
+    <listViews>
+        <fullName>Solar_Power_NE_Invite</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>CONTACT.TITLE</columns>
+        <columns>CONTACT.PHONE1</columns>
+        <columns>CONTACT.EMAIL</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <label>Solar Power NE Invite</label>
+    </listViews>
+    <listViews>
+        <fullName>X18_03_ReVision_Energy</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>CONTACT.TITLE</columns>
+        <columns>CONTACT.PHONE1</columns>
+        <columns>CONTACT.EMAIL</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>ACCOUNT.NAME</field>
+            <operation>contains</operation>
+            <value>ReVision</value>
+        </filters>
+        <label>18-03 ReVision Energy</label>
+    </listViews>
+    <listViews>
+        <fullName>X18_04_Partners</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>CONTACT.TITLE</columns>
+        <columns>CONTACT.PHONE1</columns>
+        <columns>CONTACT.EMAIL</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>CONTACT.ADDRESS2_STATE_CODE</columns>
+        <columns>CONTACT.FIRST_NAME</columns>
+        <columns>CONTACT.LAST_NAME</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CONTACT.RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Contact.Contact,Contact.Partner_Contact,Contact.Bank_Contact</value>
+        </filters>
+        <label>18-04 Partners</label>
+    </listViews>
+    <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>Bank_Contact</fullName>
+        <active>true</active>
+        <description>To link to Capital Raising Object</description>
+        <label>Bank Contact</label>
+        <picklistValues>
+            <picklist>LASERCA__Credit_Bureau__c</picklist>
+            <values>
+                <fullName>Equifax</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Experian</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>TransUnion</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>BWC GIS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Door Knocking</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Engineer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>External Referral</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Scout</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Word of mouth</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Name</picklist>
+            <values>
+                <fullName>Dr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mrs%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ms%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Type_of_Avidia_Service_Provider__c</picklist>
+            <values>
+                <fullName>Accountant</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Attorney</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Consultant</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None of the above</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Real Estate Appraiser</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Community_Solar_Contact</fullName>
+        <active>true</active>
+        <label>Customer Contact</label>
+        <picklistValues>
+            <picklist>LASERCA__Credit_Bureau__c</picklist>
+            <values>
+                <fullName>Equifax</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Experian</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>TransUnion</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>BWC GIS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Door Knocking</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Engineer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>External Referral</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Scout</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Word of mouth</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Name</picklist>
+            <values>
+                <fullName>Dr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mrs%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ms%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Type_of_Avidia_Service_Provider__c</picklist>
+            <values>
+                <fullName>Accountant</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Attorney</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Consultant</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None of the above</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Real Estate Appraiser</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Contact</fullName>
+        <active>true</active>
+        <label>Contact</label>
+        <picklistValues>
+            <picklist>LASERCA__Credit_Bureau__c</picklist>
+            <values>
+                <fullName>Equifax</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Experian</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>TransUnion</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>BWC GIS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Door Knocking</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Engineer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>External Referral</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Scout</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Word of mouth</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Name</picklist>
+            <values>
+                <fullName>Dr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mrs%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ms%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Type_of_Avidia_Service_Provider__c</picklist>
+            <values>
+                <fullName>Accountant</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Attorney</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Consultant</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None of the above</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Real Estate Appraiser</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Contact_Co_Applicant</fullName>
+        <active>true</active>
+        <label>Contact - Co-Applicant</label>
+        <picklistValues>
+            <picklist>LASERCA__Credit_Bureau__c</picklist>
+            <values>
+                <fullName>Equifax</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Experian</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>TransUnion</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>BWC GIS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Door Knocking</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Engineer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>External Referral</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Scout</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Word of mouth</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Name</picklist>
+            <values>
+                <fullName>Dr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mrs%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ms%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Type_of_Avidia_Service_Provider__c</picklist>
+            <values>
+                <fullName>Accountant</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Attorney</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Consultant</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None of the above</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Real Estate Appraiser</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Partner_Contact</fullName>
+        <active>true</active>
+        <label>Partner Contact</label>
+        <picklistValues>
+            <picklist>LASERCA__Credit_Bureau__c</picklist>
+            <values>
+                <fullName>Equifax</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Experian</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>TransUnion</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>BWC GIS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Door Knocking</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Engineer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>External Referral</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Scout</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Word of mouth</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Name</picklist>
+            <values>
+                <fullName>Dr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mrs%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ms%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Type_of_Avidia_Service_Provider__c</picklist>
+            <values>
+                <fullName>Accountant</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Attorney</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Consultant</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None of the above</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Real Estate Appraiser</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Project_Management_Contact</fullName>
+        <active>true</active>
+        <description>For towns, projects, site aq contacts</description>
+        <label>Project Management Contact</label>
+        <picklistValues>
+            <picklist>LASERCA__Credit_Bureau__c</picklist>
+            <values>
+                <fullName>Equifax</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Experian</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>TransUnion</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>BWC GIS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Door Knocking</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Engineer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>External Referral</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Scout</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Word of mouth</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Name</picklist>
+            <values>
+                <fullName>Dr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mrs%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ms%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Type_of_Avidia_Service_Provider__c</picklist>
+            <values>
+                <fullName>Accountant</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Attorney</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Consultant</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None of the above</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Real Estate Appraiser</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts>
+        <customTabListAdditionalFields>FULL_NAME</customTabListAdditionalFields>
+        <customTabListAdditionalFields>ACCOUNT.NAME</customTabListAdditionalFields>
+        <customTabListAdditionalFields>CONTACT.PHONE1</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>FULL_NAME</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>ACCOUNT.NAME</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>ACCOUNT.SITE</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>LASERCA__Home_Address__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>LASERCA__Home_State__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Product_Line__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>FULL_NAME</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>ACCOUNT.NAME</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>ACCOUNT.SITE</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>CONTACT.PHONE1</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>CONTACT.PHONE3</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>CONTACT.PHONE4</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>CONTACT.PHONE5</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>CONTACT.PHONE6</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>rcsfl__SMS_Number__c</lookupPhoneDialogsAdditionalFields>
+        <searchResultsAdditionalFields>FULL_NAME</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>ACCOUNT.NAME</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>ACCOUNT.SITE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CONTACT.PHONE1</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CONTACT.EMAIL</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CORE.USERS.ALIAS</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>Private</sharingModel>
+    <webLinks>
+        <fullName>APXTConga4__Conga_Composer_OAuth</fullName>
+        <availability>online</availability>
+        <description>*** DO NOT USE THIS BUTTON ON A PAGE LAYOUT *** 
+
+OAuth buttons require additional setup. Please see the Composer Installation Guide for more details.
+
+COPY THE URL FROM THIS BUTTON and paste it into your own custom button or link. Then add optional parameters to finely tune the button&apos;s behavior. See the Composer Configuration Guide for details.</description>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>660</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Conga Composer (OAuth)</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/apex/APXTConga4__Conga_Composer
+?id={!Contact.Id}</url>
+        <width>900</width>
+    </webLinks>
+    <webLinks>
+        <fullName>APXTConga4__Conga_Mail_Merge</fullName>
+        <availability>online</availability>
+        <description>*** DO NOT USE THIS BUTTON ON A PAGE LAYOUT *** 
+
+COPY THE URL FROM THIS BUTTON and paste it into your own custom button or link. Then add optional parameters to finely tune the button&apos;s behavior. See the Conga Configuration Guide for details.</description>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>false</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>660</height>
+        <isResizable>false</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Conga Composer</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>https://composer.congamerge.com
+?sessionId={!API.Session_ID}
+&amp;serverUrl={!API.Partner_Server_URL_290}
+&amp;id={!Contact.Id}</url>
+        <width>900</width>
+    </webLinks>
+    <webLinks>
+        <fullName>ClickToDial__Enable_Click_to_Call</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Enable Click-to-Call</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/20.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/20.0/apex.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/resource/1290987267000/ClickToDial__Createtask&quot;)}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>GoogleMaps</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Google Maps</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>http://maps.google.com/maps?f=q&amp;hl=en&amp;q={!Contact_MailingStreet}+{!Contact_MailingCity}+{!Contact_MailingState}&amp;om=1</url>
+    </webLinks>
+    <webLinks>
+        <fullName>GoogleSearch</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Google Search</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>http://www.google.com/search?q={!Contact_FirstName} {!Contact_LastName}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>LASERCA__LASER_Credit_Access</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>LASER Credit Access</masterLabel>
+        <openType>sidebar</openType>
+        <page>LASERCA__CreditAPI</page>
+        <protected>false</protected>
+    </webLinks>
+    <webLinks>
+        <fullName>LASERCA__LASER_Credit_Access_2</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>LASER Credit Access</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>if(confirm(&apos;You are about to run a personal credit report. Are you sure you want to proceed?&apos;)){
+window.location.href = &apos;/apex/LASERCA__CreditAPI?id={!Contact.Id}&amp;createTask=true&amp;retURL=/{!Contact.Id}&apos;;
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>LASER_Credit_Access_Custom</fullName>
+        <availability>online</availability>
+        <description>Alternative to the LASER Credit Access button to standardize on the &quot;Pull Credit Report&quot; checkbox. See https://github.com/BlueWaveFinanceGroup/SMP/pull/136 for context</description>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Pull Credit Report</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/27.0/connection.js&quot;)} 
+
+var contact = new sforce.SObject(&apos;Contact&apos;); 
+contact.Id = &apos;{!Contact.Id}&apos;; 
+contact.LASERCA__Pull_Credit_Report__c = true; 
+var result = sforce.connection.update([contact]); 
+alert(&apos;You have queued a credit check, please refresh the page to check for results&apos;);</url>
+    </webLinks>
+    <webLinks>
+        <fullName>LiveText__Opt_in_for_Text_Messages_list</fullName>
+        <availability>online</availability>
+        <description>This button is for List View</description>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Opt-in for Text Messages</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/10.0/connection.js&quot;)} 
+			{!REQUIRESCRIPT(&quot;/soap/ajax/14.0/apex.js&quot;)} 
+			{!REQUIRESCRIPT(&apos;/support/console/31.0/integration.js&apos;)}; 
+
+			var records = {!GETRECORDIDS($ObjectType.Contact)}; 
+			if (records[0] == null) 
+			{ 
+				alert(&quot;Please select at least one contact&quot;) 
+			} 
+			else{ 
+				var packagePrefix = &quot;LiveText__&quot;; 
+				var recordType = &quot;contact&quot;; 
+				var recordIds = &quot;&quot;; 
+				var optOutField = &apos;&apos;; 
+				var optOutDefaultValue = &apos;yes&apos;; 
+				var smsType = &apos;&apos;; 
+				var userId = &apos;{!$User.Id}&apos;; 
+				var elementIdVar = &apos;&apos;; 
+				var showUserDropDown = false; 
+				var dialogTitle = &apos;&apos;; 
+				var queryString = &apos;&apos;; 
+
+				for (var n in records) { 
+					if(n == &apos;remove&apos; || n == &apos;indexOf&apos;) continue; 
+					recordIds = recordIds + records[n]; 
+				
+					if (n != records.length-1) { 
+						recordIds = recordIds + &quot;,&quot;; 
+					} 
+				} 
+
+				var e = document.getElementsByName(&quot;fcf&quot;)[0]; 
+				var selectedView = e.options[e.selectedIndex].value; 
+				
+				var returnURL = &apos;/003?fcf=&apos;+ selectedView + &apos;&amp;rolodexIndex=-1&amp;page=1&apos;; 
+
+				var urlStart =  &apos;https://&apos;+window.location.hostname+&apos;/apex/LiveText__LiveTextOptinStatusPage?recordType=&apos;+recordType + 
+&apos;&amp;records=&apos;+recordIds+&apos;&amp;retURL=&apos;+returnURL;
+
+
+				if(sforce.console.isInConsole()) { 
+					sforce.console.openPrimaryTab(null, urlStart + &apos;&amp;inConsole=yes&amp;optType=1&apos;, true, &apos;Opt-in for Text Messages&apos;); 
+				}else{ 
+					window.top.location.href = urlStart + &apos;&amp;inConsole=no&amp;optType=1&apos;; 
+				} 
+			}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>LiveText__Opt_out_for_Text_Messaging_List</fullName>
+        <availability>online</availability>
+        <description>This button is for List View</description>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Opt-out for Text Messages</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/10.0/connection.js&quot;)}
+			{!REQUIRESCRIPT(&quot;/soap/ajax/14.0/apex.js&quot;)}
+			{!REQUIRESCRIPT(&apos;/support/console/31.0/integration.js&apos;)};
+
+			var records = {!GETRECORDIDS($ObjectType.Contact)};
+			if (records[0] == null)
+			{
+				alert(&quot;Please select at least one contact&quot;);
+			}
+			else{
+				var packagePrefix = &quot;LiveText__&quot;;
+				var recordType = &quot;contact&quot;;
+				var recordIds = &quot;&quot;;
+				var optOutField = &apos;&apos;;
+				var optOutDefaultValue = &apos;yes&apos;;
+				var smsType = &apos;&apos;;
+				var userId = &apos;{!$User.Id}&apos;;
+				var elementIdVar = &apos;&apos;;
+				var showUserDropDown = false;
+				var dialogTitle = &apos;&apos;;
+				var queryString = &apos;&apos;; 				
+					
+				for (var n in records) {
+					if(n == &apos;remove&apos; || n == &apos;indexOf&apos;) continue;
+					recordIds = recordIds + records[n];
+					
+					if (n != records.length-1) {
+						recordIds = recordIds + &quot;,&quot;;
+					}
+				}
+			
+				var e = document.getElementsByName(&quot;fcf&quot;)[0];
+				var selectedView = e.options[e.selectedIndex].value;
+			
+				var returnURL = &apos;/003?fcf=&apos;+ selectedView + &apos;&amp;rolodexIndex=-1&amp;page=1&apos;;
+			
+				var urlStart =  &apos;https://&apos;+window.location.hostname+&apos;/apex/LiveText__LiveTextOptinStatusPage?recordType=&apos;+recordType + 
+&apos;&amp;records=&apos;+recordIds+&apos;&amp;retURL=&apos;+returnURL;
+
+				
+				if(sforce.console.isInConsole()) {
+					sforce.console.openPrimaryTab(null, urlStart+&apos;&amp;inConsole=yes&amp;optType=0&apos;, true, &apos;Opt-out for Text Messages&apos;);
+				}else{
+					window.top.location.href = urlStart + &apos;&amp;inConsole=no&amp;optType=0&apos;;
+				}
+			}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>LiveText__Send_Bulk_SMS2</fullName>
+        <availability>online</availability>
+        <description>Sends text message to selected records</description>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Send Text to List</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/10.0/connection.js&quot;)} 
+            {!REQUIRESCRIPT(&quot;/soap/ajax/14.0/apex.js&quot;)} 
+            {!REQUIRESCRIPT(&apos;/support/console/31.0/integration.js&apos;)}; 
+
+            var records = {!GETRECORDIDS($ObjectType.Contact)}; 
+            var hasShortCodeNumber = sforce.apex.execute(&quot;LiveText.RetrievePreferredPhoneNumber&quot;,&quot;agentHasShortcodeNumberAssigned&quot;,{});
+            if (records[0] == null){ 
+                alert(&quot;Please select at least one contact&quot;);
+            }else if((records.length &gt; 25) &amp;&amp; hasShortCodeNumber==&quot;false&quot;){ 
+                alert(&quot;A maximum of 25 text messages may be sent at once. Please select fewer recipients and try again.&quot;); 
+            } 
+            else{ 
+                var packagePrefix = &quot;LiveText__&quot;; 
+                var recordType = &quot;contact&quot;; 
+                var recordIds = &quot;&quot;;
+
+                for (var n in records) { 
+                    if(n == &apos;remove&apos; || n == &apos;indexOf&apos;) continue; 
+                    recordIds = recordIds + records[n]; 
+                    
+                    if (n != records.length-1) { 
+                        recordIds = recordIds + &quot;,&quot;; 
+                    } 
+                }
+
+                var storageId = sforce.apex.execute(&quot;LiveText.RetrievePreferredPhoneNumber&quot;,&quot;saveToStorage&quot;,{stringToSave:recordIds});
+                var urlStart = &apos;https://&apos;+window.location.hostname+&apos;/apex/LiveText__LiveTextBulkSms?recordType=&apos;+recordType+&apos;&amp;storageId=&apos;+storageId; 
+                
+                if(sforce.console.isInConsole()) { 
+                    sforce.console.openPrimaryTab(null, urlStart, true);
+                } else { 
+                    window.top.location.href = urlStart; 
+                } 
+            }</url>
+    </webLinks>
+    <webLinks>
+        <fullName>MC4SF__MailChimp_Subscriptions_detail</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>MailChimp Subscriptions</masterLabel>
+        <openType>noSidebar</openType>
+        <page>MC4SF__SubscriptionsContact</page>
+        <protected>false</protected>
+    </webLinks>
+    <webLinks>
+        <fullName>MC4SF__MailChimp_Subscriptions_list</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>page</linkType>
+        <masterLabel>MailChimp Subscriptions</masterLabel>
+        <openType>replace</openType>
+        <page>MC4SF__SubscriptionsContactList</page>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+    </webLinks>
+    <webLinks>
+        <fullName>New_Customer_Care_Case</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>New Customer Care Case</masterLabel>
+        <openType>sidebar</openType>
+        <protected>false</protected>
+        <url>https://na54.salesforce.com/500/e? 
+&amp;RecordType=012j00000000HA8 
+&amp;ent=Case 
+&amp;cas14=Customer Care Case 
+&amp;cas3_lkid={!Contact.Id} 
+&amp;cas3_lkold={!Contact.Name} 
+&amp;00Nj000000BVAYr={!Contact.Name} is having issue with 
+&amp;cas11=Phone
+&amp;00Nj000000BiMdn=&quot;Customer Care&quot;</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Opt_in_for_Text_Messages</fullName>
+        <availability>online</availability>
+        <description>For LiveText</description>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Opt-in for Text Messages</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/10.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/14.0/apex.js&quot;)} 
+{!REQUIRESCRIPT(&apos;/support/console/31.0/integration.js&apos;)}; 
+
+var recordId = window.location.pathname.substring(1); 
+var returnURL = &apos;/&apos; + recordId; 
+
+var urlStart = &apos;https://&apos;+window.location.hostname+&apos;/apex/LiveText__LiveTextOptinStatusPage?records=&apos;+recordId+&apos;&amp;retURL=&apos;+returnURL; 
+
+if(sforce.console.isInConsole()) { 
+sforce.console.openPrimaryTab(null, urlStart + &apos;&amp;inConsole=yes&amp;optType=1&apos;, true, &apos;Opt-in for Text Messages&apos;); 
+}else{ 
+window.top.location.href = urlStart + &apos;&amp;inConsole=no&amp;optType=1&apos;; 
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Opt_out_for_Text_Messages</fullName>
+        <availability>online</availability>
+        <description>For LiveText</description>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Opt-out for Text Messages</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/10.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/14.0/apex.js&quot;)} 
+{!REQUIRESCRIPT(&apos;/support/console/31.0/integration.js&apos;)}; 
+
+var recordId = window.location.pathname.substring(1); 
+var returnURL = &apos;/&apos; + recordId; 
+
+var urlStart = &apos;https://&apos;+window.location.hostname+&apos;/apex/LiveText__LiveTextOptinStatusPage?records=&apos;+recordId+&apos;&amp;retURL=&apos;+returnURL; 
+
+if(sforce.console.isInConsole()) { 
+sforce.console.openPrimaryTab(null, urlStart + &apos;&amp;inConsole=yes&amp;optType=0&apos;, true, &apos;Opt-out for Text Messages&apos;); 
+}else{ 
+window.top.location.href = urlStart + &apos;&amp;inConsole=no&amp;optType=0&apos;; 
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Send_Text_Message</fullName>
+        <availability>online</availability>
+        <description>For LiveText</description>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Send Text Message</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&apos;/soap/ajax/31.0/connection.js&apos;)};
+{!REQUIRESCRIPT(&apos;/soap/ajax/31.0/apex.js&apos;)};
+{!REQUIRESCRIPT(&apos;/support/console/31.0/integration.js&apos;)};
+
+var objectId = window.location.pathname.substring(1);
+var recordPrefix = objectId.substring(0, 3);
+var phoneInformation = JSON.parse(sforce.apex.execute(&quot;LiveText.RetrievePreferredPhoneNumber&quot;,&quot;getToPhoneInformationFromObject&quot;,{selectedObjId:objectId}));
+var phoneNumber = phoneInformation[&apos;phone&apos;];
+var oObjectId = phoneInformation[&apos;orginatingObjectId&apos;];
+var ownerId = phoneInformation[&apos;ownerId&apos;];
+var params = &apos;&amp;phone=&apos;+phoneNumber.replace(&apos;+&apos;, &apos;%2B&apos;) +&apos;&amp;oid=&apos;+objectId+&apos;&amp;conversationtype=outbound&amp;objectprefix=&apos;+recordPrefix+&apos;&amp;ownerId=&apos;+ownerId+&apos;&amp;orginatingObjectId=&apos;+oObjectId;
+var conversationSessionPrefix = &apos;/{!$ObjectType.LiveText__Conversation_Session__c}/e?cvid=null&apos;+params;
+
+if(sforce.console.isInConsole()){
+    sforce.console.openPrimaryTab(null, conversationSessionPrefix, true, &apos;{!HTMLENCODE($Label.livetext__txt_conversation)}&apos;, null);
+    var closeSubtab = function closeSubtab(result) {
+        var tabId = result.id;
+        sforce.console.closeTab(tabId);
+    };
+    sforce.console.getEnclosingTabId(closeSubtab);
+}else{
+    var query = &quot;SELECT Id FROM AppMenuItem WHERE Name=&apos;LiveText_Console&apos;&quot;;
+    sforce.connection.sessionId = &apos;{!$Api.Session_ID}&apos;;
+    var queryResult = sforce.connection.query(query);
+    var records = queryResult.getArray(&apos;records&apos;);
+    var ltId = records[0].Id;
+    window.top.location.href = &apos;https://&apos;+window.location.hostname+&apos;/console?tsid=&apos;+ltId +&apos;#&apos;+conversationSessionPrefix;
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>dsfs__Send_with_DocuSign</fullName>
+        <availability>online</availability>
+        <description>This button will initiate a DocuSign Envelope that is linked to the Contact</description>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Send with DocuSign</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/apex/dsfs__DocuSign_JavaScript&quot;)}
+DocuSign_CreateEnvelope();</url>
+    </webLinks>
+    <webLinks>
+        <fullName>et4ae5__ExactTarget_Resubscribe</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Marketing Cloud Resubscribe</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/19.0/connection.js&quot;)}
+      {!REQUIRESCRIPT(&quot;/soap/ajax/15.0/apex.js&quot;)}
+      var didResub;
+      try
+      {
+      didResub=sforce.apex.execute(&quot;et4ae5/jsButtonMethods&quot;,&quot;performResub&quot;, {subscriberKey:&quot;{!CASESAFEID(Contact.Id)}&quot;,objectType:&quot;contact&quot;});
+      }
+      catch (e)
+      {
+      didResub=sforce.apex.execute(&quot;jsButtonMethods&quot;,&quot;performResub&quot;, {subscriberKey:&quot;{!CASESAFEID(Contact.Id)}&quot;,objectType:&quot;contact&quot;});
+      }
+      if (didResub==&quot;connection error&quot;)
+      {
+      alert(&quot;{!$Label.et4ae5__msg0047}&quot;);
+      }
+      else if (didResub==&quot;not found&quot;)
+      {
+      alert(&quot;{!$Label.et4ae5__msg0085}&quot;);
+      }
+      else if (didResub==&quot;other error&quot;)
+      {
+      alert(&quot;{!$Label.et4ae5__msg0086}&quot;);
+      }
+      else if (didResub==&quot;not integrated&quot;)
+      {
+      alert(&quot;{!$Label.et4ae5__msg0087}&quot;);
+      }
+      else if (didResub==&quot;success&quot;)
+      {
+      alert(&quot;{!Contact.Name} {!$Label.et4ae5__wasresublegacy}&quot;);
+      }
+      else
+      {
+      alert(didResub);
+      }
+      var theUrl=&quot;/{!Contact.Id}&quot;;
+      parent.location.href=theUrl;</url>
+    </webLinks>
+    <webLinks>
+        <fullName>et4ae5__ExactTarget_Unsubscribe</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Marketing Cloud Unsubscribe</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/19.0/connection.js&quot;)}
+      {!REQUIRESCRIPT(&quot;/soap/ajax/15.0/apex.js&quot;)}
+      var didUnsub;
+      try
+      {
+      didUnsub=sforce.apex.execute(&quot;et4ae5/jsButtonMethods&quot;,&quot;performUnsub&quot;, {subscriberKey:&quot;{!CASESAFEID(Contact.Id)}&quot;,objectType:&quot;contact&quot;});
+      }
+      catch (e)
+      {
+      didUnsub=sforce.apex.execute(&quot;jsButtonMethods&quot;,&quot;performUnsub&quot;, {subscriberKey:&quot;{!CASESAFEID(Contact.Id)}&quot;,objectType:&quot;contact&quot;});
+      }
+      if (didUnsub==&quot;connection error&quot;)
+      {
+      alert(&quot;{!$Label.et4ae5__msg0047}&quot;);
+      }
+      else if (didUnsub==&quot;not found&quot;)
+      {
+      alert(&quot;{!$Label.et4ae5__msg0085}&quot;);
+      }
+      else if (didUnsub==&quot;other error&quot;)
+      {
+      alert(&quot;{!$Label.et4ae5__msg0086}&quot;);
+      }
+      else if (didUnsub==&quot;not integrated&quot;)
+      {
+      alert(&quot;{!$Label.et4ae5__msg0087}&quot;);
+      }
+      else if (didUnsub==&quot;success&quot;)
+      {
+      alert(&quot;{!Contact.Name} {!$Label.et4ae5__wasunsublegacy}&quot;);
+      }
+      else
+      {
+      alert(didUnsub);
+      }
+      var theUrl=&quot;/{!Contact.Id}&quot;;
+      parent.location.href=theUrl;</url>
+    </webLinks>
+    <webLinks>
+        <fullName>et4ae5__Send_ExactTarget_Email</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Send Marketing Cloud Email</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/28.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/28.0/apex.js&quot;)}
+var bAccessable; 
+try{
+     bAccessable = sforce.apex.execute(&quot;et4ae5.SObjectHelperJS&quot;,&quot;isFieldAccessible&quot;,{sSObject:&quot;Contact&quot;, sField:&quot;HasOptedOutOfEmail&quot;});
+}catch (e) {
+     bAccessable = false;
+}
+
+if(bAccessable == &quot;true&quot;){
+     var sHasOptedOutOfEmail = &quot;&quot; + {!Contact.HasOptedOutOfEmail} + &quot;&quot;;
+     if(sHasOptedOutOfEmail == &quot;1&quot;){
+          alert(&quot;{!$Label.et4ae5__ctoptedout}&quot;);
+     }else{
+          try{
+               var urlPrefix=sforce.apex.execute(&quot;et4ae5/jsButtonMethods&quot;,&quot;namespace&quot;, {});
+               var theUrl=&quot;https://&quot;+urlPrefix+&quot;/apex/singleSendETEmail?contactId={!CASESAFEID(Contact.Id)}&quot;;
+               parent.location.href = theUrl;
+          }catch (e){
+               var theUrl=&quot;/apex/singleSendETEmail?contactId={!CASESAFEID(Contact.Id)}&quot;;
+               parent.location.href = theUrl;
+          }
+     }
+}else{
+     alert(&quot;{!$Label.et4ae5__ctoptedoutaccess}&quot;);
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>et4ae5__Send_ExactTarget_SMS</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Send Marketing Cloud SMS</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/28.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/28.0/apex.js&quot;)}
+var bAccessable;
+try{
+     bAccessable = sforce.apex.execute(&quot;et4ae5.SObjectHelperJS&quot;,&quot;isFieldAccessible&quot;,{sSObject:&quot;Contact&quot;, sField:&quot;HasOptedOutOfMobile__c&quot;});
+} catch (e) {
+     bAccessable = false;
+}
+
+if(bAccessable == &quot;true&quot;){
+     var sHasOptedOutOfSMS = &quot;&quot; + {!Contact.et4ae5__HasOptedOutOfMobile__c} + &quot;&quot;;
+     if(sHasOptedOutOfSMS == &quot;1&quot;){
+         alert(&quot;{!$Label.et4ae5__ctoptedoutsms}&quot;);
+     }else{
+         try{
+               var urlPrefix=sforce.apex.execute(&quot;et4ae5/jsButtonMethods&quot;,&quot;namespace&quot;, {});
+               var theUrl=&quot;https://&quot;+urlPrefix+&quot;/apex/singleSendETMobile?contactId={!CASESAFEID(Contact.Id)}&quot;;
+               parent.location.href = theUrl;
+         }catch (e){
+              var theUrl=&quot;/apex/singleSendETMobile?contactId={!CASESAFEID(Contact.Id)}&quot;;
+           parent.location.href = theUrl;
+         }
+     }
+}else{
+     alert(&quot;{!$Label.et4ae5__ctoptedoutsmsaccess}&quot;);     
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>et4ae5__View_ExactTarget_Analytics</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>View Marketing Cloud Analytics</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/19.0/connection.js&quot;)}
+      {!REQUIRESCRIPT(&quot;/soap/ajax/15.0/apex.js&quot;)}
+      try
+      {
+      var urlPrefix=sforce.apex.execute(&quot;et4ae5/jsButtonMethods&quot;,&quot;namespace&quot;, {});
+      var theUrl=&quot;https://&quot;+urlPrefix+&quot;/apex/SubscriberAnalytics?id={!CASESAFEID(Contact.Id)}&amp;obj=contact&quot;;
+      parent.location.href = theUrl;
+      }
+      catch (e)
+      {
+      var theUrl=&quot;/apex/SubscriberAnalytics?id={!CASESAFEID(Contact.Id)}&amp;obj=contact&quot;;
+      parent.location.href = theUrl;
+      }</url>
+    </webLinks>
+    <webLinks>
+        <fullName>rcsfl__Send_SMS</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Send SMS</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>sendCTIMessage(&apos;/CLICK_TO_DIAL?OBJECT_NAME={!Contact.Name}&amp;ENTITY_NAME=SMS&amp;ID={!Contact.Id}&apos;);</url>
+    </webLinks>
+</CustomObject>

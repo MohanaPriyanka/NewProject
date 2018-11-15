@@ -1,0 +1,3118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>true</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableChangeDataCapture>false</enableChangeDataCapture>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>Private</externalSharingModel>
+    <fields>
+        <fullName>Actual_COD_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Actual COD Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Actual_Credits_Flowing_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Actual Utility NMC to Customer Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Actual_First_Bill_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>This field must be manually populated after the first production update</inlineHelpText>
+        <label>Actual First BW Bill Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Actual_PTO_Date_MANUAL__c</fullName>
+        <description>Actual PTO Date to be manually populated for SSS without a PM relationship</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Actual PTO Date to be manually populated for SSS without a PM relationship</inlineHelpText>
+        <label>Actual PTO Date (MANUAL OVERRIDE)</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Actual_PTO_Date_Pull_from_Project__c</fullName>
+        <description>Formula field that is populated for SSS that have a relationship with a project. NOT visible on SSS Layout</description>
+        <externalId>false</externalId>
+        <formula>Project_Management__r.Actual_PTO_date__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Formula field that is populated for SSS that have a relationship with a project. NOT visible on SSS Layout</inlineHelpText>
+        <label>Actual PTO Date Pull from Project</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Actual_PTO_Date__c</fullName>
+        <description>Field populated by either &quot;Actual PTO Date Pull from Project&quot; from SSS with relationships to PM or &quot;Actual PTO Date (MANUAL)&quot; if it is filled in. if the &quot;Actual PTO Date (MANUAL) is not filled in, the field is populated by the Actual PTO Date Pull from Project&quot;.</description>
+        <externalId>false</externalId>
+        <formula>BLANKVALUE(Actual_PTO_Date_MANUAL__c,Actual_PTO_Date_Pull_from_Project__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Field populated by either Actual PTO Date Pull from Project from SSS with relationships to PM or Actual PTO Date (MANUAL) if it is filled in. If the Actual PTO Date (MANUAL) is not filled in, the field is populated by the Actual PTO Date Pull from Project</inlineHelpText>
+        <label>Actual PTO Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Actual_Utility_NMC_Transfer_to_Host_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Actual Utility NMC to Host Account Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Address__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Number and Street Name</inlineHelpText>
+        <label>Address</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Anchor_CS_Capacity_Committed__c</fullName>
+        <externalId>false</externalId>
+        <formula>Capacity_Committed_kW_DC__c +  Anchor_Capacity_Reserved__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Anchor/CS Capacity Committed</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Anchor_Capacity_Reserved__c</fullName>
+        <externalId>false</externalId>
+        <label>Anchor Capacity</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Anchor_Tenant__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Anchor Tenant</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipLabel>Shared Solar Systems</relationshipLabel>
+        <relationshipName>Shared_Solar_Systems</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>App_ID_WO_Manual__c</fullName>
+        <externalId>false</externalId>
+        <label>App ID#/ WO #</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Assemblage_Count__c</fullName>
+        <defaultValue>1</defaultValue>
+        <externalId>false</externalId>
+        <label>Assemblage Count</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Assemblage__c</fullName>
+        <externalId>false</externalId>
+        <formula>RIGHT(Name,4)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Assemblage</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Assignment_Order__c</fullName>
+        <externalId>false</externalId>
+        <label>Assignment Order</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>1</fullName>
+                    <default>false</default>
+                    <label>1</label>
+                </value>
+                <value>
+                    <fullName>2</fullName>
+                    <default>false</default>
+                    <label>2</label>
+                </value>
+                <value>
+                    <fullName>3</fullName>
+                    <default>false</default>
+                    <label>3</label>
+                </value>
+                <value>
+                    <fullName>4</fullName>
+                    <default>false</default>
+                    <label>4</label>
+                </value>
+                <value>
+                    <fullName>5</fullName>
+                    <default>false</default>
+                    <label>5</label>
+                </value>
+                <value>
+                    <fullName>6</fullName>
+                    <default>false</default>
+                    <label>6</label>
+                </value>
+                <value>
+                    <fullName>7</fullName>
+                    <default>false</default>
+                    <label>7</label>
+                </value>
+                <value>
+                    <fullName>8</fullName>
+                    <default>false</default>
+                    <label>8</label>
+                </value>
+                <value>
+                    <fullName>9</fullName>
+                    <default>false</default>
+                    <label>9</label>
+                </value>
+                <value>
+                    <fullName>10</fullName>
+                    <default>false</default>
+                    <label>10</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Auto_Payment_Form__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>This field determines whether or not the customer&apos;s portal will show the Chargent connected payment button/form or if it will show the form that simply collects payment information up front. True is the latter, false is the former.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This field determines whether or not the customer&apos;s portal will show the Chargent connected payment button/form or if it will show the form that simply collects payment information up front. True is the latter, false is the former.</inlineHelpText>
+        <label>Auto-Payment Form</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Availability__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( Capacity_Available_to_be_Reserved__c &gt; 0 , &quot;There is Additional Capacity Available to be Reserved&quot;, &quot;The Project is Full&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Availability</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Average_Subscription_Size__c</fullName>
+        <externalId>false</externalId>
+        <label>Average Subscription Size</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>BWC_Project_Entity_Manual__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>BWC Project Entity</label>
+        <referenceTo>Entity__c</referenceTo>
+        <relationshipLabel>Shared Solar Systems</relationshipLabel>
+        <relationshipName>Shared_Solar_Systems</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>BWC_Project_Entity__c</fullName>
+        <externalId>false</externalId>
+        <formula>Project_Management__r.BWC_Project_Entity__r.Name</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>BWC Project Entity</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bill_Due_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>Bill_Send_Date__c + 20</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Bill Due Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Bill_Send_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Bill Send Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Billing_Anchors__c</fullName>
+        <externalId>false</externalId>
+        <label>Billing Anchors on Project</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>BlueWave</fullName>
+                    <default>false</default>
+                    <label>BlueWave</label>
+                </value>
+                <value>
+                    <fullName>RadianGen</fullName>
+                    <default>false</default>
+                    <label>RadianGen</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Billing_Cycle_Group_Number__c</fullName>
+        <externalId>false</externalId>
+        <label>xxUtility Billing Cycle Group Number</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Billing_Cycle_Start_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>xxUtility Billing Cycle Start Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Billing_Method__c</fullName>
+        <externalId>false</externalId>
+        <label>Billing Method</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>NMC</fullName>
+                    <default>false</default>
+                    <label>NMC</label>
+                </value>
+                <value>
+                    <fullName>kWh</fullName>
+                    <default>false</default>
+                    <label>kWh</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Billing_Period_End_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>BW Billing Period End Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Billing_Period_Start_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>BW Billing Period Start Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Capacity_Available_to_be_Reserved__c</fullName>
+        <externalId>false</externalId>
+        <formula>if( Anchor_Capacity_Reserved__c &gt;0,  Total_System_Size_kW_DC_QC__c - Anchor_Capacity_Reserved__c - Total_Capacity_Committed_Reserved__c, Total_CS_Capacity_kW_DC_Formula__c -  Total_Capacity_Committed_Reserved__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Capacity Available to be Reserved(kW DC)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Capacity_Committed_kW_DC__c</fullName>
+        <externalId>false</externalId>
+        <label>Committed Capacity (kW DC)</label>
+        <precision>8</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>City__c</fullName>
+        <externalId>false</externalId>
+        <label>City</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Class__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF ( OR( 
+
+Name = &quot;Oxford Barrett St. P2&quot;, Name = &quot;Oxford Barrett St. P1&quot;), &quot;Class 2&quot;,
+
+IF(AND(   Total_System_Size_kW_AC_QC__c &gt; 60, Total_System_Size_kW_AC_QC__c  &lt;= 1000), &quot;Class 2&quot;, 
+
+IF ( Total_System_Size_kW_AC_QC__c &gt; 1000, &quot;Class 3&quot;, null)))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>System Class</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Client_Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>The client account field designates that party in which this shared solar system is being serviced for.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The client account field designates that party in which this shared solar system is being serviced for.</inlineHelpText>
+        <label>Client Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Shared Solar Systems</relationshipLabel>
+        <relationshipName>Shared_Solar_Systems</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Comments__c</fullName>
+        <externalId>false</externalId>
+        <label>Comments</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Contracts_Needed_to_COD__c</fullName>
+        <externalId>false</externalId>
+        <formula>kW_needed_to_hit_payment_threshold__c  /  Average_Subscription_Size__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Contracts Needed to COD</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Conversion_Rate__c</fullName>
+        <externalId>false</externalId>
+        <formula>Total_System_Size_kW_AC_QC__c /  Total_System_Size_kW_DC_QC__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Conversion Rate</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Count_of_Schedule_Zs__c</fullName>
+        <externalId>false</externalId>
+        <label>Count of Schedule Zs</label>
+        <summaryForeignKey>Schedule_Z__c.Shared_Solar_System__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Credit_Score_Requirement__c</fullName>
+        <defaultValue>700</defaultValue>
+        <externalId>false</externalId>
+        <label>Credit Score Requirement</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Customer_Acquisition__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Customer Acquisition</label>
+        <referenceTo>Partner__c</referenceTo>
+        <relationshipLabel>Shared Solar Systems</relationshipLabel>
+        <relationshipName>Shared_Solar_Systems</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Days_until_NTP__c</fullName>
+        <externalId>false</externalId>
+        <formula>NTP_Target_Date__c - today()</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Days until NTP</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Description__c</fullName>
+        <externalId>false</externalId>
+        <label>Description</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Energy_Analytics_del__c</fullName>
+        <externalId>false</externalId>
+        <label>Energy Analytics</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Est_Utility_NMC_Transfer_to_Host_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Est Utility NMC to Host Account Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Est_Utility_NMC_to_Customer_Override__c</fullName>
+        <description>If this field is filled in, it will override the formula in the Est Utility NMC to Customer Date field on the shared solar system record.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If this field is filled in, it will override the formula in the Est Utility NMC to Customer Date field on the shared solar system record.</inlineHelpText>
+        <label>Est Utility NMC to Customer Override</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Est_of_Subscribers__c</fullName>
+        <description>This is an estimate and is used in DocuSign.</description>
+        <externalId>false</externalId>
+        <formula>Total_CS_Capacity_kW_DC_Formula__c / Maximum_Subscription_Assemblage__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>This is an estimate and is used in DocuSign.</inlineHelpText>
+        <label>Est # of Subscribers</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Estimated_COD_Date_Manual__c</fullName>
+        <externalId>false</externalId>
+        <label>Estimated COD Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Estimated_COD_Date_QC__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(ISBLANK( Project_Management__c ),  Estimated_COD_Date_Manual__c,Estimated_COD_Date__c  )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Estimated COD Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Estimated_COD_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>Project_Management__r.Estimated_COD_date__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Estimated COD Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Estimated_Credit_Flow_Date__c</fullName>
+        <description>Adds 14 days to the Last Schedule Z Enacted Date if populated. Otherwise, adds 14 days to Actual PTO Date or 3 months to the Estimated PTO Date.</description>
+        <externalId>false</externalId>
+        <formula>BLANKVALUE(Est_Utility_NMC_to_Customer_Override__c,
+IF(
+ISBLANK(Actual_PTO_Date__c),
+Estimated_PTO_Date__c + 90,
+BLANKVALUE(Last_Sch_Z_Enacted_Date__c+14,
+Actual_PTO_Date__c +14)))</formula>
+        <inlineHelpText>Adds 14 days to the Last Schedule Z Enacted Date if populated. Otherwise, adds 14 days to Actual PTO Date or 3 months to the Estimated PTO Date.</inlineHelpText>
+        <label>Est Utility NMC to Customer Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Estimated_Credits_Flowing_Date__c</fullName>
+        <description>NOT USED CAN BE DELETED</description>
+        <externalId>false</externalId>
+        <inlineHelpText>NOT USED CAN BE DELETED</inlineHelpText>
+        <label>XEstimated Credits Flowing Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Estimated_First_BW_Bill_Override__c</fullName>
+        <description>If filled in, the date will override the formula in the Estimated First BW Bill Date field on the shared solar system.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If filled in, the date will override the formula in the Estimated First BW Bill Date field on the shared solar system.</inlineHelpText>
+        <label>Estimated First BW Bill Override</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Estimated_First_Bill_Date__c</fullName>
+        <description>This is the 15th of the month after the Actual Credit Flow to Customer Date (or the Estimated Credit Flow to Customer Date if former is blank). If the Estimated first BW Bill Date Override field is filled in, it override this formula and show that date instead.</description>
+        <externalId>false</externalId>
+        <formula>BLANKVALUE(Estimated_First_BW_Bill_Override__c,
+BLANKVALUE(
+IF(MONTH(Actual_Credits_Flowing_Date__c)=12, DATE(YEAR(Actual_Credits_Flowing_Date__c)+1,1,15), 
+DATE(YEAR(Actual_Credits_Flowing_Date__c),MONTH(Actual_Credits_Flowing_Date__c)+1,15)), 
+
+IF(MONTH(Estimated_Credit_Flow_Date__c)=12,
+DATE(YEAR(Estimated_Credit_Flow_Date__c)+1,1,15),
+DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,15))))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>This is the 15th of the month after the Actual Credit Flow to Customer Date (or the Estimated Credit Flow to Customer Date if former is blank). If the Estimated first BW Bill Date Override field is filled in, it override this formula and show that instead</inlineHelpText>
+        <label>Estimated First BW Bill Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Estimated_PTO_Date_MANUAL__c</fullName>
+        <description>Manually populate this field for SSS without PM relationships</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Manually populate this field for SSS without PM relationships</inlineHelpText>
+        <label>Estimated PTO Date (MANUAL OVERRIDE)</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Estimated_PTO_Date_Pull_from_Project__c</fullName>
+        <description>Estimated PTO date pulled from the Project; Field will be hidden on SSS layout</description>
+        <externalId>false</externalId>
+        <formula>Project_Management__r.Estimated_PTO_Date__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Estimated PTO date pulled from the Project; Field will be hidden on SSS layout</inlineHelpText>
+        <label>Estimated PTO Date Pull from Project</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Estimated_PTO_Date__c</fullName>
+        <description>Field populated by either &quot;Estimated PTO Date Pull from Project&quot; from SSS with relationships to PM or &quot;Estimated PTO Date (MANUAL)&quot; if it is filled in. if the &quot;Estimated PTO Date (MANUAL) is not filled in, the field is populated by the Estimated PTO Date Pull from Project&quot;.</description>
+        <externalId>false</externalId>
+        <formula>BLANKVALUE(Estimated_PTO_Date_MANUAL__c,Estimated_PTO_Date_Pull_from_Project__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Field populated by either &quot;Estimated PTO Date Pull from Project&quot; from SSS with relationships to PM or &quot;Estimated PTO Date (MANUAL)&quot; if it is filled in. if the &quot;Estimated PTO Date (MANUAL) is not filled in, the field is populated by the Estimated PTO Date</inlineHelpText>
+        <label>Estimated PTO Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Expected_Yield_kWh_kW__c</fullName>
+        <externalId>false</externalId>
+        <label>Expected Yield (kWh/kW)</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Graph_Box__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Graph Box</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Host_Utility_Account_Number__c</fullName>
+        <externalId>false</externalId>
+        <label>Host Utility Account Number</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Last_Sch_Z_Enacted_Date__c</fullName>
+        <description>This field is populated with the maximum Date Enacted by Utility field on all related Schedule Z records. If it needs to be updated, please update the Schedule Z record.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This field is populated with the maximum Date Enacted by Utility field on all related Schedule Z records. If it needs to be updated, please update the Schedule Z record.</inlineHelpText>
+        <label>Last Sch Z Enacted Date</label>
+        <summarizedField>Schedule_Z__c.Date_Enacted_by_Utility__c</summarizedField>
+        <summaryForeignKey>Schedule_Z__c.Shared_Solar_System__c</summaryForeignKey>
+        <summaryOperation>max</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Last_Schedule_Z__c</fullName>
+        <description>This field is populated by the maximum date from the Date Submitted to Utility field from all related schedule Z records where the Date Submitted to Utility field is not null.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This field is populated by the maximum date from the Date Submitted to Utility field from all related schedule Z records where the Date Submitted to Utility field is not null. If it needs to be updated, update the Schedule Z record.</inlineHelpText>
+        <label>Last Schedule Z Submitted:</label>
+        <summarizedField>Schedule_Z__c.Date_Submitted_to_Utility__c</summarizedField>
+        <summaryFilterItems>
+            <field>Schedule_Z__c.Date_Submitted_to_Utility__c</field>
+            <operation>notEqual</operation>
+            <value></value>
+        </summaryFilterItems>
+        <summaryForeignKey>Schedule_Z__c.Shared_Solar_System__c</summaryForeignKey>
+        <summaryOperation>max</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Latitude_and_Longitude__c</fullName>
+        <displayLocationInDecimal>false</displayLocationInDecimal>
+        <externalId>false</externalId>
+        <label>Latitude and Longitude</label>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Location</type>
+    </fields>
+    <fields>
+        <fullName>Maximum_Subscription_Assemblage__c</fullName>
+        <defaultValue>25</defaultValue>
+        <externalId>false</externalId>
+        <label>Maximum Subscription (Assemblage)</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Maximum_Subscription_Capacity_kW_DC__c</fullName>
+        <externalId>false</externalId>
+        <formula>Assemblage_Count__c *  Maximum_Subscription_Assemblage__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Maximum Subscription Capacity (kW DC)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Maximum_Subscription_Cost__c</fullName>
+        <externalId>false</externalId>
+        <formula>Maximum_Subscription_Capacity_kW_DC__c *  NMC_Value__c *  Expected_Yield_kWh_kW__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Maximum Subscription Cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Meter_Installed_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Meter Installed Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Meter_Reading_Schedule__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>This is a lookup to the Meter Reading Schedule, which determines when the dates at which the host account meter will be read. The group can be found on the host account bill. This field is populated by the IX team.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is a lookup to the Meter Reading Schedule, which determines when the dates at which the host account meter will be read. The group can be found on the host account bill. This field is populated by the IX team.</inlineHelpText>
+        <label>Meter Reading Schedule</label>
+        <referenceTo>Meter_Reading_Schedule__c</referenceTo>
+        <relationshipLabel>Shared Solar Systems</relationshipLabel>
+        <relationshipName>Shared_Solar_Systems</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Meter__c</fullName>
+        <externalId>false</externalId>
+        <label>Meter #</label>
+        <length>12</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Min_Schedule_Z_to_Utility_Date__c</fullName>
+        <description>This field is populated with the Minimum date from the &quot;Date Submitted to Utility&quot; field from all related schedule z records with statuses of Submitted to Utility &gt;&gt;&gt; Contact Utility to get it Enacted, Rejected, Enacted by Utility, Replaced with newly Enacted Schedule Z. If it needs to be updated, please update the Schedule Z record.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Minimum date from the Date Submitted to Utility field from related sched z records with statuses of Submitted to Utility &gt;&gt;&gt; Contact Utility to get Enacted, Rejected, Enacted by Utility, Replaced with newly Enacted Sched Z. To update, edit Sched Z record.</inlineHelpText>
+        <label>Min Schedule Z to Utility Date</label>
+        <summarizedField>Schedule_Z__c.Date_Submitted_to_Utility__c</summarizedField>
+        <summaryFilterItems>
+            <field>Schedule_Z__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Submitted to Utility &gt;&gt;&gt; Contact Utility to get it Enacted, Rejected, Enacted by Utility, Replaced with newly Enacted Schedule Z</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Schedule_Z__c.Shared_Solar_System__c</summaryForeignKey>
+        <summaryOperation>min</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>NMC_Value__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_NMC_Tariff__r.Value_of_Net_Metering_Credit__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>NMC Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>NTP_Target_Date__c</fullName>
+        <description>Target date to hit NTP offtake</description>
+        <externalId>false</externalId>
+        <label>NTP Target Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>NTP_Target__c</fullName>
+        <externalId>false</externalId>
+        <formula>Total_System_Size_kW_DC__c * 0.40</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>NTP Target</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>NTP_Threshold__c</fullName>
+        <description>% subscribed to hit NTP for project</description>
+        <externalId>false</externalId>
+        <label>NTP % Threshold</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Next_Schedule_Z_Date__c</fullName>
+        <description>This field is populated with the maximum Next Schedule Z Date field on all related Schedule Z records. If it needs to be updated, please update the Schedule Z record.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This field is populated with the maximum Next Schedule Z Date field on all related Schedule Z records. If it needs to be updated, please update the Schedule Z record.</inlineHelpText>
+        <label>Next Schedule Z Date</label>
+        <summarizedField>Schedule_Z__c.Next_Schedule_Z_Date__c</summarizedField>
+        <summaryForeignKey>Schedule_Z__c.Shared_Solar_System__c</summaryForeignKey>
+        <summaryOperation>max</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Next_Schedule_Z_Label__c</fullName>
+        <externalId>false</externalId>
+        <formula>Name&amp;&quot; #&quot;&amp; TEXT(Count_of_Schedule_Zs__c + 1)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Next Schedule Z Label</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Open__c</fullName>
+        <defaultValue>true</defaultValue>
+        <externalId>false</externalId>
+        <label>Open</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Partner_Assignment__c</fullName>
+        <externalId>false</externalId>
+        <label>Partner Assignment</label>
+        <length>100</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Partner__c</fullName>
+        <externalId>false</externalId>
+        <label>Partners</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>BlueWave Incentive Program</fullName>
+                    <default>false</default>
+                    <label>BlueWave Incentive Program</label>
+                </value>
+                <value>
+                    <fullName>Boston Solar</fullName>
+                    <default>false</default>
+                    <label>Boston Solar</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Payment_Threshold__c</fullName>
+        <description>Percent of project that needs to be filled to get paid</description>
+        <externalId>false</externalId>
+        <label>Payment Threshold %</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Picklist__c</fullName>
+        <description>This is the name of the entity that we are servicing a shared solar system on behalf of.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the name of the entity that we are servicing a shared solar system on behalf of.</inlineHelpText>
+        <label>Servicing on behalf of</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>BlueWave</fullName>
+                    <default>false</default>
+                    <label>BlueWave</label>
+                </value>
+                <value>
+                    <fullName>NextSun</fullName>
+                    <default>false</default>
+                    <label>NextSun</label>
+                </value>
+                <value>
+                    <fullName>AMP</fullName>
+                    <default>false</default>
+                    <label>AMP</label>
+                </value>
+                <value>
+                    <fullName>Ameresco</fullName>
+                    <default>false</default>
+                    <label>Ameresco</label>
+                </value>
+                <value>
+                    <fullName>Norton Development</fullName>
+                    <default>false</default>
+                    <label>Norton Development</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Product__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Product</label>
+        <referenceTo>Product2</referenceTo>
+        <relationshipLabel>Shared Solar Systems</relationshipLabel>
+        <relationshipName>Shared_Solar_Systems</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Project_Capacity_Available_kW_DC__c</fullName>
+        <externalId>false</externalId>
+        <formula>if( Anchor_Capacity_Reserved__c &gt;0, Total_System_Size_kW_DC_QC__c - Anchor_Capacity_Reserved__c - Capacity_Committed_kW_DC__c, 
+Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Capacity not yet Committed (kW DC)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Project_Management__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Project Management</label>
+        <referenceTo>MPM4_BASE__Milestone1_Project__c</referenceTo>
+        <relationshipLabel>Shared Solar Systems</relationshipLabel>
+        <relationshipName>Shared_Solar_Systems</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Project_View__c</fullName>
+        <externalId>false</externalId>
+        <label>Project View</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>25</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Public__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Public</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Reserved_Capacity_Integer__c</fullName>
+        <externalId>false</externalId>
+        <formula>VALUE( Reserved_Capacity_kW_DC__c )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Reserved Capacity (Integer)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Reserved_Capacity_kW_DC__c</fullName>
+        <externalId>false</externalId>
+        <label>Reserved Capacity (kW DC)</label>
+        <length>10</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>SSS_Update__c</fullName>
+        <description>Triggers workflows</description>
+        <externalId>false</externalId>
+        <label>SSS Update</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>1</fullName>
+                    <default>false</default>
+                    <label>1</label>
+                </value>
+                <value>
+                    <fullName>2</fullName>
+                    <default>false</default>
+                    <label>2</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Sales_Charge__c</fullName>
+        <description>For use in BCS.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>For use in BCS.</inlineHelpText>
+        <label>Sales fee</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Sales_Partners__c</fullName>
+        <externalId>false</externalId>
+        <label>Sales Partners</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>All</fullName>
+                    <default>true</default>
+                    <label>All</label>
+                </value>
+                <value>
+                    <fullName>Barbara Cerullo</fullName>
+                    <default>false</default>
+                    <label>Barbara Cerullo</label>
+                </value>
+                <value>
+                    <fullName>BlueWave Inside Sales</fullName>
+                    <default>false</default>
+                    <label>BlueWave Inside Sales</label>
+                </value>
+                <value>
+                    <fullName>Boston Solar</fullName>
+                    <default>false</default>
+                    <label>Boston Solar</label>
+                </value>
+                <value>
+                    <fullName>Ecogen Services</fullName>
+                    <default>false</default>
+                    <label>Ecogen Services</label>
+                </value>
+                <value>
+                    <fullName>EnergySage</fullName>
+                    <default>false</default>
+                    <label>EnergySage</label>
+                </value>
+                <value>
+                    <fullName>Grace Episcopal Church</fullName>
+                    <default>false</default>
+                    <label>Grace Episcopal Church</label>
+                </value>
+                <value>
+                    <fullName>James Bigelow</fullName>
+                    <default>false</default>
+                    <label>James Bigelow</label>
+                </value>
+                <value>
+                    <fullName>Next Step Living</fullName>
+                    <default>false</default>
+                    <label>Next Step Living</label>
+                </value>
+                <value>
+                    <fullName>Quest Energy Solutions</fullName>
+                    <default>false</default>
+                    <label>Quest Energy Solutions</label>
+                </value>
+                <value>
+                    <fullName>Relay Power</fullName>
+                    <default>false</default>
+                    <label>Relay Power</label>
+                </value>
+                <value>
+                    <fullName>Solar on Earth</fullName>
+                    <default>false</default>
+                    <label>Solar on Earth</label>
+                </value>
+                <value>
+                    <fullName>Solstice Initiative</fullName>
+                    <default>false</default>
+                    <label>Solstice Initiative</label>
+                </value>
+                <value>
+                    <fullName>SolWorks</fullName>
+                    <default>false</default>
+                    <label>SolWorks</label>
+                </value>
+                <value>
+                    <fullName>South Mountain Solar</fullName>
+                    <default>false</default>
+                    <label>South Mountain Solar</label>
+                </value>
+                <value>
+                    <fullName>SunCity Energy</fullName>
+                    <default>false</default>
+                    <label>SunCity Energy</label>
+                </value>
+                <value>
+                    <fullName>Vineyard Power</fullName>
+                    <default>false</default>
+                    <label>Vineyard Power</label>
+                </value>
+                <value>
+                    <fullName>Vivint Solar</fullName>
+                    <default>false</default>
+                    <label>Vivint Solar</label>
+                </value>
+                <value>
+                    <fullName>Yeloha</fullName>
+                    <default>false</default>
+                    <label>Yeloha</label>
+                </value>
+                <value>
+                    <fullName>Hale Reservation</fullName>
+                    <default>false</default>
+                    <label>Hale Reservation</label>
+                </value>
+                <value>
+                    <fullName>Palmetto Solar</fullName>
+                    <default>false</default>
+                    <label>Palmetto Solar</label>
+                </value>
+                <value>
+                    <fullName>BlueDot Solar</fullName>
+                    <default>false</default>
+                    <label>BlueDot Solar</label>
+                </value>
+                <value>
+                    <fullName>Pinnacle Energy</fullName>
+                    <default>false</default>
+                    <label>Pinnacle Energy</label>
+                </value>
+                <value>
+                    <fullName>SunMark NH</fullName>
+                    <default>false</default>
+                    <label>SunMark NH</label>
+                </value>
+                <value>
+                    <fullName>Clean Choice Energy</fullName>
+                    <default>false</default>
+                    <label>Clean Choice Energy</label>
+                </value>
+                <value>
+                    <fullName>Arcadia Power</fullName>
+                    <default>false</default>
+                    <label>Arcadia Power</label>
+                </value>
+                <value>
+                    <fullName>Placeholder Partner</fullName>
+                    <default>false</default>
+                    <label>Placeholder Partner</label>
+                </value>
+                <value>
+                    <fullName>New England Renewable Energy Group</fullName>
+                    <default>false</default>
+                    <label>New England Renewable Energy Group</label>
+                </value>
+                <value>
+                    <fullName>Reliable Solar Solutions</fullName>
+                    <default>false</default>
+                    <label>Reliable Solar Solutions</label>
+                </value>
+                <value>
+                    <fullName>Solar Five</fullName>
+                    <default>false</default>
+                    <label>Solar Five</label>
+                </value>
+                <value>
+                    <fullName>Trusted Solar</fullName>
+                    <default>false</default>
+                    <label>Trusted Solar</label>
+                </value>
+                <value>
+                    <fullName>Blue Selenium</fullName>
+                    <default>false</default>
+                    <label>Blue Selenium</label>
+                </value>
+                <value>
+                    <fullName>RevoluSun</fullName>
+                    <default>false</default>
+                    <label>RevoluSun</label>
+                </value>
+                <value>
+                    <fullName>RGS Energy</fullName>
+                    <default>false</default>
+                    <label>RGS Energy</label>
+                </value>
+                <value>
+                    <fullName>ReVision Energy</fullName>
+                    <default>false</default>
+                    <label>ReVision Energy</label>
+                </value>
+                <value>
+                    <fullName>Summit Energy</fullName>
+                    <default>false</default>
+                    <label>Summit Energy</label>
+                </value>
+                <value>
+                    <fullName>Mass Renewables</fullName>
+                    <default>false</default>
+                    <label>Mass Renewables</label>
+                </value>
+                <value>
+                    <fullName>BlueWave Test Partner</fullName>
+                    <default>false</default>
+                    <label>BlueWave Test Partner</label>
+                </value>
+                <value>
+                    <fullName>SunWatt Solar</fullName>
+                    <default>false</default>
+                    <label>SunWatt Solar</label>
+                </value>
+                <value>
+                    <fullName>Resonant Energy</fullName>
+                    <default>false</default>
+                    <label>Resonant Energy</label>
+                </value>
+                <value>
+                    <fullName>Acela Energy Group, Inc.</fullName>
+                    <default>false</default>
+                    <label>Acela Energy Group, Inc.</label>
+                </value>
+                <value>
+                    <fullName>Invaleon Technologies Corporation</fullName>
+                    <default>false</default>
+                    <label>Invaleon Technologies Corporation</label>
+                </value>
+                <value>
+                    <fullName>Energy Consulting Associates</fullName>
+                    <default>false</default>
+                    <label>Energy Consulting Associates</label>
+                </value>
+                <value>
+                    <fullName>ACE Solar</fullName>
+                    <default>false</default>
+                    <label>ACE Solar</label>
+                </value>
+                <value>
+                    <fullName>Newport Electric</fullName>
+                    <default>false</default>
+                    <label>Newport Electric</label>
+                </value>
+                <value>
+                    <fullName>Accept Solar Inc.</fullName>
+                    <default>false</default>
+                    <label>Accept Solar Inc.</label>
+                </value>
+                <value>
+                    <fullName>Renewable Connections, LLC</fullName>
+                    <default>false</default>
+                    <label>Renewable Connections, LLC</label>
+                </value>
+                <value>
+                    <fullName>ACE Residential Solar</fullName>
+                    <default>false</default>
+                    <label>ACE Residential Solar</label>
+                </value>
+                <value>
+                    <fullName>Oxford100</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Oxford100</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Sales_Target_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>Estimated_COD_Date__c - 7</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Sales Target Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>ScheduleZ_Filed__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( ISBLANK( Min_Schedule_Z_to_Utility_Date__c ), FALSE, TRUE)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>ScheduleZ Filed</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Service_Territories__c</fullName>
+        <externalId>false</externalId>
+        <label>Service Territories</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Service_Territories</valueSetName>
+        </valueSet>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Service_Territory__c</fullName>
+        <externalId>false</externalId>
+        <label>Service Territory</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Duke Energy Carolinas (DEC)</fullName>
+                    <default>false</default>
+                    <label>Duke Energy Carolinas (DEC)</label>
+                </value>
+                <value>
+                    <fullName>Duke Energy Progress (DEP)</fullName>
+                    <default>false</default>
+                    <label>Duke Energy Progress (DEP)</label>
+                </value>
+                <value>
+                    <fullName>NEMA</fullName>
+                    <default>false</default>
+                    <label>NEMA</label>
+                </value>
+                <value>
+                    <fullName>SEMA</fullName>
+                    <default>false</default>
+                    <label>SEMA</label>
+                </value>
+                <value>
+                    <fullName>WCMA</fullName>
+                    <default>false</default>
+                    <label>WCMA</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Special_Ledger_Account_Number__c</fullName>
+        <externalId>false</externalId>
+        <label>Special Ledger Account Number</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>State__c</fullName>
+        <externalId>false</externalId>
+        <label>State</label>
+        <length>5</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>System_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>System Type</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>System_Update__c</fullName>
+        <externalId>false</externalId>
+        <label>System Update</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>System_Utility__c</fullName>
+        <externalId>false</externalId>
+        <label>Utility</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Total_CS_Capacity__c</fullName>
+        <externalId>false</externalId>
+        <label>Total CS Capacity (kW DC)</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Total_CS_Capacity_kW_DC_Formula__c</fullName>
+        <externalId>false</externalId>
+        <formula>Total_System_Size_kW_DC_QC__c - Anchor_Capacity_Reserved__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Total CS Capacity (kW DC)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Total_Capacity_Committed_Reserved__c</fullName>
+        <externalId>false</externalId>
+        <formula>Capacity_Committed_kW_DC__c +  Reserved_Capacity_Integer__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Total Capacity Committed/Reserved</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Total_System_Size_kW_AC_Project__c</fullName>
+        <externalId>false</externalId>
+        <formula>Project_Management__r.Total_System_Size_kW_AC__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Total System Size (kW AC)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Total_System_Size_kW_AC_QC__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( ISBLANK(  Project_Management__c ),  Total_System_Size_kW_AC__c , Total_System_Size_kW_AC_Project__c )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Total System Size (kW AC)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Total_System_Size_kW_AC__c</fullName>
+        <externalId>false</externalId>
+        <label>Total System Size (kW AC)</label>
+        <precision>8</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Total_System_Size_kW_DC_QC__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( ISBLANK( Project_Management__c ),  Total_System_Size_kWh_DC__c , Total_System_Size_kW_DC__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Total System Size (kW DC)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Total_System_Size_kW_DC__c</fullName>
+        <externalId>false</externalId>
+        <formula>Project_Management__r.Total_MWDC__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Total System Size (kW DC) - Project</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Total_System_Size_kWh_DC__c</fullName>
+        <externalId>false</externalId>
+        <label>Total System Size (kW DC)</label>
+        <precision>8</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Upcoming_Meter_Read_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>CASE(MONTH(TODAY()),
+1,
+IF( TODAY()&gt; Meter_Reading_Schedule__r.January_Meter_Read_Date__c,Meter_Reading_Schedule__r.February_Meter_Read_Date__c,Meter_Reading_Schedule__r.January_Meter_Read_Date__c),
+2,
+IF( TODAY()&gt; Meter_Reading_Schedule__r.February_Meter_Read_Date__c,Meter_Reading_Schedule__r.March_Meter_Read_Date__c,Meter_Reading_Schedule__r.February_Meter_Read_Date__c),
+3,
+IF( TODAY()&gt; Meter_Reading_Schedule__r.March_Meter_Read_Date__c,Meter_Reading_Schedule__r.April_Meter_Read_Date__c,Meter_Reading_Schedule__r.March_Meter_Read_Date__c),
+4,
+IF( TODAY()&gt; Meter_Reading_Schedule__r.April_Meter_Read_Date__c,Meter_Reading_Schedule__r.May_Meter_Read_Date__c,Meter_Reading_Schedule__r.April_Meter_Read_Date__c),
+5,
+IF( TODAY()&gt; Meter_Reading_Schedule__r.May_Meter_Read_Date__c,Meter_Reading_Schedule__r.June_Meter_Read_Date__c,Meter_Reading_Schedule__r.May_Meter_Read_Date__c),
+6,
+IF( TODAY()&gt; Meter_Reading_Schedule__r.June_Meter_Read_Date__c,Meter_Reading_Schedule__r.July_Meter_Read_Date__c,Meter_Reading_Schedule__r.June_Meter_Read_Date__c),
+7,
+IF( TODAY()&gt; Meter_Reading_Schedule__r.July_Meter_Read_Date__c,Meter_Reading_Schedule__r.August_Meter_Read_Date__c,Meter_Reading_Schedule__r.July_Meter_Read_Date__c),
+8,
+IF( TODAY()&gt; Meter_Reading_Schedule__r.August_Meter_Read_Date__c,Meter_Reading_Schedule__r.September_Meter_Read_Date__c,Meter_Reading_Schedule__r.August_Meter_Read_Date__c),
+9,
+IF( TODAY()&gt; Meter_Reading_Schedule__r.September_Meter_Read_Date__c,Meter_Reading_Schedule__r.October_Meter_Read_Date__c,Meter_Reading_Schedule__r.September_Meter_Read_Date__c),
+10,
+IF( TODAY()&gt; Meter_Reading_Schedule__r.October_Meter_Read_Date__c,Meter_Reading_Schedule__r.November_Meter_Read_Date__c,Meter_Reading_Schedule__r.October_Meter_Read_Date__c),
+11,
+IF( TODAY()&gt; Meter_Reading_Schedule__r.November_Meter_Read_Date__c,Meter_Reading_Schedule__r.December_Meter_Read_Date__c,Meter_Reading_Schedule__r.November_Meter_Read_Date__c),
+12,
+IF( 
+TODAY()&gt; Meter_Reading_Schedule__r.December_Meter_Read_Date__c,null,Meter_Reading_Schedule__r.December_Meter_Read_Date__c),
+null)</formula>
+        <label>Upcoming Meter Read Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Update_Dummy__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Update Dummy</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>User__c</fullName>
+        <externalId>false</externalId>
+        <formula>$User.Id</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>User</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Utility_NMC_Tariff__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Utility NMC Tariff</label>
+        <referenceTo>Utility_NMC_Tariff__c</referenceTo>
+        <relationshipLabel>Shared Solar Systems</relationshipLabel>
+        <relationshipName>Shared_Solar_Systems</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Utility__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Utility</label>
+        <referenceTo>Utility__c</referenceTo>
+        <relationshipLabel>Shared Solar Systems</relationshipLabel>
+        <relationshipName>Shared_Solar_Systems</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Waitlist_Yes_No__c</fullName>
+        <description>This was made to be used in DocuSign.</description>
+        <externalId>false</externalId>
+        <formula>IF(CONTAINS( Name , &quot;Waitlist&quot;)=true,
+&quot;Yes&quot;,
+&quot;No&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>This was made to be used in DocuSign.</inlineHelpText>
+        <label>Waitlist Yes/No</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>XXX_App_ID_WO__c</fullName>
+        <externalId>false</externalId>
+        <formula>Project_Management__r.Uility_WR__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>XXX_App ID#/ WO #</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zip_Code__c</fullName>
+        <externalId>false</externalId>
+        <label>Zip Code</label>
+        <length>5</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>kW_Needed_To_Hit_NTP_Threshold__c</fullName>
+        <description>kW needed to hit NTP</description>
+        <externalId>false</externalId>
+        <formula>(  Total_System_Size_kW_DC__c  * NTP_Threshold__c )-( Anchor_Capacity_Reserved__c + Capacity_Committed_kW_DC__c )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>kW Needed To Hit NTP Threshold</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>kW_needed_to_hit_payment_threshold__c</fullName>
+        <externalId>false</externalId>
+        <formula>( Total_System_Size_kWh_DC__c *  Payment_Threshold__c )-( Anchor_Capacity_Reserved__c + Capacity_Committed_kW_DC__c )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>kW Needed To Hit Payment Threshold</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <label>Shared Solar System</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Credit_Score_Requirement__c</columns>
+        <columns>Service_Territories__c</columns>
+        <columns>Total_CS_Capacity__c</columns>
+        <columns>Total_CS_Capacity_kW_DC_Formula__c</columns>
+        <columns>Picklist__c</columns>
+        <columns>Open__c</columns>
+        <columns>Project_Management__c</columns>
+        <columns>Maximum_Subscription_Cost__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>State__c</field>
+            <operation>equals</operation>
+            <value>MN</value>
+        </filters>
+        <label>Minnesota Projects</label>
+    </listViews>
+    <listViews>
+        <fullName>Assignment_Order</fullName>
+        <columns>NAME</columns>
+        <columns>Open__c</columns>
+        <columns>Assignment_Order__c</columns>
+        <columns>Service_Territory__c</columns>
+        <columns>System_Utility__c</columns>
+        <columns>Credit_Score_Requirement__c</columns>
+        <columns>Class__c</columns>
+        <columns>Expected_Yield_kWh_kW__c</columns>
+        <columns>Capacity_Available_to_be_Reserved__c</columns>
+        <columns>BWC_Project_Entity_Manual__c</columns>
+        <columns>UPDATEDBY_USER</columns>
+        <columns>Sales_Partners__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>NAME</field>
+            <operation>notContain</operation>
+            <value>Holder</value>
+        </filters>
+        <filters>
+            <field>NAME</field>
+            <operation>notContain</operation>
+            <value>P1</value>
+        </filters>
+        <filters>
+            <field>NAME</field>
+            <operation>notContain</operation>
+            <value>P2</value>
+        </filters>
+        <filters>
+            <field>Open__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>Assignment Order</label>
+    </listViews>
+    <listViews>
+        <fullName>CS_Credits_Flowing_Pipeline</fullName>
+        <columns>NAME</columns>
+        <columns>Picklist__c</columns>
+        <columns>Billing_Anchors__c</columns>
+        <columns>Host_Utility_Account_Number__c</columns>
+        <columns>Billing_Cycle_Group_Number__c</columns>
+        <columns>Estimated_PTO_Date_MANUAL__c</columns>
+        <columns>Actual_PTO_Date_MANUAL__c</columns>
+        <columns>Actual_Utility_NMC_Transfer_to_Host_Date__c</columns>
+        <columns>Est_Utility_NMC_to_Customer_Override__c</columns>
+        <columns>Actual_Credits_Flowing_Date__c</columns>
+        <columns>Estimated_First_BW_Bill_Override__c</columns>
+        <columns>Actual_First_Bill_Date__c</columns>
+        <columns>Comments__c</columns>
+        <columns>System_Utility__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>NAME</field>
+            <operation>notContain</operation>
+            <value>waitlist,Place Holder,placeholder,p1,p2</value>
+        </filters>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Shared_Solar_System__c.SSS_PM_Relationship</value>
+        </filters>
+        <filters>
+            <field>Picklist__c</field>
+            <operation>notEqual</operation>
+        </filters>
+        <label>Credits Flowing Editable (PM)</label>
+        <sharedTo>
+            <group>BFG</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Credits_Flow_Editable_No_PM</fullName>
+        <columns>NAME</columns>
+        <columns>Picklist__c</columns>
+        <columns>Billing_Anchors__c</columns>
+        <columns>Host_Utility_Account_Number__c</columns>
+        <columns>Billing_Cycle_Group_Number__c</columns>
+        <columns>Estimated_PTO_Date_MANUAL__c</columns>
+        <columns>Actual_PTO_Date_MANUAL__c</columns>
+        <columns>Actual_Utility_NMC_Transfer_to_Host_Date__c</columns>
+        <columns>Est_Utility_NMC_to_Customer_Override__c</columns>
+        <columns>Estimated_First_BW_Bill_Override__c</columns>
+        <columns>Comments__c</columns>
+        <columns>System_Utility__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>NAME</field>
+            <operation>notContain</operation>
+            <value>Medfield Country Way,waitlist,Place Holder,placeholder,p1,p2</value>
+        </filters>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Shared_Solar_System__c.SSS_No_PM_Relationship</value>
+        </filters>
+        <label>Credits Flowing Editable (No PM)</label>
+        <sharedTo>
+            <group>BFG</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Oxford_Barrett_Assemblage</fullName>
+        <columns>NAME</columns>
+        <columns>Total_System_Size_kWh_DC__c</columns>
+        <columns>Capacity_Committed_kW_DC__c</columns>
+        <columns>Anchor_Capacity_Reserved__c</columns>
+        <columns>Project_Capacity_Available_kW_DC__c</columns>
+        <columns>Capacity_Available_to_be_Reserved__c</columns>
+        <columns>Total_Capacity_Committed_Reserved__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>NAME</field>
+            <operation>contains</operation>
+            <value>oxford barrett</value>
+        </filters>
+        <filters>
+            <field>NAME</field>
+            <operation>notContain</operation>
+            <value>P1,P2</value>
+        </filters>
+        <label>Oxford Barrett Assemblage</label>
+    </listViews>
+    <listViews>
+        <fullName>Systems_Available_to_Trusted</fullName>
+        <columns>NAME</columns>
+        <columns>Sales_Partners__c</columns>
+        <columns>Service_Territories__c</columns>
+        <columns>Open__c</columns>
+        <columns>Capacity_Available_to_be_Reserved__c</columns>
+        <columns>Partner__c</columns>
+        <columns>Partner_Assignment__c</columns>
+        <columns>System_Utility__c</columns>
+        <columns>Utility__c</columns>
+        <columns>Service_Territory__c</columns>
+        <columns>Product__c</columns>
+        <columns>Credit_Score_Requirement__c</columns>
+        <columns>Total_System_Size_kWh_DC__c</columns>
+        <columns>Total_System_Size_kW_DC_QC__c</columns>
+        <columns>Total_System_Size_kW_DC__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Sales_Partners__c</field>
+            <operation>includes</operation>
+            <value>Trusted Solar</value>
+        </filters>
+        <label>Systems Available to Trusted</label>
+    </listViews>
+    <nameField>
+        <label>Shared Solar System Name</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Shared Solar Systems</pluralLabel>
+    <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>SSS_No_PM_Relationship</fullName>
+        <active>true</active>
+        <label>SSS - No PM Relationship</label>
+        <picklistValues>
+            <picklist>Assignment_Order__c</picklist>
+            <values>
+                <fullName>1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>10</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>4</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>5</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>6</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>7</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>8</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>9</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Billing_Anchors__c</picklist>
+            <values>
+                <fullName>BlueWave</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>RadianGen</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Billing_Method__c</picklist>
+            <values>
+                <fullName>NMC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>kWh</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Partner__c</picklist>
+            <values>
+                <fullName>BlueWave Incentive Program</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Boston Solar</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Picklist__c</picklist>
+            <values>
+                <fullName>AMP</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ameresco</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BlueWave</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NextSun</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Norton Development</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>SSS_Update__c</picklist>
+            <values>
+                <fullName>1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Sales_Partners__c</picklist>
+            <values>
+                <fullName>ACE Residential Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ACE Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Accept Solar Inc%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Acela Energy Group%2C Inc%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>All</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Arcadia Power</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Barbara Cerullo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Blue Selenium</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BlueDot Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BlueWave Inside Sales</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BlueWave Test Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Boston Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Clean Choice Energy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ecogen Services</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Energy Consulting Associates</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>EnergySage</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Grace Episcopal Church</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Hale Reservation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Invaleon Technologies Corporation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>James Bigelow</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mass Renewables</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>New England Renewable Energy Group</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Newport Electric</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Next Step Living</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Palmetto Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pinnacle Energy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Placeholder Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Quest Energy Solutions</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>RGS Energy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ReVision Energy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Relay Power</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reliable Solar Solutions</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Renewable Connections%2C LLC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Resonant Energy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>RevoluSun</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SolWorks</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar Five</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar on Earth</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solstice Initiative</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>South Mountain Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Summit Energy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SunCity Energy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SunMark NH</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SunWatt Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Trusted Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Vineyard Power</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Vivint Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yeloha</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Service_Territories__c</picklist>
+            <values>
+                <fullName>Capital</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Central</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Dunwoodie</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Genesee</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Hudson Valley</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Long Island</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MN</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Millwood</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mohawk Valley</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>N%2EY%2EC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NEMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>North</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SEMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WCMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>West</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Service_Territory__c</picklist>
+            <values>
+                <fullName>Duke Energy Carolinas %28DEC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Duke Energy Progress %28DEP%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NEMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SEMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WCMA</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>SSS_PM_Relationship</fullName>
+        <active>true</active>
+        <label>SSS - PM Relationship</label>
+        <picklistValues>
+            <picklist>Assignment_Order__c</picklist>
+            <values>
+                <fullName>1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>10</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>4</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>5</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>6</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>7</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>8</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>9</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Billing_Anchors__c</picklist>
+            <values>
+                <fullName>BlueWave</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>RadianGen</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Billing_Method__c</picklist>
+            <values>
+                <fullName>NMC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>kWh</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Partner__c</picklist>
+            <values>
+                <fullName>BlueWave Incentive Program</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Boston Solar</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Picklist__c</picklist>
+            <values>
+                <fullName>AMP</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ameresco</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BlueWave</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NextSun</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Norton Development</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>SSS_Update__c</picklist>
+            <values>
+                <fullName>1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Sales_Partners__c</picklist>
+            <values>
+                <fullName>ACE Residential Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ACE Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Accept Solar Inc%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Acela Energy Group%2C Inc%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>All</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Arcadia Power</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Barbara Cerullo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Blue Selenium</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BlueDot Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BlueWave Inside Sales</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BlueWave Test Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Boston Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Clean Choice Energy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ecogen Services</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Energy Consulting Associates</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>EnergySage</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Grace Episcopal Church</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Hale Reservation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Invaleon Technologies Corporation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>James Bigelow</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mass Renewables</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>New England Renewable Energy Group</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Newport Electric</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Next Step Living</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Palmetto Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pinnacle Energy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Placeholder Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Quest Energy Solutions</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>RGS Energy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ReVision Energy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Relay Power</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reliable Solar Solutions</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Renewable Connections%2C LLC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Resonant Energy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>RevoluSun</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SolWorks</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar Five</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar on Earth</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solstice Initiative</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>South Mountain Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Summit Energy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SunCity Energy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SunMark NH</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SunWatt Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Trusted Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Vineyard Power</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Vivint Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yeloha</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Service_Territories__c</picklist>
+            <values>
+                <fullName>Capital</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Central</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Dunwoodie</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Genesee</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Hudson Valley</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Long Island</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MN</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Millwood</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mohawk Valley</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>N%2EY%2EC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NEMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>North</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SEMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WCMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>West</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Service_Territory__c</picklist>
+            <values>
+                <fullName>Duke Energy Carolinas %28DEC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Duke Energy Progress %28DEP%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NEMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SEMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WCMA</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts/>
+    <sharingModel>Private</sharingModel>
+    <validationRules>
+        <fullName>PM_Team_Locks</fullName>
+        <active>true</active>
+        <description>Allows only Shauna and Sandra to edit certain fields</description>
+        <errorConditionFormula>AND(
+  NOT(
+    OR($User.Id=&quot;005j000000BdUCs&quot;,
+    $User.Id=&quot;005j000000FrWpy&quot;,$User.Id=&quot;0050a00000JcYrV&quot;
+    )
+    ),
+    OR(
+    ISCHANGED(Address__c),
+    ISCHANGED(City__c),
+    ISCHANGED(State__c),
+    ISCHANGED(Zip_Code__c),
+    ISCHANGED(Meter__c),
+    ISCHANGED(Host_Utility_Account_Number__c),
+    ISCHANGED(App_ID_WO_Manual__c)
+    )
+    )</errorConditionFormula>
+        <errorMessage>Due to their importance, certain fields on the Shared Solar System page are restricted so that only certain people on Project Management can edit them. Please contact the Project Management Interconnection lead, or your System Administrator to edit.</errorMessage>
+    </validationRules>
+    <visibility>Public</visibility>
+    <webLinks>
+        <fullName>Customer_Info_Report</fullName>
+        <availability>online</availability>
+        <description>Schedule Z with FICO and Property Type</description>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>Customer Info Report</masterLabel>
+        <openType>sidebar</openType>
+        <protected>false</protected>
+        <url>https://na16.salesforce.com/00Oj0000000QGIY?pv2={!Shared_Solar_System__c.Name}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Preview_Next_Schedule_Z</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Preview Next Schedule Z</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <url>/00Oj0000004i4Un?pv2={!Shared_Solar_System__c.Name}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Update_Capacity_Report</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>Update Capacity Report</masterLabel>
+        <openType>sidebar</openType>
+        <protected>false</protected>
+        <url>&quot;/00Oj00000048bbR?pv0={!Shared_Solar_System__c.Name}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>XXConga_Composer_Schedule_Z</fullName>
+        <availability>online</availability>
+        <description>Originally created by Conga Solution Manager. Date of last use of Update Button from Conga Solution record: https://apxtconga4.na16.visual.force.com/a2Dj0000000Ih6qEAC
+24-Oct-2016 10:35:04 AM</description>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>false</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>660</height>
+        <isResizable>false</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>XXConga Schedule Z</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>https://composer.congamerge.com?SolMgr=1
+&amp;sessionId={!API.Session_ID}
+&amp;serverUrl={!API.Partner_Server_URL_290}
+&amp;Id={!Shared_Solar_System__c.Id}
+
+&amp;QueryId=[SZSum]a270a000000LRek,[SchZ]a27j0000000bTkk,[SZid]a270a000001cyWi
+
+
+&amp;TemplateId=a2Fj0000000xegq
+&amp;OFN={!Shared_Solar_System__c.Name}+Schedule+Z</url>
+        <width>900</width>
+    </webLinks>
+    <webLinks>
+        <fullName>XXConga_Future_Schedule_Z</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>XXConga Future Schedule Z</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>https://composer.congamerge.com?SolMgr=1
+&amp;sessionId={!API.Session_ID}
+&amp;serverUrl={!API.Partner_Server_URL_290}
+&amp;Id={!Shared_Solar_System__c.Id}
+
+&amp;QueryId=[SchZ]a27j0000000bVyB,[SZSum]a270a000000LReu,[SZidfuture]a270a000001cyWs 
+
+&amp;TemplateId=a2Fj0000000fC5a
+&amp;OFN={!Shared_Solar_System__c.Name}+Schedule+Z</url>
+    </webLinks>
+    <webLinks>
+        <fullName>XXNext_Schedule_Z</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>XXNext Schedule Z</masterLabel>
+        <openType>sidebar</openType>
+        <protected>false</protected>
+        <url>https://na16.salesforce.com/00Oj0000004i4Un?pv2={!Shared_Solar_System__c.Name}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>XXSchedule_Z</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>XXSchedule Z</masterLabel>
+        <openType>sidebar</openType>
+        <protected>false</protected>
+        <url>https://na16.salesforce.com/00Oj0000004hQoa?pv2={!Shared_Solar_System__c.Name}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>XXUpdate_Subscriptions</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>XXUpdate Subscriptions</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/29.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/29.0/apex.js&quot;)} 
+if (confirm(&apos;Are you sure you want to update the subscriptions?&apos;)) { 
+var result = sforce.apex.execute(&quot;DynamicToStaticSubscriptionHandler&quot;,&quot;DynamicToStaticSubscriptionHandler&quot;, 
+{sssId:&quot;{!Shared_Solar_System__c.Id}&quot;}); 
+alert(result); 
+window.location.reload(); 
+}</url>
+    </webLinks>
+</CustomObject>

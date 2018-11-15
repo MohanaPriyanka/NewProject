@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Avidia</fullName>
+        <default>false</default>
+        <label>Avidia</label>
+    </customValue>
+    <customValue>
+        <fullName>BlueWave</fullName>
+        <default>false</default>
+        <label>BlueWave</label>
+    </customValue>
+    <description>W-001450: Lender of record for Loans,</description>
+    <masterLabel>Lender</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

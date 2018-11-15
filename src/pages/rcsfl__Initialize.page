@@ -1,0 +1,11 @@
+<apex:page controller="rcsfl.AdminUIController999" sidebar="false">
+    <apex:form id="adminForm">
+    <h1> RingCentral for Salesforce </h1>
+    <P> <h3> Please click "Continue" button below to configure RingCentral for Salesforce. </h3>
+    <h3> The App works with the default configuration.  </h3>
+    <h3> You can configure how to save call logs and fields that appear on call log when user make or receive calls.
+    </h3>
+    </p>
+        <apex:commandButton action="{!initialize}" value="Continue" id="initialize" />
+    </apex:form>
+</apex:page>

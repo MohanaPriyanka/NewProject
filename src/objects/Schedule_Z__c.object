@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>true</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableChangeDataCapture>false</enableChangeDataCapture>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <fields>
+        <fullName>Asset_Owner__c</fullName>
+        <externalId>false</externalId>
+        <label>Asset Owner</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Comments__c</fullName>
+        <externalId>false</externalId>
+        <label>Comments</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Contract_Assignment_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Date that contracts were legally assigned to the project entity after a Schedule Z submission.</inlineHelpText>
+        <label>Contract Assignment Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Date_Billing__c</fullName>
+        <externalId>false</externalId>
+        <label>Date Billing</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Date_Enacted_by_Utility__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Stamped by status change</inlineHelpText>
+        <label>Date Enacted by Utility</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Date_Executed_by_Asset_Owner__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Stamped by status change</inlineHelpText>
+        <label>Date Executed by Asset Owner</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Date_QC_Complete__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Stamped by the status change</inlineHelpText>
+        <label>Date QC Complete</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Date_Rejected_by_Utility__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Stamped by status Change</inlineHelpText>
+        <label>Date Rejected by Utility</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Date_Replaced_with_Newly_Enacted_Sch_Z__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Stamped by status change</inlineHelpText>
+        <label>Date Replaced with Newly Enacted Sch Z</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Date_Submitted_to_Utility__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Stamped by status change</inlineHelpText>
+        <label>Date Submitted to Utility</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Days_to_QC__c</fullName>
+        <description>This field calculated the number of business days between the QC start date field and the Date QC Complete Field.</description>
+        <externalId>false</externalId>
+        <formula>CASE(MOD( QC_Start_Date__c - DATE(1985,6,24),7), 
+
+  0 , CASE( MOD(  Date_QC_Complete__c  - QC_Start_Date__c  ,7),1,2,2,3,3,4,4,5,5,5,6,5,1), 
+  1 , CASE( MOD( Date_QC_Complete__c - QC_Start_Date__c  ,7),1,2,2,3,3,4,4,4,5,4,6,5,1), 
+  2 , CASE( MOD( Date_QC_Complete__c - QC_Start_Date__c  ,7),1,2,2,3,3,3,4,3,5,4,6,5,1), 
+  3 , CASE( MOD( Date_QC_Complete__c - QC_Start_Date__c  ,7),1,2,2,2,3,2,4,3,5,4,6,5,1), 
+  4 , CASE( MOD( Date_QC_Complete__c - QC_Start_Date__c  ,7),1,1,2,1,3,2,4,3,5,4,6,5,1), 
+  5 , CASE( MOD( Date_QC_Complete__c - QC_Start_Date__c  ,7),1,0,2,1,3,2,4,3,5,4,6,5,0), 
+  6 , CASE( MOD( Date_QC_Complete__c - QC_Start_Date__c  ,7),1,1,2,2,3,3,4,4,5,5,6,5,0), 
+  999) 
+  + 
+  (FLOOR(( Date_QC_Complete__c - QC_Start_Date__c )/7)*5)-1</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>This field calculated the number of business days between the QC start date field and the Date QC Complete Field.</inlineHelpText>
+        <label>Days to QC</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Next_Schedule_Z_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Defaults to 6 months after the date created, can be edited</inlineHelpText>
+        <label>Next Schedule Z Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>QC_Start_Date__c</fullName>
+        <description>This is set by a process builder when the Status is set to new.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is set by a process builder when the Status is set to new.</inlineHelpText>
+        <label>QC Start Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Schedule_Z_Id__c</fullName>
+        <externalId>false</externalId>
+        <label>Schedule Z Id</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Shared_Solar_System__c</fullName>
+        <externalId>false</externalId>
+        <label>Shared Solar System</label>
+        <referenceTo>Shared_Solar_System__c</referenceTo>
+        <relationshipLabel>Schedule Zs</relationshipLabel>
+        <relationshipName>Schedule_Zs</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>This stamps dates in the related fields</inlineHelpText>
+        <label>Status</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>New</fullName>
+                    <default>true</default>
+                    <label>New &gt;&gt;&gt; Complete Subscription QC</label>
+                </value>
+                <value>
+                    <fullName>QC Complete</fullName>
+                    <default>false</default>
+                    <label>Subscription QC Completed &gt;&gt;&gt; Complete Front Page QC</label>
+                </value>
+                <value>
+                    <fullName>Front Page QC Completed &gt;&gt;&gt; Submit to Asset Owner</fullName>
+                    <default>false</default>
+                    <label>Front Page QC Completed &gt;&gt;&gt; Submit to Asset Owner</label>
+                </value>
+                <value>
+                    <fullName>Submitted to Asset Owner &gt;&gt;&gt; Contact Asset Owner to get it Executed</fullName>
+                    <default>false</default>
+                    <label>Submitted to Asset Owner &gt;&gt;&gt; Contact Asset Owner to get it Executed</label>
+                </value>
+                <value>
+                    <fullName>Executed by Asset Owner</fullName>
+                    <default>false</default>
+                    <label>Executed by Asset Owner &gt;&gt;&gt; Submit to Utility</label>
+                </value>
+                <value>
+                    <fullName>Submitted to Utility</fullName>
+                    <default>false</default>
+                    <label>Submitted to Utility &gt;&gt;&gt; Contact Utility to get it Enacted</label>
+                </value>
+                <value>
+                    <fullName>Rejected by Utility</fullName>
+                    <default>false</default>
+                    <label>Rejected</label>
+                </value>
+                <value>
+                    <fullName>Enacted by Utility</fullName>
+                    <default>false</default>
+                    <label>Enacted by Utility</label>
+                </value>
+                <value>
+                    <fullName>Billing</fullName>
+                    <default>false</default>
+                    <label>Billing</label>
+                </value>
+                <value>
+                    <fullName>Replaced with newly Enacted Schedule Z</fullName>
+                    <default>false</default>
+                    <label>Replaced with newly Enacted Schedule Z</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Utility__c</fullName>
+        <externalId>false</externalId>
+        <formula>Shared_Solar_System__r.System_Utility__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Utility</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Schedule Z</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>Schedule Z Name</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Schedule Zs</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+    <validationRules>
+        <fullName>Ready_only_For_Schedule_Z</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(ISCHANGED(Schedule_Z_Id__c) , Schedule_Z_Id__c != NULL)</errorConditionFormula>
+        <errorMessage>Cannot Change Schedule Z Id</errorMessage>
+    </validationRules>
+    <visibility>Public</visibility>
+    <webLinks>
+        <fullName>Conga_Create_SchZ_PDF</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Conga: Create Schedule Z PDF</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>https://composer.congamerge.com?SolMgr=1 
+&amp;sessionId={!API.Session_ID} 
+&amp;serverUrl={!API.Partner_Server_URL_290} 
+&amp;Id={!Schedule_Z__c.Id} 
+&amp;QueryId=[SZSum]a270a000001El3l,[SchZ]a270a000001El3g,[SSS]a270a000001El3q 
+&amp;TemplateId={!IF(Schedule_Z__c.Utility__c=&quot;Eversource&quot;,&quot;a2F0a000001RC7W&quot;,&quot;a2F0a000001RBod&quot;)}
+&amp;OFN={!Schedule_Z__c.Name}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>View_Schedule_Z_In_Report</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>View Schedule Z In Report</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/00O0a000005FEM2?pv0={!Schedule_Z__c.Id}</url>
+    </webLinks>
+</CustomObject>

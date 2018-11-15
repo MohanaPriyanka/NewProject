@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>NAV_Getting_Started</fullName>
+        <default>false</default>
+        <label>NAV_Getting_Started</label>
+    </customValue>
+    <customValue>
+        <fullName>NAV_Personal_Information</fullName>
+        <default>false</default>
+        <label>NAV_Personal_Information</label>
+    </customValue>
+    <customValue>
+        <fullName>NAV_Credit_Check</fullName>
+        <default>false</default>
+        <label>NAV_Credit_Check</label>
+    </customValue>
+    <customValue>
+        <fullName>NAV_Confirmations</fullName>
+        <default>false</default>
+        <label>NAV_Confirmations</label>
+    </customValue>
+    <customValue>
+        <fullName>NAV_Income_Doc</fullName>
+        <default>false</default>
+        <label>NAV_Income_Doc</label>
+    </customValue>
+    <customValue>
+        <fullName>NAV_SREC_and_Disbursals</fullName>
+        <default>false</default>
+        <label>NAV_SREC_and_Disbursals</label>
+    </customValue>
+    <customValue>
+        <fullName>NAV_Complete</fullName>
+        <default>false</default>
+        <label>NAV_Complete</label>
+    </customValue>
+    <description>Customer Application Portal Stages</description>
+    <masterLabel>CAP Stages</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

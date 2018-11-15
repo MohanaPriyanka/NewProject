@@ -1,0 +1,97 @@
+<apex:page standardController="LASERCA__Personal_Credit_Report__c" extensions="LASERCA.PCR_PaymentPatternExtension" showHeader="false" sidebar="false">
+<style>
+    .detailList{
+        display: table;
+        border-collapse: separate;
+        border-spacing: 2px;
+        border-color: gray;
+        display: inline-block;
+        padding-top: 12px;
+    }
+    .labelCol{
+        padding-top: 3px;
+        padding-bottom: 3px;
+        color: #4a4a56;
+        width: 18%;
+        border-bottom: 1px solid #e3deb8;
+        text-align: right;
+        padding-left: 5px;
+        font-weight: bold;
+    }
+    .dataCol{
+        padding-top: 3px;
+        padding-bottom: 3px;
+        width: 25%;
+        border-bottom: 1px solid #e3deb8;
+        padding-right: 5px;
+        padding-left: 5px;
+        text-align: left;
+    }
+    .last{
+        border-bottom: 0px solid #e3deb8;
+    }
+    .container{
+        width: 100%;
+        max-width: 1250px;
+        font-size: 11px;
+        font-family: Arial,Helvetica,sans-serif;
+    }
+    .floatRight{
+        padding-left: 15px;
+        display: inline-block;
+        padding-top: 15px;
+    }
+    .wrapper{
+        border-bottom: 2px solid #8e9dbe;
+        width: 100%;
+        padding-top: 5px;
+    }
+</style>
+    <div class="container">
+    <apex:repeat value="{!taList}" var="ta">
+    <div class="wrapper">
+        <table class="detailList" border="0" cellpadding="0" cellspacing="0">
+            <tbody>
+                <tr>
+                    <td class="labelCol">Trade Accounts Name</td>
+                    <td class="dataCol"><apex:outputField value="{!ta.Name}"/></td>
+                    <td class="labelCol">Rating Code</td>
+                    <td class="dataCol"><apex:outputField value="{!ta.LASERCA__Rating_Code__c}"/></td>
+                </tr>
+                <tr>
+                    <td class="labelCol">Open Date</td>
+                    <td class="dataCol"><apex:outputField value="{!ta.LASERCA__Open_Date__c}"/></td>
+                    <td class="labelCol">Rating Type</td>
+                    <td class="dataCol"><apex:outputField value="{!ta.LASERCA__Rating_Type__c}"/></td>
+                </tr>
+                <tr>
+                    <td class="labelCol">Credit Loan Type</td>
+                    <td class="dataCol"><apex:outputField value="{!ta.LASERCA__Credit_Loan_Type__c}"/></td>
+                    <td class="labelCol">High Credit Amount</td>
+                    <td class="dataCol"><apex:outputField value="{!ta.LASERCA__High_Credit_Amount__c}"/></td>
+                </tr>
+                <tr>
+                    <td class="labelCol">Account Status Type</td>
+                    <td class="dataCol"><apex:outputField value="{!ta.LASERCA__Account_Status_Type__c}"/></td>
+                    <td class="labelCol">Account Balance</td>
+                    <td class="dataCol"><apex:outputField value="{!ta.LASERCA__Account_Balance__c}"/></td>
+                </tr>
+                <tr>
+                    <td class="labelCol last">Status</td>
+                    <td class="dataCol last"><apex:outputField value="{!ta.LASERCA__Status__c}"/></td>
+                    <td class="labelCol last">Monthly Payment</td>
+                    <td class="dataCol last"><apex:outputField value="{!ta.LASERCA__Monthly_Payment__c}"/></td>
+                </tr>
+            </tbody>
+        </table>
+        <!--
+            @Justin - Add the rest of the fields here and then remove this comment
+        -->
+        <div class="floatRight">
+        <c:PaymentPattern startDate="{!ta.LASERCA__Payment_Pattern_Start_Date__c}" data="{!ta.LASERCA__Payment_Pattern_Data__c}"/>
+        </div>
+    </div>
+    </apex:repeat>
+    </div>
+
+</apex:page>

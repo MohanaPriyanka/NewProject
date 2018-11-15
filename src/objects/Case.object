@@ -1,0 +1,4117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ChangeStatus</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CloneAsChild</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CloseCase</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>MassClose</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>NewCase</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <businessProcesses>
+        <fullName>Customer Care Case</fullName>
+        <isActive>true</isActive>
+        <values>
+            <fullName>Awaiting Customer</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Awaiting External Team</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Awaiting Internal Team</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Closed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Escalated</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>In Progress</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New</fullName>
+            <default>true</default>
+        </values>
+    </businessProcesses>
+    <businessProcesses>
+        <fullName>Finance Case</fullName>
+        <isActive>true</isActive>
+        <values>
+            <fullName>Closed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Escalated</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New</fullName>
+            <default>true</default>
+        </values>
+    </businessProcesses>
+    <businessProcesses>
+        <fullName>Product Support</fullName>
+        <isActive>true</isActive>
+        <values>
+            <fullName>Awaiting Customer</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Closed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Escalated</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>In Progress</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>New Email Arrived</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>On Hold</fullName>
+            <default>false</default>
+        </values>
+    </businessProcesses>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <enableFeeds>true</enableFeeds>
+    <externalSharingModel>Private</externalSharingModel>
+    <fields>
+        <fullName>AccountId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Adjusted_Time_to_Close__c</fullName>
+        <description>This field is the lesser of the difference between the First Login Date and Case Open Date and Case Closed Date and Case Opened Date (found in Time to Close field), counting only weekdays.</description>
+        <externalId>false</externalId>
+        <formula>IF(
+NOT(ISBLANK(Related_Opportunity__r.Account.Parent_Account__r.First_Login_Date__c))
+&amp;&amp;Related_Opportunity__r.Account.Parent_Account__r.First_Login_Date__c&lt;ClosedDate,
+
+CASE( MOD( DATEVALUE(CreatedDate) - DATE(1985,6,24),7), 
+0 , CASE( MOD( ROUND(Related_Opportunity__r.Account.Parent_Account__r.First_Login_Date__c - CreatedDate,0) ,7),1,2,2,3,3,4,4,5,5,5,6,5,1), 
+1 , CASE( MOD( ROUND(Related_Opportunity__r.Account.Parent_Account__r.First_Login_Date__c - CreatedDate,0),7),1,2,2,3,3,4,4,4,5,4,6,5,1), 
+2 , CASE( MOD( ROUND(Related_Opportunity__r.Account.Parent_Account__r.First_Login_Date__c - CreatedDate,0),7),1,2,2,3,3,3,4,3,5,4,6,5,1), 
+3 , CASE( MOD( ROUND(Related_Opportunity__r.Account.Parent_Account__r.First_Login_Date__c - CreatedDate,0),7),1,2,2,2,3,2,4,3,5,4,6,5,1), 
+4 , CASE( MOD( ROUND(Related_Opportunity__r.Account.Parent_Account__r.First_Login_Date__c - CreatedDate,0),7),1,1,2,1,3,2,4,3,5,4,6,5,1), 
+5 , CASE( MOD( ROUND(Related_Opportunity__r.Account.Parent_Account__r.First_Login_Date__c - CreatedDate,0),7),1,0,2,1,3,2,4,3,5,4,6,5,0), 
+6 , CASE( MOD( ROUND(Related_Opportunity__r.Account.Parent_Account__r.First_Login_Date__c - CreatedDate,0) ,7),1,1,2,2,3,3,4,4,5,5,6,5,0), 
+999) 
++ 
+(FLOOR(( ROUND(Related_Opportunity__r.Account.Parent_Account__r.First_Login_Date__c - CreatedDate,0) )/7)*5),
+
+Time_to_Close__c
+)</formula>
+        <inlineHelpText>This field is the lesser of the difference between the First Login Date and Case Open Date and Case Closed Date and Case Opened Date (found in Time to Close field), counting only weekdays.</inlineHelpText>
+        <label>Adjusted Time to Close</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Am_I_the_case_contact__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(ISBLANK(Contact.Email), $User.Email = SuppliedEmail , $User.Email = Contact.Email)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Checks to see if logged in user&apos;s email address matches case contact email address, if case contact is blank, checks Web Email address</inlineHelpText>
+        <label>Am I the case contact?</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>AssetId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Assignee_If_Different__c</fullName>
+        <externalId>false</externalId>
+        <label>Assignee If Different</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Aly Garvin</fullName>
+                    <default>false</default>
+                    <label>Aly Garvin</label>
+                </value>
+                <value>
+                    <fullName>Alex Schulte</fullName>
+                    <default>false</default>
+                    <label>Alex Schulte</label>
+                </value>
+                <value>
+                    <fullName>Reg Schonborn</fullName>
+                    <default>false</default>
+                    <label>Reg Schonborn</label>
+                </value>
+                <value>
+                    <fullName>Olivia Love</fullName>
+                    <default>false</default>
+                    <label>Olivia Love</label>
+                </value>
+                <value>
+                    <fullName>Trevor Lennox</fullName>
+                    <default>false</default>
+                    <label>Trevor Lennox</label>
+                </value>
+                <value>
+                    <fullName>Kamal</fullName>
+                    <default>false</default>
+                    <label>Kamal</label>
+                </value>
+                <value>
+                    <fullName>BWOC</fullName>
+                    <default>false</default>
+                    <label>BWOC</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>BusinessHoursId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Case_Alert_Details__c</fullName>
+        <externalId>false</externalId>
+        <formula>&quot;Current Case Alerts: &quot;&amp;IF(Case_Alert_Status__c,&quot;&quot;,&quot;N/A&quot;)&amp;
+TRIM(
+IF(Pending_Reply__c &gt; 0,BR()&amp;&quot;Replies Pending: &quot;&amp;TEXT(Pending_Reply__c),&quot;&quot;)&amp;
+IF(ISBLANK(First_Response_Date_Time__c)&amp;&amp;CreatedDate&lt;NOW()-1,BR()&amp;&quot;Aged without Response: &quot;&amp;TEXT(ROUND(NOW()-CreatedDate,2)),&quot;&quot;)
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Case Alert Details</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Case_Alert_Status__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(Case_Alerts__c=IMAGE(&quot;/img/msg_icons/confirm16.png&quot;,&quot;All Clear&quot;),FALSE,TRUE)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Case Alert Status</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Case_Alerts_Text__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(Pending_Reply__c &gt; 0 || ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-2,&quot;Alert: &quot;,
+IF(Pending_Reply__c &gt; 0,&quot;Reply Pending&quot;, 
+IF(ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, &quot;Over 1 Day&quot;,&quot;All Clear&quot;)))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Case Alerts</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Case_Alerts__c</fullName>
+        <externalId>false</externalId>
+        <formula>TRIM(
+
+IF(Pending_Reply__c &gt; 0 || ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-2,&apos; &apos; ,IMAGE(&quot;/img/msg_icons/confirm16.png&quot;,&quot;All Clear&quot;))&amp;&quot; &quot;&amp;
+
+IF(Pending_Reply__c &gt; 0,IMAGE(&quot;/img/func_icons/util/mailFrontEnv16.gif&quot;,&quot;Reply Pending&quot;),&quot;&quot;)&amp;&quot; &quot;&amp;
+
+IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IMAGE(&quot;/img/icon/dashboards16.png&quot;,&quot;Overdue Case&quot;),&quot;&quot;))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Case Alerts</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Case_Detail__c</fullName>
+        <externalId>false</externalId>
+        <label>Case Detail</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Case_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Case Type</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Customer</fullName>
+                    <default>true</default>
+                    <label>Customer</label>
+                </value>
+                <value>
+                    <fullName>BlueWave</fullName>
+                    <default>false</default>
+                    <label>BlueWave</label>
+                </value>
+                <value>
+                    <fullName>3rd Party</fullName>
+                    <default>false</default>
+                    <label>3rd Party</label>
+                </value>
+                <value>
+                    <fullName>Vendor</fullName>
+                    <default>false</default>
+                    <label>Vendor</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Case_Update__c</fullName>
+        <description>Formerly Case Update (API Name is still Case_Update).  Please use chatter for case-specific updates.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Formerly Case Update (API Name is still Case_Update).  Please use chatter for case-specific updates.</inlineHelpText>
+        <label>Next Steps</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Category__c</fullName>
+        <description>Select all options that best describe what the customer case was about.</description>
+        <externalId>false</externalId>
+        <label>Category</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <controllingField>Product_Line__c</controllingField>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Onboarding</fullName>
+                    <default>false</default>
+                    <label>Onboarding</label>
+                </value>
+                <value>
+                    <fullName>TPF/Collections</fullName>
+                    <default>false</default>
+                    <label>TPF/Collections</label>
+                </value>
+                <value>
+                    <fullName>SREC</fullName>
+                    <default>false</default>
+                    <label>SREC</label>
+                </value>
+                <value>
+                    <fullName>Billing</fullName>
+                    <default>false</default>
+                    <label>Billing</label>
+                </value>
+                <value>
+                    <fullName>Subscription Change</fullName>
+                    <default>false</default>
+                    <label>Subscription Change</label>
+                </value>
+                <value>
+                    <fullName>Technical Assistance</fullName>
+                    <default>false</default>
+                    <label>Technical Assistance</label>
+                </value>
+                <value>
+                    <fullName>Product Question</fullName>
+                    <default>false</default>
+                    <label>Product Question</label>
+                </value>
+                <value>
+                    <fullName>Subscription Adjustment</fullName>
+                    <default>false</default>
+                    <label>Subscription Adjustment</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <label>Other</label>
+                </value>
+                <value>
+                    <fullName>SRECs</fullName>
+                    <default>false</default>
+                    <label>SRECs</label>
+                </value>
+                <value>
+                    <fullName>Application Status</fullName>
+                    <default>false</default>
+                    <label>Application Status</label>
+                </value>
+                <value>
+                    <fullName>Disbursals</fullName>
+                    <default>false</default>
+                    <label>Disbursals</label>
+                </value>
+                <value>
+                    <fullName>Loan Terms</fullName>
+                    <default>false</default>
+                    <label>Loan Terms</label>
+                </value>
+                <value>
+                    <fullName>Amortization Table</fullName>
+                    <default>false</default>
+                    <label>Amortization Table</label>
+                </value>
+                <value>
+                    <fullName>Portal Issue</fullName>
+                    <default>false</default>
+                    <label>Portal Issue</label>
+                </value>
+                <value>
+                    <fullName>Underwriting</fullName>
+                    <default>false</default>
+                    <label>Underwriting</label>
+                </value>
+                <value>
+                    <fullName>Poor Review</fullName>
+                    <default>false</default>
+                    <label>Poor Review</label>
+                </value>
+                <value>
+                    <fullName>Credit Allocation Issue</fullName>
+                    <default>false</default>
+                    <label>Credit Allocation Issue</label>
+                </value>
+                <value>
+                    <fullName>Cancelled Utility Account</fullName>
+                    <default>false</default>
+                    <label>Cancelled Utility Account</label>
+                </value>
+                <value>
+                    <fullName>Final Bill</fullName>
+                    <default>false</default>
+                    <label>Final Bill</label>
+                </value>
+                <value>
+                    <fullName>Payment Plan</fullName>
+                    <default>false</default>
+                    <label>Payment Plan</label>
+                </value>
+                <value>
+                    <fullName>Do not send bill</fullName>
+                    <default>false</default>
+                    <label>Do not send bill</label>
+                </value>
+                <value>
+                    <fullName>Bill % Incorrect: Rounding error</fullName>
+                    <default>false</default>
+                    <label>Bill % Incorrect: Rounding error</label>
+                </value>
+                <value>
+                    <fullName>Bill % Incorrect: Unknown error</fullName>
+                    <default>false</default>
+                    <label>Bill % Incorrect: Unknown error</label>
+                </value>
+                <value>
+                    <fullName>UAS Marked as Cancelled: On Transfer Sheet</fullName>
+                    <default>false</default>
+                    <label>UAS Marked as Cancelled: On Transfer Sheet</label>
+                </value>
+                <value>
+                    <fullName>UAS Marked as Cancelled: Not on Transfer Sheet</fullName>
+                    <default>false</default>
+                    <label>UAS Marked as Cancelled: Not on Transfer Sheet</label>
+                </value>
+                <value>
+                    <fullName>Custom Message Update</fullName>
+                    <default>false</default>
+                    <label>Custom Message Update</label>
+                </value>
+                <value>
+                    <fullName>Transfer</fullName>
+                    <default>false</default>
+                    <label>Transfer</label>
+                </value>
+                <value>
+                    <fullName>Cancellation</fullName>
+                    <default>false</default>
+                    <label>Cancellation</label>
+                </value>
+                <value>
+                    <fullName>Product Terms</fullName>
+                    <default>false</default>
+                    <label>Product Terms</label>
+                </value>
+                <value>
+                    <fullName>QC Call</fullName>
+                    <default>false</default>
+                    <label>QC Call</label>
+                </value>
+                <value>
+                    <fullName>Contract/Application Issue</fullName>
+                    <default>false</default>
+                    <label>Contract/Application Issue</label>
+                </value>
+                <value>
+                    <fullName>Customer Utility Bill</fullName>
+                    <default>false</default>
+                    <label>Customer Utility Bill</label>
+                </value>
+                <value>
+                    <fullName>Elligibility</fullName>
+                    <default>false</default>
+                    <label>Elligibility</label>
+                </value>
+                <value>
+                    <fullName>Capacity</fullName>
+                    <default>false</default>
+                    <label>Capacity</label>
+                </value>
+                <value>
+                    <fullName>Invoice</fullName>
+                    <default>false</default>
+                    <label>Invoice</label>
+                </value>
+            </valueSetDefinition>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
+                <valueName>Billing</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Subscription Change</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
+                <valueName>Technical Assistance</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Product Question</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Subscription Adjustment</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Other</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
+                <valueName>Portal Issue</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
+                <valueName>Poor Review</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Credit Allocation Issue</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Cancelled Utility Account</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Final Bill</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Payment Plan</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Do not send bill</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Bill % Incorrect: Rounding error</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Bill % Incorrect: Unknown error</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>UAS Marked as Cancelled: On Transfer Sheet</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>UAS Marked as Cancelled: Not on Transfer Sheet</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Custom Message Update</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Transfer</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Cancellation</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Product Terms</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>QC Call</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Contract/Application Issue</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Customer Utility Bill</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Elligibility</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Capacity</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Invoice</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
+                <valueName>Onboarding</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
+                <valueName>TPF/Collections</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
+                <valueName>SREC</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
+                <valueName>SRECs</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
+                <valueName>Application Status</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
+                <valueName>Disbursals</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
+                <valueName>Loan Terms</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
+                <valueName>Amortization Table</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
+                <valueName>Underwriting</valueName>
+            </valueSettings>
+        </valueSet>
+        <visibleLines>6</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Chargent_Order__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Chargent Order</label>
+        <referenceTo>ChargentOrders__ChargentOrder__c</referenceTo>
+        <relationshipLabel>Cases</relationshipLabel>
+        <relationshipName>Cases</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>ClosedDate</fullName>
+        <trackTrending>false</trackTrending>
+    </fields>
+    <fields>
+        <fullName>Comments</fullName>
+        <trackTrending>false</trackTrending>
+    </fields>
+    <fields>
+        <fullName>Complaint_Description__c</fullName>
+        <description>Detailed description of complaint; includes additional categories (beyond primary category) if appropriate</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Enter detailed description of complaint; include additional categories (beyond primary category) if appropriate</inlineHelpText>
+        <label>Complaint Description</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>ContactEmail</fullName>
+        <trackTrending>false</trackTrending>
+    </fields>
+    <fields>
+        <fullName>ContactFax</fullName>
+        <trackTrending>false</trackTrending>
+    </fields>
+    <fields>
+        <fullName>ContactId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>ContactMobile</fullName>
+        <trackTrending>false</trackTrending>
+    </fields>
+    <fields>
+        <fullName>ContactPhone</fullName>
+        <trackTrending>false</trackTrending>
+    </fields>
+    <fields>
+        <fullName>Created_From_Task__c</fullName>
+        <externalId>false</externalId>
+        <label>Created From Call Log</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Deadline__c</fullName>
+        <description>Due date for case - set by process builder for CS and RL follow up cases</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Due date for case - set by process builder for CS and RL follow up cases</inlineHelpText>
+        <label>Deadline</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Deal__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Deal to which this case is associated</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Deal to which this case is associated</inlineHelpText>
+        <label>Deal</label>
+        <referenceTo>Deal__c</referenceTo>
+        <relationshipLabel>Cases</relationshipLabel>
+        <relationshipName>Cases</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Description</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+    </fields>
+    <fields>
+        <fullName>Disable_Followup_Email__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Checking this box will stop the automated email that goes out when a customer care or partner support case is closed that contains the survey.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Checking this box will stop the automated email that goes out when a customer care or partner support case is closed that contains the survey.</inlineHelpText>
+        <label>Disable Followup Email</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Expand__c</fullName>
+        <externalId>false</externalId>
+        <formula>HyperLink(
+&quot;/console#%2F&quot;&amp;AccountId
+&amp;&quot;|%2F007%3Fid%3D&quot;&amp;AccountId&amp;&quot;%26rlid%3DRelatedHistoryList&quot;
+&amp;IF(ISBLANK(ContactId),&quot;&quot;,&quot;|%2F&quot;&amp;ContactId)
+&amp;IF( Account.Product_Line_Formula__c!= &quot;Residential Loan&quot;,&quot;|%2Fapex%2Faccountinfo%3FaccountID%3D&quot;&amp;AccountId &amp;&quot;%26acctName%3D&quot;&amp;Account.Name&amp;&quot;%26totalBalance%3D&quot;&amp;TEXT(Account.Total_Outstanding_Balance__c)&amp;
+IF(Account.RecordTypeId=&quot;012j00000010Ha3&quot;,&quot;%26&amp;isParentAcct%3DTRUE&quot;,&quot;&quot;),&quot;&quot;)
+&amp;&quot;|%2F&quot;&amp;Id
+,IMAGE(&quot;/img/icon/custom51_100/pencil24.png&quot;,&quot;Expand&quot;),&quot;_parent&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Expand</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Finance_Category__c</fullName>
+        <externalId>false</externalId>
+        <label>Finance Category</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Debt Capital Markets / Structured Transactions</fullName>
+                    <default>false</default>
+                    <label>Debt Capital Markets / Structured Transactions</label>
+                </value>
+                <value>
+                    <fullName>Equity Capital Markets / Strategic Partnerships</fullName>
+                    <default>false</default>
+                    <label>Equity Capital Markets / Strategic Partnerships</label>
+                </value>
+                <value>
+                    <fullName>1603 Compliance / Loan Support</fullName>
+                    <default>false</default>
+                    <label>1603 Compliance / Loan Support</label>
+                </value>
+                <value>
+                    <fullName>Corporate Finance</fullName>
+                    <default>false</default>
+                    <label>Corporate Finance</label>
+                </value>
+                <value>
+                    <fullName>Platform Finance</fullName>
+                    <default>false</default>
+                    <label>Platform Finance</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>First_Response_Age__c</fullName>
+        <description>Note - I&apos;m reasonably certain the help text is correct, but I might be missing something.</description>
+        <externalId>false</externalId>
+        <formula>IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-CreatedDate 
+- 
+IF(MOD( DATEVALUE(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)) - DATE(1900,1,7), 7)=0,(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-DATETIMEVALUE(TEXT(DATEVALUE(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)))&amp;&quot; 4:00:00&quot;))-1,0) 
+- 
+IF(MOD( DATEVALUE(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)) - DATE(1900,1,7), 7)=6,(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-DATETIMEVALUE(TEXT(DATEVALUE(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)))&amp;&quot; 4:00:00&quot;)),0) 
+- 
+IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-CreatedDate &gt; 1,IF(FLOOR((IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c) - CreatedDate) / 7) &gt;= 1,FLOOR((IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c) - CreatedDate) / 7) * 2,IF((MOD( DATEVALUE(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)) - DATE(1900,1,7), 7) - MOD( DATEVALUE(CreatedDate) - DATE(1900,1,7), 7)) &lt;= 0,2,0)),0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>First Response Time - Date/Time Opened; excluding weekend days</inlineHelpText>
+        <label>First Response Age</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>First_Response_Date_Time__c</fullName>
+        <externalId>false</externalId>
+        <label>First Response Date/Time</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Forwarded_Email_Count__c</fullName>
+        <description>Created by OpFocus</description>
+        <externalId>false</externalId>
+        <label>Forwarded Email Count</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>IsClosedOnCreate</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+    </fields>
+    <fields>
+        <fullName>IsEscalated</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+    </fields>
+    <fields>
+        <fullName>Lead_Lookup__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Lead</label>
+        <referenceTo>Lead</referenceTo>
+        <relationshipLabel>Cases</relationshipLabel>
+        <relationshipName>Cases</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Link_to_Case__c</fullName>
+        <externalId>false</externalId>
+        <formula>HYPERLINK(&quot;https://na16.salesforce.com/&quot;&amp;Id ,  Subject)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Case Subject</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>New_Email_Count__c</fullName>
+        <defaultValue>0</defaultValue>
+        <description>Created by OpFocus</description>
+        <externalId>false</externalId>
+        <label>New Email Count</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Origin</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>OwnerId</fullName>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>ParentId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Pending_Reply__c</fullName>
+        <externalId>false</externalId>
+        <formula>New_Email_Count__c - Sent_Email_Count__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Pending Reply</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Power_of_One__c</fullName>
+        <externalId>false</externalId>
+        <formula>1</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Power of One</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Primary_Complaint_Category__c</fullName>
+        <description>Primary category of issue or complaint</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Select the primary issue or complaint category</inlineHelpText>
+        <label>Primary Complaint Category</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Advertising/marketing</fullName>
+                    <default>false</default>
+                    <label>Advertising/marketing</label>
+                </value>
+                <value>
+                    <fullName>Application</fullName>
+                    <default>false</default>
+                    <label>Application</label>
+                </value>
+                <value>
+                    <fullName>Customer Service</fullName>
+                    <default>false</default>
+                    <label>Customer Service</label>
+                </value>
+                <value>
+                    <fullName>Discrimination</fullName>
+                    <default>false</default>
+                    <label>Discrimination</label>
+                </value>
+                <value>
+                    <fullName>Fraud</fullName>
+                    <default>false</default>
+                    <label>Fraud</label>
+                </value>
+                <value>
+                    <fullName>Identity Theft</fullName>
+                    <default>false</default>
+                    <label>Identity Theft</label>
+                </value>
+                <value>
+                    <fullName>Improper Sales Practices</fullName>
+                    <default>false</default>
+                    <label>Improper Sales Practices</label>
+                </value>
+                <value>
+                    <fullName>Installer/Partner</fullName>
+                    <default>false</default>
+                    <label>Installer/Partner</label>
+                </value>
+                <value>
+                    <fullName>Miscellaneous</fullName>
+                    <default>false</default>
+                    <label>Miscellaneous</label>
+                </value>
+                <value>
+                    <fullName>Origination/Credit Decision</fullName>
+                    <default>false</default>
+                    <label>Origination/Credit Decision</label>
+                </value>
+                <value>
+                    <fullName>Payments</fullName>
+                    <default>false</default>
+                    <label>Payments</label>
+                </value>
+                <value>
+                    <fullName>Privacy</fullName>
+                    <default>false</default>
+                    <label>Privacy</label>
+                </value>
+                <value>
+                    <fullName>Servicemember/SCRA</fullName>
+                    <default>false</default>
+                    <label>Servicemember/SCRA</label>
+                </value>
+                <value>
+                    <fullName>Service Provider</fullName>
+                    <default>false</default>
+                    <label>Service Provider</label>
+                </value>
+                <value>
+                    <fullName>Servicing/Collection</fullName>
+                    <default>false</default>
+                    <label>Servicing/Collection</label>
+                </value>
+                <value>
+                    <fullName>Unauthorized Enrollment</fullName>
+                    <default>false</default>
+                    <label>Unauthorized Enrollment</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Priority</fullName>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Product_Line_Account__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF ( ISNULL(Account.Product_Line_Formula__c) , &quot;Not Defined&quot;, Account.Product_Line_Formula__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Product Line (Account)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Product_Line__c</fullName>
+        <externalId>false</externalId>
+        <label>Product Line</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Community Solar</fullName>
+                    <default>false</default>
+                    <label>Community Solar</label>
+                </value>
+                <value>
+                    <fullName>Solar Loan</fullName>
+                    <default>false</default>
+                    <label>Solar Loan</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Product_tag__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Product the support case is related to</inlineHelpText>
+        <label>Product Tag</label>
+        <referenceTo>agf__ADM_Product_Tag__c</referenceTo>
+        <relationshipLabel>Cases</relationshipLabel>
+        <relationshipName>Cases</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Production_Update__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Production Update</label>
+        <referenceTo>Energy_Usage_Update__c</referenceTo>
+        <relationshipLabel>Cases</relationshipLabel>
+        <relationshipName>Cases</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Read_Email_Count__c</fullName>
+        <defaultValue>0</defaultValue>
+        <description>Created by OpFocus</description>
+        <externalId>false</externalId>
+        <label>Read Email Count</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Reason</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Recurring_Billing__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account.Recurring_Billing__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Recurring Billing?</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Related_Opportunity__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Related Opportunity to Case</description>
+        <externalId>false</externalId>
+        <label>Opportunity</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipLabel>Cases</relationshipLabel>
+        <relationshipName>Cases</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Related_Utility_Account_Log__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Related Utility Account Log</label>
+        <referenceTo>Utility_Account_Log__c</referenceTo>
+        <relationshipLabel>Cases</relationshipLabel>
+        <relationshipName>Cases</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Replied_Email_Count__c</fullName>
+        <defaultValue>0</defaultValue>
+        <description>Created by OpFocus</description>
+        <externalId>false</externalId>
+        <label>Replied Email Count</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Resolution__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>What is the resolution to this case?</inlineHelpText>
+        <label>Resolution</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Data Update</fullName>
+                    <default>false</default>
+                    <label>Data Update</label>
+                </value>
+                <value>
+                    <fullName>Duplicate</fullName>
+                    <default>false</default>
+                    <label>Duplicate</label>
+                </value>
+                <value>
+                    <fullName>Modify Access</fullName>
+                    <default>false</default>
+                    <label>Modify Access</label>
+                </value>
+                <value>
+                    <fullName>No Longer an Issue</fullName>
+                    <default>false</default>
+                    <label>No Longer an Issue</label>
+                </value>
+                <value>
+                    <fullName>Question</fullName>
+                    <default>false</default>
+                    <label>Question</label>
+                </value>
+                <value>
+                    <fullName>User Error</fullName>
+                    <default>false</default>
+                    <label>User Error</label>
+                </value>
+                <value>
+                    <fullName>Bug</fullName>
+                    <default>false</default>
+                    <label>Bug</label>
+                </value>
+                <value>
+                    <fullName>Enhanced Code</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Enhanced Code</label>
+                </value>
+                <value>
+                    <fullName>Enhanced Config</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Enhanced Config</label>
+                </value>
+                <value>
+                    <fullName>Fix Code</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Fix Code</label>
+                </value>
+                <value>
+                    <fullName>Fix Config</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Fix Config</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Root_Cause__c</fullName>
+        <description>Long text description of what caused the issue</description>
+        <externalId>false</externalId>
+        <inlineHelpText>What caused the issue?</inlineHelpText>
+        <label>Root Cause</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Sent_Email_Count__c</fullName>
+        <defaultValue>0</defaultValue>
+        <description>Created by OpFocus</description>
+        <externalId>false</externalId>
+        <label>Sent Email Count</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Shared_Solar_System__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Shared Solar System</label>
+        <referenceTo>Shared_Solar_System__c</referenceTo>
+        <relationshipLabel>Cases</relationshipLabel>
+        <relationshipName>Cases</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>SourceId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Status</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Subject</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+    </fields>
+    <fields>
+        <fullName>SuppliedCompany</fullName>
+        <trackTrending>false</trackTrending>
+    </fields>
+    <fields>
+        <fullName>SuppliedEmail</fullName>
+        <trackTrending>false</trackTrending>
+    </fields>
+    <fields>
+        <fullName>SuppliedName</fullName>
+        <trackTrending>false</trackTrending>
+    </fields>
+    <fields>
+        <fullName>SuppliedPhone</fullName>
+        <trackTrending>false</trackTrending>
+    </fields>
+    <fields>
+        <fullName>Time_to_Close__c</fullName>
+        <externalId>false</externalId>
+        <formula>CASE( MOD( DATEVALUE(CreatedDate) - DATE(1985,6,24),7), 
+
+  0 , CASE( MOD( ROUND(ClosedDate - CreatedDate,0) ,7),1,2,2,3,3,4,4,5,5,5,6,5,1), 
+  1 , CASE( MOD( ROUND(ClosedDate - CreatedDate,0),7),1,2,2,3,3,4,4,4,5,4,6,5,1), 
+  2 , CASE( MOD( ROUND(ClosedDate - CreatedDate,0),7),1,2,2,3,3,3,4,3,5,4,6,5,1), 
+  3 , CASE( MOD( ROUND(ClosedDate - CreatedDate,0),7),1,2,2,2,3,2,4,3,5,4,6,5,1), 
+  4 , CASE( MOD( ROUND(ClosedDate - CreatedDate,0),7),1,1,2,1,3,2,4,3,5,4,6,5,1), 
+  5 , CASE( MOD( ROUND(ClosedDate - CreatedDate,0),7),1,0,2,1,3,2,4,3,5,4,6,5,0), 
+  6 , CASE( MOD( ROUND(ClosedDate - CreatedDate,0) ,7),1,1,2,2,3,3,4,4,5,5,6,5,0), 
+  999) 
+  + 
+  (FLOOR(( ROUND(ClosedDate - CreatedDate,0) )/7)*5)</formula>
+        <label>Time to Close</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Type</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Unread_Messages__c</fullName>
+        <externalId>false</externalId>
+        <formula>New_Email_Count__c - Read_Email_Count__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Unread Messages</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Utility_Follow_Up_Required__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Utility Follow Up Required?</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>agf__ADM_Work__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>A connection to the Agile Accelerator Work object used to track Bugs, Investigations and User Stories</description>
+        <externalId>false</externalId>
+        <label>Work</label>
+        <referenceTo>agf__ADM_Work__c</referenceTo>
+        <relationshipLabel>Cases</relationshipLabel>
+        <relationshipName>AgileAcceleratorCases</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <listViews>
+        <fullName>Alert_Expire_Emails</fullName>
+        <columns>CASES.CASE_NUMBER</columns>
+        <columns>NAME</columns>
+        <columns>CASES.SUBJECT</columns>
+        <columns>CASES.STATUS</columns>
+        <columns>CASES.PRIORITY</columns>
+        <columns>CASES.CREATED_DATE</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CASES.SUBJECT</field>
+            <operation>contains</operation>
+            <value>Alert</value>
+        </filters>
+        <filters>
+            <field>CASES.STATUS</field>
+            <operation>notEqual</operation>
+            <value>Closed</value>
+        </filters>
+        <label>&quot;Alert Expire Emails&quot;</label>
+    </listViews>
+    <listViews>
+        <fullName>AllOpenCases</fullName>
+        <columns>CASES.CASE_NUMBER</columns>
+        <columns>NAME</columns>
+        <columns>CASES.SUBJECT</columns>
+        <columns>CASES.STATUS</columns>
+        <columns>CASES.PRIORITY</columns>
+        <columns>CASES.CREATED_DATE_DATE_ONLY</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CASES.CLOSED</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </filters>
+        <label>All Open Cases</label>
+    </listViews>
+    <listViews>
+        <fullName>BWOC_Queue_Open_Cases</fullName>
+        <columns>CASES.CASE_NUMBER</columns>
+        <columns>NAME</columns>
+        <columns>CASES.SUBJECT</columns>
+        <columns>CASES.STATUS</columns>
+        <columns>CASES.PRIORITY</columns>
+        <columns>CASES.CREATED_DATE</columns>
+        <columns>CASES.LAST_UPDATE</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Queue</filterScope>
+        <filters>
+            <field>CASES.STATUS</field>
+            <operation>equals</operation>
+            <value>New</value>
+        </filters>
+        <filters>
+            <field>CASES.SUBJECT</field>
+            <operation>notContain</operation>
+            <value>Onboarding</value>
+        </filters>
+        <label>BWOC Queue - New Cases</label>
+        <queue>Customer_Care</queue>
+    </listViews>
+    <listViews>
+        <fullName>BWOC_Queue_Open_Cases1</fullName>
+        <columns>CASES.CASE_NUMBER</columns>
+        <columns>NAME</columns>
+        <columns>CASES.SUBJECT</columns>
+        <columns>CASES.STATUS</columns>
+        <columns>CASES.PRIORITY</columns>
+        <columns>CASES.CREATED_DATE</columns>
+        <columns>Case_Update__c</columns>
+        <columns>CASES.LAST_UPDATE</columns>
+        <filterScope>Queue</filterScope>
+        <filters>
+            <field>CASES.STATUS</field>
+            <operation>notEqual</operation>
+            <value>Closed,Resolved</value>
+        </filters>
+        <filters>
+            <field>CASES.SUBJECT</field>
+            <operation>notContain</operation>
+            <value>Onboarding</value>
+        </filters>
+        <label>BWOC Queue - Open Cases</label>
+        <queue>Customer_Care</queue>
+    </listViews>
+    <listViews>
+        <fullName>BWOC_Queue_Vendor_Casetype</fullName>
+        <columns>CASES.CASE_NUMBER</columns>
+        <columns>NAME</columns>
+        <columns>CASES.SUBJECT</columns>
+        <columns>CASES.STATUS</columns>
+        <columns>CASES.PRIORITY</columns>
+        <columns>CASES.CREATED_DATE</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CASES.STATUS</field>
+            <operation>notEqual</operation>
+            <value>Closed,Resolved</value>
+        </filters>
+        <filters>
+            <field>Case_Type__c</field>
+            <operation>equals</operation>
+            <value>Vendor</value>
+        </filters>
+        <label>BWOC Queue - Vendor Casetype</label>
+    </listViews>
+    <listViews>
+        <fullName>Charlotte_s_Cases</fullName>
+        <columns>CASES.CASE_NUMBER</columns>
+        <columns>NAME</columns>
+        <columns>CASES.SUBJECT</columns>
+        <columns>Case_Update__c</columns>
+        <columns>CASES.STATUS</columns>
+        <columns>CASES.PRIORITY</columns>
+        <columns>CASES.CREATED_DATE</columns>
+        <columns>CASES.LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CASES.RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Case.Customer_Care</value>
+        </filters>
+        <filters>
+            <field>CASES.STATUS</field>
+            <operation>notEqual</operation>
+            <value>Closed,Resolved</value>
+        </filters>
+        <filters>
+            <field>CORE.USERS.FIRST_NAME</field>
+            <operation>equals</operation>
+            <value>charlotte</value>
+        </filters>
+        <label>Customer Support - Charlotte</label>
+    </listViews>
+    <listViews>
+        <fullName>Closed_Customer_Care_Cases</fullName>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>Expand__c</columns>
+        <columns>NAME</columns>
+        <columns>CASES.SUBJECT</columns>
+        <columns>CASES.CASE_NUMBER</columns>
+        <columns>CASES.STATUS</columns>
+        <columns>CASES.CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CASES.RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Case.Customer_Care</value>
+        </filters>
+        <filters>
+            <field>CASES.STATUS</field>
+            <operation>equals</operation>
+            <value>Closed,Resolved</value>
+        </filters>
+        <filters>
+            <field>CASES.SUBJECT</field>
+            <operation>notContain</operation>
+            <value>barrett billing blitz,Sturbridge A and B,onboarding,Communication Outreach</value>
+        </filters>
+        <label>Closed Customer Care Cases</label>
+    </listViews>
+    <listViews>
+        <fullName>Closed_Partner_Support_Cases</fullName>
+        <columns>CASES.CASE_NUMBER</columns>
+        <columns>NAME</columns>
+        <columns>CASES.SUBJECT</columns>
+        <columns>Related_Opportunity__c</columns>
+        <columns>Product_Line__c</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>CASES.STATUS</columns>
+        <columns>CASES.PRIORITY</columns>
+        <columns>CASES.CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CASES.RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Case.Partner_Care_Case,Case.Customer_Care</value>
+        </filters>
+        <filters>
+            <field>CASES.STATUS</field>
+            <operation>contains</operation>
+            <value>closed</value>
+        </filters>
+        <filters>
+            <field>CORE.USERS.ALIAS</field>
+            <operation>contains</operation>
+            <value>Partner,law,fala,dew,jberg,jlu</value>
+        </filters>
+        <filters>
+            <field>CASES.SUBJECT</field>
+            <operation>notContain</operation>
+            <value>sandbox</value>
+        </filters>
+        <label>Closed Partner Support Cases</label>
+    </listViews>
+    <listViews>
+        <fullName>Community_Solar_Case_Case</fullName>
+        <columns>CASES.CASE_NUMBER</columns>
+        <columns>Expand__c</columns>
+        <columns>NAME</columns>
+        <columns>CASES.SUBJECT</columns>
+        <columns>CASES.STATUS</columns>
+        <columns>CASES.PRIORITY</columns>
+        <columns>CASES.CREATED_DATE</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Queue</filterScope>
+        <label>Community Solar Case</label>
+        <queue>Community_Solar_Case</queue>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Customer_Care_Case1</fullName>
+        <columns>CASES.CASE_NUMBER</columns>
+        <columns>Expand__c</columns>
+        <columns>NAME</columns>
+        <columns>CASES.SUBJECT</columns>
+        <columns>CASES.STATUS</columns>
+        <columns>CASES.PRIORITY</columns>
+        <columns>CASES.CREATED_DATE</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Queue</filterScope>
+        <label>Bluewave Customer Care</label>
+        <queue>Customer_Care</queue>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Customer_Support_All_Cases</fullName>
+        <columns>OWNER_NAME</columns>
+        <columns>CASES.CASE_NUMBER</columns>
+        <columns>NAME</columns>
+        <columns>CASES.SUBJECT</columns>
+        <columns>CASES.STATUS</columns>
+        <columns>CASES.PRIORITY</columns>
+        <columns>CASES.CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CASES.RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Case.Customer_Care</value>
+        </filters>
+        <filters>
+            <field>CASES.STATUS</field>
+            <operation>notEqual</operation>
+            <value>Closed,Resolved</value>
+        </filters>
+        <label>Customer Support - All Cases</label>
+    </listViews>
+    <listViews>
+        <fullName>Customer_Support_My_Cases</fullName>
+        <columns>CASES.CASE_NUMBER</columns>
+        <columns>NAME</columns>
+        <columns>CASES.SUBJECT</columns>
+        <columns>CASES.STATUS</columns>
+        <columns>Case_Update__c</columns>
+        <columns>CASES.CREATED_DATE</columns>
+        <columns>CASES.LAST_UPDATE</columns>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>CASES.STATUS</field>
+            <operation>notEqual</operation>
+            <value>Closed,Resolved</value>
+        </filters>
+        <filters>
+            <field>CASES.RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Case.Customer_Care</value>
+        </filters>
+        <label>Customer Support - My Cases</label>
+    </listViews>
+    <listViews>
+        <fullName>Customer_Support_Sheri</fullName>
+        <columns>CASES.CASE_NUMBER</columns>
+        <columns>NAME</columns>
+        <columns>CASES.SUBJECT</columns>
+        <columns>CASES.STATUS</columns>
+        <columns>CASES.PRIORITY</columns>
+        <columns>CASES.CREATED_DATE</columns>
+        <columns>CASES.LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CASES.RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Case.Customer_Care</value>
+        </filters>
+        <filters>
+            <field>CASES.STATUS</field>
+            <operation>notEqual</operation>
+            <value>Closed,Resolved</value>
+        </filters>
+        <filters>
+            <field>CORE.USERS.FIRST_NAME</field>
+            <operation>equals</operation>
+            <value>Sheri</value>
+        </filters>
+        <label>Customer Support -  Sheri</label>
+    </listViews>
+    <listViews>
+        <fullName>Customer_Support_Team_Case</fullName>
+        <columns>CASES.CASE_NUMBER</columns>
+        <columns>NAME</columns>
+        <columns>CASES.SUBJECT</columns>
+        <columns>CASES.STATUS</columns>
+        <columns>CASES.PRIORITY</columns>
+        <columns>CASES.CREATED_DATE</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Queue</filterScope>
+        <label>Customer Support - Team</label>
+        <queue>Customer_Support_Team</queue>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Customer_Support_Tim_Harry</fullName>
+        <columns>CASES.CASE_NUMBER</columns>
+        <columns>NAME</columns>
+        <columns>CASES.SUBJECT</columns>
+        <columns>Case_Update__c</columns>
+        <columns>CASES.STATUS</columns>
+        <columns>CORE.USERS.FIRST_NAME</columns>
+        <columns>CASES.PRIORITY</columns>
+        <columns>CASES.CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CASES.RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Case.Customer_Care</value>
+        </filters>
+        <filters>
+            <field>CASES.STATUS</field>
+            <operation>notEqual</operation>
+            <value>Closed,Resolved</value>
+        </filters>
+        <filters>
+            <field>CORE.USERS.FIRST_NAME</field>
+            <operation>equals</operation>
+            <value>Timothy,Harold</value>
+        </filters>
+        <label>Customer Support - Tim &amp; Harry</label>
+    </listViews>
+    <listViews>
+        <fullName>Customer_Support_Walter</fullName>
+        <columns>CASES.CASE_NUMBER</columns>
+        <columns>NAME</columns>
+        <columns>CASES.SUBJECT</columns>
+        <columns>Case_Update__c</columns>
+        <columns>CASES.STATUS</columns>
+        <columns>CASES.CREATED_DATE</columns>
+        <columns>CASES.LAST_UPDATE</columns>
+        <columns>CASES.PRIORITY</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CASES.RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Case.Customer_Care</value>
+        </filters>
+        <filters>
+            <field>CASES.STATUS</field>
+            <operation>notEqual</operation>
+            <value>Closed,Resolved</value>
+        </filters>
+        <filters>
+            <field>CORE.USERS.FIRST_NAME</field>
+            <operation>equals</operation>
+            <value>Walter</value>
+        </filters>
+        <label>Customer Support - Walter</label>
+    </listViews>
+    <listViews>
+        <fullName>My_Open_Casessss</fullName>
+        <columns>CASES.CASE_NUMBER</columns>
+        <columns>NAME</columns>
+        <columns>CASES.SUBJECT</columns>
+        <columns>CASES.STATUS</columns>
+        <columns>CASES.PRIORITY</columns>
+        <columns>CASES.CREATED_DATE</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>CASES.STATUS</field>
+            <operation>notEqual</operation>
+            <value>Closed</value>
+        </filters>
+        <label>My Open Cases</label>
+    </listViews>
+    <listViews>
+        <fullName>National_Grid_Net_Metering_Cases</fullName>
+        <columns>CASES.CASE_NUMBER</columns>
+        <columns>CASES.SUBJECT</columns>
+        <columns>CASES.CREATED_DATE</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>Deadline__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CASES.REASON</field>
+            <operation>equals</operation>
+            <value>Billing</value>
+        </filters>
+        <filters>
+            <field>ACCOUNT.NAME</field>
+            <operation>notContain</operation>
+            <value>test</value>
+        </filters>
+        <filters>
+            <field>CASES.STATUS</field>
+            <operation>equals</operation>
+            <value>On Hold,Escalated,New</value>
+        </filters>
+        <filters>
+            <field>Utility_Follow_Up_Required__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>Utility Net Metering Cases</label>
+        <sharedTo>
+            <group>BFG</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Open_Partner_Care_Cases1</fullName>
+        <columns>CASES.CASE_NUMBER</columns>
+        <columns>Expand__c</columns>
+        <columns>NAME</columns>
+        <columns>Product_Line__c</columns>
+        <columns>CASES.SUBJECT</columns>
+        <columns>Category__c</columns>
+        <columns>CASES.CREATED_DATE</columns>
+        <columns>CASES.STATUS</columns>
+        <columns>CASES.PRIORITY</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>CASES.LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CASES.RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Case.Partner_Care_Case</value>
+        </filters>
+        <filters>
+            <field>CASES.STATUS</field>
+            <operation>equals</operation>
+            <value>Closed</value>
+        </filters>
+        <label>Closed Partner Care Cases</label>
+    </listViews>
+    <listViews>
+        <fullName>Open_Partner_Support_Cases</fullName>
+        <columns>CASES.CASE_NUMBER</columns>
+        <columns>NAME</columns>
+        <columns>CASES.SUBJECT</columns>
+        <columns>Related_Opportunity__c</columns>
+        <columns>Product_Line__c</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>CASES.STATUS</columns>
+        <columns>CASES.PRIORITY</columns>
+        <columns>CASES.CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CASES.RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Case.Partner_Care_Case,Case.Customer_Care</value>
+        </filters>
+        <filters>
+            <field>CASES.STATUS</field>
+            <operation>contains</operation>
+            <value>Escalated,Awaiting,Progress,New</value>
+        </filters>
+        <filters>
+            <field>CORE.USERS.ALIAS</field>
+            <operation>contains</operation>
+            <value>Partner,law,fala,dew,jberg,jlu</value>
+        </filters>
+        <filters>
+            <field>CASES.SUBJECT</field>
+            <operation>notContain</operation>
+            <value>sandbox</value>
+        </filters>
+        <label>Open Partner Support Cases</label>
+    </listViews>
+    <listViews>
+        <fullName>Product_Support_Case</fullName>
+        <columns>CASES.CASE_NUMBER</columns>
+        <columns>NAME</columns>
+        <columns>CASES.SUBJECT</columns>
+        <columns>CASES.STATUS</columns>
+        <columns>CASES.PRIORITY</columns>
+        <columns>CASES.CREATED_DATE</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Queue</filterScope>
+        <filters>
+            <field>CASES.CLOSED</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </filters>
+        <label>Product Support</label>
+        <queue>Product_Support</queue>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
+    <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
+    <recordTypeTrackHistory>true</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>Asset_Management_Case</fullName>
+        <active>true</active>
+        <businessProcess>Finance Case</businessProcess>
+        <label>Asset Management Case</label>
+        <picklistValues>
+            <picklist>Assignee_If_Different__c</picklist>
+            <values>
+                <fullName>Alex Schulte</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Aly Garvin</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BWOC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Kamal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Olivia Love</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reg Schonborn</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Trevor Lennox</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Case_Type__c</picklist>
+            <values>
+                <fullName>3rd Party</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BlueWave</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Vendor</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Category__c</picklist>
+            <values>
+                <fullName>Billing</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Finance_Category__c</picklist>
+            <values>
+                <fullName>1603 Compliance %2F Loan Support</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Corporate Finance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Debt Capital Markets %2F Structured Transactions</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Equity Capital Markets %2F Strategic Partnerships</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Platform Finance</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Origin</picklist>
+            <values>
+                <fullName>Chatter Answers</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Email</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Phone</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Web</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Primary_Complaint_Category__c</picklist>
+            <values>
+                <fullName>Advertising%2Fmarketing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Application</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Service</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Discrimination</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Fraud</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Identity Theft</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Improper Sales Practices</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Installer%2FPartner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Miscellaneous</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Origination%2FCredit Decision</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Payments</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Privacy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Service Provider</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Servicemember%2FSCRA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Servicing%2FCollection</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unauthorized Enrollment</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Priority</picklist>
+            <values>
+                <fullName>High</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Low</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Medium</fullName>
+                <default>true</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Product_Line__c</picklist>
+            <values>
+                <fullName>Community Solar</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Reason</picklist>
+            <values>
+                <fullName>Complex functionality</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Executive Team - Complete</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Existing problem</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Instructions not clear</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>New problem</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>User didn%27t attend training</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Resolution__c</picklist>
+            <values>
+                <fullName>Data Update</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Modify Access</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No Longer an Issue</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Question</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>User Error</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Type</picklist>
+            <values>
+                <fullName>Feature Request</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Problem</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Question</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Case</fullName>
+        <active>true</active>
+        <businessProcess>Customer Care Case</businessProcess>
+        <label>Case</label>
+        <picklistValues>
+            <picklist>Assignee_If_Different__c</picklist>
+            <values>
+                <fullName>Alex Schulte</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Aly Garvin</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BWOC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Kamal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Olivia Love</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reg Schonborn</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Trevor Lennox</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Case_Type__c</picklist>
+            <values>
+                <fullName>3rd Party</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BlueWave</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Vendor</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Category__c</picklist>
+            <values>
+                <fullName>Bill %25 Incorrect%3A Rounding error</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bill %25 Incorrect%3A Unknown error</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Billing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cancelled Utility Account</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Credit Allocation Issue</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Custom Message Update</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Do not send bill</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Final Bill</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Payment Plan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Subscription Adjustment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>UAS Marked as Cancelled%3A Not on Transfer Sheet</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>UAS Marked as Cancelled%3A On Transfer Sheet</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Finance_Category__c</picklist>
+            <values>
+                <fullName>1603 Compliance %2F Loan Support</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Corporate Finance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Debt Capital Markets %2F Structured Transactions</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Equity Capital Markets %2F Strategic Partnerships</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Platform Finance</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Origin</picklist>
+            <values>
+                <fullName>Chatter Answers</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Email</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Phone</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Web</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Primary_Complaint_Category__c</picklist>
+            <values>
+                <fullName>Advertising%2Fmarketing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Application</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Service</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Discrimination</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Fraud</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Identity Theft</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Improper Sales Practices</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Installer%2FPartner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Miscellaneous</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Origination%2FCredit Decision</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Payments</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Privacy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Service Provider</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Servicemember%2FSCRA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Servicing%2FCollection</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unauthorized Enrollment</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Priority</picklist>
+            <values>
+                <fullName>High</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Low</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Medium</fullName>
+                <default>true</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Product_Line__c</picklist>
+            <values>
+                <fullName>Community Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar Loan</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Reason</picklist>
+            <values>
+                <fullName>Billing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Complex functionality</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Executive Team - Complete</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Existing problem</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Instructions not clear</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>New problem</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Onboarding</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>User didn%27t attend training</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Resolution__c</picklist>
+            <values>
+                <fullName>Data Update</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Modify Access</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No Longer an Issue</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Question</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>User Error</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Type</picklist>
+            <values>
+                <fullName>Feature Request</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Problem</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Question</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Customer_Care</fullName>
+        <active>true</active>
+        <businessProcess>Customer Care Case</businessProcess>
+        <label>Customer Care</label>
+        <picklistValues>
+            <picklist>Assignee_If_Different__c</picklist>
+            <values>
+                <fullName>Alex Schulte</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Aly Garvin</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BWOC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Kamal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Olivia Love</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reg Schonborn</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Trevor Lennox</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Case_Type__c</picklist>
+            <values>
+                <fullName>3rd Party</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BlueWave</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Vendor</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Category__c</picklist>
+            <values>
+                <fullName>Application Status</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Billing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cancellation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Disbursals</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Question</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SRECs</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Subscription Adjustment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Technical Assistance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Transfer</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Finance_Category__c</picklist>
+            <values>
+                <fullName>1603 Compliance %2F Loan Support</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Corporate Finance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Debt Capital Markets %2F Structured Transactions</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Equity Capital Markets %2F Strategic Partnerships</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Platform Finance</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Origin</picklist>
+            <values>
+                <fullName>Chatter Answers</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Email</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Phone</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Web</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Primary_Complaint_Category__c</picklist>
+            <values>
+                <fullName>Advertising%2Fmarketing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Application</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Service</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Discrimination</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Fraud</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Identity Theft</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Improper Sales Practices</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Installer%2FPartner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Miscellaneous</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Origination%2FCredit Decision</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Payments</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Privacy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Service Provider</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Servicemember%2FSCRA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Servicing%2FCollection</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unauthorized Enrollment</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Priority</picklist>
+            <values>
+                <fullName>High</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Low</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Medium</fullName>
+                <default>true</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Product_Line__c</picklist>
+            <values>
+                <fullName>Community Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar Loan</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Reason</picklist>
+            <values>
+                <fullName>Complex functionality</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Executive Team - Complete</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Existing problem</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Instructions not clear</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>New problem</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Onboarding</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>User didn%27t attend training</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Resolution__c</picklist>
+            <values>
+                <fullName>Data Update</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Modify Access</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No Longer an Issue</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Question</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>User Error</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Type</picklist>
+            <values>
+                <fullName>Feature Request</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Problem</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Question</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Finance_Case</fullName>
+        <active>true</active>
+        <businessProcess>Finance Case</businessProcess>
+        <label>Finance Case</label>
+        <picklistValues>
+            <picklist>Assignee_If_Different__c</picklist>
+            <values>
+                <fullName>Alex Schulte</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Aly Garvin</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BWOC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Kamal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Olivia Love</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reg Schonborn</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Trevor Lennox</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Case_Type__c</picklist>
+            <values>
+                <fullName>3rd Party</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BlueWave</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Vendor</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Category__c</picklist>
+            <values>
+                <fullName>Billing</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Finance_Category__c</picklist>
+            <values>
+                <fullName>1603 Compliance %2F Loan Support</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Corporate Finance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Debt Capital Markets %2F Structured Transactions</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Equity Capital Markets %2F Strategic Partnerships</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Platform Finance</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Origin</picklist>
+            <values>
+                <fullName>Chatter Answers</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Email</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Phone</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Web</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Primary_Complaint_Category__c</picklist>
+            <values>
+                <fullName>Advertising%2Fmarketing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Application</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Service</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Discrimination</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Fraud</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Identity Theft</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Improper Sales Practices</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Installer%2FPartner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Miscellaneous</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Origination%2FCredit Decision</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Payments</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Privacy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Service Provider</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Servicemember%2FSCRA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Servicing%2FCollection</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unauthorized Enrollment</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Priority</picklist>
+            <values>
+                <fullName>High</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Low</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Medium</fullName>
+                <default>true</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Product_Line__c</picklist>
+            <values>
+                <fullName>Community Solar</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Reason</picklist>
+            <values>
+                <fullName>Complex functionality</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Executive Team - Complete</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Existing problem</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Instructions not clear</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>New problem</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>User didn%27t attend training</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Resolution__c</picklist>
+            <values>
+                <fullName>Data Update</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Modify Access</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No Longer an Issue</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Question</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>User Error</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Type</picklist>
+            <values>
+                <fullName>Feature Request</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Problem</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Question</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Partner_Care_Case</fullName>
+        <active>true</active>
+        <businessProcess>Customer Care Case</businessProcess>
+        <label>Partner Care Case</label>
+        <picklistValues>
+            <picklist>Assignee_If_Different__c</picklist>
+            <values>
+                <fullName>Alex Schulte</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Aly Garvin</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BWOC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Kamal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Olivia Love</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reg Schonborn</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Trevor Lennox</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Case_Type__c</picklist>
+            <values>
+                <fullName>3rd Party</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BlueWave</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Vendor</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Category__c</picklist>
+            <values>
+                <fullName>Amortization Table</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Capacity</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Contract%2FApplication Issue</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Utility Bill</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Elligibility</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Invoice</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Loan Terms</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Onboarding</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Portal Issue</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Terms</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>QC Call</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SREC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>TPF%2FCollections</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Underwriting</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Finance_Category__c</picklist>
+            <values>
+                <fullName>1603 Compliance %2F Loan Support</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Corporate Finance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Debt Capital Markets %2F Structured Transactions</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Equity Capital Markets %2F Strategic Partnerships</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Platform Finance</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Origin</picklist>
+            <values>
+                <fullName>Chatter Answers</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Email</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Phone</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Web</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Primary_Complaint_Category__c</picklist>
+            <values>
+                <fullName>Advertising%2Fmarketing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Application</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Service</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Discrimination</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Fraud</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Identity Theft</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Improper Sales Practices</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Installer%2FPartner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Miscellaneous</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Origination%2FCredit Decision</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Payments</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Privacy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Service Provider</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Servicemember%2FSCRA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Servicing%2FCollection</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unauthorized Enrollment</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Priority</picklist>
+            <values>
+                <fullName>High</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Low</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Medium</fullName>
+                <default>true</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Product_Line__c</picklist>
+            <values>
+                <fullName>Community Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar Loan</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Reason</picklist>
+            <values>
+                <fullName>Complex functionality</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Executive Team - Complete</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Existing problem</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Instructions not clear</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>New problem</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Onboarding</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>User didn%27t attend training</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Resolution__c</picklist>
+            <values>
+                <fullName>Data Update</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Modify Access</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No Longer an Issue</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Question</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>User Error</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Type</picklist>
+            <values>
+                <fullName>Feature Request</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Problem</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Question</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Product_Support</fullName>
+        <active>true</active>
+        <businessProcess>Product Support</businessProcess>
+        <label>Product Support</label>
+        <picklistValues>
+            <picklist>Assignee_If_Different__c</picklist>
+            <values>
+                <fullName>Alex Schulte</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Aly Garvin</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BWOC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Kamal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Olivia Love</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reg Schonborn</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Trevor Lennox</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Case_Type__c</picklist>
+            <values>
+                <fullName>3rd Party</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BlueWave</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Vendor</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Category__c</picklist>
+            <values>
+                <fullName>Amortization Table</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Application Status</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bill %25 Incorrect%3A Rounding error</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bill %25 Incorrect%3A Unknown error</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Billing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cancellation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cancelled Utility Account</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Capacity</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Contract%2FApplication Issue</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Credit Allocation Issue</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Custom Message Update</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Utility Bill</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Disbursals</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Do not send bill</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Elligibility</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Final Bill</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Invoice</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Loan Terms</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Onboarding</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Payment Plan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Poor Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Portal Issue</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Question</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Terms</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>QC Call</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SREC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SRECs</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Subscription Adjustment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Subscription Change</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>TPF%2FCollections</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Technical Assistance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Transfer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>UAS Marked as Cancelled%3A Not on Transfer Sheet</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>UAS Marked as Cancelled%3A On Transfer Sheet</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Underwriting</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Finance_Category__c</picklist>
+            <values>
+                <fullName>1603 Compliance %2F Loan Support</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Corporate Finance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Debt Capital Markets %2F Structured Transactions</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Equity Capital Markets %2F Strategic Partnerships</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Platform Finance</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Origin</picklist>
+            <values>
+                <fullName>Email</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Web</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Primary_Complaint_Category__c</picklist>
+            <values>
+                <fullName>Advertising%2Fmarketing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Application</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Service</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Discrimination</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Fraud</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Identity Theft</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Improper Sales Practices</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Installer%2FPartner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Miscellaneous</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Origination%2FCredit Decision</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Payments</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Privacy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Service Provider</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Servicemember%2FSCRA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Servicing%2FCollection</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unauthorized Enrollment</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Priority</picklist>
+            <values>
+                <fullName>High</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Low</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Medium</fullName>
+                <default>true</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Product_Line__c</picklist>
+            <values>
+                <fullName>Community Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar Loan</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Reason</picklist>
+            <values>
+                <fullName>Complex functionality</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Executive Team - Complete</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Existing problem</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Instructions not clear</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>New problem</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>User didn%27t attend training</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Resolution__c</picklist>
+            <values>
+                <fullName>Bug</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Data Update</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Duplicate</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Modify Access</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No Longer an Issue</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Question</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>User Error</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Type</picklist>
+            <values>
+                <fullName>Feature Request</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Problem</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Question</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts>
+        <customTabListAdditionalFields>CASES.CASE_NUMBER</customTabListAdditionalFields>
+        <customTabListAdditionalFields>CASES.SUBJECT</customTabListAdditionalFields>
+        <customTabListAdditionalFields>CASES.CREATED_DATE</customTabListAdditionalFields>
+        <customTabListAdditionalFields>CASES.PRIORITY</customTabListAdditionalFields>
+        <customTabListAdditionalFields>OWNER_NAME</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>CASES.CASE_NUMBER</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>CASES.SUBJECT</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>NAME</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>ACCOUNT.NAME</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>CASES.STATUS</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>CASES.CASE_NUMBER</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>CASES.SUBJECT</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>NAME</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>ACCOUNT.NAME</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>CASES.STATUS</lookupPhoneDialogsAdditionalFields>
+        <searchResultsAdditionalFields>CASES.CASE_NUMBER</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CASES.SUBJECT</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CASES.STATUS</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CASES.CREATED_DATE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CORE.USERS.ALIAS</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Block_Close_Case_with_Order_Status_Error</fullName>
+        <active>true</active>
+        <description>Disallows the closing of a case if that case is linked to a chargent order with a Payment Status of &apos;Error&apos;.</description>
+        <errorConditionFormula>AND(TEXT(Chargent_Order__r.ChargentOrders__Payment_Status__c) = &apos;Error&apos;, AND(TEXT(Status) = &apos;Closed&apos;,
+             TEXT(PRIORVALUE(Status)) != &apos;Closed&apos;))</errorConditionFormula>
+        <errorMessage>Don&apos;t close a case related to a Chargent Order with Payment Status &apos;Error&apos;. Instead, update the Payment Status to &apos;Complete&apos; to indicate it should no longer be used. Then, close the case, or let the case creator automatically close it next time it runs.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Resolution_required_when_closing_a_case</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+ISBLANK(TEXT(Resolution__c) ),
+ RecordTypeId = &apos;0120a0000004dlv&apos;, /* Product Support */
+ IsClosed = TRUE
+)</errorConditionFormula>
+        <errorDisplayField>Resolution__c</errorDisplayField>
+        <errorMessage>Resolution is required before closing the case.</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>APXTConga4__Conga_Composer_OAuth</fullName>
+        <availability>online</availability>
+        <description>*** DO NOT USE THIS BUTTON ON A PAGE LAYOUT *** 
+
+OAuth buttons require additional setup. Please see the Composer Installation Guide for more details.
+
+COPY THE URL FROM THIS BUTTON and paste it into your own custom button or link. Then add optional parameters to finely tune the button&apos;s behavior. See the Composer Configuration Guide for details.</description>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>660</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Conga Composer (OAuth)</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/apex/APXTConga4__Conga_Composer
+?id={!Case.Id}</url>
+        <width>900</width>
+    </webLinks>
+    <webLinks>
+        <fullName>APXTConga4__Conga_Mail_Merge</fullName>
+        <availability>online</availability>
+        <description>*** DO NOT USE THIS BUTTON ON A PAGE LAYOUT *** 
+
+COPY THE URL FROM THIS BUTTON and paste it into your own custom button or link. Then add optional parameters to finely tune the button&apos;s behavior. See the Conga Configuration Guide for details.</description>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>false</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>660</height>
+        <isResizable>false</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Conga Composer</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>https://composer.congamerge.com
+?sessionId={!API.Session_ID}
+&amp;serverUrl={!API.Partner_Server_URL_290}
+&amp;id={!Case.Id}</url>
+        <width>900</width>
+    </webLinks>
+    <webLinks>
+        <fullName>Account_Hierarchy</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Account Hierarchy</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/support/console/28.0/integration.js&quot;)} 
+
+if (sforce.console.isInConsole()) { 
+srcUp(&apos;/acc/account_hierarchy.jsp?id={!Account.Id}&apos;);
+} else { 
+window.open(&apos;/acc/account_hierarchy.jsp?id={!Account.Id}&apos;,&apos;_blank&apos;); 
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Account_History</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Account History</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/support/console/28.0/integration.js&quot;)} 
+
+if (sforce.console.isInConsole()) { 
+srcUp(&apos;/007?id=0010v000003hbr3&amp;rlid=RelatedHistoryList&amp;closed=1&apos;);
+} else { 
+window.open(&apos;/007?id=0010v000003hbr3&amp;rlid=RelatedHistoryList&amp;closed=1&apos;,&apos;_blank&apos;); 
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Contacts</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Contacts</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/support/console/28.0/integration.js&quot;)} 
+
+if (sforce.console.isInConsole()) { 
+srcUp(&apos;/003?rlid=RelatedContactList&amp;id={!Case.AccountId}&apos;);
+} else { 
+window.open(&apos;/003?rlid=RelatedContactList&amp;id={!Case.AccountId}&apos;,&apos;_blank&apos;);
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>LiveText__Send_Bulk_SMS</fullName>
+        <availability>online</availability>
+        <description>Sends text message to selected records</description>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Send Text to List</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/10.0/connection.js&quot;)} 
+            {!REQUIRESCRIPT(&quot;/soap/ajax/14.0/apex.js&quot;)} 
+            {!REQUIRESCRIPT(&apos;/support/console/31.0/integration.js&apos;)}; 
+
+            var records = {!GETRECORDIDS($ObjectType.Case)}; 
+            var hasShortCodeNumber = sforce.apex.execute(&quot;LiveText.RetrievePreferredPhoneNumber&quot;,&quot;agentHasShortcodeNumberAssigned&quot;,{});
+            if (records[0] == null){ 
+                alert(&quot;Please select at least one case&quot;);
+            }else if((records.length &gt; 25) &amp;&amp; hasShortCodeNumber==&quot;false&quot;){ 
+                alert(&quot;A maximum of 25 text messages may be sent at once. Please select fewer recipients and try again.&quot;); 
+            } 
+            else{ 
+                var packagePrefix = &quot;LiveText__&quot;; 
+                var recordType = &quot;case&quot;; 
+                var recordIds = &quot;&quot;;
+
+                for (var n in records) { 
+                    if(n == &apos;remove&apos; || n == &apos;indexOf&apos;) continue; 
+                    recordIds = recordIds + records[n]; 
+                    
+                    if (n != records.length-1) { 
+                        recordIds = recordIds + &quot;,&quot;; 
+                    } 
+                }
+
+                var storageId = sforce.apex.execute(&quot;LiveText.RetrievePreferredPhoneNumber&quot;,&quot;saveToStorage&quot;,{stringToSave:recordIds});
+                var urlStart = &apos;https://&apos;+window.location.hostname+&apos;/apex/LiveText__LiveTextBulkSms?recordType=&apos;+recordType+&apos;&amp;storageId=&apos;+storageId; 
+                
+                if(sforce.console.isInConsole()) { 
+                    sforce.console.openPrimaryTab(null, urlStart, true);
+                } else { 
+                    window.top.location.href = urlStart; 
+                } 
+            }</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Property_Accounts</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Property Accounts</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>https://na16.salesforce.com/00Oj0000004iDSu?pv0={!Case.AccountId}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>dsfs__Send_with_DocuSign</fullName>
+        <availability>online</availability>
+        <description>This button will initiate a DocuSign Envelope that is linked to the Case</description>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Send with DocuSign</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/apex/dsfs__DocuSign_JavaScript&quot;)}
+DocuSign_CreateEnvelope();</url>
+    </webLinks>
+</CustomObject>

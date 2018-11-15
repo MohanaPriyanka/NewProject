@@ -1,0 +1,78 @@
+<apex:page controller="LASERCA.CreditSettingsController">
+    <apex:form >
+        <apex:pageBlock title="Credit API Settings" mode="edit">
+            <apex:pageMessages />
+            <apex:repeat value="{!cAPIAccList}" var="cAPIAcc">
+                <apex:pageBlockSection title="{!cAPIAcc.LASERCA__Username__c}" columns="1">
+                    <apex:inputfield styleClass="input_username" value="{!cAPIAcc.LASERCA__Username__c}"/>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Password"/>
+                        <apex:inputsecret styleClass="input_password" value="{!password}" />
+                    </apex:pageBlockSectionItem>
+                    <apex:inputField styleClass="input_experian" value="{!cAPIAcc.LASERCA__Experian__c}" />
+                    <apex:inputField styleClass="input_transunion" value="{!cAPIAcc.LASERCA__TransUnion__c}" />
+                    <apex:inputField styleClass="input_equifax" value="{!cAPIAcc.LASERCA__Equifax__c}" />
+                    <apex:inputfield styleClass="input_demo" value="{!cAPIAcc.LASERCA__Demo_Mode__c}"/>
+                    <apex:inputfield styleClass="input_debug_mode" value="{!cAPIAcc.LASERCA__Debug_Mode__c}"/>
+                    <apex:inputfield styleClass="input_default" value="{!cAPIAcc.LASERCA__Default__c}"/>
+                    <apex:pageBlockSectionItem >
+                    <apex:outputPanel />
+                    <apex:outputPanel >
+                        <apex:commandButton styleClass="submitButton" value="Update Credential" action="{!saveCredentials}" style="margin-left: 5px; display: inline-block" />
+                        <apex:commandButton styleClass="submitButton" value="Delete Credential" action="{!deleteCredential}" style="margin-left: 5px; display: inline-block"/>
+                    </apex:outputPanel>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+            </apex:repeat>
+
+            <apex:pageBlockSection title="Add a new credential..." columns="1">
+                <apex:inputfield styleClass="input_username" value="{!newcAPIAcc.LASERCA__Username__c}"/>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Password"/>
+                    <apex:inputsecret styleClass="input_password" value="{!newcAPIAcc.LASERCA__Password__c}" />
+                </apex:pageBlockSectionItem>
+                <apex:inputField styleClass="input_experian" value="{!newcAPIAcc.LASERCA__Experian__c}" />
+                <apex:inputField styleClass="input_transunion" value="{!newcAPIAcc.LASERCA__TransUnion__c}" />
+                <apex:inputField styleClass="input_equifax" value="{!newcAPIAcc.LASERCA__Equifax__c}" />
+                <apex:inputfield styleClass="input_demo" value="{!newcAPIAcc.LASERCA__Demo_Mode__c}"/>
+                <apex:inputfield styleClass="input_debug_mode" value="{!newcAPIAcc.LASERCA__Debug_Mode__c}"/>
+                <apex:inputfield styleClass="input_default" value="{!newcAPIAcc.LASERCA__Default__c}"/>
+                <apex:pageBlockSectionItem >
+                    <apex:outputPanel />
+                    <apex:outputPanel >
+                        <apex:commandButton value="Add Credential" action="{!addCredential}" style="margin-left: 5px; display: inline-block" />
+                    </apex:outputPanel>
+                    </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+
+        </apex:pageBlock>
+        <apex:inputHidden id="jsonObj" value="{!jsonObj}" />
+    </apex:form>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/json3/3.2.4/json3.min.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.min.js" integrity="sha256-1fK87Pt9T7XXn/Vj3CWSfJlZkL5f73092A8YL7p7avc=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css" integrity="sha256-O1jJhOIWWDc3wq75g7aXDl7aEQT2XPkieX/Mz/u4hQ0=" crossorigin="anonymous" />
+    
+    <script type="text/javascript">
+        $('.submitButton').click(function(){
+            var table = $(this).parents('.detailList');
+
+            var jsonObj = {input_username: table.find('.input_username').val(),
+                            input_password: table.find('.input_password').val(),
+                            input_experian: table.find('.input_experian:checked').length,
+                            input_transunion: table.find('.input_transunion:checked').length,
+                            input_equifax: table.find('.input_equifax:checked').length,
+                            input_demo: table.find('.input_demo:checked').length,
+                            input_debug_mode: table.find('.input_debug_mode:checked').length,
+                            input_default: table.find('.input_default:checked').length
+                        };
+            $('input[id*="jsonObj"]').val(JSON.stringify(jsonObj));
+        });
+
+        $('.input_default').click(function(){
+            $('.input_default').prop('checked', false);
+            $(this).prop('checked', true);
+        });
+    </script>
+</apex:page>

@@ -13,6 +13,3 @@ trigger MarketingInventoryItemOrderTrigger on Marketing_Inventory_Item_Order__c 
 		marketingInventoryItemOrderHandler.updateInventoryOrderStatus(Trigger.newMap, Trigger.oldMap);
 	}
 }
-
-
-

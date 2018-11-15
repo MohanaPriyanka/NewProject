@@ -167,5 +167,3 @@
         helper.changeTable(component, "expiredApplicants", "expiredApplicants", "originalExpiredApplicants");
     },
 })
-
-
