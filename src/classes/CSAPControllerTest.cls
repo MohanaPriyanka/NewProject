@@ -288,12 +288,23 @@ public with sharing class CSAPControllerTest {
         pullCreditForLead(residentialLead.Id);
         //Try pulling credit report
         CSAPController.pullCreditStatus(residentialLead);
-        //Check for qualified since Credit Score is 700
-        System.assertEquals('Qualified', CSAPController.checkLeadCreditIfQualified(residentialLead.Id).sssCreditQualification);
-        System.assertEquals(null, CSAPController.checkLeadCreditIfQualified(residentialLead.Id).srecProduct);
 
         Product2 smartProduct = [SELECT Id FROM Product2 WHERE Name = 'SMART Community Solar'];
-        System.assertEquals(smartProduct.Id, CSAPController.checkLeadCreditIfQualified(residentialLead.Id).smartProduct.Id);
+
+        //Check for qualified since Credit Score is 700
+        System.assertEquals('Qualified', CSAPController.checkLeadCreditIfQualified(residentialLead.Id).sssCreditQualification);
+
+        Boolean containsSmartProduct = false;
+        Boolean containsNonSmartProduct = false;
+        for (Product2 product : CSAPController.checkLeadCreditIfQualified(residentialLead.Id).productList){
+            if (product.Id == smartProduct.Id) {
+                containsSmartProduct = true;
+            } else {
+                containsNonSmartProduct = true;
+            }
+        }
+        System.assertEquals(true, containsSmartProduct);
+        System.assertEquals(false, containsNonSmartProduct);
 
         User apiUser = [SELECT Id, Name, Username
         FROM User
@@ -466,9 +477,18 @@ public with sharing class CSAPControllerTest {
         CSAPController.pullCreditStatus(lead);
         //Check for qualified since credit score is 700
         System.assertEquals('Qualified', CSAPController.checkLeadCreditIfQualified(lead.Id).sssCreditQualification);
-        System.assertEquals(null, CSAPController.checkLeadCreditIfQualified(lead.Id).srecProduct);
-        System.assertEquals(smartProduct.Id, CSAPController.checkLeadCreditIfQualified(lead.Id).smartProduct.Id);
 
+        Boolean containsSmartProduct = false;
+        Boolean containsNonSmartProduct = false;
+        for (Product2 product : CSAPController.checkLeadCreditIfQualified(lead.Id).productList){
+            if (product.Id == smartProduct.Id) {
+                containsSmartProduct = true;
+            } else {
+                containsNonSmartProduct = true;
+            }
+        }
+        System.assertEquals(true, containsSmartProduct);
+        System.assertEquals(false, containsNonSmartProduct);
 
         LASERCA__Personal_Credit_Report__c pcr = [SELECT LASERCA__Credit_Score__c FROM LASERCA__Personal_Credit_Report__c WHERE LASERCA__Lead__c = :leadToInsert.Id];
         //Check not qualified
