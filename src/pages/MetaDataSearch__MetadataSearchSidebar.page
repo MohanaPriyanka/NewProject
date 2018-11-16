@@ -1,3 +1,0 @@
-<apex:page showChat="false">    
-    <c:MetadataSearchSidebarComponent />  
-</apex:page>

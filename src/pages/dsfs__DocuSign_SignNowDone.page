@@ -1,4 +1,0 @@
-<apex:page controller="dsfs.DocuSignEnvelopeController"
-           showHeader="false"
-           sideBar="false"
-           action="{!startSignNow}"/>

@@ -266,3 +266,4 @@ public without sharing class SLPAddCustomer {
         return Util.getActiveProducts(new List<String>{state}, profile.partnerId, productType);
     }
 }
+

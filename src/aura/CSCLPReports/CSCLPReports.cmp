@@ -12,7 +12,7 @@
 	<div class="slds-form-element">
 		<div class="slds-grid">
 			<div class="slds-col slds-size_1-of-4">
-				<c:BlueWavePicklist options="{!v.reportNames}" label="Select Report" value="{!v.selectedReportName}" default="{!v.reportNames[0]}"/>
+				<c:BluewavePicklist options="{!v.reportNames}" label="Select Report" value="{!v.selectedReportName}" default="{!v.reportNames[0]}"/>
 			</div>
 		</div>
 	</div>

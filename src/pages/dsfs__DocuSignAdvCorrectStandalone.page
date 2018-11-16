@@ -1,6 +1,0 @@
-<apex:page tabstyle="dsfs__DocuSign_Status__c">
-    <apex:includeScript value="{!$Resource.dsfs__UtilJS}"/>
-    <apex:form >
-        <c:DocuSignAdvCorrect />
-    </apex:form>
-</apex:page>

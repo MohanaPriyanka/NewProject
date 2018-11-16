@@ -1,7 +1,7 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" controller="MyAccountController">
   <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
   <aura:attribute name="userContact" type="Contact"/>
-  <aura:attribute name="isEditable" type="Boolean" default="false"/>
+  <aura:attribute  name="isEditable" type="Boolean" default="false"/>
 
   <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
     <div class="slds-col slds-size_1-of-6"/>
@@ -102,3 +102,4 @@
     <div class="slds-col slds-size_1-of-6"/>
   </div>
 </aura:component>
+

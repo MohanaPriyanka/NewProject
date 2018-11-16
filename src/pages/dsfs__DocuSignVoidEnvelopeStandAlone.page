@@ -1,5 +1,0 @@
-<apex:page tabstyle="dsfs__DocuSign_Status__c">
-	<apex:form >
-		<c:DocuSignVoidEnvelope />
-	</apex:form>
-</apex:page>

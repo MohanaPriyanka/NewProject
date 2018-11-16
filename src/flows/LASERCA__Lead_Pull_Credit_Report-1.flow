@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <description>Pull Credit Report of the Lead record</description>
-    <label>Lead - Pull Credit Report</label>
-    <processType>Workflow</processType>
-</Flow>
