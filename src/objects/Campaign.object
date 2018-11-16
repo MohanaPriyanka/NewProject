@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>AddCampaign</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>AdvancedSetup</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <comment>Action override created by Lightning App Builder during activation.</comment>
+        <content>Campaign_Record_Page</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+    </actionOverrides>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <fields>
+        <fullName>ActualCost</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+    </fields>
+    <fields>
+        <fullName>AmountAllOpportunities</fullName>
+    </fields>
+    <fields>
+        <fullName>AmountWonOpportunities</fullName>
+    </fields>
+    <fields>
+        <fullName>BudgetedCost</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+    </fields>
+    <fields>
+        <fullName>CampaignImageId</fullName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>CampaignMemberRecordTypeId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Description</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+    </fields>
+    <fields>
+        <fullName>EndDate</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+    </fields>
+    <fields>
+        <fullName>ExpectedResponse</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+    </fields>
+    <fields>
+        <fullName>ExpectedRevenue</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+    </fields>
+    <fields>
+        <fullName>HierarchyActualCost</fullName>
+    </fields>
+    <fields>
+        <fullName>HierarchyAmountAllOpportunities</fullName>
+    </fields>
+    <fields>
+        <fullName>HierarchyAmountWonOpportunities</fullName>
+    </fields>
+    <fields>
+        <fullName>HierarchyBudgetedCost</fullName>
+    </fields>
+    <fields>
+        <fullName>HierarchyExpectedRevenue</fullName>
+    </fields>
+    <fields>
+        <fullName>HierarchyNumberOfContacts</fullName>
+    </fields>
+    <fields>
+        <fullName>HierarchyNumberOfConvertedLeads</fullName>
+    </fields>
+    <fields>
+        <fullName>HierarchyNumberOfLeads</fullName>
+    </fields>
+    <fields>
+        <fullName>HierarchyNumberOfOpportunities</fullName>
+    </fields>
+    <fields>
+        <fullName>HierarchyNumberOfResponses</fullName>
+    </fields>
+    <fields>
+        <fullName>HierarchyNumberOfWonOpportunities</fullName>
+    </fields>
+    <fields>
+        <fullName>HierarchyNumberSent</fullName>
+    </fields>
+    <fields>
+        <fullName>IsActive</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+    </fields>
+    <fields>
+        <fullName>Launch_Conga__c</fullName>
+        <description>##Conga created button:00b0a000000INtK</description>
+        <externalId>false</externalId>
+        <formula>&quot;&amp;id=&quot; + Id +
+&quot;&amp;qmode=Download&quot;</formula>
+        <label>Launch Conga</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Name</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+    </fields>
+    <fields>
+        <fullName>NumberOfContacts</fullName>
+    </fields>
+    <fields>
+        <fullName>NumberOfConvertedLeads</fullName>
+    </fields>
+    <fields>
+        <fullName>NumberOfLeads</fullName>
+    </fields>
+    <fields>
+        <fullName>NumberOfOpportunities</fullName>
+    </fields>
+    <fields>
+        <fullName>NumberOfResponses</fullName>
+    </fields>
+    <fields>
+        <fullName>NumberOfWonOpportunities</fullName>
+    </fields>
+    <fields>
+        <fullName>NumberSent</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+    </fields>
+    <fields>
+        <fullName>OwnerId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>ParentId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Project__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>If the campaign is related to a Project, you can relate it through this lookup field.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If the campaign is related to a Project, you can relate it through this lookup field.</inlineHelpText>
+        <label>Project</label>
+        <referenceTo>MPM4_BASE__Milestone1_Project__c</referenceTo>
+        <relationshipLabel>Campaigns</relationshipLabel>
+        <relationshipName>Campaigns</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Shirts_Total__c</fullName>
+        <externalId>false</externalId>
+        <label>Shirts (Total Requested)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>StartDate</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+    </fields>
+    <fields>
+        <fullName>Status</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Type</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.END_DATE</columns>
+        <columns>CAMPAIGN.BUDGETED_COST</columns>
+        <columns>CAMPAIGN.ACTUAL_COST</columns>
+        <columns>CAMPAIGN.CAMPAIGN_TYPE</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>AllActiveCampaigns</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.END_DATE</columns>
+        <columns>CAMPAIGN.CAMPAIGN_TYPE</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CAMPAIGN.ACTIVE</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>All Active Campaigns</label>
+    </listViews>
+    <listViews>
+        <fullName>MyActiveCampaigns</fullName>
+        <columns>CAMPAIGN.NAME</columns>
+        <columns>CAMPAIGN.START_DATE</columns>
+        <columns>CAMPAIGN.END_DATE</columns>
+        <columns>CAMPAIGN.CAMPAIGN_TYPE</columns>
+        <columns>CAMPAIGN.STATUS</columns>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>CAMPAIGN.ACTIVE</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <label>My Active Campaigns</label>
+    </listViews>
+    <searchLayouts>
+        <customTabListAdditionalFields>CAMPAIGN.NAME</customTabListAdditionalFields>
+        <customTabListAdditionalFields>CAMPAIGN.STATUS</customTabListAdditionalFields>
+        <customTabListAdditionalFields>CAMPAIGN.START_DATE</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>CAMPAIGN.NAME</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>CAMPAIGN.NAME</lookupPhoneDialogsAdditionalFields>
+        <searchResultsAdditionalFields>CAMPAIGN.NAME</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>PARENT_NAME</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CAMPAIGN.CAMPAIGN_TYPE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CAMPAIGN.STATUS</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CAMPAIGN.START_DATE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CAMPAIGN.END_DATE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CAMPAIGN.NUM_RESPONSES</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CORE.USERS.ALIAS</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>FullAccess</sharingModel>
+    <webLinks>
+        <fullName>LiveText__Send_Text_To_Campaign_Members</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Send Text to Campaign Members</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/10.0/connection.js&quot;)}
+			{!REQUIRESCRIPT(&quot;/soap/ajax/14.0/apex.js&quot;)}
+			{!REQUIRESCRIPT(&apos;/support/console/31.0/integration.js&apos;)};
+			sforce.connection.sessionId = &apos;{!$Api.Session_ID}&apos;;
+			var record =  window.location.pathname.substring(1);
+			var query = &quot;Select Id, isActive From Campaign Where id = &apos;&quot; + record + &quot;&apos;&quot;;
+			try{
+  				var queryResult = sforce.connection.query(query);
+  				var isActive = queryResult.records.IsActive;
+				if(isActive == true || isActive == &apos;true&apos;){
+					var packagePrefix = &quot;LiveText__&quot;;
+					var recordType = &quot;campaign&quot;;
+					var storageId = sforce.apex.execute(&quot;LiveText.RetrievePreferredPhoneNumber&quot;,&quot;saveToStorage&quot;,{stringToSave:record});
+					var urlStart = &apos;https://&apos;+window.location.hostname+&apos;/apex/LiveText__LiveTextCampaignBulkSMS?recordType=&apos;+recordType+&apos;&amp;storageId=&apos;+storageId;
+
+					if(sforce.console.isInConsole()) {
+    					sforce.console.openPrimaryTab(null, urlStart, true);
+					} else {
+    					window.top.location.href = urlStart;
+					}
+					}else{
+						alert(&apos;{!$Label.livetext__bulkcampaignnotactiveerror}&apos;);
+					}
+			}catch(err){
+                if(err.faultCode=&quot;sf:INSUFFICIENT_ACCESS&quot;){ 
+                    alert(&apos;{!$Label.livetext__insufficientprivilegeserror}&apos;);
+                }else{ 
+                    alert(&apos;{!$Label.livetext__sessiontimeout}&apos;);
+                } 
+			}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>ViewAllCampaignMembers</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>500</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>View All Campaign Members</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/camp/rptcmpgncalldown.jsp?scope=1&amp;scopeid={!Campaign_Name}</url>
+        <width>500</width>
+    </webLinks>
+    <webLinks>
+        <fullName>ViewCampaignInfluenceReport</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>500</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>View Campaign Influence Report</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/00O?rt=117&amp;break0=CAN&amp;scope=1&amp;scopeid_lkid={!Campaign.Id}&amp;scopeid={!Campaign_Name}&amp;c=CAN&amp;c=MR&amp;c=PCS&amp;c=CFN&amp;c=RN&amp;c=ON&amp;c=OA&amp;c=OS&amp;c=OCD&amp;c=AN&amp;s=OA&amp;duel0=CAN%2CMR%2CCFN%2CRN%2CAN%2CON%2CPCS%2COS%2COCD%2COA&amp;details=yes&amp;format=t</url>
+        <width>500</width>
+    </webLinks>
+    <webLinks>
+        <fullName>et4ae5__Send_ExactTarget_Email</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Send Marketing Cloud Email</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/19.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/15.0/apex.js&quot;)}
+try
+{
+var urlPrefix = sforce.apex.execute(&quot;et4ae5/jsButtonMethods&quot;,&quot;namespace&quot;, {});
+var theUrl = &quot;https://&quot;+urlPrefix+&quot;/apex/singleSendETEmail?campaignId={!CASESAFEID( Campaign.Id )}&quot;;
+parent.location.href = theUrl;
+}
+catch (e)
+{
+var theUrl = &quot;/apex/singleSendETEmail?campaignId={!CASESAFEID( Campaign.Id )}&quot;;
+parent.location.href = theUrl;
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>et4ae5__ViewCampaignInfluenceReport</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>500</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>View Campaign Influence Report</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/00O?rt=117&amp;break0=CAN&amp;scope=1&amp;scopeid_lkid={!Campaign.Id}&amp;scopeid={!Campaign.Name}&amp;c=CAN&amp;c=MR&amp;c=PCS&amp;c=CFN&amp;c=RN&amp;c=ON&amp;c=OA&amp;c=OS&amp;c=OCD&amp;c=AN&amp;s=OA&amp;duel0=CAN%2CMR%2CCFN%2CRN%2CAN%2CON%2CPCS%2COS%2COCD%2COA&amp;details=yes&amp;format=t</url>
+        <width>500</width>
+    </webLinks>
+</CustomObject>

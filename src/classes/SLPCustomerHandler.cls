@@ -505,4 +505,3 @@ public without sharing class SLPCustomerHandler {
         return profile.storageEnabled;
     }
 }
-

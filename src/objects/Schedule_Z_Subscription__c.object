@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableChangeDataCapture>false</enableChangeDataCapture>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <fields>
+        <fullName>Billing__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Checked when used on first production update, unchecked when production update uses newer schedule Z</inlineHelpText>
+        <label>Billing</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Customer_Subscription_kW_DC__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The size of the UAS at the time of schedule Z filing</inlineHelpText>
+        <label>Customer Subscription kW DC</label>
+        <precision>9</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Deactivated__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Checked when a newer schedule z replaces this one during billing</inlineHelpText>
+        <label>Deactivated</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Enacted__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Checked when the schedule z is enacted by the utility and unchecked when no longer being used for billing</inlineHelpText>
+        <label>Enacted</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Number_of_Decimal_Places__c</fullName>
+        <defaultValue>4</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>The number of decimal places listed on the Schedule Z at the time of Schedule Z filing</inlineHelpText>
+        <label>Number of Decimal Places</label>
+        <precision>1</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Percent_Share__c</fullName>
+        <externalId>false</externalId>
+        <formula>ROUND(Customer_Subscription_kW_DC__c/System_Size_kW_DC__c , Number_of_Decimal_Places__c + 2)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Percent Share</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>5</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Regenerate_Bill__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Regenerate Bill</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Schedule_Z_Status__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT(Schedule_Z__r.Status__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Schedule Z Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Schedule_Z__c</fullName>
+        <externalId>false</externalId>
+        <label>Schedule Z</label>
+        <referenceTo>Schedule_Z__c</referenceTo>
+        <relationshipLabel>Schedule Z Subscriptions</relationshipLabel>
+        <relationshipName>Schedule_Z_Subscriptions</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Submitted__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Unchecked until schedule Z is submitted to the utility</inlineHelpText>
+        <label>Submitted</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>System_Size_kW_DC__c</fullName>
+        <defaultValue>0</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>The size of the solar system at the time of schedule Z filing</inlineHelpText>
+        <label>System Size (kW DC)</label>
+        <precision>8</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Utility_Account_Subscription__c</fullName>
+        <externalId>false</externalId>
+        <label>Utility Account Subscription</label>
+        <referenceTo>Utility_Account_Subscription__c</referenceTo>
+        <relationshipLabel>Schedule Z Subscriptions</relationshipLabel>
+        <relationshipName>Schedule_Z_Subscriptions</relationshipName>
+        <relationshipOrder>1</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <label>Schedule Z Subscription</label>
+    <nameField>
+        <displayFormat>SZS-{0000}</displayFormat>
+        <label>Schedule Z Subscription Name</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Schedule Z Subscriptions</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

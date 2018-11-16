@@ -1,4 +1,3 @@
-
 /*************************************************************************************
  * Created By:  Cole Swain
  * Description: Enables the ability to get metadata from a report and show it in a UI without having to query for the actual records. An example is that CSCLP components 

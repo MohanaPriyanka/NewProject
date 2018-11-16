@@ -1,5 +1,5 @@
 <aura:application >
-    <c:BlueWaveSearchBar/>
-    <c:SLPAllCustomers/>
-    <c:SLPCustomer/>
+    <c:BlueWaveSearchBar />
+    <c:SLPAllCustomers />
+    <c:SLPCustomer />
 </aura:application>

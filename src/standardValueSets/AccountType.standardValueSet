@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sorted>false</sorted>
+    <standardValue>
+        <fullName>Landowner</fullName>
+        <default>true</default>
+        <label>Landowner</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Scout</fullName>
+        <default>false</default>
+        <label>Scout</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Financial Partner</fullName>
+        <default>false</default>
+        <label>Financial Partner</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Service Provider</fullName>
+        <default>false</default>
+        <label>Service Provider</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Government Entity</fullName>
+        <default>false</default>
+        <label>Government Entity</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Engineers of Record</fullName>
+        <default>false</default>
+        <label>Engineers of Record</label>
+    </standardValue>
+    <standardValue>
+        <fullName>QA/QC Consultants</fullName>
+        <default>false</default>
+        <label>QA/QC Consultants</label>
+    </standardValue>
+    <standardValue>
+        <fullName>EPC Account</fullName>
+        <default>false</default>
+        <label>EPC Account</label>
+    </standardValue>
+</StandardValueSet>

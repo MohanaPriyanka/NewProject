@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>List</customSettingsType>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>CS_Bill_Batch_Size__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Determines the batch size of UASBs inserted by a production update in the EnergyUsageUpdateTriggerHandler</inlineHelpText>
+        <label>CS Bill Batch Size</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Credit_Check_Timeout__c</fullName>
+        <defaultValue>60000</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Milliseconds that the AddCustomer Lightning Component will wait for Laser Credit Access to retrieve a credit report before timing out (defaults to 60 seconds). LCA waits 8 seconds to retrieve a report after Salesforce processes the future method.</inlineHelpText>
+        <label>Credit Check Timeout</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Customer_Care_Email__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Holds address for sending email to customer care, used by the Forgot Password page</inlineHelpText>
+        <label>Customer Care Email</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Disable_AccountBillTrigger__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Disable AccountBillTrigger</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Disable_AccountTrigger__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Disable AccountTrigger</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Disable_ChargentOrderTrigger__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Disables chargent order trigger if checked</description>
+        <externalId>false</externalId>
+        <label>Disable ChargentOrderTrigger</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Disable_ContactTrigger__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Disable ContactTrigger</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Disable_EnergyUsageUpdateTrigger__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Disable EnergyUsageUpdateTrigger</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Disable_LeadTrigger__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Disable LeadTrigger</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Disable_LoanServicer_Validation__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>This validation prevents updates to a Loan&apos;s Product, Financing Fee, or System Cost if the Loan&apos;s Opportunity Stage is Complete or Contract Pending. Updating those fields will recalculate the Loan Payment amort schedule.</inlineHelpText>
+        <label>Disable LoanServicer Validation</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Disable_LoanTrancheTrigger__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Disable LoanTrancheTrigger</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Disable_LoanTrigger__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Disable LoanTrigger</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Disable_OpportunityTrigger__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Disable OpportunityTrigger</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Disable_SharedSolarSystemTrigger__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Disable SharedSolarSystemTrigger</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Disable_System_Bill_Trigger__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Disable System Bill Trigger</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Disable_TransactionApplication_Check__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>The check in TransactionApplicationHandler prevents deletion</inlineHelpText>
+        <label>Disable TransactionApplication Check</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Disable_UASBTrigger__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Deactivates the UASBTrigger and RecurringPaymentsHandler</inlineHelpText>
+        <label>Disable UASBTrigger</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Disable_UserTrigger__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Disable UserTrigger</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>DocuSign_API_Account_ID__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>DocuSign API Account ID (https://admindemo.docusign.com/api-integrator-key) e.g. 2255b4dd-7d4f-425a-bcc9-d53328055381</inlineHelpText>
+        <label>DocuSign API Account ID</label>
+        <length>36</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>DocuSign_Customer_Care_User__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The DocuSign user that the DocuSign user will send documents on behalf of. It should be customercare@bluewavesolar.com in production, but could be different if pointed to a developer sandbox.</inlineHelpText>
+        <label>DocuSign Customer Care User</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>DocuSign_Guest_User_Credential__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The Password for the guest user</inlineHelpText>
+        <label>DocuSign Guest User Credential</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>DocuSign_Guest_User__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The user which the Apply Guest User logs into DocuSign with. It needs to have the Sender and Send on Behalf Of permission set: https://docs.docusign.com/esign/guide/authentication/sobo.html</inlineHelpText>
+        <label>DocuSign Guest User</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>DocuSign_Integrator_Key__c</fullName>
+        <defaultValue>&quot;2ceabed4-3a84-4220-9a76-9b1f9f0cf6ed&quot;</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>DocuSign Integrator Key (https://docs.docusign.com/esign/guide/authentication/integrator_key.html) e.g. 2ceabed4-3a84-4220-9a76-9b1f9f0cf6ed</inlineHelpText>
+        <label>DocuSign Integrator Key</label>
+        <length>36</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Error_Email__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Email used by GenericBatchDMLOperation to send errors and LoanServicer to send completion email</inlineHelpText>
+        <label>Error Email</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Flagged_Credit_Codes__c</fullName>
+        <defaultValue>&quot;018,020,A06,021,022,031,034,040,039&quot;</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Comma separated list of codes that force an otherwise approved credit report to go to Pending Review. Should be: 018,020,A06,021,022,031,034,040,039</inlineHelpText>
+        <label>Flagged Credit Codes</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Last_Lease_Dimensions_File_Processed__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Name of the last Lease Dimensions Payment Report file imported as Transaction Applications. Set by the Lease Dimensions Import visualforce page</inlineHelpText>
+        <label>Last Lease Dimensions File Processed</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Warn_on_Max_Loan_Amount__c</fullName>
+        <defaultValue>true</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>In the CAP Change Order screen, show the Max Loan Amount and warn applicants if requested amount exceed the max</inlineHelpText>
+        <label>Warn on Max Loan Amount</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <label>System Properties</label>
+    <visibility>Protected</visibility>
+</CustomObject>

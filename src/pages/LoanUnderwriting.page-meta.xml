@@ -4,4 +4,9 @@
     <availableInTouch>false</availableInTouch>
     <confirmationTokenRequired>false</confirmationTokenRequired>
     <label>LoanUnderwriting</label>
+    <packageVersions>
+        <majorNumber>2</majorNumber>
+        <minorNumber>12</minorNumber>
+        <namespace>LASERCA</namespace>
+    </packageVersions>
 </ApexPage>

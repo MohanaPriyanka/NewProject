@@ -1,0 +1,798 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>true</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableChangeDataCapture>false</enableChangeDataCapture>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>APR_Merge__c</fullName>
+        <externalId>false</externalId>
+        <formula>APR__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>APR Merge</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>APR__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Estimated Annual Percentage Rate Without Buydown, calculated by code for adjustable rate loans</inlineHelpText>
+        <label>APR</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>ARL_Ceiling_Rate__c</fullName>
+        <externalId>false</externalId>
+        <formula>Product__r.Ceiling_Rate__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>ARL Ceiling Rate</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ARL_Floor_Rate__c</fullName>
+        <externalId>false</externalId>
+        <formula>Product__r.Floor_Rate__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>ARL Floor Rate</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ARL_LTT2__c</fullName>
+        <externalId>false</externalId>
+        <formula>&quot;Months &quot; + TEXT(Product__r.First_Adjustment__c) + &quot; - &quot; + TEXT(Product__r.TermPlusIO__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>ARL LTT2</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ARL_LTT3__c</fullName>
+        <externalId>false</externalId>
+        <formula>&quot;Months 1 - &quot; + TEXT(Product__r.TermPlusIO__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>ARL LTT3</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ARL_LTT4__c</fullName>
+        <externalId>false</externalId>
+        <formula>&quot;Months 1 - &quot; + TEXT(Product__r.First_Adjustment__c - 1)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>ARL LTT4</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ARL_LTT__c</fullName>
+        <externalId>false</externalId>
+        <formula>&quot;Months &quot; + TEXT(Product__r.Loan_Interest_Only_Period__c + 1) + &quot; - &quot; + TEXT(Product__r.First_Adjustment__c - 1)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>ARL LTT</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ARL_Margin_Over__c</fullName>
+        <externalId>false</externalId>
+        <formula>Product__r.Margin_Over_Index_Rate__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>ARL Margin Over</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ARL_Max_Adjustment__c</fullName>
+        <externalId>false</externalId>
+        <formula>Product__r.Maximum_Adjustment__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>ARL Max Adjustment</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Applied_ITC__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF (
+Tax_Credit_Modified_by_Partner__c , 
+Modified_ITC__c,
+ITC_Estimated__c
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Applied ITC</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Applied_State_Credits__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF (
+Tax_Credit_Modified_by_Partner__c , 
+Modified_State_Tax_Credit__c,
+State_Tax_Incentive__c
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Applied State Credits</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Applied_Tax_Credits__c</fullName>
+        <externalId>false</externalId>
+        <formula>Applied_State_Credits__c + Applied_ITC__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Applied Tax Credits</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Average_Adjustable_Payment_With_Buydown__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Average P&amp;I Payment for Adjustable Loans, calculated by code</inlineHelpText>
+        <label>Average Adjustable Payment With Buydown</label>
+        <precision>14</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Average_Adjustable_Payment__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Average P&amp;I Payment for Adjustable Loans, calculated by code</inlineHelpText>
+        <label>Average Adjustable Payment</label>
+        <precision>14</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Down_Payment__c</fullName>
+        <externalId>false</externalId>
+        <label>Down Payment</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Federal_Tax_Credit_Text_Rounded__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(AND(ITC_Estimated__c &lt;= 9999, ITC_Estimated__c &gt; 999) , 
+
+LEFT(TEXT(Round(ITC_Estimated__c,0)),1)&amp;&quot;,&quot;&amp;RIGHT(TEXT(Round(ITC_Estimated__c,0)),3) , 
+
+IF(AND(ITC_Estimated__c &lt;= 99999, ITC_Estimated__c &gt; 9999) , 
+
+LEFT(TEXT(Round(ITC_Estimated__c,0)),2)&amp;&quot;,&quot;&amp;RIGHT(TEXT(Round(ITC_Estimated__c,0)),3) , 
+
+IF(AND(ITC_Estimated__c &lt;= 999999, ITC_Estimated__c &gt; 99999) , 
+
+LEFT(TEXT(Round(ITC_Estimated__c,0)),3)&amp;&quot;,&quot;&amp;RIGHT(TEXT(Round(ITC_Estimated__c,0)),3) ,
+
+TEXT(Round(ITC_Estimated__c,0))
+
+)))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Federal Tax Credit Text Rounded</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Finance_Charge__c</fullName>
+        <externalId>false</externalId>
+        <formula>Total_Loan_Payments__c - Loan_Amount__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Finance Charge</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Generate_Doc__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Generate Doc</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>ITC_Estimated__c</fullName>
+        <externalId>false</externalId>
+        <formula>System_Cost__c * 0.30</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>ITC Estimated</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Interest_Only_Payments__c</fullName>
+        <externalId>false</externalId>
+        <formula>(Product__r.Loan_Interest_Only_Period__c *  Interest_Payment__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Interest Only Payments</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Interest_Pay_Text__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF ( ISPICKVAL(Product__r.Program__c,&quot;MSLP&quot;) , &quot;During System Construction&quot; , &quot;Months 1 - &quot; + TEXT(Product__r.Loan_Interest_Only_Period__c) )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Interest Pay Text</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Interest_Payment__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( ISPICKVAL(Product__r.Program__c, &quot;MSLP&quot;), 0.35 * Loan_Amount__c * Product__r.Loan_Interest_Rate__c/12 ,Loan_Amount__c * Product__r.Loan_Interest_Rate__c /12)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Interest Payment</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Interest_Rate__c</fullName>
+        <externalId>false</externalId>
+        <formula>Product__r.Loan_Interest_Rate__c/100</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Interest Rate</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>LTT_Second_Amort__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF ( Product__r.State_Incentive_Second_Reamort__c , &quot;Months 19 -&quot; + TEXT(Product__r.Loan_Term__c + Product__r.Loan_Interest_Only_Period__c),&quot;&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Loan Term Text (Second Amort)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LTT__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF ( ISPICKVAL(Product__r.Program__c,&quot;MSLP&quot;) , &quot;First month after System Operation Date &quot; + &quot; - &quot; + TEXT(Product__r.Loan_Term__c ) + &quot; Months&quot;,
+IF ( Product__r.State_Incentive_Second_Reamort__c, &quot;Months &quot; + TEXT(Product__r.Loan_Interest_Only_Period__c + 1) + &quot; - 18&quot;,
+&quot;Months &quot; + TEXT(Product__r.Loan_Interest_Only_Period__c + 1) + &quot; - &quot; + TEXT(Product__r.Loan_Term__c +  Product__r.Loan_Interest_Only_Period__c )))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Loan Term Text</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Link_to_File__c</fullName>
+        <defaultValue>&quot;notgenerated&quot;</defaultValue>
+        <externalId>false</externalId>
+        <label>Link to File</label>
+        <length>250</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Link_to_Partner_Logo__c</fullName>
+        <externalId>false</externalId>
+        <formula>&quot;https://na54.salesforce.com/servlet/servlet.FileDownload?file=&quot; + Partner_Logo_File_Name__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Link to Partner Logo</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Loan_Amount__c</fullName>
+        <externalId>false</externalId>
+        <formula>System_Cost__c - Down_Payment__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Loan Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Loan_Payments__c</fullName>
+        <externalId>false</externalId>
+        <formula>Monthly_Payment__c *  Product__r.Loan_Term__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Loan Payments</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Loan_Principal__c</fullName>
+        <externalId>false</externalId>
+        <label>Loan Principal</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Loan_Term_in_Years__c</fullName>
+        <externalId>false</externalId>
+        <formula>SUBSTITUTE(
+  SUBSTITUTE( 
+   SUBSTITUTE( 
+    SUBSTITUTE( 
+     SUBSTITUTE( 
+      SUBSTITUTE( 
+       SUBSTITUTE( TEXT(Product__r.Term_in_Years__c) ,&quot;(20)&quot;,&quot;&quot;)
+      ,&quot;(16)&quot;,&quot;&quot;)
+     ,&quot;(15)&quot;,&quot;&quot;)
+    ,&quot;(13)&quot;,&quot;&quot;)
+   ,&quot;(12)&quot;,&quot;&quot;)
+  ,&quot;(11)&quot;,&quot;&quot;)
+ ,&quot;(10)&quot;,&quot;&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Loan Term in Years</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Max_Payment__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Maximum payment for adjustable loans, assuming the loan hits the ceiling rate as soon as possible, and no principal buydown.</inlineHelpText>
+        <label>Maximum Payment</label>
+        <precision>6</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Modified_ITC__c</fullName>
+        <externalId>false</externalId>
+        <label>Modified ITC</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Modified_State_Tax_Credit__c</fullName>
+        <externalId>false</externalId>
+        <label>Modified State Tax Credit</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Monthly_Payment_After_Buydown__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF (
+
+(( (Loan_Amount__c - Applied_Tax_Credits__c) * Product__r.Loan_Interest_Rate__c) /12 ) 
+/ (1-((1+ Product__r.Loan_Interest_Rate__c /12)^(-1*(Product__r.Loan_Term__c)))) &lt; 0,
+
+0, 
+
+(( (Loan_Amount__c  -  Applied_Tax_Credits__c) * Product__r.Loan_Interest_Rate__c) /12 ) 
+/ (1-((1+ Product__r.Loan_Interest_Rate__c /12)^(-1* (Product__r.Loan_Term__c))))
+
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Monthly Payment After Buydown</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Monthly_Payment_After_Secondary_Buydown__c</fullName>
+        <externalId>false</externalId>
+        <formula>(( (Loan_Amount__c - ITC_Estimated__c - State_Tax_Incentive__c  - State_Tax_Incentive__c) * Product__r.Loan_Interest_Rate__c) /12 ) 
+/ (1-((1+ Product__r.Loan_Interest_Rate__c /12)^(-1* (Product__r.Loan_Term__c))))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Monthly Payment After Secondary Buydown</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Monthly_Payment_IBLS__c</fullName>
+        <externalId>false</externalId>
+        <formula>((Loan_Amount__c *0.7) * Product__r.Loan_Interest_Rate__c /12 ) / (1-((1+ Product__r.Loan_Interest_Rate__c /12)^(-1*(120 - 12))))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Monthly Payment (IBLS)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Monthly_Payment__c</fullName>
+        <externalId>false</externalId>
+        <formula>((Loan_Amount__c  * Product__r.Loan_Interest_Rate__c) /12 )
+/
+(1-(
+(1+ Product__r.Loan_Interest_Rate__c /12)^
+(-1*
+(Product__r.Loan_Term__c))
+
+))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Monthly Payment</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Partner_Logo_File_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>Partner Logo File Name</label>
+        <length>40</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Product__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Product</label>
+        <referenceTo>Product2</referenceTo>
+        <relationshipName>Quick_Sales_Sheets</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Quick_Sales_Sheet__c</fullName>
+        <description>##Conga created btn:00bV0000000QsHI</description>
+        <externalId>false</externalId>
+        <formula>&quot;&amp;solmgr=1&quot; + 
+&quot;&amp;id=&quot; + Id +
+&quot;&amp;templateid=&quot; + IF( State_Tax_Incentive__c &gt; 0.02,IF(ISPICKVAL(Product__r.Index_Rate_for_Adjustment__c,&quot;WSJ Prime Rate&quot;),&quot;a2F0a000001VAzZ&quot;,&quot;a2F0a000000zxNr&quot;), IF(ISPICKVAL(Product__r.Index_Rate_for_Adjustment__c,&quot;WSJ Prime Rate&quot;),&quot;a2F0a000001VBJv&quot;,&quot;a2F0a00000109xQ&quot;)) +
+&quot;&amp;defaultpdf=1&quot; +
+&quot;&amp;ofn=Loan Summary Sheet&quot; +  
+&quot;&amp;FP0=1&quot; +
+&quot;&amp;sc0=1&quot; + 
+&quot;&amp;sc1=SalesforceFile&quot; + 
+&quot;&amp;qmode=SalesforceFile&quot;</formula>
+        <label>Quick Sales Sheet</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Send_to_Email__c</fullName>
+        <description>Populated by the SLPQuickSalesSheetController component when sending the quick sales sheet</description>
+        <externalId>false</externalId>
+        <label>Send to Email</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Sent_to_Customer__c</fullName>
+        <externalId>false</externalId>
+        <formula>if ( AND(NOT(ISBLANK(Send_to_Email__c)), Generate_Doc__c), True, False)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Sent to Customer</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>State_Tax_Incentive_Bool__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF ( State_Tax_Incentive__c &gt; 0.02 , TRUE, FALSE)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>State Tax Incentive Bool</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>State_Tax_Incentive__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF ( ISNULL(Product__r.State_Tax_Incentive__c) , 0 ,
+MIN(System_Cost__c * Product__r.State_Tax_Incentive__c, Product__r.State_Tax_Incentive_Cap__c))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>State Tax Incentive</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>System_Cost__c</fullName>
+        <externalId>false</externalId>
+        <label>System Cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>System_Size__c</fullName>
+        <externalId>false</externalId>
+        <label>System Size</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tax_Credit_Modified_by_Partner__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Tax Credit Modified by Partner</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Total_Loan_Payments__c</fullName>
+        <externalId>false</externalId>
+        <formula>Interest_Only_Payments__c +  Loan_Payments__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Total Loan Payments</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Year_2_Payoff__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Year 2 payoff amount for adjustable loans, rounded to the nearest 100</inlineHelpText>
+        <label>Year 2 Payoff</label>
+        <precision>8</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Year_4_Payoff__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Year 4 payoff amount for adjustable loans, rounded to the nearest 100</inlineHelpText>
+        <label>Year 4 Payoff</label>
+        <precision>8</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <label>Presentation Document</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>OWNER.ALIAS</columns>
+        <columns>Link_to_File__c</columns>
+        <columns>System_Cost__c</columns>
+        <columns>Product__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>Quick_Sales_Sheet__c</columns>
+        <columns>CREATEDBY_USER</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>Document Number</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Presentation Documents</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+    <visibility>Public</visibility>
+    <webLinks>
+        <fullName>QSS</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>QSS</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>https://composer.congamerge.com?SolMgr=1
+&amp;sessionId={!API.Session_ID}
+&amp;serverUrl={!API.Partner_Server_URL_290}
+&amp;Id={!Quick_Sales_Sheet__c.Id}</url>
+    </webLinks>
+</CustomObject>

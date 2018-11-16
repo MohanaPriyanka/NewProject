@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Records are created on a daily basis through an API with RadianGen. These values are not always 100% certain due to potential data malfunction.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableChangeDataCapture>false</enableChangeDataCapture>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>Read</externalSharingModel>
+    <fields>
+        <fullName>Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Month__c</fullName>
+        <externalId>false</externalId>
+        <formula>If( month( Date__c ) == 1, &quot;January&quot;, 
+if( month( Date__c ) == 2, &quot;February&quot;, 
+if( month( Date__c ) == 3, &quot;March&quot;, 
+if( month( Date__c ) == 4, &quot;April&quot;, 
+if( month( Date__c ) == 5, &quot;May&quot;, 
+if( month( Date__c ) == 6, &quot;June&quot;, 
+if( month( Date__c ) == 7, &quot;July&quot;, 
+if( month( Date__c ) == 8, &quot;August&quot;, 
+if( month( Date__c ) == 9, &quot;September&quot;, 
+if( month( Date__c ) == 10, &quot;October&quot;, 
+if( month( Date__c ) == 11, &quot;November&quot;, 
+if( month( Date__c ) == 12, &quot;December&quot;, null))))))))))))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Month</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Production_kW_DC__c</fullName>
+        <externalId>false</externalId>
+        <label>Production (kW DC)</label>
+        <precision>14</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Shared_Solar_System__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Shared Solar System</label>
+        <referenceTo>Shared_Solar_System__c</referenceTo>
+        <relationshipLabel>Daily Production Updates</relationshipLabel>
+        <relationshipName>Daily_Production_Updates</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Total_System_Capacity_kW_DC__c</fullName>
+        <externalId>false</externalId>
+        <formula>Shared_Solar_System__r.Total_System_Size_kWh_DC__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Total System Capacity (kW DC)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Year__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT(Year(Date__c))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Year</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Daily Production Update</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>Daily Production Update Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Daily Production Updates</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>Read</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

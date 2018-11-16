@@ -5,7 +5,7 @@
       <div class="slds-form-element__control">
 	<div class="slds-grid">
 	  <div class="slds-col">
-	    <ui:inputText   aura:id="searchInput"
+	    <ui:inputText aura:id="searchInput"
 			    class="slds-lookup__search-input slds-input" 
 			    placeholder="Search"
 			    value=""

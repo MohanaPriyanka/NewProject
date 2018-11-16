@@ -37,7 +37,7 @@
           <aura:if isTrue="{!v.isJoint}">
             <lightning:input type="radio" label="{!v.jointNegative}" name="" value="{!v.negativeValue}" checked="{!v.negativeValue}"/>
             <aura:set attribute="else">
-             <lightning:input type="radio" label="{!v.singleNegative}" name="" value="{!v.negativeValue}"  checked="{!v.negativeValue}"/>
+             <lightning:input  type="radio" label="{!v.singleNegative}" name="" value="{!v.negativeValue}"  checked="{!v.negativeValue}"/>
             </aura:set>
           </aura:if>
         </span>

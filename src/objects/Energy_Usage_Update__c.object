@@ -1,0 +1,1163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>true</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Energy_Usage_Update__c</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableChangeDataCapture>false</enableChangeDataCapture>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>Private</externalSharingModel>
+    <fields>
+        <fullName>Adjustments__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Manual Entry, used to summarize adjustments made during this bill period</inlineHelpText>
+        <label>Adjustments</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Bill_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>xxBill Date</label>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Bill_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Bill Status</label>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Host Account Bill Uploaded</fullName>
+                    <default>false</default>
+                    <label>Host Account Bill Uploaded</label>
+                </value>
+                <value>
+                    <fullName>Host Account Bill QCed</fullName>
+                    <default>false</default>
+                    <label>Host Account Bill QCed</label>
+                </value>
+                <value>
+                    <fullName>Credit Transfers QCed</fullName>
+                    <default>false</default>
+                    <label>Credit Transfers QCed</label>
+                </value>
+                <value>
+                    <fullName>Ready to Generate</fullName>
+                    <default>false</default>
+                    <label>Ready to Generate</label>
+                </value>
+                <value>
+                    <fullName>Bills QCed</fullName>
+                    <default>false</default>
+                    <label>Bills QCed</label>
+                </value>
+                <value>
+                    <fullName>Email Bills Sent</fullName>
+                    <default>false</default>
+                    <label>Email Bills Sent</label>
+                </value>
+                <value>
+                    <fullName>Letter Bills Sent</fullName>
+                    <default>false</default>
+                    <label>Letter Bills Sent</label>
+                </value>
+                <value>
+                    <fullName>Autopay QCed</fullName>
+                    <default>false</default>
+                    <label>Autopay QCed</label>
+                </value>
+                <value>
+                    <fullName>Not Billing this Month</fullName>
+                    <default>false</default>
+                    <label>Not Billing this Month</label>
+                </value>
+                <value>
+                    <fullName>New Production Update</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>New Production Update</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Billing_Method__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT(Shared_Solar_System__r.Billing_Method__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Billing Method</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Billing_Period_End_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Billing Period End Date</label>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Billing_Period_Start_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Billing Period Start Date</label>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Calculated_Net_Metering_Rate__c</fullName>
+        <externalId>false</externalId>
+        <formula>Total_System_NMCs__c / Production__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Calculated Net Metering Rate</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Comments_About_Host_Account_Bill__c</fullName>
+        <externalId>false</externalId>
+        <label>Comments About Host Account Bill</label>
+        <length>32768</length>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Credits_on_Bill_Period__c</fullName>
+        <externalId>false</externalId>
+        <formula>CASE( 
+MONTH(Billing_Period_Start_Date__c), 
+1, &quot;February&quot;, 
+2, &quot;March&quot;, 
+3, &quot;April&quot;, 
+4, &quot;May&quot;, 
+5, &quot;June&quot;, 
+6, &quot;July&quot;, 
+7, &quot;August&quot;, 
+8, &quot;September&quot;, 
+9, &quot;October&quot;, 
+10, &quot;November&quot;, 
+11, &quot;December&quot;, 
+&quot;January&quot; 
+)&amp;&quot; - &quot;&amp; 
+CASE( 
+MONTH(Billing_Period_End_Date__c), 
+1, &quot;February&quot;, 
+2, &quot;March&quot;, 
+3, &quot;April&quot;, 
+4, &quot;May&quot;, 
+5, &quot;June&quot;, 
+6, &quot;July&quot;, 
+7, &quot;August&quot;, 
+8, &quot;September&quot;, 
+9, &quot;October&quot;, 
+10, &quot;November&quot;, 
+11, &quot;December&quot;, 
+&quot;January&quot; 
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Credits on Bill Period</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Date_Autopay_QCed__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Bill Status change stamps this date</inlineHelpText>
+        <label>Date: Autopay QCed</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Date_Bills_QCed__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Bill Status change stamps this date</inlineHelpText>
+        <label>Date: Bills QCed</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Date_Credit_Transfers_QCed__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Bill Status change stamps this date</inlineHelpText>
+        <label>Date: Credit Transfers QCed</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Date_Email_Bills_Sent__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Bill Status change stamps this date</inlineHelpText>
+        <label>Date: Email Bills Sent</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Date_Host_Account_Bill_QCed__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Bill Status change stamps this date</inlineHelpText>
+        <label>Date: Host Account Bill QCed</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Date_Host_Bill_Uploaded__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Bill Status change stamps this date</inlineHelpText>
+        <label>Date: Host Bill Uploaded</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Date_Letter_Bills_Sent__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Bill Status change stamps this date</inlineHelpText>
+        <label>Date: Letter Bills Sent</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Date</label>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Due_Date_Autopay_QCed__c</fullName>
+        <externalId>false</externalId>
+        <formula>Date__c + 6</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Due Date: Autopay QCed</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Due_Date_Bills_QCed__c</fullName>
+        <externalId>false</externalId>
+        <formula>Date__c - 1</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Due Date: Bills QCed</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Due_Date_Credit_Transfers_QCed__c</fullName>
+        <externalId>false</externalId>
+        <formula>Date__c - 5</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Due Date: Credit Transfers QCed</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Due_Date_Email_Bills_Sent__c</fullName>
+        <externalId>false</externalId>
+        <formula>Date__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Due Date: Email Bills Sent</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Due_Date_Host_Bill_QCed__c</fullName>
+        <externalId>false</externalId>
+        <formula>Date__c - 30</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Due Date: Host Bill QCed</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Due_Date_Letter_Bills_Sent__c</fullName>
+        <externalId>false</externalId>
+        <formula>Date__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Due Date: Letter Bills Sent</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Due_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>xx Due Date</label>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Generate_Bills__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Bills Generated</label>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Host_Account_Bill_Number__c</fullName>
+        <externalId>false</externalId>
+        <formula>Shared_Solar_System__r.Host_Utility_Account_Number__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Host Account Bill Number</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Lost_Customer_Revenue__c</fullName>
+        <externalId>false</externalId>
+        <label>Revenue Management - Used Emergency Cash</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>MonthDate__c</fullName>
+        <externalId>false</externalId>
+        <formula>if( month( Date__c ) == 1, &quot;January&quot;, 
+if( month( Date__c ) == 2, &quot;February&quot;, 
+if( month( Date__c ) == 3, &quot;March&quot;, 
+if( month( Date__c ) == 4, &quot;April&quot;, 
+if( month( Date__c ) == 5, &quot;May&quot;, 
+if( month( Date__c ) == 6, &quot;June&quot;, 
+if( month( Date__c ) == 7, &quot;July&quot;, 
+if( month( Date__c ) == 8, &quot;August&quot;, 
+if( month( Date__c ) == 9, &quot;September&quot;, 
+if( month( Date__c ) == 10, &quot;October&quot;, 
+if( month( Date__c ) == 11, &quot;November&quot;, 
+if( month( Date__c ) == 12, &quot;December&quot;, null))))))))))))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Month</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Month_Number__c</fullName>
+        <externalId>false</externalId>
+        <formula>month(Date__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Month Number</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Net_Metering_Rate_Applied_2_of_4__c</fullName>
+        <externalId>false</externalId>
+        <label>Net Metering Rate Applied (2 of 4)</label>
+        <precision>16</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Net_Metering_Rate_Applied_3_of_4__c</fullName>
+        <externalId>false</externalId>
+        <label>Net Metering Rate Applied (3 of 4)</label>
+        <precision>16</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Net_Metering_Rate_Applied_4_of_4__c</fullName>
+        <externalId>false</externalId>
+        <label>Net Metering Rate Applied (4 of 4)</label>
+        <precision>16</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Net_Metering_Rate_Applied__c</fullName>
+        <externalId>false</externalId>
+        <label>Net Metering Rate Applied</label>
+        <precision>16</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Notes_about_Bill_Process__c</fullName>
+        <externalId>false</externalId>
+        <label>Notes about Bill Process:</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Product_LIne__c</fullName>
+        <externalId>false</externalId>
+        <label>Product LIne</label>
+        <length>25</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Product_Profile__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Product Profile</label>
+        <referenceTo>Product_Profile__c</referenceTo>
+        <relationshipLabel>Production Updates</relationshipLabel>
+        <relationshipName>Production_Updates</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Production__c</fullName>
+        <externalId>false</externalId>
+        <label>Production (kWh)</label>
+        <precision>10</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Production_kWh_2_of_4__c</fullName>
+        <externalId>false</externalId>
+        <label>Production kWh (2 of 4)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Production_kWh_3_of_4__c</fullName>
+        <externalId>false</externalId>
+        <label>Production kWh (3 of 4)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Production_kWh_4_of_4__c</fullName>
+        <externalId>false</externalId>
+        <label>Production kWh (4 of 4)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Residential_Equipment__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Residential Equipment</label>
+        <referenceTo>Residential_Equipment__c</referenceTo>
+        <relationshipLabel>Production Updates</relationshipLabel>
+        <relationshipName>Production_Updates</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Revenue_Minus_10_Discount__c</fullName>
+        <externalId>false</externalId>
+        <formula>Schedule_Z_Allocations__c *0.90</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Revenue Minus 10% Discount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>SRECs_Produced__c</fullName>
+        <externalId>false</externalId>
+        <formula>Production__c / 1000* Shared_Solar_System__r.Project_Management__r.SREC_Factor__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>SRECs Produced</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Schedule_Z_Allocations__c</fullName>
+        <externalId>false</externalId>
+        <label>Schedule Z Allocations</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Schedule_Z__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Schedule Z</label>
+        <referenceTo>Schedule_Z__c</referenceTo>
+        <relationshipLabel>Production Updates</relationshipLabel>
+        <relationshipName>Production_Updates</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Shared_Solar_System__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Shared Solar System</label>
+        <referenceTo>Shared_Solar_System__c</referenceTo>
+        <relationshipLabel>Production Updates</relationshipLabel>
+        <relationshipName>Production_Updates</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Size_off_NMCs__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Size off NMCs</label>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Total_Billed__c</fullName>
+        <externalId>false</externalId>
+        <formula>Total_System_NMCs__c +  Adjustments__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>This field is for reporting purposes only, it sums the Total System NMCs (what is actually used to generate bills) and adjustments</inlineHelpText>
+        <label>Total Billed</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_NMCs_Generated__c</fullName>
+        <externalId>false</externalId>
+        <label>Total NMCs Generated</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_System_Capacity_kW_DC__c</fullName>
+        <externalId>false</externalId>
+        <formula>Shared_Solar_System__r.Total_System_Size_kW_DC_QC__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Total System Capacity (kW DC)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Total_System_NMCs_2_of_4__c</fullName>
+        <externalId>false</externalId>
+        <label>Total System NMCs (2 of 4)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_System_NMCs_3_of_4__c</fullName>
+        <externalId>false</externalId>
+        <label>Total System NMCs (3 of 4)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_System_NMCs_4_of_4__c</fullName>
+        <externalId>false</externalId>
+        <label>Total System NMCs (4 of 4)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_System_NMCs__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Total credits produced as reported by the utility, including unsubscribed and subscribed credits</inlineHelpText>
+        <label>Total System NMCs</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Transfer_Credits__c</fullName>
+        <description>Total transfers of the host account during this billing cycle. This field should be +/- 2-3% of last month&apos;s Total NMC</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Total transfers of the host account during this billing cycle. This field should be +/- 2-3% of last month&apos;s Total NMC</inlineHelpText>
+        <label>Transfer off Host Account Bill</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Utility_Account__c</fullName>
+        <externalId>false</externalId>
+        <formula>Shared_Solar_System__r.Host_Utility_Account_Number__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Utility Account #</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Utility__c</fullName>
+        <externalId>false</externalId>
+        <formula>Shared_Solar_System__r.System_Utility__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Utility</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>YearDate__c</fullName>
+        <externalId>false</externalId>
+        <formula>text(year(Date__c))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Year</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Year__c</fullName>
+        <externalId>false</externalId>
+        <label>Year</label>
+        <length>5</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Production Update</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>LAST_UPDATE</columns>
+        <columns>Due_Date__c</columns>
+        <columns>Total_NMCs_Generated__c</columns>
+        <columns>Total_System_NMCs__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>Fairhaven_and_CB</fullName>
+        <columns>NAME</columns>
+        <columns>Size_off_NMCs__c</columns>
+        <columns>Production__c</columns>
+        <columns>Total_System_NMCs__c</columns>
+        <columns>Date__c</columns>
+        <columns>Billing_Period_Start_Date__c</columns>
+        <columns>Billing_Period_End_Date__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Shared_Solar_System__c</field>
+            <operation>contains</operation>
+            <value>Fairhaven,Barton</value>
+        </filters>
+        <label>Fairhaven and CB</label>
+    </listViews>
+    <listViews>
+        <fullName>March2018</fullName>
+        <columns>NAME</columns>
+        <columns>Billing_Period_Start_Date__c</columns>
+        <columns>Billing_Period_End_Date__c</columns>
+        <columns>Bill_Status__c</columns>
+        <columns>Generate_Bills__c</columns>
+        <columns>Date__c</columns>
+        <columns>Due_Date__c</columns>
+        <columns>Bill_Date__c</columns>
+        <columns>Total_System_NMCs__c</columns>
+        <columns>Production__c</columns>
+        <columns>Size_off_NMCs__c</columns>
+        <columns>Net_Metering_Rate_Applied__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Date__c</field>
+            <operation>equals</operation>
+            <value>5/15/2018</value>
+        </filters>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Energy_Usage_Update__c.Production_Update_CS</value>
+        </filters>
+        <label>March 2018</label>
+    </listViews>
+    <listViews>
+        <fullName>November</fullName>
+        <columns>NAME</columns>
+        <columns>Bill_Status__c</columns>
+        <columns>Production__c</columns>
+        <columns>Due_Date__c</columns>
+        <columns>Bill_Date__c</columns>
+        <columns>Notes_about_Bill_Process__c</columns>
+        <columns>Net_Metering_Rate_Applied__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Bill_Date__c</field>
+            <operation>equals</operation>
+            <value>11/15/2017</value>
+        </filters>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Energy_Usage_Update__c.Production_Update_CS</value>
+        </filters>
+        <label>November</label>
+    </listViews>
+    <listViews>
+        <fullName>Oxford_Barrett</fullName>
+        <columns>NAME</columns>
+        <columns>Billing_Period_Start_Date__c</columns>
+        <columns>Billing_Period_End_Date__c</columns>
+        <columns>Production__c</columns>
+        <columns>Revenue_Minus_10_Discount__c</columns>
+        <columns>Total_NMCs_Generated__c</columns>
+        <columns>MonthDate__c</columns>
+        <columns>Date__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Shared_Solar_System__c</field>
+            <operation>contains</operation>
+            <value>oxford barrett</value>
+        </filters>
+        <label>Oxford Barrett</label>
+    </listViews>
+    <nameField>
+        <label>Energy Update</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Production Updates</pluralLabel>
+    <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>Production_Update_CS</fullName>
+        <active>true</active>
+        <label>Production Update - CS</label>
+        <picklistValues>
+            <picklist>Bill_Status__c</picklist>
+            <values>
+                <fullName>Autopay QCed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bills QCed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Credit Transfers QCed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Email Bills Sent</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Host Account Bill QCed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Host Account Bill Uploaded</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Letter Bills Sent</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not Billing this Month</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ready to Generate</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Production_Update_RL</fullName>
+        <active>true</active>
+        <label>Production Update - RL</label>
+        <picklistValues>
+            <picklist>Bill_Status__c</picklist>
+            <values>
+                <fullName>Autopay QCed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bills QCed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Credit Transfers QCed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Email Bills Sent</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Host Account Bill QCed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Host Account Bill Uploaded</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Letter Bills Sent</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not Billing this Month</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ready to Generate</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Required_Fields_Transfer_2</fullName>
+        <active>true</active>
+        <errorConditionFormula>IF(
+AND(
+NOT(ISBLANK(Total_System_NMCs_2_of_4__c)),
+ISBLANK(Production_kWh_2_of_4__c),
+ISBLANK(Net_Metering_Rate_Applied_2_of_4__c)
+),true,false)</errorConditionFormula>
+        <errorMessage>Error: You must fill out Production, Net Metering Rate Applied and Total System NMCs if you want to add another month of credits.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Required_Fields_Transfer_3</fullName>
+        <active>true</active>
+        <errorConditionFormula>IF(
+AND(
+NOT(ISBLANK(Total_System_NMCs_3_of_4__c)),
+ISBLANK(Production_kWh_3_of_4__c),
+ISBLANK(Net_Metering_Rate_Applied_3_of_4__c)
+),true,false)</errorConditionFormula>
+        <errorMessage>Error: You must fill out Production, Net Metering Rate Applied and Total System NMCs if you want to add another month of credits.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Unable_to_Edit_After_Credits_QCed</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND( 
+ISBLANK( Date_Credit_Transfers_QCed__c )=false, 
+OR( 
+ISCHANGED(Adjustments__c ), 
+ISCHANGED(Net_Metering_Rate_Applied__c), 
+ISCHANGED(Production__c ), 
+ISCHANGED(Total_NMCs_Generated__c )))</errorConditionFormula>
+        <errorMessage>You cannot edit certain Production Update fields after the transfer credits have been QCed. Please contact BizOps for questions on this.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Unable_to_Edit_ScheduleZ_After_Bill_QCed</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(ISCHANGED( Schedule_Z__c  ), OR( 
+ISPICKVAL(  Bill_Status__c, &quot;Bills QCed&quot;),ISPICKVAL(Bill_Status__c, &quot;Credit Transfers QCed&quot;),ISPICKVAL(Bill_Status__c,&quot;Ready to Generate&quot;), ISPICKVAL(Bill_Status__c,&quot;Email Bills Sent&quot;),ISPICKVAL(Bill_Status__c,&quot;Letter Bills Sent&quot;),ISPICKVAL(Bill_Status__c,&quot;Autopay QCed&quot;),ISPICKVAL(Bill_Status__c,&quot;Not Billing this Month&quot;)
+))</errorConditionFormula>
+        <errorMessage>You cannot edit Schedule Z field after the Bills have been QCed.</errorMessage>
+    </validationRules>
+    <visibility>Public</visibility>
+    <webLinks>
+        <fullName>Generate_Bills</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Generate Bills</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/27.0/connection.js&quot;)} 
+
+var objCase = new sforce.SObject(&apos;Energy_Usage_Update__c&apos;); 
+
+if({! 
+    OR ( 
+    ISBLANK( Energy_Usage_Update__c.Billing_Period_Start_Date__c ), 
+    ISBLANK( Energy_Usage_Update__c.Billing_Period_End_Date__c ),
+    ISBLANK( Energy_Usage_Update__c.Date__c ), 
+    ISBLANK( Energy_Usage_Update__c.Net_Metering_Rate_Applied__c ), 
+    ISBLANK( Energy_Usage_Update__c.Production__c ), 
+    ISBLANK( Energy_Usage_Update__c.Total_System_NMCs__c ),
+    ISBLANK( Energy_Usage_Update__c.Schedule_Z__c)
+    )
+}){ 
+    alert(&quot;BLANK VALUES: All Fields in the Top Section are Required&quot;);
+} else if({!Energy_Usage_Update__c.Generate_Bills__c}){ 
+    alert(&quot;Bills Have Already Been Generated&quot;);
+} else if({!Energy_Usage_Update__c.Billing_Method__c == null}){
+    alert(&quot;The Billing Method field is blank.  Please ensure this field on the Shared Solar System has a value assigned&quot;);
+} else if({!Energy_Usage_Update__c.Billing_Method__c == &quot;kWh&quot;}){ 
+    var nmcBox = confirm(&quot;Check the Billing Methods field  UNLESS this is an XCel Minnesota Project. Hit okay to confirm this is for MN, cancel to go back.&quot;);
+    if(!nmcBox) {
+        document.location.reload(true); 
+    } else {
+        var yes = confirm(&quot;Are you sure you want to generate bills?&quot;) 
+        if(!yes) { 
+            document.location.reload(true); 
+        } else { 
+            objCase.Id = &apos;{!Energy_Usage_Update__c.Id}&apos;; 
+            objCase.Generate_Bills__c = true; 
+            var result = sforce.connection.update([objCase]); 
+            alert(&apos;Bills are being generated, this may take a few minutes&apos;);
+        }
+    }
+} else { 
+    var otheryes = confirm(&quot;Are you sure you want to generate bills?&quot;);
+    if(!otheryes) { 
+        document.location.reload(true); 
+    } else { 
+        objCase.Id = &apos;{!Energy_Usage_Update__c.Id}&apos;; 
+        objCase.Generate_Bills__c = true; 
+        var otherResult = sforce.connection.update([objCase]); 
+        alert(&apos;Bills are being generated, this may take a few minutes&apos;);
+    }
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Preview_Bills</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Preview Bills</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <url>/apex/ShowUASes?
+prodUpdate={!Energy_Usage_Update__c.Id}
+&amp;prodName={!Energy_Usage_Update__c.Name}
+&amp;totalNMCs={!TEXT(Energy_Usage_Update__c.Total_System_NMCs__c)}</url>
+    </webLinks>
+</CustomObject>

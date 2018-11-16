@@ -6,5 +6,10 @@
         <minorNumber>147</minorNumber>
         <namespace>LASERCA</namespace>
     </packageVersions>
+    <packageVersions>
+        <majorNumber>6</majorNumber>
+        <minorNumber>8</minorNumber>
+        <namespace>dsfs</namespace>
+    </packageVersions>
     <status>Active</status>
 </ApexClass>

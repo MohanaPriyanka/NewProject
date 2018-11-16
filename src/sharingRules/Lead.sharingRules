@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>Avidia</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>Shares all RL leads with Avidia to Avidia</description>
+        <label>Avidia</label>
+        <sharedTo>
+            <group>Avidia_Lending</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>Product_line__c</field>
+            <operation>equals</operation>
+            <value>Residential Loan</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Direct_Energy</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Direct Energy</label>
+        <sharedTo>
+            <group>Direct_Energy</group>
+        </sharedTo>
+        <booleanFilter>1 OR 2</booleanFilter>
+        <criteriaItems>
+            <field>Custom_ID__c</field>
+            <operation>equals</operation>
+            <value>directenergy</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Custom_ID__c</field>
+            <operation>equals</operation>
+            <value>Direct Energy</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>External_BFG</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>External BFG</label>
+        <sharedTo>
+            <group>External_BFG</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>BFG - NC Solar Loan,BFG - Community Solar (Residential),BFG - MA Solar Loan (Co-Applicant),BFG - DOER Solar Loan,BFG - SC Solar Loan,BFG - DOER Solar Loan (Co-Applicant),BFG - MA Solar Loan,BFG - SC Solar Loan (Co-Applicant)</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Share_with_Vivint</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Share with Vivint</label>
+        <sharedTo>
+            <group>Bright_Planet</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>OwnerId</field>
+            <operation>equals</operation>
+            <value>0sj00000009DLK</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Vivint_All_CS</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Vivint (All CS)</label>
+        <sharedTo>
+            <group>Vivint_Solar</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>Product_line__c</field>
+            <operation>equals</operation>
+            <value>Community Solar</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Custom_ID__c</field>
+            <operation>equals</operation>
+            <value>null</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+</SharingRules>
