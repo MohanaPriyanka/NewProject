@@ -262,3 +262,98 @@ out/
 
 # local user token and configuration
 .atomforce
+
+###############
+#Copado
+###############
+#package.xml file is recreated on the fly by Copado, no need to track
+#unnecessary changes of this file
+package.xml
+#Managed packages can trigger the installation or uninstallation of 
+#applications, it is recommended to manage this outside git
+installedPackages/*
+#if you are not customizing a managed package, you can keep your 
+#repository clean by ignoring all files for that package. 
+#For example, to ignore all files of the "Copado" managed package
+#just add to your .gitignore file the following text: *copado__*
+#if you will be customizing managed packages, make sure that the 
+#same version of the package is installed on all your environments 
+#so that deployments will only update existing managed components. 
+#Creation of managed components is not permitted by the API.
+#It is recommended that you ignore managed components that cannot be 
+#modified since there is no need to track them in Git, 
+#like for example:
+src/classes/copado__*
+src/triggers/copado__*
+src/pages/copado__*
+src/classes/APXTConga4__*
+src/triggers/APXTConga4__*
+src/pages/APXTConga4__*
+src/classes/ChargentBase__*
+src/triggers/ChargentBase__*
+src/pages/ChargentBase__*
+src/classes/ChargentOrders__*
+src/triggers/ChargentOrders__*
+src/pages/ChargentOrders__*
+src/classes/Field_Trip__*
+src/triggers/Field_Trip__*
+src/pages/Field_Trip__*
+src/classes/LASERCA__*
+src/triggers/LASERCA__*
+src/pages/LASERCA__*
+src/classes/LiveText__*
+src/triggers/LiveText__*
+src/pages/LiveText__*
+src/classes/MC4SF__*
+src/triggers/MC4SF__*
+src/pages/MC4SF__*
+src/classes/MPM4_BASE__*
+src/triggers/MPM4_BASE__*
+src/pages/MPM4_BASE__*
+src/classes/dsfs__*
+src/triggers/dsfs__*
+src/pages/dsfs__*
+src/classes/agf__*
+src/triggers/agf__*
+src/pages/agf__*
+src/classes/MetaDataSearch__*
+src/triggers/MetaDataSearch__*
+src/pages/MetaDataSearch__*
+src/classes/APXT_BPM__*
+src/triggers/APXT_BPM__*
+src/pages/APXT_BPM__*
+src/classes/et4ae5__*
+src/triggers/et4ae5__*
+src/pages/et4ae5__*
+src/classes/rcsfl__*
+src/triggers/rcsfl__*
+src/pages/rcsfl__*
+src/classes/trailheadapp__*
+src/triggers/trailheadapp__*
+src/pages/trailheadapp__*
+
+
+#profiles and permission sets are complex Files. If your Org's 
+#metadata and Git are in sync, you can track incremental changes on 
+#Profiles and Permission sets using Copado "commit files" functionality.
+#Otherwise ignore profiles and permission sets until you are ready for it. 
+#You can deploy profiles and permission sets using 
+#Copado Deployer steps: Full profiles and Full Permission sets.
+# Below is how to ignore them
+# profiles/*
+# permissionsets/*
+#Translations are complex since get updated indirectly across
+#multiple files, they can make a deployment fail if a field is 
+#translated in source and it doesn't exist on destination. 
+#If you are committing incrementally new fields and new Translations
+#you can track them in Git, just be careful. 
+#If you choose  to ignore them in Git, you can always create a deployment
+#with the Copado Deployer "Translation" Step. 
+# translations/*
+# objectTranslations/*
+#Sites which has Domain mapping has environment specific information. 
+#Make sure you setup Copado Environment Variables to make sites config
+#files environment agnostic.
+#Until the above is achieved, you can ignore them as follows
+# sites/*
+# siteDotComSites/*
