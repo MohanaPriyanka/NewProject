@@ -1966,6 +1966,10 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
         <columns>Contract_Docusign_Template__c</columns>
         <columns>Docusign_Template_Joint__c</columns>
         <columns>State__c</columns>
+        <columns>Hide_in_Requested_Product__c</columns>
+        <columns>Require_Junctions_to_Enable__c</columns>
+        <columns>Credit_Maximum__c</columns>
+        <columns>Credit_Minimum__c</columns>
         <filterScope>Everything</filterScope>
         <filters>
             <field>Months_in_Set_Rate_Period__c</field>

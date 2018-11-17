@@ -105,6 +105,19 @@
         <unique>false</unique>
     </fields>
     <label>LetterStreamJob</label>
+    <listViews>
+        <fullName>View_All</fullName>
+        <columns>NAME</columns>
+        <columns>OBJECT_ID</columns>
+        <columns>Batch_Name__c</columns>
+        <columns>Cost__c</columns>
+        <columns>Details__c</columns>
+        <columns>Job_Id__c</columns>
+        <columns>Piece_Count__c</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <label>View All</label>
+    </listViews>
     <nameField>
         <displayFormat>LSJ-{0000}</displayFormat>
         <label>LetterStreamJob Name</label>
