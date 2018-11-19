@@ -26,7 +26,8 @@ public class CustomerCommunicationHandlerTest{
         insert everLZU;
 
         TestFactory.insertBWAddress();
-
+        TestFactory.setCSBillSettings();
+        
         Entity__c entity1 = new Entity__c(Name = 'Oxford Barrett St. P1');
         insert entity1;
 

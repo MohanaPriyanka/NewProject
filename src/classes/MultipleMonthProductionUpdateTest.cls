@@ -35,6 +35,7 @@ public class MultipleMonthProductionUpdateTest {
 
         insert new List<Load_U__c>{everLZU};
         TestFactory.insertBWAddress();
+        TestFactory.setCSBillSettings();
 
         ChargentBase__Gateway__c chGateway  =
             new ChargentBase__Gateway__c(Name = 'Chargent Gateway',

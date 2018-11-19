@@ -5,7 +5,7 @@
  * This class is only creating the admin details of the bills. Sets up the correct relationships and such.
  * Money Due, kWh, etc aren't calculated.
  *
- * Tested by: TestBillCreationandPayment, RecurringPaymentsHandlerTestClass
+ * Tested by: TestBillCreationandPayment, RecurringPaymentsHandlerTestClass, TestBillCreationForCancelledCustomers
  */
 
 public without sharing class EnergyUsageUpdateTriggerHandler implements Database.Batchable<sObject> {
@@ -78,6 +78,27 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
 
 
         Map<Id, Utility_Account_Subscription__c> uasMap = getUASFromSZS(scheduleZUASIds, oppIds);
+
+        System_Properties__c sysProp = System_Properties__c.getAll().values()[0];
+        Integer collectionsWindow = Integer.valueOf(sysProp.Days_Generate_Bills_for_Cancelled__c);
+        Decimal minimumBalance = sysProp.Minimum_Balance_Bills_for_Cancelled__c;
+
+        Date todaysDate = Date.today();
+        Date maxPastDueDate = todaysDate.addDays(collectionsWindow * -1);
+
+        // If there is an outstanding balance, and the customer has gotten a bill in the past X days,
+        // create bill with $0 in new charges.
+        // Last Bill Send Date = newest bill date with Due_This_Month__c > 0
+        for (System_Bill__c systemBill : [
+            SELECT Id, Unique_ID__c, Opportunity__r.Id,
+                Account_Bill__r.Parent_Account__r.Last_Bill_Send_Date_New_Charges__c
+            FROM System_Bill__c
+            WHERE Shared_Solar_System__c IN : sssIdToEUUMap.keySet()
+            AND Balance_Net_Late_Payments__c > : minimumBalance
+            AND Account_Bill__r.Parent_Account__r.Last_Bill_Send_Date_New_Charges__c >= : maxPastDueDate
+        ]) {
+            oppIds.add(systemBill.Opportunity__r.Id);
+        }
 
         //select the Opportunities that are related to the shared solar systems that have production updates being logged.
         List<Opportunity> oppList = [
