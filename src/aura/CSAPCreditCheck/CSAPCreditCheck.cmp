@@ -9,8 +9,7 @@
   <aura:attribute name="loadingText" type="Boolean"/>
   <aura:attribute name="abbrevStates" type="String[]"/>
   <aura:attribute name="showProgramPicklist" type="Boolean"/>
-  <aura:attribute name="srecProduct" type="Object"/>
-  <aura:attribute name="smartProduct" type="Object"/>
+  <aura:attribute name="productList" type="Object[]"/>
   <aura:attribute name="selectedProduct" type="Object"/>
   <aura:attribute name="ShowDateError" type="Boolean"/>
 
@@ -224,12 +223,13 @@
           </lightning:layoutItem>
           <aura:if isTrue="{!v.showProgramPicklist}">
             <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
-              <lightning:select  aura:id="field" name="programPicklist" 
-                                 label="Which Community Solar program would you like to apply for?" 
+              <lightning:select  aura:id="field" name="programPicklist"
+                                 label="Which Community Solar program would you like to apply for?"
                                  value="{!v.lead.Product__c}">
                 <option value="" text="Select"></option>
-                <option value="{!v.smartProduct.Id}" text="SMART"></option>
-                <option value="{!v.srecProduct.Id}" text="SREC"></option>
+                <aura:iteration items="{!v.productList}" var="productToChoose">
+                  <option value="{!productToChoose.Id}" text="{!productToChoose.Program__c}"></option>
+                </aura:iteration>
               </lightning:select>
             </lightning:layoutItem>
           </aura:if>
