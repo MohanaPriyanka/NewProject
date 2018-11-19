@@ -16,7 +16,7 @@ public class DisbursalHandlerTest {
                                                 Pool_Type__c = 'Revolving Credit Line');
         insert capitalPool;
 
-        Loan_Traunch__c loanTrancheMA = new Loan_Traunch__c(
+        Loan_Traunch__c loanTrancheMA = new Loan_Traunch__c( 
             Name = 'Avidia 1',
             Tranche_Cap__c = 1000000,
             Tranche_Type__c = 'Standard',
@@ -294,12 +294,74 @@ public class DisbursalHandlerTest {
             update equipment;
 
             List<Disbursal__c> disbursalRecords = [
-                SELECT Id, Status__c
+                SELECT Id, Status__c, Type__c
                 FROM Disbursal__c
                 WHERE Loan__r.Id = : equipment.Loan__r.Id
                 ORDER BY Disbursal_Sequence__c
             ];
+
             System.assertEquals(disbursalRecords.get(1).Status__c, 'Due');
+        Test.stopTest();
+    }
+
+    @isTest static void testDisbursalsSetToHoldIfPastDisbursalOnHold() {
+        Test.startTest();
+
+        Residential_Equipment__c equipment = [
+            SELECT Id, Mechanically_Installed__c, Interconnected__c, Loan__r.Id
+            FROM Residential_Equipment__c
+            WHERE Opportunity__r.DOER_Solar_Loan__c = FALSE
+            LIMIT 1];
+
+        List<Disbursal__c> disbursalRecords = [
+            SELECT Id, Status__c, Type__c
+            FROM Disbursal__c
+            WHERE Loan__r.Id = : equipment.Loan__r.Id
+            ORDER BY Disbursal_Sequence__c
+        ];
+
+        // Set the first disbursal to Hold
+        for (Disbursal__c disbursal: disbursalRecords) {
+            if (disbursal.Type__c == 'Contract Signature') {
+                disbursal.Status__c = 'Hold';
+                update disbursal;
+            }
+        }
+
+        // This should set the second disbursal to Hold rather than Due, since the first is on Hold
+        equipment.Mechanically_Installed__c = true;
+        update equipment;
+
+        List<Disbursal__c> disbursalRecordsAfter = [
+            SELECT Id, Status__c, Type__c
+            FROM Disbursal__c
+            WHERE Loan__r.Id = : equipment.Loan__r.Id
+            ORDER BY Disbursal_Sequence__c
+        ];
+
+        System.assertEquals(disbursalRecordsAfter.get(1).Status__c, 'Hold');
+
+        // Set the first disbursal to Due
+        for (Disbursal__c disbursal: disbursalRecords) {
+            if (disbursal.Type__c == 'Contract Signature' || disbursal.Type__c == 'Mechanical Installation') {
+                disbursal.Status__c = 'Due';
+                update disbursal;
+            }
+        }
+
+        equipment.Interconnected__c = true;
+        update equipment;
+
+        List<Disbursal__c> disbursalRecordsAfterLast = [
+            SELECT Id, Status__c, Type__c
+            FROM Disbursal__c
+            WHERE Loan__r.Id = : equipment.Loan__r.Id
+            ORDER BY Disbursal_Sequence__c
+        ];
+
+        System.assertEquals(disbursalRecordsAfterLast.get(2).Type__c, 'Interconnection');
+        System.assertEquals(disbursalRecordsAfterLast.get(2).Status__c, 'Due');
+
         Test.stopTest();
     }
 
@@ -401,7 +463,6 @@ public class DisbursalHandlerTest {
             ];
             opportunityRecord.StageName = 'New';
             opportunityRecord.Product__c = nyProductId;
-            System.debug('ny opp test');
             update opportunityRecord;
 
             opportunityRecord.Loans__r.get(0).Product__c = nyProductId;
