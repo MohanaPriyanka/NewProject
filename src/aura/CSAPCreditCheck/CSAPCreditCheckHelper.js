@@ -7,7 +7,7 @@
             if (resp.getState() === "SUCCESS") {
                 helper.checkCreditResponse(component, helper, resp.getReturnValue());
             } else {
-                helper.logError("CSAPCreditCheckHelper", "checkCreditStatus", resp.getError(), lead);
+                helper.logError("CSAPCreditCheckHelper", "checkCreditStatus", resp.getError(), leadId);
                 window.clearInterval(component.get("v.creditStatusPoller"));
                 window.clearTimeout(component.get("v.creditStatusTimeoutID"));
             }
@@ -35,18 +35,14 @@
             returnValue.sssCreditQualification === "Unqualified") {
             lead.Status = returnValue.sssCreditQualification;
             if (returnValue.sssCreditQualification === "Qualified") {
-                if (returnValue.srecProduct != null && returnValue.smartProduct != null) {
+                if (returnValue.productList.length === 0){
+                    console.log('error');
+                } else if (returnValue.productList.length > 1){
                     component.set("v.showProgramPicklist", true);
-                    component.set("v.srecProduct", returnValue.srecProduct);
-                    component.set("v.smartProduct", returnValue.smartProduct);
-                }
-                if (returnValue.srecProduct != null && returnValue.smartProduct == null) {
+                    component.set("v.productList", returnValue.productList);
+                } else {
                     component.set("v.showProgramPicklist", false);
-                    component.set("v.lead.Product__c", returnValue.srecProduct.Id);
-                }
-                if (!returnValue.srecProduct == null && returnValue.smartProduct != null) {
-                    component.set("v.showProgramPicklist", false);
-                    component.set("v.lead.Product__c", returnValue.smartProduct.Id);
+                    component.set("v.lead.Product__c", returnValue.productList[0].Id);
                 }
             }
             component.set("v.creditChecked", true);
