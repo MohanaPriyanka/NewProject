@@ -1,17 +1,17 @@
 @isTest
 public class TestBillCreationandPayment {
-    @testSetup public static void CSTestRecordWarehouse(){
+    @testSetup public static void csTestRecordWarehouse(){
         Utility__c eversource = new Utility__c(
             Name = 'Eversource',
             Number_of_Decimal_Places__c = 2
         );
 
-        Utility__c national_grid = new Utility__c(
+        Utility__c nationalGrid = new Utility__c(
             Name = 'National Grid',
             Number_of_Decimal_Places__c = 2
         );
 
-        insert new List<Utility__c>{eversource, national_grid};
+        insert new List<Utility__c>{eversource, nationalGrid};
 
         Utility_NMC_Tariff__c eversizeNMC = new Utility_NMC_Tariff__c (Name = 'Eversource SEMA Class 2',
             Utility__c = 'Eversource',
@@ -2038,13 +2038,13 @@ public class TestBillCreationandPayment {
         simulateBatchBillCreation(new List<Energy_Usage_Update__c>{productionupdateA3});
         Test.stopTest();
 
-        List<UASB__c> UASBs = [
+        List<UASB__c> uasbList = [
             SELECT Id, Opportunity__c, Utility_Account_Subscription__c, Production_Update__c
             FROM UASB__c
             WHERE Opportunity__c = : opportunity.Id
         ];
 
-        System.assertEquals(4, UASBs.size());
+        System.assertEquals(4, uasbList.size());
     }
 
 
@@ -2136,7 +2136,7 @@ public class TestBillCreationandPayment {
         update newConga;
 
         // This time the bill should be for $30 more since the adjustment should be applied
-        List<System_Bill__c> SystemBillsAfter =
+        List<System_Bill__c> systemBillsAfter =
         [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
             Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
             Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
