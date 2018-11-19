@@ -228,7 +228,7 @@
                                  value="{!v.lead.Product__c}">
                 <option value="" text="Select"></option>
                 <aura:iteration items="{!v.productList}" var="productToChoose">
-                  <option value="{!productToChoose.Id}" text="productToChoose.Program__c"></option>
+                  <option value="{!productToChoose.Id}" text="{!productToChoose.Program__c}"></option>
                 </aura:iteration>
               </lightning:select>
             </lightning:layoutItem>
