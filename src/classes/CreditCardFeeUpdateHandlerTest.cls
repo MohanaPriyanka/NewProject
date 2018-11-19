@@ -1,7 +1,7 @@
 @isTest
 private class CreditCardFeeUpdateHandlerTest{
 
-Static testMethod void CreditCardFeeUpdateHandlerTest(){
+Static testMethod void ccFeeUpdateTest(){
 
 // Create NMC Tariffs
 

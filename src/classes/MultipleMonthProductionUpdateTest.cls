@@ -1,17 +1,17 @@
 @isTest
 public class MultipleMonthProductionUpdateTest {
-    @testSetup public static void MultipleMonthTest(){
+    @testSetup public static void multipleMonthTest(){
         Utility__c eversource = new Utility__c(
             Name = 'Eversource',
             Number_of_Decimal_Places__c = 2
         );
 
-        Utility__c national_grid = new Utility__c(
+        Utility__c nationalGrid = new Utility__c(
             Name = 'National Grid',
             Number_of_Decimal_Places__c = 2
         );
 
-        insert new List<Utility__c>{eversource, national_grid};
+        insert new List<Utility__c>{eversource, nationalGrid};
 
         Utility_NMC_Tariff__c everbillNMC = new Utility_NMC_Tariff__c (Name = 'Eversource SEMA Class 2', 
                                                                        Utility__c = 'Eversource', 
