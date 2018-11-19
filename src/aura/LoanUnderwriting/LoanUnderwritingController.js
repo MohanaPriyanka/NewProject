@@ -113,7 +113,7 @@
     handleFilesChange : function(component, event, helper) {
         var files = event.getSource().get("v.files")
         var parentId = component.get('v.lead.ConvertedContactId')?component.get('v.lead.ConvertedContactId'):component.get("v.lead.Id");
-        helper.uploadFiles(component, files, parentId, helper.getLead);
+        helper.uploadFiles(component, files, parentId, helper.getLead, 'Income Doc', helper, true);
     },
        
     takeSnapshot : function(component, event, helper) {
