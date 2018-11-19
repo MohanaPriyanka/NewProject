@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Used to hold periodic snapshots of Loan Partner metrics</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableChangeDataCapture>false</enableChangeDataCapture>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>Approval_Rate__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Qualified Leads / Finished Leads Ready for Credit Check</inlineHelpText>
+        <label>Approval Rate</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Average_Annual_Income__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of declared Annual Income / Finished Leads Ready for Credit Check</inlineHelpText>
+        <label>Average Annual Income</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Average_App_to_Close__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of Time to Close from Complete Opportunities / Total Completed Opportunities</inlineHelpText>
+        <label>Average App to Close</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Average_Construction_Period__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Average of Completed Opportunities Construction Periods (the difference between first and last disbursal dates, if all disbursals are made)</inlineHelpText>
+        <label>Average Construction Period</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Average_DTI__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Average Combined DTI After for Finished Leads ready for Credit Check</inlineHelpText>
+        <label>Average DTI</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Average_Max_FICO__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Average FICO for Completed Opportunities (using the max FICO between primary and co-applicant)</inlineHelpText>
+        <label>Average FICO</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Completed_Opportunities__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Number of non-Testcase Opportunities with Stage of Complete and Product Line of Residential Loan</inlineHelpText>
+        <label>Completed Opportunities</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Conversion_Rate__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Number of Completed Opportunities / Finished Leads Ready for Credit Check</inlineHelpText>
+        <label>Conversion Rate</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The month corresponding to this Partner Health record.</inlineHelpText>
+        <label>Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Decline_Rate__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Unqualified Leads / Finished Leads Ready for Credit Check</inlineHelpText>
+        <label>Decline Rate</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Finished_Leads_Ready_for_Credit_Check__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>This Partner&apos;s Leads that are Qualified, Pre-Qualified, or Ready for Credit Check. It excludes leads that are Unqualified and Unfinished.</inlineHelpText>
+        <label>Finished Leads Ready for Credit Check</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Num_Delinquent_Loans__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Loans for this partner with Days Past Due greater than 30</inlineHelpText>
+        <label># of Delinquent Loans</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Num_Pre_Qualified_Leads__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Number of Leads for this partner with Status = Pre-Qualified</inlineHelpText>
+        <label># of Pre-Qualified Leads</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Num_of_Installations_over_100_Days__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Number of Opportunities for this partner with Installation Queue Duration &gt; 100</inlineHelpText>
+        <label># of Installations over 100 Days</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Objective_QC__c</fullName>
+        <externalId>false</externalId>
+        <formula>Partner_Account__r.Paperwork__c +
+Partner_Account__r.Conversion_Rate__c +
+Partner_Account__r.GC_CS_License__c +
+Partner_Account__r.Electrical_License__c +
+Partner_Account__r.NABCEP_Cert__c +
+Partner_Account__r.TPF_Paid__c +
+Partner_Account__r.Install_Issues__c +
+Partner_Account__r.FICO__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Objective measures from the Partner&apos;s Account (Paperwork, Conversion Rate, GC CS License, Electrical License, NABCEP Cert, TPF Paid, Install Issues, FICO)</inlineHelpText>
+        <label>Objective QC</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Overall_Health_Score__c</fullName>
+        <externalId>false</externalId>
+        <formula>if (Approval_Rate__c &gt; 0.70, 2, 
+if (Approval_Rate__c &gt;= 0.50, 1, 0)) +
+
+if (Conversion_Rate__c &gt; 0.85, 3, 
+if (Conversion_Rate__c &gt;= 0.75, 2, 
+if (Conversion_Rate__c &gt;= 0.65, 1, 0))) +
+
+if (Total_Leads__c != 0,
+    if (Unfinished_Leads_Ready_for_Credit_Check__c / Total_Leads__c &lt; 0.05, 2,
+    if (Unfinished_Leads_Ready_for_Credit_Check__c / Total_Leads__c &lt; 0.1, 1, 0)),
+    0) +
+
+if (Decline_Rate__c &lt; 0.10, 2, 
+if (Decline_Rate__c &lt;= 0.20, 1, 0)) +
+
+if (Average_DTI__c &lt; 0.30, 2, 
+if (Average_DTI__c &lt;= 0.50, 1, 0)) +
+
+if (Average_Max_FICO__c &gt; 750, 2, 
+if (Average_Max_FICO__c &gt;= 700, 1, 0)) +
+
+if (AND(Average_Construction_Period__c &gt; 0, Average_Construction_Period__c &lt; 60), 3, 0) +
+
+if (Perc_Installation_over_100_Days__c &gt; 0.50, -2, 
+if (Perc_Installation_over_100_Days__c &gt;= 0.30, -1, 0)) +
+
+if (Perc_of_Delinquent_Loans__c &gt; 0.30, -2, 
+if (Perc_of_Delinquent_Loans__c &gt;= 0.11, -1, 0)) +
+
+Objective_QC__c +
+
+Subjective_QC__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Based on Approval rate, Conversion Rate, Unfinished Rate, Decline Rate, Average DTI, Average FICO, Average Construction Period, Installs over 100 days, and Delinquent Loans.</inlineHelpText>
+        <label>Overall Health Score</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Partner_Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Partner Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Partner Health</relationshipLabel>
+        <relationshipName>Partner_Health</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Partner__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Partner</label>
+        <referenceTo>Partner__c</referenceTo>
+        <relationshipLabel>Partner Health</relationshipLabel>
+        <relationshipName>PartnerHealth</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Perc_Installation_over_100_Days__c</fullName>
+        <externalId>false</externalId>
+        <label>% Installation over 100 Days</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Perc_of_Delinquent_Loans__c</fullName>
+        <externalId>false</externalId>
+        <label>% of Delinquent Loans</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Pre_Qualified_Rate__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Pre-Qualified Leads / Finished Leads Ready for Credit Check</inlineHelpText>
+        <label>Pre-Qualified Rate</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Qualified_Leads__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Number of Leads with Status of Qualified</inlineHelpText>
+        <label>Qualified Leads</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Subjective_QC__c</fullName>
+        <externalId>false</externalId>
+        <formula>Partner_Account__r.Communication_QC__c +
+Partner_Account__r.Portal_Proficiency__c +
+Partner_Account__r.Proposal_QC__c +
+Partner_Account__r.Relationship_QC__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Subjective measures from the Partner&apos;s Account (Communication, Portal Proficiency, Proposal, Relationship)</inlineHelpText>
+        <label>Subjective QC</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Total_Leads__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Total number of non-Testcase leads for this Partner with Product Line of Residential Loan</inlineHelpText>
+        <label>Total Leads</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Total_Loans_with_Construction_Period__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Number of Loans that have been fully disbursed (for which we can calculate a construction period)</inlineHelpText>
+        <label>Total Loans with Construction Period</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Unfinished_Leads_Ready_for_Credit_Check__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Leads with Status of either Unfinished, or Ready for Credit Check</inlineHelpText>
+        <label>Unfinished Leads Ready for Credit Check</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Unique_ID__c</fullName>
+        <caseSensitive>true</caseSensitive>
+        <externalId>true</externalId>
+        <inlineHelpText>Used to identify this partner&apos;s monthly Partner Health record</inlineHelpText>
+        <label>Unique ID</label>
+        <length>125</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>Unqualified_Leads__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Leads for this partner with Status of Unqualified</inlineHelpText>
+        <label>Unqualified Leads</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <label>Partner Health</label>
+    <nameField>
+        <label>Partner Health Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Partner Health</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>
