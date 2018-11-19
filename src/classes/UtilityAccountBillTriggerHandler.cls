@@ -88,8 +88,9 @@ public without sharing class UtilityAccountBillTriggerHandler {
                 System_Bill__c systemBill = systemBillMap.get(systemBillKey);
                 if (uab.Shared_Solar_System__c == uas.Opportunity__r.Shared_Solar_System__c && systemBill != null){
                     try {
-                        UASB__c uasb = setUASBFields(prodUpdate,
-                            scheduleZSubscriptionToUABIdMap.get(uas.id),
+                        UASB__c uasb = catchCancelledUASes(prodUpdate,
+                            uas,
+                            scheduleZSubscriptionToUABIdMap,
                             prodUpdate.Net_Metering_Rate_Applied__c,
                             prodUpdate.Production__c,
                             prodUpdate.Total_System_NMCs__c);
@@ -97,7 +98,7 @@ public without sharing class UtilityAccountBillTriggerHandler {
                         uasb.Name = uab.Name + uas.Opportunity__r.Shared_Solar_System__r.Name;
                         uasb.CS_Billing_Log__c = uab.Id;
                         uasb.System_Bill__c = systemBill.Id;
-                        if (prodUpdate.Total_System_NMCs_2_of_4__c > 0) {
+                        if (prodUpdate.Total_System_NMCs_2_of_4__c > 0 && scheduleZSubscriptionToUABIdMap.containsKey(uas.Id)) {
                             UASB__c uasbTwo = setUASBFields(prodUpdate,
                                 scheduleZSubscriptionToUABIdMap.get(uas.id),
                                 prodUpdate.Net_Metering_Rate_Applied_2_of_4__c,
@@ -108,7 +109,7 @@ public without sharing class UtilityAccountBillTriggerHandler {
                             uasbTwo.CS_Billing_Log__c = uab.Id;
                             uasbTwo.System_Bill__c = systemBill.Id;
                             uasbSet.add(uasbTwo);
-                            if (prodUpdate.Total_System_NMCs_3_of_4__c > 0) {
+                            if (prodUpdate.Total_System_NMCs_3_of_4__c > 0 && scheduleZSubscriptionToUABIdMap.containsKey(uas.Id)) {
                                 UASB__c uasbThree = setUASBFields(prodUpdate,
                                     scheduleZSubscriptionToUABIdMap.get(uas.id),
                                     prodUpdate.Net_Metering_Rate_Applied_3_of_4__c,
@@ -119,7 +120,7 @@ public without sharing class UtilityAccountBillTriggerHandler {
                                 uasbThree.CS_Billing_Log__c = uab.Id;
                                 uasbThree.System_Bill__c = systemBill.Id;
                                 uasbSet.add(uasbThree);
-                                if (prodUpdate.Total_System_NMCs_4_of_4__c > 0) {
+                                if (prodUpdate.Total_System_NMCs_4_of_4__c > 0 && scheduleZSubscriptionToUABIdMap.containsKey(uas.Id)) {
                                     UASB__c uasbFour = setUASBFields(prodUpdate,
                                         scheduleZSubscriptionToUABIdMap.get(uas.id),
                                         prodUpdate.Net_Metering_Rate_Applied_4_of_4__c,
@@ -188,6 +189,35 @@ public without sharing class UtilityAccountBillTriggerHandler {
             printSOQLLimits('After Updating Adjustments');
         }
 
+    }
+
+    public static UASB__c catchCancelledUASes(  Energy_Usage_Update__c prodUpdate,
+                                                Utility_Account_Subscription__c uas,
+                                                Map<Id, Schedule_Z_Subscription__c> scheduleZSubscriptionToUABIdMap,
+                                                Decimal nmcRate,
+                                                Decimal systemProduction,
+                                                Decimal systemNMCs){
+        UASB__c uasbToCreate;
+
+        if ( scheduleZSubscriptionToUABIdMap.containsKey(uas.Id)){
+            uasbToCreate = setUASBFields(prodUpdate, scheduleZSubscriptionToUABIdMap.get(uas.Id), nmcRate, systemProduction, systemNMCs);
+        } else {
+            // Zero dollar bill for cancelled customers:
+            uasbToCreate = new UASB__c( Date__c = prodUpdate.Date__c,
+                Production_Update__c = prodUpdate.Id,
+                Utility_Account_Subscription__c = uas.Id,
+                Opportunity__c = uas.Opportunity__c,
+                Shared_Solar_System__c = uas.Opportunity__r.Shared_Solar_System__c,
+                Billing_Period_Start_Date__c = prodUpdate.Billing_Period_Start_Date__c,
+                Billing_Period_End_Date__c = prodUpdate.Billing_Period_End_Date__c,
+                Total_System_NMCs__c = 0,
+                Total_System_Production_kWh__c = 0,
+                NMC_Rate__c = 0,
+                Share_of_System__c = 0,
+                Credits_Allocated__c = 0);
+        }
+
+        return uasbToCreate;
     }
 
     public static UASB__c setUASBFields(Energy_Usage_Update__c prodUpdate,
