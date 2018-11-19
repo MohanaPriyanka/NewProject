@@ -16,10 +16,7 @@ public without sharing class CSAPController {
         public String sssCreditQualification;
 
         @AuraEnabled
-        public Product2 srecProduct;
-
-        @AuraEnabled
-        public Product2 smartProduct;
+        public List<Product2> productList;
     }
 
     @AuraEnabled
@@ -99,11 +96,7 @@ public without sharing class CSAPController {
     @AuraEnabled
     public static SSSResult checkCreditReport(Id leadId, Decimal creditScore) {
         SSSResult sssResult = new SSSResult();
-        Id srecId;
-        Id smartId;
         sssResult.sssCreditQualification = 'Ready for Credit Check';
-        List<Shared_Solar_System__c> srecSystems = new List<Shared_Solar_System__c>();
-        List<Shared_Solar_System__c> smartSystems = new List<Shared_Solar_System__c>();
 
             Lead lead = [SELECT Id, Status, Partner_Name__c, Application_Source_Phase_2__c, Load_Zone__c, Utility__c FROM Lead WHERE Id = :leadId];
             String sssQuery = 'SELECT Id, Credit_Score_Requirement__c, Product__r.Id, Product__r.Name , Product__c, Product__r.Program__c ';
@@ -120,31 +113,21 @@ public without sharing class CSAPController {
             }
             sssQuery += 'ORDER BY Credit_Score_Requirement__c ASC ';
             List<Shared_Solar_System__c> sssList = Database.query(sssQuery);
+
+            Map<String, Product2> productProgramMap = new Map<String, Product2>();
+            String passedCredit = 'Unqualified';
+
             for (Shared_Solar_System__c sss : sssList) {
-                if (sss.Product__r.Program__c == 'SREC - Community Solar') {
-                    srecSystems.add(sss);
-                }
-                if (sss.Product__r.Program__c == 'SMART - Community Solar') {
-                    smartSystems.add(sss);
-                }
-            }
-            for (Shared_Solar_System__c srec : srecSystems) {
-                if (creditScore >= srec.Credit_Score_Requirement__c) {
-                    sssResult.srecProduct = srec.Product__r;
-                    break;
+                if (creditScore >= sss.Credit_Score_Requirement__c) {
+                    Product2 sssProduct = new Product2();
+                    sssProduct.Id = sss.Product__c;
+                    sssProduct.Program__c = sss.Product__r.Program__c;
+                    productProgramMap.put(sss.Product__r.Program__c, sssProduct);
+                    passedCredit = 'Qualified';
                 }
             }
-            for (Shared_Solar_System__c smart : smartSystems) {
-                if (creditScore >= smart.Credit_Score_Requirement__c) {
-                    sssResult.smartProduct = smart.Product__r;
-                    break;
-                }
-            }
-            if (sssResult.smartProduct != null || sssResult.srecProduct != null) {
-                sssResult.sssCreditQualification = 'Qualified';
-            } else {
-                sssResult.sssCreditQualification = 'Unqualified';
-            }
+            sssResult.sssCreditQualification = passedCredit;
+            sssResult.productList = productProgramMap.values();
 
         return sssResult;
     }
