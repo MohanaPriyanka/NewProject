@@ -73,6 +73,9 @@
             <componentName>flexipage:tabset</componentName>
         </componentInstances>
         <componentInstances>
+            <componentName>agf:ADM_ProductTagFields</componentName>
+        </componentInstances>
+        <componentInstances>
             <componentInstanceProperties>
                 <name>entityNames</name>
                 <value>[&quot;agf__ADM_Work__c&quot;]</value>
@@ -88,6 +91,9 @@
         <type>Region</type>
     </flexiPageRegions>
     <flexiPageRegions>
+        <componentInstances>
+            <componentName>agf:ADM_Investigation_Countdown</componentName>
+        </componentInstances>
         <componentInstances>
             <componentName>forceChatter:recordFeedContainer</componentName>
         </componentInstances>
