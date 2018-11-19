@@ -331,6 +331,22 @@ src/pages/rcsfl__*
 src/classes/trailheadapp__*
 src/triggers/trailheadapp__*
 src/pages/trailheadapp__*
+src/components/agf__*
+src/components/APXT_BPM__*
+src/components/APXTConga4__*
+src/components/ChargentBase__*
+src/components/ChargentOrders__*
+src/components/copado__*
+src/components/dsfs__*
+src/components/et4ae5__*
+src/components/Field_Trip__*
+src/components/LASERCA__*
+src/components/LiveText__*
+src/components/MC4SF__*
+src/components/MetaDataSearch__*
+src/components/MPM4_BASE__*
+src/components/rcsfl__*
+src/components/trailheadapp__*
 
 
 #profiles and permission sets are complex Files. If your Org's 
