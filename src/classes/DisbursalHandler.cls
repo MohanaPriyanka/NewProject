@@ -193,8 +193,9 @@ public class DisbursalHandler {
         List<Disbursal__c> disbursalList = new List<Disbursal__c>();
         List<Residential_Equipment__c> queriedEquipment = new List<Residential_Equipment__c>();
         List<Id> equipmentIdList = new List<Id>();
+
         for (Residential_Equipment__c equipment : equipmentList) {
-            equipmentIdList.add(equipment.Id);
+            equipmentIdList.add(equipment.Id); 
         }
         for (Residential_Equipment__c equipment : [SELECT Id, Opportunity__r.Id, Opportunity__r.Lender_of_Record__c, Opportunity__r.DOER_Solar_Loan__c FROM Residential_Equipment__c WHERE Id IN : equipmentIdList]) {
             queriedEquipment.add(equipment);
@@ -204,12 +205,26 @@ public class DisbursalHandler {
         for (Residential_Equipment__c equipment : queriedEquipment) {
             if (disbursalMap.get(equipment.Opportunity__r.Id + 'Mechanical Installation') != null) {
                 if (fieldHasChanged(equipment, newMap, oldMap, 'Mechanically_Installed__c', 'true', null)) {
-                    disbursalList.add(setDisbursalStatus('Mechanical Installation', equipment.Opportunity__r.Id, disbursalMap, 'Due', null));
+                    String newStatus = 'Due';
+                    if (disbursalMap.get(equipment.Opportunity__r.Id + 'Contract Signature') != null &&
+                        disbursalMap.get(equipment.Opportunity__r.Id + 'Contract Signature').Status__c == 'Hold') {
+                        newStatus = 'Hold';
+                        disbursalMap.get(equipment.Opportunity__r.Id + 'Mechanical Installation').Hold_on_Disbursal__c = true;
+                        disbursalMap.get(equipment.Opportunity__r.Id + 'Mechanical Installation').Reason_for_Hold__c = 'A previous disbursal is on hold.';
+                    }
+                    disbursalList.add(setDisbursalStatus('Mechanical Installation', equipment.Opportunity__r.Id, disbursalMap, newStatus, null));
                 } 
             }
             if (disbursalMap.get(equipment.Opportunity__r.Id + 'Interconnection') != null) {
                 if (fieldHasChanged(equipment, newMap, oldMap, 'Interconnected__c', 'true', null)) {
                     if (!equipment.Opportunity__r.DOER_Solar_Loan__c) {
+                        String newStatus = 'Due';
+                        if (disbursalMap.get(equipment.Opportunity__r.Id + 'Mechanical Installation') != null &&
+                            disbursalMap.get(equipment.Opportunity__r.Id + 'Mechanical Installation').Status__c == 'Hold') {
+                            newStatus = 'Hold';
+                            disbursalMap.get(equipment.Opportunity__r.Id + 'Interconnection').Hold_on_Disbursal__c = true;
+                            disbursalMap.get(equipment.Opportunity__r.Id + 'Interconnection').Reason_for_Hold__c = 'A previous disbursal is on hold.';
+                        }
                         disbursalList.add(setDisbursalStatus('Interconnection', equipment.Opportunity__r.Id, disbursalMap,  'Due', null));
                     }
                 } 
