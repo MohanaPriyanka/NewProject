@@ -372,7 +372,9 @@ private class PaymentCaseTest {
         List<Case> listOfCases = new List<Case>{PSCase};
         Map<Case, ChargentOrders__ChargentOrder__c> caseToOrderMap = new Map<Case, ChargentOrders__ChargentOrder__c>();
         caseToOrderMap.put(PSCase, order1);
-        pcc.sendAllRequiredEmails(listOfCases, caseToOrderMap);
+        Map<Id, ChargentOrders__ChargentOrder__c> orderIdtoOrderMap = new Map<Id, ChargentOrders__ChargentOrder__c>();
+        orderIdtoOrderMap.put(order1.Id, order1);
+        pcc.sendAllRequiredEmails(listOfCases, orderIdtoOrderMap);
 
         System.assertEquals(1, MessagingService.emailsSent.size());
     }
@@ -588,7 +590,10 @@ private class PaymentCaseTest {
         Map<Case, ChargentOrders__ChargentOrder__c> caseToOrderMap = new Map<Case, ChargentOrders__ChargentOrder__c>();
         caseToOrderMap.put(PSCase, order1);
         caseToOrderMap.put(secondCase, order2);
-        pcc.sendAllRequiredEmails(listOfCases, caseToOrderMap);
+        Map<Id, ChargentOrders__ChargentOrder__c> orderIdtoOrderMap = new Map<Id, ChargentOrders__ChargentOrder__c>();
+        orderIdtoOrderMap.put(order1.Id, order1);
+        orderIdtoOrderMap.put(order2.Id, order2);
+        pcc.sendAllRequiredEmails(listOfCases, orderIdtoOrderMap);
 
         // 2 emails sent total
         System.assertEquals(2, MessagingService.emailsSent.size());
