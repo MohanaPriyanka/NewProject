@@ -268,7 +268,7 @@ out/
 ###############
 #package.xml file is recreated on the fly by Copado, no need to track
 #unnecessary changes of this file
-package.xml
+src/package.xml
 #Managed packages can trigger the installation or uninstallation of 
 #applications, it is recommended to manage this outside git
 installedPackages/*
