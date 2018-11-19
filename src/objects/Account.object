@@ -15295,6 +15295,26 @@ try {
 }</url>
     </webLinks>
     <webLinks>
+        <fullName>Manage_Access_to_Products</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Manage Access to Products</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/flow/Partner_Product_Junction_Management?varPartner_ID={!Account.PartnerId__c}&amp;varPartnerName={!Account.Partner_Name__c}&amp;retURL=home/home.jsp</url>
+        <width>900</width>
+    </webLinks>
+    <webLinks>
         <fullName>Opt_in_for_Text_Messages</fullName>
         <availability>online</availability>
         <description>For LiveText</description>
