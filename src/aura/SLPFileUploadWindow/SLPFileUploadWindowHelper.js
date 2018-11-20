@@ -160,6 +160,26 @@
             $A.enqueueAction(action); 
         });
     },
+
+    addDisbursalOnHoldMessage : function(component, parentId, oppId) {
+        var action = component.get("c.checkIfDisbursalOnHold");
+        var self = this;
+
+        action.setParams({
+            oppId: oppId
+        }); 
+
+        action.setCallback(this, function(a) {
+            if(a.getState() == "SUCCESS") {
+                var isDisbursalOnHold = a.getReturnValue();
+                if (isDisbursalOnHold) {
+                    component.set("v.disbursalMessage", 'A disbursal for this job is on hold. Please contact BlueWave Partner Support at partnersupport@bluewavesolar.com or 888-817-2703 for more details.');
+                    return;
+                }
+            }
+        });
+        $A.enqueueAction(action);
+    },
   
     startSpinner : function (component) {
         $A.util.removeClass(component.find("spinner"), 'noDisplay'); 
@@ -188,13 +208,15 @@
                 actionThree = helper.saveSObjectErrorOption(component, oppId, 'Opportunity', 'Mechanical_Install_Date_From_RE__c', newDate, null, {suppressAlert: true});
                 actionFour = helper.saveSObjectErrorOption(component, oppId, 'Opportunity', 'Mechanically_Installed__c', true, null, {suppressAlert: true});
             }
+            self.addDisbursalOnHoldMessage(component, parentId, oppId);
         } else if (fileName === 'Interconnection Documentation') {
             actionOne = helper.saveSObjectErrorOption(component, parentId, 'Residential_Equipment__c', 'Interconnection_Date__c', newDate, null, {suppressAlert: true});
             actionTwo = helper.saveSObjectErrorOption(component, parentId, 'Residential_Equipment__c', 'Interconnected__c', true,  null, {suppressAlert: true});
             if (oppId != undefined || oppId != NULL) {
                 actionThree = helper.saveSObjectErrorOption(component, oppId, 'Opportunity', 'Interconnection_Date_From_RE__c', newDate,  null, {suppressAlert: true});
                 actionFour = helper.saveSObjectErrorOption(component, oppId, 'Opportunity', 'Interconnected__c', true,  null, {suppressAlert: true});
-            } 
+            }
+            self.addDisbursalOnHoldMessage(component, parentId, oppId);
         } else if (fileName === 'Sales Agreement') {
             if (oppId != undefined || oppId != NULL) {
                 actionOne = helper.saveSObjectErrorOption(component, parentId, 'Opportunity', 'Partner_Sales_Agreement_Status__c', 'Completed',  null, {suppressAlert: true});
@@ -271,10 +293,10 @@
     },
     
     addErrorMessaging : function(component) {
-        $A.util.removeClass(component.find("errorTextLine"), 'noDisplay'); 
-        $A.util.addClass(component.find("uploadButton"), 'shake'); 
+        $A.util.removeClass(component.find("errorTextLine"), 'noDisplay');
+        $A.util.addClass(component.find("uploadButton"), 'shake');
         $A.util.removeClass(component.find("saveButton"), 'noDisplay');
-        $A.util.addClass(component.find("spinner"), 'noDisplay'); 
+        $A.util.addClass(component.find("spinner"), 'noDisplay');
     },
     
     removeErrorMessaging : function(component) {
