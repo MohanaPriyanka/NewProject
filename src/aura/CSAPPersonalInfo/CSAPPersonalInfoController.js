@@ -59,7 +59,6 @@
             component.set('v.loading', true);
             component.set("v.loadingText", "Locating your address...");
             helper.processLead(component, event, helper);
-            // The only place where we run CSAPController.upsertCSAPRecords
             helper.upsertRecords(component, event, helper);
         }
     },
