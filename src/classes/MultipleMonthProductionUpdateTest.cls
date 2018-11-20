@@ -213,7 +213,7 @@ public class MultipleMonthProductionUpdateTest {
                 Shared_Solar_System__c = sss1.id,
                 Schedule_Z__c = scheduleZ1.id,
                 Billing_Period_End_Date__c = myDateMar,
-                Date__c = myDateFeb,
+                Date__c = myDateMar,
                 Total_System_NMCs__c = 13000,
                 Net_Metering_Rate_Applied__c = 0.1619,
                 Production__c = 80296);
@@ -331,5 +331,57 @@ public class MultipleMonthProductionUpdateTest {
         System.assertNotEquals(120.02, generatedBill.Credits_Allocated__c);
         System.assertEquals(0.4833, generatedBill.Share_of_System__c);
         System.assertEquals(772.40, generatedBill.Subscription_Production_kWh_Static__c);
+    }
+
+    @isTest public static void testRoundingMethodSwitch() {
+        Test.startTest();
+        Energy_Usage_Update__c prodUpdate = [
+            SELECT Id, Name, Schedule_Z__c, Production__c
+            FROM Energy_Usage_Update__c
+            WHERE Name = 'sssA - March 2016'];
+
+        Utility__c nGrid = [
+            SELECT Id, Credits_Allocated_Rounding_Method__c
+            FROM Utility__c
+            WHERE Name = 'Eversource'];
+
+        Shared_Solar_System__c sss1 = [
+            SELECT Id, Billing_Method__c
+            FROM Shared_Solar_System__c];
+
+        Schedule_Z_Subscription__c szs = [
+            SELECT Id, Name, Customer_Subscription_kW_DC__c,
+            Number_of_Decimal_Places__c
+            FROM Schedule_Z_Subscription__c
+            WHERE Customer_Subscription_kW_DC__c = 14];
+
+        szs.Customer_Subscription_kW_DC__c = 25.59;
+        szs.Number_of_Decimal_Places__c = 2;
+        update szs;
+
+        prodUpdate.Total_System_NMCs__c = 28319.04;
+        update prodUpdate;
+
+        nGrid.Credits_Allocated_Rounding_Method__c = 'DOWN';
+        update nGrid;
+
+        sss1.Billing_Method__c = 'NMC';
+        update sss1;
+
+        prodUpdate.Generate_Bills__c = true;
+        update prodUpdate;
+        Test.stopTest();
+
+        UASB__c generatedBill =
+        [SELECT Id, Name, Utility_Account_Subscription__r.Name,
+            Credits_Allocated__c, Share_of_System__c, Subscription_Production_kWh_Static__c
+        FROM UASB__c
+        WHERE Schedule_Z_Subscription__r.Name = : szs.Name
+        AND Production_Update__r.Id = : prodUpdate.Id];
+
+        // Matches real data: (1.77% share with $28,319.04 NMCs = 501.247, round down to 501.24)
+        System.assertEquals(501.24, generatedBill.Credits_Allocated__c);
+        System.assertNotEquals(501.25, generatedBill.Credits_Allocated__c);
+        System.assertEquals(1.77, generatedBill.Share_of_System__c);
     }
 }

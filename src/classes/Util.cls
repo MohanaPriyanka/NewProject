@@ -122,6 +122,31 @@ public without sharing class Util {
         return(decimalValues[decimalValues.size()-1]);
     }
 
+    // Converts string rounding method to System.RoundingMode
+    public static Decimal roundedValue(Decimal valueToRound, Integer numPlaces, String roundMethod) {
+        Decimal newvalue;
+
+        if (roundMethod == 'CEILING'){
+            newvalue = valueToRound.setScale(numPlaces, roundingMode.CEILING);
+        } else if (roundMethod == 'DOWN') {
+            system.debug('Entered');
+            newvalue = valueToRound.setScale(numPlaces, roundingMode.DOWN);
+        } else if (roundMethod == 'FLOOR') {
+            newvalue = valueToRound.setScale(numPlaces, roundingMode.FLOOR);
+        } else if (roundMethod == 'HALF_DOWN') {
+            newvalue = valueToRound.setScale(numPlaces, roundingMode.HALF_DOWN);
+        } else if (roundMethod == 'HALF_EVEN') {
+            newvalue = valueToRound.setScale(numPlaces, roundingMode.HALF_EVEN);
+        } else if (roundMethod == 'HALF_UP') {
+            newvalue = valueToRound.setScale(numPlaces, roundingMode.HALF_UP);
+        } else if (roundMethod == 'UP') {
+            newvalue = valueToRound.setScale(numPlaces, roundingMode.UP);
+        } else {
+            newvalue = valueToRound.setScale(numPlaces, roundingMode.HALF_UP);
+        }
+        return newvalue;
+    }
+
     public static void printCPULimit(String prefix) {
         System.debug(LoggingLevel.ERROR, 'Limits: ' + prefix + ': ' + Limits.getCpuTime() + 'ms of '
             + Limits.getLimitCpuTime() + 'ms used');
