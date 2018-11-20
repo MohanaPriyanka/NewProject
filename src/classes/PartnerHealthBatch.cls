@@ -48,38 +48,32 @@ public class PartnerHealthBatch implements Database.Batchable<SObject>,Schedulab
     }
 
     private void processLeads(Map<Id, Partner_Health__c> partnerIdToHealthMap, Map<Id, Partner__c> partnerMap) {
-        List<Lead> leads = [
-            SELECT Id, Annual_Income_Currency__c, Co_Applicant_Income__c, CreatedDate, Partner_Lookup__c,
-                Average_Debt_to_Income_After__c, Status
+        List<AggregateResult> leadAggregates = [
+            SELECT Partner_Lookup__c, Status, COUNT(Id) numLeads,
+                SUM(Annual_Income_Currency__c) annualIncome, SUM(Co_Applicant_Income__c) coAppIncome, SUM(Average_Debt_to_Income_After__c) avgDTI
             FROM Lead
             WHERE Partner_Lookup__c IN :partnerMap.keySet()
             AND Product_line__c = 'Residential Loan'
             AND Lead.LastName != 'Testcase'
+            GROUP BY Partner_Lookup__c, Status
         ];
-        for (Lead lead : leads) {
-            Partner_Health__c partnerHealth = getPartnerHealth(partnerMap.get(lead.Partner_Lookup__c), partnerIdToHealthMap);
-            partnerHealth.Total_Leads__c += 1;
-            if (lead.Status == 'Qualified') {
-                partnerHealth.Qualified_Leads__c += 1;
-            } else if (lead.Status == 'Unqualified') {
-                partnerHealth.Unqualified_Leads__c += 1;
-            } else if (lead.Status == 'Pre-Qualified') {
-                partnerHealth.Num_Pre_Qualified_Leads__c += 1;
+        for (AggregateResult leadAggregate : leadAggregates) {
+            Partner_Health__c partnerHealth = getPartnerHealth(partnerMap.get((Id) leadAggregate.get('Partner_Lookup__c')), partnerIdToHealthMap);
+            partnerHealth.Total_Leads__c += (Integer) leadAggregate.get('numLeads');
+            if (leadAggregate.get('Status') == 'Qualified') {
+                partnerHealth.Qualified_Leads__c += (Integer) leadAggregate.get('numLeads');
+            } else if (leadAggregate.get('Status') == 'Unqualified') {
+                partnerHealth.Unqualified_Leads__c += (Integer) leadAggregate.get('numLeads');
+            } else if (leadAggregate.get('Status') == 'Pre-Qualified') {
+                partnerHealth.Num_Pre_Qualified_Leads__c += (Integer) leadAggregate.get('numLeads');
             }
-            if (lead.Status == 'Ready for Credit Check' || lead.Status == 'Unfinished') {
-                partnerHealth.Unfinished_Leads_Ready_for_Credit_Check__c += 1;
+            if (leadAggregate.get('Status') == 'Ready for Credit Check' || leadAggregate.get('Status') == 'Unfinished') {
+                partnerHealth.Unfinished_Leads_Ready_for_Credit_Check__c += (Integer) leadAggregate.get('numLeads');
             } else {
-                if (lead.Annual_Income_Currency__c != null) {
-                    partnerHealth.Average_Annual_Income__c += lead.Annual_Income_Currency__c;
-                }
-                if (lead.Co_Applicant_Income__c != null) {
-                    partnerHealth.Average_Annual_Income__c += lead.Co_Applicant_Income__c;
-                }
-                partnerHealth.Finished_Leads_Ready_for_Credit_Check__c += 1;
-                if (lead.Average_Debt_to_Income_After__c != null) {
-                    //Average Debt stored Temporarily in Average DTI to calculate metric accordingly
-                    partnerHealth.Average_DTI__c += lead.Average_Debt_to_Income_After__c;
-                }
+                partnerHealth.Finished_Leads_Ready_for_Credit_Check__c += (Integer) leadAggregate.get('numLeads');
+                partnerHealth.Average_Annual_Income__c += Util.nullToZero((Decimal) leadAggregate.get('annualIncome'));
+                partnerHealth.Average_Annual_Income__c += Util.nullToZero((Decimal) leadAggregate.get('coAppIncome'));
+                partnerHealth.Average_DTI__c += Util.nullToZero((Decimal) leadAggregate.get('avgDTI'));
             }
         }
     }
