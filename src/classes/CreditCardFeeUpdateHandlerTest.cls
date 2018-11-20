@@ -1,7 +1,7 @@
 @isTest
 private class CreditCardFeeUpdateHandlerTest{
 
-Static testMethod void CreditCardFeeUpdateHandlerTest(){
+Static testMethod void ccFeeUpdateTest(){
 
 // Create NMC Tariffs
 
@@ -116,6 +116,7 @@ Static testMethod void CreditCardFeeUpdateHandlerTest(){
         insert new List<Shared_Solar_System__c>{sss1, sss2};
 
         TestFactory.insertBWAddress();
+        TestFactory.setCSBillSettings();
 
 // create Parent Accounts
 

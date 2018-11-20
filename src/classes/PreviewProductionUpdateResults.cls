@@ -83,8 +83,9 @@ public without sharing class PreviewProductionUpdateResults{
               Utility_Account_Subscription__r.Utility_Account_Log__r.Name,
               Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Total_System_Size_kWh_DC__c,
               Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Method__c,
-              Utility_Account_Subscription__r.Opportunity__r.Product__r.NM_Rate_Floor__c
-            FROM Schedule_Z_Subscription__c
+              Utility_Account_Subscription__r.Opportunity__r.Product__r.NM_Rate_Floor__c,
+              Schedule_Z__r.Shared_Solar_System__r.Utility__r.Credits_Allocated_Rounding_Method__c
+          FROM Schedule_Z_Subscription__c
             WHERE Schedule_Z__c = : scheduleZ.Id
             AND (Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c != 'RadianGen'
             OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c = 'Residential'
@@ -132,8 +133,9 @@ public without sharing class PreviewProductionUpdateResults{
               Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Id,
               Utility_Account_Subscription__r.Opportunity__r.shared_solar_system__r.Total_System_Size_kWh_DC__c,
               Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Method__c,
-              Utility_Account_Subscription__r.Opportunity__r.Product__r.NM_Rate_Floor__c
-            FROM Schedule_Z_Subscription__c
+              Utility_Account_Subscription__r.Opportunity__r.Product__r.NM_Rate_Floor__c,
+              Schedule_Z__r.Shared_Solar_System__r.Utility__r.Credits_Allocated_Rounding_Method__c
+          FROM Schedule_Z_Subscription__c
             WHERE Utility_Account_Subscription__r.Utility_Account_Log__r.Account__r.Id = : parentId
             AND (Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c = 'Bluewave'
             OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c = 'Residential'
