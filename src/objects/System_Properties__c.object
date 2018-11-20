@@ -38,6 +38,17 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Days_Generate_Bills_For_Cancelled__c</fullName>
+        <externalId>false</externalId>
+        <label>Days Generate Bills For Cancelled</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Disable_AccountBillTrigger__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -249,6 +260,16 @@
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Minimum_Balance_Bills_for_Cancelled__c</fullName>
+        <externalId>false</externalId>
+        <label>Minimum Balance Bills for Cancelled</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Warn_on_Max_Loan_Amount__c</fullName>
