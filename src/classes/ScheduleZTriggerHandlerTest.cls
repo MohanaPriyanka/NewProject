@@ -114,6 +114,7 @@ public class ScheduleZTriggerHandlerTest {
 
         insert new List<Load_U__c>{everLZU, ngridLZU};
         TestFactory.insertBWAddress();
+        TestFactory.setCSBillSettings();
 
         Account clientAccount = new Account(name = 'Client Account',
             Client_Brand_Key__c = 'AmpBlack');

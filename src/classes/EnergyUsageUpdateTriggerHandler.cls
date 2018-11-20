@@ -5,7 +5,7 @@
  * This class is only creating the admin details of the bills. Sets up the correct relationships and such.
  * Money Due, kWh, etc aren't calculated.
  *
- * Tested by: TestBillCreationandPayment, RecurringPaymentsHandlerTestClass
+ * Tested by: TestBillCreationandPayment, RecurringPaymentsHandlerTestClass, TestBillCreationForCancelledCustomers
  */
 
 public without sharing class EnergyUsageUpdateTriggerHandler implements Database.Batchable<sObject> {
@@ -13,6 +13,8 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
     public Set<Id> scheduleZs = new Set<Id>();
     public Set<Integer> euuMonths = new Set<Integer>();
     public Set<String> euuYears = new Set<String>();
+    public Set<Id> cancelledUASes = new Set<Id>();
+    public Set<Id> cancelledOpps = new Set<Id>();
 
     // Prep for batch, set list of Schedule Z Ids and Shared Solar System Map:
     public EnergyUsageUpdateTriggerHandler(List<Energy_Usage_Update__c> euuList) {
@@ -21,6 +23,28 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             scheduleZs.add(euu.Schedule_Z__c);
             euuMonths.add((Integer) euu.Month_Number__c);
             euuYears.add(euu.YearDate__c);
+        }
+
+        System_Properties__c sysProp = System_Properties__c.getAll().values()[0];
+        Integer collectionsWindow = Integer.valueOf(sysProp.Days_Generate_Bills_for_Cancelled__c);
+        Decimal minimumBalance = sysProp.Minimum_Balance_Bills_for_Cancelled__c;
+
+        Date todaysDate = Date.today();
+        Date maxPastDueDate = todaysDate.addDays(collectionsWindow * -1);
+
+        // If there is an outstanding balance, and the customer has gotten a bill in the past X days,
+        // create bill with $0 in new charges.
+        // Last Bill Send Date = newest bill date with Due_This_Month__c > 0
+        for (UASB__c uasb : [
+            SELECT Id, System_Bill__r.Unique_ID__c, System_Bill__r.Opportunity__r.Id, Utility_Account_Subscription__c,
+                System_Bill__r.Account_Bill__r.Parent_Account__r.Last_Bill_Send_Date_New_Charges__c
+            FROM UASB__c
+            WHERE System_Bill__r.Shared_Solar_System__c IN : sssIdToEUUMap.keySet()
+            AND System_Bill__r.Balance_Net_Late_Payments__c > : minimumBalance
+            AND System_Bill__r.Account_Bill__r.Parent_Account__r.Last_Bill_Send_Date_New_Charges__c >= : maxPastDueDate
+        ]) {
+            cancelledUASes.add(uasb.Utility_Account_Subscription__c);
+            cancelledOpps.add(uasb.System_Bill__r.Opportunity__r.Id);
         }
     }
 
@@ -54,11 +78,11 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
     // Batch into groups of Schedule Z Subscriptions:
     public Database.QueryLocator start(Database.BatchableContext bc) {
         String query =  'SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Opportunity__c ' +
-                        ' FROM Schedule_Z_Subscription__c ' +
-                        ' WHERE Schedule_Z__c IN : scheduleZs ' +
-                        ' AND ( Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c!= \'RadianGen\' ' +
-                        ' OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c= \'Residential\' ' +
-                        ' OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c= \'Non-Residential\' )';
+            ' FROM Schedule_Z_Subscription__c ' +
+            ' WHERE Schedule_Z__c IN : scheduleZs ' +
+            ' AND ( Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c!= \'RadianGen\' ' +
+            ' OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c= \'Residential\' ' +
+            ' OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c= \'Non-Residential\' )';
         return Database.getQueryLocator(query);
     }
 
@@ -68,14 +92,13 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
     }
 
     public void createBills(List<Schedule_Z_Subscription__c> scheduleZSubscriptions ){
-        Set<Id> scheduleZUASIds = new Set<Id>();
-        Set<Id> oppIds = new Set<Id>();
+        Set<Id> scheduleZUASIds = new Set<Id>(cancelledUASes);
+        Set<Id> oppIds = new Set<Id>(cancelledOpps);
 
         for (Schedule_Z_Subscription__c scheduleZSub : scheduleZSubscriptions) {
             scheduleZUASIds.add(scheduleZSub.Utility_Account_Subscription__c);
             oppIds.add(scheduleZSub.Utility_Account_Subscription__r.Opportunity__c);
         }
-
 
         Map<Id, Utility_Account_Subscription__c> uasMap = getUASFromSZS(scheduleZUASIds, oppIds);
 
@@ -86,8 +109,8 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
                 Product__r.Days_in_Bill_Period__c, Account.Max_Account_Bill_Number__c, StageName
             FROM Opportunity
             WHERE Shared_Solar_System__c IN : sssIdToEUUMap.keySet()
-                AND StageName = 'Complete'
-                AND Id IN : oppIds
+            AND StageName = 'Complete'
+            AND Id IN : oppIds
             ORDER BY Name
         ];
 
@@ -268,7 +291,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             SELECT Opportunity__r.Id oppID, MAX(Bill_Number__c) maxBillNumber
             FROM System_Bill__c
             WHERE Shared_Solar_System__c IN : sssIds
-                AND Opportunity__c IN : oppIds
+            AND Opportunity__c IN : oppIds
             GROUP BY Opportunity__r.Id
         ]) {
             String oppId = (String)lineItem.get('oppID');
@@ -293,8 +316,8 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
                 Max_Account_Bill_Number__c
             FROM Utility_Account_Subscription__c
             WHERE Id IN : scheduleZUASIds
-                AND Opportunity__c IN : oppIds
-                AND Opportunity__r.StageName = 'Complete'
+            AND Opportunity__c IN : oppIds
+            AND Opportunity__r.StageName = 'Complete'
             ORDER BY Name
         ];
 

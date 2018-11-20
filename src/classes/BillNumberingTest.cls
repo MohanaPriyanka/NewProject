@@ -31,6 +31,7 @@ public with sharing class BillNumberingTest {
 
         insert everLZU;
         TestFactory.insertBWAddress();
+        TestFactory.setCSBillSettings();
 
         Account clientAccount = new Account(name = 'Client Account',
             Client_Brand_Key__c = 'AmpBlack');

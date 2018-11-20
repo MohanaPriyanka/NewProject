@@ -1553,6 +1553,21 @@ IF(
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>Last_Bill_Send_Date_New_Charges__c</fullName>
+        <externalId>false</externalId>
+        <label>Last Bill Send Date (With New Charges)</label>
+        <summarizedField>Account_Bill__c.Date__c</summarizedField>
+        <summaryFilterItems>
+            <field>Account_Bill__c.Due_This_Month__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Account_Bill__c.Parent_Account__c</summaryForeignKey>
+        <summaryOperation>max</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <type>Summary</type>
+    </fields>
+    <fields>
         <fullName>Last_Bill_Send_Date__c</fullName>
         <externalId>false</externalId>
         <label>Last Bill Send Date</label>
