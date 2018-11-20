@@ -24809,7 +24809,7 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Product2.Contract_Docusign_Template__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -24864,12 +24864,12 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Product2.Docusign_Template_CoSigner__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Product2.Docusign_Template_Joint__c</field>
         <readable>true</readable>
     </fieldPermissions>
