@@ -48,7 +48,7 @@
     <enableBulkApi>true</enableBulkApi>
     <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>false</enableFeeds>
-    <enableHistory>false</enableHistory>
+    <enableHistory>true</enableHistory>
     <enableReports>false</enableReports>
     <enableSearch>false</enableSearch>
     <enableSharing>true</enableSharing>
@@ -59,6 +59,7 @@
         <defaultValue>true</defaultValue>
         <externalId>false</externalId>
         <label>Active</label>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
@@ -73,6 +74,7 @@ https://success.salesforce.com/answers?id=906300000004AH9AAM</description>
         <relationshipLabel>Partner Product Junctions</relationshipLabel>
         <relationshipName>Partner_Product_Junctions</relationshipName>
         <required>false</required>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
@@ -85,6 +87,7 @@ https://success.salesforce.com/answers?id=906300000004AH9AAM</description>
         <relationshipName>Partner_Product_Junctions</relationshipName>
         <relationshipOrder>0</relationshipOrder>
         <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>MasterDetail</type>
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
@@ -93,6 +96,7 @@ https://success.salesforce.com/answers?id=906300000004AH9AAM</description>
     <nameField>
         <displayFormat>PPJ-{0000}</displayFormat>
         <label>Partner Product Junction Name</label>
+        <trackHistory>true</trackHistory>
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Partner Product Junctions</pluralLabel>
