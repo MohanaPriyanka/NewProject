@@ -157,6 +157,20 @@ public class TestFactory {
 		);
 	}
 
+	public static void setCSBillSettings(){
+		List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
+		if (systemProperties.size() > 0) {
+			systemProperties[0].Days_Generate_Bills_for_Cancelled__c = 90;
+			systemProperties[0].Minimum_Balance_Bills_for_Cancelled__c = 0;
+			update systemProperties[0];
+		} else {
+			System_Properties__c property = new System_Properties__c(Name = 'System');
+			property.Days_Generate_Bills_for_Cancelled__c = 90;
+			property.Minimum_Balance_Bills_for_Cancelled__c = 0;
+			insert property;
+		}
+	}
+
 	public static void insertLetterStreamSettings() {
 		insert new LetterStream_Settings__c(
 			Name = 'Test',

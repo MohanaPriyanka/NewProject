@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>CEILING</fullName>
+        <default>false</default>
+        <label>CEILING</label>
+    </customValue>
+    <customValue>
+        <fullName>DOWN</fullName>
+        <default>false</default>
+        <label>DOWN</label>
+    </customValue>
+    <customValue>
+        <fullName>FLOOR</fullName>
+        <default>false</default>
+        <label>FLOOR</label>
+    </customValue>
+    <customValue>
+        <fullName>HALF_DOWN</fullName>
+        <default>false</default>
+        <label>HALF_DOWN</label>
+    </customValue>
+    <customValue>
+        <fullName>HALF_EVEN</fullName>
+        <default>false</default>
+        <label>HALF_EVEN</label>
+    </customValue>
+    <customValue>
+        <fullName>HALF_UP</fullName>
+        <default>true</default>
+        <label>HALF_UP</label>
+    </customValue>
+    <customValue>
+        <fullName>UP</fullName>
+        <default>false</default>
+        <label>UP</label>
+    </customValue>
+    <masterLabel>Rounding Methods</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>
