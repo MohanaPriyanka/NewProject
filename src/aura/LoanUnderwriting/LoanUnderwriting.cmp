@@ -16,8 +16,10 @@
   <aura:attribute name="contactAttachments" type="Attachment[]"/>
   <aura:attribute name="waiting" type="Boolean" default="false"/>
   <aura:attribute name="showInfoRequestModal" type="Boolean" default="false"/>
+  <lightning:notificationsLibrary aura:id="notifLib" />
 
   <c:LightningErrorHandler />
+
 
   <aura:if isTrue="{!v.waiting}">
     <lightning:spinner alternativeText="Saving..." class="slds-is-fixed" size="medium"/>
