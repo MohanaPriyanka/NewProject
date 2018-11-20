@@ -63,7 +63,7 @@
                     otherIncome.push(attachment.Name);
                 } else if (desc === helper.TC_DOC) {
                     tcDocs.push(attachment.Name);
-                } else if (desc.substring(0,9) === 'Requested') {
+                } else if (desc !== undefined && desc.substring(0,9) === 'Requested') {
                     requestedDocs.push(attachment.Name);
                 }
             });
