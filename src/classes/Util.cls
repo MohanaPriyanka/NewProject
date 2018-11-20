@@ -129,7 +129,6 @@ public without sharing class Util {
         if (roundMethod == 'CEILING'){
             newvalue = valueToRound.setScale(numPlaces, roundingMode.CEILING);
         } else if (roundMethod == 'DOWN') {
-            system.debug('Entered');
             newvalue = valueToRound.setScale(numPlaces, roundingMode.DOWN);
         } else if (roundMethod == 'FLOOR') {
             newvalue = valueToRound.setScale(numPlaces, roundingMode.FLOOR);
