@@ -7,8 +7,8 @@
         <namespace>APXT_BPM</namespace>
     </packageVersions>
     <packageVersions>
-        <majorNumber>4</majorNumber>
-        <minorNumber>46</minorNumber>
+        <majorNumber>5</majorNumber>
+        <minorNumber>55</minorNumber>
         <namespace>ChargentBase</namespace>
     </packageVersions>
     <packageVersions>

@@ -26,6 +26,7 @@ public class CustomerCommunicationHandlerTest{
         insert everLZU;
 
         TestFactory.insertBWAddress();
+        TestFactory.setCSBillSettings();
 
         Entity__c entity1 = new Entity__c(Name = 'Oxford Barrett St. P1');
         insert entity1;
@@ -285,8 +286,8 @@ public class CustomerCommunicationHandlerTest{
         // Test both the scheduling of the class and the execution of the batch
         CustomerCommunicationHandler m = new CustomerCommunicationHandler();
         Database.executeBatch(m, 10);
-        String CRON_EXP = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
-        String jobId = System.schedule('CustomerCommunicationHandler', CRON_EXP, m );
+        String cronExpress = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
+        String jobId = System.schedule('CustomerCommunicationHandler', cronExpress, m );
         Test.stopTest();
 
         List<Account> accountlist = [SELECT Id, Name, RecordTypeId, Max_Overdue_Due_Date__c,
@@ -331,8 +332,8 @@ public class CustomerCommunicationHandlerTest{
         // Test both the scheduling of the class and the execution of the batch
         CustomerCommunicationHandler m = new CustomerCommunicationHandler();
         Database.executeBatch(m, 10);
-        String CRON_EXP = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
-        String jobId = System.schedule('CustomerCommunicationHandler', CRON_EXP, m );
+        String cronExpress = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
+        String jobId = System.schedule('CustomerCommunicationHandler', cronExpress, m );
         Test.stopTest();
 
         List<Account> accountlist = [SELECT Id, Name, RecordTypeId, Max_Overdue_Due_Date__c,
@@ -377,8 +378,8 @@ public class CustomerCommunicationHandlerTest{
         // Test both the scheduling of the class and the execution of the batch
         CustomerCommunicationHandler m = new CustomerCommunicationHandler();
         Database.executeBatch(m, 10);
-        String CRON_EXP = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
-        String jobId = System.schedule('CustomerCommunicationHandler', CRON_EXP, m );
+        String cronExpress = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
+        String jobId = System.schedule('CustomerCommunicationHandler', cronExpress, m );
         Test.stopTest();
 
         List<Account> accountlist = [SELECT Id, Name, RecordTypeId, Max_Overdue_Due_Date__c,

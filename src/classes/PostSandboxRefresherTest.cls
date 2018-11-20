@@ -11,6 +11,8 @@ private class PostSandboxRefresherTest {
             Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street 4th Floor',
             Address_Line_Two__c = 'Boston, MA 02114'
         );
+        TestFactory.setCSBillSettings();
+        
         Test.loadData(Utility__c.SObjectType, 'TestCSUtility');
         Test.loadData(Utility_NMC_Tariff__c.SObjectType, 'TestCSUtilityNMCTariff');
         Test.loadData(Load_U__c.SObjectType, 'TestCSLoadU');
