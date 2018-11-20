@@ -229,7 +229,6 @@ public without sharing class UtilityAccountBillTriggerHandler {
 
         Decimal shareOfSystem = szs.Percent_Share__c;
         String creditsRoundingMethod = szs.Schedule_Z__r.Shared_Solar_System__r.Utility__r.Credits_Allocated_Rounding_Method__c;
-        System.debug('ROUNDINGMETHOD' + creditsRoundingMethod);
         // Calculate % Share of Production (kWh)
         Decimal subscriptionProduction = ((shareOfSystem/100) * systemProduction).setScale(2, roundingMode.HALF_UP);
 
@@ -238,7 +237,7 @@ public without sharing class UtilityAccountBillTriggerHandler {
         String billingMethod = szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Method__c;
         if (billingMethod == 'NMC'){
             subscriptionNMCs = (shareOfSystem/100) * systemNMCs;
-            subscriptionNMCs = Util.roundedValue(subscriptionNMCs, 2, creditsRoundingMethod);
+            subscriptionNMCs = Util.roundValue(subscriptionNMCs, 2, creditsRoundingMethod);
         } else if (billingMethod == 'kWh') {
             subscriptionNMCs = ((nmcRate - 0.02)*subscriptionProduction).setScale(2, roundingMode.HALF_UP) + ((0.02)*subscriptionProduction).setScale(2, roundingMode.HALF_UP);
         }

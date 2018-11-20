@@ -123,7 +123,7 @@ public without sharing class Util {
     }
 
     // Converts string rounding method to System.RoundingMode
-    public static Decimal roundedValue(Decimal valueToRound, Integer numPlaces, String roundMethod) {
+    public static Decimal roundValue(Decimal valueToRound, Integer numPlaces, String roundMethod) {
         Decimal newvalue;
 
         if (roundMethod == 'CEILING'){
