@@ -1170,8 +1170,10 @@ IF(Total_Outstanding_Balance__c  &gt; 1, (TODAY()-Max_Overdue_Due_Date__c), 0))<
     <fields>
         <fullName>Do_not_Send_Bills__c</fullName>
         <defaultValue>false</defaultValue>
+        <description>This field is scheduled to be deleted and should not be used anymore. No users should have access to view or edit it.</description>
         <externalId>false</externalId>
-        <label>Do not Send Bills</label>
+        <inlineHelpText>This field is scheduled to be deleted and should not be used anymore. No users should have access to view or edit it.</inlineHelpText>
+        <label>xxDo not Send Bills</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
         <type>Checkbox</type>
