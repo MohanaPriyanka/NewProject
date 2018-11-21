@@ -1517,9 +1517,9 @@ TEXT(YEAR(Commencement_Datee__c ) + FLOOR((MONTH(Commencement_Datee__c ) + Produ
     <fields>
         <fullName>Profit_Center__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
-        <description>This is a lookup to the Account that is the Profit Center associated with this loan. It is selected by the Partner in the SLP when they submit the Invoice.</description>
+        <description>This is a lookup to the Account that is the Profit Center associated with this loan. It is selected by the Partner in the SLP when they submit the Invoice</description>
         <externalId>false</externalId>
-        <inlineHelpText>This is a lookup to the Account that is the Profit Center associated with this loan. It is selected by the Partner in the SLP when they submit the Invoice.</inlineHelpText>
+        <inlineHelpText>This is a lookup field to the Account that is the Profit Center associated with this loan. It is selected by the Partner in the SLP when they submit the Invoice</inlineHelpText>
         <label>Profit Center</label>
         <referenceTo>Account</referenceTo>
         <relationshipLabel>Loans</relationshipLabel>
