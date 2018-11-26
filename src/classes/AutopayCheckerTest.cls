@@ -173,6 +173,21 @@ public with sharing class AutopayCheckerTest {
         ];
         delete ordersWithNoChargeDate;
 
+        ChargentOrders__ChargentOrder__c orderToMakeNegative = [
+            SELECT Id, Account_Bill__c, Account_Bill__r.Carry_Over_Balance__c, ChargentOrders__Charge_Amount__c,
+                Property_Account_ID__c, Entity__c, Account_Bill__r.Bill_Number__c, ChargentOrders__Charge_Date__c,
+                ChargentOrders__Account__r.Max_Account_Bill_Number__c, Account_Bill__r.Due_Date_SB__c,
+                ChargentOrders__Payment_Start_Date__c
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE ChargentOrders__Payment_Status__c = 'Recurring'
+            AND Account_Bill__c != null
+            AND ChargentOrders__Charge_Amount__c = 0
+            LIMIT 1
+        ];
+
+        orderToMakeNegative.ChargentOrders__Charge_Amount__c = -1;
+        update orderToMakeNegative;
+
         List<ChargentOrders__ChargentOrder__c> orders = [
             SELECT Id, Account_Bill__c, Account_Bill__r.Carry_Over_Balance__c, ChargentOrders__Charge_Amount__c,
                 Property_Account_ID__c, Entity__c, Account_Bill__r.Bill_Number__c, ChargentOrders__Charge_Date__c,
@@ -180,22 +195,32 @@ public with sharing class AutopayCheckerTest {
                 ChargentOrders__Payment_Start_Date__c
             FROM ChargentOrders__ChargentOrder__c
             WHERE ChargentOrders__Payment_Status__c = 'Recurring'
+            AND Account_Bill__c != null
         ];
-
-        List<ChargentOrders__ChargentOrder__c> zeroDollarOrders = new List<ChargentOrders__ChargentOrder__c>();
+        List<ChargentOrders__ChargentOrder__c> zeroOrNegDollarOrders = new List<ChargentOrders__ChargentOrder__c>();
+        Integer countZeroDollarOrders = 0;
+        Integer countNegativeDollarOrders = 0;
         for (ChargentOrders__ChargentOrder__c order : orders) {
-            if (order.ChargentOrders__Charge_Amount__c == 0) {
+            if (order.ChargentOrders__Charge_Amount__c <= 0) {
                 order.ChargentOrders__Payment_Start_Date__c = Date.newInstance(Date.today().year()+1, 1, 1);
-                zeroDollarOrders.add(order);
+                zeroOrNegDollarOrders.add(order);
+            }
+            if (order.ChargentOrders__Charge_Amount__c == 0) {
+                countZeroDollarOrders += 1;
+            } else if (order.ChargentOrders__Charge_Amount__c < 0) {
+                countNegativeDollarOrders += 1;
             }
         }
-        update zeroDollarOrders;
+        update zeroOrNegDollarOrders;
+
+        System.assert(countZeroDollarOrders > 0, 'There should be atleast 1 zero dollar order');
+        System.assert(countNegativeDollarOrders > 0, 'There should be atleast 1 negative dollar order');
 
         AutopayChecker autopayChecker = new AutopayChecker(null);
         AutopayChecker.QCResult qcResult = autopayChecker.checkZeroDollarChargentOrdersNotToFire();
         System.assert(qcResult.passed, 'All $0 orders should be for the future');
 
-        for (ChargentOrders__ChargentOrder__c order : zeroDollarOrders) {
+        for (ChargentOrders__ChargentOrder__c order : zeroOrNegDollarOrders) {
             order.ChargentOrders__Payment_Start_Date__c = Date.newInstance(2010, 1, 1);
         }
         update orders;
