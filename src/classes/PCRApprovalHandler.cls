@@ -16,8 +16,8 @@ public without sharing class PCRApprovalHandler {
     public static final String APPROVED = 'Approved';
     public static final String READYFORCREDITCHECK = 'Ready for Credit Check';
     public static final String PENDINGCREDITREVIEW = 'Pending Credit Review';
-    public static final String UNQUALIFIED = 'Unqualified'; 
-    public static final String REVIEWEDAPPROVED = 'Reviewed - Approved'; 
+    public static final String UNQUALIFIED = 'Unqualified';
+    public static final String REVIEWEDAPPROVED = 'Reviewed - Approved';
     public static final String REVIEWEDPREAPPROVED = 'Reviewed - PreApproved';
     public static final String NOTYETREVIEWED = 'Not Yet Reviewed';
 
@@ -32,38 +32,38 @@ public without sharing class PCRApprovalHandler {
 
     public PCRApprovalHandler() {
         if (doerEmailTemplate == null) {
-            doerEmailTemplate = [SELECT id, HtmlValue, Body 
-                                 FROM EmailTemplate 
-                                 WHERE DeveloperName = 'RS_DOER_PreQualification_Approval'
-                                 LIMIT 1];
+            doerEmailTemplate = [SELECT id, HtmlValue, Body
+            FROM EmailTemplate
+            WHERE DeveloperName = 'RS_DOER_PreQualification_Approval'
+            LIMIT 1];
         }
         if (standardEmailTemplate == null) {
             standardEmailTemplate = [SELECT id, HtmlValue, Body, TemplateType
-                                     FROM EmailTemplate 
-                                     WHERE DeveloperName = 'RS_PreQualification_Approval'
-                                     LIMIT 1];
+            FROM EmailTemplate
+            WHERE DeveloperName = 'RS_PreQualification_Approval'
+            LIMIT 1];
         }
         if (denialEmailTemplate == null) {
-            denialEmailTemplate = [SELECT id, HtmlValue, Body 
-                                     FROM EmailTemplate 
-                                     WHERE DeveloperName = 'RS_Customer_PreApplication_Denial'
-                                     LIMIT 1];
+            denialEmailTemplate = [SELECT id, HtmlValue, Body
+            FROM EmailTemplate
+            WHERE DeveloperName = 'RS_Customer_PreApplication_Denial'
+            LIMIT 1];
         }
         if (coAppDenialEmailTemplate == null) {
             coAppDenialEmailTemplate = [SELECT id, HtmlValue, Body
-                                     FROM EmailTemplate
-                                     WHERE DeveloperName = 'RS_Customer_PreApplication_Denial_Joint'
-                                     LIMIT 1];
+            FROM EmailTemplate
+            WHERE DeveloperName = 'RS_Customer_PreApplication_Denial_Joint'
+            LIMIT 1];
         }
         if (customerCareAddress == null) {
-            customerCareAddress = [SELECT id, Address 
-                                FROM OrgWideEmailAddress
-                                WHERE Address = : 'customercare@bluewavesolar.com' 
-                                LIMIT 1];
+            customerCareAddress = [SELECT id, Address
+            FROM OrgWideEmailAddress
+            WHERE Address = : 'customercare@bluewavesolar.com'
+            LIMIT 1];
         }
         if (flaggedCreditCodes == null) {
             List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
-            if (systemProperties != null && 
+            if (systemProperties != null &&
                 !systemProperties.isEmpty() &&
                 systemProperties[0].Flagged_Credit_Codes__c != null) {
                 flaggedCreditCodes = new Set<String>(systemProperties[0].Flagged_Credit_Codes__c.split(','));
@@ -307,12 +307,21 @@ public without sharing class PCRApprovalHandler {
 
             List<LASERCA__Personal_Credit_Report__c> pcrs = getPCRsForCreditAnalysis(pcrIds);
 
-            Lead lead = [
+            List<Lead> leadList = [
                 SELECT Id, Monthly_Mortgage_Tax_and_Insurance__c, Co_App_Monthly_Mortgage__c
                 FROM Lead
                 WHERE Id = :pcrs[0].LASERCA__Lead__c
                 LIMIT 1
             ];
+
+            Lead lead;
+
+            if (leadList.size() > 0) {
+                lead = leadList[0];
+            } else {
+                return;
+            }
+
 
             for( LASERCA__Personal_Credit_Report__c pcr : pcrs ){
                 LASERCA__Trade_Accounts__c mortgage = new LASERCA__Trade_Accounts__c();
@@ -380,7 +389,7 @@ public without sharing class PCRApprovalHandler {
             lead.Status  == UNQUALIFIED) {
             String htmlbody;
             if (hasCoApp) {
-                 htmlbody = coAppDenialEmailTemplate.HtmlValue;
+                htmlbody = coAppDenialEmailTemplate.HtmlValue;
             } else {
                 htmlbody = denialEmailTemplate.HtmlValue;
             }
@@ -402,7 +411,7 @@ public without sharing class PCRApprovalHandler {
         } else {
             return(
                 checkPCRforFlaggedCreditCodes(lead.Personal_Credit_Report__r)
-                || checkPCRforFlaggedCreditCodes(lead.Personal_Credit_Report_Co_Applicant__r)
+                    || checkPCRforFlaggedCreditCodes(lead.Personal_Credit_Report_Co_Applicant__r)
             );
         }
     }
@@ -621,7 +630,7 @@ public without sharing class PCRApprovalHandler {
         } else {
             return (creditScore < creditMinimum);
         }
-    } 
+    }
 
     private Lead setLeadStatus(String approval, Lead lead) {
         if (approval == APPROVED) {
@@ -637,13 +646,13 @@ public without sharing class PCRApprovalHandler {
     private void sendEmail(String firstname, String subjectLine, String body, String partnerEmail, Id targetObjectId) {
         Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
         mail.setHtmlBody(body);
-        mail.setOrgWideEmailAddressId(customerCareAddress.id); 
+        mail.setOrgWideEmailAddressId(customerCareAddress.id);
 
         if (partnerEmail != NULL) {
             String[] ccAddresses = new String[] {partnerEmail};
             mail.setccAddresses(ccAddresses);
         }
-                                                          
+
         mail.setSubject(subjectLine);
         mail.setTargetObjectId(targetObjectId);
         system.debug(mail);
@@ -687,8 +696,8 @@ public without sharing class PCRApprovalHandler {
         public Set<Id> approvedProducts;
         public Lead lead;
 
-        public CreditResultSummary(Lead lead, Integer creditScore, 
-                                   Decimal monthlyIncome, Decimal monthlyDebt) {
+        public CreditResultSummary(Lead lead, Integer creditScore,
+            Decimal monthlyIncome, Decimal monthlyDebt) {
             this.lead = lead;
             this.incomeSupport = lead.Income_Support__c;
             this.loanPrincipal = lead.Loan_Principal__c;
@@ -781,26 +790,26 @@ public without sharing class PCRApprovalHandler {
             if (newStatus == PCRApprovalHandler.DECLINED) {
                 return false;
             } else if (newStatus == PCRApprovalHandler.PENDINGREVIEW &&
-                       oldStatus == PCRApprovalHandler.DECLINED) {
+                oldStatus == PCRApprovalHandler.DECLINED) {
                 return true;
             } else if (newStatus == PCRApprovalHandler.APPROVED &&
-                       (oldStatus == PCRApprovalHandler.PENDINGREVIEW ||
-                        oldStatus == PCRApprovalHandler.DECLINED)) {
+                (oldStatus == PCRApprovalHandler.PENDINGREVIEW ||
+                    oldStatus == PCRApprovalHandler.DECLINED)) {
                 return true;
             } else {
                 return false;
             }
         }
-    } 
+    }
 
     @TestVisible
     public class CreditQualifyingMetrics {
-        public Lead lead; 
+        public Lead lead;
         public Decimal adjustedDTI;
         public Integer creditScore;
         public Decimal totalAnnualIncome;
-        public Decimal totalMonthlyDebt;     
-    }   
+        public Decimal totalMonthlyDebt;
+    }
 
     public static CreditQualifyingMetrics calculateCreditQualifyingMetrics(String leadId) {
         CreditQualifyingMetrics creditMetric = new CreditQualifyingMetrics();
@@ -812,18 +821,18 @@ public without sharing class PCRApprovalHandler {
         List<Product2> productList = new List<Product2>();
         List<LASERCA__Personal_Credit_Report__c> creditReportList = new List<LASERCA__Personal_Credit_Report__c>();
         List<lead> leadList = [SELECT Id, DOER_Solar_Loan__c, Status, Co_Applicant_Income__c,
-                               Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c, Personal_Credit_Report__r.Adjusted_Income__c,
-                               LASER_Credit_Score__c, Annual_Income_Currency__c, Income_Support__c, Personal_Credit_Report__r.Adjusted_DTI__c,
-                               Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
-                               Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c, Partner_Lookup__c, IBLS_Category__c,
-                                (SELECT Id, Adjusted_Income__c, Adjusted_DTI__c, LASERCA__Credit_Score_TransUnion__c, 
-                                    DTI_After__c, LASERCA__Confirming_Social_Security_Number__c,
-                                    LASERCA__Sum_of_monthly_Personal_Debt__c, LASERCA__Contact__c, 
-                                    Adjusted_Monthly_Personal_Debt__c 
-                                FROM LASERCA__Personal_Credit_Reports__r)
-                               FROM Lead
-                               WHERE Id = : leadId];
-        creditMetric.Lead = leadList[0];                               
+            Personal_Credit_Report__r.LASERCA__Sum_of_monthly_Personal_Debt__c, Personal_Credit_Report__r.Adjusted_Income__c,
+            LASER_Credit_Score__c, Annual_Income_Currency__c, Income_Support__c, Personal_Credit_Report__r.Adjusted_DTI__c,
+            Product_Line__c, Product_Program__c, LASERCA__Home_State__c, Loan_Principal__c,
+            Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c, Partner_Lookup__c, IBLS_Category__c,
+        (SELECT Id, Adjusted_Income__c, Adjusted_DTI__c, LASERCA__Credit_Score_TransUnion__c,
+            DTI_After__c, LASERCA__Confirming_Social_Security_Number__c,
+            LASERCA__Sum_of_monthly_Personal_Debt__c, LASERCA__Contact__c,
+            Adjusted_Monthly_Personal_Debt__c
+        FROM LASERCA__Personal_Credit_Reports__r)
+        FROM Lead
+        WHERE Id = : leadId];
+        creditMetric.Lead = leadList[0];
         creditReportList = leadList[0].LASERCA__Personal_Credit_Reports__r;
 
         if (leadIsCoapplicant(creditReportList)) {
@@ -832,17 +841,17 @@ public without sharing class PCRApprovalHandler {
                     creditMetric.creditScore = Integer.valueOf(Util.nullToZero(creditReport.LASERCA__Credit_Score_TransUnion__c));
                 }
                 if (!socialSecurityVerificationSet.contains(creditReport.LASERCA__Confirming_Social_Security_Number__c)) {
-                    creditMetric.totalMonthlyDebt = creditMetric.totalMonthlyDebt + creditReport.Adjusted_Monthly_Personal_Debt__c;     
-                    incomeList.add(identifyCorrectIncomeValue(creditReport, creditMetric));     
+                    creditMetric.totalMonthlyDebt = creditMetric.totalMonthlyDebt + creditReport.Adjusted_Monthly_Personal_Debt__c;
+                    incomeList.add(identifyCorrectIncomeValue(creditReport, creditMetric));
                     if (creditReport.Adjusted_DTI__c != null && !pcrIsCoApplicant(creditReport)) {
                         creditMetric.adjustedDTI = creditReport.Adjusted_DTI__c;
                     }
                     socialSecurityVerificationSet.add(creditReport.LASERCA__Confirming_Social_Security_Number__c);
-                }        
-            }       
+                }
+            }
             if (!incomeList.isEmpty()) {
                 for (Decimal incomeValue : incomeList) {
-                    creditMetric.totalAnnualIncome = incomeValue + creditMetric.totalAnnualIncome;                                            
+                    creditMetric.totalAnnualIncome = incomeValue + creditMetric.totalAnnualIncome;
                 }
             }
         } else {
@@ -850,29 +859,29 @@ public without sharing class PCRApprovalHandler {
                 creditMetric.adjustedDTI = creditMetric.Lead.Personal_Credit_Report__r.Adjusted_DTI__c;
             }
             if (creditMetric.Lead.Personal_Credit_Report__r.Adjusted_Income__c != null) {
-                creditMetric.totalAnnualIncome = creditMetric.Lead.Personal_Credit_Report__r.Adjusted_Income__c;                      
+                creditMetric.totalAnnualIncome = creditMetric.Lead.Personal_Credit_Report__r.Adjusted_Income__c;
             } else {
-                creditMetric.totalAnnualIncome = creditMetric.Lead.Annual_Income_Currency__c;                      
+                creditMetric.totalAnnualIncome = creditMetric.Lead.Annual_Income_Currency__c;
             }
             creditMetric.creditScore = Integer.valueOf(creditMetric.Lead.LASER_Credit_Score__c);
-            creditMetric.totalMonthlyDebt = creditMetric.Lead.Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c;  
-        }   
-        return creditMetric;         
+            creditMetric.totalMonthlyDebt = creditMetric.Lead.Personal_Credit_Report__r.Adjusted_Monthly_Personal_Debt__c;
+        }
+        return creditMetric;
     }
 
     public static Boolean leadIsCoapplicant (List<LASERCA__Personal_Credit_Report__c> creditReportList) {
-        Set<String> socialSecurityVerificationSet = new Set<String>();        
+        Set<String> socialSecurityVerificationSet = new Set<String>();
         List<LASERCA__Personal_Credit_Report__c> nonDuplicateCreditReportList = new List<LASERCA__Personal_Credit_Report__c>();
         for (LASERCA__Personal_Credit_Report__c creditReport : creditReportList) {
             if (!socialSecurityVerificationSet.contains(creditReport.LASERCA__Confirming_Social_Security_Number__c)) {
                 nonDuplicateCreditReportList.add(creditReport);
-                socialSecurityVerificationSet.add(creditReport.LASERCA__Confirming_Social_Security_Number__c);                
+                socialSecurityVerificationSet.add(creditReport.LASERCA__Confirming_Social_Security_Number__c);
             }
         }
         if (nonDuplicateCreditReportList.size() > 1) {
-          return true;
+            return true;
         } else {
-          return false;
+            return false;
         }
     }
 
@@ -889,10 +898,10 @@ public without sharing class PCRApprovalHandler {
         if (creditReport.Adjusted_Income__c != null) {
             income = creditReport.Adjusted_Income__c;
         } else if (creditReport.Adjusted_Income__c == null && !pcrIsCoApplicant(creditReport)){
-            income = creditMetric.Lead.Annual_Income_Currency__c;                        
+            income = creditMetric.Lead.Annual_Income_Currency__c;
         } else if (creditReport.Adjusted_Income__c == null && pcrIsCoApplicant(creditReport)){
             income = Util.nullToZero(creditMetric.Lead.Co_Applicant_Income__c);
-        }    
+        }
         return income;
     }
 
@@ -914,9 +923,9 @@ public without sharing class PCRApprovalHandler {
 
         public override String toString() {
             return('For ' + productName + ' (' + productId + '), ' +
-                   'Rate: ' + loanInterestRate + ', ' +
-                   'Loan Payment: ' + monthlyLoanPayment + ', ' +
-                   'DTI After Payments: ' + dtiAfter);
+                'Rate: ' + loanInterestRate + ', ' +
+                'Loan Payment: ' + monthlyLoanPayment + ', ' +
+                'DTI After Payments: ' + dtiAfter);
         }
     }
 
@@ -938,24 +947,24 @@ public without sharing class PCRApprovalHandler {
             productList = new List<String>(productSet);
             programList = new List<String>(programSet);
             stateList = new List<String>(stateSet);
-            
+
             // This is the superset of all products that might be applicable for the leads being
             // checked. We'll filter them out for a particular lead later on.
             products = [SELECT Id, Name, External_Name__c, Product_Type__c, Program__c, State__c, Debt_To_Income_Maximum__c,
-                        Credit_Minimum__c, Credit_Maximum__c, Loan_Interest_Rate__c, Loan_Term__c,
-                        Require_Junctions_to_Enable__c, Maximum_Loan_Size__c, IBLS_Category__c, DTI_After_Rate_Gross_Up__c,
-                        (SELECT Id, Enabled_Product__c, Partner__c 
-                         FROM Partner_Product_Junctions__r
-                         WHERE Active__c = true)
-                        FROM Product2
-                        WHERE isActive = true
-                        AND Product_Type__c IN :productList
-                        AND Program__c IN :programList
-                        AND State__c IN :stateList];
+                Credit_Minimum__c, Credit_Maximum__c, Loan_Interest_Rate__c, Loan_Term__c,
+                Require_Junctions_to_Enable__c, Maximum_Loan_Size__c, IBLS_Category__c, DTI_After_Rate_Gross_Up__c,
+            (SELECT Id, Enabled_Product__c, Partner__c
+            FROM Partner_Product_Junctions__r
+            WHERE Active__c = true)
+            FROM Product2
+            WHERE isActive = true
+            AND Product_Type__c IN :productList
+            AND Program__c IN :programList
+            AND State__c IN :stateList];
         }
 
         public PCRApprovalHandler.CreditResultSummary getCreditSummary(Lead lead, Integer creditScore,
-                                                                       Decimal monthlyIncome, Decimal monthlyDebt) {
+            Decimal monthlyIncome, Decimal monthlyDebt) {
             PCRApprovalHandler.CreditResultSummary creditResultSummary =
                 new PCRApprovalHandler.CreditResultSummary(lead, creditScore, monthlyIncome, monthlyDebt);
             // if the credit score returns no products, then it will be declined
@@ -997,8 +1006,8 @@ public without sharing class PCRApprovalHandler {
             return true;
         }
 
-        public PCRApprovalHandler.CreditStatusResult calcDTIAfter(Product2 product, Lead leadRecord, 
-                                                                   Decimal monthlyIncome, Decimal monthlyDebt) {
+        public PCRApprovalHandler.CreditStatusResult calcDTIAfter(Product2 product, Lead leadRecord,
+            Decimal monthlyIncome, Decimal monthlyDebt) {
             Double paymentDenominatorVar1, paymentDenominatorVar2, paymentDenominatorVar3, paymentDenominator;
             Decimal paymentNumerator, dtiNumerator, dtiDenominator, dtiAfter, monthlyPayment;
             Decimal interestRate = (product.Loan_Interest_Rate__c + Util.nullToZero(product.DTI_After_Rate_Gross_Up__c)) / 100;
