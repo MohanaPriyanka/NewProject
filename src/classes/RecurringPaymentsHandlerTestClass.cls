@@ -943,6 +943,130 @@ private class RecurringPaymentsHandlerTestClass {
         }
     }
 
+    @IsTest static void testNegativeDollarCharges() {
+        Account accountA, accountB;
+        List<Account> parentAccounts = [SELECT Id, Name FROM Account];
+        for (Account account : parentAccounts) {
+            if (account.Name == 'Account A') {
+                accountA = account;
+            } else if (account.Name == 'Account B') {
+                accountB = account;
+            }
+        }
+        List<System_Bill__c> systemBills = [
+            SELECT Id, Total_Due__c, Property_Account__r.Name, Shared_Solar_System__r.Name, Total_Payments_This_Month__c,
+                Payments_Net_Previous_Balances__c
+            FROM System_Bill__c
+            WHERE (Property_Account__c = :accountA.Id
+            OR Property_Account__c = :accountB.Id)
+            AND Bill_Number__c = 1
+        ];
+        // Pay off the first bill
+        CSPaymentTest.mockMakeASinglePayment(systemBills);
+
+        for (System_Bill__c systemBill : systemBills) {
+            if (systemBill.Property_Account__c == accountA.Id) {
+                // we want to mock an extra payment for this bill, so the resulting bill has a negative balance
+                systemBill.Total_Payments_This_Month__c += 100;
+                systemBill.Payments_Net_Previous_Balances__c += 100;
+                update systemBill;
+            }
+        }
+
+        Test.startTest();
+        List<Energy_Usage_Update__c> prodUpdates = [
+            SELECT Id, Name
+            FROM Energy_Usage_Update__c
+            WHERE Name IN ('sssA - March 2016', 'sssB - March 2016')
+        ];
+        for (Energy_Usage_Update__c prodUpdate : prodUpdates) {
+            // Generate $0 bills for one system
+            if (prodUpdate.Name == 'sssA - March 2016') {
+                prodUpdate.Production__c = 0;
+                prodUpdate.Total_System_NMCs__c = 0;
+            }
+            prodUpdate.Generate_Bills__c = true;
+        }
+        update prodUpdates;
+
+        List<Account_Bill__c> accountBills = [
+            SELECT Id
+            FROM Account_Bill__c
+            WHERE Parent_Account__c = :accountA.Id
+            OR Parent_Account__c = :accountB.Id
+        ];
+        // Should be four Account Bills, two for Feb that were loaded, and two for Mar just generated
+        System.assertEquals(4, accountBills.size());
+        systemBills = [
+            SELECT Id, Total_Due__c, Property_Account__r.Name, Shared_Solar_System__r.Name, Carry_Over_Balance__c, Total_Payments_This_Month__c,
+                Payments_Net_Previous_Balances__c
+            FROM System_Bill__c
+            WHERE (Property_Account__c = :accountA.Id
+            OR Property_Account__c = :accountB.Id)
+            AND Bill_Number__c = 2
+        ];
+        // Should be three new System Bills, two for Account A and one for Account B.
+        // The two for Account A should be $0 since the Production Update was 0
+        System.assertEquals(3, systemBills.size());
+        for (System_Bill__c systemBill : systemBills) {
+            if (systemBill.Property_Account__r.Name == 'Account A') {
+                System.assertEquals(-100, systemBill.Total_Due__c);
+            } else if (systemBill.Property_Account__r.Name == 'Account B') {
+                System.assertEquals(321.33, systemBill.Total_Due__c);
+            } else {
+                System.assertEquals('Account A or B', systemBill.Property_Account__r.Name );
+            }
+        }
+
+        List<ChargentOrders__ChargentOrder__c> chargentOrders = [
+            SELECT Id, ChargentOrders__Payment_Start_Date__c, ChargentOrders__Charge_Amount__c,
+                ChargentOrders__Charge_Date__c, Account_Bill__c
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE Opportunity__r.AccountId = :accountA.Id
+            OR Opportunity__r.AccountId = :accountB.Id
+        ];
+        // The three Chargent Orders will still be on the old Account Bills for the old amounts and an old Start Date.
+        // They haven't moved to the new Account Bill yet (which the RecurringPaymentsHandler does below), so the
+        // amounts were the previous billed amounts
+        System.assertEquals(3, chargentOrders.size());
+        Map<Id, Date> paymentStartDateMap = new Map<Id, Date>();
+        for (ChargentOrders__ChargentOrder__c chargentOrder : chargentOrders) {
+            System.assert(chargentOrder.ChargentOrders__Charge_Amount__c > 0);
+            System.assert(chargentOrder.ChargentOrders__Payment_Start_Date__c < System.today());
+            paymentStartDateMap.put(chargentOrder.Id, chargentOrder.ChargentOrders__Payment_Start_Date__c);
+        }
+
+        simulateBatchRecurringHandler();
+        Test.stopTest();
+
+        chargentOrders = [
+            SELECT Id, ChargentOrders__Payment_Start_Date__c, ChargentOrders__Charge_Amount__c,
+                ChargentOrders__Charge_Date__c, Account_Bill__c, Opportunity__r.Account.Name
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE Opportunity__r.AccountId = :accountA.Id
+            OR Opportunity__r.AccountId = :accountB.Id
+        ];
+        // Two Chargent Orders for Account A should be 0 and have a Payment Start Date of the next month's charge date
+        // if running on the charge date, but two months out if running before the charge date.
+        for (ChargentOrders__ChargentOrder__c chargentOrder : chargentOrders) {
+            if (chargentOrder.Opportunity__r.Account.Name == 'Account A') {
+                Date expectedChargeDate =
+                    RecurringPaymentsHandler.newPaymentStartDate(
+                        Date.today(),
+                        Integer.valueOf(chargentOrder.ChargentOrders__Charge_Date__c),
+                        paymentStartDateMap.get(chargentOrder.Id)
+                    );
+                System.assertEquals(-100, chargentOrder.ChargentOrders__Charge_Amount__c);
+                System.assertEquals(expectedChargeDate, chargentOrder.ChargentOrders__Payment_Start_Date__c);
+            } else if (chargentOrder.Opportunity__r.Account.Name == 'Account B') {
+                System.assertEquals(321.33, chargentOrder.ChargentOrders__Charge_Amount__c);
+                System.assert(chargentOrder.ChargentOrders__Payment_Start_Date__c < System.today());
+            } else {
+                System.assertEquals('Account A or B', chargentOrder.Opportunity__r.Account.Name);
+            }
+        }
+    }
+
     // If we get a $0 chargent order, the chargent move pushes the payment start date out so we don't get an error when
     // doing the autopay charge. If we run the move before the charge date, we might push the date out by two months.
     @IsTest static void testNextPaymentStartDate() {
