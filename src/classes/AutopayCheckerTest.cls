@@ -200,7 +200,7 @@ public with sharing class AutopayCheckerTest {
         List<ChargentOrders__ChargentOrder__c> zeroOrNegDollarOrders = new List<ChargentOrders__ChargentOrder__c>();
         Integer countZeroDollarOrders = 0;
         Integer countNegativeDollarOrders = 0;
-        
+
         for (ChargentOrders__ChargentOrder__c order : orders) {
             if (order.ChargentOrders__Charge_Amount__c <= 0) {
                 order.ChargentOrders__Payment_Start_Date__c = Date.newInstance(Date.today().year()+1, 1, 1);

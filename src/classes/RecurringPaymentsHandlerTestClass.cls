@@ -964,14 +964,16 @@ private class RecurringPaymentsHandlerTestClass {
         // Pay off the first bill
         CSPaymentTest.mockMakeASinglePayment(systemBills);
 
+        System_Bill__c systemBillToUpdate;
         for (System_Bill__c systemBill : systemBills) {
             if (systemBill.Property_Account__c == accountA.Id) {
                 // we want to mock an extra payment for this bill, so the resulting bill has a negative balance
                 systemBill.Total_Payments_This_Month__c += 100;
                 systemBill.Payments_Net_Previous_Balances__c += 100;
-                update systemBill;
+                systemBillToUpdate = systemBill;
             }
         }
+        update systemBillToUpdate;
 
         Test.startTest();
         List<Energy_Usage_Update__c> prodUpdates = [
