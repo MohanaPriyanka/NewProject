@@ -26,8 +26,10 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         }
 
         System_Properties__c sysProp = System_Properties__c.getAll().values()[0];
-        Integer collectionsWindow = Integer.valueOf(sysProp.Days_Generate_Bills_for_Cancelled__c);
+        Decimal collectionsWindowDec = sysProp.Days_Generate_Bills_for_Cancelled__c;
         Decimal minimumBalance = sysProp.Minimum_Balance_Bills_for_Cancelled__c;
+        Integer collectionsWindow = Integer.valueOf(Util.nullToZero(collectionsWindowDec));
+        minimumBalance = Util.nullToZero(minimumBalance);
 
         Date todaysDate = Date.today();
         Date maxPastDueDate = todaysDate.addDays(collectionsWindow * -1);

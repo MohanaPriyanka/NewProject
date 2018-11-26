@@ -122,6 +122,32 @@ public without sharing class Util {
         return(decimalValues[decimalValues.size()-1]);
     }
 
+    // Converts string rounding method to System.RoundingMode
+    public static Decimal roundValue(Decimal valueToRound, Integer numPlaces, String roundMethod) {
+        Decimal newvalue;
+
+        switch on roundMethod {
+            when 'CEILING' {
+                newvalue = valueToRound.setScale(numPlaces, RoundingMode.CEILING);
+            } when 'DOWN' {
+                newvalue = valueToRound.setScale(numPlaces, RoundingMode.DOWN);
+            } when 'FLOOR' {
+                newvalue = valueToRound.setScale(numPlaces, RoundingMode.FLOOR);
+            } when 'HALF_DOWN' {
+                newvalue = valueToRound.setScale(numPlaces, RoundingMode.HALF_DOWN);
+            } when 'HALF_EVEN' {
+                newvalue = valueToRound.setScale(numPlaces, RoundingMode.HALF_EVEN);
+            } when 'HALF_UP' {
+                newvalue = valueToRound.setScale(numPlaces, RoundingMode.HALF_UP);
+            } when 'UP' {
+                newvalue = valueToRound.setScale(numPlaces, RoundingMode.UP);
+            } when else {
+                newvalue = valueToRound.setScale(numPlaces, roundingMode.HALF_UP);
+            }
+        }
+        return newvalue;
+    }
+
     public static void printCPULimit(String prefix) {
         System.debug(LoggingLevel.ERROR, 'Limits: ' + prefix + ': ' + Limits.getCpuTime() + 'ms of '
             + Limits.getLimitCpuTime() + 'ms used');
