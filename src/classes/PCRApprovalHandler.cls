@@ -108,7 +108,6 @@ public without sharing class PCRApprovalHandler {
     @TestVisible
     private static boolean noDelay = false;
     public static void calcDTIAndEmailOnlyOld(List<LASERCA__Personal_Credit_Report__c> newPCR) {
-        System.debug('Already Ran = ' + alreadyRan);
         if (alreadyRan) {
             return;
         }
@@ -302,35 +301,49 @@ public without sharing class PCRApprovalHandler {
         if (triggerOldMap == null) {
 
             for (LASERCA__Credit_Report_Log__c crl : triggerNewMap.values()) {
-                pcrIds.add(crl.LASERCA__Personal_Credit_Report__c);
+                if (crl.LASERCA__Status__c == 'Completed') {
+                    pcrIds.add(crl.LASERCA__Personal_Credit_Report__c);
+                }
             }
 
-            List<LASERCA__Personal_Credit_Report__c> pcrs = getPCRsForCreditAnalysis(pcrIds);
+            if (pcrIds.isEmpty()) {
+                return;
+            } else {
+                List<LASERCA__Personal_Credit_Report__c> pcrs = getPCRsForCreditAnalysis(pcrIds);
 
-            Lead lead = [
-                SELECT Id, Monthly_Mortgage_Tax_and_Insurance__c, Co_App_Monthly_Mortgage__c
-                FROM Lead
-                WHERE Id = :pcrs[0].LASERCA__Lead__c
-                LIMIT 1
-            ];
+                List<Lead> leadList = [
+                    SELECT Id, Monthly_Mortgage_Tax_and_Insurance__c, Co_App_Monthly_Mortgage__c
+                    FROM Lead
+                    WHERE Id = :pcrs[0].LASERCA__Lead__c
+                    LIMIT 1
+                ];
 
-            for( LASERCA__Personal_Credit_Report__c pcr : pcrs ){
-                LASERCA__Trade_Accounts__c mortgage = new LASERCA__Trade_Accounts__c();
-                if (pcr.LASERCA__Contact__c != null) {
-                    mortgage.Name = 'Self-Reported Mortgage';
-                    mortgage.LASERCA__Personal_Credit_Report__c = pcr.Id;
-                    mortgage.LASERCA__Monthly_Payment__c = lead.Co_App_Monthly_Mortgage__c;
-                    mortgage.Exclude_From_Rollup__c = true;
+                Lead lead;
+
+                if (leadList.size() == 0) {
+                    return;
                 } else {
-                    mortgage.Name = 'Self-Reported Mortgage';
-                    mortgage.LASERCA__Personal_Credit_Report__c = pcr.Id;
-                    mortgage.LASERCA__Monthly_Payment__c = lead.Monthly_Mortgage_Tax_and_Insurance__c;
-                    mortgage.Exclude_From_Rollup__c = true;
+                    lead = leadList[0];
                 }
 
-                mortgagesList.add(mortgage);
+                for (LASERCA__Personal_Credit_Report__c pcr : pcrs) {
+                    LASERCA__Trade_Accounts__c mortgage = new LASERCA__Trade_Accounts__c();
+                    if (pcr.LASERCA__Contact__c != null) {
+                        mortgage.Name = 'Self-Reported Mortgage';
+                        mortgage.LASERCA__Personal_Credit_Report__c = pcr.Id;
+                        mortgage.LASERCA__Monthly_Payment__c = lead.Co_App_Monthly_Mortgage__c;
+                        mortgage.Exclude_From_Rollup__c = true;
+                    } else {
+                        mortgage.Name = 'Self-Reported Mortgage';
+                        mortgage.LASERCA__Personal_Credit_Report__c = pcr.Id;
+                        mortgage.LASERCA__Monthly_Payment__c = lead.Monthly_Mortgage_Tax_and_Insurance__c;
+                        mortgage.Exclude_From_Rollup__c = true;
+                    }
+
+                    mortgagesList.add(mortgage);
+                }
+                insert mortgagesList;
             }
-            insert mortgagesList;
 
         }
     }
@@ -434,6 +447,7 @@ public without sharing class PCRApprovalHandler {
             FROM LASERCA__Personal_Credit_Report__c
             WHERE Id IN : pcrIds
         ];
+        System.debug('PCRS retrieved from query: ' + pcrs);
         return pcrs;
     }
 

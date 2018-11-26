@@ -1097,6 +1097,19 @@ private class PCRApprovalHandlerTest {
             System.assertNotEquals(null, lead.Personal_Credit_Report__c);
         }
     }
+
+    static testMethod void testCoAppCreditCheck() {
+        Test.startTest();
+        Contact jointContact = new Contact();
+        jointContact.FirstName = 'JointCredit';
+        jointContact.LastName = 'Test';
+        insert jointContact;
+        System.debug('testing debug');
+
+        jointContact.LASERCA__Pull_Credit_Report__c = true;
+        update jointContact;
+        Test.stopTest();
+    }
   
     public class Application {
         public Integer income, loan;
@@ -1245,6 +1258,7 @@ private class PCRApprovalHandlerTest {
             }
             insert pcrs;
             insert coAppPCRs;
+
             Map<Id, Id> leadIdToPCRId = new Map<Id, Id>();
             Map<Id, Id> leadIdToCoAppPCRId = new Map<Id, Id>();
             List<Id> coAppPCRIds = new List<Id>();
@@ -1265,6 +1279,48 @@ private class PCRApprovalHandlerTest {
             for (Application app : application) {
                 app.pcrId = leadIdToPCRId.get(app.leadId);
                 app.coAppPCRId = leadIdToCoAppPCRId.get(app.leadId);
+                applicationMap.put(app.key, app);
+            }
+            for (Application app : application) {
+                app.pcrId = pcrs[0].Id;
+                app.coAppPCRId = coAppPCRs[0].Id;
+                applicationMap.put(app.key, app);
+            }
+        }
+
+        public void insertPCRsWithoutLeads() {
+            List<LASERCA__Personal_Credit_Report__c> pcrs = new List<LASERCA__Personal_Credit_Report__c>();
+            List<LASERCA__Personal_Credit_Report__c> coAppPCRs = new List<LASERCA__Personal_Credit_Report__c>();
+            for (Application app : application) {
+                pcrs.add(new LASERCA__Personal_Credit_Report__c(
+                    LASERCA__Code__c = app.code1,
+                    LASERCA__Code_2__c = app.code2,
+                    LASERCA__Code_3__c = app.code3,
+                    LASERCA__Code_4__c = app.code4,
+                    LASERCA__Bankruptcy__c = (app.bankruptcy != null)?app.bankruptcy:false,
+                    LASERCA__Credit_Score_TransUnion__c = (app.fico!=null?String.valueOf(app.fico):null),
+                    Credit_Denial_Email_Sent__c = (app.sendEmails!=null?!app.sendEmails:true),
+                    Credit_PreApproval_Email_Sent__c = (app.sendEmails!=null?!app.sendEmails:true)
+                ));
+                if (app.applicationType != null && app.applicationType.contains('Joint')) {
+                    coAppPCRs.add(new LASERCA__Personal_Credit_Report__c(
+                        LASERCA__Code__c = app.coAppCode1,
+                        LASERCA__Code_2__c = app.coAppCode2,
+                        LASERCA__Code_3__c = app.coAppCode3,
+                        LASERCA__Code_4__c = app.coAppCode4,
+                        LASERCA__Bankruptcy__c = (app.coAppBankruptcy != null)?app.coAppBankruptcy:false,
+                        LASERCA__Credit_Score_TransUnion__c = (app.coAppFICO!=null?String.valueOf(app.coAppFICO):null),
+                        Credit_Denial_Email_Sent__c = (app.sendEmails!=null?!app.sendEmails:true),
+                        Credit_PreApproval_Email_Sent__c = (app.sendEmails!=null?!app.sendEmails:true)
+                    ));
+                }
+            }
+            insert pcrs;
+            insert coAppPCRs;
+
+            for (Application app : application) {
+                app.pcrId = pcrs[0].Id;
+                app.coAppPCRId = coAppPCRs[0].Id;
                 applicationMap.put(app.key, app);
             }
         }
