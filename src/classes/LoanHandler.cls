@@ -1259,28 +1259,14 @@ public without sharing class LoanHandler{
             }
         }
         for (Residential_Equipment__c equipmentLoopVar : equipmentList) {
-            List<String> fieldNames = new List<String>{'Annual_Production_kWh_kW__c', 'Interconnected__c', 'Interconnection_Date__c',  'Percentage_of_System_Shaded__c',  'SREC_Opt_In_Calendar_Quarter__c',  'Generator_Type__c',  'MA_Facility_Sector__c',  'Generator_Nameplate_Capacity__c',  'Contract_Execution_Date__c',  'Generator_Interconnection_Date__c',  'Generator_Installation_Date__c',  'Generator_Energized_Online_Date__c',  'Module_Manufacturer__c',  'Module_Model_Number__c',  'Module_Power_Rating__c',  'Number_of_Modules__c',  'Module_Array_Mounting_Type__c',  'Module_Array_Azimuth__c',  'Module_Array_Tilt__c',  'Module_Mounting_Location__c',  'Inverter_Manufacturer__c',  'Inverter_Model_Number__c',  'Number_of_Meters__c',  'Solar_Meter_Manufacturer__c',  'Solar_Meter_Model__c',    'Solar_Meter_Serial_Number__c'};
-            Boolean nullOrBlankResult = checkNullOrBlankField(equipmentList.get(0), fieldNames);
-            if (equipmentLoopVar.State__c == 'MA') {
-                if (nullOrBlankResult && ptoDocumentProvided) {
-                    taskUniqueId = equipmentLoopVar.Lead__c + ' ' + 'Interconnection';
-                    taskMap.get(taskUniqueId).Status__c = 'Complete';
-                    taskMap.get(taskUniqueId).Completion_Date__c = Date.today();
-                    taskUpdateList.add(taskMap.get(taskUniqueId));
-                    equipmentLeadIdList.add(equipmentLoopVar.Lead__c);
-                } else {
-                    return;
-                }
+            if (ptoDocumentProvided) {
+                taskUniqueId = equipmentLoopVar.Lead__c + ' ' + 'Interconnection';
+                taskMap.get(taskUniqueId).Status__c = 'Complete';
+                taskMap.get(taskUniqueId).Completion_Date__c = Date.today();
+                taskUpdateList.add(taskMap.get(taskUniqueId));
+                equipmentLeadIdList.add(equipmentLoopVar.Lead__c);
             } else {
-                if (ptoDocumentProvided) {
-                    taskUniqueId = equipmentLoopVar.Lead__c + ' ' + 'Interconnection';
-                    taskMap.get(taskUniqueId).Status__c = 'Complete';
-                    taskMap.get(taskUniqueId).Completion_Date__c = Date.today();
-                    taskUpdateList.add(taskMap.get(taskUniqueId));
-                    equipmentLeadIdList.add(equipmentLoopVar.Lead__c);
-                } else {
-                        return;
-                }
+                continue;
             }
         }
         update taskUpdateList;
@@ -1332,38 +1318,6 @@ public without sharing class LoanHandler{
         }
         update taskUpdateList;
     }
-
-    public static Boolean checkNullOrBlankField(Residential_Equipment__c equipment, List<String> fieldNames) {
-        Boolean checkResult = true;
-        Map<String, Object> equipmentFieldMap = new Map<String,Object>(equipment.getPopulatedFieldsAsMap());
-
-        for (String fieldName : fieldNames) {
-            if (equipmentFieldMap.get(fieldName) instanceof Integer || equipmentFieldMap.get(fieldName) instanceof Double) {
-                if (equipmentFieldMap.get(fieldName) != null) {
-                    continue;
-                } else {
-                    checkResult = false;
-                }
-            } else if (equipmentFieldMap.get(fieldName) instanceof String) {
-                if (String.isNotBlank((String)equipmentFieldMap.get(fieldName))) {
-                    continue;
-                } else {
-                    checkResult = false;
-                }
-            } else if (equipmentFieldMap.get(fieldName) instanceof Boolean) {
-                continue;
-            } else if (equipmentFieldMap.get(fieldName) instanceof Date) {
-                if (equipmentFieldMap.get(fieldName) != null) {
-                    continue;
-                } else {
-                    checkResult = false;
-                }
-            } else {
-                checkResult = false;
-            }
-        }
-        return checkResult;
-     }
 
     public static void assignResidentialEquipmentToLoan(List<Loan__c> loanList) {
         List<Residential_Equipment__c> equipmentUpdateList =   new List<Residential_Equipment__c>();
