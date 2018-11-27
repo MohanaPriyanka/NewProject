@@ -391,23 +391,13 @@
 
             case 'Interconnection':
             case 'Report Interconnection to MCEC':
-                if (component.get('v.customerInformation.Loan__r.State__c') === 'MA') {
-                    urlEvent.setParams(
-                    //SREC Form - more than a simple file upload (openUploadWindow), should be its own window or SREC onboarding component
-                       {'url': 'https://forms.bluewaverenewables.com/381637'
-                               + '?tfa_117=' + equipmentId
-                               + '&tfa_118=' + !equipmentUpdateDummy
-                               + '&tfa_107=' + oppId});
-                    break;
-                } else {
-                    helper.openUploadWindow(component,"Date of Interconnection:","Upload Proof of Interconnection", equipmentId, oppId, null, "Interconnection Documentation", taskHelpText);
-                    return;
-                }
+                helper.openUploadWindow(component,"Date of Interconnection:","Upload Proof of Interconnection", equipmentId, oppId, null, "Interconnection Documentation", taskHelpText);
+                return;
             case 'Provide Sales Agreement':
-              helper.openUploadWindow(component,"hide","Upload Sales Agreement", oppId, oppId, null, "Sales Agreement", taskHelpText);
-              return;
+                helper.openUploadWindow(component,"hide","Upload Sales Agreement", oppId, oppId, null, "Sales Agreement", taskHelpText);
+                return;
             default:
-              break;
+                break;
         }
         urlEvent.fire();
     },
