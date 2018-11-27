@@ -408,24 +408,31 @@ public with sharing class LoanUnderwritingTest {
     static testMethod void testSendContinueApplicationRequest() {
         Test.startTest();
 
-        Lead lead = [SELECT Id, Name, Email, CAP_Stage__c, ConvertedOpportunityId, Status, Comments__c
+        Lead lead = [SELECT Id, Name, Email, CAP_Stage__c, ConvertedOpportunityId, Status, Comments__c, Personal_Credit_Report__c,
+        (SELECT Id, Adjusted_DTI__c FROM LASERCA__Personal_Credit_Reports__r)
         FROM Lead
         WHERE FirstName = 'leadMALoanTerm20Rate725'
         LIMIT 1];
 
         System.assertEquals('Unqualified', lead.Status);
+        System.assertEquals(1, lead.LASERCA__Personal_Credit_Reports__r.size());
+        System.assertEquals(null, lead.LASERCA__Personal_Credit_Reports__r[0].Adjusted_DTI__c);
 
         Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
         Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
 
         LoanUnderwriting.sendContinueApplicationRequest(lead);
 
-        lead = [SELECT Id, Name, Email, CAP_Stage__c, Status
+        lead = [SELECT Id, Name, Email, CAP_Stage__c, Status, (SELECT Id, Adjusted_DTI__c FROM LASERCA__Personal_Credit_Reports__r)
         FROM Lead
         WHERE FirstName = 'leadMALoanTerm20Rate725'
         LIMIT 1];
 
+        // We assert that DTI has been adjusted to allow the customer to select products, and that the status
+        // is now 'awaiting info' so the customer can continue the application.
         System.assertEquals('Awaiting Info Requested from Customer', lead.Status);
+        System.assertEquals(1, lead.LASERCA__Personal_Credit_Reports__r.size());
+        System.assertEquals(50.0, lead.LASERCA__Personal_Credit_Reports__r[0].Adjusted_DTI__c);
 
         Test.stopTest();
     }
