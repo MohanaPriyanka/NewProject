@@ -3984,7 +3984,9 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <active>true</active>
         <errorConditionFormula>AND(
 ISBLANK(TEXT(Resolution__c) ),
- RecordTypeId = &apos;0120a0000004dlv&apos;, /* Product Support */
+OR(
+   RecordTypeId = &apos;0120a0000004dlv&apos;, /* Product Support */
+   RecordTypeId = &apos;012j00000000HA8&apos;), /* Customer Care */
  IsClosed = TRUE
 )</errorConditionFormula>
         <errorDisplayField>Resolution__c</errorDisplayField>
