@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>When a case is closed, this email is sent to the customer</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Partner Care Case Close</name>
+    <style>none</style>
+    <subject>Did BlueWave help you resolve your issue today?</subject>
+    <textOnly>On a 1-5 scale, how easy did BlueWave make it to solve your issue today?
+1
+2
+3
+4
+5
+
+Really hard  Really easy
+
+Sent with</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>
