@@ -1278,7 +1278,7 @@ CONTAINS(Name,&apos;-&apos;),true,false
             <name>Opportunity_Stage_QC_Signature_Pending</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <booleanFilter>1 AND 2</booleanFilter>
         <criteriaItems>
             <field>Opportunity.All_QC_Boxes_True__c</field>
@@ -1299,7 +1299,7 @@ CONTAINS(Name,&apos;-&apos;),true,false
             <name>Opportunity_Stage_QC_in_Process</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <booleanFilter>1 AND 2 AND 3 AND 4 AND 5</booleanFilter>
         <criteriaItems>
             <field>Opportunity.Contract_Status__c</field>
