@@ -68,11 +68,6 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         }
     }
 
-    private static void printCPULimit(String prefix) {
-        Util.printCPULimit(prefix);
-        Util.printSOQLLimit(prefix);
-    }
-
     private static String getDate(Energy_Usage_Update__c euu) {
         return DateTime.newInstance(euu.Date__c.year(), euu.Date__c.month(),euu.Date__c.day()).format('yyyy-MM');
     }
@@ -111,7 +106,6 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
                 Product__r.Days_in_Bill_Period__c, Account.Max_Account_Bill_Number__c, StageName
             FROM Opportunity
             WHERE Shared_Solar_System__c IN : sssIdToEUUMap.keySet()
-            AND StageName = 'Complete'
             AND Id IN : oppIds
             ORDER BY Name
         ];
@@ -139,8 +133,6 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             previousBillsSet.put(systemBill.Unique_ID__c, systemBill);
         }
 
-        printCPULimit('Before first uas loop');
-
         for (Opportunity opp : oppList) {
             if (sssIdToEUUMap.containsKey(opp.Shared_Solar_System__c)) {
                 Energy_Usage_Update__c euu = sssIdToEUUMap.get(opp.Shared_Solar_System__c);
@@ -157,14 +149,10 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             }
         }
 
-        printCPULimit('After first uas loop');
-
         //Create the Account Bills
         if (!abKeyToAccountBillMap.isEmpty()) {
             upsert abKeyToAccountBillMap.values() Unique_Id__c;
         }
-
-        printCPULimit('After Account Bills upserted');
 
         Map<String, System_Bill__c > systemBillMap = new Map<string, System_Bill__c >();
         for (Opportunity opp : oppList) {
@@ -187,13 +175,9 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             }
         }
 
-        printCPULimit('Before System Bills upserted');
-
         if (!systemBillMap.isEmpty()) {
             upsert systemBillMap.values() Unique_Id__c;
         }
-
-        printCPULimit('After System Bills upserted');
 
         Map<Id, Utility_Account_Bill__c> utilityAccountLogIdToUABMap = new Map<Id, Utility_Account_Bill__c>();
         for (Utility_Account_Subscription__c uas : uasMap.values()) {
@@ -210,8 +194,6 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
                 }
             }
         }
-
-        printCPULimit('Before Utility Account Bills upserted');
         if (!utilityAccountLogIdToUABMap.isEmpty()) {
             upsert utilityAccountLogIdToUABMap.values() Unique_Id__c;
         }
@@ -220,40 +202,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
 
         UtilityAccountBillTriggerHandler handler = new UtilityAccountBillTriggerHandler();
         handler.createUASB(sssIdToEUUMap, systemBillMap, utilityAccountLogIdToUABMap, uasMap.values());
-
-        printCPULimit('After Utility Account Bills upserted');
     }
-
-    private List<Opportunity> collectCompleteOrCarryOverOpps(Set<Id> sssIds) {
-        List<Opportunity> allOpps = [
-            SELECT   Id, Name, Account.Name, Shared_Solar_System__r.Name, Shared_Solar_System__c,
-                AccountId, Account.Id, Account.Recurring_Billing__c, Product__r.Monthly_Late_Fee__c,
-                Product__r.Days_in_Bill_Period__c, Account.Max_Account_Bill_Number__c, StageName,
-            (SELECT Id, Carry_Over_Balance__c FROM System_Bills__r ORDER BY Date__c DESC LIMIT 1)
-            FROM Opportunity
-            WHERE Shared_Solar_System__c IN : sssIds
-            ORDER BY Name
-        ];
-
-        List<Opportunity> oppList = new List<Opportunity>();
-        for (Opportunity anyOpp : allOpps) {
-            if (anyOpp.StageName == 'Complete' || hasCarryOverBalance(anyOpp)) {
-                oppList.add(anyOpp);
-            }
-        }
-        return oppList;
-    }
-
-    private Boolean hasCarryOverBalance(Opportunity opp) {
-        if (opp.System_Bills__r.size() == 0 ||
-            opp.System_Bills__r[0].Carry_Over_Balance__c == null ||
-            opp.System_Bills__r[0].Carry_Over_Balance__c.setScale(2, RoundingMode.HALF_UP) <= 0) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
 
     public void finish(Database.BatchableContext bc){
         AsyncApexJob job = [SELECT Id, Status, NumberOfErrors,
@@ -319,7 +268,6 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             FROM Utility_Account_Subscription__c
             WHERE Id IN : scheduleZUASIds
             AND Opportunity__c IN : oppIds
-            AND Opportunity__r.StageName = 'Complete'
             ORDER BY Name
         ];
 
