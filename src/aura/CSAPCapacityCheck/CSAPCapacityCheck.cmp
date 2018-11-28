@@ -33,7 +33,7 @@
           </lightning:layoutItem>
           <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12" >
             <div class="slds-align--absolute-center">
-              <lightning:button label="Continue Application" onclick="{!c.finishStage}"/>
+              <lightning:button label="Continue Application" onclick="{!c.goToSolarCheck}"/>
             </div>
           </lightning:layoutItem>
         </lightning:layout>
@@ -69,5 +69,58 @@
         </lightning:layout>
       </aura:if>
     </aura:if>
+  </aura:if>
+
+  <aura:if isTrue="{!v.page == 'SolarCheck'}">
+    <lightning:layout multipleRows="true" horizontalAlign="center">
+      <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+        <div class="slds-align--absolute-center slds-text-body--large--blue">
+          <b>In order to qualify for Community Solar in your state we need to know some details about the property.</b>
+        </div>
+      </lightning:layoutItem>
+      <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+        <lightning:select aura:id="field" name="haveSolarPanelsOnPropertySelectList"
+                          label="Do you have solar panels on your property?"
+                          value="{!v.lead.Loan_System_Information__c}"
+                          required="true">
+          <option value="">Choose one...</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </lightning:select>
+      </lightning:layoutItem>
+      <aura:if isTrue="{!v.lead.Loan_System_Information__c == 'No'}">
+        <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+          <div class="slds-align--absolute-center slds-text-body--large--blue">
+            <b>Great, you may continue the application.</b>
+          </div>
+        </lightning:layoutItem>
+        <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12" >
+          <div class="slds-align--absolute-center">
+            <lightning:button label="Continue Application" onclick="{!c.finishStage}"/>
+          </div>
+        </lightning:layoutItem>
+      </aura:if>
+      <aura:if isTrue="{!v.lead.Loan_System_Information__c == 'Yes'}">
+        <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+          <div class="slds-align--absolute-center slds-text-body--large--blue">
+            <b>Unfortunately, your state regulations do not allow Community Solar customers to have solar panels on their property.</b>
+          </div>
+        </lightning:layoutItem>
+        <aura:if isTrue="{!v.lead.Application_Source_Phase_2__c == null}">
+          <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+            <div class="slds-align--absolute-center slds-text-body--large--blue">
+              <b>You may now close this application.</b>
+            </div>
+          </lightning:layoutItem>
+          <aura:set attribute="else">
+            <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12" >
+              <div class="slds-align--absolute-center">
+                <lightning:button label="Continue Application" onclick="{!c.skipToEnd}"/>
+              </div>
+            </lightning:layoutItem>
+          </aura:set>
+        </aura:if>
+      </aura:if>
+    </lightning:layout>
   </aura:if>
 </aura:component>

@@ -2,7 +2,6 @@
   <aura:attribute name="ual" type="Utility_Account_Log__c" default="{'sobjectType':'Utility_Account_Log__c',
                                                                       'Name': ''}"/>
   <aura:attribute name="ualList" type="Utility_Account_Log__c[]"/>
-  <aura:attribute name="haveSolarPanelsOnProperty" type="String"/>
   <aura:attribute name="provideLoginInformation" type="String"/>
   <aura:attribute name="abbrevStates" type="String[]"/>
   <aura:attribute name="attachments" type="Attachment[]"/>
@@ -153,30 +152,18 @@
                   </lightning:layoutItem>
                 </aura:if>
                 <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-                  <lightning:select aura:id="field" name="leadPreviousBWApplicant"
-                                    label="Have you successfully applied for a BlueWave Home Solar Loan in the last 60 Days?"
-                                    value="{!v.ual.Previous_BW_CL_Applicant__c}"
+                  <lightning:select aura:id="field" name="haveSolarPanelsOnPropertySelectList"
+                                    label="Do you have solar panels on your property?"
+                                    value="{!v.lead.Loan_System_Information__c}"
                                     required="true">
                     <option value="">Choose one...</option>
                     <option value="Yes">Yes</option>
                     <option value="No">No</option>
                   </lightning:select>
                 </lightning:layoutItem>
-                <aura:if isTrue="{!v.ual.Previous_BW_CL_Applicant__c == 'No'}">
-                  <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-                    <lightning:select aura:id="field" name="haveSolarPanelsOnPropertySelectList"
-                                      label="Do you have solar panels on your property?"
-                                      value="{!v.haveSolarPanelsOnProperty}"
-                                      required="true">
-                      <option value="">Choose one...</option>
-                      <option value="Yes">Yes</option>
-                      <option value="No">No</option>
-                    </lightning:select>
-                  </lightning:layoutItem>
-                  <lightning:layoutItem padding="left-small" size="12" smallDeviceSize="12" mediumDeviceSize="12"/>
-                </aura:if>
+                <lightning:layoutItem padding="left-small" size="12" smallDeviceSize="12" mediumDeviceSize="12"/>
 
-                <aura:if isTrue="{!v.haveSolarPanelsOnProperty == 'Yes'}">
+                <aura:if isTrue="{!v.lead.Loan_System_Information__c == 'Yes'}">
                   <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
                     <lightning:input aura:id="field" name="leadEstimatedInstallDate"
                                      type="date"
