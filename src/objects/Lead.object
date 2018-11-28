@@ -1739,6 +1739,16 @@ This field can be changed to a formula consistent with the other factors if LASE
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Demo_Request__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Lead requests demo</inlineHelpText>
+        <label>Demo Request</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Description</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -3196,6 +3206,16 @@ Monthly_Payment__c)</formula>
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Newsletter_Opt_in__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Lead will receive newsletter</inlineHelpText>
+        <label>Newsletter Opt-in</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>No_Veteran_Disability__c</fullName>
         <defaultValue>false</defaultValue>
         <description>This checkbox serves as the false value to the Veteran/Disability checkbox. It allows the CAP UI to show blank checkboxes without having to default to false.</description>
@@ -3628,6 +3648,63 @@ IF(ISPICKVAL(Personal_Credit_Report__r.Solar_Loan_Pre_Qualification_Status__c, &
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Product_Interest__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Maps product interest from website lead generation form</inlineHelpText>
+        <label>Product Interest</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Solar for my home</fullName>
+                    <default>false</default>
+                    <label>Solar for my home</label>
+                </value>
+                <value>
+                    <fullName>Solar for my business</fullName>
+                    <default>false</default>
+                    <label>Solar for my business</label>
+                </value>
+                <value>
+                    <fullName>Solar for my land</fullName>
+                    <default>false</default>
+                    <label>Solar for my land</label>
+                </value>
+                <value>
+                    <fullName>Providing rooftop solar financing</fullName>
+                    <default>false</default>
+                    <label>Providing rooftop solar financing</label>
+                </value>
+                <value>
+                    <fullName>Community Solar sales</fullName>
+                    <default>false</default>
+                    <label>Community Solar sales</label>
+                </value>
+                <value>
+                    <fullName>Community Solar services</fullName>
+                    <default>false</default>
+                    <label>Community Solar services</label>
+                </value>
+                <value>
+                    <fullName>Developing Solar</fullName>
+                    <default>false</default>
+                    <label>Developing Solar</label>
+                </value>
+                <value>
+                    <fullName>Something else</fullName>
+                    <default>false</default>
+                    <label>Something else</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
         <fullName>Product_Line_Account_Map__c</fullName>
         <externalId>false</externalId>
         <formula>Product_line__c</formula>
@@ -3841,6 +3918,18 @@ IF(AND(Risk_Level_Business_Type__c = &quot;Not Risky&quot;, VALUE(Number_of_Year
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Referral_Code__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Referral code used for lead creation</inlineHelpText>
+        <label>Referral Code</label>
+        <length>25</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Referral_Email__c</fullName>
         <externalId>false</externalId>
         <label>Referral Email</label>
@@ -4040,6 +4129,21 @@ IF(INCLUDES(  Load_Zone__c , &quot;SEMA/NEMA&quot;), &quot;SEMA/NEMA&quot;, &quo
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>State_Market__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>States Served</inlineHelpText>
+        <label>State Market</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>State_abbreviations</valueSetName>
+        </valueSet>
+        <visibleLines>4</visibleLines>
     </fields>
     <fields>
         <fullName>State_of_Issuance__c</fullName>
@@ -4491,6 +4595,17 @@ IF(INCLUDES(  Utility_1__c , &quot;SCE&amp;G&quot;), &quot;SCE&amp;G&quot;,
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Webpage_Source__c</fullName>
+        <description>Shows from which page lead converted</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Shows from which page lead converted</inlineHelpText>
+        <label>Webpage Source</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Url</type>
     </fields>
     <fields>
         <fullName>Website</fullName>
