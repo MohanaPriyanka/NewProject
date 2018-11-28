@@ -16549,6 +16549,12 @@ SEMA = 13 -14</inlineHelpText>
         </picklistValues>
     </recordTypes>
     <recordTypes>
+        <fullName>Lead_General</fullName>
+        <active>true</active>
+        <businessProcess>CS</businessProcess>
+        <label>Lead (General)</label>
+    </recordTypes>
+    <recordTypes>
         <fullName>Utility_Duke_Energy</fullName>
         <active>true</active>
         <businessProcess>CS</businessProcess>
