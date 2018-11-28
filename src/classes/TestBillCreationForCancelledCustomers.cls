@@ -396,6 +396,18 @@ public class TestBillCreationForCancelledCustomers {
         update listAccountBills;
     }
 
+    static void setOppToCancelled(List<String> oppIds) {
+        List<Opportunity> listOpps = [
+            SELECT Id, StageName
+            FROM Opportunity
+            WHERE Id IN : oppIds
+        ];
+        for (Opportunity opp : listOpps) {
+            opp.StageName = 'Cancelled';
+        }
+        update listOpps;
+    }
+
     static void setCollectionsWindow (Integer monthsToGenerate){
         System_Properties__c propertyAlreadyInserted = [Select Id FROM System_Properties__c];
         delete propertyAlreadyInserted;
@@ -543,13 +555,14 @@ public class TestBillCreationForCancelledCustomers {
         Test.startTest();
 
         Utility_Account_Subscription__c uasToDeactivate = [
-            SELECT Id, Name
+            SELECT Id, Name, Opportunity__r.Id
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__r.Name = 'acA A_SSS1'
             LIMIT 1];
 
         uasToDeactivate.Next_Schedule_Z_Status__c = 'Inactive Subscription';
         update uasToDeactivate;
+        setOppToCancelled(new List<String>{uasToDeactivate.Opportunity__r.Id});
         runSecondMonthProductionUpdates();
 
         Test.stopTest();
@@ -574,13 +587,14 @@ public class TestBillCreationForCancelledCustomers {
         Test.startTest();
 
         Utility_Account_Subscription__c uasToDeactivate = [
-            SELECT Id, Name
+            SELECT Id, Name, Opportunity__r.Id
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__r.Name = 'acA A_SSS1'
             LIMIT 1];
 
         uasToDeactivate.Next_Schedule_Z_Status__c = 'Inactive Subscription';
         update uasToDeactivate;
+        setOppToCancelled(new List<String>{uasToDeactivate.Opportunity__r.Id});
         runSecondMonthProductionUpdates();
 
         Test.stopTest();
@@ -605,7 +619,7 @@ public class TestBillCreationForCancelledCustomers {
         Test.startTest();
         List<Utility_Account_Subscription__c> uasList = new List<Utility_Account_Subscription__c>();
         for (Utility_Account_Subscription__c uasToDeactivate : [
-            SELECT Id, Name
+            SELECT Id, Name, Opportunity__r.Id
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__r.Name = 'acB B_SSS1'
             OR Opportunity__r.Name = 'acB B_SSS2'
@@ -615,6 +629,7 @@ public class TestBillCreationForCancelledCustomers {
             uasList.add(uasToDeactivate);
         }
         update uasList;
+        setOppToCancelled(new List<String>{uasList[0].Opportunity__r.Id, uasList[1].Opportunity__r.Id});
         runSecondMonthProductionUpdates();
         Test.stopTest();
 
@@ -637,7 +652,7 @@ public class TestBillCreationForCancelledCustomers {
         Test.startTest();
         List<Utility_Account_Subscription__c> uasList = new List<Utility_Account_Subscription__c>();
         for (Utility_Account_Subscription__c uasToDeactivate : [
-            SELECT Id, Name
+            SELECT Id, Name, Opportunity__r.Id
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__r.Name = 'acB B_SSS1'
             OR Opportunity__r.Name = 'acB B_SSS2'
@@ -647,6 +662,7 @@ public class TestBillCreationForCancelledCustomers {
             uasList.add(uasToDeactivate);
         }
         update uasList;
+        setOppToCancelled(new List<String>{uasList[0].Opportunity__r.Id, uasList[1].Opportunity__r.Id});
         runSecondMonthProductionUpdates();
         Test.stopTest();
 
@@ -672,13 +688,14 @@ public class TestBillCreationForCancelledCustomers {
         Test.startTest();
 
         Utility_Account_Subscription__c uasToDeactivate = [
-            SELECT Id, Name
+            SELECT Id, Name, Opportunity__r.Id
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__r.Name = 'acA A_SSS1'
             LIMIT 1];
 
         uasToDeactivate.Next_Schedule_Z_Status__c = 'Inactive Subscription';
         update uasToDeactivate;
+        setOppToCancelled(new List<String>{uasToDeactivate.Opportunity__r.Id, uasToDeactivate.Opportunity__r.Id});
         runSecondMonthProductionUpdates();
 
         Test.stopTest();
