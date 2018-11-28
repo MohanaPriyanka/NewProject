@@ -21438,6 +21438,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Opportunity.All_Customers_Signature_Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Opportunity.All_QC_Boxes_True__c</field>
         <readable>true</readable>
     </fieldPermissions>
