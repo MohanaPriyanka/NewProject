@@ -823,6 +823,40 @@ IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12),
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <rules>
+        <fullName>CS - BlueWave - Contract Receipt</fullName>
+        <actions>
+            <name>Sends_CS_Contract_Receipt_Email</name>
+            <type>Alert</type>
+        </actions>
+        <actions>
+            <name>EMAIL_LOG_CS_BlueWave_Contract_Reciept</name>
+            <type>Task</type>
+        </actions>
+        <active>true</active>
+        <booleanFilter>1 AND 2 AND (3 OR 4 )</booleanFilter>
+        <criteriaItems>
+            <field>Opportunity.Product_Line__c</field>
+            <operation>equals</operation>
+            <value>Community Solar</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Opportunity.StageName</field>
+            <operation>equals</operation>
+            <value>Complete</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Opportunity.Opportunity_Order__c</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Opportunity.Opportunity_Order__c</field>
+            <operation>equals</operation>
+        </criteriaItems>
+        <description>Triggers sending of CS contract receipt email when CS opportunity is closed as won</description>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
         <fullName>CS - BlueWave - Contract Receipt %28Eversource%29</fullName>
         <actions>
             <name>Sends_CS_Contract_Receipt_Email</name>
@@ -871,7 +905,7 @@ IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12),
             <name>EMAIL_LOG_NGrid_Contract_Execution</name>
             <type>Task</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <booleanFilter>1 AND 2 AND (3 OR 5) AND 4</booleanFilter>
         <criteriaItems>
             <field>Opportunity.Product_Line__c</field>
