@@ -41,4 +41,9 @@
         <default>false</default>
         <label>EPC Account</label>
     </standardValue>
+    <standardValue>
+        <fullName>Profit Center</fullName>
+        <default>false</default>
+        <label>Profit Center</label>
+    </standardValue>
 </StandardValueSet>
