@@ -5,23 +5,16 @@
  *************************************************************************************/
 
 public without sharing class UtilityAccountBillTriggerHandler {
-    private void printSOQLLimits(String location) {
-        System.debug(LoggingLevel.ERROR, 'SOQL Limites: ' + location + ': ' +  Limits.getQueries());
-    }
-
-    public void createUASB( Map<Id, Energy_Usage_Update__c> prodUpdateMap, 
+    public void createUASB( Map<Id, Energy_Usage_Update__c> prodUpdateMap,
                             Map<String, System_Bill__c > systemBillMap, 
                             Map<Id, Utility_Account_Bill__c> utilityAccountLogIdToUABMap, 
                             List<Utility_Account_Subscription__c> uasList){
-        printSOQLLimits('******* Start UAB Trigger *******');
 
         Set<Id> scheduleZIds = new Set<Id>();
         for (Energy_Usage_Update__c productionUpdate : prodUpdateMap.Values()) {
             scheduleZIds.add(productionUpdate.Schedule_Z__c);
         }
-        printSOQLLimits('After Collecting Sched Z on Prod Updates');
 
-        printSOQLLimits('Before Collecting Sched Z Subs on Prod Updates');
         // Collect Schedule Z Subscriptions related to the Schedule Zs
         List<Schedule_Z_Subscription__c> scheduleZSubscriptions = [
             SELECT Id, Customer_Subscription_kW_DC__c, Percent_Share__c, Utility_Account_Subscription__c,
@@ -57,9 +50,7 @@ public without sharing class UtilityAccountBillTriggerHandler {
         for (Schedule_Z_Subscription__c scheduleZSub : scheduleZSubscriptions) {
             scheduleZSubscriptionToUABIdMap.put(scheduleZSub.Utility_Account_Subscription__c, scheduleZSub);
         }
-        printSOQLLimits('After Collecting Sched Z Subs on Prod Updates');
 
-        printSOQLLimits('Before Collecting Adjustments');
         // Get Adjustment List for UAS that belong to the Utility Account Logs
         // Do I need to look into Bill_Adjustments?
         List<Bill_Adjustment__c> adjustmentList = [ SELECT Id, Name, UASB__c,
@@ -75,10 +66,8 @@ public without sharing class UtilityAccountBillTriggerHandler {
                                                 AND Approval_Status__c = 'Approved'
                                                 ORDER BY CreatedDate];
 
-        printSOQLLimits('After Collecting Adjustments');
 
 
-        printSOQLLimits('Before Building UASBs');
         Set<UASB__c> uasbSet = new Set<UASB__c>();
         Map<String, List<Bill_Adjustment__c>> adjustmentsToUpdateMap = new Map<String, List<Bill_Adjustment__c>>();
         for(Utility_Account_Subscription__c uas : uasList){
@@ -160,16 +149,13 @@ public without sharing class UtilityAccountBillTriggerHandler {
 
         Logger.flushLogs();
 
-        printSOQLLimits('After Building UASBs');
 
         // if there are utility account subscription bills insert them
 
         if(uasbSet.size() > 0) {
-            printSOQLLimits('Before Upserting UASBs');
             List<UASB__c> billList = new List<UASB__c>(uasbSet);
             upsert billList Unique_Id__c;
             // connect bill adjustments to UASBs
-            printSOQLLimits('After Inserting UASBs');
             for (UASB__c bill : billList) {
                 if (adjustmentsToUpdateMap.containsKey(bill.Unique_Id__c)) {
                     List<Bill_Adjustment__c> adjustments = adjustmentsToUpdateMap.get(bill.Unique_Id__c);
@@ -179,7 +165,6 @@ public without sharing class UtilityAccountBillTriggerHandler {
                     adjustmentsToUpdateMap.put(bill.Unique_ID__c, adjustments);
                 }
             }
-            printSOQLLimits('Before Updating Adjustments');
             if(adjustmentsToUpdateMap.size() > 0) {
                 List<Bill_Adjustment__c> adjustmentsToUpdate = new List<Bill_Adjustment__c>();
                 for (List<Bill_Adjustment__c> adjustments : adjustmentsToUpdateMap.values()) {
@@ -187,7 +172,6 @@ public without sharing class UtilityAccountBillTriggerHandler {
                 }
                 update adjustmentsToUpdate;
             }
-            printSOQLLimits('After Updating Adjustments');
         }
 
     }
