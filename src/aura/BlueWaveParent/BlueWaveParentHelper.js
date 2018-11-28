@@ -184,7 +184,7 @@
                     message += 'We\'ll open a Box Upload Widget in a new window. Please make sure your popup blocker is disabled\n\n';
                     message += 'File size cannot exceed: ' + helper.precisionRound(ltg.MAX_FILE_SIZE/ltg.BYTES_IN_MB,2) + ' MB.\n';
                     message += 'Your file size is: ' + helper.precisionRound(file.size/ltg.BYTES_IN_MB,2) + ' MB.';
-                    if (showInModal === undefined) {
+                    if (!showInModal) {
                         helper.showNotice(component, helper.openBoxUploader, 'File Too Large', message, description);
                         component.set('v.isLargeFile', true);
                     } else {
