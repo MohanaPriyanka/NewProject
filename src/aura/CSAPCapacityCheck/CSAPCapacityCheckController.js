@@ -46,7 +46,8 @@
         if (lead.LASERCA__Home_State__c === 'NY') {
             component.set("v.page", 'SolarCheck');
         } else {
-            this.finishStage(component, event, helper);
+            var finishStage = component.get('c.finishStage');
+            $A.enqueueAction(finishStage);
         }
     },
 
