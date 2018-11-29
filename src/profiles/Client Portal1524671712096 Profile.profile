@@ -14138,6 +14138,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Loan__c.Profit_Center__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Loan__c.Requested_Loan_Amount__c</field>
         <readable>false</readable>
     </fieldPermissions>
