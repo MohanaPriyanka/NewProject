@@ -54,6 +54,19 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ReadWrite</externalSharingModel>
     <fields>
+        <fullName>Credits_Allocated_Rounding_Method__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Credits Allocated = Share of System * Total System NMCs, rounded using this method. https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_methods_system_decimal.htm</inlineHelpText>
+        <label>Credits Allocated: Rounding Method</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Rounding_Methods</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Number_of_Decimal_Places__c</fullName>
         <externalId>false</externalId>
         <label>Number of Decimal Places</label>

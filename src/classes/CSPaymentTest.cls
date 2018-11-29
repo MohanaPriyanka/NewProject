@@ -35,6 +35,8 @@ public class CSPaymentTest {
         Test.loadData(UASB__c.SObjectType, 'TestCSUASB');
         Test.loadData(ChargentOrders__ChargentOrder__c.SObjectType, 'TestCSChargentOrder');
 
+        TestFactory.setCSBillSettings();
+
         // Because there's no way to populate self lookups:
         // https://salesforce.stackexchange.com/questions/54527/test-loaddata-undocumented-but-useful-behavior-loading-relationships
         // We put the parent account's name in AccountNumber and use that to update the accounts.

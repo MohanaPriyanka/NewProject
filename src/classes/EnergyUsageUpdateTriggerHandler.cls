@@ -5,7 +5,7 @@
  * This class is only creating the admin details of the bills. Sets up the correct relationships and such.
  * Money Due, kWh, etc aren't calculated.
  *
- * Tested by: TestBillCreationandPayment, RecurringPaymentsHandlerTestClass
+ * Tested by: TestBillCreationandPayment, RecurringPaymentsHandlerTestClass, TestBillCreationForCancelledCustomers
  */
 
 public without sharing class EnergyUsageUpdateTriggerHandler implements Database.Batchable<sObject> {
@@ -13,6 +13,8 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
     public Set<Id> scheduleZs = new Set<Id>();
     public Set<Integer> euuMonths = new Set<Integer>();
     public Set<String> euuYears = new Set<String>();
+    public Set<Id> cancelledUASes = new Set<Id>();
+    public Set<Id> cancelledOpps = new Set<Id>();
 
     // Prep for batch, set list of Schedule Z Ids and Shared Solar System Map:
     public EnergyUsageUpdateTriggerHandler(List<Energy_Usage_Update__c> euuList) {
@@ -21,6 +23,30 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             scheduleZs.add(euu.Schedule_Z__c);
             euuMonths.add((Integer) euu.Month_Number__c);
             euuYears.add(euu.YearDate__c);
+        }
+
+        System_Properties__c sysProp = System_Properties__c.getAll().values()[0];
+        Decimal collectionsWindowDec = sysProp.Days_Generate_Bills_for_Cancelled__c;
+        Decimal minimumBalance = sysProp.Minimum_Balance_Bills_for_Cancelled__c;
+        Integer collectionsWindow = Integer.valueOf(Util.nullToZero(collectionsWindowDec));
+        minimumBalance = Util.nullToZero(minimumBalance);
+
+        Date todaysDate = Date.today();
+        Date maxPastDueDate = todaysDate.addDays(collectionsWindow * -1);
+
+        // If there is an outstanding balance, and the customer has gotten a bill in the past X days,
+        // create bill with $0 in new charges.
+        // Last Bill Send Date = newest bill date with Due_This_Month__c > 0
+        for (UASB__c uasb : [
+            SELECT Id, System_Bill__r.Unique_ID__c, System_Bill__r.Opportunity__r.Id, Utility_Account_Subscription__c,
+                System_Bill__r.Account_Bill__r.Parent_Account__r.Last_Bill_Send_Date_New_Charges__c
+            FROM UASB__c
+            WHERE System_Bill__r.Shared_Solar_System__c IN : sssIdToEUUMap.keySet()
+            AND System_Bill__r.Balance_Net_Late_Payments__c > : minimumBalance
+            AND System_Bill__r.Account_Bill__r.Parent_Account__r.Last_Bill_Send_Date_New_Charges__c >= : maxPastDueDate
+        ]) {
+            cancelledUASes.add(uasb.Utility_Account_Subscription__c);
+            cancelledOpps.add(uasb.System_Bill__r.Opportunity__r.Id);
         }
     }
 
@@ -42,11 +68,6 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         }
     }
 
-    private static void printCPULimit(String prefix) {
-        Util.printCPULimit(prefix);
-        Util.printSOQLLimit(prefix);
-    }
-
     private static String getDate(Energy_Usage_Update__c euu) {
         return DateTime.newInstance(euu.Date__c.year(), euu.Date__c.month(),euu.Date__c.day()).format('yyyy-MM');
     }
@@ -54,11 +75,11 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
     // Batch into groups of Schedule Z Subscriptions:
     public Database.QueryLocator start(Database.BatchableContext bc) {
         String query =  'SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Opportunity__c ' +
-                        ' FROM Schedule_Z_Subscription__c ' +
-                        ' WHERE Schedule_Z__c IN : scheduleZs ' +
-                        ' AND ( Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c!= \'RadianGen\' ' +
-                        ' OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c= \'Residential\' ' +
-                        ' OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c= \'Non-Residential\' )';
+            ' FROM Schedule_Z_Subscription__c ' +
+            ' WHERE Schedule_Z__c IN : scheduleZs ' +
+            ' AND ( Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c!= \'RadianGen\' ' +
+            ' OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c= \'Residential\' ' +
+            ' OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c= \'Non-Residential\' )';
         return Database.getQueryLocator(query);
     }
 
@@ -68,14 +89,13 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
     }
 
     public void createBills(List<Schedule_Z_Subscription__c> scheduleZSubscriptions ){
-        Set<Id> scheduleZUASIds = new Set<Id>();
-        Set<Id> oppIds = new Set<Id>();
+        Set<Id> scheduleZUASIds = new Set<Id>(cancelledUASes);
+        Set<Id> oppIds = new Set<Id>(cancelledOpps);
 
         for (Schedule_Z_Subscription__c scheduleZSub : scheduleZSubscriptions) {
             scheduleZUASIds.add(scheduleZSub.Utility_Account_Subscription__c);
             oppIds.add(scheduleZSub.Utility_Account_Subscription__r.Opportunity__c);
         }
-
 
         Map<Id, Utility_Account_Subscription__c> uasMap = getUASFromSZS(scheduleZUASIds, oppIds);
 
@@ -86,8 +106,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
                 Product__r.Days_in_Bill_Period__c, Account.Max_Account_Bill_Number__c, StageName
             FROM Opportunity
             WHERE Shared_Solar_System__c IN : sssIdToEUUMap.keySet()
-                AND StageName = 'Complete'
-                AND Id IN : oppIds
+            AND Id IN : oppIds
             ORDER BY Name
         ];
 
@@ -114,8 +133,6 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             previousBillsSet.put(systemBill.Unique_ID__c, systemBill);
         }
 
-        printCPULimit('Before first uas loop');
-
         for (Opportunity opp : oppList) {
             if (sssIdToEUUMap.containsKey(opp.Shared_Solar_System__c)) {
                 Energy_Usage_Update__c euu = sssIdToEUUMap.get(opp.Shared_Solar_System__c);
@@ -132,14 +149,10 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             }
         }
 
-        printCPULimit('After first uas loop');
-
         //Create the Account Bills
         if (!abKeyToAccountBillMap.isEmpty()) {
             upsert abKeyToAccountBillMap.values() Unique_Id__c;
         }
-
-        printCPULimit('After Account Bills upserted');
 
         Map<String, System_Bill__c > systemBillMap = new Map<string, System_Bill__c >();
         for (Opportunity opp : oppList) {
@@ -162,13 +175,9 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             }
         }
 
-        printCPULimit('Before System Bills upserted');
-
         if (!systemBillMap.isEmpty()) {
             upsert systemBillMap.values() Unique_Id__c;
         }
-
-        printCPULimit('After System Bills upserted');
 
         Map<Id, Utility_Account_Bill__c> utilityAccountLogIdToUABMap = new Map<Id, Utility_Account_Bill__c>();
         for (Utility_Account_Subscription__c uas : uasMap.values()) {
@@ -185,8 +194,6 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
                 }
             }
         }
-
-        printCPULimit('Before Utility Account Bills upserted');
         if (!utilityAccountLogIdToUABMap.isEmpty()) {
             upsert utilityAccountLogIdToUABMap.values() Unique_Id__c;
         }
@@ -195,40 +202,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
 
         UtilityAccountBillTriggerHandler handler = new UtilityAccountBillTriggerHandler();
         handler.createUASB(sssIdToEUUMap, systemBillMap, utilityAccountLogIdToUABMap, uasMap.values());
-
-        printCPULimit('After Utility Account Bills upserted');
     }
-
-    private List<Opportunity> collectCompleteOrCarryOverOpps(Set<Id> sssIds) {
-        List<Opportunity> allOpps = [
-            SELECT   Id, Name, Account.Name, Shared_Solar_System__r.Name, Shared_Solar_System__c,
-                AccountId, Account.Id, Account.Recurring_Billing__c, Product__r.Monthly_Late_Fee__c,
-                Product__r.Days_in_Bill_Period__c, Account.Max_Account_Bill_Number__c, StageName,
-            (SELECT Id, Carry_Over_Balance__c FROM System_Bills__r ORDER BY Date__c DESC LIMIT 1)
-            FROM Opportunity
-            WHERE Shared_Solar_System__c IN : sssIds
-            ORDER BY Name
-        ];
-
-        List<Opportunity> oppList = new List<Opportunity>();
-        for (Opportunity anyOpp : allOpps) {
-            if (anyOpp.StageName == 'Complete' || hasCarryOverBalance(anyOpp)) {
-                oppList.add(anyOpp);
-            }
-        }
-        return oppList;
-    }
-
-    private Boolean hasCarryOverBalance(Opportunity opp) {
-        if (opp.System_Bills__r.size() == 0 ||
-            opp.System_Bills__r[0].Carry_Over_Balance__c == null ||
-            opp.System_Bills__r[0].Carry_Over_Balance__c.setScale(2, RoundingMode.HALF_UP) <= 0) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
 
     public void finish(Database.BatchableContext bc){
         AsyncApexJob job = [SELECT Id, Status, NumberOfErrors,
@@ -268,7 +242,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             SELECT Opportunity__r.Id oppID, MAX(Bill_Number__c) maxBillNumber
             FROM System_Bill__c
             WHERE Shared_Solar_System__c IN : sssIds
-                AND Opportunity__c IN : oppIds
+            AND Opportunity__c IN : oppIds
             GROUP BY Opportunity__r.Id
         ]) {
             String oppId = (String)lineItem.get('oppID');
@@ -293,8 +267,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
                 Max_Account_Bill_Number__c
             FROM Utility_Account_Subscription__c
             WHERE Id IN : scheduleZUASIds
-                AND Opportunity__c IN : oppIds
-                AND Opportunity__r.StageName = 'Complete'
+            AND Opportunity__c IN : oppIds
             ORDER BY Name
         ];
 
