@@ -1,7 +1,6 @@
 /**
  * Created by mstackhouse on 9/21/2018.
  * Description: 
- * Test: 
  */
 
 @IsTest
@@ -134,7 +133,6 @@ public with sharing class UtilTest {
     public static void testPrepForCSV() {
         String unprepped = 'this is$_@an \n=+ un\n}pr{e[pp]ed, str)ing(.';
         String expected = 'this is_an  unprepped string.';
-
         System.assertEquals(expected, Util.prepForCSV(unprepped));
     }
 
