@@ -794,6 +794,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>TestBillCreationForCancelledCustomers</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>TestBillCreationandPayment</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -1904,6 +1908,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Last_Bill_Send_Date_17__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Last_Bill_Send_Date_New_Charges__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -30762,6 +30771,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility__c.Credits_Allocated_Rounding_Method__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Utility__c.Number_of_Decimal_Places__c</field>
         <readable>true</readable>
@@ -49170,10 +49184,6 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
-        <name>ActivateOrder</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
         <name>ActivitiesAccess</name>
     </userPermissions>
     <userPermissions>
@@ -49255,10 +49265,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>DistributeFromPersWksp</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>EditActivatedOrders</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>

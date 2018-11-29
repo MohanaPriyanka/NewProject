@@ -163,6 +163,7 @@ public without sharing class OverpaymentApplication {
         if (overpayMap.containsKey(sbKey)) {
             List<Overpayment__c> overpayments = overpayMap.get(sbKey);
             Decimal sBillBalance = sbill.Balance_Net_Late_Payments__c;
+
             for (Overpayment__c overpayment : overpayments) {
                 Decimal originalAdjust = overpayment.Overpayment_Amount__c;
                 Decimal outstanding = overpayment.Intermediate_Outstanding__c;
@@ -182,7 +183,7 @@ public without sharing class OverpaymentApplication {
                     overApp = createOverpayApp(sbill, amount, overpayment, sbKey);
                     overpaymentAdjustmentsToInsert.add(overApp);
 
-                    overpayment.Intermediate_Outstanding__c -= amount;
+                    overpayment.Intermediate_Outstanding__c += amount;
                 }
             }
             overpayMap.put(sbkey,overpayments);
