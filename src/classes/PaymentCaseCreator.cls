@@ -178,6 +178,7 @@ public without sharing class PaymentCaseCreator implements Schedulable {
         List<Case> allCasesToOpen = new List<Case>();
 
         Map<Case, ChargentOrders__ChargentOrder__c> newCasesToOrderMap = new Map<Case, ChargentOrders__ChargentOrder__c>();
+        Map<Id, ChargentOrders__ChargentOrder__c> orderIdToOrderMap = new Map<Id, ChargentOrders__ChargentOrder__c>();
 
         // First, iterate through the relevant orders and
         //    if there's no case already
@@ -215,12 +216,12 @@ public without sharing class PaymentCaseCreator implements Schedulable {
                     Case caseToOpen = createCaseForOrder(order, caseType);
                     allCasesToOpen.add(caseToOpen);
                     newCasesToOrderMap.put(caseToOpen, order);
+                    orderIdToOrderMap.put(order.Id, order);
                 }
             }
         }
 
-        /// Emails ////////////////////////////////////
-        sendAllRequiredEmails(allCasesToOpen, newCasesToOrderMap);
+
 
         // Close leftover cases
         for (Id order : orderToCaseMap.keySet()) {
@@ -234,6 +235,8 @@ public without sharing class PaymentCaseCreator implements Schedulable {
         Database.SaveResult[] updateResults = Database.update(allCasesToClose, false);
 
 
+        /// Emails ////////////////////////////////////
+        sendAllRequiredEmails(allCasesToOpen, orderIdToOrderMap);
 
         /////// LOGGING ////////
         // Get # of successful opens/closes
@@ -275,7 +278,9 @@ public without sharing class PaymentCaseCreator implements Schedulable {
             chOrder.ChargentOrders__Payment_Status__c.equals('Error')) {
             return OrderCaseType.PaymentStatusError;
         } else if (chOrder.ChargentOrders__Next_Transaction_Date__c != null &&
-            chOrder.ChargentOrders__Next_Transaction_Date__c.daysBetween(Date.today()) >= 0) {
+            chOrder.ChargentOrders__Next_Transaction_Date__c.daysBetween(Date.today()) >= 0 &&
+            chOrder.ChargentOrders__Payment_Status__c != 'Stopped' &&
+            chOrder.ChargentOrders__Payment_Status__c != 'Complete') {
             return OrderCaseType.InvalidNextTransDate;
         } else if (chOrder.ChargentOrders__Payment_Status__c != 'Stopped' &&
             chOrder.ChargentOrders__Payment_Status__c != 'Complete' &&
@@ -301,7 +306,6 @@ public without sharing class PaymentCaseCreator implements Schedulable {
         newCase.Chargent_Order__c = chOrder.Id;
         newCase.Description = this.caseTypeDescriptionMap.get(type);
         newCase.Origin = 'Other';
-        newCase.ContactId = chOrder.Account_Bill__r.Parent_Account__r.Send_Bills_Contact__r.Id;
         newCase.Case_Type__c = 'BlueWave';
         newCase.Disable_Followup_Email__c = true;
 
@@ -310,6 +314,7 @@ public without sharing class PaymentCaseCreator implements Schedulable {
             newCase.RecordTypeId = PaymentCaseCreator.customerCare.Id;
             newCase.RecordType = PaymentCaseCreator.customerCare;
             newCase.OwnerId = this.CustomerCareQueueID.Id;
+            newCase.ContactId = chOrder.Account_Bill__r.Parent_Account__r.Send_Bills_Contact__r.Id;
         } else {
             newCase.RecordTypeId = PaymentCaseCreator.productSupport.Id;
             newCase.RecordType = PaymentCaseCreator.productSupport;
@@ -336,7 +341,7 @@ public without sharing class PaymentCaseCreator implements Schedulable {
 
     // Loops through all cases and sends an email if one is required
     //      i.e. calls prepareAndSendEmailForCase on individual case/order pairs
-    public void sendAllRequiredEmails(List<Case> cases, Map<Case, ChargentOrders__ChargentOrder__c> caseToOrderMap) {
+    public void sendAllRequiredEmails(List<Case> cases, Map<Id, ChargentOrders__ChargentOrder__c> caseToOrderMap) {
 
         List<String> errorsWarrantingAnEmail =
             new List<String>{'Credit Card Declined.',
@@ -355,7 +360,7 @@ public without sharing class PaymentCaseCreator implements Schedulable {
         List<Messaging.Email> emailsToSend = new List<Messaging.Email>();
 
         for (Case aCase : cases) {
-            ChargentOrders__ChargentOrder__c chOrder = caseToOrderMap.get(aCase);
+            ChargentOrders__ChargentOrder__c chOrder = caseToOrderMap.get(aCase.Chargent_Order__c);
             if (chOrder == null || chOrder.ChargentOrders__Transactions__r.size() == 0) {
                 continue;
             }
@@ -380,10 +385,10 @@ public without sharing class PaymentCaseCreator implements Schedulable {
                             chOrder.Account_Bill__r.Parent_Account__r.Client_Brand_Key__c.contains('Amp');
                         if (isAmp) {
                             emailsToSend.add(sendTransactionErrorEmail(name, billDueDateString, errorMessage, emailList,
-                                templateMap.get('CS_Autopay_Error_Message_AmpRed'), chOrder.Account_Bill__r.Parent_Account__r.Send_Bills_Contact__c));
+                                templateMap.get('CS_Autopay_Error_Message_AmpRed'), chOrder.Account_Bill__r.Parent_Account__r.Send_Bills_Contact__c, aCase));
                         } else {
                             emailsToSend.add(sendTransactionErrorEmail(name, billDueDateString, errorMessage, emailList,
-                                templateMap.get('CS_Autopay_Error_Message'), chOrder.Account_Bill__r.Parent_Account__r.Send_Bills_Contact__c));
+                                templateMap.get('CS_Autopay_Error_Message'), chOrder.Account_Bill__r.Parent_Account__r.Send_Bills_Contact__c, aCase));
                         }
                     } else {
                         emailsToSend.add(sendInternalErrorEmail('AUTOPAY EMAIL SEND FAIL FOR ORDER: ' + chOrder.Id + ' because there is no bill due date on the related account bill'));
@@ -416,7 +421,7 @@ public without sharing class PaymentCaseCreator implements Schedulable {
         }
     }
 
-    public Messaging.Email sendTransactionErrorEmail(String name, String billDueDate, String errorMessage, List<String> recipientEmailAddresses, EmailTemplate template, Id contactId) {
+    public Messaging.Email sendTransactionErrorEmail(String name, String billDueDate, String errorMessage, List<String> recipientEmailAddresses, EmailTemplate template, Id contactId, Case caseToAttach) {
         // Replace the merge fields in the template with the passed in strings
         String HTML = template.htmlValue;
         String plaintext = template.body;
@@ -444,6 +449,7 @@ public without sharing class PaymentCaseCreator implements Schedulable {
         mail.setToAddresses(recipientEmailAddresses);
         mail.setSaveAsActivity(true);
         mail.setTargetObjectId(contactId);
+        mail.setWhatId(caseToAttach.Id);
 
         // return the email
         return mail;
