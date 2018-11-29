@@ -439,18 +439,12 @@
     finishStage : function(component, event, helper) {
         const lead = component.get('v.lead');
         let leadToSave;
-        let leadPCR;
         if (lead.Status === 'Awaiting Info Requested from Customer') {
             leadToSave = {
                 sobjectType: 'Lead',
                 Status: 'Under BlueWave Review',
                 Id: lead.Id,
                 Unfinished_Lead__c: false
-            };
-            leadPCR = {
-              sobjectType: 'LASERCA__Personal_Credit_Report__c',
-              Id: lead.Personal_Credit_Report__c,
-              Adjusted_DTI__c: null
             };
         } else {
             leadToSave = {
@@ -460,17 +454,6 @@
             };
         }
         helper.saveSObject(component, lead.Id, 'Lead', null, null, leadToSave)
-        .then($A.getCallback(function resolve() {
-            if (leadPCR !== null) {
-                helper.saveSObject(component,
-                    lead.Personal_Credit_Report__c,
-                    'LASERCA__Personal_Credit_Report__c',
-                    null,
-                    null,
-                    leadPCR
-                );
-            }
-        }))
         .then($A.getCallback(function resolve() {
             return helper.insertPartnerTaskFunction(component, event, helper);
         }))

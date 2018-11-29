@@ -127,8 +127,28 @@
     },       
 
     finishStage : function(component, event, helper) {
-        helper.createLoanAndEquipmentFunction(component, helper).then(
-            $A.getCallback(function resolve() {
+        const lead = component.get('v.lead');
+        let leadPCR;
+        if (lead.Status === 'Awaiting Info Requested from Customer') {
+            leadPCR = {
+                sobjectType: 'LASERCA__Personal_Credit_Report__c',
+                Id: lead.Personal_Credit_Report__c,
+                Adjusted_DTI__c: null
+            };
+        }
+        helper.createLoanAndEquipmentFunction(component, helper)
+        .then($A.getCallback(function resolve() {
+            if (leadPCR !== null) {
+                helper.saveSObject(component,
+                    lead.Personal_Credit_Report__c,
+                    'LASERCA__Personal_Credit_Report__c',
+                    null,
+                    null,
+                    leadPCR
+                );
+            }
+        }))
+        .then($A.getCallback(function resolve() {
                 helper.finishStage(component, event, helper);
             }));
     },

@@ -636,8 +636,6 @@ global without sharing class LoanUnderwriting {
         lead.Comments__c = prependComments(lead.Comments__c, infoRequest);
         lead.Status = 'Awaiting Info Requested From Customer';
 
-        System.debug(lead.Personal_Credit_Report__c);
-
         LASERCA__Personal_Credit_Report__c leadPCR = [SELECT Id, Adjusted_DTI__c FROM LASERCA__Personal_Credit_Report__c WHERE Id = :lead.Personal_Credit_Report__c];
         leadPCR.Adjusted_DTI__c = 50.0;
 
