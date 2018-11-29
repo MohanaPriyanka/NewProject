@@ -867,7 +867,7 @@ IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12),
             <type>Task</type>
         </actions>
         <active>true</active>
-        <booleanFilter>1 AND 2 AND 3 AND (4 OR 5)</booleanFilter>
+        <booleanFilter>1 AND 2 AND (3 OR 4 )</booleanFilter>
         <criteriaItems>
             <field>Opportunity.Product_Line__c</field>
             <operation>equals</operation>
@@ -877,11 +877,6 @@ IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12),
             <field>Opportunity.StageName</field>
             <operation>equals</operation>
             <value>Complete</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.UtilityMapper__c</field>
-            <operation>equals</operation>
-            <value>Eversource</value>
         </criteriaItems>
         <criteriaItems>
             <field>Opportunity.Opportunity_Order__c</field>
