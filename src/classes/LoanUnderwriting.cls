@@ -636,12 +636,16 @@ global without sharing class LoanUnderwriting {
         lead.Comments__c = prependComments(lead.Comments__c, infoRequest);
         lead.Status = 'Awaiting Info Requested From Customer';
 
+        LASERCA__Personal_Credit_Report__c leadPCR = [SELECT Id, Adjusted_DTI__c FROM LASERCA__Personal_Credit_Report__c WHERE Id = :lead.Personal_Credit_Report__c];
+        leadPCR.Adjusted_DTI__c = 50.0;
+
         String htmlBody = buildContinueAppRequestHtml('RS_SLP_Customer_Continue_Application', lead);
         String emailSubject = 'BlueWave Solar Loan - ' +  lead.FirstName + ' ' + lead.LastName + ' - Continue your application here';
         Messaging.SingleEmailMessage mail = prepareEmailMessage(emailSubject, lead.Id, 'customercare@bluewavesolar.com', htmlBody);
 
         try {
             update lead;
+            update leadPCR;
             MessagingService.sendEmail(new Messaging.SingleEmailMessage[] {mail});
         } catch (DmlException de) {
             Logger.logNow('LoanUnderwriting', 'sendContinueApplicationRequest', 'The following exception occurred while trying to request documents from the customer: ' + de.getMessage());

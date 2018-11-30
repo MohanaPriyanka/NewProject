@@ -89,7 +89,7 @@
         helper.toggleProductSelection(component, helper, productId, productTerm, !valueBeforeToggle);
     },
 
-    toggleProductSelection : function(component, helper, prodId, term, selected) { 
+    toggleProductSelection : function(component, helper, prodId, term, selected) {
         if (selected) {
             if (prodId !== component.get("v.lead.Product__c")) {
                 // Will cause the current checkbox to become unchecked
