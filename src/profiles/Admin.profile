@@ -1556,6 +1556,16 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.CS_Delinquency_Letter_67_no_fee__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.CS_Delinquency_Letter_67_with_fee__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.CS_Sales_Approach__c</field>
         <readable>true</readable>
@@ -1958,6 +1968,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.License_Revoked__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Link_to_Client_Logo__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -24968,6 +24983,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Product2.Annual_kWh_Maximum__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Product2.Cancellation_Fee_Amount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
