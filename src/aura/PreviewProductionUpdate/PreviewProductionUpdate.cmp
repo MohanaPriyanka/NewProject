@@ -23,7 +23,7 @@
       </li>
     </ul>
     <div aura:id="tab-default-1" class="slds-tabs_default__content slds-show backgroundColor" role="tabpanel" aria-labelledby="tab-default-1__item">
-      <div class="slds-p-top_small slds-p-left_medium slds-p-bottom_small backgroundBlack">
+      <div class="slds-p-top_small slds-p-left_medium slds-p-bottom_small highlightSection">
         <aura:if isTrue="{!v.selectedScheduleZ}">
           <aura:set attribute="else">
             <h2 class="slds-p-bottom_small slds-text-heading--small"><b>Select a Schedule Z to Preview Bills</b></h2>
