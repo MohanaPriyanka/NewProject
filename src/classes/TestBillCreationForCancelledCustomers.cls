@@ -396,6 +396,17 @@ public class TestBillCreationForCancelledCustomers {
         update listAccountBills;
     }
 
+    static void setCollectionsWindow (Integer monthsToGenerate){
+        System_Properties__c propertyAlreadyInserted = [Select Id FROM System_Properties__c];
+        delete propertyAlreadyInserted;
+
+        System_Properties__c property = new System_Properties__c(
+            Name = 'System',
+            Days_Generate_Bills_for_Cancelled__c = monthsToGenerate,
+            Minimum_Balance_Bills_for_Cancelled__c = 0);
+        insert property;
+    }
+
     static void setOppToCancelled(List<String> oppIds) {
         List<Opportunity> listOpps = [
             SELECT Id, StageName
@@ -406,17 +417,6 @@ public class TestBillCreationForCancelledCustomers {
             opp.StageName = 'Cancelled';
         }
         update listOpps;
-    }
-
-    static void setCollectionsWindow (Integer monthsToGenerate){
-        System_Properties__c propertyAlreadyInserted = [Select Id FROM System_Properties__c];
-        delete propertyAlreadyInserted;
-
-        System_Properties__c property = new System_Properties__c(
-            Name = 'System',
-            Days_Generate_Bills_for_Cancelled__c = monthsToGenerate,
-            Minimum_Balance_Bills_for_Cancelled__c = 0);
-        insert property;
     }
 
     static void runSecondMonthProductionUpdates() {
@@ -444,7 +444,7 @@ public class TestBillCreationForCancelledCustomers {
         Date oneMonthInFuture = todaysDate.addMonths(1);
 
         Energy_Usage_Update__c secondProdUpdateSSS1 = new Energy_Usage_Update__c (
-            Name = 'sssA - September 2016',
+            Name = 'sssB - September 2016',
             Shared_Solar_System__c = sssList[0].Id,
             Production__c = 73072.00,
             Due_Date__c = oneMonthInFuture,
@@ -706,6 +706,110 @@ public class TestBillCreationForCancelledCustomers {
         System.assertEquals(false,sbMapTwo.containsKey('acA A_SSS1_2'));
         System.assertEquals(158.47,sbMapTwo.get('acB B_SSS1_2').Total_Due__c); // DTM:74.73 + PMOB:83.74 = TD:158.47
         System.assertEquals(499.43,sbMapTwo.get('acB B_SSS2_2').Total_Due__c); // DTM:82.31 + PMOB:417.12 = TD:499.43
+        System.assertEquals(80.38,sbMapTwo.get('acC C_SSS1_2').Total_Due__c); // DTM:37.91 + PMOB:42.47 = TD:80.38
+        System.assertEquals(906.87,sbMapTwo.get('acC C_SSS2_2').Total_Due__c); // DTM:149.46 + PMOB:757.41 = TD:906.87
+        System.assertEquals(365.16,sbMapTwo.get('acC C_B_SSS1_2').Total_Due__c); // DTM:172.21 + PMOB:192.95 = TD:365.16
+    }
+
+    @IsTest public static void testPreviewBillsPaidOffCustomer() {
+        // 1 customer on 2 project is taken off both schedule zs
+        // but has only paid off 1 of 2 so should have 1 system bill
+
+        makePayment('acB B_SSS1', 1);
+
+        Test.startTest();
+        List<Utility_Account_Subscription__c> uasList = new List<Utility_Account_Subscription__c>();
+        for (Utility_Account_Subscription__c uasToDeactivate : [
+            SELECT Id, Name, Opportunity__r.Id
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__r.Name = 'acB B_SSS1'
+            OR Opportunity__r.Name = 'acB B_SSS2'
+            LIMIT 2
+        ]) {
+            uasToDeactivate.Next_Schedule_Z_Status__c = 'Inactive Subscription';
+            uasList.add(uasToDeactivate);
+        }
+        update uasList;
+        setOppToCancelled(new List<String>{uasList[0].Opportunity__r.Id, uasList[1].Opportunity__r.Id});
+        runSecondMonthProductionUpdates();
+        Test.stopTest();
+
+        Energy_Usage_Update__c sss1Prod = [
+            SELECT Id, Schedule_Z__c
+            FROM Energy_Usage_Update__c
+            WHERE Name = 'sssA - September 2016'];
+
+        List<UASB__c> normalBillsListA = PreviewProductionUpdateResults.getUASes(sss1Prod.Id, true, sss1Prod.Schedule_Z__c);
+
+        List<Id> uasIdsA = new List<Id>();
+        for (UASB__c bill : normalBillsListA){
+            uasIdsA.add(bill.Utility_Account_Subscription__c);
+        }
+
+        List<UASB__c> cancelledBillListA = PreviewProductionUpdateResults.getCancelledBills(sss1Prod.Id, uasIdsA);
+        System.assertEquals(3, normalBillsListA.size());
+        System.assertEquals(0, cancelledBillListA.size());
+
+        Map<String, System_Bill__c> sbMapTwo = queryForBills();
+        System.assertEquals(11,sbMapTwo.values().size());
+        System.assertEquals(83.74,sbMapTwo.get('acB B_SSS1_1').Total_Payments_This_Month__c);
+        System.assertEquals(0,sbMapTwo.get('acB B_SSS1_1').Carry_Over_Balance__c);
+
+        System.assertEquals(false,sbMapTwo.containsKey('acB B_SSS1_2'));
+        System.assertEquals(397.30,sbMapTwo.get('acA A_SSS1_2').Total_Due__c); // DTM:187.36 + PMOB:209.94 = TD:397.30
+        System.assertEquals(417.12,sbMapTwo.get('acB B_SSS2_2').Total_Due__c); // DTM:0 + PMOB:417.12 = TD:417.12
+        System.assertEquals(80.38,sbMapTwo.get('acC C_SSS1_2').Total_Due__c); // DTM:37.91 + PMOB:42.47 = TD:80.38
+        System.assertEquals(906.87,sbMapTwo.get('acC C_SSS2_2').Total_Due__c); // DTM:149.46 + PMOB:757.41 = TD:906.87
+        System.assertEquals(365.16,sbMapTwo.get('acC C_B_SSS1_2').Total_Due__c); // DTM:172.21 + PMOB:192.95 = TD:365.16
+    }
+
+    @IsTest public static void testPreviewBillsNotPaidOff() {
+        // 1 customer on 2 project is taken off both schedule zs
+        // but has only paid off 1 of 2 so should have 1 system bill
+
+        makePayment('acB B_SSS1', 1);
+
+        Test.startTest();
+        List<Utility_Account_Subscription__c> uasList = new List<Utility_Account_Subscription__c>();
+        for (Utility_Account_Subscription__c uasToDeactivate : [
+            SELECT Id, Name, Opportunity__r.Id
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__r.Name = 'acB B_SSS1'
+            OR Opportunity__r.Name = 'acB B_SSS2'
+            LIMIT 2
+        ]) {
+            uasToDeactivate.Next_Schedule_Z_Status__c = 'Inactive Subscription';
+            uasList.add(uasToDeactivate);
+        }
+        update uasList;
+        setOppToCancelled(new List<String>{uasList[0].Opportunity__r.Id, uasList[1].Opportunity__r.Id});
+        runSecondMonthProductionUpdates();
+        Test.stopTest();
+
+        Energy_Usage_Update__c sss2Prod = [
+            SELECT Id, Schedule_Z__c
+            FROM Energy_Usage_Update__c
+            WHERE Name = 'sssB - September 2016'];
+
+        List<UASB__c> normalBillsListB = PreviewProductionUpdateResults.getUASes(sss2Prod.Id, true, sss2Prod.Schedule_Z__c);
+
+        List<Id> uasIdsB = new List<Id>();
+        for (UASB__c bill : normalBillsListB){
+            uasIdsB.add(bill.Utility_Account_Subscription__c);
+        }
+
+        List<UASB__c> cancelledBillListB = PreviewProductionUpdateResults.getCancelledBills(sss2Prod.Id, uasIdsB);
+        System.assertEquals(1, normalBillsListB.size());
+        System.assertEquals(1, cancelledBillListB.size());
+
+        Map<String, System_Bill__c> sbMapTwo = queryForBills();
+        System.assertEquals(11,sbMapTwo.values().size());
+        System.assertEquals(83.74,sbMapTwo.get('acB B_SSS1_1').Total_Payments_This_Month__c);
+        System.assertEquals(0,sbMapTwo.get('acB B_SSS1_1').Carry_Over_Balance__c);
+
+        System.assertEquals(false,sbMapTwo.containsKey('acB B_SSS1_2'));
+        System.assertEquals(397.30,sbMapTwo.get('acA A_SSS1_2').Total_Due__c); // DTM:187.36 + PMOB:209.94 = TD:397.30
+        System.assertEquals(417.12,sbMapTwo.get('acB B_SSS2_2').Total_Due__c); // DTM:0 + PMOB:417.12 = TD:417.12
         System.assertEquals(80.38,sbMapTwo.get('acC C_SSS1_2').Total_Due__c); // DTM:37.91 + PMOB:42.47 = TD:80.38
         System.assertEquals(906.87,sbMapTwo.get('acC C_SSS2_2').Total_Due__c); // DTM:149.46 + PMOB:757.41 = TD:906.87
         System.assertEquals(365.16,sbMapTwo.get('acC C_B_SSS1_2').Total_Due__c); // DTM:172.21 + PMOB:192.95 = TD:365.16
