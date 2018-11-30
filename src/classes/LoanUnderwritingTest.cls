@@ -408,7 +408,7 @@ public with sharing class LoanUnderwritingTest {
     static testMethod void testSendContinueApplicationRequest() {
         Test.startTest();
 
-        Lead lead = [SELECT Id, Name, Email, CAP_Stage__c, ConvertedOpportunityId, Status, Comments__c
+        Lead lead = [SELECT Id, Name, Email, CAP_Stage__c, ConvertedOpportunityId, Status, Comments__c, Personal_Credit_Report__c
         FROM Lead
         WHERE FirstName = 'leadMALoanTerm20Rate725'
         LIMIT 1];
