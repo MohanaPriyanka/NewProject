@@ -49272,6 +49272,10 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
+        <name>EditActivatedOrders</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
         <name>EditCaseComments</name>
     </userPermissions>
     <userPermissions>

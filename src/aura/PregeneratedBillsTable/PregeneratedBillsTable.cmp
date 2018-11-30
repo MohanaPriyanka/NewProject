@@ -55,7 +55,7 @@
             <div class="slds-truncate"><ui:outputText value="{!uasbs.PreGen_Production_Update__c}"/></div>
           </td>
           <td>
-            <div class="slds-truncate"><a href="{!'/' + uasbs.Utility_Account_Subscription__c}"
+            <div class="slds-truncate"><a href="{!'/' + uasbs.Schedule_Z_Subscription__c}"
                                           target="_blank"><ui:outputText
                                           value="{!uasbs.PreGen_Additional_Id__c != null ? uasbs.PreGen_Additional_Id__c : uasbs.PreGen_Utility_Acct__c}"/></a></div>
           </td>
@@ -88,11 +88,13 @@
 <div>
    <div class="slds-grid">
     <div class="slds-col">
-      <span class="slds-text-heading--small">Download All Data CSV </span>&nbsp;
-      <lightning:buttonIcon iconName="utility:download" variant="bare" size="large" onclick="{!c.downloadCsv}" alternativeText="Download" class="slds-p-right_large"/>
       <aura:if isTrue="{!v.IsProdUpdate}">
         <span class="slds-text-heading--small">Download Transfer Sheet CSV </span>&nbsp;
         <lightning:buttonIcon iconName="utility:download" variant="bare" size="large" onclick="{!c.downloadTransferSheet}" alternativeText="Download"/>
+        <aura:set attribute="else">
+          <span class="slds-text-heading--small">Download All Data CSV </span>&nbsp;
+          <lightning:buttonIcon iconName="utility:download" variant="bare" size="large" onclick="{!c.downloadCsv}" alternativeText="Download" class="slds-p-right_large"/>
+        </aura:set>
       </aura:if>
     </div>
    </div>

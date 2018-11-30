@@ -794,6 +794,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>TestBillCreationForCancelledCustomers</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>TestBillCreationandPayment</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1905,6 +1909,11 @@
         <editable>false</editable>
         <field>Account.Last_Bill_Send_Date_17__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Last_Bill_Send_Date_New_Charges__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -30764,6 +30773,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility_NMC_Tariff__c.Year_of_Tariff__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility__c.Credits_Allocated_Rounding_Method__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
