@@ -8288,6 +8288,38 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         </sharedTo>
     </listViews>
     <listViews>
+        <fullName>BFG_Community_Solartest</fullName>
+        <columns>OPPORTUNITY.LAST_UPDATE</columns>
+        <columns>OPPORTUNITY.NAME</columns>
+        <columns>CS_Capacity_Allocated__c</columns>
+        <columns>Shared_Solar_System__c</columns>
+        <columns>OPPORTUNITY.STAGE_NAME</columns>
+        <columns>ACH_Account_Number__c</columns>
+        <columns>ACH_Account_Type__c</columns>
+        <columns>ACH_Account_Types__c</columns>
+        <columns>ACH_Bank_Name__c</columns>
+        <columns>ACH_Bank_Routing_Number__c</columns>
+        <columns>ACH_Name_on_Account__c</columns>
+        <columns>CC_Expiration_Date__c</columns>
+        <columns>CC_Expiration_Month__c</columns>
+        <columns>CC_Expiration_Year__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Product_Line__c</field>
+            <operation>equals</operation>
+            <value>Community Solar</value>
+        </filters>
+        <filters>
+            <field>OPPORTUNITY.NAME</field>
+            <operation>notContain</operation>
+            <value>test</value>
+        </filters>
+        <label>Community Solartest</label>
+        <sharedTo>
+            <group>BFG</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
         <fullName>BFG_Opportunities</fullName>
         <columns>OPPORTUNITY.RECORDTYPE</columns>
         <columns>OPPORTUNITY.NAME</columns>
