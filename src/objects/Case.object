@@ -3987,7 +3987,10 @@ ISBLANK(TEXT(Resolution__c) ),
 OR(
    RecordTypeId = &apos;0120a0000004dlv&apos;, /* Product Support */
    RecordTypeId = &apos;012j00000000HA8&apos;), /* Customer Care */
- IsClosed = TRUE
+AND(
+   IsClosed = TRUE,
+   ISCHANGED(IsClosed)
+)
 )</errorConditionFormula>
         <errorDisplayField>Resolution__c</errorDisplayField>
         <errorMessage>Resolution is required before closing the case.</errorMessage>
