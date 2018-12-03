@@ -3988,8 +3988,8 @@ OR(
    RecordTypeId = &apos;0120a0000004dlv&apos;, /* Product Support */
    RecordTypeId = &apos;012j00000000HA8&apos;), /* Customer Care */
 AND(
-   IsClosed = TRUE,
-   ISCHANGED(IsClosed)
+    TEXT(Status) = &apos;Closed&apos;,
+   ISCHANGED(Status)
 )
 )</errorConditionFormula>
         <errorDisplayField>Resolution__c</errorDisplayField>
