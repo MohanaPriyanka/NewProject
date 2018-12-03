@@ -41,7 +41,7 @@
 
         actionGetUASList.setCallback(this,function(resp){
             if (resp.getState() === 'SUCCESS') {
-                component.set("v.SchZBillList", resp.getReturnValue());
+                component.set("v.nonCancelledBills", resp.getReturnValue());
             } else {
                 var appEvent = $A.get("e.c:ApexCallbackError");
                 appEvent.setParams({"className" : "PreviewProductionUpdateResults",
@@ -51,6 +51,25 @@
             }
         });
         $A.enqueueAction(actionGetUASList);
+    },
+
+    switchToNewCredits : function (component, event, helper) {
+        $A.util.addClass(component.find("tab-default-1"), 'slds-show');
+        $A.util.removeClass(component.find("tab-default-1"), 'slds-hide');
+        $A.util.removeClass(component.find("tab-default-2"), 'slds-show');
+        $A.util.addClass(component.find("tab-default-2"), 'slds-hide');
+    },
+
+    switchToZeroBills : function (component, event, helper) {
+        if (!component.get("v.selectedScheduleZ")){
+            alert('Select a Schedule Z before viewing $0 bills');
+            return;
+        }
+        helper.getCancelledBills(component);
+        $A.util.removeClass(component.find("tab-default-1"), 'slds-show');
+        $A.util.addClass(component.find("tab-default-1"), 'slds-hide');
+        $A.util.addClass(component.find("tab-default-2"), 'slds-show');
+        $A.util.removeClass(component.find("tab-default-2"), 'slds-hide');
     },
 
     saveToProdUpdate : function (component, event, helper) {
@@ -75,5 +94,70 @@
             }
         });
         $A.enqueueAction(actionSaveProdUpdate);
-    }
+    },
+
+    downloadAllData : function(component,event,helper){
+        var allBillsList = component.get("v.nonCancelledBills");
+        var additionalUASB = component.get("v.cancelledBills");
+        additionalUASB.push(...allBillsList);
+
+        var allHavePremise = true;
+        var allDoNotHavePremise = true;
+        var i;
+        for (i = 0; i < additionalUASB.length; i++) {
+            if (additionalUASB[i].PreGen_Additional_Id__c != null) {
+                allDoNotHavePremise = false;
+            } else {
+                allHavePremise = false;
+            }
+        }
+
+        var keys;
+
+        if (allDoNotHavePremise) {
+            keys = ['PreGen_Name_on_Account__c','PreGen_IsPreGen__c', 'PreGen_Discounted_Bill__c', 'PreGen_NMCs_Allocated__c',
+                'PreGen_Production_Update__c', 'PreGen_Schedule_Z_Status__c', 'PreGen_System_Share__c', 'PreGen_Utility_Acct__c'];
+        } else if (allHavePremise) {
+            keys = ['PreGen_Name_on_Account__c','PreGen_IsPreGen__c', 'PreGen_Discounted_Bill__c', 'PreGen_NMCs_Allocated__c',
+                'PreGen_Production_Update__c', 'PreGen_Additional_Id__c', 'PreGen_Schedule_Z_Status__c', 'PreGen_System_Share__c'];
+        } else {
+            keys = ['PreGen_Name_on_Account__c','PreGen_IsPreGen__c', 'PreGen_Discounted_Bill__c', 'PreGen_NMCs_Allocated__c',
+                'PreGen_Production_Update__c', 'PreGen_Additional_Id__c', 'PreGen_Schedule_Z_Status__c', 'PreGen_System_Share__c', 'PreGen_Utility_Acct__c'];
+        }
+
+        var csvFile, counter, columnDivider, lineDivider;
+
+        if (additionalUASB == null || !additionalUASB.length) {
+            return null;
+        }
+
+        columnDivider = ',';
+        lineDivider =  '\n';
+
+        csvFile = '';
+        csvFile += keys.join(columnDivider);
+        csvFile += lineDivider;
+
+        for (var i=0; i < additionalUASB.length; i++){
+            counter = 0;
+
+            for (var sTempkey in keys) {
+                var skey = keys[sTempkey] ;
+                // add , [comma] after every String value,. [except first]
+                if (counter > 0){
+                    csvFile += columnDivider;
+                }
+                csvFile += '"'+ additionalUASB[i][skey]+'"';
+                counter++;
+            }
+            csvFile += lineDivider;
+        }
+
+        var hiddenElement = document.createElement('a');
+        hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvFile);
+        hiddenElement.target = '_self'; //
+        hiddenElement.download = 'PreviewBills.csv';
+        document.body.appendChild(hiddenElement);
+        hiddenElement.click();
+    },
 })

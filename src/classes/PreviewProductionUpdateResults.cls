@@ -27,6 +27,65 @@ public without sharing class PreviewProductionUpdateResults{
   }
 
   @AuraEnabled
+  public static List<UASB__c> getCancelledBills (Id productionUpdateId, List<String> alreadyGeneratedList){
+      Map<Id, UASB__c> cancelledUASBs = new Map<Id, UASB__c>();
+
+      Energy_Usage_Update__c productionUpdate = [
+          SELECT Id, Name, Date__c, Shared_Solar_System__c
+          FROM Energy_Usage_Update__c
+          WHERE Id = : productionUpdateId
+          LIMIT 1];
+
+      System_Properties__c sysProp = System_Properties__c.getAll().values()[0];
+      Decimal collectionsWindowDec = sysProp.Days_Generate_Bills_for_Cancelled__c;
+      Decimal minimumBalance = sysProp.Minimum_Balance_Bills_for_Cancelled__c;
+      Integer collectionsWindow = Integer.valueOf(Util.nullToZero(collectionsWindowDec));
+      minimumBalance = Util.nullToZero(minimumBalance);
+
+      Date todaysDate = productionUpdate.Date__c;
+      Date maxPastDueDate = todaysDate.addDays(collectionsWindow * -1);
+
+      for (UASB__c uasb : [
+          SELECT Id, System_Bill__r.Unique_ID__c, System_Bill__r.Opportunity__r.Id, Utility_Account_Subscription__c,
+              System_Bill__r.Account_Bill__r.Parent_Account__r.Last_Bill_Send_Date_New_Charges__c,
+              Utility_Account_Subscription__r.Name_on_Account_From_Log__c,
+              Utility_Account_Subscription__r.Name,
+              Utility_Account_Subscription__r.Utility_Account_Log__r.Name,
+              Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
+              Utility_Account_Subscription__r.Utility_Account_Log__r.Premise_Number__c,
+              System_Bill__r.Account_Bill__r.Parent_Account__r.Account_Balance__c
+          FROM UASB__c
+          WHERE System_Bill__r.Shared_Solar_System__c = : productionUpdate.Shared_Solar_System__c
+          AND System_Bill__r.Balance_Net_Late_Payments__c > : minimumBalance
+          AND System_Bill__r.Account_Bill__r.Parent_Account__r.Last_Bill_Send_Date_New_Charges__c >= : maxPastDueDate
+          AND Utility_Account_Subscription__r.Id NOT IN : alreadyGeneratedList
+      ]) {
+          UASB__c mockBill = new UASB__c(
+              PreGen_IsPreGen__c = true,
+              PreGen_Discounted_Bill__c = 0,
+              PreGen_NMCs_Allocated__c = 0,
+              PreGen_Name_on_Account__c = 'Cancelled: ' + uasb.Utility_Account_Subscription__r.Name_on_Account_From_Log__c,
+              Production_Update__c = null,
+              PreGen_Schedule_Z_Status__c = uasb.Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
+              PreGen_System_Share__c = 0,
+              Utility_Account_Subscription__c = uasb.Utility_Account_Subscription__c,
+              PreGen_Additional_Id__c = null,
+              PreGen_Utility_Acct__c = uasb.Utility_Account_Subscription__r.Utility_Account_Log__r.Name
+          );
+
+          if (uasb.Utility_Account_Subscription__r.Utility_Account_Log__r.Premise_Number__c != null) {
+              mockBill.PreGen_Additional_Id__c = uasb.Utility_Account_Subscription__r.Utility_Account_Log__r.Premise_Number__c;
+          }
+
+          Date dateOfLastCredit = uasb.System_Bill__r.Account_Bill__r.Parent_Account__r.Last_Bill_Send_Date_New_Charges__c;
+          mockBill.PreGen_CreditOnBillPeriod__c = String.valueOf(dateOfLastCredit);
+          mockBill.Name = 'Account Balance: $' + String.valueOf(uasb.System_Bill__r.Account_Bill__r.Parent_Account__r.Account_Balance__c);
+          cancelledUASBs.put(mockBill.Utility_Account_Subscription__c, mockBill);
+      }
+      return cancelledUASBs.values();
+  }
+
+  @AuraEnabled
   public static List<Account> getProperties (String parentAcctId, Boolean isParentAcct) {
     if ( isParentAcct ) {
       List<Account> accountList = [ SELECT Id, Name
@@ -252,7 +311,8 @@ public without sharing class PreviewProductionUpdateResults{
         PreGen_Discounted_Bill__c = discountedBill.setScale(2),
         PreGen_Subscription_Production__c = billFields.Subscription_Production_kWh_Static__c,
         PreGen_NMCs_Allocated__c = billFields.Credits_Allocated__c,
-        Utility_Account_Subscription__c = szs.Id,
+        Utility_Account_Subscription__c = szs.Utility_Account_Subscription__c,
+        Schedule_Z_Subscription__c = szs.Id,
         PreGen_Name_on_Account__c = szs.Utility_Account_Subscription__r.Name_on_Account_From_Log__c,
         PreGen_Production_Update__c = (production.MonthDate__c + ' '+ production.YearDate__c),
         PreGen_Schedule_Z_Status__c = szs.Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
