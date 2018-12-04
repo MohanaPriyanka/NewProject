@@ -302,11 +302,15 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Pending Quality Control Signature</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Pending System Information from Partner</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Record has been updated</fullName>
+            <fullName>QC In Process</fullName>
             <default>false</default>
         </values>
         <values>
