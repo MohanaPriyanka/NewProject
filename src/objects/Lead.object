@@ -6357,12 +6357,11 @@ SEMA = 13 -14</inlineHelpText>
     </listViews>
     <listViews>
         <fullName>Non_DOER_Leads_with_Credit_Pulled</fullName>
-        <booleanFilter>(1 OR 2) AND 3 AND 4 AND 5 AND 6 AND 7</booleanFilter>
+        <booleanFilter>1 AND 2 AND 3 AND 4 AND 5 AND 6</booleanFilter>
         <columns>FULL_NAME</columns>
         <columns>DOER_Solar_Loan__c</columns>
         <columns>LEAD.CREATED_DATE</columns>
         <columns>Date_of_Credit_Report__c</columns>
-        <columns>Avidia_Review_Status__c</columns>
         <columns>Application_Source_Phase_2__c</columns>
         <columns>Monthly_Mortgage_Tax_and_Insurance__c</columns>
         <columns>LEAD.STATE_CODE</columns>
@@ -6376,10 +6375,6 @@ SEMA = 13 -14</inlineHelpText>
             <operation>notEqual</operation>
         </filters>
         <filters>
-            <field>Personal_Credit_Report_Co_Applicant__c</field>
-            <operation>notEqual</operation>
-        </filters>
-        <filters>
             <field>DOER_Solar_Loan__c</field>
             <operation>equals</operation>
             <value>0</value>
@@ -6390,11 +6385,6 @@ SEMA = 13 -14</inlineHelpText>
             <value>test,testcase</value>
         </filters>
         <filters>
-            <field>Lender_of_Record__c</field>
-            <operation>equals</operation>
-            <value>Avidia</value>
-        </filters>
-        <filters>
             <field>LEAD.CREATED_DATE</field>
             <operation>greaterThan</operation>
             <value>9/5/2017 12:00 AM</value>
@@ -6403,6 +6393,11 @@ SEMA = 13 -14</inlineHelpText>
             <field>Product_line__c</field>
             <operation>equals</operation>
             <value>Residential Loan</value>
+        </filters>
+        <filters>
+            <field>Lender_of_Record__c</field>
+            <operation>equals</operation>
+            <value>Avidia</value>
         </filters>
         <label>Non-DOER Leads with Credit Pulled</label>
         <sharedTo>
