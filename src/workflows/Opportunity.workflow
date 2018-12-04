@@ -1179,7 +1179,7 @@ CONTAINS(Name,&apos;-&apos;),true,false
             <type>FieldUpdate</type>
         </actions>
         <active>true</active>
-        <booleanFilter>1 AND 2 AND 3</booleanFilter>
+        <booleanFilter>1 AND 2 AND 3 AND 4</booleanFilter>
         <criteriaItems>
             <field>Opportunity.Contract_Status__c</field>
             <operation>equals</operation>
@@ -1194,6 +1194,11 @@ CONTAINS(Name,&apos;-&apos;),true,false
             <field>Opportunity.Quality_Check_Status__c</field>
             <operation>equals</operation>
             <value>Completed</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Opportunity.StageName</field>
+            <operation>equals</operation>
+            <value>QC In Process</value>
         </criteriaItems>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
