@@ -79,68 +79,68 @@
                 <processMetadataValues>
                     <name>inputDataType</name>
                     <value>
-                        <stringValue>String</stringValue>
+                        <stringValue>DateTime</stringValue>
                     </value>
                 </processMetadataValues>
                 <processMetadataValues>
                     <name>leftHandSideType</name>
                     <value>
-                        <stringValue>String</stringValue>
+                        <stringValue>DateTime</stringValue>
                     </value>
                 </processMetadataValues>
                 <processMetadataValues>
                     <name>operatorDataType</name>
                     <value>
-                        <stringValue>String</stringValue>
+                        <stringValue>DateTime</stringValue>
                     </value>
                 </processMetadataValues>
                 <processMetadataValues>
                     <name>rightHandSideType</name>
                     <value>
-                        <stringValue>String</stringValue>
+                        <stringValue>DateTime</stringValue>
                     </value>
                 </processMetadataValues>
-                <leftValueReference>myVariable_current.Owner:User.FirstName</leftValueReference>
+                <leftValueReference>myVariable_current.LastModifiedDate</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>NullTestTest</stringValue>
+                    <dateTimeValue>1970-02-02T05:00:00.000Z</dateTimeValue>
                 </rightValue>
             </conditions>
             <conditions>
                 <processMetadataValues>
                     <name>inputDataType</name>
                     <value>
-                        <stringValue>DateTime</stringValue>
+                        <stringValue>String</stringValue>
                     </value>
                 </processMetadataValues>
                 <processMetadataValues>
                     <name>leftHandSideType</name>
                     <value>
-                        <stringValue>DateTime</stringValue>
+                        <stringValue>String</stringValue>
                     </value>
                 </processMetadataValues>
                 <processMetadataValues>
                     <name>operatorDataType</name>
                     <value>
-                        <stringValue>DateTime</stringValue>
+                        <stringValue>String</stringValue>
                     </value>
                 </processMetadataValues>
                 <processMetadataValues>
                     <name>rightHandSideType</name>
                     <value>
-                        <stringValue>DateTime</stringValue>
+                        <stringValue>String</stringValue>
                     </value>
                 </processMetadataValues>
-                <leftValueReference>myVariable_current.CreatedDate</leftValueReference>
+                <leftValueReference>myVariable_current.Name</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <dateTimeValue>1980-02-02T05:00:00.000Z</dateTimeValue>
+                    <stringValue>nulltestname</stringValue>
                 </rightValue>
             </conditions>
             <connector>
                 <targetReference>myRule_1_pmetdec</targetReference>
             </connector>
-            <label>Null Criteria</label>
+            <label>Null Action</label>
         </rules>
     </decisions>
     <decisions>
@@ -174,74 +174,73 @@
                 <processMetadataValues>
                     <name>inputDataType</name>
                     <value>
-                        <stringValue>String</stringValue>
+                        <stringValue>DateTime</stringValue>
                     </value>
                 </processMetadataValues>
                 <processMetadataValues>
                     <name>leftHandSideType</name>
                     <value>
-                        <stringValue>String</stringValue>
+                        <stringValue>DateTime</stringValue>
                     </value>
                 </processMetadataValues>
                 <processMetadataValues>
                     <name>operatorDataType</name>
                     <value>
-                        <stringValue>String</stringValue>
+                        <stringValue>DateTime</stringValue>
                     </value>
                 </processMetadataValues>
                 <processMetadataValues>
                     <name>rightHandSideType</name>
                     <value>
-                        <stringValue>String</stringValue>
+                        <stringValue>DateTime</stringValue>
                     </value>
                 </processMetadataValues>
-                <leftValueReference>myVariable_old.Owner:User.FirstName</leftValueReference>
+                <leftValueReference>myVariable_old.LastModifiedDate</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>NullTestTest</stringValue>
+                    <dateTimeValue>1970-02-02T05:00:00.000Z</dateTimeValue>
                 </rightValue>
             </conditions>
             <conditions>
                 <processMetadataValues>
                     <name>inputDataType</name>
                     <value>
-                        <stringValue>DateTime</stringValue>
+                        <stringValue>String</stringValue>
                     </value>
                 </processMetadataValues>
                 <processMetadataValues>
                     <name>leftHandSideType</name>
                     <value>
-                        <stringValue>DateTime</stringValue>
+                        <stringValue>String</stringValue>
                     </value>
                 </processMetadataValues>
                 <processMetadataValues>
                     <name>operatorDataType</name>
                     <value>
-                        <stringValue>DateTime</stringValue>
+                        <stringValue>String</stringValue>
                     </value>
                 </processMetadataValues>
                 <processMetadataValues>
                     <name>rightHandSideType</name>
                     <value>
-                        <stringValue>DateTime</stringValue>
+                        <stringValue>String</stringValue>
                     </value>
                 </processMetadataValues>
-                <leftValueReference>myVariable_old.CreatedDate</leftValueReference>
+                <leftValueReference>myVariable_old.Name</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <dateTimeValue>1980-02-02T05:00:00.000Z</dateTimeValue>
+                    <stringValue>nulltestname</stringValue>
                 </rightValue>
             </conditions>
             <label>Previously Met - Prev</label>
         </rules>
     </decisions>
-    <description>Creates Loan Pipeline Report Data object upon creation of a loan lead and links that object back to the lead.</description>
-    <interviewLabel>Create_MCEC_Report_Data_Object-9_InterviewLabel</interviewLabel>
-    <label>Create Loan Pipelin Report Data Object</label>
+    <interviewLabel>DocuSign_Recipient_Status_Partner_Opps-7_InterviewLabel</interviewLabel>
+    <label>DocuSign Recipient Status (Partner Opps)</label>
     <processMetadataValues>
         <name>ObjectType</name>
         <value>
-            <stringValue>Lead</stringValue>
+            <stringValue>dsfs__DocuSign_Recipient_Status__c</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -270,7 +269,7 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>true</isOutput>
-        <objectType>Lead</objectType>
+        <objectType>dsfs__DocuSign_Recipient_Status__c</objectType>
     </variables>
     <variables>
         <name>myVariable_old</name>
@@ -278,7 +277,7 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
-        <objectType>Lead</objectType>
+        <objectType>dsfs__DocuSign_Recipient_Status__c</objectType>
     </variables>
     <variables>
         <name>myVariable_waitStartTimeVariable</name>
