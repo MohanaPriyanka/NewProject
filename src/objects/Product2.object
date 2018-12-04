@@ -528,6 +528,11 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
                     <default>false</default>
                     <label>35% Contract Signature, 65% Interconnection</label>
                 </value>
+                <value>
+                    <fullName>20% Building Permit Approved, 70% Mechanical Installation, 0% CED Ensemble, 10% Interconnection</fullName>
+                    <default>false</default>
+                    <label>20% Building Permit Approved, 70% Mechanical Installation, 0% CED Ensemble, 10% Interconnection</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
@@ -1496,6 +1501,11 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
                     <fullName>SREC - Community Solar</fullName>
                     <default>false</default>
                     <label>SREC - Community Solar</label>
+                </value>
+                <value>
+                    <fullName>CED Ensemble</fullName>
+                    <default>false</default>
+                    <label>CED Ensemble</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
