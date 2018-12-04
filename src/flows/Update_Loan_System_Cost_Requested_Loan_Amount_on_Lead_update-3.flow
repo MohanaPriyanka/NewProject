@@ -20,7 +20,7 @@
             </value>
         </processMetadataValues>
         <name>myRule_1_A1</name>
-        <label>null action</label>
+        <label>Null Action</label>
         <locationX>100</locationX>
         <locationY>200</locationY>
         <actionName>chatterPost</actionName>
@@ -103,7 +103,7 @@
                 <leftValueReference>myVariable_current.Owner:User.FirstName</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>NullTestTest</stringValue>
+                    <stringValue>NullTest</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -198,7 +198,7 @@
                 <leftValueReference>myVariable_old.Owner:User.FirstName</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>NullTestTest</stringValue>
+                    <stringValue>NullTest</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -235,9 +235,9 @@
             <label>Previously Met - Prev</label>
         </rules>
     </decisions>
-    <description>Creates Loan Pipeline Report Data object upon creation of a loan lead and links that object back to the lead.</description>
-    <interviewLabel>Create_MCEC_Report_Data_Object-9_InterviewLabel</interviewLabel>
-    <label>Create Loan Pipelin Report Data Object</label>
+    <description>Updates the System Cost/Requested Loan Amount on the Loan after a lead update</description>
+    <interviewLabel>Update_Loan_System_Cost_Requested_Loan_Amount_on_Lead_update-3_InterviewLabel</interviewLabel>
+    <label>Update Loan System Cost/Requested Loan Amount on Lead update</label>
     <processMetadataValues>
         <name>ObjectType</name>
         <value>
