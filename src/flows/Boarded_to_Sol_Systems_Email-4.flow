@@ -100,10 +100,10 @@
                         <stringValue>String</stringValue>
                     </value>
                 </processMetadataValues>
-                <leftValueReference>myVariable_current.Owner:User.FirstName</leftValueReference>
+                <leftValueReference>myVariable_current.Owner__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>NullTestTest</stringValue>
+                    <stringValue>NullTest</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -195,10 +195,10 @@
                         <stringValue>String</stringValue>
                     </value>
                 </processMetadataValues>
-                <leftValueReference>myVariable_old.Owner:User.FirstName</leftValueReference>
+                <leftValueReference>myVariable_old.Owner__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>NullTestTest</stringValue>
+                    <stringValue>NullTest</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -235,13 +235,12 @@
             <label>Previously Met - Prev</label>
         </rules>
     </decisions>
-    <description>Creates Loan Pipeline Report Data object upon creation of a loan lead and links that object back to the lead.</description>
-    <interviewLabel>Create_MCEC_Report_Data_Object-9_InterviewLabel</interviewLabel>
-    <label>Create Loan Pipelin Report Data Object</label>
+    <interviewLabel>Boarded_to_Sol_Systems_Email-4_InterviewLabel</interviewLabel>
+    <label>Boarded to Sol Systems Email</label>
     <processMetadataValues>
         <name>ObjectType</name>
         <value>
-            <stringValue>Lead</stringValue>
+            <stringValue>Opportunity</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -270,7 +269,7 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>true</isOutput>
-        <objectType>Lead</objectType>
+        <objectType>Opportunity</objectType>
     </variables>
     <variables>
         <name>myVariable_old</name>
@@ -278,7 +277,7 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
-        <objectType>Lead</objectType>
+        <objectType>Opportunity</objectType>
     </variables>
     <variables>
         <name>myVariable_waitStartTimeVariable</name>
