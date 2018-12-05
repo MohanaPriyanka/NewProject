@@ -1081,11 +1081,31 @@ ISBLANK(Net_Metering_Rate_Applied_3_of_4__c)
         <fullName>Unable_to_Edit_After_Bills_QCed</fullName>
         <active>true</active>
         <description>Lock down the rest of the fields that affect billing</description>
-        <errorConditionFormula>AND(
-OR(ISCHANGED(Production__c),ISCHANGED(Production_kWh_2_of_4__c),ISCHANGED(Production_kWh_3_of_4__c),ISCHANGED(Production_kWh_4_of_4__c), ISCHANGED(Total_System_NMCs__c), ISCHANGED( Net_Metering_Rate_Applied__c ),ISCHANGED( Net_Metering_Rate_Applied_2_of_4__c),ISCHANGED(Net_Metering_Rate_Applied_3_of_4__c),ISCHANGED(Net_Metering_Rate_Applied_4_of_4__c),ISCHANGED( Total_System_NMCs_2_of_4__c),ISCHANGED( Total_System_NMCs_3_of_4__c), ISCHANGED(Total_System_NMCs_4_of_4__c),
-OR( 
-ISPICKVAL( Bill_Status__c, &quot;Bills QCed&quot;),ISPICKVAL(Bill_Status__c, &quot;Credit Transfers QCed&quot;),ISPICKVAL(Bill_Status__c,&quot;Ready to Generate&quot;), ISPICKVAL(Bill_Status__c,&quot;Email Bills Sent&quot;),ISPICKVAL(Bill_Status__c,&quot;Letter Bills Sent&quot;),ISPICKVAL(Bill_Status__c,&quot;Autopay QCed&quot;),ISPICKVAL(Bill_Status__c,&quot;Not Billing this Month&quot;)
-)))</errorConditionFormula>
+        <errorConditionFormula>AND( 
+    OR(
+       ISCHANGED(Production__c),
+       ISCHANGED(Production_kWh_2_of_4__c),
+       ISCHANGED(Production_kWh_3_of_4__c),
+       ISCHANGED(Production_kWh_4_of_4__c),
+       ISCHANGED(Total_System_NMCs__c),
+       ISCHANGED(Net_Metering_Rate_Applied__c ),
+       ISCHANGED(Net_Metering_Rate_Applied_2_of_4__c),
+       ISCHANGED(Net_Metering_Rate_Applied_3_of_4__c),
+       ISCHANGED(Net_Metering_Rate_Applied_4_of_4__c),
+       ISCHANGED(Total_System_NMCs_2_of_4__c),
+       ISCHANGED(Total_System_NMCs_3_of_4__c),
+       ISCHANGED(Total_System_NMCs_4_of_4__c)
+      ),
+    OR( 
+       ISPICKVAL(Bill_Status__c, &quot;Bills QCed&quot;),
+       ISPICKVAL(Bill_Status__c, &quot;Credit Transfers QCed&quot;),
+       ISPICKVAL(Bill_Status__c,&quot;Ready to Generate&quot;),
+       ISPICKVAL(Bill_Status__c,&quot;Email Bills Sent&quot;),
+       ISPICKVAL(Bill_Status__c,&quot;Letter Bills Sent&quot;),
+       ISPICKVAL(Bill_Status__c,&quot;Autopay QCed&quot;),
+       ISPICKVAL(Bill_Status__c,&quot;Not Billing this Month&quot;) 
+      )
+    )</errorConditionFormula>
         <errorMessage>You cannot edit production data fields after Bills QCed</errorMessage>
     </validationRules>
     <validationRules>
