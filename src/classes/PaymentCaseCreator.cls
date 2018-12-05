@@ -192,13 +192,13 @@ public without sharing class PaymentCaseCreator implements Schedulable {
         for (ChargentOrders__ChargentOrder__c order : chOrders) {
 
             OrderCaseType caseType = needsCase(order, orderAccountHasBillsMap.get(order));
-
             if (caseType == OrderCaseType.NoCaseNeeded) {                                     // shouldn't be a case
                 // if a Case is open for this order, it shouldn't be, so close it.
                 if (orderToCaseMap.containsKey(order.Id)) {
                     List<Case> casesToClose = orderToCaseMap.get(order.Id);
                     for (Case caseToClose : casesToClose) {
                         caseToClose.Status = 'Closed';
+                        caseToClose.Resolution__c = 'No Longer an Issue';
                     }
 
                     allCasesToClose.addAll(casesToClose);
@@ -227,13 +227,13 @@ public without sharing class PaymentCaseCreator implements Schedulable {
         for (Id order : orderToCaseMap.keySet()) {
             for (Case caseToClose: orderToCaseMap.get(order)) {
                 caseToClose.Status = 'Closed';
+                caseToClose.Resolution__c = 'No Longer an Issue';
                 allCasesToClose.add(caseToClose);
             }
         }
 
         Database.SaveResult[] insertResults = Database.insert(allCasesToOpen, false);
         Database.SaveResult[] updateResults = Database.update(allCasesToClose, false);
-
 
         /// Emails ////////////////////////////////////
         sendAllRequiredEmails(allCasesToOpen, orderIdToOrderMap);
