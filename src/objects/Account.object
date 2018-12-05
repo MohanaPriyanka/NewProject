@@ -3241,7 +3241,7 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <fullName>Status__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Account is Closed if all Opportunities are Cancelled, Duplicate, Expired or Dead</inlineHelpText>
-        <label>Status</label>
+        <label>CS Status</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
