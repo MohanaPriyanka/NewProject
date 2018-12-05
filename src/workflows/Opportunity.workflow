@@ -1198,7 +1198,7 @@ CONTAINS(Name,&apos;-&apos;),true,false
         <criteriaItems>
             <field>Opportunity.StageName</field>
             <operation>equals</operation>
-            <value>QC In Process</value>
+            <value>Pending Quality Control Signature</value>
         </criteriaItems>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
