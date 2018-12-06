@@ -8921,8 +8921,8 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         </filters>
         <filters>
             <field>Lender_of_Record__c</field>
-            <operation>equals</operation>
-            <value>Avidia</value>
+            <operation>notEqual</operation>
+            <value>BlueWave</value>
         </filters>
         <label>NonDOER Opportunities with Credit Pulled</label>
     </listViews>
@@ -8931,11 +8931,21 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <columns>OPPORTUNITY.NAME</columns>
         <columns>ACCOUNT.NAME</columns>
         <columns>OPPORTUNITY.AMOUNT</columns>
-        <columns>OPPORTUNITY.CLOSE_DATE</columns>
+        <columns>Lead_Status__c</columns>
         <columns>OPPORTUNITY.STAGE_NAME</columns>
         <columns>CORE.USERS.ALIAS</columns>
         <columns>OPPORTUNITY.CREATED_DATE</columns>
         <filterScope>Everything</filterScope>
+        <filters>
+            <field>Product_Line__c</field>
+            <operation>equals</operation>
+            <value>Residential Loan</value>
+        </filters>
+        <filters>
+            <field>OPPORTUNITY.NAME</field>
+            <operation>notContain</operation>
+            <value>test</value>
+        </filters>
         <label>Opportunities by Created Date</label>
         <sharedTo>
             <group>Non_Partners</group>
@@ -8998,8 +9008,8 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         </filters>
         <filters>
             <field>Lender_of_Record__c</field>
-            <operation>equals</operation>
-            <value>Avidia</value>
+            <operation>notEqual</operation>
+            <value>BlueWave</value>
         </filters>
         <filters>
             <field>Lead_Status__c</field>
