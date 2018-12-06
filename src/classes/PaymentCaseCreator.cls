@@ -198,7 +198,7 @@ public without sharing class PaymentCaseCreator implements Schedulable {
                     List<Case> casesToClose = orderToCaseMap.get(order.Id);
                     for (Case caseToClose : casesToClose) {
                         caseToClose.Status = 'Closed';
-                        caseToClose.Resolution__c = 'No Longer an Issue';
+                        caseToClose.Resolution__c = 'Other';
                     }
 
                     allCasesToClose.addAll(casesToClose);
@@ -227,7 +227,7 @@ public without sharing class PaymentCaseCreator implements Schedulable {
         for (Id order : orderToCaseMap.keySet()) {
             for (Case caseToClose: orderToCaseMap.get(order)) {
                 caseToClose.Status = 'Closed';
-                caseToClose.Resolution__c = 'No Longer an Issue';
+                caseToClose.Resolution__c = 'Other';
                 allCasesToClose.add(caseToClose);
             }
         }
