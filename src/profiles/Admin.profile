@@ -1918,7 +1918,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Last_Bill_Send_Date_New_Charges__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
