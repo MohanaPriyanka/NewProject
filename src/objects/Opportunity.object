@@ -8822,6 +8822,7 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <booleanFilter>1 AND  2 AND 3 AND 4 AND 5</booleanFilter>
         <columns>OPPORTUNITY.NAME</columns>
         <columns>CORE.USERS.FULL_NAME</columns>
+        <columns>Avidia_Review_Status__c</columns>
         <columns>Personal_Credit_Report2__c</columns>
         <columns>ACH_Name_on_Account__c</columns>
         <columns>OPPORTUNITY.CREATED_DATE</columns>
@@ -8855,8 +8856,9 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
             <operation>notEqual</operation>
             <value>Voided,DUPLICATE</value>
         </filters>
-        <label>My View</label>
+        <label>Avidia CL Unreviewed Opportunities</label>
         <sharedTo>
+            <group>Avidia_Lending</group>
             <group>BlueWave_Residential_Sales_Team</group>
         </sharedTo>
     </listViews>
@@ -8921,8 +8923,8 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         </filters>
         <filters>
             <field>Lender_of_Record__c</field>
-            <operation>notEqual</operation>
-            <value>BlueWave</value>
+            <operation>contains</operation>
+            <value>Avidia</value>
         </filters>
         <label>NonDOER Opportunities with Credit Pulled</label>
     </listViews>
