@@ -117,15 +117,21 @@ public class CustomerCommunicationHandlerTest{
 
             Account propAcct1 = new Account( Name = 'Prop Account 1',
                                             Parent_Account__c = accountParent1.Id,
+                                            Product_Line__c = 'Community Solar',
+                                            RecordTypeId = '012j00000010HeQ',
                                             Send_Bills_Contact__c = contactA.Id,
                                             Client_Brand_Key__c = 'BluewaveLogo');
             Account propAcct2 = new Account( Name = 'Prop Account 2',
                                             Parent_Account__c = accountParent2.Id,
+                                            Product_Line__c = 'Community Solar',
                                             Send_Bills_Contact__c = contactB.Id,
+                                            RecordTypeId = '012j00000010HeQ',
                                             Client_Brand_Key__c = 'AmpRed');
             Account propAcct3 = new Account( Name = 'Prop Account 3',
                                             Parent_Account__c = accountParent3.Id,
+                                            Product_Line__c = 'Community Solar',
                                             Send_Bills_Contact__c = contactC.Id,
+                                            RecordTypeId = '012j00000010HeQ',
                                             Client_Brand_Key__c = 'BluewaveLogo');
 
             insert new List<Account>{propAcct1, propAcct2, propAcct3};
@@ -387,6 +393,7 @@ public class CustomerCommunicationHandlerTest{
             Send_Bills_Contact__c, Days_Past_Due__c
         FROM Account];
         System.assertNotEquals(0, accountlist.size());
+        System.debug(accountlist.size());
 
         CronTrigger ct = [SELECT Id, CronExpression, TimesTriggered,
             NextFireTime
