@@ -166,4 +166,23 @@ public with sharing class UtilTest {
         // All This shouldn't use any SOQL queries
         System.assertEquals(0, Limits.getQueries());
     }
+
+    @IsTest
+    public static void testObscureText() {
+        String textToObscure = 'secret1234';
+        String expectedAll = '**********';
+        String expectedLast1 = '*********4';
+        String expectedLast2 = '********34';
+        String expectedLast3 = '*******234';
+        String expectedLast4 = '******1234';
+        String expectedSameAsLength = 'secret1234';
+
+        System.assertEquals(expectedAll, Util.obscureText(textToObscure, 0));
+        System.assertEquals(expectedLast1, Util.obscureText(textToObscure, 1));
+        System.assertEquals(expectedLast2, Util.obscureText(textToObscure, 2));
+        System.assertEquals(expectedLast3, Util.obscureText(textToObscure, 3));
+        System.assertEquals(expectedLast4, Util.obscureText(textToObscure, 4));
+        System.assertEquals(expectedSameAsLength, Util.obscureText(textToObscure, textToObscure.length()));
+        System.assertEquals(expectedSameAsLength, Util.obscureText(textToObscure, 9999));
+    }
 }

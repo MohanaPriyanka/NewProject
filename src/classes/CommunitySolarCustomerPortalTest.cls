@@ -264,6 +264,8 @@ public without sharing class CommunitySolarCustomerPortalTest {
     }
 
     @isTest static void testChargentLicenseAssignment(){
+        Test.startTest();
+
         Account parentAccount = [
             SELECT Id, Name
             FROM Account
@@ -278,13 +280,28 @@ public without sharing class CommunitySolarCustomerPortalTest {
             AccountId = parentAccount.Id,
             Active_Communities_User__c = true
         );
-        insert con;
+
+        Contact conPartnerLogin = new Contact(
+            FirstName = 'First',
+            Email = 'communitiesUserContact@bluewave-capital.com',
+            LastName = 'Last',
+            AccountId = parentAccount.Id,
+            Active_Communities_User__c = true
+        );
+        Contact conPartner = new Contact(
+            FirstName = 'First',
+            Email = 'communitiesUserContact@bluewave-capital.com',
+            LastName = 'Last',
+            AccountId = parentAccount.Id,
+            Active_Communities_User__c = true
+        );
+
+        insert new List<Contact>{con, conPartnerLogin, conPartner};
         // To avoid DML operation on setup object error:
         // http://burnignorance.com/salesforce-tips/create-a-customer-portal-user-in-test-class-2/
         User thisUser = [ SELECT Id FROM User WHERE Id = :UserInfo.getUserId() ];
 
         System.runAs ( thisUser ) {
-            Test.startTest();
 
             Profile communityProfile = [SELECT Id
                                         FROM Profile
@@ -303,8 +320,43 @@ public without sharing class CommunitySolarCustomerPortalTest {
                 EmailEncodingKey = 'ISO-8859-1',
                 LanguageLocaleKey = 'en_US'
             );
-            insert communityUser;
-            Test.stopTest();
+
+            Profile partnerLoginProfile = [SELECT Id
+                                        FROM Profile
+                                        WHERE Name = 'Partner Community Login User (Custom)'];
+            User partnerLoginUser = new User(
+                ProfileId = partnerLoginProfile.Id,
+                FirstName = 'Test',
+                LastName = 'PartnerLogin',
+                Username = 'moreUniqueemail3184PartnerLogin@test.com',
+                Email = 'moreUniqueemail3184PartnerLogin@test.com',
+                Alias = 'ema318pl',
+                ContactId = conPartnerLogin.Id,
+                CommunityNickname = 'ema318pl',
+                TimeZoneSidKey = 'America/New_York',
+                LocaleSidKey = 'en_US',
+                EmailEncodingKey = 'ISO-8859-1',
+                LanguageLocaleKey = 'en_US'
+            );
+
+            Profile partnerProfile = [SELECT Id
+                                        FROM Profile
+                                        WHERE Name = 'Partner Community User (Custom)'];
+            User partnerUser = new User(
+                ProfileId = partnerProfile.Id,
+                FirstName = 'Test',
+                LastName = 'BFG_User',
+                Username = 'moreUniqueemail3184partner@test.com',
+                Email = 'moreUniqueemail3184partner@test.com',
+                Alias = 'ema318p',
+                ContactId = conPartner.Id,
+                CommunityNickname = 'ema318p',
+                TimeZoneSidKey = 'America/New_York',
+                LocaleSidKey = 'en_US',
+                EmailEncodingKey = 'ISO-8859-1',
+                LanguageLocaleKey = 'en_US'
+            );
+            insert new List<User>{communityUser, partnerLoginUser, partnerUser};
 
             PackageLicense pl = [   SELECT Id
                                     FROM PackageLicense
@@ -312,11 +364,14 @@ public without sharing class CommunitySolarCustomerPortalTest {
 
             List<UserPackageLicense> packageAssign = [  SELECT Id, UserId, PackageLicenseId
                                                         FROM UserPackageLicense
-                                                        WHERE UserId = : communityUser.Id
+                                                        WHERE (UserId = : communityUser.Id
+                                                        OR UserId = : partnerLoginUser.Id
+                                                        OR UserId = : partnerUser.Id)
                                                         AND PackageLicenseId = : pl.Id];
 
-            System.assertEquals(1,packageAssign.size());
+            System.assertEquals(3,packageAssign.size());
         }
+        Test.stopTest();
     }
 
     @isTest static void testGetAllSystemBills() {

@@ -512,6 +512,13 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                     ChargentBase__Active__c = true);
             insert chGateway2;
 
+            Entity__c defaultEntity = new Entity__c(
+                Name = 'BWC Holdings, LLC',
+                Gateway__c = chGateway.Id
+            );
+
+            insert defaultEntity;
+
             Entity__c entity1 = [SELECT Id FROM Entity__c WHERE Name = 'Project A Oak Road' LIMIT 1];
             entity1.Gateway__c = chGateway.Id;
             Entity__c entity2 = [SELECT Id FROM Entity__c WHERE Name = 'Project B Main St' LIMIT 1];
@@ -588,7 +595,6 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Due_Date__c = threeMonthsAgo,
                 Billing_Period_End_Date__c = twoMonthsAgo,
                 Total_System_NMCs__c = 13483.66,
-                Size_off_NMCs__c = true,
                 Date__c = threeMonthsAgo,
                 Schedule_Z__c =  scheduleZ1.Id
             );
@@ -602,7 +608,6 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Due_Date__c = twoMonthsAgo,
                 Billing_Period_End_Date__c = oneMonthAgo,
                 Total_System_NMCs__c = 12033.73,
-                Size_off_NMCs__c = true,
                 Date__c = twoMonthsAgo,
                 Schedule_Z__c =  scheduleZ1.Id
             );
@@ -616,7 +621,6 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Due_Date__c = oneMonthAgo,
                 Billing_Period_End_Date__c = today,
                 Total_System_NMCs__c = 36424.44,
-                Size_off_NMCs__c = true,
                 Date__c = oneMonthAgo,
                 Schedule_Z__c =  scheduleZ1.Id
             );
@@ -630,7 +634,6 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Due_Date__c = threeMonthsAgo,
                 Billing_Period_End_Date__c = twoMonthsAgo,
                 Total_System_NMCs__c = 40983.43,
-                Size_off_NMCs__c = true,
                 Date__c = threeMonthsAgo,
                 Schedule_Z__c =  scheduleZ2.Id
             );
@@ -644,7 +647,6 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Due_Date__c = twoMonthsAgo,
                 Billing_Period_End_Date__c = oneMonthAgo,
                 Total_System_NMCs__c = 13483.66,
-                Size_off_NMCs__c = true,
                 Date__c = twoMonthsAgo,
                 Schedule_Z__c =  scheduleZ2.Id
             );
@@ -658,7 +660,6 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Due_Date__c = oneMonthAgo,
                 Billing_Period_End_Date__c = today,
                 Total_System_NMCs__c = 12033.73,
-                Size_off_NMCs__c = true,
                 Date__c = oneMonthAgo,
                 Schedule_Z__c =  scheduleZ2.Id
             );
