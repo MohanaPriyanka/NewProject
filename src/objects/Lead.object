@@ -2652,6 +2652,18 @@ This field can be changed to a formula consistent with the other factors if LASE
         <type>Picklist</type>
     </fields>
     <fields>
+        <fullName>Lead_ID_18_digit__c</fullName>
+        <description>This is the case safe 18 digit salesforce id. It was created to be used with the marketing cloud connector.</description>
+        <externalId>false</externalId>
+        <formula>CASESAFEID(Id)</formula>
+        <inlineHelpText>This is the case safe 18 digit salesforce id. It was created to be used with the marketing cloud connector.</inlineHelpText>
+        <label>Lead ID (18 digit)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Lead_ID__c</fullName>
         <externalId>false</externalId>
         <formula>Id</formula>
