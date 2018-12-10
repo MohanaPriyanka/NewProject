@@ -12,9 +12,11 @@ public with sharing class CSAccountCanceller {
 
         //Querying for Opps instead of Accounts --> for some reason I was unable to grab the Opps related list for delinquent accounts
         //Need to filter for already cancelled Accounts --> Check Cancellation_Request_Date__c
+        List<Account> accountsList = new List<Account>();
         Set<String> accounts = new Set<String>();
         List<Opportunity> oppsList = [
-            SELECT Id, Account.Id, Account.Product_Line__c, Account.RecordTypeId, Account.Days_Past_Due__c, Customer_Group__c
+            SELECT Id, Account.Id, Account.Product_Line__c, Account.RecordTypeId,Account.Cancellation_Request_Date__c,
+                Account.Cancellation_Reason__c, Account.Days_Past_Due__c, Customer_Group__c
             FROM Opportunity
             WHERE Customer_Group__c NOT IN ('Anchor', 'Public Offtake')
             AND Account.RecordTypeId = '012j00000010HeQ' AND Account.Product_Line__c = 'Community Solar'
@@ -36,18 +38,12 @@ public with sharing class CSAccountCanceller {
             for (Opportunity opp : oppsList) {
                 if (!accounts.contains(opp.Account.Id)) {
                     accounts.add(opp.Account.Id);
+                    accountsList.add(opp.Account);
                 }
             }
-            //One query outside of the above loop but could I avoid the loop?
-            List<Account> accountList = [
-                SELECT Id, Cancellation_Request_Date__c, Cancellation_Comments__c,
-                    Cancellation_Reason__c, Days_Past_Due__c
-                FROM Account
-                WHERE Id IN :accounts
-            ];
 
             //Update the Accounts
-            for (Account acct : accountList) {
+            for (Account acct : accountsList) {
                 if (acct.Cancellation_Reason__c == null) {
                     acct.Cancellation_Reason__c = 'Lack of Payment';
                 }
