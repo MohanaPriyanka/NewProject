@@ -1,6 +1,5 @@
 @isTest
 private class LeadTriggerHandlerTest {
-    
     @isTest static void customerSubscriptionProcessTest() {
         System_Properties__c sysProp = new System_Properties__c(
             Name = 'System',
@@ -363,7 +362,7 @@ private class LeadTriggerHandlerTest {
         }
     }
 
-    @IsTest static void testMultipleSubscriptions() {
+    @IsTest static void testMultipleSubscriptionsWithChargentOrders() {
         System_Properties__c sysProp = new System_Properties__c(
             Name = 'System',
             DocuSign_API_Account_ID__c = '123',
@@ -373,6 +372,20 @@ private class LeadTriggerHandlerTest {
             DocuSign_Integrator_Key__c = '123123-123123'
         );
         insert sysProp;
+
+        ChargentBase__Gateway__c chGateway  =
+            new ChargentBase__Gateway__c(   Name = 'Chargent Gateway',
+                ChargentBase__Available_Payment_Methods__c = 'eCheck',
+                ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
+                ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck',
+                ChargentBase__Active__c = True);
+        insert chGateway;
+
+        Entity__c defaultEntity = new Entity__c(
+            Name = 'BWC Holdings, LLC',
+            Gateway__c = chGateway.Id
+        );
+        insert defaultEntity;
 
         Utility_NMC_Tariff__c nmcRate =  new Utility_NMC_Tariff__c(
             Value_of_Net_Metering_Credit__c = .1848,
@@ -445,6 +458,38 @@ private class LeadTriggerHandlerTest {
         additionalProperty.Electricity_Provider__c = 'National Grid';
         insert new List<Lead>{primaryProperty, additionalProperty};
 
+        ChargentOrders__ChargentOrder__c newACHOrder1 = new ChargentOrders__ChargentOrder__c(
+            ChargentOrders__Payment_Method__c = 'ACH',
+            ChargentOrders__Bank_Name__c = 'primary bank',
+            ChargentOrders__Bank_Routing_Number__c = '123456789',
+            ChargentOrders__Bank_Account_Type__c = 'Checking',
+            ChargentOrders__Bank_Account_Number__c = '1234567890',
+            ChargentOrders__Bank_Account_Name__c = 'primary',
+            ChargentOrders__Billing_Email__c = 'primary@bluewavesolar.com',
+            Entity__c = defaultEntity.Id,
+            ChargentOrders__Gateway__c = defaultEntity.Gateway__c,
+            Lead__c = primaryProperty.Id,
+            Autopay_Only__c = true
+        );
+
+        ChargentOrders__ChargentOrder__c newACHOrder2 = new ChargentOrders__ChargentOrder__c(
+            ChargentOrders__Payment_Method__c = 'Credit Card',
+            ChargentOrders__Billing_Email__c = 'additional@bluewavesolar.com',
+            ChargentOrders__Card_Type__c = 'VISA',
+            ChargentOrders__Card_Number__c = '1234123412341234',
+            ChargentOrders__Card_Expiration_Month__c = '01',
+            ChargentOrders__Card_Expiration_Year__c = '12',
+            ChargentOrders__Billing_Zip_Postal__c = '12345',
+            ChargentOrders__Billing_First_Name__c = 'Testy',
+            ChargentOrders__Billing_Last_Name__c = 'McTesterson',
+            Entity__c = defaultEntity.Id,
+            ChargentOrders__Gateway__c = defaultEntity.Gateway__c,
+            Lead__c = additionalProperty.Id,
+            Autopay_Only__c = true
+        );
+
+        insert new List<ChargentOrders__ChargentOrder__c>{newACHOrder1, newACHOrder2};
+
         LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
             LASERCA__Lead__c = primaryProperty.Id,
             LASERCA__Credit_Score_TransUnion__c = '720'
@@ -493,12 +538,23 @@ private class LeadTriggerHandlerTest {
 
         // 2 opps for the Eversource lead (one for each SSS)
         opps = [
-            SELECT Id, Name, Shared_Solar_System__c, AccountId
+            SELECT Id, Name, Shared_Solar_System__c, AccountId, ACH_Bank_Name__c, ACH_Bank_Routing_Number__c,
+                CC_Account_Number__c, ACH_Account_Number__c
             FROM Opportunity
             WHERE Shared_Solar_System__r.System_Utility__c = 'Eversource'
             AND AccountId =: eversourceLeads[0].ConvertedAccountId
         ];
         System.assertEquals(2, opps.size());
+        for (Opportunity opp : opps) {
+            if (opp.ACH_Bank_Name__c != null) {
+                //from ACHOrder1
+                System.assertEquals('*****6789', opp.ACH_Bank_Routing_Number__c);
+                System.assertEquals('******7890', opp.ACH_Account_Number__c);
+            } else {
+                //from ACHOrder2
+                System.assertEquals('************1234', opp.CC_Account_Number__c);
+            }
+        }
 
         List<AggregateResult> uasAggregate = [
             SELECT Opportunity__r.AccountId, COUNT(Id) num, SUM(Customer_Subscription_KW_DC__c) total,
@@ -512,6 +568,19 @@ private class LeadTriggerHandlerTest {
         System.assertEquals(35, ((Decimal) uasAggregate[0].get('total')).setScale(0));
         System.assertEquals(25, uasAggregate[0].get('maximum'));
         System.assertEquals(5, ((Decimal) uasAggregate[0].get('minimum')).setScale(0));
+
+        List<ChargentOrders__ChargentOrder__c> primaryPropOrders = [
+            SELECT Id, ChargentOrders__Billing_Email__c, ChargentOrders__Bank_Name__c,
+                ChargentOrders__Bank_Account_Name__c
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE ChargentOrders__Account__c = : eversourceLeads[0].ConvertedAccountId
+        ];
+        System.assertEquals(1, primaryPropOrders.size());
+        for (ChargentOrders__ChargentOrder__c chOrder : primaryPropOrders) {
+            System.assertEquals(newACHOrder1.ChargentOrders__Billing_Email__c, chOrder.ChargentOrders__Billing_Email__c);
+            System.assertEquals(newACHOrder1.ChargentOrders__Bank_Name__c, chOrder.ChargentOrders__Bank_Name__c);
+            System.assertEquals(newACHOrder1.ChargentOrders__Bank_Account_Name__c, chOrder.ChargentOrders__Bank_Account_Name__c);
+        }
 
         List<Lead> ngridLeads = [SELECT Id, ConvertedAccountId FROM Lead WHERE Utility_1__c = 'National Grid'];
         System.assertEquals(1, ngridLeads.size());
@@ -537,6 +606,20 @@ private class LeadTriggerHandlerTest {
         System.assertEquals(25, ((Decimal) uasAggregate[0].get('total')).setScale(0));
         System.assertEquals(25, uasAggregate[0].get('maximum'));
         System.assertEquals(25, ((Decimal) uasAggregate[0].get('minimum')).setScale(0));
+
+        List<ChargentOrders__ChargentOrder__c> additionalPropOrders = [
+            SELECT Id, ChargentOrders__Billing_Email__c, ChargentOrders__Bank_Name__c,
+                ChargentOrders__Bank_Account_Name__c
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE ChargentOrders__Account__c = : ngridLeads[0].ConvertedAccountId
+        ];
+
+        System.assertEquals(1, additionalPropOrders.size());
+        for (ChargentOrders__ChargentOrder__c chOrder : additionalPropOrders) {
+            System.assertEquals(newACHOrder2.ChargentOrders__Billing_Email__c, chOrder.ChargentOrders__Billing_Email__c);
+            System.assertEquals(newACHOrder2.ChargentOrders__Bank_Name__c, chOrder.ChargentOrders__Bank_Name__c);
+            System.assertEquals(newACHOrder2.ChargentOrders__Bank_Account_Name__c, chOrder.ChargentOrders__Bank_Account_Name__c);
+        }
     }
 
     private static Shared_Solar_System__c getSharedSolarSystem(Utility_NMC_Tariff__c nmcRate, Product2 csProduct,

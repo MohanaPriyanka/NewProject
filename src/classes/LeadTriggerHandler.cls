@@ -264,8 +264,10 @@ public without sharing class LeadTriggerHandler {
         repo.insertOpps();
         for (Lead lead : leads) {
             repo.createUAS(lead);
+            repo.moveChOrderToAccount(lead);
         }
         repo.insertUASes();
+        repo.updateChargentOrders();
         if (!skipContractSend) {
             repo.sendContracts();
         }
@@ -274,8 +276,11 @@ public without sharing class LeadTriggerHandler {
     private class SubscriptionRepo {
         private List<Utility_Account_Log__c> ualList;
         private List<Shared_Solar_System__c> sssList;
+        private Map<Id, Shared_Solar_System__c> sssByIds;
         private Map<Id, List<Opportunity>> leadOppsMap;
         private List<Utility_Account_Subscription__c> uasList;
+        private List<ChargentOrders__ChargentOrder__c> chargentOrdersToUpdate;
+        private Map<Id, ChargentOrders__ChargentOrder__c> chOrdersByLeadId;
         private List<Id> oppIdList;
 
         public SubscriptionRepo(List<Lead> leads) {
@@ -294,15 +299,41 @@ public without sharing class LeadTriggerHandler {
                 SELECT Id, Name, Sales_Partners__c, Maximum_Subscription_Cost__c, Product__c,
                     Project_Capacity_Available_kW_DC__c, Estimated_COD_Date__c, Service_Territories__c,
                     Reserved_Capacity_kW_DC__c, Service_Territory__c, System_Utility__c,
-                    Utility_NMC_Tariff__c, Credit_Score_Requirement__c, Assignment_Order__c, Estimated_COD_Date_QC__c
+                    Utility_NMC_Tariff__c, Credit_Score_Requirement__c, Assignment_Order__c, Estimated_COD_Date_QC__c,
+                    BWC_Project_Entity_Manual__c, BWC_Project_Entity_Manual__r.Gateway__c
                 FROM Shared_Solar_System__c
                 WHERE Open__c = TRUE
                 AND Capacity_Available_to_be_Reserved__c > 0
             ];
+            sssByIds = new Map<Id, Shared_Solar_System__c>();
+            for (Shared_Solar_System__c sss : sssList) {
+                sssByIds.put(sss.Id, sss);
+            }
+            // Catching here to allow legacy leads & tests to work
+            List<ChargentOrders__ChargentOrder__c> chOrders = new List<ChargentOrders__ChargentOrder__c>();
+            chOrders = [
+                SELECT Id, Lead__c, ChargentOrders__Payment_Method__c, ChargentOrders__Bank_Name__c,
+                    ChargentOrders__Bank_Routing_Number__c, ChargentOrders__Bank_Account_Type__c,
+                    ChargentOrders__Bank_Account_Number__c, ChargentOrders__Bank_Account_Name__c,
+                    ChargentOrders__Billing_Email__c, ChargentOrders__Card_Type__c,
+                    ChargentOrders__Card_Number__c, ChargentOrders__Card_Expiration_Month__c,
+                    ChargentOrders__Card_Expiration_Year__c, ChargentOrders__Billing_Address__c,
+                    ChargentOrders__Billing_City__c, ChargentOrders__Billing_State__c,
+                    ChargentOrders__Billing_Zip_Postal__c, ChargentOrders__Billing_First_Name__c,
+                    ChargentOrders__Billing_Last_Name__c, Autopay_Only__c
+                FROM ChargentOrders__ChargentOrder__c
+                WHERE Lead__c IN : leadIds
+            ];
+
+            chOrdersByLeadId = new Map<Id, ChargentOrders__ChargentOrder__c>();
+            for (ChargentOrders__ChargentOrder__c chOrder : chOrders) {
+                chOrdersByLeadId.put(chOrder.Lead__c, chOrder);
+            }
 
             leadOppsMap = new Map<Id, List<Opportunity>>();
             uasList = new List<Utility_Account_Subscription__c>();
             oppIdList = new List<Id>();
+            chargentOrdersToUpdate = new List<ChargentOrders__ChargentOrder__c>();
         }
 
         public List<Utility_Account_Log__c> getUALList(Lead lead) {
@@ -356,6 +387,7 @@ public without sharing class LeadTriggerHandler {
                     remainingAccountCostToAllocate > 0) {
                     Decimal annualElectricityCostAssigned = Math.min(remainingAccountCostToAllocate, sss.Maximum_Subscription_Cost__c);
                     remainingAccountCostToAllocate = remainingAccountCostToAllocate - annualElectricityCostAssigned;
+                    ChargentOrders__ChargentOrder__c baseChargentOrder = chOrdersByLeadId.get(lead.Id);
                     Opportunity opp = new Opportunity(
                         AccountId = lead.ConvertedAccountId,
                         Shared_Solar_System__c = sss.Id,
@@ -374,6 +406,9 @@ public without sharing class LeadTriggerHandler {
                         Lead__c = lead.Id
                     );
                     opp = setDefaultOppFields(lead, opp);
+                    if (baseChargentOrder != null) {
+                        opp = addPaymentInfoToOpp(opp, baseChargentOrder);
+                    }
                     oppListToCreate.add(opp);
                     oppCounter++;
                 }
@@ -433,8 +468,38 @@ public without sharing class LeadTriggerHandler {
             insert uasList;
         }
 
+        public void moveChOrderToAccount(Lead lead) {
+            ChargentOrders__ChargentOrder__c baseChargentOrder = chOrdersByLeadId.get(lead.Id);
+            if (baseChargentOrder == null) return;
+            baseChargentOrder.ChargentOrders__Account__c = lead.ConvertedAccountId;
+            chargentOrdersToUpdate.add(baseChargentOrder);
+        }
+
+        public void updateChargentOrders() {
+            if (!chargentOrdersToUpdate.isEmpty()) {
+                update chargentOrdersToUpdate;
+            }
+        }
+
         public void sendContracts() {
             DocuSignHelper.sendCSPackageFuture(oppIdList);
+        }
+
+        public Opportunity addPaymentInfoToOpp(Opportunity opp, ChargentOrders__ChargentOrder__c chOrder) {
+            if (chOrder.ChargentOrders__Payment_Method__c == 'ACH') {
+                opp.ACH_Bank_Name__c = chOrder.ChargentOrders__Bank_Name__c;
+                opp.ACH_Bank_Routing_Number__c = Util.obscureText(chOrder.ChargentOrders__Bank_Routing_Number__c, 4);
+                opp.ACH_Account_Type__c = chOrder.ChargentOrders__Bank_Account_Type__c;
+                opp.ACH_Account_Number__c = Util.obscureText(chOrder.ChargentOrders__Bank_Account_Number__c, 4);
+                opp.ACH_Name_on_Account__c = chOrder.ChargentOrders__Bank_Account_Name__c;
+            } else if (chOrder.ChargentOrders__Payment_Method__c == 'Credit Card') {
+                opp.CC_Card_Type__c = chOrder.ChargentOrders__Card_Type__c ;
+                opp.CC_Account_Number__c = Util.obscureText(chOrder.ChargentOrders__Card_Number__c, 4);
+                opp.CC_CardHolder_Name__c = chOrder.ChargentOrders__Billing_Last_Name__c;
+                opp.CC_Expiration_Month__c = chOrder.ChargentOrders__Card_Expiration_Month__c;
+                opp.CC_Expiration_Year__c = chOrder.ChargentOrders__Card_Expiration_Year__c;
+            }
+            return opp;
         }
     }
 

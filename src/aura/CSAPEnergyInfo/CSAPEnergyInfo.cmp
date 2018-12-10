@@ -2,7 +2,6 @@
   <aura:attribute name="ual" type="Utility_Account_Log__c" default="{'sobjectType':'Utility_Account_Log__c',
                                                                       'Name': ''}"/>
   <aura:attribute name="ualList" type="Utility_Account_Log__c[]"/>
-  <aura:attribute name="haveSolarPanelsOnProperty" type="String"/>
   <aura:attribute name="provideLoginInformation" type="String"/>
   <aura:attribute name="abbrevStates" type="String[]"/>
   <aura:attribute name="attachments" type="Attachment[]"/>
@@ -82,7 +81,7 @@
                 </div>
                 <div class="slds-float_right">
                   <aura:if isTrue="{!v.ualList.length > 0}">
-                    <lightning:button label="Cancel adding Utility Account and Complete the Application" onclick="{!c.cancelAddUAL}"/>
+                    <lightning:button label="Cancel adding Utility Account and Continue the Application" onclick="{!c.cancelAddUAL}"/>
                   </aura:if>
                   <lightning:button label="Next" onclick="{!c.goToGridUsageHistory}"/>
                 </div>
@@ -153,30 +152,18 @@
                   </lightning:layoutItem>
                 </aura:if>
                 <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-                  <lightning:select aura:id="field" name="leadPreviousBWApplicant"
-                                    label="Have you successfully applied for a BlueWave Home Solar Loan in the last 60 Days?"
-                                    value="{!v.ual.Previous_BW_CL_Applicant__c}"
+                  <lightning:select aura:id="field" name="haveSolarPanelsOnPropertySelectList"
+                                    label="Do you have solar panels on your property?"
+                                    value="{!v.lead.Loan_System_Information__c}"
                                     required="true">
                     <option value="">Choose one...</option>
                     <option value="Yes">Yes</option>
                     <option value="No">No</option>
                   </lightning:select>
                 </lightning:layoutItem>
-                <aura:if isTrue="{!v.ual.Previous_BW_CL_Applicant__c == 'No'}">
-                  <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-                    <lightning:select aura:id="field" name="haveSolarPanelsOnPropertySelectList"
-                                      label="Do you have solar panels on your property?"
-                                      value="{!v.haveSolarPanelsOnProperty}"
-                                      required="true">
-                      <option value="">Choose one...</option>
-                      <option value="Yes">Yes</option>
-                      <option value="No">No</option>
-                    </lightning:select>
-                  </lightning:layoutItem>
-                  <lightning:layoutItem padding="left-small" size="12" smallDeviceSize="12" mediumDeviceSize="12"/>
-                </aura:if>
+                <lightning:layoutItem padding="left-small" size="12" smallDeviceSize="12" mediumDeviceSize="12"/>
 
-                <aura:if isTrue="{!v.haveSolarPanelsOnProperty == 'Yes'}">
+                <aura:if isTrue="{!v.lead.Loan_System_Information__c == 'Yes'}">
                   <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
                     <lightning:input aura:id="field" name="leadEstimatedInstallDate"
                                      type="date"
@@ -227,7 +214,6 @@
         <div aria-labelledby="uaServiceAddressForm">
           <fieldset class="slds-box slds-theme--default slds-container_center">
             <legend id="uaServiceAddressForm" class="slds-text-heading--small slds-p-vertical--medium slds-section__title--large slds-align_absolute-center">
-              <b class="slds-section__title--large--stream">One last thing!</b>
               <b class="slds-section__title--large"> Please provide your Utility Account</b>
               <b class="slds-section__title--large--stream"> Service Address</b>
             </legend>
@@ -282,12 +268,11 @@
           </fieldset>
         </div>
       </aura:if>
-
-      <aura:if isTrue="{!v.page == 'AddMore'}">
+      <aura:if isTrue="{!v.page == 'AddMoreUAL'}">
         <div aria-labelledby="addToApplicationForm">
           <fieldset class="slds-form-element slds-align_absolute-center">
             <legend class="slds-form-element__legend slds-form-element__label slds-align_absolute-center slds-m-bottom_small">
-              <b class="slds-section__title--large--stream">Would you like to add anything to your application?</b>
+              <b class="slds-section__title--large--stream">Do you have any additional Utility Accounts at this Property?</b>
             </legend>
             <div class="slds-form-element__control slds-align_absolute-center">
               <aura:if isTrue="{!v.lead.Status == 'Qualified'}">
@@ -307,43 +292,12 @@
                   </a>
                 </div>
               </aura:if>
-
-              <div class="slds-visual-picker slds-visual-picker_large">
-                <a onclick="{!c.addResidence}">
-                  <label for="visual-picker-residential">
-                <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">
-                  <span class="slds-icon_container" title="description of icon when needed">
-                    <lightning:icon class="blueIcon" iconName="utility:home" size="x-large"/>
-                  </span>
-                </span>
-                    <span class="slds-visual-picker__body">
-                  <div class="slds-text-body--large--blue"><b>Add an entirely different</b></div>
-                  <div class="slds-text-body--large--stream"><b>Home</b></div>
-                </span>
-                  </label>
-                </a>
-              </div>
-              <div class="slds-visual-picker slds-visual-picker_large">
-                <a onclick="{!c.addBusiness}">
-                  <label for="visual-picker-business">
-                <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">
-                  <span class="slds-icon_container" title="description of icon when needed">
-                    <lightning:icon class="blueIcon" iconName="utility:company" size="x-large"/>
-                  </span>
-                </span>
-                    <span class="slds-visual-picker__body">
-                  <div class="slds-text-body--large--blue"><b>Add an entirely different</b></div>
-                  <div class="slds-text-body--large--stream"><b>Business</b></div>
-                </span>
-                  </label>
-                </a>
-              </div>
             </div>
           </fieldset>
         </div>
 
         <div class="slds-clearfix slds-p-top_medium slds-align_absolute-center">
-          <lightning:button label="Complete Application" onclick="{!c.finishStage}"/>
+          <lightning:button label="No, Continue to Next Step" onclick="{!c.finishStage}"/>
         </div>
       </aura:if>
     </aura:set>

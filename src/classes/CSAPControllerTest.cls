@@ -554,6 +554,7 @@ public with sharing class CSAPControllerTest {
             Name_on_Account__c = 'Tester Testcase'
         ));
 
+        List<ChargentOrders__ChargentOrder__c> orderList = new List<ChargentOrders__ChargentOrder__c>();
         List<Lead> leadList = new List<Lead>();
         Test.startTest();
         for (Integer i = 0; i < 10; i++) {
@@ -571,6 +572,11 @@ public with sharing class CSAPControllerTest {
                 Annual_Cost_of_Electricity__c = 10000,
                 Name_on_Account__c = 'TBD');
             ualList.add(ual);
+
+            ChargentOrders__ChargentOrder__c chOrder = new ChargentOrders__ChargentOrder__c(
+
+            );
+            orderList.add(chOrder);
         }
         insert ualList;
 
@@ -830,4 +836,82 @@ public with sharing class CSAPControllerTest {
         opps = [SELECT Id, OwnerId, Name FROM Opportunity];
         System.assertEquals(0, opps.size(), 'Should not have made opportunities for an unqualified lead');
         Test.stopTest();
-    }}
+    }
+
+    @IsTest static void testInsertChargentOrderOnLead() {
+        Lead residentialLead = getLeadForTest();
+        insert residentialLead;
+        ChargentBase__Gateway__c chGateway = new ChargentBase__Gateway__c(
+            Name = 'Chargent Gateway',
+            ChargentBase__Active__c = true,
+            ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
+            ChargentBase__Available_Payment_Methods__c = 'eCheck;Credit Card',
+            ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck'
+        );
+        insert chGateway;
+
+        Entity__c defaultEntity = new Entity__c(
+            Name = 'BWC Holdings, LLC',
+            Gateway__c = chGateway.Id
+        );
+        insert defaultEntity;
+
+        ChargentOrders__ChargentOrder__c newACHOrder = new ChargentOrders__ChargentOrder__c(
+            ChargentOrders__Payment_Method__c = 'ACH',
+            ChargentOrders__Bank_Name__c = 'Test Bank',
+            ChargentOrders__Bank_Routing_Number__c = '123456789',
+            ChargentOrders__Bank_Account_Type__c = 'Checking',
+            ChargentOrders__Bank_Account_Number__c = '1234567890',
+            ChargentOrders__Bank_Account_Name__c = 'Testy McTesterson',
+            ChargentOrders__Billing_Email__c = residentialLead.Email,
+            ChargentOrders__Card_Type__c = '',
+            ChargentOrders__Card_Number__c = '',
+            ChargentOrders__Card_Expiration_Month__c = '',
+            ChargentOrders__Card_Expiration_Year__c = '',
+            ChargentOrders__Billing_Address__c = '',
+            ChargentOrders__Billing_City__c = '',
+            ChargentOrders__Billing_State__c = '',
+            ChargentOrders__Billing_Zip_Postal__c = '',
+            ChargentOrders__Billing_First_Name__c = '',
+            ChargentOrders__Billing_Last_Name__c = '',
+            Autopay_Only__c = true
+        );
+
+        ChargentOrders__ChargentOrder__c newCreditCardOrder = new ChargentOrders__ChargentOrder__c(
+            ChargentOrders__Payment_Method__c = 'Credit Card',
+            ChargentOrders__Bank_Name__c = '',
+            ChargentOrders__Bank_Routing_Number__c = '',
+            ChargentOrders__Bank_Account_Type__c = '',
+            ChargentOrders__Bank_Account_Number__c = '',
+            ChargentOrders__Bank_Account_Name__c = '',
+            ChargentOrders__Billing_Email__c = residentialLead.Email,
+            ChargentOrders__Card_Type__c = 'VISA',
+            ChargentOrders__Card_Number__c = '1234123412341234',
+            ChargentOrders__Card_Expiration_Month__c = '01',
+            ChargentOrders__Card_Expiration_Year__c = '12',
+            ChargentOrders__Billing_Address__c = '',
+            ChargentOrders__Billing_City__c = '',
+            ChargentOrders__Billing_State__c = '',
+            ChargentOrders__Billing_Zip_Postal__c = '12345',
+            ChargentOrders__Billing_First_Name__c = 'Testy',
+            ChargentOrders__Billing_Last_Name__c = 'McTesterson',
+            Autopay_Only__c = true
+        );
+        Test.startTest();
+        CSAPController.insertChargentOrderOnLead(newACHOrder, residentialLead);
+        CSAPController.insertChargentOrderOnLead(newCreditCardOrder, residentialLead);
+        Test.stopTest();
+
+        List<ChargentOrders__ChargentOrder__c> newOrders = [
+            SELECT Id, Lead__c, Entity__c, ChargentOrders__Gateway__c
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE Lead__c = : residentialLead.Id
+        ];
+
+        System.assertEquals(2, newOrders.size());
+        System.assertEquals(defaultEntity.Id, newOrders[0].Entity__c);
+        System.assertEquals(defaultEntity.Gateway__c, newOrders[0].ChargentOrders__Gateway__c);
+        System.assertEquals(defaultEntity.Id, newOrders[1].Entity__c);
+        System.assertEquals(defaultEntity.Gateway__c, newOrders[1].ChargentOrders__Gateway__c);
+    }
+}

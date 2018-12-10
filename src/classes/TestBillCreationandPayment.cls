@@ -366,7 +366,6 @@ public class TestBillCreationandPayment {
             Total_System_NMCs__c = 21872,
             Date__c = myDateMar
         );
-
         insert new List<Energy_Usage_Update__c>{
             productionupdateA1, productionupdateA2, productionupdateA3, productionupdateB1, productionupdateB2, productionupdateB3
         };
@@ -1092,7 +1091,8 @@ public class TestBillCreationandPayment {
                 chargentOrdersTransactionsToNotUpdate.add(transB);
             }
         }
-
+        // running unnecessary code
+        Util.disableTrigger('Disable_ChargentOrderTrigger__c');
         insert chargentOrdersTransactionsToUpdate;
         for (ChargentOrders__Transaction__c trans : chargentOrdersTransactionsToUpdate) {
             trans.Distributed_Among_System_Bills__c = true;
@@ -1261,7 +1261,8 @@ public class TestBillCreationandPayment {
                 chargentOrdersTransactionsToNotUpdate.add(transB);
             }
         }
-
+        // running unnecessary code
+        Util.disableTrigger('Disable_ChargentOrderTrigger__c');
         insert chargentOrdersTransactionsToUpdate;
         for (ChargentOrders__Transaction__c trans : chargentOrdersTransactionsToUpdate) {
             trans.Distributed_Among_System_Bills__c = true;
@@ -1908,7 +1909,7 @@ public class TestBillCreationandPayment {
         Energy_Usage_Update__c productionupdateA3 = [
             SELECT Id, Generate_Bills__c, Month_Number__c, Schedule_Z__c, Shared_Solar_System__c, YearDate__c, Date__c,
                 MonthDate__c, Net_Metering_Rate_Applied__c, Production__c, Total_System_NMCs__c, Total_System_NMCs_2_of_4__c,
-                Size_off_NMCs__c, Billing_Period_Start_Date__c, Billing_Period_End_Date__c
+                Billing_Method__c, Billing_Period_Start_Date__c, Billing_Period_End_Date__c
             FROM Energy_Usage_Update__c
             WHERE Name = 'sssA - March 2016'
             LIMIT 1
