@@ -2815,7 +2815,7 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
     <fields>
         <fullName>Send_Bills_Contact_ID__c</fullName>
         <externalId>false</externalId>
-        <formula>Send_Bills_Contact__r.Id</formula>
+        <formula>CASESAFEID(Send_Bills_Contact__r.Id)</formula>
         <label>Send Bills Contact ID</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
