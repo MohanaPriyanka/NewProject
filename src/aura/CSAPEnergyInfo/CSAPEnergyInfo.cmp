@@ -279,15 +279,15 @@
                 <div class="slds-visual-picker slds-visual-picker_large">
                   <a onclick="{!c.addUAL}">
                     <label for="visual-picker-add-utility">
-                <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">
-                  <span class="slds-icon_container" title="description of icon when needed">
-                    <lightning:icon class="blueIcon" iconName="utility:light_bulb" size="x-large"/>
-                  </span>
-                </span>
+                    <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">
+                      <span class="slds-icon_container" title="description of icon when needed">
+                        <lightning:icon class="blueIcon" iconName="utility:light_bulb" size="x-large"/>
+                      </span>
+                    </span>
                       <span class="slds-visual-picker__body">
-                  <div class="slds-text-body--large--blue"><b>Add another utility to </b></div>
-                  <div class="slds-text-body--large--stream"><b>{!v.lead.Company}</b></div>
-                </span>
+                      <div class="slds-text-body--large--blue"><b>Add another utility to </b></div>
+                      <div class="slds-text-body--large--stream"><b>{!v.lead.Company}</b></div>
+                    </span>
                     </label>
                   </a>
                 </div>

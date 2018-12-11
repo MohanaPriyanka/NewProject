@@ -486,7 +486,7 @@ public without sharing class LeadTriggerHandler {
         }
 
         public Opportunity addPaymentInfoToOpp(Opportunity opp, ChargentOrders__ChargentOrder__c chOrder) {
-            if (chOrder.ChargentOrders__Payment_Method__c == 'ACH') {
+            if (chOrder.ChargentOrders__Payment_Method__c == 'Check') {
                 opp.ACH_Bank_Name__c = chOrder.ChargentOrders__Bank_Name__c;
                 opp.ACH_Bank_Routing_Number__c = Util.obscureText(chOrder.ChargentOrders__Bank_Routing_Number__c, 4);
                 opp.ACH_Account_Type__c = chOrder.ChargentOrders__Bank_Account_Type__c;

@@ -194,6 +194,7 @@
                   <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
                     <lightning:input aura:id="field" name="name"
                                      label="Property Name"
+                                     maxlength="62"
                                      value="{!v.lead.Company}"
                                      required="true"/>
                   </lightning:layoutItem>
@@ -417,6 +418,7 @@
           <form class="slds-form--stacked">
             <div class="slds-p-around--small slds-text-body--regular">
               <b>
+                Please select your Utility or Load Zone from the list below. You can find this information on your utility bill.
                 <aura:if isTrue="{!v.lead.State == 'Massachusetts'}">
                 Your zip code is serviced by multiple Load Zones or multiple Utilities. Please consult your utility bill
                 (for National Grid customers) or

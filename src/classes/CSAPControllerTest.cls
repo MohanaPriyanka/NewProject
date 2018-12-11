@@ -190,22 +190,26 @@ public with sharing class CSAPControllerTest {
         Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Community Login User (Custom)'];
         Contact referralContact = [SELECT Id FROM Contact WHERE Lastname='Customer' LIMIT 1];
 
-        User userRecord = new User(
-            FirstName = 'User',
-            LastName ='Testing',
-            Alias = 'cswain',
-            Email = 'tropicole34@aol.com',
-            EmailEncodingKey ='UTF-8',
-            PortalRole = 'Manager',
-            LanguageLocaleKey ='en_US',
-            LocaleSidKey ='en_US',
-            ProfileId = profileRecord.Id,
-            Country ='United States',
-            IsActive = true,
-            ContactId = contactPartner.Id,
-            TimeZoneSidKey='America/Los_Angeles',
-            Username='tropicole34@aol.com');
-        Util.insertSObj(userRecord);
+        User currentUser = [SELECT Id FROM User WHERE Id =: UserInfo.getUserId() LIMIT 1];
+        User userRecord;
+        System.runAs(currentUser) {
+            userRecord = new User(
+                FirstName = 'User',
+                LastName ='Testing',
+                Alias = 'cswain',
+                Email = 'tropicole34@aol.com',
+                EmailEncodingKey ='UTF-8',
+                PortalRole = 'Manager',
+                LanguageLocaleKey ='en_US',
+                LocaleSidKey ='en_US',
+                ProfileId = profileRecord.Id,
+                Country ='United States',
+                IsActive = true,
+                ContactId = contactPartner.Id,
+                TimeZoneSidKey='America/Los_Angeles',
+                Username='tropicole34@aol.com');
+            Util.insertSObj(userRecord);
+        }
 
         Lead leadToInsert = getLeadForTest();
 
@@ -330,22 +334,26 @@ public with sharing class CSAPControllerTest {
         Contact customerContact = [SELECT Id FROM Contact WHERE Lastname='Customer' LIMIT 1];
         Contact contactPartner = [SELECT Id FROM Contact WHERE Lastname = 'SWAIN' LIMIT 1];
 
-        User userRecord = new User(
-            FirstName = 'User',
-            Lastname ='Testing',
-            Alias = 'cswain',
-            Email = 'tropicole34@aol.com',
-            Emailencodingkey ='UTF-8',
-            PortalRole = 'Manager',
-            Languagelocalekey ='en_US',
-            Localesidkey ='en_US',
-            Profileid = profileRecord.Id,
-            Country ='United States',
-            IsActive = true,
-            ContactId = contactPartner.Id,
-            Timezonesidkey='America/Los_Angeles',
-            Username='tropicole34@aol.com');
-        Util.insertSObj(userRecord);
+        User currentUser = [SELECT Id FROM User WHERE Id =: UserInfo.getUserId() LIMIT 1];
+        User userRecord;
+        System.runAs(currentUser) {
+            userRecord = new User(
+                FirstName = 'User',
+                Lastname ='Testing',
+                Alias = 'cswain',
+                Email = 'tropicole34@aol.com',
+                Emailencodingkey ='UTF-8',
+                PortalRole = 'Manager',
+                Languagelocalekey ='en_US',
+                Localesidkey ='en_US',
+                Profileid = profileRecord.Id,
+                Country ='United States',
+                IsActive = true,
+                ContactId = contactPartner.Id,
+                Timezonesidkey='America/Los_Angeles',
+                Username='tropicole34@aol.com');
+            Util.insertSObj(userRecord);
+        }
 
         Lead defaultLead = new Lead(FirstName = 'NoPartner',
             LastName = 'Testcase',
@@ -614,23 +622,26 @@ public with sharing class CSAPControllerTest {
             WHERE IsActive = TRUE
             AND Program__c = 'SMART - Community Solar'
         ];
-
-        User userRecord = new User(
-            FirstName = 'User',
-            LastName ='Testing',
-            Alias = 'cswain',
-            Email = 'tropicole34@aol.com',
-            EmailEncodingKey ='UTF-8',
-            PortalRole = 'Manager',
-            LanguageLocaleKey ='en_US',
-            LocaleSidKey ='en_US',
-            ProfileId = profileRecord.Id,
-            Country ='United States',
-            IsActive = true,
-            ContactId = contactPartner.Id,
-            TimeZoneSidKey='America/Los_Angeles',
-            Username='tropicole34@aol.com');
-        Util.insertSObj(userRecord);
+        User currentUser = [SELECT Id FROM User WHERE Id =: UserInfo.getUserId() LIMIT 1];
+        User userRecord;
+        System.runAs(currentUser) {
+            userRecord = new User(
+                FirstName = 'User',
+                LastName ='Testing',
+                Alias = 'cswain',
+                Email = 'tropicole34@aol.com',
+                EmailEncodingKey ='UTF-8',
+                PortalRole = 'Manager',
+                LanguageLocaleKey ='en_US',
+                LocaleSidKey ='en_US',
+                ProfileId = profileRecord.Id,
+                Country ='United States',
+                IsActive = true,
+                ContactId = contactPartner.Id,
+                TimeZoneSidKey='America/Los_Angeles',
+                Username='tropicole34@aol.com');
+            Util.insertSObj(userRecord);
+        }
 
         Lead lead = getLeadForTest();
         CSAPController.upsertCSAPRecords(lead, null, null, '');
@@ -733,22 +744,26 @@ public with sharing class CSAPControllerTest {
             AND Program__c = 'SMART - Community Solar'
         ];
 
-        User userRecord = new User(
-            FirstName = 'User',
-            LastName ='Testing',
-            Alias = 'cswain',
-            Email = 'tropicole34@aol.com',
-            EmailEncodingKey ='UTF-8',
-            PortalRole = 'Manager',
-            LanguageLocaleKey ='en_US',
-            LocaleSidKey ='en_US',
-            ProfileId = profileRecord.Id,
-            Country ='United States',
-            IsActive = true,
-            ContactId = contactPartner.Id,
-            TimeZoneSidKey='America/Los_Angeles',
-            Username='tropicole34@aol.com');
-        Util.insertSObj(userRecord);
+        User currentUser = [SELECT Id FROM User WHERE Id =: UserInfo.getUserId() LIMIT 1];
+        User userRecord;
+        System.runAs(currentUser) {
+            userRecord = new User(
+                FirstName = 'User',
+                LastName ='Testing',
+                Alias = 'cswain',
+                Email = 'tropicole34@aol.com',
+                EmailEncodingKey ='UTF-8',
+                PortalRole = 'Manager',
+                LanguageLocaleKey ='en_US',
+                LocaleSidKey ='en_US',
+                ProfileId = profileRecord.Id,
+                Country ='United States',
+                IsActive = true,
+                ContactId = contactPartner.Id,
+                TimeZoneSidKey='America/Los_Angeles',
+                Username='tropicole34@aol.com');
+            Util.insertSObj(userRecord);
+        }
 
         Lead lead = getLeadForTest();
         CSAPController.upsertCSAPRecords(lead, null, null, '');
@@ -838,7 +853,7 @@ public with sharing class CSAPControllerTest {
         Test.stopTest();
     }
 
-    @IsTest static void testInsertChargentOrderOnLead() {
+    @IsTest static void testInsertChargentOrderOnLeadAsPartner() {
         Lead residentialLead = getLeadForTest();
         insert residentialLead;
         ChargentBase__Gateway__c chGateway = new ChargentBase__Gateway__c(
@@ -897,9 +912,131 @@ public with sharing class CSAPControllerTest {
             ChargentOrders__Billing_Last_Name__c = 'McTesterson',
             Autopay_Only__c = true
         );
+        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Community Login User (Custom)'];
+        Contact customerContact = [SELECT Id FROM Contact WHERE Lastname='Customer' LIMIT 1];
+        Contact contactPartner = [SELECT Id FROM Contact WHERE Lastname = 'SWAIN' LIMIT 1];
+
+        User userRecord = new User(
+            FirstName = 'User',
+            Lastname ='Testing',
+            Alias = 'cswain',
+            Email = 'tropicole34@aol.com',
+            Emailencodingkey ='UTF-8',
+            PortalRole = 'Manager',
+            Languagelocalekey ='en_US',
+            Localesidkey ='en_US',
+            Profileid = profileRecord.Id,
+            Country ='United States',
+            IsActive = true,
+            ContactId = contactPartner.Id,
+            Timezonesidkey='America/Los_Angeles',
+            Username='tropicole34@aol.com');
+        Util.insertSObj(userRecord);
+
+
         Test.startTest();
-        CSAPController.insertChargentOrderOnLead(newACHOrder, residentialLead);
-        CSAPController.insertChargentOrderOnLead(newCreditCardOrder, residentialLead);
+        System.runAs(userRecord) {
+            CSAPController.insertChargentOrderOnLead(newACHOrder, residentialLead);
+            CSAPController.insertChargentOrderOnLead(newCreditCardOrder, residentialLead);
+        }
+        Test.stopTest();
+
+        List<ChargentOrders__ChargentOrder__c> newOrders = [
+            SELECT Id, Lead__c, Entity__c, ChargentOrders__Gateway__c
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE Lead__c = : residentialLead.Id
+        ];
+
+        System.assertEquals(2, newOrders.size());
+        System.assertEquals(defaultEntity.Id, newOrders[0].Entity__c);
+        System.assertEquals(defaultEntity.Gateway__c, newOrders[0].ChargentOrders__Gateway__c);
+        System.assertEquals(defaultEntity.Id, newOrders[1].Entity__c);
+        System.assertEquals(defaultEntity.Gateway__c, newOrders[1].ChargentOrders__Gateway__c);
+    }
+
+    @IsTest static void testInsertChargentOrderOnLeadAsGuestUser() {
+        Lead residentialLead = getLeadForTest();
+        insert residentialLead;
+        ChargentBase__Gateway__c chGateway = new ChargentBase__Gateway__c(
+            Name = 'Chargent Gateway',
+            ChargentBase__Active__c = true,
+            ChargentBase__Default_Payment_Method_for_PC__c = 'eCheck',
+            ChargentBase__Available_Payment_Methods__c = 'eCheck;Credit Card',
+            ChargentBase__Default_Payment_Method_for_PR__c = 'eCheck'
+        );
+        insert chGateway;
+
+        Entity__c defaultEntity = new Entity__c(
+            Name = 'BWC Holdings, LLC',
+            Gateway__c = chGateway.Id
+        );
+        insert defaultEntity;
+
+        ChargentOrders__ChargentOrder__c newACHOrder = new ChargentOrders__ChargentOrder__c(
+            ChargentOrders__Payment_Method__c = 'ACH',
+            ChargentOrders__Bank_Name__c = 'Test Bank',
+            ChargentOrders__Bank_Routing_Number__c = '123456789',
+            ChargentOrders__Bank_Account_Type__c = 'Checking',
+            ChargentOrders__Bank_Account_Number__c = '1234567890',
+            ChargentOrders__Bank_Account_Name__c = 'Testy McTesterson',
+            ChargentOrders__Billing_Email__c = residentialLead.Email,
+            ChargentOrders__Card_Type__c = '',
+            ChargentOrders__Card_Number__c = '',
+            ChargentOrders__Card_Expiration_Month__c = '',
+            ChargentOrders__Card_Expiration_Year__c = '',
+            ChargentOrders__Billing_Address__c = '',
+            ChargentOrders__Billing_City__c = '',
+            ChargentOrders__Billing_State__c = '',
+            ChargentOrders__Billing_Zip_Postal__c = '',
+            ChargentOrders__Billing_First_Name__c = '',
+            ChargentOrders__Billing_Last_Name__c = '',
+            Autopay_Only__c = true
+        );
+
+        ChargentOrders__ChargentOrder__c newCreditCardOrder = new ChargentOrders__ChargentOrder__c(
+            ChargentOrders__Payment_Method__c = 'Credit Card',
+            ChargentOrders__Bank_Name__c = '',
+            ChargentOrders__Bank_Routing_Number__c = '',
+            ChargentOrders__Bank_Account_Type__c = '',
+            ChargentOrders__Bank_Account_Number__c = '',
+            ChargentOrders__Bank_Account_Name__c = '',
+            ChargentOrders__Billing_Email__c = residentialLead.Email,
+            ChargentOrders__Card_Type__c = 'VISA',
+            ChargentOrders__Card_Number__c = '1234123412341234',
+            ChargentOrders__Card_Expiration_Month__c = '01',
+            ChargentOrders__Card_Expiration_Year__c = '12',
+            ChargentOrders__Billing_Address__c = '',
+            ChargentOrders__Billing_City__c = '',
+            ChargentOrders__Billing_State__c = '',
+            ChargentOrders__Billing_Zip_Postal__c = '12345',
+            ChargentOrders__Billing_First_Name__c = 'Testy',
+            ChargentOrders__Billing_Last_Name__c = 'McTesterson',
+            Autopay_Only__c = true
+        );
+        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Apply Profile'];
+
+        User userRecord = new User(
+            FirstName = 'User',
+            Lastname ='Testing',
+            Alias = 'cswain',
+            Email = 'tropicole34@aol.com',
+            Emailencodingkey ='UTF-8',
+            PortalRole = 'Manager',
+            Languagelocalekey ='en_US',
+            Localesidkey ='en_US',
+            Profileid = profileRecord.Id,
+            Country ='United States',
+            IsActive = true,
+            Timezonesidkey='America/Los_Angeles',
+            Username='tropicole34@aol.com');
+        Util.insertSObj(userRecord);
+
+
+        Test.startTest();
+        System.runAs(userRecord) {
+            CSAPController.insertChargentOrderOnLead(newACHOrder, residentialLead);
+            CSAPController.insertChargentOrderOnLead(newCreditCardOrder, residentialLead);
+        }
         Test.stopTest();
 
         List<ChargentOrders__ChargentOrder__c> newOrders = [

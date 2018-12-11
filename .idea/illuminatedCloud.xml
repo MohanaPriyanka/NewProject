@@ -6,7 +6,6 @@
         <IlluminatedCloudConnection>
           <option name="connectionName" value="UAT" />
           <option name="defaultModuleName" value="SMP" />
-          <option name="offlineSymbolTablePath" value="$PROJECT_DIR$/IlluminatedCloud/UAT/OfflineSymbolTable.zip" />
         </IlluminatedCloudConnection>
       </list>
     </option>
