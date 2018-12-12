@@ -444,16 +444,19 @@
         <formula>&quot;&amp;solmgr=1&quot; + 
 &quot;&amp;id=&quot; + Id + 
 &quot;&amp;templateid=a2Fq0000002FqCt&quot; + 
-&quot;&amp;qmode=Download&quot; + 
-&quot;&amp;ofn=&quot; + TEXT(Days_Past_Due__c) + &quot; Days Past Due Delinquency Letter&quot; + 
-&quot;&amp;sc0=1&quot; + 
+&quot;&amp;ofn=&quot; + Account_Number__c + TEXT(Days_Past_Due__c) + &quot; Days Past Due Delinquency Letter&quot; + 
+&quot;&amp;ofn=&quot; + TEXT(TODAY()) + &quot; CS Delinquency Letters&quot; + 
+&quot;&amp;APDF=1&quot; + 
+&quot;&amp;QMode=1&quot; + 
+&quot;&amp;ContentWorkspaceId=058q0000000A8JS&quot; + 
+&quot;&amp;DefaultPDF=1&quot; + 
+&quot;&amp;ZipPDFs=0&quot; + 
 &quot;&amp;ac0=1&quot; + 
+&quot;&amp;ac2=1&quot; + 
 &quot;&amp;ac1=Past Due Delinquency Letter Generated&quot; + 
-&quot;&amp;sc1=Attachments&quot; + 
-&quot;&amp;LG0=1&quot; + 
+&quot;&amp;LG0=0&quot; + 
 &quot;&amp;LG1=Past Due Delinquency Letter Generated&quot; + 
 &quot;&amp;LG4=1&quot; + 
-&quot;&amp;attachmentparentid=&quot; + Send_Bills_Contact__c + 
 &quot;&amp;lgwhoid=&quot; + Send_Bills_Contact__c</formula>
         <inlineHelpText>Field used on conductor to send cs delinquency letters to customers without a cancellation fee.</inlineHelpText>
         <label>CS Delinquency Letter (67 no fee)</label>
@@ -469,16 +472,18 @@
         <formula>&quot;&amp;solmgr=1&quot; + 
 &quot;&amp;id=&quot; + Id + 
 &quot;&amp;templateid=a2Fq0000002FqCy&quot; + 
-&quot;&amp;qmode=Download&quot; + 
-&quot;&amp;ofn=&quot; + TEXT(Days_Past_Due__c) + &quot; Days Past Due Delinquency Letter&quot; + 
-&quot;&amp;sc0=1&quot; + 
+&quot;&amp;ofn=&quot; + TEXT(TODAY()) + &quot; CS Delinquency Letters&quot; + 
+&quot;&amp;APDF=1&quot; + 
+&quot;&amp;QMode=1&quot; + 
+&quot;&amp;ContentWorkspaceId=058q0000000A8JS&quot; + 
+&quot;&amp;DefaultPDF=1&quot; + 
+&quot;&amp;ZipPDFs=0&quot; + 
 &quot;&amp;ac0=1&quot; + 
+&quot;&amp;ac2=1&quot; + 
 &quot;&amp;ac1=Past Due Delinquency Letter Generated&quot; + 
-&quot;&amp;sc1=Attachments&quot; + 
-&quot;&amp;LG0=1&quot; + 
+&quot;&amp;LG0=0&quot; + 
 &quot;&amp;LG1=Past Due Delinquency Letter Generated&quot; + 
 &quot;&amp;LG4=1&quot; + 
-&quot;&amp;attachmentparentid=&quot; + Send_Bills_Contact__c + 
 &quot;&amp;lgwhoid=&quot; + Send_Bills_Contact__c</formula>
         <inlineHelpText>This field is used in the conga conductor to generate cs past due letters.</inlineHelpText>
         <label>CS Delinquency Letter (67 with fee)</label>
@@ -904,17 +909,19 @@ Days_Past_Due__c = 90)</formula>
         <externalId>false</externalId>
         <formula>&quot;&amp;solmgr=1&quot; + 
 &quot;&amp;id=&quot; + Id +
-&quot;&amp;templateid=&quot; + CASE(Days_Past_Due__c,30,&quot;a2Fq0000002FpPJ&quot;,45,&quot;a1oq0000000K70I&quot;,88,&quot;a2Fq0000002FlmA&quot;,&quot;&quot;) +
-&quot;&amp;qmode=Download&quot; + 
-&quot;&amp;ofn=&quot; + TEXT(Days_Past_Due__c) + &quot; Days Past Due Delinquency Letter&quot; + 
-&quot;&amp;sc0=1&quot; + 
-&quot;&amp;ac0=1&quot; + 
+&quot;&amp;templateid=&quot; + CASE(Days_Past_Due__c,30,&quot;a2Fq0000002FpPJ&quot;,45,&quot;a2Fq0000002FpPE&quot;,88,&quot;a2Fq0000002FlmA&quot;,&quot;a2Fq0000002FpPJ&quot;) +
+&quot;&amp;ofn=&quot; + TEXT(TODAY()) + &quot; CS Delinquency Letters&quot; + 
+&quot;&amp;APDF=1&quot; +
+&quot;&amp;QMode=1&quot; +
+&quot;&amp;ContentWorkspaceId=058q0000000A8JS&quot; +
+&quot;&amp;DefaultPDF=1&quot; + 
+&quot;&amp;ZipPDFs=0&quot; +
+&quot;&amp;ac0=1&quot; +
+&quot;&amp;ac2=1&quot; +
 &quot;&amp;ac1=Past Due Delinquency Letter Generated&quot; + 
-&quot;&amp;sc1=Attachments&quot; +
-&quot;&amp;LG0=1&quot; +
+&quot;&amp;LG0=0&quot; +
 &quot;&amp;LG1=Past Due Delinquency Letter Generated&quot; + 
 &quot;&amp;LG4=1&quot; +
-&quot;&amp;attachmentparentid=&quot; + Send_Bills_Contact__c +
 &quot;&amp;lgwhoid=&quot; + Send_Bills_Contact__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Conga Lettersteam Delinquency</label>
