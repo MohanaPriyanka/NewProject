@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>AMP branded email to customers who&apos;ve had Autopay errors</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>CS Autopay Error Email - AMP</name>
+    <style>none</style>
+    <subject>There Was An Issue With Your Autopayment</subject>
+    <textOnly>Dear &lt;First Name&gt;,
+
+We are writing to notify you that we encountered a problem processing your BlueWave Community Solar payment. For your reference, the transaction produced the following error message: &lt;Error Message&gt;. Please note your payment is due &lt;current bill due date&gt;.
+
+Please log into your Community Solar Portal and update your payment information.
+
+To update your payment information:
+
+Log into your Community Solar Portal
+Navigate to the My Account tab
+Click the “Update My Payment Info” tab
+Enter your new payment information
+Agree to the usage terms
+Save your new payment information
+
+If you have any questions or would like assistance updating your payment information, please email BlueWave Customer Support here or give us a call at 844.786.4100.
+
+We look forward to a bright future ahead!
+
+- All of us here at AMP and BlueWave
+
+BlueWave Customer Care
+844.786.4100 | customercare@bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

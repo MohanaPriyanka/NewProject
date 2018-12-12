@@ -2658,87 +2658,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <businessProcess>Customer Care Case</businessProcess>
         <label>Customer Care</label>
         <picklistValues>
-            <picklist>Category__c</picklist>
-            <values>
-                <fullName>Application Status</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Billing</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Cancellation</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Disbursals</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Product Question</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SRECs</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Subscription Adjustment</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Technical Assistance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Transfer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Underwriting</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Product_Line__c</picklist>
-            <values>
-                <fullName>Community Solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar Loan</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Resolution__c</picklist>
-            <values>
-                <fullName>Duplicate</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Not a support case</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Resolved by external team</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Resolved with KB article</fullName>
-                <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Assignee_If_Different__c</picklist>
             <values>
                 <fullName>Alex Schulte</fullName>
@@ -2785,6 +2704,53 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
             <values>
                 <fullName>Vendor</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Category__c</picklist>
+            <values>
+                <fullName>Application Status</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Billing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cancellation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Disbursals</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Question</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SRECs</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Subscription Adjustment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Technical Assistance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Transfer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Underwriting</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -2917,6 +2883,17 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
         </picklistValues>
         <picklistValues>
+            <picklist>Product_Line__c</picklist>
+            <values>
+                <fullName>Community Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar Loan</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Reason</picklist>
             <values>
                 <fullName>Complex functionality</fullName>
@@ -2945,6 +2922,29 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             <values>
                 <fullName>User didn%27t attend training</fullName>
                 <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Resolution__c</picklist>
+            <values>
+                <fullName>Duplicate</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not a support case</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Resolved by external team</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Resolved with KB article</fullName>
+                <default>true</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -3228,6 +3228,56 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <businessProcess>Customer Care Case</businessProcess>
         <label>Partner Care Case</label>
         <picklistValues>
+            <picklist>Assignee_If_Different__c</picklist>
+            <values>
+                <fullName>Alex Schulte</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Aly Garvin</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BWOC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Kamal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Olivia Love</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reg Schonborn</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Trevor Lennox</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Case_Type__c</picklist>
+            <values>
+                <fullName>3rd Party</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BlueWave</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Vendor</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Category__c</picklist>
             <values>
                 <fullName>Amortization Table</fullName>
@@ -3283,90 +3333,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
             <values>
                 <fullName>Underwriting</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Product_Line__c</picklist>
-            <values>
-                <fullName>Community Solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar Loan</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Resolution__c</picklist>
-            <values>
-                <fullName>Duplicate</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Not a support case</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Resolved by external team</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Resolved with KB article</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Assignee_If_Different__c</picklist>
-            <values>
-                <fullName>Alex Schulte</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Aly Garvin</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>BWOC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Kamal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Olivia Love</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reg Schonborn</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Trevor Lennox</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Case_Type__c</picklist>
-            <values>
-                <fullName>3rd Party</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>BlueWave</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer</fullName>
-                <default>true</default>
-            </values>
-            <values>
-                <fullName>Vendor</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -3499,6 +3465,17 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
         </picklistValues>
         <picklistValues>
+            <picklist>Product_Line__c</picklist>
+            <values>
+                <fullName>Community Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar Loan</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Reason</picklist>
             <values>
                 <fullName>Complex functionality</fullName>
@@ -3526,6 +3503,29 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
             <values>
                 <fullName>User didn%27t attend training</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Resolution__c</picklist>
+            <values>
+                <fullName>Duplicate</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not a support case</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Resolved by external team</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Resolved with KB article</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -3904,10 +3904,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <picklistValues>
             <picklist>Resolution__c</picklist>
             <values>
-                <fullName>Bug</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Data Update</fullName>
                 <default>false</default>
             </values>
@@ -3987,7 +3983,10 @@ ISBLANK(TEXT(Resolution__c) ),
 OR(
    RecordTypeId = &apos;0120a0000004dlv&apos;, /* Product Support */
    RecordTypeId = &apos;012j00000000HA8&apos;), /* Customer Care */
- IsClosed = TRUE
+AND(
+    TEXT(Status) = &apos;Closed&apos;,
+   ISCHANGED(Status)
+)
 )</errorConditionFormula>
         <errorDisplayField>Resolution__c</errorDisplayField>
         <errorMessage>Resolution is required before closing the case.</errorMessage>

@@ -11149,6 +11149,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Lead.Lead_ID_18_digit__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Lead.Lead_ID__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -21120,11 +21125,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>MPM4_BASE__TH_TimeEntryLineItem__c.MPM4_BASE__Description__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__TH_TimeEntryLineItem__c.MPM4_BASE__Hours_Input__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

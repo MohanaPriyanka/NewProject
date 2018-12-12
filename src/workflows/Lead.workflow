@@ -1608,9 +1608,9 @@ Product_line__c = &apos;Residential Loan&apos;,
             <name>SLP_Pending_Information</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>false</active>
-        <formula>AND(!Unfinished_Lead__c , NOT(ISNULL(Personal_Credit_Report__c)) , Product_line__c = &quot;Residential Loan&quot;, NOT(TEXT(Status) = &quot;Under BlueWave Review&quot;))</formula>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+        <active>true</active>
+        <formula>AND(ISCHANGED(Unfinished_Lead__c),!Unfinished_Lead__c , NOT(ISNULL(Personal_Credit_Report__c)) , Product_line__c = &quot;Residential Loan&quot;, NOT(TEXT(Status) = &quot;Under BlueWave Review&quot;))</formula>
+        <triggerType>onAllChanges</triggerType>
     </rules>
     <rules>
         <fullName>SLP - Ready for Credit Check</fullName>

@@ -8818,6 +8818,51 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         </sharedTo>
     </listViews>
     <listViews>
+        <fullName>My_View</fullName>
+        <booleanFilter>1 AND  2 AND 3 AND 4 AND 5</booleanFilter>
+        <columns>OPPORTUNITY.NAME</columns>
+        <columns>CORE.USERS.FULL_NAME</columns>
+        <columns>Avidia_Review_Status__c</columns>
+        <columns>Personal_Credit_Report2__c</columns>
+        <columns>ACH_Name_on_Account__c</columns>
+        <columns>OPPORTUNITY.CREATED_DATE</columns>
+        <columns>OPPORTUNITY.STAGE_NAME</columns>
+        <columns>Product_Line__c</columns>
+        <columns>Sales_tag__c</columns>
+        <columns>BS_Sales_ID__c</columns>
+        <columns>Partner_tag_lookup__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Product_Line__c</field>
+            <operation>equals</operation>
+            <value>Residential Loan</value>
+        </filters>
+        <filters>
+            <field>Lead_Status__c</field>
+            <operation>notEqual</operation>
+            <value>Qualified</value>
+        </filters>
+        <filters>
+            <field>OPPORTUNITY.NAME</field>
+            <operation>notContain</operation>
+            <value>Test</value>
+        </filters>
+        <filters>
+            <field>Lender_of_Record__c</field>
+            <operation>equals</operation>
+        </filters>
+        <filters>
+            <field>OPPORTUNITY.STAGE_NAME</field>
+            <operation>notEqual</operation>
+            <value>Voided,DUPLICATE</value>
+        </filters>
+        <label>Avidia CL Unreviewed Opportunities</label>
+        <sharedTo>
+            <group>Avidia_Lending</group>
+            <group>BlueWave_Residential_Sales_Team</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
         <fullName>NewThisWeek</fullName>
         <columns>OPPORTUNITY.NAME</columns>
         <columns>ACCOUNT.NAME</columns>
@@ -8878,7 +8923,7 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         </filters>
         <filters>
             <field>Lender_of_Record__c</field>
-            <operation>equals</operation>
+            <operation>contains</operation>
             <value>Avidia</value>
         </filters>
         <label>NonDOER Opportunities with Credit Pulled</label>
@@ -8888,11 +8933,21 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <columns>OPPORTUNITY.NAME</columns>
         <columns>ACCOUNT.NAME</columns>
         <columns>OPPORTUNITY.AMOUNT</columns>
-        <columns>OPPORTUNITY.CLOSE_DATE</columns>
+        <columns>Lead_Status__c</columns>
         <columns>OPPORTUNITY.STAGE_NAME</columns>
         <columns>CORE.USERS.ALIAS</columns>
         <columns>OPPORTUNITY.CREATED_DATE</columns>
         <filterScope>Everything</filterScope>
+        <filters>
+            <field>Product_Line__c</field>
+            <operation>equals</operation>
+            <value>Residential Loan</value>
+        </filters>
+        <filters>
+            <field>OPPORTUNITY.NAME</field>
+            <operation>notContain</operation>
+            <value>test</value>
+        </filters>
         <label>Opportunities by Created Date</label>
         <sharedTo>
             <group>Non_Partners</group>
@@ -8955,8 +9010,8 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         </filters>
         <filters>
             <field>Lender_of_Record__c</field>
-            <operation>equals</operation>
-            <value>Avidia</value>
+            <operation>notEqual</operation>
+            <value>BlueWave</value>
         </filters>
         <filters>
             <field>Lead_Status__c</field>
