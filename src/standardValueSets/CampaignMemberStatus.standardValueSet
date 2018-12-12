@@ -27,6 +27,11 @@
         <label>Invited</label>
     </standardValue>
     <standardValue>
+        <fullName>New</fullName>
+        <default>false</default>
+        <label>New</label>
+    </standardValue>
+    <standardValue>
         <fullName>No Show</fullName>
         <default>false</default>
         <label>No Show</label>
