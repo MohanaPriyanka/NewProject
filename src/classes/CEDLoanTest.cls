@@ -86,7 +86,7 @@ public without sharing class CEDLoanTest {
             Family = 'Solar Loan',
             Credit_Maximum__c = '1000',
             Credit_Minimum__c = '600',
-            Disbursal_Terms__c = '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection',
+            Disbursal_Terms__c = '20% Contract Signature, 70% Mechanical Installation, 0% CED Ensemble, 10% Interconnection',
             Loan_Capital_Pool__c = capitalPool.Id,
             Loan_Financing_Fee_Terms__c = 'No Financing Fee',
             Loan_Interest_Only_Period__c = 12,
@@ -96,7 +96,7 @@ public without sharing class CEDLoanTest {
             Product_Type__c = 'Residential Loan',
             Program__c = 'CED',
             State__c = 'MA',
-            Technology_Platform_Fee__c = 0,
+            Technology_Platform_Fee__c = 7.5,
             Debt_To_Income_Maximum__c = 50,
             Lender_of_Record__c = 'Avidia',
             Hide_in_Requested_Product__c = False,
@@ -113,7 +113,7 @@ public without sharing class CEDLoanTest {
             Family = 'Solar Loan',
             Credit_Maximum__c = '1000',
             Credit_Minimum__c = '600',
-            Disbursal_Terms__c = '30% Contract Signature, 60% Mechanical Installation, 10% Interconnection',
+            Disbursal_Terms__c = '20% Building Permit Approved, 70% Mechanical Installation, 0% CED Ensemble, 10% Interconnection',
             Loan_Capital_Pool__c = capitalPool.Id,
             Loan_Financing_Fee_Terms__c = 'No Financing Fee',
             Loan_Interest_Only_Period__c = 12,
@@ -123,7 +123,7 @@ public without sharing class CEDLoanTest {
             Product_Type__c = 'Residential Loan',
             Program__c = 'CED',
             State__c = 'NY',
-            Technology_Platform_Fee__c = 0,
+            Technology_Platform_Fee__c = 7.5,
             Debt_To_Income_Maximum__c = 50,
             Lender_of_Record__c = 'Avidia',
             Hide_in_Requested_Product__c = False,
@@ -220,6 +220,280 @@ public without sharing class CEDLoanTest {
         insert creport;
 
         return application;
+    }
+
+    @isTest static void testCreateCEDDisbursalsFromOpportunity() {
+        Decimal totalAmount = 0;
+        Decimal totalPercentage = 0;
+        Map<String, List<Product2>> productMapMA = SLPAddCustomer.getProducts('MA');
+        List<Product2> productList = productMapMA.get('CED');
+
+        String systemInfo = '{"Number_of_Modules__c":5,"Module_Manufacturer__c":"Sunviva",' +
+            '"Module_Model_Number__c":"Type","Number_of_Inverters__c":1,"Inverter_Manufacturer__c":"SolarWorld",' +
+            '"Inverter_Model_Number__c":"Type","Estimated_Completion_Date__c":"04/13/2019","Generator_Nameplate_Capacity__c":' +
+            '12,"Storage_Grid_Hybrid__c":false,"Storage_Full_or_Partial_Home__c":"","Storage_Manufacturer__c":"",' +
+            '"Storage_Model__c":"","Storage_Inverter_Manufacturer__c":"","Storage_Inverter_Model__c":""}';
+
+        Lead newLead = new Lead(
+            FirstName = 'Jordan',
+            LastName = 'Testcase',
+            LASERCA__Home_State__c = 'MA',
+            Email = 'jpentaleri@bluewavesolar.com',
+            Product_Program__c = 'CED',
+            Requested_Loan_Amount__c = 34000,
+            System_Cost__c = 34000,
+            Product__c = productList[0].Id,
+            DOER_Solar_Loan__c = false,
+            Loan_System_Information__c = systemInfo,
+            Contingent_Contract__c = true
+        );
+
+        SLPAddCustomer.addNewLeadRecord(newLead); // Mimics installer's actions in SLP
+        Lead application = mockApplication(); // Mimics customer's actions in CAP up to pulling credit
+
+        Test.startTest();
+        CAPController.createLoanAndEquipment(application.Id, 'jpentaleri@bluewavesolar.com');
+        CAPController.convertLead(application.Id, 'jpentaleri@bluewavesolar.com');
+
+        Opportunity opportunityRecord = [
+            SELECT Id, Name,
+            (SELECT Id, Name FROM Loans__r)
+            FROM Opportunity
+            WHERE Email__c = 'jpentaleri@bluewavesolar.com'
+        ];
+
+        opportunityRecord.Contract_Status__c = 'Completed';
+        opportunityRecord.StageName = 'Complete';
+        update opportunityRecord;
+
+        List<Disbursal__c> disbursalRecords = [
+            SELECT Id, Name, Disbursal_Percentage__c, Amount__c, Status__c
+            FROM Disbursal__c
+            WHERE Loan__r.Id = : opportunityRecord.Loans__r.get(0).Id
+            ORDER BY Disbursal_Sequence__c
+        ];
+        Test.stopTest();
+
+        for (Disbursal__c disbursal : disbursalRecords) {
+            totalAmount = totalAmount + disbursal.Amount__c;
+            totalPercentage = totalPercentage + disbursal.Disbursal_Percentage__c;
+        }
+
+        System.assertEquals(4, disbursalRecords.size());
+        System.assertEquals('D1 - 20% - Jordan Testcase - Bluewave Inside Sales', disbursalRecords[0].Name);
+        System.assertEquals('D2 - 70% - Jordan Testcase - Bluewave Inside Sales', disbursalRecords[1].Name);
+        System.assertEquals('D3 - 0% - Jordan Testcase - Bluewave Inside Sales', disbursalRecords[2].Name);
+        System.assertEquals('D4 - 10% - Jordan Testcase - Bluewave Inside Sales', disbursalRecords[3].Name);
+        System.assertEquals((totalAmount * 0.2), disbursalRecords[0].Amount__c);
+        System.assertEquals((totalAmount * 0.7), disbursalRecords[1].Amount__c);
+        System.assertEquals((totalAmount * 0.0), disbursalRecords[2].Amount__c);
+        System.assertEquals((totalAmount * 0.1), disbursalRecords[3].Amount__c);
+        System.assertEquals('Due', disbursalRecords[0].Status__c);
+        System.assertEquals('Pending', disbursalRecords[1].Status__c);
+        System.assertEquals('Pending', disbursalRecords[2].Status__c);
+        System.assertEquals('Pending', disbursalRecords[3].Status__c);
+        System.assertEquals(34000.00, totalAmount);
+        System.assertEquals(100, totalPercentage);
+    }
+
+    @isTest public static void testCEDInvoiceUploadAndDisbursalTrueUp(){
+        // Tests the program picklist in portal. This list mocks what programs partners have access to:
+        // Right now, the partner has access to the MA CED product, but not the NY CED product
+        Map<String, List<Product2>> productMapMA = SLPAddCustomer.getProducts('MA');
+        List<Product2> productList = productMapMA.get('CED');
+
+        String systemInfo = '{"Number_of_Modules__c":5,"Module_Manufacturer__c":"Sunviva",' +
+            '"Module_Model_Number__c":"Type","Number_of_Inverters__c":1,"Inverter_Manufacturer__c":"SolarWorld",' +
+            '"Inverter_Model_Number__c":"Type","Estimated_Completion_Date__c":"04/13/2019","Generator_Nameplate_Capacity__c":' +
+            '12,"Storage_Grid_Hybrid__c":false,"Storage_Full_or_Partial_Home__c":"","Storage_Manufacturer__c":"",' +
+            '"Storage_Model__c":"","Storage_Inverter_Manufacturer__c":"","Storage_Inverter_Model__c":""}';
+
+        Lead newLead = new Lead(
+            FirstName = 'Jordan',
+            LastName = 'Testcase',
+            LASERCA__Home_State__c = 'MA',
+            Email = 'jpentaleri@bluewavesolar.com',
+            Product_Program__c = 'CED',
+            Requested_Loan_Amount__c = 34000,
+            System_Cost__c = 34000,
+            Product__c = productList[0].Id,
+            DOER_Solar_Loan__c = false,
+            Loan_System_Information__c = systemInfo,
+            Contingent_Contract__c = true
+        );
+
+        SLPAddCustomer.addNewLeadRecord(newLead); // Mimics installer's actions in SLP
+        Lead application = mockApplication(); // Mimics customer's actions in CAP up to pulling credit
+
+        Test.startTest();
+        CAPController.convertLead(application.Id, 'jpentaleri@bluewavesolar.com');
+        CAPController.createLoanAndEquipment(application.Id, 'jpentaleri@bluewavesolar.com');
+
+        Opportunity opportunityRecord = [
+            SELECT Id, Name,
+            (SELECT Id, Name, Requested_Loan_Amount__c FROM Loans__r)
+            FROM Opportunity
+            WHERE Email__c = 'jpentaleri@bluewavesolar.com'
+        ];
+
+        opportunityRecord.Contract_Status__c = 'Completed';
+        opportunityRecord.StageName = 'Complete';
+        update opportunityRecord;
+
+        List<String> oppId = new List<String> {opportunityRecord.Id};
+        Loan__c loan = opportunityRecord.Loans__r[0];
+        Decimal loanAmount = loan.Requested_Loan_Amount__c;
+        DisbursalHandler dh = new DisbursalHandler();
+        Map<String,Disbursal__c> DisbursalMap = dh.getDisbursalMap(oppId);
+
+        Disbursal__c bpDisbursal = DisbursalMap.get(opportunityRecord.Id + 'Contract Signature');
+        bpDisbursal.Status__c = 'Disbursed';
+        update bpDisbursal;
+
+        // could possibly remove this assertion or move it to another test to reduce soql calls
+        DisbursalMap = dh.getDisbursalMap(oppId);
+        System.assertEquals('Disbursed', DisbursalMap.get(opportunityRecord.Id + 'Contract Signature').Status__c);
+        System.assertEquals('Pending', DisbursalMap.get(opportunityRecord.Id + 'Mechanical Installation').Status__c);
+        System.assertEquals('Pending', DisbursalMap.get(opportunityRecord.Id + 'CED Ensemble').Status__c);
+        System.assertEquals('Pending', DisbursalMap.get(opportunityRecord.Id + 'Interconnection').Status__c);
+
+        Blob bodyBlob = Blob.valueOf('Unit Test Attachment Body');
+        Residential_Equipment__c equipment = [SELECT Id, Mechanically_Installed__c, Labor_Performed__c, Materials_Supplied__c, Interconnected__c, Loan__r.Id
+        FROM Residential_Equipment__c
+        LIMIT 1];
+
+        Attachment cedInvoiceDoc = new Attachment();
+        cedInvoiceDoc.ParentId = equipment.Id;
+        cedInvoiceDoc.Description = 'Materials Invoice';
+        cedInvoiceDoc.Name =  String.valueOf('test.txt');
+        cedInvoiceDoc.Body = bodyBlob;
+
+        List<Account> profitCenterList = BlueWaveParent.getProfitCenters();
+
+        // Invoice Amount and Profit Center are entered manually when the invoice is being uploaded.
+        loan.Invoice_Amount__c = 19000.00;
+        loan.Profit_Center__c = profitCenterList[0].Id;
+
+        insert cedInvoiceDoc;
+        update loan;
+        Test.stopTest();
+
+        Datetime now = Datetime.now();
+
+        List<AsyncApexJob> asyncApexJobs = [
+            SELECT Id
+            FROM AsyncApexJob
+            WHERE CreatedDate > : now.addSeconds(-2)
+        ];
+
+        // sometimes overlaps with other requests
+        System.assert(asyncApexJobs.size() >= 1);
+    }
+
+    @isTest public static void testQueueableDisbursalUpdate(){
+        // Tests the program picklist in portal. This list mocks what programs partners have access to:
+        // Right now, the partner has access to the MA CED product, but not the NY CED product
+        Map<String, List<Product2>> productMapMA = SLPAddCustomer.getProducts('MA');
+        List<Product2> productList = productMapMA.get('CED');
+
+        String systemInfo = '{"Number_of_Modules__c":5,"Module_Manufacturer__c":"Sunviva",' +
+            '"Module_Model_Number__c":"Type","Number_of_Inverters__c":1,"Inverter_Manufacturer__c":"SolarWorld",' +
+            '"Inverter_Model_Number__c":"Type","Estimated_Completion_Date__c":"04/13/2019","Generator_Nameplate_Capacity__c":' +
+            '12,"Storage_Grid_Hybrid__c":false,"Storage_Full_or_Partial_Home__c":"","Storage_Manufacturer__c":"",' +
+            '"Storage_Model__c":"","Storage_Inverter_Manufacturer__c":"","Storage_Inverter_Model__c":""}';
+
+        Lead newLead = new Lead(
+            FirstName = 'Jordan',
+            LastName = 'Testcase',
+            LASERCA__Home_State__c = 'MA',
+            Email = 'jpentaleri@bluewavesolar.com',
+            Product_Program__c = 'CED',
+            Requested_Loan_Amount__c = 34000,
+            System_Cost__c = 34000,
+            Product__c = productList[0].Id,
+            DOER_Solar_Loan__c = false,
+            Loan_System_Information__c = systemInfo,
+            Contingent_Contract__c = true
+        );
+
+        SLPAddCustomer.addNewLeadRecord(newLead); // Mimics installer's actions in SLP
+        Lead application = mockApplication(); // Mimics customer's actions in CAP up to pulling credit
+
+        Test.startTest();
+        CAPController.convertLead(application.Id, 'jpentaleri@bluewavesolar.com');
+        CAPController.createLoanAndEquipment(application.Id, 'jpentaleri@bluewavesolar.com');
+        Test.stopTest();
+
+        Opportunity opportunityRecord = [
+            SELECT Id, Name,
+            (SELECT Id, Name, Requested_Loan_Amount__c, Partner__c, Product__c, Technology_Platform_Fee__c FROM Loans__r)
+            FROM Opportunity
+            WHERE Email__c = 'jpentaleri@bluewavesolar.com'
+        ];
+
+        opportunityRecord.Contract_Status__c = 'Completed';
+        opportunityRecord.StageName = 'Complete';
+        update opportunityRecord;
+
+        List<String> oppId = new List<String> {opportunityRecord.Id};
+        Loan__c loan = opportunityRecord.Loans__r[0];
+        Decimal loanAmount = loan.Requested_Loan_Amount__c;
+        DisbursalHandler dh = new DisbursalHandler();
+        Map<String,Disbursal__c> DisbursalMap = dh.getDisbursalMap(oppId);
+
+        Disbursal__c csDisbursal = DisbursalMap.get(opportunityRecord.Id + 'Contract Signature');
+        csDisbursal.Status__c = 'Disbursed';
+        update csDisbursal;
+
+        // could possibly remove this assertion or move it to another test to reduce soql calls
+        DisbursalMap = dh.getDisbursalMap(oppId);
+        System.assertEquals('Disbursed', DisbursalMap.get(opportunityRecord.Id + 'Contract Signature').Status__c);
+        System.assertEquals('Pending', DisbursalMap.get(opportunityRecord.Id + 'Mechanical Installation').Status__c);
+        System.assertEquals('Pending', DisbursalMap.get(opportunityRecord.Id + 'CED Ensemble').Status__c);
+        System.assertEquals('Pending', DisbursalMap.get(opportunityRecord.Id + 'Interconnection').Status__c);
+
+        List<Account> profitCenterList = BlueWaveParent.getProfitCenters();
+
+        // Invoice Amount and Profit Center are entered manually when the invoice is being uploaded.
+        loan.Invoice_Amount__c = 19000.00;
+        loan.Profit_Center__c = profitCenterList[0].Id;
+
+        QueueableDisbursalUpsert updateJob = new QueueableDisbursalUpsert(loan);
+        updateJob.execute(null);
+
+        Decimal d1Amount = loanAmount * .20;
+        Decimal d2Amount = loan.Invoice_Amount__c;
+        Decimal d3Amount = (loanAmount * .70) - d2Amount - loan.Technology_Platform_Fee__c;
+        Decimal d4Amount = loanAmount * .10;
+
+        DisbursalMap = dh.getDisbursalMap(oppId);
+        System.assertEquals('Disbursed', DisbursalMap.get(opportunityRecord.Id + 'Contract Signature').Status__c);
+        System.assertEquals('Pending', DisbursalMap.get(opportunityRecord.Id + 'Mechanical Installation').Status__c);
+        System.assertEquals('Pending', DisbursalMap.get(opportunityRecord.Id + 'CED Ensemble').Status__c);
+        System.assertEquals('Pending', DisbursalMap.get(opportunityRecord.Id + 'Interconnection').Status__c);
+        System.assertEquals(d1Amount, DisbursalMap.get(opportunityRecord.Id + 'Contract Signature').Amount__c);
+        System.assertEquals(d2Amount, DisbursalMap.get(opportunityRecord.Id + 'Mechanical Installation').Amount__c);
+        System.assertEquals(d3Amount, DisbursalMap.get(opportunityRecord.Id + 'CED Ensemble').Amount__c);
+        System.assertEquals(d4Amount, DisbursalMap.get(opportunityRecord.Id + 'Interconnection').Amount__c);
+
+        Residential_Equipment__c equipment = [SELECT Id, Mechanically_Installed__c, Labor_Performed__c, Materials_Supplied__c, Interconnected__c, Loan__r.Id
+        FROM Residential_Equipment__c
+        LIMIT 1];
+
+        System.assert(equipment.Mechanically_Installed__c == false);
+
+        equipment.Mechanically_Installed__c = true;
+        update equipment;
+
+        DisbursalMap = dh.getDisbursalMap(oppId);
+        System.assertEquals('Disbursed', DisbursalMap.get(opportunityRecord.Id + 'Contract Signature').Status__c);
+        System.assertEquals('Due', DisbursalMap.get(opportunityRecord.Id + 'Mechanical Installation').Status__c);
+        System.assertEquals('Due', DisbursalMap.get(opportunityRecord.Id + 'CED Ensemble').Status__c);
+        System.assertEquals('Pending', DisbursalMap.get(opportunityRecord.Id + 'Interconnection').Status__c);
+        System.assertEquals(d1Amount, DisbursalMap.get(opportunityRecord.Id + 'Contract Signature').Amount__c);
+        System.assertEquals(d2Amount, DisbursalMap.get(opportunityRecord.Id + 'Mechanical Installation').Amount__c);
+        System.assertEquals(d3Amount, DisbursalMap.get(opportunityRecord.Id + 'CED Ensemble').Amount__c);
+        System.assertEquals(d4Amount, DisbursalMap.get(opportunityRecord.Id + 'Interconnection').Amount__c);
     }
 
     @isTest public static void testPartnerAccessToProduct(){
