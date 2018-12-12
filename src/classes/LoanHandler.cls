@@ -1437,7 +1437,13 @@ public without sharing class LoanHandler{
     public void checkLoanCompletePartnerTasks(Loan__c newLoan, Map<Id, Loan__c> oldLoanMap) {
         if (newLoan.Profit_Center__c != null && oldLoanMap.get(newLoan.Id).Profit_Center__c == null) {
             updatePartnerTaskMaterialsInvoice(newLoan, getPartnerTasks(new List<String>{newLoan.Lead__c}));
+            updateDisbursalsForCEDLoan(newLoan);
         }
+    }
+
+    public void updateDisbursalsForCEDLoan(Loan__c loan) {
+        QueueableDisbursalUpsert updateJob = new QueueableDisbursalUpsert(loan);
+        System.enqueueJob(updateJob);
     }
 
     // Called before update or insert to set Number of Days past due
