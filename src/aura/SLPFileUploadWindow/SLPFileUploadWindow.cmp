@@ -100,7 +100,7 @@
             <aura:if isTrue="{!not(empty(v.disbursalMessage))}">
               <ui:outputText value="{!v.disbursalMessage}"/>
             </aura:if>
-          </div>
+          </div> 
           <div>
             <lightning:button aura:id="saveButton"
                               class="slds-align--absolute-center"

@@ -164,9 +164,11 @@
     addDisbursalOnHoldMessage : function(component, parentId, oppId) {
         var action = component.get("c.checkIfDisbursalOnHold");
         var self = this;
+
         action.setParams({
             oppId: oppId
-        });
+        }); 
+
         action.setCallback(this, function(a) {
             if(a.getState() == "SUCCESS") {
                 var isDisbursalOnHold = a.getReturnValue();
@@ -178,7 +180,7 @@
         });
         $A.enqueueAction(action);
     },
-
+  
     startSpinner : function (component) {
         $A.util.removeClass(component.find("spinner"), 'noDisplay'); 
         $A.util.addClass(component.find("helpTextLine"), 'noDisplay'); 
@@ -187,7 +189,7 @@
         $A.util.addClass(component.find("greyBoxes"), 'noDisplay'); 
         $A.util.addClass(component.find("fileTypePicklist"), 'noDisplay'); 
     },
-
+      
     fileUploadSuccess : function (component, parentId, fileName, helper) {
         var newDate = component.get("v.dateValue");
         var oppId = component.get("v.oppId");
@@ -291,10 +293,10 @@
     },
     
     addErrorMessaging : function(component) {
-        $A.util.removeClass(component.find("errorTextLine"), 'noDisplay'); 
-        $A.util.addClass(component.find("uploadButton"), 'shake'); 
+        $A.util.removeClass(component.find("errorTextLine"), 'noDisplay');
+        $A.util.addClass(component.find("uploadButton"), 'shake');
         $A.util.removeClass(component.find("saveButton"), 'noDisplay');
-        $A.util.addClass(component.find("spinner"), 'noDisplay'); 
+        $A.util.addClass(component.find("spinner"), 'noDisplay');
     },
     
     removeErrorMessaging : function(component) {

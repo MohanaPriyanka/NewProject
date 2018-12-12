@@ -101,7 +101,7 @@ public without sharing class BlueWaveParent {
         Loan__c loan = [
             SELECT Id,
             (SELECT Id, Status__c
-            FROM Disbursals__r)
+             FROM Disbursals__r) 
             FROM Loan__c
             WHERE Opportunity__c =: oppId
         ];
