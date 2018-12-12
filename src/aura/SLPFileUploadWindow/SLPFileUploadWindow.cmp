@@ -10,6 +10,7 @@
   <aura:attribute name="fileReader" type="Object[]" />
   <aura:attribute name="buttonText" type="String" default="Select File"/>
   <aura:attribute name="errorText" type="String" default=""/>
+  <aura:attribute name="disbursalMessage" type="String" default=""/>
   <aura:attribute name="helpText" type="String" default=""/>
   <aura:attribute name="fileList" type="Object[]" />
   <aura:attribute name="fileTypes" type="String[]" default=""/>
@@ -92,7 +93,14 @@
           </div>    
         </div>
         <footer aura:id="windowFooter" class="slds-modal__footer">
-          <h2 aura:id="successText" id="modal-heading-01" class="slds-align--absolute-center slds-text-heading_x-small proximaNovaWhite blueText noDisplay"><ui:outputText value="{!v.fileName + ' Uploaded Successfully'}"/></h2>
+          <div class="slds-align--absolute-center">
+            <h2 aura:id="successText" id="modal-heading-01" class="slds-text-heading_x-small proximaNovaWhite blueText noDisplay"><ui:outputText value="{!v.fileName + ' Uploaded Successfully'}"/></h2>
+          </div>
+          <div class="slds-text-body_small slds-text-color_error" style="text-align: center;padding-top: 20px">
+            <aura:if isTrue="{!not(empty(v.disbursalMessage))}">
+              <ui:outputText value="{!v.disbursalMessage}"/>
+            </aura:if>
+          </div>
           <div>
             <lightning:button aura:id="saveButton"
                               class="slds-align--absolute-center"
