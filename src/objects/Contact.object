@@ -569,6 +569,16 @@ Specify the global country code setting or record level country code to automati
         <type>TextArea</type>
     </fields>
     <fields>
+        <fullName>Employed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates Co-Applicant Employment</inlineHelpText>
+        <label>Employed</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Employed_less_than_a_year__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -577,6 +587,18 @@ Specify the global country code setting or record level country code to automati
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Employer_Annual_Salary__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Provided by loan applicant</inlineHelpText>
+        <label>Employer Annual Salary</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Express_Consent__c</fullName>
@@ -986,6 +1008,54 @@ Specify the global country code setting or record level country code to automati
         <trackHistory>false</trackHistory>
     </fields>
     <fields>
+        <fullName>Monthly_Income_2__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Used for co-applicant &quot;Other Income&quot;</inlineHelpText>
+        <label>Monthly Income 2</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Monthly_Income_Details_2__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Used for co-applicant &quot;Other Income&quot;</inlineHelpText>
+        <label>Monthly Income Details 2</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Monthly_Income_Details__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Used for co-applicant &quot;Other Income&quot;</inlineHelpText>
+        <label>Monthly Income Details</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Monthly_Income__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Used for co-applicant &quot;Other Income&quot;</inlineHelpText>
+        <label>Monthly Income</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>NABCEP_Certification_Number__c</fullName>
         <externalId>false</externalId>
         <label>NABCEP Certification Number</label>
@@ -1030,6 +1100,16 @@ Specify the global country code setting or record level country code to automati
         <externalId>false</externalId>
         <inlineHelpText>Reg O question: I am an executive officer or director at a financial institution</inlineHelpText>
         <label>Other Bank Executive?</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Other_Income__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Used for a loan applicant to provide other monthly income (alimony, dividend, rental, etc)</inlineHelpText>
+        <label>Other Income</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
@@ -1163,6 +1243,28 @@ SUBSTITUTE(Phone, &quot;(&quot;, &quot;&quot;), &quot;)&quot;, &quot;&quot;), &q
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Retired__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates Co-Applicant Retirement Income</inlineHelpText>
+        <label>Retired</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Retirement_Annual_Salary__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Provided by loan applicant</inlineHelpText>
+        <label>Retirement Annual Salary</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>Sales_Representative__c</fullName>
         <deleteConstraint>Restrict</deleteConstraint>
         <description>This is the relationship to the Sales Team object. It allow the portal to show records unique to each Sales Rep.</description>
@@ -1175,6 +1277,28 @@ SUBSTITUTE(Phone, &quot;(&quot;, &quot;&quot;), &quot;)&quot;, &quot;&quot;), &q
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
         <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Self_Employed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates Co-Applicant Self Employment Income</inlineHelpText>
+        <label>Self Employed</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Self_Employment_Annual_Salary__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Provided by loan applicant</inlineHelpText>
+        <label>Self-Employment Annual Salary</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Title</fullName>
@@ -1266,6 +1390,28 @@ SUBSTITUTE(Phone, &quot;(&quot;, &quot;&quot;), &quot;)&quot;, &quot;&quot;), &q
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Veteran_Annual_Salary__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Provided by loan applicant</inlineHelpText>
+        <label>Veteran Annual Salary</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Veteran_Disability__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates Co-Applicant Veteran or Disability Income</inlineHelpText>
+        <label>Veteran Disability</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Year_Employment__c</fullName>

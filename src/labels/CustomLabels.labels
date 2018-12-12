@@ -168,7 +168,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSN Reason</shortDescription>
-        <value>Lastly, we need {0}&apos;s Social Security Number, date of birth, annual income, and unreported mortgage debt.</value>
+        <value>Lastly, we need {0}&apos;s Social Security Number, date of birth.</value>
     </labels>
     <labels>
         <fullName>Co_Signer_PI_Next</fullName>
@@ -628,8 +628,7 @@
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>SSN Reason</shortDescription>
-        <value>We need your Social Security Number and Date of Birth to run a credit check, and your annual income
-      and monthly debt to see if you will qualify for our loan.</value>
+        <value>We need your Social Security Number and Date of Birth to run a credit check.</value>
     </labels>
     <labels>
         <fullName>PI_Privacy_Policy_Acknowledged_BW</fullName>
