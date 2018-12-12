@@ -6,7 +6,6 @@
 private class CSAccountCancellerTest {
     @TestSetup public static void setupTestData() {
         CustomerCommunicationHandlerTest.setupData();
-        //Does not have any anchor opportunities or delinquent customers to test
     }
 
     @IsTest
@@ -25,7 +24,8 @@ private class CSAccountCancellerTest {
         update listaccountBills;
 
         //A: Normal - Cancel
-        CSAccountCanceller.handleOverdueAccounts();
+        CSCancellationScheduler cancellationScheduler = new CSCancellationScheduler();
+        cancellationScheduler.execute(null);
         Account testAccount = [
             SELECT Id, Name, Cancellation_Request_Date__c, Cancellation_Reason__c, Cancellation_Comments__c
             FROM Account WHERE Id = :listaccountBills[0].Parent_Account__r.Id
@@ -38,9 +38,7 @@ private class CSAccountCancellerTest {
         System.assertEquals('Automated Cancellation', testAccount.Cancellation_Comments__c);
         System.assertEquals('Lack of Payment', testAccount.Cancellation_Reason__c);
 
-        //Undo cancel and set customer group of Opp to Anchor
-        //Check to make sure not cancelled
-        //Will changing the opportunity customer group cause other classes to fail?
+        //Undo cancel and set Opp.Customer_Group__c to Anchor
         testAccount.Cancellation_Reason__c = null;
         testAccount.Cancellation_Comments__c = null;
         testAccount.Cancellation_Request_Date__c = null;
