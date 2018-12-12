@@ -533,6 +533,11 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
                     <default>false</default>
                     <label>20% Building Permit Approved, 70% Mechanical Installation, 0% CED Ensemble, 10% Interconnection</label>
                 </value>
+                <value>
+                    <fullName>20% Contract Signature, 70% Mechanical Installation, 0% CED Ensemble, 10% Interconnection</fullName>
+                    <default>false</default>
+                    <label>20% Contract Signature, 70% Mechanical Installation, 0% CED Ensemble, 10% Interconnection</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
