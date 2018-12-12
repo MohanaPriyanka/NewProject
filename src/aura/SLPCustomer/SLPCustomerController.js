@@ -370,6 +370,7 @@
         var equipmentId = component.get("v.customerInformation.Id");
         var equipmentObject = component.get("v.equipmentUpdate");
         var oppId = component.get("v.customerInformation.Opportunity__r.Id");
+        var loanId = component.get("v.customerInformation.Loan__r.Id");
         var equipmentUpdateDummy = component.get("v.customerInformation.Interconnection_Update_Dummy__c");
         var urlEvent = $A.get("e.force:navigateToURL");
         var taskName = event.getSource().get("v.class");
@@ -385,19 +386,33 @@
                 helper.openBuildingPermitModal(component, event, helper);
                 return;
 
+            case 'Material Invoice':
+                helper.openUploadWindow(component,"hide","Upload Material Invoice", equipmentId, loanId, null, "Material Invoice", taskHelpText);
+                return;
+
             case 'Mechanical Installation':
                 helper.openUploadWindow(component,"Date of Mechanical Installation:","Upload Proof of Mechanical Installation", equipmentId, oppId, null, "Mechanical Installation Documentation", taskHelpText);
                 return;
 
             case 'Interconnection':
             case 'Report Interconnection to MCEC':
-                helper.openUploadWindow(component,"Date of Interconnection:","Upload Proof of Interconnection", equipmentId, oppId, null, "Interconnection Documentation", taskHelpText);
-                return;
+                if (component.get('v.customerInformation.Loan__r.State__c') === 'MA') {
+                    urlEvent.setParams(
+                    //SREC Form - more than a simple file upload (openUploadWindow), should be its own window or SREC onboarding component
+                       {'url': 'https://forms.bluewaverenewables.com/381637'
+                               + '?tfa_117=' + equipmentId
+                               + '&tfa_118=' + !equipmentUpdateDummy
+                               + '&tfa_107=' + oppId});
+                    break;
+                } else {
+                    helper.openUploadWindow(component,"Date of Interconnection:","Upload Proof of Interconnection", equipmentId, oppId, null, "Interconnection Documentation", taskHelpText);
+                    return;
+                }
             case 'Provide Sales Agreement':
-                helper.openUploadWindow(component,"hide","Upload Sales Agreement", oppId, oppId, null, "Sales Agreement", taskHelpText);
-                return;
+              helper.openUploadWindow(component,"hide","Upload Sales Agreement", oppId, oppId, null, "Sales Agreement", taskHelpText);
+              return;
             default:
-                break;
+              break;
         }
         urlEvent.fire();
     },
