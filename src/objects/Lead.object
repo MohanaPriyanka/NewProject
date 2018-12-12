@@ -17940,7 +17940,7 @@ if ({!ISBLANK( Lead.Co_App_Adverse_Credit_Notice_1__c )}) {
         <protected>false</protected>
         <showsLocation>false</showsLocation>
         <showsStatus>false</showsStatus>
-        <url>https://na16.salesforce.com/500/e?
+        <url>/500/e?
 &amp;RecordType=012j00000000HA8
 &amp;ent=Case&amp;cas14=Customer Care Case
 &amp;CF00Nj000000BVAYm_lkid={!Lead.Lead_ID__c}
@@ -17995,7 +17995,7 @@ window.location.href = &apos;{!$Site.BaseUrl}/_ui/core/email/author/EmailAuthor?
         <protected>false</protected>
         <showsLocation>false</showsLocation>
         <showsStatus>false</showsStatus>
-        <url>https://na16.salesforce.com/_ui/core/email/author/EmailAuthor?p2_lkid={!Lead.Id}&amp;rtype=00Q&amp;template_id=00Xj0000000MSY1</url>
+        <url>/_ui/core/email/author/EmailAuthor?p2_lkid={!Lead.Id}&amp;rtype=00Q&amp;template_id=00Xj0000000MSY1</url>
     </webLinks>
     <webLinks>
         <fullName>Send_Co_Applicant_Link_BW_Loan</fullName>
@@ -18014,7 +18014,7 @@ window.location.href = &apos;{!$Site.BaseUrl}/_ui/core/email/author/EmailAuthor?
         <protected>false</protected>
         <showsLocation>false</showsLocation>
         <showsStatus>false</showsStatus>
-        <url>https://na16.salesforce.com/_ui/core/email/author/EmailAuthor?p2_lkid={!Lead.Id}&amp;rtype=00Q&amp;template_id=00Xj0000000FlPi</url>
+        <url>/_ui/core/email/author/EmailAuthor?p2_lkid={!Lead.Id}&amp;rtype=00Q&amp;template_id=00Xj0000000FlPi</url>
     </webLinks>
     <webLinks>
         <fullName>Send_PreQual_Approval_Email</fullName>
@@ -18025,7 +18025,7 @@ window.location.href = &apos;{!$Site.BaseUrl}/_ui/core/email/author/EmailAuthor?
         <masterLabel>Send PreQual Approval Email</masterLabel>
         <openType>replace</openType>
         <protected>false</protected>
-        <url>https://na16.salesforce.com/_ui/core/email/author/EmailAuthor?p2_lkid={!Lead.Id}&amp;rtype=00Q&amp;template_id=00Xj0000000FYDj</url>
+        <url>/_ui/core/email/author/EmailAuthor?p2_lkid={!Lead.Id}&amp;rtype=00Q&amp;template_id=00Xj0000000FYDj</url>
     </webLinks>
     <webLinks>
         <fullName>Underwriting_Review</fullName>

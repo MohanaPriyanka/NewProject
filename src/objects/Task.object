@@ -4410,7 +4410,7 @@ document.location.reload(true);
         <protected>false</protected>
         <showsLocation>false</showsLocation>
         <showsStatus>false</showsStatus>
-        <url>https://na16.salesforce.com/_ui/core/email/author/EmailAuthor?rtype=003&amp;p3_lkid={!Task.Requested_By__c}&amp;retURL=%2F{!Task.Requested_By__c}&amp;p5={!$User.Email}&amp;p24=&quot;{!Lead.Email}}&amp;template_id=00Xj0000000RB7O</url>
+        <url>/_ui/core/email/author/EmailAuthor?rtype=003&amp;p3_lkid={!Task.Requested_By__c}&amp;retURL=%2F{!Task.Requested_By__c}&amp;p5={!$User.Email}&amp;p24=&quot;{!Lead.Email}}&amp;template_id=00Xj0000000RB7O</url>
     </webLinks>
     <webLinks>
         <fullName>Send_Reminder_Email</fullName>
@@ -4443,7 +4443,7 @@ window.location.reload();</url>
         <protected>false</protected>
         <showsLocation>false</showsLocation>
         <showsStatus>false</showsStatus>
-        <url>https://na16.salesforce.com/00Oj0000004i9LJ?pv0={!User.Name}</url>
+        <url>/00Oj0000004i9LJ?pv0={!User.Name}</url>
     </webLinks>
     <webLinks>
         <fullName>rcsfl__Send_SMS_Opp</fullName>

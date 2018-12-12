@@ -1,0 +1,4 @@
+Confirm if the utility for the lead below is Duke Energy and if so, whether the installer-homeowner contract is contingent on Duke Energy Rebate. 
+
+Lead Name: {!Lead.Name} 
+{!Lead.Link}
