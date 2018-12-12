@@ -32,6 +32,12 @@
         }
         var errorMessage = "";
         var lead = component.get("v.lead");
+        errorMessage += this.getFieldError(component, {'fieldValue': lead.Monthly_Mortgage_Tax_and_Insurance__c,
+            'fieldId': "mortgageElement",
+            'fieldType': "currency",
+            'errorMessage': "Enter your approximate monthly mortgage. If you don't have a mortgage, " +
+                            "enter your estimated monthly taxes and insurance. If you don't pay mortgage, " +
+                            "insurance or tax on the installation property, enter 0."});
         errorMessage += this.getFieldError(component, {'fieldValue': lead.LASERCA__Home_Address__c,
                                                        'fieldId': "homeAddressElement",
                                                        'errorMessage': "Enter your street address"});
@@ -106,16 +112,6 @@
                                                        'fieldId': "birthdateElement",
                                                        'fieldType': "date",
                                                        'errorMessage': "Enter your birthdate, e.g. 01/01/1980"});
-        errorMessage += this.getFieldError(component, {'fieldValue': lead.Annual_Income_Currency__c,
-                                                       'fieldId': "incomeElement",
-                                                       'fieldType': "currency",
-                                                       'errorMessage': "Enter your income, and 0 if you aren't reporting any income"});
-        errorMessage += this.getFieldError(component, {'fieldValue': lead.Monthly_Mortgage_Tax_and_Insurance__c,
-                                                       'fieldId': "mortgageElement",
-                                                       'fieldType': "currency",
-                                                       'errorMessage': "Enter your approximate monthly mortgage. If you don't have a mortgage, " +
-                                                                       "enter your estimated monthly taxes and insurance. If you don't pay mortgage, " +
-                                                                       "insurance or tax on the installation property, enter 0."});
         errorMessage += this.getFieldError(component, {'fieldValue': lead.Credit_Check_Acknowledged__c,
                                                        'fieldId': "creditCheckElement",
                                                        'fieldType': "uncheckedCheckbox",
@@ -186,15 +182,6 @@
                                                        'fieldId': "coAppBirthdateElement",
                                                        'fieldType': "date",
                                                        'errorMessage': "Enter " + firstname + "'s birthdate, e.g. 01/01/1980"});
-        errorMessage += this.getFieldError(component, {'fieldValue': lead.CoApplicant_Contact__r.Income__c,
-                                                       'fieldId': "coAppIncomeElement",
-                                                       'fieldType': "currency",
-                                                       'errorMessage': "Enter " + firstname + "'s income, and 0 if they aren't reporting any income"});
-        errorMessage += this.getFieldError(component, {
-            'fieldValue': lead.Co_App_Monthly_Mortgage__c,
-            'fieldId': "coAppMortgageElement",
-            'fieldType': "currency",
-            'errorMessage': "Enter " + lead.Co_Applicant_First_Name__c + "\'s approximate monthly mortgage, taxes, and insurance not included in " + lead.FirstName + "\'s mortgage, and 0 if not applicable"});
         errorMessage += this.getFieldError(component, {'fieldValue': lead.CoApplicant_Contact__r.Credit_Check_Acknowledged__c,
             'fieldId': "coAppCreditCheckAcknowledgment",
             'fieldType': "uncheckedCheckbox",
@@ -270,6 +257,7 @@
                     helper.copyCoAppToLead(contact, lead);
                     helper.copyCoAppToLead(contact, leadClone);
                     lead.CoApplicant_Contact__c = retVal.Id;
+                    lead.CoApplicant_Contact__r.Id = retVal.Id;
                     leadClone.CoApplicant_Contact__c = retVal.Id;
                     return(helper.saveSObject(component, leadClone.Id, 'Lead', null, null, leadClone));
                 })).then($A.getCallback(function resolve(retVal) {

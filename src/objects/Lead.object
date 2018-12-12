@@ -1906,6 +1906,18 @@ This field can be changed to a formula consistent with the other factors if LASE
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Employer_Annual_Salary__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Provided by loan applicant</inlineHelpText>
+        <label>Employer Annual Salary</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>EnergySage_Lead__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -3212,7 +3224,7 @@ Monthly_Payment__c)</formula>
         <defaultValue>false</defaultValue>
         <description>This checkbox serves as the false value to the Veteran/Disability checkbox. It allows the CAP UI to show blank checkboxes without having to default to false.</description>
         <externalId>false</externalId>
-        <label>No Veteran/Disability</label>
+        <label>XXXNo Veteran/Disability</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
@@ -3222,7 +3234,7 @@ Monthly_Payment__c)</formula>
         <defaultValue>false</defaultValue>
         <description>This checkbox serves as the false value to the Employed checkbox. It allows the CAP UI to show blank checkboxes without having to default to false.</description>
         <externalId>false</externalId>
-        <label>Not Employed</label>
+        <label>XXXNot Employed</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
@@ -3232,7 +3244,7 @@ Monthly_Payment__c)</formula>
         <defaultValue>false</defaultValue>
         <description>This checkbox serves as the false value to the Reliant on Alimony/Child Support/Other checkbox. It allows the CAP UI to show blank checkboxes without having to default to false.</description>
         <externalId>false</externalId>
-        <label>Not Reliant on Alimony/Child Support/Oth</label>
+        <label>XXXNot Reliant on Alimony/Child Support</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
@@ -3252,7 +3264,7 @@ Monthly_Payment__c)</formula>
         <defaultValue>false</defaultValue>
         <description>This checkbox serves as the false value to the Retired checkbox. It allows the CAP UI to show blank checkboxes without having to default to false.</description>
         <externalId>false</externalId>
-        <label>Not Retired</label>
+        <label>XXXNot Retired</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
@@ -3262,7 +3274,7 @@ Monthly_Payment__c)</formula>
         <defaultValue>false</defaultValue>
         <description>This checkbox serves as the false value to the Self-Employed checkbox. It allows the CAP UI to show blank checkboxes without having to default to false.</description>
         <externalId>false</externalId>
-        <label>Not Self-Employed</label>
+        <label>XXXNot Self-Employed</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
@@ -3323,6 +3335,16 @@ Monthly_Payment__c)</formula>
         <externalId>false</externalId>
         <inlineHelpText>Reg O Question. Is borrower or co-borrower an executive officer or director of another institution?</inlineHelpText>
         <label>Other Bank Executive?</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Other_Income__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Used for a loan applicant to provide other monthly income (alimony, dividend, rental, etc)</inlineHelpText>
+        <label>Other Income</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
@@ -3915,6 +3937,18 @@ IF(AND(Risk_Level_Business_Type__c = &quot;Not Risky&quot;, VALUE(Number_of_Year
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Retirement_Annual_Salary__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Provided by loan applicant</inlineHelpText>
+        <label>Retirement Annual Salary</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>Risk_Level_Business_Type__c</fullName>
         <externalId>false</externalId>
         <formula>IF((ISPICKVAL(Business_Type__c, &quot;Construction&quot;)) || (ISPICKVAL(Business_Type__c, &quot;Restaurant/Food &amp; Beverage&quot;)) || (ISPICKVAL(Business_Type__c, &quot;Religious Organization&quot;)) || (ISPICKVAL(Business_Type__c, &quot;Non-Profit&quot;)),&quot;Risky&quot;, &quot;Not Risky&quot;)</formula>
@@ -3999,6 +4033,18 @@ IF(AND(Risk_Level_Business_Type__c = &quot;Not Risky&quot;, VALUE(Number_of_Year
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Self_Employment_Annual_Salary__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Provided by loan applicant</inlineHelpText>
+        <label>Self-Employment Annual Salary</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Self_Reported_Partner__c</fullName>
@@ -4465,6 +4511,18 @@ IF(INCLUDES(  Utility_1__c , &quot;SCE&amp;G&quot;), &quot;SCE&amp;G&quot;,
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Veteran_Annual_Salary__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Provided by loan applicant</inlineHelpText>
+        <label>Veteran Annual Salary</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Veteran_Disability__c</fullName>

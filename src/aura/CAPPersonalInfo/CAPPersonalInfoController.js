@@ -48,6 +48,13 @@
         if (component.get('v.abbrevStates') && component.get('v.abbrevStates').length === 0) {
             helper.getUSStates(component, 'v.abbrevStates', true);
         }
+        if (component.get('v.years') && component.get('v.years').length === 0) {
+            let years = [];
+            for (let i = 0; i <= 50; i++) {
+                years.push(i);
+            }
+            component.set('v.years', years);
+        }
     },
 
     setApplicationType : function(component, event, helper) {
@@ -129,17 +136,25 @@
         // PI is locked if credit has already been run
         if (component.get('v.piLocked')) {
             if (component.get('v.lenderOfRecord') === 'Avidia') {
-                component.set('v.page', 'PrimaryLicenseInfo');
+                component.set('v.page', 'IncomeType');
             } else {
                 component.set('v.page', 'PrimarySSN');
             }
         } else {
             if (component.get('v.lenderOfRecord') === 'Avidia') {
-                helper.saveLead(component, event, helper, {finish: false, nextPage: 'PrimaryLicenseInfo'});
+                helper.saveLead(component, event, helper, {finish: false, nextPage: 'IncomeType'});
             } else {
                 helper.saveLead(component, event, helper, {finish: false, nextPage: 'PrimarySSN'});
             }
         }
+    },
+
+    callSaveIncomeType : function(component, event, helper) {
+        helper.saveIncomeType(component, event, helper, 'PrimaryLicenseInfo');
+    },
+
+    callSaveCoAppIncomeType : function(component, event, helper) {
+        helper.saveCoAppIncomeType(component, event, helper, 'CoAppSSN');
     },
 
     saveLicenseInfo : function(component, event, helper) {
@@ -189,7 +204,7 @@
             return;
         }
 
-        helper.saveLead(component, event, helper, {finish: false, nextPage: 'CoAppSSN'});
+        helper.saveLead(component, event, helper, {finish: false, nextPage: 'CoAppIncomeType'});
     },
 
     saveCoAppSSN : function(component, event, helper) {
