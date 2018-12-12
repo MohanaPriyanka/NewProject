@@ -129,6 +129,21 @@
                       </div>
                     </div>
                   </div>
+                  <aura:if isTrue="{!v.availableProductPrograms.length != 1}">
+                  <div class="slds-form-element__row">
+                    <div aura:id="programElement" class="slds-form-element slds-p-horizontal--small slds-size_1-of-1">
+                      <label class="slds-form-element__label"><b>Program</b></label>
+                      <div class="slds-form-element__control">
+                        <ui:inputSelect aura:id="programSelection" class="slds-input" value="{!v.newLead.Product_Program__c}" change="{!c.setProductProgram}">
+                          <ui:inputSelectOption text="" label="Select"/>
+                          <aura:iteration items="{!v.availableProductPrograms}" var="prodProgram">
+                          <ui:inputSelectOption label="{!prodProgram}" text="{!prodProgram}"/>
+                         </aura:iteration>
+                        </ui:inputSelect>
+                      </div>
+                    </div>
+                  </div>
+                  </aura:if>
                   <div class="slds-form-element__row">
                     <div aura:id="programElement" class="slds-form-element slds-p-horizontal--small slds-size_1-of-1">
                       <label class="slds-form-element__label"><b>Program</b></label>
