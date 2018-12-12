@@ -21157,11 +21157,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>MPM4_BASE__TH_TimeEntryLineItem__c.MPM4_BASE__Hours_Input__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>MPM4_BASE__TH_TimeEntryLineItem__c.MPM4_BASE__IsReminderSet__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -51122,10 +51117,6 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
-        <name>EditBillingInfo</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
         <name>EditBrandTemplates</name>
     </userPermissions>
     <userPermissions>
@@ -51383,10 +51374,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ManageRoles</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>ManageSandboxes</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
