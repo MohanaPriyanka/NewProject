@@ -40,11 +40,12 @@ private class CSAccountCancellerTest {
 
         //Undo cancel and set Opp.Customer_Group__c to Anchor
         testAccount.Cancellation_Reason__c = null;
-        testAccount.Cancellation_Comments__c = null;
+        testAccount.Cancellation_Comments__c = '';
         testAccount.Cancellation_Request_Date__c = null;
         testOpp.Customer_Group__c = 'Anchor';
         update testAccount;
         update testOpp;
+        System.debug('Comments: ' + testAccount.Cancellation_Comments__c);
 
         //B: Do not Cancel Anchor/Public Offtake Accounts
         CSAccountCanceller.handleOverdueAccounts();
