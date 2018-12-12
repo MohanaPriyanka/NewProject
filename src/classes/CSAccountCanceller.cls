@@ -19,15 +19,9 @@ public with sharing class CSAccountCanceller {
 
         for (Account acct : accountList) {
             if (acct.Opportunities.isEmpty()){
-                if (acct.Cancellation_Reason__c == null) {
                     acct.Cancellation_Reason__c = 'Lack of Payment';
                     acct.Cancellation_Request_Date__c = System.today();
-                }
-                if (String.isBlank(acct.Cancellation_Comments__c)){
                     acct.Cancellation_Comments__c = 'Automated Cancellation';
-                } else {
-                    acct.Cancellation_Comments__c = acct.Cancellation_Comments__c + 'Automated Cancellation';
-                }
                 updatedAccounts.add(acct);
             }
         }
