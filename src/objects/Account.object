@@ -561,7 +561,7 @@
                 <sorted>false</sorted>
                 <value>
                     <fullName>Lack of Payment</fullName>
-                    <default>true</default>
+                    <default>false</default>
                     <label>Lack of Payment - Default</label>
                 </value>
                 <value>
@@ -13027,6 +13027,73 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <active>true</active>
         <label>Property</label>
         <picklistValues>
+            <picklist>Cancellation_Reason__c</picklist>
+            <values>
+                <fullName>Business Sold%2FOut of Business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Moved</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Death</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Does Not Understand Product</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Financial Hardship</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment - Does Not Understand Product</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment - Financial Hardship</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment - Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment - Product Does Not Meet Needs</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment - Unable to Establish Communication</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment - Unhappy with BW Service</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Does Not Meet Needs</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unable to Establish Communication</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unhappy with BW Service</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>AccountSource</picklist>
             <values>
                 <fullName>BWC GIS</fullName>
@@ -13107,73 +13174,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Email WITHOUT Fee</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Cancellation_Reason__c</picklist>
-            <values>
-                <fullName>Business Sold%2FOut of Business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Moved</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Death</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Does Not Understand Product</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Financial Hardship</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment</fullName>
-                <default>true</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment - Does Not Understand Product</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment - Financial Hardship</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment - Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment - Product Does Not Meet Needs</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment - Unable to Establish Communication</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment - Unhappy with BW Service</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Product Does Not Meet Needs</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Unable to Establish Communication</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Unhappy with BW Service</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
