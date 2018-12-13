@@ -14948,7 +14948,7 @@ accountID={!Account.Id}
         <protected>false</protected>
         <showsLocation>false</showsLocation>
         <showsStatus>false</showsStatus>
-        <url>https://na16.salesforce.com/00Oj0000004hzFJ?pv0={!Account.Id}</url>
+        <url>/00Oj0000004hzFJ?pv0={!Account.Id}</url>
     </webLinks>
     <webLinks>
         <fullName>Cancellation_Letter_Generation</fullName>
@@ -15490,7 +15490,7 @@ if(sforce.console.isInConsole()){
         <protected>false</protected>
         <showsLocation>false</showsLocation>
         <showsStatus>false</showsStatus>
-        <url>https://na16.salesforce.com/00Oj0000004Dl7H?pv0={!Account.Name}</url>
+        <url>/00Oj0000004Dl7H?pv0={!Account.Name}</url>
     </webLinks>
     <webLinks>
         <fullName>delete_this</fullName>

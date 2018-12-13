@@ -1632,7 +1632,7 @@ alert(&apos;This is the current amount this Account has due per this bill:\n\n&a
         <protected>false</protected>
         <showsLocation>false</showsLocation>
         <showsStatus>false</showsStatus>
-        <url>/flow/check_test?Accountbillid={!Account_Bill__c.Account_Bill_ID__c}&amp;retURL=https://na54.salesforce.com/{!Account_Bill__c.Account_Bill_ID__c}</url>
+        <url>/flow/check_test?Accountbillid={!Account_Bill__c.Account_Bill_ID__c}&amp;retURL=/{!Account_Bill__c.Account_Bill_ID__c}</url>
         <width>650</width>
     </webLinks>
     <webLinks>
