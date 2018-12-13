@@ -19338,11 +19338,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Percent_Complete__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Predecessor_Project__c</field>
         <readable>true</readable>
@@ -21125,11 +21120,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>MPM4_BASE__TH_TimeEntryLineItem__c.MPM4_BASE__Description__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__TH_TimeEntryLineItem__c.MPM4_BASE__Hours_Input__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
