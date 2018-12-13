@@ -383,6 +383,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             Product2 normalCSProduct = new Product2(Name = 'BlueWave SMART',
                 Family = 'Community Solar',
                 Product_Type__c = 'Community Solar',
+                Program__c = 'SMART - Community Solar',
+                Customer_Subscription_Type__c = 'kWh',
                 State__c = 'MA',
                 ProductCode = 'CS - BlueWave - 10%',
                 IsActive = true,
@@ -390,13 +392,14 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 NMC_Discount__c = 10,
                 Annual_kWh_Maximum__c = 100000000,
                 NM_Rate_Floor__c = 0,
-                Program__c = 'SREC - Community Solar',
                 Credit_Minimum__c = '200',
                 Monthly_Late_Fee__c = 1);
 
             Product2 normalSRECProduct = new Product2(Name = 'BlueWave SREC',
                 Family = 'Community Solar',
                 Product_Type__c = 'Community Solar',
+                Program__c = 'SREC - Community Solar',
+                Customer_Subscription_Type__c = 'Electricity Cost ($)',
                 State__c = 'MA',
                 ProductCode = 'CS - BlueWave - 10%',
                 IsActive = true,
@@ -404,7 +407,6 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 NMC_Discount__c = 10,
                 Annual_kWh_Maximum__c = 100000000,
                 NM_Rate_Floor__c = 0,
-                Program__c = 'SMART - Community Solar',
                 Credit_Minimum__c = '200',
                 Monthly_Late_Fee__c = 1);
 

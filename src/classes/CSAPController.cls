@@ -243,7 +243,7 @@ public without sharing class CSAPController {
 
     @AuraEnabled
     public static Product2 getProduct (String productId) {
-        return [SELECT Id, Name, Program__c FROM Product2 WHERE Id =: productId];
+        return [SELECT Id, Name, Program__c, Customer_Subscription_Type__c FROM Product2 WHERE Id =: productId];
     }
 
     @AuraEnabled
