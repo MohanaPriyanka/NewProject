@@ -366,7 +366,6 @@ public class TestBillCreationandPayment {
             Total_System_NMCs__c = 21872,
             Date__c = myDateMar
         );
-
         insert new List<Energy_Usage_Update__c>{
             productionupdateA1, productionupdateA2, productionupdateA3, productionupdateB1, productionupdateB2, productionupdateB3
         };
@@ -1092,7 +1091,8 @@ public class TestBillCreationandPayment {
                 chargentOrdersTransactionsToNotUpdate.add(transB);
             }
         }
-
+        // running unnecessary code
+        Util.disableTrigger('Disable_ChargentOrderTrigger__c');
         insert chargentOrdersTransactionsToUpdate;
         for (ChargentOrders__Transaction__c trans : chargentOrdersTransactionsToUpdate) {
             trans.Distributed_Among_System_Bills__c = true;
@@ -1261,7 +1261,8 @@ public class TestBillCreationandPayment {
                 chargentOrdersTransactionsToNotUpdate.add(transB);
             }
         }
-
+        // running unnecessary code
+        Util.disableTrigger('Disable_ChargentOrderTrigger__c');
         insert chargentOrdersTransactionsToUpdate;
         for (ChargentOrders__Transaction__c trans : chargentOrdersTransactionsToUpdate) {
             trans.Distributed_Among_System_Bills__c = true;

@@ -200,4 +200,18 @@ public without sharing class Util {
             insert property;
         }
     }
+
+    public static String obscureText(String text, Integer trailingCharacters) {
+        Integer length = text.length();
+        if (length < trailingCharacters) {
+            trailingCharacters = length;
+        }
+        String remainingCharacters = text.substring(length - trailingCharacters);
+        String obscuredText = '';
+        for (Integer i = 0; i < (length - trailingCharacters); i++) {
+            obscuredText += '*';
+        }
+        obscuredText += remainingCharacters;
+        return obscuredText;
+    }
 }

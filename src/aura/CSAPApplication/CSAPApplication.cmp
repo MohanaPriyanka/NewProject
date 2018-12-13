@@ -13,5 +13,6 @@
   <c:CSAPCapacityCheck supressWaiting="true"/>
   <c:CSAPCreditCheck supressWaiting="true"/>
   <c:CSAPEnergyInfo supressWaiting="true"/>
+  <c:CSAPPaymentInfo supressWaiting="true"/>
   <c:CSAPComplete supressWaiting="true"/>
 </aura:component>

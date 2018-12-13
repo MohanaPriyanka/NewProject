@@ -512,6 +512,13 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                     ChargentBase__Active__c = true);
             insert chGateway2;
 
+            Entity__c defaultEntity = new Entity__c(
+                Name = 'BWC Holdings, LLC',
+                Gateway__c = chGateway.Id
+            );
+
+            insert defaultEntity;
+
             Entity__c entity1 = [SELECT Id FROM Entity__c WHERE Name = 'Project A Oak Road' LIMIT 1];
             entity1.Gateway__c = chGateway.Id;
             Entity__c entity2 = [SELECT Id FROM Entity__c WHERE Name = 'Project B Main St' LIMIT 1];

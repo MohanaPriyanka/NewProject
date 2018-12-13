@@ -5,6 +5,8 @@ public without sharing class ChargentOrderCreationhandler {
         Map<Id, Opportunity> oldvaluesmap = new Map<Id, Opportunity> ();
         List<Opportunity> oppToUpdateList = new list<Opportunity> ();
         Set<Id> sssIds = new Set<Id>();
+        Set<Id> leadIds = new Set<Id>();
+        Set<Id> leadsWithOrder = new Set<Id>();
         List<ChargentOrders__ChargentOrder__c> ordersToInsert = new List<ChargentOrders__ChargentOrder__c>();
 
         for(Opportunity oppOld : oldOppList){
@@ -15,15 +17,34 @@ public without sharing class ChargentOrderCreationhandler {
             String newACH = opp.ACH_Name_on_Account__c;
             String newvalueID = opp.Id;
             String oldACH = oldvaluesmap.get(newvalueID).ACH_Name_on_Account__c;
-            if (newACH != null && oldACH == null && opp.Product_Line__c == 'Community Solar'){
+            if (opp.Product_Line__c != 'Community Solar') {
+                continue;
+            }
+            if (newACH != null && oldACH == null){
                 oppToUpdateList.add(opp);
                 sssIds.add(opp.Shared_Solar_System__c);
-            } else if (opp.CC_Account_Number__c != null && oldvaluesmap.get(newvalueID).CC_Account_Number__c == null && opp.Product_Line__c == 'Community Solar'){
+            } else if (opp.CC_Account_Number__c != null && oldvaluesmap.get(newvalueID).CC_Account_Number__c == null){
                 oppToUpdateList.add(opp);
                 sssIds.add(opp.Shared_Solar_System__c);
             }
+            leadIds.add(opp.Lead__c);
         }
 
+        if (leadIds.isEmpty()) {
+            return;
+        }
+
+        // We now collect payment info in CSAP, so we might already have orders.
+        List<ChargentOrders__ChargentOrder__c> chargentOrders = [
+            SELECT Id, Lead__c
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE Lead__c =:leadIds AND Lead__c != null
+        ];
+
+
+        for (ChargentOrders__ChargentOrder__c chOrder : chargentOrders) {
+            leadsWithOrder.add(chOrder.Lead__c);
+        }
 
         if (oppToUpdateList.size() > 0) {
             List<Shared_Solar_System__c> sharedSolarSystems = [
@@ -44,40 +65,45 @@ public without sharing class ChargentOrderCreationhandler {
             ];
 
             for(Opportunity opp : oppToUpdateList) {
-                String paymentMethod;
-                if (opp.CC_Account_Number__c != null) {
-                    paymentMethod = 'Credit Card';
-                } else {
-                    paymentMethod = 'Check';
+                // if we already have an order for this account, we don't need to create a new one.
+                if (!leadsWithOrder.contains(opp.Lead__c)) {
+                    String paymentMethod;
+                    if (opp.CC_Account_Number__c != null) {
+                        paymentMethod = 'Credit Card';
+                    } else {
+                        paymentMethod = 'Check';
+                    }
+                    Shared_Solar_System__c sss = sharedSolarSystemMap.get(opp.Shared_Solar_System__c);
+                    Id entityId;
+                    Id gatewayId;
+                    if (sss.BWC_Project_Entity_Manual__c == null) {
+                        entityId = defaultEntity.Id;
+                        gatewayId = defaultEntity.Gateway__c;
+                    } else {
+                        entityId = sss.BWC_Project_Entity_Manual__c;
+                        gatewayId = sss.BWC_Project_Entity_Manual__r.Gateway__c;
+                    }
+
+                    ChargentOrders__ChargentOrder__c orderA = new ChargentOrders__ChargentOrder__c(
+                        ChargentOrders__Account__c = opp.AccountId,
+                        ChargentOrders__Gateway__c = gatewayId,
+                        Entity__c = entityId,
+                        ChargentOrders__Payment_Method__c = paymentMethod,
+                        ChargentOrders__Bank_Name__c = opp.ACH_Bank_Name__c,
+                        ChargentOrders__Bank_Routing_Number__c = opp.ACH_Bank_Routing_Number__c ,
+                        ChargentOrders__Bank_Account_Type__c = opp.ACH_Account_Type__c,
+                        ChargentOrders__Bank_Account_Number__c = opp.ACH_Account_Number__c,
+                        ChargentOrders__Bank_Account_Name__c = opp.ACH_Name_on_Account__c,
+                        ChargentOrders__Card_Type__c = opp.CC_Card_Type__c,
+                        ChargentOrders__Card_Number__c = opp.CC_Account_Number__c,
+                        ChargentOrders__Billing_Last_Name__c = opp.CC_CardHolder_Name__c,
+                        ChargentOrders__Card_Expiration_Month__c = opp.CC_Expiration_Month__c,
+                        ChargentOrders__Card_Expiration_Year__c = opp.CC_Expiration_Year__c );
+                    ordersToInsert.add(orderA);
+                    Logger.logLater('ChargentOrderCreationhandler', 'createChargentOrder', 'Method used to create chargent orders for opp: ' + opp.Id);
                 }
-                Shared_Solar_System__c sss = sharedSolarSystemMap.get(opp.Shared_Solar_System__c);
-                Id entityId;
-                Id gatewayId;
-                if (sss.BWC_Project_Entity_Manual__c == null) {
-                    entityId = defaultEntity.Id;
-                    gatewayId = defaultEntity.Gateway__c;
-                } else {
-                    entityId = sss.BWC_Project_Entity_Manual__c;
-                    gatewayId = sss.BWC_Project_Entity_Manual__r.Gateway__c;
-                }
-                    
-                ChargentOrders__ChargentOrder__c orderA = new ChargentOrders__ChargentOrder__c(
-                                                          ChargentOrders__Account__c = opp.AccountId,
-                                                          ChargentOrders__Gateway__c = gatewayId,
-                                                          Entity__c = entityId,
-                                                          ChargentOrders__Payment_Method__c = paymentMethod,
-                                                          ChargentOrders__Bank_Name__c = opp.ACH_Bank_Name__c,
-                                                          ChargentOrders__Bank_Routing_Number__c = opp.ACH_Bank_Routing_Number__c ,
-                                                          ChargentOrders__Bank_Account_Type__c = opp.ACH_Account_Type__c,
-                                                          ChargentOrders__Bank_Account_Number__c = opp.ACH_Account_Number__c,
-                                                          ChargentOrders__Bank_Account_Name__c = opp.ACH_Name_on_Account__c,
-                                                          ChargentOrders__Card_Type__c = opp.CC_Card_Type__c,
-                                                          ChargentOrders__Card_Number__c = opp.CC_Account_Number__c,
-                                                          ChargentOrders__Billing_Last_Name__c = opp.CC_CardHolder_Name__c,
-                                                          ChargentOrders__Card_Expiration_Month__c = opp.CC_Expiration_Month__c,
-                                                          ChargentOrders__Card_Expiration_Year__c = opp.CC_Expiration_Year__c );
-                ordersToInsert.add(orderA);
                 accountids.add(opp.AccountId);
+                // we still need to blank out the payment info from the opportunity after we used it for docusign
                 opp.ACH_Bank_Name__c = 'removed';
                 opp.ACH_Bank_Routing_Number__c = 'removed';
                 opp.ACH_Account_Type__c = 'removed';
@@ -89,6 +115,8 @@ public without sharing class ChargentOrderCreationhandler {
                 opp.CC_Expiration_Month__c = 'rd';
                 opp.CC_Expiration_Year__c = 'rmvd';
             }
+
+            Logger.flushLogs();
 
             List<Account> accountList = [SELECT Name, Id, Recurring_Billing__c
                                   FROM Account

@@ -53,6 +53,7 @@
 
     finishStage : function(component, event, helper) {
         var lead = component.get("v.lead");
+        helper.saveSObject(component, lead.Id, "Lead", null, null, lead);
 
         if (lead.Application_Source_Phase_2__c === 'CSAP Additional Property') {
             component.set('v.page', 'Done');
