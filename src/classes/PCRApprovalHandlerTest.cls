@@ -9,11 +9,11 @@ private class PCRApprovalHandlerTest {
     static testMethod void testNonDOERPCRApproval() {
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
         Product2 bwsl1 = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
-        
+
         Product2 mslp1 = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
         mslp1.Program__c = 'MSLP';
         mslp1.IBLS_Category__c = 'Category 1';
-        
+
         Product2 mslp2 = LoanTestRecordWarehouse.getDefaultProduct('MA', 4.99, 10, null, '681', '999', null);
         mslp2.Program__c = 'MSLP';
         mslp2.IBLS_Category__c = 'Category 2';
@@ -84,9 +84,9 @@ private class PCRApprovalHandlerTest {
 
         String applicationJSON =
             '{"application":[ ' +
-              '  {"key":1, "income":50000, "loan":45000, "doer":true,  "fico":570, "coAppFico":600, "ibls":"Category 1", "debt":400, "balance":2000, "coAppIncome":2000, "applicationType":"Joint Co-Sign", "expectedStatus":"Pending Credit Review", "expectedDTIBefore":9.60, "expectedDTIAfter":9.60}, ' +
-              '  {"key":2, "income":50000, "loan":45000, "doer":true,  "fico":820, "coAppFico":600, "ibls":"Category 1", "debt":400, "balance":2000, "coAppIncome":2000, "applicationType":"Joint Co-Sign", "expectedStatus":"Pending Credit Review", "expectedDTIBefore":9.60, "expectedDTIAfter":21.58} ' +
-            ']}';
+                '  {"key":1, "income":50000, "loan":45000, "doer":true,  "fico":570, "coAppFico":600, "ibls":"Category 1", "debt":400, "balance":2000, "coAppIncome":2000, "applicationType":"Joint Co-Sign", "expectedStatus":"Pending Credit Review", "expectedDTIBefore":9.60, "expectedDTIAfter":9.60}, ' +
+                '  {"key":2, "income":50000, "loan":45000, "doer":true,  "fico":820, "coAppFico":600, "ibls":"Category 1", "debt":400, "balance":2000, "coAppIncome":2000, "applicationType":"Joint Co-Sign", "expectedStatus":"Pending Credit Review", "expectedDTIBefore":9.60, "expectedDTIAfter":21.58} ' +
+                ']}';
         ApplicationSet applicationSet = parse(applicationJSON);
         applicationSet.insertLeads(partner.Id);
         applicationSet.insertPCRs();
@@ -234,11 +234,11 @@ private class PCRApprovalHandlerTest {
         //Test for both main applicant and Co-applicant
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
 
-            String applicationJSON =
-                '{"application":[ ' +
-                    '  {"key":1, "income":200003, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":700, "coAppFico":400, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
-                    '  {"key":2, "income":14000, "loan":15000, "doer":true,  "fico":800, "ibls":"Category 1", "debt":500, "expectedSLAStatus":"Declined"} ' +
-                    + ']}';
+        String applicationJSON =
+            '{"application":[ ' +
+                '  {"key":1, "income":200003, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":700, "coAppFico":400, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
+                '  {"key":2, "income":14000, "loan":15000, "doer":true,  "fico":800, "ibls":"Category 1", "debt":500, "expectedSLAStatus":"Declined"} ' +
+                + ']}';
         ApplicationSet applicationSet = parse(applicationJSON);
         applicationSet.insertLeads(partner.Id);
         applicationSet.insertPCRs();
@@ -250,9 +250,9 @@ private class PCRApprovalHandlerTest {
 
         List<LASERCA__Personal_Credit_Report__c> pcrList = [
             SELECT Id, LASERCA__Contact__c, LASERCA__Credit_Score_TransUnion__c,
-                (SELECT LASERCA__Monthly_Payment__c, Exclude_From_Rollup__c
-                FROM LASERCA__Trade_Accounts__r
-                WHERE Name = 'Self-Reported Mortgage')
+            (SELECT LASERCA__Monthly_Payment__c, Exclude_From_Rollup__c
+            FROM LASERCA__Trade_Accounts__r
+            WHERE Name = 'Self-Reported Mortgage')
             FROM LASERCA__Personal_Credit_Report__c
         ];
 
@@ -289,7 +289,7 @@ private class PCRApprovalHandlerTest {
         mslp.Lender_of_Record__c = 'Avidia';
         mslp.Program__c = 'MSLP';
         insert new List<Product2>{productVar, mslp};
-        
+
         Lead leadAG = newLead(90000, 20000, productVar.Id, false, partner.Id);
         insert leadAG;
 
@@ -645,7 +645,7 @@ private class PCRApprovalHandlerTest {
         mslp.Lender_of_Record__c = 'Avidia';
         mslp.Program__c = 'MSLP';
         insert mslp;
-        
+
         Lead lead = newLead(60000, 10000, null, true, partner.Id);
         insert lead;
 
@@ -785,9 +785,9 @@ private class PCRApprovalHandlerTest {
                 '  {"key":7, "income":200004, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
                 '  {"key":8, "income":6, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":700, "coAppFico":400, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"}, ' +
                 '  {"key":9, "income":5, "coAppIncome":1, "loan":65000, "applicationType":"Joint Co-App", "doer":false, "fico":400, "coAppFico":700, "debt":500, "balance":10000, "expectedStatus":"Pending Credit Review"} ' +
-            ']}';
+                ']}';
 
-            ApplicationSet applicationSet = parse(applicationJSON);
+        ApplicationSet applicationSet = parse(applicationJSON);
         applicationSet.insertLeads(partner.Id);
         applicationSet.insertPCRs();
         Test.startTest();
@@ -908,7 +908,7 @@ private class PCRApprovalHandlerTest {
         Product2 productVar = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999', null);
         productVar.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
         productVar.Lender_of_Record__c = 'Avidia';
-        
+
         Product2 mslp = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999',  null);
         mslp.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
         mslp.Lender_of_Record__c = 'Avidia';
@@ -1097,7 +1097,19 @@ private class PCRApprovalHandlerTest {
             System.assertNotEquals(null, lead.Personal_Credit_Report__c);
         }
     }
-  
+
+    static testMethod void testCoAppCreditCheck() {
+        Contact jointContact = new Contact();
+        jointContact.FirstName = 'JointCoApp';
+        jointContact.LastName = 'Testcase';
+        insert jointContact;
+
+        jointContact.LASERCA__Pull_Credit_Report__c = true;
+        update jointContact;
+
+        // validates that the contact can be udpated without
+    }
+
     public class Application {
         public Integer income, loan;
         public Id prodId;
