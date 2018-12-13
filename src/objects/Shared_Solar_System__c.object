@@ -2991,7 +2991,7 @@ null)</formula>
         <masterLabel>Customer Info Report</masterLabel>
         <openType>sidebar</openType>
         <protected>false</protected>
-        <url>https://na16.salesforce.com/00Oj0000000QGIY?pv2={!Shared_Solar_System__c.Name}</url>
+        <url>/00Oj0000000QGIY?pv2={!Shared_Solar_System__c.Name}</url>
     </webLinks>
     <webLinks>
         <fullName>Preview_Next_Schedule_Z</fullName>
@@ -3084,7 +3084,7 @@ null)</formula>
         <masterLabel>XXNext Schedule Z</masterLabel>
         <openType>sidebar</openType>
         <protected>false</protected>
-        <url>https://na16.salesforce.com/00Oj0000004i4Un?pv2={!Shared_Solar_System__c.Name}</url>
+        <url>/00Oj0000004i4Un?pv2={!Shared_Solar_System__c.Name}</url>
     </webLinks>
     <webLinks>
         <fullName>XXSchedule_Z</fullName>
@@ -3096,7 +3096,7 @@ null)</formula>
         <masterLabel>XXSchedule Z</masterLabel>
         <openType>sidebar</openType>
         <protected>false</protected>
-        <url>https://na16.salesforce.com/00Oj0000004hQoa?pv2={!Shared_Solar_System__c.Name}</url>
+        <url>/00Oj0000004hQoa?pv2={!Shared_Solar_System__c.Name}</url>
     </webLinks>
     <webLinks>
         <fullName>XXUpdate_Subscriptions</fullName>

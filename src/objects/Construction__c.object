@@ -359,7 +359,7 @@
     <fields>
         <fullName>EPC_Costs__c</fullName>
         <externalId>false</externalId>
-        <formula>HYPERLINK(&quot;https://na54.salesforce.com/00O0a000005FJBs?&quot;&amp;Id,&quot;EPC Summary&quot;)</formula>
+        <formula>HYPERLINK(&quot;/00O0a000005FJBs?&quot;&amp;Id,&quot;EPC Summary&quot;)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>EPC Costs</label>
         <required>false</required>
@@ -473,7 +473,7 @@
     <fields>
         <fullName>Factoid_Report__c</fullName>
         <externalId>false</externalId>
-        <formula>HYPERLINK(&quot;https://na54.salesforce.com/00O0a000005FMmh&quot;, &quot;All Factoids&quot;)</formula>
+        <formula>HYPERLINK(&quot;/00O0a000005FMmh&quot;, &quot;All Factoids&quot;)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Factoid Report</label>
         <required>false</required>

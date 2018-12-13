@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Notification that the task has been completed</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Task Completion Notfication</name>
+    <style>none</style>
+    <subject>Task Completed -  {!Task.Subject}</subject>
+    <textOnly>*|MC:SUBJECT|*
+
+
+Dear {CurrentUser},
+
+The following task has been completed.
+
+https://na16.salesforce.com/{!Activity.Id}
+Subject: {!Task.Subject}
+
+Thanks,
+{!Task.Who}</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>
