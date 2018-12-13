@@ -80,19 +80,13 @@
             if(ual.Id){
                 var ualPromise = helper.saveSObject(component, ual.Id, "Utility_Account_Log__c", null, null, ual);
                 ualPromise.then($A.getCallback(function resolve(retVal) {
-                    component.set("v.page", "AddMore");
+                    component.set("v.page", "AddMoreUAL");
                     component.set("v.ual", {
                         sobjectType: "Utility_Account_Log__c"
                     });
                 }));
             }
         }
-    },
-    addResidence : function(component, event, helper) {
-        helper.addNewLead(component, event, helper,"Residential");
-    },
-    addBusiness : function(component, event, helper) {
-        helper.addNewLead(component, event, helper,"Non-Residential");
     },
     cancelAddUAL : function(component, event, helper) {
         if(confirm("Are you sure you want to cancel adding another Utility Account Log?")){
@@ -125,9 +119,6 @@
     },
     
     finishStage : function(component, event, helper) {
-        component.set('v.loading', true);
-        component.set('v.loadingText', 'Submitting your application...');
-        helper.convertLeadFunction(component, event, helper);
         helper.finishStage(component, event, helper);
     },
 })

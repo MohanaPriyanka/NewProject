@@ -47,6 +47,7 @@
         var numberOfFiles = fr.length; 
         helper.saveFilesToServer(component, event, parentId, 0, fileInput, newFileName, fr, numberOfFiles, helper);
     },
+
     
     closeWindow : function(component, event, helper) {
         helper.closeWindow(component); 

@@ -342,4 +342,29 @@ public without sharing class CSAPController {
 
         return lead;
     }
+
+    @AuraEnabled
+    public static void insertChargentOrderOnLead(ChargentOrders__ChargentOrder__c newOrder, Lead lead) {
+        Lead primaryLead = getLead(lead.Id, lead.Email);
+        List<Entity__c> defaultEntities = [
+            SELECT Id, Gateway__c
+            FROM Entity__c
+            WHERE Name = 'BWC Holdings, LLC'
+            LIMIT 1
+        ];
+        if (primaryLead != null && !defaultEntities.isEmpty()) {
+            newOrder.Lead__c = primaryLead.Id;
+            newOrder.Entity__c = defaultEntities[0].Id;
+            newOrder.ChargentOrders__Gateway__c = defaultEntities[0].Gateway__c;
+            insert newOrder;
+        } else if (defaultEntities.isEmpty()) {
+            Logger.logNow('CSAPController', 'insertChargentOrderOnLead', 'Could not identify the default entity to insert with');
+            throw new AuraHandledException('Cannot insert order without Default Entity');
+        }
+    }
+
+    @AuraEnabled
+    public static List<String> getStates() {
+        return BlueWaveParent.getUSStates(true);
+    }
 }
