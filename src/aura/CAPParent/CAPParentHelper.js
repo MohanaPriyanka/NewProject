@@ -202,4 +202,141 @@
             $A.enqueueAction(action);
         });
     },
+
+    PAYSTUB: 'PayStub',
+    TAX_PREV_YEAR: 'Tax Return (Previous Year)',
+    TAX_TWO_YEARS_PRIOR: 'Tax Return (Two Years Previous)',
+    SSN: 'SSN Award Letter',
+    PENSION: 'Pension Award Letter',
+    BANK: 'Bank Statement (SSN Income)',
+    VETERAN: 'Veteran Income Documentation',
+    OTHER_INCOME: 'Income: Other',
+    TC_DOC: 'MSLP Technical Confirmation',
+    BUS_TAX_PREV_YEAR: 'Business Tax Return (Previous Year)',
+    BUS_TAX_TWO_YEARS_PRIOR: 'Business Tax Return (Two Years Previous)',
+    LEASE_AGR: 'Lease Agreement',
+
+    parseAttachments : function(component, helper) {
+        const lead = component.get('v.lead');
+        if (lead.Attachments) {
+            const paystubs = [];
+            const taxreturns = [];
+            const lastYearReturns = [];
+            const twoYearReturns = [];
+            const retirement = [];
+            const veteran = [];
+            const otherIncome = [];
+            const tcDocs = [];
+            const requestedDocs = [];
+            lead.Attachments.forEach(function(attachment) {
+                const desc = attachment.Description;
+                if (desc === helper.PAYSTUB) {
+                    paystubs.push(attachment.Name + ' (' + desc + ')');
+                } else if (desc === helper.TAX_PREV_YEAR) {
+                    taxreturns.push(attachment.Name + ' (' + desc + ')');
+                    lastYearReturns.push(attachment.Name);
+                } else if (desc === helper.TAX_TWO_YEARS_PRIOR) {
+                    taxreturns.push(attachment.Name + ' (' + desc + ')');
+                    twoYearReturns.push(attachment.Name + ' (' + desc + ')');
+                } else if (
+                    desc === helper.SSN ||
+                    desc === helper.PENSION ||
+                    desc === helper.BANK
+                ) {
+                    retirement.push(attachment.Name + ' (' + desc + ')');
+                } else if (desc === helper.VETERAN) {
+                    veteran.push(attachment.Name + ' (' + desc + ')');
+                } else if (desc === helper.OTHER_INCOME) {
+                    otherIncome.push(attachment.Name + ' (' + desc + ')');
+                } else if (desc === helper.TC_DOC) {
+                    tcDocs.push(attachment.Name + ' (' + desc + ')');
+                } else if (desc && desc.substring(0,9) === 'Requested') {
+                    requestedDocs.push(attachment.Name + ' (' + desc + ')');
+                }
+            });
+            component.set('v.paystubs', paystubs);
+            component.set('v.taxreturns', taxreturns);
+            component.set('v.lastYearReturns', lastYearReturns);
+            component.set('v.twoYearReturns', twoYearReturns);
+            component.set('v.retirementIncome', retirement);
+            component.set('v.veteranIncome', veteran);
+            component.set('v.otherIncome', otherIncome);
+            component.set('v.tcDocs', tcDocs);
+            component.set('v.requestedDocs', requestedDocs);
+        }
+    },
+
+    handleAttachment : function(component, event, helper, description) {
+        var files = event.getSource().get("v.files");
+        if (component.get('v.lead.ConvertedContactId')) {
+            helper.uploadFiles(component, files, component.get('v.lead.ConvertedContactId'), helper.getLead, description, helper);
+        } else {
+            helper.uploadFiles(component, files, component.get('v.lead.Id'), helper.getLead, description, helper);
+        }
+    },
+
+    getLead : function(component, helper) {
+        var action = component.get('c.getLeadWrapper');
+        action.setParams({'leadId' : component.get('v.lead.Id'),
+            'email': component.get('v.lead.Email')});
+        action.setCallback(this,function(resp) {
+            if (resp.getState() === 'SUCCESS') {
+                // We call getLead after docs are uploaded to refresh the attachment list.
+                // We lose data if fields are set before uploading and not yet saved.
+                component.set('v.lead.Attachments', resp.getReturnValue().attachments);
+                helper.parseAttachments(component, helper);
+            } else {
+                this.logError('CAPIncomeDocHelper', 'getLead', resp.getError(), component.get('v.lead'));
+            }
+        });
+        $A.enqueueAction(action);
+    },
+
+    saveIncomeType : function(component, event, helper, page) {
+        let incomeTypeCmp = component.find('incomeTypeCmp');
+        if (!incomeTypeCmp.anyTypesSelected()) {
+            component.find('notifLib').showNotice({
+                "variant": "error",
+                "header": 'Missing Income Type Selection',
+                "message": "Please select at least one form of income with which you will repay the loan."
+            });
+            return;
+        }
+
+        if (!helper.validatePageFields(incomeTypeCmp)) {
+            component.find('notifLib').showNotice({
+                "variant": "error",
+                "header": 'Missing Income Type Details',
+                "message": "Please fill out all required fields."
+            });
+            return;
+        }
+
+        incomeTypeCmp.saveIncomeType(component.get('v.lead'), 'Lead', component.get('v.piLocked'),
+            function(totalIncome) {
+                helper.saveSObject(component, component.get('v.lead').Id, 'Lead', 'Annual_Income_Currency__c', totalIncome, null).then(
+                    $A.getCallback(function resolve() {
+                        component.set('v.page', page);
+                    }));
+            });
+    },
+
+    saveCoAppIncomeType : function(component, event, helper, page) {
+        let incomeTypeCmp = component.find('jointIncomeTypeCmp');
+        if (!helper.validatePageFields(incomeTypeCmp)) {
+            component.find('notifLib').showNotice({
+                "variant": "error",
+                "header": 'Missing Income Type Details',
+                "message": "Please fill out all required fields."
+            });
+            return;
+        }
+        incomeTypeCmp.saveIncomeType(component.get('v.lead.CoApplicant_Contact__r'), 'Contact', component.get('v.piLocked'),
+            function(totalIncome) {
+                helper.saveSObject(component, component.get('v.lead').Id, 'Lead', 'Co_Applicant_Income__c', totalIncome, null).then(
+                    $A.getCallback(function resolve() {
+                        component.set('v.page', page);
+                    }));
+            });
+    },
 })

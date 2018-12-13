@@ -479,7 +479,7 @@
 
     validatePageFields : function(component) {
         var pageFields = component.find('field');
-        if (!pageFields) return;
+        if (!pageFields) return true;
         var isAllValid = [].concat(pageFields).reduce(function (validSoFar, inputCmp) {
             // showHelpMessageIfInvalid exists for lightning:input, but not ui:input
             if (typeof inputCmp.showHelpMessageIfInvalid === 'function') {
