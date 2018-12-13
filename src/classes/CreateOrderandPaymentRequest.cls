@@ -126,7 +126,8 @@ public without sharing class CreateOrderandPaymentRequest {
 
         //Find all of the old chargent orders that are marked Recurring and set it to Stopped
         List<ChargentOrders__ChargentOrder__c> chargentOrderList = [
-            SELECT Id, ChargentOrders__Payment_Status__c, Reason_for_Recurring_Stop__c
+            SELECT Id, ChargentOrders__Payment_Status__c, Reason_for_Recurring_Stop__c, Entity__r.Gateway__c,
+                ChargentOrders__Gateway__c, ChargentOrders__Gateway__r.ChargentBase__Active__c
             FROM ChargentOrders__ChargentOrder__c
             WHERE Id NOT IN :ordersToInsert
             AND (ChargentOrders__Payment_Status__c = 'Recurring' OR ChargentOrders__Payment_Status__c = 'Error')
@@ -134,23 +135,31 @@ public without sharing class CreateOrderandPaymentRequest {
             AND Entity__r.Id IN : entityIdSet
         ];
         if (chargentOrderList.size() > 0) {
-            for (ChargentOrders__ChargentOrder__c co : chargentOrderList) {
-                if (co.ChargentOrders__Payment_Status__c == 'Recurring') {
-                    co.ChargentOrders__Payment_Status__c = 'Stopped';
-                } else {
-                    co.ChargentOrders__Payment_Status__c = 'Complete';
-                }
-                co.Reason_for_Recurring_Stop__c = 'Replaced with New Payment Info From Portal';
-            }
-            try {
-                update chargentOrderList;
-            } catch (DmlException de) {
-                Logger.logNow('CreateOrderandPaymentRequest', 'setChargeAmountandInsert', 'Old orders not updated: ' +
-                    String.valueOf(de) + '\n' + de.getStackTraceString());
-                throw new AuraHandledException(de.getMessage());
-            }
+            updateChargentOrdersToStopped(chargentOrderList);
         }
         return ordersToInsert;
+    }
+
+    @TestVisible
+    private static void updateChargentOrdersToStopped(List<ChargentOrders__ChargentOrder__c> chargentOrders) {
+        for (ChargentOrders__ChargentOrder__c co : chargentOrders) {
+            if (co.ChargentOrders__Payment_Status__c == 'Recurring') {
+                co.ChargentOrders__Payment_Status__c = 'Stopped';
+            } else {
+                co.ChargentOrders__Payment_Status__c = 'Complete';
+            }
+            if (!co.ChargentOrders__Gateway__r.ChargentBase__Active__c) {
+                co.ChargentOrders__Gateway__c = co.Entity__r.Gateway__c;
+            }
+            co.Reason_for_Recurring_Stop__c = 'Replaced with New Payment Info From Portal';
+        }
+        try {
+            update chargentOrders;
+        } catch (DmlException de) {
+            Logger.logNow('CreateOrderandPaymentRequest', 'setChargeAmountandInsert', 'Old orders not updated: ' +
+                String.valueOf(de) + '\n' + de.getStackTraceString());
+            throw new AuraHandledException(de.getMessage());
+        }
     }
 
     // Returns tomorrow's date in the organization's timezone, not the user's timezone
