@@ -23203,7 +23203,7 @@ newwindow.focus();</url>
         <protected>false</protected>
         <showsLocation>false</showsLocation>
         <showsStatus>false</showsStatus>
-        <url>https://na16.salesforce.com/500/e?
+        <url>/500/e?
 &amp;RecordType=012j00000000HA8
 &amp;ent=Case
 &amp;cas14=Customer Care Case
