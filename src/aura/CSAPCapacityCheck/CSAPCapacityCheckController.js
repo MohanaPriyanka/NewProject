@@ -41,8 +41,19 @@
         }
     },
 
+    goToSolarCheck : function(component, event, helper) {
+        var lead = component.get("v.lead");
+        if (lead.LASERCA__Home_State__c === 'NY') {
+            component.set("v.page", 'SolarCheck');
+        } else {
+            var finishStage = component.get('c.finishStage');
+            $A.enqueueAction(finishStage);
+        }
+    },
+
     finishStage : function(component, event, helper) {
         var lead = component.get("v.lead");
+        helper.saveSObject(component, lead.Id, "Lead", null, null, lead);
 
         if (lead.Application_Source_Phase_2__c === 'CSAP Additional Property') {
             component.set('v.page', 'Done');

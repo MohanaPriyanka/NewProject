@@ -1,5 +1,7 @@
 /**
  * Created by jpentaleri on 7/9/2018.
+ *
+ * Test: CommunitySolarCustomerPortalTest.testChargentLicenseAssignment
  */
 
 public with sharing class ManagedPackageLicenseHandler {
@@ -9,13 +11,17 @@ public with sharing class ManagedPackageLicenseHandler {
         List<User> usersToAssignList = new List<User>();
         String packageNamespacePrefix = 'ChargentOrders';
 
-        Profile communityProfile = [SELECT Id
+        List<Profile> communityProfiles = [SELECT Id
         FROM Profile
-        WHERE Name = 'Community Solar Community User'];
+        WHERE Name = 'Community Solar Community User'
+        OR Name = 'Partner Community Login User (Custom)'
+        OR Name = 'Partner Community User (Custom)'];
 
         for (User userToCheck : triggeredUsers){
-            if (userToCheck.ProfileId == communityProfile.Id){
-                usersToAssignList.add(userToCheck);
+            for (Profile communityProfile : communityProfiles) {
+                if (userToCheck.ProfileId == communityProfile.Id){
+                    usersToAssignList.add(userToCheck);
+                }
             }
         }
         assignLicense(usersToAssignList, packageNamespacePrefix);

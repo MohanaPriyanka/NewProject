@@ -1,18 +1,84 @@
 <aura:component controller="CSAPController" access="global" extends="c:CSAPParent">
   <aura:set attribute="STAGENAME" value="NAV_Complete"/>
   <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
-  <aura:if isTrue="{!v.page == 'Complete'}">
-        <lightning:layout aura:id="passedCreditText" class="animated" multipleRows="true" horizontalAlign="center">
-          <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-            <div class="slds-align--absolute-center">
-              <p><b class="slds-text-body--large--blue">Thanks for your Community Solar Application! We’ll send you your contract shortly!</b></p>
+  <aura:attribute name="loading" type="Boolean"/>
+  <aura:attribute name="loadingText" type="String"/>
+
+  <aura:if isTrue="{!v.loading}">
+    <div class="slds-icon-eq slds-is-animated slds-align_absolute-center slds-p-top_medium" title="Loading">
+      <div class="slds-icon-eq__bar"></div>
+      <div class="slds-icon-eq__bar"></div>
+      <div class="slds-icon-eq__bar"></div>
+      <span class="slds-assistive-text">Loading</span>
+    </div>
+    <div class="slds-text-body--regular slds-align_absolute-center">
+      {!v.loadingText}
+    </div>
+    <aura:set attribute="else">
+
+      <!--Add More Properties-->
+      <aura:if isTrue="{!v.page == 'AddMore'}">
+        <div aria-labelledby="addToApplicationForm">
+          <fieldset class="slds-form-element slds-align_absolute-center">
+            <legend class="slds-form-element__legend slds-form-element__label slds-align_absolute-center slds-m-bottom_small">
+              <b class="slds-section__title--large--stream">Would you like to add anything to your application?</b>
+            </legend>
+            <div class="slds-form-element__control slds-align_absolute-center">
+
+              <div class="slds-visual-picker slds-visual-picker_large">
+                <a onclick="{!c.addResidence}">
+                  <label for="visual-picker-residential">
+                    <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">
+                      <span class="slds-icon_container" title="description of icon when needed">
+                        <lightning:icon class="blueIcon" iconName="utility:home" size="x-large"/>
+                      </span>
+                    </span>
+                    <span class="slds-visual-picker__body">
+                      <div class="slds-text-body--large--blue"><b>Add an entirely different</b></div>
+                      <div class="slds-text-body--large--stream"><b>Home</b></div>
+                    </span>
+                  </label>
+                </a>
+              </div>
+              <div class="slds-visual-picker slds-visual-picker_large">
+                <a onclick="{!c.addBusiness}">
+                  <label for="visual-picker-business">
+                    <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">
+                      <span class="slds-icon_container" title="description of icon when needed">
+                        <lightning:icon class="blueIcon" iconName="utility:company" size="x-large"/>
+                      </span>
+                    </span>
+                    <span class="slds-visual-picker__body">
+                      <div class="slds-text-body--large--blue"><b>Add an entirely different</b></div>
+                      <div class="slds-text-body--large--stream"><b>Business</b></div>
+                    </span>
+                  </label>
+                </a>
+              </div>
             </div>
-          </lightning:layoutItem>
-          <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-            <div class="slds-align--absolute-center">
-              <p><b class="slds-text-body--large--stream"> Thank you!</b></p>
-            </div>
-          </lightning:layoutItem>
-        </lightning:layout>
+          </fieldset>
+        </div>
+
+        <div class="slds-clearfix slds-p-top_medium slds-align_absolute-center">
+          <lightning:button label="Complete Application" onclick="{!c.finishStage}"/>
+        </div>
+      </aura:if>
+
+      <!--Completed App Message-->
+      <aura:if isTrue="{!v.page == 'Complete'}">
+            <lightning:layout aura:id="passedCreditText" class="animated" multipleRows="true" horizontalAlign="center">
+              <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                <div class="slds-align--absolute-center">
+                  <p><b class="slds-text-body--large--blue">Thanks for your Community Solar Application! We’ll send you your contract shortly!</b></p>
+                </div>
+              </lightning:layoutItem>
+              <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                <div class="slds-align--absolute-center">
+                  <p><b class="slds-text-body--large--stream"> Thank you!</b></p>
+                </div>
+              </lightning:layoutItem>
+            </lightning:layout>
+      </aura:if>
+    </aura:set>
   </aura:if>
 </aura:component>

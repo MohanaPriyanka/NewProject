@@ -1,0 +1,249 @@
+<!--
+ - Created by mstackhouse on 10/25/2018.
+ -->
+
+<aura:component controller="CSAPController" access="global" extends="c:CSAPParent">
+  <aura:set attribute="STAGENAME" value="NAV_Payment_Information"/>
+  <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
+  <aura:attribute name="chOrder" type="ChargentOrders__ChargentOrder__c"
+                  default="{ 'sobjectType': 'ChargentOrders__ChargentOrder__c',
+                            'ChargentOrders__Payment_Method__c' : '',
+                            'ChargentOrders__Bank_Name__c' : '',
+                            'ChargentOrders__Bank_Routing_Number__c' : '',
+                            'ChargentOrders__Bank_Account_Type__c' : '',
+                            'ChargentOrders__Bank_Account_Number__c' : '',
+                            'ChargentOrders__Bank_Account_Name__c' : '',
+                            'ChargentOrders__Billing_Email__c' : 'compliance@bluewavesolar.com',
+                            'ChargentOrders__Card_Type__c' : '',
+                            'ChargentOrders__Card_Number__c' : '',
+                            'ChargentOrders__Card_Expiration_Month__c' : '',
+                            'ChargentOrders__Card_Expiration_Year__c' : '',
+                            'ChargentOrders__Billing_Address__c' : '',
+                            'ChargentOrders__Billing_City__c' : '',
+                            'ChargentOrders__Billing_State__c' : '',
+                            'ChargentOrders__Billing_Zip_Postal__c' : '',
+                            'ChargentOrders__Billing_First_Name__c' : '',
+                            'ChargentOrders__Billing_Last_Name__c' : '',
+                            'Autopay_Only__c': true}"/>
+  <aura:attribute name="Autopay" type="Boolean" default="true"/>
+  <aura:attribute name="supressWaiting" type="Boolean" />
+  <aura:attribute name="AutopayAcknowledgement" type="Boolean" default="false"/>
+  <aura:attribute name="SelectedPaymentMethod" type="String" default=""/>
+  <aura:handler name="change" value="{!v.SelectedPaymentMethod}" action="{!c.clearFields}"/>
+  <aura:attribute name="PaymentMethodsAccepted" type="String[]" default="[['Bank Account', 'ACH'],['Credit Card', 'Credit Card']]"/>
+  <aura:attribute name="States" type="String[]"/>
+  <aura:attribute name="expirationYears" type="String[]"/>
+  <aura:attribute name="ErrorText" type="String"/>
+  <aura:attribute name="showErrorText" type="Boolean" default="false"/>
+  <aura:attribute name="loading" type="Boolean"/>
+  <aura:attribute name="loadingText" type="String"/>
+  <lightning:notificationsLibrary aura:id="notifLib"/>
+
+  <aura:if isTrue="{!v.loading}">
+    <div class="slds-icon-eq slds-is-animated slds-align_absolute-center slds-p-top_medium" title="Loading">
+      <div class="slds-icon-eq__bar"></div>
+      <div class="slds-icon-eq__bar"></div>
+      <div class="slds-icon-eq__bar"></div>
+      <span class="slds-assistive-text">Loading</span>
+    </div>
+    <div class="slds-text-body--regular slds-align_absolute-center">
+      {!v.loadingText}
+    </div>
+    <aura:set attribute="else">
+      <aura:if isTrue="{!v.page == 'PaymentInfo'}">
+          <div aria-labelledby="paymentInformationForm">
+            <fieldset class="slds-box slds-theme--default slds-container_center">
+              <legend id="paymentInformation" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
+                <b class="slds-section__title--large">Now we need to collect a </b>
+                <b class="slds-section__title--large--stream">Payment Method</b>
+                <b class="slds-section__title--large"> for autopay.</b>
+              </legend>
+                <div class="slds-p-around--small slds-text-body--regular slds-align_absolute-center">
+                  <b>We require all Community Solar customers to sign up for Autopay. You will not be charged at this time. Payments will begin automatically once we begin to transfer credits to your utility account. We will provide at least 10 days written notice before initiating charges to the account provided.</b>
+                </div>
+              <lightning:layout aura:id="passedCreditText" class="animated" multipleRows="true">
+
+              <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                <lightning:select
+                  aura:id="field"
+                  name="Select Payment Method"
+                  label="Select Payment Method:"
+                  value="{!v.SelectedPaymentMethod}"
+                  required="true">
+                    <option text="" value=""/>
+                  <aura:iteration items="{!v.PaymentMethodsAccepted}" var="paymentMethod">
+                    <option text="{!paymentMethod[0]}" value="{!paymentMethod[1]}"/>
+                  </aura:iteration>
+                </lightning:select>
+              </lightning:layoutItem>
+              </lightning:layout>
+
+              <lightning:layout aura:id="passedCreditText" class="animated" multipleRows="true">
+
+                <aura:if isTrue="{!v.SelectedPaymentMethod == 'ACH'}">
+                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                  <lightning:input
+                    aura:id="field"
+                    name="BankRouting"
+                    type="text"
+                    label="Routing Number:"
+                    minlength="2"
+                    maxlength="11"
+                    value="{!v.chOrder.ChargentOrders__Bank_Routing_Number__c}"
+                    required="true"/>
+                </lightning:layoutItem>
+                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                  <lightning:input
+                    aura:id="field"
+                    name="BankAccountNumber"
+                    type="text"
+                    label="Bank Account Number:"
+                    maxlength="24"
+                    value="{!v.chOrder.ChargentOrders__Bank_Account_Number__c}"
+                    required="true"/>
+                </lightning:layoutItem>
+                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                  <lightning:input
+                    aura:id="field"
+                    name="BankAccountName"
+                    type="text"
+                    label="Name on Account:"
+                    value="{!v.chOrder.ChargentOrders__Bank_Account_Name__c}"
+                    required="true"/>
+                </lightning:layoutItem>
+                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                    <lightning:input
+                      aura:id="field"
+                      name="BankName"
+                      type="text"
+                      label="Bank Name:"
+                      minlength="2"
+                      value="{!v.chOrder.ChargentOrders__Bank_Name__c}"
+                      required="true"/>
+                </lightning:layoutItem>
+                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                  <lightning:select
+                    aura:id="field"
+                    name="BankAccountType"
+                    label="Account Type:"
+                    value="{!v.chOrder.ChargentOrders__Bank_Account_Type__c}"
+                    required="true">
+                    <option label="" text="" value=""/>
+                    <option  label="Checking" text="Checking" value="Checking"/>
+                    <option  label="Savings" text="Savings" value="Savings"/>
+                  </lightning:select>
+                </lightning:layoutItem>
+              </aura:if>
+              <aura:if isTrue="{!v.SelectedPaymentMethod == 'Credit Card'}">
+                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                  <lightning:select
+                    aura:id="field"
+                    name="CCType"
+                    label="Card Type:"
+                    value="{!v.chOrder.ChargentOrders__Card_Type__c}"
+                    required="true">
+                    <option label="" text="" value=""/>
+                    <option label="Visa" text="Visa" value="Visa"/>
+                    <option label="Mastercard" text="Mastercard" value="Mastercard"/>
+                    <option label="Discover" text="Discover" value="Discover"/>
+                    <option label="American Express" text="American Express" value="American Express"/>
+                  </lightning:select>
+                </lightning:layoutItem>
+                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                  <lightning:input
+                    aura:id="field"
+                    name="CCNumber"
+                    type="text"
+                    label="Credit Card Number:"
+                    maxlength="16"
+                    value="{!v.chOrder.ChargentOrders__Card_Number__c}"
+                    required="true"/>
+                </lightning:layoutItem>
+                <lightning:layoutItem aura:id="ExpyMonth" padding="around-small" size="3" smallDeviceSize="3" mediumDeviceSize="3">
+                  <lightning:select
+                    aura:id="field"
+                    name="Expiration Month"
+                    label="Exp. Month:"
+                    value="{!v.chOrder.ChargentOrders__Card_Expiration_Month__c}"
+                    required="true">
+                    <option label="" text="" value=""/>
+                    <aura:iteration items="1,2,3,4,5,6,7,8,9,10,11,12" var="item">
+                      <option label="{!''+item}" text="{!''+item}"/>
+                    </aura:iteration>
+                  </lightning:select>
+                </lightning:layoutItem>
+                <lightning:layoutItem aura:id="ExpyYear" padding="around-small" size="3" smallDeviceSize="3" mediumDeviceSize="3">
+                  <lightning:select
+                    aura:id="field"
+                    name="Expiration Year"
+                    label="Exp. Year:"
+                    value="{!v.chOrder.ChargentOrders__Card_Expiration_Year__c}"
+                    required="true">
+                    <option label="" text="" value=""/>
+                    <aura:iteration items="{!v.expirationYears}" var="year">
+                      <option label="{!year}" text="{!year}"/>
+                    </aura:iteration>
+                  </lightning:select>
+                </lightning:layoutItem>
+                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                  <lightning:input
+                    aura:id="field"
+                    name="BillingZipcode"
+                    type="text"
+                    label="Zipcode:"
+                    maxlength="5"
+                    minlength="5"
+                    value="{!v.chOrder.ChargentOrders__Billing_Zip_Postal__c}"
+                    required="true"/>
+                </lightning:layoutItem>
+                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                  <lightning:input
+                    aura:id="field"
+                    name="FirstName"
+                    type="text"
+                    label="First Name:"
+                    value="{!v.chOrder.ChargentOrders__Billing_First_Name__c}"
+                    required="true"/>
+                </lightning:layoutItem>
+                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                  <lightning:input
+                    aura:id="field"
+                    name="LastName"
+                    type="text"
+                    label="Last Name:"
+                    value="{!v.chOrder.ChargentOrders__Billing_Last_Name__c}"
+                    required="true"/>
+                </lightning:layoutItem>
+              </aura:if>
+              <aura:if isTrue="{!and(v.Autopay, v.SelectedPaymentMethod != '')}">
+                <fieldset class="slds-box slds-theme--default slds-p-top_medium slds-container--medium slds-p-top_medium">
+                  <div class="slds-p-left_small slds-p-right_small">
+                    <div class="slds-text-body_small slds-text-color_default">
+                      I hereby authorize BlueWave or its servicer(s) to initiate debit entries (ACH) on my bank account or automatically charge the credit card I designate in this form. I understand that any debit entry from my account that is returned unpaid may be collected in the same manner as an unpaid paper check. I understand that the monthly payment amount debited from my bank account may vary from month to month based on variable generation from my Shared Solar System.
+
+                      My authorization for debit entries to my designated bank account shall remain in full force and effect until BlueWave or its servicer(s) has received written notification from me at least thirty (30) days in advance of my intent to change or cancel this Authorization for pre-arranged payments. I hereby release BlueWave or its servicer(s) from any and all claims resulting from this authorization.
+                    </div>
+                    <div class="slds-p-top_medium">
+                      <h3 class="slds-text-body_small slds-text-color_default">
+                        <lightning:input type="checkbox" required="true" checked="{!v.AutopayAcknowledgement}"/><b>I Agree</b>
+                      </h3>
+                    </div>
+                  </div>
+                </fieldset>
+              </aura:if>
+
+              <aura:if isTrue="{!v.AutopayAcknowledgement}">
+                <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12" >
+                  <div class="slds-align--absolute-center">
+                    <lightning:button label="Submit Payment Information" onclick="{!c.submitPaymentInfo}"/>
+                  </div>
+                </lightning:layoutItem>
+              </aura:if>
+              </lightning:layout>
+
+            </fieldset>
+          </div>
+      </aura:if>
+    </aura:set>
+  </aura:if>
+</aura:component>
