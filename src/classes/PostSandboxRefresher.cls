@@ -555,9 +555,12 @@ global class PostSandboxRefresher implements SandboxPostCopy {
 
     global class ProductionUpdateHelper implements Queueable {
         global void execute(QueueableContext context) {
-            List<Shared_Solar_System__c> sssList = [SELECT Id, Name, BWC_Project_Entity_Manual__r.Id, Product__r.Id
+            List<Shared_Solar_System__c> sssList = [
+                SELECT Id, Name, BWC_Project_Entity_Manual__r.Id, Product__r.Id
             FROM Shared_Solar_System__c
-            ORDER BY Name DESC];
+                WHERE BWC_Project_Entity_Manual__r.Id != NULL
+                ORDER BY Name DESC
+            ];
 
             Date today = Date.today();
             Date threeMonthsAgo = today.addMonths(-3);

@@ -1049,6 +1049,13 @@ if( month( Date__c ) == 12, &quot;December&quot;, null))))))))))))</formula>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
     <validationRules>
+        <fullName>Require_Entity_to_Create_Prod_update</fullName>
+        <active>true</active>
+        <description>A SSS must have an associated entity to create a production update</description>
+        <errorConditionFormula>IsBlank(Shared_Solar_System__r.BWC_Project_Entity_Manual__c)</errorConditionFormula>
+        <errorMessage>A SSS must have an associated entity to create a production update</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>Required_Fields_Transfer_2</fullName>
         <active>true</active>
         <errorConditionFormula>IF(
@@ -1069,6 +1076,37 @@ ISBLANK(Production_kWh_3_of_4__c),
 ISBLANK(Net_Metering_Rate_Applied_3_of_4__c)
 ),true,false)</errorConditionFormula>
         <errorMessage>Error: You must fill out Production, Net Metering Rate Applied and Total System NMCs if you want to add another month of credits.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Unable_to_Edit_After_Bills_QCed</fullName>
+        <active>true</active>
+        <description>Lock down the rest of the fields that affect billing</description>
+        <errorConditionFormula>AND( 
+    OR(
+       ISCHANGED(Production__c),
+       ISCHANGED(Production_kWh_2_of_4__c),
+       ISCHANGED(Production_kWh_3_of_4__c),
+       ISCHANGED(Production_kWh_4_of_4__c),
+       ISCHANGED(Total_System_NMCs__c),
+       ISCHANGED(Net_Metering_Rate_Applied__c ),
+       ISCHANGED(Net_Metering_Rate_Applied_2_of_4__c),
+       ISCHANGED(Net_Metering_Rate_Applied_3_of_4__c),
+       ISCHANGED(Net_Metering_Rate_Applied_4_of_4__c),
+       ISCHANGED(Total_System_NMCs_2_of_4__c),
+       ISCHANGED(Total_System_NMCs_3_of_4__c),
+       ISCHANGED(Total_System_NMCs_4_of_4__c)
+      ),
+    OR( 
+       ISPICKVAL(Bill_Status__c, &quot;Bills QCed&quot;),
+       ISPICKVAL(Bill_Status__c, &quot;Credit Transfers QCed&quot;),
+       ISPICKVAL(Bill_Status__c,&quot;Ready to Generate&quot;),
+       ISPICKVAL(Bill_Status__c,&quot;Email Bills Sent&quot;),
+       ISPICKVAL(Bill_Status__c,&quot;Letter Bills Sent&quot;),
+       ISPICKVAL(Bill_Status__c,&quot;Autopay QCed&quot;),
+       ISPICKVAL(Bill_Status__c,&quot;Not Billing this Month&quot;) 
+      )
+    )</errorConditionFormula>
+        <errorMessage>You cannot edit production data fields after Bills QCed</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>Unable_to_Edit_After_Credits_QCed</fullName>
