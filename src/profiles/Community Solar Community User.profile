@@ -542,14 +542,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>MySolarFarmController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>MySolarFarmControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>NavHeaderController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -10832,6 +10824,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Lead.Demo_Request__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Lead.Description</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -11377,6 +11374,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Lead.Newsletter_Opt_in__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Lead.No_Veteran_Disability__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -11572,6 +11574,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Lead.Product_Interest__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Lead.Product_Line_Account_Map__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -11624,6 +11631,11 @@
         <editable>false</editable>
         <field>Lead.Record_Type_ID__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.Referral_Code__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -11713,6 +11725,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Solar_Coverage__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.State_Market__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -11873,6 +11890,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Webform__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.Webpage_Source__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -45232,6 +45254,10 @@
         <recordType>Lead.Lead</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Lead-Lead Layout</layout>
+        <recordType>Lead.Lead_General</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>LetterStreamJob__c-LetterStreamJob Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -46603,6 +46629,11 @@
         <default>true</default>
         <recordType>Lead.Lead</recordType>
         <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Lead.Lead_General</recordType>
+        <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
