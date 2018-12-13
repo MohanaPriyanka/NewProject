@@ -179,7 +179,7 @@ public with sharing class AutopayChecker implements Queueable {
             Date nextAutopayDate =
                 RecurringPaymentsHandler.getNextAutopayDate(Date.today(), Integer.valueOf(order.ChargentOrders__Charge_Date__c));
             if (order.Account_Bill__c != null &&
-                order.ChargentOrders__Charge_Amount__c == 0 &&
+                order.ChargentOrders__Charge_Amount__c <= 0 &&
                 order.ChargentOrders__Payment_Start_Date__c <= nextAutopayDate) {
                 orderIds.add(order.Id);
                 passed = false;
