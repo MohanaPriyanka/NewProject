@@ -175,7 +175,7 @@
     */
     // http://peterknolle.com/file-upload-lightning-component/
     // Assumes callbackFunc takes a component as an argument - not sure if that will always work...
-    uploadFiles : function(component, files, parentId, callbackFunc, description, helper) {
+    uploadFiles : function(component, files, parentId, callbackFunc, description, helper, showInModal) {
         var ltg = this;
         for (var i=0; i<files.length; i=i+1) {
             (function(file) {
@@ -184,8 +184,13 @@
                     message += 'We\'ll open a Box Upload Widget in a new window. Please make sure your popup blocker is disabled\n\n';
                     message += 'File size cannot exceed: ' + helper.precisionRound(ltg.MAX_FILE_SIZE/ltg.BYTES_IN_MB,2) + ' MB.\n';
                     message += 'Your file size is: ' + helper.precisionRound(file.size/ltg.BYTES_IN_MB,2) + ' MB.';
-                    helper.showNotice(component, helper.openBoxUploader, 'File Too Large', message, description);
-                    component.set('v.isLargeFile', true);
+                    if (!showInModal) {
+                        helper.showNotice(component, helper.openBoxUploader, 'File Too Large', message, description);
+                        component.set('v.isLargeFile', true);
+                    } else {
+                        alert(message);
+                        helper.openBoxUploader(description);
+                    }
                     return;
                 }
                 var fr = new FileReader();
