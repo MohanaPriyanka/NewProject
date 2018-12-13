@@ -22,6 +22,11 @@
         <label>Attended</label>
     </standardValue>
     <standardValue>
+        <fullName>Do not contact</fullName>
+        <default>false</default>
+        <label>Do not contact</label>
+    </standardValue>
+    <standardValue>
         <fullName>Invited</fullName>
         <default>false</default>
         <label>Invited</label>
