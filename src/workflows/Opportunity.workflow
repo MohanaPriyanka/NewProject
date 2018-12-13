@@ -1179,7 +1179,7 @@ CONTAINS(Name,&apos;-&apos;),true,false
             <type>FieldUpdate</type>
         </actions>
         <active>true</active>
-        <booleanFilter>1 AND 2 AND 3</booleanFilter>
+        <booleanFilter>1 AND 2 AND 3 AND 4</booleanFilter>
         <criteriaItems>
             <field>Opportunity.Contract_Status__c</field>
             <operation>equals</operation>
@@ -1194,6 +1194,11 @@ CONTAINS(Name,&apos;-&apos;),true,false
             <field>Opportunity.Quality_Check_Status__c</field>
             <operation>equals</operation>
             <value>Completed</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Opportunity.StageName</field>
+            <operation>equals</operation>
+            <value>Pending Quality Control Signature</value>
         </criteriaItems>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
@@ -1278,7 +1283,7 @@ CONTAINS(Name,&apos;-&apos;),true,false
             <name>Opportunity_Stage_QC_Signature_Pending</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <booleanFilter>1 AND 2</booleanFilter>
         <criteriaItems>
             <field>Opportunity.All_QC_Boxes_True__c</field>
@@ -1299,7 +1304,7 @@ CONTAINS(Name,&apos;-&apos;),true,false
             <name>Opportunity_Stage_QC_in_Process</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <booleanFilter>1 AND 2 AND 3 AND 4 AND 5</booleanFilter>
         <criteriaItems>
             <field>Opportunity.Contract_Status__c</field>
