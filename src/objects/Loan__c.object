@@ -2221,6 +2221,6 @@ null))</formula>
         <protected>false</protected>
         <showsLocation>false</showsLocation>
         <showsStatus>false</showsStatus>
-        <url>https://na16.salesforce.com/_ui/core/email/author/EmailAuthor?p2_lkid={!Loan__c.Id}&amp;template_id=00Xj0000000FmIO</url>
+        <url>/_ui/core/email/author/EmailAuthor?p2_lkid={!Loan__c.Id}&amp;template_id=00Xj0000000FmIO</url>
     </webLinks>
 </CustomObject>
