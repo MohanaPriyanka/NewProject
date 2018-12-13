@@ -641,7 +641,7 @@ private class RecurringPaymentsHandlerTestClass {
         Entity__c entityA = new Entity__c (Name = 'BarrettProjCo', Gateway__c = chGatewayA.Id);
 
         insert entityA;
-        Test.startTest();
+
         Shared_Solar_System__c sssA = [
             SELECT Id, BWC_Project_Entity_Manual__c, BWC_Project_Entity_Manual__r.Gateway__c
             FROM Shared_Solar_System__c
@@ -694,6 +694,8 @@ private class RecurringPaymentsHandlerTestClass {
             Status__c = 'Billing'
         );
         insert scheduleZA;
+
+        Test.startTest();
 
         //Create first Account Bill. Created through Production Updates
         Energy_Usage_Update__c productionUpdateA = [

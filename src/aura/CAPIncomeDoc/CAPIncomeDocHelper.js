@@ -1,93 +1,4 @@
 ({
-    PAYSTUB: 'PayStub',
-    TAX_PREV_YEAR: 'Tax Return (Previous Year)',
-    TAX_TWO_YEARS_PRIOR: 'Tax Return (Two Years Previous)',
-    SSN: 'SSN Award Letter',
-    PENSION: 'Pension Award Letter',
-    BANK: 'Bank Statement (SSN Income)',
-    VETERAN: 'Veteran Income Documentation',
-    OTHER_INCOME: 'Income: Other',
-    TC_DOC: 'MSLP Technical Confirmation',
-    BUS_TAX_PREV_YEAR: 'Business Tax Return (Previous Year)',
-    BUS_TAX_TWO_YEARS_PRIOR: 'Business Tax Return (Two Years Previous)',
-    LEASE_AGR: 'Lease Agreement',
-
-    getLead : function(component, helper) {
-        var action = component.get('c.getLeadWrapper');
-        action.setParams({'leadId' : component.get('v.lead.Id'),
-                          'email': component.get('v.lead.Email')});
-        action.setCallback(this,function(resp) {
-            if (resp.getState() === 'SUCCESS') {
-                // We call getLead after docs are uploaded to refresh the attachment list.
-                // We lose data if fields are set before uploading and not yet saved.
-                component.set('v.lead.Attachments', resp.getReturnValue().attachments);
-                helper.parseAttachments(component, helper);
-            } else {
-                this.logError('CAPIncomeDocHelper', 'getLead', resp.getError(), component.get('v.lead'));
-            }
-        });
-        $A.enqueueAction(action);
-    },
-
-    parseAttachments : function(component, helper) {
-        const lead = component.get('v.lead');
-        if (lead.Attachments) {
-            const paystubs = [];
-            const taxreturns = [];
-            const lastYearReturns = [];
-            const twoYearReturns = [];
-            const retirement = [];
-            const veteran = [];
-            const otherIncome = [];
-            const tcDocs = [];
-            const requestedDocs = [];
-            lead.Attachments.forEach(function(attachment) {
-                const desc = attachment.Description;
-                if (desc === helper.PAYSTUB) {
-                    paystubs.push(attachment.Name);
-                } else if (desc === helper.TAX_PREV_YEAR) {
-                    taxreturns.push(attachment.Name);
-                    lastYearReturns.push(attachment.Name);
-                } else if (desc === helper.TAX_TWO_YEARS_PRIOR) {
-                    taxreturns.push(attachment.Name);
-                    twoYearReturns.push(attachment.Name);
-                } else if (
-                    desc === helper.SSN ||
-                    desc === helper.PENSION ||
-                    desc === helper.BANK
-                ) {
-                    retirement.push(attachment.Name);
-                } else if (desc === helper.VETERAN) {
-                    veteran.push(attachment.Name);
-                } else if (desc === helper.OTHER_INCOME) {
-                    otherIncome.push(attachment.Name);
-                } else if (desc === helper.TC_DOC) {
-                    tcDocs.push(attachment.Name);
-                } else if (desc !== undefined && desc.substring(0,9) === 'Requested') {
-                    requestedDocs.push(attachment.Name);
-                }
-            });
-            component.set('v.paystubs', paystubs);
-            component.set('v.taxreturns', taxreturns);
-            component.set('v.lastYearReturns', lastYearReturns);
-            component.set('v.twoYearReturns', twoYearReturns);
-            component.set('v.retirementIncome', retirement);
-            component.set('v.veteranIncome', veteran);
-            component.set('v.otherIncome', otherIncome);
-            component.set('v.tcDocs', tcDocs);
-            component.set('v.requestedDocs', requestedDocs);
-        }
-    },
-
-    handleAttachment : function(component, event, helper, description) {
-        var files = event.getSource().get("v.files");
-        if (component.get('v.lead.ConvertedContactId')) {
-            helper.uploadFiles(component, files, component.get('v.lead.ConvertedContactId'), helper.getLead, description, helper);
-        } else {
-            helper.uploadFiles(component, files, component.get('v.lead.Id'), helper.getLead, description, helper);
-        }
-    },
-
     checkProjectIDErrors : function(component) {
         var errorMessage = "";
         var lead = component.get("v.lead");
@@ -123,4 +34,38 @@
         });
     },
 
+    finishIncomeDocs : function(component, event, helper) {
+        const lead = component.get('v.lead');
+        let leadToSave;
+        if (lead.Status === 'Awaiting Info Requested from Customer') {
+            leadToSave = {
+                sobjectType: 'Lead',
+                Status: 'Under BlueWave Review',
+                Id: lead.Id,
+                Unfinished_Lead__c: false
+            };
+        } else {
+            leadToSave = {
+                sobjectType: 'Lead',
+                Id: lead.Id,
+                Unfinished_Lead__c: false
+            };
+        }
+        helper.saveSObject(component, lead.Id, 'Lead', null, null, leadToSave)
+        .then($A.getCallback(function resolve() {
+            return helper.insertPartnerTaskFunction(component, event, helper);
+        }))
+        .then($A.getCallback(function resolve() {
+            helper.finishStage(component, event, helper);
+        }));
+    },
+
+    incomeSourceProvided : function(lead) {
+        return (lead &&
+                (lead.Employed__c ||
+                 lead.Self_Employed__c ||
+                 lead.Retired__c ||
+                 lead.Veteran_Disability__c ||
+                 lead.Other_Income__c));
+    },
 })
