@@ -174,57 +174,20 @@ public without sharing class CSSubscriptionEnroller {
         Decimal totalAnnualkWhElectricity = 0;
         for (Utility_Account_Log__c ual : getUALList(lead)) {
             totalAnnualCostOfElectricity += Util.nullToZero(ual.Annual_Cost_of_Electricity__c);
+            totalAnnualCostOfElectricity -= Util.nullToZero(ual.Subscribed_Annual_Cost_of_Electricity__c);
             totalAnnualkWhElectricity += Util.nullToZero(ual.Proposed_kWh__c);
+            totalAnnualkWhElectricity -= Util.nullToZero(ual.Subscribed_Annual_kWhs__c);
         }
         return new AnnualEnergyTotal(totalAnnualCostOfElectricity, totalAnnualkWhElectricity);
     }
 
     public void createOpportunity(Lead lead) {
         AnnualEnergyTotal annualTotals = getAnnualTotals(lead);
-        Decimal remainingAccountCostToAllocate = annualTotals.cost;
-        Decimal remainingAccountkWhToAllocate = annualTotals.kWh;
-        List<Opportunity> oppListToCreate = new List<Opportunity>();
-        Integer oppCounter = 1;
-        for (Shared_Solar_System__c sss : getSortedSharedSolarSystems(lead)) {
-            if (Integer.valueOf(lead.LASER_Credit_Score__c) >= sss.Credit_Score_Requirement__c &&
-                (remainingAccountCostToAllocate > 0 || remainingAccountkWhToAllocate > 0)) {
-                Decimal annualElectricityCostAssigned = Math.min(remainingAccountCostToAllocate, sss.Maximum_Subscription_Cost__c);
-                if (remainingAccountCostToAllocate > 0) {
-                    remainingAccountCostToAllocate -= annualElectricityCostAssigned;
-                }
-                Decimal annualElectricitykWhAssigned = Math.min(remainingAccountkWhToAllocate, sss.Maximum_Subscription_Capacity_kW_DC__c * sss.Expected_Yield_kWh_kW__c);
-                if (remainingAccountkWhToAllocate > 0) {
-                    remainingAccountkWhToAllocate -= annualElectricitykWhAssigned;
-                }
-                ChargentOrders__ChargentOrder__c baseChargentOrder = chOrdersByLeadId.get(lead.Id);
-                Opportunity opp = new Opportunity(
-                    AccountId = lead.ConvertedAccountId,
-                    Shared_Solar_System__c = sss.Id,
-                    Reserved_System_Capacity_kW_DC2__c = sss.Reserved_Capacity_kW_DC__c,
-                    Available_System_Capacity_kW_DC__c = sss.Project_Capacity_Available_kW_DC__c,
-                    Product__c = sss.Product__c,
-                    System_Assigned__c = true,
-                    NMC_Tariff__c = sss.Utility_NMC_Tariff__c,
-                    Name = lead.FirstName + ' ' + lead.LastName,
-                    StageName = 'New',
-                    CloseDate = Date.today(),
-                    UAS_Created__c = true,
-                    Annual_Electricity_Cost__c = annualElectricityCostAssigned,
-                    Annual_Electricity_Cost2__c = annualElectricityCostAssigned,
-                    Annual_Consumption_kWh__c = annualElectricitykWhAssigned,
-                    Opportunity_Order__c = oppCounter,
-                    Lead__c = lead.Id
-                );
-                opp = setDefaultOppFields(lead, opp);
-                System.debug('creating ch order');
-                System.debug(baseChargentOrder);
-                if (baseChargentOrder != null) {
-                    opp = addPaymentInfoToOpp(opp, baseChargentOrder);
-                }
-                oppListToCreate.add(opp);
-                oppCounter++;
-            }
-        }
+        List<Shared_Solar_System__c> availableSSS = getSortedSharedSolarSystems(lead);
+        ChargentOrders__ChargentOrder__c baseChargentOrder = chOrdersByLeadId.get(lead.Id);
+
+        List<Opportunity> oppListToCreate = CSOpportunityFactory.generateCSOpportunities(lead, availableSSS, baseChargentOrder, annualTotals, lead.ConvertedAccountId);
+
         leadOppsMap.put(lead.Id, oppListToCreate);
     }
 
@@ -336,23 +299,6 @@ public without sharing class CSSubscriptionEnroller {
         DocuSignHelper.sendCSPackageFuture(oppIdList);
     }
 
-    public Opportunity addPaymentInfoToOpp(Opportunity opp, ChargentOrders__ChargentOrder__c chOrder) {
-        if (chOrder.ChargentOrders__Payment_Method__c == 'Check') {
-            opp.ACH_Bank_Name__c = chOrder.ChargentOrders__Bank_Name__c;
-            opp.ACH_Bank_Routing_Number__c = Util.obscureText(chOrder.ChargentOrders__Bank_Routing_Number__c, 4);
-            opp.ACH_Account_Type__c = chOrder.ChargentOrders__Bank_Account_Type__c;
-            opp.ACH_Account_Number__c = Util.obscureText(chOrder.ChargentOrders__Bank_Account_Number__c, 4);
-            opp.ACH_Name_on_Account__c = chOrder.ChargentOrders__Bank_Account_Name__c;
-        } else if (chOrder.ChargentOrders__Payment_Method__c == 'Credit Card') {
-            opp.CC_Card_Type__c = chOrder.ChargentOrders__Card_Type__c ;
-            opp.CC_Account_Number__c = Util.obscureText(chOrder.ChargentOrders__Card_Number__c, 4);
-            opp.CC_CardHolder_Name__c = chOrder.ChargentOrders__Billing_Last_Name__c;
-            opp.CC_Expiration_Month__c = chOrder.ChargentOrders__Card_Expiration_Month__c;
-            opp.CC_Expiration_Year__c = chOrder.ChargentOrders__Card_Expiration_Year__c;
-        }
-        return opp;
-    }
-
     public void assignApplicableRateClass(Lead lead) {
         List<Utility_Account_Log__c> uals = getUALList(lead);
         Product2 product = productsMap.get(lead.Product__c);
@@ -392,93 +338,12 @@ public without sharing class CSSubscriptionEnroller {
         update ualsToUpdateMap.values();
     }
 
-    private static Opportunity setDefaultOppFields(Lead lead, Opportunity opp){
-        opp.AccountId = lead.convertedAccountId;
-        opp.Assessors_Parcel_Number__c = lead.Accessor_s_Parcel_Number__c;
-        opp.Annual_Independent_Income__c = lead.Annual_Income_Currency__c;
-        opp.Application_Date__c = lead.Application__c;
-        opp.Application_Type__c = lead.Application_Type__c;
-        opp.Avidia_Checking_Account__c = lead.Avidia_Checking_Account__c;
-        opp.Business_Title__c = lead.Business_Title__c;
-        opp.Co_Applicant_Date_of_Birth__c = lead.Co_Applicant_Date_of_Birth__c;
-        opp.Co_Applicant_Email__c = lead.Co_Applicant_Email__c;
-        opp.Co_Applicant_First_Name__c = lead.Co_Applicant_First_Name__c;
-        opp.Co_Applicant_Income__c = lead.Co_Applicant_Income__c;
-        opp.Co_Applicant_Last_Name__c = lead.Co_Applicant_Last_Name__c;
-        opp.Co_Applicant_Phone__c = lead.Co_Applicant_Phone__c;
-        opp.Commencement_Date__c = lead.Commencement_Date__c;
-        opp.Cumulative_Loan_to_Value__c = lead.Cumulative_Loan_to_Value_if_Applicable__c;
-        opp.Customer_Referral__c = lead.Customer_Referral__c;
-        opp.Customer_type__c = lead.Customer_type__c;
-        opp.Customer_Group__c = lead.Customer_Type_Formula__c;
-        opp.Custom_ID__c = lead.Custom_ID__c;
-        opp.Date_of_Application__c = lead.Date_of_Application__c;
-        opp.Date_of_Expiration__c = lead.Date_of_Expiration__c;
-        opp.Date_of_Issuance__c = lead.Date_of_Issuance__c;
-        opp.Direct_Disbursal_to_Installer_Authorized__c = lead.Direct_Disbursal_to_Installer_Authorized__c;
-        opp.DOER_Solar_Loan__c = lead.DOER_Solar_Loan__c;
-        opp.Utility_Account__c = lead.Electric_Account_Number__c;
-        opp.Electronic_Disbursal_Authorized__c = lead.Electronic_Disbursal_Authorized__c;
-        opp.Email__c = lead.Email_Re_Enter__c;
-        opp.Employed_for_more_than_one_year__c = lead.Employed_for_more_than_one_year__c;
-        opp.Employed_for_more_than_six_months__c = lead.Employed_for_more_than_six_months__c;
-        opp.External_System_Lead_ID__c = lead.External_System_Lead_ID__c;
-        opp.Form_Completion_Time__c = lead.Form_Completion_Time__c;
-        opp.State_ab__c = lead.LASERCA__Home_State__c;
-        opp.Income_Type__c = lead.Income_Type__c;
-        opp.Income_Type_2__c = lead.Income_Type_2__c;
-        opp.Is_Loan_Secured__c = lead.Is_Loan_Secured__c;
-        opp.Lead_ID__c = lead.Lead_ID__c;
-        opp.Lived_at_residence_more_than_six_months__c = lead.Lived_Residence_Six_Months__c;
-        opp.Loan_Program_Class__c = lead.Loan_Program_Class__c;
-        opp.Loan_Principle__c  = lead.System_Cost__c;
-        opp.Requested_Loan_Amount__c  = lead.Requested_Loan_Amount__c;
-        opp.Maximum_Loan__c = lead.Maximum_Loan__c;
-        opp.Maximum_Monthly_Disbursement__c = lead.Maximum_Monthly_Disbursement2__c;
-        opp.Monthly_Income__c = lead.Monthly_Income__c;
-        opp.Monthly_Income_2__c = lead.Monthly_Income_2__c;
-        opp.Monthly_Income_Details__c = lead.Monthly_Income_Details__c;
-        opp.Monthly_Income_Details_2__c = lead.Monthly_Income_Details_2__c;
-        opp.More_than_five_years_industry_experience__c = lead.More_than_five_years_industry_experience__c;
-        opp.Name = lead.Company;
-        opp.Number_of_Years_at_Location__c = lead.Number_of_Years_at_Location__c;
-        opp.Number_of_Years_in_Business__c = lead.Number_of_Years_in_Business__c;
-        opp.Parcel_ZIp__c = lead.Parcel_Zip__c;
-        opp.Partner_tag_lookup__c = lead.Partner_lookup__c;
-        opp.Partner_Email__c = lead.Partner_Email__c;
-        opp.Partner_Tag__c = lead.Partner_Tag__c;
-        opp.Personal_Credit_Report2__c = lead.Personal_Credit_Report__c;
-        opp.Personal_Credit_Report_Co_Applicant__c = lead.Personal_Credit_Report_Co_Applicant__c;
-        opp.Customer_Phone__c = lead.Phone2__c;
-        opp.Product_Line__c = lead.Product_Line__c;
-        opp.Project_Identification_Number__c = lead.Project_Identification_Number__c;
-        opp.Referral_Email__c = lead.Referral_Email__c;
-        opp.Residence_Owner__c = lead.Residence_Owner__c;
-        opp.BS_Sales_ID__c = lead.bs_Sales_ID__c;
-        opp.Sales_Person_Tag__c = lead.Sales_Person__c;
-        opp.Security_Type__c = lead.Security_Type__c;
-        opp.Service_Territory__c = lead.Load_Zone__c;
-        opp.Subscription__c = lead.Solar_Coverage__c;
-        opp.State_of_Issuance__c = lead.State_of_Issuance__c;
-        opp.Project_Assignment__c = lead.System_Assignment__c;
-        opp.Annual_Consumption_kWh__c = lead.Total_Annual_Consumption_kWh__c;
-        opp.Annual_Electricity_Cost__c = lead.Total_Annual_Electricity_Cost__c;
-        opp.UtilityMapper__c = lead.Utility__c;
-        opp.Utility_Account_Holder_Name__c = lead.Utility_Account_Holder__c;
-        opp.Utility_Account_Holder_Business__c = lead.Utility_Account_Holder_Business__c;
-        opp.Utility_Password__c = lead.Utility_Account_Password__c;
-        opp.Username__c = lead.Utility_Account_Username__c;
-        opp.Utility_Relationship__c = lead.Utility_Relationship__c;
-        opp.OwnerId = lead.OwnerId;
-        return opp;
-    }
-
     @TestVisible
-    private class AnnualEnergyTotal {
+    public class AnnualEnergyTotal {
         public Decimal cost;
         public Decimal kWh;
 
-        AnnualEnergyTotal(Decimal cost, Decimal kWh) {
+        public AnnualEnergyTotal(Decimal cost, Decimal kWh) {
             this.cost = cost.setScale(0);
             this.kWh = kWh.setScale(0);
         }

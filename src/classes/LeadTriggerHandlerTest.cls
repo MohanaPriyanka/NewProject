@@ -1,5 +1,5 @@
 @isTest
-private class LeadTriggerHandlerTest {
+public class LeadTriggerHandlerTest {
     @isTest static void customerSubscriptionProcessTest() {
         System_Properties__c sysProp = new System_Properties__c(
             Name = 'System',
@@ -801,7 +801,7 @@ private class LeadTriggerHandlerTest {
         System.assertEquals(25, ((Decimal) uasAggregate[0].get('minimum')).setScale(0));
     }
 
-    private static Shared_Solar_System__c getSharedSolarSystem(Utility_NMC_Tariff__c nmcRate, Product2 csProduct,
+    public static Shared_Solar_System__c getSharedSolarSystem(Utility_NMC_Tariff__c nmcRate, Product2 csProduct,
         String utility, String name) {
         Shared_Solar_System__c sss1 = new Shared_Solar_System__c(
             Name = name,
@@ -824,7 +824,7 @@ private class LeadTriggerHandlerTest {
         return sss1;
     }
 
-    private static void insertTariffsForProduct(Id productId) {
+    public static void insertTariffsForProduct(Id productId) {
         Utility_NMC_Tariff__c eversourceG1 =  new Utility_NMC_Tariff__c(
             Value_of_Net_Metering_Credit__c = .70578,
             Name = 'Eversource G1',
