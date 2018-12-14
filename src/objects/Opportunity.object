@@ -400,7 +400,7 @@
         <fullName>ACH_Name_on_Account__c</fullName>
         <externalId>false</externalId>
         <label>ACH Name on Account</label>
-        <length>30</length>
+        <length>100</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
