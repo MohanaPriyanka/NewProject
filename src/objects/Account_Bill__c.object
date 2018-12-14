@@ -1062,6 +1062,19 @@ IF(Parent_Account__r.Recurring_Billing__c = TRUE, &quot;You are currently on aut
         <type>Summary</type>
     </fields>
     <fields>
+        <fullName>Previous_Account_Balance_Net_Payments__c</fullName>
+        <externalId>false</externalId>
+        <formula>Parent_Account__r.Account_Balance__c + Past_Payment__c + Previous_Overpayment__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Previous Account Balance Net Payments</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>Previous_Account_Balance__c</fullName>
         <externalId>false</externalId>
         <formula>Parent_Account__r.Account_Balance__c + Previous_Overpayment__c</formula>

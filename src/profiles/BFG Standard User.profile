@@ -2934,6 +2934,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account_Bill__c.Previous_Account_Balance_Net_Payments__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account_Bill__c.Previous_Account_Balance__c</field>
         <readable>true</readable>
     </fieldPermissions>
