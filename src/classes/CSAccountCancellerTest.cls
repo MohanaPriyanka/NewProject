@@ -12,8 +12,6 @@ private class CSAccountCancellerTest {
     static void testOverdueAccounts() {
         //Set up delinquent customers
         Test.startTest();
-        Util.disableTrigger('Disable_OpportunityTrigger__c');
-        Util.disableTrigger('Disable_AccountTrigger__c');
         List<Shared_Solar_System__c> sss = [SELECT Id FROM Shared_Solar_System__c ORDER BY Name ASC ];
 
         CustomerCommunicationHandlerTest.createBills(System.today() - 88, sss[0].Id); // 67 days late
@@ -40,6 +38,9 @@ private class CSAccountCancellerTest {
         System.assertEquals('Lack of Payment', testAccount.Cancellation_Reason__c);
 
         //Undo cancel and set Opp.Customer_Group__c to Anchor
+        Util.disableTrigger('Disable_OpportunityTrigger__c');
+        Util.disableTrigger('Disable_AccountTrigger__c');
+
         testAccount.Cancellation_Reason__c = null;
         testAccount.Cancellation_Comments__c = '';
         testAccount.Cancellation_Request_Date__c = null;
@@ -47,6 +48,8 @@ private class CSAccountCancellerTest {
         update testAccount;
         update testOpp;
 
+        Util.enableTrigger('Disable_OpportunityTrigger__c');
+        Util.enableTrigger('Disable_AccountTrigger__c');
 
         //B: Do not Cancel Anchor/Public Offtake Accounts
         CSAccountCanceller.handleOverdueAccounts();
@@ -57,6 +60,12 @@ private class CSAccountCancellerTest {
 
         System.assertEquals(null, testAccountB.Cancellation_Request_Date__c);
         System.assertEquals(null, testAccountB.Cancellation_Reason__c);
+
+        //C: Make sure not updating other accounts
+        List<Account> allAccounts = [SELECT Id, Cancellation_Request_Date__c FROM Account WHERE Id != :testAccount.Id];
+        for (Account a : allAccounts) {
+            System.assertEquals(null, a.Cancellation_Request_Date__c);
+        }
 
         Test.stopTest();
     }

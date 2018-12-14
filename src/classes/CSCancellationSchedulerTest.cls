@@ -11,8 +11,6 @@ private class CSCancellationSchedulerTest {
     @IsTest
     static void testExecute() {
         Test.startTest();
-        Util.disableTrigger('Disable_OpportunityTrigger__c');
-        Util.disableTrigger('Disable_AccountTrigger__c');
         List<Shared_Solar_System__c> sss = [SELECT Id FROM Shared_Solar_System__c ORDER BY Name ASC ];
 
         CustomerCommunicationHandlerTest.createBills(System.today() - 88, sss[0].Id); // 67 days late
