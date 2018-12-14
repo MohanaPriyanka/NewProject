@@ -63,8 +63,11 @@ private class CSAccountCancellerTest {
 
         //C: Make sure not updating other accounts
         List<Account> allAccounts = [SELECT Id, Cancellation_Request_Date__c FROM Account WHERE Id != :testAccount.Id];
-        for (Account a : allAccounts) {
-            System.assertEquals(null, a.Cancellation_Request_Date__c);
+        System.assertNotEquals(0, allAccounts.size());
+        if (!allAccounts.isEmpty()) {
+            for (Account a : allAccounts) {
+                System.assertEquals(null, a.Cancellation_Request_Date__c);
+            }
         }
 
         Test.stopTest();
