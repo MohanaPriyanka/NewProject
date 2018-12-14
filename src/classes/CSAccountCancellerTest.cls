@@ -12,6 +12,8 @@ private class CSAccountCancellerTest {
     static void testOverdueAccounts() {
         //Set up delinquent customers
         Test.startTest();
+        Util.disableTrigger('Disable_OpportunityTrigger__c');
+        Util.disableTrigger('Disable_AccountTrigger__c');
         List<Shared_Solar_System__c> sss = [SELECT Id FROM Shared_Solar_System__c ORDER BY Name ASC ];
 
         CustomerCommunicationHandlerTest.createBills(System.today() - 88, sss[0].Id); // 67 days late
@@ -24,8 +26,7 @@ private class CSAccountCancellerTest {
         update listaccountBills;
 
         //A: Normal - Cancel
-        CSCancellationScheduler cancellationScheduler = new CSCancellationScheduler();
-        cancellationScheduler.execute(null);
+        CSAccountCanceller.handleOverdueAccounts();
         Account testAccount = [
             SELECT Id, Name, Cancellation_Request_Date__c, Cancellation_Reason__c, Cancellation_Comments__c
             FROM Account WHERE Id = :listaccountBills[0].Parent_Account__r.Id

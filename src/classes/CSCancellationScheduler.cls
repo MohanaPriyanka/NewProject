@@ -1,5 +1,7 @@
 /**
  * Created by Sarah Renfro on 12/6/2018.
+ *
+ * Tested By: CSCancellationSchedulerTest
  */
 
 public without sharing class CSCancellationScheduler implements Schedulable{

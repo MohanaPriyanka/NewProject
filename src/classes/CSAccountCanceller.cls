@@ -5,7 +5,7 @@
  * Tested By: CSAccountCancellerTest
  */
 
-public with sharing class CSAccountCanceller {
+public without sharing class CSAccountCanceller {
 
     public static void handleOverdueAccounts() {
         List<Account> updatedAccounts = new List<Account>();
