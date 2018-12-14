@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Profile xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>BFG Standard User</fullName>
     <applicationVisibilities>
         <application>BlueWave_Finance_Group</application>
         <default>true</default>
@@ -5622,6 +5621,11 @@
         <editable>false</editable>
         <field>ChargentOrders__ChargentOrder__c.Hour_Created__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>ChargentOrders__ChargentOrder__c.Lead__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -21562,6 +21566,11 @@
         <editable>false</editable>
         <field>Opportunity.Age__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.All_Customers_Signature_Status__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
