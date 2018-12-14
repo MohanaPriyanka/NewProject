@@ -3567,6 +3567,11 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <inlineHelpText>Overpayments that have not been applied to a bill, and will be applied to the next bill if for the same project entity</inlineHelpText>
         <label>Unapplied Overpayments</label>
         <summarizedField>Account_Bill__c.Unapplied_Overpayments__c</summarizedField>
+        <summaryFilterItems>
+            <field>Account_Bill__c.Published__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </summaryFilterItems>
         <summaryForeignKey>Account_Bill__c.Parent_Account__c</summaryForeignKey>
         <summaryOperation>sum</summaryOperation>
         <trackHistory>false</trackHistory>
