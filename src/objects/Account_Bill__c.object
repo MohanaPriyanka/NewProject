@@ -957,7 +957,7 @@ IF(Parent_Account__r.Recurring_Billing__c = TRUE, &quot;You are currently on aut
         <relationshipLabel>Account Bills</relationshipLabel>
         <relationshipName>Account_Bills</relationshipName>
         <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <reparentableMasterDetail>true</reparentableMasterDetail>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>

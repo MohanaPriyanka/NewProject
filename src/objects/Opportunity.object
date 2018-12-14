@@ -376,7 +376,7 @@
         <fullName>ACH_Bank_Name__c</fullName>
         <externalId>false</externalId>
         <label>ACH Bank Name</label>
-        <length>30</length>
+        <length>100</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -8973,8 +8973,8 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         </filters>
         <filters>
             <field>Lender_of_Record__c</field>
-            <operation>contains</operation>
-            <value>Avidia</value>
+            <operation>notContain</operation>
+            <value>BlueWave</value>
         </filters>
         <label>NonDOER Opportunities with Credit Pulled</label>
     </listViews>
