@@ -356,7 +356,8 @@ public without sharing class CommunitySolarCustomerPortalTest {
                 EmailEncodingKey = 'ISO-8859-1',
                 LanguageLocaleKey = 'en_US'
             );
-            insert new List<User>{communityUser, partnerLoginUser, partnerUser};
+            // To avoid UNABLE_TO_LOCK_ROW:
+            Util.insertSobjs(new list<User>{communityUser, partnerLoginUser, partnerUser});
 
             PackageLicense pl = [   SELECT Id
                                     FROM PackageLicense

@@ -557,7 +557,6 @@ public class LeadTriggerHandlerTest {
         ];
         System.assertEquals(2, opps.size());
 
-        System.debug(opps);
         for (Opportunity opp : opps) {
             if (opp.ACH_Bank_Name__c != null) {
                 //from ACHOrder1

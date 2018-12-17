@@ -306,18 +306,15 @@ public without sharing class CSSubscriptionEnroller {
             Map<String, Utility_NMC_Tariff__c> possibleTariffsByName = tariffsByProductIdAndTariffName.get(lead.Product__c);
             String tariffName = getUtilityTariffName(ual, lead);
             Utility_NMC_Tariff__c tariff = possibleTariffsByName.get(tariffName);
-            System.debug(tariff);
-            System.debug(tariffName);
             if (tariff != null && product != null && product.Program__c.contains('SMART')) {
                 ual.Utility_NMC_Tariff__c = tariff.Id;
-                // Currently, we only need to have a sizing ration for SMART
+                // Currently, we only need to have a sizing ratio for SMART
                 ual.Proposed_kWh__c = ual.Annual_kWh__c * tariff.Size_Ratio__c;
             } else {
                 ual.Proposed_kWh__c = ual.Annual_kWh__c;
             }
             ualsToUpdateMap.put(ual.Id, ual);
         }
-        System.debug(uals);
         ualsByLeadId.put(lead.Id, uals);
     }
 
@@ -338,7 +335,6 @@ public without sharing class CSSubscriptionEnroller {
         update ualsToUpdateMap.values();
     }
 
-    @TestVisible
     public class AnnualEnergyTotal {
         public Decimal cost;
         public Decimal kWh;
