@@ -1,5 +1,287 @@
 <messaging:emailTemplate subject="Your Community Solar Portal is Live!" recipientType="User" relatedToType="Account">
 <messaging:htmlEmailBody >
+<apex:outputPanel rendered="{!relatedTo.Client_Brand_Key__c=='AmpRed' || relatedTo.Client_Brand_Key__c=='AmpBlack'}">
+<html>
+<body>
+        <!--*|IF:MC_PREVIEW_TEXT|*-->
+        <!--[if !gte mso 9]><!----><span class="mcnPreviewText" style="display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;">View this email for instructions on how to register your Community Solar Portal</span><!--<![endif]-->
+        <!--*|END:IF|*-->
+        <center>
+            <table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable">
+                <tbody><tr>
+                    <td align="center" valign="top" id="bodyCell">
+                        <!-- BEGIN TEMPLATE // -->
+                        <!--[if (gte mso 9)|(IE)]>
+                        <table align="center" border="0" cellspacing="0" cellpadding="0" width="600" style="width:600px;">
+                        <tr>
+                        <td align="center" valign="top" width="600" style="width:600px;">
+                        <![endif]-->
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="templateContainer">
+                            <tbody><tr>
+                                <td valign="top" id="templatePreheader"></td>
+                            </tr>
+                            <tr>
+                                <td valign="top" id="templateHeader"><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnImageBlock" style="min-width:100%;">
+    <tbody class="mcnImageBlockOuter">
+            <tr>
+                <td valign="top" style="padding:9px" class="mcnImageBlockInner">
+                    <table align="left" width="100%" border="0" cellpadding="0" cellspacing="0" class="mcnImageContentContainer" style="min-width:100%;">
+                        <tbody><tr>
+                            <td class="mcnImageContent" valign="top" style="padding-right: 9px; padding-left: 9px; padding-top: 0; padding-bottom: 0; text-align:center;">
+                                
+                                    
+                                        <img align="center" alt="" src="https://gallery.mailchimp.com/7d3664585512fbeca00466dd5/images/133b023f-a97a-441a-8080-6cdbf8bd68bf.png" width="300" style="max-width:300px; padding-bottom: 0; display: inline !important; vertical-align: bottom;" class="mcnImage" />
+                                    
+                                
+                            </td>
+                        </tr>
+                    </tbody></table>
+                </td>
+            </tr>
+    </tbody>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width:100%;">
+    <tbody class="mcnTextBlockOuter">
+        <tr>
+            <td valign="top" class="mcnTextBlockInner" style="padding-top:9px;">
+                <!--[if mso]>
+                <table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+                <tr>
+                <![endif]-->
+                
+                <!--[if mso]>
+                <td valign="top" width="600" style="width:600px;">
+                <![endif]-->
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width:100%; min-width:100%;" width="100%" class="mcnTextContentContainer">
+                    <tbody><tr>
+                        
+                        <td valign="top" class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;">
+                        
+                            <h2 class="mc-toc-title" dir="ltr" style="text-align: left;"><span style="font-family:open sans,helvetica neue,helvetica,arial,sans-serif"><span style="font-size:16px"><span style="color:#000000"><strong>Dear&nbsp;{!Recipient.FirstName},&nbsp;</strong></span></span><br></br>
+<br></br>
+<span style="font-size:18px"><strong><span style="color:#000000">Your </span><span style="color:#FF0000"><a style="text-decoration:none" href="https://bluewavememberportal.force.com/s/login?bk=AmpRed" target="_blank" >Community Solar Portal</a></span><span style="color:#000000">&nbsp;</span><span style="color:#000000">is now live!&nbsp;</span></strong></span><br></br>
+<br></br>
+<span style="font-size:14px"><span style="color:#000000"><strong>On your Community Solar&nbsp;Portal you can:</strong></span></span></span></h2>
+
+<ul>
+    <li><span style="font-size:14px"><span style="font-family:open sans,helvetica neue,helvetica,arial,sans-serif"><span style="color:#000000">Track your solar savings</span></span></span></li>
+    <li><span style="font-size:14px"><span style="font-family:open sans,helvetica neue,helvetica,arial,sans-serif"><span style="color:#000000">View your statements</span></span></span></li>
+</ul>
+<span style="font-size:14px"><span style="font-family:open sans,helvetica neue,helvetica,arial,sans-serif">{!recipient.Autopay_Conditional_Text__c}</span></span>
+<br></br><br></br>
+<span style="font-size:14px"><span style="font-family:open sans,helvetica neue,helvetica,arial,sans-serif">{!recipient.Autopay_Conditional_Text_2_of_2__c}</span></span>
+                        </td>
+                    </tr>
+                </tbody></table>
+                <!--[if mso]>
+                </td>
+                <![endif]-->
+                
+                <!--[if mso]>
+                </tr>
+                </table>
+                <![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnBoxedTextBlock" style="min-width:100%;">
+    <!--[if gte mso 9]>
+    <table align="center" border="0" cellspacing="0" cellpadding="0" width="100%">
+    <![endif]-->
+    <tbody class="mcnBoxedTextBlockOuter">
+        <tr>
+            <td valign="top" class="mcnBoxedTextBlockInner">
+                
+                <!--[if gte mso 9]>
+                <td align="center" valign="top" ">
+                <![endif]-->
+                <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width:100%;" class="mcnBoxedTextContentContainer">
+                    <tbody><tr>
+                        
+                        <td style="padding-top:9px; padding-left:18px; padding-bottom:9px; padding-right:18px;">
+                        
+                            <table border="0" cellspacing="0" class="mcnTextContentContainer" width="100%" style="min-width: 100% !important;border: 3px solid #EA5B3A;">
+                                <tbody><tr>
+                                    <td valign="top" class="mcnTextContent" style="padding: 18px;color: #F2F2F2;font-family: Helvetica;font-size: 14px;font-weight: normal;text-align: center;">
+                                        <div style="text-align: left;"><span style="font-family:open sans,helvetica neue,helvetica,arial,sans-serif"><span style="color:#000000">To register your Community Solar Portal account, click on the link below. Enter the assigned username below and create a password to finish registering. Once complete, you will have access to your Community Solar Portal!&nbsp;</span></span></div>
+
+<div style="text-align: center;"><br></br>
+<span style="font-family:open sans,helvetica neue,helvetica,arial,sans-serif"><a href="{!$Network.NetworkUrlForUserEmails}" target="_blank"><span style="color:#FF0000">{!Recipient.FirstName}'s Member Portal</span></a><br></br>
+<span style="color:#000000">Username: {!Recipient.Username}&nbsp;</span></span></div>
+
+                                    </td>
+                                </tr>
+                            </tbody></table>
+                        </td>
+                    </tr>
+                </tbody></table>
+                <!--[if gte mso 9]>
+                </td>
+                <![endif]-->
+                
+                <!--[if gte mso 9]>
+                </tr>
+                </table>
+                <![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width:100%;">
+    <tbody class="mcnTextBlockOuter">
+        <tr>
+            <td valign="top" class="mcnTextBlockInner" style="padding-top:9px;">
+                <!--[if mso]>
+                <table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+                <tr>
+                <![endif]-->
+                
+                <!--[if mso]>
+                <td valign="top" width="600" style="width:600px;">
+                <![endif]-->
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width:100%; min-width:100%;" width="100%" class="mcnTextContentContainer">
+                    <tbody><tr>
+                        
+                        <td valign="top" class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;">
+                        
+                            <div style="text-align: center;"><span style="font-family:open sans,helvetica neue,helvetica,arial,sans-serif"><span style="font-size:14px"><span style="color:#000000">Have questions? Visit our </span><a href="https://bluewave-capital.box.com/s/of1gru90pvcywuew69uu298jg483wmf9" target="_blank"><span style="color:#FF0000">FAQ page</span></a><span style="color:#000000">. If you have additional&nbsp;questions,&nbsp;please contact our Customer Care team at </span><a href="mailto:customercare@bluewavesolar.com" target="_blank"><span style="color:#FF0000">customercare@bluewavesolar.com</span></a><span style="color:#000000"> or </span><span style="color:#FF0000">(844) 786-4100</span><span style="color:#000000">. We're happy to help.&nbsp;</span></span></span></div>
+
+<div style="text-align: center;"><br></br>
+<span style="font-family:open sans,helvetica neue,helvetica,arial,sans-serif"><span style="font-size:14px"><span style="color:#000000">We look forward to a bright future ahead</span></span></span></div>
+
+<div style="text-align: center;"><span style="font-family:open sans,helvetica neue,helvetica,arial,sans-serif"><span style="font-size:14px"><span style="color:#000000">- All of us here at </span><span style="color:#FF0000">Amp</span><span style="color:#000000"> and </span><span style="color:#FF0000">BlueWave</span></span></span></div>
+
+                        </td>
+                    </tr>
+                </tbody></table>
+                <!--[if mso]>
+                </td>
+                <![endif]-->
+                
+                <!--[if mso]>
+                </tr>
+                </table>
+                <![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnFollowBlock" style="min-width:100%;">
+    <tbody class="mcnFollowBlockOuter">
+        <tr>
+            <td align="center" valign="top" style="padding:9px" class="mcnFollowBlockInner">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnFollowContentContainer" style="min-width:100%;">
+    <tbody><tr>
+        <td align="center" style="padding-left:9px;padding-right:9px;">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width:100%;" class="mcnFollowContent">
+                <tbody><tr>
+                    <td align="center" valign="top" style="padding-top:9px; padding-right:9px; padding-left:9px;">
+                        <table align="center" border="0" cellpadding="0" cellspacing="0">
+                            <tbody><tr>
+                                <td align="center" valign="top">
+                                    <!--[if mso]>
+                                    <table align="center" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                    <![endif]-->
+                                    
+                                        <!--[if mso]>
+                                        <td align="center" valign="top">
+                                        <![endif]-->
+                                        
+                                            <table align="left" border="0" cellpadding="0" cellspacing="0" class="mcnFollowStacked" style="display:inline;">
+                                                 
+                                                <tbody><tr>
+                                                    <td align="center" valign="top" class="mcnFollowIconContent" style="padding-right:10px; padding-bottom:9px;">
+                                                        <a href="https://twitter.com/ampcleanenergy" target="_blank"><img src="https://cdn-images.mailchimp.com/icons/social-block-v2/outline-dark-twitter-96.png" alt="Twitter" class="mcnFollowBlockIcon" width="48" style="width:48px; max-width:48px; display:block;" /></a>
+                                                    </td>
+                                                </tr>
+                                                
+                                                
+                                            </tbody></table>
+                                        
+                                        
+                                        <!--[if mso]>
+                                        </td>
+                                        <![endif]-->
+                                    
+                                        <!--[if mso]>
+                                        <td align="center" valign="top">
+                                        <![endif]-->
+                                        
+                                            <table align="left" border="0" cellpadding="0" cellspacing="0" class="mcnFollowStacked" style="display:inline;">
+                                                 
+                                                <tbody><tr>
+                                                    <td align="center" valign="top" class="mcnFollowIconContent" style="padding-right:10px; padding-bottom:9px;">
+                                                        <a href="https://www.linkedin.com/company/amp-energy/" target="_blank"><img src="https://cdn-images.mailchimp.com/icons/social-block-v2/outline-dark-linkedin-96.png" alt="LinkedIn" class="mcnFollowBlockIcon" width="48" style="width:48px; max-width:48px; display:block;" /></a>
+                                                    </td>
+                                                </tr>
+                                                
+                                                
+                                            </tbody></table>
+                                        
+                                        
+                                        <!--[if mso]>
+                                        </td>
+                                        <![endif]-->
+                                    
+                                        <!--[if mso]>
+                                        <td align="center" valign="top">
+                                        <![endif]-->
+                                        
+                                            <table align="left" border="0" cellpadding="0" cellspacing="0" class="mcnFollowStacked" style="display:inline;">
+                                                 
+                                                <tbody><tr>
+                                                    <td align="center" valign="top" class="mcnFollowIconContent" style="padding-right:0; padding-bottom:9px;">
+                                                        <a href="https://amp.energy/" target="_blank"><img src="https://cdn-images.mailchimp.com/icons/social-block-v2/outline-dark-link-96.png" alt="Website" class="mcnFollowBlockIcon" width="48" style="width:48px; max-width:48px; display:block;" /></a>
+                                                    </td>
+                                                </tr>
+                                                
+                                                
+                                            </tbody></table>
+                                        
+                                        
+                                        <!--[if mso]>
+                                        </td>
+                                        <![endif]-->
+                                    
+                                    <!--[if mso]>
+                                    </tr>
+                                    </table>
+                                    <![endif]-->
+                                </td>
+                            </tr>
+                        </tbody></table>
+                    </td>
+                </tr>
+            </tbody></table>
+        </td>
+    </tr>
+</tbody></table>
+
+            </td>
+        </tr>
+    </tbody>
+</table></td>
+                            </tr>
+                            <tr>
+                                <td valign="top" id="templateBody"></td>
+                            </tr>
+                            <tr>
+                                <td valign="top" id="templateFooter"></td>
+                            </tr>
+                        </tbody></table>
+                        <!--[if (gte mso 9)|(IE)]>
+                        </td>
+                        </tr>
+                        </table>
+                        <![endif]-->
+                        <!-- // END TEMPLATE -->
+                    </td>
+                </tr>
+            </tbody></table>
+        </center>
+    
+
+</body>
+</html>
+</apex:outputPanel>
 <apex:outputPanel rendered="{!relatedTo.Client_Brand_Key__c=='BluewaveLogo'}">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
     <head>
@@ -737,286 +1019,6 @@ to contact us at </span><span style="color:#00AEAA">customercare@bluewavesolar.c
         </center>
     </body>
 </html>
-</apex:outputPanel>
-<apex:outputPanel rendered="{!relatedTo.Client_Brand_Key__c=='AmpRed' || relatedTo.Client_Brand_Key__c=='AmpBlack'}">
-<body>
-        <!--*|IF:MC_PREVIEW_TEXT|*-->
-        <!--[if !gte mso 9]><!----><span class="mcnPreviewText" style="display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;">View this email for instructions on how to register your Community Solar Portal</span><!--<![endif]-->
-        <!--*|END:IF|*-->
-        <center>
-            <table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable">
-                <tbody><tr>
-                    <td align="center" valign="top" id="bodyCell">
-                        <!-- BEGIN TEMPLATE // -->
-                        <!--[if (gte mso 9)|(IE)]>
-                        <table align="center" border="0" cellspacing="0" cellpadding="0" width="600" style="width:600px;">
-                        <tr>
-                        <td align="center" valign="top" width="600" style="width:600px;">
-                        <![endif]-->
-                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="templateContainer">
-                            <tbody><tr>
-                                <td valign="top" id="templatePreheader"></td>
-                            </tr>
-                            <tr>
-                                <td valign="top" id="templateHeader"><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnImageBlock" style="min-width:100%;">
-    <tbody class="mcnImageBlockOuter">
-            <tr>
-                <td valign="top" style="padding:9px" class="mcnImageBlockInner">
-                    <table align="left" width="100%" border="0" cellpadding="0" cellspacing="0" class="mcnImageContentContainer" style="min-width:100%;">
-                        <tbody><tr>
-                            <td class="mcnImageContent" valign="top" style="padding-right: 9px; padding-left: 9px; padding-top: 0; padding-bottom: 0; text-align:center;">
-                                
-                                    
-                                        <img align="center" alt="" src="https://gallery.mailchimp.com/7d3664585512fbeca00466dd5/images/133b023f-a97a-441a-8080-6cdbf8bd68bf.png" width="300" style="max-width:300px; padding-bottom: 0; display: inline !important; vertical-align: bottom;" class="mcnImage" />
-                                    
-                                
-                            </td>
-                        </tr>
-                    </tbody></table>
-                </td>
-            </tr>
-    </tbody>
-</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width:100%;">
-    <tbody class="mcnTextBlockOuter">
-        <tr>
-            <td valign="top" class="mcnTextBlockInner" style="padding-top:9px;">
-                <!--[if mso]>
-                <table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
-                <tr>
-                <![endif]-->
-                
-                <!--[if mso]>
-                <td valign="top" width="600" style="width:600px;">
-                <![endif]-->
-                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width:100%; min-width:100%;" width="100%" class="mcnTextContentContainer">
-                    <tbody><tr>
-                        
-                        <td valign="top" class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;">
-                        
-                            <h2 class="mc-toc-title" dir="ltr" style="text-align: left;"><span style="font-family:open sans,helvetica neue,helvetica,arial,sans-serif"><span style="font-size:16px"><span style="color:#000000"><strong>Dear&nbsp;{!Recipient.FirstName},&nbsp;</strong></span></span><br></br>
-<br></br>
-<span style="font-size:18px"><strong><span style="color:#000000">Your </span><span style="color:#FF0000"><a style="text-decoration:none" href="https://bluewavememberportal.force.com/s/login?bk=AmpRed" target="_blank" >Community Solar Portal</a></span><span style="color:#000000">&nbsp;</span><span style="color:#000000">is now live!&nbsp;</span></strong></span><br></br>
-<br></br>
-<span style="font-size:14px"><span style="color:#000000"><strong>On your Community Solar&nbsp;Portal you can:</strong></span></span></span></h2>
-
-<ul>
-    <li><span style="font-size:14px"><span style="font-family:open sans,helvetica neue,helvetica,arial,sans-serif"><span style="color:#000000">Track your solar savings</span></span></span></li>
-    <li><span style="font-size:14px"><span style="font-family:open sans,helvetica neue,helvetica,arial,sans-serif"><span style="color:#000000">View your statements</span></span></span></li>
-</ul>
-<span style="font-size:14px"><span style="font-family:open sans,helvetica neue,helvetica,arial,sans-serif">{!recipient.Autopay_Conditional_Text__c}</span></span>
-<br></br><br></br>
-<span style="font-size:14px"><span style="font-family:open sans,helvetica neue,helvetica,arial,sans-serif">{!recipient.Autopay_Conditional_Text_2_of_2__c}</span></span>
-                        </td>
-                    </tr>
-                </tbody></table>
-                <!--[if mso]>
-                </td>
-                <![endif]-->
-                
-                <!--[if mso]>
-                </tr>
-                </table>
-                <![endif]-->
-            </td>
-        </tr>
-    </tbody>
-</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnBoxedTextBlock" style="min-width:100%;">
-    <!--[if gte mso 9]>
-    <table align="center" border="0" cellspacing="0" cellpadding="0" width="100%">
-    <![endif]-->
-    <tbody class="mcnBoxedTextBlockOuter">
-        <tr>
-            <td valign="top" class="mcnBoxedTextBlockInner">
-                
-                <!--[if gte mso 9]>
-                <td align="center" valign="top" ">
-                <![endif]-->
-                <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width:100%;" class="mcnBoxedTextContentContainer">
-                    <tbody><tr>
-                        
-                        <td style="padding-top:9px; padding-left:18px; padding-bottom:9px; padding-right:18px;">
-                        
-                            <table border="0" cellspacing="0" class="mcnTextContentContainer" width="100%" style="min-width: 100% !important;border: 3px solid #EA5B3A;">
-                                <tbody><tr>
-                                    <td valign="top" class="mcnTextContent" style="padding: 18px;color: #F2F2F2;font-family: Helvetica;font-size: 14px;font-weight: normal;text-align: center;">
-                                        <div style="text-align: left;"><span style="font-family:open sans,helvetica neue,helvetica,arial,sans-serif"><span style="color:#000000">To register your Community Solar Portal account, click on the link below. Enter the assigned username below and create a password to finish registering. Once complete, you will have access to your Community Solar Portal!&nbsp;</span></span></div>
-
-<div style="text-align: center;"><br></br>
-<span style="font-family:open sans,helvetica neue,helvetica,arial,sans-serif"><a href="{!$Network.NetworkUrlForUserEmails}" target="_blank"><span style="color:#FF0000">{!Recipient.FirstName}'s Member Portal</span></a><br></br>
-<span style="color:#000000">Username: {!Recipient.Username}&nbsp;</span></span></div>
-
-                                    </td>
-                                </tr>
-                            </tbody></table>
-                        </td>
-                    </tr>
-                </tbody></table>
-                <!--[if gte mso 9]>
-                </td>
-                <![endif]-->
-                
-                <!--[if gte mso 9]>
-                </tr>
-                </table>
-                <![endif]-->
-            </td>
-        </tr>
-    </tbody>
-</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width:100%;">
-    <tbody class="mcnTextBlockOuter">
-        <tr>
-            <td valign="top" class="mcnTextBlockInner" style="padding-top:9px;">
-                <!--[if mso]>
-                <table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
-                <tr>
-                <![endif]-->
-                
-                <!--[if mso]>
-                <td valign="top" width="600" style="width:600px;">
-                <![endif]-->
-                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width:100%; min-width:100%;" width="100%" class="mcnTextContentContainer">
-                    <tbody><tr>
-                        
-                        <td valign="top" class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;">
-                        
-                            <div style="text-align: center;"><span style="font-family:open sans,helvetica neue,helvetica,arial,sans-serif"><span style="font-size:14px"><span style="color:#000000">Have questions? Visit our </span><a href="https://bluewave-capital.box.com/s/of1gru90pvcywuew69uu298jg483wmf9" target="_blank"><span style="color:#FF0000">FAQ page</span></a><span style="color:#000000">. If you have additional&nbsp;questions,&nbsp;please contact our Customer Care team at </span><a href="mailto:customercare@bluewavesolar.com" target="_blank"><span style="color:#FF0000">customercare@bluewavesolar.com</span></a><span style="color:#000000"> or </span><span style="color:#FF0000">(844) 786-4100</span><span style="color:#000000">. We're happy to help.&nbsp;</span></span></span></div>
-
-<div style="text-align: center;"><br></br>
-<span style="font-family:open sans,helvetica neue,helvetica,arial,sans-serif"><span style="font-size:14px"><span style="color:#000000">We look forward to a bright future ahead</span></span></span></div>
-
-<div style="text-align: center;"><span style="font-family:open sans,helvetica neue,helvetica,arial,sans-serif"><span style="font-size:14px"><span style="color:#000000">- All of us here at </span><span style="color:#FF0000">Amp</span><span style="color:#000000"> and </span><span style="color:#FF0000">BlueWave</span></span></span></div>
-
-                        </td>
-                    </tr>
-                </tbody></table>
-                <!--[if mso]>
-                </td>
-                <![endif]-->
-                
-                <!--[if mso]>
-                </tr>
-                </table>
-                <![endif]-->
-            </td>
-        </tr>
-    </tbody>
-</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnFollowBlock" style="min-width:100%;">
-    <tbody class="mcnFollowBlockOuter">
-        <tr>
-            <td align="center" valign="top" style="padding:9px" class="mcnFollowBlockInner">
-                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnFollowContentContainer" style="min-width:100%;">
-    <tbody><tr>
-        <td align="center" style="padding-left:9px;padding-right:9px;">
-            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width:100%;" class="mcnFollowContent">
-                <tbody><tr>
-                    <td align="center" valign="top" style="padding-top:9px; padding-right:9px; padding-left:9px;">
-                        <table align="center" border="0" cellpadding="0" cellspacing="0">
-                            <tbody><tr>
-                                <td align="center" valign="top">
-                                    <!--[if mso]>
-                                    <table align="center" border="0" cellspacing="0" cellpadding="0">
-                                    <tr>
-                                    <![endif]-->
-                                    
-                                        <!--[if mso]>
-                                        <td align="center" valign="top">
-                                        <![endif]-->
-                                        
-                                            <table align="left" border="0" cellpadding="0" cellspacing="0" class="mcnFollowStacked" style="display:inline;">
-                                                 
-                                                <tbody><tr>
-                                                    <td align="center" valign="top" class="mcnFollowIconContent" style="padding-right:10px; padding-bottom:9px;">
-                                                        <a href="https://twitter.com/ampcleanenergy" target="_blank"><img src="https://cdn-images.mailchimp.com/icons/social-block-v2/outline-dark-twitter-96.png" alt="Twitter" class="mcnFollowBlockIcon" width="48" style="width:48px; max-width:48px; display:block;" /></a>
-                                                    </td>
-                                                </tr>
-                                                
-                                                
-                                            </tbody></table>
-                                        
-                                        
-                                        <!--[if mso]>
-                                        </td>
-                                        <![endif]-->
-                                    
-                                        <!--[if mso]>
-                                        <td align="center" valign="top">
-                                        <![endif]-->
-                                        
-                                            <table align="left" border="0" cellpadding="0" cellspacing="0" class="mcnFollowStacked" style="display:inline;">
-                                                 
-                                                <tbody><tr>
-                                                    <td align="center" valign="top" class="mcnFollowIconContent" style="padding-right:10px; padding-bottom:9px;">
-                                                        <a href="https://www.linkedin.com/company/amp-energy/" target="_blank"><img src="https://cdn-images.mailchimp.com/icons/social-block-v2/outline-dark-linkedin-96.png" alt="LinkedIn" class="mcnFollowBlockIcon" width="48" style="width:48px; max-width:48px; display:block;" /></a>
-                                                    </td>
-                                                </tr>
-                                                
-                                                
-                                            </tbody></table>
-                                        
-                                        
-                                        <!--[if mso]>
-                                        </td>
-                                        <![endif]-->
-                                    
-                                        <!--[if mso]>
-                                        <td align="center" valign="top">
-                                        <![endif]-->
-                                        
-                                            <table align="left" border="0" cellpadding="0" cellspacing="0" class="mcnFollowStacked" style="display:inline;">
-                                                 
-                                                <tbody><tr>
-                                                    <td align="center" valign="top" class="mcnFollowIconContent" style="padding-right:0; padding-bottom:9px;">
-                                                        <a href="https://amp.energy/" target="_blank"><img src="https://cdn-images.mailchimp.com/icons/social-block-v2/outline-dark-link-96.png" alt="Website" class="mcnFollowBlockIcon" width="48" style="width:48px; max-width:48px; display:block;" /></a>
-                                                    </td>
-                                                </tr>
-                                                
-                                                
-                                            </tbody></table>
-                                        
-                                        
-                                        <!--[if mso]>
-                                        </td>
-                                        <![endif]-->
-                                    
-                                    <!--[if mso]>
-                                    </tr>
-                                    </table>
-                                    <![endif]-->
-                                </td>
-                            </tr>
-                        </tbody></table>
-                    </td>
-                </tr>
-            </tbody></table>
-        </td>
-    </tr>
-</tbody></table>
-
-            </td>
-        </tr>
-    </tbody>
-</table></td>
-                            </tr>
-                            <tr>
-                                <td valign="top" id="templateBody"></td>
-                            </tr>
-                            <tr>
-                                <td valign="top" id="templateFooter"></td>
-                            </tr>
-                        </tbody></table>
-                        <!--[if (gte mso 9)|(IE)]>
-                        </td>
-                        </tr>
-                        </table>
-                        <![endif]-->
-                        <!-- // END TEMPLATE -->
-                    </td>
-                </tr>
-            </tbody></table>
-        </center>
-    
-
-</body>
 </apex:outputPanel>
 </messaging:htmlEmailBody>
 </messaging:emailTemplate>
