@@ -442,7 +442,7 @@ public class TestBillCreationForCancelledCustomers {
         Date oneMonthInFuture = todaysDate.addMonths(1);
 
         Energy_Usage_Update__c secondProdUpdateSSS1 = new Energy_Usage_Update__c (
-            Name = 'sssA - September 2016',
+            Name = 'sssB - September 2016',
             Shared_Solar_System__c = sssList[0].Id,
             Production__c = 73072.00,
             Due_Date__c = oneMonthInFuture,
