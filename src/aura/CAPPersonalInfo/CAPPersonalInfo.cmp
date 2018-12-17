@@ -15,7 +15,9 @@
                   description="Set by CAPStart or CAPCreditStatus if credit is already run"/>
   <aura:attribute name="coAppLocked" type="Boolean" default="false"/>
   <aura:attribute name="bwslTransferAlert" type="Boolean"/>
+  <aura:attribute name="years" type="String[]"/>
   <lightning:overlayLibrary aura:id="overlayLib"/>
+  <lightning:notificationsLibrary aura:id="notifLib"/>
 
   <!-- MASS SOLAR LOAN IBLS CATEGORIZATION  -->
   <aura:if isTrue="{!v.page == 'iblsQualification'}">
@@ -219,10 +221,10 @@
        </form>
      </div>
    </aura:if>
-   <!-- PRIMARY PI -->
+  <!-- PRIMARY PI -->
 
-   <!-- INSTALLATION ADDRESS-->
-   <aura:if isTrue="{!v.page == 'AddressPI'}">
+  <!-- INSTALLATION ADDRESS-->
+  <aura:if isTrue="{!v.page == 'AddressPI'}">
     <div class="slds-col slds-col--padded slds-p-top--small">
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required">
@@ -254,6 +256,12 @@
             <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="zipCodeElement">
               <label class="slds-form-element__label">Zip Code</label>
               <ui:inputText value="{!v.lead.LASERCA__Home_Zip__c}" disabled="{!v.piLocked}"/>
+            </div>
+          </div>
+          <div class="slds-grid slds-wrap slds-form-element__row">
+            <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="mortgageElement">
+              <label class="slds-form-element__label">Approximate Monthly Mortgage Payment</label>
+              <ui:inputCurrency value="{!v.lead.Monthly_Mortgage_Tax_and_Insurance__c}" disabled="{!v.piLocked}"/>
             </div>
           </div>
           <div class="slds-grid slds-wrap slds-form-element__row">
@@ -299,7 +307,7 @@
           </fieldset>
         </aura:if>
         <div class="slds-grid slds-wrap slds-form-element__row slds-m-top_medium">
-          <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="ownHouseElement">
+          <div class="slds-col_padded slds-large-size_1_of_1 slds-medium-size_1-of-1 slds-small-size_1-of-1" aura:id="ownHouseElement">
             <label class="slds-section__title"><b>Property Type</b></label>
             <fieldset class="slds-form-element slds-m-left_small slds-m-top_xx-small">
               <div class="slds-form-element__control slds-p-top_small slds-text-body--regular">
@@ -316,7 +324,7 @@
           </div>
         </div>
         <div class="slds-grid slds-wrap slds-form-element__row slds-m-top_medium">
-          <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="ownHouseElement">
+          <div class="slds-col_padded slds-large-size_1_of_1 slds-medium-size_1-of-1 slds-small-size_1-of-1" aura:id="ownHouseElement">
             <label class="slds-section__title"><b>Do you own the property detailed above as your installation address?</b></label>
             <fieldset class="slds-form-element slds-m-left_small slds-m-top_xx-small">
               <div class="slds-form-element__control slds-p-top_small slds-text-body--regular">
@@ -349,6 +357,25 @@
     </div>
   </aura:if>
   <!-- INSTALLATION ADDRESS-->
+
+  <!-- INCOME TYPE -->
+  <aura:if isTrue="{!v.page == 'IncomeType'}">
+    <div>
+      <div class="slds-col--padded slds-form-element__label slds-text-heading--medium">
+        <b>What are your sources of income?</b>
+      </div>
+      <div class="slds-col--padded slds-text-body--regular">
+        Do not include income from your spouse or household
+      </div>
+      <c:CAPIncomeType aura:id="incomeTypeCmp" applicant="{!v.lead}" piLocked="{!v.piLocked}" supressWaiting="true"/>
+      <form>
+        <div class="slds-col--padded slds-form-element__row slds-m-top--medium">
+          <lightning:button aura:id="confirmSubmit" label="Save and Next" onclick="{!c.callSaveIncomeType}"/>
+        </div>
+      </form>
+    </div>
+  </aura:if>
+  <!-- INCOME TYPE -->
 
   <!-- Primary MSLP License Information -->
   <aura:if isTrue="{!v.page == 'PrimaryLicenseInfo'}">
@@ -424,17 +451,6 @@
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="birthdateElement">
             <label class="slds-form-element__label">Date of Birth</label>
             <c:BlueWaveDate value="{!v.lead.LASERCA__Birthdate__c}" disabled="{!v.piLocked}"/>
-          </div>
-        </div>
-        <div class="slds-grid slds-wrap slds-form-element__row">
-          <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="incomeElement">
-            <label class="slds-form-element__label">Gross Annual Income (Primary Applicant)</label>
-            <c:BlueWaveInputToolTip popoverText="Gross Annual Income as reported on line 22 of tax return form 1040. If filing a joint application, you'll be asked to provide the Co-Applicant's income later."/>
-            <ui:inputCurrency value="{!v.lead.Annual_Income_Currency__c}" disabled="{!v.piLocked}"/>
-          </div>
-          <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="mortgageElement">
-            <label class="slds-form-element__label">Approximate Monthly Mortgage Payment</label>
-            <ui:inputCurrency value="{!v.lead.Monthly_Mortgage_Tax_and_Insurance__c}" disabled="{!v.piLocked}"/>
           </div>
         </div>
         <aura:if isTrue="{!v.lead.LASERCA__Home_State__c == 'NY'}">
@@ -613,6 +629,22 @@
   </aura:if>
   <!-- / CO APPLICANT PI -->
 
+  <!-- CO APPLICANT INCOME TYPE -->
+  <aura:if isTrue="{!v.page == 'CoAppIncomeType'}">
+    <div>
+      <div class="slds-col--padded slds-form-element__label slds-text-heading--medium">
+        <b>What are {!v.lead.CoApplicant_Contact__r.FirstName}'s sources of income?</b>
+      </div>
+      <c:CAPIncomeType aura:id="jointIncomeTypeCmp" applicant="{!v.lead.CoApplicant_Contact__r}" piLocked="{!v.piLocked}" supressWaiting="true"/>
+      <form>
+        <div class="slds-col--padded slds-form-element__row slds-m-top--medium">
+          <lightning:button aura:id="confirmSubmit" label="Save and Next" onclick="{!c.callSaveCoAppIncomeType}"/>
+        </div>
+      </form>
+    </div>
+  </aura:if>
+  <!-- CO APPLICANT INCOME TYPE -->
+
   <!-- CO APPLICANT SSN -->
   <aura:if isTrue="{!v.page == 'CoAppSSN'}">
     <div class="slds-col slds-col--padded slds-p-top--small">
@@ -631,18 +663,6 @@
           <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppBirthdateElement">
             <label class="slds-form-element__label">Date of Birth</label>
             <c:BlueWaveDate value="{!v.lead.CoApplicant_Contact__r.LASERCA__Co_Applicant_DOB__c}" disabled="{!v.coAppLocked}"/>
-          </div>
-        </div>
-        <div class="slds-grid slds-wrap slds-form-element__row">
-          <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppIncomeElement">
-            <label class="slds-form-element__label">Gross Annual Income (Co-Applicant)</label>
-            <c:BlueWaveInputToolTip popoverText="Gross Annual Income as reported on line 22 of tax return form 1040. "/>
-            <ui:inputCurrency value="{!v.lead.CoApplicant_Contact__r.Income__c}" disabled="{!v.coAppLocked}"/>
-          </div>
-          <div class="slds-col_padded slds-large-size_1_of_2 slds-medium-size_1-of-2 slds-small-size_1-of-1" aura:id="coAppmortgageElement">
-            <label class="slds-form-element__label">Approximate Monthly Mortgage</label>
-            <c:BlueWaveInputToolTip popoverText="{!'If ' + v.lead.Co_Applicant_First_Name__c + ' pays a mortgage, interest, or tax that has not been entered in ' + v.lead.FirstName + '\'s approximate monthly mortgage, please enter it here. Otherwise, enter 0'}"/>
-            <ui:inputCurrency value="{!v.lead.Co_App_Monthly_Mortgage__c}" disabled="{!v.coAppLocked}"/>
           </div>
         </div>
         <div class="slds-grid slds-wrap slds-form-element__row slds-p-top--small">

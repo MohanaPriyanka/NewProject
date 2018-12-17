@@ -823,17 +823,9 @@ IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12),
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <rules>
-        <fullName>CS - BlueWave - Contract Receipt %28Eversource%29</fullName>
-        <actions>
-            <name>Sends_CS_Contract_Receipt_Email</name>
-            <type>Alert</type>
-        </actions>
-        <actions>
-            <name>EMAIL_LOG_CS_BlueWave_Contract_Reciept</name>
-            <type>Task</type>
-        </actions>
-        <active>true</active>
-        <booleanFilter>1 AND 2 AND 3 AND (4 OR 5)</booleanFilter>
+        <fullName>CS - BlueWave - Contract Receipt</fullName>
+        <active>false</active>
+        <booleanFilter>1 AND 2 AND (3 OR 4 )</booleanFilter>
         <criteriaItems>
             <field>Opportunity.Product_Line__c</field>
             <operation>equals</operation>
@@ -845,9 +837,38 @@ IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12),
             <value>Complete</value>
         </criteriaItems>
         <criteriaItems>
-            <field>Opportunity.UtilityMapper__c</field>
+            <field>Opportunity.Opportunity_Order__c</field>
             <operation>equals</operation>
-            <value>Eversource</value>
+            <value>1</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Opportunity.Opportunity_Order__c</field>
+            <operation>equals</operation>
+        </criteriaItems>
+        <description>Triggers sending of CS contract receipt email when CS opportunity is closed as won</description>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>CS - BlueWave - Contract Receipt %28Eversource%29</fullName>
+        <actions>
+            <name>Sends_CS_Contract_Receipt_Email</name>
+            <type>Alert</type>
+        </actions>
+        <actions>
+            <name>EMAIL_LOG_CS_BlueWave_Contract_Reciept</name>
+            <type>Task</type>
+        </actions>
+        <active>true</active>
+        <booleanFilter>1 AND 2 AND (3 OR 4 )</booleanFilter>
+        <criteriaItems>
+            <field>Opportunity.Product_Line__c</field>
+            <operation>equals</operation>
+            <value>Community Solar</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Opportunity.StageName</field>
+            <operation>equals</operation>
+            <value>Complete</value>
         </criteriaItems>
         <criteriaItems>
             <field>Opportunity.Opportunity_Order__c</field>
@@ -871,7 +892,7 @@ IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12),
             <name>EMAIL_LOG_NGrid_Contract_Execution</name>
             <type>Task</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <booleanFilter>1 AND 2 AND (3 OR 5) AND 4</booleanFilter>
         <criteriaItems>
             <field>Opportunity.Product_Line__c</field>
@@ -1179,7 +1200,7 @@ CONTAINS(Name,&apos;-&apos;),true,false
             <type>FieldUpdate</type>
         </actions>
         <active>true</active>
-        <booleanFilter>1 AND 2 AND 3</booleanFilter>
+        <booleanFilter>1 AND 2 AND 3 AND 4</booleanFilter>
         <criteriaItems>
             <field>Opportunity.Contract_Status__c</field>
             <operation>equals</operation>
@@ -1194,6 +1215,11 @@ CONTAINS(Name,&apos;-&apos;),true,false
             <field>Opportunity.Quality_Check_Status__c</field>
             <operation>equals</operation>
             <value>Completed</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Opportunity.StageName</field>
+            <operation>equals</operation>
+            <value>Pending Quality Control Signature</value>
         </criteriaItems>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
@@ -1278,7 +1304,7 @@ CONTAINS(Name,&apos;-&apos;),true,false
             <name>Opportunity_Stage_QC_Signature_Pending</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <booleanFilter>1 AND 2</booleanFilter>
         <criteriaItems>
             <field>Opportunity.All_QC_Boxes_True__c</field>
@@ -1299,7 +1325,7 @@ CONTAINS(Name,&apos;-&apos;),true,false
             <name>Opportunity_Stage_QC_in_Process</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <booleanFilter>1 AND 2 AND 3 AND 4 AND 5</booleanFilter>
         <criteriaItems>
             <field>Opportunity.Contract_Status__c</field>

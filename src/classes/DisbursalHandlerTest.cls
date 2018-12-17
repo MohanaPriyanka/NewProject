@@ -749,6 +749,7 @@ public class DisbursalHandlerTest {
                 disbursal.Date_of_Disbursal__c = disbursalDate;
             }
         }
+        System.debug(loan.Disbursals__r);
         update loan.Disbursals__r;
         loan = [
             SELECT Id, First_Payment_Due_Date_Override__c, (SELECT Id, Type__c, Status__c, Date_of_Disbursal__c FROM Disbursals__r)

@@ -49,6 +49,14 @@ public without sharing class BlueWaveParent {
     }
 
     @AuraEnabled
+    public static List<Account> getProfitCenters() {
+        List<Account> profitCenters = [ SELECT Id, Name
+        FROM Account
+        WHERE Type = 'Profit Center'];
+        return profitCenters;
+    }
+
+    @AuraEnabled
     public static Id saveTheFile(Id parentId, String fileName, String base64Data, String contentType, String description) {
         base64Data = EncodingUtil.urlDecode(base64Data, 'UTF-8');
         

@@ -76,6 +76,20 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Cancellation_Fee_Amount__c</fullName>
+        <defaultValue>0</defaultValue>
+        <description>This is the total cancellation fee per contract for a single CS share. If it $0, it means there is no cancellation fee.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the total cancellation fee per contract for a single CS share. If it $0, it means there is no cancellation fee.</inlineHelpText>
+        <label>Cancellation Fee Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>Ceiling_Rate__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>The maximum interest rate to which this variable rate product can be adjusted</inlineHelpText>
@@ -537,6 +551,11 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
                     <fullName>20% Building Permit Approved, 70% Mechanical Installation, 0% CED Ensemble, 10% Interconnection</fullName>
                     <default>false</default>
                     <label>20% Building Permit Approved, 70% Mechanical Installation, 0% CED Ensemble, 10% Interconnection</label>
+                </value>
+                <value>
+                    <fullName>20% Contract Signature, 70% Mechanical Installation, 0% CED Ensemble, 10% Interconnection</fullName>
+                    <default>false</default>
+                    <label>20% Contract Signature, 70% Mechanical Installation, 0% CED Ensemble, 10% Interconnection</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
