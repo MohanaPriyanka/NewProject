@@ -350,7 +350,6 @@ public class TestBillCreationForCancelledCustomers {
             Billing_Period_Start_Date__c = oneMonthInFuture,
             Billing_Period_End_Date__c = todaysDate,
             Total_System_NMCs__c = 13483.66,
-            Size_off_NMCs__c = TRUE,
             Date__c = oneMonthAgo,
             Schedule_Z__c = schZOne.Id
         );
@@ -368,7 +367,6 @@ public class TestBillCreationForCancelledCustomers {
             Total_System_NMCs_2_of_4__c = 20000,
             Net_Metering_Rate_Applied_2_of_4__c = 0.13,
             Production_kWh_2_of_4__c = 153846,
-            Size_off_NMCs__c = TRUE,
             Date__c = oneMonthAgo,
             Schedule_Z__c = schZTwo.Id
         );
@@ -451,7 +449,6 @@ public class TestBillCreationForCancelledCustomers {
             Billing_Period_Start_Date__c = oneMonthAgo,
             Billing_Period_End_Date__c = todaysDate,
             Total_System_NMCs__c = 12033.73,
-            Size_off_NMCs__c = TRUE,
             Date__c = todaysDate,
             Schedule_Z__c =  schZOne.Id
         );
@@ -465,7 +462,6 @@ public class TestBillCreationForCancelledCustomers {
             Billing_Period_Start_Date__c = oneMonthAgo,
             Billing_Period_End_Date__c = todaysDate,
             Total_System_NMCs__c = 12033.73,
-            Size_off_NMCs__c = TRUE,
             Date__c = todaysDate,
             Schedule_Z__c =  schZTwo.Id
         );
