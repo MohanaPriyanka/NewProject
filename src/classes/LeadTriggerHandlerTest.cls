@@ -557,7 +557,6 @@ public class LeadTriggerHandlerTest {
         ];
         System.assertEquals(2, opps.size());
 
-        System.debug(opps);
         for (Opportunity opp : opps) {
             if (opp.ACH_Bank_Name__c != null) {
                 //from ACHOrder1
@@ -828,43 +827,59 @@ public class LeadTriggerHandlerTest {
         Utility_NMC_Tariff__c eversourceG1 =  new Utility_NMC_Tariff__c(
             Value_of_Net_Metering_Credit__c = .70578,
             Name = 'Eversource G1',
+            Utility__c = 'Eversource',
             Size_Ratio__c = 1.3,
             Product__c = productId,
+            Customer_Type__c = 'Non-Residential',
+            Maximum_kWh__c = 10000,
             Date__c = Date.today()
         );
         Utility_NMC_Tariff__c eversourceG2 =  new Utility_NMC_Tariff__c(
             Value_of_Net_Metering_Credit__c = .70578,
             Name = 'Eversource G2',
+            Utility__c = 'Eversource',
             Size_Ratio__c = 1.4,
             Product__c = productId,
+            Customer_Type__c = 'Non-Residential',
+            Minimum_kWh__c = 10000,
             Date__c = Date.today()
         );
         Utility_NMC_Tariff__c eversourceR1 =  new Utility_NMC_Tariff__c(
             Value_of_Net_Metering_Credit__c = .70578,
             Name = 'Eversource R1',
+            Utility__c = 'Eversource',
             Size_Ratio__c = 1.5,
             Product__c = productId,
+            Customer_Type__c = 'Residential',
             Date__c = Date.today()
         );
         Utility_NMC_Tariff__c nationalGridG1 =  new Utility_NMC_Tariff__c(
             Value_of_Net_Metering_Credit__c = .70578,
             Name = 'National Grid G1',
+            Utility__c = 'National Grid',
             Size_Ratio__c = 1.55,
             Product__c = productId,
+            Customer_Type__c = 'Non-Residential',
+            Maximum_kWh__c = 10000,
             Date__c = Date.today()
         );
         Utility_NMC_Tariff__c nationalGridG2 =  new Utility_NMC_Tariff__c(
             Value_of_Net_Metering_Credit__c = .70578,
             Name = 'National Grid G2',
+            Utility__c = 'National Grid',
             Size_Ratio__c = 1.45,
             Product__c = productId,
+            Customer_Type__c = 'Non-Residential',
+            Minimum_kWh__c = 10000,
             Date__c = Date.today()
         );
         Utility_NMC_Tariff__c nationalGridR1 =  new Utility_NMC_Tariff__c(
             Value_of_Net_Metering_Credit__c = .70578,
             Name = 'National Grid R1',
+            Utility__c = 'National Grid',
             Size_Ratio__c = 1.35,
             Product__c = productId,
+            Customer_Type__c = 'Residential',
             Date__c = Date.today()
         );
         insert new List<Utility_NMC_Tariff__c>{

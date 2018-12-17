@@ -431,13 +431,13 @@ public class RecalculateUALCostControllerTest {
 
     @isTest static void testCustomDeductionOrderBykWH() {
         Utility_Account_Log__c ual = [
-            SELECT Id, Subscribed_Annual_kWhs__c, Annual_kWh__c
+            SELECT Id, Subscribed_Annual_kWhs__c, Proposed_kWh__c
             FROM Utility_Account_Log__c
             WHERE Name_on_Account__c = 'Johnny Bravo'
         ];
 
         System.assertEquals(283000.00, ual.Subscribed_Annual_kWhs__c);
-        System.assertEquals(00, ual.Annual_kWh__c);
+        System.assertEquals(00, ual.Proposed_kWh__c);
 
         Test.startTest();
 
@@ -523,7 +523,7 @@ public class RecalculateUALCostControllerTest {
                                       WHERE Name_on_Account__c = 'Johnny Bravo'];
 
         System.assertEquals(283000.00, ual.Subscribed_Annual_kWhs__c);
-        ual.Annual_kWh__c = 320000; // 320000 - 283000 = 37000
+        ual.Proposed_kWh__c = 320000; // 320000 - 283000 = 37000
         update ual;
 
         Test.startTest();
