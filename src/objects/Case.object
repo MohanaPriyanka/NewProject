@@ -968,7 +968,7 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
     <fields>
         <fullName>Link_to_Case__c</fullName>
         <externalId>false</externalId>
-        <formula>HYPERLINK(&quot;https://na16.salesforce.com/&quot;&amp;Id ,  Subject)</formula>
+        <formula>HYPERLINK(&quot;/&quot;&amp;Id ,  Subject)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Case Subject</label>
         <required>false</required>
@@ -4153,7 +4153,7 @@ window.open(&apos;/003?rlid=RelatedContactList&amp;id={!Case.AccountId}&apos;,&a
         <protected>false</protected>
         <showsLocation>false</showsLocation>
         <showsStatus>false</showsStatus>
-        <url>https://na16.salesforce.com/00Oj0000004iDSu?pv0={!Case.AccountId}</url>
+        <url>/00Oj0000004iDSu?pv0={!Case.AccountId}</url>
     </webLinks>
     <webLinks>
         <fullName>dsfs__Send_with_DocuSign</fullName>

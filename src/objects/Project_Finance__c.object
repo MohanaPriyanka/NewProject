@@ -146,6 +146,6 @@
         <protected>false</protected>
         <showsLocation>false</showsLocation>
         <showsStatus>false</showsStatus>
-        <url>https://na54.salesforce.com/003/e?CF00N0a00000CNMDj={!Project_Finance__c.Name}&amp;CF00N0a00000CNMDj_lkid={!Project_Finance__c.Id}&amp;retURL=%2F{!Project_Finance__c.Id}&amp;RecordType=012j0000000uhG6&amp;accid=0010a00001C8TQS&amp;ent=Contact</url>
+        <url>/003/e?CF00N0a00000CNMDj={!Project_Finance__c.Name}&amp;CF00N0a00000CNMDj_lkid={!Project_Finance__c.Id}&amp;retURL=%2F{!Project_Finance__c.Id}&amp;RecordType=012j0000000uhG6&amp;accid=0010a00001C8TQS&amp;ent=Contact</url>
     </webLinks>
 </CustomObject>

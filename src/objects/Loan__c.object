@@ -924,6 +924,17 @@ TEXT(YEAR(Commencement_Datee__c ) + FLOOR((MONTH(Commencement_Datee__c ) + Produ
         <type>Percent</type>
     </fields>
     <fields>
+        <fullName>Invoice_Amount__c</fullName>
+        <externalId>false</externalId>
+        <label>Invoice Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>Last_Due_Date_Paid__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Formula that shows the latest &quot;Date of Payment&quot; from related Loan Payment records that have a Payment greater than 0</inlineHelpText>
@@ -1188,21 +1199,7 @@ TEXT(YEAR(Commencement_Datee__c ) + FLOOR((MONTH(Commencement_Datee__c ) + Produ
     <fields>
         <fullName>Maturity_Date_Month_Day__c</fullName>
         <externalId>false</externalId>
-        <formula>CASE(MONTH(Maturity_Date__c),
-1, &quot;January&quot;,
-2, &quot;February&quot;,
-3, &quot;March&quot;,
-4, &quot;April&quot;,
-5, &quot;May&quot;,
-6, &quot;June&quot;,
-7, &quot;July&quot;,
-8, &quot;August&quot;,
-9, &quot;September&quot;,
-10, &quot;October&quot;,
-11, &quot;November&quot;,
-12, &quot;December&quot;,
-&quot;None&quot;)
-&amp;&quot; &quot;&amp;TEXT(DAY(Maturity_Date__c))</formula>
+        <formula>&quot;January&quot;</formula>
         <label>Maturity Date (Month Day)</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
@@ -1985,6 +1982,17 @@ null))</formula>
         <type>Summary</type>
     </fields>
     <fields>
+        <fullName>sfxId__c</fullName>
+        <externalId>true</externalId>
+        <label>sfxId</label>
+        <length>18</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>xxLeadID__c</fullName>
         <externalId>false</externalId>
         <formula>Opportunity__r.Email__c</formula>
@@ -2009,7 +2017,7 @@ null))</formula>
         <filters>
             <field>Loan_Number__c</field>
             <operation>equals</operation>
-            <value>BW0024388</value>
+            <value>BW0023024</value>
         </filters>
         <label>Loans by Date</label>
     </listViews>
@@ -2221,6 +2229,6 @@ null))</formula>
         <protected>false</protected>
         <showsLocation>false</showsLocation>
         <showsStatus>false</showsStatus>
-        <url>https://na16.salesforce.com/_ui/core/email/author/EmailAuthor?p2_lkid={!Loan__c.Id}&amp;template_id=00Xj0000000FmIO</url>
+        <url>/_ui/core/email/author/EmailAuthor?p2_lkid={!Loan__c.Id}&amp;template_id=00Xj0000000FmIO</url>
     </webLinks>
 </CustomObject>

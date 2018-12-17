@@ -1,0 +1,12 @@
+Kamal cogentenergy has assigned you the following new task: 
+
+Subject: {!Task.Subject} 
+
+Priority: {!Task.Priority} 
+
+Comments: {!Task.Description} 
+
+
+For more details, click the following link: 
+
+{!Task.Link}

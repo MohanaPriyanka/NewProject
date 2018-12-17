@@ -187,6 +187,15 @@
         <template>DOER/DOER_Customer_Credit_Denial</template>
     </alerts>
     <alerts>
+        <fullName>NC_Pre_Qualified_Homeowner</fullName>
+        <ccEmails>PartnerSupport@bluewavesolar.com</ccEmails>
+        <description>NC Pre-Qualified Homeowner</description>
+        <protected>false</protected>
+        <senderAddress>noreply@bluewavesolar.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>BFG_Internal_Alerts/NC_Pre_Qualified_Homeowner</template>
+    </alerts>
+    <alerts>
         <fullName>Non_Partner_Installer_Email_Alert</fullName>
         <ccEmails>agarvin@bluewave-capital.com</ccEmails>
         <ccEmails>solarloans@bluewave-capital.com</ccEmails>

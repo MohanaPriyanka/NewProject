@@ -302,11 +302,15 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Pending Quality Control Signature</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Pending System Information from Partner</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Record has been updated</fullName>
+            <fullName>QC In Process</fullName>
             <default>false</default>
         </values>
         <values>
@@ -372,7 +376,7 @@
         <fullName>ACH_Bank_Name__c</fullName>
         <externalId>false</externalId>
         <label>ACH Bank Name</label>
-        <length>30</length>
+        <length>100</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -396,7 +400,7 @@
         <fullName>ACH_Name_on_Account__c</fullName>
         <externalId>false</externalId>
         <label>ACH Name on Account</label>
-        <length>30</length>
+        <length>100</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -501,9 +505,47 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>All_Customers_Signature_Status__c</fullName>
+        <description>This field tracks whether all of the Customers on Residential Loan and Community Solar opportunities have signed, taking into account Joint and Individual applications.</description>
+        <externalId>false</externalId>
+        <formula>CASE(
+Product_Line__c,
+
+&quot;Community Solar&quot;,
+
+IF(Contract_Status__c =&quot;Completed&quot;,&quot;Completed&quot;,&quot;Incomplete&quot;),
+
+&quot;Residential Loan&quot;,
+
+CASE(Application_Type__c,
+&quot;Joint&quot;,
+
+IF(
+AND(Contract_Status__c =&quot;Completed&quot;, Co_Applicant_Signature_Status__c=&quot;Completed&quot;),
+&quot;Completed&quot;,&quot;Incomplete&quot;
+),
+
+&quot;Individual&quot;,
+IF(Contract_Status__c =&quot;Completed&quot;,&quot;Completed&quot;,&quot;Incomplete&quot;),
+
+&quot;&quot;),
+
+&quot;&quot;
+)</formula>
+        <inlineHelpText>This field tracks whether all of the Customers on Residential Loan and Community Solar opportunities have signed, taking into account Joint and Individual applications.</inlineHelpText>
+        <label>All Customers Signature Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>All_QC_Boxes_True__c</fullName>
         <externalId>false</externalId>
-        <formula>and(
+        <formula>IF(
+ Product_Line__c=&quot;Community Solar&quot;,
+and(
 Contract_Fully_Populated__c =true,  
 Utility_Bill_Received__c =true, 
 Personal_Credit_Report_Reviewed__c =true, 
@@ -513,6 +555,14 @@ Service_Address_and_Name_on_Account_Chk__c =true,
  Utility_Acct_Verified_on_Contract__c =true,
  Current_Utility_Bill__c = true,
  Green_Button_Data_Received__c = true
+),
+IF(
+ Product_Line__c=&quot;Residential Loan&quot;,
+and( Commencement_Date_QC__c=true,
+ Loan_Amount_Verified__c =true,
+ Customer_Address_Verified__c =true,
+ System_Information_Verified__c,
+ Customer_Signature_Verified__c ),false)
 )</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>All QC Boxes True?</label>
@@ -8923,8 +8973,8 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         </filters>
         <filters>
             <field>Lender_of_Record__c</field>
-            <operation>contains</operation>
-            <value>Avidia</value>
+            <operation>notContain</operation>
+            <value>BlueWave</value>
         </filters>
         <label>NonDOER Opportunities with Credit Pulled</label>
     </listViews>
@@ -23153,7 +23203,7 @@ newwindow.focus();</url>
         <protected>false</protected>
         <showsLocation>false</showsLocation>
         <showsStatus>false</showsStatus>
-        <url>https://na16.salesforce.com/500/e?
+        <url>/500/e?
 &amp;RecordType=012j00000000HA8
 &amp;ent=Case
 &amp;cas14=Customer Care Case

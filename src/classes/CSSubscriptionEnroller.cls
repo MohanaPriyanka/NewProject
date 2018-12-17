@@ -101,7 +101,7 @@ public without sharing class CSSubscriptionEnroller {
 
     public void enroll() {
         for (Lead lead : leads) {
-            assignApplicableRateClass(lead);
+            calculateProposedkWh(lead);
         }
         updateUALs();
         for (Integer leadIndex = 0; leadIndex < leads.size(); leadIndex++) {
@@ -192,85 +192,18 @@ public without sharing class CSSubscriptionEnroller {
             oppsToInsert.addAll(opps);
         }
         insert oppsToInsert;
+
+        for (Opportunity opp : oppsToInsert) {
+            oppIdList.add(opp.Id);
+        }
     }
 
     public void createUAS(Lead lead) {
-        Map<Id, Decimal> sssRemainingSubscriptionCostMap = new Map<Id, Decimal>();
-        Map<Id, Decimal> sssRemainingSubscriptionCapacityMap = new Map<Id, Decimal>();
+        List<Shared_Solar_System__c> sharedSolarSystems = getSortedSharedSolarSystems(lead);
+        List<Opportunity> opportunities = leadOppsMap.get(lead.Id);
+        List<Utility_Account_Log__c> uals = ualsByLeadId.get(lead.Id);
 
-        for (Shared_Solar_System__c sss : getSortedSharedSolarSystems(lead)) {
-            sssRemainingSubscriptionCostMap.put(sss.Id, sss.Maximum_Subscription_Cost__c);
-            Decimal maximumSubscriptionkWh = sss.Maximum_Subscription_Capacity_kW_DC__c * sss.Expected_Yield_kWh_kW__c;
-            sssRemainingSubscriptionCapacityMap.put(sss.Id, maximumSubscriptionkWh);
-        }
-
-        for (Utility_Account_Log__c ual : getUALList(lead)) {
-            if (ual.Lead__r.Product__r.Customer_Subscription_Type__c == 'kWh') {
-                createUASbyCapacity(lead, ual, sssRemainingSubscriptionCapacityMap);
-            } else if (ual.Lead__r.Product__r.Customer_Subscription_Type__c == 'Electricity Cost ($)') {
-                createUASbyCost(lead, ual, sssRemainingSubscriptionCostMap);
-            }
-        }
-    }
-
-    public void createUASbyCapacity(Lead lead, Utility_Account_Log__c ual, Map<Id, Decimal> sssRemainingSubscriptionCapacityMap) {
-        Integer uasNumberCounter = 1;
-        Decimal remainingUALCapacityToAllocate = ual.Proposed_kWh__c;
-
-        for (Opportunity opp : leadOppsMap.get(lead.Id)) {
-            if (sssRemainingSubscriptionCapacityMap.containsKey(opp.Shared_Solar_System__c)){
-                Decimal sssRemainingSubscriptionCapacity = sssRemainingSubscriptionCapacityMap.get(opp.Shared_Solar_System__c);
-                Decimal annualElectricityCapacityAssigned = Math.min(remainingUALCapacityToAllocate, sssRemainingSubscriptionCapacity);
-                if (annualElectricityCapacityAssigned > 0) {
-                    //Deduct the assigned value from the sss remaining subscription cost and then put it back into the map
-                    sssRemainingSubscriptionCapacity -= annualElectricityCapacityAssigned;
-                    sssRemainingSubscriptionCapacityMap.put(opp.Shared_Solar_System__c, sssRemainingSubscriptionCapacity);
-
-                    remainingUALCapacityToAllocate -= annualElectricityCapacityAssigned;
-                    uasList.add(new Utility_Account_Subscription__c(
-                        Name = ual.Name,
-                        Name_on_Account__c = ual.Name_on_Account__c,
-                        Opportunity__c = opp.Id,
-                        Utility_Account_Log__c = ual.Id,
-                        UAS_Number__c = uasNumberCounter,
-                        Annual_kwh_subscription_future__c = annualElectricityCapacityAssigned
-                    ));
-                    uasNumberCounter++;
-                    oppIdList.add(opp.Id);
-                }
-            }
-        }
-    }
-
-    public void createUASbyCost(Lead lead, Utility_Account_Log__c ual, Map<Id, Decimal> sssRemainingSubscriptionCostMap) {
-        Integer uasNumberCounter = 1;
-        Decimal remainingUALCostToAllocate = ual.Annual_Cost_of_Electricity__c;
-
-        for (Opportunity opp : leadOppsMap.get(lead.Id)) {
-            if (sssRemainingSubscriptionCostMap.containsKey(opp.Shared_Solar_System__c)){
-                Decimal sssRemainingSubscriptionCost = sssRemainingSubscriptionCostMap.get(opp.Shared_Solar_System__c);
-                Decimal annualElectricityCostAssigned = Math.min(remainingUALCostToAllocate, sssRemainingSubscriptionCost);
-                if (annualElectricityCostAssigned > 0) {
-                    //Deduct the assigned value from the sss remaining subscription cost and then put it back into the map
-                    sssRemainingSubscriptionCost -= annualElectricityCostAssigned;
-                    sssRemainingSubscriptionCostMap.put(opp.Shared_Solar_System__c, sssRemainingSubscriptionCost);
-
-                    remainingUALCostToAllocate = remainingUALCostToAllocate - annualElectricityCostAssigned;
-                    uasList.add(new Utility_Account_Subscription__c(
-                        Name = ual.Name,
-                        Name_on_Account__c = ual.Name_on_Account__c,
-                        Opportunity__c = opp.Id,
-                        Annual_Cost_of_Electricity__c = ual.Annual_Cost_of_Electricity__c,
-                        Utility_Account_Log__c = ual.Id,
-                        UAS_Number__c = uasNumberCounter,
-                        calculated_annual_cost_of_electricity__c = annualElectricityCostAssigned,
-                        Subscribed_Annual_Cost_of_Electricity__c = annualElectricityCostAssigned
-                    ));
-                    uasNumberCounter++;
-                    oppIdList.add(opp.Id);
-                }
-            }
-        }
+        uasList.addAll(CSUtilityAccountSubscriptionFactory.generateSubscriptions(uals, sharedSolarSystems, opportunities));
     }
 
     public void insertUASes() {
@@ -294,13 +227,13 @@ public without sharing class CSSubscriptionEnroller {
         DocuSignHelper.sendCSPackageFuture(oppIdList);
     }
 
-    public void assignApplicableRateClass(Lead lead) {
+    public void calculateProposedkWh(Lead lead) {
         List<Utility_Account_Log__c> uals = getUALList(lead);
         Product2 product = productsMap.get(lead.Product__c);
         for (Utility_Account_Log__c ual : uals) {
             List<Utility_NMC_Tariff__c> productTariffs = tariffsByProduct.get(lead.Product__c);
             Utility_NMC_Tariff__c tariff = assignUtilityTariff(ual, lead, productTariffs);
-            if (tariff != null && product != null && product.Program__c.contains('SMART')) {
+            if (tariff != null && product != null && ual.Annual_kWh__c != null) {
                 ual.Utility_NMC_Tariff__c = tariff.Id;
                 // Currently, we only need to have a sizing ratio for SMART
                 ual.Proposed_kWh__c = ual.Annual_kWh__c * tariff.Size_Ratio__c;

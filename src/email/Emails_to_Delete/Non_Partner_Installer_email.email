@@ -1,0 +1,5 @@
+The DOER Solar Loan lead {!Lead.Name} has been created with an installer that is not a BlueWave Partner. Please reach out to the company to begin communications.
+
+Lead:  {!Lead.Link}
+
+Company: {!Lead.Self_Reported_Partner__c}

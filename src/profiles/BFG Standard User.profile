@@ -81,11 +81,6 @@
         <visible>false</visible>
     </applicationVisibilities>
     <applicationVisibilities>
-        <application>standard__LightningInstrumentation</application>
-        <default>false</default>
-        <visible>false</visible>
-    </applicationVisibilities>
-    <applicationVisibilities>
         <application>standard__LightningSales</application>
         <default>false</default>
         <visible>true</visible>
@@ -495,7 +490,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>LoanUnderwriting</apexClass>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>LoanUnderwritingTest</apexClass>
@@ -1548,6 +1543,16 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.CS_Delinquency_Letter_67_no_fee__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.CS_Delinquency_Letter_67_with_fee__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.CS_Sales_Approach__c</field>
         <readable>true</readable>
@@ -1950,6 +1955,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.License_Revoked__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Link_to_Client_Logo__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2920,6 +2930,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account_Bill__c.Payments_Net_Previous_Balances__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account_Bill__c.Previous_Account_Balance_Net_Payments__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -5623,6 +5638,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>ChargentOrders__ChargentOrder__c.Lead__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>ChargentOrders__ChargentOrder__c.Loan__c</field>
         <readable>true</readable>
@@ -6823,9 +6843,19 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Contact.Employed__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Contact.Employed_less_than_a_year__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contact.Employer_Annual_Salary__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -6994,6 +7024,26 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contact.Monthly_Income_2__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contact.Monthly_Income_Details_2__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contact.Monthly_Income_Details__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contact.Monthly_Income__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contact.NABCEP_Certification_Number__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -7015,6 +7065,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Contact.Other_Bank_Executive__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contact.Other_Income__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7074,7 +7129,27 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contact.Retired__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contact.Retirement_Annual_Salary__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contact.Sales_Representative__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contact.Self_Employed__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contact.Self_Employment_Annual_Salary__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7095,6 +7170,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Contact.User__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contact.Veteran_Annual_Salary__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contact.Veteran_Disability__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -10904,6 +10989,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Lead.Employer_Annual_Salary__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Lead.EnergySage_Lead__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -11438,6 +11528,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Other_Income__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Lead.PCR_Percentile_Co_App__c</field>
         <readable>true</readable>
@@ -11668,6 +11763,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Retirement_Annual_Salary__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Risk_Level_Business_Type__c</field>
         <readable>true</readable>
@@ -11705,6 +11805,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Lead.Self_Employed__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Self_Employment_Annual_Salary__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -11870,6 +11975,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Lead.Utility_relationship__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Veteran_Annual_Salary__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -19343,11 +19453,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Percent_Complete__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Predecessor_Project__c</field>
         <readable>true</readable>
@@ -21134,11 +21239,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>MPM4_BASE__TH_TimeEntryLineItem__c.MPM4_BASE__Hours_Input__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>MPM4_BASE__TH_TimeEntryLineItem__c.MPM4_BASE__IsReminderSet__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -21471,6 +21571,11 @@
         <editable>false</editable>
         <field>Opportunity.Age__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.All_Customers_Signature_Status__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -24990,6 +25095,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Product2.Annual_kWh_Maximum__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Product2.Cancellation_Fee_Amount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -44961,9 +45071,6 @@
         <layout>CampaignMember-Campaign Member Page Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>CampaignMemberStatus-Campaign Member Status Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Campaign_Inventory_Log__c-Campaign Inventory Log Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -45576,9 +45683,6 @@
         <layout>Q_A__kav-Q%26A Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Question-Question Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>QuickText-Quick Text Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -45592,9 +45696,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Raw_Feeder_Data__x-Raw Feeder Data Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Reply-Reply Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Request_for_Information__c-Request for Information Layout</layout>
@@ -49041,7 +49142,7 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>standard-Campaign</tab>
-        <visibility>Hidden</visibility>
+        <visibility>DefaultOff</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>standard-Case</tab>
@@ -49174,10 +49275,6 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
-        <name>ActivateOrder</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
         <name>ActivitiesAccess</name>
     </userPermissions>
     <userPermissions>
@@ -49259,10 +49356,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>DistributeFromPersWksp</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>EditActivatedOrders</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -49391,22 +49484,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>SolutionImport</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>SubscribeDashboardToOtherUsers</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>SubscribeReportToOtherUsers</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>SubscribeReportsRunAsUser</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>SubscribeToLightningDashboards</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>

@@ -190,6 +190,10 @@
                 <behavior>Readonly</behavior>
                 <field>Case_Alerts__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>agf__ADM_Work__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
