@@ -11,7 +11,15 @@ public without sharing class CSOpportunityFactoryTest {
         Lead lead = new Lead();
         Opportunity opp = new Opportunity();
 
-        Opportunity updatedOpp = CSOpportunityFactory.setDefaultOppFields(lead, opp, null);
+        Boolean hasErrored = false;
+
+        try {
+            Opportunity updatedOpp = CSOpportunityFactory.setDefaultOppFields(lead, opp, null);
+        } catch (Exception e) {
+            hasErrored = true;
+        }
+
+        System.assert(!hasErrored);
     }
 
     @IsTest
@@ -200,12 +208,6 @@ public without sharing class CSOpportunityFactoryTest {
         Account propertyAccount = new Account(Name = 'Property');
         insert propertyAccount;
 
-        Contact contact = new Contact(
-            FirstName = 'Test',
-            LastName = 'Testcase',
-            AccountId = parentAccount.Id
-        );
-
         Lead lead = new Lead(
             FirstName = 'Test',
             LastName = 'Testcase',
@@ -347,12 +349,6 @@ public without sharing class CSOpportunityFactoryTest {
 
         Account propertyAccount = new Account(Name = 'Property');
         insert propertyAccount;
-
-        Contact contact = new Contact(
-            FirstName = 'Test',
-            LastName = 'Testcase',
-            AccountId = parentAccount.Id
-        );
 
         Lead lead = new Lead(
             FirstName = 'Test',

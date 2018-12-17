@@ -38,17 +38,15 @@ public without sharing class CSOpportunityFactory {
                     Product__c = sss.Product__c,
                     System_Assigned__c = true,
                     NMC_Tariff__c = sss.Utility_NMC_Tariff__c,
-                    Name = lead.FirstName + ' ' + lead.LastName,
                     StageName = 'New',
                     CloseDate = Date.today(),
                     UAS_Created__c = true,
                     Annual_Electricity_Cost__c = annualElectricityCostAssigned,
                     Annual_Electricity_Cost2__c = annualElectricityCostAssigned,
                     Annual_Consumption_kWh__c = annualElectricitykWhAssigned,
-                    Opportunity_Order__c = oppCounter,
-                    Lead__c = lead.Id
+                    Opportunity_Order__c = oppCounter
                 );
-                opp = setDefaultOppFields(lead, opp, propertyAccountId);
+                opp = setDefaultOppFields(lead, opp);
                 if (baseChargentOrder != null) {
                     opp = addPaymentInfoToOpp(opp, baseChargentOrder);
                 }
@@ -78,8 +76,8 @@ public without sharing class CSOpportunityFactory {
     }
 
     @TestVisible
-    private static Opportunity setDefaultOppFields(Lead lead, Opportunity opp, Id propertyAccountId) {
-        opp.AccountId = propertyAccountId;
+    private static Opportunity setDefaultOppFields(Lead lead, Opportunity opp) {
+        opp.Lead__c = lead.Id;
         opp.Application_Date__c = lead.Application__c;
         opp.Application_Type__c = lead.Application_Type__c;
         opp.Avidia_Checking_Account__c = lead.Avidia_Checking_Account__c;

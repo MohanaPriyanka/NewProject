@@ -449,6 +449,7 @@ IF( ISPICKVAL(Class__c, &quot;Class 3&quot;), (Transmission_Charge__c +  Transit
         <fullName>Product__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
+        <inlineHelpText>Used to relate an NMC Tariff to a product for subscription sizing purposes</inlineHelpText>
         <label>Product</label>
         <referenceTo>Product2</referenceTo>
         <relationshipLabel>Utility NMC Tariffs</relationshipLabel>
