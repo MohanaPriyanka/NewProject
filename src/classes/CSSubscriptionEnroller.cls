@@ -22,7 +22,7 @@ public without sharing class CSSubscriptionEnroller {
     private List<Id> oppIdList;
     private List<Lead> leads;
     private Boolean skipContractSend = false;
-    private Map<Id, Map<String, Utility_NMC_Tariff__c>> tariffsByProductIdAndTariffName;
+    private Map<Id, List<Utility_NMC_Tariff__c>> tariffsByProduct;
 
 
     public CSSubscriptionEnroller(List<Lead> leads, Boolean skipContractSend) {
@@ -78,22 +78,17 @@ public without sharing class CSSubscriptionEnroller {
 
         List<Product2> products = [
             SELECT Id, Program__c,
-            (SELECT Id, Name, Size_Ratio__c FROM Utility_NMC_Tariffs__r)
+                (SELECT Id, Name, Size_Ratio__c, Customer_Type__c, Minimum_kWh__c, Maximum_kWh__c, Utility__c
+                FROM Utility_NMC_Tariffs__r)
             FROM Product2
             WHERE Product_Type__c = 'Community Solar'
         ];
 
         productsMap = new Map<Id, Product2>();
-        tariffsByProductIdAndTariffName = new Map<Id, Map<String, Utility_NMC_Tariff__c>>();
+        tariffsByProduct = new Map<Id, List<Utility_NMC_Tariff__c>>();
         for (Product2 product : products) {
             productsMap.put(product.Id, product);
-            Map<String, Utility_NMC_Tariff__c> productTariffsByName = new Map<String, Utility_NMC_Tariff__c>();
-            if (product.Utility_NMC_Tariffs__r.size() > 0) {
-                for (Utility_NMC_Tariff__c tariff : product.Utility_NMC_Tariffs__r) {
-                    productTariffsByName.put(tariff.Name, tariff);
-                }
-            }
-            tariffsByProductIdAndTariffName.put(product.Id, productTariffsByName);
+            tariffsByProduct.put(product.Id, product.Utility_NMC_Tariffs__r);
         }
 
         leadOppsMap = new Map<Id, List<Opportunity>>();
@@ -303,9 +298,8 @@ public without sharing class CSSubscriptionEnroller {
         List<Utility_Account_Log__c> uals = getUALList(lead);
         Product2 product = productsMap.get(lead.Product__c);
         for (Utility_Account_Log__c ual : uals) {
-            Map<String, Utility_NMC_Tariff__c> possibleTariffsByName = tariffsByProductIdAndTariffName.get(lead.Product__c);
-            String tariffName = getUtilityTariffName(ual, lead);
-            Utility_NMC_Tariff__c tariff = possibleTariffsByName.get(tariffName);
+            List<Utility_NMC_Tariff__c> productTariffs = tariffsByProduct.get(lead.Product__c);
+            Utility_NMC_Tariff__c tariff = assignUtilityTariff(ual, lead, productTariffs);
             if (tariff != null && product != null && product.Program__c.contains('SMART')) {
                 ual.Utility_NMC_Tariff__c = tariff.Id;
                 // Currently, we only need to have a sizing ratio for SMART
@@ -318,17 +312,17 @@ public without sharing class CSSubscriptionEnroller {
         ualsByLeadId.put(lead.Id, uals);
     }
 
-    public static String getUtilityTariffName(Utility_Account_Log__c ual, Lead lead) {
-        String tariffName = '';
-        tariffName += ual.Utility__c;
-        if (lead.Customer_type__c == 'Non-Residential' && ual.Annual_kWh__c >= 10000) {
-            tariffName += ' G2';
-        } else if (lead.Customer_type__c == 'Non-Residential' && ual.Annual_kWh__c < 10000) {
-            tariffName += ' G1';
-        } else if (lead.Customer_type__c == 'Residential') {
-            tariffName += ' R1';
+    public static Utility_NMC_Tariff__c assignUtilityTariff(Utility_Account_Log__c ual, Lead lead, List<Utility_NMC_Tariff__c> tariffs) {
+        Utility_NMC_Tariff__c assignedTariff;
+        for (Utility_NMC_Tariff__c tariff : tariffs) {
+            if (lead.Customer_type__c == tariff.Customer_type__c
+                && lead.Utility__c == tariff.Utility__c
+                && (tariff.Maximum_kWh__c == null || ual.Annual_kWh__c < tariff.Maximum_kWh__c)
+                && (tariff.Minimum_kWh__c == null || ual.Annual_kWh__c >= tariff.Minimum_kWh__c)) {
+                assignedTariff = tariff;
+            }
         }
-        return tariffName;
+        return assignedTariff;
     }
 
     public void updateUALs() {
