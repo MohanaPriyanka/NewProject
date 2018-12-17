@@ -8,18 +8,19 @@
 public without sharing class CSOpportunityFactoryTest {
     @IsTest
     public static void testCanSetDefaultOppFieldsFromLeadWhenNull() {
+        // This tests that we can set the map fields from a lead to an opp, even if the values on the lead are null
         Lead lead = new Lead();
         Opportunity opp = new Opportunity();
 
         Boolean hasErrored = false;
 
         try {
-            Opportunity updatedOpp = CSOpportunityFactory.setDefaultOppFields(lead, opp, null);
+            Opportunity updatedOpp = CSOpportunityFactory.setDefaultOppFields(lead, opp);
         } catch (Exception e) {
             hasErrored = true;
         }
 
-        System.assert(!hasErrored);
+        System.assert(!hasErrored, 'CSOpportunityFactory.setDefaultOppFields hit an error');
     }
 
     @IsTest
