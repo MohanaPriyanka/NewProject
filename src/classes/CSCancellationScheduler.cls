@@ -7,5 +7,7 @@
 public without sharing class CSCancellationScheduler implements Schedulable{
     public void execute(SchedulableContext sc){
         CSAccountCanceller.handleOverdueAccounts();
+
+
     }
 }
