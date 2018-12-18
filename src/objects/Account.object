@@ -615,7 +615,7 @@
                 <sorted>false</sorted>
                 <value>
                     <fullName>Lack of Payment</fullName>
-                    <default>true</default>
+                    <default>false</default>
                     <label>Lack of Payment - Default</label>
                 </value>
                 <value>
@@ -4076,6 +4076,49 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <active>true</active>
         <label>Account (Default)</label>
         <picklistValues>
+            <picklist>Cancellation_Reason__c</picklist>
+            <values>
+                <fullName>Business Sold%2FOut of Business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Moved</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Death</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Does Not Understand Product</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Financial Hardship</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Does Not Meet Needs</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unable to Establish Communication</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unhappy with BW Service</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>AccountSource</picklist>
             <values>
                 <fullName>BWC GIS</fullName>
@@ -4156,49 +4199,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Email WITHOUT Fee</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Cancellation_Reason__c</picklist>
-            <values>
-                <fullName>Business Sold%2FOut of Business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Moved</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Death</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Does Not Understand Product</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Financial Hardship</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment</fullName>
-                <default>true</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Product Does Not Meet Needs</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Unable to Establish Communication</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Unhappy with BW Service</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -4970,6 +4970,49 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <description>Only Visible to BWC Founders</description>
         <label>BWC Founders</label>
         <picklistValues>
+            <picklist>Cancellation_Reason__c</picklist>
+            <values>
+                <fullName>Business Sold%2FOut of Business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Moved</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Death</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Does Not Understand Product</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Financial Hardship</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Does Not Meet Needs</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unable to Establish Communication</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unhappy with BW Service</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>AccountSource</picklist>
             <values>
                 <fullName>BWC GIS</fullName>
@@ -5050,49 +5093,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Email WITHOUT Fee</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Cancellation_Reason__c</picklist>
-            <values>
-                <fullName>Business Sold%2FOut of Business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Moved</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Death</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Does Not Understand Product</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Financial Hardship</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment</fullName>
-                <default>true</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Product Does Not Meet Needs</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Unable to Establish Communication</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Unhappy with BW Service</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -5844,6 +5844,49 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <description>Only Visible to BWC Principals</description>
         <label>BWC Principals</label>
         <picklistValues>
+            <picklist>Cancellation_Reason__c</picklist>
+            <values>
+                <fullName>Business Sold%2FOut of Business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Moved</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Death</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Does Not Understand Product</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Financial Hardship</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Does Not Meet Needs</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unable to Establish Communication</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unhappy with BW Service</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>AccountSource</picklist>
             <values>
                 <fullName>BWC GIS</fullName>
@@ -5924,49 +5967,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Email WITHOUT Fee</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Cancellation_Reason__c</picklist>
-            <values>
-                <fullName>Business Sold%2FOut of Business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Moved</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Death</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Does Not Understand Product</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Financial Hardship</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment</fullName>
-                <default>true</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Product Does Not Meet Needs</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Unable to Establish Communication</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Unhappy with BW Service</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -6717,6 +6717,49 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <active>true</active>
         <label>BW Founders</label>
         <picklistValues>
+            <picklist>Cancellation_Reason__c</picklist>
+            <values>
+                <fullName>Business Sold%2FOut of Business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Moved</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Death</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Does Not Understand Product</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Financial Hardship</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Does Not Meet Needs</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unable to Establish Communication</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unhappy with BW Service</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>AccountSource</picklist>
             <values>
                 <fullName>BWC GIS</fullName>
@@ -6797,49 +6840,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Email WITHOUT Fee</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Cancellation_Reason__c</picklist>
-            <values>
-                <fullName>Business Sold%2FOut of Business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Moved</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Death</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Does Not Understand Product</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Financial Hardship</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment</fullName>
-                <default>true</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Product Does Not Meet Needs</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Unable to Establish Communication</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Unhappy with BW Service</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -7594,6 +7594,49 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <active>true</active>
         <label>BW Principals</label>
         <picklistValues>
+            <picklist>Cancellation_Reason__c</picklist>
+            <values>
+                <fullName>Business Sold%2FOut of Business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Moved</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Death</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Does Not Understand Product</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Financial Hardship</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Does Not Meet Needs</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unable to Establish Communication</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unhappy with BW Service</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>AccountSource</picklist>
             <values>
                 <fullName>BWC GIS</fullName>
@@ -7674,49 +7717,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Email WITHOUT Fee</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Cancellation_Reason__c</picklist>
-            <values>
-                <fullName>Business Sold%2FOut of Business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Moved</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Death</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Does Not Understand Product</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Financial Hardship</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment</fullName>
-                <default>true</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Product Does Not Meet Needs</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Unable to Establish Communication</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Unhappy with BW Service</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -8472,6 +8472,49 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <description>Made for CS Client Portal</description>
         <label>Client Account</label>
         <picklistValues>
+            <picklist>Cancellation_Reason__c</picklist>
+            <values>
+                <fullName>Business Sold%2FOut of Business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Moved</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Death</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Does Not Understand Product</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Financial Hardship</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Does Not Meet Needs</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unable to Establish Communication</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unhappy with BW Service</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>AccountSource</picklist>
             <values>
                 <fullName>BWC GIS</fullName>
@@ -8578,49 +8621,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Email WITHOUT Fee</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Cancellation_Reason__c</picklist>
-            <values>
-                <fullName>Business Sold%2FOut of Business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Moved</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Death</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Does Not Understand Product</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Financial Hardship</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment</fullName>
-                <default>true</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Product Does Not Meet Needs</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Unable to Establish Communication</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Unhappy with BW Service</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -9470,6 +9470,49 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <active>true</active>
         <label>Competitor Account</label>
         <picklistValues>
+            <picklist>Cancellation_Reason__c</picklist>
+            <values>
+                <fullName>Business Sold%2FOut of Business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Moved</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Death</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Does Not Understand Product</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Financial Hardship</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Does Not Meet Needs</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unable to Establish Communication</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unhappy with BW Service</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>AccountSource</picklist>
             <values>
                 <fullName>BWC GIS</fullName>
@@ -9550,49 +9593,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Email WITHOUT Fee</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Cancellation_Reason__c</picklist>
-            <values>
-                <fullName>Business Sold%2FOut of Business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Moved</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Death</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Does Not Understand Product</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Financial Hardship</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment</fullName>
-                <default>true</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Product Does Not Meet Needs</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Unable to Establish Communication</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Unhappy with BW Service</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -10348,6 +10348,49 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <description>To be used by Executive Team only</description>
         <label>Executive Team</label>
         <picklistValues>
+            <picklist>Cancellation_Reason__c</picklist>
+            <values>
+                <fullName>Business Sold%2FOut of Business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Moved</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Death</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Does Not Understand Product</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Financial Hardship</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Does Not Meet Needs</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unable to Establish Communication</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unhappy with BW Service</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>AccountSource</picklist>
             <values>
                 <fullName>BWC GIS</fullName>
@@ -10428,49 +10471,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Email WITHOUT Fee</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Cancellation_Reason__c</picklist>
-            <values>
-                <fullName>Business Sold%2FOut of Business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Moved</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Death</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Does Not Understand Product</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Financial Hardship</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment</fullName>
-                <default>true</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Product Does Not Meet Needs</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Unable to Establish Communication</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Unhappy with BW Service</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -11221,6 +11221,49 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <active>true</active>
         <label>Parent Account</label>
         <picklistValues>
+            <picklist>Cancellation_Reason__c</picklist>
+            <values>
+                <fullName>Business Sold%2FOut of Business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Moved</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Death</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Does Not Understand Product</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Financial Hardship</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Does Not Meet Needs</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unable to Establish Communication</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unhappy with BW Service</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>AccountSource</picklist>
             <values>
                 <fullName>BWC GIS</fullName>
@@ -11301,49 +11344,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Email WITHOUT Fee</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Cancellation_Reason__c</picklist>
-            <values>
-                <fullName>Business Sold%2FOut of Business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Moved</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Death</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Does Not Understand Product</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Financial Hardship</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment</fullName>
-                <default>true</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Product Does Not Meet Needs</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Unable to Establish Communication</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Unhappy with BW Service</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -12102,6 +12102,49 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <active>true</active>
         <label>Partner Account</label>
         <picklistValues>
+            <picklist>Cancellation_Reason__c</picklist>
+            <values>
+                <fullName>Business Sold%2FOut of Business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Moved</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Death</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Does Not Understand Product</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Financial Hardship</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Does Not Meet Needs</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unable to Establish Communication</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unhappy with BW Service</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>AccountSource</picklist>
             <values>
                 <fullName>BWC GIS</fullName>
@@ -12208,49 +12251,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Email WITHOUT Fee</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Cancellation_Reason__c</picklist>
-            <values>
-                <fullName>Business Sold%2FOut of Business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Moved</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Death</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Does Not Understand Product</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Financial Hardship</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment</fullName>
-                <default>true</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Product Does Not Meet Needs</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Unable to Establish Communication</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Unhappy with BW Service</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -13112,6 +13112,73 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <active>true</active>
         <label>Property</label>
         <picklistValues>
+            <picklist>Cancellation_Reason__c</picklist>
+            <values>
+                <fullName>Business Sold%2FOut of Business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Moved</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Death</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Does Not Understand Product</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Financial Hardship</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment - Does Not Understand Product</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment - Financial Hardship</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment - Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment - Product Does Not Meet Needs</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment - Unable to Establish Communication</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment - Unhappy with BW Service</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Does Not Meet Needs</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unable to Establish Communication</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unhappy with BW Service</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>AccountSource</picklist>
             <values>
                 <fullName>BWC GIS</fullName>
@@ -13192,73 +13259,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Email WITHOUT Fee</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Cancellation_Reason__c</picklist>
-            <values>
-                <fullName>Business Sold%2FOut of Business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Moved</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Death</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Does Not Understand Product</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Financial Hardship</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment</fullName>
-                <default>true</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment - Does Not Understand Product</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment - Financial Hardship</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment - Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment - Product Does Not Meet Needs</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment - Unable to Establish Communication</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment - Unhappy with BW Service</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Product Does Not Meet Needs</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Unable to Establish Communication</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Unhappy with BW Service</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -14018,6 +14018,49 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <description>Record Type for Residential Loan Accounts</description>
         <label>Residential Loan</label>
         <picklistValues>
+            <picklist>Cancellation_Reason__c</picklist>
+            <values>
+                <fullName>Business Sold%2FOut of Business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Moved</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Death</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Does Not Understand Product</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Financial Hardship</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of Payment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Does Not Meet Needs</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unable to Establish Communication</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unhappy with BW Service</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>AccountSource</picklist>
             <values>
                 <fullName>BWC GIS</fullName>
@@ -14098,49 +14141,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Email WITHOUT Fee</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Cancellation_Reason__c</picklist>
-            <values>
-                <fullName>Business Sold%2FOut of Business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Moved</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Death</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Does Not Understand Product</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Financial Hardship</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of Payment</fullName>
-                <default>true</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Product Does Not Meet Needs</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Unable to Establish Communication</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Unhappy with BW Service</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -14931,10 +14931,10 @@ $User.Id=&quot;0050a00000Jc6mh&quot;)))</errorConditionFormula>
     <validationRules>
         <fullName>Require_Cancellation_Reason</fullName>
         <active>true</active>
-        <description>Cancellation Reason is required before filling out Cancellation Request Date</description>
-        <errorConditionFormula>AND(NOT(ISBLANK(Cancellation_Request_Date__c )), ISBLANK( (TEXT(Cancellation_Reason__c))))</errorConditionFormula>
+        <description>Cancellation Reason and Cancellation Request Date must be both filled out</description>
+        <errorConditionFormula>NOT(ISBLANK(Cancellation_Request_Date__c)) &amp;&amp; ISBLANK(TEXT(Cancellation_Reason__c)) || ISBLANK(Cancellation_Request_Date__c)&amp;&amp; NOT(ISBLANK(TEXT(Cancellation_Reason__c)))</errorConditionFormula>
         <errorDisplayField>Cancellation_Reason__c</errorDisplayField>
-        <errorMessage>Cancellation Reason required before selecting Cancellation Request Date</errorMessage>
+        <errorMessage>Cancellation Reason and Cancellation Request Date are both required</errorMessage>
     </validationRules>
     <webLinks>
         <fullName>APXTConga4__Conga_Composer_OAuth</fullName>
