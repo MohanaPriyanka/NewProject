@@ -117,15 +117,18 @@ public class CustomerCommunicationHandlerTest{
 
             Account propAcct1 = new Account( Name = 'Prop Account 1',
                                             Parent_Account__c = accountParent1.Id,
+                                            RecordTypeId = '012j00000010HeQ',
                                             Send_Bills_Contact__c = contactA.Id,
                                             Client_Brand_Key__c = 'BluewaveLogo');
             Account propAcct2 = new Account( Name = 'Prop Account 2',
                                             Parent_Account__c = accountParent2.Id,
                                             Send_Bills_Contact__c = contactB.Id,
+                                            RecordTypeId = '012j00000010HeQ',
                                             Client_Brand_Key__c = 'AmpRed');
             Account propAcct3 = new Account( Name = 'Prop Account 3',
                                             Parent_Account__c = accountParent3.Id,
                                             Send_Bills_Contact__c = contactC.Id,
+                                            RecordTypeId = '012j00000010HeQ',
                                             Client_Brand_Key__c = 'BluewaveLogo');
 
             insert new List<Account>{propAcct1, propAcct2, propAcct3};
@@ -400,7 +403,6 @@ public class CustomerCommunicationHandlerTest{
         List<Error_Log__c> errorList = [SELECT Id, Class__c, Method__c, User__c
         FROM Error_Log__c];
         System.assertEquals(0, errorList.size());
-        System.debug(errorList);
 
         System.assertNotEquals(MessagingService.emailsSent.size(), 0);
     }
