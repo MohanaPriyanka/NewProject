@@ -561,7 +561,7 @@
                 <sorted>false</sorted>
                 <value>
                     <fullName>Lack of Payment</fullName>
-                    <default>true</default>
+                    <default>false</default>
                     <label>Lack of Payment - Default</label>
                 </value>
                 <value>
@@ -4098,7 +4098,7 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Lack of Payment</fullName>
-                <default>true</default>
+                <default>false</default>
             </values>
             <values>
                 <fullName>Other</fullName>
@@ -4992,7 +4992,7 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Lack of Payment</fullName>
-                <default>true</default>
+                <default>false</default>
             </values>
             <values>
                 <fullName>Other</fullName>
@@ -5866,7 +5866,7 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Lack of Payment</fullName>
-                <default>true</default>
+                <default>false</default>
             </values>
             <values>
                 <fullName>Other</fullName>
@@ -6739,7 +6739,7 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Lack of Payment</fullName>
-                <default>true</default>
+                <default>false</default>
             </values>
             <values>
                 <fullName>Other</fullName>
@@ -7616,7 +7616,7 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Lack of Payment</fullName>
-                <default>true</default>
+                <default>false</default>
             </values>
             <values>
                 <fullName>Other</fullName>
@@ -8520,7 +8520,7 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Lack of Payment</fullName>
-                <default>true</default>
+                <default>false</default>
             </values>
             <values>
                 <fullName>Other</fullName>
@@ -9492,7 +9492,7 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Lack of Payment</fullName>
-                <default>true</default>
+                <default>false</default>
             </values>
             <values>
                 <fullName>Other</fullName>
@@ -10370,7 +10370,7 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Lack of Payment</fullName>
-                <default>true</default>
+                <default>false</default>
             </values>
             <values>
                 <fullName>Other</fullName>
@@ -11243,7 +11243,7 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Lack of Payment</fullName>
-                <default>true</default>
+                <default>false</default>
             </values>
             <values>
                 <fullName>Other</fullName>
@@ -12150,7 +12150,7 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Lack of Payment</fullName>
-                <default>true</default>
+                <default>false</default>
             </values>
             <values>
                 <fullName>Other</fullName>
@@ -13134,7 +13134,7 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Lack of Payment</fullName>
-                <default>true</default>
+                <default>false</default>
             </values>
             <values>
                 <fullName>Lack of Payment - Does Not Understand Product</fullName>
@@ -14040,7 +14040,7 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>Lack of Payment</fullName>
-                <default>true</default>
+                <default>false</default>
             </values>
             <values>
                 <fullName>Other</fullName>
