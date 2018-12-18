@@ -252,9 +252,17 @@ public without sharing class CSSubscriptionEnroller {
                 && lead.Utility__c == tariff.Utility__c
                 && (tariff.Maximum_kWh__c == null || ual.Annual_kWh__c < tariff.Maximum_kWh__c)
                 && (tariff.Minimum_kWh__c == null || ual.Annual_kWh__c >= tariff.Minimum_kWh__c)) {
-                assignedTariff = tariff;
+                if (assignedTariff == null) {
+                    assignedTariff = tariff;
+                } else {
+                    String message = 'Lead ' + lead.Id + ' meets the criteria for multiple tariffs.';
+                    message += ' Assigned Tariff: ' + assignedTariff;
+                    message += ' Other Qualified Tariff: ' + tariff;
+                    Logger.logLater('CSSubscriptionEnroller', 'assignUtilityTariff', message);
+                }
             }
         }
+        Logger.flushLogs();
         return assignedTariff;
     }
 

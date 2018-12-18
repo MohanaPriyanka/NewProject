@@ -82,7 +82,11 @@ public without sharing class RecalculateUALCostController {
         checkSubscriptionType(ual.Utility_Account_Subscriptions__r);
 
         ualCostOfElectricity = ual.Annual_Cost_of_Electricity__c;
-        ualkWhOfElectricity = ual.Proposed_kWh__c;
+        if (ual.Proposed_kWh__c == null) {
+            ualkWhOfElectricity = ual.Annual_kWh__c;
+        } else {
+            ualkWhOfElectricity = ual.Proposed_kWh__c;
+        }
 
         this.subscribedCostOfElectricity = 0;
         this.subscribedkWhOfElectricity = 0;
