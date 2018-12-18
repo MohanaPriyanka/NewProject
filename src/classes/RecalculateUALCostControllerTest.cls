@@ -20,9 +20,15 @@ public class RecalculateUALCostControllerTest {
         Test.loadData(Shared_Solar_System__c.SObjectType, 'RecalcUALTestSharedSolarSystem');
         Test.loadData(Account.SObjectType, 'RecalcUALTestAccount');
         Test.loadData(Utility_Account_Log__c.SObjectType, 'RecalcUALTestUtilityAccountLog');
+        System.debug('Inserted UALs');
+        Test.loadData(Product2.SObjectType, 'RecalcUALTestProduct');
+        System.debug('Inserted Products');
         Test.loadData(Opportunity.SObjectType, 'RecalcUALTestOpportunity');
+        System.debug('Inserted Opps');
         Test.loadData(Utility_Account_Subscription__c.SObjectType, 'RecalcUALTestUtilityAccountSubscription');
+        System.debug('Inserted UASs');
         Test.loadData(Schedule_Z__c.SObjectType, 'RecalcUALTestScheduleZ');
+        System.debug('Inserted ScheduleZs');
 
         // Because there's no way to populate self lookups:
         // https://salesforce.stackexchange.com/questions/54527/test-loaddata-undocumented-but-useful-behavior-loading-relationships
@@ -44,65 +50,7 @@ public class RecalculateUALCostControllerTest {
             }
         }
         update accounts;
-
-        // adding Products & leads separately, so that we don't need to add additional CSV uploads to other tests
-        Product2 byCostProduct = new Product2( Name = 'Cost Product',
-            Family = 'Community Solar',
-            Product_Type__c = 'Community Solar',
-            State__c = 'MA',
-            ProductCode = 'CS - BlueWave - 10%',
-            IsActive = true,
-            Lender_of_Record__c = 'BlueWave',
-            NMC_Discount__c = 10,
-            Annual_kWh_Maximum__c = 100000000,
-            NM_Rate_Floor__c = 0,
-            Customer_Subscription_Type__c = 'Electricity Cost ($)',
-            Monthly_Late_Fee__c = 1);
-
-        Product2 bykWhProduct = new Product2( Name = 'kWh Product',
-            Family = 'Community Solar',
-            Product_Type__c = 'Community Solar',
-            State__c = 'MA',
-            ProductCode = 'CS - BlueWave - 10%',
-            IsActive = true,
-            Lender_of_Record__c = 'BlueWave',
-            NMC_Discount__c = 10,
-            Annual_kWh_Maximum__c = 100000000,
-            NM_Rate_Floor__c = 0,
-            Customer_Subscription_Type__c = 'kWh',
-            Monthly_Late_Fee__c = 1);
-
-        insert new List<Product2>{byCostProduct, bykWhProduct};
-
-        Utility_Account_Log__c ual1 = [
-            SELECT Id,
-                (SELECT Id, Opportunity__c FROM Utility_Account_Subscriptions__r)
-            FROM Utility_Account_Log__c
-            WHERE Name_on_Account__c = 'Joey Chan'
-        ];
-        Utility_Account_Log__c ual2 = [
-            SELECT Id,
-                (SELECT Id, Opportunity__c FROM Utility_Account_Subscriptions__r)
-            FROM Utility_Account_Log__c
-            WHERE Name_on_Account__c = 'Johnny Bravo'
-        ];
-
-        Util.disableTrigger('Disable_OpportunityTrigger__c');
-        Map<Id, Opportunity> oppsToUpdate = new Map<Id, Opportunity>();
-        for (Utility_Account_Subscription__c uas : ual1.Utility_Account_Subscriptions__r) {
-            oppsToUpdate.put(uas.Opportunity__c, new Opportunity(
-                Id = uas.Opportunity__c,
-                Product__c = byCostProduct.Id
-            ));
-        }
-        for (Utility_Account_Subscription__c uas : ual2.Utility_Account_Subscriptions__r) {
-            oppsToUpdate.put(uas.Opportunity__c, new Opportunity(
-                Id = uas.Opportunity__c,
-                Product__c = bykWhProduct.Id
-            ));
-        }
-
-        update oppsToUpdate.values();
+        System.debug('completed setup');
     }
 
     @isTest static void testMethodOne() {
