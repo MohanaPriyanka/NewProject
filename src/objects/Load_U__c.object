@@ -85,6 +85,15 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Utility_Junction_Count__c</fullName>
+        <externalId>false</externalId>
+        <label>Utility_Junction_Count</label>
+        <summaryForeignKey>ZipCode_Utility_Junction__c.Load_Zone_Utility__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
         <fullName>Utility__c</fullName>
         <externalId>false</externalId>
         <label>XXXX Utility</label>
