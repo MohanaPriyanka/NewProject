@@ -1365,6 +1365,18 @@ This field can be changed to a formula consistent with the other factors if LASE
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Confirm_Utility__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Text Field used in CSAP backend only. If in a split utility territory, this field will be populated with both utilities until resolved</inlineHelpText>
+        <label>Confirm Utility</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Construction_Period_DOER__c</fullName>
         <externalId>false</externalId>
         <label>Construction Period (DOER)</label>
@@ -2747,6 +2759,18 @@ This field can be changed to a formula consistent with the other factors if LASE
         <externalId>false</externalId>
         <label>xxLicense Number</label>
         <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LoadZone__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Text Field (ex. SEMA, NEMA) If in a split load zone, this field will be populated with both until resolved (SEMA/NEMA)</inlineHelpText>
+        <label>Load Zone</label>
+        <length>100</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -4691,6 +4715,20 @@ IF(INCLUDES(  Utility_1__c , &quot;SCE&amp;G&quot;), &quot;SCE&amp;G&quot;,
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>ZipCode__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Lookup to the &quot;Load Zone &amp; Utility&quot; object which maps the zipcode to a load zone and utility</inlineHelpText>
+        <label>ZIP Code</label>
+        <referenceTo>Load_U__c</referenceTo>
+        <relationshipLabel>Leads (ZIP Code)</relationshipLabel>
+        <relationshipName>ZIPLeads</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Zip_Code_Lookup_Field__c</fullName>
