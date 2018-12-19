@@ -43,8 +43,14 @@ private class ReferralCodeHandlerTest {
         insert newBSST3;
 
         Load_U__c newLZU = new Load_U__c ( Name = '02052', LZ__c = 'NEMA',
-                                           Utility_Relationship_1__c = eversource.Id, Town__c= 'Medfield');
+                                           Town__c= 'Medfield');
         insert newLZU;
+
+        ZipCode_Utility_Junction__c junction = new ZipCode_Utility_Junction__c(
+            Load_Zone_Utility__c = newLZU.Id,
+            Utility__c = eversource.Id
+        );
+        insert junction;
 
         Lead newCommunitySolarLead = new Lead(FirstName = 'Cole1', LastName = 'Swain', Company = 'BlueWave',
                                               Product_Line__c = 'Community Solar', Status = 'contacted',

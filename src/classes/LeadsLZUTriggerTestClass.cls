@@ -9,8 +9,14 @@ private class LeadsLZUTriggerTestClass {
 
         insert new List<Utility__c>{eversource};
 
-        Load_U__c newLZU = new Load_U__c (Name = '02052', LZ__c = 'NEMA', Utility_Relationship_1__c = eversource.Id, Town__c= 'Medfield');
+        Load_U__c newLZU = new Load_U__c (Name = '02052', LZ__c = 'NEMA', Town__c= 'Medfield');
         insert newLZU;
+
+        ZipCode_Utility_Junction__c junction = new ZipCode_Utility_Junction__c(
+            Load_Zone_Utility__c = newLZU.Id,
+            Utility__c = eversource.Id
+        );
+        insert junction;
 
         Lead newLead = new Lead(FirstName = 'Cole', LastName = 'Swain', Company = 'BlueWave', Status = 'contacted', Parcel_Zip__c = '02052', Product_Line__c = 'Community Solar');
         Test.startTest();

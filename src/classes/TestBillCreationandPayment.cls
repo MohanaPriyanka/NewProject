@@ -29,15 +29,24 @@ public class TestBillCreationandPayment {
 
         Load_U__c everLZU = new Load_U__c (Name = '02633',
             LZ__c = 'SEMA',
-            Utility_Relationship_1__c = eversource.Id,
             Town__c= 'Medfield');
 
         Load_U__c ngridLZU = new Load_U__c (Name = '01570',
             LZ__c = 'WCMA',
-            Utility_Relationship_1__c = nationalGrid.Id,
             Town__c= 'Westtown');
 
         insert new List<Load_U__c>{everLZU, ngridLZU};
+
+        ZipCode_Utility_Junction__c junction = new ZipCode_Utility_Junction__c(
+            Load_Zone_Utility__c = everLZU.Id,
+            Utility__c = eversource.Id
+        );
+        ZipCode_Utility_Junction__c junctionTwo = new ZipCode_Utility_Junction__c(
+            Load_Zone_Utility__c = ngridLZU.Id,
+            Utility__c = nationalGrid.Id
+        );
+        insert new List<ZipCode_Utility_Junction__c>{junction, junctionTwo};
+
         TestFactory.insertBWAddress();
         TestFactory.setCSBillSettings();
 

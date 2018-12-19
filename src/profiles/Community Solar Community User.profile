@@ -10734,6 +10734,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Lead.Confirm_Utility__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Lead.Construction_Period_DOER__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -11260,6 +11265,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.License_Number__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.LoadZone__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -11995,6 +12005,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Year_Employment__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.ZipCode__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -13150,6 +13165,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Load_U__c.LZ__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Load_U__c.Load_Zone__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
