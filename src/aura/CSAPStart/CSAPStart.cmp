@@ -50,11 +50,32 @@
         </legend>
         <form class="slds-form--stacked">
           <lightning:layout multipleRows="true">
-            <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
-              Hello! Welcome to the application
+            <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+              <b>Here are a few things to keep in mind as you go through the application process:</b>
+              <ul>
+                <li>
+                  • To determine your energy needs, we’ll be asking for some information from your
+                  electric bill, so it’s best to have it handy before you get started.
+                </li>
+                <li>
+                  • We’ll also be collecting some personal information including your social security
+                  number, so we can perform a credit check.
+                </li>
+              </ul>
             </lightning:layoutItem>
-            {!v.lead.Partner_Lookup__c}
-            {!v.lead.bs_Sales_ID__c}
+            <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+            <b>Please note that state regulations determine where Community Solar is available, and who can sign up:</b>
+              <ul>
+                <li>
+                  • In NY, Community Solar is only available to residential customers who currently do not
+                  have rooftop solar.
+                </li>
+                <li>
+                  • In MA, Community Solar is available to residential, commercial, and industrial
+                  customers.
+                </li>
+              </ul>
+            </lightning:layoutItem>
           </lightning:layout>
           <div class="slds-clearfix slds-p-top_medium">
             <div class="slds-float_right">
