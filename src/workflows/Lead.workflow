@@ -966,22 +966,17 @@ IF(Number_of_Periods__c&gt;120, max(1250,0.07*Loan_Amount__c), max(1250,0.05*Loa
             <type>FieldUpdate</type>
         </actions>
         <active>true</active>
-        <criteriaItems>
-            <field>Lead.load_zone_check_needed__c</field>
-            <operation>equals</operation>
-            <value>True</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Lead.Product_line__c</field>
-            <operation>equals</operation>
-            <value>Community Solar</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Lead.Contacted__c</field>
-            <operation>equals</operation>
-            <value>True</value>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+        <formula>OR( 
+AND( 
+CONTAINS(ZipCode__r.LZ__c,&quot;/&quot;), 
+ISBLANK(LoadZone__c) 
+), 
+AND( 
+NOT(ISBLANK(ZipCode__r.Utility_Relationship_2__c)),
+ISBLANK(Utility_relationship__c) 
+) 
+)</formula>
+        <triggerType>onAllChanges</triggerType>
     </rules>
     <rules>
         <fullName>CS - Lead Status - Qualified</fullName>
