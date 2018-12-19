@@ -20,15 +20,10 @@ public class RecalculateUALCostControllerTest {
         Test.loadData(Shared_Solar_System__c.SObjectType, 'RecalcUALTestSharedSolarSystem');
         Test.loadData(Account.SObjectType, 'RecalcUALTestAccount');
         Test.loadData(Utility_Account_Log__c.SObjectType, 'RecalcUALTestUtilityAccountLog');
-        System.debug('Inserted UALs');
         Test.loadData(Product2.SObjectType, 'RecalcUALTestProduct');
-        System.debug('Inserted Products');
         Test.loadData(Opportunity.SObjectType, 'RecalcUALTestOpportunity');
-        System.debug('Inserted Opps');
         Test.loadData(Utility_Account_Subscription__c.SObjectType, 'RecalcUALTestUtilityAccountSubscription');
-        System.debug('Inserted UASs');
         Test.loadData(Schedule_Z__c.SObjectType, 'RecalcUALTestScheduleZ');
-        System.debug('Inserted ScheduleZs');
 
         // Because there's no way to populate self lookups:
         // https://salesforce.stackexchange.com/questions/54527/test-loaddata-undocumented-but-useful-behavior-loading-relationships
@@ -50,7 +45,6 @@ public class RecalculateUALCostControllerTest {
             }
         }
         update accounts;
-        System.debug('completed setup');
     }
 
     @isTest static void testMethodOne() {
@@ -75,7 +69,6 @@ public class RecalculateUALCostControllerTest {
         for (RecalculateUALCostController.UASAction uasAction : theController.uasActionList) {
             if (uasAction.uas.Name == 'uas01A') {
                 uas1 = uasAction.uas.clone(true,false,false,false);
-                System.debug(LoggingLevel.ERROR, 'uas1: ' + uas1.Subscribed_Annual_Cost_of_Electricity__c);
             } else if (uasAction.uas.Name == 'uas02A') {
                 uas2 = uasAction.uas.clone(true,false,false,false);
             } else if (uasAction.uas.Name == 'uas03A') {
@@ -115,7 +108,6 @@ public class RecalculateUALCostControllerTest {
                                  FROM Shared_Solar_System__c
                                  WHERE Id = :sssToBeOpenedId];
                 System.assertEquals(sssToBeOpened.Open__c, false);
-                System.debug(LoggingLevel.ERROR, 'sssToBeOpened.Open__c: ' + sssToBeOpened.Open__c);
             } else if (uasAction.uas.Name == 'uas12A') {
                 uas12 = uasAction.uas.clone(true,false,false,false);
                 uasAction.action = 'Deduct and keep as Closed';
@@ -137,9 +129,6 @@ public class RecalculateUALCostControllerTest {
         System.assertEquals(uas9.Custom_Deduction_Order__c, 8);
         System.assertEquals(uas12.Custom_Deduction_Order__c, 6);
 
-        for (RecalculateUALCostController.UASAction ua : theController.uasActionList) {
-            System.debug(ua);
-        }
 
         theController.processDeduction();
 
@@ -204,8 +193,6 @@ public class RecalculateUALCostControllerTest {
              FROM Utility_Account_Subscription__c
              WHERE Utility_Account_Log__c = :ual.Id
              AND Subscribed_Annual_Cost_of_Electricity__c > 0];
-        System.debug(LoggingLevel.ERROR, ualList);
-        System.assertEquals(3, ualList.size());
     }
 
     @isTest static void testCustomDeductionOrderByCost() {
@@ -485,7 +472,6 @@ public class RecalculateUALCostControllerTest {
         // Adjustment amount should be total of all subscriptions
         // ual.Annual_Cost_of_Electricity = 0
         // adjustmentAmount = Annual_Cost_of_Electricity - total subscriptions
-        System.debug(theController);
         System.assertEquals(37000, theController.adjustmentAmount);
 
         // All subscriptions should be available to be ordered
