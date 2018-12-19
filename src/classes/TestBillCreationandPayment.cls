@@ -28,15 +28,13 @@ public class TestBillCreationandPayment {
         insert new List<Utility_NMC_Tariff__c>{eversizeNMC, ngridsizeNMC};
 
         Load_U__c everLZU = new Load_U__c (Name = '02633',
-            Load_zone__c = 'SEMA Eversource',
             LZ__c = 'SEMA',
-            Utility__C = 'Eversource',
+            Utility_Relationship_1__c = eversource.Id,
             Town__c= 'Medfield');
 
         Load_U__c ngridLZU = new Load_U__c (Name = '01570',
-            Load_zone__c= 'WCMA National Grid',
             LZ__c = 'WCMA',
-            Utility__C = 'National Grid',
+            Utility_Relationship_1__c = nationalGrid.Id,
             Town__c= 'Westtown');
 
         insert new List<Load_U__c>{everLZU, ngridLZU};
@@ -115,7 +113,6 @@ public class TestBillCreationandPayment {
                 Capacity_Committed_kW_DC__c = 0,
                 Total_System_Size_kWh_DC__c = 1445.86,
                 Total_System_Size_kW_AC__c  = 996,
-                System_Utility__c = 'Eversource',
                 Credit_Score_Requirement__c = 200,
                 Assignment_order__c = '1',
                 Utility_NMC_Tariff__c = eversizeNMC.Id,
@@ -139,7 +136,6 @@ public class TestBillCreationandPayment {
                 Capacity_Committed_kW_DC__c = 0,
                 Total_System_Size_kWh_DC__c = 1445.86,
                 Total_System_Size_kW_AC__c  = 996,
-                System_Utility__c = 'Eversource',
                 Credit_Score_Requirement__c = 200,
                 Assignment_order__c = '2',
                 Utility_NMC_Tariff__c = eversizeNMC.Id,

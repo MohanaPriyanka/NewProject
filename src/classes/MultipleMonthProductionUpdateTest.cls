@@ -28,9 +28,8 @@ public class MultipleMonthProductionUpdateTest {
         insert new List<Utility_NMC_Tariff__c>{everbillNMC, eversizeNMC};
         
         Load_U__c everLZU = new Load_U__c (Name = '02633', 
-                                           Load_zone__c = 'SEMA Eversource', 
-                                           LZ__c = 'SEMA', 
-                                           Utility__C = 'Eversource', 
+                                           LZ__c = 'SEMA',
+                                           Utility_Relationship_1__c = eversource.Id,
                                            Town__c= 'Medfield');
 
         insert new List<Load_U__c>{everLZU};
@@ -60,7 +59,6 @@ public class MultipleMonthProductionUpdateTest {
                                        Capacity_Committed_kW_DC__c = 0,
                                        Total_System_Size_kWh_DC__c = 1445.86,
                                        Total_System_Size_kW_AC__c  = 996,
-                                       System_Utility__c = 'Eversource',
                                        Credit_Score_Requirement__c = 200,
                                        Assignment_order__c = '1',
                                        Utility_NMC_Tariff__c = eversizeNMC.Id,
