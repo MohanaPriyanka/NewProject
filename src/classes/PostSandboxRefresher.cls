@@ -415,6 +415,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 normalSRECProduct
             };
 
+            LeadTriggerHandlerTest.insertTariffsForProduct(normalCSProduct.Id);
+
             Utility_NMC_Tariff__c eversizeNMC = [SELECT Id FROM Utility_NMC_Tariff__c WHERE Name = 'Eversource SEMA Class 2' LIMIT 1];
             Utility_NMC_Tariff__c nationalGridNMC = [SELECT Id FROM Utility_NMC_Tariff__c WHERE Name = 'National Grid WCMA Class 2 Billing Rate' LIMIT 1];
             Account clientAccount = new Account(Name = 'Test Client');

@@ -1,0 +1,3 @@
+Id,Name,Family,Product_Type__c,State__c,ProductCode,IsActive,Lender_of_Record__c,NMC_Discount__c,Annual_kWh_Maximum__c,NM_Rate_Floor__c,Customer_Subscription_Type__c,Monthly_Late_Fee__c
+prod1,Cost Product,Community Solar,Community Solar,MA,CS - BlueWave - 10%,true,BlueWave,10,100000000,0,Electricity Cost ($),1
+prod2,kWh Product,Community Solar,Community Solar,MA,CS - BlueWave - 10%,true,BlueWave,10,100000000,0,kWh,1
