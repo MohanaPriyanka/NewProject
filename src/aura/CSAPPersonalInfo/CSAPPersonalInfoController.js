@@ -12,16 +12,10 @@
         }else{
             helper.handleNavEvent(component, event, helper, "AboutYourself");
         }
-        var lead = {"sobjectType": "Lead"};
-        // helper.raiseNavEvent("COMPLETED", {"stageName": "NAV_Getting_Started", "lead": lead});
-        lead.Partner_Lookup__c = component.get("v.partnerId");
-        lead.bs_Sales_ID__c = component.get("v.salesRepId");
-        component.set("v.lead", lead);
     },
     goToAboutYourself : function(component, event, helper) {
         component.set("v.page", "AboutYourself");
     },
-
     goToApplyingFor : function(component, event, helper) {
         if (event.getSource().get("v.label") == "Previous") {
             component.set("v.page", "ApplyingFor");
@@ -52,7 +46,7 @@
         component.set("v.NonResidential", true);
     },
     goToCheckCapacity : function(component, event, helper) {
-        if (helper.validatePageFields(component)){
+        if(helper.validatePageFields(component)){
             component.set('v.loading', true);
             component.set("v.loadingText", "Locating your address...");
             helper.processLead(component, event, helper);

@@ -1051,4 +1051,13 @@ public with sharing class CSAPControllerTest {
         System.assertEquals(defaultEntity.Id, newOrders[1].Entity__c);
         System.assertEquals(defaultEntity.Gateway__c, newOrders[1].ChargentOrders__Gateway__c);
     }
+
+    @IsTest static void testHasAvailableCapacityForNYBusiness() {
+        Lead residentialLead = getLeadForTest();
+        residentialLead.Application_Type__c = 'Non-Residential';
+        residentialLead.LASERCA__Home_State__c = 'NY';
+        insert residentialLead;
+
+        System.assertEquals(false, CSAPController.hasAvailableCapacity(residentialLead.Id));
+    }
 }

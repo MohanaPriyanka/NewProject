@@ -34,7 +34,8 @@
                 if (actionResult.getState() === 'SUCCESS') {
                     var lead = actionResult.getReturnValue();
                     component.set("v.lead", lead);
-                    if (lead.Utility_1__c.includes('/') || lead.Load_Zone__c.includes('/')) {
+                    if((lead.Utility_1__c && lead.Utility_1__c.includes('/'))
+                        || (lead.Load_Zone__c && lead.Load_Zone__c.includes('/'))) {
                         component.set('v.loading', false);
                         component.set('v.splitZones', lead.Load_Zone__c.split('/'));
                         component.set('v.splitUtilities', lead.Utility_1__c.split('/'));

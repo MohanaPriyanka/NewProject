@@ -234,14 +234,6 @@
                                    minlength="5"
                                    messageWhenBadInput="Please enter a 5 digit zip-code"/>
                 </lightning:layoutItem>
-
-                <aura:if isTrue="{!and(v.lead.LASERCA__Home_State__c == 'NY', v.lead.Application_Type__c == 'Non-Residential')}">
-                  <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12" >
-                    <div class="slds-align--absolute-center slds-text-body--large--blue">
-                      Unfortunately, we do not offer community solar for Non-Residential customers in your state. If you wish
-                    </div>
-                  </lightning:layoutItem>
-                </aura:if>
               </lightning:layout>
 
               <lightning:layout multipleRows="true">
@@ -410,9 +402,7 @@
             </aura:if>
           </div>
           <div class="slds-float_right">
-            <aura:if isTrue="{!or(v.lead.LASERCA__Home_State__c != 'NY', v.lead.Application_Type__c != 'Non-Residential')}">
-              <lightning:button label="Next" onclick="{!c.goToCheckCapacity}"/>
-            </aura:if>
+            <lightning:button label="Next" onclick="{!c.goToCheckCapacity}"/>
           </div>
         </div>
       </div>
