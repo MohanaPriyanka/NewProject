@@ -46,7 +46,7 @@
     <div aria-labelledby="aboutYourselfForm">
       <fieldset class="slds-box slds-theme--default slds-container_center">
         <legend id="aboutYourselfForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-          <b class=" slds-section__title--large">Prepare your documents before starting the application</b>
+          <b class=" slds-section__title--large">Getting Started</b>
         </legend>
         <form class="slds-form--stacked">
           <lightning:layout multipleRows="true">
@@ -67,11 +67,11 @@
             <b>Please note that state regulations determine where Community Solar is available, and who can sign up:</b>
               <ul>
                 <li>
-                  • In NY, Community Solar is only available to residential customers who currently do not
+                  • In New York, Community Solar is only available to residential customers who currently do not
                   have rooftop solar.
                 </li>
                 <li>
-                  • In MA, Community Solar is available to residential, commercial, and industrial
+                  • In Massachusetts, Community Solar is available to residential, commercial, and industrial
                   customers.
                 </li>
               </ul>
