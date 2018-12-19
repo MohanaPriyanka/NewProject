@@ -27,8 +27,9 @@ public without sharing class CSAPController {
                     Company, Type_of_Business__c, Business_Title__c, Number_of_Years_in_Business__c, Number_of_Years_at_Location__c,
                     Credit_Check_Acknowledged__c, Privacy_Policy_Acknowledged__c, Utility_Bill_Access_Acknowledged__c,
                     Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c, Application_Source_Phase_2__c,
-                    LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c,
-                    Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Customer_Referral__c, Owner.Id
+                    LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c, ZipCode__c,
+                    Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Customer_Referral__c, Owner.Id,
+                    LoadZone__c, Utility_relationship__c
             FROM Lead
             WHERE Id = :leadId
             AND Email = :email
@@ -98,13 +99,13 @@ public without sharing class CSAPController {
         SSSResult sssResult = new SSSResult();
         sssResult.sssCreditQualification = 'Ready for Credit Check';
 
-            Lead lead = [SELECT Id, Status, Partner_Name__c, Application_Source_Phase_2__c, Load_Zone__c, Utility__c FROM Lead WHERE Id = :leadId];
+            Lead lead = [SELECT Id, Status, Partner_Name__c, Application_Source_Phase_2__c, LoadZone__c, Utility_relationship__c FROM Lead WHERE Id = :leadId];
             String sssQuery = 'SELECT Id, Credit_Score_Requirement__c, Product__r.Id, Product__r.Name , Product__c, Product__r.Program__c ';
             sssQuery +=       'FROM Shared_Solar_System__c ';
             sssQuery +=       'WHERE Open__c = true ';
             sssQuery +=       'AND Capacity_Available_to_be_Reserved__c > 0 ';
-            sssQuery +=       'AND System_Utility__c IN (\'' + lead.Utility__c + '\') ';
-            sssQuery +=       'AND Service_Territories__c INCLUDES(\'' + lead.Load_Zone__c + '\') ';
+            sssQuery +=       'AND Utility__c IN (\'' + lead.Utility_relationship__c + '\') ';
+            sssQuery +=       'AND Service_Territories__c INCLUDES(\'' + lead.LoadZone__c + '\') ';
 
             if (lead.Partner_Name__c != null){
                 sssQuery +=       'AND Sales_Partners__c INCLUDES( \'' + 'All' + '\', \'' + lead.Partner_Name__c + '\' ) ';
@@ -138,9 +139,25 @@ public without sharing class CSAPController {
         lead.Id = null;
         insert lead;
         // The lead trigger sets the Load Zone and Utility, which we need in case it ends up being split.
-        Lead insertedLead = [SELECT Load_Zone__c, Utility_1__c FROM Lead WHERE Id = :lead.Id];
-        lead.Load_Zone__c = insertedLead.Load_Zone__c;
-        lead.Utility_1__c = insertedLead.Utility_1__c;
+        Lead insertedLead = [
+            SELECT LoadZone__c, Utility_relationship__c, Utility_relationship__r.Name,
+                ZipCode__c, Zipcode__r.Utility_Relationship_1__c,
+                Zipcode__r.Utility_Relationship_2__c, Zipcode__r.LZ__c
+            FROM Lead
+            WHERE Id = :lead.Id];
+
+        lead.ZipCode__c = insertedLead.ZipCode__c;
+
+        if (insertedLead.Zipcode__r.Utility_Relationship_2__c != null){
+            lead.Utility_relationship__c = null;
+        } else {
+            lead.Utility_relationship__c = insertedLead.Utility_relationship__c;
+        }
+        if (insertedLead.Zipcode__r.LZ__c.contains('/')){
+            lead.LoadZone__c = null;
+        } else {
+            lead.LoadZone__c = insertedLead.LoadZone__c;
+        }
         return lead;
     }
     public static Lead processLead(Lead lead){
@@ -182,21 +199,25 @@ public without sharing class CSAPController {
 
 
         insert lead;
-        Lead insertedLead = [SELECT Load_Zone__c, Utility_1__c FROM Lead WHERE Id = :lead.Id];
-        lead.Load_Zone__c = insertedLead.Load_Zone__c;
-        lead.Utility_1__c = insertedLead.Utility_1__c;
+        Lead insertedLead = [
+            SELECT LoadZone__c, Utility_relationship__c, Confirm_Utility__c
+            FROM Lead
+            WHERE Id = :lead.Id];
 
+        lead.LoadZone__c = insertedLead.LoadZone__c;
+        lead.Utility_relationship__c = insertedLead.Utility_relationship__c;
+        lead.Confirm_Utility__c = insertedLead.Confirm_Utility__c;
         return lead;
     }
     @AuraEnabled
     public static Boolean hasAvailableCapacity(Id leadId) {
-        Lead lead = [SELECT Id, Load_Zone__c, Utility__c, Partner_Name__c, Application_Source_Phase_2__c, System_Assignment__c FROM Lead WHERE Id = :leadId];
+        Lead lead = [SELECT Id, LoadZone__c, Utility_relationship__c, Partner_Name__c, Application_Source_Phase_2__c, System_Assignment__c FROM Lead WHERE Id = :leadId];
         String sssQuery = 'SELECT Id, Product__r.Name  ';
         sssQuery +=       'FROM Shared_Solar_System__c ';
         sssQuery +=       'WHERE Open__c = true ';
         sssQuery +=       'AND Capacity_Available_to_be_Reserved__c > 0 ';
-        sssQuery +=       'AND System_Utility__c = \'' + lead.Utility__c + '\' ';
-        sssQuery +=       'AND Service_Territories__c INCLUDES(\'' + lead.Load_Zone__c + '\') ';
+        sssQuery +=       'AND Utility__c = \'' + lead.Utility_relationship__c + '\' ';
+        sssQuery +=       'AND Service_Territories__c INCLUDES(\'' + lead.LoadZone__c + '\') ';
         if (lead.Partner_Name__c != null){
             sssQuery +=       'AND Sales_Partners__c INCLUDES( \'' + 'All' + '\', \'' + lead.Partner_Name__c + '\' ) ';
         } else {
@@ -285,9 +306,8 @@ public without sharing class CSAPController {
         if (primaryLead == null) {
             throw new AuraHandledException('Invalid lead');
         }
-        primaryLead.Utility_1__c = lead.Utility_1__c;
-        primaryLead.Load_Zone__c = lead.Load_Zone__c;
-        primaryLead.LZU__c = lead.Load_Zone__c + ' ' + lead.Utility_1__c;
+        primaryLead.Utility_relationship__c = lead.Utility_relationship__c;
+        primaryLead.LoadZone__c = lead.LoadZone__c;
         primaryLead.Status = 'Ready for Credit Check';
         update primaryLead;
     }

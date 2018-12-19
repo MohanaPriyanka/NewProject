@@ -3,26 +3,38 @@ private class TestSSSAddReservations {
 
 Static testMethod void SSSAddReservations(){
 
-Utility_NMC_Tariff__c everbillNMC = new Utility_NMC_Tariff__c (
-        Name = 'Eversource SEMA Class 2', 
-        Utility__c = 'Eversource', 
-        Class__c = 'Class 2',
-        Value_of_Net_Metering_Credit__c = 0.1848,
-        Current_Billing_Rate__c = TRUE
-                );
+        Utility__c eversource = new Utility__c(
+            Name = 'Eversource',
+            Number_of_Decimal_Places__c = 2
+        );
 
-insert everbillNMC;
-system.debug(everbillNMC);
+        Utility__c nationalGrid = new Utility__c(
+            Name = 'National Grid',
+            Number_of_Decimal_Places__c = 2
+        );
 
-Account myAccount = new Account(name = 'Test Account');
-insert myAccount;
+        insert new List<Utility__c>{eversource, nationalGrid};
 
-LASERCA__Personal_Credit_Report__c pcr1 = new LASERCA__Personal_Credit_Report__c(
-                                          LASERCA__Credit_Score_TransUnion__c = '700');
-                                          
-insert pcr1;
+        Utility_NMC_Tariff__c everbillNMC = new Utility_NMC_Tariff__c (
+                Name = 'Eversource SEMA Class 2',
+                Utility__c = 'Eversource',
+                Class__c = 'Class 2',
+                Value_of_Net_Metering_Credit__c = 0.1848,
+                Current_Billing_Rate__c = TRUE
+        );
 
-Date myDate = Date.newInstance(2015, 2, 17);
+        insert everbillNMC;
+        system.debug(everbillNMC);
+
+        Account myAccount = new Account(name = 'Test Account');
+        insert myAccount;
+
+        LASERCA__Personal_Credit_Report__c pcr1 = new LASERCA__Personal_Credit_Report__c(
+                                                  LASERCA__Credit_Score_TransUnion__c = '700');
+
+        insert pcr1;
+
+        Date myDate = Date.newInstance(2015, 2, 17);
 
         Shared_Solar_System__c myProject = new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
                                                                  Service_Territories__c = 'SEMA',
@@ -31,7 +43,7 @@ Date myDate = Date.newInstance(2015, 2, 17);
                                                                  Capacity_Committed_kW_DC__c = 0,
                                                                  Total_System_Size_kWh_DC__c = 1445.86,
                                                                  Total_System_Size_kW_AC__c  = 996,
-                                                                 System_Utility__c = 'Eversource',
+                                                                 Utility__c = eversource.Id,
                                                                  Credit_Score_Requirement__c = 200,
                                                                  Assignment_order__c = '1',
                                                                  Expected_Yield_kWh_kW__c = 1300,

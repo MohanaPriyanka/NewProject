@@ -1,7 +1,18 @@
 @isTest
 public class paymentGatewayAssignmentHandlerTestclass {
     @isTest static void testPaymentGatewayAssignmentHandler() {
-        
+        Utility__c eversource = new Utility__c(
+            Name = 'Eversource',
+            Number_of_Decimal_Places__c = 2
+        );
+
+        Utility__c nationalGrid = new Utility__c(
+            Name = 'National Grid',
+            Number_of_Decimal_Places__c = 2
+        );
+
+        insert new List<Utility__c>{eversource, nationalGrid};
+
         Utility_NMC_Tariff__c nmcRateNgridWcmaSizing =  new Utility_NMC_Tariff__c(
             Value_of_Net_Metering_Credit__c = 0.15,
             Name = 'Nation Grid WCMA Class 2 I',
@@ -17,8 +28,6 @@ public class paymentGatewayAssignmentHandlerTestclass {
             Current_Billing_Rate__c = true,
             Date__c = Date.today()
         );
-
-
 
         insert new List<Utility_NMC_Tariff__c>{nmcRateNgridWcmaSizing, nmcRateNgridWcmaBilling};
 
@@ -91,7 +100,7 @@ public class paymentGatewayAssignmentHandlerTestclass {
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
             Total_System_Size_kW_AC__c  = 996,
-            System_Utility__c = 'National Grid',
+            Utility__c = nationalGrid.Id,
             Assignment_order__c = '1',
             Utility_NMC_Tariff__c = nmcRateNgridWcmaSizing.Id,
             Assemblage_Count__c = 1,
@@ -109,7 +118,7 @@ public class paymentGatewayAssignmentHandlerTestclass {
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
             Total_System_Size_kW_AC__c  = 996,
-            System_Utility__c = 'National Grid',
+            Utility__c = nationalGrid.Id,
             Assignment_order__c = '1',
             Utility_NMC_Tariff__c = nmcRateNgridWcmaSizing.Id,
             Assemblage_Count__c = 1,
@@ -127,7 +136,7 @@ public class paymentGatewayAssignmentHandlerTestclass {
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
             Total_System_Size_kW_AC__c  = 996,
-            System_Utility__c = 'Eversource',
+            Utility__c = eversource.Id,
             Assignment_order__c = '1',
             Utility_NMC_Tariff__c = nmcRateNgridWcmaSizing.Id,
             Assemblage_Count__c = 1,
@@ -145,7 +154,7 @@ public class paymentGatewayAssignmentHandlerTestclass {
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
             Total_System_Size_kW_AC__c  = 996,
-            System_Utility__c = 'Eversource',
+            Utility__c = eversource.Id,
             Assignment_order__c = '1',
             Utility_NMC_Tariff__c = nmcRateNgridWcmaSizing.Id,
             Assemblage_Count__c = 1,
