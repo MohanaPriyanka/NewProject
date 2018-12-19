@@ -34,11 +34,28 @@
                 if (actionResult.getState() === 'SUCCESS') {
                     var lead = actionResult.getReturnValue();
                     component.set("v.lead", lead);
-                    if (lead.Utility_1__c.includes('/') || lead.Load_Zone__c.includes('/')) {
+
+                    var utilityList = [];
+                    if (lead.Confirm_Utility__c.includes('/')){
+                        var splitNamesFromId = lead.Confirm_Utility__c.split('>');
+                        var namesList = splitNamesFromId[0].split('/');
+                        var idsList = splitNamesFromId[1].split('/');
+
+                        var i;
+                        for (i = 0; i < namesList.length; i++) {
+                            var newUtility = {
+                                'Name': namesList[i],
+                                'Id': idsList[i]
+                            };
+                            utilityList.push(newUtility);
+                        };
                         component.set('v.loading', false);
-                        component.set('v.splitZones', lead.Load_Zone__c.split('/'));
-                        component.set('v.splitUtilities', lead.Utility_1__c.split('/'));
                         component.set('v.page', 'SplitLoadZone');
+                        component.set('v.splitUtilities', utilityList);
+                    } else if (lead.Lead_Zone_Text__c.includes('/')){
+                        component.set('v.loading', false);
+                        component.set('v.page', 'SplitLoadZone');
+                        component.set('v.splitZones', lead.Lead_Zone_Text__c.split('/'));
                     } else {
                         helper.finishStage(component, event, helper);
                     }
@@ -60,11 +77,28 @@
                 if (actionResult.getState() === 'SUCCESS') {
                     var lead = actionResult.getReturnValue();
                     component.set("v.lead", lead);
-                    if (lead.Utility_1__c.includes('/') || lead.Load_Zone__c.includes('/')) {
+
+                    var utilityList = [];
+                    if (lead.Confirm_Utility__c.includes('/')){
+                        var splitNamesFromId = lead.Confirm_Utility__c.split('>');
+                        var namesList = splitNamesFromId[0].split('/');
+                        var idsList = splitNamesFromId[1].split('/');
+
+                        var i;
+                        for (i = 0; i < namesList.length; i++) {
+                            var newUtility = {
+                                'Name': namesList[i],
+                                'Id': idsList[i]
+                            };
+                            utilityList.push(newUtility);
+                        };
                         component.set('v.loading', false);
-                        component.set('v.splitZones', lead.Load_Zone__c.split('/'));
-                        component.set('v.splitUtilities', lead.Utility_1__c.split('/'));
                         component.set('v.page', 'SplitLoadZone');
+                        component.set('v.splitUtilities', utilityList);
+                    } else if (lead.Lead_Zone_Text__c.includes('/')) {
+                        component.set('v.loading', false);
+                        component.set('v.page', 'SplitLoadZone');
+                        component.set('v.splitZones', lead.Lead_Zone_Text__c.split('/'));
                     } else {
                         helper.finishStage(component, event, helper);
                     }

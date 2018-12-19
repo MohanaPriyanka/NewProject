@@ -6,6 +6,17 @@ private class ReferralCodeHandlerTest {
         List<Lead> newLeadList = new List<Lead>();
         List<Lead> updatedLeads = new List<Lead>();
 
+        Utility__c eversource = new Utility__c(
+            Name = 'Eversource',
+            Number_of_Decimal_Places__c = 2
+        );
+
+        Utility__c nationalGrid = new Utility__c(
+            Name = 'National Grid',
+            Number_of_Decimal_Places__c = 2
+        );
+        insert new List<Utility__c>{eversource, nationalGrid};
+
         Account newAccount = new Account(Name = 'Cole Swain');
         insert newAccount;
 
@@ -31,8 +42,8 @@ private class ReferralCodeHandlerTest {
                                         Email__c = 'cole@bluewave-capital.com', Custom_Id__c = 'cole');
         insert newBSST3;
 
-        Load_U__c newLZU = new Load_U__c ( Name = '02052', Load_zone__c= 'NEMA Eversource', LZ__c = 'NEMA',
-                                           Utility__C = 'Eversource', Town__c= 'Medfield');
+        Load_U__c newLZU = new Load_U__c ( Name = '02052', LZ__c = 'NEMA',
+                                           Utility_Relationship_1__c = eversource.Id, Town__c= 'Medfield');
         insert newLZU;
 
         Lead newCommunitySolarLead = new Lead(FirstName = 'Cole1', LastName = 'Swain', Company = 'BlueWave',
