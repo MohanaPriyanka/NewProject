@@ -1059,5 +1059,6 @@ public with sharing class CSAPControllerTest {
         insert residentialLead;
 
         System.assertEquals(false, CSAPController.hasAvailableCapacity(residentialLead.Id));
+        System.assertEquals(true, CSAPController.autoDenyLead(residentialLead));
     }
 }

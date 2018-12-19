@@ -195,7 +195,7 @@ public without sharing class CSAPController {
                 LASERCA__Home_State__c, Application_Type__c
             FROM Lead
             WHERE Id = :leadId];
-        if (lead.LASERCA__Home_State__c == 'NY' && lead.Application_Type__c == 'Non-Residential') {
+        if (autoDenyLead(lead)) {
             return false;
         }
         String sssQuery = 'SELECT Id, Product__r.Name  ';
@@ -217,6 +217,15 @@ public without sharing class CSAPController {
         List<Shared_Solar_System__c> sssList = Database.query(sssQuery);
 
         return (sssList.size() > 0);
+    }
+
+    @TestVisible
+    private static Boolean autoDenyLead(Lead lead) {
+        if (lead.LASERCA__Home_State__c == 'NY' && lead.Application_Type__c == 'Non-Residential') {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // The Credit Check methods are copied FROM SLPAddCustomer to make it easier to retire that class
