@@ -26,11 +26,15 @@ public class LightningReportsControllerTest {
         response = LightningReportsController.getAsyncReportResponseWithoutRows(asyncReportId);
         System.assertEquals('summary', response.reportType);
 
+        Datetime today = Datetime.now();
+        Datetime twoMonthsAgo = today.addMonths(-2);
+
         // In case there are lead records created outside of the lead insert above
         List<AggregateResult> leadAggregateResults = [
             SELECT LastName, SUM(Annual_Income_Currency__c) annualIncome
             FROM Lead
             WHERE LastName = 'TestLightningReports'
+            AND CreatedDate > :twoMonthsAgo
             GROUP BY LastName
         ];
 
