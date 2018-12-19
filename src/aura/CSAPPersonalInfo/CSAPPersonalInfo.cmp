@@ -13,7 +13,7 @@
   <aura:attribute name="referralCode" type="String"/>
   <aura:attribute name="ShowDateError" type="Boolean"/>
   <aura:attribute name="splitZones" type="String[]"/>
-  <aura:attribute name="splitUtilities" type="String[]"/>
+  <aura:attribute name="splitUtilities" type="Object[]"/>
 
   <aura:set attribute="STAGENAME" value="NAV_Personal_Information"/>
   <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
@@ -194,6 +194,7 @@
                   <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
                     <lightning:input aura:id="field" name="name"
                                      label="Property Name"
+                                     maxlength="62"
                                      value="{!v.lead.Company}"
                                      required="true"/>
                   </lightning:layoutItem>
@@ -417,26 +418,26 @@
           <form class="slds-form--stacked">
             <div class="slds-p-around--small slds-text-body--regular">
               <b>
+                Please select your Utility or Load Zone from the list below. You can find this information on your utility bill.
                 <aura:if isTrue="{!v.lead.State == 'Massachusetts'}">
-                Your zip code is serviced by multiple Load Zones or multiple Utilities. Please consult your utility bill
-                (for National Grid customers) or
-                <a target="_blank" href="https://static1.squarespace.com/static/56fbfd2d37013b142d331d72/t/580fcb5a9de4bb7cf17a798b/1477430108492/RE_MA_Utility_Load_Zones_web.pdf">
-                  this map
-                </a>
-                (for Eversource) to provide us with your Load Zone or Utility so we can see if we have solar projects that can service you.
+                  Your zip code is serviced by multiple Load Zones or multiple Utilities. Please consult your utility bill
+                  (for National Grid customers) or
+                  <a target="_blank" href="https://static1.squarespace.com/static/56fbfd2d37013b142d331d72/t/580fcb5a9de4bb7cf17a798b/1477430108492/RE_MA_Utility_Load_Zones_web.pdf">
+                    this map
+                  </a>
+                  (for Eversource) to provide us with your Load Zone or Utility so we can see if we have solar projects that can service you.
                   <aura:set attribute="else">
-                  <aura:if isTrue="{!v.lead.State == 'New York'}">
-                    Please select your Utility or Load Zone from the list below. You can find this information on your utility bill, or by entering your address in
-                    <a target="_blank" href="https://www.arcgis.com/home/webmap/viewer.html?url=https://services1.arcgis.com/Lsfphzk53dXVltQC/ArcGIS/rest/services/NYISO_Zones/FeatureServer/0&amp;source=sd">
-                      this map
-                    </a>.
-                    <aura:set attribute="else">
-                      Please select your Utility or Load Zone from the list below. You can find this information on your utility bill.
-                    </aura:set>
-                  </aura:if>
+                    <aura:if isTrue="{!v.lead.State == 'New York'}">
+                      Please select your Utility or Load Zone from the list below. You can find this information on your utility bill, or by entering your address in
+                      <a target="_blank" href="https://www.arcgis.com/home/webmap/viewer.html?url=https://services1.arcgis.com/Lsfphzk53dXVltQC/ArcGIS/rest/services/NYISO_Zones/FeatureServer/0&amp;source=sd">
+                        this map
+                      </a>.
+                      <aura:set attribute="else">
+                        Please select your Utility or Load Zone from the list below. You can find this information on your utility bill.
+                      </aura:set>
+                    </aura:if>
                   </aura:set>
                 </aura:if>
-
               </b>
             </div>
             <lightning:layout multipleRows="true">
@@ -444,9 +445,9 @@
                 <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
                   <lightning:select aura:id="loadZone" name="loadZone"
                                     label="Load Zone"
-                                    value="{!v.lead.Load_Zone__c}"
+                                    value="{!v.lead.LoadZone__c}"
                                     required="true">
-                    <option value="{!v.lead.Load_Zone__c}">Choose Load Zone...</option>
+                    <option value="{!v.lead.LoadZone__c}">Choose Load Zone...</option>
                     <aura:iteration items="{!v.splitZones}" var="loadZone">
                       <option value="{!loadZone}">{!loadZone}</option>
                     </aura:iteration>
@@ -457,11 +458,11 @@
                 <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
                   <lightning:select aura:id="utility" name="utility"
                                     label="Utility"
-                                    value="{!v.lead.Utility_1__c}"
+                                    value="{!v.lead.Utility_relationship__c}"
                                     required="true">
-                    <option value="{!v.lead.Utility_1__c}">Choose Utility...</option>
+                    <option value="{!v.lead.Utility_relationship__c}">Choose Utility...</option>
                     <aura:iteration items="{!v.splitUtilities}" var="utility">
-                      <option value="{!utility}">{!utility}</option>
+                      <option value="{!utility.Id}" label="{!utility.Name}">{!utility}</option>
                     </aura:iteration>
                   </lightning:select>
                 </lightning:layoutItem>

@@ -143,27 +143,36 @@ public without sharing class LeadTriggerHandler {
     private void updateLZUL(List<Lead> leadList, Map<ID, Lead> oldLeadMap){
         Set<String> zipCodeSet = new Set<String>();
         for (Lead l : leadList){
-            if (l.Parcel_Zip__c != null && (l.Load_Zone__c == null || l.Utility_1__c == null)) {
+            if (l.Parcel_Zip__c != null && (l.LoadZone__c == null || l.Utility_relationship__c == null)) {
                 zipCodeSet.add(l.Parcel_Zip__c);
             }
         }
         if (zipCodeSet.size() > 0 ){
             Map<String, Load_u__c> validLZU = new Map<String, Load_u__c>();
-            for (Load_u__c obj : [SELECT Id, Name, Load_Zone__c, LZ__c, Utility__c FROM Load_u__c WHERE Name IN : zipCodeSet] ){
+            for (Load_u__c obj : [
+                SELECT Id, Name, LZ__c, Utility__c,
+                    Utility_Relationship_1__c, Utility_Relationship_2__c,
+                    Utility_Relationship_1__r.Id, Utility_Relationship_2__r.Id,
+                    Utility_Relationship_1__r.Name, Utility_Relationship_2__r.Name
+                FROM Load_u__c
+                WHERE Name IN : zipCodeSet] ){
                 validLZU.put(obj.Name, obj); 
             }
             for (Lead l : leadList){
-                if (oldLeadMap == null || oldLeadMap.get(l.Id).Parcel_Zip__c != l.Parcel_Zip__c){
-                    if (validLZU.containsKey (l.Parcel_Zip__c)){
-                        l.LZU__c = validLZU.get (l.Parcel_Zip__c).Load_Zone__c;
-                        l.Load_Zone__c = validLZU.get (l.Parcel_Zip__c).LZ__c;
-                        l.Utility_1__c = validLZU.get(l.Parcel_Zip__c).Utility__c;
+                if ((oldLeadMap == null || oldLeadMap.get(l.Id).Parcel_Zip__c != l.Parcel_Zip__c) && validLZU.containsKey(l.Parcel_Zip__c)){
+                    Load_u__c zone = validLZU.get(l.Parcel_Zip__c);
+                    l.ZipCode__c = zone.Id;
+                    l.LoadZone__c = zone.LZ__c;
+                    if (zone.Utility_Relationship_2__c == null){
+                        l.Utility_relationship__c = zone.Utility_Relationship_1__c;
+                        l.Confirm_Utility__c = 'single';
+                    } else {
+                        String utilList =   zone.Utility_Relationship_1__r.Name + '/' +
+                                            zone.Utility_Relationship_2__r.Name + '>' +
+                                            zone.Utility_Relationship_1__r.Id + '/' +
+                                            zone.Utility_Relationship_2__r.Id;
+                        l.Confirm_Utility__c = utilList;
                     }
-                }
-                else if (oldLeadMap.get(l.Id).Parcel_Zip__c != l.Parcel_Zip__c && !validLZU.containsKey(l.Parcel_Zip__c)){
-                    l.LZU__c = null;
-                    l.Load_Zone__c = null;
-                    l.Utility_1__c = null;
                 }
             }
         }
@@ -235,18 +244,17 @@ public without sharing class LeadTriggerHandler {
         opp.BS_Sales_ID__c = lead.bs_Sales_ID__c;
         opp.Sales_Person_Tag__c = lead.Sales_Person__c;
         opp.Security_Type__c = lead.Security_Type__c;
-        opp.Service_Territory__c = lead.Load_Zone__c;
+        opp.Service_Territory__c = lead.LoadZone__c;
         opp.Subscription__c = lead.Solar_Coverage__c;
         opp.State_of_Issuance__c = lead.State_of_Issuance__c;
         opp.Project_Assignment__c = lead.System_Assignment__c;
         opp.Annual_Consumption_kWh__c = lead.Total_Annual_Consumption_kWh__c;
         opp.Annual_Electricity_Cost__c = lead.Total_Annual_Electricity_Cost__c;
-        opp.UtilityMapper__c = lead.Utility__c;
         opp.Utility_Account_Holder_Name__c = lead.Utility_Account_Holder__c;
         opp.Utility_Account_Holder_Business__c = lead.Utility_Account_Holder_Business__c;
         opp.Utility_Password__c = lead.Utility_Account_Password__c;
         opp.Username__c = lead.Utility_Account_Username__c;
-        opp.Utility_Relationship__c = lead.Utility_Relationship__c;
+        opp.Utility_relationship__c = lead.Utility_relationship__c;
         opp.OwnerId = lead.OwnerId;
         return opp;
     }
@@ -298,7 +306,7 @@ public without sharing class LeadTriggerHandler {
             sssList = [
                 SELECT Id, Name, Sales_Partners__c, Maximum_Subscription_Cost__c, Product__c,
                     Project_Capacity_Available_kW_DC__c, Estimated_COD_Date__c, Service_Territories__c,
-                    Reserved_Capacity_kW_DC__c, Service_Territory__c, System_Utility__c,
+                    Reserved_Capacity_kW_DC__c, Service_Territory__c, Utility__c,
                     Utility_NMC_Tariff__c, Credit_Score_Requirement__c, Assignment_Order__c, Estimated_COD_Date_QC__c,
                     BWC_Project_Entity_Manual__c, BWC_Project_Entity_Manual__r.Gateway__c
                 FROM Shared_Solar_System__c
@@ -350,9 +358,9 @@ public without sharing class LeadTriggerHandler {
             List<SSSWrapper> sssWrappers = new List<SSSWrapper>();
             List<Shared_Solar_System__c> sortedSharedSolarSystems = new List<Shared_Solar_System__c>();
             for (Shared_Solar_System__c sss : sssList) {
-                if (sss.System_Utility__c == lead.Utility__c &&
+                if (sss.Utility__c == lead.Utility_relationship__c &&
                     (sss.Service_Territories__c != null &&
-                        sss.Service_Territories__c.contains(lead.Load_Zone__c)) &&
+                        sss.Service_Territories__c.contains(lead.LoadZone__c)) &&
                     (sss.Sales_Partners__c != null &&
                         (sss.Sales_Partners__c.contains('All') ||
                             sss.Sales_Partners__c.contains(lead.Partner_Name__c))) &&
