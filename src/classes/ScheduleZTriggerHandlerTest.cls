@@ -1,5 +1,46 @@
 @isTest
 public class ScheduleZTriggerHandlerTest {
+
+    @IsTest static void testHandleDates() {
+        Shared_Solar_System__c sss1 = [
+            SELECT Id
+            FROM Shared_Solar_System__c
+            WHERE Name = 'Oxford Barrett St. P1'
+            LIMIT 1
+        ];
+
+        test.startTest();
+
+        Schedule_Z__c sss1ScheduleZ = new Schedule_Z__c(
+            Name = '18-0515 Oxford Barrett St. P1',
+            Shared_Solar_System__c = sss1.Id,
+            Status__c = 'Enacted by Utility',
+            Date_Enacted_by_Utility__c = System.today().addMonths(-5)
+        );
+
+        Schedule_Z__c sss1ScheduleZ2 = new Schedule_Z__c(
+            Name = '18-0615 Oxford Barrett St. P1',
+            Shared_Solar_System__c = sss1.Id,
+            Status__c = 'QC Complete'
+        );
+
+        insert sss1ScheduleZ;
+        insert sss1ScheduleZ2;
+
+        System.assertEquals(null, sss1ScheduleZ.Date_Schedule_z_Retired_by_Utility__c);
+
+        sss1ScheduleZ2.Status__c = 'Enacted by Utility';
+        update sss1ScheduleZ2;
+
+        Schedule_Z__c firstSchedZ = [
+            SELECT Id, Name, Date_Schedule_Z_Retired_by_Utility__C
+            FROM Schedule_Z__c
+            WHERE Name = '18-0515 Oxford Barrett St. P1'
+        ];
+
+        System.assertEquals(System.today(), firstSchedZ.Date_Schedule_Z_Retired_by_Utility__c);
+    }
+
     @IsTest static void testSubscriptionsCreatedWithoutFutureSubscription() {
         Shared_Solar_System__c sss1 = [
             SELECT Id
@@ -112,7 +153,6 @@ public class ScheduleZTriggerHandlerTest {
 
         insert new List<Load_U__c>{everLZU, ngridLZU};
         TestFactory.insertBWAddress();
-        TestFactory.setCSBillSettings();
 
         Account clientAccount = new Account(name = 'Client Account',
             Client_Brand_Key__c = 'AmpBlack');

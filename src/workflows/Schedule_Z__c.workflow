@@ -105,7 +105,7 @@ IF(MOD(YEAR(TODAY() ) + FLOOR((MONTH(TODAY() ) + 6)/12), 400) = 0 || (MOD(YEAR(T
             <name>Date_Enacted_by_Utility</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <criteriaItems>
             <field>Schedule_Z__c.Status__c</field>
             <operation>equals</operation>
@@ -119,7 +119,7 @@ IF(MOD(YEAR(TODAY() ) + FLOOR((MONTH(TODAY() ) + 6)/12), 400) = 0 || (MOD(YEAR(T
             <name>Date_Executed_by_Asset_Owner</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <criteriaItems>
             <field>Schedule_Z__c.Status__c</field>
             <operation>equals</operation>
@@ -133,7 +133,7 @@ IF(MOD(YEAR(TODAY() ) + FLOOR((MONTH(TODAY() ) + 6)/12), 400) = 0 || (MOD(YEAR(T
             <name>Date_Stamp_QC</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <criteriaItems>
             <field>Schedule_Z__c.Status__c</field>
             <operation>equals</operation>
@@ -147,7 +147,7 @@ IF(MOD(YEAR(TODAY() ) + FLOOR((MONTH(TODAY() ) + 6)/12), 400) = 0 || (MOD(YEAR(T
             <name>Date_Rejected_by_Utility</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <criteriaItems>
             <field>Schedule_Z__c.Status__c</field>
             <operation>equals</operation>
@@ -175,7 +175,7 @@ IF(MOD(YEAR(TODAY() ) + FLOOR((MONTH(TODAY() ) + 6)/12), 400) = 0 || (MOD(YEAR(T
             <name>Date_Submitted_to_Utility</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <criteriaItems>
             <field>Schedule_Z__c.Status__c</field>
             <operation>equals</operation>
@@ -185,10 +185,6 @@ IF(MOD(YEAR(TODAY() ) + FLOOR((MONTH(TODAY() ) + 6)/12), 400) = 0 || (MOD(YEAR(T
     </rules>
     <rules>
         <fullName>Next Schedule Z Date and Schedule Z ID</fullName>
-        <actions>
-            <name>Next_Schedule_Z_Date</name>
-            <type>FieldUpdate</type>
-        </actions>
         <actions>
             <name>Schedule_Z_Id</name>
             <type>FieldUpdate</type>
@@ -210,7 +206,7 @@ IF(MOD(YEAR(TODAY() ) + FLOOR((MONTH(TODAY() ) + 6)/12), 400) = 0 || (MOD(YEAR(T
         <criteriaItems>
             <field>Schedule_Z__c.Status__c</field>
             <operation>equals</operation>
-            <value>New</value>
+            <value>QC in Process</value>
         </criteriaItems>
         <description>timestamp</description>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
@@ -221,12 +217,18 @@ IF(MOD(YEAR(TODAY() ) + FLOOR((MONTH(TODAY() ) + 6)/12), 400) = 0 || (MOD(YEAR(T
             <name>Set_Date_Billing</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <criteriaItems>
             <field>Schedule_Z__c.Status__c</field>
             <operation>equals</operation>
             <value>Billing</value>
         </criteriaItems>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>Status updated</fullName>
+        <active>false</active>
+        <formula>OR( TEXT(Status__c) == &quot;QC in Process&quot;, TEXT(Status__c) == &quot;QC Complete&quot;)</formula>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
 </Workflow>
