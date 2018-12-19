@@ -484,7 +484,7 @@ private class LeadTriggerHandlerTest {
         insert new List<Lead>{primaryProperty, additionalProperty};
 
         ChargentOrders__ChargentOrder__c newACHOrder1 = new ChargentOrders__ChargentOrder__c(
-            ChargentOrders__Payment_Method__c = 'ACH',
+            ChargentOrders__Payment_Method__c = 'Check',
             ChargentOrders__Bank_Name__c = 'primary bank',
             ChargentOrders__Bank_Routing_Number__c = '123456789',
             ChargentOrders__Bank_Account_Type__c = 'Checking',
