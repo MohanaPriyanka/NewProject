@@ -78,4 +78,12 @@
         });
         $A.enqueueAction(unsplitLeadAction);
     },
+
+    cancelAddProperty : function(component, event, helper) {
+        if (confirm("Are you sure you want to cancel adding another Property?")) {
+            var lead = component.get('v.lead');
+            var stageName = lead.CSAP_Stage__c;
+            helper.closePageFireComplete(component, helper, stageName, lead);
+        }
+    },
 })

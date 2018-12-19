@@ -172,6 +172,9 @@
           </div>
           <aura:if isTrue="{!or(v.lead.Application_Type__c == 'Residential', v.lead.Application_Type__c == 'Non-Residential')}">
             <div class="slds-float_right">
+              <aura:if isTrue="{!v.lead.Application_Source_Phase_2__c != null}">
+                <lightning:button label="Cancel Adding Additional Property" onclick="{!c.cancelAddProperty}"/>
+              </aura:if>
               <lightning:button label="Next" onclick="{!c.goToAddressForm}"/>
             </div>
           </aura:if>
@@ -402,6 +405,9 @@
             </aura:if>
           </div>
           <div class="slds-float_right">
+            <aura:if isTrue="{!v.lead.Application_Source_Phase_2__c != null}">
+              <lightning:button label="Cancel Adding Additional Property" onclick="{!c.cancelAddProperty}"/>
+            </aura:if>
             <lightning:button label="Next" onclick="{!c.goToCheckCapacity}"/>
           </div>
         </div>

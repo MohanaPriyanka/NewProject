@@ -25,6 +25,7 @@
                 }
                 var newLead = {
                     sobjectType: "Lead",
+                    Id : oldLead.Id,
                     Personal_Credit_Report__c: oldLead.Personal_Credit_Report__c,
                     Parent_Account__c: oldLead.Parent_Account__c,
                     Partner_Lookup__c : oldLead.Partner_Lookup__c,
@@ -40,7 +41,8 @@
                     Application_Source_Phase_2__c : runCredit,
                     Credit_Check_Acknowledged__c : oldLead.Credit_Check_Acknowledged__c,
                     Product_line__c : 'Community Solar',
-                    OwnerId : oldLead.OwnerId
+                    OwnerId : oldLead.OwnerId,
+                    CSAP_Stage__c : oldLead.CSAP_Stage__c
                 };
                 component.set("v.lead", newLead);
 

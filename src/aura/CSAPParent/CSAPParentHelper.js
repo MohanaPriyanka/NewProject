@@ -63,7 +63,8 @@
         var stageName = component.get("v.STAGENAME");
         var currentMaxStage = lead.CSAP_Stage__c;
         if ((currentMaxStage == null || 
-            helper.getStage(stageName) > helper.getStage(currentMaxStage))) {
+            helper.getStage(stageName) > helper.getStage(currentMaxStage)) &&
+            lead.Id !== undefined) {
             lead.CSAP_Stage__c = stageName;
             var promise = helper.saveSObject(component, lead.Id, "Lead", "CSAP_Stage__c", stageName);
             promise.then($A.getCallback(function resolve(value) {
@@ -83,4 +84,5 @@
         stageChangeEvent.setParams({"lead": lead});
         stageChangeEvent.fire();
     },
+
 })
