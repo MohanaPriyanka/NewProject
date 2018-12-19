@@ -298,6 +298,13 @@ public with sharing class DocuSignHelperTest {
         sysProp.DocuSign_Integrator_Key__c = '123123-123123';
         update sysProp;
 
+        Utility__c nationalGrid = new Utility__c(
+            Name = 'National Grid',
+            Number_of_Decimal_Places__c = 2
+        );
+
+        insert new List<Utility__c>{nationalGrid};
+
         Utility_NMC_Tariff__c nmcRate =  new Utility_NMC_Tariff__c(
             Value_of_Net_Metering_Credit__c = 1,
             Name = 'Nation Grid WCMA Class 2 - S/F 2016',
@@ -329,7 +336,7 @@ public with sharing class DocuSignHelperTest {
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
             Total_System_Size_kW_AC__c  = 996,
-            System_Utility__c = 'National Grid',
+            Utility__c = nationalGrid.Id,
             Credit_Score_Requirement__c = 200,
             Assignment_order__c = '1',
             Utility_NMC_Tariff__c = nmcRate.Id,
@@ -357,8 +364,8 @@ public with sharing class DocuSignHelperTest {
             FirstName = 'Joey',
             Email = 'test@email.com',
             Electricity_Provider__c = 'National Grid',
-            Utility_1__c = 'National Grid',
-            Load_Zone__c = 'WCMA',
+            Utility_relationship__c = nationalGrid.Id,
+            LoadZone__c = 'WCMA',
             Company = 'Cloud Jedi',
             Status = 'Qualified',
             Product_Line__c = 'Community Solar',
@@ -372,8 +379,8 @@ public with sharing class DocuSignHelperTest {
             FirstName = 'Pentaleri',
             Email = 'test@email.com',
             Electricity_Provider__c = 'National Grid',
-            Utility_1__c = 'National Grid',
-            Load_Zone__c = 'WCMA',
+            Utility_relationship__c = nationalGrid.Id,
+            LoadZone__c = 'WCMA',
             Company = 'Cloud Jedi',
             Status = 'Qualified',
             Product_Line__c = 'Community Solar',

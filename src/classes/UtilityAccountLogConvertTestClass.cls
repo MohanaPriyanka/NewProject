@@ -4,12 +4,22 @@ private class UtilityAccountLogConvertTestClass
  
 Static testMethod void utilityAccountLogConversion()
 {
+        Utility__c eversource = new Utility__c(
+            Name = 'Eversource',
+            Number_of_Decimal_Places__c = 2
+        );
 
-        Load_U__c newLZU = new Load_U__c ( name = '02052', Load_zone__c= 'NEMA Eversource', LZ__c= 'NEMA', Utility__c = 'Eversource', town__c = 'Medfield');
+        Utility__c nationalGrid = new Utility__c(
+            Name = 'National Grid',
+            Number_of_Decimal_Places__c = 2
+        );
+
+        insert new List<Utility__c>{eversource, nationalGrid};
+
+        Load_U__c newLZU = new Load_U__c ( name = '02052', LZ__c= 'NEMA', Utility_Relationship_1__c = eversource.Id, town__c = 'Medfield');
         newLZU.name = '02052';
-        newLZU.Load_Zone__C = 'NEMA Eversource';
         newLZU.LZ__C = 'NEMA';
-        newLZU.Utility__c = 'Eversource';
+        newLZU.Utility_Relationship_1__c = eversource.Id;
         newLZU.town__c = 'Medfield';
         insert newLZU;
 

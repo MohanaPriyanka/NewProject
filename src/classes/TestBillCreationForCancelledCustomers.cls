@@ -1,18 +1,28 @@
 @isTest
 public class TestBillCreationForCancelledCustomers {
     @testSetup public static void testSetupBillRecords() {
+        Utility__c eversource = new Utility__c(
+            Name = 'Eversource',
+            Number_of_Decimal_Places__c = 2
+        );
+
+        Utility__c nationalGrid = new Utility__c(
+            Name = 'National Grid',
+            Number_of_Decimal_Places__c = 2
+        );
+
+        insert new List<Utility__c>{eversource, nationalGrid};
+
         Load_U__c everLZU = new Load_U__c(
             Name = '02633',
-            Load_zone__c = 'SEMA Eversource',
             LZ__c = 'SEMA',
-            Utility__C = 'Eversource',
+            Utility_Relationship_1__c = eversource.Id,
             Town__c = 'Medfield');
 
         Load_U__c ngridLZU = new Load_U__c(
             Name = '01570',
-            Load_zone__c = 'WCMA National Grid',
             LZ__c = 'WCMA',
-            Utility__C = 'National Grid',
+            Utility_Relationship_1__c = nationalGrid.Id,
             Town__c = 'Westtown');
 
         insert new List<Load_U__c>{
@@ -86,11 +96,6 @@ public class TestBillCreationForCancelledCustomers {
             Gateway__c = chGateway.Id);
         insert entity2;
 
-        Utility__c eversource = new Utility__c(
-            Name = 'Eversource',
-            Number_of_Decimal_Places__c = 2);
-        insert eversource;
-
         Shared_Solar_System__c sss1 =
             new Shared_Solar_System__c(Name = 'Project A Oak Road',
                 Service_Territory__c = 'SEMA',
@@ -100,7 +105,6 @@ public class TestBillCreationForCancelledCustomers {
                 Capacity_Committed_kW_DC__c = 0,
                 Total_System_Size_kWh_DC__c = 1445.86,
                 Total_System_Size_kW_AC__c = 996,
-                System_Utility__c = 'Eversource',
                 Credit_Score_Requirement__c = 200,
                 Assignment_order__c = '1',
                 Billing_Method__c = 'NMC',
@@ -122,7 +126,6 @@ public class TestBillCreationForCancelledCustomers {
                 Capacity_Committed_kW_DC__c = 0,
                 Total_System_Size_kWh_DC__c = 1445.86,
                 Total_System_Size_kW_AC__c = 996,
-                System_Utility__c = 'Eversource',
                 Credit_Score_Requirement__c = 200,
                 Assignment_order__c = '2',
                 Utility_NMC_Tariff__c = everbillNMC.Id,
@@ -350,7 +353,6 @@ public class TestBillCreationForCancelledCustomers {
             Billing_Period_Start_Date__c = oneMonthInFuture,
             Billing_Period_End_Date__c = todaysDate,
             Total_System_NMCs__c = 13483.66,
-            Size_off_NMCs__c = TRUE,
             Date__c = oneMonthAgo,
             Schedule_Z__c = schZOne.Id
         );
@@ -368,7 +370,6 @@ public class TestBillCreationForCancelledCustomers {
             Total_System_NMCs_2_of_4__c = 20000,
             Net_Metering_Rate_Applied_2_of_4__c = 0.13,
             Production_kWh_2_of_4__c = 153846,
-            Size_off_NMCs__c = TRUE,
             Date__c = oneMonthAgo,
             Schedule_Z__c = schZTwo.Id
         );
@@ -451,7 +452,6 @@ public class TestBillCreationForCancelledCustomers {
             Billing_Period_Start_Date__c = oneMonthAgo,
             Billing_Period_End_Date__c = todaysDate,
             Total_System_NMCs__c = 12033.73,
-            Size_off_NMCs__c = TRUE,
             Date__c = todaysDate,
             Schedule_Z__c =  schZOne.Id
         );
@@ -465,7 +465,6 @@ public class TestBillCreationForCancelledCustomers {
             Billing_Period_Start_Date__c = oneMonthAgo,
             Billing_Period_End_Date__c = todaysDate,
             Total_System_NMCs__c = 12033.73,
-            Size_off_NMCs__c = TRUE,
             Date__c = todaysDate,
             Schedule_Z__c =  schZTwo.Id
         );
