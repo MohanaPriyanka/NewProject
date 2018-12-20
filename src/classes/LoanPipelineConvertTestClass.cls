@@ -16,12 +16,18 @@ Static testMethod void loanPipeLineConvert ()
 
         insert new List<Utility__c>{eversource, nationalGrid};
 
-        Load_U__c newLZU = new Load_U__c ( name = '02052', LZ__c= 'NEMA', Utility_Relationship_1__c = eversource.Id, town__c = 'Medfield');
+        Load_U__c newLZU = new Load_U__c ( name = '02052', LZ__c= 'NEMA', town__c = 'Medfield');
         newLZU.name = '02052';
         newLZU.LZ__C = 'NEMA';
-        newLZU.Utility_Relationship_1__c = eversource.Id;
         newLZU.town__c = 'Medfield';
         insert newLZU;
+
+        ZipCode_Utility_Junction__c junction = new ZipCode_Utility_Junction__c(
+            Load_Zone_Utility__c = newLZU.Id,
+            Utility__c = eversource.Id
+        );
+        insert junction;
+
         Loan_Data__c capitalPool = new Loan_Data__c(Name = 'Revolving Credit Line',
                                                 Total_Capital__c = 10000000,
                                                 Investor__c = 'The Bank',

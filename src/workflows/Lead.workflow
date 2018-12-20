@@ -972,7 +972,7 @@ CONTAINS(ZipCode__r.LZ__c,&quot;/&quot;),
 ISBLANK(LoadZone__c) 
 ), 
 AND( 
-NOT(ISBLANK(ZipCode__r.Utility_Relationship_2__c)),
+ZipCode__r.Utility_Junction_Count__c &gt; 1,
 ISBLANK(Utility_relationship__c) 
 ) 
 )</formula>

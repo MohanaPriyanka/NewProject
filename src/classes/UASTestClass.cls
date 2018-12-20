@@ -18,9 +18,15 @@ Static testMethod void UASTestClass()
 
         insert new List<Utility__c>{eversource, nationalGrid};
 
-        Load_U__c newLZU = new Load_U__c ( name = '02052', LZ__c= 'NEMA', Utility_Relationship_1__c = eversource.Id, town__c = 'Medfield');
+        Load_U__c newLZU = new Load_U__c ( name = '02052', LZ__c= 'NEMA', town__c = 'Medfield');
         insert newLZU;
-        
+
+        ZipCode_Utility_Junction__c junction = new ZipCode_Utility_Junction__c(
+            Load_Zone_Utility__c = newLZU.Id,
+            Utility__c = nationalGrid.Id
+        );
+        insert junction;
+
         lead newLead = new lead (Lastname = 'BlueWave', company = 'BlueWave', status = 'new', product_line__c = 'Community Solar', parcel_zip__c = '02052');
         insert newLead;
         

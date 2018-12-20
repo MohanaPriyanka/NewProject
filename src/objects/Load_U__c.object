@@ -85,6 +85,15 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Utility_Junction_Count__c</fullName>
+        <externalId>false</externalId>
+        <label>Utility_Junction_Count</label>
+        <summaryForeignKey>ZipCode_Utility_Junction__c.Load_Zone_Utility__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
         <fullName>Utility_Relationship_1__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -92,7 +101,7 @@
         <label>Utility Relationship 1</label>
         <referenceTo>Utility__c</referenceTo>
         <relationshipLabel>Load Zones &amp; Utilities</relationshipLabel>
-        <relationshipName>Load_Zones_Utilities1</relationshipName>
+        <relationshipName>Load_Zones_Utilities1_del</relationshipName>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
@@ -105,7 +114,7 @@
         <label>Utility Relationship 2</label>
         <referenceTo>Utility__c</referenceTo>
         <relationshipLabel>Load Zones &amp; Utilities (Utility Relationship 2)</relationshipLabel>
-        <relationshipName>Load_Zones_Utilities2</relationshipName>
+        <relationshipName>Load_Zones_Utilities2_del</relationshipName>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
