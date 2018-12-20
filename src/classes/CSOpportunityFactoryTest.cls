@@ -181,8 +181,11 @@ public without sharing class CSOpportunityFactoryTest {
             Monthly_Late_Fee__c = 1);
         insert csProduct;
 
-        Shared_Solar_System__c sss1 = LeadTriggerHandlerTest.getSharedSolarSystem(nmcRate, csProduct, 'Eversource', 'Eversource P1');
-        Shared_Solar_System__c sss2 = LeadTriggerHandlerTest.getSharedSolarSystem(nmcRate, csProduct, 'Eversource', 'Eversource P2');
+        Utility__c eversource = new Utility__c(Name = 'Eversource', Number_of_Decimal_Places__c = 2);
+        insert eversource;
+
+        Shared_Solar_System__c sss1 = LeadTriggerHandlerTest.getSharedSolarSystem(nmcRate, csProduct, eversource, 'Eversource P1');
+        Shared_Solar_System__c sss2 = LeadTriggerHandlerTest.getSharedSolarSystem(nmcRate, csProduct, eversource, 'Eversource P2');
 
         List<Shared_Solar_System__c> availableSSS = new List<Shared_Solar_System__c>{sss1, sss2};
 
@@ -323,8 +326,11 @@ public without sharing class CSOpportunityFactoryTest {
             Monthly_Late_Fee__c = 1);
         insert csProduct;
 
-        Shared_Solar_System__c sss1 = LeadTriggerHandlerTest.getSharedSolarSystem(nmcRate, csProduct, 'Eversource', 'Eversource P1');
-        Shared_Solar_System__c sss2 = LeadTriggerHandlerTest.getSharedSolarSystem(nmcRate, csProduct, 'Eversource', 'Eversource P2');
+        Utility__c eversource = new Utility__c(Name = 'Eversource', Number_of_Decimal_Places__c = 2);
+        insert eversource;
+
+        Shared_Solar_System__c sss1 = LeadTriggerHandlerTest.getSharedSolarSystem(nmcRate, csProduct, eversource, 'Eversource P1');
+        Shared_Solar_System__c sss2 = LeadTriggerHandlerTest.getSharedSolarSystem(nmcRate, csProduct, eversource, 'Eversource P2');
 
         List<Shared_Solar_System__c> availableSSS = new List<Shared_Solar_System__c>{sss1, sss2};
 
