@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>Underwriting_Permission</name>
+    </customPermissions>
+    <description>Gives access to editing the Lead Status field on RL and CS leads.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Underwriting Permission</label>
+</PermissionSet>
