@@ -44,7 +44,7 @@ public without sharing class CSSubscriptionEnroller {
         sssList = [
             SELECT Id, Name, Sales_Partners__c, Maximum_Subscription_Cost__c, Maximum_Subscription_Capacity_kW_DC__c,
                 Product__c, Project_Capacity_Available_kW_DC__c, Estimated_COD_Date__c, Service_Territories__c,
-                Reserved_Capacity_kW_DC__c, Service_Territory__c, System_Utility__c, Expected_Yield_kWh_kW__c,
+                Reserved_Capacity_kW_DC__c, Service_Territory__c, Utility__c, Expected_Yield_kWh_kW__c,
                 Utility_NMC_Tariff__c, Credit_Score_Requirement__c, Assignment_Order__c, Estimated_COD_Date_QC__c,
                 BWC_Project_Entity_Manual__c, BWC_Project_Entity_Manual__r.Gateway__c
             FROM Shared_Solar_System__c
@@ -78,7 +78,7 @@ public without sharing class CSSubscriptionEnroller {
 
         List<Product2> products = [
             SELECT Id, Program__c,
-                (SELECT Id, Name, Size_Ratio__c, Customer_Type__c, Minimum_kWh__c, Maximum_kWh__c, Utility__c
+                (SELECT Id, Name, Size_Ratio__c, Customer_Type__c, Minimum_kWh__c, Maximum_kWh__c, Utility_Relationship__c
                 FROM Utility_NMC_Tariffs__r)
             FROM Product2
             WHERE Product_Type__c = 'Community Solar'
@@ -146,9 +146,9 @@ public without sharing class CSSubscriptionEnroller {
         List<SSSWrapper> sssWrappers = new List<SSSWrapper>();
         List<Shared_Solar_System__c> sortedSharedSolarSystems = new List<Shared_Solar_System__c>();
         for (Shared_Solar_System__c sss : sssList) {
-            if (sss.System_Utility__c == lead.Utility__c &&
+            if (sss.Utility__c == lead.Utility_Relationship__c &&
                 (sss.Service_Territories__c != null &&
-                    sss.Service_Territories__c.contains(lead.Load_Zone__c)) &&
+                    sss.Service_Territories__c.contains(lead.LoadZone__c)) &&
                 (sss.Sales_Partners__c != null &&
                     (sss.Sales_Partners__c.contains('All') ||
                         sss.Sales_Partners__c.contains(lead.Partner_Name__c))) &&
@@ -249,7 +249,7 @@ public without sharing class CSSubscriptionEnroller {
         Utility_NMC_Tariff__c assignedTariff;
         for (Utility_NMC_Tariff__c tariff : tariffs) {
             if (lead.Customer_type__c == tariff.Customer_type__c
-                && lead.Utility__c == tariff.Utility__c
+                && lead.Utility_relationship__c == tariff.Utility_Relationship__c
                 && (tariff.Maximum_kWh__c == null || ual.Annual_kWh__c < tariff.Maximum_kWh__c)
                 && (tariff.Minimum_kWh__c == null || ual.Annual_kWh__c >= tariff.Minimum_kWh__c)) {
                 if (assignedTariff == null) {

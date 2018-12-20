@@ -2754,6 +2754,18 @@ This field can be changed to a formula consistent with the other factors if LASE
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>LoadZone__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Text Field (ex. SEMA, NEMA) If in a split load zone, this field will be populated with both until resolved (SEMA/NEMA)</inlineHelpText>
+        <label>Load Zone</label>
+        <length>100</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Load_Z__c</fullName>
         <externalId>false</externalId>
         <formula>IF(
