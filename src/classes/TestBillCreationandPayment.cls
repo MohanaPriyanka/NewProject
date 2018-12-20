@@ -1202,6 +1202,8 @@ public class TestBillCreationandPayment {
     }
 
     @isTest public static void testAdjustments2() {
+        Test.startTest();
+
         List<Account_Bill__c> accountbilllist = [SELECT Id, Name,
             Bill_Number__c, Property_Account_ID__c
         FROM Account_Bill__c];
@@ -1211,8 +1213,6 @@ public class TestBillCreationandPayment {
             FROM Entity__c
             WHERE Name = 'Oxford Barrett St. P1'
         ];
-
-        Test.startTest();
 
         List<ChargentOrders__Transaction__c> chargentOrdersTransactionsToUpdate = new List<ChargentOrders__Transaction__c>();
         List<ChargentOrders__Transaction__c> chargentOrdersTransactionsToNotUpdate = new List<ChargentOrders__Transaction__c>();

@@ -140,7 +140,7 @@ public without sharing class CSAPController {
         insert lead;
         // The lead trigger sets the Load Zone and Utility, which we need in case it ends up being split.
         Lead insertedLead = [
-            SELECT LoadZone__c, ZipCode__c, Zipcode__r.LZ__c, Zipcode__r.Utility_Junction_Count__c
+            SELECT LoadZone__c, Utility_relationship__c, ZipCode__c, Zipcode__r.LZ__c, Zipcode__r.Utility_Junction_Count__c
             FROM Lead
             WHERE Id = :lead.Id];
 

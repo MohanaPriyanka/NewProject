@@ -829,7 +829,7 @@ public with sharing class CSAPControllerTest {
 
         // If in 02021, the lead should be found in NEMA/SEMA and National Grid/Eversource
         System.assertEquals('NEMA/SEMA', lead.Zipcode__r.LZ__c);
-        System.assertEquals(1, lead.Zipcode__r.Utility_Junction_Count__c);
+        System.assertEquals(2, lead.Zipcode__r.Utility_Junction_Count__c);
         // Check Load Zone (01Qj0000000EZU9) wfr sets lead status
         System.assertEquals('Load Zone Check Needed', lead.Status);
 
