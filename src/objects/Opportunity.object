@@ -8327,11 +8327,6 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
             <operation>equals</operation>
             <value>Community Solar</value>
         </filters>
-        <filters>
-            <field>OPPORTUNITY.NAME</field>
-            <operation>notContain</operation>
-            <value>test</value>
-        </filters>
         <label>Community Solar</label>
         <sharedTo>
             <group>BFG</group>
@@ -8904,7 +8899,7 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <filters>
             <field>OPPORTUNITY.STAGE_NAME</field>
             <operation>notEqual</operation>
-            <value>Voided,DUPLICATE</value>
+            <value>Voided,DUPLICATE,Expired</value>
         </filters>
         <label>Avidia CL Unreviewed Opportunities</label>
         <sharedTo>

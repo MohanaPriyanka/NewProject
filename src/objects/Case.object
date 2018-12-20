@@ -1851,34 +1851,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         </sharedTo>
     </listViews>
     <listViews>
-        <fullName>Customer_Support_Tim_Harry</fullName>
-        <columns>CASES.CASE_NUMBER</columns>
-        <columns>NAME</columns>
-        <columns>CASES.SUBJECT</columns>
-        <columns>Case_Update__c</columns>
-        <columns>CASES.STATUS</columns>
-        <columns>CORE.USERS.FIRST_NAME</columns>
-        <columns>CASES.PRIORITY</columns>
-        <columns>CASES.CREATED_DATE</columns>
-        <filterScope>Everything</filterScope>
-        <filters>
-            <field>CASES.RECORDTYPE</field>
-            <operation>equals</operation>
-            <value>Case.Customer_Care</value>
-        </filters>
-        <filters>
-            <field>CASES.STATUS</field>
-            <operation>notEqual</operation>
-            <value>Closed,Resolved</value>
-        </filters>
-        <filters>
-            <field>CORE.USERS.FIRST_NAME</field>
-            <operation>equals</operation>
-            <value>Timothy,Harold</value>
-        </filters>
-        <label>Customer Support - Tim &amp; Harry</label>
-    </listViews>
-    <listViews>
         <fullName>Customer_Support_Walter</fullName>
         <columns>CASES.CASE_NUMBER</columns>
         <columns>NAME</columns>
