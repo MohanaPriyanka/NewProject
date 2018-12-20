@@ -11,7 +11,7 @@ public without sharing class CSAccountCanceller {
         List<Account> updatedAccounts = new List<Account>();
         List<Account> accountList = [
             SELECT Id, Days_Past_Due__c, Cancellation_Request_Date__c, Cancellation_Reason__c, Cancellation_Comments__c,
-            (SELECT Id FROM Opportunities WHERE Customer_Group__c IN ('Anchor', 'Public Offtake'))
+            (SELECT Id FROM Opportunities WHERE Customer_Group__c IN ('Anchor', 'Public Offtake') OR RecordTypeId = '012j0000000tL23AAE')
             FROM Account
             WHERE RecordTypeId = '012j00000010HeQ' AND Days_Past_Due__c > 67 AND Override_Delinquency_Removal__c = FALSE
             AND Cancellation_Request_Date__c = NULL
