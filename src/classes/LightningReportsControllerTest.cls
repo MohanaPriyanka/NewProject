@@ -42,7 +42,8 @@ public class LightningReportsControllerTest {
         System.assert(srgWithoutRows.fieldDataList.isEmpty());
         System.assertEquals(srgWithoutRows.fieldAggregateList.get(0).label, 'Annual Income');
         // $200,000.00 should contain 200,000.0
-        System.assert(srgWithoutRows.fieldAggregateList.get(0).value.contains(((Decimal)leadAggregateResults[0].get('annualIncome')).format()));
+        String message = 'Test may have failed because Lead is more than 2 months old. Run PostSandboxRefresher.setupDataForReportTest() to create a new lead';
+        System.assert(srgWithoutRows.fieldAggregateList.get(0).value.contains(((Decimal)leadAggregateResults[0].get('annualIncome')).format()), message);
 
         LightningReportsController.SummaryReportGroup srgWithRows = new LightningReportsController.SummaryReportGroup();
         srgWithRows = LightningReportsController.getAsyncSummaryReportGroup((String) asyncReportId, '0');
