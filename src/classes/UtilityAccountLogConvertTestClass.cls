@@ -16,12 +16,17 @@ Static testMethod void utilityAccountLogConversion()
 
         insert new List<Utility__c>{eversource, nationalGrid};
 
-        Load_U__c newLZU = new Load_U__c ( name = '02052', LZ__c= 'NEMA', Utility_Relationship_1__c = eversource.Id, town__c = 'Medfield');
+        Load_U__c newLZU = new Load_U__c ( name = '02052', LZ__c= 'NEMA', town__c = 'Medfield');
         newLZU.name = '02052';
         newLZU.LZ__C = 'NEMA';
-        newLZU.Utility_Relationship_1__c = eversource.Id;
         newLZU.town__c = 'Medfield';
         insert newLZU;
+
+        ZipCode_Utility_Junction__c junction = new ZipCode_Utility_Junction__c(
+            Load_Zone_Utility__c = newLZU.Id,
+            Utility__c = eversource.Id
+        );
+        insert junction;
 
         Product2 csProduct = new Product2( Name = 'Community Solar - SREC 16-01',
                               Family = 'Community Solar',
@@ -46,28 +51,28 @@ Static testMethod void utilityAccountLogConversion()
         newLead.Parcel_Zip__C = '02052';
         newLead.Product__c = csProduct.Id;
         newLead.Electricity_Provider__c = 'Eversource';
-        insert newLead;   
+        insert newLead;
 
         newLead.Status = 'Qualified';
-        update newLead; 
-         
+        update newLead;
+
         utility_account_log__c newUtilityAccount = new utility_account_log__c ( name = '32456', annual_cost_of_electricity__c = 1000, lead__c = newLead.id );
         insert newUtilityAccount;
- 
- 
+
+
         test.startTest();
-        
+
                database.leadConvert lc = new database.leadConvert();
                lc.setLeadId(newLead.id);
- 
+
                leadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE IsConverted=true LIMIT 1];
                lc.setConvertedStatus(convertStatus.MasterLabel);
- 
+
                Database.LeadConvertResult lcr = Database.convertLead(lc);
                System.assert(lcr.isSuccess());
- 
+
                lc.setOpportunityName('Cole Swain');
- 
+
         test.stopTest();
 
 }

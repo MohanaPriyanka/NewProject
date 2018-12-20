@@ -151,9 +151,7 @@ public without sharing class LeadTriggerHandler {
             Map<String, Load_u__c> validLZU = new Map<String, Load_u__c>();
             for (Load_u__c obj : [
                 SELECT Id, Name, LZ__c, Utility__c,
-                    Utility_Relationship_1__c, Utility_Relationship_2__c,
-                    Utility_Relationship_1__r.Id, Utility_Relationship_2__r.Id,
-                    Utility_Relationship_1__r.Name, Utility_Relationship_2__r.Name
+                (SELECT Id, Name, Utility__r.Id, Utility__r.Name FROM ZipCode_Utility_Junctions__r)
                 FROM Load_u__c
                 WHERE Name IN : zipCodeSet] ){
                 validLZU.put(obj.Name, obj); 
@@ -163,15 +161,18 @@ public without sharing class LeadTriggerHandler {
                     Load_u__c zone = validLZU.get(l.Parcel_Zip__c);
                     l.ZipCode__c = zone.Id;
                     l.LoadZone__c = zone.LZ__c;
-                    if (zone.Utility_Relationship_2__c == null){
-                        l.Utility_relationship__c = zone.Utility_Relationship_1__c;
-                        l.Confirm_Utility__c = 'single';
+                    if (zone.ZipCode_Utility_Junctions__r.size() == 1){
+                        l.Utility_relationship__c = zone.ZipCode_Utility_Junctions__r[0].Utility__r.Id;
+                        l.Confirm_Utility__c =  zone.ZipCode_Utility_Junctions__r[0].Utility__r.Name + '>'
+                                                + zone.ZipCode_Utility_Junctions__r[0].Utility__r.Id;
                     } else {
-                        String utilList =   zone.Utility_Relationship_1__r.Name + '/' +
-                                            zone.Utility_Relationship_2__r.Name + '>' +
-                                            zone.Utility_Relationship_1__r.Id + '/' +
-                                            zone.Utility_Relationship_2__r.Id;
-                        l.Confirm_Utility__c = utilList;
+                        String utilityNames;
+                        String utilityIds;
+                        for (ZipCode_Utility_Junction__c junction : zone.ZipCode_Utility_Junctions__r){
+                            utilityNames = utilityNames + '/' + junction.Name;
+                            utilityIds = utilityIds + '/' + junction.Id;
+                        }
+                        l.Confirm_Utility__c= utilityNames + '>' + utilityIds;
                     }
                 }
             }

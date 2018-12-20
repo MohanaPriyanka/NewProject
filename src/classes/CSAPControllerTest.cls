@@ -86,17 +86,29 @@ public with sharing class CSAPControllerTest {
         Load_U__c everLZU = new Load_U__c (
             Name = '02052',
             LZ__c = 'SEMA',
-            Town__c= 'Medfield',
-            Utility_Relationship_1__c = eversource.Id
+            Town__c= 'Medfield'
         );
         Load_U__c canton = new Load_U__c (
             Name = '02021',
             LZ__c = 'NEMA/SEMA',
-            Town__c= 'Canton',
-            Utility_Relationship_1__c = nationalGrid.Id,
-            Utility_Relationship_2__c = eversource.Id
+            Town__c= 'Canton'
         );
         insert new List<Load_U__c>{everLZU, canton};
+
+        ZipCode_Utility_Junction__c junction = new ZipCode_Utility_Junction__c(
+            Load_Zone_Utility__c = everLZU.Id,
+            Utility__c = eversource.Id
+        );
+        ZipCode_Utility_Junction__c junctionTwo = new ZipCode_Utility_Junction__c(
+            Load_Zone_Utility__c = canton.Id,
+            Utility__c = nationalGrid.Id
+        );
+        ZipCode_Utility_Junction__c junctionThree = new ZipCode_Utility_Junction__c(
+            Load_Zone_Utility__c = canton.Id,
+            Utility__c = eversource.Id
+        );
+        insert new List<ZipCode_Utility_Junction__c>{junction, junctionTwo, junctionThree};
+
 
         Product2 srecProduct = new Product2( Name = 'SREC Community Solar',
                                                   Family = 'Community Solar',
@@ -682,15 +694,13 @@ public with sharing class CSAPControllerTest {
                 LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c,
                 Parent_Account__r.Owner.Name, Parent_Account__r.Owner.Id, LoadZone__c, Product_line__c, Utility_relationship__c,
                 Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Date_of_Application__c, Customer_Referral__c,
-                Zipcode__r.LZ__c, Zipcode__r.Utility__c, Zipcode__r.Utility_Relationship_1__c, Zipcode__r.Utility_Relationship_2__c,
-                Zipcode__r.Utility_Relationship_1__r.Id, Zipcode__r.Utility_Relationship_2__r.Id,
-                Zipcode__r.Utility_Relationship_1__r.Name, Zipcode__r.Utility_Relationship_2__r.Name, Confirm_Utility__c
+                Zipcode__r.LZ__c, Zipcode__r.Utility_Junction_Count__c , Confirm_Utility__c
             FROM Lead
             WHERE Id = :lead.Id];
 
         // If in 02021, the lead should be found in NEMA/SEMA and National Grid/Eversource
         System.assertEquals('NEMA/SEMA', lead.Zipcode__r.LZ__c);
-        System.assertEquals('Eversource', lead.Zipcode__r.Utility_Relationship_2__r.Name);
+        System.assertEquals(2, lead.Zipcode__r.Utility_Junction_Count__c);
         System.assertEquals('NEMA/SEMA', lead.LoadZone__c);
         System.assertEquals(null, lead.Utility_relationship__c);
         System.assertNotEquals(null, lead.Confirm_Utility__c);
@@ -813,13 +823,13 @@ public with sharing class CSAPControllerTest {
                 LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c,
                 Parent_Account__r.Owner.Name, Parent_Account__r.Owner.Id, LoadZone__c, Product_line__c, Utility_relationship__c,
                 Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Date_of_Application__c, Customer_Referral__c,
-                Zipcode__r.LZ__c, Zipcode__r.Utility_Relationship_1__c, Zipcode__r.Utility_Relationship_2__c
+                Zipcode__r.LZ__c, Zipcode__r.Utility_Junction_Count__c
             FROM Lead
             WHERE Id = :lead.Id];
 
         // If in 02021, the lead should be found in NEMA/SEMA and National Grid/Eversource
         System.assertEquals('NEMA/SEMA', lead.Zipcode__r.LZ__c);
-        System.assertEquals(nationalGrid.Id, lead.Zipcode__r.Utility_Relationship_1__c);
+        System.assertEquals(2, lead.Zipcode__r.Utility_Junction_Count__c);
         // Check Load Zone (01Qj0000000EZU9) wfr sets lead status
         System.assertEquals('Load Zone Check Needed', lead.Status);
 

@@ -16,18 +16,26 @@ public class TestBillCreationForCancelledCustomers {
         Load_U__c everLZU = new Load_U__c(
             Name = '02633',
             LZ__c = 'SEMA',
-            Utility_Relationship_1__c = eversource.Id,
             Town__c = 'Medfield');
 
         Load_U__c ngridLZU = new Load_U__c(
             Name = '01570',
             LZ__c = 'WCMA',
-            Utility_Relationship_1__c = nationalGrid.Id,
             Town__c = 'Westtown');
 
         insert new List<Load_U__c>{
             everLZU, ngridLZU
         };
+
+        ZipCode_Utility_Junction__c junction = new ZipCode_Utility_Junction__c(
+            Load_Zone_Utility__c = everLZU.Id,
+            Utility__c = eversource.Id
+        );
+        ZipCode_Utility_Junction__c junctionTwo = new ZipCode_Utility_Junction__c(
+            Load_Zone_Utility__c = ngridLZU.Id,
+            Utility__c = nationalGrid.Id
+        );
+        insert new List<ZipCode_Utility_Junction__c>{junction, junctionTwo};
 
         Utility_NMC_Tariff__c everbillNMC = new Utility_NMC_Tariff__c(
             Name = 'Eversource SEMA Class 2',
@@ -731,7 +739,6 @@ public class TestBillCreationForCancelledCustomers {
         update uasList;
         setOppToCancelled(new List<String>{uasList[0].Opportunity__r.Id, uasList[1].Opportunity__r.Id});
         runSecondMonthProductionUpdates();
-        Test.stopTest();
 
         Energy_Usage_Update__c sss1Prod = [
             SELECT Id, Schedule_Z__c
@@ -744,6 +751,7 @@ public class TestBillCreationForCancelledCustomers {
         for (UASB__c bill : normalBillsListA){
             uasIdsA.add(bill.Utility_Account_Subscription__c);
         }
+        Test.stopTest();
 
         List<UASB__c> cancelledBillListA = PreviewProductionUpdateResults.getCancelledBills(sss1Prod.Id, uasIdsA);
         System.assertEquals(3, normalBillsListA.size());
@@ -783,7 +791,6 @@ public class TestBillCreationForCancelledCustomers {
         update uasList;
         setOppToCancelled(new List<String>{uasList[0].Opportunity__r.Id, uasList[1].Opportunity__r.Id});
         runSecondMonthProductionUpdates();
-        Test.stopTest();
 
         Energy_Usage_Update__c sss2Prod = [
             SELECT Id, Schedule_Z__c
@@ -800,6 +807,7 @@ public class TestBillCreationForCancelledCustomers {
         List<UASB__c> cancelledBillListB = PreviewProductionUpdateResults.getCancelledBills(sss2Prod.Id, uasIdsB);
         System.assertEquals(1, normalBillsListB.size());
         System.assertEquals(1, cancelledBillListB.size());
+        Test.stopTest();
 
         Map<String, System_Bill__c> sbMapTwo = queryForBills();
         System.assertEquals(11,sbMapTwo.values().size());

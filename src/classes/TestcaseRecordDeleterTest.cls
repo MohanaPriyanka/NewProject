@@ -511,10 +511,15 @@ public class TestcaseRecordDeleterTest {
 
         Load_U__c everLZU = new Load_U__c (Name = '02633',
             LZ__c = 'SEMA',
-            Utility_Relationship_1__c = eversource.Id,
             Town__c= 'Medfield');
-
         insert everLZU;
+
+        ZipCode_Utility_Junction__c junction = new ZipCode_Utility_Junction__c(
+            Load_Zone_Utility__c = everLZU.Id,
+            Utility__c = eversource.Id
+        );
+        insert junction;
+
         insert new BW_Address__c(Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street', Address_Line_Two__c = 'Boston, MA 02114');
 
         Account clientAccount = new Account(name = 'Client Account',
