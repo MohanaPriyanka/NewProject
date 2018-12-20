@@ -438,6 +438,60 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>CS_Delinquency_Letter_67_no_fee__c</fullName>
+        <description>Field used on conductor to send cs delinquency letters to customers without a cancellation fee.</description>
+        <externalId>false</externalId>
+        <formula>&quot;&amp;solmgr=1&quot; + 
+&quot;&amp;id=&quot; + Id + 
+&quot;&amp;templateid=a2Fq0000002FqCt&quot; + 
+&quot;&amp;ofn=&quot; + TEXT(TODAY()) + &quot; 67 Days No Fee CS Delinquency Letters&quot; + 
+&quot;&amp;APDF=1&quot; + 
+&quot;&amp;QMode=1&quot; + 
+&quot;&amp;ContentWorkspaceId=058q0000000A8JS&quot; + 
+&quot;&amp;DefaultPDF=1&quot; + 
+&quot;&amp;ZipPDFs=0&quot; + 
+&quot;&amp;ac0=1&quot; + 
+&quot;&amp;ac2=1&quot; + 
+&quot;&amp;ac1=Past Due Delinquency Letter Generated&quot; + 
+&quot;&amp;LG0=0&quot; + 
+&quot;&amp;LG1=Past Due Delinquency Letter Generated&quot; + 
+&quot;&amp;LG4=1&quot; + 
+&quot;&amp;lgwhoid=&quot; + Send_Bills_Contact__c</formula>
+        <inlineHelpText>Field used on conductor to send cs delinquency letters to customers without a cancellation fee.</inlineHelpText>
+        <label>CS Delinquency Letter (67 no fee)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_Delinquency_Letter_67_with_fee__c</fullName>
+        <description>This field is used in the conga conductor to generate cs past due letters.</description>
+        <externalId>false</externalId>
+        <formula>&quot;&amp;solmgr=1&quot; + 
+&quot;&amp;id=&quot; + Id + 
+&quot;&amp;templateid=a2Fq0000002FqCy&quot; + 
+&quot;&amp;ofn=&quot; + TEXT(TODAY()) + &quot; 67 Days with fee CS Delinquency Letters&quot; + 
+&quot;&amp;APDF=1&quot; + 
+&quot;&amp;QMode=1&quot; + 
+&quot;&amp;ContentWorkspaceId=058q0000000A8JS&quot; + 
+&quot;&amp;DefaultPDF=1&quot; + 
+&quot;&amp;ZipPDFs=0&quot; + 
+&quot;&amp;ac0=1&quot; + 
+&quot;&amp;ac2=1&quot; + 
+&quot;&amp;ac1=Past Due Delinquency Letter Generated&quot; + 
+&quot;&amp;LG0=0&quot; + 
+&quot;&amp;LG1=Past Due Delinquency Letter Generated&quot; + 
+&quot;&amp;LG4=1&quot; + 
+&quot;&amp;lgwhoid=&quot; + Send_Bills_Contact__c</formula>
+        <inlineHelpText>This field is used in the conga conductor to generate cs past due letters.</inlineHelpText>
+        <label>CS Delinquency Letter (67 with fee)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>CS_Sales_Approach__c</fullName>
         <externalId>false</externalId>
         <label>CS Sales Approach</label>
@@ -854,20 +908,34 @@ Days_Past_Due__c = 90)</formula>
         <externalId>false</externalId>
         <formula>&quot;&amp;solmgr=1&quot; + 
 &quot;&amp;id=&quot; + Id +
-&quot;&amp;templateid=a2F0a000001V4km&quot; + 
-&quot;&amp;apdf=1&quot; + 
-&quot;&amp;qmode=Download&quot; + 
-&quot;&amp;defaultpdf=1&quot; + 
-&quot;&amp;ofn=&quot; + TEXT(Days_Past_Due__c) + &quot; Days Past Due Delinquency Letter&quot; + 
-&quot;&amp;sc0=1&quot; + 
+&quot;&amp;templateid=&quot; + IF( 
+CONTAINS(TEXT((Client_Brand_Key__c)),&quot;Bluewave&quot;), 
+CASE(Days_Past_Due__c, 
+30,&quot;a2F29000000GaSC&quot;, 
+45,&quot;a2F29000000GaSG&quot;, 
+88,&quot;a2F29000000GaSF&quot;, 
+&quot;&quot;), 
+IF( 
+CONTAINS(TEXT((Client_Brand_Key__c)),&quot;Amp&quot;), 
+CASE(Days_Past_Due__c, 
+30,&quot;a2F29000000GaSB&quot;, 
+45,&quot;a2F29000000GaSD&quot;, 
+88,&quot;a2F29000000GaSE&quot;, 
+&quot;&quot;), 
+&quot;&quot;)) 
++ 
+&quot;&amp;ofn=&quot; + TEXT(TODAY()) + &quot; CS Delinquency Letters&quot; + 
+&quot;&amp;APDF=1&quot; + 
+&quot;&amp;QMode=1&quot; + 
+&quot;&amp;ContentWorkspaceId=05829000000Ck1e&quot; + 
+&quot;&amp;DefaultPDF=1&quot; + 
+&quot;&amp;ZipPDFs=0&quot; + 
 &quot;&amp;ac0=1&quot; + 
+&quot;&amp;ac2=1&quot; + 
 &quot;&amp;ac1=Past Due Delinquency Letter Generated&quot; + 
-&quot;&amp;sc1=Attachments&quot; +
-&quot;&amp;LG0=1&quot; +
+&quot;&amp;LG0=0&quot; + 
 &quot;&amp;LG1=Past Due Delinquency Letter Generated&quot; + 
 &quot;&amp;LG4=1&quot; +
-&quot;&amp;attachmentparentid=&quot; + Send_Bills_Contact__c +
-&quot;&amp;lgparentid=&quot; + Send_Bills_Contact__c +
 &quot;&amp;lgwhoid=&quot; + Send_Bills_Contact__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Conga Lettersteam Delinquency</label>
@@ -1679,6 +1747,16 @@ IF(
                 </value>
             </valueSetDefinition>
         </valueSet>
+    </fields>
+    <fields>
+        <fullName>Link_to_Client_Logo__c</fullName>
+        <externalId>false</externalId>
+        <formula>&quot;https://bluewaverenewables--uat.cs19.my.salesforce.com&quot; + IF( ISPICKVAL(Client_Brand_Key__c, &quot;BluewaveLogo&quot;), &quot;/resource/1470818337000/BlueWaveLogo&quot;, &quot;/resource/clientLogos/&quot; + TEXT(Client_Brand_Key__c) + &quot;.png&quot; )</formula>
+        <label>Link to Client Logo</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>LinkedIn_URL__c</fullName>
