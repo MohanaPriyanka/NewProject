@@ -2,6 +2,11 @@
 private class ChargentOrderCreationhandlertest {
 
     Static testMethod void ChargentOrderCreationhandlertest (){
+        Utility__c eversource = new Utility__c(
+            Name = 'Eversource',
+            Number_of_Decimal_Places__c = 2
+        );
+        insert eversource;
 
         Utility__c eversource = new Utility__c(
             Name = 'Eversource',

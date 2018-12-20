@@ -67,14 +67,27 @@
                                    value="{!v.ual.Name_on_Account__c}"
                                    required="true"/>
                 </lightning:layoutItem>
-                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
-                  <lightning:input aura:id="field" name="ualAnnualCostofElectricity"
-                                   type="number"
-                                   formatter="currency"
-                                   label="Roughly, how much do you spend on electricity per year?"
-                                   value="{!v.ual.Annual_Cost_of_Electricity__c}"
-                                   required="true"/>
-                </lightning:layoutItem>
+                <aura:if isTrue="{!v.selectedProduct.Customer_Subscription_Type__c == 'kWh'}">
+                  <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
+                    <lightning:input aura:id="field" name="ualAnnualkWhUsed"
+                                     type="number"
+                                     label="How many kWh do you use in a year?"
+                                     value="{!v.ual.Annual_kWh__c}"
+                                     placeholder="Annual kWh"
+                                     required="true"/>
+                  </lightning:layoutItem>
+                  <aura:set attribute="else">
+                    <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
+                      <lightning:input aura:id="field" name="ualAnnualCostofElectricity"
+                                       type="number"
+                                       formatter="currency"
+                                       label="Roughly, how much do you spend on electricity per year?"
+                                       value="{!v.ual.Annual_Cost_of_Electricity__c}"
+                                       placeholder="Annual Cost"
+                                       required="true"/>
+                    </lightning:layoutItem>
+                  </aura:set>
+                </aura:if>
               </lightning:layout>
               <div class="slds-clearfix slds-p-top_medium">
                 <div class="slds-float_left">
