@@ -2,6 +2,11 @@
 private class ChargentOrderCreationhandlertest {
 
     Static testMethod void ChargentOrderCreationhandlertest (){
+        Utility__c eversource = new Utility__c(
+            Name = 'Eversource',
+            Number_of_Decimal_Places__c = 2
+        );
+        insert eversource;
 
         Utility_NMC_Tariff__c eversizeNMC = new Utility_NMC_Tariff__c ( Name = 'Eversource SEMA Class 2', 
                                                                         Utility__c = 'Eversource', 
@@ -32,7 +37,7 @@ private class ChargentOrderCreationhandlertest {
                                                                     Capacity_Committed_kW_DC__c = 0,
                                                                     Total_System_Size_kWh_DC__c = 1445.86,
                                                                     Total_System_Size_kW_AC__c  = 996,
-                                                                    System_Utility__c = 'Eversource',
+                                                                    Utility__c = eversource.Id,
                                                                     Credit_Score_Requirement__c = 200,
                                                                     Assignment_order__c = '1',
                                                                     Utility_NMC_Tariff__c = eversizeNMC.Id,
