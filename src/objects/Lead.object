@@ -1365,6 +1365,18 @@ This field can be changed to a formula consistent with the other factors if LASE
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Confirm_Utility__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Text Field used in CSAP backend only. If in a split utility territory, this field will be populated with both utilities until resolved</inlineHelpText>
+        <label>Confirm Utility</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Construction_Period_DOER__c</fullName>
         <externalId>false</externalId>
         <label>Construction Period (DOER)</label>
@@ -2540,7 +2552,7 @@ This field can be changed to a formula consistent with the other factors if LASE
     <fields>
         <fullName>LZU__c</fullName>
         <externalId>false</externalId>
-        <label>Load Zone &amp; Utility</label>
+        <label>XXXX Load Zone &amp; Utility</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -2754,6 +2766,18 @@ This field can be changed to a formula consistent with the other factors if LASE
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>LoadZone__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Text Field (ex. SEMA, NEMA) If in a split load zone, this field will be populated with both until resolved (SEMA/NEMA)</inlineHelpText>
+        <label>Load Zone</label>
+        <length>100</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Load_Z__c</fullName>
         <externalId>false</externalId>
         <formula>IF(
@@ -2771,7 +2795,7 @@ TEXT( LZU__c ) = &apos;Manual Lookup Required&apos;,
 
 &apos;Manual Lookup Required&apos;, null))</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Load Zone (F)</label>
+        <label>XXXX Load Zone (F)</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <type>Text</type>
@@ -2782,7 +2806,7 @@ TEXT( LZU__c ) = &apos;Manual Lookup Required&apos;,
         <externalId>false</externalId>
         <formula>Zip_Code_Lookup_Field__r.Load_Zone__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Load Zone Utility</label>
+        <label>XXXXX Load Zone Utility</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <type>Text</type>
@@ -2791,7 +2815,7 @@ TEXT( LZU__c ) = &apos;Manual Lookup Required&apos;,
     <fields>
         <fullName>Load_Zone__c</fullName>
         <externalId>false</externalId>
-        <label>Load Zone</label>
+        <label>XXXX Load Zone</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -4461,7 +4485,7 @@ if( or(text(Status) = &quot;Cancelled&quot;, text(Status) = &quot;Not Interested
     <fields>
         <fullName>Utility_1__c</fullName>
         <externalId>false</externalId>
-        <label>Utility</label>
+        <label>XXXXX Utility</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -4578,7 +4602,7 @@ if( or(text(Status) = &quot;Cancelled&quot;, text(Status) = &quot;Not Interested
     <fields>
         <fullName>Utility_Partner_Relationship__c</fullName>
         <externalId>false</externalId>
-        <label>Utility Partner Relationship</label>
+        <label>XXXXX Utility Partner Relationship</label>
         <length>20</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
@@ -4597,7 +4621,7 @@ IF(INCLUDES(  Utility_1__c , &quot;Duke Energy&quot;), &quot;Duke Energy&quot;,
 IF(INCLUDES(  Utility_1__c , &quot;SCE&amp;G&quot;), &quot;SCE&amp;G&quot;, 
  &quot;Other&quot;))))))</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Utility</label>
+        <label>XXXXX Utility</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <type>Text</type>
@@ -4693,13 +4717,27 @@ IF(INCLUDES(  Utility_1__c , &quot;SCE&amp;G&quot;), &quot;SCE&amp;G&quot;,
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>ZipCode__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Lookup to the &quot;Load Zone &amp; Utility&quot; object which maps the zipcode to a load zone and utility</inlineHelpText>
+        <label>ZIP Code</label>
+        <referenceTo>Load_U__c</referenceTo>
+        <relationshipLabel>Leads (ZIP Code)</relationshipLabel>
+        <relationshipName>ZIPLeads</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Zip_Code_Lookup_Field__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <label>Zip Code Lookup</label>
+        <label>XXXXX Zip Code Lookup</label>
         <referenceTo>Load_U__c</referenceTo>
-        <relationshipLabel>Leads</relationshipLabel>
-        <relationshipName>Leads</relationshipName>
+        <relationshipLabel>LeadsDel</relationshipLabel>
+        <relationshipName>LeadsDel</relationshipName>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -4720,7 +4758,7 @@ IF(load_zone_check_needed__c = TRUE,
 
 &quot;Unfortunately we have run out of capacity in your area, please check back soon!&quot;))</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Zip Code Qualification</label>
+        <label>XXXXX Zip Code Qualification</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <type>Text</type>
@@ -6062,7 +6100,7 @@ INCLUDES(Load_Zone__c, &quot;NEMA/WCMA&quot;)
 WCMA = 8 - 10
 NEMA = 11 - 12
 SEMA = 13 -14</inlineHelpText>
-        <label>Load Zone Check Needed</label>
+        <label>XXXXX Load Zone Check Needed</label>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
     </fields>

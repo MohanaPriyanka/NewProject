@@ -1,6 +1,6 @@
 @isTest
 private class assignServiceTerritoryTest {
-
+/*
 Static testMethod void validateAssignServiceTerritory(){
 
 lead newLead = new lead(firstName = 'Cole', lastName = 'Swain', Product_Line__c = 'Community Solar', company = 'BlueWave', status = 'contacted', Parcel_Zip__c = '29501') ;
@@ -19,5 +19,5 @@ lead leadQuery = [SELECT firstName, service_territory__c FROM lead WHERE firstNa
 system.assertEquals('Duke Energy Progress (DEP)' , leadQuery.service_territory__c);
  
  
-}
+}*/
 }

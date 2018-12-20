@@ -6,10 +6,27 @@ Static testMethod void UASTestClass()
 {
 
         Date myDate = Date.newInstance(2015, 2, 17);
+        Utility__c eversource = new Utility__c(
+            Name = 'Eversource',
+            Number_of_Decimal_Places__c = 2
+        );
 
-        Load_U__c newLZU = new Load_U__c ( name = '02052', Load_zone__c= 'NEMA Eversource', LZ__c= 'NEMA', Utility__c = 'Eversource', town__c = 'Medfield');
+        Utility__c nationalGrid = new Utility__c(
+            Name = 'National Grid',
+            Number_of_Decimal_Places__c = 2
+        );
+
+        insert new List<Utility__c>{eversource, nationalGrid};
+
+        Load_U__c newLZU = new Load_U__c ( name = '02052', LZ__c= 'NEMA', town__c = 'Medfield');
         insert newLZU;
-        
+
+        ZipCode_Utility_Junction__c junction = new ZipCode_Utility_Junction__c(
+            Load_Zone_Utility__c = newLZU.Id,
+            Utility__c = nationalGrid.Id
+        );
+        insert junction;
+
         lead newLead = new lead (Lastname = 'BlueWave', company = 'BlueWave', status = 'new', product_line__c = 'Community Solar', parcel_zip__c = '02052');
         insert newLead;
         
@@ -38,7 +55,7 @@ Static testMethod void UASTestClass()
         Service_Territories__c = 'NEMA',
         total_system_size_kWh_DC__c = 950,
         Expected_Yield_kWh_kW__c = 1450,
-        system_utility__c = 'Eversource',
+        Utility__c = eversource.Id,
         assemblage_count__c = 5,
         Maximum_Subscription_Assemblage__c = 25);
 
