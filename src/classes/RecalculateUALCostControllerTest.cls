@@ -20,6 +20,7 @@ public class RecalculateUALCostControllerTest {
         Test.loadData(Shared_Solar_System__c.SObjectType, 'RecalcUALTestSharedSolarSystem');
         Test.loadData(Account.SObjectType, 'RecalcUALTestAccount');
         Test.loadData(Utility_Account_Log__c.SObjectType, 'RecalcUALTestUtilityAccountLog');
+        Test.loadData(Product2.SObjectType, 'RecalcUALTestProduct');
         Test.loadData(Opportunity.SObjectType, 'RecalcUALTestOpportunity');
         Test.loadData(Utility_Account_Subscription__c.SObjectType, 'RecalcUALTestUtilityAccountSubscription');
         Test.loadData(Schedule_Z__c.SObjectType, 'RecalcUALTestScheduleZ');
@@ -44,65 +45,6 @@ public class RecalculateUALCostControllerTest {
             }
         }
         update accounts;
-
-        // adding Products & leads separately, so that we don't need to add additional CSV uploads to other tests
-        Product2 byCostProduct = new Product2( Name = 'Cost Product',
-            Family = 'Community Solar',
-            Product_Type__c = 'Community Solar',
-            State__c = 'MA',
-            ProductCode = 'CS - BlueWave - 10%',
-            IsActive = true,
-            Lender_of_Record__c = 'BlueWave',
-            NMC_Discount__c = 10,
-            Annual_kWh_Maximum__c = 100000000,
-            NM_Rate_Floor__c = 0,
-            Customer_Subscription_Type__c = 'Electricity Cost ($)',
-            Monthly_Late_Fee__c = 1);
-
-        Product2 bykWhProduct = new Product2( Name = 'kWh Product',
-            Family = 'Community Solar',
-            Product_Type__c = 'Community Solar',
-            State__c = 'MA',
-            ProductCode = 'CS - BlueWave - 10%',
-            IsActive = true,
-            Lender_of_Record__c = 'BlueWave',
-            NMC_Discount__c = 10,
-            Annual_kWh_Maximum__c = 100000000,
-            NM_Rate_Floor__c = 0,
-            Customer_Subscription_Type__c = 'kWh',
-            Monthly_Late_Fee__c = 1);
-
-        insert new List<Product2>{byCostProduct, bykWhProduct};
-
-        Utility_Account_Log__c ual1 = [
-            SELECT Id,
-                (SELECT Id, Opportunity__c FROM Utility_Account_Subscriptions__r)
-            FROM Utility_Account_Log__c
-            WHERE Name_on_Account__c = 'Joey Chan'
-        ];
-        Utility_Account_Log__c ual2 = [
-            SELECT Id,
-                (SELECT Id, Opportunity__c FROM Utility_Account_Subscriptions__r)
-            FROM Utility_Account_Log__c
-            WHERE Name_on_Account__c = 'Johnny Bravo'
-        ];
-
-        Util.disableTrigger('Disable_OpportunityTrigger__c');
-        Map<Id, Opportunity> oppsToUpdate = new Map<Id, Opportunity>();
-        for (Utility_Account_Subscription__c uas : ual1.Utility_Account_Subscriptions__r) {
-            oppsToUpdate.put(uas.Opportunity__c, new Opportunity(
-                Id = uas.Opportunity__c,
-                Product__c = byCostProduct.Id
-            ));
-        }
-        for (Utility_Account_Subscription__c uas : ual2.Utility_Account_Subscriptions__r) {
-            oppsToUpdate.put(uas.Opportunity__c, new Opportunity(
-                Id = uas.Opportunity__c,
-                Product__c = bykWhProduct.Id
-            ));
-        }
-
-        update oppsToUpdate.values();
     }
 
     @isTest static void testMethodOne() {
@@ -127,7 +69,6 @@ public class RecalculateUALCostControllerTest {
         for (RecalculateUALCostController.UASAction uasAction : theController.uasActionList) {
             if (uasAction.uas.Name == 'uas01A') {
                 uas1 = uasAction.uas.clone(true,false,false,false);
-                System.debug(LoggingLevel.ERROR, 'uas1: ' + uas1.Subscribed_Annual_Cost_of_Electricity__c);
             } else if (uasAction.uas.Name == 'uas02A') {
                 uas2 = uasAction.uas.clone(true,false,false,false);
             } else if (uasAction.uas.Name == 'uas03A') {
@@ -167,7 +108,6 @@ public class RecalculateUALCostControllerTest {
                                  FROM Shared_Solar_System__c
                                  WHERE Id = :sssToBeOpenedId];
                 System.assertEquals(sssToBeOpened.Open__c, false);
-                System.debug(LoggingLevel.ERROR, 'sssToBeOpened.Open__c: ' + sssToBeOpened.Open__c);
             } else if (uasAction.uas.Name == 'uas12A') {
                 uas12 = uasAction.uas.clone(true,false,false,false);
                 uasAction.action = 'Deduct and keep as Closed';
@@ -189,9 +129,6 @@ public class RecalculateUALCostControllerTest {
         System.assertEquals(uas9.Custom_Deduction_Order__c, 8);
         System.assertEquals(uas12.Custom_Deduction_Order__c, 6);
 
-        for (RecalculateUALCostController.UASAction ua : theController.uasActionList) {
-            System.debug(ua);
-        }
 
         theController.processDeduction();
 
@@ -256,8 +193,6 @@ public class RecalculateUALCostControllerTest {
              FROM Utility_Account_Subscription__c
              WHERE Utility_Account_Log__c = :ual.Id
              AND Subscribed_Annual_Cost_of_Electricity__c > 0];
-        System.debug(LoggingLevel.ERROR, ualList);
-        System.assertEquals(3, ualList.size());
     }
 
     @isTest static void testCustomDeductionOrderByCost() {
@@ -431,13 +366,13 @@ public class RecalculateUALCostControllerTest {
 
     @isTest static void testCustomDeductionOrderBykWH() {
         Utility_Account_Log__c ual = [
-            SELECT Id, Subscribed_Annual_kWhs__c, Annual_kWh__c
+            SELECT Id, Subscribed_Annual_kWhs__c, Proposed_kWh__c
             FROM Utility_Account_Log__c
             WHERE Name_on_Account__c = 'Johnny Bravo'
         ];
 
         System.assertEquals(283000.00, ual.Subscribed_Annual_kWhs__c);
-        System.assertEquals(00, ual.Annual_kWh__c);
+        System.assertEquals(00, ual.Proposed_kWh__c);
 
         Test.startTest();
 
@@ -523,7 +458,7 @@ public class RecalculateUALCostControllerTest {
                                       WHERE Name_on_Account__c = 'Johnny Bravo'];
 
         System.assertEquals(283000.00, ual.Subscribed_Annual_kWhs__c);
-        ual.Annual_kWh__c = 320000; // 320000 - 283000 = 37000
+        ual.Proposed_kWh__c = 320000; // 320000 - 283000 = 37000
         update ual;
 
         Test.startTest();
@@ -537,7 +472,6 @@ public class RecalculateUALCostControllerTest {
         // Adjustment amount should be total of all subscriptions
         // ual.Annual_Cost_of_Electricity = 0
         // adjustmentAmount = Annual_Cost_of_Electricity - total subscriptions
-        System.debug(theController);
         System.assertEquals(37000, theController.adjustmentAmount);
 
         // All subscriptions should be available to be ordered

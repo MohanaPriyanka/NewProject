@@ -2,5 +2,5 @@
 <StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
     <cacheControl>Public</cacheControl>
     <contentType>text/plain</contentType>
-    <description>RecalcUALTestOpportunity</description>
+    <description>RecalcUALTestProduct</description>
 </StaticResource>
