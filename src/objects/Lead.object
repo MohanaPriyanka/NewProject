@@ -6216,7 +6216,7 @@ SEMA = 13 -14</inlineHelpText>
         </filters>
         <filters>
             <field>LEAD.STATUS</field>
-            <operation>notContain</operation>
+            <operation>contains</operation>
             <value>waitlist,expired,unqualified,Contacted,Declined,Cancelled</value>
         </filters>
         <filters>
