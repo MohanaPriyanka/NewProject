@@ -636,6 +636,19 @@ IF( ISPICKVAL(Class__c, &quot;Class 3&quot;), (Transmission_Charge__c +  Transit
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Utility_Relationship__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Utility Relationship</label>
+        <referenceTo>Utility__c</referenceTo>
+        <relationshipLabel>Utility NMC Tariffs</relationshipLabel>
+        <relationshipName>Utility_NMC_Tariffs</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Utility__c</fullName>
         <externalId>false</externalId>
         <label>Utility</label>

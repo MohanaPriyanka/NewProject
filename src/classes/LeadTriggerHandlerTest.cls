@@ -11,6 +11,18 @@ public class LeadTriggerHandlerTest {
         );
         insert sysProp;
 
+        Utility__c eversource = new Utility__c(
+            Name = 'Eversource',
+            Number_of_Decimal_Places__c = 2
+        );
+
+        Utility__c nationalGrid = new Utility__c(
+            Name = 'National Grid',
+            Number_of_Decimal_Places__c = 2
+        );
+
+        insert new List<Utility__c>{eversource, nationalGrid};
+
         Utility_NMC_Tariff__c nmcRate =  (Utility_NMC_Tariff__c)TestFactory.createSObject(new Utility_NMC_Tariff__c(Value_of_Net_Metering_Credit__c = 1,
                                                                                                                     Name = 'Nation Grid WCMA Class 2 - S/F 2016',
                                                                                                                     Sizing_Rate__c = true,
@@ -41,7 +53,7 @@ public class LeadTriggerHandlerTest {
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
             Total_System_Size_kW_AC__c  = 996,
-            System_Utility__c = 'National Grid',
+                                                                                                                                Utility__c = nationalgrid.Id,
             Credit_Score_Requirement__c = 200,
             Assignment_order__c = '1',
             Utility_NMC_Tariff__c = nmcRate.Id,
@@ -68,8 +80,8 @@ public class LeadTriggerHandlerTest {
                                                              FirstName = 'Joey',
                                                              Email = 'test@email.com',
                                                              Electricity_Provider__c = 'National Grid',
-                                                             Utility_1__c = 'National Grid',
-                                                             Load_Zone__c = 'WCMA',
+                                                             Utility_relationship__c = nationalGrid.Id,
+                                                             LoadZone__c = 'WCMA',
                                                              Company = 'Cloud Jedi',
                                                              Status = 'Qualified',
                                                              Product_Line__c = 'Community Solar',
@@ -82,8 +94,8 @@ public class LeadTriggerHandlerTest {
                                      FirstName = 'Pentaleri',
                                      Email = 'test@email.com',
                                      Electricity_Provider__c = 'National Grid',
-                                     Utility_1__c = 'National Grid',
-                                     Load_Zone__c = 'WCMA',
+                                     Utility_relationship__c = nationalGrid.Id,
+                                     LoadZone__c = 'WCMA',
                                      Company = 'Cloud Jedi',
                                      Status = 'Qualified',
                                      Product_Line__c = 'Community Solar',
@@ -371,7 +383,7 @@ public class LeadTriggerHandlerTest {
         }
     }
 
-    @IsTest static void testMultipleSubscriptionsWithChargentOrders() {
+    @IsTest static void testMultipleSubscriptions() {
         System_Properties__c sysProp = new System_Properties__c(
             Name = 'System',
             DocuSign_API_Account_ID__c = '123',
@@ -396,6 +408,18 @@ public class LeadTriggerHandlerTest {
         );
         insert defaultEntity;
 
+        Utility__c eversource = new Utility__c(
+            Name = 'Eversource',
+            Number_of_Decimal_Places__c = 2
+        );
+
+        Utility__c nationalGrid = new Utility__c(
+            Name = 'National Grid',
+            Number_of_Decimal_Places__c = 2
+        );
+
+        insert new List<Utility__c>{eversource, nationalGrid};
+
         Utility_NMC_Tariff__c nmcRate =  new Utility_NMC_Tariff__c(
             Value_of_Net_Metering_Credit__c = .1848,
             Name = 'Nation Grid WCMA Class 2 - S/F 2016',
@@ -419,9 +443,9 @@ public class LeadTriggerHandlerTest {
             Monthly_Late_Fee__c = 1);
         insert csProduct;
 
-        Shared_Solar_System__c sss1 = getSharedSolarSystem(nmcRate, csProduct, 'Eversource', 'Eversource P1');
-        Shared_Solar_System__c sss2 = getSharedSolarSystem(nmcRate, csProduct, 'Eversource', 'Eversource P2');
-        Shared_Solar_System__c sss3 = getSharedSolarSystem(nmcRate, csProduct, 'National Grid', 'National Grid P1');
+        Shared_Solar_System__c sss1 = getSharedSolarSystem(nmcRate, csProduct, eversource, 'Eversource P1');
+        Shared_Solar_System__c sss2 = getSharedSolarSystem(nmcRate, csProduct, eversource, 'Eversource P2');
+        Shared_Solar_System__c sss3 = getSharedSolarSystem(nmcRate, csProduct, nationalGrid, 'National Grid P1');
         insert new List<Shared_Solar_System__c>{sss1, sss2, sss3};
 
         Shared_Solar_System__c sssCheck = [
@@ -454,8 +478,8 @@ public class LeadTriggerHandlerTest {
             LastName = 'Testcase',
             Email = 'test@test.com',
             Electricity_Provider__c = 'Eversource',
-            Utility_1__c = 'Eversource',
-            Load_Zone__c = 'WCMA',
+            Utility_relationship__c = eversource.Id,
+            LoadZone__c = 'WCMA',
             Company = 'Test',
             Status = 'Qualified',
             Product_line__c = 'Community Solar',
@@ -465,7 +489,7 @@ public class LeadTriggerHandlerTest {
             Parent_Account__c = parentAccount.Id
         );
         Lead additionalProperty = primaryProperty.clone();
-        additionalProperty.Utility_1__c = 'National Grid';
+        additionalProperty.Utility_relationship__c = nationalGrid.Id;
         additionalProperty.Electricity_Provider__c = 'National Grid';
         insert new List<Lead>{primaryProperty, additionalProperty};
 
@@ -544,7 +568,7 @@ public class LeadTriggerHandlerTest {
         CSAPController.convertCSLead(primaryProperty.Id, primaryProperty.Email);
         Test.stopTest();
 
-        List<Lead> eversourceLeads = [SELECT Id, ConvertedAccountId FROM Lead WHERE Utility_1__c = 'Eversource'];
+        List<Lead> eversourceLeads = [SELECT Id, ConvertedAccountId FROM Lead WHERE Utility_relationship__r.Name = 'Eversource'];
         System.assertEquals(1, eversourceLeads.size());
 
         // 2 opps for the Eversource lead (one for each SSS)
@@ -552,7 +576,7 @@ public class LeadTriggerHandlerTest {
             SELECT Id, Name, Shared_Solar_System__c, AccountId, ACH_Bank_Name__c, ACH_Bank_Routing_Number__c,
                 CC_Account_Number__c, ACH_Account_Number__c, CC_Card_Type__c
             FROM Opportunity
-            WHERE Shared_Solar_System__r.System_Utility__c = 'Eversource'
+            WHERE Shared_Solar_System__r.Utility__r.Name = 'Eversource'
             AND AccountId =: eversourceLeads[0].ConvertedAccountId
         ];
         System.assertEquals(2, opps.size());
@@ -594,14 +618,14 @@ public class LeadTriggerHandlerTest {
             System.assertEquals(newACHOrder1.ChargentOrders__Bank_Account_Name__c, chOrder.ChargentOrders__Bank_Account_Name__c);
         }
 
-        List<Lead> ngridLeads = [SELECT Id, ConvertedAccountId FROM Lead WHERE Utility_1__c = 'National Grid'];
+        List<Lead> ngridLeads = [SELECT Id, ConvertedAccountId FROM Lead WHERE Utility_relationship__r.Name = 'National Grid'];
         System.assertEquals(1, ngridLeads.size());
 
         // Just 1 opp for NGrid since there's only one system
         opps = [
-            SELECT Id, Name, Shared_Solar_System__c, AccountId
+            SELECT Id, Name, Shared_Solar_System__c, AccountId, ACH_Bank_Name__c
             FROM Opportunity
-            WHERE Shared_Solar_System__r.System_Utility__c = 'National Grid'
+            WHERE Shared_Solar_System__r.Utility__r.Name = 'National Grid'
             AND AccountId =: ngridLeads[0].ConvertedAccountId
         ];
         System.assertEquals(1, opps.size());
@@ -644,6 +668,19 @@ public class LeadTriggerHandlerTest {
             DocuSign_Integrator_Key__c = '123123-123123'
         );
         insert sysProp;
+        
+        Utility__c eversource = new Utility__c(
+            Name = 'Eversource',
+            Number_of_Decimal_Places__c = 2
+        );
+
+        Utility__c nationalGrid = new Utility__c(
+            Name = 'National Grid',
+            Number_of_Decimal_Places__c = 2
+        );
+
+        insert new List<Utility__c>{eversource, nationalGrid};
+        
         Utility_NMC_Tariff__c nmcRate =  new Utility_NMC_Tariff__c(
             Value_of_Net_Metering_Credit__c = .1848,
             Name = 'Nation Grid WCMA Class 2 - S/F 2016',
@@ -665,12 +702,12 @@ public class LeadTriggerHandlerTest {
             Customer_Subscription_Type__c = 'kWh',
             Monthly_Late_Fee__c = 1);
         insert csProduct;
-        insertTariffsForProduct(csProduct.Id);
-        Shared_Solar_System__c sss1 = getSharedSolarSystem(nmcRate, csProduct, 'Eversource', 'Eversource P1');
-        Shared_Solar_System__c sss2 = getSharedSolarSystem(nmcRate, csProduct, 'Eversource', 'Eversource P2');
-        Shared_Solar_System__c sss4 = getSharedSolarSystem(nmcRate, csProduct, 'Eversource', 'Eversource P3');
-        Shared_Solar_System__c sss5 = getSharedSolarSystem(nmcRate, csProduct, 'Eversource', 'Eversource P4');
-        Shared_Solar_System__c sss3 = getSharedSolarSystem(nmcRate, csProduct, 'National Grid', 'National Grid P1');
+        insertTariffsForProduct(csProduct.Id, eversource.Id, nationalGrid.Id);
+        Shared_Solar_System__c sss1 = getSharedSolarSystem(nmcRate, csProduct, eversource, 'Eversource P1');
+        Shared_Solar_System__c sss2 = getSharedSolarSystem(nmcRate, csProduct, eversource, 'Eversource P2');
+        Shared_Solar_System__c sss4 = getSharedSolarSystem(nmcRate, csProduct, eversource, 'Eversource P3');
+        Shared_Solar_System__c sss5 = getSharedSolarSystem(nmcRate, csProduct, eversource, 'Eversource P4');
+        Shared_Solar_System__c sss3 = getSharedSolarSystem(nmcRate, csProduct, nationalGrid, 'National Grid P1');
         insert new List<Shared_Solar_System__c>{sss1, sss2, sss3, sss4, sss5};
         Shared_Solar_System__c sssCheck = [
             SELECT Maximum_Subscription_Cost__c, Maximum_Subscription_Capacity_kW_DC__c
@@ -698,8 +735,8 @@ public class LeadTriggerHandlerTest {
             LastName = 'Testcase',
             Email = 'test@test.com',
             Electricity_Provider__c = 'Eversource',
-            Utility_1__c = 'Eversource',
-            Load_Zone__c = 'WCMA',
+			Utility_relationship__c = eversource.Id,
+            LoadZone__c = 'WCMA',
             Company = 'Test',
             Status = 'Qualified',
             Product_line__c = 'Community Solar',
@@ -710,7 +747,7 @@ public class LeadTriggerHandlerTest {
             Parent_Account__c = parentAccount.Id
         );
         Lead additionalProperty = primaryProperty.clone();
-        additionalProperty.Utility_1__c = 'National Grid';
+        additionalProperty.Utility_relationship__c = nationalGrid.Id;
         additionalProperty.Electricity_Provider__c = 'National Grid';
         additionalProperty.Customer_type__c = 'Non-Residential';
         insert new List<Lead>{primaryProperty, additionalProperty};
@@ -753,14 +790,14 @@ public class LeadTriggerHandlerTest {
         LeadTriggerHandler.skipContractSend = true;
         CSAPController.convertCSLead(primaryProperty.Id, primaryProperty.Email);
         Test.stopTest();
-        List<Lead> eversourceLeads = [SELECT Id, ConvertedAccountId FROM Lead WHERE Utility_1__c = 'Eversource'];
+        List<Lead> eversourceLeads = [SELECT Id, ConvertedAccountId FROM Lead WHERE Utility_Relationship__r.Name = 'Eversource'];
         System.assertEquals(1, eversourceLeads.size());
         // 2 opps for the Eversource lead (one for each SSS)
         opps = [
             SELECT Id, Name, Shared_Solar_System__c, AccountId, ACH_Bank_Name__c, ACH_Bank_Routing_Number__c,
                 CC_Account_Number__c, ACH_Account_Number__c
             FROM Opportunity
-            WHERE Shared_Solar_System__r.System_Utility__c = 'Eversource'
+            WHERE Shared_Solar_System__r.Utility__r.Name = 'Eversource'
             AND AccountId =: eversourceLeads[0].ConvertedAccountId
         ];
         System.assertEquals(2, opps.size());
@@ -776,13 +813,13 @@ public class LeadTriggerHandlerTest {
         System.assertEquals(35, ((Decimal) uasAggregate[0].get('total')).setScale(0));
         System.assertEquals(25, uasAggregate[0].get('maximum'));
         System.assertEquals(5, ((Decimal) uasAggregate[0].get('minimum')).setScale(0));
-        List<Lead> ngridLeads = [SELECT Id, ConvertedAccountId FROM Lead WHERE Utility_1__c = 'National Grid'];
+        List<Lead> ngridLeads = [SELECT Id, ConvertedAccountId FROM Lead WHERE Utility_Relationship__r.Name  = 'National Grid'];
         System.assertEquals(1, ngridLeads.size());
         // Just 1 opp for NGrid since there's only one system
         opps = [
             SELECT Id, Name, Shared_Solar_System__c, AccountId
             FROM Opportunity
-            WHERE Shared_Solar_System__r.System_Utility__c = 'National Grid'
+            WHERE Shared_Solar_System__r.Utility__r.Name = 'National Grid'
             AND AccountId =: ngridLeads[0].ConvertedAccountId
         ];
         System.assertEquals(1, opps.size());
@@ -801,7 +838,7 @@ public class LeadTriggerHandlerTest {
     }
 
     public static Shared_Solar_System__c getSharedSolarSystem(Utility_NMC_Tariff__c nmcRate, Product2 csProduct,
-        String utility, String name) {
+        Utility__c utility, String name) {
         Shared_Solar_System__c sss1 = new Shared_Solar_System__c(
             Name = name,
             Service_Territories__c = 'WCMA; SEMA',
@@ -810,7 +847,7 @@ public class LeadTriggerHandlerTest {
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
             Total_System_Size_kW_AC__c = 996,
-            System_Utility__c = utility,
+            Utility__c = utility.Id,
             Credit_Score_Requirement__c = 700,
             Assignment_Order__c = '1',
             Utility_NMC_Tariff__c = nmcRate.Id,
@@ -823,11 +860,11 @@ public class LeadTriggerHandlerTest {
         return sss1;
     }
 
-    public static void insertTariffsForProduct(Id productId) {
+    public static void insertTariffsForProduct(Id productId, Id eversourceId, Id nationalGridId) {
         Utility_NMC_Tariff__c eversourceG1 =  new Utility_NMC_Tariff__c(
             Value_of_Net_Metering_Credit__c = .70578,
             Name = 'Eversource G1',
-            Utility__c = 'Eversource',
+            Utility_Relationship__c = eversourceId,
             Size_Ratio__c = 1.3,
             Product__c = productId,
             Customer_Type__c = 'Non-Residential',
@@ -837,7 +874,7 @@ public class LeadTriggerHandlerTest {
         Utility_NMC_Tariff__c eversourceG2 =  new Utility_NMC_Tariff__c(
             Value_of_Net_Metering_Credit__c = .70578,
             Name = 'Eversource G2',
-            Utility__c = 'Eversource',
+            Utility_Relationship__c = eversourceId,
             Size_Ratio__c = 1.4,
             Product__c = productId,
             Customer_Type__c = 'Non-Residential',
@@ -847,7 +884,7 @@ public class LeadTriggerHandlerTest {
         Utility_NMC_Tariff__c eversourceR1 =  new Utility_NMC_Tariff__c(
             Value_of_Net_Metering_Credit__c = .70578,
             Name = 'Eversource R1',
-            Utility__c = 'Eversource',
+            Utility_Relationship__c = eversourceId,
             Size_Ratio__c = 1.5,
             Product__c = productId,
             Customer_Type__c = 'Residential',
@@ -856,7 +893,7 @@ public class LeadTriggerHandlerTest {
         Utility_NMC_Tariff__c nationalGridG1 =  new Utility_NMC_Tariff__c(
             Value_of_Net_Metering_Credit__c = .70578,
             Name = 'National Grid G1',
-            Utility__c = 'National Grid',
+            Utility_Relationship__c = nationalGridId,
             Size_Ratio__c = 1.55,
             Product__c = productId,
             Customer_Type__c = 'Non-Residential',
@@ -866,7 +903,7 @@ public class LeadTriggerHandlerTest {
         Utility_NMC_Tariff__c nationalGridG2 =  new Utility_NMC_Tariff__c(
             Value_of_Net_Metering_Credit__c = .70578,
             Name = 'National Grid G2',
-            Utility__c = 'National Grid',
+            Utility_Relationship__c = nationalGridId,
             Size_Ratio__c = 1.45,
             Product__c = productId,
             Customer_Type__c = 'Non-Residential',
@@ -876,7 +913,7 @@ public class LeadTriggerHandlerTest {
         Utility_NMC_Tariff__c nationalGridR1 =  new Utility_NMC_Tariff__c(
             Value_of_Net_Metering_Credit__c = .70578,
             Name = 'National Grid R1',
-            Utility__c = 'National Grid',
+            Utility_Relationship__c = nationalGridId,
             Size_Ratio__c = 1.35,
             Product__c = productId,
             Customer_Type__c = 'Residential',

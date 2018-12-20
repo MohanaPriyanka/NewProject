@@ -331,22 +331,6 @@ global class PostSandboxRefresher implements SandboxPostCopy {
      */
     global class CSRecordLoader implements Queueable {
         global void execute(QueueableContext context) {
-            Load_U__c everLZU = new Load_U__c(Name = '02633',
-                Load_Zone__c = 'SEMA Eversource',
-                LZ__c = 'SEMA',
-                Utility__c = 'Eversource',
-                Town__c = 'Medfield');
-
-            Load_U__c ngridLZU = new Load_U__c(Name = '01570',
-                Load_Zone__c = 'WCMA National Grid',
-                LZ__c = 'WCMA',
-                Utility__c = 'National Grid',
-                Town__c = 'Westtown');
-
-            insert new List<Load_U__c>{
-                everLZU, ngridLZU
-            };
-
             Utility_NMC_Tariff__c everbillNMC = new Utility_NMC_Tariff__c(
                 Name = 'Eversource SEMA Class 2',
                 Utility__c = 'Eversource',
@@ -415,7 +399,6 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 normalSRECProduct
             };
 
-            LeadTriggerHandlerTest.insertTariffsForProduct(normalCSProduct.Id);
 
             Utility_NMC_Tariff__c eversizeNMC = [SELECT Id FROM Utility_NMC_Tariff__c WHERE Name = 'Eversource SEMA Class 2' LIMIT 1];
             Utility_NMC_Tariff__c nationalGridNMC = [SELECT Id FROM Utility_NMC_Tariff__c WHERE Name = 'National Grid WCMA Class 2 Billing Rate' LIMIT 1];
@@ -435,6 +418,32 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             insert eversource;
             Utility__c nationalGrid = new Utility__c(Name = 'National Grid', Number_of_Decimal_Places__c = 2);
             insert nationalGrid;
+
+            LeadTriggerHandlerTest.insertTariffsForProduct(normalCSProduct.Id, eversource.Id, nationalGrid.Id);
+
+            Load_U__c everLZU = new Load_U__c(Name = '02633',
+                Load_Zone__c = 'SEMA Eversource',
+                LZ__c = 'SEMA',
+                Town__c = 'Medfield');
+
+            Load_U__c ngridLZU = new Load_U__c(Name = '01570',
+                Load_Zone__c = 'WCMA National Grid',
+                LZ__c = 'WCMA',
+                Town__c = 'Westtown');
+
+            insert new List<Load_U__c>{
+                everLZU, ngridLZU
+            };
+
+            ZipCode_Utility_Junction__c junction = new ZipCode_Utility_Junction__c(
+                Load_Zone_Utility__c = everLZU.Id,
+                Utility__c = eversource.Id
+            );
+            ZipCode_Utility_Junction__c junctionTwo = new ZipCode_Utility_Junction__c(
+                Load_Zone_Utility__c = ngridLZU.Id,
+                Utility__c = nationalGrid.Id
+            );
+            insert new List<ZipCode_Utility_Junction__c>{junction, junctionTwo};
 
             Shared_Solar_System__c sss1 = getSolarSystem('Project A Oak Road', '1', clientAccount, eversizeNMC, normalCSProduct, entity1, eversource);
             Shared_Solar_System__c sss2 = getSolarSystem('Project B Main St', '2', clientAccount, eversizeNMC, normalCSProduct, entity2, eversource);
@@ -463,7 +472,6 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                     Capacity_Committed_kW_DC__c = 0,
                     Total_System_Size_kWh_DC__c = 1445.86,
                     Total_System_Size_kW_AC__c = 996,
-                    System_Utility__c = utility.Name,
                     Credit_Score_Requirement__c = 200,
                     Assignment_Order__c = order,
                     Utility_NMC_Tariff__c = nmc.Id,
