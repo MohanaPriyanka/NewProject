@@ -34,14 +34,7 @@
                 if (actionResult.getState() === 'SUCCESS') {
                     var lead = actionResult.getReturnValue();
                     component.set("v.lead", lead);
-                    if (lead.Utility_1__c.includes('/') || lead.Load_Zone__c.includes('/')) {
-                        component.set('v.loading', false);
-                        component.set('v.splitZones', lead.Load_Zone__c.split('/'));
-                        component.set('v.splitUtilities', lead.Utility_1__c.split('/'));
-                        component.set('v.page', 'SplitLoadZone');
-                    } else {
-                        helper.finishStage(component, event, helper);
-                    }
+                    this.populateUtilityPicklist(component,event,helper,lead);
                 } else {
                     helper.raiseError('CSAPPersonalInfoHelper', 'upsertRecords',
                         'There was an issue saving your information. It is possible that the information you provided may contain a typo. Please review',
@@ -60,14 +53,7 @@
                 if (actionResult.getState() === 'SUCCESS') {
                     var lead = actionResult.getReturnValue();
                     component.set("v.lead", lead);
-                    if (lead.Utility_1__c.includes('/') || lead.Load_Zone__c.includes('/')) {
-                        component.set('v.loading', false);
-                        component.set('v.splitZones', lead.Load_Zone__c.split('/'));
-                        component.set('v.splitUtilities', lead.Utility_1__c.split('/'));
-                        component.set('v.page', 'SplitLoadZone');
-                    } else {
-                        helper.finishStage(component, event, helper);
-                    }
+                    this.populateUtilityPicklist(component,event,helper,lead);
                 } else {
                     helper.raiseError('CSAPPersonalInfoHelper', 'upsertRecords',
                         'There was an issue saving your information. It is possible that the information you provided may contain a typo. Please review',
@@ -79,4 +65,32 @@
             $A.enqueueAction(addAdditionalLeadAction);
         }
     },
+
+    populateUtilityPicklist : function(component, event, helper, lead) {
+        var utilityList = [];
+        if (lead.Confirm_Utility__c && lead.Confirm_Utility__c.includes('/')){
+            var splitNamesFromId = lead.Confirm_Utility__c.split('>');
+            var namesList = splitNamesFromId[0].split('/');
+            var idsList = splitNamesFromId[1].split('/');
+
+            var i;
+            for (i = 0; i < namesList.length; i++) {
+                var newUtility = {
+                    'Name': namesList[i],
+                    'Id': idsList[i]
+                };
+                utilityList.push(newUtility);
+            };
+            component.set('v.loading', false);
+            component.set('v.page', 'SplitLoadZone');
+            component.set('v.splitUtilities', utilityList);
+        } else if (lead.LoadZone__c && lead.LoadZone__c.includes('/')) {
+            component.set('v.loading', false);
+            component.set('v.page', 'SplitLoadZone');
+            component.set('v.splitZones', lead.LoadZone__c.split('/'));
+        } else {
+            helper.finishStage(component, event, helper);
+        }
+    },
+
 })

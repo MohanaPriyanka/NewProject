@@ -7,6 +7,18 @@ private class mapSharedSolarSytemTestClass{
         Date codDate = Date.newInstance(2015, 4, 17);
         Date codDateTwo = Date.newInstance(2015, 7, 17);
 
+        Utility__c eversource = new Utility__c(
+            Name = 'Eversource',
+            Number_of_Decimal_Places__c = 2
+        );
+
+        Utility__c nationalGrid = new Utility__c(
+            Name = 'National Grid',
+            Number_of_Decimal_Places__c = 2
+        );
+
+        insert new List<Utility__c>{eversource, nationalGrid};
+
         Utility_NMC_Tariff__c nmcTariff = new Utility_NMC_Tariff__c(
             Name = 'Eversource SEMA Class 2',
             Class__c = 'Class 2',
@@ -22,7 +34,7 @@ private class mapSharedSolarSytemTestClass{
             Total_System_Size_kW_AC__c = 750,
             Estimated_COD_Date_Manual__c = codDate,
             Service_Territories__c = 'SEMA',
-            System_Utility__c = 'Eversource',
+            Utility__c = eversource.Id,
             credit_score_requirement__c = 600);
                 insert systemOne;
 
@@ -34,7 +46,7 @@ private class mapSharedSolarSytemTestClass{
             Total_System_Size_kW_AC__c = 750,
             Estimated_COD_Date_Manual__c = codDateTwo,
             Service_Territories__c = 'SEMA',
-            System_Utility__c = 'Eversource',
+            Utility__c = eversource.Id,
             credit_score_requirement__c = 700);
                 insert systemTwo;
 

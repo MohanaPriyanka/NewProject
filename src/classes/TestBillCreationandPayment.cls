@@ -28,18 +28,25 @@ public class TestBillCreationandPayment {
         insert new List<Utility_NMC_Tariff__c>{eversizeNMC, ngridsizeNMC};
 
         Load_U__c everLZU = new Load_U__c (Name = '02633',
-            Load_zone__c = 'SEMA Eversource',
             LZ__c = 'SEMA',
-            Utility__C = 'Eversource',
             Town__c= 'Medfield');
 
         Load_U__c ngridLZU = new Load_U__c (Name = '01570',
-            Load_zone__c= 'WCMA National Grid',
             LZ__c = 'WCMA',
-            Utility__C = 'National Grid',
             Town__c= 'Westtown');
 
         insert new List<Load_U__c>{everLZU, ngridLZU};
+
+        ZipCode_Utility_Junction__c junction = new ZipCode_Utility_Junction__c(
+            Load_Zone_Utility__c = everLZU.Id,
+            Utility__c = eversource.Id
+        );
+        ZipCode_Utility_Junction__c junctionTwo = new ZipCode_Utility_Junction__c(
+            Load_Zone_Utility__c = ngridLZU.Id,
+            Utility__c = nationalGrid.Id
+        );
+        insert new List<ZipCode_Utility_Junction__c>{junction, junctionTwo};
+
         TestFactory.insertBWAddress();
         TestFactory.setCSBillSettings();
 
@@ -115,7 +122,6 @@ public class TestBillCreationandPayment {
                 Capacity_Committed_kW_DC__c = 0,
                 Total_System_Size_kWh_DC__c = 1445.86,
                 Total_System_Size_kW_AC__c  = 996,
-                System_Utility__c = 'Eversource',
                 Credit_Score_Requirement__c = 200,
                 Assignment_order__c = '1',
                 Utility_NMC_Tariff__c = eversizeNMC.Id,
@@ -139,7 +145,6 @@ public class TestBillCreationandPayment {
                 Capacity_Committed_kW_DC__c = 0,
                 Total_System_Size_kWh_DC__c = 1445.86,
                 Total_System_Size_kW_AC__c  = 996,
-                System_Utility__c = 'Eversource',
                 Credit_Score_Requirement__c = 200,
                 Assignment_order__c = '2',
                 Utility_NMC_Tariff__c = eversizeNMC.Id,
@@ -1197,6 +1202,8 @@ public class TestBillCreationandPayment {
     }
 
     @isTest public static void testAdjustments2() {
+        Test.startTest();
+
         List<Account_Bill__c> accountbilllist = [SELECT Id, Name,
             Bill_Number__c, Property_Account_ID__c
         FROM Account_Bill__c];
@@ -1206,8 +1213,6 @@ public class TestBillCreationandPayment {
             FROM Entity__c
             WHERE Name = 'Oxford Barrett St. P1'
         ];
-
-        Test.startTest();
 
         List<ChargentOrders__Transaction__c> chargentOrdersTransactionsToUpdate = new List<ChargentOrders__Transaction__c>();
         List<ChargentOrders__Transaction__c> chargentOrdersTransactionsToNotUpdate = new List<ChargentOrders__Transaction__c>();

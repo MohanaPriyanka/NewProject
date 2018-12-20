@@ -67,9 +67,9 @@
     <fields>
         <fullName>Load_Zone__c</fullName>
         <externalId>false</externalId>
-        <label>Load Zone &amp; Utility</label>
+        <label>XXXXX Load Zone &amp; Utility</label>
         <length>50</length>
-        <required>true</required>
+        <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
@@ -85,9 +85,44 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Utility_Junction_Count__c</fullName>
+        <externalId>false</externalId>
+        <label>Utility_Junction_Count</label>
+        <summaryForeignKey>ZipCode_Utility_Junction__c.Load_Zone_Utility__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Utility_Relationship_1__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Lookup to utility object. This field is used to map to the lead utility lookup field. If in split load zone, Utility_Relationship_2 must also be populated</inlineHelpText>
+        <label>Utility Relationship 1</label>
+        <referenceTo>Utility__c</referenceTo>
+        <relationshipLabel>Load Zones &amp; Utilities</relationshipLabel>
+        <relationshipName>Load_Zones_Utilities1_del</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Utility_Relationship_2__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Lookup to utility object. If in split load zone, this field must be populated. Customer will have ability to choose between this field and Utility_Relationship_1 in the CSAP</inlineHelpText>
+        <label>Utility Relationship 2</label>
+        <referenceTo>Utility__c</referenceTo>
+        <relationshipLabel>Load Zones &amp; Utilities (Utility Relationship 2)</relationshipLabel>
+        <relationshipName>Load_Zones_Utilities2_del</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Utility__c</fullName>
         <externalId>false</externalId>
-        <label>Utility</label>
+        <label>XXXX Utility</label>
         <length>120</length>
         <required>false</required>
         <trackTrending>false</trackTrending>

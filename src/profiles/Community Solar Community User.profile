@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Profile xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Community Solar Community User</fullName>
     <applicationVisibilities>
         <application>BlueWave_Finance_Group</application>
         <default>false</default>
@@ -10739,6 +10740,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Lead.Confirm_Utility__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Lead.Construction_Period_DOER__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -11265,6 +11271,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.License_Number__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.LoadZone__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -12000,6 +12011,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Year_Employment__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.ZipCode__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -13159,8 +13175,28 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Load_U__c.Load_Zone__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Load_U__c.Town__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Load_U__c.Utility_Junction_Count__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Load_U__c.Utility_Relationship_1__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Load_U__c.Utility_Relationship_2__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -46085,6 +46121,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Utility_NMC_Tariff__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>ZipCode_Utility_Junction__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <pageAccesses>
