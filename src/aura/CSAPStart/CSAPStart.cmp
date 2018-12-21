@@ -41,4 +41,49 @@
     </div>
   </aura:if>
   <!-- / LOGIN FORM -->
+
+  <aura:if isTrue="{!v.page == 'ApplicationPrep'}">
+    <div aria-labelledby="aboutYourselfForm">
+      <fieldset class="slds-box slds-theme--default slds-container_center">
+        <legend id="aboutYourselfForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
+          <b class=" slds-section__title--large">Before you begin</b>
+        </legend>
+        <form class="slds-form--stacked">
+          <lightning:layout multipleRows="true">
+            <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+              <b>Here are a few things to keep in mind as you go through the application process:</b>
+              <ul>
+                <li>
+                  • To determine your energy needs, we’ll be asking for some information from your
+                  electric bill, so it’s best to have it handy before you get started.
+                </li>
+                <li>
+                  • We’ll also be collecting some personal information including your social security
+                  number, so we can perform a credit check.
+                </li>
+              </ul>
+            </lightning:layoutItem>
+            <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+            <b>Please note that state regulations determine where Community Solar is available, and who can sign up:</b>
+              <ul>
+                <li>
+                  • In New York, Community Solar is only available to residential customers who currently do not
+                  have rooftop solar.
+                </li>
+                <li>
+                  • In Massachusetts, Community Solar is available to residential, commercial, and industrial
+                  customers.
+                </li>
+              </ul>
+            </lightning:layoutItem>
+          </lightning:layout>
+          <div class="slds-clearfix slds-p-top_medium">
+            <div class="slds-float_right">
+              <lightning:button label="Begin Application" onclick="{!c.beginApplication}"/>
+            </div>
+          </div>
+        </form>
+      </fieldset>
+    </div>
+  </aura:if>
 </aura:component>
