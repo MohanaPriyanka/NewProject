@@ -50,7 +50,7 @@
             </lightning:layoutItem>
             <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
               <div class="slds-align--absolute-center slds-text-body--large--blue">
-                <b>You can now close this application.</b>
+                <b>You can now close this window.</b>
               </div>
             </lightning:layoutItem>
           </aura:if>
@@ -63,7 +63,7 @@
             </lightning:layoutItem>
             <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
               <div class="slds-align--absolute-center slds-text-body--large--blue">
-                <b>You can now close this application.</b>
+                <b>You can now close this window.</b>
               </div>
             </lightning:layoutItem>
           </aura:if>
@@ -83,7 +83,7 @@
             <aura:if isTrue="{!v.lead.Application_Source_Phase_2__c == null}">
               <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
                 <div class="slds-align--absolute-center slds-text-body--large--blue">
-                  <b>You can now close this application.</b>
+                  <b>You can now close this window.</b>
                 </div>
               </lightning:layoutItem>
               <aura:set attribute="else">

@@ -69,7 +69,7 @@
             <lightning:layout aura:id="passedCreditText" class="animated" multipleRows="true" horizontalAlign="center">
               <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
                 <div class="slds-align--absolute-center">
-                  <p><b class="slds-text-body--large--blue">Thanks for your Community Solar Application! We’ll send you your contract shortly!</b></p>
+                  <p><b class="slds-text-body--large--blue">Thanks for your Community Solar Application! We’ll email you your contract shortly!</b></p>
                 </div>
               </lightning:layoutItem>
               <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
