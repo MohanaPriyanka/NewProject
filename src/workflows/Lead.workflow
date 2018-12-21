@@ -966,16 +966,7 @@ IF(Number_of_Periods__c&gt;120, max(1250,0.07*Loan_Amount__c), max(1250,0.05*Loa
             <type>FieldUpdate</type>
         </actions>
         <active>true</active>
-        <formula>OR( 
-AND( 
-CONTAINS(ZipCode__r.LZ__c,&quot;/&quot;), 
-ISBLANK(LoadZone__c) 
-), 
-AND( 
-ZipCode__r.Utility_Junction_Count__c &gt; 1,
-ISBLANK(Utility_relationship__c) 
-) 
-)</formula>
+        <formula>OR(  AND(  CONTAINS(ZipCode__r.LZ__c,&quot;/&quot;),  ISBLANK(LoadZone__c)  ),  AND(  ZipCode__r.Utility_Junction_Count__c &gt; 1, ISBLANK(Utility_relationship__c)  )  )</formula>
         <triggerType>onAllChanges</triggerType>
     </rules>
     <rules>

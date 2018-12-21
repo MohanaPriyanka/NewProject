@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Profile xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Community Solar Community User</fullName>
     <applicationVisibilities>
         <application>BlueWave_Finance_Group</application>
         <default>false</default>
@@ -75,6 +74,11 @@
         <application>standard__Chatter</application>
         <default>false</default>
         <visible>false</visible>
+    </applicationVisibilities>
+    <applicationVisibilities>
+        <application>standard__Content</application>
+        <default>false</default>
+        <visible>true</visible>
     </applicationVisibilities>
     <applicationVisibilities>
         <application>standard__Insights</application>
@@ -871,14 +875,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>assignServiceTerritoryHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>assignServiceTerritoryTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>customIdSwapLeadTriggerTestClass</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -1310,7 +1306,22 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>APXT_BPM__Conductor_Region__mdt.APXT_BPM__Hostname__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>APXT_BPM__Conductor_Setting__mdt.APXT_BPM__Conductor_Region__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>APXT_BPM__Conductor__c.APXT_BPM__Conductor_Environment__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>APXT_BPM__Conductor__c.APXT_BPM__Consolidated_PDF_Output_File__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1546,6 +1557,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.COI__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.CS_Delinquency_Letter_67_no_fee__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.CS_Delinquency_Letter_67_with_fee__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1951,6 +1972,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.License_Revoked__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Link_to_Client_Logo__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2922,6 +2948,11 @@
         <editable>false</editable>
         <field>Account_Bill__c.Payments_Net_Previous_Balances__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account_Bill__c.Previous_Account_Balance_Net_Payments__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -25130,6 +25161,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Product2.Cancellation_Fee_Amount__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Product2.Ceiling_Rate__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -45880,6 +45916,9 @@
     <layoutAssignments>
         <layout>WorkThanks-Thanks Layout</layout>
     </layoutAssignments>
+    <layoutAssignments>
+        <layout>ZipCode_Utility_Junction__c-ZipCode Utility Junction Layout</layout>
+    </layoutAssignments>
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>false</allowDelete>
@@ -46121,15 +46160,6 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Utility_NMC_Tariff__c</object>
-        <viewAllRecords>false</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>false</allowCreate>
-        <allowDelete>false</allowDelete>
-        <allowEdit>false</allowEdit>
-        <allowRead>false</allowRead>
-        <modifyAllRecords>false</modifyAllRecords>
-        <object>ZipCode_Utility_Junction__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <pageAccesses>

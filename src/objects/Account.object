@@ -443,11 +443,11 @@
         <externalId>false</externalId>
         <formula>&quot;&amp;solmgr=1&quot; + 
 &quot;&amp;id=&quot; + Id + 
-&quot;&amp;templateid=a2Fq0000002FqCt&quot; + 
+&quot;&amp;templateid=a2F0a000001ZcDO&quot; + 
 &quot;&amp;ofn=&quot; + TEXT(TODAY()) + &quot; 67 Days No Fee CS Delinquency Letters&quot; + 
 &quot;&amp;APDF=1&quot; + 
 &quot;&amp;QMode=1&quot; + 
-&quot;&amp;ContentWorkspaceId=058q0000000A8JS&quot; + 
+&quot;&amp;ContentWorkspaceId=0580a0000001Ji4&quot; + 
 &quot;&amp;DefaultPDF=1&quot; + 
 &quot;&amp;ZipPDFs=0&quot; + 
 &quot;&amp;ac0=1&quot; + 
@@ -470,11 +470,11 @@
         <externalId>false</externalId>
         <formula>&quot;&amp;solmgr=1&quot; + 
 &quot;&amp;id=&quot; + Id + 
-&quot;&amp;templateid=a2Fq0000002FqCy&quot; + 
+&quot;&amp;templateid=a2F0a000001ZcDJ&quot; + 
 &quot;&amp;ofn=&quot; + TEXT(TODAY()) + &quot; 67 Days with fee CS Delinquency Letters&quot; + 
 &quot;&amp;APDF=1&quot; + 
 &quot;&amp;QMode=1&quot; + 
-&quot;&amp;ContentWorkspaceId=058q0000000A8JS&quot; + 
+&quot;&amp;ContentWorkspaceId=a270a000000NDzm&quot; + 
 &quot;&amp;DefaultPDF=1&quot; + 
 &quot;&amp;ZipPDFs=0&quot; + 
 &quot;&amp;ac0=1&quot; + 
@@ -911,23 +911,23 @@ Days_Past_Due__c = 90)</formula>
 &quot;&amp;templateid=&quot; + IF( 
 CONTAINS(TEXT((Client_Brand_Key__c)),&quot;Bluewave&quot;), 
 CASE(Days_Past_Due__c, 
-30,&quot;a2F29000000GaSC&quot;, 
-45,&quot;a2F29000000GaSG&quot;, 
-88,&quot;a2F29000000GaSF&quot;, 
+30,&quot;a2F0a000001ZcCz&quot;, 
+45,&quot;a2F0a000001ZcD4&quot;, 
+88,&quot;a2F0a000001ZcDT&quot;, 
 &quot;&quot;), 
 IF( 
 CONTAINS(TEXT((Client_Brand_Key__c)),&quot;Amp&quot;), 
 CASE(Days_Past_Due__c, 
-30,&quot;a2F29000000GaSB&quot;, 
-45,&quot;a2F29000000GaSD&quot;, 
-88,&quot;a2F29000000GaSE&quot;, 
+30,&quot;a2F0a000001ZcCu&quot;, 
+45,&quot;a2F0a000001ZcD9&quot;, 
+88,&quot;a2F0a000001ZcDY&quot;, 
 &quot;&quot;), 
 &quot;&quot;)) 
 + 
 &quot;&amp;ofn=&quot; + TEXT(TODAY()) + &quot; CS Delinquency Letters&quot; + 
 &quot;&amp;APDF=1&quot; + 
 &quot;&amp;QMode=1&quot; + 
-&quot;&amp;ContentWorkspaceId=05829000000Ck1e&quot; + 
+&quot;&amp;ContentWorkspaceId=0580a0000001Ji4&quot; + 
 &quot;&amp;DefaultPDF=1&quot; + 
 &quot;&amp;ZipPDFs=0&quot; + 
 &quot;&amp;ac0=1&quot; + 

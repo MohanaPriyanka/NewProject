@@ -727,6 +727,7 @@ The Whole Enchilada: All notifications (Default)</inlineHelpText>
         <columns>CORE.USERS.ACTIVE</columns>
         <columns>CORE.PROFILE.NAME</columns>
         <columns>MANAGER</columns>
+        <columns>License_Type__c</columns>
         <filterScope>Everything</filterScope>
         <filters>
             <field>CORE.PROFILE.NAME</field>
