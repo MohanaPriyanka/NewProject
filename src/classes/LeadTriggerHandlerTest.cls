@@ -865,8 +865,6 @@ public class LeadTriggerHandlerTest {
             Value_of_Net_Metering_Credit__c = .70578,
             Name = 'Eversource G1',
             Utility_Relationship__c = eversourceId,
-            Size_Ratio__c = 1.3,
-            Product__c = productId,
             Customer_Type__c = 'Non-Residential',
             Maximum_kWh__c = 10000,
             Date__c = Date.today()
@@ -875,8 +873,6 @@ public class LeadTriggerHandlerTest {
             Value_of_Net_Metering_Credit__c = .70578,
             Name = 'Eversource G2',
             Utility_Relationship__c = eversourceId,
-            Size_Ratio__c = 1.4,
-            Product__c = productId,
             Customer_Type__c = 'Non-Residential',
             Minimum_kWh__c = 10000,
             Date__c = Date.today()
@@ -885,8 +881,6 @@ public class LeadTriggerHandlerTest {
             Value_of_Net_Metering_Credit__c = .70578,
             Name = 'Eversource R1',
             Utility_Relationship__c = eversourceId,
-            Size_Ratio__c = 1.5,
-            Product__c = productId,
             Customer_Type__c = 'Residential',
             Date__c = Date.today()
         );
@@ -894,8 +888,6 @@ public class LeadTriggerHandlerTest {
             Value_of_Net_Metering_Credit__c = .70578,
             Name = 'National Grid G1',
             Utility_Relationship__c = nationalGridId,
-            Size_Ratio__c = 1.55,
-            Product__c = productId,
             Customer_Type__c = 'Non-Residential',
             Maximum_kWh__c = 10000,
             Date__c = Date.today()
@@ -904,8 +896,6 @@ public class LeadTriggerHandlerTest {
             Value_of_Net_Metering_Credit__c = .70578,
             Name = 'National Grid G2',
             Utility_Relationship__c = nationalGridId,
-            Size_Ratio__c = 1.45,
-            Product__c = productId,
             Customer_Type__c = 'Non-Residential',
             Minimum_kWh__c = 10000,
             Date__c = Date.today()
@@ -914,13 +904,47 @@ public class LeadTriggerHandlerTest {
             Value_of_Net_Metering_Credit__c = .70578,
             Name = 'National Grid R1',
             Utility_Relationship__c = nationalGridId,
-            Size_Ratio__c = 1.35,
-            Product__c = productId,
             Customer_Type__c = 'Residential',
             Date__c = Date.today()
         );
+
         insert new List<Utility_NMC_Tariff__c>{
             eversourceG1, eversourceG2, eversourceR1, nationalGridG1, nationalGridG2, nationalGridR1
+        };
+
+        Product_Tariff__c smartER1 = new Product_Tariff__c(
+            Product__c = productId,
+            Utility_NMC_Tariff__c = eversourceR1.Id,
+            Size_Ratio__c = 1.5
+        );
+        Product_Tariff__c smartEG1 = new Product_Tariff__c(
+            Product__c = productId,
+            Utility_NMC_Tariff__c = eversourceG1.Id,
+            Size_Ratio__c = 1.4
+        );
+        Product_Tariff__c smartEG2 = new Product_Tariff__c(
+            Product__c = productId,
+            Utility_NMC_Tariff__c = eversourceG2.Id,
+            Size_Ratio__c = 1.3
+        );
+        Product_Tariff__c smartNGR1 = new Product_Tariff__c(
+            Product__c = productId,
+            Utility_NMC_Tariff__c = nationalGridR1.Id,
+            Size_Ratio__c = 1.35
+        );
+        Product_Tariff__c smartNGG1 = new Product_Tariff__c(
+            Product__c = productId,
+            Utility_NMC_Tariff__c = nationalGridG1.Id,
+            Size_Ratio__c = 1.45
+        );
+        Product_Tariff__c smartNGG2 = new Product_Tariff__c(
+            Product__c = productId,
+            Utility_NMC_Tariff__c = nationalGridG2.Id,
+            Size_Ratio__c = 1.55
+        );
+
+        insert new List<Product_Tariff__c>{
+            smartER1, smartEG1, smartEG2, smartNGR1, smartNGG1, smartNGG2
         };
     }
 }

@@ -367,6 +367,19 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Product_Tariff__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Product Tariff</label>
+        <referenceTo>Product_Tariff__c</referenceTo>
+        <relationshipLabel>Utility Account Logs</relationshipLabel>
+        <relationshipName>Utility_Account_Logs</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Proposed_kWh__c</fullName>
         <description>Is equal to Annual kWh * ual.Tariff.Sizing_Ratio</description>
         <externalId>false</externalId>
