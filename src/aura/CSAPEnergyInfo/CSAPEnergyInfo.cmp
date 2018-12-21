@@ -164,6 +164,7 @@
                     </aura:if>
                   </lightning:layoutItem>
                 </aura:if>
+                <aura:if isTrue="{!v.lead.LASERCA__Home_State__c != 'NY'}">
                 <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
                   <lightning:select aura:id="field" name="haveSolarPanelsOnPropertySelectList"
                                     label="Do you have solar panels on your property?"
@@ -175,7 +176,7 @@
                   </lightning:select>
                 </lightning:layoutItem>
                 <lightning:layoutItem padding="left-small" size="12" smallDeviceSize="12" mediumDeviceSize="12"/>
-
+                </aura:if>
                 <aura:if isTrue="{!v.lead.Loan_System_Information__c == 'Yes'}">
                   <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
                     <lightning:input aura:id="field" name="leadEstimatedInstallDate"
