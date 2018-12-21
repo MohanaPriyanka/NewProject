@@ -22,7 +22,7 @@ public without sharing class CSSubscriptionEnroller {
     private List<Id> oppIdList;
     private List<Lead> leads;
     private Boolean skipContractSend = false;
-    private Map<Id, List<Utility_NMC_Tariff__c>> tariffsByProduct;
+    private Map<Id, List<Product_Tariff__c>> tariffsByProduct;
 
 
     public CSSubscriptionEnroller(List<Lead> leads, Boolean skipContractSend) {
@@ -78,17 +78,19 @@ public without sharing class CSSubscriptionEnroller {
 
         List<Product2> products = [
             SELECT Id, Program__c,
-                (SELECT Id, Name, Size_Ratio__c, Customer_Type__c, Minimum_kWh__c, Maximum_kWh__c, Utility_Relationship__c
-                FROM Utility_NMC_Tariffs__r)
+                (SELECT Id, Name, Size_Ratio__c, Utility_NMC_Tariff__r.Customer_Type__c,
+                    Utility_NMC_Tariff__r.Minimum_kWh__c, Utility_NMC_Tariff__r.Maximum_kWh__c,
+                    Utility_NMC_Tariff__r.Utility_Relationship__c
+                FROM Product_Tariffs__r)
             FROM Product2
             WHERE Product_Type__c = 'Community Solar'
         ];
 
         productsMap = new Map<Id, Product2>();
-        tariffsByProduct = new Map<Id, List<Utility_NMC_Tariff__c>>();
+        tariffsByProduct = new Map<Id, List<Product_Tariff__c>>();
         for (Product2 product : products) {
             productsMap.put(product.Id, product);
-            tariffsByProduct.put(product.Id, product.Utility_NMC_Tariffs__r);
+            tariffsByProduct.put(product.Id, product.Product_Tariffs__r);
         }
 
         leadOppsMap = new Map<Id, List<Opportunity>>();
@@ -231,10 +233,11 @@ public without sharing class CSSubscriptionEnroller {
         List<Utility_Account_Log__c> uals = getUALList(lead);
         Product2 product = productsMap.get(lead.Product__c);
         for (Utility_Account_Log__c ual : uals) {
-            List<Utility_NMC_Tariff__c> productTariffs = tariffsByProduct.get(lead.Product__c);
-            Utility_NMC_Tariff__c tariff = assignUtilityTariff(ual, lead, productTariffs);
+            List<Product_Tariff__c> productTariffs = tariffsByProduct.get(lead.Product__c);
+            Product_Tariff__c tariff = assignUtilityTariff(ual, lead, productTariffs);
             if (tariff != null && product != null && ual.Annual_kWh__c != null) {
-                ual.Utility_NMC_Tariff__c = tariff.Id;
+                ual.Utility_NMC_Tariff__c = tariff.Utility_NMC_Tariff__c;
+                ual.Product_Tariff__c = tariff.Id;
                 // Currently, we only need to have a sizing ratio for SMART
                 ual.Proposed_kWh__c = ual.Annual_kWh__c * tariff.Size_Ratio__c;
             } else {
@@ -245,13 +248,13 @@ public without sharing class CSSubscriptionEnroller {
         ualsByLeadId.put(lead.Id, uals);
     }
 
-    public static Utility_NMC_Tariff__c assignUtilityTariff(Utility_Account_Log__c ual, Lead lead, List<Utility_NMC_Tariff__c> tariffs) {
-        Utility_NMC_Tariff__c assignedTariff;
-        for (Utility_NMC_Tariff__c tariff : tariffs) {
-            if (lead.Customer_type__c == tariff.Customer_type__c
-                && lead.Utility_relationship__c == tariff.Utility_Relationship__c
-                && (tariff.Maximum_kWh__c == null || ual.Annual_kWh__c < tariff.Maximum_kWh__c)
-                && (tariff.Minimum_kWh__c == null || ual.Annual_kWh__c >= tariff.Minimum_kWh__c)) {
+    public static Product_Tariff__c assignUtilityTariff(Utility_Account_Log__c ual, Lead lead, List<Product_Tariff__c> tariffs) {
+        Product_Tariff__c assignedTariff;
+        for (Product_Tariff__c tariff : tariffs) {
+            if (lead.Customer_type__c == tariff.Utility_NMC_Tariff__r.Customer_type__c
+                && lead.Utility_relationship__c == tariff.Utility_NMC_Tariff__r.Utility_Relationship__c
+                && (tariff.Utility_NMC_Tariff__r.Maximum_kWh__c == null || ual.Annual_kWh__c < tariff.Utility_NMC_Tariff__r.Maximum_kWh__c)
+                && (tariff.Utility_NMC_Tariff__r.Minimum_kWh__c == null || ual.Annual_kWh__c >= tariff.Utility_NMC_Tariff__r.Minimum_kWh__c)) {
                 if (assignedTariff == null) {
                     assignedTariff = tariff;
                 } else {

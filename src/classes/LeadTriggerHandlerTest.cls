@@ -31,35 +31,35 @@ public class LeadTriggerHandlerTest {
 
         Product2 csProduct = new Product2(
             Name = 'Community Solar - SREC 16-01',
-                              Family = 'Community Solar',
-                              Product_Type__c = 'Community Solar',
+            Family = 'Community Solar',
+            Product_Type__c = 'Community Solar',
             Program__c = 'SREC - Community Solar',
-                              State__c = 'MA',
-                              ProductCode = 'CS - BlueWave - 10%',
-                              IsActive = True,
-                              Lender_of_Record__c = 'BlueWave',
-                              NMC_Discount__c = 10,
-                              Annual_kWh_Maximum__c = 100000000,
+            State__c = 'MA',
+            ProductCode = 'CS - BlueWave - 10%',
+            IsActive = True,
+            Lender_of_Record__c = 'BlueWave',
+            NMC_Discount__c = 10,
+            Annual_kWh_Maximum__c = 100000000,
             Customer_Subscription_Type__c = 'Electricity Cost ($)',
-                              NM_Rate_Floor__c = 0,
-                              Monthly_Late_Fee__c = 1);
+            NM_Rate_Floor__c = 0,
+            Monthly_Late_Fee__c = 1);
         insert csProduct;
 
         Shared_Solar_System__c sss1 = new Shared_Solar_System__c(
             Name = 'Oxford Barrett St. P1',
-                                                                                                                                Service_Territories__c = 'WCMA; SEMA',
-                                                                                                                                Open__c = true,
-                                                                                                                                Reserved_Capacity_kW_DC__c = '0',
-                                                                                                                                Capacity_Committed_kW_DC__c = 0,
-                                                                                                                                Total_System_Size_kWh_DC__c = 1445.86,
-                                                                                                                                Total_System_Size_kW_AC__c  = 996,
+            Service_Territories__c = 'WCMA; SEMA',
+            Open__c = true,
+            Reserved_Capacity_kW_DC__c = '0',
+            Capacity_Committed_kW_DC__c = 0,
+            Total_System_Size_kWh_DC__c = 1445.86,
+            Total_System_Size_kW_AC__c  = 996,
                                                                                                                                 Utility__c = nationalgrid.Id,
-                                                                                                                                Credit_Score_Requirement__c = 200,
-                                                                                                                                Assignment_order__c = '1',
-                                                                                                                                Utility_NMC_Tariff__c = nmcRate.Id,
-                                                                                                                                Product__c = csProduct.Id,
-                                                                                                                                Expected_Yield_kWh_kW__c = 1300,
-                                                                                                                                Assemblage_Count__c = 1,  
+            Credit_Score_Requirement__c = 200,
+            Assignment_order__c = '1',
+            Utility_NMC_Tariff__c = nmcRate.Id,
+            Product__c = csProduct.Id,
+            Expected_Yield_kWh_kW__c = 1300,
+            Assemblage_Count__c = 1,
             Maximum_Subscription_Assemblage__c = 25
         );
 
@@ -120,14 +120,14 @@ public class LeadTriggerHandlerTest {
 
         Utility_Account_Log__c ual = new Utility_Account_Log__c(
             Lead__c = lead.Id,
-                                                                                                                  Annual_Cost_of_Electricity__c = 10000,
+            Annual_Cost_of_Electricity__c = 10000,
             Name_on_Account__c = 'Joey Chan'
         );
         insert ual;
         
         Utility_Account_Log__c ual2 = new Utility_Account_Log__c(
             Lead__c = lead2.Id,
-                                                                 Annual_Cost_of_Electricity__c = 10000,
+            Annual_Cost_of_Electricity__c = 10000,
             Name_on_Account__c = 'Joey Chan'
         );
         insert ual2;
@@ -865,8 +865,6 @@ public class LeadTriggerHandlerTest {
             Value_of_Net_Metering_Credit__c = .70578,
             Name = 'Eversource G1',
             Utility_Relationship__c = eversourceId,
-            Size_Ratio__c = 1.3,
-            Product__c = productId,
             Customer_Type__c = 'Non-Residential',
             Maximum_kWh__c = 10000,
             Date__c = Date.today()
@@ -875,8 +873,6 @@ public class LeadTriggerHandlerTest {
             Value_of_Net_Metering_Credit__c = .70578,
             Name = 'Eversource G2',
             Utility_Relationship__c = eversourceId,
-            Size_Ratio__c = 1.4,
-            Product__c = productId,
             Customer_Type__c = 'Non-Residential',
             Minimum_kWh__c = 10000,
             Date__c = Date.today()
@@ -885,8 +881,6 @@ public class LeadTriggerHandlerTest {
             Value_of_Net_Metering_Credit__c = .70578,
             Name = 'Eversource R1',
             Utility_Relationship__c = eversourceId,
-            Size_Ratio__c = 1.5,
-            Product__c = productId,
             Customer_Type__c = 'Residential',
             Date__c = Date.today()
         );
@@ -894,8 +888,6 @@ public class LeadTriggerHandlerTest {
             Value_of_Net_Metering_Credit__c = .70578,
             Name = 'National Grid G1',
             Utility_Relationship__c = nationalGridId,
-            Size_Ratio__c = 1.55,
-            Product__c = productId,
             Customer_Type__c = 'Non-Residential',
             Maximum_kWh__c = 10000,
             Date__c = Date.today()
@@ -904,8 +896,6 @@ public class LeadTriggerHandlerTest {
             Value_of_Net_Metering_Credit__c = .70578,
             Name = 'National Grid G2',
             Utility_Relationship__c = nationalGridId,
-            Size_Ratio__c = 1.45,
-            Product__c = productId,
             Customer_Type__c = 'Non-Residential',
             Minimum_kWh__c = 10000,
             Date__c = Date.today()
@@ -914,13 +904,47 @@ public class LeadTriggerHandlerTest {
             Value_of_Net_Metering_Credit__c = .70578,
             Name = 'National Grid R1',
             Utility_Relationship__c = nationalGridId,
-            Size_Ratio__c = 1.35,
-            Product__c = productId,
             Customer_Type__c = 'Residential',
             Date__c = Date.today()
         );
+
         insert new List<Utility_NMC_Tariff__c>{
             eversourceG1, eversourceG2, eversourceR1, nationalGridG1, nationalGridG2, nationalGridR1
+        };
+
+        Product_Tariff__c smartER1 = new Product_Tariff__c(
+            Product__c = productId,
+            Utility_NMC_Tariff__c = eversourceR1.Id,
+            Size_Ratio__c = 1.5
+        );
+        Product_Tariff__c smartEG1 = new Product_Tariff__c(
+            Product__c = productId,
+            Utility_NMC_Tariff__c = eversourceG1.Id,
+            Size_Ratio__c = 1.4
+        );
+        Product_Tariff__c smartEG2 = new Product_Tariff__c(
+            Product__c = productId,
+            Utility_NMC_Tariff__c = eversourceG2.Id,
+            Size_Ratio__c = 1.3
+        );
+        Product_Tariff__c smartNGR1 = new Product_Tariff__c(
+            Product__c = productId,
+            Utility_NMC_Tariff__c = nationalGridR1.Id,
+            Size_Ratio__c = 1.35
+        );
+        Product_Tariff__c smartNGG1 = new Product_Tariff__c(
+            Product__c = productId,
+            Utility_NMC_Tariff__c = nationalGridG1.Id,
+            Size_Ratio__c = 1.45
+        );
+        Product_Tariff__c smartNGG2 = new Product_Tariff__c(
+            Product__c = productId,
+            Utility_NMC_Tariff__c = nationalGridG2.Id,
+            Size_Ratio__c = 1.55
+        );
+
+        insert new List<Product_Tariff__c>{
+            smartER1, smartEG1, smartEG2, smartNGR1, smartNGG1, smartNGG2
         };
     }
 }
