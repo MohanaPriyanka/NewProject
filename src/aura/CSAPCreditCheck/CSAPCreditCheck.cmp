@@ -20,8 +20,7 @@
     <div aria-labelledby="ssnForm">
         <fieldset class="slds-box slds-theme--default slds-contstaainer_center">
         <legend id="ssnForm" class="slds-text-heading--small slds-p-vertical--medium slds-section__title--large slds-align_absolute-center">
-          <b class="slds-section__title--large">We need to check that you qualify for </b>
-          <b class="slds-section__title--large--stream">Community Solar</b>
+          <b class="slds-section__title--large">We need to check that you qualify for Community Solar</b>
         </legend>
         <form class="slds-form--stacked">
           <lightning:layout multipleRows="true">
@@ -108,9 +107,7 @@
     <div aria-labelledby="informationConfirmationForm">
         <fieldset class="slds-box slds-theme--default slds-container_center">
         <legend id="informationConfirmationForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-          <b class="slds-section__title--large">Please</b>
-          <b class="slds-section__title--large--stream"> verify your information</b>
-          <b class="slds-section__title--large"> is correct before we check your score.</b>
+          <b class="slds-section__title--large">Please verify your information is correct before we check your score.</b>
         </legend>
 
         <form class="slds-form--stacked">
@@ -215,12 +212,16 @@
         <lightning:layout aura:id="passedCreditText" class="animated" multipleRows="true" horizontalAlign="center">
           <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
             <div class="slds-align--absolute-center">
-              <p><b class="slds-text-body--xx_large--stream animated">Congratulations!</b></p>&nbsp;
-              <p><b class="slds-text-body--large--blue">You qualify for </b></p>&nbsp;
-              <p><b class="slds-text-body--large--stream"> Community Solar </b></p>&nbsp;
-              <p><b class="slds-text-body--large--blue"> in your area! </b></p>
+              <p><b class="slds-text-body--xx_large--stream animated">Congratulations!</b></p>
             </div>
           </lightning:layoutItem>
+          <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+            <div class="slds-align--absolute-center">
+              <p><b class="slds-text-body--large--blue">You qualify for Community Solar in your area! </b></p>
+            </div>
+          </lightning:layoutItem>
+        </lightning:layout>
+        <lightning:layout aura:id="passedCreditText" class="animated" multipleRows="true" horizontalAlign="center">
           <aura:if isTrue="{!v.showProgramPicklist}">
             <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
               <lightning:select  aura:id="field" name="programPicklist"
@@ -233,7 +234,7 @@
               </lightning:select>
             </lightning:layoutItem>
           </aura:if>
-          <aura:if isTrue="{!or(not(v.showProgramPicklist), and(v.showProgramPicklist, not(empty(v.lead.Product__c))))}">
+            <aura:if isTrue="{!or(not(v.showProgramPicklist), and(v.showProgramPicklist, not(empty(v.lead.Product__c))))}">
             <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12" >
               <div class="slds-align--absolute-center">
                 <lightning:button label="Continue" onclick="{!c.finishStage}"/>
