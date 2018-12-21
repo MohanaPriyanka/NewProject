@@ -356,8 +356,8 @@ public without sharing class CommunitySolarCustomerPortalTest {
                 EmailEncodingKey = 'ISO-8859-1',
                 LanguageLocaleKey = 'en_US'
             );
-            insert new List<User>{communityUser, partnerLoginUser, partnerUser};
-
+            Util.insertSObjs(new List<User>{communityUser, partnerLoginUser, partnerUser});
+            
             PackageLicense pl = [   SELECT Id
                                     FROM PackageLicense
                                     WHERE NamespacePrefix = 'ChargentOrders'];
