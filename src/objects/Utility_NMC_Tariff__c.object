@@ -495,20 +495,6 @@ IF( ISPICKVAL(Class__c, &quot;Class 3&quot;), (Transmission_Charge__c +  Transit
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Product__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <inlineHelpText>Used to relate an NMC Tariff to a product for subscription sizing purposes</inlineHelpText>
-        <label>Product</label>
-        <referenceTo>Product2</referenceTo>
-        <relationshipLabel>Utility NMC Tariffs</relationshipLabel>
-        <relationshipName>Utility_NMC_Tariffs</relationshipName>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>September_Previous_Year__c</fullName>
         <externalId>false</externalId>
         <label>September (Previous Year)</label>
@@ -529,19 +515,6 @@ IF( ISPICKVAL(Class__c, &quot;Class 3&quot;), (Transmission_Charge__c +  Transit
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Size_Ratio__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Used to size customers on kWh subscriptions</inlineHelpText>
-        <label>Size Ratio</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>8</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Sizing_Rate__c</fullName>

@@ -390,14 +390,6 @@
         <relatedList>Partner_Product_Junction__c.Enabled_Product__c</relatedList>
     </relatedLists>
     <relatedLists>
-        <fields>NAME</fields>
-        <fields>Customer_Type__c</fields>
-        <fields>Minimum_kWh__c</fields>
-        <fields>Maximum_kWh__c</fields>
-        <fields>Size_Ratio__c</fields>
-        <relatedList>Utility_NMC_Tariff__c.Product__c</relatedList>
-    </relatedLists>
-    <relatedLists>
         <relatedList>RelatedFileList</relatedList>
     </relatedLists>
     <relatedLists>
@@ -432,6 +424,11 @@
         <fields>CREATED_DATE</fields>
         <fields>Link_to_File__c</fields>
         <relatedList>Quick_Sales_Sheet__c.Product__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>Size_Ratio__c</fields>
+        <relatedList>Product_Tariff__c.Product__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
