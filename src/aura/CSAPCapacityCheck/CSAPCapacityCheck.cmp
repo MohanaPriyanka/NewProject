@@ -60,11 +60,11 @@
             </lightning:layoutItem>
             <aura:set attribute="else">
               <div class="slds-align--absolute-center slds-text-body--large--blue">
-                <b>If you are not redirected in 5 seconds...</b>
+                <b>If you are not redirected in 5 seconds click the button below to continue the application</b>
               </div>
               <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12" >
                 <div class="slds-align--absolute-center">
-                  <lightning:button label="Click Here To Continue Application" onclick="{!c.skipToEnd}"/>
+                  <lightning:button label="Continue" onclick="{!c.skipToEnd}"/>
                 </div>
               </lightning:layoutItem>
             </aura:set>
