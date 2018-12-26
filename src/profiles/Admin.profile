@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Profile xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Admin</fullName>
     <applicationVisibilities>
         <application>BlueWave_Finance_Group</application>
         <default>false</default>
@@ -25741,6 +25742,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Product_Tariff__c.Product__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Product_Tariff__c.Size_Ratio__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Project_Assemblage__c.Assemblage_Relationship__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -30756,6 +30767,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Utility_NMC_Tariff__c.Customer_Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Utility_NMC_Tariff__c.Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -30856,12 +30872,22 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Utility_NMC_Tariff__c.Maximum_kWh__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Utility_NMC_Tariff__c.May_Previous_Year__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility_NMC_Tariff__c.May__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility_NMC_Tariff__c.Minimum_kWh__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -30885,6 +30911,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_NMC_Tariff__c.Product__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Utility_NMC_Tariff__c.September_Previous_Year__c</field>
         <readable>true</readable>
@@ -30893,6 +30924,11 @@
         <editable>true</editable>
         <field>Utility_NMC_Tariff__c.September__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_NMC_Tariff__c.Size_Ratio__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -30927,6 +30963,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility_NMC_Tariff__c.Transmission_kWh_Charge__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility_NMC_Tariff__c.Utility_Relationship__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -47306,6 +47347,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>Product_Release__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>Product_Tariff__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
