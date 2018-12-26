@@ -2010,7 +2010,7 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <filters>
             <field>CORE.USERS.ALIAS</field>
             <operation>contains</operation>
-            <value>Partner,law,fala,dew,jberg,jlu</value>
+            <value>Partner,law,mzhe,dew,jberg,jlu</value>
         </filters>
         <filters>
             <field>CASES.SUBJECT</field>
