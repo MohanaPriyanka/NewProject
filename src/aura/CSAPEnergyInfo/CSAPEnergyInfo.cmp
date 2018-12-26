@@ -33,8 +33,7 @@
         <div aria-labelledby="utilityAccountInformationForm">
           <fieldset class="slds-box slds-theme--default slds-container_center">
             <legend id="utilityAccountInformationForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-              <b class="slds-section__title--large">Now we need some information about your </b>
-              <b class="slds-section__title--large--stream">Utility Account</b>
+              <b class="slds-section__title--large">Now we need some information about your Utility Account</b>
             </legend>
 
             <div class="slds-p-around--small slds-text-body--regular">
@@ -107,11 +106,7 @@
         <div aria-labelledby="GridUsageHistoryForm">
           <fieldset class="slds-box slds-theme--default slds-container_center">
             <legend id="gridUsageHistoryForm" class="slds-text-heading--small slds-p-vertical--medium slds-section__title--large slds-align_absolute-center">
-              <b class="slds-section__title--large">To give you the right amount of</b>
-              <b class="slds-section__title--large--stream"> solar </b>
-              <b class="slds-section__title--large">we also need your</b>&nbsp;
-              <b class="slds-section__title--large--stream">{!v.lead.Electricity_Provider__c} </b>&nbsp;
-              <b class="slds-section__title--large">energy usage history</b>
+              <b class="slds-section__title--large">To give you the right amount of solar we also need your energy usage history</b>
             </legend>
             <lightning:layout multipleRows="true">
               <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
@@ -228,8 +223,7 @@
         <div aria-labelledby="uaServiceAddressForm">
           <fieldset class="slds-box slds-theme--default slds-container_center">
             <legend id="uaServiceAddressForm" class="slds-text-heading--small slds-p-vertical--medium slds-section__title--large slds-align_absolute-center">
-              <b class="slds-section__title--large"> Please provide your Utility Account</b>
-              <b class="slds-section__title--large--stream"> Service Address</b>
+              <b class="slds-section__title--large"> Please provide your Utility Account Service Address</b>
             </legend>
 
             <div class="slds-p-around--small slds-text-body--regular">
@@ -284,11 +278,12 @@
       </aura:if>
       <aura:if isTrue="{!v.page == 'AddMoreUAL'}">
         <div aria-labelledby="addToApplicationForm">
-          <fieldset class="slds-form-element slds-align_absolute-center">
-            <legend class="slds-form-element__legend slds-form-element__label slds-align_absolute-center slds-m-bottom_small">
-              <b class="slds-section__title--large--stream">Do you have any additional Utility Accounts at this Property?</b>
+          <fieldset class="slds-box slds-theme--default slds-container_center">
+            <legend id="ApplyingFor" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
+              <b class="slds-section__title--large">Do you have any additional Utility Accounts at this Property?</b>
             </legend>
-            <div class="slds-form-element__control slds-align_absolute-center">
+            <lightning:layout multipleRows="true" horizontalAlign="center">
+              <lightning:layoutItem size="3" smallDeviceSize="6" mediumDeviceSize="3">
               <aura:if isTrue="{!v.lead.Status == 'Qualified'}">
                 <div class="slds-visual-picker slds-visual-picker_large">
                   <a onclick="{!c.addUAL}">
@@ -306,7 +301,8 @@
                   </a>
                 </div>
               </aura:if>
-            </div>
+              </lightning:layoutItem>
+            </lightning:layout>
           </fieldset>
         </div>
 

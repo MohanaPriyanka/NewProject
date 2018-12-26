@@ -4631,7 +4631,7 @@ IF(INCLUDES(  Utility_1__c , &quot;SCE&amp;G&quot;), &quot;SCE&amp;G&quot;,
         <fullName>Utility_relationship__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <label>Utility</label>
+        <label>Utility Partner</label>
         <referenceTo>Utility__c</referenceTo>
         <relationshipLabel>Leads</relationshipLabel>
         <relationshipName>Leads</relationshipName>

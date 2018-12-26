@@ -21,11 +21,11 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Proposed_kWh__c</field>
+                <field>Utility_NMC_Tariff__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Utility_NMC_Tariff__c</field>
+                <field>Product_Tariff__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -127,6 +127,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Annual_kWh__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Proposed_kWh__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
