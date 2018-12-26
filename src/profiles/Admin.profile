@@ -9293,6 +9293,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>APXT_BPM__Conductor_Region__mdt.APXT_BPM__Hostname__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>APXT_BPM__Conductor_Setting__mdt.APXT_BPM__Conductor_Region__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>APXT_BPM__Conductor__c.APXT_BPM__Conductor_Environment__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9759,7 +9769,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Do_not_Send_Bills__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -10899,7 +10909,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account_Bill__c.Past_Overpayment_and_Overdue__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -10925,6 +10935,11 @@
         <editable>false</editable>
         <field>Account_Bill__c.Payments_Net_Previous_Balances__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account_Bill__c.Previous_Account_Balance_Net_Payments__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -12354,7 +12369,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Campaign.Launch_Conga__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -13629,7 +13644,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>ChargentOrders__ChargentOrder__c.Lead__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -14834,7 +14849,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contact.Employed__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -14844,7 +14859,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contact.Employer_Annual_Salary__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -15014,22 +15029,22 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contact.Monthly_Income_2__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Contact.Monthly_Income_Details_2__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Contact.Monthly_Income_Details__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Contact.Monthly_Income__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -15059,7 +15074,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contact.Other_Income__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -15119,12 +15134,12 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contact.Retired__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Contact.Retirement_Annual_Salary__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -15134,12 +15149,12 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contact.Self_Employed__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Contact.Self_Employment_Annual_Salary__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -15164,12 +15179,12 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contact.Veteran_Annual_Salary__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Contact.Veteran_Disability__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -16944,6 +16959,41 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Invoice__c.Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Knowledge__kav.Answer__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Knowledge__kav.Cause__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Knowledge__kav.Environment__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Knowledge__kav.Internal_Notes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Knowledge__kav.Objective__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Knowledge__kav.Procedure__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Knowledge__kav.Resolution__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -18924,7 +18974,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Docs_Requested__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -18984,7 +19034,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Employer_Annual_Salary__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -19279,7 +19329,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.LoadZone__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -19529,7 +19579,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Other_Income__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -19764,7 +19814,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Retirement_Annual_Salary__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -19809,7 +19859,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Self_Employment_Annual_Salary__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -19979,7 +20029,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Veteran_Annual_Salary__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -20017,9 +20067,9 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Lead.ZipCode__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -21189,7 +21239,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Load_U__c.Utility_Junction_Count__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -42784,7 +42834,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Scrum_Team__c.agf__Velocity_Type__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -43149,27 +43199,27 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Sprint__c.agf__Committed_Items_Completed__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Sprint__c.agf__Committed_Items__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Sprint__c.agf__Committed_Points__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Sprint__c.agf__Committed_Story_Points_Completed__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Sprint__c.agf__Completed_Items__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -43179,22 +43229,22 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Sprint__c.agf__Completion_Committed_Items__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Sprint__c.agf__Completion_Committed_Story_Points__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Sprint__c.agf__Completion_Items__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Sprint__c.agf__Completion_Story_Points__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -43739,17 +43789,17 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Work_Commitment__c.agf__Committed_Story_Points__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Work_Commitment__c.agf__Sprint__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Work_Commitment__c.agf__Work__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -50794,7 +50844,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>et4ae5__Automated_Send__c.et4ae5__Preheader__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -51154,7 +51204,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>et4ae5__IndividualEmailResult__c.et4ae5__CampaignMemberId__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -51309,7 +51359,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>et4ae5__JB_Event__e.et4ae5__FutureContext__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -53371,6 +53421,9 @@
         <layout>Invoice__c-Invoice Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Knowledge__kav-Article Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Lead-BFG - Community Solar %28Commercial%29</layout>
         <recordType>Lead.BFG_Community_Solar_Anchor</recordType>
     </layoutAssignments>
@@ -54707,6 +54760,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>Invoice__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>Knowledge__kav</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>

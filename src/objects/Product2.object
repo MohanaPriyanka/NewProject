@@ -2017,6 +2017,9 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
         <columns>Maximum_Loan_Size__c</columns>
         <columns>State__c</columns>
         <columns>Loan_Interest_Rate__c</columns>
+        <columns>Docusign_Template_CoSigner__c</columns>
+        <columns>Contract_Docusign_Template__c</columns>
+        <columns>Docusign_Template_Joint__c</columns>
         <columns>Loan_Term__c</columns>
         <columns>Credit_Minimum__c</columns>
         <columns>Credit_Maximum__c</columns>
@@ -2024,9 +2027,6 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
         <columns>PRODUCT2.CREATED_DATE</columns>
         <columns>PRODUCT2.LAST_UPDATE</columns>
         <columns>Index_Rate_for_Adjustment__c</columns>
-        <columns>Docusign_Template_CoSigner__c</columns>
-        <columns>Contract_Docusign_Template__c</columns>
-        <columns>Docusign_Template_Joint__c</columns>
         <filterScope>Everything</filterScope>
         <filters>
             <field>Product_Type__c</field>
