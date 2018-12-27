@@ -80,7 +80,8 @@ public without sharing class OpportunityTriggerHandler {
 
         for (Opportunity newOpp : newOppMap.values()) {
             if (oldOppMap.get(newOpp.Id).Contract_Status__c != 'Completed'
-                && newOpp.Contract_Status__c == 'Completed'){
+                && newOpp.Contract_Status__c == 'Completed'
+                && !newOpp.Shared_Solar_System_Name__c.contains('Waitlist')){
                 parentAccountIdList.add(newOpp.Parent_Account__c);
             } else if (oldOppMap.get(newOpp.Id).Shared_Solar_System_Name__c.contains('Waitlist')
                 && !newOpp.Shared_Solar_System_Name__c.contains('Waitlist')) {
