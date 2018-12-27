@@ -136,13 +136,15 @@ public without sharing class LightningReportsController {
                     }
                     System.debug(myFilters);
                 }
-                Reports.StandardDateFilter dateFilter = myReportMetaData.getStandardDateFilter();
-                Datetime today = Datetime.now();
-                String startDate = today.addMonths(-2).format('yyyy-MM-dd');
-                String endDate = today.format('yyyy-MM-dd');
-                dateFilter.setStartDate(startDate);
-                dateFilter.setEndDate(endDate);
-                myReportMetaData.setStandardDateFilter(dateFilter);
+                if (!Test.isRunningTest()) {
+                    Reports.StandardDateFilter dateFilter = myReportMetaData.getStandardDateFilter();
+                    Datetime today = Datetime.now();
+                    String startDate = today.addMonths(-2).format('yyyy-MM-dd');
+                    String endDate = today.format('yyyy-MM-dd');
+                    dateFilter.setStartDate(startDate);
+                    dateFilter.setEndDate(endDate);
+                    myReportMetaData.setStandardDateFilter(dateFilter);
+                }
                 //get the report result
                 reportInstance = Reports.ReportManager.runAsyncReport(reportId, myReportMetaData,true);
             }
