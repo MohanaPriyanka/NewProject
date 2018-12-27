@@ -266,6 +266,11 @@ public without sharing class CSAPController {
     }
 
     @AuraEnabled
+    public static Utility__c getUtility (String utilityId) {
+        return [SELECT Id, Name FROM Utility__c WHERE Id =: utilityId];
+    }
+
+    @AuraEnabled
     public static Lead convertCSLead(Id leadId, String email) {
         Lead primaryLead = getLead(leadId, email);
         List<Lead> leads = [
