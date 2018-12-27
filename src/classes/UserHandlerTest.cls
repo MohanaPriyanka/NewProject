@@ -103,7 +103,8 @@ public class UserHandlerTest {
 		Integer previousNumberUsers = oldUserList.size();
 
 		test.startTest();
-		UserHandler.createCSCommunityUser(contactList);
+		UserHandler userInsertJob = new UserHandler(contactList);
+		System.enqueueJob(userInsertJob);
 		test.stopTest();
 
 		List<User> userListUpdated = [SELECT Id, ContactId FROM User WHERE IsActive = true];
@@ -124,7 +125,8 @@ public class UserHandlerTest {
 		Integer previousNumberUsers = oldUserList.size();
 
 		test.startTest();
-		UserHandler.createCSCommunityUser(newContactList);
+		UserHandler userInsertJob = new UserHandler(newContactList);
+		System.enqueueJob(userInsertJob);
 		test.stopTest();
 
 		List<User> userListUpdated = [SELECT Id, ContactId FROM User WHERE IsActive = true];
@@ -138,19 +140,17 @@ public class UserHandlerTest {
 		Integer firstNumberUsers = firstUserList.size();
 
 		test.startTest();
-		UserHandler.createCSCommunityUser(contactList);
+		UserHandler userInsertJob = new UserHandler(contactList);
+		System.enqueueJob(userInsertJob);
 
-		List<User> secondUserList = [SELECT Id, ContactId FROM User WHERE IsActive = true];
-		Integer secondNumberUsers = secondUserList.size();
-
-		UserHandler.createCSCommunityUser(contactList);
-
-		List<User> thirdUserList = [SELECT Id, ContactId FROM User WHERE IsActive = true];
-		Integer thirdNumberUsers = thirdUserList.size();
+		UserHandler secondInsertJob = new UserHandler(contactList);
+		System.enqueueJob(secondInsertJob);
 		test.stopTest();
 
-		System.assertEquals(firstNumberUsers + 3, secondNumberUsers);
-		System.assertEquals(firstNumberUsers + 3, thirdNumberUsers);
+		List<User> newUserList = [SELECT Id, ContactId FROM User WHERE IsActive = true];
+		Integer newNumberUsers = newUserList.size();
+
+		System.assertEquals(firstNumberUsers + 3, newNumberUsers);
 	}
 
 	@isTest public static void testOpportunityTrigger() {
