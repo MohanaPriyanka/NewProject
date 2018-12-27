@@ -1,15 +1,6 @@
 ({
     doInit: function(component, event, helper) {
         var leadId = component.get("v.leadId");
-        if(!leadId){
-            var lead = {"sobjectType": "Lead"};
-            helper.raiseNavEvent("COMPLETED", {"stageName": "NAV_Getting_Started", "lead": lead});
-            lead.Partner_Lookup__c = component.get("v.partnerId");
-            lead.bs_Sales_ID__c = component.get("v.salesRepId");
-            component.set("v.lead", lead);
-            component.set("v.STAGENAME", "NAV_Personal_Information");
-            component.set("v.page", "AboutYourself");
-        }
         if (component.get("v.abbrevStates") && component.get("v.abbrevStates").length === 0) {
             helper.getUSStates(component, "v.abbrevStates", true);
         }
@@ -82,7 +73,7 @@
     cancelAddProperty : function(component, event, helper) {
         if (confirm("Are you sure you want to cancel adding another Property?")) {
             var lead = component.get('v.lead');
-            var stageName = lead.CSAP_Stage__c;
+            var stageName = "NAV_Payment_Information";
             helper.closePageFireComplete(component, helper, stageName, lead);
         }
     },

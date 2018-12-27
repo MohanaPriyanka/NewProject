@@ -41,8 +41,7 @@
                     Application_Source_Phase_2__c : runCredit,
                     Credit_Check_Acknowledged__c : oldLead.Credit_Check_Acknowledged__c,
                     Product_line__c : 'Community Solar',
-                    OwnerId : oldLead.OwnerId,
-                    CSAP_Stage__c : oldLead.CSAP_Stage__c
+                    OwnerId : oldLead.OwnerId
                 };
                 component.set("v.lead", newLead);
 
@@ -53,6 +52,7 @@
                 stageChangeEvent.setParams({"eventType": "INITIATED"});
                 stageChangeEvent.setParams({"lead": newLead});
                 stageChangeEvent.fire();
+                component.set("v.page", 'AddressForm');
             } else if (resp.getState() === "ERROR") {
                 helper.logError("CSAPCompleteHelper", "getLeadRecord", resp.getError(), component.get("v.leadId"));
                 reject(resp.getError());

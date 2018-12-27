@@ -19,12 +19,12 @@
       <!--Add More Properties-->
       <aura:if isTrue="{!v.page == 'AddMore'}">
         <div aria-labelledby="addToApplicationForm">
-          <fieldset class="slds-form-element slds-align_absolute-center">
-            <legend class="slds-form-element__legend slds-form-element__label slds-align_absolute-center slds-m-bottom_small">
-              <b class="slds-section__title--large--stream">Would you like to add anything to your application?</b>
+          <fieldset class="slds-box slds-theme--default slds-container_center">
+            <legend id="ApplyingFor" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
+              <b class="slds-section__title--large">Would you like to add anything to your application?</b>
             </legend>
-            <div class="slds-form-element__control slds-align_absolute-center">
-
+            <lightning:layout multipleRows="true" horizontalAlign="center">
+              <lightning:layoutItem size="3" smallDeviceSize="6" mediumDeviceSize="3">
               <div class="slds-visual-picker slds-visual-picker_large">
                 <a onclick="{!c.addResidence}">
                   <label for="visual-picker-residential">
@@ -40,6 +40,8 @@
                   </label>
                 </a>
               </div>
+              </lightning:layoutItem>
+              <lightning:layoutItem size="3" smallDeviceSize="6" mediumDeviceSize="3">
               <div class="slds-visual-picker slds-visual-picker_large">
                 <a onclick="{!c.addBusiness}">
                   <label for="visual-picker-business">
@@ -55,7 +57,8 @@
                   </label>
                 </a>
               </div>
-            </div>
+              </lightning:layoutItem>
+            </lightning:layout>
           </fieldset>
         </div>
 
@@ -69,7 +72,7 @@
             <lightning:layout aura:id="passedCreditText" class="animated" multipleRows="true" horizontalAlign="center">
               <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
                 <div class="slds-align--absolute-center">
-                  <p><b class="slds-text-body--large--blue">Thanks for your Community Solar Application! We’ll send you your contract shortly!</b></p>
+                  <p><b class="slds-text-body--large--blue">Thanks for your Community Solar Application! We’ll email you your contract shortly!</b></p>
                 </div>
               </lightning:layoutItem>
               <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
