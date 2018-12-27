@@ -356,7 +356,8 @@ public without sharing class CommunitySolarCustomerPortalTest {
                 EmailEncodingKey = 'ISO-8859-1',
                 LanguageLocaleKey = 'en_US'
             );
-            insert new List<User>{communityUser, partnerLoginUser, partnerUser};
+            // To avoid UNABLE_TO_LOCK_ROW:
+            Util.insertSobjs(new list<User>{communityUser, partnerLoginUser, partnerUser});
 
             PackageLicense pl = [   SELECT Id
                                     FROM PackageLicense
@@ -484,7 +485,6 @@ public without sharing class CommunitySolarCustomerPortalTest {
             FROM System_Bill__c
             WHERE Account_Bill__r.Parent_Account__r.Parent_Account__c = : user.Contact.Account.Id
         ];
-        Test.stopTest();
 
         System.runAs(user) {
             String propertyAccount = 'All';
@@ -496,5 +496,6 @@ public without sharing class CommunitySolarCustomerPortalTest {
             // Goal of this method is to return an aggregate of the most recent system bills
             System.assertEquals(3, aggregateSystemBills.size());
         }
+        Test.stopTest();
     }
 }

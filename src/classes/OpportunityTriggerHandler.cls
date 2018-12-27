@@ -14,14 +14,13 @@ public without sharing class OpportunityTriggerHandler {
     public void OnBeforeInsert(List<Opportunity> newOppList){
         customIdSwapOpp(newOppList, null);
         mapDocuSignRS(newOppList, null);
-        mapContactReferralCode(newOppList);
         setLeadLookup(newOppList);
     }
 
     public void OnBeforeUpdate(List<Opportunity> oldOppList, List<Opportunity> updatedOppList, Map<ID, Opportunity> oldOppMap, Map<ID, Opportunity> newOppMap){
         customIdSwapOpp(updatedOppList, oldOppMap);
         mapDocuSignRS(updatedOppList, oldOppMap);
-        mapContactReferralCode(updatedOppList);
+        activatePortalUser(oldOppMap, newOppMap);
         updateInvoicedSubscription(oldOppMap, newOppMap);
     }
     
@@ -75,30 +74,30 @@ public without sharing class OpportunityTriggerHandler {
             }
         }
     }
-    public void mapContactReferralCode(List<Opportunity> oppList){
-        Set<String> emailList = new Set<String>();
-        Set<String> parentAccountIdSet = new Set<String>();
-        //instantiate the variables.
-        for (Opportunity opp : oppList) {
-            if (opp.Product_Line__c == 'Community Solar') {
-                emailList.add(opp.email__c);
-                parentAccountIdSet.add(opp.Parent_Account_Id__c);
+
+    public void activatePortalUser(Map<ID, Opportunity> oldOppMap, Map<ID, Opportunity> newOppMap){
+        List<Id> parentAccountIdList = new List<Id>();
+
+        for (Opportunity newOpp : newOppMap.values()) {
+            if (oldOppMap.get(newOpp.Id).Shared_Solar_System_Name__c != null
+                && newOpp.Shared_Solar_System_Name__c != null
+                && !newOpp.Shared_Solar_System_Name__c.contains('Waitlist')){
+                    if (oldOppMap.get(newOpp.Id).Contract_Status__c != 'Completed'
+                        && newOpp.Contract_Status__c == 'Completed'){
+                        parentAccountIdList.add(newOpp.Parent_Account__c);
+                    } else if (oldOppMap.get(newOpp.Id).Shared_Solar_System_Name__c.contains('Waitlist')){
+                        parentAccountIdList.add(newOpp.Parent_Account__c);
+                    }
             }
         }
-        if (parentAccountIdSet.size() > 0 ) {
-            Map <String, Contact> contactMap = new Map <String, Contact>();
-            for (Contact obj : [SELECT Referral_Code__c, Email, Name, Account_Id__c FROM Contact WHERE Account_Id__c IN : parentAccountIdSet AND Email IN : EmailList]){
-                contactMap.put(obj.Account_Id__c, obj);
-            }
-            for (Opportunity opp : oppList) {
-                if (opp.Product_Line__c == 'Community Solar') {
-                    if (contactMap.containsKey(opp.Parent_Account_Id__c)){
-                        opp.Referral_Code__c = contactMap.get(opp.Parent_Account_Id__c).Referral_Code__c;
-                    }
-                }else{
-                    opp.Referral_Code__c = null;
-                } 
-            }
+        if (parentAccountIdList.size() > 0){
+            List<Contact> contactList = [
+                SELECT Id, FirstName, LastName, Email
+                FROM Contact
+                WHERE AccountId IN : parentAccountIdList];
+
+            UserHandler userInsertJob = new UserHandler(contactList);
+            System.enqueueJob(userInsertJob);
         }
     }
 

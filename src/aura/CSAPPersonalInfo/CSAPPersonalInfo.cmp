@@ -13,7 +13,7 @@
   <aura:attribute name="referralCode" type="String"/>
   <aura:attribute name="ShowDateError" type="Boolean"/>
   <aura:attribute name="splitZones" type="String[]"/>
-  <aura:attribute name="splitUtilities" type="Object[]"/>
+  <aura:attribute name="splitUtilities" type="String[]"/>
 
   <aura:set attribute="STAGENAME" value="NAV_Personal_Information"/>
   <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
@@ -36,8 +36,7 @@
       <div aria-labelledby="aboutYourselfForm">
           <fieldset class="slds-box slds-theme--default slds-container_center">
           <legend id="aboutYourselfForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-           <b class=" slds-section__title--large">Tell us a little bit about</b>
-           <b class=" slds-section__title--large--stream"> yourself</b>
+           <b class=" slds-section__title--large">Tell us a little bit about yourself</b>
           </legend>
           <form class="slds-form--stacked">
             <lightning:layout multipleRows="true">
@@ -97,13 +96,12 @@
     <!-- ADDRESS_FORM -->
     <aura:if isTrue="{!v.page == 'ApplyingFor'}">
       <div aria-labelledby="applyingForForm">
-        <fieldset class="slds-form-element slds-align_absolute-center">
-          <legend class="slds-form-element__legend slds-form-element__label slds-align_absolute-center slds-m-bottom_small">
-            <b class="slds-section__title--large">Select which kind of </b>
-            <b class="slds-section__title--large--stream"> Community Solar</b>
-            <b class="slds-section__title--large"> you are applying for!</b>
+        <fieldset class="slds-box slds-theme--default slds-container_center">
+          <legend id="ApplyingFor" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
+            <b class="slds-section__title--large">Select which kind of Community Solar you are applying for!</b>
           </legend>
-          <div class="slds-form-element__control slds-align_absolute-center">
+          <lightning:layout multipleRows="true" horizontalAlign="center">
+            <lightning:layoutItem size="3" smallDeviceSize="6" mediumDeviceSize="3">
             <div class="slds-visual-picker slds-visual-picker_medium">
               <input type="radio" id="visual-picker-residential" onchange="{!c.setCSApplicationResidential}" checked="{!v.Residential}"/>
               <label for="visual-picker-residential">
@@ -133,6 +131,8 @@
                 </aura:if>
               </label>
             </div>
+            </lightning:layoutItem>
+            <lightning:layoutItem size="3" smallDeviceSize="6" mediumDeviceSize="3">
             <div class="slds-visual-picker slds-visual-picker_medium">
               <input type="radio" id="visual-picker-non-residential" onchange="{!c.setCSApplicationNonResidential}" checked="{!v.NonResidential}"/>
               <label for="visual-picker-non-residential">
@@ -162,7 +162,8 @@
                 </aura:if>
               </label>
             </div>
-          </div>
+            </lightning:layoutItem>
+          </lightning:layout>
         </fieldset>
       </div>
       <div class="slds-clearfix">
@@ -194,7 +195,6 @@
                   <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
                     <lightning:input aura:id="field" name="name"
                                      label="Property Name"
-                                     maxlength="62"
                                      value="{!v.lead.Company}"
                                      required="true"/>
                   </lightning:layoutItem>
@@ -235,8 +235,19 @@
                                    minlength="5"
                                    messageWhenBadInput="Please enter a 5 digit zip-code"/>
                 </lightning:layoutItem>
+                <aura:if isTrue="{!and(v.lead.LASERCA__Home_State__c == 'NY', v.lead.Application_Type__c == 'Residential' )}">
+                  <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
+                    <lightning:select aura:id="field" name="haveSolarPanelsOnPropertySelectList"
+                                      label="Do you have solar panels on your property?"
+                                      value="{!v.lead.Loan_System_Information__c}"
+                                      required="true">
+                      <option value="">Choose one...</option>
+                      <option value="Yes">Yes</option>
+                      <option value="No">No</option>
+                    </lightning:select>
+                  </lightning:layoutItem>
+                </aura:if>
               </lightning:layout>
-
               <lightning:layout multipleRows="true">
                 <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
                   <lightning:select aura:id="field" name="sendBillToHome"
@@ -418,6 +429,7 @@
           <form class="slds-form--stacked">
             <div class="slds-p-around--small slds-text-body--regular">
               <b>
+                Please select your Utility or Load Zone from the list below. You can find this information on your utility bill.
                 <aura:if isTrue="{!v.lead.State == 'Massachusetts'}">
                   Your zip code is serviced by multiple Load Zones or multiple Utilities. Please consult your utility bill
                   (for National Grid customers) or
@@ -437,6 +449,7 @@
                     </aura:if>
                   </aura:set>
                 </aura:if>
+
               </b>
             </div>
             <lightning:layout multipleRows="true">
@@ -444,9 +457,9 @@
                 <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
                   <lightning:select aura:id="loadZone" name="loadZone"
                                     label="Load Zone"
-                                    value="{!v.lead.LoadZone__c}"
+                                    value="{!v.lead.Load_Zone__c}"
                                     required="true">
-                    <option value="{!v.lead.LoadZone__c}">Choose Load Zone...</option>
+                    <option value="{!v.lead.Load_Zone__c}">Choose Load Zone...</option>
                     <aura:iteration items="{!v.splitZones}" var="loadZone">
                       <option value="{!loadZone}">{!loadZone}</option>
                     </aura:iteration>
@@ -457,11 +470,11 @@
                 <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
                   <lightning:select aura:id="utility" name="utility"
                                     label="Utility"
-                                    value="{!v.lead.Utility_relationship__c}"
+                                    value="{!v.lead.Utility_1__c}"
                                     required="true">
-                    <option value="{!v.lead.Utility_relationship__c}">Choose Utility...</option>
+                    <option value="{!v.lead.Utility_1__c}">Choose Utility...</option>
                     <aura:iteration items="{!v.splitUtilities}" var="utility">
-                      <option value="{!utility.Id}" label="{!utility.Name}">{!utility}</option>
+                      <option value="{!utility}">{!utility}</option>
                     </aura:iteration>
                   </lightning:select>
                 </lightning:layoutItem>

@@ -871,6 +871,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>assignServiceTerritoryHandler</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>assignServiceTerritoryTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>customIdSwapLeadTriggerTestClass</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -45079,6 +45087,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Adjustment_Application__c-Adjustment Application Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Articles__kav-Article Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Asset-Asset Layout</layout>
