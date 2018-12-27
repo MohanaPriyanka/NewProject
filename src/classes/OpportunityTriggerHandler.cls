@@ -79,22 +79,25 @@ public without sharing class OpportunityTriggerHandler {
         List<Id> parentAccountIdList = new List<Id>();
 
         for (Opportunity newOpp : newOppMap.values()) {
-            if (oldOppMap.get(newOpp.Id).Contract_Status__c != 'Completed'
-                && newOpp.Contract_Status__c == 'Completed'
+            if (oldOppMap.get(newOpp.Id).Shared_Solar_System_Name__c != null
+                && newOpp.Shared_Solar_System_Name__c != null
                 && !newOpp.Shared_Solar_System_Name__c.contains('Waitlist')){
-                parentAccountIdList.add(newOpp.Parent_Account__c);
-            } else if (oldOppMap.get(newOpp.Id).Shared_Solar_System_Name__c.contains('Waitlist')
-                && !newOpp.Shared_Solar_System_Name__c.contains('Waitlist')) {
-                parentAccountIdList.add(newOpp.Parent_Account__c);
+                    if (oldOppMap.get(newOpp.Id).Contract_Status__c != 'Completed'
+                        && newOpp.Contract_Status__c == 'Completed'){
+                        parentAccountIdList.add(newOpp.Parent_Account__c);
+                    } else if (oldOppMap.get(newOpp.Id).Shared_Solar_System_Name__c.contains('Waitlist')){
+                        parentAccountIdList.add(newOpp.Parent_Account__c);
+                    }
             }
         }
+        if (parentAccountIdList.size() > 0){
+            List<Contact> contactList = [
+                SELECT Id, FirstName, LastName, Email
+                FROM Contact
+                WHERE AccountId IN : parentAccountIdList];
 
-        List<Contact> contactList = [
-            SELECT Id, FirstName, LastName, Email
-            FROM Contact
-            WHERE AccountId IN : parentAccountIdList];
-
-        UserHandler.createCSCommunityUser(contactList);
+            UserHandler.createCSCommunityUser(contactList);
+        }
     }
 
     public void updateInvoicedSubscription(Map<ID, Opportunity> oldOpps, Map<ID, Opportunity> newOpps){
