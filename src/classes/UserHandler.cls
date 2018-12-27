@@ -1,30 +1,27 @@
 public without sharing class UserHandler{
     public static void createCSCommunityUser(List<Contact> userContacts) {
         Map<Id, User> usersToInsertMap = new Map<Id, User>();
+        Set<Id> alreadyAttempted = new Set<Id>();
         Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Community Solar Community User'];
 
         for (Contact userContact : userContacts){
-            User userToInsert = setUserFields(userContact, profileRecord.Id);
-            usersToInsertMap.put(userContact.Id, userToInsert);
-        }
-
-        String response = attemptInsert(usersToInsertMap);
-        System.debug(response);
-
-        /* ConnectApi.CommunityPage comm = ConnectApi.Communities.getCommunities();
-        for (ConnectApi.Community community : comm.communities) {
-            if (community.name == 'BlueWave Member Portal') {
-                communityID = community.id;
+            if (userContact.Email != null && userContact.FirstName != null && userContact.LastName != null){
+                User userToInsert = setUserFields(userContact, profileRecord.Id);
+                usersToInsertMap.put(userContact.Id, userToInsert);
             }
         }
-        */
+        attemptInsert(usersToInsertMap, alreadyAttempted);
+        Logger.flushLogs();
+
     }
 
     public static User setUserFields(Contact userContact, String profileId) {
+        // Username is limited to 80 characters, Nickname to 40 and Alias to 8:
+
         User userToInsert = new User(
             FirstName = userContact.FirstName,
             Lastname = userContact.LastName,
-            Alias = 'xxx234',
+            Alias = userContact.FirstName.left(2) + userContact.LastName.right(6),
             Email = userContact.Email,
             Emailencodingkey ='UTF-8',
             Languagelocalekey ='en_US',
@@ -33,44 +30,68 @@ public without sharing class UserHandler{
             IsActive = true,
             ContactId = userContact.Id,
             Profileid = profileId,
-            Timezonesidkey='America/New_York', // !! fix this
-            Username= userContact.Email
+            Timezonesidkey='America/New_York',
+            Username= userContact.Email,
+            CommunityNickname = userContact.FirstName.left(10) + userContact.LastName.left(30)
         );
         return userToInsert;
     }
 
-    public static String attemptInsert(Map<Id, User> usersToInsertMap) {
-        // If the username already exists, try to create a new username. If it doesn't work even with the new
-        // username, log an error to flag manual intervention
-        String responseMessage = 'all good';
+    public static void attemptInsert(Map<Id, User> usersToInsertMap, Set<Id> alreadyAttempted) {
+        // If the username or nickname already exists, try to create a new one.
+        // If it doesn't work even with the new value, log an error to flag manual intervention
         try {
             insert usersToInsertMap.values();
         } catch (Exception e){
-            system.debug(e.getMessage());
-            // IF the error is a username error:
-            // need to get erroredUser from message somehow
-            // Otherwise, log a generic error and remove from list
+            String response = e.getMessage();
+            // Example: 'Insert failed. First exception on row 0; first error: DUPLICATE_COMM_NICKNAME'
+            // Working back from the error message, want to get row number of record that hit error
+            Integer location;
+            Integer recordToRetry;
+            Integer recordToRemove;
+            Map<Id, User> newUserMap;
 
-         /*   if (newerror = erroredUser){
-                1. remove from list
-                2. log error
-            } */
-
-            User erroredUser;
-            Map<Id, User> newUserMap = catchPreviouslyUsedEmail(usersToInsertMap, erroredUser);
-            attemptInsert(newUserMap);
-            responseMessage = 'hitError';
+            if (response.contains('DUPLICATE_USERNAME')){
+                location = response.indexOf('DUPLICATE_USERNAME');
+                recordToRetry = Integer.valueOf(response.substring(location-16,location-15));
+                newUserMap = catchPreviouslyUsedValues(usersToInsertMap, recordToRetry);
+            } else if (response.contains('DUPLICATE_COMM_NICKNAME')) {
+                location = response.indexOf('DUPLICATE_COMM_NICKNAME');
+                recordToRetry = Integer.valueOf(response.substring(location-16,location-15));
+                newUserMap = catchPreviouslyUsedValues(usersToInsertMap, recordToRetry);
+            } else if (response.contains('PORTAL_USER_ALREADY_EXISTS_FOR_CONTACT')){
+                location = response.indexOf('PORTAL_USER_ALREADY_EXISTS_FOR_CONTACT');
+                recordToRemove = Integer.valueOf(response.substring(location-16,location-15));
+                Id errorContactId = usersToInsertMap.values()[recordToRemove].ContactId;
+                newUserMap = usersToInsertMap;
+                newUserMap.remove(errorContactId);
+            } else {
+                String message = 'Unhandled Error: ' + response + newUserMap;
+                Logger.logLater('UserHandler',
+                                'attemptInsert',
+                                message);
+            }
+            if (recordToRetry != null) {
+                Id errorContactId = newUserMap.values()[recordToRetry].ContactId;
+                if (alreadyAttempted.contains(errorContactId)) {
+                    newUserMap.remove(errorContactId);
+                    Logger.logLater('UserHandler',
+                                    'attemptInsert',
+                                    'Could not generate unique username or nickname. Contact: ' + errorContactId);
+                } else {
+                    alreadyAttempted.add(errorContactId);
+                }
+                attemptInsert(newUserMap, alreadyAttempted);
+            }
         }
-        return responseMessage;
     }
 
-    public static Map<Id, User> catchPreviouslyUsedEmail(Map<Id, User> usersToInsertMap, User erroredUser) {
-        String firstName = erroredUser.FirstName;
-        String lastName = erroredUser.LastName;
-        Id contactId = erroredUser.ContactId;
-
-        erroredUser.Username = firstName.left(1) + ' ' + lastName + '@bluewavesolar.com';
-        usersToInsertMap.put(contactId, erroredUser);
+    public static Map<Id, User> catchPreviouslyUsedValues(Map<Id, User> usersToInsertMap, Integer recordNumber) {
+        // If the customer's email is already used as a username, create a fake bluewave email for them:
+        User userWithError = usersToInsertMap.values()[recordNumber];
+        userWithError.Username = userWithError.FirstName.left(40) + userWithError.LastName.left(40) + '@bluewavesolar.com';
+        userWithError.CommunityNickname = userWithError.LastName.left(5) + userWithError.FirstName.left(25);
+        usersToInsertMap.put(userWithError.ContactId, userWithError);
         return usersToInsertMap;
     }
 }
