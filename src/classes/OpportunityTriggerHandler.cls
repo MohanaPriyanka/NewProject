@@ -96,7 +96,8 @@ public without sharing class OpportunityTriggerHandler {
                 FROM Contact
                 WHERE AccountId IN : parentAccountIdList];
 
-            UserHandler.createCSCommunityUser(contactList);
+            UserHandler userInsertJob = new UserHandler(contactList);
+            System.enqueueJob(userInsertJob);
         }
     }
 

@@ -1,10 +1,16 @@
-public without sharing class UserHandler{
-    public static void createCSCommunityUser(List<Contact> userContacts) {
+public without sharing class UserHandler implements Queueable{
+    private List<Contact> contactsToCreateUsers;
+
+    public UserHandler(List<Contact> userContacts) {
+        this.contactsToCreateUsers = userContacts;
+    }
+
+    public void execute(QueueableContext context) {
         Map<Id, User> usersToInsertMap = new Map<Id, User>();
         Set<Id> alreadyAttempted = new Set<Id>();
         Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Community Solar Community User'];
 
-        for (Contact userContact : userContacts){
+        for (Contact userContact : contactsToCreateUsers){
             if (userContact.Email != null && userContact.FirstName != null && userContact.LastName != null){
                 User userToInsert = setUserFields(userContact, profileRecord.Id);
                 usersToInsertMap.put(userContact.Id, userToInsert);
