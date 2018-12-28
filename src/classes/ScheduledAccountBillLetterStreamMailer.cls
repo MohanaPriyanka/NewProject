@@ -11,28 +11,39 @@ global without sharing class ScheduledAccountBillLetterStreamMailer {
     // Max size is 12Mb, but need to give buffer for csv file. So, 10 Mb * 1000 Kb/Mb * 1000 b/Kb
     public static Integer maxPackageSize = 1*1000*1000;
     public static Boolean makeCallout = true;
+    public static CaseFactory caseFactory = new CaseFactory();
 
     webService static void batchAccountBills() {
         Map<Id, Account_Bill__c> accountBillsByDocIds = new Map<Id, Account_Bill__c>();
         Set<Id> docIds = new Set<Id>();
 
         List<Account_Bill__c> accountBills = [
-            SELECT Id, Parent_Account__r.Name, Parent_Account__r.BillingStreet, Parent_Account__r.BillingCity,
+            SELECT Id, Parent_Account__c, Parent_Account__r.Name, Parent_Account__r.BillingStreet, Parent_Account__r.BillingCity,
                 Parent_Account__r.BillingState, Parent_Account__r.BillingPostalCode, Bill_PDF_Page_Count__c,
                 Calendar_Month__c, Year__c, Bill_Attach_Document__c
             FROM Account_Bill__c
             WHERE Published__c = TRUE
             AND Ready_For_Paper_Bill_Queue__c = TRUE
             AND Bill_Attach_Document__c != NULL
+            AND Parent_Account__r.Opt_Out_of_Paper_Billing__c != TRUE
         ];
 
         if (accountBills.isEmpty()) {
             return ;
         }
 
+        List<Case> newCases = new List<Case>();
         for (Account_Bill__c accountBill : accountBills) {
-            docIds.add(accountBill.Bill_Attach_Document__c);
-            accountBillsByDocIds.put(accountBill.Bill_Attach_Document__c, accountBill);
+            if (checkBillAccountAddressValid(accountBill)) {
+                docIds.add(accountBill.Bill_Attach_Document__c);
+                accountBillsByDocIds.put(accountBill.Bill_Attach_Document__c, accountBill);
+            } else {
+                newCases.add(createCaseForInvalidAddress(accountBill));
+            }
+        }
+
+        if (!newCases.isEmpty()) {
+            insert newCases;
         }
 
         List<ContentDocument> documents = [
@@ -77,5 +88,38 @@ global without sharing class ScheduledAccountBillLetterStreamMailer {
         Decimal sizeInKB = (packageSize/1000).setScale(3);
         String message = 'Package of ' + sizeInKB + ' kB queued for letter stream. ' + 'JobID: ' + jobId;
         return message;
+    }
+
+    @TestVisible
+    private static Boolean checkBillAccountAddressValid(Account_Bill__c accountBill) {
+        if (accountBill.Parent_Account__r != null
+            && accountBill.Parent_Account__r.BillingStreet != null
+            && accountBill.Parent_Account__r.BillingCity != null
+            && accountBill.Parent_Account__r.BillingPostalCode != null
+            && accountBill.Parent_Account__r.BillingState != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @TestVisible
+    private static Case createCaseForInvalidAddress(Account_Bill__c accountBill) {
+        Case newCase = caseFactory.getCase('Customer_Care');
+
+        newCase.Subject = 'Cannot send bill to Community Solar customer.';
+        newCase.Priority = 'Medium';
+        newCase.Product_Line__c = 'Community Solar';
+        newCase.Category__c = 'Billing';
+        String description = 'The customer address is invalid, so bills cannot be sent to customer. Please update ' +
+            'the address on the related Account. If the customer does not want to receive paper bills, ' +
+            'please use the \'Opt Out of Paper Billing\' checkbox. [Auto-generated]' ;
+        newCase.Description = description;
+        newCase.Origin = 'Other';
+        newCase.Case_Type__c = 'BlueWave';
+        newCase.Disable_Followup_Email__c = true;
+        newCase.AccountId = accountBill.Parent_Account__c;
+
+        return newCase;
     }
 }

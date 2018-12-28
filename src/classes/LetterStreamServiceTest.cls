@@ -459,8 +459,12 @@ public with sharing class LetterStreamServiceTest {
             BillingState = 'Colorado',
             BillingPostalCode = '80525'
         );
-        insert new List<Account>{accountParent1, accountParent2, accountParent3};
-        List<Id> accountIds = new List<Id>{accountParent1.Id, accountParent2.Id, accountParent3.Id};
+
+        Account accountParent4 = new Account(
+            name = 'Account Parent',
+            RecordTypeId = parentAccountRT
+        );
+        insert new List<Account>{accountParent1, accountParent2, accountParent3, accountParent4};
 
         ContentVersion documentVersion1 = new ContentVersion(
             Title = 'test document',
@@ -515,7 +519,16 @@ public with sharing class LetterStreamServiceTest {
             Bill_Attach_Document__c = contentDocuments[2].Id,
             Bill_PDF_Page_Count__c = 4 // this value gets set by the conga conductor when bill pdfs are createdI
         );
-        List<Account_Bill__c> accountBills = new List<Account_Bill__c>{accountBill1, accountBill2, accountBill3};
+        Account_Bill__c accountBill4 = new Account_Bill__c(
+            Parent_Account__c = accountParent4.Id,
+            Bill_Number__c = 2,
+            Published__c = true,
+            Ready_For_Paper_Bill_Queue__c = true,
+            Bill_Attach_Version__c = contentDocuments[2].LatestPublishedVersionId,
+            Bill_Attach_Document__c = contentDocuments[2].Id,
+            Bill_PDF_Page_Count__c = 4 // this value gets set by the conga conductor when bill pdfs are createdI
+        );
+        List<Account_Bill__c> accountBills = new List<Account_Bill__c>{accountBill1, accountBill2, accountBill3, accountBill4};
         insert accountBills;
 
         Datetime now = Datetime.now();
@@ -529,6 +542,24 @@ public with sharing class LetterStreamServiceTest {
         ScheduledAccountBillLetterStreamMailer.batchAccountBills();
         Test.stopTest();
 
+        RecordType customerCare = [
+            SELECT Id, Name
+            FROM RecordType
+            Where SobjectType = 'Case' and DeveloperName = 'Customer_Care'
+            LIMIT 1
+        ];
+
+        List<Case> cases = [
+            SELECT Id, RecordTypeId, AccountId, Product_Line__c, Subject
+            FROM Case
+        ];
+
+        System.assertEquals(1, cases.size());
+        System.assertEquals(accountParent4.Id, cases[0].AccountId);
+        System.assertEquals(customerCare.Id, cases[0].RecordTypeId);
+        System.assertEquals('Community Solar', cases[0].Product_Line__c);
+        System.assertEquals('Cannot send bill to Community Solar customer.', cases[0].Subject);
+
         List<AsyncApexJob> asyncApexJobs = [
             SELECT Id
             FROM AsyncApexJob
@@ -537,5 +568,147 @@ public with sharing class LetterStreamServiceTest {
 
         // sometimes overlaps with other requests
         System.assert(asyncApexJobs.size() >= 2);
+    }
+
+    @IsTest
+    public static void testCheckAddressBeforeSending() {
+        Id parentAccountRT =
+            Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
+
+        Account accountParent1 = new Account(
+            name = 'Account With Address',
+            RecordTypeId = parentAccountRT,
+            BillingStreet = '123 Fake St',
+            BillingCity = 'City',
+            BillingState = 'Colorado',
+            BillingPostalCode = '80525'
+        );
+
+        Account accountParent2 = new Account(
+            name = 'Account Without Full Address',
+            RecordTypeId = parentAccountRT
+        );
+
+        Account accountParent3 = new Account(
+            name = 'Account With Only Street',
+            BillingStreet = '123 Fake St',
+            RecordTypeId = parentAccountRT
+        );
+
+        Account accountParent4 = new Account(
+            name = 'Account With Only City',
+            BillingCity = 'City',
+            RecordTypeId = parentAccountRT
+        );
+
+        Account accountParent5 = new Account(
+            name = 'Account With Only State',
+            BillingState = 'Colorado',
+            RecordTypeId = parentAccountRT
+        );
+
+        Account accountParent6 = new Account(
+            name = 'Account With Only Zip',
+            BillingPostalCode = '80525',
+            RecordTypeId = parentAccountRT
+        );
+
+        insert new List<Account>{accountParent1, accountParent2, accountParent3, accountParent4, accountParent5, accountParent6};
+
+        Account_Bill__c accountBill1 = new Account_Bill__c(
+            Parent_Account__c = accountParent1.Id,
+            Bill_Number__c = 1
+        );
+
+        Account_Bill__c accountBill2 = new Account_Bill__c(
+            Parent_Account__c = accountParent2.Id,
+            Bill_Number__c = 2
+        );
+
+        Account_Bill__c accountBill3 = new Account_Bill__c(
+            Parent_Account__c = accountParent3.Id,
+            Bill_Number__c = 3
+        );
+
+        Account_Bill__c accountBill4 = new Account_Bill__c(
+            Parent_Account__c = accountParent4.Id,
+            Bill_Number__c = 4
+        );
+
+        Account_Bill__c accountBill5 = new Account_Bill__c(
+            Parent_Account__c = accountParent5.Id,
+            Bill_Number__c = 5
+        );
+
+        Account_Bill__c accountBill6 = new Account_Bill__c(
+            Parent_Account__c = accountParent6.Id,
+            Bill_Number__c = 6
+        );
+
+        insert new List<Account_Bill__c>{accountBill1, accountBill2, accountBill3, accountBill4, accountBill5, accountBill6};
+
+        List<Account_Bill__c> accountBills = [
+            SELECT Id, Parent_Account__r.Name, Parent_Account__r.BillingStreet, Parent_Account__r.BillingCity,
+                Parent_Account__r.BillingState, Parent_Account__r.BillingPostalCode, Bill_PDF_Page_Count__c,
+                Calendar_Month__c, Year__c, Bill_Attach_Document__c
+            FROM Account_Bill__c
+            ORDER BY Bill_Number__c ASC
+        ];
+
+        // Return True assertions
+        System.assert(ScheduledAccountBillLetterStreamMailer.checkBillAccountAddressValid(accountBills[0]));
+        // Return False assertions
+        System.assert(!ScheduledAccountBillLetterStreamMailer.checkBillAccountAddressValid(accountBills[1]));
+        System.assert(!ScheduledAccountBillLetterStreamMailer.checkBillAccountAddressValid(accountBills[2]));
+        System.assert(!ScheduledAccountBillLetterStreamMailer.checkBillAccountAddressValid(accountBills[3]));
+        System.assert(!ScheduledAccountBillLetterStreamMailer.checkBillAccountAddressValid(accountBills[4]));
+        System.assert(!ScheduledAccountBillLetterStreamMailer.checkBillAccountAddressValid(accountBills[5]));
+    }
+
+    @IsTest
+    public static void testCreateCaseForInvalidAddress() {
+        Id parentAccountRT =
+            Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
+
+        Account accountParent1 = new Account(
+            name = 'Account With Address',
+            RecordTypeId = parentAccountRT,
+            BillingStreet = '123 Fake St',
+            BillingCity = 'City',
+            BillingState = 'Colorado',
+            BillingPostalCode = '80525'
+        );
+        insert accountParent1;
+
+        Account_Bill__c accountBill1 = new Account_Bill__c(
+            Parent_Account__c = accountParent1.Id,
+            Bill_Number__c = 1
+        );
+        insert accountBill1;
+
+        List<Account_Bill__c> accountBills = [
+            SELECT Id, Parent_Account__r.Name, Parent_Account__r.BillingStreet, Parent_Account__r.BillingCity,
+                Parent_Account__r.BillingState, Parent_Account__r.BillingPostalCode, Bill_PDF_Page_Count__c,
+                Calendar_Month__c, Year__c, Bill_Attach_Document__c
+            FROM Account_Bill__c
+            ORDER BY Bill_Number__c ASC
+        ];
+
+        System.assertEquals(1, accountBills.size());
+
+        Case testCase = ScheduledAccountBillLetterStreamMailer.createCaseForInvalidAddress(accountBills[0]);
+
+        RecordType customerCare = [
+            SELECT Id, Name
+            FROM RecordType
+            Where SobjectType = 'Case' and DeveloperName = 'Customer_Care'
+            LIMIT 1
+        ];
+
+        System.assertEquals('Medium', testCase.Priority);
+        String message = 'Description should contain instructions on how to prevent paper bills to be sent';
+        System.assert(testCase.Description.contains('Opt Out of Paper Billing'), message);
+        System.assertEquals(accountParent1.Id, testCase.AccountId);
+        System.assertEquals(customerCare.Id, testCase.RecordTypeId);
     }
 }
