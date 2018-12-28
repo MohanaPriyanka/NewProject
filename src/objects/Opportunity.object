@@ -2166,9 +2166,9 @@ TEXT(DAY(Commencement_Date__c))
     <fields>
         <fullName>Cosigner_Notice_Signed__c</fullName>
         <defaultValue>false</defaultValue>
-        <description>Only for New York Loans</description>
+        <description>Only for New York and Florida Loans</description>
         <externalId>false</externalId>
-        <inlineHelpText>Only for New York Loans</inlineHelpText>
+        <inlineHelpText>Only for New York and Florida Loans</inlineHelpText>
         <label>Cosigner Notice Signed</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
