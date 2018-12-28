@@ -83,7 +83,9 @@ public without sharing class QueueAccountBillLetterStreamMailer implements Queue
         response = http.send(request);
         Dom.Document responseXML = response.getBodyDocument();
         String responseXMLString = responseXML.toXmlString();
-        System.enqueueJob(new QueueAccountBillLetterStreamMailer.QueueHandleResponse(responseXMLString, accountBillIds, lss.csv));
+        System.enqueueJob(
+            new QueueAccountBillLetterStreamMailer.QueueHandleResponse(responseXMLString, accountBillIds, lss.csv, accountBillsByDocIds, makeCallout)
+        );
     }
 
     public static List<Account_Bill__c> markAccountBillsAsMailed(Set<Id> accountBillIds, Id newJobId) {
@@ -104,18 +106,29 @@ public without sharing class QueueAccountBillLetterStreamMailer implements Queue
         public String responseXMLString;
         public Set<Id> accountBillIds;
         public String csv;
+        public Map<Id, Account_Bill__c> accountBillsByDocIds;
+        public Boolean makeCallout;
 
-        public QueueHandleResponse(String responseXMLString, Set<Id> accountBillIds, String csv) {
+        public QueueHandleResponse(String responseXMLString, Set<Id> accountBillIds, String csv, Map<Id, Account_Bill__c> accountBillsByDocIds, Boolean makeCallout) {
             this.responseXMLString = responseXMLString;
             this.accountBillIds = accountBillIds;
             this.csv = csv;
+            this.accountBillsByDocIds = accountBillsByDocIds;
+            this.makeCallout = makeCallout;
         }
 
         public void execute(QueueableContext contact) {
+            handleResponse();
+        }
+
+        public void handleResponse() {
             LetterStreamService lss = new LetterStreamService();
+            // newJob gets inserted within here
             LetterStreamJob__c newJob = lss.parseLetterStreamResponse(responseXMLString);
 
-            if (newJob == null) {
+            if (newJob == null && accountBillIds.size() > 1) {
+                retryJobs();
+            } else if (newJob == null) {
                 Logger.logNow('QueueAccountBillLetterStreamMailer', 'execute', 'Job post failed - response xml: ' + responseXMLString + '\n CSV: ' + csv);
             } else {
                 update markAccountBillsAsMailed(accountBillIds, newJob.Id);
@@ -126,6 +139,16 @@ public without sharing class QueueAccountBillLetterStreamMailer implements Queue
                 file.FirstPublishLocationId = newJob.Id;
                 file.pathOnClient = '/response.xml';
                 insert file;
+            }
+        }
+
+        public void retryJobs() {
+            Integer jobNumber = 1;
+            for (Id documentId : accountBillsByDocIds.keySet()) {
+                Id accountId = accountBillsByDocIds.get(documentId).Id;
+                Set<Id> accountIds = new Set<Id>{accountId};
+                Set<Id> documentIds = new Set<Id>{documentId};
+                System.enqueueJob(new QueueAccountBillLetterStreamMailer(accountIds, documentIds, makeCallout, jobNumber));
             }
         }
     }
