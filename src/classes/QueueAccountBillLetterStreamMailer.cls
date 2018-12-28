@@ -123,7 +123,6 @@ public without sharing class QueueAccountBillLetterStreamMailer implements Queue
 
         public void handleResponse() {
             LetterStreamService lss = new LetterStreamService();
-            // newJob gets inserted within here
             LetterStreamJob__c newJob = lss.parseLetterStreamResponse(responseXMLString);
 
             if (newJob == null && accountBillIds.size() > 1) {
