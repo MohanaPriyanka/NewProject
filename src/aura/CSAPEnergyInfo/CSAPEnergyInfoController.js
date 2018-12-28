@@ -24,7 +24,7 @@
                 if (resp.getState() === "SUCCESS") {
                     component.set('v.utility', resp.getReturnValue());
                 } else {
-                    helper.logError("CSAPEnergyInfoController", "getProduct", resp.getError(), lead);
+                    helper.logError("CSAPEnergyInfoController", "getUtility", resp.getError(), lead);
                 }
             });
             $A.enqueueAction(utilityAction);
