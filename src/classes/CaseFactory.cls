@@ -14,19 +14,20 @@ public without sharing class CaseFactory {
     public Case newCase;
 
     public caseFactory() {
-        customerCare = [
+        List<RecordType> caseRecordTypes = [
             SELECT Id, Name
             FROM RecordType
-            Where SobjectType = 'Case' and DeveloperName = 'Customer_Care'
-            LIMIT 1
+            WHERE SobjectType = 'Case'
+            AND (DeveloperName = 'Product_Support' OR DeveloperName = 'Customer_Care')
+            ORDER BY DeveloperName
         ];
 
-        productSupport = [
-            SELECT Id, Name
-            FROM RecordType
-            WHERE SobjectType = 'Case' AND DeveloperName = 'Product_Support'
-            LIMIT 1
-        ];
+        if (caseRecordTypes.size() != 2) {
+            Logger.logNow('CaseFactory', 'constructor', 'Missing RecordType for case. Available RecordTypes: ' + caseRecordTypes);
+        } else {
+            customerCare = caseRecordTypes[0];
+            productSupport = caseRecordTypes[1];
+        }
 
         customerCareEmail = [
             SELECT Id, Address
@@ -35,21 +36,20 @@ public without sharing class CaseFactory {
             LIMIT 1
         ];
 
-        ProductQueueID = [
+        List<Group> assignmentGroups = [
             SELECT Id, DeveloperName
             FROM Group
             WHERE Type = 'Queue'
-            AND DeveloperName = 'Product_Support'
-            LIMIT 1
-        ];
-        CustomerCareQueueID = [
-            SELECT Id, DeveloperName
-            FROM Group
-            WHERE Type = 'Queue'
-            AND DeveloperName = 'Customer_Care'
-            LIMIT 1
+            AND (DeveloperName = 'Product_Support' OR DeveloperName = 'Customer_Care')
+            ORDER BY DeveloperName
         ];
 
+        if (assignmentGroups.size() != 2) {
+            Logger.logNow('CaseFactory', 'constructor', 'Missing Groups for assignment. Available Groups: ' + assignmentGroups);
+        } else {
+            CustomerCareQueueID = assignmentGroups[0];
+            ProductQueueID = assignmentGroups[1];
+        }
     }
 
     public Case getCase(String type) {
