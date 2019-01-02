@@ -12,10 +12,11 @@ global without sharing class ScheduledAccountBillLetterStreamMailer implements D
     public Integer maxPackageSize = 1*1000*1000;
     public Boolean makeCallout = true;
     public CaseFactory caseFactory = new CaseFactory();
+    public Integer jobNumber = 1;
 
     webservice static void batchAccountBills(){
         ScheduledAccountBillLetterStreamMailer batchJob = new ScheduledAccountBillLetterStreamMailer();
-        Database.executeBatch(batchJob, 100);
+        Database.executeBatch(batchJob, 50);
     }
 
     public Database.QueryLocator start(Database.BatchableContext bc) {
@@ -66,7 +67,6 @@ global without sharing class ScheduledAccountBillLetterStreamMailer implements D
         Integer packageSize = 0;
         Set<Id> packageAccountBills = new Set<Id>();
         Set<Id> packageContentDocuments = new Set<Id>();
-        Integer jobNumber = 1;
 
         for (ContentDocument doc : documents) {
             packageSize += doc.ContentSize;
@@ -78,7 +78,7 @@ global without sharing class ScheduledAccountBillLetterStreamMailer implements D
                 packageAccountBills.clear();
                 packageContentDocuments.clear();
                 packageSize = 0;
-                jobNumber += 1;
+                jobNumber++;
                 Logger.logLater('ScheduleAccountBillLetterStreamMailer', 'batchAccountBills', queuedLogMessage(packageSize, jobId));
             }
         }
