@@ -6,13 +6,15 @@
  + *************************************************************************************/
 
 global class BatchCreditSRECHandler implements Database.Batchable<sObject>,Database.AllowsCallouts,Database.Stateful {
-    webservice static void executeBatch (){
+    webservice static void executeBatch (String type){
         BatchCreditSRECHandler batchJob = new BatchCreditSRECHandler();
+        batchJob.srecType = type;
         Database.executeBatch(batchJob, 1);
     }
     public List<ChargentOrders__ChargentOrder__c> updatedChOrders;
     public List<Id> successSRECList = new List<Id>();
     public List<Id> successInvoiceList = new List<Id>();
+    public String srecType;
 
     public Database.QueryLocator start(Database.BatchableContext bc) {
         updatedChOrders = new List<ChargentOrders__ChargentOrder__c>();
@@ -29,6 +31,13 @@ global class BatchCreditSRECHandler implements Database.Batchable<sObject>,Datab
         'ChargentOrders__Bank_Account_Name__c ' +
         'FROM ChargentOrders__ChargentOrder__c ' +
         'WHERE SREC_Status__c = \'Ready\'';
+        if (srecType == 'quarterly') {
+            // SREC__c objects used for quarterly payments
+            query += ' AND Related_SREC__c != NULL';
+        } else if (srecType == 'monthly') {
+            // SREC_Invoice__c uses for monthly payments
+            query += ' AND SREC_Invoice__c != NULL';
+        }
 
         return Database.getQueryLocator(query);
     }

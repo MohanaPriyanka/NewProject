@@ -838,6 +838,22 @@ location.reload(true);
 alert(&apos;Bills have been Queued for sending to LetterStream. Check \&apos;View Paper Bills to be Added \&apos; in ~5 min to confirm all bills have been sent. Contact Product Team if there are bills in that list.&apos;);</url>
     </webLinks>
     <webLinks>
+        <fullName>Send_Monthly_SREC_Payments</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Send Monthly SREC Payments</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/29.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/29.0/apex.js&quot;)} 
+if (confirm(&apos;Are you sure you want to send SREC Payments?&apos;)) { 
+var result = sforce.apex.execute(&quot;BatchCreditSRECHandler&quot;, &quot;executeBatch&quot;, {type:&quot;monthly&quot;}); 
+alert(result); 
+window.location.reload(); 
+}</url>
+    </webLinks>
+    <webLinks>
         <fullName>Send_PDFs_Via_Email</fullName>
         <availability>online</availability>
         <displayType>link</displayType>
@@ -861,6 +877,22 @@ alert(&apos;Bills have been Queued for sending to LetterStream. Check \&apos;Vie
 &amp;ReportId={!APXT_BPM__Conductor__c.APXT_BPM__Report_Id__c}
 &amp;RecordId={!APXT_BPM__Conductor__c.APXT_BPM__Record_Id__c}
 &amp;UrlFieldName=Conga_Formula_EMAIL__c</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Send_Quarterly_SREC_Payments</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Send Quarterly SREC Payments</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/29.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/29.0/apex.js&quot;)}
+if (confirm(&apos;Are you sure you want to send SREC Payments?&apos;)) {
+var result = sforce.apex.execute(&quot;BatchCreditSRECHandler&quot;, &quot;executeBatch&quot;, {type:&quot;quarterly&quot;});
+alert(result);
+window.location.reload();
+}</url>
     </webLinks>
     <webLinks>
         <fullName>Send_SREC_Payments</fullName>

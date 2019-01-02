@@ -250,7 +250,7 @@ private class RecurringSRECHandlerTest{
     static testMethod void runBatchofOne() {
         // Outside tests, batch size = 1 because Chargent only accepts 1 order at a time in callout:
         Test.startTest();
-        BatchCreditSRECHandler.executeBatch();
+        BatchCreditSRECHandler.executeBatch(null);
         Test.stopTest();
 
         ChargentOrders__ChargentOrder__c updatedCho = [ SELECT Id, Name, 
@@ -269,7 +269,7 @@ private class RecurringSRECHandlerTest{
         System.assertEquals('Success', updatedCho.SREC_Status__c);
     }
 
-    static testMethod void runBatchofFour() {
+    static testMethod void runMonthlyBatchofFour() {
         // Outside tests, batch size = 1 but we want to test with > 1 so that finish method is tested
         // with > 1 record. We won't hit callout exception in a test because Chargent callout is mocked
         List<ChargentOrders__ChargentOrder__c> prelimOrderList = [SELECT Id, Name
@@ -295,6 +295,7 @@ private class RecurringSRECHandlerTest{
 
         Test.startTest();
             BatchCreditSRECHandler batchJob = new BatchCreditSRECHandler();
+            batchJob.srecType = 'monthly';
             Database.executeBatch(batchJob, 4);
         Test.stopTest();
 
@@ -306,6 +307,51 @@ private class RecurringSRECHandlerTest{
         List<ChargentOrders__ChargentOrder__c> postBatchList = [SELECT Id, Name, SREC_Invoice__c
                                                                 FROM ChargentOrders__ChargentOrder__c
                                                                 WHERE SREC_Status__c = 'Success'];
-        System.AssertEquals(4, postBatchList.size());
+
+        // only 3 SREC_Invoices in this batch, so even with a batch size of 4 only 3 are processed
+        System.AssertEquals(3, postBatchList.size());
+    }
+
+    static testMethod void runQuarterlyBatchofFour() {
+        // Outside tests, batch size = 1 but we want to test with > 1 so that finish method is tested
+        // with > 1 record. We won't hit callout exception in a test because Chargent callout is mocked
+        List<ChargentOrders__ChargentOrder__c> prelimOrderList = [SELECT Id, Name
+                                                                  FROM ChargentOrders__ChargentOrder__c];
+
+        List<SREC__c> prelimSRECList = [ SELECT Id, Name
+                                                    FROM SREC__c];
+
+        // For monthly SRECs, the SREC Status is set by a flow, not by a trigger. This mocks that:
+        Integer count = 0;
+        Integer numberOfInvoices = prelimSRECList.size();
+
+        for (ChargentOrders__ChargentOrder__c choOrder : prelimOrderList){
+            choOrder.SREC_Status__c = 'Ready';
+            if (count < numberOfInvoices) {
+                choOrder.Related_SREC__c = prelimSRECList[count].Id;
+            }
+            count ++;
+        }
+        update prelimOrderList;
+        System.assertEquals(4,prelimOrderList.size());
+        System.assertEquals(3,numberOfInvoices);
+
+        Test.startTest();
+            BatchCreditSRECHandler batchJob = new BatchCreditSRECHandler();
+            batchJob.srecType = 'quarterly';
+            Database.executeBatch(batchJob, 4);
+        Test.stopTest();
+
+        for (SREC__c updatedInvoice : [ SELECT Id, Name, Date_Distributed_to_Customer__c
+                                                FROM SREC__c]){
+            System.AssertEquals(System.Today(), updatedInvoice.Date_Distributed_to_Customer__c);
+        }
+
+        List<ChargentOrders__ChargentOrder__c> postBatchList = [SELECT Id, Name, SREC_Invoice__c
+                                                                FROM ChargentOrders__ChargentOrder__c
+                                                                WHERE SREC_Status__c = 'Success'];
+
+        // only 3 SRECs in this batch, so even with a batch size of 4 only 3 are processed
+        System.AssertEquals(3, postBatchList.size());
     }
 }
