@@ -81,5 +81,20 @@
     </fields>
     <label>Knowledge</label>
     <pluralLabel>Knowledge</pluralLabel>
+    <recordTypes>
+        <fullName>How_To</fullName>
+        <active>true</active>
+        <label>How To</label>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Q_A</fullName>
+        <active>true</active>
+        <label>Q&amp;A</label>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Solution</fullName>
+        <active>true</active>
+        <label>Solution</label>
+    </recordTypes>
     <startsWith>Vowel</startsWith>
 </CustomObject>
