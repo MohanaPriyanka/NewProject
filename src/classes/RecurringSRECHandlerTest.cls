@@ -44,11 +44,22 @@ private class RecurringSRECHandlerTest{
 
         /* Only one Chargent Order to avoid error: No more than one executeBatch can be called from within a test method. 
         Please make sure the iterable returned from your start method matches the batch size, resulting in one executeBatch invocation */
-        ChargentOrders__ChargentOrder__c alreadyReady = new ChargentOrders__ChargentOrder__c(
+        ChargentOrders__ChargentOrder__c monthlyAlreadyReady = new ChargentOrders__ChargentOrder__c(
                                                         ChargentOrders__Bank_Account_Number__c = '00000000000',
                                                         ChargentOrders__Bank_Routing_Number__c = '123456789',
                                                         ChargentOrders__Bank_Account_Name__c = 'Jordan Test',
-                                                        ChargentOrders__Bank_Name__c = 'Originally Set to Ready',             
+                                                        ChargentOrders__Bank_Name__c = 'Monthly Originally Set to Ready',
+                                                        ChargentOrders__Bank_Account_Type__c = 'Checking',
+                                                        ChargentOrders__Payment_Method__c = 'Check',
+                                                        ChargentOrders__Gateway__c = chGateway.Id,
+                                                        Entity__c = srecEntity.Id,
+                                                        ChargentOrders__Credit_Amount__c = 0.03,
+                                                        SREC_Status__c = 'Ready');
+        ChargentOrders__ChargentOrder__c quarterlyAlreadyReady = new ChargentOrders__ChargentOrder__c(
+                                                        ChargentOrders__Bank_Account_Number__c = '00000000000',
+                                                        ChargentOrders__Bank_Routing_Number__c = '123456789',
+                                                        ChargentOrders__Bank_Account_Name__c = 'Jordan Test',
+                                                    ChargentOrders__Bank_Name__c = 'Quarterly Originally Set to Ready',
                                                         ChargentOrders__Bank_Account_Type__c = 'Checking',
                                                         ChargentOrders__Payment_Method__c = 'Check',
                                                         ChargentOrders__Gateway__c = chGateway.Id,
@@ -88,7 +99,8 @@ private class RecurringSRECHandlerTest{
                                                         Entity__c = srecEntity.Id,
                                                         ChargentOrders__Credit_Amount__c = 0,
                                                         SREC_Status__c = '');
-        insert new List<ChargentOrders__ChargentOrder__c>{alreadyReady, orderOne, orderTwo, orderThree};
+        insert new List<ChargentOrders__ChargentOrder__c>{
+            monthlyAlreadyReady, quarterlyAlreadyReady, orderOne, orderTwo, orderThree};
 
         Lead leadOne = new Lead (   FirstName = 'One',
                                     LastName = 'Testcase',
@@ -191,8 +203,9 @@ private class RecurringSRECHandlerTest{
         insert new List<SREC_Invoice__c>{invoice, invoiceTwo, invoiceThree};
 
 
-        alreadyReady.SREC_Invoice__c = invoice.Id;
-        update alreadyReady;
+        monthlyAlreadyReady.SREC_Invoice__c = invoice.Id;
+        quarterlyAlreadyReady.Related_SREC__c = srecOne.Id;
+        update new List<ChargentOrders__ChargentOrder__c>{monthlyAlreadyReady, quarterlyAlreadyReady};
     }
 
     static testMethod void updateSRECandOrder() {
@@ -204,7 +217,7 @@ private class RecurringSRECHandlerTest{
         List<ChargentOrders__ChargentOrder__c> prelimNotReadyForSend = [SELECT Id, Name 
                                                                         FROM ChargentOrders__ChargentOrder__c
                                                                         WHERE SREC_Status__c != 'Ready'];
-        System.assertEquals(1,prelimReadyForSend.size());
+        System.assertEquals(2,prelimReadyForSend.size());
         System.assertEquals(3,prelimNotReadyForSend.size());                                                                                                                      
 
         List<SREC__c> srecToUpdateList = new List<SREC__c>();
@@ -233,10 +246,10 @@ private class RecurringSRECHandlerTest{
                                                                     FROM ChargentOrders__ChargentOrder__c
                                                                     WHERE SREC_Status__c != 'Ready'];
                                                                     
-        // 4 Chargent Orders: 3 should have been updated by above, and changed to Ready. The final one should not have been affected, since it 
+        // 4 Chargent Orders: 3 should have been updated by above, and changed to Ready. The final two should not have been affected, since it
         // already had SREC Status = Ready
 
-        System.assertEquals(4,choReadyForSend.size());
+        System.assertEquals(5,choReadyForSend.size());
         System.assertEquals(0,choNotReadyForSend.size());  
         System.assertEquals(choReadyForSend[0].Related_SREC__r.Total_SREC_Value_to_Customer__c, choReadyForSend[0].ChargentOrders__Credit_Amount__c);
         System.assertEquals(choReadyForSend[1].Related_SREC__r.Total_SREC_Value_to_Customer__c, choReadyForSend[1].ChargentOrders__Credit_Amount__c);
@@ -247,14 +260,15 @@ private class RecurringSRECHandlerTest{
         System.assertEquals(0.03, choReadyForSend[3].ChargentOrders__Credit_Amount__c);
     }
 
-    static testMethod void runBatchofOne() {
+    static testMethod void runMonthlyBatchofOne() {
         // Outside tests, batch size = 1 because Chargent only accepts 1 order at a time in callout:
         Test.startTest();
-        BatchCreditSRECHandler.executeBatch(null);
+        BatchCreditSRECHandler.executeBatch('monthly');
         Test.stopTest();
 
         ChargentOrders__ChargentOrder__c updatedCho = [ SELECT Id, Name, 
-                                                        SREC_Status__c, 
+                                                        SREC_Status__c,
+                                                        SREC_Invoice__c,
                                                         ChargentOrders__Credit_Amount__c, 
                                                         ChargentOrders__Bank_Routing_Number__c, 
                                                         ChargentOrders__Bank_Account_Number__c, 
@@ -263,17 +277,45 @@ private class RecurringSRECHandlerTest{
                                                         ChargentOrders__Subtotal__c, 
                                                         ChargentOrders__Bank_Account_Name__c 
                                                         FROM ChargentOrders__ChargentOrder__c
-                                                        WHERE ChargentOrders__Bank_Name__c = 'Originally Set to Ready'
+                                                        WHERE ChargentOrders__Bank_Name__c = 'Monthly Originally Set to Ready'
                                                         LIMIT 1];
 
         System.assertEquals('Success', updatedCho.SREC_Status__c);
+        System.assertNotEquals(null, updatedCho.SREC_Invoice__c);
+    }
+
+    static testMethod void runQuarterlyBatchofOne() {
+        // Outside tests, batch size = 1 because Chargent only accepts 1 order at a time in callout:
+        Test.startTest();
+        BatchCreditSRECHandler.executeBatch('quarterly');
+        Test.stopTest();
+
+        ChargentOrders__ChargentOrder__c updatedCho = [ SELECT Id, Name,
+                                                        SREC_Status__c,
+                                                        Related_SREC__c,
+                                                        ChargentOrders__Credit_Amount__c,
+                                                        ChargentOrders__Bank_Routing_Number__c,
+                                                        ChargentOrders__Bank_Account_Number__c,
+                                                        ChargentOrders__Bank_Account_Type__c,
+                                                        ChargentOrders__Bank_Name__c,
+                                                        ChargentOrders__Subtotal__c,
+                                                        ChargentOrders__Bank_Account_Name__c
+                                                        FROM ChargentOrders__ChargentOrder__c
+                                                        WHERE ChargentOrders__Bank_Name__c = 'Quarterly Originally Set to Ready'
+                                                        LIMIT 1];
+
+        System.assertEquals('Success', updatedCho.SREC_Status__c);
+        System.assertNotEquals(null, updatedCho.Related_SREC__c);
     }
 
     static testMethod void runMonthlyBatchofFour() {
         // Outside tests, batch size = 1 but we want to test with > 1 so that finish method is tested
         // with > 1 record. We won't hit callout exception in a test because Chargent callout is mocked
-        List<ChargentOrders__ChargentOrder__c> prelimOrderList = [SELECT Id, Name
-                                                                  FROM ChargentOrders__ChargentOrder__c];
+        List<ChargentOrders__ChargentOrder__c> prelimOrderList = [
+            SELECT Id, Name
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE ChargentOrders__Bank_Name__c != 'Monthly Originally Set to Ready'
+        ];
 
         List<SREC_Invoice__c> prelimInvoiceList = [ SELECT Id, Name, Date_Paid__c
                                                     FROM SREC_Invoice__c];
@@ -304,9 +346,12 @@ private class RecurringSRECHandlerTest{
             System.AssertEquals(System.Today(), updatedInvoice.Date_Paid__c);
         }
 
-        List<ChargentOrders__ChargentOrder__c> postBatchList = [SELECT Id, Name, SREC_Invoice__c
-                                                                FROM ChargentOrders__ChargentOrder__c
-                                                                WHERE SREC_Status__c = 'Success'];
+        List<ChargentOrders__ChargentOrder__c> postBatchList = [
+            SELECT Id, Name, SREC_Invoice__c
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE SREC_Status__c = 'Success'
+            AND ChargentOrders__Bank_Name__c != 'Monthly Originally Set to Ready'
+        ];
 
         // only 3 SREC_Invoices in this batch, so even with a batch size of 4 only 3 are processed
         System.AssertEquals(3, postBatchList.size());
@@ -315,8 +360,11 @@ private class RecurringSRECHandlerTest{
     static testMethod void runQuarterlyBatchofFour() {
         // Outside tests, batch size = 1 but we want to test with > 1 so that finish method is tested
         // with > 1 record. We won't hit callout exception in a test because Chargent callout is mocked
-        List<ChargentOrders__ChargentOrder__c> prelimOrderList = [SELECT Id, Name
-                                                                  FROM ChargentOrders__ChargentOrder__c];
+        List<ChargentOrders__ChargentOrder__c> prelimOrderList = [
+            SELECT Id, Name
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE ChargentOrders__Bank_Name__c != 'Quarterly Originally Set to Ready'
+        ];
 
         List<SREC__c> prelimSRECList = [ SELECT Id, Name
                                                     FROM SREC__c];
@@ -347,9 +395,12 @@ private class RecurringSRECHandlerTest{
             System.AssertEquals(System.Today(), updatedInvoice.Date_Distributed_to_Customer__c);
         }
 
-        List<ChargentOrders__ChargentOrder__c> postBatchList = [SELECT Id, Name, SREC_Invoice__c
-                                                                FROM ChargentOrders__ChargentOrder__c
-                                                                WHERE SREC_Status__c = 'Success'];
+        List<ChargentOrders__ChargentOrder__c> postBatchList = [
+            SELECT Id, Name, SREC_Invoice__c
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE SREC_Status__c = 'Success'
+            AND ChargentOrders__Bank_Name__c != 'Quarterly Originally Set to Ready'
+        ];
 
         // only 3 SRECs in this batch, so even with a batch size of 4 only 3 are processed
         System.AssertEquals(3, postBatchList.size());
