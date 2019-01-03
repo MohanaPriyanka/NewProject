@@ -863,6 +863,22 @@ alert(&apos;Bills have been Queued for sending to LetterStream. Check \&apos;Vie
 &amp;UrlFieldName=Conga_Formula_EMAIL__c</url>
     </webLinks>
     <webLinks>
+        <fullName>Send_Quarterly_SREC_Payments</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Send Quarterly SREC Payments</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/29.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/29.0/apex.js&quot;)}
+if (confirm(&apos;Are you sure you want to send SREC Payments?&apos;)) {
+var result = sforce.apex.execute(&quot;BatchCreditSRECHandler&quot;, &quot;executeBatch&quot;, {type:&quot;quarterly&quot;});
+alert(result);
+window.location.reload();
+}</url>
+    </webLinks>
+    <webLinks>
         <fullName>Send_SREC_Payments</fullName>
         <availability>online</availability>
         <displayType>link</displayType>

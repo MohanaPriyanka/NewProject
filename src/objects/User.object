@@ -116,6 +116,16 @@
         <type>Hierarchy</type>
     </fields>
     <fields>
+        <fullName>MetaDataSearch__Recent_Searches__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Recent Searches</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
         <fullName>Parent_Account_ID__c</fullName>
         <externalId>false</externalId>
         <formula>Contact.Account.Id</formula>

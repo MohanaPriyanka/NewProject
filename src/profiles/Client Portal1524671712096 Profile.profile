@@ -29916,6 +29916,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>User.MetaDataSearch__Recent_Searches__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>User.Parent_Account_ID__c</field>
         <readable>false</readable>
     </fieldPermissions>

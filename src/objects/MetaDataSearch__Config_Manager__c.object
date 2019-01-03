@@ -217,6 +217,15 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>MetaDataSearch__Search_Flows__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Search Flows</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>MetaDataSearch__Search_Lightning_Components__c</fullName>
         <defaultValue>true</defaultValue>
         <deprecated>false</deprecated>
@@ -249,6 +258,15 @@
         <deprecated>false</deprecated>
         <externalId>false</externalId>
         <label>Search Objects</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>MetaDataSearch__Search_Page_Layouts__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Search Page Layouts</label>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
