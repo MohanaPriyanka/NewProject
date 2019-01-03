@@ -71,7 +71,7 @@ public without sharing class QueueAccountBillLetterStreamMailer implements Queue
         // Job number is important, because the name we send to letterstream must be unqiue. The DateTime might not provide
         // enough resolution to differentiate jobs.
         // Added milliseconds (SSS) to provide more resolution to date time
-        String jobName = 'Job_' +  + '_' + DateTime.now().format('MM-dd-yyyy_HH:mm:ss.SSS') + '_' + jobNumber + '.csv';
+        String jobName = 'Job_' +  + '_' + DateTime.now().format('MM-dd-yyyy_HH:mm:ss:SSS') + '_' + jobNumber + '.csv';
 
         lettersToSend.addFile(jobName, csvBlob, null);
 

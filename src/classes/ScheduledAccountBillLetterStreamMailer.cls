@@ -7,7 +7,7 @@
  */
 
 
-global without sharing class ScheduledAccountBillLetterStreamMailer implements Database.Batchable<sObject> {
+global without sharing class ScheduledAccountBillLetterStreamMailer implements Database.Batchable<sObject>, Database.Stateful {
     // Max size is 12Mb, but need to give buffer for csv file. So, 10 Mb * 1000 Kb/Mb * 1000 b/Kb
     public Integer maxPackageSize = 1*1000*1000;
     public Boolean makeCallout = true;
