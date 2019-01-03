@@ -1301,6 +1301,20 @@ SUBSTITUTE(Phone, &quot;(&quot;, &quot;&quot;), &quot;)&quot;, &quot;&quot;), &q
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Soft_Pull_Credit_Report__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>We can determine whether it&apos;s a soft pull or not by inspecting LASERCA__Credit_Report_Log__c.LASERCA__Login_Account__c. 
+
+Soft Pull: bluewavesoft
+Hard Pull: Bluewave2</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Check this checkbox to pull a credit report using the Soft Pull Transunion account, instead of a the Hard Pull account</inlineHelpText>
+        <label>Soft Pull Credit Report</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Title</fullName>
         <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>false</trackHistory>
