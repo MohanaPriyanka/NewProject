@@ -7170,6 +7170,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Contact.Soft_Pull_Credit_Report__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Contact.Title</field>
         <readable>true</readable>
@@ -11888,6 +11893,11 @@
         <editable>true</editable>
         <field>Lead.Service_Territory__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.Soft_Pull_Credit_Report__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -50997,6 +51007,10 @@
     <tabVisibilities>
         <tab>dsfs__DocuSign_Recipient_Status__c</tab>
         <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>et4ae5__IndividualEmailResult__c</tab>
+        <visibility>DefaultOff</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>standard-Account</tab>
