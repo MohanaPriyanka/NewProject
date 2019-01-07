@@ -587,6 +587,7 @@ public with sharing class LetterStreamServiceTest {
             LIMIT 1
         ];
 
+
         // assert case was created for accountParent4 with missing address
         List<Case> cases = [
             SELECT Id, RecordTypeId, AccountId, Product_Line__c, Subject
@@ -598,6 +599,7 @@ public with sharing class LetterStreamServiceTest {
         System.assertEquals(customerCare.Id, cases[0].RecordTypeId);
         System.assertEquals('Community Solar', cases[0].Product_Line__c);
         System.assertEquals('Cannot send bill to Community Solar customer.', cases[0].Subject);
+
 
         List<AsyncApexJob> asyncApexJobs = [
             SELECT Id
@@ -1168,4 +1170,7 @@ public with sharing class LetterStreamServiceTest {
         System.assertEquals(originalAsyncApexJobs.size(), asyncApexJobs.size());
         System.assertEquals(1, errorLogs.size());
     }
+
+
+    
 }
