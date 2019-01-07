@@ -171,7 +171,7 @@ public without sharing class LeadTriggerHandler {
                         for (ZipCode_Utility_Junction__c junction : zone.ZipCode_Utility_Junctions__r){
                             if (utilityNames == null){
                                 utilityNames = junction.Utility__r.Name;
-                                utilityIds = junction.Id;
+                                utilityIds = junction.Utility__r.Id;
                             } else {
                                 utilityNames += '/' + junction.Utility__r.Name;
                                 utilityIds += '/' + junction.Utility__r.Id;
