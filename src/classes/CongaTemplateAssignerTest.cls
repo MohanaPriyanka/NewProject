@@ -273,7 +273,7 @@ public class CongaTemplateAssignerTest {
         update congaConductor;
 
         Test.stopTest();
-        
+
         List<Error_Log__c> errorLogs = [SELECT Id, Name FROM Error_Log__c];
         List<Account_Bill__c> updatedAccountBills = queryAccountBills();
 

@@ -10,14 +10,14 @@ public without sharing class CongaTemplateAssigner implements Database.Batchable
     }
 
     public CongaTemplateAssigner(Map<Id,APXT_BPM__Conductor__c> oldMap, List<APXT_BPM__Conductor__c> newList) {
-        Boolean getTemplates = false;
         for (APXT_BPM__Conductor__c conductor : newList) {
             if (conductor.Assign_Templates__c && !oldMap.get(conductor.Id).Assign_Templates__c) {
-                getTemplates = true;
+                congaTemplateList = getTemplateList();
+                if (congaTemplateList.size() > 0){
+                    Database.executeBatch(this, 20);
+                }
+                break;
             }
-        }
-        if (getTemplates){
-            congaTemplateList = getTemplateList();
         }
     }
 
@@ -37,6 +37,7 @@ public without sharing class CongaTemplateAssigner implements Database.Batchable
                         'FROM Account_Bill__c '+
                         'WHERE Month__c = '+ System.Today().month() + ' ' +
                         'AND Year__c = \'' + String.valueOf(System.Today().year()) + '\' ' +
+                        'AND Bill_Template__c = null ' +
                         'AND Published__c = false';
 
         return Database.getQueryLocator(query);
@@ -111,5 +112,6 @@ public without sharing class CongaTemplateAssigner implements Database.Batchable
     }
 
     public void finish(Database.BatchableContext bc){
+        // Batchable Class must contain finish method, but nothing to do here:
     }
 }
