@@ -735,6 +735,44 @@ else
         <url>/00O0a000005FJzY</url>
     </webLinks>
     <webLinks>
+        <fullName>Preview_Monthly_SREC_Payments</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Preview Monthly SREC Payments</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/00O0a000005FJcy</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Preview_Quarterly_SREC_Payments</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Preview Quarterly SREC Payments</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/00O8A000000SaVp</url>
+    </webLinks>
+    <webLinks>
         <fullName>Preview_SREC_Payments</fullName>
         <availability>online</availability>
         <displayType>link</displayType>

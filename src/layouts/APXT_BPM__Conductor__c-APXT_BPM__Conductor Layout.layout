@@ -164,10 +164,13 @@
                 <emptySpace>true</emptySpace>
             </layoutItems>
             <layoutItems>
-                <customLink>Monthly_SREC_QC_Report</customLink>
+                <customLink>Preview_Monthly_SREC_Payments</customLink>
             </layoutItems>
             <layoutItems>
-                <customLink>Preview_SREC_Payments</customLink>
+                <customLink>Preview_Quarterly_SREC_Payments</customLink>
+            </layoutItems>
+            <layoutItems>
+                <customLink>Monthly_SREC_QC_Report</customLink>
             </layoutItems>
             <layoutItems>
                 <customLink>View_Invoices_to_Be_Created</customLink>

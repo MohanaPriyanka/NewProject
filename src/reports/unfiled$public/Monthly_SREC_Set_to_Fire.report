@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>ChargentOrders__ChargentOrder__c$Name</field>
+    </columns>
+    <columns>
+        <field>ChargentOrders__ChargentOrder__c$SREC_Status__c</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>ChargentOrders__ChargentOrder__c$ChargentOrders__Credit_Amount__c</field>
+    </columns>
+    <filter>
+        <criteriaItems>
+            <column>ChargentOrders__ChargentOrder__c$SREC_Status__c</column>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Ready</value>
+        </criteriaItems>
+        <criteriaItems>
+            <column>ChargentOrders__ChargentOrder__c$SREC_Invoice__c</column>
+            <isUnlocked>true</isUnlocked>
+            <operator>notEqual</operator>
+            <value></value>
+        </criteriaItems>
+    </filter>
+    <format>Tabular</format>
+    <name>Monthly SREC Set To Fire</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Chargent_Orders_Custom__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>ChargentOrders__ChargentOrder__c$ChargentOrders__Birthdate__c</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>
