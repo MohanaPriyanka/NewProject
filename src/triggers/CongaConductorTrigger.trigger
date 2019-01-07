@@ -3,6 +3,6 @@ trigger CongaConductorTrigger on APXT_BPM__Conductor__c (after update) {
         OverpaymentApplication.triggerApplication(Trigger.oldMap, Trigger.new);
         BatchCSBillEmailHandler emailSend = new BatchCSBillEmailHandler(Trigger.oldMap, Trigger.new);
         CongaTemplateAssigner templateAssigner = new CongaTemplateAssigner(Trigger.oldMap, Trigger.new);
-        // help
+        Database.executeBatch(templateAssigner, 20);
     }
 }

@@ -48,6 +48,15 @@ public class CongaTemplateAssignerTest {
             Brand_Key__c = 'AmpRed'
         );
 
+        APXTConga4__Conga_Template__c bwShortAutopay = new APXTConga4__Conga_Template__c(
+            APXTConga4__Name__c = 'bwShortAutopay',
+            Active__c = true,
+            Autopay__c = true,
+            Anchor__c = false,
+            Max_Number_of_UASBs__c = 2,
+            Brand_Key__c = 'BluewaveLogo'
+        );
+
         APXTConga4__Conga_Template__c bwLongAutopay = new APXTConga4__Conga_Template__c(
             APXTConga4__Name__c = 'bwLongAutopay',
             Active__c = true,
@@ -66,9 +75,9 @@ public class CongaTemplateAssignerTest {
             Brand_Key__c = 'AmpRed'
         );
 
-        // Missing: AMP Short Autopay, BW Short Autopay to test error handling
+        // Missing: AMP Short Autopay to test error handling
         insert new List<APXTConga4__Conga_Template__c>{
-            anchorTemplate, bwShortBill, bwLongBill, ampShortBill, ampLongBill, bwLongAutopay, ampLongAutopay
+            anchorTemplate, bwShortBill, bwLongBill, ampShortBill, ampLongBill, bwLongAutopay, bwShortAutopay, ampLongAutopay
         };
 
         List <Account_Bill__c> listAccountBills = [
@@ -85,7 +94,8 @@ public class CongaTemplateAssignerTest {
 
     static List<Account_Bill__c> queryAccountBills(){
         List <Account_Bill__c> accountBillList = [
-            SELECT Id, Name, Published__c, Month__c, Year__c, Conga_Template__c
+            SELECT Id, Name, Published__c, Month__c, Year__c, Bill_Template__c, Bill_Template__r.APXTConga4__Name__c,
+                Parent_Account__r.Recurring_Billing__c, Parent_Account__r.Client_Brand_Key__c
             FROM Account_Bill__c
             WHERE Published__c = false
             ORDER BY Name
@@ -164,8 +174,11 @@ public class CongaTemplateAssignerTest {
 
         /* For reference:
           acA A = UASB Count : 1
-          acB B = UASB Count : 3
-          acC C = UASB Count : 4 */
+          acB B = UASB Count : 2
+          acC C = UASB Count : 3
+        */
+
+        runSecondMonthProductionUpdates();
 
         List<Account> acctList = new List<Account>();
         for (Account acct : [SELECT Id, Name FROM Account]){
@@ -183,16 +196,13 @@ public class CongaTemplateAssignerTest {
         }
         update acctList;
 
-        runSecondMonthProductionUpdates();
-
         Map<String,APXTConga4__Conga_Template__c> congaTemplateMap = getCongaTemplateMap();
-        system.debug(congaTemplateMap);
-        List <Account_Bill__c> prelimAccountBills = queryAccountBills();
-        system.debug(prelimAccountBills);
+
+        List<Account_Bill__c> prelimAccountBills = queryAccountBills();
         System.assertEquals(3, prelimAccountBills.size());
-        System.assertEquals(null, prelimAccountBills[0].Conga_Template__c);
-        System.assertEquals(null, prelimAccountBills[1].Conga_Template__c);
-        System.assertEquals(null, prelimAccountBills[2].Conga_Template__c);
+        System.assertEquals(null, prelimAccountBills[0].Bill_Template__c);
+        System.assertEquals(null, prelimAccountBills[1].Bill_Template__c);
+        System.assertEquals(null, prelimAccountBills[2].Bill_Template__c);
 
         APXT_BPM__Conductor__c congaConductor = new APXT_BPM__Conductor__c (
             APXT_BPM__Title__c = 'Conga Record'
@@ -206,8 +216,76 @@ public class CongaTemplateAssignerTest {
         List<Account_Bill__c> updatedAccountBills = queryAccountBills();
 
         System.assertEquals(3, updatedAccountBills.size());
-        System.assertEquals(congaTemplateMap.get('ampShortBill').Id, updatedAccountBills[0].Conga_Template__c);
-        System.assertEquals(congaTemplateMap.get('bwLongAutopay').Id, updatedAccountBills[1].Conga_Template__c);
-        System.assertEquals(congaTemplateMap.get('bwLongBill').Id, updatedAccountBills[2].Conga_Template__c);
+
+        System.assertEquals(congaTemplateMap.get('ampShortBill').APXTConga4__Name__c, updatedAccountBills[0].Bill_Template__r.APXTConga4__Name__c);
+        System.assertEquals(congaTemplateMap.get('bwShortAutopay').APXTConga4__Name__c, updatedAccountBills[1].Bill_Template__r.APXTConga4__Name__c);
+        System.assertEquals(congaTemplateMap.get('bwLongBill').APXTConga4__Name__c, updatedAccountBills[2].Bill_Template__r.APXTConga4__Name__c);
+    }
+
+    @isTest public static void testErrorLogging() {
+        APXTConga4__Conga_Template__c templateToDelete = [
+            SELECT Id, Name
+            FROM APXTConga4__Conga_Template__c
+            WHERE APXTConga4__Name__c = 'ampLongAutopay'
+            LIMIT 1];
+
+        delete templateToDelete;
+
+        Test.startTest();
+
+        /* For reference:
+          acA A = UASB Count : 1
+          acB B = UASB Count : 2
+          acC C = UASB Count : 3
+        */
+
+        runSecondMonthProductionUpdates();
+
+        List<Account> acctList = new List<Account>();
+        for (Account acct : [SELECT Id, Name FROM Account]){
+            if (acct.Name == 'acA A'){
+                acct.Recurring_Billing__c = true;
+                acct.Client_Brand_Key__c = 'AmpRed';
+            } else if (acct.Name == 'acB B'){
+                acct.Recurring_Billing__c = true;
+                acct.Client_Brand_Key__c = 'BluewaveLogo';
+            } else {
+                acct.Recurring_Billing__c = false;
+                acct.Client_Brand_Key__c = 'BluewaveLogo';
+            }
+            acctList.add(acct);
+        }
+        update acctList;
+
+        Map<String,APXTConga4__Conga_Template__c> congaTemplateMap = getCongaTemplateMap();
+
+        List<Account_Bill__c> prelimAccountBills = queryAccountBills();
+        System.assertEquals(3, prelimAccountBills.size());
+        System.assertEquals(null, prelimAccountBills[0].Bill_Template__c);
+        System.assertEquals(null, prelimAccountBills[1].Bill_Template__c);
+        System.assertEquals(null, prelimAccountBills[2].Bill_Template__c);
+
+        APXT_BPM__Conductor__c congaConductor = new APXT_BPM__Conductor__c (
+            APXT_BPM__Title__c = 'Conga Record'
+        );
+        insert congaConductor;
+        congaConductor.Assign_Templates__c = true;
+        update congaConductor;
+
+        Test.stopTest();
+        
+        List<Error_Log__c> errorLogs = [SELECT Id, Name FROM Error_Log__c];
+        List<Account_Bill__c> updatedAccountBills = queryAccountBills();
+
+        System.assertEquals(3, updatedAccountBills.size());
+
+        // AMP Short Autopay template does not exist. Should log an error:
+        System.assertEquals(null, updatedAccountBills[0].Bill_Template__c);
+        System.assertEquals(1, errorLogs.size());
+
+        // Other templates should still be assigned:
+        System.assertEquals(congaTemplateMap.get('bwShortAutopay').APXTConga4__Name__c, updatedAccountBills[1].Bill_Template__r.APXTConga4__Name__c);
+        System.assertEquals(congaTemplateMap.get('bwLongBill').APXTConga4__Name__c, updatedAccountBills[2].Bill_Template__r.APXTConga4__Name__c);
+
     }
 }
