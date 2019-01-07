@@ -394,8 +394,8 @@ public with sharing class LetterStreamServiceTest {
 
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, new LetterStreamAPIMock(accountBills));
-        QueueAccountBillLetterStreamMailer mailer = new QueueAccountBillLetterStreamMailer(accountBillsToTest, documentsToTest, true, 1);
-        mailer.sendAccountBills();
+        QueueAccountBillLetterStreamMailer mailer = new QueueAccountBillLetterStreamMailer(accountBillsToTest, documentsToTest, true);
+        mailer.sendAccountBills(null);
         Test.stopTest();
 
         List<Account_Bill__c> accountBillsAfterSend = [

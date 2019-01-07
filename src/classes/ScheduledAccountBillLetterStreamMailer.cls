@@ -12,7 +12,6 @@ global without sharing class ScheduledAccountBillLetterStreamMailer implements D
     public Integer maxPackageSize = 1*1000*1000;
     public Boolean makeCallout = true;
     public CaseFactory caseFactory = new CaseFactory();
-    public Integer jobNumber = 1;
 
     webservice static void batchAccountBills(){
         ScheduledAccountBillLetterStreamMailer batchJob = new ScheduledAccountBillLetterStreamMailer();
@@ -74,17 +73,16 @@ global without sharing class ScheduledAccountBillLetterStreamMailer implements D
             packageContentDocuments.add(doc.Id);
             // avoid max heap size by sending package and starting over
             if (packageSize >= maxPackageSize) {
-                Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments, makeCallout, jobNumber));
+                Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments, makeCallout));
                 packageAccountBills.clear();
                 packageContentDocuments.clear();
                 packageSize = 0;
-                jobNumber++;
                 Logger.logLater('ScheduleAccountBillLetterStreamMailer', 'batchAccountBills', queuedLogMessage(packageSize, jobId));
             }
         }
         // if we never hit max heap size, send at end
         if (!packageAccountBills.isEmpty() && !packageContentDocuments.isEmpty()) {
-            Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments, makeCallout, jobNumber));
+            Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments, makeCallout));
             Logger.logLater('ScheduleAccountBillLetterStreamMailer', 'batchAccountBills', queuedLogMessage(packageSize, jobId));
         }
 

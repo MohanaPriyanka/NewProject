@@ -11,22 +11,20 @@ public without sharing class QueueAccountBillLetterStreamMailer implements Queue
     public Set<Id> accountBills;
     public Set<Id> documentsIds;
     public Boolean makeCallout;
-    public Integer jobNumber;
 
-    public QueueAccountBillLetterStreamMailer(Set<Id> accountBills, Set<Id> documentsIds, Boolean makeCallout, Integer jobNumber) {
+    public QueueAccountBillLetterStreamMailer(Set<Id> accountBills, Set<Id> documentsIds, Boolean makeCallout) {
         this.accountBills = accountBills;
         this.documentsIds = documentsIds;
         this.makeCallout = makeCallout;
-        this.jobNumber = jobNumber;
     }
 
     public void execute(QueueableContext context) {
         if (makeCallout) {
-            sendAccountBills();
+            sendAccountBills(context);
         }
     }
 
-    public void sendAccountBills() {
+    public void sendAccountBills(QueueableContext context) {
         Map<Id, Account_Bill__c> accountBillsByDocIds = new Map<Id, Account_Bill__c>();
         List<Account_Bill__c> accountBills = [
             SELECT Id, Parent_Account__r.Name, Parent_Account__r.BillingStreet, Parent_Account__r.BillingCity,
@@ -71,7 +69,11 @@ public without sharing class QueueAccountBillLetterStreamMailer implements Queue
         // Job number is important, because the name we send to letterstream must be unqiue. The DateTime might not provide
         // enough resolution to differentiate jobs.
         // Added milliseconds (SSS) to provide more resolution to date time
-        String jobName = 'Job_' +  + '_' + DateTime.now().format('MM-dd-yyyy_HH:mm:ss:SSS') + '_' + jobNumber + '.csv';
+        Id jobId;
+        if (context != null) {
+            jobId = context.getJobId();
+        }
+        String jobName = 'Job_' +  + '_' + DateTime.now().format('MM-dd-yyyy_HH:mm:ss:SSS') + '_' + jobId + '.csv';
 
         lettersToSend.addFile(jobName, csvBlob, null);
 
@@ -148,13 +150,11 @@ public without sharing class QueueAccountBillLetterStreamMailer implements Queue
                 Logger.logNow('QueueAccountBillLetterStreamMailer', 'queueIndividualAccountBills', 'Attempted to queue individual account bill');
                 return;
             }
-            Integer jobNumber = 1;
             for (Id documentId : accountBillsByDocIds.keySet()) {
                 Id accountId = accountBillsByDocIds.get(documentId).Id;
                 Set<Id> accountIds = new Set<Id>{accountId};
                 Set<Id> documentIds = new Set<Id>{documentId};
-                System.enqueueJob(new QueueAccountBillLetterStreamMailer(accountIds, documentIds, makeCallout, jobNumber));
-                jobNumber++;
+                System.enqueueJob(new QueueAccountBillLetterStreamMailer(accountIds, documentIds, makeCallout));
             }
         }
     }
