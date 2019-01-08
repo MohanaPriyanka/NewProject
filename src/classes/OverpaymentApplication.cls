@@ -33,7 +33,7 @@ public without sharing class OverpaymentApplication {
 
         List<Bill_Adjustment__c> adjustments = [
             SELECT Id, Name, Adjustment_Amount__c,
-                Outstanding__c, Opportunity_ID__c,
+                Outstanding__c,
                 UASB__r.Opportunity__r.AccountId,
                 UASB__c, UASB__r.Opportunity__c
             FROM Bill_Adjustment__c
