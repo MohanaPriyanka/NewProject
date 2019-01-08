@@ -62,8 +62,6 @@ public without sharing class CongaTemplateAssigner implements Database.Batchable
 
         for (Account_Bill__c accountBill : scope){
             templateKey = abToTemplateKeyMap.get(accountBill.Id);
-            system.debug(accountBill.Id);
-            system.debug(abToTemplateKeyMap);
             for (APXTConga4__Conga_Template__c template : congaTemplateList){
                 if (checkTemplateMatch(template, templateKey)){
                     accountBill.Bill_Template__c = template.Id;
@@ -103,8 +101,6 @@ public without sharing class CongaTemplateAssigner implements Database.Batchable
     }
 
     public Boolean checkTemplateMatch(APXTConga4__Conga_Template__c congaTemplate, TemplateKey templateKey) {
-        system.debug(congaTemplate);
-        system.debug(templateKey);
         Boolean isMatch = false;
         if (congaTemplate.Autopay__c == templateKey.isAutopay
             && congaTemplate.Anchor__c == templateKey.isAnchor
