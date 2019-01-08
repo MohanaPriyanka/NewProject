@@ -13,11 +13,14 @@ public without sharing class CongaTemplateAssigner implements Database.Batchable
         for (APXT_BPM__Conductor__c conductor : newList) {
             if (conductor.Assign_Templates__c && !oldMap.get(conductor.Id).Assign_Templates__c) {
                 congaTemplateList = getTemplateList();
-                if (congaTemplateList.size() > 0){
-                    Database.executeBatch(this, 20);
-                }
-                break;
             }
+            break;
+        }
+    }
+
+    public void executeBatch() {
+        if (congaTemplateList != null){
+            Database.executeBatch(this, 20);
         }
     }
 
@@ -59,7 +62,8 @@ public without sharing class CongaTemplateAssigner implements Database.Batchable
 
         for (Account_Bill__c accountBill : scope){
             templateKey = abToTemplateKeyMap.get(accountBill.Id);
-
+            system.debug(accountBill.Id);
+            system.debug(abToTemplateKeyMap);
             for (APXTConga4__Conga_Template__c template : congaTemplateList){
                 if (checkTemplateMatch(template, templateKey)){
                     accountBill.Bill_Template__c = template.Id;
@@ -88,19 +92,19 @@ public without sharing class CongaTemplateAssigner implements Database.Batchable
         if (abToTemplateKeyMap.containsKey(acctBillId)){
             templateKey = abToTemplateKeyMap.get(acctBillId);
             templateKey.uasbCount += systemBill.UASB_Count__c;
-            abToTemplateKeyMap.put(acctBillId, templateKey);
         } else {
             templateKey.isAutopay = systemBill.Account_Bill__r.Parent_Account__r.Recurring_Billing__c;
             templateKey.isAnchor = anchorOpp;
             templateKey.uasbCount = systemBill.UASB_Count__c;
             templateKey.clientBrandKey = systemBill.Account_Bill__r.Parent_Account__r.Client_Brand_Key__c;
-
             abToTemplateKeyMap.put(acctBillId, templateKey);
         }
         return abToTemplateKeyMap;
     }
 
     public Boolean checkTemplateMatch(APXTConga4__Conga_Template__c congaTemplate, TemplateKey templateKey) {
+        system.debug(congaTemplate);
+        system.debug(templateKey);
         Boolean isMatch = false;
         if (congaTemplate.Autopay__c == templateKey.isAutopay
             && congaTemplate.Anchor__c == templateKey.isAnchor
