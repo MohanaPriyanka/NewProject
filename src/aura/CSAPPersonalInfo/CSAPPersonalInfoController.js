@@ -69,4 +69,12 @@
         });
         $A.enqueueAction(unsplitLeadAction);
     },
+
+    cancelAddProperty : function(component, event, helper) {
+        if (confirm("Are you sure you want to cancel adding another Property?")) {
+            var lead = component.get('v.lead');
+            var stageName = "NAV_Payment_Information";
+            helper.closePageFireComplete(component, helper, stageName, lead);
+        }
+    },
 })
