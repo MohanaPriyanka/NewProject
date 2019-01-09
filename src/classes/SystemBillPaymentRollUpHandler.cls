@@ -214,7 +214,7 @@ public without sharing class   SystemBillPaymentRollUpHandler {
             systemBills = [
                 SELECT Id, Total_Payments_This_Month__c, Late_Payments__c, Payments_Net_Previous_Balances__c,
                     Late_Fee_Payments__c, Balance_Net_Late_Payments__c, Total_Due__c, Shared_Solar_System_ID__c,
-                    Entity_ID__c, Opportunity_Id__c, Account_Bill__c, Account_Bill_Number__c, Early_Payments__c,
+                    Entity_ID__c, Account_Bill__c, Account_Bill_Number__c, Early_Payments__c,
                     Carry_Forward_Payments__c, Opportunity__r.Id, Opportunity__c, Late_Fees__c,
                     Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Id, Date__c,
                     Account_Bill__r.Name, Account_Bill__r.Overpayment_Amount_Rollup__c, CreatedDate,

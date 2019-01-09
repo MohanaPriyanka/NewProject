@@ -3607,7 +3607,7 @@ IF(AND(Credit_Score_Integer_2__c &gt; 680, Debt_to_Income__c &lt;= 0.40), &quot;
         </picklistValues>
     </recordTypes>
     <searchLayouts/>
-    <sharingModel>Private</sharingModel>
+    <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
     <webLinks>
         <fullName>Conga_Composer_Credit_Score_Disclosure</fullName>
