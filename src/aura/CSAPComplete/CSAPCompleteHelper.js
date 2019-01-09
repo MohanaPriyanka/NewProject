@@ -25,6 +25,7 @@
                 }
                 var newLead = {
                     sobjectType: "Lead",
+                    Id : oldLead.Id,
                     Personal_Credit_Report__c: oldLead.Personal_Credit_Report__c,
                     Parent_Account__c: oldLead.Parent_Account__c,
                     Partner_Lookup__c : oldLead.Partner_Lookup__c,
