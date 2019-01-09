@@ -7,30 +7,41 @@
  */
 
 
-global without sharing class ScheduledAccountBillLetterStreamMailer {
+global without sharing class ScheduledAccountBillLetterStreamMailer implements Database.Batchable<sObject>, Database.Stateful {
     // Max size is 12Mb, but need to give buffer for csv file. So, 10 Mb * 1000 Kb/Mb * 1000 b/Kb
-    public static Integer maxPackageSize = 1*1000*1000;
-    public static Boolean makeCallout = true;
-    public static CaseFactory caseFactory = new CaseFactory();
+    public Integer maxPackageSize = 1*1000*1000;
+    public Boolean makeCallout = true;
+    public CaseFactory caseFactory = new CaseFactory();
 
-    webService static void batchAccountBills() {
+    webservice static void batchAccountBills(){
+        ScheduledAccountBillLetterStreamMailer batchJob = new ScheduledAccountBillLetterStreamMailer();
+        Database.executeBatch(batchJob, 50);
+    }
+
+    public Database.QueryLocator start(Database.BatchableContext bc) {
+        String query = 'SELECT Id, Parent_Account__c, Parent_Account__r.Name, Parent_Account__r.BillingStreet,' +
+            'Parent_Account__r.BillingCity, Parent_Account__r.BillingState, Parent_Account__r.BillingPostalCode,' +
+            'Bill_PDF_Page_Count__c, Calendar_Month__c, Year__c, Bill_Attach_Document__c' +
+            ' FROM Account_Bill__c' +
+            ' WHERE Published__c = TRUE' +
+            ' AND Ready_For_Paper_Bill_Queue__c = TRUE' +
+            ' AND Bill_Attach_Document__c != NULL' +
+            ' AND Parent_Account__r.Opt_Out_of_Paper_Billing__c != TRUE';
+
+        return Database.getQueryLocator(query);
+    }
+
+    public void execute(Database.BatchableContext bc, List<Account_Bill__c> accountBills) {
+        batchAccountBillsByDocumentSize(accountBills);
+        }
+
+    public void finish(Database.BatchableContext bc) {
+        Logger.flushLogs();
+    }
+
+    public void batchAccountBillsByDocumentSize(List<Account_Bill__c> accountBills) {
         Map<Id, Account_Bill__c> accountBillsByDocIds = new Map<Id, Account_Bill__c>();
         Set<Id> docIds = new Set<Id>();
-
-        List<Account_Bill__c> accountBills = [
-            SELECT Id, Parent_Account__c, Parent_Account__r.Name, Parent_Account__r.BillingStreet, Parent_Account__r.BillingCity,
-                Parent_Account__r.BillingState, Parent_Account__r.BillingPostalCode, Bill_PDF_Page_Count__c,
-                Calendar_Month__c, Year__c, Bill_Attach_Document__c
-            FROM Account_Bill__c
-            WHERE Published__c = TRUE
-            AND Ready_For_Paper_Bill_Queue__c = TRUE
-            AND Bill_Attach_Document__c != NULL
-            AND Parent_Account__r.Opt_Out_of_Paper_Billing__c != TRUE
-        ];
-
-        if (accountBills.isEmpty()) {
-            return ;
-        }
 
         List<Case> newCases = new List<Case>();
         for (Account_Bill__c accountBill : accountBills) {
@@ -55,7 +66,6 @@ global without sharing class ScheduledAccountBillLetterStreamMailer {
         Integer packageSize = 0;
         Set<Id> packageAccountBills = new Set<Id>();
         Set<Id> packageContentDocuments = new Set<Id>();
-        Integer jobNumber = 1;
 
         for (ContentDocument doc : documents) {
             packageSize += doc.ContentSize;
@@ -63,17 +73,16 @@ global without sharing class ScheduledAccountBillLetterStreamMailer {
             packageContentDocuments.add(doc.Id);
             // avoid max heap size by sending package and starting over
             if (packageSize >= maxPackageSize) {
-                Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments, makeCallout, jobNumber));
+                Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments, makeCallout));
                 packageAccountBills.clear();
                 packageContentDocuments.clear();
                 packageSize = 0;
-                jobNumber += 1;
                 Logger.logLater('ScheduleAccountBillLetterStreamMailer', 'batchAccountBills', queuedLogMessage(packageSize, jobId));
             }
         }
         // if we never hit max heap size, send at end
         if (!packageAccountBills.isEmpty() && !packageContentDocuments.isEmpty()) {
-            Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments, makeCallout, jobNumber));
+            Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments, makeCallout));
             Logger.logLater('ScheduleAccountBillLetterStreamMailer', 'batchAccountBills', queuedLogMessage(packageSize, jobId));
         }
 
@@ -81,17 +90,16 @@ global without sharing class ScheduledAccountBillLetterStreamMailer {
             String message = 'Bills: ' + packageAccountBills + ', Docs: ' + packageContentDocuments;
             Logger.logLater('ScheduleAccountBillLetterStreamMailer', 'batchAccountBills', message);
         }
-        Logger.flushLogs();
     }
 
-    public static String queuedLogMessage(Decimal packageSize, Id JobId) {
+    public String queuedLogMessage(Decimal packageSize, Id JobId) {
         Decimal sizeInKB = (packageSize/1000).setScale(3);
         String message = 'Package of ' + sizeInKB + ' kB queued for letter stream. ' + 'JobID: ' + jobId;
         return message;
     }
 
     @TestVisible
-    private static Boolean checkBillAccountAddressValid(Account_Bill__c accountBill) {
+    private Boolean checkBillAccountAddressValid(Account_Bill__c accountBill) {
         if (accountBill.Parent_Account__r != null
             && accountBill.Parent_Account__r.BillingStreet != null
             && accountBill.Parent_Account__r.BillingCity != null
@@ -104,7 +112,7 @@ global without sharing class ScheduledAccountBillLetterStreamMailer {
     }
 
     @TestVisible
-    private static Case createCaseForInvalidAddress(Account_Bill__c accountBill) {
+    private Case createCaseForInvalidAddress(Account_Bill__c accountBill) {
         Case newCase = caseFactory.getCase('Customer_Care');
 
         newCase.Subject = 'Cannot send bill to Community Solar customer.';
