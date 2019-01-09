@@ -256,4 +256,18 @@ ISCHANGED(Name)
         <url>{!$Site.BaseUrl}/flow/Check_Logging_3_0?returl={!Paper_Check__c.Id}&amp;checkid={!Paper_Check__c.Id}</url>
         <width>520</width>
     </webLinks>
+    <webLinks>
+        <fullName>Reverse_Check</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Reverse Check</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/31.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/31.0/apex.js&quot;)}
+
+sforce.apex.execute(&quot;ReturnedTransactionHandler&quot;,&quot;unrollPaperCheck&quot;,{transactionId:&quot;{! Paper_Check__c.Id}&quot;}); 
+location.reload(true);</url>
+    </webLinks>
 </CustomObject>
