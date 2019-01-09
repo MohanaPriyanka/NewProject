@@ -6,63 +6,23 @@
  */
 
 
-global without sharing class ReturnedTransactionHandler {
+public without sharing class ReturnedTransactionHandler {
     public Map<Id, System_Bill__c> finalGroupedSystemBillsToUpdate = new Map<Id, System_Bill__c>();
     public Map<Id, Overpayment__c> finalOverpaymentsToModifyList = new Map<Id, Overpayment__c>();
     public Map<Id,Account> propaccountMap;
     public List<Bill_Adjustment__c> billAdjustmentsToInsert = new List<Bill_Adjustment__c>();
     public Set<Account> propAccountsToUpdate = new Set<Account>();
     public List<ChargentOrders__Transaction__c> transactionsToUpdate = new List<ChargentOrders__Transaction__c>();
+    public List<ChargentOrders__Transaction__c> reverseTransactions = new List<ChargentOrders__Transaction__c>();
     public List<Overpayment__c> overpayList;
 
-// existing interface from 'mark as returned' onClickJSButton on single transaction
-    webService static void unrollPayment(Id transactionId) {
-        ReturnedTransactionHandler returnedTransactionHandler = new ReturnedTransactionHandler();
-        returnedTransactionHandler.unrollPayment(new List<Id>{transactionId});
-        returnedTransactionHandler.updateRecords();
-    }
-
-    webService static void unrollPayments(List<Id> transactionIds) {
-        ReturnedTransactionHandler returnedTransactionHandler = new ReturnedTransactionHandler();
-        returnedTransactionHandler.unrollPayment(transactionIds);
-        returnedTransactionHandler.updateRecords();
-    }
-
-    webService static void unrollPaperCheck(Id paperCheckId) {
-        List<ChargentOrders__Transaction__c> transactionsToReturn = [
-            SELECT Id, ChargentOrders__Order__c, ChargentOrders__Amount__c, ChargentOrders__Response_Status__c,
-                ChargentOrders__Gateway__c, Distributed_Among_System_Bills__c, ChargentOrders__Response_Message__c,
-                ChargentOrders__Type__c, ChargentOrders__Payment_Method__c, Activity_Type__c
-            FROM ChargentOrders__Transaction__c
-            WHERE ChargentOrders__Order__r.Paper_Check__c = : paperCheckId
-        ];
-
-
-        List<Id> transactionIds = new List<Id>();
-        List<ChargentOrders__Transaction__c> reverseTransactions = new List<ChargentOrders__Transaction__c>();
-
-        for (ChargentOrders__Transaction__c chOTransaction : transactionsToReturn) {
-            ChargentOrders__Transaction__c reverseTransaction = chOTransaction.clone(false, true, true, false);
-            reverseTransaction.ChargentOrders__Amount__c *= -1;
-            reverseTransaction.ChargentOrders__Response_Status__c = 'Approved';
-            reverseTransactions.add(reverseTransaction);
-            transactionIds.add(chOTransaction.Id);
-        }
-
-        insert reverseTransactions;
-
-        ReturnedTransactionHandler returnedTransactionHandler = new ReturnedTransactionHandler();
-        returnedTransactionHandler.unrollPayment(transactionIds);
-        returnedTransactionHandler.updateRecords();
-    }
-
-    public void unrollPayment(List<Id> transactionIds) {
+    public void unrollPayment(Set<Id> transactionIds) {
         List<ChargentOrders__Transaction__c> chTransactions;
         List<System_Bill__c> systemBills;
         Datetime lastSystemBillDate;
 
         SystemBillPaymentRollUpHandler.SystemBillRepo sbRepo = new SystemBillPaymentRollUpHandler.SystemBillRepo(
-            transactionIds
+            new List<Id>(transactionIds)
         );
 
         chTransactions = sbRepo.getTransactions();
@@ -140,6 +100,7 @@ global without sharing class ReturnedTransactionHandler {
                 billAdjustmentsToInsert.add(adjust);
             }
             transactionsToUpdate.add(chTransaction);
+            createReverseTransaction(chTransaction);
         }
     }
 
@@ -213,25 +174,38 @@ global without sharing class ReturnedTransactionHandler {
         return lists;
     }
 
-    public void removePaymentFromMaxBill(System_Bill__c systemBill, Decimal payment) {
-
+    public void createReverseTransaction(ChargentOrders__Transaction__c transactionToReverse) {
+        ChargentOrders__Transaction__c reverseTransaction = transactionToReverse.clone(false, true, true, false);
+        reverseTransaction.ChargentOrders__Amount__c *= -1;
+        reverseTransaction.ChargentOrders__Response_Status__c = 'Approved';
+        reverseTransactions.add(reverseTransaction);
     }
 
     public void updateRecords() {
-        if (billAdjustmentsToInsert.size() > 0) {
-            insert billAdjustmentsToInsert;
-        }
-        if (finalGroupedSystemBillsToUpdate.size() > 0) {
-            update finalGroupedSystemBillsToUpdate.values();
-        }
-        if (overpayList.size() > 0) {
-            update overpayList;
-        }
-        if (propAccountsToUpdate.size() > 0) {
-            update new List<Account>(propAccountsToUpdate);
-        }
-        if (transactionsToUpdate.size() > 0) {
-            update transactionsToUpdate;
+        // implement unit of work concept
+        Savepoint sp = Database.setSavepoint();
+        try {
+            if (billAdjustmentsToInsert.size() > 0) {
+                insert billAdjustmentsToInsert;
+            }
+            if (finalGroupedSystemBillsToUpdate.size() > 0) {
+                update finalGroupedSystemBillsToUpdate.values();
+            }
+            if (overpayList.size() > 0) {
+                update overpayList;
+            }
+            if (propAccountsToUpdate.size() > 0) {
+                update new List<Account>(propAccountsToUpdate);
+            }
+            if (transactionsToUpdate.size() > 0) {
+                update transactionsToUpdate;
+            }
+            if (reverseTransactions.size() > 0) {
+                insert reverseTransactions;
+            }
+        } catch (Exception e) {
+            Database.rollback(sp);
+            throw e;
         }
     }
 

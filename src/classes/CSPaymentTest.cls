@@ -412,7 +412,7 @@ public class CSPaymentTest {
         System.assertEquals(2, bill2Adjustments[1].Overpayment_Amount__c);
 
         List<Id> transactions = new List<Id>{transA.Id, transB.Id};
-        ReturnedTransactionHandler.unrollPayments(transactions);
+        ReturnedTransactionController.unrollPayments(transactions);
         Test.stopTest();
 
         List<ChargentOrders__Transaction__c> updatedTransactions = [
@@ -423,11 +423,7 @@ public class CSPaymentTest {
         ];
 
         System.assertEquals('Returned', updatedTransactions[0].ChargentOrders__Response_Status__c);
-        System.assertEquals(transA.Id, updatedTransactions[0].Id);
-
         System.assertEquals('Returned', updatedTransactions[1].ChargentOrders__Response_Status__c);
-        System.assertEquals(transB.Id, updatedTransactions[1].Id);
-
 
         List<System_Bill__c> updatedsystemBillListAfterReversal = [
             SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
@@ -649,7 +645,7 @@ public class CSPaymentTest {
         System.assertEquals(2, bill2Adjustments[1].Overpayment_Amount__c);
 
         List<Id> transactions = new List<Id>{transA.Id, transB.Id};
-        ReturnedTransactionHandler.unrollPaperCheck(paperCheck.Id);
+        ReturnedTransactionController.unrollPaperChecks(new List<Id>{paperCheck.Id});
         Test.stopTest();
 
         List<ChargentOrders__Transaction__c> updatedTransactions = [
@@ -876,7 +872,7 @@ public class CSPaymentTest {
         System.assertEquals(4, bill2Adjustments[0].Overpayment_Amount__c);
 
         List<Id> transactions = new List<Id>{transA.Id, transB.Id};
-        ReturnedTransactionHandler.unrollPayments(transactions);
+        ReturnedTransactionController.unrollPayments(transactions);
         Test.stopTest();
 
         List<ChargentOrders__Transaction__c> updatedTransactions = [
@@ -887,11 +883,7 @@ public class CSPaymentTest {
         ];
 
         System.assertEquals('Returned', updatedTransactions[0].ChargentOrders__Response_Status__c);
-        System.assertEquals(transA.Id, updatedTransactions[0].Id);
-
         System.assertEquals('Returned', updatedTransactions[1].ChargentOrders__Response_Status__c);
-        System.assertEquals(transB.Id, updatedTransactions[1].Id);
-
 
         List<System_Bill__c> updatedsystemBillListAfterReversal = [
             SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
@@ -1079,7 +1071,7 @@ public class CSPaymentTest {
         System.assertEquals(1, bill2Adjustments.size());
         System.assertEquals(2, bill2Adjustments[0].Overpayment_Amount__c);
 
-        ReturnedTransactionHandler.unrollPayment(transA.Id);
+        ReturnedTransactionController.unrollPayments(new List<Id>{transA.Id});
         Test.stopTest();
 
         ChargentOrders__Transaction__c updatedTransA = [
@@ -1152,7 +1144,7 @@ public class CSPaymentTest {
         System.assertEquals(0, bill2AdjustmentsAfterReversal[0].Overpayment_Amount__c);
 
         try {
-            ReturnedTransactionHandler.unrollPayment(updatedTransA.Id);
+            ReturnedTransactionController.unrollPayments(new List<Id>{updatedTransA.Id});
         } catch (Util.BWException e) {
             System.assertEquals('Transaction cannot be marked for return.', e.getMessage());
         }
@@ -1347,7 +1339,7 @@ public class CSPaymentTest {
         System.assertEquals(1, bill2Adjustments.size());
         System.assertEquals(2, bill2Adjustments[0].Overpayment_Amount__c);
 
-        ReturnedTransactionHandler.unrollPayment(transA.Id);
+        ReturnedTransactionController.unrollPayments(new List<Id>{transA.Id});
 
         ChargentOrders__Transaction__c updatedTransA = [
             SELECT Id, ChargentOrders__Response_Status__c
@@ -1413,7 +1405,7 @@ public class CSPaymentTest {
         System.assertEquals(null, bill2AdjustmentsAfterReversal[0].Account_Bill__c);
 
         try {
-            ReturnedTransactionHandler.unrollPayment(updatedTransA.Id);
+            ReturnedTransactionController.unrollPayments(new List<Id>{updatedTransA.Id});
         } catch (Util.BWException e) {
             System.assertEquals('Transaction cannot be marked for return.', e.getMessage());
         }

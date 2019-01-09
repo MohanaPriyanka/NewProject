@@ -192,12 +192,15 @@ public without sharing class   SystemBillPaymentRollUpHandler {
         public SystemBillRepo(List<Id> transactions) {
             transactionList = [
                 SELECT Id, Name, ChargentOrders__Response_Status__c, Entity_ID__c, ChargentOrders__Amount__c, CreatedDate,
-                    Distributed_Among_System_Bills__c, ChargentOrders__Recurring__c,
+                    Distributed_Among_System_Bills__c, ChargentOrders__Recurring__c, ChargentOrders__Response_Message__c,
+                    ChargentOrders__Gateway__c, ChargentOrders__Type__c, ChargentOrders__Payment_Method__c, Activity_Type__c,
                     ChargentOrders__Order__r.Account_Bill__c,
                     ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Id,
                     ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Date_of_Last_Payment__c,
                     ChargentOrders__Order__r.Account_Bill__r.Bill_Number__c,
-                    ChargentOrders__Order__r.Entity__c
+                    ChargentOrders__Order__r.Entity__c,
+                    ChargentOrders__Order__r.Paper_Check__c,
+                    ChargentOrders__Order__c
                 FROM ChargentOrders__Transaction__c
                 WHERE Id IN :transactions
                 AND ChargentOrders__Response_Status__c = 'Approved'];
