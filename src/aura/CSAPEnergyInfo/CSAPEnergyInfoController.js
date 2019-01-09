@@ -17,6 +17,17 @@
                 }
             });
             $A.enqueueAction(action);
+            var utilityAction = component.get("c.getUtility");
+            var utilId = event.getParam("lead").Utility_relationship__c;
+            utilityAction.setParams({"utilityId" : utilId});
+            utilityAction.setCallback(this, function(resp) {
+                if (resp.getState() === "SUCCESS") {
+                    component.set('v.utility', resp.getReturnValue());
+                } else {
+                    helper.logError("CSAPEnergyInfoController", "getUtility", resp.getError(), lead);
+                }
+            });
+            $A.enqueueAction(utilityAction);
         }
         if (component.get("v.abbrevStates") && component.get("v.abbrevStates").length === 0) {
             helper.getUSStates(component, "v.abbrevStates", true);

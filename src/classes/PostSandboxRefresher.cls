@@ -576,7 +576,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         global void execute(QueueableContext context) {
             List<Shared_Solar_System__c> sssList = [
                 SELECT Id, Name, BWC_Project_Entity_Manual__r.Id, Product__r.Id
-            FROM Shared_Solar_System__c
+                FROM Shared_Solar_System__c
                 WHERE BWC_Project_Entity_Manual__r.Id != NULL
                 ORDER BY Name DESC
             ];

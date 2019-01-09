@@ -12,6 +12,7 @@
   <aura:attribute name="loading" type="Boolean"/>
   <aura:attribute name="loadingText" type="String"/>
   <aura:attribute name="isLargeFile" type="Boolean"/>
+  <aura:attribute name="utility" type="Object"/>
   <lightning:notificationsLibrary aura:id="notifLib"/>
 
   <aura:set attribute="STAGENAME" value="NAV_Energy_Information"/>
@@ -43,14 +44,11 @@
             <form class="slds-form--stacked">
               <lightning:layout multipleRows="true">
                 <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
-                  <lightning:select aura:id="field" name="leadElectricityProvider"
-                                    label="Electricity Provider"
-                                    value="{!v.lead.Electricity_Provider__c}"
-                                    required="true">
-                    <option value="">Choose one...</option>
-                    <option value="Eversource">Eversource</option>
-                    <option value="National Grid">National Grid</option>
-                  </lightning:select>
+                  <lightning:input aura:id="field" name="leadElectricityProvider"
+                                   label="Electricity Provider"
+                                   value="{!v.utility.Name}"
+                                   disabled="true"
+                                   required="true"/>
                 </lightning:layoutItem>
                 <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
                   <lightning:input aura:id="field" name="ualUtilityAccountNumber"
@@ -160,17 +158,17 @@
                   </lightning:layoutItem>
                 </aura:if>
                 <aura:if isTrue="{!v.lead.LASERCA__Home_State__c != 'NY'}">
-                  <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-                    <lightning:select aura:id="field" name="haveSolarPanelsOnPropertySelectList"
-                                      label="Do you have solar panels on your property?"
-                                      value="{!v.lead.Loan_System_Information__c}"
-                                      required="true">
-                      <option value="">Choose one...</option>
-                      <option value="Yes">Yes</option>
-                      <option value="No">No</option>
-                    </lightning:select>
-                  </lightning:layoutItem>
-                  <lightning:layoutItem padding="left-small" size="12" smallDeviceSize="12" mediumDeviceSize="12"/>
+                <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                  <lightning:select aura:id="field" name="haveSolarPanelsOnPropertySelectList"
+                                    label="Do you have solar panels on your property?"
+                                    value="{!v.lead.Loan_System_Information__c}"
+                                    required="true">
+                    <option value="">Choose one...</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </lightning:select>
+                </lightning:layoutItem>
+                <lightning:layoutItem padding="left-small" size="12" smallDeviceSize="12" mediumDeviceSize="12"/>
                 </aura:if>
                 <aura:if isTrue="{!v.lead.Loan_System_Information__c == 'Yes'}">
                   <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
@@ -284,23 +282,23 @@
             </legend>
             <lightning:layout multipleRows="true" horizontalAlign="center">
               <lightning:layoutItem size="3" smallDeviceSize="6" mediumDeviceSize="3">
-                <aura:if isTrue="{!v.lead.Status == 'Qualified'}">
-                  <div class="slds-visual-picker slds-visual-picker_large">
-                    <a onclick="{!c.addUAL}">
-                      <label for="visual-picker-add-utility">
-                      <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">
-                        <span class="slds-icon_container" title="description of icon when needed">
-                          <lightning:icon class="blueIcon" iconName="utility:light_bulb" size="x-large"/>
-                        </span>
+              <aura:if isTrue="{!v.lead.Status == 'Qualified'}">
+                <div class="slds-visual-picker slds-visual-picker_large">
+                  <a onclick="{!c.addUAL}">
+                    <label for="visual-picker-add-utility">
+                    <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">
+                      <span class="slds-icon_container" title="description of icon when needed">
+                        <lightning:icon class="blueIcon" iconName="utility:light_bulb" size="x-large"/>
                       </span>
-                        <span class="slds-visual-picker__body">
-                        <div class="slds-text-body--large--blue"><b>Add another utility to </b></div>
-                        <div class="slds-text-body--large--stream"><b>{!v.lead.Company}</b></div>
-                      </span>
-                      </label>
-                    </a>
-                  </div>
-                </aura:if>
+                    </span>
+                      <span class="slds-visual-picker__body">
+                      <div class="slds-text-body--large--blue"><b>Add another utility to </b></div>
+                      <div class="slds-text-body--large--stream"><b>{!v.lead.Company}</b></div>
+                    </span>
+                    </label>
+                  </a>
+                </div>
+              </aura:if>
               </lightning:layoutItem>
             </lightning:layout>
           </fieldset>

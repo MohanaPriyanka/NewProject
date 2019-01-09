@@ -712,6 +712,7 @@ public with sharing class CSAPControllerTest {
             lead.LoadZone__c = 'SEMA';
             lead.Utility_relationship__c = eversource.Id;
             CSAPController.unsplitLead(lead);
+            System.assertEquals('Eversource', CSAPController.getUtility(eversource.Id).Name);
         }
 
         System.assert(CSAPController.hasAvailableCapacity(lead.Id),

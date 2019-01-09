@@ -23000,6 +23000,17 @@ PRIORVALUE(Is_there_a_Partner_Record__c )= FALSE))</errorConditionFormula>
         <errorMessage>Income Verification, Partner Verification, and MCEC Technical Verification Boxes must be checked</errorMessage>
     </validationRules>
     <validationRules>
+        <fullName>Underwriting_Permission_Restriction</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+ISCHANGED(Status),
+OR(Product_line__c=&quot;Community Solar&quot;,
+Product_line__c=&quot;Residential Loan&quot;),
+ISPICKVAL($User.UserType,&quot;PowerPartner&quot;)=false,
+$Permission.Underwriting_Permission=false)</errorConditionFormula>
+        <errorMessage>Changing the Lead Status on CS and RL leads requires Underwriting permission.</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>Utility_Error</fullName>
         <active>false</active>
         <errorConditionFormula>AND(IsConverted, Product_line__c = &apos;Community Solar&apos;, Utility__c != Electricity_Provider__c)</errorConditionFormula>

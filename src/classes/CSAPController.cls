@@ -210,7 +210,7 @@ public without sharing class CSAPController {
     @AuraEnabled
     public static Boolean hasAvailableCapacity(Id leadId) {
         Lead lead = [
-            SELECT Id, Load_Zone__c, Utility__c, Partner_Name__c, Application_Source_Phase_2__c, System_Assignment__c,
+            SELECT Id, Partner_Name__c, Application_Source_Phase_2__c, System_Assignment__c,
                 LASERCA__Home_State__c, Application_Type__c, Utility_relationship__c, LoadZone__c
             FROM Lead
             WHERE Id = :leadId];
@@ -267,6 +267,11 @@ public without sharing class CSAPController {
     @AuraEnabled
     public static Product2 getProduct (String productId) {
         return [SELECT Id, Name, Program__c, Customer_Subscription_Type__c FROM Product2 WHERE Id =: productId];
+    }
+
+    @AuraEnabled
+    public static Utility__c getUtility (String utilityId) {
+        return [SELECT Id, Name FROM Utility__c WHERE Id =: utilityId];
     }
 
     @AuraEnabled
