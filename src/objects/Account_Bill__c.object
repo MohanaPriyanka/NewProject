@@ -1336,9 +1336,10 @@ New Charges...</inlineHelpText>
         <formula>&quot;&amp;solmgr=1&quot; + 
 &quot;&amp;id=&quot; + Id + 
 &quot;&amp;queryid=[Sbs]a27j0000000bSg9&quot; + 
+&quot;&amp;queryid=[Lbs]a270a000000NFEW&quot; +
 &quot;&amp;templateid=&quot; + Bill_Template__r.Id + 
 &quot;&amp;defaultpdf=1&quot; + 
-&quot;&amp;ofn=&quot; + Name + &quot; Community Solar Bill&quot; + 
+&quot;&amp;ofn=&quot; + SUBSTITUTE(Name,&quot;&amp;&quot;,&quot;{~~~}&quot;) + &quot; Community Solar Bill&quot; + 
 &quot;&amp;sc0=1&quot; + 
 &quot;&amp;sc1=SalesforceFile&quot; + 
 &quot;&amp;ac0=1&quot; + 
@@ -1600,8 +1601,10 @@ LEN(Reason_For_Unpublish__c)&lt;15
 &amp;serverUrl={!API.Partner_Server_URL_290}
 &amp;Id={!Account_Bill__c.Id}
 &amp;QueryId=[Sbs]a27j0000000bSg9
+&amp;QueryId=[Lbs]a270a000000NFEW 
 &amp;TemplateId={!Account_Bill__c.Bill_TemplateId__c}
 &amp;DefaultPDF=1
+&amp;OFN={!Account_Bill__c.Name}+ &quot;Community Solar Bill&quot;
 &amp;SC0=1
 &amp;SC1=Attachments
 &amp;AC0=1
