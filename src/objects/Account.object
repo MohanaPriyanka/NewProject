@@ -14917,6 +14917,17 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <validationRules>
+        <fullName>Cannot_Update_Address_to_Blank</fullName>
+        <active>true</active>
+        <errorConditionFormula>OR(
+AND(ISCHANGED(BillingCity),OR(ISBLANK(BillingCity),ISNULL(BillingCity))),
+AND(ISCHANGED( BillingState ),OR(ISBLANK(BillingState ),ISNULL(BillingState))),
+AND(ISCHANGED(BillingStreet ),OR(ISBLANK(BillingStreet ),ISNULL(BillingStreet ))),
+AND(ISCHANGED(BillingPostalCode ),OR(ISBLANK(BillingPostalCode),ISNULL(BillingPostalCode)))
+)</errorConditionFormula>
+        <errorMessage>Account address cannot be updated to blank</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>Partner_Account_Owner_Change_Restriction</fullName>
         <active>true</active>
         <description>This rule prevents people besides Alan Robertson and System Admins from changing the account owner on Partner Accounts.</description>
