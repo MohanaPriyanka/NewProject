@@ -321,6 +321,15 @@ Conga_Letter_Stream_Merge__c (Print)</inlineHelpText>
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Assign_Templates__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Assign Templates</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Emails_Sent__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
