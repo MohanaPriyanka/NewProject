@@ -33,6 +33,15 @@
                                     component.set("v.hasCapacity", "Yes");
                                     $A.util.addClass(component.find("greatNews"), 'pulse');
                                 }));
+                        } else if (!hasAvailableCapacity && lead.Application_Source_Phase_2__c != null) {
+                            var delaySkipToEnd = component.get('c.delaySkipToEnd');
+                            helper.saveSObject(component, lead.Id, "Lead", "Status", "Waitlist").then(
+                                $A.getCallback(function resolve() {
+                                    component.set("v.loading", false);
+                                    component.set("v.hasCapacity", "No");
+                                })).then(
+                            $A.enqueueAction(delaySkipToEnd)
+                            );
                         } else {
                             helper.saveSObject(component, lead.Id, "Lead", "Status", "Waitlist").then(
                                 $A.getCallback(function resolve() {
@@ -67,13 +76,16 @@
     },
 
     skipToEnd : function(component, event, helper) {
-        component.set('v.page', 'Done');
-        //Skip to the Add More or Finish page
-        var stageChangeEvent = $A.get("e.c:CSAPNavigationEvent");
-        stageChangeEvent.setParams({"stageName": "NAV_Energy_Information"});
-        stageChangeEvent.setParams({"options": {"pageName": "AddMore"}});
-        stageChangeEvent.setParams({"eventType": "INITIATED"});
-        stageChangeEvent.setParams({"lead": component.get('v.lead')});
-        stageChangeEvent.fire();
-    }
+        var lead = component.get('v.lead');
+        var stageName = lead.CSAP_Stage__c;
+        helper.closePageFireComplete(component, helper, stageName, lead)
+    },
+
+    delaySkipToEnd : function(component, event, helper) {
+        var skipToEnd = component.get('c.skipToEnd');
+        window.setTimeout(
+            $A.getCallback(function() {
+                $A.enqueueAction(skipToEnd);
+            }), 5000);
+    },
 })
