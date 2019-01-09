@@ -252,7 +252,7 @@
     <fields>
         <fullName>Opportunity_ID__c</fullName>
         <externalId>false</externalId>
-        <formula>UASB__r.System_Bill__r.Opportunity_Id__c</formula>
+        <formula>UASB__r.System_Bill__r.Opportunity__r.Id</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Opportunity ID</label>
         <required>false</required>
