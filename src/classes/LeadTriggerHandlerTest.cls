@@ -1,6 +1,5 @@
 @isTest
-private class LeadTriggerHandlerTest {
-    
+public class LeadTriggerHandlerTest {
     @isTest static void customerSubscriptionProcessTest() {
         System_Properties__c sysProp = new System_Properties__c(
             Name = 'System',
@@ -30,34 +29,39 @@ private class LeadTriggerHandlerTest {
                                                                                                                     Date__c = Date.today()));
         insert nmcRate;
 
-        Product2 csProduct = new Product2( Name = 'Community Solar - SREC 16-01',
-                              Family = 'Community Solar',
-                              Product_Type__c = 'Community Solar',
-                              State__c = 'MA',
-                              ProductCode = 'CS - BlueWave - 10%',
-                              IsActive = True,
-                              Lender_of_Record__c = 'BlueWave',
-                              NMC_Discount__c = 10,
-                              Annual_kWh_Maximum__c = 100000000,
-                              NM_Rate_Floor__c = 0,
-                              Monthly_Late_Fee__c = 1);
+        Product2 csProduct = new Product2(
+            Name = 'Community Solar - SREC 16-01',
+            Family = 'Community Solar',
+            Product_Type__c = 'Community Solar',
+            Program__c = 'SREC - Community Solar',
+            State__c = 'MA',
+            ProductCode = 'CS - BlueWave - 10%',
+            IsActive = True,
+            Lender_of_Record__c = 'BlueWave',
+            NMC_Discount__c = 10,
+            Annual_kWh_Maximum__c = 100000000,
+            Customer_Subscription_Type__c = 'Electricity Cost ($)',
+            NM_Rate_Floor__c = 0,
+            Monthly_Late_Fee__c = 1);
         insert csProduct;
 
-        Shared_Solar_System__c sss1 = (Shared_Solar_System__c)TestFactory.createSObject(new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
-                                                                                                                                Service_Territories__c = 'WCMA; SEMA',
-                                                                                                                                Open__c = true,
-                                                                                                                                Reserved_Capacity_kW_DC__c = '0',
-                                                                                                                                Capacity_Committed_kW_DC__c = 0,
-                                                                                                                                Total_System_Size_kWh_DC__c = 1445.86,
-                                                                                                                                Total_System_Size_kW_AC__c  = 996,
+        Shared_Solar_System__c sss1 = new Shared_Solar_System__c(
+            Name = 'Oxford Barrett St. P1',
+            Service_Territories__c = 'WCMA; SEMA',
+            Open__c = true,
+            Reserved_Capacity_kW_DC__c = '0',
+            Capacity_Committed_kW_DC__c = 0,
+            Total_System_Size_kWh_DC__c = 1445.86,
+            Total_System_Size_kW_AC__c  = 996,
                                                                                                                                 Utility__c = nationalgrid.Id,
-                                                                                                                                Credit_Score_Requirement__c = 200,
-                                                                                                                                Assignment_order__c = '1',
-                                                                                                                                Utility_NMC_Tariff__c = nmcRate.Id,
-                                                                                                                                Product__c = csProduct.Id,
-                                                                                                                                Expected_Yield_kWh_kW__c = 1300,
-                                                                                                                                Assemblage_Count__c = 1,  
-                                                                                                                                Maximum_Subscription_Assemblage__c = 25));
+            Credit_Score_Requirement__c = 200,
+            Assignment_order__c = '1',
+            Utility_NMC_Tariff__c = nmcRate.Id,
+            Product__c = csProduct.Id,
+            Expected_Yield_kWh_kW__c = 1300,
+            Assemblage_Count__c = 1,
+            Maximum_Subscription_Assemblage__c = 25
+        );
 
         
         sss1.Sales_Partners__c = 'Barbara Cerullo; Boston Solar'; 
@@ -114,14 +118,18 @@ private class LeadTriggerHandlerTest {
 
 
 
-        Utility_Account_Log__c ual = (Utility_Account_Log__c)TestFactory.createSObject(new Utility_Account_Log__c(Lead__c = lead.Id,
-                                                                                                                  Annual_Cost_of_Electricity__c = 10000,
-                                                                                                                  Name_on_Account__c = 'Joey Chan'));
+        Utility_Account_Log__c ual = new Utility_Account_Log__c(
+            Lead__c = lead.Id,
+            Annual_Cost_of_Electricity__c = 10000,
+            Name_on_Account__c = 'Joey Chan'
+        );
         insert ual;
         
-        Utility_Account_Log__c ual2 = new Utility_Account_Log__c(Lead__c = lead2.Id,
-                                                                 Annual_Cost_of_Electricity__c = 10000,
-                                                                 Name_on_Account__c = 'Joey Chan');
+        Utility_Account_Log__c ual2 = new Utility_Account_Log__c(
+            Lead__c = lead2.Id,
+            Annual_Cost_of_Electricity__c = 10000,
+            Name_on_Account__c = 'Joey Chan'
+        );
         insert ual2;
 
 
@@ -423,6 +431,7 @@ private class LeadTriggerHandlerTest {
         Product2 csProduct = new Product2( Name = 'Community Solar - SREC 16-01',
             Family = 'Community Solar',
             Product_Type__c = 'Community Solar',
+            Program__c = 'SREC - Community Solar',
             State__c = 'MA',
             ProductCode = 'CS - BlueWave - 10%',
             IsActive = true,
@@ -430,6 +439,7 @@ private class LeadTriggerHandlerTest {
             NMC_Discount__c = 10,
             Annual_kWh_Maximum__c = 100000000,
             NM_Rate_Floor__c = 0,
+            Customer_Subscription_Type__c = 'Electricity Cost ($)',
             Monthly_Late_Fee__c = 1);
         insert csProduct;
 
@@ -564,7 +574,7 @@ private class LeadTriggerHandlerTest {
         // 2 opps for the Eversource lead (one for each SSS)
         opps = [
             SELECT Id, Name, Shared_Solar_System__c, AccountId, ACH_Bank_Name__c, ACH_Bank_Routing_Number__c,
-                CC_Account_Number__c, ACH_Account_Number__c
+                CC_Account_Number__c, ACH_Account_Number__c, CC_Card_Type__c
             FROM Opportunity
             WHERE Shared_Solar_System__r.Utility__r.Name = 'Eversource'
             AND AccountId =: eversourceLeads[0].ConvertedAccountId
@@ -576,7 +586,7 @@ private class LeadTriggerHandlerTest {
                 //from ACHOrder1
                 System.assertEquals('*****6789', opp.ACH_Bank_Routing_Number__c);
                 System.assertEquals('******7890', opp.ACH_Account_Number__c);
-            } else {
+            } else if (opp.CC_Card_Type__c != null) {
                 //from ACHOrder2
                 System.assertEquals('************1234', opp.CC_Account_Number__c);
             }
@@ -648,7 +658,186 @@ private class LeadTriggerHandlerTest {
         }
     }
 
-    private static Shared_Solar_System__c getSharedSolarSystem(Utility_NMC_Tariff__c nmcRate, Product2 csProduct,
+    @IsTest static void testMultipleSubscriptionsBykWh() {
+        System_Properties__c sysProp = new System_Properties__c(
+            Name = 'System',
+            DocuSign_API_Account_ID__c = '123',
+            DocuSign_Customer_Care_User__c = '123@123.com',
+            DocuSign_Guest_User__c = '123@345.com',
+            DocuSign_Guest_User_Credential__c = '234234',
+            DocuSign_Integrator_Key__c = '123123-123123'
+        );
+        insert sysProp;
+        
+        Utility__c eversource = new Utility__c(
+            Name = 'Eversource',
+            Number_of_Decimal_Places__c = 2
+        );
+
+        Utility__c nationalGrid = new Utility__c(
+            Name = 'National Grid',
+            Number_of_Decimal_Places__c = 2
+        );
+
+        insert new List<Utility__c>{eversource, nationalGrid};
+        
+        Utility_NMC_Tariff__c nmcRate =  new Utility_NMC_Tariff__c(
+            Value_of_Net_Metering_Credit__c = .1848,
+            Name = 'Nation Grid WCMA Class 2 - S/F 2016',
+            Sizing_Rate__c = true,
+            Date__c = Date.today()
+        );
+        insert nmcRate;
+        Product2 csProduct = new Product2( Name = 'Community Solar - SMART 18-02',
+            Family = 'Community Solar',
+            Product_Type__c = 'Community Solar',
+            Program__c = 'SMART - Community Solar',
+            State__c = 'MA',
+            ProductCode = 'CS - BlueWave - 10%',
+            IsActive = true,
+            Lender_of_Record__c = 'BlueWave',
+            NMC_Discount__c = 10,
+            Annual_kWh_Maximum__c = 100000000,
+            NM_Rate_Floor__c = 0,
+            Customer_Subscription_Type__c = 'kWh',
+            Monthly_Late_Fee__c = 1);
+        insert csProduct;
+        insertTariffsForProduct(csProduct.Id, eversource.Id, nationalGrid.Id);
+        Shared_Solar_System__c sss1 = getSharedSolarSystem(nmcRate, csProduct, eversource, 'Eversource P1');
+        Shared_Solar_System__c sss2 = getSharedSolarSystem(nmcRate, csProduct, eversource, 'Eversource P2');
+        Shared_Solar_System__c sss4 = getSharedSolarSystem(nmcRate, csProduct, eversource, 'Eversource P3');
+        Shared_Solar_System__c sss5 = getSharedSolarSystem(nmcRate, csProduct, eversource, 'Eversource P4');
+        Shared_Solar_System__c sss3 = getSharedSolarSystem(nmcRate, csProduct, nationalGrid, 'National Grid P1');
+        insert new List<Shared_Solar_System__c>{sss1, sss2, sss3, sss4, sss5};
+        Shared_Solar_System__c sssCheck = [
+            SELECT Maximum_Subscription_Cost__c, Maximum_Subscription_Capacity_kW_DC__c
+            FROM Shared_Solar_System__c
+            WHERE Id = :sss1.Id
+        ];
+        System.assertEquals(25, sssCheck.Maximum_Subscription_Capacity_kW_DC__c);
+        System.assertEquals(6006, sssCheck.Maximum_Subscription_Cost__c);
+        Partner__c partner = new Partner__c(Name = 'BlueWave Customer Care');
+        insert partner;
+        BSST__c salesTeam = new BSST__c (Name = 'Partner',
+            Partner__c = partner.Id,
+            Custom_ID__c = 'partner'
+        );
+        insert salesTeam;
+        Account parentAccount = new Account(Name = 'Parent');
+        insert parentAccount;
+        Contact contact = new Contact(
+            FirstName = 'Test',
+            LastName = 'Testcase',
+            AccountId = parentAccount.Id
+        );
+        Lead primaryProperty = new Lead(
+            FirstName = 'Test',
+            LastName = 'Testcase',
+            Email = 'test@test.com',
+            Electricity_Provider__c = 'Eversource',
+			Utility_relationship__c = eversource.Id,
+            LoadZone__c = 'WCMA',
+            Company = 'Test',
+            Status = 'Qualified',
+            Product_line__c = 'Community Solar',
+            Customer_type__c = 'Residential',
+            Product__c = csProduct.Id,
+            Custom_ID__c = 'partner',
+            System_Assignment__c = 'Automatic - Assignment Order',
+            Parent_Account__c = parentAccount.Id
+        );
+        Lead additionalProperty = primaryProperty.clone();
+        additionalProperty.Utility_relationship__c = nationalGrid.Id;
+        additionalProperty.Electricity_Provider__c = 'National Grid';
+        additionalProperty.Customer_type__c = 'Non-Residential';
+        insert new List<Lead>{primaryProperty, additionalProperty};
+        LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
+            LASERCA__Lead__c = primaryProperty.Id,
+            LASERCA__Credit_Score_TransUnion__c = '720'
+        );
+        insert pcr;
+        primaryProperty.Personal_Credit_Report__c = pcr.Id;
+        additionalProperty.Personal_Credit_Report__c = pcr.Id;
+        update new List<Lead>{primaryProperty, additionalProperty};
+        // kW DC = Annual Cost / NMC Rate / Yield
+        Utility_Account_Log__c ual1 = new Utility_Account_Log__c(
+            Lead__c = primaryProperty.Id,
+            Annual_kWh__c = (1300 * 20), // sss yield 1300 kWh/kW * 30 kW subscription
+            Name_on_Account__c = 'Primary 1'
+        );
+        Utility_Account_Log__c ual2 = new Utility_Account_Log__c(
+            Lead__c = primaryProperty.Id,
+            Annual_kWh__c = (1300 * 5 / 1.5).setScale(2), // sss yield 1300 kWh/kW * 5 kW subscription / 1.5 for Eversource R1
+            Name_on_Account__c = 'Primary 2'
+        );
+        Utility_Account_Log__c ual3 = new Utility_Account_Log__c(
+            Lead__c = additionalProperty.Id,
+            Annual_kWh__c = (1300 * 25 / 1.45), // sss yield 1300 kWh/kW * 25 kW subscription / 1.45 for NG G2
+            Name_on_Account__c = 'Additional 1'
+        );
+        insert new List<Utility_Account_Log__c>{ual1, ual2, ual3};
+        List<Opportunity> opps = [SELECT Id FROM Opportunity];
+        List<Utility_Account_Subscription__c> uases = [SELECT Id FROM Utility_Account_Subscription__c];
+        // There should be no opps or uases to start
+        System.assertEquals(0, opps.size());
+        System.assertEquals(0, uases.size());
+        Test.startTest();
+        Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
+        Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
+        // Since there are contracts to send here, we will run into "You have uncommitted work pending"
+        // because of the DML in convertCSLead. The customerSubscriptionProcessTest method tests
+        // the sendCSPackage method (which convertCSLead and sendContracts wraps) explicitly.
+        LeadTriggerHandler.skipContractSend = true;
+        CSAPController.convertCSLead(primaryProperty.Id, primaryProperty.Email);
+        Test.stopTest();
+        List<Lead> eversourceLeads = [SELECT Id, ConvertedAccountId FROM Lead WHERE Utility_Relationship__r.Name = 'Eversource'];
+        System.assertEquals(1, eversourceLeads.size());
+        // 2 opps for the Eversource lead (one for each SSS)
+        opps = [
+            SELECT Id, Name, Shared_Solar_System__c, AccountId, ACH_Bank_Name__c, ACH_Bank_Routing_Number__c,
+                CC_Account_Number__c, ACH_Account_Number__c
+            FROM Opportunity
+            WHERE Shared_Solar_System__r.Utility__r.Name = 'Eversource'
+            AND AccountId =: eversourceLeads[0].ConvertedAccountId
+        ];
+        System.assertEquals(2, opps.size());
+        List<AggregateResult> uasAggregate = [
+            SELECT Opportunity__r.AccountId, COUNT(Id) num, SUM(Customer_Subscription_KW_DC__c) total,
+                MIN(Customer_Subscription_KW_DC__c) minimum, MAX(Customer_Subscription_KW_DC__c) maximum
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__r.AccountId =: eversourceLeads[0].ConvertedAccountId
+            GROUP BY Opportunity__r.AccountId
+        ];
+        // Should be a 25kW, 10kW and 5kW UAS, for a total of 35
+        System.assertEquals(3, uasAggregate[0].get('num'));
+        System.assertEquals(35, ((Decimal) uasAggregate[0].get('total')).setScale(0));
+        System.assertEquals(25, uasAggregate[0].get('maximum'));
+        System.assertEquals(5, ((Decimal) uasAggregate[0].get('minimum')).setScale(0));
+        List<Lead> ngridLeads = [SELECT Id, ConvertedAccountId FROM Lead WHERE Utility_Relationship__r.Name  = 'National Grid'];
+        System.assertEquals(1, ngridLeads.size());
+        // Just 1 opp for NGrid since there's only one system
+        opps = [
+            SELECT Id, Name, Shared_Solar_System__c, AccountId
+            FROM Opportunity
+            WHERE Shared_Solar_System__r.Utility__r.Name = 'National Grid'
+            AND AccountId =: ngridLeads[0].ConvertedAccountId
+        ];
+        System.assertEquals(1, opps.size());
+        uasAggregate = [
+            SELECT Opportunity__r.AccountId, COUNT(Id) num, SUM(Customer_Subscription_KW_DC__c) total,
+                MIN(Customer_Subscription_KW_DC__c) minimum, MAX(Customer_Subscription_KW_DC__c) maximum
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__r.AccountId =: ngridLeads[0].ConvertedAccountId
+            GROUP BY Opportunity__r.AccountId
+        ];
+        // Just one 25kW UAS
+        System.assertEquals(1, uasAggregate[0].get('num'));
+        System.assertEquals(25, ((Decimal) uasAggregate[0].get('total')).setScale(0));
+        System.assertEquals(25, uasAggregate[0].get('maximum'));
+        System.assertEquals(25, ((Decimal) uasAggregate[0].get('minimum')).setScale(0));
+    }
+
+    public static Shared_Solar_System__c getSharedSolarSystem(Utility_NMC_Tariff__c nmcRate, Product2 csProduct,
         Utility__c utility, String name) {
         Shared_Solar_System__c sss1 = new Shared_Solar_System__c(
             Name = name,
@@ -669,5 +858,93 @@ private class LeadTriggerHandlerTest {
             Sales_Partners__c = 'All'
         );
         return sss1;
+    }
+
+    public static void insertTariffsForProduct(Id productId, Id eversourceId, Id nationalGridId) {
+        Utility_NMC_Tariff__c eversourceG1 =  new Utility_NMC_Tariff__c(
+            Value_of_Net_Metering_Credit__c = .70578,
+            Name = 'Eversource G1',
+            Utility_Relationship__c = eversourceId,
+            Customer_Type__c = 'Non-Residential',
+            Maximum_kWh__c = 10000,
+            Date__c = Date.today()
+        );
+        Utility_NMC_Tariff__c eversourceG2 =  new Utility_NMC_Tariff__c(
+            Value_of_Net_Metering_Credit__c = .70578,
+            Name = 'Eversource G2',
+            Utility_Relationship__c = eversourceId,
+            Customer_Type__c = 'Non-Residential',
+            Minimum_kWh__c = 10000,
+            Date__c = Date.today()
+        );
+        Utility_NMC_Tariff__c eversourceR1 =  new Utility_NMC_Tariff__c(
+            Value_of_Net_Metering_Credit__c = .70578,
+            Name = 'Eversource R1',
+            Utility_Relationship__c = eversourceId,
+            Customer_Type__c = 'Residential',
+            Date__c = Date.today()
+        );
+        Utility_NMC_Tariff__c nationalGridG1 =  new Utility_NMC_Tariff__c(
+            Value_of_Net_Metering_Credit__c = .70578,
+            Name = 'National Grid G1',
+            Utility_Relationship__c = nationalGridId,
+            Customer_Type__c = 'Non-Residential',
+            Maximum_kWh__c = 10000,
+            Date__c = Date.today()
+        );
+        Utility_NMC_Tariff__c nationalGridG2 =  new Utility_NMC_Tariff__c(
+            Value_of_Net_Metering_Credit__c = .70578,
+            Name = 'National Grid G2',
+            Utility_Relationship__c = nationalGridId,
+            Customer_Type__c = 'Non-Residential',
+            Minimum_kWh__c = 10000,
+            Date__c = Date.today()
+        );
+        Utility_NMC_Tariff__c nationalGridR1 =  new Utility_NMC_Tariff__c(
+            Value_of_Net_Metering_Credit__c = .70578,
+            Name = 'National Grid R1',
+            Utility_Relationship__c = nationalGridId,
+            Customer_Type__c = 'Residential',
+            Date__c = Date.today()
+        );
+
+        insert new List<Utility_NMC_Tariff__c>{
+            eversourceG1, eversourceG2, eversourceR1, nationalGridG1, nationalGridG2, nationalGridR1
+        };
+
+        Product_Tariff__c smartER1 = new Product_Tariff__c(
+            Product__c = productId,
+            Utility_NMC_Tariff__c = eversourceR1.Id,
+            Size_Ratio__c = 1.5
+        );
+        Product_Tariff__c smartEG1 = new Product_Tariff__c(
+            Product__c = productId,
+            Utility_NMC_Tariff__c = eversourceG1.Id,
+            Size_Ratio__c = 1.4
+        );
+        Product_Tariff__c smartEG2 = new Product_Tariff__c(
+            Product__c = productId,
+            Utility_NMC_Tariff__c = eversourceG2.Id,
+            Size_Ratio__c = 1.3
+        );
+        Product_Tariff__c smartNGR1 = new Product_Tariff__c(
+            Product__c = productId,
+            Utility_NMC_Tariff__c = nationalGridR1.Id,
+            Size_Ratio__c = 1.35
+        );
+        Product_Tariff__c smartNGG1 = new Product_Tariff__c(
+            Product__c = productId,
+            Utility_NMC_Tariff__c = nationalGridG1.Id,
+            Size_Ratio__c = 1.45
+        );
+        Product_Tariff__c smartNGG2 = new Product_Tariff__c(
+            Product__c = productId,
+            Utility_NMC_Tariff__c = nationalGridG2.Id,
+            Size_Ratio__c = 1.55
+        );
+
+        insert new List<Product_Tariff__c>{
+            smartER1, smartEG1, smartEG2, smartNGR1, smartNGG1, smartNGG2
+        };
     }
 }

@@ -367,6 +367,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             Product2 normalCSProduct = new Product2(Name = 'BlueWave SMART',
                 Family = 'Community Solar',
                 Product_Type__c = 'Community Solar',
+                Program__c = 'SMART - Community Solar',
+                Customer_Subscription_Type__c = 'kWh',
                 State__c = 'MA',
                 ProductCode = 'CS - BlueWave - 10%',
                 IsActive = true,
@@ -374,13 +376,14 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 NMC_Discount__c = 10,
                 Annual_kWh_Maximum__c = 100000000,
                 NM_Rate_Floor__c = 0,
-                Program__c = 'SREC - Community Solar',
                 Credit_Minimum__c = '200',
                 Monthly_Late_Fee__c = 1);
 
             Product2 normalSRECProduct = new Product2(Name = 'BlueWave SREC',
                 Family = 'Community Solar',
                 Product_Type__c = 'Community Solar',
+                Program__c = 'SREC - Community Solar',
+                Customer_Subscription_Type__c = 'Electricity Cost ($)',
                 State__c = 'MA',
                 ProductCode = 'CS - BlueWave - 10%',
                 IsActive = true,
@@ -388,7 +391,6 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 NMC_Discount__c = 10,
                 Annual_kWh_Maximum__c = 100000000,
                 NM_Rate_Floor__c = 0,
-                Program__c = 'SMART - Community Solar',
                 Credit_Minimum__c = '200',
                 Monthly_Late_Fee__c = 1);
 
@@ -396,6 +398,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 normalCSProduct,
                 normalSRECProduct
             };
+
 
             Utility_NMC_Tariff__c eversizeNMC = [SELECT Id FROM Utility_NMC_Tariff__c WHERE Name = 'Eversource SEMA Class 2' LIMIT 1];
             Utility_NMC_Tariff__c nationalGridNMC = [SELECT Id FROM Utility_NMC_Tariff__c WHERE Name = 'National Grid WCMA Class 2 Billing Rate' LIMIT 1];
@@ -415,6 +418,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             insert eversource;
             Utility__c nationalGrid = new Utility__c(Name = 'National Grid', Number_of_Decimal_Places__c = 2);
             insert nationalGrid;
+
+            LeadTriggerHandlerTest.insertTariffsForProduct(normalCSProduct.Id, eversource.Id, nationalGrid.Id);
 
             Load_U__c everLZU = new Load_U__c(Name = '02633',
                 Load_Zone__c = 'SEMA Eversource',
@@ -571,7 +576,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         global void execute(QueueableContext context) {
             List<Shared_Solar_System__c> sssList = [
                 SELECT Id, Name, BWC_Project_Entity_Manual__r.Id, Product__r.Id
-                FROM Shared_Solar_System__c
+            FROM Shared_Solar_System__c
                 WHERE BWC_Project_Entity_Manual__r.Id != NULL
                 ORDER BY Name DESC
             ];
