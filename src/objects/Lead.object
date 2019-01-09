@@ -4645,7 +4645,7 @@ IF(INCLUDES(  Utility_1__c , &quot;SCE&amp;G&quot;), &quot;SCE&amp;G&quot;,
         <fullName>Utility_relationship__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <label>Utility</label>
+        <label>Utility Partner</label>
         <referenceTo>Utility__c</referenceTo>
         <relationshipLabel>Leads</relationshipLabel>
         <relationshipName>Leads</relationshipName>
@@ -22998,6 +22998,17 @@ PRIORVALUE(Technical_Approval_Verified__c )= FALSE,
 PRIORVALUE(Income_Verified__c)= FALSE,
 PRIORVALUE(Is_there_a_Partner_Record__c )= FALSE))</errorConditionFormula>
         <errorMessage>Income Verification, Partner Verification, and MCEC Technical Verification Boxes must be checked</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Underwriting_Permission_Restriction</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+ISCHANGED(Status),
+OR(Product_line__c=&quot;Community Solar&quot;,
+Product_line__c=&quot;Residential Loan&quot;),
+ISPICKVAL($User.UserType,&quot;PowerPartner&quot;)=false,
+$Permission.Underwriting_Permission=false)</errorConditionFormula>
+        <errorMessage>Changing the Lead Status on CS and RL leads requires Underwriting permission.</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>Utility_Error</fullName>

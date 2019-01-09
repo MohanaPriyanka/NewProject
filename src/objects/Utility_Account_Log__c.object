@@ -367,6 +367,33 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Product_Tariff__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Product Tariff</label>
+        <referenceTo>Product_Tariff__c</referenceTo>
+        <relationshipLabel>Utility Account Logs</relationshipLabel>
+        <relationshipName>Utility_Account_Logs</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Proposed_kWh__c</fullName>
+        <description>Is equal to Annual kWh * ual.Tariff.Sizing_Ratio</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Used to size customer&apos;s subscriptions by kWh, is based on Annual kWh * Sizing Ratio. Should be value used when re-sizing customers</inlineHelpText>
+        <label>Proposed kWh</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Service_Address_Formula__c</fullName>
         <externalId>false</externalId>
         <formula>Account__r.Street_Address__c</formula>
@@ -541,6 +568,19 @@
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Utility_NMC_Tariff__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Utility NMC Tariff</label>
+        <referenceTo>Utility_NMC_Tariff__c</referenceTo>
+        <relationshipLabel>Utility Account Logs</relationshipLabel>
+        <relationshipName>Utility_Account_Logs</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Utility__c</fullName>

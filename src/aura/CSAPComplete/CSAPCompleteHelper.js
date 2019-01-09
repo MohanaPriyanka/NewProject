@@ -51,6 +51,7 @@
                 stageChangeEvent.setParams({"eventType": "INITIATED"});
                 stageChangeEvent.setParams({"lead": newLead});
                 stageChangeEvent.fire();
+                component.set("v.page", 'AddressForm');
             } else if (resp.getState() === "ERROR") {
                 helper.logError("CSAPCompleteHelper", "getLeadRecord", resp.getError(), component.get("v.leadId"));
                 reject(resp.getError());

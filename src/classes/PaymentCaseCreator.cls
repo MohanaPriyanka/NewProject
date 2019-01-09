@@ -22,20 +22,8 @@ public without sharing class PaymentCaseCreator implements Schedulable {
         AccountBillError,
         NoCaseNeeded
     }
+    public CaseFactory caseFactory = new CaseFactory();
 
-
-    public static RecordType customerCare = [
-        SELECT Id, Name
-        FROM RecordType
-        Where SobjectType = 'Case' and DeveloperName = 'Customer_Care'
-        LIMIT 1];
-
-    public static RecordType productSupport = [
-        SELECT Id, Name
-        FROM RecordType
-        WHERE SobjectType = 'Case' AND DeveloperName = 'Product_Support'
-        LIMIT 1
-    ];
 
     OrgWideEmailAddress customerCareEmail = [
         SELECT Id, Address
@@ -65,22 +53,6 @@ public without sharing class PaymentCaseCreator implements Schedulable {
         new Map<OrderCaseType, String>{OrderCaseType.PaymentStatusError => 'Transaction Failed',
         OrderCaseType.InvalidNextTransDate => 'Internal - Send to Product Team',
         OrderCaseType.AccountBillError => 'Internal - Send to Product Team'};
-
-    public Group CustomerCareQueueID = [
-        SELECT Id, DeveloperName
-        FROM Group
-        WHERE Type = 'Queue'
-        AND DeveloperName = 'Customer_Care'
-        LIMIT 1
-    ];
-
-    public Group ProductQueueID = [
-        SELECT Id, DeveloperName
-        FROM Group
-        WHERE Type = 'Queue'
-        AND DeveloperName = 'Product_Support'
-        LIMIT 1
-    ];
 
     public void execute(SchedulableContext sc) {
         // without batching just run this:
@@ -192,7 +164,6 @@ public without sharing class PaymentCaseCreator implements Schedulable {
         for (ChargentOrders__ChargentOrder__c order : chOrders) {
 
             OrderCaseType caseType = needsCase(order, orderAccountHasBillsMap.get(order));
-
             if (caseType == OrderCaseType.NoCaseNeeded) {                                     // shouldn't be a case
                 // if a Case is open for this order, it shouldn't be, so close it.
                 if (orderToCaseMap.containsKey(order.Id)) {
@@ -235,7 +206,6 @@ public without sharing class PaymentCaseCreator implements Schedulable {
 
         Database.SaveResult[] insertResults = Database.insert(allCasesToOpen, false);
         Database.SaveResult[] updateResults = Database.update(allCasesToClose, false);
-
 
         /// Emails ////////////////////////////////////
         sendAllRequiredEmails(allCasesToOpen, orderIdToOrderMap);
@@ -300,7 +270,15 @@ public without sharing class PaymentCaseCreator implements Schedulable {
             return null;
         }
 
-        Case newCase = new Case();
+        Case newCase;
+
+        if (type == OrderCaseType.PaymentStatusError) {
+            newCase = caseFactory.getCase('Customer_Care');
+            newCase.ContactId = chOrder.Account_Bill__r.Parent_Account__r.Send_Bills_Contact__r.Id;
+        } else {
+            newCase = caseFactory.getCase('Product_Support');
+        }
+
         newCase.Subject = 'Automatic Payment Error [' + caseTypeSubjectMap.get(type) + ']';
         newCase.Priority = 'Medium';
         newCase.Product_Line__c = 'Community Solar';
@@ -310,18 +288,6 @@ public without sharing class PaymentCaseCreator implements Schedulable {
         newCase.Origin = 'Other';
         newCase.Case_Type__c = 'BlueWave';
         newCase.Disable_Followup_Email__c = true;
-
-
-        if (type == OrderCaseType.PaymentStatusError) {
-            newCase.RecordTypeId = PaymentCaseCreator.customerCare.Id;
-            newCase.RecordType = PaymentCaseCreator.customerCare;
-            newCase.OwnerId = this.CustomerCareQueueID.Id;
-            newCase.ContactId = chOrder.Account_Bill__r.Parent_Account__r.Send_Bills_Contact__r.Id;
-        } else {
-            newCase.RecordTypeId = PaymentCaseCreator.productSupport.Id;
-            newCase.RecordType = PaymentCaseCreator.productSupport;
-            newCase.OwnerId = this.ProductQueueID.Id;
-        }
 
         // Set related Account
         if (chOrder.Account_Bill__c != null) {
