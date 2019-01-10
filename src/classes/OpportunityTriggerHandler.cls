@@ -84,9 +84,9 @@ public without sharing class OpportunityTriggerHandler {
                 && !newOpp.Shared_Solar_System_Name__c.contains('Waitlist')){
                     if (oldOppMap.get(newOpp.Id).Contract_Status__c != 'Completed'
                         && newOpp.Contract_Status__c == 'Completed'){
-                        parentAccountIdList.add(newOpp.Parent_Account__c);
+                        parentAccountIdList.add(newOpp.Parent_Account_ID__c);
                     } else if (oldOppMap.get(newOpp.Id).Shared_Solar_System_Name__c.contains('Waitlist')){
-                        parentAccountIdList.add(newOpp.Parent_Account__c);
+                        parentAccountIdList.add(newOpp.Parent_Account_ID__c);
                     }
             }
         }

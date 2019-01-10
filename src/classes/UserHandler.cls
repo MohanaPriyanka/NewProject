@@ -47,6 +47,9 @@ public without sharing class UserHandler implements Queueable{
         // If the username or nickname already exists, try to create a new one.
         // If it doesn't work even with the new value, log an error to flag manual intervention
         try {
+            if(Test.isRunningTest()){
+                Util.insertSObjs(usersToInsertMap.values());
+            }
             insert usersToInsertMap.values();
         } catch (Exception e){
             String response = e.getMessage();
