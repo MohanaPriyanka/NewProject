@@ -69,7 +69,6 @@ public without sharing class ReturnedTransactionHandler {
             chTransaction.ChargentOrders__Response_Status__c = 'Returned';
             Datetime chCreatedDatetime = chTransaction.CreatedDate;
             Date chCreatedDate = Date.newInstance(chCreatedDatetime.year(), chCreatedDatetime.month(), chCreatedDatetime.day());
-            // for paper checks, we want to reverse the previous bills, even if new ones have been published
             if (lastSystemBillDate < chCreatedDate || chTransaction.ChargentOrders__Order__r.Paper_Check__c != null) {
                 SystemBillPaymentRollUpHandler.listObject objectList = removePaymentFromSBs( groupedSystemBillsList,
                     payment,
