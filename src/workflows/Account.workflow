@@ -195,7 +195,7 @@
             <name>Invoiced_Amount</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <criteriaItems>
             <field>Account.Cancellation_Notice_Type__c</field>
             <operation>notEqual</operation>

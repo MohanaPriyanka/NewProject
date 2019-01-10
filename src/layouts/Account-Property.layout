@@ -3,11 +3,8 @@
     <customButtons>Billing_Info</customButtons>
     <customButtons>Account_info_Page</customButtons>
     <customButtons>Customer_Billing_Summary</customButtons>
-    <customButtons>Opt_out_for_Text_Messages</customButtons>
-    <customButtons>Opt_in_for_Text_Messages</customButtons>
-    <customButtons>Send_Text_Message</customButtons>
-    <excludeButtons>DataDotComAccountInsights</excludeButtons>
-    <excludeButtons>DataDotComClean</excludeButtons>
+    <customButtons>Submit_Bill_Adjustment</customButtons>
+    <excludeButtons>DataDotComCompanyHierarchy</excludeButtons>
     <excludeButtons>DisableCustomerPortalAccount</excludeButtons>
     <excludeButtons>DisablePartnerPortalAccount</excludeButtons>
     <excludeButtons>IncludeOffline</excludeButtons>
@@ -103,6 +100,10 @@
                 <field>Last_Bill_Send_Date__c</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Last_Bill_Send_Date_New_Charges__c</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Date_of_Last_Payment__c</field>
             </layoutItems>
@@ -193,6 +194,10 @@
                 <field>First_Bill_Date__c</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Max_Account_Bill_Number__c</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Description</field>
             </layoutItems>
@@ -229,19 +234,11 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Number_of_Contracts_to_Cancel__c</field>
+                <field>Cancellation_Fees_Invoiced__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Cancellation_Notice_Type__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Step_3_Address_Check_to_Project_Co__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Send_Cancellation_Email_Link__c</field>
+                <field>Cancellation_Fees_Paid__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -251,19 +248,19 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Cancellation_Fees_Invoiced__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Cancellation_Fees_Paid__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>Cancellation_Explanation__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Max_Account_Bill_Number__c</field>
+                <behavior>Edit</behavior>
+                <field>Cancellation_Comments__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Cancellation_Reason__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Cancellation_Request_Date__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
