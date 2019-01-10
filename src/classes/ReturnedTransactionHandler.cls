@@ -15,6 +15,8 @@ public without sharing class ReturnedTransactionHandler {
     public List<ChargentOrders__Transaction__c> transactionsToUpdate = new List<ChargentOrders__Transaction__c>();
     public List<ChargentOrders__Transaction__c> reverseTransactions = new List<ChargentOrders__Transaction__c>();
     public List<Overpayment__c> overpayList;
+    public List<Case> caseList;
+    public CaseFactory caseFactory = new CaseFactory();
 
     public void unrollPayment(Set<Id> transactionIds) {
         List<ChargentOrders__Transaction__c> chTransactions;
@@ -101,6 +103,7 @@ public without sharing class ReturnedTransactionHandler {
             }
             transactionsToUpdate.add(chTransaction);
             createReverseTransaction(chTransaction);
+            createCaseForTransaction(chTransaction);
         }
     }
 
@@ -181,6 +184,22 @@ public without sharing class ReturnedTransactionHandler {
         reverseTransactions.add(reverseTransaction);
     }
 
+    public void createCaseForTransaction(ChargentOrders__Transaction__c transactionToReverse) {
+        Case newCase = caseFactory.getCase('CustomerSupport');
+
+        newCase.Subject = 'Customer Transaction Marked as Returned';
+        newCase.Priority = 'Medium';
+        newCase.Product_Line__c = 'Community Solar';
+        newCase.Category__c = 'Billing';
+        newCase.Chargent_Order__c = transactionToReverse.ChargentOrders__Order__c;
+        newCase.Description = 'This transaction was marked as returned. There may be followup required with the customer to resolve issues with their payment method.';
+        newCase.Origin = 'Other';
+        newCase.Case_Type__c = 'BlueWave';
+        newCase.Disable_Followup_Email__c = true;
+
+        caseList.add(newCase);
+    }
+
     public void updateRecords() {
         // implement unit of work concept
         Savepoint sp = Database.setSavepoint();
@@ -202,6 +221,9 @@ public without sharing class ReturnedTransactionHandler {
             }
             if (reverseTransactions.size() > 0) {
                 insert reverseTransactions;
+            }
+            if (caseList.size() > 0) {
+                insert caseList;
             }
         } catch (Exception e) {
             Database.rollback(sp);
