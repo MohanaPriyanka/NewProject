@@ -49,8 +49,9 @@ public without sharing class UserHandler implements Queueable{
         try {
             if(Test.isRunningTest()){
                 Util.insertSObjs(usersToInsertMap.values());
+            } else {
+                insert usersToInsertMap.values();
             }
-            insert usersToInsertMap.values();
         } catch (Exception e){
             String response = e.getMessage();
             // Example: 'Insert failed. First exception on row 0; first error: DUPLICATE_COMM_NICKNAME'
