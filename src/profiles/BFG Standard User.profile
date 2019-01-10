@@ -9250,17 +9250,17 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.Adjusted_DTI_Notes__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.Adjusted_DTI__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.Adjusted_Income__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9270,22 +9270,22 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.Adjustments_Comments__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.Adverse_Credit_Notice_1__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.Adverse_Credit_Notice_2__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.Adverse_Credit_Notice_3__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9310,7 +9310,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.Avidia_Review_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9320,7 +9320,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.Co_Applicant__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9345,7 +9345,7 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.Credit_PreApproval_Email_Sent__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9375,12 +9375,12 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.DTI_After__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.DTI_Before__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9420,7 +9420,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.Do_not_trigger_PCRApprovalHandler__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9440,47 +9440,47 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Address__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__AutoBalance__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__AutoCount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__AutoHighCredit__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__AutoPastDue__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__AutoPayment__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Bankruptcy_Score__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Bankruptcy__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Charge_off_accounts__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9490,72 +9490,72 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Co_Applicant_Credit_Score_Equifax__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Co_Applicant_Credit_Score_Experian__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Co_Applicant_Credit_Score_Median__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Co_Applicant_Credit_Score_TransUnion__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Co_Applicant_Equifax_Alert_Message__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Co_Applicant_Equifax_Score_Factor__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Co_Applicant_Experian_Alert_Message__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Co_Applicant_Experian_Score_Factor__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Co_Applicant_TransUnion_Alert_Message__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Co_Applicant_TransUnion_Score_Factor__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Code_2__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Code_3__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Code_4__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Code__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9565,172 +9565,172 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Confirming_Social_Security_Number__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Contact__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Credit_Report_Accessed__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Credit_Score_Description__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Credit_Score_Equifax__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Credit_Score_Experian__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Credit_Score_Median__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Credit_Score_Other_Description__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Credit_Score_Other__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Credit_Score_TransUnion__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Credit_Score__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__CurrentContact__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Current_City__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Current_Postal_Code__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Current_State__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Date_of_Birth__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Date_of_Credit_Report__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Debt_to_high_credit__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__DerogOtherCount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Detail_1__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Detail_2__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Detail_3__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Detail_4__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__EducationBalance__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__EducationCount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__EducationHighCredit__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__EducationPastDue__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__EducationPayment__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Equifax_Alert_Message__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Equifax_Score_Factor__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Experian_Alert_Message__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Experian_Score_Factor__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__File_Number__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Inquiry_Count__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9740,122 +9740,122 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__InstallmentBalance__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__InstallmentCount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__InstallmentHighCredit__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__InstallmentOtherBalance__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__InstallmentOtherCount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__InstallmentOtherHighCredit__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__InstallmentOtherPastDue__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__InstallmentOtherPayment__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__InstallmentPastDue__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__InstallmentPayment__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Installment_Balance__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Lead__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__LiabilityBankruptcyCount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__LiabilityChargeOffCount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__LiabilityCollectionCount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__LiabilityCurrentAdverseCount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__LiabilityPreviousAdverseCount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__LiabilitySatisfactoryCount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__MortgageBalance__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__MortgageCount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__MortgageHighCredit__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__MortgagePastDue__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__MortgagePayment__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9870,7 +9870,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Now_Delinquent_or_Derogatory__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9880,7 +9880,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Oldest_Trade_Line__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9890,27 +9890,27 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__OpenBalance__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__OpenCount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__OpenHighCredit__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__OpenPastDue__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__OpenPayment__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9920,57 +9920,57 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Prior_Bankruptcy__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Public_Records__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Ranking__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__ReIssue__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Real_Estate_Balance__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Real_Estate_Payment__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__ResidencyType__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__RevolvingCount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__RevolvingHighCredit__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__RevolvingPastDue__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__RevolvingPayment__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9980,7 +9980,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Revolving_Balance__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -9995,82 +9995,82 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Surcharge_per_report__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__TotalLiabilityBalance__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__TotalLiabilityCount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__TotalLiabilityHighCredit__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__TotalLiabilityPastDue__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__TotalLiabilityPayment__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__TotalSecuredLoanBalance__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Total_High_Credit__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Total_Unsecured_Loan_Balance__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__TransUnion_Alert_Message__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__TransUnion_Score_Factor__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__UnknownBalance__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__UnknownCount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__UnknownHighCredit__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__UnknownPastDue__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__UnknownPayment__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -10080,22 +10080,22 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Was_Delinquent_or_Derogatory__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__X30_Day__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__X60_Day__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__X90_Day__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -10135,7 +10135,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.Opportunity__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -10165,7 +10165,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.Solar_Loan_Approval_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -10175,12 +10175,12 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.Solar_Loan_Manual_Approval__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.Solar_Loan_Manual_Decline__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -10190,7 +10190,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>LASERCA__Personal_Credit_Report__c.Solar_Loan_Pre_Qualification_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -31095,7 +31095,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Utility_NMC_Tariff__c.Utility__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -35965,6 +35965,16 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>agf__ADM_Work__c.Approval_Details__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>agf__ADM_Work__c.Approved__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Work__c.Assignee_First_Name__c</field>
         <readable>true</readable>
@@ -40098,6 +40108,16 @@
         <editable>false</editable>
         <field>copado__Pull_Request_Review__c.copado__Username__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>copado__Pull_Request__c.Number_of_Approved_Reviews__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>copado__Pull_Request__c.Number_of_Commented_Reviews__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -45534,11 +45554,11 @@
         <layout>Invoice__c-Invoice Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Knowledge__kav-How To</layout>
-        <recordType>Knowledge__kav.How_To</recordType>
+        <layout>Knowledge__kav-Article Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Knowledge__kav-Q%26A</layout>
+        <layout>Knowledge__kav-How To</layout>
+        <recordType>Knowledge__kav.How_To</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Knowledge__kav-Q%26A</layout>
@@ -46505,10 +46525,10 @@
     </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
-        <allowDelete>false</allowDelete>
-        <allowEdit>false</allowEdit>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
-        <modifyAllRecords>false</modifyAllRecords>
+        <modifyAllRecords>true</modifyAllRecords>
         <object>LASERCA__Personal_Credit_Report__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
@@ -49531,10 +49551,6 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
-        <name>ActivateOrder</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
         <name>ActivitiesAccess</name>
     </userPermissions>
     <userPermissions>
@@ -49616,10 +49632,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>DistributeFromPersWksp</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>EditActivatedOrders</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
