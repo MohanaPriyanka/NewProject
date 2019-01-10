@@ -709,14 +709,9 @@ public without sharing class SLPControllersTestclass {
             System.assertEquals(new List<String>{'MA'}, SLPAddCustomer.getActiveStates());
             System.assertEquals('AvidiaBlueWave', SLPAddCustomer.getLenderOfRecord('MA'));
         }
-        Map<String, List<Product2>> productMap = new Map<String, List<Product2>>();
 
-        productMap = SLPAddCustomer.getProducts('MA');
-        List<Product2> bwProducts = productMap.get('BlueWave Solar Loan');
-        List<Product2> mslpProducts = productMap.get('MSLP');
-
-        System.assertEquals(6, bwProducts.size());
-        System.assertEquals(3, mslpProducts.size());
+        products = SLPAddCustomer.getProducts('MA');
+        System.assertEquals(9, products.size());
         Test.stopTest();
     }
 

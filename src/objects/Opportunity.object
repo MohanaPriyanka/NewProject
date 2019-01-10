@@ -3680,9 +3680,9 @@ IF(or(ISBLANK(Annual_Independent_Income__c), income_based_loan_support__c = Fals
         <fullName>Installation_Queue_Duration__c</fullName>
         <externalId>false</externalId>
         <formula>IF( 
-ISBLANK( Mechanical_Install_Date_From_RE__c )=true, 
+ISBLANK(Disbursal_3_Full_Install_Checkbox__c)=true, 
 TODAY()-Contract_Close_Date__c, 
-Mechanical_Install_Date_From_RE__c - Contract_Close_Date__c 
+Disbursal_3_Full_Install_Checkbox__c - Contract_Close_Date__c 
 )</formula>
         <label>Installation Queue Duration</label>
         <precision>18</precision>

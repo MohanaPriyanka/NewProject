@@ -66,15 +66,19 @@
     },
 
     setProductProgram : function(component, event, helper) {
-        var productProgramMap = component.get("v.productProgramMap");
-        var selectedProgram = component.get("v.newLead.Product_Program__c");
+        const newLead = component.get('v.newLead');
+        const availableLoanProducts = component.get("v.availableLoanProducts");
+        var productProgram = helper.getProductProgram(availableLoanProducts, newLead.Product__c)
 
-        if (selectedProgram === 'MSLP') {
-            component.set('v.newLead.DOER_Solar_Loan__c', true);
-            component.set("v.availableLoanProducts", null);
+        if (newLead.Product__c) {
+            component.set('v.productProgram', productProgram);
+            if (productProgram === 'MSLP') {
+                component.set('v.newLead.DOER_Solar_Loan__c', true);
+            } else {
+                component.set('v.newLead.DOER_Solar_Loan__c', false);
+            }
         } else {
-            component.set('v.newLead.DOER_Solar_Loan__c', false);
-            component.set("v.availableLoanProducts", productProgramMap[selectedProgram]);
+            component.set('v.productProgram', '');
         }
     },
 })

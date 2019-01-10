@@ -1,13 +1,13 @@
 ({
     doInit : function(component, event, helper) {
-        var actionStates = component.get("c.getStates");
+        var actionStates = component.get("c.getStates");        
         actionStates.setCallback(this,function(resp){
             if (resp.getState() === 'SUCCESS') {
-                component.set("v.States", resp.getReturnValue());
+                component.set("v.States", resp.getReturnValue());    
             } else {
                 component.set("v.States", "MA");
             }
-        });
+        });   
         $A.enqueueAction(actionStates);
 
         component.set("v.DynamicTotalDue", component.get("v.StaticTotalDue"));

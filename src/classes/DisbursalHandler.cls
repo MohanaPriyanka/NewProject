@@ -20,26 +20,33 @@ public class DisbursalHandler {
             }
         }
         if (!opportunityIdList.isEmpty()) {
-            loanList = getLoansFromOpportunityIds(opportunityIdList);
-            List<Id> loanIds = getLoanIdsFromLoanList(loanList);
-            List<Disbursal__c> disbursals = getDisbursalsFromLoan(loanIds);
-
-            disbursalStatuses = getDisbursalStatusMap(disbursals);
-            disbursalAmounts = getDisbursalAmountMap(disbursals);
-            disbursalsToInsert = createAndTrueUpDisbursals(loanList, disbursalStatuses, disbursalAmounts);
-
-            upsert disbursalsToInsert Unique_ID__c;
-        }
+            List<Id> loanIds = new List<Id>();
+            for(Opportunity opp : [SELECT Id, Name,
+                                     (SELECT Id, Name, Opportunity__r.StageName, Requested_Loan_Amount__c, Partner__r.Id, Partner__r.Name,
+                                        Product__r.Disbursal_Terms__c, Opportunity__r.Requested_Loan_Amount__c, Sales_Agent__r.Id 
+                                      FROM Loans__r)
+                                    FROM Opportunity
+                                    WHERE Id IN : opportunityIdList]) {
+                loanList.add(opp.Loans__r);
+                for (Loan__c loan : opp.Loans__r) {
+                    loanIds.add(loan.Id);
+                }
             }
 
-    public List<Disbursal__c> createAndTrueUpDisbursals(List<Loan__c> loanList, Map<String, String> disbursalStatuses, Map<String, Decimal> disbursalAmounts) {
-        List<Disbursal__c> disbursalsToInsert = new List<Disbursal__c>();
+            List<Disbursal__c> disbursals = [
+                SELECT Id, Unique_ID__c, Status__c, Amount__c
+                FROM Disbursal__c
+                WHERE Loan__c IN : loanIds
+            ];
+
+            for (Disbursal__c disbursal : disbursals) {
+                disbursalStatuses.put(disbursal.Unique_ID__c, disbursal.Status__c);
+                disbursalAmounts.put(disbursal.Unique_ID__c, disbursal.Amount__c);
+            }
+
             for (Loan__c loanRecord : loanList) {
                 List<Disbursal__c> stagedDisbursals = new List<Disbursal__c>();
                 Decimal disbursalTotal = 0;
-            Boolean loanInvoiceReceived = (loanRecord.Invoice_Amount__c != null);
-            Integer sequenceToAllocateBalance;
-            Decimal loanAmountMinusTPF = loanRecord.Requested_Loan_Amount__c - loanRecord.Technology_Platform_Fee__c;
                 for (Disbursal__c disbursal : createDisbursalsFromDisbursalTermsField(loanRecord)) {
                     String previousStatus = disbursalStatuses.get(disbursal.Unique_ID__c);
                     if (!protectedDisbursalStatuses.contains(previousStatus)) {
@@ -54,21 +61,14 @@ public class DisbursalHandler {
                 /* If the total Amount to be disbursed matches the loan amount,
                    we filter the list to only update the disbursals without protected statuses.
                    Otherwise we adjust the disbursal amounts to match the loan amount. */
-            if ((!loanInvoiceReceived && disbursalTotal == loanRecord.Requested_Loan_Amount__c) ||
-                loanInvoiceReceived && disbursalTotal == loanAmountMinusTPF) {
+                if (disbursalTotal == loanRecord.Requested_Loan_Amount__c) {
                     disbursalsToInsert.addAll(filterProtectedDisbursals(stagedDisbursals, disbursalStatuses));
                 } else {
-                if (loanInvoiceReceived) {
-                    sequenceToAllocateBalance = 3;
-                } else {
-                    sequenceToAllocateBalance = 2;
+                    disbursalsToInsert.addAll(trueUpNewDisbursals(stagedDisbursals, disbursalStatuses, disbursalAmounts, loanRecord.Requested_Loan_Amount__c));
                 }
-                disbursalsToInsert.addAll(trueUpNewDisbursals(stagedDisbursals,
-                    disbursalStatuses, disbursalAmounts, loanRecord.Requested_Loan_Amount__c,
-                    sequenceToAllocateBalance, loanRecord.Invoice_Amount__c, loanRecord.Technology_Platform_Fee__c));
             }
+            upsert disbursalsToInsert Unique_ID__c;
         }
-        return disbursalsToInsert;
     }
 
     public static List<Disbursal__c> createDisbursalsFromDisbursalTermsField (Loan__c loanRecord) {
@@ -91,78 +91,16 @@ public class DisbursalHandler {
             Loan__c = loanRecord.Id,
             Disbursal_Sequence__c = sequence,
             Disbursal_Percentage__c = rate,
-            Partner__c = loanRecord.Partner__c,
-            Sales_Representative__c = loanRecord.Sales_Agent__c,
+            Partner__c = loanRecord.Partner__r.Id,
+            Sales_Representative__c = loanRecord.Sales_Agent__r.Id,
             Status__c = 'Pending',
-            Amount__c = calcDisbursalAmount(loanRecord, sequence, rate),
+            Amount__c = loanRecord.Requested_Loan_Amount__c * rate / 100,
             Type__c = disbursalType
         );
         if (disbursal.Name.length() >= 80) {
             disbursal.Name = disbursal.Name.substring(0,80);
         }
         return disbursal;
-    }
-
-    public List<Disbursal__c> getDisbursalsFromLoan(List<Id> loanIds) {
-        List<Disbursal__c> disbursals = [
-            SELECT Id, Unique_ID__c, Status__c, Amount__c
-            FROM Disbursal__c
-            WHERE Loan__c IN : loanIds
-        ];
-        return disbursals;
-    }
-
-    public static Decimal calcDisbursalAmount(Loan__c loanRecord, Integer sequence, Decimal rate) {
-        Decimal disbursalAmount;
-        if (loanRecord.Invoice_Amount__c != null && sequence == 2) {
-            disbursalAmount = loanRecord.Invoice_Amount__c;
-        } else if (loanRecord.Invoice_Amount__c != null && sequence == 3) {
-            disbursalAmount = loanRecord.Requested_Loan_Amount__c - loanRecord.Invoice_Amount__c - loanRecord.Technology_Platform_Fee__c;
-        } else {
-            disbursalAmount = loanRecord.Requested_Loan_Amount__c * rate / 100;
-        }
-        return disbursalAmount;
-    }
-
-    public Map<String, String> getDisbursalStatusMap(List<Disbursal__c> disbursals) {
-        Map<String, String> disbursalStatuses = new Map<String, String>();
-        for (Disbursal__c disbursal : disbursals) {
-            disbursalStatuses.put(disbursal.Unique_ID__c, disbursal.Status__c);
-        }
-        return disbursalStatuses;
-    }
-
-    public Map<String, Decimal> getDisbursalAmountMap(List<Disbursal__c> disbursals) {
-        Map<String, Decimal> disbursalAmounts = new Map<String, Decimal>();
-        for (Disbursal__c disbursal : disbursals) {
-            disbursalAmounts.put(disbursal.Unique_ID__c, disbursal.Amount__c);
-        }
-        return disbursalAmounts;
-    }
-
-    public List<Loan__c> getLoansFromOpportunityIds(List<Id> opportunityIdList) {
-        List<Loan__c> loanList = new List<Loan__c>();
-        for(Opportunity opp :  [
-            SELECT Id, Name,
-            (SELECT Id, Name, Opportunity__r.StageName, Requested_Loan_Amount__c, Partner__r.Id, Partner__r.Name,
-                Product__r.Disbursal_Terms__c, Opportunity__r.Requested_Loan_Amount__c, Sales_Agent__r.Id,
-                Profit_Center__c, Invoice_Amount__c, Technology_Platform_Fee__c
-            FROM Loans__r)
-            FROM Opportunity
-            WHERE Id IN : opportunityIdList
-        ]) {
-            loanList.add(opp.Loans__r);
-        }
-        return loanList;
-    }
-
-
-    public List<Id> getLoanIdsFromLoanList(List<Loan__c> loanList) {
-        List<Id> loanIds = new List<Id>();
-        for (Loan__c loan : loanList) {
-            loanIds.add(loan.Id);
-        }
-        return loanIds;
     }
 
     public List<Disbursal__c> filterProtectedDisbursals(List<Disbursal__c> stagedDisbursals, Map<String, String> disbursalStatuses) {
@@ -178,7 +116,7 @@ public class DisbursalHandler {
         return approvedDisbursals;
     }
 
-    public List<Disbursal__c> trueUpNewDisbursals(List<Disbursal__c> stagedDisbursals, Map<String, String> disbursalStatuses, Map<String, Decimal> disbursalAmounts, Decimal loanAmount, Integer sequenceToAllocateBalance, Decimal InvoiceAmount, Decimal tpf) {
+    public List<Disbursal__c> trueUpNewDisbursals(List<Disbursal__c> stagedDisbursals, Map<String, String> disbursalStatuses, Map<String, Decimal> disbursalAmounts, Decimal loanAmount) {
         List<Disbursal__c> approvedDisbursals = new List<Disbursal__c>();
         Decimal remainingDisbursalAmount = loanAmount;
         // Iterate through the disbursals once to get the remainder after removing protected disbursals and the D3 disbursal.
@@ -187,19 +125,16 @@ public class DisbursalHandler {
             // If the disbursal status is protected we don't want to update it, just subtract it's total from the remaining balance.
             if (protectedDisbursalStatuses.contains(previousStatus)) {
                 remainingDisbursalAmount -=  disbursalAmounts.get(disbursal.Unique_ID__c);
-            } else if (disbursal.Disbursal_Sequence__c != sequenceToAllocateBalance) {
+            } else if (disbursal.Disbursal_Sequence__c != 2) {
                 remainingDisbursalAmount -= disbursal.Amount__c;
                 approvedDisbursals.add(disbursal);
             }
         }
         // Iterate through the disbursals a second time to isolate the D2 disbural and assign the remaining amount to it.
-        if (InvoiceAmount != null) {
-            remainingDisbursalAmount -= tpf;
-        }
         for (Disbursal__c disbursal : stagedDisbursals) {
             String previousStatus = disbursalStatuses.get(disbursal.Unique_ID__c);
             if (!protectedDisbursalStatuses.contains(previousStatus) &&
-               disbursal.Disbursal_Sequence__c == sequenceToAllocateBalance) {
+               disbursal.Disbursal_Sequence__c == 2) {
                 disbursal.Amount__c = remainingDisbursalAmount;
                 approvedDisbursals.add(disbursal);
             }
@@ -262,7 +197,7 @@ public class DisbursalHandler {
         for (Residential_Equipment__c equipment : equipmentList) {
             equipmentIdList.add(equipment.Id); 
         }
-        for (Residential_Equipment__c equipment : [SELECT Id, Opportunity__r.Id, Opportunity__r.Lender_of_Record__c, Opportunity__r.Product__r.Name, Opportunity__r.DOER_Solar_Loan__c FROM Residential_Equipment__c WHERE Id IN : equipmentIdList]) {
+        for (Residential_Equipment__c equipment : [SELECT Id, Opportunity__r.Id, Opportunity__r.Lender_of_Record__c, Opportunity__r.DOER_Solar_Loan__c FROM Residential_Equipment__c WHERE Id IN : equipmentIdList]) {
             queriedEquipment.add(equipment);
             oppIdList.add(equipment.Opportunity__r.Id);
         }
@@ -276,13 +211,6 @@ public class DisbursalHandler {
                         newStatus = 'Hold';
                         disbursalMap.get(equipment.Opportunity__r.Id + 'Mechanical Installation').Hold_on_Disbursal__c = true;
                         disbursalMap.get(equipment.Opportunity__r.Id + 'Mechanical Installation').Reason_for_Hold__c = 'A previous disbursal is on hold.';
-                        if (disbursalMap.get(equipment.Opportunity__r.Id + 'CED Ensemble') != null) {
-                            disbursalMap.get(equipment.Opportunity__r.Id + 'CED Ensemble').Hold_on_Disbursal__c = true;
-                            disbursalMap.get(equipment.Opportunity__r.Id + 'CED Ensemble').Reason_for_Hold__c = 'A previous disbursal is on hold.';
-                        }
-                    }
-                    if (disbursalMap.get(equipment.Opportunity__r.Id + 'CED Ensemble') != null) {
-                        disbursalList.add(setDisbursalStatus('CED Ensemble', equipment.Opportunity__r.Id, disbursalMap, newStatus, null));
                     }
                     disbursalList.add(setDisbursalStatus('Mechanical Installation', equipment.Opportunity__r.Id, disbursalMap, newStatus, null));
                 } 
@@ -382,12 +310,7 @@ public class DisbursalHandler {
 
     public Map<String,Disbursal__c> getDisbursalMap (List<String> oppIdList) {
         Map<String,Disbursal__c> disbursalMap = new Map<String, Disbursal__c>();
-        for (Disbursal__c disbursal : [
-            SELECT Id, Status__c, Name, Loan__r.Opportunity__r.Id,
-                Type__c, Amount__c
-            FROM Disbursal__c
-            WHERE Loan__r.Opportunity__r.Id IN : oppIdList
-        ]) {
+        for (Disbursal__c disbursal : [SELECT Id, Status__c, Name, Loan__r.Opportunity__r.Id, Type__c FROM Disbursal__c WHERE Loan__r.Opportunity__r.Id IN : oppIdList]) {
             disbursalMap.put(disbursal.Loan__r.Opportunity__r.Id + disbursal.Type__c, disbursal);
         }
         return disbursalMap;

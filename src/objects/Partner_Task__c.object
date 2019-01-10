@@ -72,7 +72,6 @@
     &quot;Provide Sales Agreement&quot;, IF(ISBLANK(Loan__r.Opportunity__c),&quot;ERROR, call BW&quot;, &quot;Upload&quot;),
     &quot;BlueWave Counter Signature&quot;, &quot;&quot;,
     &quot;Building Permit&quot;, &quot;Submit&quot;,
-    &quot;Material Invoice&quot;, &quot;Upload&quot;, 
     &quot;Mechanical Installation&quot;, &quot;Upload&quot;,
     &quot;Interconnection&quot;, IF( Loan__r.State__c = &quot;MA&quot;, &quot;Input&quot;, &quot;Upload&quot;),
     &quot;Report Interconnection to MCEC&quot;, IF( Loan__r.State__c = &quot;MA&quot;, &quot;Input&quot;, &quot;Upload&quot;),
@@ -178,7 +177,6 @@ May 2018: default blank statuses to &quot;Pending&quot;</inlineHelpText>
 &quot;Mechanical Installation&quot;, &quot;Examples: Passed Electrical Inspection Report, Permit Card, Email from AHJ, or similar backup. This can be a PDF, PNG, JPG&quot;, 
 &quot;Interconnection&quot;, &quot;Examples: PTO Letter/Email from Utility, Signed Interconnection Agreement, or similar backup. This can be a PDF, PNG, JPG.&quot;, 
 &quot;Provide Sales Agreement&quot;,&quot;Please ensure the sales agreement shows: 1) System cost/requested loan amount 2) System information 3) Address 4) Customer Signature&quot;, 
-&quot;Material Invoice&quot;,&quot;Please upload the invoice with CED&quot;, 
 &quot;&quot;)</formula>
         <inlineHelpText>Used to display help text in the partner portal</inlineHelpText>
         <label>Help Text</label>
@@ -260,7 +258,6 @@ May 2018: default blank statuses to &quot;Pending&quot;</inlineHelpText>
     &quot;Building Permit&quot;, &quot;Installer&quot;,
     &quot;Mechanical Installation&quot;, &quot;Installer&quot;,
     &quot;Interconnection&quot;, &quot;Installer&quot;,
-    &quot;Material Invoice&quot;, &quot;Installer&quot;,
     &quot;Report Interconnection to MCEC&quot;, &quot;Installer&quot;,
     &quot;Complete&quot;, &quot;BlueWave&quot;,
     &quot;&quot;)</formula>
@@ -429,7 +426,6 @@ May 2018: default blank statuses to &quot;Pending&quot;</inlineHelpText>
 &quot;Under BlueWave Review&quot;, &quot;Review Income Documentation&quot;,
 &quot;Provide Sales Agreement&quot;, &quot;Upload Sales Agreement&quot;,
 &quot;Building Permit&quot;, &quot;Submit Approved Building Permit&quot;,
-&quot;Material Invoice&quot;, &quot;Upload Material Invoice&quot;, 
 &quot;Mechanical Installation&quot;, &quot;Upload Mechanical Installation Documentation&quot;,
 &quot;Interconnection&quot;, &quot;Input Interconnection Documentation&quot;,
 Name) &amp;

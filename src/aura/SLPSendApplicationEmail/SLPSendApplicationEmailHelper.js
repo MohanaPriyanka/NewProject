@@ -52,16 +52,19 @@
         } else {
             helper.setInputToCorrect(component, "loanAmountElement" );
         }
-        if (!lead.Product_Program__c) {
-            helper.setInputToError(component, "programElement", "shake");
-            errorMessage = errorMessage + "Please select a Program" + "\n" + "\n";
+        if (lead.LASERCA__Home_State__c === 'MA') {
+            if (!lead.Product__c) {
+                helper.setInputToError(component, "productElement", "shake");
+                errorMessage = errorMessage + "Please select a Product" + "\n" + "\n";
+            } else {
+                helper.setInputToCorrect(component, "productElement" );
+            }
         } else {
-            helper.setInputToCorrect(component, "programElement" );
-        }
-        // If they haven't selected a product, don't include undefined in the lead, it results in
-        // "An internal sever error has occured Error ID: 798891498-91509 (119852647)"
-        if (!lead.Product__c) {
-            delete lead['Product__c'];
+            // If they haven't selected a product, don't include undefined in the lead, it results in 
+            // "An internal sever error has occured Error ID: 798891498-91509 (119852647)"
+            if (!lead.Product__c) {
+                delete lead['Product__c'];
+            }
         }
         if (errorMessage.length > 0) {
             return errorMessage;
@@ -91,6 +94,11 @@
         var errors = helper.errorsInForm(component, helper, newLead);
         if (errors == null) {
             helper.startSpinner(component, 'emailSpinner');
+            newLead.Product_Program__c = helper.getProductProgram(availableLoanProducts, newLead.Product__c);
+            // We don't want to set a product for MA loans - just MSLP vs non-MSLP
+            if (newLead.Product__c === 'MSLP' || newLead.Product__c === 'BlueWave Solar Loan') {
+                delete newLead.Product__c;
+            }
             var leadPromise = helper.createLead(component, helper, newLead);
             leadPromise.then($A.getCallback(function resolve(lead) {
                 helper.emailApplication(component, helper, downPayment, lead);
@@ -168,30 +176,27 @@
         action.setParams({state: component.get("v.newLead.LASERCA__Home_State__c"),
                           productType: 'Residential Loan'});
         action.setCallback(this,function(resp){
-            if (resp.getState() == 'SUCCESS'){
-                var productProgramMap = resp.getReturnValue();
-                var programList = Object.keys(productProgramMap);
-                var numberOfPrograms = programList.length;
-
-                component.set("v.availableProductPrograms", programList);
-                component.set("v.productProgramMap", productProgramMap);
-
-                if (numberOfPrograms === 1){
-                    component.set("v.availableLoanProducts", productProgramMap[programList[0]]);
-                    component.set("v.newLead.Product_Program__c",programList[0]);
-                    if (programList[0] === 'MSLP') {
-                        component.set('v.newLead.DOER_Solar_Loan__c', true);
-                    } else {
-                        component.set('v.newLead.DOER_Solar_Loan__c', false);
-                    }
-                } else {
-                    component.set("v.availableLoanProducts",null);
-                }
+            if (resp.getState() == 'SUCCESS') {
+                component.set("v.availableLoanProducts", resp.getReturnValue());
             } else {
                 helper.logError("SLPSendApplicationEmailController", "availableLoanProducts", resp.getError());
             }
         });
         $A.enqueueAction(action);
+    },
+
+    // selectedId might be a Product ID or "BlueWave Solar Loan" or "MSLP" for MA
+    getProductProgram : function(products, selectedId) {
+        if (selectedId) {
+            for (var p in products) {
+                if (selectedId === products[p].Id) {
+                    return products[p].Program__c;
+                }
+            }
+            return selectedId;
+        } else {
+            return products[0].Program__c;
+        }
     },
 
     //The value for grid hybrid is a Boolean in the database and a string ('Yes' or 'No') in the form

@@ -1,5 +1,5 @@
 ({
-    checkInputs : function(component, inputFields) {
+    checkInputs : function(component, inputFields) { 
         var paymentMethod = component.get("v.SelectedPaymentMethod");
         component.set("v.ErrorText","Please fill out all required fields. ");
         component.set("v.showErrorText", false);
@@ -40,19 +40,19 @@
         }
 
         var errorsExist = component.get("v.showErrorText");
-        return errorsExist;
+        return errorsExist; 
     },
 
 
-    addErrorAnimation : function(component, fieldName) {
-        $A.util.addClass(component.find(fieldName), 'slds-has-error');
+    addErrorAnimation : function(component, fieldName) { 
+        $A.util.addClass(component.find(fieldName), 'slds-has-error'); 
     },
 
-    removeErrorAnimation : function(component, fieldName) {
+    removeErrorAnimation : function(component, fieldName) { 
         $A.util.removeClass(component.find(fieldName), 'slds-has-error');
     },
-
-    checkFieldIsPopulated : function(component, fieldValue, fieldName, minLength, additionalErrorText) {
+    
+    checkFieldIsPopulated : function(component, fieldValue, fieldName, minLength, additionalErrorText) { 
         if (fieldValue === null) {
             this.addErrorAnimation(component, fieldName);
             this.unhideFieldsShowError(component, component.get("v.ErrorText"));
@@ -64,23 +64,23 @@
         }
     },
 
-    unhideFieldsShowError : function(component, errorMessageText) {
+    unhideFieldsShowError : function(component, errorMessageText) { 
         // allows for resubmittal 
-        component.set("v.ErrorText",  errorMessageText);
+        component.set("v.ErrorText",  errorMessageText);   
         component.set("v.showErrorText", true);
         component.set("v.hideFields", false);
         component.set("v.Spinner", false);
     },
 
-    showFinalError : function(component, errorMessageText) {
+    showFinalError : function(component, errorMessageText) { 
         // does NOT allow for resubmittal 
-        component.set("v.ResponseText",  'An error has occurred, but do not resubmit payment. We have been notified and will contact you with further instructions');
-        component.set("v.Spinner", false);
+        component.set("v.ResponseText",  'An error has occurred, but do not resubmit payment. We have been notified and will contact you with further instructions');   
+        component.set("v.Spinner", false); 
     },
 
-    showApproved : function(component) {
-        component.set("v.Spinner", false);
-        component.set("v.ResponseText",  'Payment approved. You will recieve an email from BlueWave momentarily.');
+    showApproved : function(component) { 
+        component.set("v.Spinner", false); 
+        component.set("v.ResponseText",  'Payment approved. You will recieve an email from BlueWave momentarily.');   
     },
 
     showOrderCreated : function(component) {
@@ -94,7 +94,7 @@
             component.set("v.showErrorText", false);
             component.set("v.hideFields", true);
             component.set("v.Spinner", true);
-            var orderList = component.get("v.BillsToCharge");
+            var orderList = component.get("v.BillsToCharge"); 
             var paymentPercent = component.get("v.DynamicTotalDue")/component.get("v.StaticTotalDue");
 
             var ordersToInsertList = [];
@@ -115,8 +115,8 @@
                     ordersToInsertList.push(chargentOrder);
                 }
             }
-
-            var actionSubmit = component.get("c.setChargeAmountAndInsert");
+              
+            var actionSubmit = component.get("c.setChargeAmountAndInsert");  
 
             actionSubmit.setParams({
                 "chargeAmounts": ordersToInsertList,
@@ -141,8 +141,8 @@
                     );
                     helper.showFinalError(component);
                 }
-            });
-            $A.enqueueAction(actionSubmit);
+            });   
+            $A.enqueueAction(actionSubmit);  
         });
     },
 
@@ -178,11 +178,11 @@
         var self = this;
 
         return new Promise(function(resolve, reject) {
-            var actionCharge = component.get("c.chargeOrder");
+            var actionCharge = component.get("c.chargeOrder");  
 
             actionCharge.setParams({
                 "chOrder": orderToCharge
-            });
+            });        
 
             actionCharge.setCallback(this,function(resp){
                 if (resp.getState() === 'SUCCESS') {
@@ -208,16 +208,16 @@
                     }
                 } else {
                     // because of the try-catch block in apex, this is rare:
-                    self.showFinalError(component);
+                    self.showFinalError(component);   
                 }
-            });
-            $A.enqueueAction(actionCharge);
-        });
+            });   
+            $A.enqueueAction(actionCharge); 
+        });   
     },
 
     postSubmitProcessing : function(component, helper, showApproval) {
-        var transactionIDList = component.get("v.transactionsCreated");
-        var updateRecords = component.get("c.processingPostSubmit");
+        var transactionIDList = component.get("v.transactionsCreated");  
+        var updateRecords = component.get("c.processingPostSubmit");  
 
         updateRecords.setParams({
             "transactionIdList": transactionIDList
@@ -227,12 +227,12 @@
             var self = this;
 
             if (resp.getState() === 'SUCCESS' && resp.getReturnValue() && showApproval) {
-                self.showApproved(component);
+                self.showApproved(component);   
             } else {
                 // because of the try-catch block in apex, this is rare:
                 self.showFinalError(component);
             }
-        });
-        $A.enqueueAction(updateRecords);
+        });   
+        $A.enqueueAction(updateRecords); 
     },
 })

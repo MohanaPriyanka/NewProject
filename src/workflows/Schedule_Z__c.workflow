@@ -186,6 +186,10 @@ IF(MOD(YEAR(TODAY() ) + FLOOR((MONTH(TODAY() ) + 6)/12), 400) = 0 || (MOD(YEAR(T
     <rules>
         <fullName>Next Schedule Z Date and Schedule Z ID</fullName>
         <actions>
+            <name>Next_Schedule_Z_Date</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <actions>
             <name>Schedule_Z_Id</name>
             <type>FieldUpdate</type>
         </actions>

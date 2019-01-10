@@ -1697,7 +1697,7 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
     <fields>
         <fullName>System_Utility__c</fullName>
         <externalId>false</externalId>
-        <label>XXXXX Utility</label>
+        <label>Utility</label>
         <length>20</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>

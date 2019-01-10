@@ -68,7 +68,8 @@
 
     populateUtilityPicklist : function(component, event, helper, lead) {
         var utilityList = [];
-        if (lead.Confirm_Utility__c && lead.Confirm_Utility__c.includes('/')){
+        if ((lead.Confirm_Utility__c && lead.Confirm_Utility__c.includes('/'))
+            || (lead.LoadZone__c && lead.LoadZone__c.includes('/'))){
             var splitNamesFromId = lead.Confirm_Utility__c.split('>');
             var namesList = splitNamesFromId[0].split('/');
             var idsList = splitNamesFromId[1].split('/');
@@ -84,10 +85,9 @@
             component.set('v.loading', false);
             component.set('v.page', 'SplitLoadZone');
             component.set('v.splitUtilities', utilityList);
-        } else if (lead.LoadZone__c && lead.LoadZone__c.includes('/')) {
-            component.set('v.loading', false);
-            component.set('v.page', 'SplitLoadZone');
-            component.set('v.splitZones', lead.LoadZone__c.split('/'));
+            if (lead.LoadZone__c.includes('/')){
+                component.set('v.splitZones', lead.LoadZone__c.split('/'));
+            }
         } else {
             helper.finishStage(component, event, helper);
         }
