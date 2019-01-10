@@ -69,7 +69,8 @@ public without sharing class ReturnedTransactionHandler {
             chTransaction.ChargentOrders__Response_Status__c = 'Returned';
             Datetime chCreatedDatetime = chTransaction.CreatedDate;
             Date chCreatedDate = Date.newInstance(chCreatedDatetime.year(), chCreatedDatetime.month(), chCreatedDatetime.day());
-            if (lastSystemBillDate < chCreatedDate) {
+            // for paper checks, we want to reverse the previous bills, even if new ones have been published
+            if (lastSystemBillDate < chCreatedDate || chTransaction.ChargentOrders__Order__r.Paper_Check__c != null) {
                 SystemBillPaymentRollUpHandler.listObject objectList = removePaymentFromSBs( groupedSystemBillsList,
                     payment,
                     maxbillnumber,
@@ -177,7 +178,7 @@ public without sharing class ReturnedTransactionHandler {
     public void createReverseTransaction(ChargentOrders__Transaction__c transactionToReverse) {
         ChargentOrders__Transaction__c reverseTransaction = transactionToReverse.clone(false, true, true, false);
         reverseTransaction.ChargentOrders__Amount__c *= -1;
-        reverseTransaction.ChargentOrders__Response_Status__c = 'Approved';
+        reverseTransaction.ChargentOrders__Response_Status__c = 'Returned';
         reverseTransactions.add(reverseTransaction);
     }
 
