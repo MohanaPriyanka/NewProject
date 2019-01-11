@@ -224,6 +224,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Account_Bill__c.Additional_Bill_Insert__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Account_Bill__c.Additional_Send_Bill_Email__c</field>
         <readable>true</readable>
