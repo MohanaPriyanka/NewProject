@@ -133,7 +133,7 @@
     <div class="slds-col slds-col--padded slds-p-top--small">
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required">
-          <div class="slds-form-element__control slds-text-heading--medium">
+          <div class="slds-form-element__control">
             <b>{!$Label.c.PI_Individual_or_Joint}</b>
           </div>
           <div class="slds-form-element__control slds-p-top_small slds-text-body--regular">
@@ -439,7 +439,7 @@
     <div class="slds-col slds-col--padded slds-p-top--small">
       <form class="slds-form--stacked">
         <div class="slds-form-element slds-is-required">
-          <div class="slds-form-element__control proximaNovaStream slds-m-bottom_small">
+          <div class="slds-form-element__control proximaNovaStream slds-text-heading--medium">
             <b>{!$Label.c.PI_Primary_SSN}</b>
           </div>
         </div>
