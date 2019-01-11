@@ -5300,7 +5300,7 @@ MAX(Personal_Credit_Report2__r.Credit_Score_Integer_2__c, Personal_Credit_Report
     <fields>
         <fullName>Parent_Account_ID__c</fullName>
         <externalId>false</externalId>
-        <formula>Account.Parent_Account__r.Id</formula>
+        <formula>CASESAFEID(Account.Parent_Account__r.Id)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Parent Account ID</label>
         <required>false</required>
