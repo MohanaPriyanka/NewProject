@@ -832,7 +832,7 @@ IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12),
             <name>EMAIL_LOG_CS_BlueWave_Contract_Reciept</name>
             <type>Task</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <booleanFilter>1 AND 2 AND 3 AND (4 OR 5)</booleanFilter>
         <criteriaItems>
             <field>Opportunity.Product_Line__c</field>
@@ -871,7 +871,7 @@ IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12),
             <name>EMAIL_LOG_NGrid_Contract_Execution</name>
             <type>Task</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <booleanFilter>1 AND 2 AND (3 OR 5) AND 4</booleanFilter>
         <criteriaItems>
             <field>Opportunity.Product_Line__c</field>
