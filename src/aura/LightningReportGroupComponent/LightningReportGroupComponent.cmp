@@ -8,11 +8,11 @@
 		<table class="slds-table slds-table_bordered slds-table_cell-buffer">
 			<thead scope="col">
 				<tr>
-					<th class="nimbusBackground45 slds-text-heading--medium" colspan="{!v.reportObject.sumResp.groupMap[0].groupColumnSize}">
+					<th class="gray-background slds-text-heading" colspan="{!v.reportObject.sumResp.groupMap[0].groupColumnSize}">
 						<b>{!v.reportObject.sumResp.groupMap[0].fieldName}</b>
 					</th>
 					<aura:iteration var="groupSummary" items="{!v.reportObject.sumResp.groupMap[0].fieldAggregateList}" indexVar="i">
-						<th class="nimbusBackground45 slds-text-heading--medium" colspan="{!i+1==v.reportObject.sumResp.groupMap[0].fieldAggregateListSize?v.reportObject.sumResp.groupMap[0].lastColumnSize:v.reportObject.sumResp.groupMap[0].groupColumnSize}">
+						<th class="gray-background slds-text-heading" colspan="{!i+1==v.reportObject.sumResp.groupMap[0].fieldAggregateListSize?v.reportObject.sumResp.groupMap[0].lastColumnSize:v.reportObject.sumResp.groupMap[0].groupColumnSize}">
 							<b>{!groupSummary.label}</b>
 						</th>
 					</aura:iteration>
@@ -29,7 +29,7 @@
 						</td>
 						<aura:iteration var="aggList" items="{!group.fieldAggregateList}" indexVar="i">
 							<td colspan="{!i+1==group.fieldAggregateListSize?group.lastColumnSize:group.groupColumnSize}" data-groupkey="{!group.groupKey}" onclick="{!c.openChildRecords}" class="{!group.visibleChild?'selectedBackground':''}">
-								<div class="slds-text-body--large-dark">
+								<div class="slds-text-heading">
 									{!aggList.value}
 								</div>
 							</td>
@@ -37,7 +37,7 @@
 					</tr>
 					<aura:if isTrue="{!group.visibleChild}">
 						<aura:iteration var="header" items="{!v.reportObject.sumResp.reportFields}" indexVar="i">
-							<td colspan="{!v.group.fieldsInGroup}" class="nimbusBackground25 slds-text-heading--medium">
+							<td colspan="{!v.group.fieldsInGroup}" class="light-gray-background slds-text-heading--medium">
 								<div class="{!i==0?'slds-m-left_large':'slds-m-left_small'}">
 									<b>{!header.fieldLabel}</b>
 								</div>
@@ -47,7 +47,7 @@
 							<tr>
 								<aura:iteration var="cell" items="{!row}">
 									<td colspan="{!v.group.fieldsInGroup}">
-										<div class="slds-m-left_small slds-text-body--large-dark">
+										<div class="slds-m-left_small slds-text-heading">
 											{!cell.fieldLabel}
 										</div>
 									</td>

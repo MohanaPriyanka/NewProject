@@ -4,7 +4,7 @@
   <aura:attribute name="showLogout" type="Boolean" default="true"/>
   <aura:handler event="c:SLPLandingPageEvent" action="{!c.hideDisplay}" />
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" /> 
-  <div aura:id="header" class="header gradLeftRight ">
+  <div aura:id="header" class="header ">
     <a href="{!v.link}">
       <div class="w3-container">
         <img src="{!$Resource.RenewablesWhiteLogo}" class="logo fadeIn" />
