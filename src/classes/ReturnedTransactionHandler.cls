@@ -15,7 +15,7 @@ public without sharing class ReturnedTransactionHandler {
     public List<ChargentOrders__Transaction__c> transactionsToUpdate = new List<ChargentOrders__Transaction__c>();
     public List<ChargentOrders__Transaction__c> reverseTransactions = new List<ChargentOrders__Transaction__c>();
     public List<Overpayment__c> overpayList;
-    public List<Case> caseList;
+    public List<Case> caseList = new List<Case>();
     public CaseFactory caseFactory = new CaseFactory();
 
     public void unrollPayment(Set<Id> transactionIds) {
@@ -71,7 +71,7 @@ public without sharing class ReturnedTransactionHandler {
             chTransaction.ChargentOrders__Response_Status__c = 'Returned';
             Datetime chCreatedDatetime = chTransaction.CreatedDate;
             Date chCreatedDate = Date.newInstance(chCreatedDatetime.year(), chCreatedDatetime.month(), chCreatedDatetime.day());
-            if (lastSystemBillDate < chCreatedDate || chTransaction.ChargentOrders__Order__r.Paper_Check__c != null) {
+            if (lastSystemBillDate < chCreatedDate) {
                 SystemBillPaymentRollUpHandler.listObject objectList = removePaymentFromSBs( groupedSystemBillsList,
                     payment,
                     maxbillnumber,
@@ -83,17 +83,9 @@ public without sharing class ReturnedTransactionHandler {
                 propertyAccount.Date_of_Last_Payment__c = dateOfLastPayment;
                 propAccountsToUpdate.add(propertyAccount);
             } else {
-                List<Utility_Account_Subscription__c> utilAccSubs = [
-                    SELECT Id, Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__c
-                    FROM Utility_Account_Subscription__c
-                    WHERE Utility_Account_Log__r.Account__c = : parentID
-                    AND Opportunity__r.Shared_Solar_System__c = : groupedSystemBillsList[0].Shared_Solar_System__c
-                    AND Next_Schedule_Z_Status__c = 'Active Subscription'
-                ];
-
                 Bill_Adjustment__c adjust = new Bill_Adjustment__c( Name = 'Returned Payment: ' + groupedSystemBillsList[0].Account_Bill__r.Name + ' ' + dateOfLastPayment.format(),
                     Adjustment_Amount__c = payment,
-                    Utility_Account_Subscription__c = utilAccSubs[0].Id,
+                    Utility_Account_Subscription__c = groupedSystemBillsList[0].Utility_Account_Subscription_Bills__r[0].Utility_Account_Subscription__c,
                     Source_ID__c = chTransaction.Id,
                     Approval_Status__c = 'Approved',
                     Adjustment_Type__c = 'Returned Payment',
