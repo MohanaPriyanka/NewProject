@@ -165,7 +165,7 @@ public class UserHandlerTest {
 			ORDER BY Name];
 
 		oppList[0].Contract_Status__c = 'Completed';
-		oppList[1].Shared_Solar_System__c = nonWaitlist.Id;
+		oppList[1].Contract_Status__c = 'Completed';
 
 		List<User> oldUserList = [
 			SELECT Id, ContactId

@@ -47,7 +47,11 @@ public without sharing class UserHandler implements Queueable{
         // If the username or nickname already exists, try to create a new one.
         // If it doesn't work even with the new value, log an error to flag manual intervention
         try {
-            insert usersToInsertMap.values();
+            if(Test.isRunningTest()){
+                Util.insertSObjs(usersToInsertMap.values());
+            } else {
+                insert usersToInsertMap.values();
+            }
         } catch (Exception e){
             String response = e.getMessage();
             // Example: 'Insert failed. First exception on row 0; first error: DUPLICATE_COMM_NICKNAME'
