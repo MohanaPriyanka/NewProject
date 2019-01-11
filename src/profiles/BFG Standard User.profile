@@ -36001,6 +36001,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>agf__ADM_Work__c.Planned_Completion_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>agf__ADM_Work__c.Release_Notes__c</field>
         <readable>false</readable>
     </fieldPermissions>
