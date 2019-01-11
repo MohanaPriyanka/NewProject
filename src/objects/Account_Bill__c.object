@@ -124,6 +124,21 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Additional_Bill_Insert__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Add a second conga template to the bill with this lookup</inlineHelpText>
+        <label>Additional Bill Insert</label>
+        <referenceTo>APXTConga4__Conga_Template__c</referenceTo>
+        <relationshipLabel>Account Bills (Additional Bill Insert)</relationshipLabel>
+        <relationshipName>Account_Bills1</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Additional_Send_Bill_Email__c</fullName>
         <externalId>false</externalId>
         <formula>Parent_Account__r.Additional_Email__c</formula>
@@ -1337,9 +1352,9 @@ New Charges...</inlineHelpText>
 &quot;&amp;id=&quot; + Id + 
 &quot;&amp;queryid=[Sbs]a27j0000000bSg9&quot; + 
 &quot;&amp;queryid=[Lbs]a270a000000NFEW&quot; +
-&quot;&amp;templateid=&quot; + Bill_Template__r.Id + 
+&quot;&amp;templateid=&quot; + Bill_Template__r.Id + if(ISBLANK(Additional_Bill_Insert__r.Id),&apos;&apos;,&apos;,&apos; + Additional_Bill_Insert__r.Id) +
 &quot;&amp;defaultpdf=1&quot; + 
-&quot;&amp;ofn=&quot; + SUBSTITUTE(Name,&quot;&amp;&quot;,&quot;{~~~}&quot;) + &quot; Community Solar Bill&quot; + 
+&quot;&amp;ofn=&quot; + SUBSTITUTE(Name,&quot;&amp;&quot;,&quot;{~}&quot;) + &quot; Community Solar Bill&quot; + 
 &quot;&amp;sc0=1&quot; + 
 &quot;&amp;sc1=SalesforceFile&quot; + 
 &quot;&amp;ac0=1&quot; + 
