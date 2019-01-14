@@ -3,10 +3,10 @@
         var promise = helper.getLeadRecord(component, event, helper);
         promise.then($A.getCallback(function resolve(retVal) {
             var lead = retVal;
-            if(lead != null){
+            if(lead){
+                component.set("v.page", "");
                 if (lead.CSAP_Stage__c) {
-                    component.set("v.page", "");
-                    helper.raiseNavEvent("COMPLETED", {"stageName": lead.CSAP_Stage__c, "lead": lead});
+                    helper.raiseNavEvent("COMPLETED", {"stageName": lead.CSAP_Stage__c, "lead": lead, "page": ""});
                 }else{
                     component.set("v.lead", lead);
                     helper.finishStage(component, event, helper);
