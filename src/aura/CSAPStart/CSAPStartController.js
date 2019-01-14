@@ -2,10 +2,13 @@
     doInit: function(component, event, helper) {
         component.set("v.STAGENAME", "NAV_Getting_Started");
         component.set("v.page", "ApplicationPrep");
+        var leadId = component.get("v.leadId");
+        if(leadId){
+            component.set("v.page","Login");
+        }
     },
 
     handleNavEvent : function(component, event, helper) {
-
     },
 
     beginApplication : function(component, event, helper) {
