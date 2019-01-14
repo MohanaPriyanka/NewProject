@@ -6,7 +6,7 @@
             if(lead){
                 component.set("v.page", "");
                 if (lead.CSAP_Stage__c) {
-                    helper.raiseNavEvent("COMPLETED", {"stageName": lead.CSAP_Stage__c, "lead": lead, "page": ""});
+                    helper.raiseNavEvent("COMPLETED", {"stageName": lead.CSAP_Stage__c, "lead": lead});
                 }else{
                     component.set("v.lead", lead);
                     helper.finishStage(component, event, helper);
