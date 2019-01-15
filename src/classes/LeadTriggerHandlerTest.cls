@@ -702,7 +702,10 @@ public class LeadTriggerHandlerTest {
             Customer_Subscription_Type__c = 'kWh',
             Monthly_Late_Fee__c = 1);
         insert csProduct;
-        insertTariffsForProduct(csProduct.Id, eversource.Id, nationalGrid.Id);
+
+        PostSandboxRefresher.SolarSystemHelper helper = new PostSandboxRefresher.SolarSystemHelper();
+        helper.insertTariffsForProduct(csProduct.Id, eversource.Id, nationalGrid.Id);
+
         Shared_Solar_System__c sss1 = getSharedSolarSystem(nmcRate, csProduct, eversource, 'Eversource P1');
         Shared_Solar_System__c sss2 = getSharedSolarSystem(nmcRate, csProduct, eversource, 'Eversource P2');
         Shared_Solar_System__c sss4 = getSharedSolarSystem(nmcRate, csProduct, eversource, 'Eversource P3');
@@ -858,93 +861,5 @@ public class LeadTriggerHandlerTest {
             Sales_Partners__c = 'All'
         );
         return sss1;
-    }
-
-    public static void insertTariffsForProduct(Id productId, Id eversourceId, Id nationalGridId) {
-        Utility_NMC_Tariff__c eversourceG1 =  new Utility_NMC_Tariff__c(
-            Value_of_Net_Metering_Credit__c = .70578,
-            Name = 'Eversource G1',
-            Utility_Relationship__c = eversourceId,
-            Customer_Type__c = 'Non-Residential',
-            Maximum_kWh__c = 10000,
-            Date__c = Date.today()
-        );
-        Utility_NMC_Tariff__c eversourceG2 =  new Utility_NMC_Tariff__c(
-            Value_of_Net_Metering_Credit__c = .70578,
-            Name = 'Eversource G2',
-            Utility_Relationship__c = eversourceId,
-            Customer_Type__c = 'Non-Residential',
-            Minimum_kWh__c = 10000,
-            Date__c = Date.today()
-        );
-        Utility_NMC_Tariff__c eversourceR1 =  new Utility_NMC_Tariff__c(
-            Value_of_Net_Metering_Credit__c = .70578,
-            Name = 'Eversource R1',
-            Utility_Relationship__c = eversourceId,
-            Customer_Type__c = 'Residential',
-            Date__c = Date.today()
-        );
-        Utility_NMC_Tariff__c nationalGridG1 =  new Utility_NMC_Tariff__c(
-            Value_of_Net_Metering_Credit__c = .70578,
-            Name = 'National Grid G1',
-            Utility_Relationship__c = nationalGridId,
-            Customer_Type__c = 'Non-Residential',
-            Maximum_kWh__c = 10000,
-            Date__c = Date.today()
-        );
-        Utility_NMC_Tariff__c nationalGridG2 =  new Utility_NMC_Tariff__c(
-            Value_of_Net_Metering_Credit__c = .70578,
-            Name = 'National Grid G2',
-            Utility_Relationship__c = nationalGridId,
-            Customer_Type__c = 'Non-Residential',
-            Minimum_kWh__c = 10000,
-            Date__c = Date.today()
-        );
-        Utility_NMC_Tariff__c nationalGridR1 =  new Utility_NMC_Tariff__c(
-            Value_of_Net_Metering_Credit__c = .70578,
-            Name = 'National Grid R1',
-            Utility_Relationship__c = nationalGridId,
-            Customer_Type__c = 'Residential',
-            Date__c = Date.today()
-        );
-
-        insert new List<Utility_NMC_Tariff__c>{
-            eversourceG1, eversourceG2, eversourceR1, nationalGridG1, nationalGridG2, nationalGridR1
-        };
-
-        Product_Tariff__c smartER1 = new Product_Tariff__c(
-            Product__c = productId,
-            Utility_NMC_Tariff__c = eversourceR1.Id,
-            Size_Ratio__c = 1.5
-        );
-        Product_Tariff__c smartEG1 = new Product_Tariff__c(
-            Product__c = productId,
-            Utility_NMC_Tariff__c = eversourceG1.Id,
-            Size_Ratio__c = 1.4
-        );
-        Product_Tariff__c smartEG2 = new Product_Tariff__c(
-            Product__c = productId,
-            Utility_NMC_Tariff__c = eversourceG2.Id,
-            Size_Ratio__c = 1.3
-        );
-        Product_Tariff__c smartNGR1 = new Product_Tariff__c(
-            Product__c = productId,
-            Utility_NMC_Tariff__c = nationalGridR1.Id,
-            Size_Ratio__c = 1.35
-        );
-        Product_Tariff__c smartNGG1 = new Product_Tariff__c(
-            Product__c = productId,
-            Utility_NMC_Tariff__c = nationalGridG1.Id,
-            Size_Ratio__c = 1.45
-        );
-        Product_Tariff__c smartNGG2 = new Product_Tariff__c(
-            Product__c = productId,
-            Utility_NMC_Tariff__c = nationalGridG2.Id,
-            Size_Ratio__c = 1.55
-        );
-
-        insert new List<Product_Tariff__c>{
-            smartER1, smartEG1, smartEG2, smartNGR1, smartNGG1, smartNGG2
-        };
     }
 }
