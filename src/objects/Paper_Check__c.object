@@ -267,7 +267,7 @@ ISCHANGED(Name)
         <url>{!REQUIRESCRIPT(&quot;/soap/ajax/31.0/connection.js&quot;)}
 {!REQUIRESCRIPT(&quot;/soap/ajax/31.0/apex.js&quot;)}
 
-sforce.apex.execute(&quot;ReturnedTransactionHandler&quot;,&quot;unrollPaperCheck&quot;,{transactionId:&quot;{! Paper_Check__c.Id}&quot;}); 
+sforce.apex.execute(&quot;ReturnedTransactionController&quot;,&quot;unrollPaperChecks&quot;,{paperCheckIds:[&quot;{! Paper_Check__c.Id}&quot;]}); 
 location.reload(true);</url>
     </webLinks>
 </CustomObject>
