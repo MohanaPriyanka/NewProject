@@ -1678,6 +1678,10 @@
                 <default>false</default>
             </values>
             <values>
+                <fullName>Asset Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Blast Letter</fullName>
                 <default>false</default>
             </values>
@@ -1718,6 +1722,10 @@
                 <default>false</default>
             </values>
             <values>
+                <fullName>Detailed Study</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Draft</fullName>
                 <default>false</default>
             </values>
@@ -1727,6 +1735,10 @@
             </values>
             <values>
                 <fullName>EPC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ESS Application</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1899,6 +1911,14 @@
             </values>
             <values>
                 <fullName>Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SIS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SMART</fullName>
                 <default>false</default>
             </values>
             <values>
