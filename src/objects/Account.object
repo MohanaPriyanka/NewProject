@@ -1751,7 +1751,7 @@ IF(
     <fields>
         <fullName>Link_to_Client_Logo__c</fullName>
         <externalId>false</externalId>
-        <formula>&quot;https://bluewaverenewables--uat.cs19.my.salesforce.com&quot; + IF( ISPICKVAL(Client_Brand_Key__c, &quot;BluewaveLogo&quot;), &quot;/resource/1470818337000/BlueWaveLogo&quot;, &quot;/resource/clientLogos/&quot; + TEXT(Client_Brand_Key__c) + &quot;.png&quot; )</formula>
+        <formula>HYPERLINK(IF(ISPICKVAL(Client_Brand_Key__c, &quot;BluewaveLogo&quot;), &quot;/resource/1470818337000/BlueWaveLogo&quot;, &quot;/resource/clientLogos/&quot; + TEXT(Client_Brand_Key__c) + &quot;.png&quot;), &quot;Logo Image&quot;)</formula>
         <label>Link to Client Logo</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
