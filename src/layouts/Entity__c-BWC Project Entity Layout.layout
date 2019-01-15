@@ -190,7 +190,12 @@
     </relatedLists>
     <relatedLists>
         <fields>State__c</fields>
-        <fields>NAME</fields>
+        <fields>Annual_Report__c</fields>
+        <fields>Biennial_Report__c</fields>
+        <fields>Formation__c</fields>
+        <fields>Registration__c</fields>
+        <fields>Foreign_Registration__c</fields>
+        <fields>LAST_UPDATE</fields>
         <relatedList>State_Registration__c.Entity__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
