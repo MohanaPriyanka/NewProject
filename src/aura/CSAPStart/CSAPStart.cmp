@@ -8,41 +8,8 @@
 
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
 
-  <!-- LOGIN FORM -->
-  <aura:if isTrue="{!v.page == 'Login'}">
-    <div aria-labelledby="loginForm">
-        <fieldset class="slds-box slds-theme--default slds-container_center">
-        <legend id="loginForm" class="slds-text-heading--small slds-p-vertical--medium">
-          Login
-        </legend>
-        <div class="slds-form--stacked">
-          Enter the email associated with this application to confirm your identity before starting or continuing your application.
-          <lightning:layout horizontalAlign="spread">
-            <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
-              <ui:inputEmail aura:id="field"
-                             placeholder="yourname@email.com"
-                             label="Email"
-                             value="{!v.leadEmail}"
-                             required="true"
-                             updateOn="keydown,change"
-                             keydown="{!c.checkForEnter}"/>
-            </lightning:layoutItem>
-          </lightning:layout>
 
-          <div class="slds-clearfix slds-p-top_medium">
-            <div class="slds-float_left">
-            </div>
-            <div class="slds-float_right">
-              <lightning:button label="Next" onclick="{!c.login}"/>
-            </div>
-          </div>
-        </div>
-      </fieldset>
-    </div>
-  </aura:if>
-  <!-- / LOGIN FORM -->
-
-  <aura:if isTrue="{!v.page == 'ApplicationPrep'}">
+  <aura:if isTrue="{!v.page == 'ApplicationPrep' || v.page == 'Login'}">
     <div aria-labelledby="aboutYourselfForm">
       <fieldset class="slds-box slds-theme--default slds-container_center">
         <legend id="aboutYourselfForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
@@ -77,13 +44,49 @@
               </ul>
             </lightning:layoutItem>
           </lightning:layout>
+          <aura:if isTrue="{!v.page == 'ApplicationPrep'}">
           <div class="slds-clearfix slds-p-top_medium">
             <div class="slds-float_right">
               <lightning:button label="Begin Application" onclick="{!c.beginApplication}"/>
             </div>
           </div>
+          </aura:if>
         </form>
       </fieldset>
     </div>
   </aura:if>
+
+  <!-- LOGIN FORM -->
+  <aura:if isTrue="{!v.page == 'Login'}">
+    <div aria-labelledby="loginForm">
+      <fieldset class="slds-box slds-theme--default slds-container_center">
+        <legend id="loginForm" class="slds-text-heading--small slds-p-vertical--medium">
+          Login
+        </legend>
+        <div class="slds-form--stacked">
+          Enter the email associated with this application to confirm your identity before starting or continuing your application.
+          <lightning:layout horizontalAlign="spread">
+            <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+              <ui:inputEmail aura:id="field"
+                             placeholder="yourname@email.com"
+                             label="Email"
+                             value="{!v.leadEmail}"
+                             required="true"
+                             updateOn="keydown,change"
+                             keydown="{!c.checkForEnter}"/>
+            </lightning:layoutItem>
+          </lightning:layout>
+
+          <div class="slds-clearfix slds-p-top_medium">
+            <div class="slds-float_left">
+            </div>
+            <div class="slds-float_right">
+              <lightning:button label="Next" onclick="{!c.login}"/>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+  </aura:if>
+  <!-- / LOGIN FORM -->
 </aura:component>
