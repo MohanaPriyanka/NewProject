@@ -1193,11 +1193,6 @@
                     <label>Social Media</label>
                 </value>
                 <value>
-                    <fullName>SREC (and other Incentive Programs)</fullName>
-                    <default>false</default>
-                    <label>SREC (and other Incentive Programs)</label>
-                </value>
-                <value>
                     <fullName>Stage 1 Pre-Development - DD Stage and Site Acq</fullName>
                     <default>false</default>
                     <label>Stage 1 Pre-Development - DD Stage and Site Acq</label>
@@ -1251,6 +1246,11 @@
                     <fullName>Third Party Interests (Scouts &amp; Offtake)</fullName>
                     <default>false</default>
                     <label>Third Party Interests (Scouts &amp; Offtake)</label>
+                </value>
+                <value>
+                    <fullName>SREC (and other Incentive Programs)</fullName>
+                    <default>false</default>
+                    <label>SREC (and other Incentive Programs)</label>
                 </value>
             </valueSetDefinition>
             <valueSettings>
@@ -1344,10 +1344,6 @@
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
-                <valueName>SREC (and other Incentive Programs)</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
                 <valueName>Stage 1 Pre-Development - DD Stage and Site Acq</valueName>
             </valueSettings>
             <valueSettings>
@@ -1381,6 +1377,10 @@
             <valueSettings>
                 <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
                 <valueName>Third Party Interests (Scouts &amp; Offtake)</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+                <valueName>SREC (and other Incentive Programs)</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
