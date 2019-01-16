@@ -105,9 +105,8 @@ public without sharing class CSOpportunityFactory {
         opp.Referral_Email__c = lead.Referral_Email__c;
         opp.BS_Sales_ID__c = lead.bs_Sales_ID__c;
         opp.Security_Type__c = lead.Security_Type__c;
-        opp.Service_Territory__c = lead.Load_Zone__c;
+        opp.LoadZone__c = lead.LoadZone__c;
         opp.Project_Assignment__c = lead.System_Assignment__c;
-        opp.UtilityMapper__c = lead.Utility__c;
         opp.OwnerId = lead.OwnerId;
         return opp;
     }
