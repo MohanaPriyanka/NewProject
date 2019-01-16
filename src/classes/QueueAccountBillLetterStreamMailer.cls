@@ -3,7 +3,7 @@
  * Description: Queues collection of accountBills with their pdf versions (ContentDocument) for sending to LetterStream.
  * Called from ScheduledAccountBillLetterStreamMailer which batches collections to avoid APEX heap size limits.
  *
- * Test: LetterStreamServiceTests
+ * Test: 
  */
 
 
@@ -11,20 +11,22 @@ public without sharing class QueueAccountBillLetterStreamMailer implements Queue
     public Set<Id> accountBills;
     public Set<Id> documentsIds;
     public Boolean makeCallout;
+    public Integer jobNumber;
 
-    public QueueAccountBillLetterStreamMailer(Set<Id> accountBills, Set<Id> documentsIds, Boolean makeCallout) {
+    public QueueAccountBillLetterStreamMailer(Set<Id> accountBills, Set<Id> documentsIds, Boolean makeCallout, Integer jobNumber) {
         this.accountBills = accountBills;
         this.documentsIds = documentsIds;
         this.makeCallout = makeCallout;
+        this.jobNumber = jobNumber;
     }
 
     public void execute(QueueableContext context) {
         if (makeCallout) {
-            sendAccountBills(context);
+            sendAccountBills();
         }
     }
 
-    public void sendAccountBills(QueueableContext context) {
+    public void sendAccountBills() {
         Map<Id, Account_Bill__c> accountBillsByDocIds = new Map<Id, Account_Bill__c>();
         List<Account_Bill__c> accountBills = [
             SELECT Id, Parent_Account__r.Name, Parent_Account__r.BillingStreet, Parent_Account__r.BillingCity,
@@ -66,14 +68,8 @@ public without sharing class QueueAccountBillLetterStreamMailer implements Queue
         }
 
         Blob csvBlob = Blob.valueOf(lss.csv);
-        // Job number is important, because the name we send to letterstream must be unqiue. The DateTime might not provide
-        // enough resolution to differentiate jobs.
-        // Added milliseconds (SSS) to provide more resolution to date time
-        Id jobId;
-        if (context != null) {
-            jobId = context.getJobId();
-        }
-        String jobName = 'Job_' +  + '_' + DateTime.now().format('MM-dd-yyyy_HH:mm:ss:SSS') + '_' + jobId + '.csv';
+
+        String jobName = 'Job_' +  + '_' + DateTime.now().format('MM-dd-yyyy_HH:mm:ss') + '_' + jobNumber + '.csv';
 
         lettersToSend.addFile(jobName, csvBlob, null);
 
@@ -127,10 +123,11 @@ public without sharing class QueueAccountBillLetterStreamMailer implements Queue
 
         public void handleResponse() {
             LetterStreamService lss = new LetterStreamService();
+            // newJob gets inserted within here
             LetterStreamJob__c newJob = lss.parseLetterStreamResponse(responseXMLString);
 
             if (newJob == null && accountBillIds.size() > 1) {
-                queueIndividualAccountBills();
+                retryJobs();
             } else if (newJob == null) {
                 Logger.logNow('QueueAccountBillLetterStreamMailer', 'execute', 'Job post failed - response xml: ' + responseXMLString + '\n CSV: ' + csv);
             } else {
@@ -145,16 +142,13 @@ public without sharing class QueueAccountBillLetterStreamMailer implements Queue
             }
         }
 
-        public void queueIndividualAccountBills() {
-            if (accountBillIds.size() == 1) {
-                Logger.logNow('QueueAccountBillLetterStreamMailer', 'queueIndividualAccountBills', 'Attempted to queue individual account bill');
-                return;
-            }
+        public void retryJobs() {
+            Integer jobNumber = 1;
             for (Id documentId : accountBillsByDocIds.keySet()) {
                 Id accountId = accountBillsByDocIds.get(documentId).Id;
                 Set<Id> accountIds = new Set<Id>{accountId};
                 Set<Id> documentIds = new Set<Id>{documentId};
-                System.enqueueJob(new QueueAccountBillLetterStreamMailer(accountIds, documentIds, makeCallout));
+                System.enqueueJob(new QueueAccountBillLetterStreamMailer(accountIds, documentIds, makeCallout, jobNumber));
             }
         }
     }
