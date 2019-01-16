@@ -555,12 +555,13 @@ public with sharing class LetterStreamServiceTest {
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, new LetterStreamAPIMock(accountBills));
 
-        ScheduledAccountBillLetterStreamMailer accountBillController = new ScheduledAccountBillLetterStreamMailer();
+        AccountBillLetterStreamImpl accountBillController = new AccountBillLetterStreamImpl();
         accountBillController.makeCallout = false;
         // Each document is 7 bytes, for a total of 21 bytes. We allow some overflow on packages
         // this will generate two packages, 1st with 14 bytes and 2nd with 7 bytes.
         accountBillController.maxPackageSize = 10;
-        accountBillController.batchAccountBillsBySize(AccountBillSelector.getAccountBillsReadyToBeSent(null));        Test.stopTest();
+        accountBillController.batchAccountBillsBySize(AccountBillSelector.getAccountBillsReadyToBeSent(null));
+        Test.stopTest();
 
         RecordType customerCare = [
             SELECT Id, Name
@@ -804,7 +805,7 @@ public with sharing class LetterStreamServiceTest {
             ORDER BY Bill_Number__c ASC
         ];
 
-        ScheduledAccountBillLetterStreamMailer accountBillController = new ScheduledAccountBillLetterStreamMailer();
+        AccountBillLetterStreamImpl accountBillController = new AccountBillLetterStreamImpl();
         // Return True assertions
         System.assert(accountBillController.checkBillAccountAddressValid(accountBills[0]));
         // Return False assertions
@@ -846,7 +847,7 @@ public with sharing class LetterStreamServiceTest {
 
         System.assertEquals(1, accountBills.size());
 
-        ScheduledAccountBillLetterStreamMailer accountBillController = new ScheduledAccountBillLetterStreamMailer();
+        AccountBillLetterStreamImpl accountBillController = new AccountBillLetterStreamImpl();
         Case testCase = accountBillController.createCaseForInvalidAddress(accountBills[0]);
 
         RecordType customerCare = [
@@ -862,7 +863,7 @@ public with sharing class LetterStreamServiceTest {
         System.assertEquals(accountParent1.Id, testCase.AccountId);
         System.assertEquals(customerCare.Id, testCase.RecordTypeId);
     }
-    
+
     @IsTest
     public static void testHandleFailedResponse() {
         TestFactory.insertBWAddress();
