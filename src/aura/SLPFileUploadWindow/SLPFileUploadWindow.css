@@ -1,12 +1,12 @@
-.THIS .blueBackground {
-    background:#266092; 
-    color:#FFFFFF;
-}
+/*.THIS .blueBackground {*/
+    /*background:#266092; */
+    /*color:#FFFFFF;*/
+/*}*/
 
-.THIS .tealBackground {
-    background:#00AFA9; 
-    color:#FFFFFF;
-}
+/*.THIS .tealBackground {*/
+    /*background:#00AFA9; */
+    /*color:#FFFFFF;*/
+/*}*/
 
 .THIS .greyBackground {
     background:#A9A9A9; 
@@ -21,9 +21,9 @@
     color:#FFFFFF;
 }
 
-.THIS .blueText {
-    color:#266092;
-}
+/*.THIS .blueText {*/
+    /*color:#266092;*/
+/*}*/
 
 .THIS .shake {
   -webkit-animation-duration: 1.0s;
@@ -38,8 +38,15 @@
 .THIS .border {
     border-style: solid;
     border-width: 6px;
-    border-color:#00AFA9;
+    border-color: t(colorBorderBrand);
     border-radius: 2px;
+}
+
+.THIS .slds-button{
+    background-color: t(colorBackgroundButtonBrand);
+}
+.THIS .slds-modal__header {
+    background: t(colorBrand);
 }
 
 .THIS .greyborder {

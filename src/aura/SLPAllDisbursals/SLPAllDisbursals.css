@@ -50,18 +50,23 @@
     color: #216093  ;
     padding-left: 8%;
 }
-.THIS .bwTeal {
-    color: #00AFA9  ;
-    padding-left: 8%;
+/*.THIS .bwTeal {*/
+    /*color: #00AFA9  ;*/
+    /*padding-left: 8%;*/
+/*}*/
+
+/*.THIS .bwSecondary {*/
+    /*color: #00AFA9  ;*/
+/*}*/
+
+/*.THIS .bwBlue {*/
+    /*color: #216093  ;*/
+/*}*/
+
+.THIS .slds-truncate {
+    color: t(colorTextBrand);
 }
 
-.THIS .bwSecondary {
-    color: #00AFA9  ;
-}
-
-.THIS .bwBlue {
-    color: #216093  ;
-}
 .THIS .bwBluePaddingBelow {
     color: #7C98AB  ;
     padding-bottom:1%;

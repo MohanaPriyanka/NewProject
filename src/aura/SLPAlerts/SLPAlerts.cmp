@@ -25,9 +25,9 @@
      <div aura:id = "alertsTable" class="main2">
       <br></br>
       <div>
-        <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack slds-scrollable">
+        <table class="slds-table slds-table--bordered  slds-table--striped box slds-scrollable">
           <thead>
-            <tr class="slds-text-heading--label proximaNovaDataBlue " >
+            <tr class="slds-text-heading--label" >
               <th scope="col"><span class="slds-truncate"><b>Subject</b></span></th>
               <th scope="col"><span class="slds-truncate"><b>Date</b></span></th>
               <th scope="col"><span class="slds-truncate"></span></th>
@@ -50,7 +50,7 @@
        </div>
      </div>   
      <aura:set attribute="else">
-       <div class="slds-align_absolute-center proximaNovaBlue"><p><b> There are no current alerts.</b></p></div>
+       <div class="slds-align_absolute-center"><p><b> There are no current alerts.</b></p></div>
      </aura:set>
    </aura:if>
  </div>

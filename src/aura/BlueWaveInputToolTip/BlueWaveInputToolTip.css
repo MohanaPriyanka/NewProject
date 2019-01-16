@@ -9,7 +9,7 @@
     left: calc(50% - 25px);
     display: none;
     white-space: normal;
-    background-color: rgb(22, 50, 92);
+    background-color: t(colorBrand);
 }
 
 
@@ -19,7 +19,11 @@
     right: calc(50% - 25px);
     display: none;
     white-space: normal;
-    background-color: rgb(22, 50, 92);
+    background-color: t(colorBrand);
+}
+
+.THIS .popover-text {
+    color:#FFFFFF;
 }
 
 .THIS.anchor:hover .slds-popover__right  {
