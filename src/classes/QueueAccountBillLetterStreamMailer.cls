@@ -3,7 +3,7 @@
  * Description: Queues collection of accountBills with their pdf versions (ContentDocument) for sending to LetterStream.
  * Called from ScheduledAccountBillLetterStreamMailer which batches collections to avoid APEX heap size limits.
  *
- * Test: 
+ * Test: LetterStreamServiceTests
  */
 
 
@@ -69,7 +69,7 @@ public without sharing class QueueAccountBillLetterStreamMailer implements Queue
 
         Blob csvBlob = Blob.valueOf(lss.csv);
 
-        String jobName = 'Job_' +  + '_' + DateTime.now().format('MM-dd-yyyy_HH:mm:ss') + '_' + jobNumber + '.csv';
+        String jobName = 'Job_' +  + '_' + DateTime.now().format('MM-dd-yyyy_HH:mm:ss:SSS') + '_' + jobNumber + '.csv';
 
         lettersToSend.addFile(jobName, csvBlob, null);
 
