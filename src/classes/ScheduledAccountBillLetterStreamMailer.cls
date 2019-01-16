@@ -7,16 +7,11 @@
  */
 
 
-global without sharing class ScheduledAccountBillLetterStreamMailer {
+public without sharing class ScheduledAccountBillLetterStreamMailer {
     // Max size is 12Mb, but need to give buffer for csv file. So, 10 Mb * 1000 Kb/Mb * 1000 b/Kb
     public Integer maxPackageSize = 1*1000*1000;
     public Boolean makeCallout = true;
     public CaseFactory caseFactory = new CaseFactory();
-
-    webservice static void batchAccountBills(){
-        ScheduledAccountBillLetterStreamMailer batchJob = new ScheduledAccountBillLetterStreamMailer();
-        batchJob.batchAccountBillsBySize(AccountBillSelector.getAccountBillsReadyToBeSent());
-    }
 
     public void batchAccountBillsBySize(List<Account_Bill__c> accountBills) {
         Map<Id, Account_Bill__c> accountBillsByDocIds = new Map<Id, Account_Bill__c>();
