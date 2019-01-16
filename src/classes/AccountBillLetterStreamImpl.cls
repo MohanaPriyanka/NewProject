@@ -1,6 +1,6 @@
 /**
  * Created by mstackhouse on 8/1/2018.
- * Description: Scheduled Job to send account bills that need to be mailed to customers. We send PDFs of the account
+ * Description: Implementation to send account bills that need to be mailed to customers. We send PDFs of the account
  * bills to LetterStream, who packages and mails the hard copies. Calls QueueAccountBillLetterStreamMailer which makes
  * the HttpRequest to the endpoint.
  * Test: LetterStreamServiceTest
@@ -13,7 +13,7 @@ public without sharing class AccountBillLetterStreamImpl {
     public Boolean makeCallout = true;
     public CaseFactory caseFactory = new CaseFactory();
 
-    public void batchAccountBillsBySize(List<Account_Bill__c> accountBills) {
+    public void queueAccountBillsToSend(List<Account_Bill__c> accountBills) {
         Map<Id, Account_Bill__c> accountBillsByDocIds = new Map<Id, Account_Bill__c>();
         Set<Id> docIds = new Set<Id>();
         List<Case> newCases = new List<Case>();

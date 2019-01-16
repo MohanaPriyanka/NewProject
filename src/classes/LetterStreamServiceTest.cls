@@ -560,7 +560,7 @@ public with sharing class LetterStreamServiceTest {
         // Each document is 7 bytes, for a total of 21 bytes. We allow some overflow on packages
         // this will generate two packages, 1st with 14 bytes and 2nd with 7 bytes.
         accountBillController.maxPackageSize = 10;
-        accountBillController.batchAccountBillsBySize(AccountBillSelector.getAccountBillsReadyToBeSent(null));
+        accountBillController.queueAccountBillsToSend(AccountBillSelector.getAccountBillsReadyToBeSent(null));
         Test.stopTest();
 
         RecordType customerCare = [

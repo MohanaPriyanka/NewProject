@@ -1,7 +1,7 @@
 /**
  * Created by mstackhouse on 1/16/2019.
  * Description: 
- * Test: 
+ * Test: AccountBillSelectorTest
  */
 
 
@@ -16,7 +16,7 @@ public without sharing class AccountBillSelector {
             'AND Bill_Attach_Document__c != NULL ';
 
         if (idsToGet != null && !idsToGet.isEmpty()) {
-            query += '\n AND Id IN ' + idsToGet + ' ';
+            query += '\n AND Id IN : idsToGet ';
         }
 
         return Database.query(query);

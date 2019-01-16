@@ -1,7 +1,7 @@
 /**
  * Created by mstackhouse on 8/1/2018.
  * Description: Queues collection of accountBills with their pdf versions (ContentDocument) for sending to LetterStream.
- * Called from ScheduledAccountBillLetterStreamMailer which batches collections to avoid APEX heap size limits.
+ * Called from AccountBillLetterStreamImpl which batches collections to avoid APEX heap size limits.
  *
  * Test: LetterStreamServiceTests
  */
