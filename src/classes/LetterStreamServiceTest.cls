@@ -554,13 +554,13 @@ public with sharing class LetterStreamServiceTest {
 
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, new LetterStreamAPIMock(accountBills));
+
         ScheduledAccountBillLetterStreamMailer accountBillController = new ScheduledAccountBillLetterStreamMailer();
         accountBillController.makeCallout = false;
         // Each document is 7 bytes, for a total of 21 bytes. We allow some overflow on packages
         // this will generate two packages, 1st with 14 bytes and 2nd with 7 bytes.
         accountBillController.maxPackageSize = 10;
-        accountBillController.batchAccountBillsBySize(AccountBillSelector.getAccountBillsReadyToBeSent());
-        Test.stopTest();
+        accountBillController.batchAccountBillsBySize(AccountBillSelector.getAccountBillsReadyToBeSent(null));        Test.stopTest();
 
         RecordType customerCare = [
             SELECT Id, Name
@@ -686,12 +686,7 @@ public with sharing class LetterStreamServiceTest {
 
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, new LetterStreamAPIMock(accountBills));
-        ScheduledAccountBillLetterStreamMailer accountBillController = new ScheduledAccountBillLetterStreamMailer();
-        accountBillController.makeCallout = false;
-        // Each document is 7 bytes, for a total of 21 bytes. We allow some overflow on packages
-        // this will generate two packages, 1st with 14 bytes and 2nd with 7 bytes.
-        accountBillController.maxPackageSize = 10;
-        accountBillController.batchAccountBillsBySize(AccountBillSelector.getAccountBillsReadyToBeSent());
+        AccountBillController.sendAllReadyBillsToLetterStream();
         Test.stopTest();
 
         RecordType customerCare = [
@@ -867,152 +862,9 @@ public with sharing class LetterStreamServiceTest {
         System.assertEquals(accountParent1.Id, testCase.AccountId);
         System.assertEquals(customerCare.Id, testCase.RecordTypeId);
     }
-
+    
     @IsTest
     public static void testHandleFailedResponse() {
-        TestFactory.insertBWAddress();
-        TestFactory.insertLetterStreamSettings();
-
-        Datetime now = Datetime.now();
-
-        List<AsyncApexJob> originalAsyncApexJobs = [
-            SELECT Id
-            FROM AsyncApexJob
-            WHERE CreatedDate > : now.addSeconds(-1)
-        ];
-
-        Id parentAccountRT =
-            Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
-
-        Account accountParent1 = new Account(
-            name = 'Account Parent',
-            RecordTypeId = parentAccountRT,
-            BillingStreet = '123 Fake St',
-            BillingCity = 'City',
-            BillingState = 'Colorado',
-            BillingPostalCode = '80525'
-        );
-
-        Account accountParent2 = new Account(
-            name = 'Account Parent',
-            RecordTypeId = parentAccountRT,
-            BillingStreet = '123 Fake St',
-            BillingCity = 'City',
-            BillingState = 'Colorado',
-            BillingPostalCode = '80525'
-        );
-
-        Account accountParent3 = new Account(
-            name = 'Account Parent',
-            RecordTypeId = parentAccountRT,
-            BillingStreet = '123 Fake St',
-            BillingCity = 'City',
-            BillingState = 'Colorado',
-            BillingPostalCode = '80525'
-        );
-        insert new List<Account>{accountParent1, accountParent2, accountParent3};
-        List<Id> accountIds = new List<Id>{accountParent1.Id, accountParent2.Id, accountParent3.Id};
-
-        ContentVersion documentVersion1 = new ContentVersion(
-            Title = 'test document',
-            PathOnClient = 'test_Doc.pdf',
-            VersionData = Blob.valueOf('testDoc')
-        );
-        ContentVersion documentVersion2 = new ContentVersion(
-            Title = 'test document',
-            PathOnClient = 'test_Doc.pdf',
-            VersionData = Blob.valueOf('testDoc')
-        );
-        Util.insertSObjs(new List<ContentVersion>{documentVersion1, documentVersion2});
-        List<Id> contentVersionIds = new List<Id>{documentVersion1.Id, documentVersion2.Id};
-
-        List<ContentDocument> contentDocuments = [
-            SELECT Id, LatestPublishedVersionId, LatestPublishedVersion.Title
-            FROM ContentDocument
-            WHERE LatestPublishedVersionId IN : contentVersionIds
-        ];
-
-        Account_Bill__c accountBill1 = new Account_Bill__c(
-            Parent_Account__c = accountParent1.Id,
-            Bill_Number__c = 1,
-            Published__c = true,
-            Ready_For_Paper_Bill_Queue__c = true,
-            Bill_Attach_Version__c = contentDocuments[0].LatestPublishedVersionId,
-            Bill_Attach_Document__c = contentDocuments[0].Id,
-            Bill_PDF_Page_Count__c = 4 // this value gets set by the conga conductor when bill pdfs are createdI
-        );
-
-        Account_Bill__c accountBill2 = new Account_Bill__c(
-            Parent_Account__c = accountParent2.Id,
-            Bill_Number__c = 2,
-            Published__c = true,
-            Ready_For_Paper_Bill_Queue__c = true,
-            Bill_Attach_Version__c = contentDocuments[1].LatestPublishedVersionId,
-            Bill_Attach_Document__c = contentDocuments[1].Id,
-            Bill_PDF_Page_Count__c = 4 // this value gets set by the conga conductor when bill pdfs are createdI
-        );
-        List<Account_Bill__c> accountBills = new List<Account_Bill__c>{accountBill1, accountBill2};
-        insert accountBills;
-
-        accountBills = [
-            SELECT Id, Parent_Account__r.Name, Parent_Account__r.BillingStreet, Parent_Account__r.BillingCity,
-                Parent_Account__r.BillingState, Parent_Account__r.BillingPostalCode, Bill_PDF_Page_Count__c,
-                Calendar_Month__c, Year__c, Bill_Attach_Document__c
-            FROM Account_Bill__c
-            ORDER BY Bill_Number__c ASC
-        ];
-
-        Map<Id, Account_Bill__c> accountBillsByDocIds = new Map<Id, Account_Bill__c>();
-        for (Account_Bill__c accountBill : accountBills) {
-            accountBillsByDocIds.put(accountBill.Bill_Attach_Document__c, accountBill);
-        }
-
-        Set<Id> documentsToTest = new Set<Id>();
-        for (ContentDocument doc : contentDocuments) {
-            documentsToTest.add(doc.Id);
-        }
-        Set<Id> accountBillsToTest = new Set<Id>{accountBill1.Id, accountBill2.Id};
-
-        // need to mock the failed response
-        String responseXMLString = '<?xml version="1.0" encoding="UTF-8"?>' +
-            '<messages id="86fjkb92">' +
-            '<message type="info">' +
-            '<code>-900</code>' +
-            '<details>Failed: Job name must be 8 to 20 characters (a-zA-Z0-9_-)</details>' +
-            '</message>' +
-            '</messages>';
-
-        // we don't use the csv on the first failed response, if accountBills.size() > 1
-        String csv = '';
-
-        now = Datetime.now();
-
-        Test.startTest();
-        QueueAccountBillLetterStreamMailer.QueueHandleResponse reponseHandler =
-            new QueueAccountBillLetterStreamMailer.QueueHandleResponse(responseXMLString, accountBillsToTest, csv, accountBillsByDocIds, false);
-        reponseHandler.handleResponse();
-        Test.stopTest();
-
-        List<Error_Log__c> errorLogs = [
-            SELECT Id, Class__c, Method__c, Message__c
-            FROM Error_Log__c
-            WHERE CreatedDate > : now.addSeconds(-1)
-        ];
-
-        List<AsyncApexJob> asyncApexJobs = [
-            SELECT Id
-            FROM AsyncApexJob
-            WHERE CreatedDate > : now.addSeconds(-1)
-        ];
-
-        // sometimes overlaps with other requests
-        // should have atleast 2 jobs, because we queued 2 new jobs for the failed account bills
-        System.assertEquals(originalAsyncApexJobs.size() + 2, asyncApexJobs.size());
-        System.assertEquals(0, errorLogs.size());
-    }
-
-    @IsTest
-    public static void testHandleFailedRetryResponse() {
         TestFactory.insertBWAddress();
         TestFactory.insertLetterStreamSettings();
 

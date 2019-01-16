@@ -126,9 +126,7 @@ public without sharing class QueueAccountBillLetterStreamMailer implements Queue
             // newJob gets inserted within here
             LetterStreamJob__c newJob = lss.parseLetterStreamResponse(responseXMLString);
 
-            if (newJob == null && accountBillIds.size() > 1) {
-                queueIndividualAccountBills();
-            } else if (newJob == null) {
+            if (newJob == null) {
                 Logger.logNow('QueueAccountBillLetterStreamMailer', 'execute', 'Job post failed - response xml: ' + responseXMLString + '\n CSV: ' + csv);
             } else {
                 update markAccountBillsAsMailed(accountBillIds, newJob.Id);
@@ -139,21 +137,6 @@ public without sharing class QueueAccountBillLetterStreamMailer implements Queue
                 file.FirstPublishLocationId = newJob.Id;
                 file.pathOnClient = '/response.xml';
                 insert file;
-            }
-        }
-
-        public void queueIndividualAccountBills() {
-            if (accountBillIds.size() == 1) {
-                Logger.logNow('QueueAccountBillLetterStreamMailer', 'queueIndividualAccountBills', 'Attempted to queue individual account bill');
-                return;
-            }
-            Integer jobNumber = 1;
-            for (Id documentId : accountBillsByDocIds.keySet()) {
-                Id accountId = accountBillsByDocIds.get(documentId).Id;
-                Set<Id> accountIds = new Set<Id>{accountId};
-                Set<Id> documentIds = new Set<Id>{documentId};
-                System.enqueueJob(new QueueAccountBillLetterStreamMailer(accountIds, documentIds, makeCallout, jobNumber));
-                jobNumber++;
             }
         }
     }
