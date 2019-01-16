@@ -4157,6 +4157,18 @@ TEXT(DAY(Interest_Only_Start_Date__c))
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>LoadZone__c</fullName>
+        <externalId>false</externalId>
+        <label>Load Zone</label>
+        <length>200</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Load_Z__c</fullName>
         <externalId>false</externalId>
         <formula>IF(
@@ -4174,7 +4186,7 @@ TEXT( Load_Zone_Utility_4__c  ) = &apos;Manual Lookup Required&apos;,
 
 &apos;Manual Lookup Required&apos;, null))</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Load Zone</label>
+        <label>XXXX Load Zone</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -4322,7 +4334,7 @@ TEXT( Load_Zone_Utility_4__c  ) = &apos;Manual Lookup Required&apos;,
         <externalId>false</externalId>
         <formula>Load_Z__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Load Zone</label>
+        <label>XXXX Load Zone</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -6646,7 +6658,7 @@ if(and( isnull(Disbursal_1_Contract_Signature_Checkbox__c )=False,isnull( Disbur
     <fields>
         <fullName>Service_Territory__c</fullName>
         <externalId>false</externalId>
-        <label>Service Territory</label>
+        <label>XXXX Service Territory</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
