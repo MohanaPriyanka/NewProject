@@ -96,6 +96,8 @@
         <style>CustomLinks</style>
     </layoutSections>
     <relatedLists>
+        <fields>NAME</fields>
+        <fields>ID_Number__c</fields>
         <fields>State__c</fields>
         <fields>Annual_Report__c</fields>
         <fields>Biennial_Report__c</fields>
