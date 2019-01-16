@@ -20,3 +20,5 @@ TestAccountForCaseCreator-AccountBillOne,Case Creator Bill,TestAccountForCaseCre
 TestAPizzaJan-AccountBillOne,APizza Shop January 2018,APizza,TestSolarSystem-BarrettP1,2018-01-01 00:00:00,APizza 2018-01,Statement,1,0.00,0.00,0.00,FALSE
 TestAPizzaFeb-AccountBillTwo,APizza Shop February 2018,APizza,TestSolarSystem-BarrettP1,2018-02-02 00:00:00,APizza 2018-02,Statement,2,0.00,259.96,0.00,FALSE
 TestAccountBillForAutoEmailer,AutoEmailer Februany 2018,TestAccountForAutoEmailer,TestSolarSystem-BarrettP1,2018-02-02 00:00:00,AutoE 2018-02,Statement,1,0.00,0.00,0.00,FALSE,2018-02-02
+TestABikeJan-AccountBillOne,ABike Shop January 2018,ABike,TestSolarSystem-BarrettP1,2018-01-01 00:00:00,ABike 2018-01,Statement,1,0.00,0.00,0.00,FALSE
+TestABikeFeb-AccountBillTwo,ABike Shop February 2018,ABike,TestSolarSystem-BarrettP2,2018-02-02 00:00:00,ABike 2018-02,Statement,2,0.00,259.96,0.00,FALSE
