@@ -7,7 +7,7 @@
  */
 
 
-global without sharing class ScheduledAccountBillLetterStreamMailer implements Database.Batchable<sObject>, Database.Stateful {
+global without sharing class ScheduledAccountBillLetterStreamMailer {
     // Max size is 12Mb, but need to give buffer for csv file. So, 10 Mb * 1000 Kb/Mb * 1000 b/Kb
     public Integer maxPackageSize = 1*1000*1000;
     public Boolean makeCallout = true;
@@ -15,35 +15,18 @@ global without sharing class ScheduledAccountBillLetterStreamMailer implements D
 
     webservice static void batchAccountBills(){
         ScheduledAccountBillLetterStreamMailer batchJob = new ScheduledAccountBillLetterStreamMailer();
-        Database.executeBatch(batchJob, 50);
+        batchJob.batchAccountBillsBySize(AccountBillSelector.getAccountBillsReadyToBeSent());
     }
 
-    public Database.QueryLocator start(Database.BatchableContext bc) {
-        String query = 'SELECT Id, Parent_Account__c, Parent_Account__r.Name, Parent_Account__r.BillingStreet,' +
-            'Parent_Account__r.BillingCity, Parent_Account__r.BillingState, Parent_Account__r.BillingPostalCode,' +
-            'Bill_PDF_Page_Count__c, Calendar_Month__c, Year__c, Bill_Attach_Document__c' +
-            ' FROM Account_Bill__c' +
-            ' WHERE Published__c = TRUE' +
-            ' AND Ready_For_Paper_Bill_Queue__c = TRUE' +
-            ' AND Bill_Attach_Document__c != NULL' +
-            ' AND Parent_Account__r.Opt_Out_of_Paper_Billing__c != TRUE';
-
-        return Database.getQueryLocator(query);
-    }
-
-    public void execute(Database.BatchableContext bc, List<Account_Bill__c> accountBills) {
-        batchAccountBillsByDocumentSize(accountBills);
-        }
-
-    public void finish(Database.BatchableContext bc) {
-        Logger.flushLogs();
-    }
-
-    public void batchAccountBillsByDocumentSize(List<Account_Bill__c> accountBills) {
+    public void batchAccountBillsBySize(List<Account_Bill__c> accountBills) {
         Map<Id, Account_Bill__c> accountBillsByDocIds = new Map<Id, Account_Bill__c>();
         Set<Id> docIds = new Set<Id>();
-
         List<Case> newCases = new List<Case>();
+
+        if (accountBills.isEmpty()) {
+            return ;
+        }
+
         for (Account_Bill__c accountBill : accountBills) {
             if (checkBillAccountAddressValid(accountBill)) {
                 docIds.add(accountBill.Bill_Attach_Document__c);
@@ -58,7 +41,7 @@ global without sharing class ScheduledAccountBillLetterStreamMailer implements D
         }
 
         List<ContentDocument> documents = [
-            SELECT Id, LatestPublishedVersion.Title, LatestPublishedVersion.VersionData, ContentSize
+            SELECT Id, ContentSize
             FROM ContentDocument
             WHERE Id IN : docIds
         ];
@@ -66,6 +49,7 @@ global without sharing class ScheduledAccountBillLetterStreamMailer implements D
         Integer packageSize = 0;
         Set<Id> packageAccountBills = new Set<Id>();
         Set<Id> packageContentDocuments = new Set<Id>();
+        Integer jobNumber = 1;
 
         for (ContentDocument doc : documents) {
             packageSize += doc.ContentSize;
@@ -73,16 +57,17 @@ global without sharing class ScheduledAccountBillLetterStreamMailer implements D
             packageContentDocuments.add(doc.Id);
             // avoid max heap size by sending package and starting over
             if (packageSize >= maxPackageSize) {
-                Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments, makeCallout));
+                Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments, makeCallout, jobNumber));
                 packageAccountBills.clear();
                 packageContentDocuments.clear();
                 packageSize = 0;
+                jobNumber += 1;
                 Logger.logLater('ScheduleAccountBillLetterStreamMailer', 'batchAccountBills', queuedLogMessage(packageSize, jobId));
             }
         }
         // if we never hit max heap size, send at end
         if (!packageAccountBills.isEmpty() && !packageContentDocuments.isEmpty()) {
-            Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments, makeCallout));
+            Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments, makeCallout, jobNumber));
             Logger.logLater('ScheduleAccountBillLetterStreamMailer', 'batchAccountBills', queuedLogMessage(packageSize, jobId));
         }
 
@@ -90,6 +75,7 @@ global without sharing class ScheduledAccountBillLetterStreamMailer implements D
             String message = 'Bills: ' + packageAccountBills + ', Docs: ' + packageContentDocuments;
             Logger.logLater('ScheduleAccountBillLetterStreamMailer', 'batchAccountBills', message);
         }
+        Logger.flushLogs();
     }
 
     public String queuedLogMessage(Decimal packageSize, Id JobId) {
