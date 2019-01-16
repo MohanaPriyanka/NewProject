@@ -47,6 +47,10 @@ public without sharing class AccountBillLetterStreamImpl {
         Integer jobNumber = 1;
 
         for (ContentDocument doc : documents) {
+            if (Limits.getQueueableJobs() == 50) {
+                Logger.logLater('AccountBillLetterStreamImpl', 'queueAccountBillsToSend', 'Maximum Jobs Queued, need to queue bills again');
+                continue;
+            }
             packageSize += doc.ContentSize;
             packageAccountBills.add(accountBillsByDocIds.get(doc.Id).Id);
             packageContentDocuments.add(doc.Id);
@@ -57,18 +61,18 @@ public without sharing class AccountBillLetterStreamImpl {
                 packageContentDocuments.clear();
                 packageSize = 0;
                 jobNumber += 1;
-                Logger.logLater('ScheduleAccountBillLetterStreamMailer', 'batchAccountBills', queuedLogMessage(packageSize, jobId));
+                Logger.logLater('AccountBillLetterStreamImpl', 'queueAccountBillsToSend', queuedLogMessage(packageSize, jobId));
             }
         }
         // if we never hit max heap size, send at end
-        if (!packageAccountBills.isEmpty() && !packageContentDocuments.isEmpty()) {
+        if (!packageAccountBills.isEmpty() && !packageContentDocuments.isEmpty() && Limits.getQueueableJobs() < 50) {
             Id jobId = System.enqueueJob(new QueueAccountBillLetterStreamMailer(packageAccountBills, packageContentDocuments, makeCallout, jobNumber));
-            Logger.logLater('ScheduleAccountBillLetterStreamMailer', 'batchAccountBills', queuedLogMessage(packageSize, jobId));
+            Logger.logLater('AccountBillLetterStreamImpl', 'queueAccountBillsToSend', queuedLogMessage(packageSize, jobId));
         }
 
         if (packageAccountBills.isEmpty() || packageContentDocuments.isEmpty()) {
             String message = 'Bills: ' + packageAccountBills + ', Docs: ' + packageContentDocuments;
-            Logger.logLater('ScheduleAccountBillLetterStreamMailer', 'batchAccountBills', message);
+            Logger.logLater('AccountBillLetterStreamImpl', 'queueAccountBillsToSend', message);
         }
         Logger.flushLogs();
     }
