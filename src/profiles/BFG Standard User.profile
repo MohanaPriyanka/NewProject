@@ -1731,6 +1731,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.Collection_Call_Today__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.Collection_Email_To_Fire_Today__c</field>
         <readable>false</readable>
     </fieldPermissions>

@@ -802,6 +802,24 @@ Specify the global country code setting or record level country code to automati
         </valueSet>
     </fields>
     <fields>
+        <fullName>Collection_Call_Today__c</fullName>
+        <externalId>false</externalId>
+        <formula>OR(
+Days_Past_Due__c = 10, 
+Days_Past_Due__c = 15, 
+Days_Past_Due__c = 30,
+Days_Past_Due__c = 45,
+Days_Past_Due__c = 60,
+Days_Past_Due__c = 74,
+Days_Past_Due__c = 81,
+Days_Past_Due__c = 88,
+Days_Past_Due__c = 90)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Collection Call Today</label>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Collection_Email_To_Fire_Today__c</fullName>
         <externalId>false</externalId>
         <formula>OR(

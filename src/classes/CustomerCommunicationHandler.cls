@@ -12,8 +12,8 @@ public class CustomerCommunicationHandler implements Database.Batchable<sObject>
     }
 
     public Map<String, String> templateMap;
-
     public String errorsToLog;
+    public CaseFactory caseFactory = new CaseFactory();
 
     public String getTemplate(String templateKey, Account acct){
         String templateHTML;
@@ -35,12 +35,14 @@ public class CustomerCommunicationHandler implements Database.Batchable<sObject>
                         'Recurring_Billing__c, Days_Past_Due__c, ' + 
                         'RecordTypeId, Total_Outstanding_Balance__c, ' +
                         'Total_Billed__c, Client_Brand_Key__c, ' +
+                        'Collection_Call_Today__c, Collection_Email_To_Fire_Today__c, ' +
                         'Max_Overdue_Due_Date__c ' +
                         'FROM Account ' +
                         'WHERE Total_Outstanding_Balance__c > 1 ' +
                         'AND Send_Bills_Contact__c != null ' +
                         'AND Do_not_Send_Bills__c = false ' +
-                        'AND Collection_Email_To_Fire_Today__c = true ' +
+                        'AND (Collection_Email_To_Fire_Today__c = true ' +
+                        'OR Collection_Call_Today__c = true) ' +
                         'AND Recurring_Billing__c = false ';
         return Database.getQueryLocator(query);
     }
@@ -48,6 +50,7 @@ public class CustomerCommunicationHandler implements Database.Batchable<sObject>
     public void execute(Database.BatchableContext bc, List<Account> scope){
         Decimal outstandingbalance;
         List<Messaging.SingleEmailMessage> emailsToSend =  new List<Messaging.SingleEmailMessage>();
+        List<Case> caseToInsertList = new List<Case>();
         templateMap = new Map<String, String>();
 
         for (EmailTemplate template :   [SELECT Id, HtmlValue, Body, DeveloperName
@@ -62,7 +65,11 @@ public class CustomerCommunicationHandler implements Database.Batchable<sObject>
                                     LIMIT 1];
         for (Account act : scope){
             String contactid = act.Send_Bills_Contact__c;
-            if (contactid != null) {
+
+            if (contactid != null && act.Collection_Call_Today__c){
+                caseToInsertList = createCollectionsCallCase(caseToInsertList,act);
+            }
+            if (contactid != null && act.Collection_Email_To_Fire_Today__c) {
                 Date todaysDate = system.today();
                 Date sendBillReminderDate = act.Max_Overdue_Due_Date__c - 3;
                 String email;
@@ -100,10 +107,35 @@ public class CustomerCommunicationHandler implements Database.Batchable<sObject>
             }
         }
         MessagingService.sendEmail(emailsToSend);
+
+        if (caseToInsertList != null){
+            insert caseToInsertList;
+        }
+
         if (errorsToLog != 'None'){
             Logger.logLater('CustomerCommunicationHandler', 'Missing Email Templates: acct / template', errorsToLog);
             Logger.flushLogs(); 
         }
+    }
+
+    public List<Case> createCollectionsCallCase(List<Case> caseToInsertList, Account acct){
+        Case newCase;
+        newCase = caseFactory.getCase('Collections');
+        newCase.ContactId = acct.Send_Bills_Contact__c;
+        newCase.Subject = 'Collections Call: ' + acct.Days_Past_Due__c + ' Days';
+        newCase.Priority = 'Medium';
+        newCase.Product_Line__c = 'Community Solar';
+        newCase.Category__c = 'Billing';
+        newCase.Description =
+                'Remind them their payment is Past due' + ' / ' +
+                'Ask if they have sent payment and if so when and note check number' + ' / ' +
+                'Note this info on the case in the chatter' + ' / ' +
+                'If there is no reply leave a voice note';
+        newCase.Origin = 'Other';
+        newCase.Case_Type__c = 'BlueWave';
+        newCase.Disable_Followup_Email__c = true;
+        caseToInsertList.add(newCase);
+        return caseToInsertList;
     }
 
     public void finish(Database.BatchableContext bc){
