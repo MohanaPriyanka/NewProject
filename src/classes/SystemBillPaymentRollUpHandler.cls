@@ -192,12 +192,15 @@ public without sharing class   SystemBillPaymentRollUpHandler {
         public SystemBillRepo(List<Id> transactions) {
             transactionList = [
                 SELECT Id, Name, ChargentOrders__Response_Status__c, Entity_ID__c, ChargentOrders__Amount__c, CreatedDate,
-                    Distributed_Among_System_Bills__c, ChargentOrders__Recurring__c,
+                    Distributed_Among_System_Bills__c, ChargentOrders__Recurring__c, ChargentOrders__Response_Message__c,
+                    ChargentOrders__Gateway__c, ChargentOrders__Type__c, ChargentOrders__Payment_Method__c, Activity_Type__c,
                     ChargentOrders__Order__r.Account_Bill__c,
                     ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Id,
                     ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Date_of_Last_Payment__c,
                     ChargentOrders__Order__r.Account_Bill__r.Bill_Number__c,
-                    ChargentOrders__Order__r.Entity__c
+                    ChargentOrders__Order__r.Entity__c,
+                    ChargentOrders__Order__r.Paper_Check__c,
+                    ChargentOrders__Order__c
                 FROM ChargentOrders__Transaction__c
                 WHERE Id IN :transactions
                 AND ChargentOrders__Response_Status__c = 'Approved'];
@@ -219,7 +222,8 @@ public without sharing class   SystemBillPaymentRollUpHandler {
                     Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Id, Date__c,
                     Account_Bill__r.Name, Account_Bill__r.Overpayment_Amount_Rollup__c, CreatedDate,
                     Account_Bill__r.Is_Most_Recent__c, Name,
-                    Account_Bill__r.Parent_Account__r.Id, Account_Bill__r.Parent_Account__r.Date_of_Last_Payment__c
+                    Account_Bill__r.Parent_Account__r.Id, Account_Bill__r.Parent_Account__r.Date_of_Last_Payment__c,
+                (SELECT Id, Utility_Account_Subscription__c FROM Utility_Account_Subscription_Bills__r)
                 FROM System_Bill__c
                 WHERE Account_Bill__r.Parent_Account__r.Id IN :propertyAccountMap.keySet()
                 ORDER BY Account_Bill_Number__c];
