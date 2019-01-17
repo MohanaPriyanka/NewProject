@@ -57,7 +57,7 @@
 
   <aura:if isTrue="{!v.page == 'GetPrimaryIncomeSources'}">
     <div>
-      <div class="slds-col--padded slds-form-element__label slds-text-heading--medium">
+      <div class="slds-col--padded slds-m-bottom_medium slds-text-heading--medium">
         <b>What are your sources of income?</b>
       </div>
       <div class="slds-col--padded slds-text-body--regular">
@@ -74,7 +74,7 @@
 
   <aura:if isTrue="{!v.page == 'GetJointIncomeSources'}">
     <div>
-      <div class="slds-col--padded slds-form-element__label slds-text-heading--medium">
+      <div class="slds-col--padded slds-m-bottom_medium slds-text-heading--medium">
         <b>What are {!v.lead.CoApplicant_Contact__r.FirstName}'s sources of income?</b>
       </div>
       <c:CAPIncomeType aura:id="jointIncomeTypeCmp" applicant="{!v.lead.CoApplicant_Contact__r}" piLocked="{!v.piLocked}" supressWaiting="true"/>
@@ -88,7 +88,7 @@
 
   <aura:if isTrue="{!v.page == 'GetAllPrimaryDocs'}">
     <div>
-      <div class="slds-col--padded slds-m-bottom_medium slds-form-element__label slds-text-heading--medium">
+      <div class="slds-col--padded slds-m-bottom_medium slds-text-heading--medium">
         <b>Please provide documentation for your declared income</b>
       </div>
       <c:CAPIncomeDocCollection aura:id="primaryIncomeDocCollectionCmp" lead="{!v.lead}" applicant="{!v.lead}" supressWaiting="true"/>
@@ -102,7 +102,7 @@
 
   <aura:if isTrue="{!v.page == 'GetAllJointDocs'}">
     <div>
-      <div class="slds-col--padded slds-m-bottom_medium slds-form-element__label slds-text-heading--medium">
+      <div class="slds-col--padded slds-m-bottom_medium slds-text-heading--medium">
         <b>Please provide documentation for {!v.lead.CoApplicant_Contact__r.FirstName}'s declared income</b>
       </div>
       <c:CAPIncomeDocCollection aura:id="jointIncomeDocCollectionCmp" lead="{!v.lead}" applicant="{!v.lead.CoApplicant_Contact__r}" supressWaiting="true"/>
