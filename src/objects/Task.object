@@ -1621,6 +1621,388 @@
         <description>Project Management tasks (Site Acq, Project Dev, Interconnect, Construction, Asset Mgmt, etc)</description>
         <label>Project Management</label>
         <picklistValues>
+            <picklist>Task_Category__c</picklist>
+            <values>
+                <fullName>Billing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cancellation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Fairhaven and Clara Barton Call-a-thon</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Fairhaven and Clara Barton Fiasco</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>General CS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>How much will I save</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>How to Pay Bill</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Payment Plan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Portal Log In</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Subscription Size Change</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>When will I see credits on my account</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Task_Performed__c</picklist>
+            <values>
+                <fullName>Acquisition</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Admin %28Salesforce%2C organization%2C planning%2C management%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Asset Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Blast Letter</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Budget%2FCashflow review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Budgets</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Community Service</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Community Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Compliance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Construction Administration</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Construction Budget</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Contract Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Corporate Finance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Detailed Study</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Draft</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Due Diligence</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>EPC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ESS Application</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Engagement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Event</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Exec Committee</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Finance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Finance Committee</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Financial Modeling</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>HR</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ISA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ISO NE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>IX Applications</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>IX Meetings</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Impact Study</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Incentives</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Interconnection</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Interconnection - Application Stage</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Interconnection - Net Metering</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Interconnection - Utility Construction</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Interview</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Investor Relations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lobbying</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mailer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Meeting</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Metering</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Modeling</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Net-Metering</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Off-site meetings</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ongoing Tasks</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partnerships</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Payment%2FDeadline</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Permitting</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Physical Plant</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Platform Development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Policy Development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Press Release</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project Considerations %28Risk Summary %26 IC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project Finance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project Management Summary</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project Partners</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>RFP</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Real Estate</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Revenue and OpEx</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SIS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SMART</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SREC %28and other Incentive Programs%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SRECS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sales</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sent to Scout</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Site Origination</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Site Visit</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Social Media</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Stage 1 Pre-Development - DD Stage and Site Acq</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Stage 1 Pre-Development - Interconnection Strategy %26 App</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Stage 2 Development - Design</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Stage 2 Development - Permitting</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Stage 2 Development - Real Estate</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Stage 2 Development - Tax Agreement %26 Ch%2E 61%2FA%2FB</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Stage 3 - Pre-Construction</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Stage 4 - Construction</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Structure%2FStrategy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>System Operations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Telcom Construction</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Third Party Interests %28Scouts %26 Offtake%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Utility Construction</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Assignee_if_Different__c</picklist>
             <values>
                 <fullName>Alex Schulte</fullName>
@@ -1815,368 +2197,6 @@
             </values>
             <values>
                 <fullName>Send Quote</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Task_Category__c</picklist>
-            <values>
-                <fullName>Billing</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Cancellation</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Fairhaven and Clara Barton Call-a-thon</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Fairhaven and Clara Barton Fiasco</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>General CS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>How much will I save</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>How to Pay Bill</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Payment Plan</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Portal Log In</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Subscription Size Change</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>When will I see credits on my account</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Task_Performed__c</picklist>
-            <values>
-                <fullName>Acquisition</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Admin %28Salesforce%2C organization%2C planning%2C management%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Blast Letter</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Budget%2FCashflow review</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Budgets</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Community Service</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Community Solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Compliance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Construction Administration</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Construction Budget</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Contract Review</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Corporate Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Draft</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Due Diligence</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>EPC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engagement</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Event</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Exec Committee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Finance Committee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Financial Modeling</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>HR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ISA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ISO NE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IX Applications</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IX Meetings</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Impact Study</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Incentives</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Interconnection</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Interconnection - Application Stage</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Interconnection - Net Metering</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Interconnection - Utility Construction</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Interview</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Investor Relations</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lobbying</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mailer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Meeting</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Metering</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Modeling</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Net-Metering</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Off-site meetings</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ongoing Tasks</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partnerships</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Payment%2FDeadline</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Permitting</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Physical Plant</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Platform Development</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Policy Development</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Press Release</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Project Considerations %28Risk Summary %26 IC%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Project Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Project Management Summary</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Project Partners</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>RFP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Real Estate</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Revenue and OpEx</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Review</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SREC %28and other Incentive Programs%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SRECS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sales</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sent to Scout</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Site Origination</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Site Visit</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Social Media</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Stage 1 Pre-Development - DD Stage and Site Acq</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Stage 1 Pre-Development - Interconnection Strategy %26 App</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Stage 2 Development - Design</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Stage 2 Development - Permitting</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Stage 2 Development - Real Estate</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Stage 2 Development - Tax Agreement %26 Ch%2E 61%2FA%2FB</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Stage 3 - Pre-Construction</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Stage 4 - Construction</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Structure%2FStrategy</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>System Operations</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Telcom Construction</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Third Party Interests %28Scouts %26 Offtake%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Utility Construction</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
