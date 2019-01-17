@@ -33615,6 +33615,16 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Product_Tag__c.Team_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Product_Tag__c.Team_Queue_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>agf__ADM_Product_Tag__c.agf__Active__c</field>
         <readable>true</readable>
