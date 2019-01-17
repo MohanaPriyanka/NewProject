@@ -3786,7 +3786,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Bill_Adjustment__c.Approval_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
