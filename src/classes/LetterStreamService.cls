@@ -209,7 +209,7 @@ public without sharing class LetterStreamService {
         csv += (Util.prepForCSV(params.pages) + ','); // page count
         csv += 'firstclass,'; // mailType
         csv += 'N,'; // coversheet
-        csv += 'N,'; // duplex
+        csv += 'Y,'; // duplex
         csv += 'C,'; // ink
         csv += 'W,'; // Paper
     }

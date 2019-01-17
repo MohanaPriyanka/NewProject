@@ -880,7 +880,7 @@ else
         <url>{!REQUIRESCRIPT(&quot;/soap/ajax/31.0/connection.js&quot;)} 
 {!REQUIRESCRIPT(&quot;/soap/ajax/31.0/apex.js&quot;)} 
 
-sforce.apex.execute(&quot;ScheduledAccountBillLetterStreamMailer&quot;,&quot;batchAccountBills&quot;,{}); 
+sforce.apex.execute(&quot;AccountBillController&quot;,&quot;sendAllReadyBillsToLetterStream&quot;,{}); 
 location.reload(true);
 alert(&apos;Bills have been Queued for sending to LetterStream. Check \&apos;View Paper Bills to be Added \&apos; in ~5 min to confirm all bills have been sent. Contact Product Team if there are bills in that list.&apos;);</url>
     </webLinks>
