@@ -121,7 +121,7 @@
     <section aura:id="smallWindow" role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
       <div class="slds-modal__container">
         <header class="slds-modal__header ">
-            <h3 class="slds-text-body_small white">
+            <h3 class="slds-text-heading_small">
               Community Solar Application
             <lightning:buttonIcon aura:id="closeButton" name="close" class="closeButton" iconName="utility:close" variant="bare" onclick="{!c.closeCSWindow}" size="small" alternativeText="close" />
             </h3>

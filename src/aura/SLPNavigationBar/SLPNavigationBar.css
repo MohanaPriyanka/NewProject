@@ -11,8 +11,22 @@
 }
 .THIS .closeButton {
     float:right;
-    color:#FFFFFF;
+    color:t(colorTextButtonBrand);
     margin-right:3%;
+}
+
+.THIS .slds-modal__header{
+    background: t(colorBackgroundButtonBrand);
+}
+
+.THIS .slds-text-heading_small {
+    color: t(colorTextButtonBrand);
+    font-size: 13px;
+}
+
+.THIS .slds-context-bar__label-action {
+    font-size:90%;
+    color: t(colorTextLink);
 }
 /*.THIS .blueBackground {*/
     /*background:#266092;*/

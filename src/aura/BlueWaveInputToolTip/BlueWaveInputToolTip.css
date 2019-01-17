@@ -23,7 +23,7 @@
 }
 
 .THIS .popover-text {
-    color:#FFFFFF;
+    color: t(colorTextButtonBrand);
 }
 
 .THIS.anchor:hover .slds-popover__right  {
