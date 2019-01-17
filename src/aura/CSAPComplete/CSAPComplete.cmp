@@ -63,7 +63,7 @@
         </div>
 
         <div class="slds-clearfix slds-p-top_medium slds-align_absolute-center">
-          <lightning:button label="Complete Application" onclick="{!c.finishStage}"/>
+          <lightning:button label="Submit Application" onclick="{!c.finishStage}"/>
         </div>
       </aura:if>
 
