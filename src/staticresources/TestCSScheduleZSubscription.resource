@@ -12,3 +12,5 @@ TestSZS-PropertyD-UAS6,25.0000,2,1445.86,UASPaymentTest6,TestSZBarrettP1
 TestSZS-PropertyD-UAS7,10.0000,2,1445.86,UASPaymentTest7,TestSZBarrettP2
 TestSZS-APizza1,25.0000,2,1445.86,UASAPizza1,TestSZBarrettP1
 TestSZS-APizza2,25.0000,2,1445.86,UASAPizza2,TestSZBarrettP4
+TestSZS-ABike1,25.0000,2,1445.86,UASABike1,TestSZBarrettP1
+TestSZS-ABike2,25.0000,2,1445.86,UASABike2,TestSZBarrettP2
