@@ -50,18 +50,7 @@
     color: #216093  ;
     padding-left: 8%;
 }
-/*.THIS .bwTeal {*/
-    /*color: #00AFA9  ;*/
-    /*padding-left: 8%;*/
-/*}*/
 
-/*.THIS .bwSecondary {*/
-    /*color: #00AFA9  ;*/
-/*}*/
-
-/*.THIS .bwBlue {*/
-    /*color: #216093  ;*/
-/*}*/
 
 .THIS .slds-truncate {
     color: t(colorTextBrand);
@@ -77,7 +66,7 @@
     text-align: center;
     padding: 15px 10px;
     padding-top: 5%;
-    background-color:#216093    ;
+    background-color:#216093;
     border-bottom:2px solid #7c98ad    ;
     border-radius:5px;
     height:75px;

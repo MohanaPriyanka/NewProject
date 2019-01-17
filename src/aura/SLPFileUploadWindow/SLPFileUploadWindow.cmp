@@ -21,26 +21,26 @@
       <div class="slds-modal__container">
         <header class="slds-modal__header">
           <lightning:buttonIcon aura:id="closeButton" name="close" class="closeButton" iconName="utility:close" variant="bare" onclick="{!c.closeWindow}" size="small" alternativeText="close" />
-          <h2 aura:id="headerText" id="modal-heading-01" class="slds-align--absolute-center slds-text-heading_medium slds-hyphenate whiteText"><ui:outputText value="{!v.windowHeader}"/></h2>
+          <h2 aura:id="headerText" id="modal-heading-01" class="slds-align--absolute-center slds-text-heading slds-hyphenate"><ui:outputText value="{!v.windowHeader}"/></h2>
         </header>
         <div aura:id="windowBody" class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
           <h2 aura:id="errorTextLine" id="modal-heading-01" class="slds-align--absolute-center slds-text-heading_x-small slds-hyphenate redcolor noDisplay"><ui:outputText value="{!v.errorText}"/></h2>
           <div class="slds-form slds-form_compound">
-            <fieldset class="slds-form-element"> 
+            <fieldset class="slds-form-element">
               <div aura:id="rowOne" class="slds-form-element__row">
                 <div aura:id="helpTextLine" class="slds-form-element__label slds-hyphenate"><ui:outputText value="{!v.helpText}"/></div>
               </div>
               <div aura:id="rowTwo" class="slds-form-element__row">
-                <aura:if isTrue="{!v.dateLabel == 'hideAndFileOption'}"> 
+                <aura:if isTrue="{!v.dateLabel == 'hideAndFileOption'}">
                   <div aura:id="fileTypePicklist" class="slds-form-element slds-p-horizontal--small animated">
                     <label class="slds-form-element__label"><b>What type of file are you uploading?</b></label>
                     <ui:inputSelect aura:id="inputFileType"
                                     class="slds-input"
                                     disabled=""
                                     value="{!v.fileName}">
-                      <ui:inputSelectOption text="Select File Type" label="Select File Type"/> 
+                      <ui:inputSelectOption text="Select File Type" label="Select File Type"/>
                       <aura:iteration items="{!v.fileTypes}" var="fileNameOption">
-                        <ui:inputSelectOption text="{!fileNameOption}" label="{!fileNameOption}"/> 
+                        <ui:inputSelectOption text="{!fileNameOption}" label="{!fileNameOption}"/>
                       </aura:iteration>
                     </ui:inputSelect>
                   </div>
@@ -50,11 +50,11 @@
                         <div aura:id="inputDate" class="slds-form-element">
               		  <label class="slds-form-element__label"><b><ui:outputText value="{!v.dateLabel}"/></b></label>
                           <c:BlueWaveDate aura:id="dateVal" value="{!v.dateValue}"/>
-            	        </div> 
+            	        </div>
                       </aura:set>
                     </aura:if>
                   </aura:set>
-                </aura:if> 
+                </aura:if>
               </div>
               <div aura:id="spinner" class="noDisplay">
                 <div class="slds-form-element">
@@ -75,35 +75,35 @@
           <div aura:id="fileUploadBox" class="slds-file-selector slds-file-selector_files slds-align--absolute-center">
             <input aura:id="file" type="file" multiple="true" onchange="{!c.filePreview}" class="slds-file-selector__input slds-assistive-text" accept=".jpg,.png,.pdf" id="file-upload-input-01" aria-describedby="file-selector-id-01">
             </input>
-            <label aura:id="uploadButton" name="clickAreaForUpload" class="slds-file-selector__body slds-button slds-button--neutral tealBackground" for="file-upload-input-01">
+            <label aura:id="uploadButton" name="clickAreaForUpload" class="slds-file-selector__body slds-button slds-button--neutral" for="file-upload-input-01">
               <lightning:Icon aura:id="uploadIcon" class="border" iconName="utility:upload" variant="bare" size="x-small" alternativeText="upload"/>
-              <span class="slds-text-body_regular whiteText">Select File(s)</span>
+              <span class="slds-text-body_regular">Select File(s)</span>
             </label>
-          </div> 
+          </div>
           <br></br>
           <div aura:id="greyBoxes">
             <aura:iteration items="{!v.fileList}" var="filename">
               <div class="slds-file-selector slds-file-selector_files slds-align--absolute-center">
-                <label name="clickAreaForUpload" class="slds-file-selector__body slds-button slds-button--neutral greyBackground">
+                <label name="clickAreaForUpload" class="slds-file-selector__body slds-button slds-button--neutral">
                   <lightning:buttonIcon aura:id="removeButton" class="removeButton" name="{!filename.name}" onclick="{!c.removeFile}" iconName="utility:close" variant="bare" size="small" alternativeText="add"/>
-                  <span class="slds-text-body_regular whiteText"><ui:outputText value="{!filename.name}"/></span>
+                  <span class="slds-text-body_regular "><ui:outputText value="{!filename.name}"/></span>
                 </label>
-              </div>    
+              </div>
             </aura:iteration>
-          </div>    
+          </div>
         </div>
         <footer aura:id="windowFooter" class="slds-modal__footer">
           <div class="slds-align--absolute-center">
-            <h2 aura:id="successText" id="modal-heading-01" class="slds-text-heading_x-small proximaNovaWhite noDisplay"><ui:outputText value="{!v.fileName + ' Uploaded Successfully'}"/></h2>
+            <h2 aura:id="successText" id="modal-heading-01" class="slds-text-heading_x-small noDisplay"><ui:outputText value="{!v.fileName + ' Uploaded Successfully'}"/></h2>
           </div>
           <div class="slds-text-body_small slds-text-color_error" style="text-align: center;padding-top: 20px">
             <aura:if isTrue="{!not(empty(v.disbursalMessage))}">
               <ui:outputText value="{!v.disbursalMessage}"/>
             </aura:if>
-          </div> 
+          </div>
           <div>
             <lightning:button aura:id="saveButton"
-                              class="slds-align--absolute-center whiteText"
+                              class="slds-align--absolute-center"
                               label="Save"
                               onclick="{!c.fileUpload}"/>
             <div aura:id="doneButton" class="noDisplay">
