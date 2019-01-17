@@ -9,17 +9,17 @@ public with sharing class LetterStreamServiceTest {
     public static void testResponseParser() {
         String exampleResponse = '<?xml version="1.0" encoding="UTF-8"?>' +
             '<messages id="86fjkb92">' +
-                '<message type="info">' +
-                    '<code>-100</code>' +
-                    '<details>Success</details>' +
-                    '<batch>bw_bills</batch>' +
-                    '<quantity>2</quantity>' +
-                    '<cost>2.82</cost>' +
-                    '<doc><id>0694C000000PskrQAC</id><job>1646754</job><cost>1.41</cost></doc>' +
-                    '<doc><id>0694C000000Psl1QAC</id><job>1646754</job><cost>1.41</cost></doc>' +
-                    '<doc><id>0694C000000Psm1QAC</id><job>1646754</job><cost>1.41</cost></doc>' +
-                    '<doc><id>0694C000000Psx1QAC</id><job>1646754</job><cost>1.41</cost></doc>' +
-                '</message>' +
+            '<message type="info">' +
+            '<code>-100</code>' +
+            '<details>Success</details>' +
+            '<batch>bw_bills</batch>' +
+            '<quantity>2</quantity>' +
+            '<cost>2.82</cost>' +
+            '<doc><id>0694C000000PskrQAC</id><job>1646754</job><cost>1.41</cost></doc>' +
+            '<doc><id>0694C000000Psl1QAC</id><job>1646754</job><cost>1.41</cost></doc>' +
+            '<doc><id>0694C000000Psm1QAC</id><job>1646754</job><cost>1.41</cost></doc>' +
+            '<doc><id>0694C000000Psx1QAC</id><job>1646754</job><cost>1.41</cost></doc>' +
+            '</message>' +
             '</messages>';
 
         LetterStreamService lss = new LetterStreamService();
@@ -57,17 +57,17 @@ public with sharing class LetterStreamServiceTest {
     public static void testResponseParserMixedOrder() {
         String exampleResponse = '<?xml version="1.0" encoding="UTF-8"?>' +
             '<messages id="86fjkb92">' +
-                '<message type="info">' +
-                    '<details>Success</details>' +
-                    '<code>-100</code>' +
-                    '<doc><id>0694C000000PskrQAC</id><job>1646754</job><cost>1.41</cost></doc>' +
-                    '<batch>bw_bills</batch>' +
-                    '<quantity>2</quantity>' +
-                    '<doc><id>0694C000000Psl1QAC</id><job>1646754</job><cost>1.41</cost></doc>' +
-                    '<doc><id>0694C000000Psm1QAC</id><job>1646754</job><cost>1.41</cost></doc>' +
-                    '<doc><id>0694C000000Psx1QAC</id><job>1646754</job><cost>1.41</cost></doc>' +
-                    '<cost>2.82</cost>' +
-                '</message>' +
+            '<message type="info">' +
+            '<details>Success</details>' +
+            '<code>-100</code>' +
+            '<doc><id>0694C000000PskrQAC</id><job>1646754</job><cost>1.41</cost></doc>' +
+            '<batch>bw_bills</batch>' +
+            '<quantity>2</quantity>' +
+            '<doc><id>0694C000000Psl1QAC</id><job>1646754</job><cost>1.41</cost></doc>' +
+            '<doc><id>0694C000000Psm1QAC</id><job>1646754</job><cost>1.41</cost></doc>' +
+            '<doc><id>0694C000000Psx1QAC</id><job>1646754</job><cost>1.41</cost></doc>' +
+            '<cost>2.82</cost>' +
+            '</message>' +
             '</messages>';
 
         LetterStreamService lss = new LetterStreamService();
@@ -292,7 +292,6 @@ public with sharing class LetterStreamServiceTest {
 
     @IsTest
     public static void testSendLetters() {
-        // tests that we can send the letters with callout in a single queued job
         TestFactory.insertBWAddress();
         TestFactory.insertLetterStreamSettings();
 
@@ -394,8 +393,8 @@ public with sharing class LetterStreamServiceTest {
 
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, new LetterStreamAPIMock(accountBills));
-        QueueAccountBillLetterStreamMailer mailer = new QueueAccountBillLetterStreamMailer(accountBillsToTest, documentsToTest, true);
-        mailer.sendAccountBills(null);
+        QueueAccountBillLetterStreamMailer mailer = new QueueAccountBillLetterStreamMailer(accountBillsToTest, documentsToTest, true, 1);
+        mailer.sendAccountBills();
         Test.stopTest();
 
         List<Account_Bill__c> accountBillsAfterSend = [
@@ -436,8 +435,7 @@ public with sharing class LetterStreamServiceTest {
     }
 
     @IsTest
-    public static void testQueueMultipleSendLetterJobs() {
-        // tests that we can take a single batch and split that off into multiple jobs based on document size
+    public static void testQueueSendLetters() {
         TestFactory.insertBWAddress();
         TestFactory.insertLetterStreamSettings();
 
@@ -557,27 +555,12 @@ public with sharing class LetterStreamServiceTest {
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, new LetterStreamAPIMock(accountBills));
 
-        ScheduledAccountBillLetterStreamMailer batchJob = new ScheduledAccountBillLetterStreamMailer();
-        batchJob.makeCallout = false;
+        AccountBillLetterStreamImpl accountBillController = new AccountBillLetterStreamImpl();
+        accountBillController.makeCallout = false;
         // Each document is 7 bytes, for a total of 21 bytes. We allow some overflow on packages
         // this will generate two packages, 1st with 14 bytes and 2nd with 7 bytes.
-        batchJob.maxPackageSize = 10;
-
-        // simulate what happens when running Database.executeBatch(batchJob)
-        // this allows us to test the query without the batching aspect
-        // Required b/c Database.executeBatch counts as a queueable job, so we exceed the limit of 2 in a test.
-
-        // get the query defined in the start method
-        Database.QueryLocator query = batchJob.start(null);
-        // turn that query into an iterator
-        Database.QueryLocatorIterator iterator = query.iterator();
-        List<Account_Bill__c> queriedAccountBills = new List<Account_Bill__c>();
-        // iterate through the query and build the account bills
-        while (iterator.hasNext()) {
-            queriedAccountBills.add((Account_Bill__c)iterator.next());
-        }
-        // run the execute
-        batchJob.execute(null, queriedAccountBills);
+        accountBillController.maxPackageSize = 10;
+        accountBillController.queueAccountBillsToSend(AccountBillSelector.getAccountBillsReadyToBeSent(null));
         Test.stopTest();
 
         RecordType customerCare = [
@@ -586,7 +569,6 @@ public with sharing class LetterStreamServiceTest {
             Where SobjectType = 'Case' and DeveloperName = 'Customer_Care'
             LIMIT 1
         ];
-
 
         // assert case was created for accountParent4 with missing address
         List<Case> cases = [
@@ -599,7 +581,6 @@ public with sharing class LetterStreamServiceTest {
         System.assertEquals(customerCare.Id, cases[0].RecordTypeId);
         System.assertEquals('Community Solar', cases[0].Product_Line__c);
         System.assertEquals('Cannot send bill to Community Solar customer.', cases[0].Subject);
-
 
         List<AsyncApexJob> asyncApexJobs = [
             SELECT Id
@@ -613,8 +594,7 @@ public with sharing class LetterStreamServiceTest {
     }
 
     @IsTest
-    public static void testCanBatchSendLetterJobsRequest() {
-        // tests that we can create a batch of X account bills and queue a job for them
+    public static void testSendLettersAvoidHeapSize() {
         TestFactory.insertBWAddress();
         TestFactory.insertLetterStreamSettings();
 
@@ -631,56 +611,47 @@ public with sharing class LetterStreamServiceTest {
         Id parentAccountRT =
             Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
 
-        Account accountParent1 = new Account(
-            name = 'Account Parent',
-            RecordTypeId = parentAccountRT,
-            BillingStreet = '123 Fake St',
-            BillingCity = 'City',
-            BillingState = 'Colorado',
-            BillingPostalCode = '80525'
-        );
+        Integer numberOfAccounts = 10;
 
-        Account accountParent2 = new Account(
-            name = 'Account Parent',
-            RecordTypeId = parentAccountRT,
-            BillingStreet = '123 Fake St',
-            BillingCity = 'City',
-            BillingState = 'Colorado',
-            BillingPostalCode = '80525'
-        );
+        List<Account> accounts = new List<Account>();
+        for (Integer i = 0; i < numberOfAccounts; i++) {
+            accounts.add(new Account(
+                name = 'Account Parent',
+                RecordTypeId = parentAccountRT,
+                BillingStreet = '123 Fake St',
+                BillingCity = 'City',
+                BillingState = 'Colorado',
+                BillingPostalCode = '80525'
+            ));
+        }
+        insert accounts;
 
-        Account accountParent3 = new Account(
-            name = 'Account Parent',
-            RecordTypeId = parentAccountRT,
-            BillingStreet = '123 Fake St',
-            BillingCity = 'City',
-            BillingState = 'Colorado',
-            BillingPostalCode = '80525'
-        );
-
-        Account accountParent4 = new Account(
+        Account accountParentInvalid = new Account(
             name = 'Account Parent',
             RecordTypeId = parentAccountRT
         );
-        insert new List<Account>{accountParent1, accountParent2, accountParent3, accountParent4};
+        insert accountParentInvalid;
 
-        ContentVersion documentVersion1 = new ContentVersion(
-            Title = 'test document',
-            PathOnClient = 'test_Doc.pdf',
-            VersionData = Blob.valueOf('testDoc')
-        );
-        ContentVersion documentVersion2 = new ContentVersion(
-            Title = 'test document',
-            PathOnClient = 'test_Doc.pdf',
-            VersionData = Blob.valueOf('testDoc')
-        );
-        ContentVersion documentVersion3 = new ContentVersion(
-            Title = 'test document',
-            PathOnClient = 'test_Doc.pdf',
-            VersionData = Blob.valueOf('testDoc')
-        );
-        Util.insertSObjs(new List<ContentVersion>{documentVersion1, documentVersion2, documentVersion3});
-        List<Id> contentVersionIds = new List<Id>{documentVersion1.Id, documentVersion2.Id, documentVersion3.Id};
+        // try to exceed heap size
+        StaticResource static_resource = [SELECT Id, Body
+            FROM StaticResource
+            WHERE Name = 'LargeFileTest'
+            LIMIT 1
+        ];
+        List<ContentVersion> docs = new List<ContentVersion>();
+        for (Integer i = 0; i < numberOfAccounts + 1; i++) {
+            docs.add(new ContentVersion(
+                Title = 'test document',
+                PathOnClient = 'test_Doc.pdf',
+                VersionData = static_resource.Body
+            ));
+        }
+
+        Util.insertSObjs(docs);
+        List<Id> contentVersionIds = new List<Id>{};
+        for (ContentVersion doc : docs) {
+            contentVersionIds.add(doc.Id);
+        }
 
         List<ContentDocument> contentDocuments = [
             SELECT Id, LatestPublishedVersionId
@@ -688,60 +659,35 @@ public with sharing class LetterStreamServiceTest {
             WHERE LatestPublishedVersionId IN : contentVersionIds
         ];
 
-        Account_Bill__c accountBill1 = new Account_Bill__c(
-            Parent_Account__c = accountParent1.Id,
-            Bill_Number__c = 2,
-            Published__c = true,
-            Ready_For_Paper_Bill_Queue__c = true,
-            Bill_Attach_Version__c = contentDocuments[0].LatestPublishedVersionId,
-            Bill_Attach_Document__c = contentDocuments[0].Id,
-            Bill_PDF_Page_Count__c = 4 // this value gets set by the conga conductor when bill pdfs are createdI
-        );
+        List<Account_Bill__c> accountBills = new List<Account_Bill__c>();
+        for (Integer i = 0; i < numberOfAccounts; i++) {
+            accountBills.add(new Account_Bill__c(
+                Parent_Account__c = accounts[i].Id,
+                Bill_Number__c = 2,
+                Published__c = true,
+                Ready_For_Paper_Bill_Queue__c = true,
+                Bill_Attach_Version__c = contentDocuments[i].LatestPublishedVersionId,
+                Bill_Attach_Document__c = contentDocuments[i].Id,
+                Bill_PDF_Page_Count__c = 4 // this value gets set by the conga conductor when bill pdfs are createdI
+            ));
+        }
 
-        Account_Bill__c accountBill2 = new Account_Bill__c(
-            Parent_Account__c = accountParent2.Id,
+        accountBills.add(new Account_Bill__c(
+            Parent_Account__c = accountParentInvalid.Id,
             Bill_Number__c = 2,
             Published__c = true,
             Ready_For_Paper_Bill_Queue__c = true,
-            Bill_Attach_Version__c = contentDocuments[1].LatestPublishedVersionId,
-            Bill_Attach_Document__c = contentDocuments[1].Id,
+            Bill_Attach_Version__c = contentDocuments[numberOfAccounts].LatestPublishedVersionId,
+            Bill_Attach_Document__c = contentDocuments[numberOfAccounts].Id,
             Bill_PDF_Page_Count__c = 4 // this value gets set by the conga conductor when bill pdfs are createdI
-        );
-
-        Account_Bill__c accountBill3 = new Account_Bill__c(
-            Parent_Account__c = accountParent3.Id,
-            Bill_Number__c = 2,
-            Published__c = true,
-            Ready_For_Paper_Bill_Queue__c = true,
-            Bill_Attach_Version__c = contentDocuments[2].LatestPublishedVersionId,
-            Bill_Attach_Document__c = contentDocuments[2].Id,
-            Bill_PDF_Page_Count__c = 4 // this value gets set by the conga conductor when bill pdfs are createdI
-        );
-        Account_Bill__c accountBill4 = new Account_Bill__c(
-            Parent_Account__c = accountParent4.Id,
-            Bill_Number__c = 2,
-            Published__c = true,
-            Ready_For_Paper_Bill_Queue__c = true,
-            Bill_Attach_Version__c = contentDocuments[2].LatestPublishedVersionId,
-            Bill_Attach_Document__c = contentDocuments[2].Id,
-            Bill_PDF_Page_Count__c = 4 // this value gets set by the conga conductor when bill pdfs are createdI
-        );
-        List<Account_Bill__c> accountBills = new List<Account_Bill__c>{accountBill1, accountBill2, accountBill3, accountBill4};
+        ));
         insert accountBills;
 
         now = Datetime.now();
 
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, new LetterStreamAPIMock(accountBills));
-
-        ScheduledAccountBillLetterStreamMailer batchJob = new ScheduledAccountBillLetterStreamMailer();
-        batchJob.makeCallout = false;
-        // Each document is 7 bytes, for a total of 21 bytes. We allow some overflow on packages
-        // this will generate one package
-        batchJob.maxPackageSize = 100;
-
-        // run a batch with 4 account bills, only 4 have been created
-        Database.executeBatch(batchJob, 5);
+        AccountBillController.sendAllReadyBillsToLetterStream();
         Test.stopTest();
 
         RecordType customerCare = [
@@ -758,7 +704,7 @@ public with sharing class LetterStreamServiceTest {
         ];
 
         System.assertEquals(1, cases.size());
-        System.assertEquals(accountParent4.Id, cases[0].AccountId);
+        System.assertEquals(accountParentInvalid.Id, cases[0].AccountId);
         System.assertEquals(customerCare.Id, cases[0].RecordTypeId);
         System.assertEquals('Community Solar', cases[0].Product_Line__c);
         System.assertEquals('Cannot send bill to Community Solar customer.', cases[0].Subject);
@@ -770,8 +716,8 @@ public with sharing class LetterStreamServiceTest {
         ];
 
         // sometimes overlaps with other requests
-        // should have atleast 3 jobs, because a single batch job requires 2 asyncJobs + 1 queued for letterstream
-        System.assertEquals(originalAsyncApexJobs.size() + 3, asyncApexJobs.size());
+        // should have atleast 2 jobs, because we queued 2 new jobs for the failed account bills
+        System.assertEquals(originalAsyncApexJobs.size() + 10, asyncApexJobs.size());
     }
 
     @IsTest
@@ -859,15 +805,15 @@ public with sharing class LetterStreamServiceTest {
             ORDER BY Bill_Number__c ASC
         ];
 
-        ScheduledAccountBillLetterStreamMailer batchJob = new ScheduledAccountBillLetterStreamMailer();
+        AccountBillLetterStreamImpl accountBillController = new AccountBillLetterStreamImpl();
         // Return True assertions
-        System.assert(batchJob.checkBillAccountAddressValid(accountBills[0]));
+        System.assert(accountBillController.checkBillAccountAddressValid(accountBills[0]));
         // Return False assertions
-        System.assert(!batchJob.checkBillAccountAddressValid(accountBills[1]));
-        System.assert(!batchJob.checkBillAccountAddressValid(accountBills[2]));
-        System.assert(!batchJob.checkBillAccountAddressValid(accountBills[3]));
-        System.assert(!batchJob.checkBillAccountAddressValid(accountBills[4]));
-        System.assert(!batchJob.checkBillAccountAddressValid(accountBills[5]));
+        System.assert(!accountBillController.checkBillAccountAddressValid(accountBills[1]));
+        System.assert(!accountBillController.checkBillAccountAddressValid(accountBills[2]));
+        System.assert(!accountBillController.checkBillAccountAddressValid(accountBills[3]));
+        System.assert(!accountBillController.checkBillAccountAddressValid(accountBills[4]));
+        System.assert(!accountBillController.checkBillAccountAddressValid(accountBills[5]));
     }
 
     @IsTest
@@ -901,8 +847,8 @@ public with sharing class LetterStreamServiceTest {
 
         System.assertEquals(1, accountBills.size());
 
-        ScheduledAccountBillLetterStreamMailer batchJob = new ScheduledAccountBillLetterStreamMailer();
-        Case testCase = batchJob.createCaseForInvalidAddress(accountBills[0]);
+        AccountBillLetterStreamImpl accountBillController = new AccountBillLetterStreamImpl();
+        Case testCase = accountBillController.createCaseForInvalidAddress(accountBills[0]);
 
         RecordType customerCare = [
             SELECT Id, Name
@@ -920,149 +866,6 @@ public with sharing class LetterStreamServiceTest {
 
     @IsTest
     public static void testHandleFailedResponse() {
-        TestFactory.insertBWAddress();
-        TestFactory.insertLetterStreamSettings();
-
-        Datetime now = Datetime.now();
-
-        List<AsyncApexJob> originalAsyncApexJobs = [
-            SELECT Id
-            FROM AsyncApexJob
-            WHERE CreatedDate > : now.addSeconds(-1)
-        ];
-
-        Id parentAccountRT =
-            Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId();
-
-        Account accountParent1 = new Account(
-            name = 'Account Parent',
-            RecordTypeId = parentAccountRT,
-            BillingStreet = '123 Fake St',
-            BillingCity = 'City',
-            BillingState = 'Colorado',
-            BillingPostalCode = '80525'
-        );
-
-        Account accountParent2 = new Account(
-            name = 'Account Parent',
-            RecordTypeId = parentAccountRT,
-            BillingStreet = '123 Fake St',
-            BillingCity = 'City',
-            BillingState = 'Colorado',
-            BillingPostalCode = '80525'
-        );
-
-        Account accountParent3 = new Account(
-            name = 'Account Parent',
-            RecordTypeId = parentAccountRT,
-            BillingStreet = '123 Fake St',
-            BillingCity = 'City',
-            BillingState = 'Colorado',
-            BillingPostalCode = '80525'
-        );
-        insert new List<Account>{accountParent1, accountParent2, accountParent3};
-        List<Id> accountIds = new List<Id>{accountParent1.Id, accountParent2.Id, accountParent3.Id};
-
-        ContentVersion documentVersion1 = new ContentVersion(
-            Title = 'test document',
-            PathOnClient = 'test_Doc.pdf',
-            VersionData = Blob.valueOf('testDoc')
-        );
-        ContentVersion documentVersion2 = new ContentVersion(
-            Title = 'test document',
-            PathOnClient = 'test_Doc.pdf',
-            VersionData = Blob.valueOf('testDoc')
-        );
-        Util.insertSObjs(new List<ContentVersion>{documentVersion1, documentVersion2});
-        List<Id> contentVersionIds = new List<Id>{documentVersion1.Id, documentVersion2.Id};
-
-        List<ContentDocument> contentDocuments = [
-            SELECT Id, LatestPublishedVersionId, LatestPublishedVersion.Title
-            FROM ContentDocument
-            WHERE LatestPublishedVersionId IN : contentVersionIds
-        ];
-
-        Account_Bill__c accountBill1 = new Account_Bill__c(
-            Parent_Account__c = accountParent1.Id,
-            Bill_Number__c = 1,
-            Published__c = true,
-            Ready_For_Paper_Bill_Queue__c = true,
-            Bill_Attach_Version__c = contentDocuments[0].LatestPublishedVersionId,
-            Bill_Attach_Document__c = contentDocuments[0].Id,
-            Bill_PDF_Page_Count__c = 4 // this value gets set by the conga conductor when bill pdfs are createdI
-        );
-
-        Account_Bill__c accountBill2 = new Account_Bill__c(
-            Parent_Account__c = accountParent2.Id,
-            Bill_Number__c = 2,
-            Published__c = true,
-            Ready_For_Paper_Bill_Queue__c = true,
-            Bill_Attach_Version__c = contentDocuments[1].LatestPublishedVersionId,
-            Bill_Attach_Document__c = contentDocuments[1].Id,
-            Bill_PDF_Page_Count__c = 4 // this value gets set by the conga conductor when bill pdfs are createdI
-        );
-        List<Account_Bill__c> accountBills = new List<Account_Bill__c>{accountBill1, accountBill2};
-        insert accountBills;
-
-        accountBills = [
-            SELECT Id, Parent_Account__r.Name, Parent_Account__r.BillingStreet, Parent_Account__r.BillingCity,
-                Parent_Account__r.BillingState, Parent_Account__r.BillingPostalCode, Bill_PDF_Page_Count__c,
-                Calendar_Month__c, Year__c, Bill_Attach_Document__c
-            FROM Account_Bill__c
-            ORDER BY Bill_Number__c ASC
-        ];
-
-        Map<Id, Account_Bill__c> accountBillsByDocIds = new Map<Id, Account_Bill__c>();
-        for (Account_Bill__c accountBill : accountBills) {
-            accountBillsByDocIds.put(accountBill.Bill_Attach_Document__c, accountBill);
-        }
-
-        Set<Id> documentsToTest = new Set<Id>();
-        for (ContentDocument doc : contentDocuments) {
-            documentsToTest.add(doc.Id);
-        }
-        Set<Id> accountBillsToTest = new Set<Id>{accountBill1.Id, accountBill2.Id};
-
-        // need to mock the failed response
-        String responseXMLString = '<?xml version="1.0" encoding="UTF-8"?>' +
-            '<messages id="86fjkb92">' +
-            '<message type="info">' +
-            '<code>-900</code>' +
-            '<details>Failed: Job name must be 8 to 20 characters (a-zA-Z0-9_-)</details>' +
-            '</message>' +
-            '</messages>';
-
-        // we don't use the csv on the first failed response, if accountBills.size() > 1
-        String csv = '';
-
-        now = Datetime.now();
-
-        Test.startTest();
-        QueueAccountBillLetterStreamMailer.QueueHandleResponse reponseHandler =
-            new QueueAccountBillLetterStreamMailer.QueueHandleResponse(responseXMLString, accountBillsToTest, csv, accountBillsByDocIds, false);
-        reponseHandler.handleResponse();
-        Test.stopTest();
-
-        List<Error_Log__c> errorLogs = [
-            SELECT Id, Class__c, Method__c, Message__c
-            FROM Error_Log__c
-            WHERE CreatedDate > : now.addSeconds(-1)
-        ];
-
-        List<AsyncApexJob> asyncApexJobs = [
-            SELECT Id
-            FROM AsyncApexJob
-            WHERE CreatedDate > : now.addSeconds(-1)
-        ];
-
-        // sometimes overlaps with other requests
-        // should have atleast 2 jobs, because we queued 2 new jobs for the failed account bills
-        System.assertEquals(originalAsyncApexJobs.size() + 2, asyncApexJobs.size());
-        System.assertEquals(0, errorLogs.size());
-    }
-
-    @IsTest
-    public static void testHandleFailedRetryResponse() {
         TestFactory.insertBWAddress();
         TestFactory.insertLetterStreamSettings();
 
