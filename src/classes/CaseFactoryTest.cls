@@ -55,6 +55,30 @@ public with sharing class CaseFactoryTest {
     }
 
     @IsTest
+    public static void getCollectionsCase() {
+        RecordType customerCare = [
+            SELECT Id, Name
+            FROM RecordType
+            Where SobjectType = 'Case' and DeveloperName = 'Customer_Care'
+            LIMIT 1
+        ];
+
+        Group CollectionsQueue = [
+            SELECT Id, DeveloperName
+            FROM Group
+            WHERE Type = 'Queue'
+            AND DeveloperName = 'Collections'
+            LIMIT 1
+        ];
+
+        CaseFactory caseFactory = new CaseFactory();
+        Case testCase = caseFactory.getCase('Collections');
+
+        System.assertEquals(customerCare.Id, testCase.RecordTypeId);
+        System.assertEquals(CollectionsQueue.Id, testCase.OwnerId);
+    }
+
+    @IsTest
     public static void testGetCaseWithoutType() {
         CaseFactory caseFactory = new CaseFactory();
         Case testCase = caseFactory.getCase('Emotional_Support');
