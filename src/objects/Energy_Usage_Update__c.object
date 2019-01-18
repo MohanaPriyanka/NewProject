@@ -718,6 +718,48 @@ if( month( Date__c ) == 12, &quot;December&quot;, null))))))))))))</formula>
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Total_NMCs_2_of_4__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Bill_Line_Total_2__c +  Total_System_NMCs_2_of_4__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>NMCs Available for Allocation (2 of 4) + Utility Bill Line Total (2 of 4)</inlineHelpText>
+        <label>Total NMCs (2 of 4)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_NMCs_3_of_4__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Bill_Line_Total_3__c +  Total_System_NMCs_3_of_4__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>NMCs Available for Allocation (3 of 4) + Utility Bill Line Total (3 of 4)</inlineHelpText>
+        <label>Total NMCs (3 of 4)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_NMCs_4_of_4__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Bill_Line_Total_4__c +  Total_System_NMCs_4_of_4__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>NMCs Available for Allocation  (4 of 4) + Utility Bill Line Total (4 of 4)</inlineHelpText>
+        <label>Total NMCs (4 of 4)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>Total_NMCs_Generated__c</fullName>
         <externalId>false</externalId>
         <label>Total NMCs Generated</label>
@@ -726,6 +768,20 @@ if( month( Date__c ) == 12, &quot;December&quot;, null))))))))))))</formula>
         <scale>2</scale>
         <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_NMCs__c</fullName>
+        <externalId>false</externalId>
+        <formula>Total_System_NMCs__c +  Utility_Bill_Line_Total__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>NMCs Available for Allocation + Utility Bill Line Total</inlineHelpText>
+        <label>Total NMCs</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
     </fields>
@@ -746,7 +802,7 @@ if( month( Date__c ) == 12, &quot;December&quot;, null))))))))))))</formula>
     <fields>
         <fullName>Total_System_NMCs_2_of_4__c</fullName>
         <externalId>false</externalId>
-        <label>Total System NMCs (2 of 4)</label>
+        <label>NMCs Available for Allocation (2 of 4)</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -758,7 +814,7 @@ if( month( Date__c ) == 12, &quot;December&quot;, null))))))))))))</formula>
     <fields>
         <fullName>Total_System_NMCs_3_of_4__c</fullName>
         <externalId>false</externalId>
-        <label>Total System NMCs (3 of 4)</label>
+        <label>NMCs Available for Allocation (3 of 4)</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -770,7 +826,7 @@ if( month( Date__c ) == 12, &quot;December&quot;, null))))))))))))</formula>
     <fields>
         <fullName>Total_System_NMCs_4_of_4__c</fullName>
         <externalId>false</externalId>
-        <label>Total System NMCs (4 of 4)</label>
+        <label>NMCs Available for Allocation (4 of 4)</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -783,7 +839,7 @@ if( month( Date__c ) == 12, &quot;December&quot;, null))))))))))))</formula>
         <fullName>Total_System_NMCs__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Total credits produced as reported by the utility, including unsubscribed and subscribed credits</inlineHelpText>
-        <label>Total System NMCs</label>
+        <label>NMCs Available for Allocation</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -817,6 +873,74 @@ if( month( Date__c ) == 12, &quot;December&quot;, null))))))))))))</formula>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Utility_Bill_Line_Total_2__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Group 2&apos;s Utility Bill Line Total</inlineHelpText>
+        <label>Utility Bill Line Total (2 of 4)</label>
+        <summarizedField>Utility_Bill_Line_Item__c.Amount__c</summarizedField>
+        <summaryFilterItems>
+            <field>Utility_Bill_Line_Item__c.Group__c</field>
+            <operation>equals</operation>
+            <value>2</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Utility_Bill_Line_Item__c.Production_Update__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Utility_Bill_Line_Total_3__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Group 3&apos;s Utility Bill Line Total</inlineHelpText>
+        <label>Utility Bill Line Total (3 of 4)</label>
+        <summarizedField>Utility_Bill_Line_Item__c.Amount__c</summarizedField>
+        <summaryFilterItems>
+            <field>Utility_Bill_Line_Item__c.Group__c</field>
+            <operation>equals</operation>
+            <value>3</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Utility_Bill_Line_Item__c.Production_Update__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Utility_Bill_Line_Total_4__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Group 4&apos;s Utility Bill Line Total</inlineHelpText>
+        <label>Utility Bill Line Total (4 of 4)</label>
+        <summarizedField>Utility_Bill_Line_Item__c.Amount__c</summarizedField>
+        <summaryFilterItems>
+            <field>Utility_Bill_Line_Item__c.Group__c</field>
+            <operation>equals</operation>
+            <value>4</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Utility_Bill_Line_Item__c.Production_Update__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Utility_Bill_Line_Total__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Group 1 (Default) Utility Bill Line Total</inlineHelpText>
+        <label>Utility Bill Line Total</label>
+        <summarizedField>Utility_Bill_Line_Item__c.Amount__c</summarizedField>
+        <summaryFilterItems>
+            <field>Utility_Bill_Line_Item__c.Group__c</field>
+            <operation>equals</operation>
+            <value>1 (Default)</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Utility_Bill_Line_Item__c.Production_Update__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
     </fields>
     <fields>
         <fullName>Utility__c</fullName>
