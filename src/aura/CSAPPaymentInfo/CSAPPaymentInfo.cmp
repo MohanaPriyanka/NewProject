@@ -214,7 +214,7 @@
                 </lightning:layoutItem>
               </aura:if>
               </lightning:layout>
-              <lightning:layout aura:id="passedCreditText" class="animated" multipleRows="true">
+              <lightning:layout aura:id="passedCreditText" class="animated" multipleRows="true" horizontalAlign="center">
 
                 <aura:if isTrue="{!and(v.Autopay, v.SelectedPaymentMethod != '')}">
                 <fieldset class="slds-box slds-theme--default slds-p-top_medium slds-container--medium slds-p-top_medium">
