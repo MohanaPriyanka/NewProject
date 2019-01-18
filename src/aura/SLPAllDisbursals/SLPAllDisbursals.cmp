@@ -12,7 +12,7 @@
     <aura:if isTrue="{!v.licenseType}">
       <div aura:id = "allDisbursals" class="">
         <div class="slds-form-element slds-lookup" data-select="single">
-          <label class="slds-form-element__label proximaNovaDataStream" for="lookup-63"><b>Disbursal Search</b></label>
+          <label class="slds-form-element__label" for="lookup-63"><b>Disbursal Search</b></label>
           <div class="slds-form-element__control">
             <div class="slds-input-has-icon slds-input-has-icon--right ">
               <ui:inputText aura:id="disbursalSearch"
@@ -28,9 +28,9 @@
            <br></br>
            <div>
             <div class="bwBluePaddingBelow proximaNovaDataMountaintop slds-scrollable"><h3>Completed Disbursals</h3></div>
-            <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack">
+            <table class="slds-table slds-table--bordered  slds-table--striped box">
               <thead>
-                <tr class="slds-text-heading--label proximaNovaDataBlue " >
+                <tr class="slds-text-heading--label " >
                   <th scope="col"><span class="slds-truncate"><b>Customer</b></span></th>
                   <th scope="col"><span class="slds-truncate"><b>Type</b></span></th>
                   <th scope="col"><span class="slds-truncate"><b>Amount</b></span></th>
@@ -72,9 +72,9 @@
           </table>
           <hr></hr>
           <div class="bwBluePaddingBelow proximaNovaDataMountaintop slds-scrollable"><h3>Pending Disbursals</h3></div>
-          <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack">
+          <table class="slds-table slds-table--bordered  slds-table--striped box">
             <thead>
-              <tr class="slds-text-heading--label proximaNovaDataBlue" >
+              <tr class="slds-text-heading--label" >
                 <th scope="col"><span class="slds-truncate"><b>Customer</b></span></th>
                 <th scope="col"><span class="slds-truncate"><b>Type</b></span></th>
                 <th scope="col"><span class="slds-truncate"><b>Amount</b></span></th>

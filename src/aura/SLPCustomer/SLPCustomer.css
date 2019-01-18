@@ -22,6 +22,27 @@
     padding-left: 10%;
 }
 
+.THIS .slds-truncate {
+    color: t(colorTextBrand);
+}
+.THIS .slds-text-heading {
+    color: t(colorTextButtonBrand);
+}
+
+.THIS .slds-text-heading--large{
+    color: t(colorTextBrand);
+}
+
+.THIS .slds-modal__header {
+    background: t(colorBrand);
+}
+
+.THIS .input-changed {
+    font-style: italic;
+    color: red;
+}
+
+
 .THIS .file {
     margin-bottom: 5px;
     display: block;
@@ -54,9 +75,6 @@
     margin-right: 15%;
 }
 
-.THIS .blueBackground {
-    background:#266092;    
-}
 
 .THIS .marginRight2 {
     margin-right:2%;   
@@ -167,18 +185,7 @@
     color: #216093  ;
     padding-left: 8%;
 }
-.THIS .bwTeal {
-    color: #00AFA9  ;
-    padding-left: 8%;
-}
 
-.THIS .bwSecondary {
-    color: #00AFA9  ;
-}
-
-.THIS .bwBlue {
-    color: #216093  ;
-}
 .THIS .bwBluePaddingBelow {
     color: #216093  ;
     padding-bottom:1%;
@@ -189,7 +196,7 @@
     text-align: center;
     padding: 15px 10px;
     padding-top: 5%;
-    background-color:#216093    ;
+    background-color: t(colorBackgroundButtonBrand);
     border-bottom:2px solid #7c98ad    ;
     border-radius:5px;
     height:75px;
@@ -383,7 +390,7 @@
 }
 
 .THIS .center a {
-    background-color: #216093  ;
+    background-color: t(colorBackgroundButtonBrand) ;
     border-radius:5px;
     color:#FFFFFF;
     width:75%;

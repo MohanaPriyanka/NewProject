@@ -33,7 +33,7 @@
          <div class="boxAnim">
           <a href="slpaddcustomer">
             <div class="headertop ">
-              <div class="navtext proximaNova150 text-align: center vertical-align: text-center ">
+              <div class="navtext text-align: center vertical-align: text-center ">
                 Add a Customer 
               </div>
             </div>
@@ -42,7 +42,7 @@
         <div class="boxAnimRight">
           <a href="slpdashboard">
             <div class="headertop ">
-              <div class="navtext proximaNova150 text-align: center vertical-align: text-center ">
+              <div class="navtext text-align: center vertical-align: text-center ">
                 Manage Customers
               </div>
             </div>
