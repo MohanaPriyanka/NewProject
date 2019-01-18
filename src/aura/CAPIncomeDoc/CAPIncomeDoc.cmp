@@ -56,31 +56,39 @@
   </aura:if>
 
   <aura:if isTrue="{!v.page == 'GetPrimaryIncomeSources'}">
-    <div>
-      <div class="slds-col--padded slds-m-bottom_medium slds-text-heading--medium">
-        <b>What are your sources of income?</b>
-      </div>
-      <div class="slds-col--padded slds-text-body--regular">
-        Do not include income from your spouse or household
-      </div>
-      <c:CAPIncomeType aura:id="incomeTypeCmp" applicant="{!v.lead}" piLocked="{!v.piLocked}" supressWaiting="true"/>
-      <form>
-        <div class="slds-col--padded slds-form-element__row slds-m-top--medium">
-          <lightning:button aura:id="confirmSubmit" label="Save and Next" onclick="{!c.callSaveIncomeType}"/>
+    <div class="slds-col slds-col--padded slds-p-top--small">
+      <form class="slds-form--stacked">
+        <div class="slds-form-element slds-is-required">
+          <div class="slds-form-element__control slds-m-bottom_small slds-text-heading--medium">
+            <b>What are your sources of income?</b>
+          </div>
+          <div class="slds-col--padded slds-text-body--regular">
+            Do not include income from your spouse or household
+          </div>
+          <c:CAPIncomeType aura:id="incomeTypeCmp" applicant="{!v.lead}" piLocked="{!v.piLocked}" supressWaiting="true"/>
+          <form>
+            <div class="slds-col--padded slds-form-element__row slds-m-top--medium">
+              <lightning:button aura:id="confirmSubmit" label="Save and Next" onclick="{!c.callSaveIncomeType}"/>
+            </div>
+          </form>
         </div>
       </form>
     </div>
   </aura:if>
 
   <aura:if isTrue="{!v.page == 'GetJointIncomeSources'}">
-    <div>
-      <div class="slds-col--padded slds-m-bottom_medium slds-text-heading--medium">
-        <b>What are {!v.lead.CoApplicant_Contact__r.FirstName}'s sources of income?</b>
-      </div>
-      <c:CAPIncomeType aura:id="jointIncomeTypeCmp" applicant="{!v.lead.CoApplicant_Contact__r}" piLocked="{!v.piLocked}" supressWaiting="true"/>
-      <form>
-        <div class="slds-col--padded slds-form-element__row slds-m-top--medium">
-          <lightning:button aura:id="confirmSubmit" label="Save and Next" onclick="{!c.callSaveCoAppIncomeType}"/>
+    <div class="slds-col slds-col--padded slds-p-top--small">
+      <form class="slds-form--stacked">
+        <div class="slds-form-element slds-is-required">
+          <div class="slds-form-element__control slds-m-bottom_small slds-text-heading--medium">
+            <b>What are {!v.lead.CoApplicant_Contact__r.FirstName}'s sources of income?</b>
+          </div>
+          <c:CAPIncomeType aura:id="jointIncomeTypeCmp" applicant="{!v.lead.CoApplicant_Contact__r}" piLocked="{!v.piLocked}" supressWaiting="true"/>
+          <form>
+            <div class="slds-col--padded slds-form-element__row slds-m-top--medium">
+              <lightning:button aura:id="confirmSubmit" label="Save and Next" onclick="{!c.callSaveCoAppIncomeType}"/>
+            </div>
+          </form>
         </div>
       </form>
     </div>
