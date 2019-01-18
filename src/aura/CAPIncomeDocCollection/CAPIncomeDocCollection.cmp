@@ -22,7 +22,7 @@
       <aura:if isTrue="{!v.applicant.Employed__c}">
         <div class="slds-form-element slds-is-required">
           <div class="slds-form-element__control slds-form-element__label">
-            <div class="slds-text-heading--medium">
+            <div class="slds-text-heading--small">
               <aura:if isTrue="{!v.inFirstQuarter}">
                 <b>Most recent paystub (dated within the last 30 days) AND either {!v.lastYear} W-2 or last paystub for {!v.lastYear}:</b>
                 <aura:set attribute="else">
@@ -39,7 +39,7 @@
 
       <aura:if isTrue="{!v.applicant.Self_Employed__c}">
         <div class="slds-form-element slds-is-required">
-          <div class="slds-form-element__control slds-text-heading--medium">
+          <div class="slds-form-element__control slds-text-heading--small">
             <b>Personal and business tax returns (federal only with all applicable schedules):</b>
           </div>
           <div class="slds-form-element__control">
@@ -56,7 +56,7 @@
       </aura:if>
 
       <aura:if isTrue="{!v.applicant.Retired__c}">
-        <div class="slds-form-element__control slds-text-heading--medium">
+        <div class="slds-form-element__control slds-text-heading--small">
           <b>Retirement income:</b></div>
         <div class="slds-form-element__control slds-form-element__label">
           Pension Award
@@ -70,7 +70,7 @@
 
       <aura:if isTrue="{!v.applicant.Veteran_Disability__c}">
         <div class="slds-form-element__control">
-          <div class="slds-form-element__legend slds-form-element__label slds-text-heading--medium">
+          <div class="slds-form-element__legend slds-text-heading--small">
             <b>Veteran pension or disability compensation:</b>
           </div>
           <lightning:input type="file" label="Attach veteran" variant="label-hidden" name="file" multiple="true" onchange="{!c.handleVeteran}"/>
@@ -79,7 +79,7 @@
 
       <aura:if isTrue="{!v.applicant.Other_Income__c}">
         <div class="slds-form-element__control">
-          <div class="slds-text-heading--medium">
+          <div class="slds-text-heading--small">
             <aura:if isTrue="{!not(empty(v.applicant.Monthly_Income_Details__c))}">
               <b>Your other income ({!v.applicant.Monthly_Income_Details__c}), typically a tax return and/or W2</b>
               <div class="slds-p-top--small">

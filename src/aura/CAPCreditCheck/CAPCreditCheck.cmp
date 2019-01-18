@@ -193,7 +193,7 @@
           </aura:if>
         </aura:if>
         <div aura:id="creditResultError"
-             class="noDisplay center">
+             class="no-display center">
           <ui:outputText value="{!'There was an error: ' + v.creditStatusErrorText + ' You can refresh the page and log back into the application to check status or retry the credit check.'}"/>
         </div>
       </form>
