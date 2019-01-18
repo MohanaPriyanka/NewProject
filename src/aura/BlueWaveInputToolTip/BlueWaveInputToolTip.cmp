@@ -31,8 +31,8 @@
       </aura:set>
     </aura:if>
 
-    <div class="{!'slds-popover ' + if(!v.placementLeft,'slds-popover__right slds-nubbin--bottom-left','slds-popover__left slds-nubbin--bottom-right')}" role="dialog">
-     <div class="slds-popover__body proximaNovaWhite">
+    <div class="{!'slds-popover ' + if(!v.placementLeft,'popover-text slds-popover__right slds-nubbin--bottom-left','popover-text slds-popover__left slds-nubbin--bottom-right')}" role="dialog">
+     <div class="slds-popover__body">
       <aura:if isTrue="{!empty(v.popoverText)}">
         {!v.popoverBody}
         <aura:set attribute="else">
