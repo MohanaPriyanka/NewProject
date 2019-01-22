@@ -1387,6 +1387,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>APXTConga4__Conga_Template__c.Payment_Plan__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>APXTConga4__Conga_Template__c.Welcome_Insert__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>APXT_BPM__Conductor_Region__mdt.APXT_BPM__Hostname__c</field>
         <readable>false</readable>
     </fieldPermissions>
