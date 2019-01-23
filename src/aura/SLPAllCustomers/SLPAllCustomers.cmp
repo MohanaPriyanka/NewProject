@@ -151,7 +151,7 @@
                          tableRecords="{!v.declinedApplicants}" 
                          recordFieldNames="['Name', 'Status', 'Action']"
                          fieldTypeMap="{Name: 'String'}"
-                         columnColorMap="{'Status': '#00B2A9'}"
+                         columnColorMap="{'Status': 'slds-tabs_default__link'}"
                          defaultButtonLabels="Add Co-Signer"
                          defaultButtonEvents="addCoSigner"/>
  <br></br>
@@ -163,7 +163,7 @@
                          tableRecords="{!v.expiredApplicants}" 
                          recordFieldNames="['Name', 'Sales_Agent__r.Name', 'Product__r.External_Name__c', 'Requested_Loan_Amount__c']"
                          fieldTypeMap="{Requested_Loan_Amount__c: 'Currency'}"
-                         columnColorMap="{'Partner_Tasks__r[0].Task_Label__c': '#00B2A9'}"/>
+                         columnColorMap="{'Partner_Tasks__r[0].Task_Label__c': 'slds-tabs_default__link'}"/>
  <br></br>
  </aura:if>
  </div>
