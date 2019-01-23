@@ -6,7 +6,7 @@
 }
 
 .THIS.footerBreak {
-    background-color: #7c98ab;
+    background-color: t(colorBrand);
     width:30%;
     height:2px;
     border-radius:0px;
