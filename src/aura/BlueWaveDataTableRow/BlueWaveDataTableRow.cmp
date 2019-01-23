@@ -21,7 +21,7 @@
   <aura:attribute name="profileSecurityMap" type="Map"/>
   <aura:attribute name="licenseType" type="String"/>
   <aura:if isTrue="{!v.fieldName != 'Action'}">
-    <div style="{!'color:' + v.colorCode}">
+    <div class="{!v.colorCode}">
       <aura:if isTrue="{!v.fieldType == 'String'}">
         <ui:outputText aura:Id="outputTextId"/>
       </aura:if>
