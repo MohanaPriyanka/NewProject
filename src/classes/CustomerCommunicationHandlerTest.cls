@@ -419,4 +419,56 @@ public class CustomerCommunicationHandlerTest{
 
         System.assertNotEquals(MessagingService.emailsSent.size(), 0);
     }
+
+    public static testmethod void testCaseCreation(){
+        Test.startTest();
+
+        List<Shared_Solar_System__c> sss = [SELECT Id FROM Shared_Solar_System__c ORDER BY Name ASC ];
+
+        createBills(System.Today() - 50, sss[1].Id); // 30 days late, should create case
+
+        List <Account_Bill__c> listaccountBills = [ SELECT Id, Published__c
+        FROM Account_Bill__c];
+
+        for (Account_Bill__c acctBill : listaccountBills) {
+            acctBill.Published__c = True;
+        }
+        update listaccountBills;
+
+        CustomerCommunicationHandler m = new CustomerCommunicationHandler();
+        Database.executeBatch(m, 10);
+        Test.stopTest();
+
+        List<Case> caseList = [SELECT Id, Subject
+                                FROM Case
+                                WHERE Subject LIKE '%Collections Call:%'];
+
+        System.assertNotEquals(0, caseList.size());
+    }
+
+    public static testmethod void testCaseNotCreated(){
+        Test.startTest();
+
+        List<Shared_Solar_System__c> sss = [SELECT Id FROM Shared_Solar_System__c ORDER BY Name ASC ];
+
+        createBills(System.Today() - 27, sss[1].Id); // 7 days late, should not create case
+
+        List <Account_Bill__c> listaccountBills = [ SELECT Id, Published__c
+        FROM Account_Bill__c];
+
+        for (Account_Bill__c acctBill : listaccountBills) {
+            acctBill.Published__c = True;
+        }
+        update listaccountBills;
+
+        CustomerCommunicationHandler m = new CustomerCommunicationHandler();
+        Database.executeBatch(m, 10);
+        Test.stopTest();
+
+        List<Case> caseList = [SELECT Id, Subject
+        FROM Case
+        WHERE Subject LIKE '%Collections Call:%'];
+
+        System.assertEquals(0, caseList.size());
+    }
  }
