@@ -339,10 +339,10 @@ public class CongaTemplateAssignerTest {
     @isTest public static void testWelcomeLetter(){
         Test.startTest();
 
-        /* For reference:
+        /* For reference (first production update is for >1 month):
           acA A = UASB Count : 1
-          acB B = UASB Count : 2
-          acC C = UASB Count : 3
+          acB B = UASB Count : 3
+          acC C = UASB Count : 4
         */
 
         List <Account_Bill__c> listAccountBills = [
@@ -392,14 +392,8 @@ public class CongaTemplateAssignerTest {
 
         List<Account_Bill__c> updatedAccountBills = queryAccountBills();
 
-        System.assertEquals(3, updatedAccountBills.size());
-        system.debug(updatedAccountBills);
-
-        List<Error_Log__c> errorLogs = [SELECT Id, Name, Message__c FROM Error_Log__c];
-        system.debug(errorLogs);
-
         System.assertEquals(congaTemplateMap.get('ampShortBill').APXTConga4__Name__c, updatedAccountBills[0].Bill_Template__r.APXTConga4__Name__c);
-        System.assertEquals(congaTemplateMap.get('bwShortAutopay').APXTConga4__Name__c, updatedAccountBills[1].Bill_Template__r.APXTConga4__Name__c);
+        System.assertEquals(congaTemplateMap.get('bwLongAutopay').APXTConga4__Name__c, updatedAccountBills[1].Bill_Template__r.APXTConga4__Name__c);
         System.assertEquals(congaTemplateMap.get('bwLongBill').APXTConga4__Name__c, updatedAccountBills[2].Bill_Template__r.APXTConga4__Name__c);
         System.assertEquals(congaTemplateMap.get('ampWelcomeLetter').APXTConga4__Name__c, updatedAccountBills[0].Additional_Bill_Insert__r.APXTConga4__Name__c);
         System.assertEquals(congaTemplateMap.get('bwWelcomeLetter').APXTConga4__Name__c, updatedAccountBills[1].Additional_Bill_Insert__r.APXTConga4__Name__c);

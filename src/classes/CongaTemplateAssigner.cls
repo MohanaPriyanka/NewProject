@@ -29,7 +29,7 @@ public without sharing class CongaTemplateAssigner implements Database.Batchable
 
         List<APXTConga4__Conga_Template__c> congaTemplates = [
             SELECT Id, Name, Autopay__c, Anchor__c, Brand_Key__c, Max_Number_of_UASBs__c,
-                Payment_Plan__c, Welcome_Insert__c
+                Payment_Plan__c, Welcome_Insert__c, APXTConga4__Name__c
             FROM APXTConga4__Conga_Template__c
             WHERE Active__c = true
             ORDER BY Max_Number_of_UASBs__c DESC];
@@ -114,8 +114,6 @@ public without sharing class CongaTemplateAssigner implements Database.Batchable
             templateKey.billNumber = systemBill.Account_Bill__r.Bill_Number__c;
             abToTemplateKeyMap.put(acctBillId, templateKey);
         }
-        system.debug('HEYO This is the debug');
-        system.debug(templateKey);
         return abToTemplateKeyMap;
     }
 
