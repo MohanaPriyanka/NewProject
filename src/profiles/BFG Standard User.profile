@@ -6893,7 +6893,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contact.Contatct_ID_18_digit__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
