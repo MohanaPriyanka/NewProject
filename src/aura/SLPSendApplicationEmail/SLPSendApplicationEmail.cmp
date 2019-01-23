@@ -58,8 +58,8 @@
               {!$Label.c.SLP_Disabled}
             </div>
             <aura:set attribute="else">
-              <div class="slds-tabs--default box">
-                <fieldset class="slds-form--compound slds-m-top_small">
+              <div class="slds-box slds-theme--default slds-tabs--default box">
+                <fieldset class=" slds-form--compound slds-m-top_small">
                   <div class="slds-text-heading--medium slds-m-left_small slds-m-bottom_small slds-m-top_small"> <b>Applicant Information</b></div>
                   <div class="slds-form-element__group">
                     <div class="slds-form-element__row">
