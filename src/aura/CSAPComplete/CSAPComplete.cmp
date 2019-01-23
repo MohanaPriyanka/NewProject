@@ -77,7 +77,7 @@
               </lightning:layoutItem>
               <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
                 <div class="slds-align--absolute-center">
-                  <p><b class="slds-text-body--large--stream"> Thank you!</b></p>
+                  <p><b class="slds-text-body--xx_large--stream"> Thank you!</b></p>
                 </div>
               </lightning:layoutItem>
             </lightning:layout>

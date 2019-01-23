@@ -272,8 +272,8 @@
       <aura:if isTrue="{!v.sendBillToHome == 'No'}">
         <div aria-labelledby="billingAddressForm">
           <fieldset class="slds-box slds-theme--default slds-container_center">
-            <legend id="billingAddressForm" class="slds-text-heading--small slds-p-vertical--medium slds-section__title--large">
-              Where would you like us to send your Community Solar Bill?
+            <legend id="billingAddressForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
+              <b class="slds-section__title--large">Where would you like us to send your Community Solar Bill?</b>
             </legend>
             <form class="slds-form--stacked">
               <lightning:layout multipleRows="true">
