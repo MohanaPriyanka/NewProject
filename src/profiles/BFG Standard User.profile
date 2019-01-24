@@ -33771,6 +33771,16 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Product_Tag__c.Team_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Product_Tag__c.Team_Queue_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>agf__ADM_Product_Tag__c.agf__Active__c</field>
         <readable>true</readable>
@@ -34783,6 +34793,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>agf__ADM_Scrum_Team_Member__c.agf__formula_email__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>agf__ADM_Scrum_Team__c.Email_Send_Triggers__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -46265,6 +46280,17 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>ZipCode_Utility_Junction__c-ZipCode Utility Junction Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>agf__ADM_Scrum_Team__c-agf__Scrum Team Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>agf__ADM_Scrum_Team__c-agf__Scrum Team Layout</layout>
+        <recordType>agf__ADM_Scrum_Team__c.agf__Program</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>agf__ADM_Scrum_Team__c-agf__Scrum Team Layout</layout>
+        <recordType>agf__ADM_Scrum_Team__c.agf__Scrum_Team</recordType>
     </layoutAssignments>
     <objectPermissions>
         <allowCreate>false</allowCreate>
