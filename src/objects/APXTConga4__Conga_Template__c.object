@@ -235,6 +235,22 @@ Stage__c=In Progress</inlineHelpText>
         <type>Number</type>
         <unique>false</unique>
     </fields>
+    <fields>
+        <fullName>Payment_Plan__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Payment Plan</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Welcome_Insert__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Welcome Insert</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
     <label>Conga Template</label>
     <listViews>
         <fullName>APXTConga4__All</fullName>
