@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>false</available>
+    <description>Send Partners link to fill out C&amp;I in-take form</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Send C&amp;I in-take form link</name>
+    <style>none</style>
+    <subject>BluWave C&amp;I Site In-take Form</subject>
+    <type>text</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>
