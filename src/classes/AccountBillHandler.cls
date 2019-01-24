@@ -5,7 +5,7 @@
  + *************************************************************************************/
 
 public without sharing class AccountBillHandler{
-    public void handleAccountBill(List<Account_Bill__c> accountBillList) {
+    public static void handleAccountBill(List<Account_Bill__c> accountBillList) {
         List<String> propertyaccountIds = new List<String>();
         List<Account_Bill__c> firstAccountBillList = new List<Account_Bill__c>();
         Map<Id, Id> firstABMap = new Map<Id, Id>();
@@ -56,7 +56,7 @@ public without sharing class AccountBillHandler{
         }
     }
 
-    public void retrieveFirstChargentOrder( List<Account_Bill__c> firstAccountBillList, Map<Id, ChargentOrders__ChargentOrder__c> ordersByABMap ){
+    public static void retrieveFirstChargentOrder( List<Account_Bill__c> firstAccountBillList, Map<Id, ChargentOrders__ChargentOrder__c> ordersByABMap ){
         List<ChargentOrders__ChargentOrder__c> ordersToUpdate = new List<ChargentOrders__ChargentOrder__c>();
 
         Set<Id> firstBillIds = new Set<Id>();
@@ -116,7 +116,7 @@ public without sharing class AccountBillHandler{
         }
     }
 
-    public void setClientBrandKey (List<Account_Bill__c> accountBillList) {
+    public static void setClientBrandKey (List<Account_Bill__c> accountBillList) {
         // The Client Brand Key on the property is used for bill template branding
         // on the parent account, it is used for portal branding
 
@@ -163,7 +163,7 @@ public without sharing class AccountBillHandler{
         }
     }
 
-    public Map<Id, Account> checkBrandConflicts (Map<Id, Account> accountMap, Account account, String brandKey) {
+    public static Map<Id, Account> checkBrandConflicts (Map<Id, Account> accountMap, Account account, String brandKey) {
         account.Client_Brand_Key__c = brandKey;
         if (accountMap.containsKey(account.Id) && brandKey != accountMap.get(account.Id).Client_Brand_Key__c){
             account.Client_Brand_Key__c = 'BluewaveLogo';
