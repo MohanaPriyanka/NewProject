@@ -132,6 +132,7 @@ public class TestBillCreationandPayment {
                 Billing_Anchors__c = 'Bluewave',
                 BWC_Project_Entity_Manual__c = entity1.Id,
                 Maximum_Subscription_Assemblage__c = 25,
+                Client_Brand_Key__c = null,
                 Utility__c = eversource.Id
             );
 
@@ -155,6 +156,7 @@ public class TestBillCreationandPayment {
                 Billing_Anchors__c = 'Bluewave',
                 BWC_Project_Entity_Manual__c = entity2.Id,
                 Maximum_Subscription_Assemblage__c = 25,
+                Client_Brand_Key__c = null,
                 Utility__c = eversource.Id
             );
 
@@ -635,7 +637,6 @@ public class TestBillCreationandPayment {
             Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
             Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
             Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c,
-            Property_Account__r.Directions_To_Write_Paper_Check__c,
             Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
             Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
             Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
@@ -750,7 +751,6 @@ public class TestBillCreationandPayment {
             Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
             Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
             Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c,
-            Property_Account__r.Directions_To_Write_Paper_Check__c,
             Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
             Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
             Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
@@ -788,7 +788,7 @@ public class TestBillCreationandPayment {
             Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
             Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
             Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c,
-            Property_Account__r.Directions_To_Write_Paper_Check__c, Monthly_Late_Fee_Interest__c,
+            Monthly_Late_Fee_Interest__c,
             Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
             Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
             Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
@@ -863,7 +863,6 @@ public class TestBillCreationandPayment {
                 Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
                 Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
                 Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c,
-                Property_Account__r.Directions_to_Write_Paper_Check__c,
                 Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
                 Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
                 Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
@@ -1131,7 +1130,7 @@ public class TestBillCreationandPayment {
             Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
             Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
             Total_Due__c, Balance_Net_Late_Payments__c, Late_Fee_Payments__c, Total_Payments_This_Month__c,
-            Property_Account__r.Directions_To_Write_Paper_Check__c, Payments_Net_Previous_Balances__c,
+            Payments_Net_Previous_Balances__c,
             Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
             Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
             Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
@@ -1156,48 +1155,6 @@ public class TestBillCreationandPayment {
         // System.assertEquals(631.07, updatedsystemBillListOne[1].Total_Payments_This_Month__c );
 
         Test.stopTest();
-    }
-
-    @isTest public static void testCheckInstructions(){
-        List<System_Bill__c> updatedsystemBillListOne =
-        [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
-            Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
-            Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
-            Total_Due__c, Balance_Net_Late_Payments__c, Late_Fee_Payments__c, Total_Payments_This_Month__c,
-            Property_Account__r.Directions_To_Write_Paper_Check__c, Payments_Net_Previous_Balances__c,
-            Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
-            Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-            Adjustments__c, Bill_Date__c, Due_Date__c, Refund_this_Balance__c,
-            Waive_Late_Fees__c, Balance_Adjustment__c,
-            Adjustments_UASB__c,
-            Billing_Period_End_Date__c, Billing_Period_Start_Date__c
-        FROM System_Bill__c
-        ORDER BY Bill_Number__c];
-
-        String oldCheckAddressField;
-        String propertyAccountId;
-
-        // NOT Waiving Late Fees
-        for (System_Bill__c editBill : updatedsystemBillListOne) {
-            if (editBill.Bill_Number__c == 2) {
-                oldCheckAddressField = editBill.Property_Account__r.Directions_To_Write_Paper_Check__c;
-                propertyAccountId = editBill.Property_Account__r.Id;
-                editBill.Waive_Late_Fees__c = FALSE;
-            }
-        }
-        Test.startTest();
-        update updatedsystemBillListOne;
-        Test.stopTest();
-
-        Account propertyAccount = [ SELECT Id, Name, Directions_To_Write_Paper_Check__c,
-            Send_Checks_Address__c, Client_Brand_Key__c
-        FROM Account
-        WHERE Id = : propertyAccountId];
-
-        System.assertNotEquals(oldCheckAddressField, propertyAccount.Directions_To_Write_Paper_Check__c);
-        System.assert(propertyAccount.Directions_To_Write_Paper_Check__c.contains('Oxford Barrett St. P1'));
-        System.assertEquals('Fake Lockbox Address, P.O Box 12345, Phoenix Arizona 02114', propertyAccount.Send_Checks_Address__c);
-        System.assertEquals('AmpBlack', propertyAccount.Client_Brand_Key__c);
     }
 
     @isTest public static void testAdjustments2() {
@@ -1295,7 +1252,6 @@ public class TestBillCreationandPayment {
             Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
             Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
             Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c,
-            Property_Account__r.Directions_To_Write_Paper_Check__c,
             Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
             Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
             Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
@@ -1347,13 +1303,10 @@ public class TestBillCreationandPayment {
         acctBillToInsert.Published__c = true;
         update acctBillToInsert;
 
-        Account propertyAccount = [ SELECT Id, Name, Directions_To_Write_Paper_Check__c,
-            Send_Checks_Address__c, Client_Brand_Key__c
+        Account propertyAccount = [ SELECT Id, Name, Client_Brand_Key__c
         FROM Account
         WHERE Name = 'Account A'];
 
-        System.assertEquals('No Payment Due', propertyAccount.Directions_To_Write_Paper_Check__c);
-        System.assertEquals('BlueWave 137 Newbury Street, 4th Floor Boston, MA 02116', propertyAccount.Send_Checks_Address__c);
         System.assertEquals('AmpBlack', propertyAccount.Client_Brand_Key__c);
         Test.stopTest();
 
@@ -1642,7 +1595,6 @@ public class TestBillCreationandPayment {
                 Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
                 Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
                 Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c,
-                Property_Account__r.Directions_to_Write_Paper_Check__c,
                 Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
                 Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
                 Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
@@ -1665,7 +1617,6 @@ public class TestBillCreationandPayment {
                 Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
                 Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
                 Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c,
-                Property_Account__r.Directions_to_Write_Paper_Check__c,
                 Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
                 Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
                 Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
@@ -2017,7 +1968,7 @@ public class TestBillCreationandPayment {
             Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
             Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
             Total_Due__c, Balance_Net_Late_Payments__c, Late_Fee_Payments__c, Total_Payments_This_Month__c,
-            Property_Account__r.Directions_To_Write_Paper_Check__c, Payments_Net_Previous_Balances__c,
+            Payments_Net_Previous_Balances__c,
             Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
             Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
             Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
@@ -2071,7 +2022,7 @@ public class TestBillCreationandPayment {
             Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
             Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
             Total_Due__c, Balance_Net_Late_Payments__c, Late_Fee_Payments__c, Total_Payments_This_Month__c,
-            Property_Account__r.Directions_To_Write_Paper_Check__c, Payments_Net_Previous_Balances__c,
+            Payments_Net_Previous_Balances__c,
             Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
             Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
             Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
