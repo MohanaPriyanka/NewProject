@@ -63,7 +63,7 @@
     <rules>
         <fullName>Case Close %3A Response to Customer Email</fullName>
         <actions>
-            <name>Case_Close_Response_to_Customer_Email</name>
+            <name>Case_Close_Email_Alert_to_Customer</name>
             <type>Alert</type>
         </actions>
         <active>true</active>
