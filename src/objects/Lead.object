@@ -665,6 +665,17 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Building_Use__c</fullName>
+        <description>From C&amp;I intake form</description>
+        <externalId>false</externalId>
+        <inlineHelpText>C&amp;I intake building use</inlineHelpText>
+        <label>Building Use</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
         <fullName>Business_Email__c</fullName>
         <externalId>false</externalId>
         <label>Business Email</label>
@@ -875,6 +886,17 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
                 </value>
             </valueSetDefinition>
         </valueSet>
+    </fields>
+    <fields>
+        <fullName>C_I_In_take_Form_info__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Collection of text fields from C&amp;I in-take form</inlineHelpText>
+        <label>C&amp;I In-take Form info</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>5</visibleLines>
     </fields>
     <fields>
         <fullName>CampaignId</fullName>
@@ -1962,6 +1984,17 @@ This field can be changed to a formula consistent with the other factors if LASE
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Estimated_IX_costs_included_in__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Collected in C&amp;I in-take form</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Collected in C&amp;I in-take form</inlineHelpText>
+        <label>Estimated IX cost included in EPC costs?</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Estimated_Install_Date__c</fullName>
         <description>This is the date submitted by the CS customer on the webform, or if they are also an RL customer, from their RL records.</description>
         <externalId>false</externalId>
@@ -1985,6 +2018,19 @@ This field can be changed to a formula consistent with the other factors if LASE
         <scale>0</scale>
         <trackHistory>false</trackHistory>
         <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Estimated_Utility_Upgrade_Cost__c</fullName>
+        <description>Collected in the C&amp;I in-take form</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Collected in the C&amp;I in-take form</inlineHelpText>
+        <label>Estimated Utility Upgrade Cost</label>
+        <length>80</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Express_Consent__c</fullName>
@@ -2160,6 +2206,32 @@ This field can be changed to a formula consistent with the other factors if LASE
         </valueSet>
     </fields>
     <fields>
+        <fullName>ISA_Status__c</fullName>
+        <description>Collected in C&amp;I form</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Collected in C&amp;I in-take form</inlineHelpText>
+        <label>ISA Status</label>
+        <length>80</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Impact_Study_Costs__c</fullName>
+        <description>Collected in C&amp;I in-take form</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Collected in C&amp;I in-take form</inlineHelpText>
+        <label>Impact Study Costs</label>
+        <length>80</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Income_Support__c</fullName>
         <externalId>false</externalId>
         <formula>IF(  Annual_Income_Currency__c &gt;  66866, if(Annual_Income_Currency__c &gt; 80240, &quot;No&quot;,&quot;Category 2&quot;), &quot;Category 1&quot;)</formula>
@@ -2275,6 +2347,45 @@ This field can be changed to a formula consistent with the other factors if LASE
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Inverter_Count__c</fullName>
+        <description>Collected in C&amp;I in-take form</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Collected in C&amp;I in-take form</inlineHelpText>
+        <label>Inverter Count</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Inverter_Manufacturer__c</fullName>
+        <description>Collected in C&amp;I in-take form</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Collected in C&amp;I in-take form</inlineHelpText>
+        <label>Inverter Manufacturer</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Inverter_Nameplate_Rating__c</fullName>
+        <description>Collected in C&amp;I in-take form</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Collected in C&amp;I in-take form</inlineHelpText>
+        <label>Inverter Nameplate Rating</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Is_Loan_Secured__c</fullName>
@@ -3126,6 +3237,45 @@ IF(DOER_Solar_Loan__c=TRUE, 0.0399, 0.0599), VALUE(TEXT(Interest_Rate_Picklist__
         <trackHistory>false</trackHistory>
     </fields>
     <fields>
+        <fullName>Module_Count__c</fullName>
+        <description>Collected in C&amp;I in-take form</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Collected in C&amp;I in-take form</inlineHelpText>
+        <label>Module Count</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Module_Manufacturer__c</fullName>
+        <description>Collected in C&amp;I in-take form</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Collected in C&amp;I in-take form</inlineHelpText>
+        <label>Module Manufacturer</label>
+        <length>40</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Module_Nameplate_Rating__c</fullName>
+        <description>Collected in C&amp;I in-take form</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Collected in C&amp;I in-take form</inlineHelpText>
+        <label>Module Nameplate Rating</label>
+        <length>25</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Monthly_Income_2__c</fullName>
         <externalId>false</externalId>
         <label>Monthly Income (2)</label>
@@ -3221,6 +3371,19 @@ Monthly_Payment__c)</formula>
         <externalId>false</externalId>
         <label>More than five years industry experience</label>
         <length>5</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Mortgage_Lender__c</fullName>
+        <description>Mortgage Lender of record from C&amp;I in-take form</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Collected in C&amp;I in-take form</inlineHelpText>
+        <label>Mortgage Lender</label>
+        <length>80</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -3910,6 +4073,19 @@ AND(Product_line__c == &quot;Residential Loan&quot;, Community_Solar_Redirect__c
         </valueSet>
     </fields>
     <fields>
+        <fullName>Proposed_EPC_Pricing__c</fullName>
+        <description>Collected in C&amp;I in-take form</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Collected in C&amp;I in-take form</inlineHelpText>
+        <label>Proposed EPC Pricing</label>
+        <length>80</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Qualified_Business__c</fullName>
         <externalId>false</externalId>
         <formula>IF(AND(Risk_Level_Business_Type__c = &quot;Risky&quot;, VALUE(Number_of_Years_at_Location__c) &gt;= 2, VALUE(Number_of_Years_in_Business__c) &gt;= 3), &quot;Qualified&quot;, 
@@ -4068,6 +4244,32 @@ IF(AND(Risk_Level_Business_Type__c = &quot;Not Risky&quot;, VALUE(Number_of_Year
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Risk Level (Business Type)</label>
         <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Roof_Age__c</fullName>
+        <description>Collected in C&amp;I In-take form</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Collected in C&amp;I In-take form</inlineHelpText>
+        <label>Roof Age</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Roof_Type__c</fullName>
+        <description>Collected in C&amp;I in-take form</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Collected in C&amp;I in-take form</inlineHelpText>
+        <label>Roof Type</label>
+        <length>80</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -4335,6 +4537,19 @@ if( or(text(Status) = &quot;Cancelled&quot;, text(Status) = &quot;Not Interested
         <externalId>false</externalId>
         <label>System Size (kW DC)</label>
         <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>System_Size_kw_AC__c</fullName>
+        <description>From C&amp;I intake form</description>
+        <externalId>false</externalId>
+        <label>System Size (kW AC)</label>
+        <precision>10</precision>
         <required>false</required>
         <scale>2</scale>
         <trackFeedHistory>false</trackFeedHistory>
@@ -4729,6 +4944,19 @@ IF(INCLUDES(  Utility_1__c , &quot;SCE&amp;G&quot;), &quot;SCE&amp;G&quot;,
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Yield_kWh_kW__c</fullName>
+        <description>Expected yield of C&amp;I rooftop installation, from in-take form</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Collected in C&amp;I in-take form</inlineHelpText>
+        <label>Yield (kWh/kW)</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>ZipCode__c</fullName>
@@ -18928,6 +19156,12 @@ SEMA = 13 -14</inlineHelpText>
                 <default>false</default>
             </values>
         </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>C_I</fullName>
+        <active>true</active>
+        <businessProcess>CS</businessProcess>
+        <label>C&amp;I</label>
     </recordTypes>
     <recordTypes>
         <fullName>Lead</fullName>
