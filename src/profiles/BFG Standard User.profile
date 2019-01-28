@@ -45574,10 +45574,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Case-Customer Care</layout>
-        <recordType>Case.Customer_Care</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Case-Customer Care</layout>
         <recordType>Case.Partner_Care_Case</recordType>
     </layoutAssignments>
     <layoutAssignments>
@@ -45587,6 +45583,10 @@
     <layoutAssignments>
         <layout>Case-Product Support</layout>
         <recordType>Case.Product_Support</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Case-Service Console - Customer Support</layout>
+        <recordType>Case.Customer_Care</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>CaseClose-Close Case Layout</layout>
