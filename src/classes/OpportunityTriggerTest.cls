@@ -106,6 +106,7 @@ public with sharing class OpportunityTriggerTest {
         );
 
         insert new List<dsfs__DocuSign_Recipient_Status__c>{
+            docuRecipientOne,
             docuRecipientTwo,
             docuRecipientThree
         };
