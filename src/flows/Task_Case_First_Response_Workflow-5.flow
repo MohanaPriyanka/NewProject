@@ -30,7 +30,7 @@
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
             <name>myRule_1</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>1 AND 2 AND (3 OR 4)</conditionLogic>
             <conditions>
                 <processMetadataValues>
                     <name>inputDataType</name>
@@ -59,7 +59,7 @@
                 <leftValueReference>myVariable_current.WhatId</leftValueReference>
                 <operator>StartsWith</operator>
                 <rightValue>
-                    <elementReference>formula_2_myRule_1_5862405698</elementReference>
+                    <elementReference>formula_2_myRule_1_8414051168</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
@@ -124,133 +124,41 @@
                     <stringValue>Call:outbound</stringValue>
                 </rightValue>
             </conditions>
-            <connector>
-                <targetReference>myRule_1_pmetdec</targetReference>
-            </connector>
-            <label>Task is Outbound &amp; Associated to Case</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>myRule_1_pmetdec</name>
-        <label>Previously Met Decision</label>
-        <locationX>100</locationX>
-        <locationY>100</locationY>
-        <defaultConnector>
-            <targetReference>myRule_1_A1</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Not Previously Met</defaultConnectorLabel>
-        <rules>
-            <name>myRule_1_pmetnullrule</name>
-            <conditionLogic>or</conditionLogic>
             <conditions>
-                <leftValueReference>myVariable_old</leftValueReference>
-                <operator>IsNull</operator>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.Subject</leftValueReference>
+                <operator>EqualTo</operator>
                 <rightValue>
-                    <booleanValue>true</booleanValue>
+                    <stringValue>Call:inbound</stringValue>
                 </rightValue>
             </conditions>
             <connector>
                 <targetReference>myRule_1_A1</targetReference>
             </connector>
-            <label>Previously Met - Null</label>
-        </rules>
-        <rules>
-            <name>myRule_1_pmetrule</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>ID</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>ID</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Formula</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_old.WhatId</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <elementReference>formula_3_myRule_1_pmetrule_4728684681</elementReference>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_old.IsClosed</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_old.Subject</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <stringValue>Call:outbound</stringValue>
-                </rightValue>
-            </conditions>
-            <label>Previously Met - Prev</label>
+            <label>Task is Associated to Case</label>
         </rules>
     </decisions>
     <description>Fix for Truly2</description>
@@ -261,7 +169,7 @@
                 <stringValue>&quot;500&quot;</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_2_myRule_1_5862405698</name>
+        <name>formula_2_myRule_1_8414051168</name>
         <dataType>String</dataType>
         <expression>&quot;500&quot;</expression>
     </formulas>
@@ -269,23 +177,12 @@
         <processMetadataValues>
             <name>originalFormula</name>
             <value>
-                <stringValue>&quot;500&quot;</stringValue>
+                <stringValue>NOW()</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_3_myRule_1_pmetrule_4728684681</name>
-        <dataType>String</dataType>
-        <expression>&quot;500&quot;</expression>
-    </formulas>
-    <formulas>
-        <processMetadataValues>
-            <name>originalFormula</name>
-            <value>
-                <stringValue>[Task].CreatedDate </stringValue>
-            </value>
-        </processMetadataValues>
-        <name>formula_4_myRule_1_A1_2849076713</name>
+        <name>formula_3_myRule_1_A1_2088785665</name>
         <dataType>DateTime</dataType>
-        <expression>{!myVariable_current.CreatedDate}</expression>
+        <expression>NOW()</expression>
     </formulas>
     <interviewLabel>Task_Case_First_Response_Workflow-5_InterviewLabel</interviewLabel>
     <label>Task: Case First Response Workflow</label>
@@ -420,7 +317,7 @@
             </processMetadataValues>
             <field>First_Response_Date_Time__c</field>
             <value>
-                <elementReference>formula_4_myRule_1_A1_2849076713</elementReference>
+                <elementReference>formula_3_myRule_1_A1_2088785665</elementReference>
             </value>
         </inputAssignments>
         <object>Case</object>
