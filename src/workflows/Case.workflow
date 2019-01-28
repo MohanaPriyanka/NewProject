@@ -72,8 +72,8 @@
      OR( ISPICKVAL(Origin,  &quot;Email&quot;), 
          ISPICKVAL(Origin,  &quot;Web&quot;)),
      CreatedDate &gt; DATETIMEVALUE(DATE(2017,05,09)),
-     RecordType.Id!=&quot;0120a0000004XZw&quot;, 
-     Disable_Followup_Email__c!=true,
+     RecordType.Id !=&quot;012j0000000uhAOAAY&quot;, 
+     Disable_Followup_Email__c != true,
      SuppliedEmail != &apos;mailer-daemon@salesforce.com&apos; 
 )</formula>
         <triggerType>onAllChanges</triggerType>
