@@ -63,4 +63,134 @@ public with sharing class OpportunityTriggerTest {
         System.assertEquals(3.8462, updatedOpp[0].Subscription_Size_for_Invoicing__c);
         System.assertEquals(16.9231, updatedOpp[1].Subscription_Size_for_Invoicing__c);
     }
+
+
+    @IsTest
+    public static void testCSOpportunityStageUpdates() {
+        Opportunity opportunityToTest = new Opportunity(
+            Name = 'Test Opp',
+            Product_Line__c = 'Community Solar',
+            StageName = 'New',
+            CloseDate = Date.today()
+        );
+
+        insert opportunityToTest;
+
+        dsfs__DocuSign_Status__c docuSignStatus = new dsfs__DocuSign_Status__c(
+            dsfs__Opportunity__c = opportunityToTest.Id
+        );
+
+        insert docuSignStatus;
+
+
+        dsfs__DocuSign_Recipient_Status__c docuRecipientOne = new dsfs__DocuSign_Recipient_Status__c(
+            dsfs__Parent_Status_Record__c = docuSignStatus.Id,
+            dsfs__Recipient_Status__c = 'Completed',
+            dsfs__DocuSign_Recipient_Id__c = 'recipient Id',
+            dsfs__DocuSign_Routing_Order__c = 1,
+            Opportunity__c = opportunityToTest.Id
+        );
+        dsfs__DocuSign_Recipient_Status__c docuRecipienttwo = new dsfs__DocuSign_Recipient_Status__c(
+            dsfs__Parent_Status_Record__c = docuSignStatus.Id,
+            dsfs__Recipient_Status__c = 'Sent',
+            dsfs__DocuSign_Recipient_Id__c = 'recipient Id',
+            dsfs__DocuSign_Routing_Order__c = 1
+        );
+
+        dsfs__DocuSign_Recipient_Status__c docuRecipientThree = new dsfs__DocuSign_Recipient_Status__c(
+            dsfs__Parent_Status_Record__c = docuSignStatus.Id,
+            dsfs__Recipient_Status__c = 'Sent',
+            dsfs__DocuSign_Recipient_Id__c = 'recipient Id',
+            dsfs__DocuSign_Routing_Order__c = 3,
+            Opportunity__c = opportunityToTest.Id
+        );
+
+        insert new List<dsfs__DocuSign_Recipient_Status__c>{
+            docuRecipientOne,
+            docuRecipientTwo,
+            docuRecipientThree
+        };
+
+        List<Opportunity> opps = [
+            SELECT Id, StageName, Contract_Status__c
+            FROM Opportunity
+            WHERE Id = :opportunityToTest.Id
+        ];
+
+        System.assertNotEquals('Sent', opps[0].Contract_Status__c);
+        System.assertNotEquals('Contract Pending', opps[0].StageName);
+
+        docuRecipientTwo.Opportunity__c = opps[0].Id;
+
+        Test.startTest();
+        update new List<dsfs__DocuSign_Recipient_Status__c>{
+            docuRecipientTwo
+        };
+        Test.stopTest();
+
+
+        opps = [
+            SELECT Id, StageName, Contract_Status__c
+            FROM Opportunity
+            WHERE Id = :opportunityToTest.Id
+        ];
+
+        System.assertEquals('Sent', opps[0].Contract_Status__c);
+        System.assertEquals('Contract Pending', opps[0].StageName);
+
+    }
+
+    @IsTest
+    public static void testRLOpportunityStageUpdates() {
+        Opportunity opportunityToTest = new Opportunity(
+            Name = 'Test Opp',
+            Product_Line__c = 'Residential Loan',
+            StageName = 'New',
+            CloseDate = Date.today()
+        );
+
+        insert opportunityToTest;
+
+        dsfs__DocuSign_Status__c docuSignStatus = new dsfs__DocuSign_Status__c(
+            dsfs__Opportunity__c = opportunityToTest.Id
+        );
+
+        insert docuSignStatus;
+
+        dsfs__DocuSign_Recipient_Status__c docuRecipientOne = new dsfs__DocuSign_Recipient_Status__c(
+            dsfs__Parent_Status_Record__c = docuSignStatus.Id,
+            dsfs__Recipient_Status__c = 'Sent',
+            dsfs__DocuSign_Recipient_Id__c = 'recipient Id',
+            dsfs__DocuSign_Routing_Order__c = 1
+        );
+
+        dsfs__DocuSign_Recipient_Status__c docuRecipientTwo = new dsfs__DocuSign_Recipient_Status__c(
+            dsfs__Parent_Status_Record__c = docuSignStatus.Id,
+            dsfs__Recipient_Status__c = 'Sent',
+            dsfs__DocuSign_Recipient_Id__c = 'recipient Id',
+            dsfs__DocuSign_Routing_Order__c = 2
+        );
+
+        dsfs__DocuSign_Recipient_Status__c docuRecipientThree = new dsfs__DocuSign_Recipient_Status__c(
+            dsfs__Parent_Status_Record__c = docuSignStatus.Id,
+            dsfs__Recipient_Status__c = 'Sent',
+            dsfs__DocuSign_Recipient_Id__c = 'recipient Id',
+            dsfs__DocuSign_Routing_Order__c = 3
+        );
+
+        insert new List<dsfs__DocuSign_Recipient_Status__c>{
+            docuRecipientOne,
+            docuRecipientTwo,
+            docuRecipientThree
+        };
+
+        List<Opportunity> opps = [
+            SELECT Id, StageName, Contract_Status__c
+            FROM Opportunity
+            WHERE Id = :opportunityToTest.Id
+        ];
+
+        System.assertNotEquals(null, opps[0].Contract_Status__c);
+        System.assertNotEquals('New', opps[0].StageName);
+    }
 }
