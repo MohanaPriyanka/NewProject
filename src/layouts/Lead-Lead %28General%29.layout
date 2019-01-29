@@ -2,7 +2,6 @@
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
     <customButtons>Convert</customButtons>
     <customButtons>dsfs__Send_with_DocuSign</customButtons>
-    <excludeButtons>DataDotComClean</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
     <layoutSections>
         <customLabel>true</customLabel>
@@ -187,13 +186,30 @@
         <fields>EMAIL_STATUS.LAST_OPEN_DATE</fields>
         <relatedList>RelatedEmailStatusList</relatedList>
     </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>et4ae5__IndividualEmailResult__c.et4ae5__Lead__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>et4ae5__EmailName__c</fields>
+        <fields>et4ae5__fBusiness_Unit__c</fields>
+        <fields>et4ae5__Created_Date_Time__c</fields>
+        <fields>et4ae5__Send_Status_View__c</fields>
+        <fields>et4ae5__Status_Date_Time__c</fields>
+        <fields>et4ae5__FromName__c</fields>
+        <fields>et4ae5__FromEmail__c</fields>
+        <fields>et4ae5__Campaigns__c</fields>
+        <fields>et4ae5__Reports__c</fields>
+        <relatedList>et4ae5__SendDefinition__c.et4ae5__Lead__c</relatedList>
+    </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
     <showInteractionLogPanel>false</showInteractionLogPanel>
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00hq0000001Zmoy</masterLabel>
+        <masterLabel>00h0a00000C2Tbx</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>
