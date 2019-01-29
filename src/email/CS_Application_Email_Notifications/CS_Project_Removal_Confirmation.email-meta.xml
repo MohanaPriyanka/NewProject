@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
-    <available>true</available>
+    <available>false</available>
     <description>Email to customers sent when they have been removed from the last of their projects</description>
     <encodingKey>ISO-8859-1</encodingKey>
     <name>CS Project Removal Confirmation</name>

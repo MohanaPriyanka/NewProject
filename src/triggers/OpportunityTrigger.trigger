@@ -2,7 +2,7 @@ trigger OpportunityTrigger on Opportunity (before insert, after insert, before u
     if (Util.isDisabled('Disable_OpportunityTrigger__c')) {
         return;
     }
-    OpportunityTriggerHandler opportunityTriggerHandler = new OpportunityTriggerHandler(Trigger.isExecuting, Trigger.size);
+    OpportunityTriggerHandler opportunityTriggerHandler = new OpportunityTriggerHandler();
     LoanHandler loanAction = new LoanHandler (Trigger.isExecuting, Trigger.size);
     DisbursalHandler disbursalHandler = new DisbursalHandler ();
 
@@ -10,10 +10,7 @@ trigger OpportunityTrigger on Opportunity (before insert, after insert, before u
         loanAction.onAfterOpportunityUpdate(Trigger.new, Trigger.old, Trigger.newMap, Trigger.oldMap);
         disbursalHandler.createDisbursalsFromOpportunity(Trigger.newMap, Trigger.oldMap);
         disbursalHandler.setContractDisbursalToReady(Trigger.new, Trigger.newMap, Trigger.oldMap);
-        List<Account> acctsToCancel = CSCancellationService.getAccountsToClose(Trigger.newMap, Trigger.oldMap);
-        if (!acctsToCancel.isEmpty()) {
-            CSCancellationService.closeAccounts(acctsToCancel);
-        }
+        opportunityTriggerHandler.onAfterUpdate(Trigger.oldMap, Trigger.newMap);
     }
     
     if (Trigger.isUpdate && Trigger.isBefore) {

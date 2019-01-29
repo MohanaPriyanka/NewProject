@@ -25,4 +25,22 @@ public class UtilityAccountSubscriptions {
         }
         update records;
     }
+
+    public static List<Utility_Account_Subscription__c> getUASesForManuallyCancelledAccounts(Map<Id, Account> triggerNewMap, Map<Id, Account> triggerOldMap) {
+        List<Id> accountsCancelled = new List<Id>();
+        List<Utility_Account_Subscription__c> uasesToMarkInactive = new List<Utility_Account_Subscription__c>();
+        for (Id newAccountId : triggerNewMap.keySet()) {
+            if (triggerOldMap.get(newAccountId).Cancellation_Request_Date__c == null &&
+                triggerNewMap.get(newAccountId).Cancellation_Request_Date__c != null) {
+                accountsCancelled.add(newAccountId);
+            }
+        }
+
+        if (accountsCancelled.isEmpty()) {
+            return uasesToMarkInactive;
+        }
+
+        uasesToMarkInactive = UASSelector.selectByAccounts(new Set<Id>(accountsCancelled));
+        return uasesToMarkInactive;
+    }
 }

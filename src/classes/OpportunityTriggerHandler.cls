@@ -1,16 +1,11 @@
 /*************************************************************************************
- * Test: OpportunityTriggerTest,LeadTriggerHandlerTest
+ * Test: OpportunityTriggerTest,LeadTriggerHandlerTest,CSCancellationServiceTest
  *************************************************************************************/
 
 public without sharing class OpportunityTriggerHandler {
     private Boolean m_isExecuting = false;
     private Integer batchSize = 0;
     
-    public OpportunityTriggerHandler(boolean isExecuting, integer size){
-        m_isExecuting = isExecuting;
-        BatchSize = size;
-    }
-        
     public void OnBeforeInsert(List<Opportunity> newOppList){
         customIdSwapOpp(newOppList, null);
         mapDocuSignRS(newOppList, null);
@@ -22,6 +17,13 @@ public without sharing class OpportunityTriggerHandler {
         mapDocuSignRS(updatedOppList, oldOppMap);
         activatePortalUser(oldOppMap, newOppMap);
         updateInvoicedSubscription(oldOppMap, newOppMap);
+    }
+
+    public void onAfterUpdate(Map<Id, Opportunity> oldMap, Map<Id, Opportunity> newMap) {
+        List<Account> acctsToCancel = CSCancellationService.getAccountsToClose(newMap, oldMap);
+        if (!acctsToCancel.isEmpty()) {
+            CSCancellationService.closeAccounts(acctsToCancel);
+        }
     }
     
     public void customIdSwapOpp(List<Opportunity> oppList, Map<ID, Opportunity> oldOppMap){

@@ -1,7 +1,7 @@
 /**
  * Created by mstackhouse on 12/17/2018.
  * Description: 
- * Test: 
+ * Test: UtilityAccountLogTriggerHandler, CSCancellationService
  */
 
 
@@ -12,10 +12,6 @@ trigger UtilityAccountLogTrigger on Utility_Account_Log__c (before update, after
     if (Trigger.isUpdate && Trigger.isBefore) {
         UtilityAccountLogTriggerHandler.updateProposedkWh(Trigger.new, Trigger.oldMap);
     } else if (Trigger.isUpdate && Trigger.isAfter) {
-        List<Utility_Account_Subscription__c> uasesToFinal =
-            CSCancellationService.getUASesForFinaledUALs(Trigger.new, Trigger.oldMap);
-        if (!uasesToFinal.isEmpty()) {
-            CSCancellationService.processFinaledUtilityAccounts(uasesToFinal);
-        }
+        UtilityAccountLogTriggerHandler.onAfterUpdate(Trigger.oldMap, Trigger.new);
     }
 }
