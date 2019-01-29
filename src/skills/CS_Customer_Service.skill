@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Skill xmlns="http://soap.sforce.com/2006/04/metadata">
+    <assignments>
+        <users>
+            <user>lalexander@bluewavesolar.com</user>
+            <user>vcoloma@bluewavesolar.com</user>
+        </users>
+    </assignments>
+    <description>Assigned for Agents able to interact with existing CS Customers. Different from CS applicants. It covers billing, solar credits, etc.</description>
+    <label>CS Customer Service</label>
+</Skill>
