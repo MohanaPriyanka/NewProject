@@ -39,7 +39,7 @@
         <quickActionLayoutColumns/>
     </quickActionLayout>
     <standardLabel>New</standardLabel>
-    <successMessage>Thanks for submitting a case! We\\\&apos;ll get back to you soon.</successMessage>
+    <successMessage>Thanks for submitting a case! We\&apos;ll get back to you soon.</successMessage>
     <targetObject>Case</targetObject>
     <targetRecordType>Case.Customer_Care</targetRecordType>
     <type>Create</type>
