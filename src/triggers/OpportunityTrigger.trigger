@@ -10,6 +10,10 @@ trigger OpportunityTrigger on Opportunity (before insert, after insert, before u
         loanAction.onAfterOpportunityUpdate(Trigger.new, Trigger.old, Trigger.newMap, Trigger.oldMap);
         disbursalHandler.createDisbursalsFromOpportunity(Trigger.newMap, Trigger.oldMap);
         disbursalHandler.setContractDisbursalToReady(Trigger.new, Trigger.newMap, Trigger.oldMap);
+        List<Account> acctsToCancel = CSCancellationService.getAccountsToClose(Trigger.newMap, Trigger.oldMap);
+        if (!acctsToCancel.isEmpty()) {
+            CSCancellationService.closeAccounts(acctsToCancel);
+        }
     }
     
     if (Trigger.isUpdate && Trigger.isBefore) {

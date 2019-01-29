@@ -131,6 +131,14 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Disable_ScheduleZTrigger__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Disable ScheduleZTrigger</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Disable_SharedSolarSystemTrigger__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -247,6 +255,17 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Finaled_Case_Owner__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Case owner that the CSCancellationService should use when creating a case after a utility account is finaled (Customer_Care, Partner_Support, etc)</inlineHelpText>
+        <label>Finaled Case Owner</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Flagged_Credit_Codes__c</fullName>
         <defaultValue>&quot;018,020,A06,021,022,031,034,040,039&quot;</defaultValue>
         <externalId>false</externalId>
@@ -278,6 +297,19 @@
         <scale>2</scale>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>System_Bill_Generation_Grace_Period__c</fullName>
+        <defaultValue>15</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Number of days past 30 to wait for System Bills to be generated, before the CSCancellationService determines that we&apos;ve stopped billing the customer. Used to handle the case where we don&apos;t generate bills on the 15th because of a weekend or holiday.</inlineHelpText>
+        <label>System Bill Generation Grace Period</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Warn_on_Max_Loan_Amount__c</fullName>
