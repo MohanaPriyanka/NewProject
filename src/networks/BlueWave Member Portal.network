@@ -5,7 +5,7 @@
     <changePasswordTemplate>CS_Application_Email_Notifications/CommunityChangePasswordEmailTemplate</changePasswordTemplate>
     <communityRoles/>
     <disableReputationRecordConversations>false</disableReputationRecordConversations>
-    <emailSenderAddress>lalexander@bluewavesolar.com</emailSenderAddress>
+    <emailSenderAddress>customercare@bluewavesolar.com</emailSenderAddress>
     <emailSenderName>BlueWave</emailSenderName>
     <enableCustomVFErrorPageOverrides>false</enableCustomVFErrorPageOverrides>
     <enableDirectMessages>false</enableDirectMessages>
@@ -86,8 +86,8 @@
     </navigationLinkSet>
     <networkMemberGroups>
         <permissionSet>AccessToModifyCSPortal</permissionSet>
-        <profile>Admin</profile>
-        <profile>Customer Community Plus Login User</profile>
+        <profile>admin</profile>
+        <profile>customer community plus login user</profile>
         <profile>community solar community user</profile>
     </networkMemberGroups>
     <networkPageOverrides>
@@ -109,5 +109,5 @@
         <customTab>Consumption_Update__c</customTab>
         <defaultTab>01rj0000000xKoR</defaultTab>
     </tabs>
-    <welcomeTemplate>CS_Application_Email_Notifications/Portal_Live_Email</welcomeTemplate>
+    <welcomeTemplate>CS_Application_Email_Notifications/Auto_Branded_Portal_Welcome</welcomeTemplate>
 </Network>
