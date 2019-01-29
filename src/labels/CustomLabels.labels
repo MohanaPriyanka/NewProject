@@ -462,6 +462,38 @@
         <value>Have they been with their employer for more than one year?</value>
     </labels>
     <labels>
+        <fullName>LA_Chat_ExtendedHeader_ChatStateHeaderGreeting_04I540000008OIA_1979875</fullName>
+        <categories>Snap-ins</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>LA_Chat_ExtendedHeader_ChatStateHeaderGreeting_04I540000008OIA_1979875</shortDescription>
+        <value>Thanks for chatting with us!</value>
+    </labels>
+    <labels>
+        <fullName>LA_Chat_FileTransfer_SelectNewFile_04I540000008OIA_4719185</fullName>
+        <categories>Snap-ins</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>LA_Chat_FileTransfer_SelectNewFile_04I540000008OIA_4719185</shortDescription>
+        <value>Uh oh - the file you&apos;re trying to upload is too big! Please select a file under 5mb.</value>
+    </labels>
+    <labels>
+        <fullName>LA_OfflineSupport_CloseConfirmation_ConfirmationDialogBo_04I540000008OIA_6810088</fullName>
+        <categories>Snap-ins</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>LA_OfflineSupport_CloseConfirmation_ConfirmationDialogBo_04I540000008OIA_6810088</shortDescription>
+        <value>We logged your Support Case! You&apos;ll hear back from us soon!</value>
+    </labels>
+    <labels>
+        <fullName>LA_OfflineSupport_CloseConfirmation_ConfirmationDialogTi_04I540000008OIA_4289172</fullName>
+        <categories>Snap-ins</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>LA_OfflineSupport_CloseConfirmation_ConfirmationDialogTi_04I540000008OIA_4289172</shortDescription>
+        <value>Success</value>
+    </labels>
+    <labels>
         <fullName>Length_With_Employer</fullName>
         <categories>Customer Application Portal</categories>
         <language>en_US</language>
