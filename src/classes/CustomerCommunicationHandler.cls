@@ -114,7 +114,7 @@ public class CustomerCommunicationHandler implements Database.Batchable<sObject>
 
         if (errorsToLog != null && errorsToLog != 'None'){
             Logger.logLater('CustomerCommunicationHandler', 'Missing Email Templates: acct / template', errorsToLog);
-            Logger.flushLogs(); 
+            Logger.flushLogs();
         }
     }
 
@@ -125,7 +125,7 @@ public class CustomerCommunicationHandler implements Database.Batchable<sObject>
         newCase.Subject = 'Collections Call: ' + acct.Days_Past_Due__c + ' Days';
         newCase.Priority = 'Medium';
         newCase.Product_Line__c = 'Community Solar';
-        newCase.Category__c = 'Billing';
+        //newCase.Category__c = 'Billing';
         newCase.Description =
                 'Remind them their payment is Past due' + ' / ' +
                 'Ask if they have sent payment and if so when and note check number' + ' / ' +
