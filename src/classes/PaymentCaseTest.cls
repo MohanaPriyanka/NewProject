@@ -268,7 +268,7 @@ private class PaymentCaseTest {
         Test.stopTest();
 
         Case PSCase =
-        [SELECT AccountId, Product_Line__c,  Chargent_Order__c, Description, Subject, Case_Type__c
+        [SELECT AccountId, Product_Line__c, Category__c, Chargent_Order__c, Description, Subject, Case_Type__c
         FROM Case
         WHERE Chargent_Order__c =: order1.Id
         AND Subject LIKE '%Transaction Failed%'
@@ -276,7 +276,7 @@ private class PaymentCaseTest {
         LIMIT 1];
 
         List<Case> internalCases =
-        [SELECT AccountId, Product_Line__c,  Chargent_Order__c, Description, Subject
+        [SELECT AccountId, Product_Line__c, Category__c, Chargent_Order__c, Description, Subject
         FROM Case
         WHERE Chargent_Order__c =: order1.Id
         AND Subject LIKE '%Send to Product Team%'];
@@ -360,7 +360,7 @@ private class PaymentCaseTest {
 
         // query for the case that was just created
         Case PSCase =
-        [SELECT AccountId, Product_Line__c,  Chargent_Order__c, Description, Subject, Case_Type__c
+        [SELECT AccountId, Product_Line__c, Category__c, Chargent_Order__c, Description, Subject, Case_Type__c
         FROM Case
         WHERE Chargent_Order__c =: order1.Id
         AND Subject LIKE '%Transaction Failed%'
@@ -566,7 +566,7 @@ private class PaymentCaseTest {
 
         // query for the case that was just created
         Case PSCase =
-        [SELECT AccountId, Product_Line__c,  Chargent_Order__c, Description, Subject, Case_Type__c,
+        [SELECT AccountId, Product_Line__c, Category__c, Chargent_Order__c, Description, Subject, Case_Type__c,
             Contact.Email
         FROM Case
         WHERE Chargent_Order__c =: order1.Id
@@ -576,7 +576,7 @@ private class PaymentCaseTest {
 
         // query for the case that was just created
         Case secondCase = [
-            SELECT AccountId, Product_Line__c,  Chargent_Order__c, Description, Subject, Case_Type__c,
+            SELECT AccountId, Product_Line__c, Category__c, Chargent_Order__c, Description, Subject, Case_Type__c,
                 Contact.Email
             FROM Case
             WHERE Chargent_Order__c =: order2.Id
