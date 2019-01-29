@@ -59,7 +59,7 @@
                 <leftValueReference>myVariable_current.WhatId</leftValueReference>
                 <operator>StartsWith</operator>
                 <rightValue>
-                    <elementReference>formula_2_myRule_1_8414051168</elementReference>
+                    <elementReference>formula_2_myRule_1_4124192251</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
@@ -150,7 +150,7 @@
                     </value>
                 </processMetadataValues>
                 <leftValueReference>myVariable_current.Subject</leftValueReference>
-                <operator>EqualTo</operator>
+                <operator>StartsWith</operator>
                 <rightValue>
                     <stringValue>Call:inbound</stringValue>
                 </rightValue>
@@ -169,7 +169,7 @@
                 <stringValue>&quot;500&quot;</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_2_myRule_1_8414051168</name>
+        <name>formula_2_myRule_1_4124192251</name>
         <dataType>String</dataType>
         <expression>&quot;500&quot;</expression>
     </formulas>
@@ -180,11 +180,11 @@
                 <stringValue>NOW()</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_3_myRule_1_A1_2088785665</name>
+        <name>formula_3_myRule_1_A1_2021325141</name>
         <dataType>DateTime</dataType>
         <expression>NOW()</expression>
     </formulas>
-    <interviewLabel>Task_Case_First_Response_Workflow-5_InterviewLabel</interviewLabel>
+    <interviewLabel>Task_Case_First_Response_Workflow-6_InterviewLabel</interviewLabel>
     <label>Task: Case First Response Workflow</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -317,7 +317,7 @@
             </processMetadataValues>
             <field>First_Response_Date_Time__c</field>
             <value>
-                <elementReference>formula_3_myRule_1_A1_2088785665</elementReference>
+                <elementReference>formula_3_myRule_1_A1_2021325141</elementReference>
             </value>
         </inputAssignments>
         <object>Case</object>
