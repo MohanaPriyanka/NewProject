@@ -7,10 +7,10 @@
         <label>Information</label>
         <layoutColumns>
             <layoutItems>
-                <field>Title</field>
+                <field>UrlName</field>
             </layoutItems>
             <layoutItems>
-                <field>UrlName</field>
+                <field>Title</field>
             </layoutItems>
             <layoutItems>
                 <field>Answer__c</field>
