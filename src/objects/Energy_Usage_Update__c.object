@@ -802,6 +802,7 @@ if( month( Date__c ) == 12, &quot;December&quot;, null))))))))))))</formula>
     <fields>
         <fullName>Total_System_NMCs_2_of_4__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>Total credits produced as reported by the utility, including unsubscribed and subscribed credits for 2 of 4</inlineHelpText>
         <label>NMCs Available for Allocation (2 of 4)</label>
         <precision>18</precision>
         <required>false</required>
@@ -814,6 +815,7 @@ if( month( Date__c ) == 12, &quot;December&quot;, null))))))))))))</formula>
     <fields>
         <fullName>Total_System_NMCs_3_of_4__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>Total credits produced as reported by the utility, including unsubscribed and subscribed credits for 3 of 4</inlineHelpText>
         <label>NMCs Available for Allocation (3 of 4)</label>
         <precision>18</precision>
         <required>false</required>
@@ -826,6 +828,7 @@ if( month( Date__c ) == 12, &quot;December&quot;, null))))))))))))</formula>
     <fields>
         <fullName>Total_System_NMCs_4_of_4__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>Total credits produced as reported by the utility, including unsubscribed and subscribed credits for 4 of 4</inlineHelpText>
         <label>NMCs Available for Allocation (4 of 4)</label>
         <precision>18</precision>
         <required>false</required>
