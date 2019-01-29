@@ -39,44 +39,137 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>myRule_1_A1</targetReference>
+                <targetReference>myRule_1_pmetdec</targetReference>
             </connector>
-            <label>No Filter</label>
+            <label>Stage Changed from Complete to Cancelled</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>myRule_1_pmetdec</name>
+        <label>Previously Met Decision</label>
+        <locationX>100</locationX>
+        <locationY>100</locationY>
+        <defaultConnector>
+            <targetReference>myRule_1_A1</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Not Previously Met</defaultConnectorLabel>
+        <rules>
+            <name>myRule_1_pmetnullrule</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>myVariable_old</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_1_A1</targetReference>
+            </connector>
+            <label>Previously Met - Null</label>
+        </rules>
+        <rules>
+            <name>myRule_1_pmetrule</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_1_pmetrule</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Previously Met - Prev</label>
+        </rules>
+    </decisions>
+    <description>Creates a case assigned to Alex Schulte when an Opp cancells after schedule z filing</description>
     <formulas>
         <processMetadataValues>
             <name>originalFormula</name>
             <value>
-                <stringValue>&quot;Parent Account: &quot; &amp; [Overpayment__c].Account_Bill__c.Parent_Account__c.Name  &amp; &quot;; Logged by: &quot; &amp; [Overpayment__c].CreatedBy.FirstName &amp;  &quot; &quot; &amp; [Overpayment__c].CreatedBy.LastName &amp; &quot;; Account Bill: &quot; &amp; [Overpayment__c].Account_Bill__c.Account_Bill_ID__c </stringValue>
+                <stringValue>TODAY() + 10</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_2_myRule_1_A1_5768819265</name>
-        <dataType>String</dataType>
-        <expression>&quot;Parent Account: &quot; &amp; {!myVariable_current.Account_Bill__r.Parent_Account__r.Name}  &amp; &quot;; Logged by: &quot; &amp; {!myVariable_current.CreatedBy.FirstName} &amp;  &quot; &quot; &amp; {!myVariable_current.CreatedBy.LastName} &amp; &quot;; Account Bill: &quot; &amp; {!myVariable_current.Account_Bill__r.Account_Bill_ID__c}</expression>
+        <name>formula_2_myRule_1_A1_4885155147</name>
+        <dataType>Date</dataType>
+        <expression>TODAY() + 10</expression>
     </formulas>
     <formulas>
         <processMetadataValues>
             <name>originalFormula</name>
             <value>
-                <stringValue>&quot;Overpayment was logged for &quot; &amp; [Overpayment__c].Account_Bill__c.Parent_Account__c.Name </stringValue>
+                <stringValue>[Opportunity].Name + &apos;has cancelled after their opportunity was completed. Please process their cancellation.&apos;</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_3_myRule_1_A1_3798288941</name>
+        <name>formula_3_myRule_1_A1_1296355957</name>
         <dataType>String</dataType>
-        <expression>&quot;Overpayment was logged for &quot; &amp; {!myVariable_current.Account_Bill__r.Parent_Account__r.Name}</expression>
+        <expression>{!myVariable_current.Name} + &apos;has cancelled after their opportunity was completed. Please process their cancellation.&apos;</expression>
     </formulas>
     <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>[Opportunity].Id </stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_4_myRule_1_A1_2305025282</name>
+        <dataType>String</dataType>
+        <expression>{!myVariable_current.Id}</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>&apos;Customer Cancellation - &apos; + [Opportunity].Name </stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_5_myRule_1_A1_1135260778</name>
+        <dataType>String</dataType>
+        <expression>&apos;Customer Cancellation - &apos; + {!myVariable_current.Name}</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>AND(
+[Opportunity].Product_Line__c = &quot;Community Solar&quot;,
+ISCHANGED([Opportunity].StageName)=true,
+ISPICKVAL(PRIORVALUE([Opportunity].StageName), &apos;Complete&apos;),
+ISPICKVAL([Opportunity].StageName, &apos;Cancelled&apos;))</stringValue>
+            </value>
+        </processMetadataValues>
         <name>formula_myRule_1</name>
         <dataType>Boolean</dataType>
-        <expression>true</expression>
+        <expression>AND(
+{!myVariable_current.Product_Line__c} = &quot;Community Solar&quot;,
+ISCHANGED({!myVariable_current.StageName})=true,
+ISPICKVAL(PRIORVALUE({!myVariable_current.StageName}), &apos;Complete&apos;),
+ISPICKVAL({!myVariable_current.StageName}, &apos;Cancelled&apos;))</expression>
     </formulas>
-    <interviewLabel>Customer_Care_Case_for_Overpayments-2_InterviewLabel</interviewLabel>
-    <label>Customer Care Case for Overpayments</label>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>AND(
+[Opportunity].Product_Line__c = &quot;Community Solar&quot;,
+ISCHANGED([Opportunity].StageName)=true,
+ISPICKVAL(PRIORVALUE([Opportunity].StageName), &apos;Complete&apos;),
+ISPICKVAL([Opportunity].StageName, &apos;Cancelled&apos;))</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_1_pmetrule</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(
+{!myVariable_old.Product_Line__c} = &quot;Community Solar&quot;,
+ISCHANGED({!myVariable_old.StageName})=true,
+ISPICKVAL(PRIORVALUE({!myVariable_old.StageName}), &apos;Complete&apos;),
+ISPICKVAL({!myVariable_old.StageName}, &apos;Cancelled&apos;))</expression>
+    </formulas>
+    <interviewLabel>Case_Created_when_Opp_Cancels_after_SZ-7_InterviewLabel</interviewLabel>
+    <label>Case- Created when Opp Cancels after SZ</label>
     <processMetadataValues>
         <name>ObjectType</name>
         <value>
-            <stringValue>Overpayment__c</stringValue>
+            <stringValue>Opportunity</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -94,13 +187,13 @@
     <processMetadataValues>
         <name>TriggerType</name>
         <value>
-            <stringValue>onCreateOnly</stringValue>
+            <stringValue>onAllChanges</stringValue>
         </value>
     </processMetadataValues>
     <processType>Workflow</processType>
     <recordCreates>
         <name>myRule_1_A1</name>
-        <label>Create CC Case</label>
+        <label>Create Follow up Case</label>
         <locationX>100</locationX>
         <locationY>200</locationY>
         <inputAssignments>
@@ -137,6 +230,36 @@
             <processMetadataValues>
                 <name>dataType</name>
                 <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Case Detail</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Case_Detail__c</field>
+            <value>
+                <stringValue>Process Customer Cancellation: Send cancellation email and letter</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
                     <stringValue>Picklist</stringValue>
                 </value>
             </processMetadataValues>
@@ -149,7 +272,7 @@
             <processMetadataValues>
                 <name>leftHandSideLabel</name>
                 <value>
-                    <stringValue>Case Type</stringValue>
+                    <stringValue>Category</stringValue>
                 </value>
             </processMetadataValues>
             <processMetadataValues>
@@ -164,9 +287,39 @@
                     <stringValue>Picklist</stringValue>
                 </value>
             </processMetadataValues>
-            <field>Case_Type__c</field>
+            <field>Category__c</field>
             <value>
-                <stringValue>BlueWave</stringValue>
+                <stringValue>Cancellation</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>Date</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Deadline</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Formula</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Deadline__c</field>
+            <value>
+                <elementReference>formula_2_myRule_1_A1_4885155147</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -189,12 +342,6 @@
                 </value>
             </processMetadataValues>
             <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue></stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
                 <name>rightHandSideType</name>
                 <value>
                     <stringValue>Formula</stringValue>
@@ -202,7 +349,7 @@
             </processMetadataValues>
             <field>Description</field>
             <value>
-                <elementReference>formula_2_myRule_1_A1_5768819265</elementReference>
+                <elementReference>formula_3_myRule_1_A1_1296355957</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -225,12 +372,6 @@
                 </value>
             </processMetadataValues>
             <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue>Group;User</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
                 <name>rightHandSideType</name>
                 <value>
                     <stringValue>ID</stringValue>
@@ -238,43 +379,7 @@
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <stringValue>00G0a000002fjb3</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Product Line</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue></stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Product_Line__c</field>
-            <value>
-                <stringValue>Community Solar</stringValue>
+                <stringValue>0050a00000H1DcB</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -297,12 +402,6 @@
                 </value>
             </processMetadataValues>
             <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue>RecordType</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
                 <name>rightHandSideType</name>
                 <value>
                     <stringValue>ID</stringValue>
@@ -311,6 +410,36 @@
             <field>RecordTypeId</field>
             <value>
                 <stringValue>012j00000000HA8</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Opportunity</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Formula</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Related_Opportunity__c</field>
+            <value>
+                <elementReference>formula_4_myRule_1_A1_2305025282</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -330,12 +459,6 @@
                 <name>leftHandSideLabel</name>
                 <value>
                     <stringValue>Status</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue></stringValue>
                 </value>
             </processMetadataValues>
             <processMetadataValues>
@@ -369,12 +492,6 @@
                 </value>
             </processMetadataValues>
             <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue></stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
                 <name>rightHandSideType</name>
                 <value>
                     <stringValue>Formula</stringValue>
@@ -382,7 +499,7 @@
             </processMetadataValues>
             <field>Subject</field>
             <value>
-                <elementReference>formula_3_myRule_1_A1_3798288941</elementReference>
+                <elementReference>formula_5_myRule_1_A1_1135260778</elementReference>
             </value>
         </inputAssignments>
         <object>Case</object>
@@ -394,7 +511,7 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>true</isOutput>
-        <objectType>Overpayment__c</objectType>
+        <objectType>Opportunity</objectType>
     </variables>
     <variables>
         <name>myVariable_old</name>
@@ -402,7 +519,7 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
-        <objectType>Overpayment__c</objectType>
+        <objectType>Opportunity</objectType>
     </variables>
     <variables>
         <name>myVariable_waitStartTimeVariable</name>
