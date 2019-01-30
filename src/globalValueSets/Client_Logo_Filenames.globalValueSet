@@ -7,7 +7,7 @@
     </customValue>
     <customValue>
         <fullName>BluewaveLogo</fullName>
-        <default>true</default>
+        <default>false</default>
         <label>BluewaveLogo</label>
     </customValue>
     <customValue>

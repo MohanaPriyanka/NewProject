@@ -1387,6 +1387,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>APXTConga4__Conga_Template__c.Payment_Plan__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>APXTConga4__Conga_Template__c.Welcome_Insert__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>APXT_BPM__Conductor_Region__mdt.APXT_BPM__Hostname__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -27753,6 +27763,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Shared_Solar_System__c.Client_Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Shared_Solar_System__c.Client_Brand_Key__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

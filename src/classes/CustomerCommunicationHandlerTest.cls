@@ -323,7 +323,6 @@ public class CustomerCommunicationHandlerTest{
         List<Error_Log__c> errorList = [SELECT Id, Class__c, Method__c, User__c
                                         FROM Error_Log__c];
         System.assertEquals(0, errorList.size());
-        System.debug(errorList);
 
         System.assertNotEquals(MessagingService.emailsSent.size(), 0);
     }
@@ -369,7 +368,6 @@ public class CustomerCommunicationHandlerTest{
         List<Error_Log__c> errorList = [SELECT Id, Class__c, Method__c, User__c
         FROM Error_Log__c];
         System.assertEquals(0, errorList.size());
-        System.debug(errorList);
 
         System.assertNotEquals(MessagingService.emailsSent.size(), 0);
     }
@@ -415,7 +413,6 @@ public class CustomerCommunicationHandlerTest{
         List<Error_Log__c> errorList = [SELECT Id, Class__c, Method__c, User__c
         FROM Error_Log__c];
         System.assertEquals(0, errorList.size());
-        System.debug(errorList);
 
         System.assertNotEquals(MessagingService.emailsSent.size(), 0);
     }

@@ -116,127 +116,59 @@ public without sharing class AccountBillHandler{
         }
     }
 
-    public static void updateCheckAddressFromAccountBill (List<Account_Bill__c> accountBillList) {
-    // if Triggered by AB, find other ABs get the max one and pass that through
-        Map<Id, Id> accountToABMap = new Map<Id, Id>();
-        List<String> accountIdList = new List<String>();
-        List<Id> propertyIdList = new List<Id>();        
+    public static void setClientBrandKey (List<Account_Bill__c> accountBillList) {
+        // The Client Brand Key on the property is used for bill template branding
+        // on the parent account, it is used for portal branding
+
         Map<Id, Account> accountMap = new Map<Id, Account>();
-        Map<Id, String> acctToFieldMap = new Map<Id, String>();
-        Map<Id, String> checkAddressOverrideMap = new Map<Id, String>();
-        Map<Id, String> clientLogoOverrideMap = new Map<Id, String>();
-        Map<Id, Entity__c> entityMap = new Map<Id, Entity__c>();
-        String checkLine;
 
+        List<System_Bill__c> sbList = [
+            SELECT Id, Name, Account_Bill__r.Parent_Account__r.Id,
+                Account_Bill__r.Parent_Account__r.Parent_Account__c,
+                Account_Bill__r.Parent_Account__r.Parent_Account__r.Id,
+                Shared_Solar_System__r.Client_Brand_Key__c,
+                Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__r.Client_Brand_Key__c
+            FROM System_Bill__c
+            WHERE Account_Bill__c IN : accountBillList
+            AND Account_Bill__r.Parent_Account__r.Parent_Account__c != null];
 
-        for (Account_Bill__c trigAcctBill : accountBillList) {
-            propertyIdList.add(trigAcctBill.Property_Account_ID__c);
-        }
+        for (System_Bill__c systemBill : sbList){
+            String brandKey;
+            String sssKey = systemBill.Shared_Solar_System__r.Client_Brand_Key__c;
+            String entityKey = systembill.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__r.Client_Brand_Key__c;
+            Account propAccount = new Account(Id = systembill.Account_Bill__r.Parent_Account__r.Id);
+            propAccount.Parent_Account__c = systembill.Account_Bill__r.Parent_Account__r.Parent_Account__r.Id;
 
-        for (Account_Bill__c acctBill : [SELECT Id, Name, Bill_Number__c,
-                                            Property_Account_ID__c, Parent_Account__r.Max_Account_Bill_Number__c
-                                            FROM Account_Bill__c 
-                                            WHERE Parent_Account__r.Id IN : propertyIdList
-                                            ORDER BY Bill_Number__c DESC ]) {
-            if (acctBill.Parent_Account__r.Max_Account_Bill_Number__c == acctBill.Bill_Number__c){
-                accountIdList.add(acctBill.Property_Account_ID__c);
-                accountToABMap.put(acctBill.Id, acctBill.Property_Account_ID__c);
-            }
-        }
-
-        for (Account accountList : [   SELECT Id, Name, Max_Account_Bill_Number__c,
-                                        Directions_to_Write_Paper_Check__c,
-                                        Send_Checks_Address__c
-                                        FROM Account 
-                                        WHERE Id IN : accountIdList ] ) {
-            accountMap.put(accountList.Id, accountList);
-        }
-
-        for (Entity__c entity : [ SELECT Id, Name, Send_Checks_Address__c, Client_Account__r.Client_Brand_Key__c
-                                    FROM Entity__c ] ) {
-            entityMap.put(entity.Id, entity);
-        }
-
-        List<AggregateResult> checkAddress = [  SELECT Account_Bill__r.Id abID, 
-                                                Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Id ProjectCompanyId, 
-                                                MAX(Account_Bill__r.Parent_Account__r.Account_Number__c)AcctNum,
-                                                SUM(Total_Due__c)TotalDue
-                                                FROM System_Bill__c 
-                                                WHERE Account_Bill__c IN : accountToABMap.keySet()
-                                                GROUP BY Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Id, 
-                                                Account_Bill__r.Id
-                                                ORDER BY SUM(Total_Due__c) DESC];
-
-        List<BW_Address__c> bwAddress = BW_Address__c.getall().values();
-        String defaultAddress = 'BlueWave ' + bwAddress[0].Address_Line_One__c;
-        defaultAddress += (', '+ bwAddress[0].Address_Line_Two__c);
-        defaultAddress += (' '+ bwAddress[0].City__c + ',');
-        defaultAddress += (' '+ bwAddress[0].State__c);
-        defaultAddress += (' '+ bwAddress[0].Zip_Code__c);
-
-        for (AggregateResult lineItem : checkAddress)  {
-            checkLine = '';
-            if (accountToABMap.containsKey((String)lineItem.get('abID'))) {
-                String accountId = accountToABMap.get((String)lineItem.get('abID'));
-                Decimal lineItemDue = ((Decimal)lineItem.get('TotalDue')).setScale(2);
-                String projectCoName = entityMap.get((String)lineItem.get('ProjectCompanyId')).Name;
-
-                Id projectCoId = entityMap.get((Id)lineItem.get('ProjectCompanyId')).Id;
-                if (entityMap.containsKey(projectCoId)) {
-                    if ( !checkAddressOverrideMap.containsKey(accountId) && entityMap.get(projectCoId).Send_Checks_Address__c != null ){
-                        checkAddressOverrideMap.put(accountId, entityMap.get(projectCoId).Send_Checks_Address__c);
-                    } else if (checkAddressOverrideMap.containsKey(accountId)){
-                        if (checkAddressOverrideMap.get(accountId) != entityMap.get(projectCoId).Send_Checks_Address__c) {
-                            checkAddressOverrideMap.put(accountId, defaultAddress);
-                        }
-                    }
-                    if ( !clientLogoOverrideMap.containsKey(accountId) && entityMap.get(projectCoId).Client_Account__r.Client_Brand_Key__c != null){
-                        clientLogoOverrideMap.put(accountId, entityMap.get(projectCoId).Client_Account__r.Client_Brand_Key__c);
-                    } else if (clientLogoOverrideMap.containsKey(accountId)){
-                        if (clientLogoOverrideMap.get(accountId) != entityMap.get(projectCoId).Client_Account__r.Client_Brand_Key__c 
-                            && entityMap.get(projectCoId).Client_Account__r.Client_Brand_Key__c != null) {
-                            clientLogoOverrideMap.put(accountId, 'BluewaveLogo');
-                        }
-                    }
-                }
-                if ( !acctToFieldMap.containsKey(accountId)) {
-                    if (lineItemDue < 0.01) {
-                        checkLine = 'No Payment Due';
-                        acctToFieldMap.put(accountId , checkLine);
-                    } else {
-                        checkLine = 'Make one check out to ' + projectCoName + ' for $' + lineItemDue;
-                        acctToFieldMap.put(accountId , checkLine);
-                    }
-                } else {
-                    if (lineItemDue < 0.01) {
-                        checkLine = acctToFieldMap.get(accountId) + ' ';
-                        acctToFieldMap.put(accountId , checkLine);
-                    } else {
-                        checkLine = acctToFieldMap.get(accountId) + ', make one check out to ' + projectCoName + ' for $' + lineItemDue;
-                        acctToFieldMap.put(accountId , checkLine); 
-                    }
-                }
-            }
-        }
-
-        for (Id acctId : acctToFieldMap.keySet()) {
-            if( acctToFieldMap.get(acctId).length() < 255) {
-                accountMap.get(acctId).Directions_to_Write_Paper_Check__c = acctToFieldMap.get(acctId);
+            if (sssKey != null){
+                brandKey = sssKey;
+            } else if (entityKey != null) {
+                brandKey = entityKey;
             } else {
-                accountMap.get(acctId).Directions_to_Write_Paper_Check__c = 'ERROR';
+                brandKey = 'BluewaveLogo';
             }
-            if(checkAddressOverrideMap.containsKey(acctId)) {
-                accountMap.get(acctId).Send_Checks_Address__c = checkAddressOverrideMap.get(acctId);
-            } else {
-                accountMap.get(acctId).Send_Checks_Address__c = defaultAddress;
-            }
-            if(clientLogoOverrideMap.containsKey(acctId)) {
-                accountMap.get(acctId).Client_Brand_Key__c = clientLogoOverrideMap.get(acctId);
-            } else {
-                accountMap.get(acctId).Client_Brand_Key__c = 'BluewaveLogo';
-            }
+
+            // If SBs under the same Property have conflicting branding, set Property to BlueWave branding:
+            accountMap = checkBrandConflicts(accountMap, propAccount, brandKey);
         }
 
-        update accountMap.Values();
+        if (accountMap.values().size() > 0){
+            for (Account propAccount : accountMap.values()) {
+                String brandKeyProperty = propAccount.Client_Brand_Key__c;
+                Account parentAccount = new Account (Id = propAccount.Parent_Account__c);
+
+                // If Properties under the same Parent have conflicting branding, set Parent to BlueWave branding:
+                accountMap = checkBrandConflicts(accountMap, parentAccount, brandKeyProperty);
+            }
+            update accountMap.values();
+        }
+    }
+
+    public static Map<Id, Account> checkBrandConflicts (Map<Id, Account> accountMap, Account account, String brandKey) {
+        account.Client_Brand_Key__c = brandKey;
+        if (accountMap.containsKey(account.Id) && brandKey != accountMap.get(account.Id).Client_Brand_Key__c){
+            account.Client_Brand_Key__c = 'BluewaveLogo';
+        }
+        accountMap.put(account.Id, account);
+        return accountMap;
     }
 }
