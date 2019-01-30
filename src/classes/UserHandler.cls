@@ -11,7 +11,10 @@ public without sharing class UserHandler implements Queueable{
         Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Community Solar Community User'];
 
         for (Contact userContact : contactsToCreateUsers){
-            if (userContact.Email != null && userContact.FirstName != null && userContact.LastName != null){
+            if (userContact.Email != null &&
+                userContact.FirstName != null &&
+                userContact.LastName != null &&
+                userContact.AccountId != null) {
                 User userToInsert = setUserFields(userContact, profileRecord.Id);
                 usersToInsertMap.put(userContact.Id, userToInsert);
             }
@@ -26,17 +29,17 @@ public without sharing class UserHandler implements Queueable{
 
         User userToInsert = new User(
             FirstName = userContact.FirstName,
-            Lastname = userContact.LastName,
+            LastName = userContact.LastName,
             Alias = userContact.FirstName.left(2) + userContact.LastName.right(6),
             Email = userContact.Email,
-            Emailencodingkey ='UTF-8',
-            Languagelocalekey ='en_US',
-            Localesidkey ='en_US',
+            EmailEncodingKey ='UTF-8',
+            LanguageLocaleKey ='en_US',
+            LocaleSidKey ='en_US',
             Country ='United States',
             IsActive = true,
             ContactId = userContact.Id,
-            Profileid = profileId,
-            Timezonesidkey='America/New_York',
+            ProfileId = profileId,
+            TimeZoneSidKey='America/New_York',
             Username= userContact.Email,
             CommunityNickname = userContact.FirstName.left(10) + userContact.LastName.left(30)
         );
@@ -47,12 +50,8 @@ public without sharing class UserHandler implements Queueable{
         // If the username or nickname already exists, try to create a new one.
         // If it doesn't work even with the new value, log an error to flag manual intervention
         try {
-            if(Test.isRunningTest()){
-                Util.insertSObjs(usersToInsertMap.values());
-            } else {
-                insert usersToInsertMap.values();
-            }
-        } catch (Exception e){
+            Util.insertSObjs(usersToInsertMap.values());
+        } catch (Exception e) {
             String response = e.getMessage();
             // Example: 'Insert failed. First exception on row 0; first error: DUPLICATE_COMM_NICKNAME'
             // Working back from the error message, want to get row number of record that hit error
@@ -61,7 +60,7 @@ public without sharing class UserHandler implements Queueable{
             Integer recordToRemove;
             Map<Id, User> newUserMap;
 
-            if (response.contains('DUPLICATE_USERNAME')){
+            if (response.contains('DUPLICATE_USERNAME')) {
                 location = response.indexOf('DUPLICATE_USERNAME');
                 recordToRetry = Integer.valueOf(response.substring(location-16,location-15));
                 newUserMap = catchPreviouslyUsedValues(usersToInsertMap, recordToRetry);
@@ -69,14 +68,14 @@ public without sharing class UserHandler implements Queueable{
                 location = response.indexOf('DUPLICATE_COMM_NICKNAME');
                 recordToRetry = Integer.valueOf(response.substring(location-16,location-15));
                 newUserMap = catchPreviouslyUsedValues(usersToInsertMap, recordToRetry);
-            } else if (response.contains('PORTAL_USER_ALREADY_EXISTS_FOR_CONTACT')){
+            } else if (response.contains('PORTAL_USER_ALREADY_EXISTS_FOR_CONTACT')) {
                 location = response.indexOf('PORTAL_USER_ALREADY_EXISTS_FOR_CONTACT');
                 recordToRemove = Integer.valueOf(response.substring(location-16,location-15));
                 Id errorContactId = usersToInsertMap.values()[recordToRemove].ContactId;
                 newUserMap = usersToInsertMap;
                 newUserMap.remove(errorContactId);
             } else {
-                String message = 'Unhandled Error: ' + response + newUserMap;
+                String message = 'Unhandled Error: ' + response + '\nUsers to insert: ' + usersToInsertMap.values();
                 Logger.logLater('UserHandler',
                                 'attemptInsert',
                                 message);

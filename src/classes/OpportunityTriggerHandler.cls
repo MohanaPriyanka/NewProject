@@ -79,14 +79,16 @@ public without sharing class OpportunityTriggerHandler {
         List<Id> parentAccountIdList = new List<Id>();
 
         for (Opportunity newOpp : newOppMap.values()) {
-            if (oldOppMap.get(newOpp.Id).Contract_Status__c != 'Completed'
-                && newOpp.Contract_Status__c == 'Completed'){
+            if (oldOppMap.get(newOpp.Id).Contract_Status__c != 'Completed' &&
+                newOpp.Contract_Status__c == 'Completed' &&
+                newOpp.Product_Line__c == 'Community Solar' &&
+                newOpp.Parent_Account_ID__c != null) {
                 parentAccountIdList.add(newOpp.Parent_Account_ID__c);
             }
         }
         if (parentAccountIdList.size() > 0){
             List<Contact> contactList = [
-                SELECT Id, FirstName, LastName, Email
+                SELECT Id, FirstName, LastName, Email, AccountId
                 FROM Contact
                 WHERE AccountId IN : parentAccountIdList];
 
