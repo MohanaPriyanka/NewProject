@@ -112,7 +112,7 @@ public class CustomerCommunicationHandler implements Database.Batchable<sObject>
             insert caseToInsertList;
         }
 
-        if (errorsToLog != 'None'){
+        if (errorsToLog != null && errorsToLog != 'None'){
             Logger.logLater('CustomerCommunicationHandler', 'Missing Email Templates: acct / template', errorsToLog);
             Logger.flushLogs();
         }
