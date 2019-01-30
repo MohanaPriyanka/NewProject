@@ -1002,7 +1002,7 @@
  [BlueWave_Surveys__c].Name</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_10_myRule_9_A1_6516336392</name>
+        <name>formula_10_myRule_9_A1_9996384967</name>
         <dataType>String</dataType>
         <expression>{!myVariable_current.Case__r.SuppliedName} &amp; &quot; gave a low Case Satisfaction rating in their survey . Please reach out to them to follow up! Survey Name: &quot; &amp;
  {!myVariable_current.Name}</expression>
@@ -1014,7 +1014,7 @@
                 <stringValue>&quot;Poor Survey Response, Followup Needed!&quot;</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_11_myRule_9_A1_9276311150</name>
+        <name>formula_11_myRule_9_A1_2853717157</name>
         <dataType>String</dataType>
         <expression>&quot;Poor Survey Response, Followup Needed!&quot;</expression>
     </formulas>
@@ -1026,7 +1026,7 @@
  [BlueWave_Surveys__c].Name</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_2_myRule_1_A1_2491258128</name>
+        <name>formula_2_myRule_1_A1_0616536030</name>
         <dataType>String</dataType>
         <expression>{!myVariable_current.Case__r.SuppliedName} &amp; &quot; gave a low Case Satisfaction rating in their survey . Please reach out to them to follow up! Survey Name: &quot; &amp;
  {!myVariable_current.Name}</expression>
@@ -1038,7 +1038,7 @@
                 <stringValue>&quot;Poor Survey Response, Followup Needed!&quot;</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_3_myRule_1_A1_4824478398</name>
+        <name>formula_3_myRule_1_A1_7903496741</name>
         <dataType>String</dataType>
         <expression>&quot;Poor Survey Response, Followup Needed!&quot;</expression>
     </formulas>
@@ -1050,7 +1050,7 @@
  [BlueWave_Surveys__c].Name</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_6_myRule_5_A1_1110453174</name>
+        <name>formula_6_myRule_5_A1_8923696721</name>
         <dataType>String</dataType>
         <expression>{!myVariable_current.Case__r.SuppliedName} &amp; &quot; gave a low Case Satisfaction rating in their survey . Please reach out to them to follow up! Survey Name: &quot; &amp;
  {!myVariable_current.Name}</expression>
@@ -1062,7 +1062,7 @@
                 <stringValue>&quot;Poor Survey Response, Followup Needed!&quot;</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_7_myRule_5_A1_5348894060</name>
+        <name>formula_7_myRule_5_A1_0021151127</name>
         <dataType>String</dataType>
         <expression>&quot;Poor Survey Response, Followup Needed!&quot;</expression>
     </formulas>
@@ -1251,7 +1251,7 @@
             </processMetadataValues>
             <field>Description</field>
             <value>
-                <elementReference>formula_2_myRule_1_A1_2491258128</elementReference>
+                <elementReference>formula_2_myRule_1_A1_0616536030</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -1551,7 +1551,7 @@
             </processMetadataValues>
             <field>Subject</field>
             <value>
-                <elementReference>formula_3_myRule_1_A1_4824478398</elementReference>
+                <elementReference>formula_3_myRule_1_A1_7903496741</elementReference>
             </value>
         </inputAssignments>
         <object>Case</object>
@@ -1714,7 +1714,7 @@
             </processMetadataValues>
             <field>Description</field>
             <value>
-                <elementReference>formula_6_myRule_5_A1_1110453174</elementReference>
+                <elementReference>formula_6_myRule_5_A1_8923696721</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -2014,7 +2014,7 @@
             </processMetadataValues>
             <field>Subject</field>
             <value>
-                <elementReference>formula_7_myRule_5_A1_5348894060</elementReference>
+                <elementReference>formula_7_myRule_5_A1_0021151127</elementReference>
             </value>
         </inputAssignments>
         <object>Case</object>
@@ -2141,7 +2141,7 @@
             </processMetadataValues>
             <field>Description</field>
             <value>
-                <elementReference>formula_10_myRule_9_A1_6516336392</elementReference>
+                <elementReference>formula_10_myRule_9_A1_9996384967</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -2447,7 +2447,7 @@
             </processMetadataValues>
             <field>Subject</field>
             <value>
-                <elementReference>formula_11_myRule_9_A1_9276311150</elementReference>
+                <elementReference>formula_11_myRule_9_A1_2853717157</elementReference>
             </value>
         </inputAssignments>
         <object>Case</object>
