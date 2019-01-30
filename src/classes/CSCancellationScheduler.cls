@@ -27,7 +27,11 @@ public without sharing class CSCancellationScheduler implements Schedulable{
                 String message = '';
                 message += 'Overdue Accounts set as overdue: ' + sobjectListToIdString(overdueAccounts) + '\n\n';
                 message += 'Cancelled Opps: ' + sobjectListToIdString(cancelledOpportunities) + '\n\n';
-                message += 'Accounts removed from all projects: ' + sobjectListToIdString(accountsRemovedFromAllProjects);
+                message += 'Accounts removed from all projects: ' + sobjectListToIdString(accountsRemovedFromAllProjects) + '\n\n';
+                message += 'Took ' +
+                    Limits.getCpuTime() + 'ms of CPU time (of ' + Limits.getLimitCpuTime() + 'ms), ' +
+                    Limits.getHeapSize()/1000000 + 'MB of heap (of ' + Limits.getLimitHeapSize()/1000000 + 'MB), and ' +
+                    Limits.getQueries() + ' queries (of ' + Limits.getLimitQueries() + ' queries)';
                 Logger.logNow('CSCancellationScheduler', 'execute', message);
             }
         } catch (Exception e) {

@@ -49,24 +49,6 @@ public without sharing class CSCancellationService {
         sendCancellationConfirmationEmails(uasesToMarkInactive);
     }
 
-    public static List<Utility_Account_Subscription__c> getUASesForManuallyCancelledAccounts(Map<Id, Account> triggerNewMap, Map<Id, Account> triggerOldMap) {
-        List<Id> accountsCancelled = new List<Id>();
-        List<Utility_Account_Subscription__c> uasesToMarkInactive = new List<Utility_Account_Subscription__c>();
-        for (Id newAccountId : triggerNewMap.keySet()) {
-            if (triggerOldMap.get(newAccountId).Cancellation_Request_Date__c == null &&
-                triggerNewMap.get(newAccountId).Cancellation_Request_Date__c != null) {
-                accountsCancelled.add(newAccountId);
-            }
-        }
-
-        if (accountsCancelled.isEmpty()) {
-            return uasesToMarkInactive;
-        }
-
-        uasesToMarkInactive = UASSelector.selectByAccounts(new Set<Id>(accountsCancelled));
-        return uasesToMarkInactive;
-    }
-
     private static void sendCancellationConfirmationEmails(List<Utility_Account_Subscription__c> uasesCancelled) {
         Map<Id, Messaging.SingleEmailMessage> cancellationEmailMap = new Map<Id, Messaging.SingleEmailMessage>();
 
@@ -120,7 +102,7 @@ public without sharing class CSCancellationService {
     public static void processFinaledUtilityAccounts(List<Utility_Account_Subscription__c> uasesToMarkInactive) {
         UtilityAccountSubscriptions subscriptions = new UtilityAccountSubscriptions(uasesToMarkInactive);
         subscriptions.removeFromProject();
-        createCaseToTransferOrTeminate(subscriptions);
+        createCaseToTransferOrTerminate(subscriptions);
     }
 
     public static List<Utility_Account_Subscription__c> getUASesForFinaledUALs(List<Utility_Account_Log__c> newUALList, Map<Id, Utility_Account_Log__c> oldUALMap) {
@@ -141,7 +123,7 @@ public without sharing class CSCancellationService {
         return uasesToMarkInactive;
     }
 
-    private static void createCaseToTransferOrTeminate(UtilityAccountSubscriptions subscriptionList) {
+    private static void createCaseToTransferOrTerminate(UtilityAccountSubscriptions subscriptionList) {
         String caseOwner;
         List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
         if (systemProperties.isEmpty() || String.isBlank(systemProperties[0].Finaled_Case_Owner__c)) {
