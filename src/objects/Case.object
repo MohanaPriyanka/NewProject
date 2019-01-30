@@ -380,7 +380,7 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>MultiselectPicklist</type>
+        <type>Picklist</type>
         <valueSet>
             <controllingField>Product_Line__c</controllingField>
             <valueSetDefinition>
@@ -715,7 +715,6 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
                 <valueName>Underwriting</valueName>
             </valueSettings>
         </valueSet>
-        <visibleLines>6</visibleLines>
     </fields>
     <fields>
         <fullName>Chargent_Order__c</fullName>
