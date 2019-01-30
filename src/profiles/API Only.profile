@@ -30148,7 +30148,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>User.Client_Brand_Key__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
