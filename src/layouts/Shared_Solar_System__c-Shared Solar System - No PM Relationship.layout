@@ -68,6 +68,10 @@
                 <behavior>Edit</behavior>
                 <field>Sales_Charge__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Project_Location_and_Customer_Allocation__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
