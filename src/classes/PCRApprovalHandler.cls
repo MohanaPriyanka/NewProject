@@ -450,7 +450,6 @@ public without sharing class PCRApprovalHandler {
                 Income_Support__c, Annual_Income_Currency__c, Co_Applicant_Income__c,
                 Co_Applicant_First_Name__c, CoApplicant_Contact__c, Application_Type__c, Partner_Lookup__c,
                 IBLS_Category__c, Avidia_Executive__c, Avidia_Service_Provider__c, Other_Bank_Executive__c,
-                Lock_Product__c,
                 Personal_Credit_Report__c,
                 Personal_Credit_Report_Co_Applicant__c,
                 Personal_Credit_Report__r.LASERCA__Contact__c,
