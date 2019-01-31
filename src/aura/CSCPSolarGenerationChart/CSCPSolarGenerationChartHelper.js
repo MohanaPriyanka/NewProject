@@ -4,70 +4,79 @@
         var action = component.get("c.getGenerationSavingsData");
         action.setCallback(this, function(resp) {
             var canvas = component.find('chart').getElement();
-            var ctx = canvas.getContext('2d'); 
+            var ctx = canvas.getContext('2d');
 
             // if chartobj is not empty, then destory the chart in the view
             if (chartobj) {
                 chartobj.destroy();
             }
-            
-            chartobj = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: resp.getReturnValue().yearMonth,
-                    datasets: [
-                        {   type: 'bar',
-                            data: resp.getReturnValue().savings,
-                            backgroundColor: '#7D98AA',
-                            hoverBorderWidth: 8,
-                            stack: 1,
-                            label: 'Savings This Month'
-                        },
-                        {
-                            type: 'bar',
-                            data: resp.getReturnValue().totalSavings,
-                            backgroundColor: '#1c5a7d',
-                            hoverBorderWidth: 8,
-                            stack: 1,
-                            label: 'Total Savings'
-                        },                        
-                    ]
-                },                
-                options: {
-                    title: {
-                        display: true,
-                        text: 'Community Solar Savings'
-                    },      
-                    tooltips: {
-                        enabled: false
-                    },                                  
-                    scales: {
-                        yAxes: [{
-                            stacked: true,
-                            ticks: {
-                                beginAtZero: true,
-                                callback: function(value, index, values) {
-                                    return '$' + parseFloat(Math.round(value * 100) / 100).toFixed(2);;
-                                }
-                            }
-                        }],
-                        xAxes: [{
-                            stacked: true,
-                        }]                        
-                    },                    
-                    legend: {
-                        display: true,
-                        labels: ['Savings this month', 'Total Savings'],
-                        position: 'right',
-                        // By default, clicking on a legend item filters the chart. We want to enable
-                        // this only when we can also fire the SLPStageChartEvent
-                        onClick: function(event, legendItem) {}
+
+            if(resp.getReturnValue().yearMonth.length === 0 && resp.getReturnValue().totalSavings.length === 0) {
+                component.set('{!v.showChart}', false);
+            } else {
+                component.set('{!v.showChart}', true);
+
+                chartobj = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: resp.getReturnValue().yearMonth,
+                        datasets: [
+                            {   type: 'bar',
+                                data: resp.getReturnValue().savings,
+                                backgroundColor: '#7D98AA',
+                                hoverBorderWidth: 8,
+                                stack: 1,
+                                label: 'Savings This Month'
+                            },
+                            {
+                                type: 'bar',
+                                data: resp.getReturnValue().totalSavings,
+                                backgroundColor: '#1c5a7d',
+                                hoverBorderWidth: 8,
+                                stack: 1,
+                                label: 'Total Savings'
+                            },
+                        ]
                     },
-                    animation: {
-                        animateScale: false
+                    options: {
+                        title: {
+                            display: true,
+                            text: 'Community Solar Savings'
+                        },
+                        tooltips: {
+                            enabled: false
+                        },
+                        scales: {
+                            yAxes: [{
+                                stacked: true,
+                                ticks: {
+                                    beginAtZero: true,
+                                    callback: function(value, index, values) {
+                                        return '$' + parseFloat(Math.round(value * 100) / 100).toFixed(2);;
+                                    }
+                                }
+                            }],
+                            xAxes: [{
+                                stacked: true,
+                            }]
+                        },
+                        legend: {
+                            display: true,
+                            labels: ['Savings this month', 'Total Savings'],
+                            position: 'right',
+                            // By default, clicking on a legend item filters the chart. We want to enable
+                            // this only when we can also fire the SLPStageChartEvent
+                            onClick: function(event, legendItem) {}
+                        },
+                        animation: {
+                            animateScale: false
+                        }
                     }
-                }
-            });
+                });
+                component.set("v.chartobj",chartobj);
+            }
+
+
 
             // canvas.onclick = function(evt) {
             //     var activePoints = chartobj.getElementsAtEvent(evt);
@@ -95,8 +104,11 @@
             // }
 
             // store the chart in the attribute
-            component.set("v.chartobj",chartobj);
+
         });
         $A.enqueueAction(action);
     }
+
+
+
 })
