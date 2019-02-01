@@ -5,6 +5,7 @@
     <encodingKey>ISO-8859-1</encodingKey>
     <name>Auto-Branded Portal Welcome</name>
     <style>none</style>
+    <subject>Welcome!</subject>
     <type>visualforce</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>
