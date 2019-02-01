@@ -54,7 +54,7 @@ public class Opportunities {
             opp.StageName = 'Cancelled';
         }
         if (!records.isEmpty()) {
-            update records;
+            Database.executeBatch(new GenericBatchDMLOperation(records, 'Update'));
         }
     }
 }
