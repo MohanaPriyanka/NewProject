@@ -1,4 +1,5 @@
 .THIS {
+
     
 }
 
@@ -48,10 +49,9 @@
 .THIS #chart_div {
     width: 100%;
     height: 500px;
-    
 }
 
-.THIS #Here {
+.THIS #chart_container {
     background-color: #FFFFFF;
 }
 

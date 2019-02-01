@@ -15,37 +15,42 @@
                 component.set('{!v.showChart}', false);
             } else {
                 component.set('{!v.showChart}', true);
+                console.log(resp.getReturnValue().yearMonth);
 
                 chartobj = new Chart(ctx, {
                     type: 'bar',
                     data: {
                         labels: resp.getReturnValue().yearMonth,
                         datasets: [
-                            {   type: 'bar',
-                                data: resp.getReturnValue().savings,
-                                backgroundColor: '#7D98AA',
-                                hoverBorderWidth: 8,
-                                stack: 1,
-                                label: 'Savings This Month'
-                            },
                             {
                                 type: 'bar',
                                 data: resp.getReturnValue().totalSavings,
-                                backgroundColor: '#1c5a7d',
+                                backgroundColor: '#387CDF',
                                 hoverBorderWidth: 8,
                                 stack: 1,
                                 label: 'Total Savings'
                             },
+                            {   type: 'bar',
+                                data: resp.getReturnValue().savings,
+                                backgroundColor: '#E3EBFA',
+                                hoverBorderWidth: 8,
+                                stack: 1,
+                                label: 'Savings This Month'
+                            },
+
                         ]
                     },
                     options: {
                         title: {
                             display: true,
-                            text: 'Community Solar Savings'
+                            text: 'Community Solar Savings',
+                            padding: 20,
                         },
                         tooltips: {
                             enabled: false
                         },
+
+
                         scales: {
                             yAxes: [{
                                 stacked: true,
@@ -54,16 +59,46 @@
                                     callback: function(value, index, values) {
                                         return '$' + parseFloat(Math.round(value * 100) / 100).toFixed(2);;
                                     }
+                                },
+                                gridLines: {
+                                  display: false,
                                 }
                             }],
                             xAxes: [{
                                 stacked: true,
+                                gridLines: {
+                                    display: false,
+                                },
+                                // callback: function(value, index, values) {
+                                //     var month;
+                                //     switch (value) {
+                                //         case 1 :
+                                //             month = 'Jan';
+                                //             break;
+                                //         case 2 :
+                                //             month = 'Feb';
+                                //             break;
+                                //         case 3 :
+                                //             month = 'Mar';
+                                //             break;
+                                //         case 10 :
+                                //             month = 'Oct';
+                                //             break;
+                                //         case 11 :
+                                //             month = 'Nov';
+                                //             break;
+                                //     }
+                                //     return  ;
+                                // }
+
                             }]
                         },
                         legend: {
                             display: true,
                             labels: ['Savings this month', 'Total Savings'],
                             position: 'right',
+                            fontcolor: '#387CDF',
+
                             // By default, clicking on a legend item filters the chart. We want to enable
                             // this only when we can also fire the SLPStageChartEvent
                             onClick: function(event, legendItem) {}
