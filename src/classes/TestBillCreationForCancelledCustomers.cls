@@ -1,6 +1,7 @@
 @isTest
 public class TestBillCreationForCancelledCustomers {
     @testSetup public static void testSetupBillRecords() {
+        Test.startTest();
         Utility__c eversource = new Utility__c(
             Name = 'Eversource',
             Number_of_Decimal_Places__c = 2
@@ -391,6 +392,7 @@ public class TestBillCreationForCancelledCustomers {
         update firstProdUpdateSSS2;
 
         setBillsToPublished();
+        Test.stopTest();
     }
 
     static void setBillsToPublished() {

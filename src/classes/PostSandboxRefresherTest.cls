@@ -202,6 +202,9 @@ private class PostSandboxRefresherTest {
         PostSandboxRefresher.SecondAccountHelper SecondAccountHelper = new PostSandboxRefresher.SecondAccountHelper();
         SecondAccountHelper.execute(null);
         Test.stopTest();
+
+        List<Opportunity> opportunities = [SELECT Id FROM Opportunity WHERE Product_Line__c != 'Community Solar'];
+        System.assert(opportunities.size() > 0, 'There should be opportunities created with Product Line of Community Solar');
     }
 
     @IsTest
