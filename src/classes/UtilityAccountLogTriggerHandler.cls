@@ -1,11 +1,19 @@
 /**
  * Created by mstackhouse on 12/17/2018.
  * Description: 
- * Test: UtilityAccountLogTriggerHandler
+ * Test: UtilityAccountLogTriggerHandler, CSCancellationService
  */
 
 
 public without sharing class UtilityAccountLogTriggerHandler {
+    public static void onAfterUpdate(Map<Id, Utility_Account_Log__c> oldMap, List<Utility_Account_Log__c> newUALs) {
+        List<Utility_Account_Subscription__c> uasesToFinal =
+            CSCancellationService.getUASesForFinaledUALs(newUALs, oldMap);
+        if (!uasesToFinal.isEmpty()) {
+            CSCancellationService.processFinaledUtilityAccounts(uasesToFinal);
+        }
+    }
+
     public static void updateProposedkWh(List<Utility_Account_Log__c> uals, Map<Id, Utility_Account_Log__c> oldUALsByIds) {
         Set<Id> productTariffs = new Set<Id>();
         for (Utility_Account_Log__c ual : uals) {

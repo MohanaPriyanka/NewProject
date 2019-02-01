@@ -1,57 +1,106 @@
 /**
  * Created by mstackhouse on 5/15/2018.
  *
- * When a schedule Z is created this class creates subscriptions from a customer's UAS.
+ * Description: Creates subscriptions from a customer's UAS when a schedule Z is created. Updates old Schedule Z's when
+ * new ones are enacted, and marks UASes as Removed if they aren't on the new schedule Z.
  *
- *
- * Tested by: ScheduleZTriggerHandlerTest
+ * Tested by: ScheduleZTriggerHandlerTest, CSCancellationServiceTest
  */
 
 public without sharing class ScheduleZTriggerHandler {
-
-    public static void handleDates(List<Schedule_Z__c> oldScheduleZS, List<Schedule_Z__c> newScheduleZS) {
-        // Create map of the old schedZs Id:Sched Z
-        Map<Id, Schedule_Z__c> oldMap = new Map<Id, Schedule_Z__c>();
-        for (Schedule_Z__c schedZ : oldScheduleZS) {
-            oldMap.put(schedZ.Id, schedZ);
-        }
+    // For newly enacted Schedule Zs, we want to set the previous Schedule Z to retired, and update any UASes that
+    // that aren't on the new Schedule Z.
+    public static void handleNewlyEnactedScheduleZ(Map<Id, Schedule_Z__c> oldMap, List<Schedule_Z__c> newScheduleZS) {
+        List<Schedule_Z__c> szToUpdate = new List<Schedule_Z__c>();
 
         // Create a list of the Sched Z's that changed Status__c
-        List<Schedule_Z__c> statusChangedSZs = new List<Schedule_Z__c>();
+        List<Id> systemIdsWithEnactedSZs = new List<Id>();
         for (Schedule_Z__c schedZ : newScheduleZS) {
-            if (oldMap.containsKey(schedZ.Id) &&
-                schedZ.Status__c != oldMap.get(schedZ.Id).Status__c) {
-                statusChangedSZs.add(schedZ);
+            if (schedZ.Status__c == 'Enacted by Utility' &&
+                (oldMap == null ||
+                    (oldMap != null &&
+                        oldMap.containsKey(schedZ.Id) &&
+                        schedZ.Status__c != oldMap.get(schedZ.Id).Status__c))) {
+                systemIdsWithEnactedSZs.add(schedZ.Shared_Solar_System__c);
             }
         }
 
-        List<Id> systems = new List<Id>();
-        for (Schedule_Z__c schedZ : statusChangedSZs) {
-            if (schedZ.Status__c == 'Enacted by Utility') {
-                // need to find previous schedule Z and set the 'Date Schedule Z Retired by Utility' to today
-                //   for now, add it to a list so that all queries can be done in one query
-                systems.add(schedZ.Shared_Solar_System__c);
-            }
-        }
-
-        List<Shared_Solar_System__c> sssList = [
+        List<Shared_Solar_System__c> sharedSolarSystemsWithEnactedSZs = [
             SELECT Id,
-            (SELECT Id FROM Schedule_Zs__r
+            (SELECT Id, Date_Enacted_by_Utility__c
+            FROM Schedule_Zs__r
             WHERE Date_Schedule_Z_Retired_by_Utility__c = NULL
-            AND Date_Enacted_by_Utility__c != NULL ORDER BY Date_Enacted_by_Utility__c DESC)
+            AND Date_Enacted_by_Utility__c != NULL
+            ORDER BY Date_Enacted_by_Utility__c DESC)
             FROM Shared_Solar_System__c
-            WHERE Id IN : systems
+            WHERE Id IN :systemIdsWithEnactedSZs
         ];
 
-        List<Schedule_Z__c> SZToUpdate = new List<Schedule_Z__c>();
-        for (Shared_Solar_System__c sss : sssList) {
-            if (sss.Schedule_Zs__r.size() > 0) {
-                sss.Schedule_Zs__r.get(0).Date_Schedule_Z_Retired_by_Utility__c = System.today();
-                SZToUpdate.add(sss.Schedule_Zs__r.get(0));
+        // We need to get all all Schedule Zs with their subscriptions for the next step in the process to find UASes
+        // with Schedule Z Subscriptions not on the new Schedule Z.
+        Map<Id, Set<Id>> szToUASesMap = getSZtoUASesMap(sharedSolarSystemsWithEnactedSZs);
+        List<Utility_Account_Subscription__c> uasesToRetire = new List<Utility_Account_Subscription__c>();
+        for (Shared_Solar_System__c sss : sharedSolarSystemsWithEnactedSZs) {
+            if (sss.Schedule_Zs__r.size() > 1) {
+                sss.Schedule_Zs__r[1].Date_Schedule_Z_Retired_by_Utility__c = sss.Schedule_Zs__r[0].Date_Enacted_by_Utility__c;
+                szToUpdate.add(sss.Schedule_Zs__r[1]);
+                uasesToRetire.addAll(
+                    findUASesToRetire(
+                        sss.Schedule_Zs__r[1].Id,
+                        sss.Schedule_Zs__r[0].Date_Enacted_by_Utility__c,
+                        sss.Schedule_Zs__r[0].Id,
+                        szToUASesMap
+                    )
+                );
             }
         }
+        if (szToUpdate.size() > 0) {
+            update szToUpdate;
+        }
+        if (uasesToRetire.size() > 0) {
+            update uasesToRetire;
+        }
+    }
 
-        update SZToUpdate;
+    private static Map<Id, Set<Id>> getSZtoUASesMap(List<Shared_Solar_System__c> sssList) {
+        Set<Id> scheduleZIds = new Set<Id>();
+        for (Shared_Solar_System__c sss : sssList) {
+            // We only have to check for UASes not on the next SZ if there is more than one Enacted and non-Retired SZ
+            if (sss.Schedule_Zs__r.size() > 1) {
+                scheduleZIds.add(sss.Schedule_Zs__r[0].Id);
+                scheduleZIds.add(sss.Schedule_Zs__r[1].Id);
+            }
+        }
+        List<Schedule_Z__c> scheduleZsWithSubscriptions = [
+            SELECT Id,
+            (SELECT Id, Utility_Account_Subscription__c FROM Schedule_Z_Subscriptions__r)
+            FROM Schedule_Z__c
+            WHERE Id = :scheduleZIds
+        ];
+        Map<Id, Set<Id>> scheduleZIdToUASesMap = new Map<Id, Set<Id>>();
+        for (Schedule_Z__c scheduleZ : scheduleZsWithSubscriptions) {
+            Set<Id> uasIds = new Set<Id>();
+            for (Schedule_Z_Subscription__c szs : scheduleZ.Schedule_Z_Subscriptions__r) {
+                uasIds.add(szs.Utility_Account_Subscription__c);
+            }
+            scheduleZIdToUASesMap.put(scheduleZ.Id, uasIds);
+        }
+
+        return scheduleZIdToUASesMap;
+    }
+
+    private static List<Utility_Account_Subscription__c> findUASesToRetire(Id retiredScheduleZId, Date retiredDate, Id enactedScheduleZId, Map<Id, Set<Id>> szToUASesMap) {
+        List<Utility_Account_Subscription__c> uasesToRetire = new List<Utility_Account_Subscription__c>();
+        for (Id uasOnOldSZId : szToUASesMap.get(retiredScheduleZId)) {
+            if (!szToUASesMap.get(enactedScheduleZId).contains(uasOnOldSZId)) {
+                Utility_Account_Subscription__c uas = new Utility_Account_Subscription__c(
+                    Id = uasOnOldSZId,
+                    Date_Removed_from_Project__c = retiredDate
+                );
+                uasesToRetire.add(uas);
+            }
+        }
+        return uasesToRetire;
     }
 
     public static void createSubscriptions(List<Schedule_Z__c> scheduleZList) {

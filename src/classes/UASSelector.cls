@@ -1,0 +1,38 @@
+/*************************************************************************************
+ * Created By: peteryao on 1/20/19  
+ * Description: 
+ * Tested By: UASSelectorTest
+ *************************************************************************************/
+
+public class UASSelector {
+    public static List<Utility_Account_Subscription__c> selectByAccounts(Set<Id> accounts) {
+        return [
+            SELECT Id,
+                Utility_Account_Log__r.Account__c,
+                Utility_Account_Log__r.Account__r.Id,
+                Utility_Account_Log__r.Account__r.Name,
+                Utility_Account_Log__r.Account__r.Cancellation_Comments__c,
+                Utility_Account_Log__r.Account__r.Send_Bills_Contact__c,
+                Utility_Account_Log__r.Account__r.Send_Bills_Contact__r.Email,
+                Utility_Account_Log__r.Account__r.Send_Bills_Contact__r.FirstName,
+                Utility_Account_Log__r.Account__r.Send_Bills_Contact__r.Additional_Email__c,
+                Utility_Account_Log__r.Account__r.Additional_Contact__r.Email,
+                Utility_Account_Log__r.Account__r.Additional_Contact__r.Additional_Email__c
+            FROM Utility_Account_Subscription__c
+            WHERE Utility_Account_Log__r.Account__c = :accounts
+        ];
+    }
+
+    public static List<Utility_Account_Subscription__c> selectByUAL(Set<Id> ualIds) {
+        return [
+            SELECT Id,
+                Utility_Account_Log__c,
+                Utility_Account_Log__r.Account__c,
+                Utility_Account_Log__r.Account__r.Id,
+                Utility_Account_Log__r.Account__r.Name,
+                Utility_Account_Log__r.Account__r.Send_Bills_Contact__c
+            FROM Utility_Account_Subscription__c
+            WHERE Utility_Account_Log__c IN :ualIds
+        ];
+    }
+}

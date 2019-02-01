@@ -2,11 +2,25 @@
  * Created By: Peter Yao
  * Description:  Class that allows us to not send emails if running tests, but instead,
  *               validate the emails that are intended to be sent.
- * Tested by: PostSandboxRefresherTest, SLPControllersTestclass
+ * Tested by: MessagingServiceTest
  **/
 
 public class MessagingService {
+    private static OrgWideEmailAddress customerCareEmail;
+    private static Map<String, EmailTemplate> emailTemplateMap = new Map<String, EmailTemplate>();
     public static Messaging.Email[] emailsSent;
+
+    public static OrgWideEmailAddress getCustomerCareEmail() {
+        if (customerCareEmail == null) {
+            customerCareEmail = [
+                SELECT Id, Address
+                FROM OrgWideEmailAddress
+                WHERE Address = 'customercare@bluewavesolar.com'
+                LIMIT 1
+            ];
+        }
+        return customerCareEmail;
+    }
 
     public static Boolean createAndSendDynamicTemplateEmail(String emailTemplateName, String orgWideEmail, String subjectLine, List<String> addressList, String templateField, String replaceText) {
         EmailEnvelope ee = new EmailEnvelope();
@@ -37,11 +51,29 @@ public class MessagingService {
         return createAndSendEmail(templateHtml, ee.orgWideEmail, ee.subjectLine, ee.addressList, ee.sobjectId);
     }
 
-    public static EmailTemplate getHtml (String templateDevName) {
-        EmailTemplate template = [SELECT Id, HtmlValue, Body 
-                                  FROM EmailTemplate 
-                                  WHERE DeveloperName = : templateDevName];
-        return template;
+    @TestVisible
+    private static Boolean onlyUseActiveTemplates = true;
+    public static EmailTemplate getHtml (String templateName) {
+        if (emailTemplateMap.get(templateName) == null) {
+            List<EmailTemplate> templates = [
+                SELECT Id, HtmlValue, Body
+                FROM EmailTemplate
+                WHERE DeveloperName = :templateName
+                AND (IsActive = TRUE OR IsActive = : onlyUseActiveTemplates)
+                LIMIT 1
+            ];
+            if (templates.isEmpty()) {
+                throw new Util.BWException('Template (' + templateName + ') not found or not active');
+            }
+            emailTemplateMap.put(templateName, templates[0]);
+        }
+        return emailTemplateMap.get(templateName);
+    }
+
+    public static void safeAddCC(String ccEmail, List<String> ccEmails) {
+        if (ccEmail != null) {
+            ccEmails.add(ccEmail);
+        }
     }
 
     public static Messaging.SendEmailResult[] createAndSendEmail (String htmlBody, String orgWideEmail, String subjectLine, List<String> addressList) {
