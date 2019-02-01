@@ -365,6 +365,117 @@ private class PCRApprovalHandlerTest {
         System.assertEquals(pcrAG.LASERCA__Lead__r.Product__c, opp.Product__c);
     }
 
+    static testMethod void testPCRProductDoNotUpdate() {
+        Util.disableTrigger('Disable_OpportunityTrigger__c');
+        Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
+        Product2 productVar = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999',  null);
+        productVar.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
+        productVar.Lender_of_Record__c = 'Avidia';
+        productVar.Debt_To_Income_Maximum__c = 1;
+
+        insert productVar;
+
+        Lead leadAG = newLead(90000, 20000, null, false, partner.Id);
+        insert leadAG;
+        System.assertEquals(null, leadAG.Product__c);
+        LoanHandlerTestClass.convertleads(new List<Lead>{leadAG});
+        leadAG.Status = 'Ready for Credit Check';
+        update leadAG;
+        LASERCA__Personal_Credit_Report__c pcrAG = new LASERCA__Personal_Credit_Report__c(
+            LASERCA__Lead__c = leadAG.Id,
+            LASERCA__Credit_Score_TransUnion__c = '815',
+            CreatedDate = Datetime.now().addMinutes(-1)
+        );
+        insert pcrAG;
+        LASERCA__Trade_Accounts__c tradeacctAG = new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrAG.id,
+            LASERCA__Monthly_Payment__c = 200);
+        insert tradeacctAG;
+        insert getCRL(pcrAG);
+
+        Test.startTest();
+
+        leadAg.Product__c = productVar.Id;
+        update leadAG;
+
+        tradeacctAG.Exclude_From_Rollup__c = true;
+        update tradeacctAG;
+
+        pcrAG.Avidia_Review_Status__c = 'Reviewed - PreApproved';
+        update pcrAG;
+        Test.stopTest();
+
+        Lead updatedLead = [
+            SELECT Id, Product__c, Personal_Credit_Report__r.DTI_After__c
+            FROM Lead
+            WHERE Id =: leadAG.Id
+        ];
+
+        System.assertNotEquals(pcrAG.DTI_After__c, updatedLead.Personal_Credit_Report__r.DTI_After__c);
+        System.assertEquals(productVar.Id, updatedLead.Product__c);
+    }
+
+    static testMethod void testPCRProductDoesUpdate() {
+        Util.disableTrigger('Disable_OpportunityTrigger__c');
+        Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
+        Product2 productVar = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999',  null);
+        productVar.Disbursal_Terms__c = '35% Contract Signature, 65% Interconnection';
+        productVar.Lender_of_Record__c = 'Avidia';
+        productVar.Debt_To_Income_Maximum__c = 1;
+
+        insert productVar;
+
+        Lead leadAG = newLead(90000, 20000, null, false, partner.Id);
+        insert leadAG;
+        System.assertEquals(null, leadAG.Product__c);
+        LoanHandlerTestClass.convertleads(new List<Lead>{leadAG});
+        leadAG.Status = 'Ready for Credit Check';
+        update leadAG;
+        LASERCA__Personal_Credit_Report__c pcrAG = new LASERCA__Personal_Credit_Report__c(
+            LASERCA__Lead__c = leadAG.Id,
+            LASERCA__Credit_Score_TransUnion__c = '815',
+            CreatedDate = Datetime.now().addMinutes(-1)
+        );
+        insert pcrAG;
+        LASERCA__Trade_Accounts__c tradeacctAG = new LASERCA__Trade_Accounts__c(LASERCA__Personal_Credit_Report__c = pcrAG.id,
+            LASERCA__Monthly_Payment__c = 200);
+        insert tradeacctAG;
+        insert getCRL(pcrAG);
+
+        Test.startTest();
+
+        leadAg.Product__c = productVar.Id;
+        update leadAG;
+
+        tradeacctAG.Exclude_From_Rollup__c = true;
+        update tradeacctAG;
+
+        Lead updatedLead = [
+            SELECT Id, Product__c, Personal_Credit_Report__r.DTI_After__c
+            FROM Lead
+            WHERE Id =: leadAG.Id
+        ];
+
+        Test.stopTest();
+
+        System.assertNotEquals(pcrAG.DTI_After__c, updatedLead.Personal_Credit_Report__r.DTI_After__c);
+        System.assertEquals(productVar.Id, updatedLead.Product__c);
+
+        updatedLead.Product__c = null;
+        update updatedLead;
+
+        pcrAG.Avidia_Review_Status__c = 'Reviewed - PreApproved';
+        update pcrAG;
+
+        updatedLead = [
+            SELECT Id, Product__c, Personal_Credit_Report__r.DTI_After__c
+            FROM Lead
+            WHERE Id =: leadAG.Id
+        ];
+
+        System.assertNotEquals(pcrAG.DTI_After__c, updatedLead.Personal_Credit_Report__r.DTI_After__c);
+        System.assertNotEquals(productVar.Id, updatedLead.Product__c);
+    }
+
     static testMethod void testExclude() {
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
         Product2 productVar = LoanTestRecordWarehouse.getDefaultProduct('MA', 5.99, 10, null, '681', '999',  null);
@@ -546,7 +657,6 @@ private class PCRApprovalHandlerTest {
         ];
         insert ppj;
         Lead lead = newLead(81000, 10000, null, false, partner.Id);
-        lead.Product__c = bwsl.Id;
         insert lead;
 
         lead.Status = 'Ready for Credit Check';
