@@ -1110,6 +1110,7 @@ public with sharing class CSCancellationServiceTest {
 
         CSCancellationScheduler cscs = new CSCancellationScheduler();
         cscs.execute(null);
+        Test.stopTest();
 
         acct = [
             SELECT Id, Status__c
@@ -1127,7 +1128,6 @@ public with sharing class CSCancellationServiceTest {
         for (Opportunity opp : oppList) {
             System.assertEquals('Cancelled', opp.StageName);
         }
-        Test.stopTest();
     }
 
 }
