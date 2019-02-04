@@ -93,6 +93,9 @@
       </div>
     </aura:if>
     <!-- / ABOUT_YOURSELF -->
+
+    
+    <!--MAKE CHANGES HERE-->
     <!-- ADDRESS_FORM -->
     <aura:if isTrue="{!v.page == 'ApplyingFor'}">
       <div aria-labelledby="applyingForForm">
