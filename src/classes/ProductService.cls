@@ -1,7 +1,9 @@
 public class ProductService {
     public static List<Product_Escalator__c> createEscalators(Decimal percentInflator, Decimal startingRate, Integer numberOfPeriods, Integer timeBetweenPeriods) {
         List<Product_Escalator__c> escalatorList = new List<Product_Escalator__c>();
-        Product_Escalation_Schedule__c escalatorSchedule = new Product_Escalation_Schedule__c ( Name = 'AMP Old Contract: $0.1327');
+        Product_Escalation_Schedule__c escalatorSchedule = new Product_Escalation_Schedule__c (
+            Name = 'Product Escalator: ' + startingRate + ' ' + percentInflator  + ' ' +  numberOfPeriods
+        );
         insert escalatorSchedule;
 
         for (Integer j = 0; j <= numberOfPeriods ; j++) {
