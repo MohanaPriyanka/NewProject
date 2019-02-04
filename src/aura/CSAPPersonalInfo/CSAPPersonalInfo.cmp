@@ -98,7 +98,7 @@
       <div aria-labelledby="applyingForForm">
         <fieldset class="slds-box slds-theme--default slds-container_center">
           <legend id="ApplyingFor" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-            <b class="slds-section__title--large">Select which kind of Community Solar you are applying for!</b>
+            <b class="slds-section__title--large">&nbsp; &nbsp;Select which kind of Community Solar you are applying for!&nbsp; &nbsp;</b>
           </legend>
           <lightning:layout multipleRows="true" horizontalAlign="center">
             <lightning:layoutItem size="3" smallDeviceSize="6" mediumDeviceSize="3">
@@ -187,7 +187,7 @@
         <aura:if isTrue="{!v.lead.Application_Type__c != ''}">
           <fieldset class="slds-box slds-theme--default slds-container_center">
             <legend id="homeAddressForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-              <b class="slds-section__title--large">Where would you like to receive Community Solar?</b>
+              <b class="slds-section__title--large">&nbsp; &nbsp;Where would you like to receive Community Solar?&nbsp; &nbsp;</b>
             </legend>
             <form class="slds-form--stacked">
               <div class="slds-p-around--small slds-text-body--regular">
@@ -272,8 +272,8 @@
       <aura:if isTrue="{!v.sendBillToHome == 'No'}">
         <div aria-labelledby="billingAddressForm">
           <fieldset class="slds-box slds-theme--default slds-container_center">
-            <legend id="billingAddressForm" class="slds-text-heading--small slds-p-vertical--medium slds-section__title--large">
-              Where would you like us to send your Community Solar Bill?
+            <legend id="billingAddressForm" class="slds-text-heading--small slds-p-vertical--medium slds-section__title--large">&nbsp; &nbsp;
+              Where would you like us to send your Community Solar Bill?&nbsp; &nbsp;
             </legend>
             <form class="slds-form--stacked">
               <lightning:layout multipleRows="true">
@@ -320,8 +320,8 @@
         <div aria-labelledby="businessForm">
           <fieldset class="slds-box slds-theme--default slds-container_center">
             <legend id="businessForm" class="slds-text-heading--small slds-p-vertical--medium slds-section__title--large slds-align_absolute-center">
-              <b class="slds-section__title--large">Tell us a bit about your</b>
-              <b class="slds-section__title--large--stream"> business</b>
+              <b class="slds-section__title--large">&nbsp; &nbsp;Tell us a bit about your</b>
+              <b class="slds-section__title--large--stream"> business &nbsp; &nbsp;</b>
             </legend>
             <form class="slds-form--stacked">
               <lightning:layout multipleRows="true">
@@ -430,7 +430,7 @@
       <div>
         <fieldset class="slds-box slds-theme--default slds-container_center">
           <legend id="homeAddressForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-            <b class="slds-section__title--large">Help us find you</b>
+            <b class="slds-section__title--large">&nbsp; &nbsp;Help us find you&nbsp; &nbsp;</b>
           </legend>
           <form class="slds-form--stacked">
             <div class="slds-p-around--small slds-text-body--regular">
