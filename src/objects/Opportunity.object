@@ -5732,6 +5732,20 @@ IF(INCLUDES(Customer_Type__c, &quot;Private Affordable&quot;),&quot;Error&quot;,
         <type>TextArea</type>
     </fields>
     <fields>
+        <fullName>Product_Escalation_Schedule__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Product Escalation Schedule</label>
+        <referenceTo>Product_Escalation_Schedule__c</referenceTo>
+        <relationshipLabel>Opportunities</relationshipLabel>
+        <relationshipName>Opportunities</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Product_Line__c</fullName>
         <externalId>false</externalId>
         <label>Product Line</label>
