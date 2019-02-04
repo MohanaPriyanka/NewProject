@@ -54,7 +54,7 @@
           <div aria-labelledby="paymentInformationForm">
             <fieldset class="slds-box slds-theme--default slds-container_center">
               <legend id="paymentInformation" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-                <b class="slds-section__title--large">Now we need to collect a Payment Method for autopay.</b>
+                <b class="slds-section__title--large">&nbsp; &nbsp;Now we need to collect a Payment Method for autopay.&nbsp; &nbsp;</b>
               </legend>
                 <div class="slds-p-around--small slds-text-body--regular slds-align_absolute-center">
                   <b>We require all Community Solar customers to sign up for Autopay. You will not be charged at this time. Payments will begin automatically once we begin to transfer credits to your utility account. We will provide at least 10 days written notice before initiating charges to the account provided.</b>
