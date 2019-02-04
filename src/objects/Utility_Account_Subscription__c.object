@@ -361,6 +361,17 @@ Round(( Subscribed_Annual_Cost_of_Electricity__c / 0.1933 / Opportunity__r.Share
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Finaled__c</fullName>
+        <externalId>false</externalId>
+        <formula>NOT(ISBLANK( Utility_Account_Log__r.Date_Utility_Account_Cancelled__c ))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Checked if the Utility Account Log has a Date Utility Account Cancelled, indicating that the utility finaled this utiltiy account.</inlineHelpText>
+        <label>Finaled</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Full_Anticipated_NMC_Allocation_kWh__c</fullName>
         <externalId>false</externalId>
         <formula>Annual_Cost_of_Electricity__c / Opportunity__r.NMC_Value__c</formula>
@@ -627,7 +638,8 @@ Round(( Subscribed_Annual_Cost_of_Electricity__c / 0.1933 / Opportunity__r.Share
     <fields>
         <fullName>Reason_for_Cancellation__c</fullName>
         <externalId>false</externalId>
-        <label>Reason for Cancellation</label>
+        <inlineHelpText>Moved to the Property Account, so cancellation reasons can be easily managed and viewed for multi-subscription accounts.</inlineHelpText>
+        <label>XXXReason for Cancellation</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
