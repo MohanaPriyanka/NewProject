@@ -25,7 +25,7 @@
             </legend>
             <lightning:layout multipleRows="true" horizontalAlign="center">
               <lightning:layoutItem size="3" smallDeviceSize="6" mediumDeviceSize="3">
-              <div class="slds-visual-picker slds-visual-picker_large">
+              <div class="slds-visual-picker slds-visual-picker_large slds-align--absolute-center">
                 <a onclick="{!c.addResidence}">
                   <label for="visual-picker-residential">
                     <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">
@@ -42,7 +42,7 @@
               </div>
               </lightning:layoutItem>
               <lightning:layoutItem size="3" smallDeviceSize="6" mediumDeviceSize="3">
-              <div class="slds-visual-picker slds-visual-picker_large">
+              <div class="slds-visual-picker slds-visual-picker_large slds-align--absolute-center">
                 <a onclick="{!c.addBusiness}">
                   <label for="visual-picker-business">
                     <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">
