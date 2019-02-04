@@ -1,12 +1,14 @@
 @isTest
 public class LoanHandlerTestClass {
     @testSetup public static void setupTestData(){
+        Test.startTest();
         List<String> partnerSetUpIds = new List<String>();  
         partnerSetUpIds = LoanTestRecordWarehouse.partnerSetup();
 
         List<lead> leadList = new List<lead>(LoanTestRecordWarehouse.getLoanHandlerLeadRecords());
         LoanHandler.createResidentialEquipment(leadList);
         LoanHandler.createLoan(leadList);
+        Test.stopTest();
     }
     @isTest static void testLoanHandlerCreateLoan() {
         // The insertion of the lead sets it as qualified due to the credit reports inserted with it.

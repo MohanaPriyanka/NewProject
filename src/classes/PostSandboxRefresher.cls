@@ -677,14 +677,16 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
                 Name = '2016 - sssA',
                 Shared_Solar_System__c = sssList[0].Id,
-                Status__c = 'Enacted by Utility'
+                Status__c = 'Enacted by Utility',
+                Date_Enacted_by_Utility__c = Date.today()
             );
             insert scheduleZ1;
 
             Schedule_Z__c scheduleZ2 = new Schedule_Z__c(
                 Name = '2016 - sssB',
                 Shared_Solar_System__c = sssList[1].Id,
-                Status__c = 'Enacted by Utility'
+                Status__c = 'Enacted by Utility',
+                Date_Enacted_by_Utility__c = Date.today()
             );
             insert scheduleZ2;
 
@@ -897,7 +899,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             Customer_Group__c = 'Residential',
             Product__c = sss.Product__r.Id,
             CloseDate = System.today(),
-            RecordTypeId = '012j00000010HPE'
+            RecordTypeId = '012j00000010HPE',
+            Product_Line__c = 'Community Solar'
         );
         return opportunity1;
     }
@@ -1022,6 +1025,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             delete [SELECT Id FROM Utility_Account_Subscription__c];
             delete [SELECT Id FROM Utility_Account_Log__c];
             delete [SELECT Id FROM Opportunity];
+            delete [SELECT Id FROM Case];
             delete [SELECT Id FROM Contact];
             delete [SELECT Id FROM Account];
             delete [SELECT Id FROM ChargentBase__Gateway__c];
