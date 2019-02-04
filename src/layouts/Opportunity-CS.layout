@@ -380,6 +380,13 @@
         <layoutColumns/>
         <style>TwoColumnsTopToBottom</style>
     </layoutSections>
+    <miniLayout>
+        <fields>Name</fields>
+        <fields>AccountId</fields>
+        <fields>CloseDate</fields>
+        <fields>StageName</fields>
+        <fields>Probability</fields>
+    </miniLayout>
     <relatedContent>
         <relatedContentItems>
             <layoutItem>
