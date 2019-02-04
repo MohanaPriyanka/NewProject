@@ -1,5 +1,14 @@
+/*************************************************************************************
+ * Created By:  Jordan Pentaleri
+ * Description: Used to modify and insert products and related objects
+ * Test: ProductServiceTest
+ *************************************************************************************/
 public class ProductService {
-    public static List<Product_Escalator__c> createEscalators(Decimal percentInflator, Decimal startingRate, Integer numberOfPeriods, Integer timeBetweenPeriods) {
+
+    // Creates escalation schedules for products that change rates over time (PPA that increases at a fixed %)
+    // For ex) A $0.1327 PPA that increases by 1.9% every 12 credit transfers for the length of the contract
+    // would have parameters: createEscalators(0.019, 0.1327, 20, 12)
+    public static List<Product_Escalator__c> createEscalators(Decimal percentInflator, Decimal startingRate, Integer numberOfPeriods, Integer creditTransfersBetweenPeriods) {
         List<Product_Escalator__c> escalatorList = new List<Product_Escalator__c>();
         Product_Escalation_Schedule__c escalatorSchedule = new Product_Escalation_Schedule__c (
             Name = 'Product Escalator: ' + startingRate + ' ' + percentInflator  + ' ' +  numberOfPeriods
@@ -7,16 +16,14 @@ public class ProductService {
         insert escalatorSchedule;
 
         for (Integer j = 0; j <= numberOfPeriods ; j++) {
-            if (j != 0){
-                startingRate = startingRate * (1 + percentInflator);
-            }
             startingRate = Util.roundValue(startingRate, 4 ,'HALF_UP');
             Product_Escalator__c escalator = new Product_Escalator__c (
                 Product_Escalation_Schedule__c = escalatorSchedule.Id,
-                Number_of_Credit_Transfers__c = timeBetweenPeriods * j,
+                Number_of_Credit_Transfers__c = creditTransfersBetweenPeriods * j,
                 New_Solar_Electricity_Rate__c = startingRate
             );
             escalatorList.add(escalator);
+            startingRate = startingRate * (1 + percentInflator);
         }
         insert escalatorList;
         return escalatorList;
