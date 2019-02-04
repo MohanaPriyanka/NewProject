@@ -23666,6 +23666,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Opportunity.Product_Escalation_Schedule__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.Product_Line__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -25832,6 +25837,21 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Product2.X25_BPS_Eligible__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Product_Escalator__c.New_NMC_Discount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Product_Escalator__c.New_Solar_Electricity_Rate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Product_Escalator__c.Number_of_Credit_Transfers__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -46234,6 +46254,12 @@
         <layout>Product2-Product Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Product_Escalation_Schedule__c-Product Escalation Schedule Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Product_Escalator__c-Product Escalator Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Product_Group_Assignment__c-Product Group Assignment Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -47849,6 +47875,24 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>Product2</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>Product_Escalation_Schedule__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>Product_Escalator__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
