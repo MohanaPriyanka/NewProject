@@ -1,5 +1,4 @@
 .THIS {
-
     
 }
 
@@ -49,9 +48,10 @@
 .THIS #chart_div {
     width: 100%;
     height: 500px;
+    
 }
 
-.THIS #chart_container {
+.THIS #mySolar {
     background-color: #FFFFFF;
 }
 

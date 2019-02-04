@@ -15,7 +15,6 @@
                 component.set('{!v.showChart}', false);
             } else {
                 component.set('{!v.showChart}', true);
-                console.log(resp.getReturnValue().yearMonth);
 
                 chartobj = new Chart(ctx, {
                     type: 'bar',
@@ -49,8 +48,6 @@
                         tooltips: {
                             enabled: false
                         },
-
-
                         scales: {
                             yAxes: [{
                                 stacked: true,
@@ -69,27 +66,7 @@
                                 gridLines: {
                                     display: false,
                                 },
-                                // callback: function(value, index, values) {
-                                //     var month;
-                                //     switch (value) {
-                                //         case 1 :
-                                //             month = 'Jan';
-                                //             break;
-                                //         case 2 :
-                                //             month = 'Feb';
-                                //             break;
-                                //         case 3 :
-                                //             month = 'Mar';
-                                //             break;
-                                //         case 10 :
-                                //             month = 'Oct';
-                                //             break;
-                                //         case 11 :
-                                //             month = 'Nov';
-                                //             break;
-                                //     }
-                                //     return  ;
-                                // }
+
 
                             }]
                         },
@@ -97,8 +74,6 @@
                             display: true,
                             labels: ['Savings this month', 'Total Savings'],
                             position: 'right',
-                            fontcolor: '#387CDF',
-
                             // By default, clicking on a legend item filters the chart. We want to enable
                             // this only when we can also fire the SLPStageChartEvent
                             onClick: function(event, legendItem) {}
