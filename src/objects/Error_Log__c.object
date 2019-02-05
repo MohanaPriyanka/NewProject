@@ -87,6 +87,46 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Severity__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Severity level used for filtering</inlineHelpText>
+        <label>Severity</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Error</fullName>
+                    <default>false</default>
+                    <label>Error</label>
+                </value>
+                <value>
+                    <fullName>Warn</fullName>
+                    <default>false</default>
+                    <label>Warn</label>
+                </value>
+                <value>
+                    <fullName>Info</fullName>
+                    <default>false</default>
+                    <label>Info</label>
+                </value>
+                <value>
+                    <fullName>Debug</fullName>
+                    <default>false</default>
+                    <label>Debug</label>
+                </value>
+                <value>
+                    <fullName>Fine</fullName>
+                    <default>false</default>
+                    <label>Fine</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Timestamp__c</fullName>
         <externalId>false</externalId>
         <label>Timestamp</label>
