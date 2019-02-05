@@ -218,6 +218,10 @@ private class PostSandboxRefresherTest {
         Test.startTest();
         PostSandboxRefresher.ProductionUpdateHelper productionUpdateHelper = new PostSandboxRefresher.ProductionUpdateHelper();
         productionUpdateHelper.execute(null);
+        PostSandboxRefresher.ProductionUpdateHelper2 productionUpdateHelper2 = new PostSandboxRefresher.ProductionUpdateHelper2();
+        productionUpdateHelper2.execute(null);
+        PostSandboxRefresher.ProductionUpdateHelper3 productionUpdateHelper3 = new PostSandboxRefresher.ProductionUpdateHelper3();
+        productionUpdateHelper3.execute(null);
 
         PostSandboxRefresher.accountBillHelper accountBillHelper = new PostSandboxRefresher.accountBillHelper();
         accountBillHelper.execute(null);
