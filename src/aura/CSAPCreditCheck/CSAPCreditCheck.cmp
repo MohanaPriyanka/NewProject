@@ -20,7 +20,7 @@
     <div aria-labelledby="ssnForm">
         <fieldset class="slds-box slds-theme--default slds-contstaainer_center">
         <legend id="ssnForm" class="slds-text-heading--small slds-p-vertical--medium slds-section__title--large slds-align_absolute-center">
-          <b class="slds-section__title--large">We need to check that you qualify for Community Solar</b>
+          <b class="slds-section__title--large slds-p-horizontal_large"> We need to check that you qualify for Community Solar </b>
         </legend>
         <form class="slds-form--stacked">
           <lightning:layout multipleRows="true">
@@ -107,7 +107,7 @@
     <div aria-labelledby="informationConfirmationForm">
         <fieldset class="slds-box slds-theme--default slds-container_center">
         <legend id="informationConfirmationForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-          <b class="slds-section__title--large">Please verify your information is correct before we check your score.</b>
+          <b class="slds-section__title--large slds-p-horizontal_large"> Please verify your information is correct before we check your score. </b>
         </legend>
 
         <form class="slds-form--stacked">
