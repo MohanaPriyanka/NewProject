@@ -29,6 +29,7 @@ public with sharing class SystemBillQualityCheckerTest {
         System_Bill__c systemBillWithTooManyDecimals = systemBills[0].clone();
         systemBillWithTooManyDecimals.Adjustments__c = .0012345;
         insert systemBillWithTooManyDecimals;
+        SystemBillQualityChecker.checkDecimalScale(new Set<Id>{systemBillWithTooManyDecimals.Id});
         Test.stopTest();
 
         errorLogs = [SELECT Id FROM Error_Log__c WHERE Class__c = 'SystemBillQualityChecker'];
@@ -44,6 +45,7 @@ public with sharing class SystemBillQualityCheckerTest {
         Test.startTest();
         systemBills[0].Total_Payments_This_Month__c = .0012345;
         update systemBills[0];
+        SystemBillQualityChecker.checkDecimalScale(new Set<Id>{systemBills[0].Id});
         Test.stopTest();
 
         errorLogs = [SELECT Id FROM Error_Log__c WHERE Class__c = 'SystemBillQualityChecker'];
