@@ -21,7 +21,7 @@
         <div aria-labelledby="addToApplicationForm">
           <fieldset class="slds-box slds-theme--default slds-container_center">
             <legend id="ApplyingFor" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-              <b class="slds-section__title--large">&nbsp; &nbsp;Would you like to add anything to your application?&nbsp; &nbsp;</b>
+              <b class="slds-section__title--large slds-p-horizontal_large"> Would you like to add anything to your application? </b>
             </legend>
             <lightning:layout multipleRows="true" horizontalAlign="center">
               <lightning:layoutItem size="3" smallDeviceSize="6" mediumDeviceSize="3">
