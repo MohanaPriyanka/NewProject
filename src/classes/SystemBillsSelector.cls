@@ -12,7 +12,7 @@ public with sharing class SystemBillsSelector {
         ];
     }
 
-    public static List<SysteM_Bill__c> selectSystemBills() {
+    public static List<System_Bill__c> selectAllSystemBills() {
         return [
             SELECT Id, Name, Account_Bill__c, Property_Account__c, Opportunity__c, Shared_Solar_System__c,
                 Shared_Solar_System_ID2__c, Unique_ID__c, Total_Due__c, Balance_Net_Late_Payments__c, Carry_Over_Balance__c,

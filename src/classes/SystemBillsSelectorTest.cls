@@ -9,7 +9,7 @@ public with sharing class SystemBillsSelectorTest {
 
     @IsTest static void testSelectSystemBillsModifiedAfter() {
         // These bills shouldn't be selected by selectSystemBillsModifiedAfter because they were before testStart
-        List<System_Bill__c> systemBills = SystemBillsSelector.selectSystemBills();
+        List<System_Bill__c> systemBills = SystemBillsSelector.selectAllSystemBills();
         System.assert(systemBills.size() >= 21, 'TestCSSystemBill.resource only has ' + systemBills.size() + ' bills');
         // Salesforce doesn't store milliseconds in the database, System.now() will have more precision than SystemModstamp.
         // We need to round the datetime to the second:

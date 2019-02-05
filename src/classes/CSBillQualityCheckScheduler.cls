@@ -12,14 +12,13 @@ public without sharing class CSBillQualityCheckScheduler implements Schedulable 
         Set<Id> systemBillIds = (new Map<Id, System_Bill__c>(systemBills)).keySet();
         SystemBillQualityChecker.checkDecimalScale(new Set<Id>(systemBillIds));
         setLastSuccessfulRun(startingDatetime);
-        Logger.logNow('CSBillQualityCheckScheduler', 'execute',
-            'Checked ' + systemBillIds.size() + ' System Bills ' +
-                'updated between ' + lastTimeRun + ' and ' + startingDatetime + '\n\n' +
-                'Took ' +
-                Limits.getCpuTime() + 'ms of CPU time (of ' + Limits.getLimitCpuTime() + 'ms), ' +
-                Limits.getHeapSize()/1000000 + 'MB of heap (of ' + Limits.getLimitHeapSize()/1000000 + 'MB), and ' +
-                Limits.getQueries() + ' queries (of ' + Limits.getLimitQueries() + ' queries)',
-                'Info');
+        String message = 'Checked ' + systemBillIds.size() + ' System Bills ' +
+            'updated between ' + lastTimeRun + ' and ' + startingDatetime + '\n\n' +
+            'Took ' +
+            Limits.getCpuTime() + 'ms of CPU time (of ' + Limits.getLimitCpuTime() + 'ms), ' +
+            Limits.getHeapSize() / 1000000 + 'MB of heap (of ' + Limits.getLimitHeapSize() / 1000000 + 'MB), and ' +
+            Limits.getQueries() + ' queries (of ' + Limits.getLimitQueries() + ' queries)';
+        Logger.logNow('CSBillQualityCheckScheduler', 'execute', message, 'Info');
     }
 
     public Datetime getLastSuccessfulRun() {
