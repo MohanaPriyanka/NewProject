@@ -14,8 +14,6 @@ public without sharing class SystemBillAccountingLogicHandler {
         Decimal carryoverbalance = 0;  
         Decimal pastbillamount = 0;
         Decimal pastbillpayment = 0;
-        Decimal pastbilloverpayment = 0;
-        Decimal pastbilloveradjust = 0;
         List<Id> propertyAccountIDs = new List<Id>();
         List<System_Bill__c> unPublishedBillList = new List<System_Bill__c>();
 

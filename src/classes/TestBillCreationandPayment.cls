@@ -712,7 +712,7 @@ public class TestBillCreationandPayment {
         Property_Account__r.Directions_To_Write_Paper_Check__c,
         Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
         Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-        Adjustments__c, Bill_Date__c, 
+        Adjustments__c, Bill_Date__c,
         Waive_Late_Fees__c, Balance_Adjustment__c,
         Adjustments_UASB__c,
         Billing_Period_End_Date__c, Billing_Period_Start_Date__c
