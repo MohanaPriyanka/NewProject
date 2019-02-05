@@ -138,16 +138,16 @@ private class RecurringPaymentsHandlerTestClass {
         WHERE ChargentOrders__Gateway__r.Name = 'Chargent Gateway One'
         AND ChargentOrders__Charge_Date__c = '30'
         AND (NOT ChargentOrders__Billing_Last_Name__c LIKE '%CaseCreation%')
-        AND (NOT ChargentOrders__Billing_Last_Name__c LIKE '%AutoEmailer%')
         LIMIT 1];
         delete orderToDelete;
 
         List<ChargentOrders__ChargentOrder__c> originalOrderCount = [
-            SELECT Id, ChargentOrders__Billing_Last_Name__c, ChargentOrders__Charge_Date__c, ChargentOrders__Gateway__r.Name
+            SELECT Id, ChargentOrders__Billing_Last_Name__c
             FROM ChargentOrders__ChargentOrder__c
             WHERE (NOT ChargentOrders__Billing_Last_Name__c LIKE '%CaseCreation%')
             AND (NOT ChargentOrders__Billing_Last_Name__c LIKE '%AutoEmailer%')
         ];
+
         System.assertEquals(6,originalOrderCount.size());
 
         List<System_Bill__c> systemBillListtwo = [
@@ -1548,7 +1548,7 @@ private class RecurringPaymentsHandlerTestClass {
         ];
 
         List<System_Bill__c> firstSystemBills = [
-            SELECT Id, Due_Date__c, Total_Due__c
+            SELECT Id, Total_Due__c
             FROM System_Bill__c
             WHERE Account_Bill__r.Parent_Account__r.Name = 'PaymentTestPropertyD'
         ];
@@ -1597,7 +1597,7 @@ private class RecurringPaymentsHandlerTestClass {
         }
         update firstSystemBills;
         firstSystemBills = [
-            SELECT Id, Due_Date__c, Total_Due__c
+            SELECT Id, Total_Due__c
             FROM System_Bill__c
             WHERE Account_Bill__r.Parent_Account__r.Name = 'PaymentTestPropertyD'
         ];
@@ -1639,7 +1639,7 @@ private class RecurringPaymentsHandlerTestClass {
         ];
 
         List<System_Bill__c> firstSystemBills = [
-            SELECT Id, Due_Date__c, Total_Due__c
+            SELECT Id, Total_Due__c
             FROM System_Bill__c
             WHERE Account_Bill__r.Parent_Account__r.Name = 'PaymentTestPropertyD'
         ];
@@ -1715,7 +1715,7 @@ private class RecurringPaymentsHandlerTestClass {
         ];
 
         List<System_Bill__c> firstSystemBills = [
-            SELECT Id, Due_Date__c, Total_Due__c
+            SELECT Id, Total_Due__c
             FROM System_Bill__c
             WHERE Account_Bill__r.Parent_Account__r.Name = 'PaymentTestPropertyD'
         ];

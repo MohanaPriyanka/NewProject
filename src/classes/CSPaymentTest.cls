@@ -3,7 +3,6 @@ public class CSPaymentTest {
     private static Profile profileRecord = [SELECT Id FROM Profile WHERE Name = 'Community Solar Community User'];
 
     @testSetup public static void CSPaymentSetupTestData() {
-        Test.startTest();
         Util.disableTrigger('Disable_System_Bill_Trigger__c');
         Util.disableTrigger('Disable_AccountBillTrigger__c');
         Util.disableTrigger('Disable_UASBTrigger__c');
@@ -14,7 +13,6 @@ public class CSPaymentTest {
         Util.disableTrigger('Disable_AccountTrigger__c');
         Util.disableTrigger('Disable_ContactTrigger__c');
         Util.disableTrigger('Disable_UserTrigger__c');
-        Util.disableTrigger('Disable_ScheduleZTrigger__c');
 
         TestFactory.insertBWAddress();
         Test.loadData(Utility__c.SObjectType, 'TestCSUtility');
@@ -27,7 +25,6 @@ public class CSPaymentTest {
         Test.loadData(Account.SObjectType, 'TestCSAccount');
         Test.loadData(Utility_Account_Log__c.SObjectType, 'TestCSUtilityAccountLog');
         Test.loadData(Opportunity.SObjectType, 'TestCSOpportunity');
-        Test.stopTest();
         Test.loadData(Utility_Account_Subscription__c.SObjectType, 'TestCSUtilityAccountSubscription');
         Test.loadData(Schedule_Z__c.SObjectType, 'TestCSScheduleZ');
         Test.loadData(Schedule_Z_Subscription__c.SObjectType, 'TestCSScheduleZSubscription');
@@ -77,7 +74,6 @@ public class CSPaymentTest {
         Util.enableTrigger('Disable_AccountTrigger__c');
         Util.enableTrigger('Disable_ContactTrigger__c');
         Util.enableTrigger('Disable_UserTrigger__c');
-        Util.enableTrigger('Disable_ScheduleZTrigger__c');
 
         List<Account_Bill__c> abs = [
             SELECT Id, Name, Bill_Number__c
@@ -369,10 +365,10 @@ public class CSPaymentTest {
                 Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
                 Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
                 Total_Due__c, Balance_Net_Late_Payments__c, Late_Fee_Payments__c, Total_Payments_This_Month__c,
-                Payments_Net_Previous_Balances__c,
+                Property_Account__r.Directions_to_Write_Paper_Check__c, Payments_Net_Previous_Balances__c,
                 Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
                 Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-                Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
+                Adjustments__c, Bill_Date__c,
                 Waive_Late_Fees__c, Previous_Overpayment__c, Balance_Adjustment__c,
                 Adjustments_UASB__c, Carry_Over_Balance__c,
                 Billing_Period_End_Date__c, Billing_Period_Start_Date__c,
@@ -434,10 +430,10 @@ public class CSPaymentTest {
                 Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
                 Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
                 Total_Due__c, Balance_Net_Late_Payments__c, Late_Fee_Payments__c, Total_Payments_This_Month__c,
-                Payments_Net_Previous_Balances__c,
+                Property_Account__r.Directions_To_Write_Paper_Check__c, Payments_Net_Previous_Balances__c,
                 Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
                 Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-                Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
+                Adjustments__c, Bill_Date__c,
                 Waive_Late_Fees__c, Previous_Overpayment__c, Balance_Adjustment__c,
                 Adjustments_UASB__c, Carry_Over_Balance__c, Account_Bill__r.Bill_Number__c,
                 Shared_Solar_System__r.BWC_Project_Entity_Manual__c,
@@ -602,10 +598,10 @@ public class CSPaymentTest {
                 Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
                 Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
                 Total_Due__c, Balance_Net_Late_Payments__c, Late_Fee_Payments__c, Total_Payments_This_Month__c,
-                Payments_Net_Previous_Balances__c,
+                Property_Account__r.Directions_to_Write_Paper_Check__c, Payments_Net_Previous_Balances__c,
                 Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
                 Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-                Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
+                Adjustments__c, Bill_Date__c,
                 Waive_Late_Fees__c, Previous_Overpayment__c, Balance_Adjustment__c,
                 Adjustments_UASB__c, Carry_Over_Balance__c,
                 Billing_Period_End_Date__c, Billing_Period_Start_Date__c,
@@ -671,10 +667,10 @@ public class CSPaymentTest {
                 Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
                 Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
                 Total_Due__c, Balance_Net_Late_Payments__c, Late_Fee_Payments__c, Total_Payments_This_Month__c,
-                Payments_Net_Previous_Balances__c,
+                Property_Account__r.Directions_To_Write_Paper_Check__c, Payments_Net_Previous_Balances__c,
                 Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
                 Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-                Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
+                Adjustments__c, Bill_Date__c,
                 Waive_Late_Fees__c, Previous_Overpayment__c, Balance_Adjustment__c,
                 Adjustments_UASB__c, Carry_Over_Balance__c, Account_Bill__r.Bill_Number__c,
                 Shared_Solar_System__r.BWC_Project_Entity_Manual__c,
@@ -841,10 +837,10 @@ public class CSPaymentTest {
                 Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
                 Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
                 Total_Due__c, Balance_Net_Late_Payments__c, Late_Fee_Payments__c, Total_Payments_This_Month__c,
-                Payments_Net_Previous_Balances__c,
+                Property_Account__r.Directions_to_Write_Paper_Check__c, Payments_Net_Previous_Balances__c,
                 Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
                 Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-                Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
+                Adjustments__c, Bill_Date__c,
                 Waive_Late_Fees__c, Previous_Overpayment__c, Balance_Adjustment__c,
                 Adjustments_UASB__c, Carry_Over_Balance__c,
                 Billing_Period_End_Date__c, Billing_Period_Start_Date__c,
@@ -910,10 +906,10 @@ public class CSPaymentTest {
                 Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
                 Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
                 Total_Due__c, Balance_Net_Late_Payments__c, Late_Fee_Payments__c, Total_Payments_This_Month__c,
-                Payments_Net_Previous_Balances__c,
+                Property_Account__r.Directions_To_Write_Paper_Check__c, Payments_Net_Previous_Balances__c,
                 Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
                 Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-                Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
+                Adjustments__c, Bill_Date__c,
                 Waive_Late_Fees__c, Previous_Overpayment__c, Balance_Adjustment__c,
                 Adjustments_UASB__c, Carry_Over_Balance__c, Account_Bill__r.Bill_Number__c,
                 Shared_Solar_System__r.BWC_Project_Entity_Manual__c,
@@ -1084,10 +1080,10 @@ public class CSPaymentTest {
                 Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
                 Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
                 Total_Due__c, Balance_Net_Late_Payments__c, Late_Fee_Payments__c, Total_Payments_This_Month__c,
-                Payments_Net_Previous_Balances__c,
+                Property_Account__r.Directions_to_Write_Paper_Check__c, Payments_Net_Previous_Balances__c,
                 Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
                 Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-                Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
+                Adjustments__c, Bill_Date__c,
                 Waive_Late_Fees__c, Previous_Overpayment__c, Balance_Adjustment__c,
                 Adjustments_UASB__c, Carry_Over_Balance__c,
                 Billing_Period_End_Date__c, Billing_Period_Start_Date__c,
@@ -1148,10 +1144,10 @@ public class CSPaymentTest {
                 Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
                 Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
                 Total_Due__c, Balance_Net_Late_Payments__c, Late_Fee_Payments__c, Total_Payments_This_Month__c,
-                Payments_Net_Previous_Balances__c,
+                Property_Account__r.Directions_To_Write_Paper_Check__c, Payments_Net_Previous_Balances__c,
                 Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
                 Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-                Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
+                Adjustments__c, Bill_Date__c,
                 Waive_Late_Fees__c, Previous_Overpayment__c, Balance_Adjustment__c,
                 Adjustments_UASB__c, Carry_Over_Balance__c, Account_Bill__r.Bill_Number__c,
                 Shared_Solar_System__r.BWC_Project_Entity_Manual__c,
@@ -1284,10 +1280,10 @@ public class CSPaymentTest {
                 Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
                 Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
                 Total_Due__c, Balance_Net_Late_Payments__c, Late_Fee_Payments__c, Total_Payments_This_Month__c,
-                Payments_Net_Previous_Balances__c,
+                Property_Account__r.Directions_to_Write_Paper_Check__c, Payments_Net_Previous_Balances__c,
                 Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
                 Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-                Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
+                Adjustments__c, Bill_Date__c,
                 Waive_Late_Fees__c, Previous_Overpayment__c, Balance_Adjustment__c,
                 Adjustments_UASB__c, Carry_Over_Balance__c,
                 Billing_Period_End_Date__c, Billing_Period_Start_Date__c,
@@ -1347,10 +1343,10 @@ public class CSPaymentTest {
                 Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
                 Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
                 Total_Due__c, Balance_Net_Late_Payments__c, Late_Fee_Payments__c, Total_Payments_This_Month__c,
-                Payments_Net_Previous_Balances__c,
+                Property_Account__r.Directions_To_Write_Paper_Check__c, Payments_Net_Previous_Balances__c,
                 Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
                 Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-                Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
+                Adjustments__c, Bill_Date__c,
                 Waive_Late_Fees__c, Previous_Overpayment__c, Balance_Adjustment__c,
                 Adjustments_UASB__c, Carry_Over_Balance__c, Account_Bill__r.Bill_Number__c,
                 Shared_Solar_System__r.BWC_Project_Entity_Manual__c,
@@ -1413,10 +1409,10 @@ public class CSPaymentTest {
                 Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
                 Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
                 Total_Due__c, Balance_Net_Late_Payments__c, Late_Fee_Payments__c, Total_Payments_This_Month__c,
-                Payments_Net_Previous_Balances__c,
+                Property_Account__r.Directions_To_Write_Paper_Check__c, Payments_Net_Previous_Balances__c,
                 Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
                 Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-                Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
+                Adjustments__c, Bill_Date__c,
                 Waive_Late_Fees__c, Previous_Overpayment__c, Balance_Adjustment__c,
                 Adjustments_UASB__c, Carry_Over_Balance__c, Account_Bill__r.Bill_Number__c,
                 Billing_Period_End_Date__c, Billing_Period_Start_Date__c, Account_Bill__r.Overpayment_Amount_Rollup__c
@@ -1550,10 +1546,10 @@ public class CSPaymentTest {
                 Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
                 Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
                 Total_Due__c, Balance_Net_Late_Payments__c, Late_Fee_Payments__c, Total_Payments_This_Month__c,
-                Payments_Net_Previous_Balances__c,
+                Property_Account__r.Directions_To_Write_Paper_Check__c, Payments_Net_Previous_Balances__c,
                 Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
                 Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-                Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
+                Adjustments__c, Bill_Date__c,
                 Waive_Late_Fees__c, Previous_Overpayment__c, Balance_Adjustment__c,
                 Adjustments_UASB__c, Carry_Over_Balance__c,
                 Billing_Period_End_Date__c, Billing_Period_Start_Date__c,
@@ -1613,10 +1609,10 @@ public class CSPaymentTest {
                 Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
                 Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
                 Total_Due__c, Balance_Net_Late_Payments__c, Late_Fee_Payments__c, Total_Payments_This_Month__c,
-                Payments_Net_Previous_Balances__c,
+                Property_Account__r.Directions_To_Write_Paper_Check__c, Payments_Net_Previous_Balances__c,
                 Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
                 Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-                Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
+                Adjustments__c, Bill_Date__c,
                 Waive_Late_Fees__c, Previous_Overpayment__c, Balance_Adjustment__c,
                 Adjustments_UASB__c, Carry_Over_Balance__c, Account_Bill__r.Bill_Number__c,
                 Billing_Period_End_Date__c, Billing_Period_Start_Date__c, Account_Bill__r.Overpayment_Amount_Rollup__c
