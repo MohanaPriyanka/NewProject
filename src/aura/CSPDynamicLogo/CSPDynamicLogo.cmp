@@ -3,7 +3,7 @@
   <aura:attribute name="bk" type="String"/>
   <aura:attribute name="showBW" type="Boolean"/> 
      
-  <div style="height:100px;" class="slds-global-header__logo global-header__icon slds-align--absolute-center slds-p-bottom_large">
+  <div style="height:100px;" class="slds-align--absolute-center slds-p-bottom_large">
     <aura:if isTrue="{!v.showBW}">
        <img src="{!'/resource/ClientLogosWhiteBackground/BluewaveLogo.png'}" style="max-height:110px;"/>
        <aura:set attribute="else">
