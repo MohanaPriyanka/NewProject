@@ -1355,10 +1355,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>LightningLoginFormController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>LightningLoginFormControllerTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
