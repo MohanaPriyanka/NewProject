@@ -4775,6 +4775,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.Details__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.Disable_Followup_Email__c</field>
         <readable>true</readable>
@@ -4802,6 +4807,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.Forwarded_Email_Count__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.How_Can_We_Help__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7911,7 +7921,27 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Energy_Usage_Update__c.Total_NMCs_2_of_4__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Energy_Usage_Update__c.Total_NMCs_3_of_4__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Energy_Usage_Update__c.Total_NMCs_4_of_4__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Energy_Usage_Update__c.Total_NMCs_Generated__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Energy_Usage_Update__c.Total_NMCs__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7947,6 +7977,26 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Energy_Usage_Update__c.Utility_Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Energy_Usage_Update__c.Utility_Bill_Line_Total_2__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Energy_Usage_Update__c.Utility_Bill_Line_Total_3__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Energy_Usage_Update__c.Utility_Bill_Line_Total_4__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Energy_Usage_Update__c.Utility_Bill_Line_Total__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -31130,6 +31180,36 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Bill_Line_Item__c.Amount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Bill_Line_Item__c.Group__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Bill_Line_Item__c.Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility_Bill_Line_Item__c.Amount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility_Bill_Line_Item__c.Group__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility_Bill_Line_Item__c.Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Utility_NMC_Tariff__c.Active__c</field>
         <readable>true</readable>
@@ -45608,10 +45688,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Case-Customer Care</layout>
-        <recordType>Case.Customer_Care</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Case-Customer Care</layout>
         <recordType>Case.Partner_Care_Case</recordType>
     </layoutAssignments>
     <layoutAssignments>
@@ -45621,6 +45697,10 @@
     <layoutAssignments>
         <layout>Case-Product Support</layout>
         <recordType>Case.Product_Support</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Case-Service Console - Customer Support</layout>
+        <recordType>Case.Customer_Care</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>CaseClose-Close Case Layout</layout>
@@ -45841,11 +45921,11 @@
         <layout>Invoice__c-Invoice Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Knowledge__kav-Article Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Knowledge__kav-How To</layout>
         <recordType>Knowledge__kav.How_To</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Knowledge__kav-Q%26A</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Knowledge__kav-Q%26A</layout>
@@ -46384,6 +46464,9 @@
     <layoutAssignments>
         <layout>Utility_Account_Subscription__c-Utility Account Subscription Layout</layout>
         <recordType>Utility_Account_Subscription__c.Utility_Account_Subscription_on_Schedule_Z</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Utility_Bill_Line_Item__c-Utility Bill Line Item Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Utility_NMC_Tariff__c-Utility NMC Tariff Layout</layout>
@@ -47468,6 +47551,24 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>Utility_Account_Subscription__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Utility_Bill_Line_Item__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>Utility_Bill_Line_Item__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>

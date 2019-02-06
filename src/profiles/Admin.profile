@@ -207,6 +207,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>CSBillQualityCheckScheduler</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CSBillQualityCheckSchedulerTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CSCLPController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -575,6 +583,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>LoggerTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ManagedPackageLicenseHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -872,6 +884,14 @@
     </classAccesses>
     <classAccesses>
         <apexClass>SystemBillQualityCheckerTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SystemBillsSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SystemBillsSelectorTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -4775,6 +4795,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.Details__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.Disable_Followup_Email__c</field>
         <readable>true</readable>
@@ -4802,6 +4827,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.Forwarded_Email_Count__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.How_Can_We_Help__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7910,8 +7940,28 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Energy_Usage_Update__c.Total_NMCs_2_of_4__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Energy_Usage_Update__c.Total_NMCs_3_of_4__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Energy_Usage_Update__c.Total_NMCs_4_of_4__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Energy_Usage_Update__c.Total_NMCs_Generated__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Energy_Usage_Update__c.Total_NMCs__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7947,6 +7997,26 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Energy_Usage_Update__c.Utility_Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Energy_Usage_Update__c.Utility_Bill_Line_Total_2__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Energy_Usage_Update__c.Utility_Bill_Line_Total_3__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Energy_Usage_Update__c.Utility_Bill_Line_Total_4__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Energy_Usage_Update__c.Utility_Bill_Line_Total__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -8382,6 +8452,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Error_Log__c.Method__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Error_Log__c.Severity__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -23616,6 +23691,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Opportunity.Product_Escalation_Schedule__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.Product_Line__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -25782,6 +25862,21 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Product2.X25_BPS_Eligible__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Product_Escalator__c.New_NMC_Discount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Product_Escalator__c.New_Solar_Electricity_Rate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Product_Escalator__c.Number_of_Credit_Transfers__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -31127,6 +31222,21 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Account_Subscription__c.calculated_annual_cost_of_electricity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility_Bill_Line_Item__c.Amount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility_Bill_Line_Item__c.Group__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility_Bill_Line_Item__c.Type__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -45608,10 +45718,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Case-Customer Care</layout>
-        <recordType>Case.Customer_Care</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Case-Customer Care</layout>
         <recordType>Case.Partner_Care_Case</recordType>
     </layoutAssignments>
     <layoutAssignments>
@@ -45621,6 +45727,10 @@
     <layoutAssignments>
         <layout>Case-Product Support</layout>
         <recordType>Case.Product_Support</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Case-Service Console - Customer Support</layout>
+        <recordType>Case.Customer_Care</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>CaseClose-Close Case Layout</layout>
@@ -45821,11 +45931,11 @@
         <layout>Invoice__c-Invoice Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Knowledge__kav-Article Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Knowledge__kav-How To</layout>
         <recordType>Knowledge__kav.How_To</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Knowledge__kav-Q%26A</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Knowledge__kav-Q%26A</layout>
@@ -46169,6 +46279,12 @@
         <layout>Product2-Product Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Product_Escalation_Schedule__c-Product Escalation Schedule Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Product_Escalator__c-Product Escalator Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Product_Group_Assignment__c-Product Group Assignment Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -46364,6 +46480,9 @@
     <layoutAssignments>
         <layout>Utility_Account_Subscription__c-Utility Account Subscription Layout</layout>
         <recordType>Utility_Account_Subscription__c.Utility_Account_Subscription_on_Schedule_Z</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Utility_Bill_Line_Item__c-Utility Bill Line Item Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Utility_NMC_Tariff__c-Utility NMC Tariff Layout</layout>
@@ -47789,6 +47908,24 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
+        <object>Product_Escalation_Schedule__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>Product_Escalator__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
         <object>Product_Group_Assignment__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
@@ -48123,6 +48260,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>Utility_Account_Subscription__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>Utility_Bill_Line_Item__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -51627,10 +51773,6 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
-        <name>ArchiveArticles</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
         <name>AssignPermissionSets</name>
     </userPermissions>
     <userPermissions>
@@ -51820,10 +51962,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>EditTopics</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>EditTranslation</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -52091,15 +52229,7 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
-        <name>PublishArticles</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
         <name>PublishPackaging</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>PublishTranslation</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -52144,10 +52274,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>SolutionImport</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>SubmitForTranslation</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>

@@ -6,7 +6,6 @@
  */
 
 public with sharing class SystemBillQualityChecker {
-    @Future
     public static void checkDecimalScale(Set<Id> systemBillIds) {
         List<SObject> systemBills = getSystemBillsWithCurrencyFields(new List<Id>(systemBillIds));
         List<Id> systemBillsWithTooManyDecimals = new List<Id>();

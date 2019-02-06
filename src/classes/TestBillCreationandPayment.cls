@@ -6,7 +6,6 @@ public class TestBillCreationandPayment {
             Name = 'Eversource',
             Number_of_Decimal_Places__c = 2
         );
-
         Utility__c nationalGrid = new Utility__c(
             Name = 'National Grid',
             Number_of_Decimal_Places__c = 2
@@ -876,7 +875,6 @@ public class TestBillCreationandPayment {
         // Want to test when a customer has 2 SBs for the same entity in a bill period
         sssList[0].BWC_Project_Entity_Manual__c = entity.Id;
         sssList[1].BWC_Project_Entity_Manual__c = entity.Id;
-        Util.disableTrigger('Disable_SharedSolarSystemTrigger__c'); // TO Avoid SOQL Limits in data setup
         update sssList;
 
         Test.startTest();
@@ -1003,7 +1001,6 @@ public class TestBillCreationandPayment {
         FROM Account
         WHERE Name = 'Account A'];
 
-        Test.startTest();
         Entity__c entity = [
             SELECT Id, Gateway__c
             FROM Entity__c
@@ -1011,6 +1008,7 @@ public class TestBillCreationandPayment {
         ];
 
 
+        Test.startTest();
 
         setBillsToPublished();
 
@@ -1555,6 +1553,7 @@ public class TestBillCreationandPayment {
         insert congaRecord;
         congaRecord.Apply_Overpay_Adjust__c = true;
         update congaRecord;
+        Test.stopTest();
 
         List<System_Bill__c> updatedSystemBillList = [
             SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
@@ -1571,7 +1570,6 @@ public class TestBillCreationandPayment {
             FROM System_Bill__c
             ORDER BY Bill_Number__c
         ];
-        Test.stopTest();
 
         // don't apply overpayments to already published bills
         System.assertEquals(true, originalSystemBillList[0].Account_Bill__r.Published__c);
@@ -1626,12 +1624,13 @@ public class TestBillCreationandPayment {
         User userA = [SELECT Id FROM User WHERE Username='testBillCreationandPay@bluewavesolar.com'];
 
         Account accountA = [SELECT Id, Name FROM Account WHERE Name = 'Account A'];
-        Test.startTest();
+
         List<Account_Bill__c> accountBillList = [ SELECT Id, Published__c FROM Account_Bill__c];
 
         for (Account_Bill__c acctBill : accountBillList) {
             acctBill.Published__c = true;
         }
+        Test.startTest();
         update accountBillList;
 
         System.runAs(userA){

@@ -20,7 +20,7 @@
     <div aria-labelledby="ssnForm">
         <fieldset class="slds-box slds-theme--default slds-contstaainer_center">
         <legend id="ssnForm" class="slds-text-heading--small slds-p-vertical--medium slds-section__title--large slds-align_absolute-center">
-          <b class="slds-section__title--large">We need to check that you qualify for Community Solar</b>
+          <b class="slds-section__title--large slds-p-horizontal_large"> We need to check that you qualify for Community Solar </b>
         </legend>
         <form class="slds-form--stacked">
           <lightning:layout multipleRows="true">
@@ -107,7 +107,7 @@
     <div aria-labelledby="informationConfirmationForm">
         <fieldset class="slds-box slds-theme--default slds-container_center">
         <legend id="informationConfirmationForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-          <b class="slds-section__title--large">Please verify your information is correct before we check your score.</b>
+          <b class="slds-section__title--large slds-p-horizontal_large"> Please verify your information is correct before we check your score. </b>
         </legend>
 
         <form class="slds-form--stacked">
@@ -199,10 +199,10 @@
     </aura:if>
       <div class="slds-align--absolute-center slds-p-top_medium slds-text-body--regular slds-align_absolute-center">Pulling credit report... This process may take up to a minute.</div></aura:if>
 
-    <div aura:id="creditStatus" class="slds-align--absolute-center slds-p-top_medium noDisplay slds-text-body--regular slds-align_absolute-center">
+    <div aura:id="creditStatus" class="slds-align--absolute-center slds-p-top_medium no-display slds-text-body--regular slds-align_absolute-center">
       <ui:outputText value="{!v.creditStatusText}"/>
     </div>
-    <div aura:id="creditResultError" class="noDisplay center">
+    <div aura:id="creditResultError" class="no-display center">
       <ui:outputText value="{!'There was an error: ' + v.creditStatusErrorText + ' You can refresh the page and log back into the application to check status or retry the credit check.'}"/>
     </div>
 
