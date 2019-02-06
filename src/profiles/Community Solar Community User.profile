@@ -62382,10 +62382,6 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>agf__QA_Hierarchy__c</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>agf__RCA__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
