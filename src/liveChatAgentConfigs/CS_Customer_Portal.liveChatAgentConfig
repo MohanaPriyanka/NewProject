@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LiveChatAgentConfig xmlns="http://soap.sforce.com/2006/04/metadata">
+    <assignments>
+        <users>
+            <user>lalexander@bluewavesolar.com</user>
+            <user>vcoloma@bluewavesolar.com</user>
+        </users>
+    </assignments>
+    <autoGreeting>{!LiveAgent_VisitorName}, Thanks for reaching out to BlueWave Support! My name is {!User_FirstName}, how can I help you?</autoGreeting>
+    <criticalWaitTime>120</criticalWaitTime>
+    <customAgentName>{!User_FirstName}</customAgentName>
+    <enableAgentFileTransfer>true</enableAgentFileTransfer>
+    <enableAgentSneakPeek>true</enableAgentSneakPeek>
+    <enableAssistanceFlag>true</enableAssistanceFlag>
+    <enableAutoAwayOnDecline>false</enableAutoAwayOnDecline>
+    <enableAutoAwayOnPushTimeout>false</enableAutoAwayOnPushTimeout>
+    <enableChatConferencing>true</enableChatConferencing>
+    <enableChatMonitoring>true</enableChatMonitoring>
+    <enableChatTransferToAgent>true</enableChatTransferToAgent>
+    <enableChatTransferToButton>true</enableChatTransferToButton>
+    <enableChatTransferToSkill>true</enableChatTransferToSkill>
+    <enableLogoutSound>true</enableLogoutSound>
+    <enableNotifications>true</enableNotifications>
+    <enableRequestSound>true</enableRequestSound>
+    <enableSneakPeek>true</enableSneakPeek>
+    <enableVisitorBlocking>false</enableVisitorBlocking>
+    <enableWhisperMessage>true</enableWhisperMessage>
+    <label>CS Customer Portal</label>
+    <supervisorDefaultAgentStatusFilter>Online</supervisorDefaultAgentStatusFilter>
+    <supervisorDefaultSkillFilter>CS_Customer_Service</supervisorDefaultSkillFilter>
+    <supervisorSkills>
+        <skill>CS_Customer_Service</skill>
+    </supervisorSkills>
+</LiveChatAgentConfig>
