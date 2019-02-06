@@ -138,16 +138,16 @@ private class RecurringPaymentsHandlerTestClass {
         WHERE ChargentOrders__Gateway__r.Name = 'Chargent Gateway One'
         AND ChargentOrders__Charge_Date__c = '30'
         AND (NOT ChargentOrders__Billing_Last_Name__c LIKE '%CaseCreation%')
+        AND (NOT ChargentOrders__Billing_Last_Name__c LIKE '%AutoEmailer%')
         LIMIT 1];
         delete orderToDelete;
 
         List<ChargentOrders__ChargentOrder__c> originalOrderCount = [
-            SELECT Id, ChargentOrders__Billing_Last_Name__c
+            SELECT Id, ChargentOrders__Billing_Last_Name__c, ChargentOrders__Charge_Date__c, ChargentOrders__Gateway__r.Name
             FROM ChargentOrders__ChargentOrder__c
             WHERE (NOT ChargentOrders__Billing_Last_Name__c LIKE '%CaseCreation%')
             AND (NOT ChargentOrders__Billing_Last_Name__c LIKE '%AutoEmailer%')
         ];
-
         System.assertEquals(6,originalOrderCount.size());
 
         List<System_Bill__c> systemBillListtwo = [
