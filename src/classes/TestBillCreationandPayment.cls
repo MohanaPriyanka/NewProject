@@ -1749,7 +1749,8 @@ public class TestBillCreationandPayment {
         Schedule_Z__c scheduleZ = new Schedule_Z__c(
             Name = '18-0615 Oxford Barrett St. P1',
             Shared_Solar_System__c = productionUpdates[0].Shared_Solar_System__c,
-            Status__c = 'Enacted by Utility'
+            Status__c = 'Enacted by Utility',
+            Date_Enacted_by_Utility__c = Date.today()
         );
 
         insert scheduleZ;
