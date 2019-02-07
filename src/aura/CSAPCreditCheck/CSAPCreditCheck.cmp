@@ -203,7 +203,9 @@
       <ui:outputText value="{!v.creditStatusText}"/>
     </div>
     <div aura:id="creditResultError" class="no-display slds-align--absolute-center slds-text-body--large--blue">
-      <ui:outputText value="{!'There was an error: ' + v.creditStatusErrorText + ' Please contact BlueWave Support for details.'}"/>
+      <ui:outputText value="{!'There was an error checking your credit: ' + v.creditStatusErrorText}"/>
+      <br/>
+      <ui:outputText value="{!'This may be due to your credit being frozen. Contact your credit agency or BlueWave support for more details.'}"/>
     </div>
 
     

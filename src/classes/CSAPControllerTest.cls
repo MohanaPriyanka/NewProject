@@ -654,7 +654,8 @@ public with sharing class CSAPControllerTest {
         //Check for qualified since credit score is 700
         CSAPController.SSSResult result = CSAPController.checkLeadCreditIfQualified(leadToInsert.Id);
         System.assertNotEquals('Ready for Credit Check', result.sssCreditQualification);
-        System.assertEquals('Credit Report was returned without a credit score.', result.sssCreditQualification);
+        String message = 'Credit Report was returned without a credit score, credit report may be frozen by consumer.';
+        System.assertEquals(message, result.sssCreditQualification);
     }
 
     @IsTest static void testSplitZone() {
