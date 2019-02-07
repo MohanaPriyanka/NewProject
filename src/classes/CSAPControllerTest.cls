@@ -633,6 +633,30 @@ public with sharing class CSAPControllerTest {
         Test.stopTest();
     }
 
+    @IsTest static void testCreditCheckReturnsResultIfNoCreditScore() {
+        Lead leadToInsert = getLeadForTest();
+        insert leadToInsert;
+
+        LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
+            LASERCA__Lead__c = leadToInsert.Id,
+            LASERCA__Credit_Score__c = null,
+            LASERCA__Credit_Score_TransUnion__c = null
+        );
+        insert pcr;
+
+        LASERCA__Credit_Report_Log__c crLog = new LASERCA__Credit_Report_Log__c(
+            LASERCA__Lead__c = leadToInsert.Id,
+            LASERCA__Personal_Credit_Report__c = pcr.Id,
+            LASERCA__Status__c = 'Completed'
+        );
+        insert crLog;
+
+        //Check for qualified since credit score is 700
+        CSAPController.SSSResult result = CSAPController.checkLeadCreditIfQualified(leadToInsert.Id);
+        System.assertNotEquals('Ready for Credit Check', result.sssCreditQualification);
+        System.assertEquals('Credit Report was returned without a credit score.', result.sssCreditQualification);
+    }
+
     @IsTest static void testSplitZone() {
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
         BSST__c salesRep = [SELECT Id FROM BSST__c LIMIT 1];
