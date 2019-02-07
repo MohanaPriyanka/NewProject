@@ -1,18 +1,20 @@
-//Test: AccountTriggerHandlerTestClass
+//Test: AccountTriggerHandlerTestClass, CSCancellationServiceTest
 
 public without sharing class AccountTriggerHandler {
-    private boolean m_isExecuting = false;
-    private integer BatchSize = 0;
-    
-    public AccountTriggerHandler(boolean isExecuting, integer size){
-        m_isExecuting = isExecuting;
-        BatchSize = size;
-    }
-    public void OnBeforeInsert(List<Account> newAccounts){
+
+    public void onBeforeInsert(List<Account> newAccounts) {
         customIdSwapAccount(newAccounts);
     }
-    public void OnBeforeUpdate(List<Account> oldAccounts, List<Account> updatedAccounts, Map<ID, Account> oldAccountMap, Map<ID, Account> newAccountMap){
+    public void onBeforeUpdate(List<Account> updatedAccounts) {
         customIdSwapAccount(updatedAccounts);
+    }
+
+    public void onAfterUpdate(Map<Id, Account> oldMap, Map<Id, Account> newMap) {
+        List<Utility_Account_Subscription__c> uasesToCancel =
+            UtilityAccountSubscriptions.getUASesForManuallyCancelledAccounts(newMap, oldMap);
+        if (!uasesToCancel.isEmpty()) {
+            CSCancellationService.processSubscriptionCancellations(uasesToCancel);
+        }
     }
 
     private void customIdSwapAccount(List<Account> accountList){

@@ -802,6 +802,24 @@ Specify the global country code setting or record level country code to automati
         </valueSet>
     </fields>
     <fields>
+        <fullName>Collection_Call_Today__c</fullName>
+        <externalId>false</externalId>
+        <formula>OR(
+Days_Past_Due__c = 10, 
+Days_Past_Due__c = 15, 
+Days_Past_Due__c = 30,
+Days_Past_Due__c = 45,
+Days_Past_Due__c = 60,
+Days_Past_Due__c = 74,
+Days_Past_Due__c = 81,
+Days_Past_Due__c = 88,
+Days_Past_Due__c = 90)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Collection Call Today</label>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Collection_Email_To_Fire_Today__c</fullName>
         <externalId>false</externalId>
         <formula>OR(
@@ -14941,10 +14959,15 @@ $User.Id=&quot;0050a00000Jc6mh&quot;)))</errorConditionFormula>
     <validationRules>
         <fullName>Require_Cancellation_Reason</fullName>
         <active>true</active>
-        <description>Cancellation Reason is required before filling out Cancellation Request Date</description>
-        <errorConditionFormula>AND(NOT(ISBLANK(Cancellation_Request_Date__c )), ISBLANK( (TEXT(Cancellation_Reason__c))))</errorConditionFormula>
+        <errorConditionFormula>OR(
+   AND(NOT(ISBLANK(Cancellation_Request_Date__c)),
+       ISBLANK(TEXT(Cancellation_Reason__c))),
+   AND(ISBLANK(Cancellation_Request_Date__c),
+       NOT(ISBLANK(TEXT(Cancellation_Reason__c)))),
+   Cancellation_Request_Date__c &gt; Today()
+   )</errorConditionFormula>
         <errorDisplayField>Cancellation_Reason__c</errorDisplayField>
-        <errorMessage>Cancellation Reason required before selecting Cancellation Request Date</errorMessage>
+        <errorMessage>Cancellation Reason and Cancellation Request Date need to be filled out at the same time, and the Cancellation Request Date can&apos;t be future dated. Once the customer has requested to cancel, their UASes will be marked Inactive.</errorMessage>
     </validationRules>
     <webLinks>
         <fullName>APXTConga4__Conga_Composer_OAuth</fullName>

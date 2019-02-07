@@ -139,6 +139,22 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>Accounts</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>AccountsSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>AccountsSelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>AccountsTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>AutopayChecker</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -204,6 +220,22 @@
     </classAccesses>
     <classAccesses>
         <apexClass>CSCPChartHandlerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CSCancellationScheduler</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CSCancellationSchedulerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CSCancellationService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CSCancellationServiceTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -563,6 +595,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>MessagingServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>MultipleMonthProductionUpdateTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -584,6 +620,22 @@
     </classAccesses>
     <classAccesses>
         <apexClass>NavHeaderControllerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>Opportunities</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>OpportunitiesSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>OpportunitiesSelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>OpportunitiesTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -867,6 +919,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>UASSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UASSelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>UASTestClass</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -904,6 +964,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>UtilityAccountLogTriggerHandlerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UtilityAccountSubscriptions</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -1387,6 +1451,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>APXTConga4__Conga_Template__c.Payment_Plan__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>APXTConga4__Conga_Template__c.Welcome_Insert__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>APXT_BPM__Conductor_Region__mdt.APXT_BPM__Hostname__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -1728,6 +1802,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.Client_Brand_Key__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Collection_Call_Today__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4696,6 +4775,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.Details__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Case.Disable_Followup_Email__c</field>
         <readable>true</readable>
@@ -4723,6 +4807,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.Forwarded_Email_Count__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.How_Can_We_Help__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -6888,7 +6977,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contact.Contatct_ID_18_digit__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -10642,6 +10731,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Lead.Building_Use__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Lead.Business_Email__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -10669,6 +10763,11 @@
         <editable>false</editable>
         <field>Lead.CSAP_Stage__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.C_I_In_take_Form_info__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -11132,12 +11231,22 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Lead.Estimated_IX_costs_included_in__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Lead.Estimated_Install_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Estimated_Lifetime_Savings__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Estimated_Utility_Upgrade_Cost__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -11211,6 +11320,16 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.ISA_Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Impact_Study_Costs__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Income_Support__c</field>
         <readable>true</readable>
@@ -11243,6 +11362,21 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Lead.Interest_Rate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Inverter_Count__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Inverter_Manufacturer__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Inverter_Nameplate_Rating__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -11547,6 +11681,21 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Lead.Module_Count__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Module_Manufacturer__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Module_Nameplate_Rating__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Lead.Monthly_Income_2__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -11583,6 +11732,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Lead.More_than_five_years_industry_experience__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Mortgage_Lender__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -11841,6 +11995,11 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Proposed_EPC_Pricing__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Qualified_Business__c</field>
         <readable>true</readable>
@@ -11903,6 +12062,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Risk_Level_Business_Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Roof_Age__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Roof_Type__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -12003,6 +12172,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Lead.System_Size_kW_DC__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.System_Size_kw_AC__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -12154,6 +12328,11 @@
         <editable>false</editable>
         <field>Lead.Year_Employment__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Yield_kWh_kW__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -27662,6 +27841,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Shared_Solar_System__c.Client_Brand_Key__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Shared_Solar_System__c.Comments__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -27898,6 +28082,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Project_Capacity_Available_kW_DC__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Project_Location_and_Customer_Allocation__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -30048,7 +30237,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>User.Client_Brand_Key__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -30501,6 +30690,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Log__c.Last_Date_UAS_Removed_From_Project__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Account_Log__c.Lead__c</field>
         <readable>true</readable>
@@ -30533,6 +30727,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Log__c.Number_of_Non_Cancelled_UASes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Log__c.Number_of_Removed_UASes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Log__c.Number_of_Subscribed_UASes__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -30758,6 +30962,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Dover_Updated_NMC__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Subscription__c.Finaled__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -33696,6 +33905,16 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Product_Tag__c.Team_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Product_Tag__c.Team_Queue_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>agf__ADM_Product_Tag__c.agf__Active__c</field>
         <readable>true</readable>
@@ -34708,6 +34927,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>agf__ADM_Scrum_Team_Member__c.agf__formula_email__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>agf__ADM_Scrum_Team__c.Email_Send_Triggers__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -45394,10 +45618,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Case-Customer Care</layout>
-        <recordType>Case.Customer_Care</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Case-Customer Care</layout>
         <recordType>Case.Partner_Care_Case</recordType>
     </layoutAssignments>
     <layoutAssignments>
@@ -45407,6 +45627,10 @@
     <layoutAssignments>
         <layout>Case-Product Support</layout>
         <recordType>Case.Product_Support</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Case-Service Console - Customer Support</layout>
+        <recordType>Case.Customer_Care</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>CaseClose-Close Case Layout</layout>
@@ -45627,11 +45851,11 @@
         <layout>Invoice__c-Invoice Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Knowledge__kav-Article Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Knowledge__kav-How To</layout>
         <recordType>Knowledge__kav.How_To</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Knowledge__kav-Q%26A</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Knowledge__kav-Q%26A</layout>
@@ -45699,6 +45923,10 @@
     <layoutAssignments>
         <layout>Lead-BFG - Standard Solar Loan %28Co-Applicant%29</layout>
         <recordType>Lead.BFG_SC_Solar_Loan_Co_Applicant</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Lead-C%26I</layout>
+        <recordType>Lead.C_I</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-Lead %28General%29</layout>
@@ -46187,6 +46415,17 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>ZipCode_Utility_Junction__c-ZipCode Utility Junction Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>agf__ADM_Scrum_Team__c-agf__Scrum Team Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>agf__ADM_Scrum_Team__c-agf__Scrum Team Layout</layout>
+        <recordType>agf__ADM_Scrum_Team__c.agf__Program</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>agf__ADM_Scrum_Team__c-agf__Scrum Team Layout</layout>
+        <recordType>agf__ADM_Scrum_Team__c.agf__Scrum_Team</recordType>
     </layoutAssignments>
     <objectPermissions>
         <allowCreate>false</allowCreate>
@@ -48694,6 +48933,11 @@
         <default>false</default>
         <recordType>Lead.BlueWave_Solar_Loan</recordType>
         <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Lead.C_I</recordType>
+        <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>

@@ -1,13 +1,18 @@
-trigger AccountTrigger on Account (before insert, before update) {
+//Test: AccountTriggerHandlerTestClass, CSCancellationServiceTest
+
+trigger AccountTrigger on Account (before insert, before update, after update) {
     if (Util.isDisabled('Disable_AccountTrigger__c')) {
         return;
     }
-    AccountTriggerHandler accountTriggerHandler = new AccountTriggerHandler(Trigger.isExecuting, Trigger.size);
-    
-    if(Trigger.isInsert && Trigger.isBefore){
-        accountTriggerHandler.OnBeforeInsert(Trigger.new);
-    }
-    else if(Trigger.isUpdate && Trigger.isBefore){
-        accountTriggerHandler.OnBeforeUpdate(Trigger.old, Trigger.new, Trigger.oldMap, Trigger.newMap);
+    AccountTriggerHandler accountTriggerHandler = new AccountTriggerHandler();
+
+    switch on Trigger.operationType {
+        when BEFORE_INSERT {
+            accountTriggerHandler.onBeforeInsert(Trigger.new);
+        } when BEFORE_UPDATE {
+            accountTriggerHandler.onBeforeUpdate(Trigger.new);
+        } when AFTER_UPDATE {
+            accountTriggerHandler.onAfterUpdate(Trigger.oldMap, Trigger.newMap);
+        }
     }
 }

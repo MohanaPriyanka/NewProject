@@ -51,7 +51,7 @@
                 <stringValue>&quot;Parent Account: &quot; &amp; [Overpayment__c].Account_Bill__c.Parent_Account__c.Name  &amp; &quot;; Logged by: &quot; &amp; [Overpayment__c].CreatedBy.FirstName &amp;  &quot; &quot; &amp; [Overpayment__c].CreatedBy.LastName &amp; &quot;; Account Bill: &quot; &amp; [Overpayment__c].Account_Bill__c.Account_Bill_ID__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_2_myRule_1_A1_2408757354</name>
+        <name>formula_2_myRule_1_A1_3886712146</name>
         <dataType>String</dataType>
         <expression>&quot;Parent Account: &quot; &amp; {!myVariable_current.Account_Bill__r.Parent_Account__r.Name}  &amp; &quot;; Logged by: &quot; &amp; {!myVariable_current.CreatedBy.FirstName} &amp;  &quot; &quot; &amp; {!myVariable_current.CreatedBy.LastName} &amp; &quot;; Account Bill: &quot; &amp; {!myVariable_current.Account_Bill__r.Account_Bill_ID__c}</expression>
     </formulas>
@@ -62,7 +62,7 @@
                 <stringValue>&quot;Overpayment was logged for &quot; &amp; [Overpayment__c].Account_Bill__c.Parent_Account__c.Name </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_3_myRule_1_A1_3220876954</name>
+        <name>formula_3_myRule_1_A1_7773776975</name>
         <dataType>String</dataType>
         <expression>&quot;Overpayment was logged for &quot; &amp; {!myVariable_current.Account_Bill__r.Parent_Account__r.Name}</expression>
     </formulas>
@@ -173,7 +173,7 @@
             <processMetadataValues>
                 <name>dataType</name>
                 <value>
-                    <stringValue>MultiPicklist</stringValue>
+                    <stringValue>Picklist</stringValue>
                 </value>
             </processMetadataValues>
             <processMetadataValues>
@@ -197,7 +197,7 @@
             <processMetadataValues>
                 <name>rightHandSideType</name>
                 <value>
-                    <stringValue>MultiPicklist</stringValue>
+                    <stringValue>Picklist</stringValue>
                 </value>
             </processMetadataValues>
             <field>Category__c</field>
@@ -238,7 +238,7 @@
             </processMetadataValues>
             <field>Description</field>
             <value>
-                <elementReference>formula_2_myRule_1_A1_2408757354</elementReference>
+                <elementReference>formula_2_myRule_1_A1_3886712146</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -418,7 +418,7 @@
             </processMetadataValues>
             <field>Subject</field>
             <value>
-                <elementReference>formula_3_myRule_1_A1_3220876954</elementReference>
+                <elementReference>formula_3_myRule_1_A1_7773776975</elementReference>
             </value>
         </inputAssignments>
         <object>Case</object>

@@ -19,7 +19,7 @@
   <ltng:require styles="{!$Resource.animations}"/>
 
   <aura:if isTrue="{!v.noAvailableProducts}">
-    <div class="slds-align_absolute-center proximaNovaDataBlue"> <b> There are currently no available products for this customer </b> </div>
+    <div class="slds-align_absolute-center "> <b> There are currently no available products for this customer </b> </div>
     <br></br>
     <br></br>
     <div aura:id="creditStatusBackButton" class="slds-align_absolute-center">
@@ -46,9 +46,9 @@
          <div aura:id = "customerTable" class="main2">
           <br></br>
           <div>
-            <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack slds-scrollable">
+            <table class="slds-table slds-table--bordered  slds-table--striped box slds-scrollable">
               <thead>
-                <tr class="slds-text-heading--label proximaNovaDataMountain " >
+                <tr class="slds-text-heading--label " >
                   <th scope="col"><span class="slds-truncate"><b>Customer</b></span></th>
                   <th scope="col"><span class="slds-truncate"><b>Pre-Qualification Status</b></span></th>
                 </tr>
@@ -116,9 +116,9 @@
             </div>
           </div>
           <hr></hr>
-          <table class="slds-table slds-table--bordered  slds-table--striped box proximaNovaBlack slds-scrollable">
+          <table class="slds-table slds-table--bordered  slds-table--striped box  slds-scrollable">
             <thead>
-              <tr class="slds-text-heading--label proximaNovaDataBlue " >
+              <tr class="slds-text-heading--label " >
               </tr>
             </thead>
             <tbody>

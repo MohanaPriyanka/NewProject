@@ -52,35 +52,35 @@
   <div aura:id="BWDataTableTabs" class="">
     <ul class="slds-tabs_default__nav" role="tablist">
       <c:BlueWaveInputToolTip popoverText="Applicants who have begun an application but have not yet been qualified or declined.">
-        <li aura:id="applications" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
+        <li aura:id="applications" class="slds-tabs_default__item slds-context-bar__item">
           <a class="slds-tabs_default__link" onclick="{!c.changeTableToApplications}" role="tab">
             <b>APPLICATIONS</b>
           </a>
         </li>
       </c:BlueWaveInputToolTip>
       <c:BlueWaveInputToolTip popoverText="Qualified customers that have not been fully disbursed and require additional action.">
-        <li aura:id="customersInProcess" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
+        <li aura:id="customersInProcess" class="slds-tabs_default__item slds-context-bar__item">
           <a class="slds-tabs_default__link" onclick="{!c.changeTableToCustomersInProcess}" role="tab">
             <b>IN PROCESS</b>
           </a>
         </li>
       </c:BlueWaveInputToolTip>
       <c:BlueWaveInputToolTip popoverText="Customers that have been fully disbursed and are complete.">
-        <li aura:id="completedCustomers" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
+        <li aura:id="completedCustomers" class="slds-tabs_default__item slds-context-bar__item">
           <a class="slds-tabs_default__link" onclick="{!c.changeTableToCompletedCustomers}" role="tab">
             <b>COMPLETED</b>
           </a>
         </li>
       </c:BlueWaveInputToolTip>
       <c:BlueWaveInputToolTip popoverText="Customers that did not meet BlueWave's credit criteria. They can add a Co-Signer to their application if they haven't already.">
-        <li aura:id="declinedApplicants" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
+        <li aura:id="declinedApplicants" class="slds-tabs_default__item slds-context-bar__item">
           <a class="slds-tabs_default__link" onclick="{!c.changeTableToDeclinedApplicants}" role="tab">
             <b>DECLINED</b>
           </a>
         </li>
       </c:BlueWaveInputToolTip>
       <c:BlueWaveInputToolTip popoverText="Applications that have expired.">
-        <li aura:id="expiredApplicants" class="slds-tabs_default__item proximaNovaBlue slds-context-bar__item">
+        <li aura:id="expiredApplicants" class="slds-tabs_default__item slds-context-bar__item">
           <a class="slds-tabs_default__link" onclick="{!c.changeTableToExpiredApplicants}" role="tab">
             <b>EXPIRED</b>
           </a>
@@ -109,7 +109,7 @@
                          recordFieldNames="['Name', 'Status', 'Action']"
                          fieldTypeMap="{Name: 'String'}"
                          conditionalColorField="Status"
-                         conditionalColorMap ="{'Pre-Qualified': '#00B2A9'}"
+                         conditionalColorMap ="{'Pre-Qualified': 'slds-tabs_default__link'}"
                          buttonConditionalField="Status"
                          buttonConditionalLabelMap="{'Pre-Qualified': 'Continue Application', 'Unfinished': 'Resend Application', 'Ready for Credit Check': 'Resend Application'}"
                          buttonConditionalEventMap="{'Pre-Qualified': 'continueApplication', 'Unfinished': 'resendApplication', 'Ready for Credit Check': 'resendApplication' }"
@@ -124,7 +124,7 @@
                          tableRecords="{!v.loansInProcess}" 
                          recordFieldNames="['Name', 'Sales_Agent__r.Name', 'Product__r.External_Name__c', 'Partner_Tasks__r[0].Owner__c', 'Partner_Tasks__r[0].Task_Label__c','Requested_Loan_Amount__c', 'Total_Funds_Disbursed__c', 'Action']"
                          fieldTypeMap="{Requested_Loan_Amount__c: 'Currency', Total_Funds_Disbursed__c: 'Currency'}"
-                         columnColorMap="{'Partner_Tasks__r[0].Task_Label__c': '#00B2A9'}"
+                         columnColorMap="{'Partner_Tasks__r[0].Task_Label__c': 'slds-tabs_default__link'}"
                          defaultButtonLabels="View"
                          defaultButtonEvents="openCustomerWindow"
                          profileSecurityMap="{User: ['Funded', 'Total_Funds_Disbursed__c']}"/>
@@ -137,7 +137,7 @@
                          tableRecords="{!v.completedLoans}" 
                          recordFieldNames="['Name', 'Sales_Agent__r.Name', 'Product__r.External_Name__c', 'Partner_Tasks__r[0].Task_Label__c','Requested_Loan_Amount__c', 'Total_Funds_Disbursed__c', 'Action']"
                          fieldTypeMap="{Requested_Loan_Amount__c: 'Currency', Total_Funds_Disbursed__c: 'Currency'}"
-                         columnColorMap="{'Partner_Tasks__r[0].Task_Label__c': '#00B2A9'}"
+                         columnColorMap="{'Partner_Tasks__r[0].Task_Label__c': 'slds-tabs_default__link'}"
                          defaultButtonLabels="View"
                          defaultButtonEvents="openCustomerWindow"
                          profileSecurityMap="{User: ['Funded', 'Total_Funds_Disbursed__c']}"
@@ -151,7 +151,7 @@
                          tableRecords="{!v.declinedApplicants}" 
                          recordFieldNames="['Name', 'Status', 'Action']"
                          fieldTypeMap="{Name: 'String'}"
-                         columnColorMap="{'Status': '#00B2A9'}"
+                         columnColorMap="{'Status': 'slds-tabs_default__link'}"
                          defaultButtonLabels="Add Co-Signer"
                          defaultButtonEvents="addCoSigner"/>
  <br></br>
@@ -163,7 +163,7 @@
                          tableRecords="{!v.expiredApplicants}" 
                          recordFieldNames="['Name', 'Sales_Agent__r.Name', 'Product__r.External_Name__c', 'Requested_Loan_Amount__c']"
                          fieldTypeMap="{Requested_Loan_Amount__c: 'Currency'}"
-                         columnColorMap="{'Partner_Tasks__r[0].Task_Label__c': '#00B2A9'}"/>
+                         columnColorMap="{'Partner_Tasks__r[0].Task_Label__c': 'slds-tabs_default__link'}"/>
  <br></br>
  </aura:if>
  </div>
