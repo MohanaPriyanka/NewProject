@@ -51,6 +51,7 @@
             helper.saveSObject(component, lead.Id, "Lead", null, null, lead);
             helper.handleCreditCheckResponse(component, helper);
         } else {
+            component.set('v.loading', false);
             component.set("v.creditStatusErrorText", returnValue.sssCreditQualification);
             helper.handleCreditCheckResponse(component, helper, "creditResultError");
         }
@@ -76,9 +77,9 @@
     },
 
     handleCreditCheckResponse : function(component, helper, divToShow) {
-        $A.util.addClass(component.find("creditStatus"), "noDisplay");
+        $A.util.addClass(component.find("creditStatus"), "no-display");
         if (divToShow) {
-            $A.util.removeClass(component.find(divToShow), "noDisplay");
+            $A.util.removeClass(component.find(divToShow), "no-display");
         }
         window.clearInterval(component.get("v.creditStatusPoller"));
         window.clearTimeout(component.get("v.creditStatusTimeoutID"));
