@@ -2751,11 +2751,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account_Bill__c.Bill_Due_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account_Bill__c.Bill_Message__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -2847,11 +2842,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account_Bill__c.Customer_Billing_Period__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account_Bill__c.Date_Sent__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2961,11 +2951,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account_Bill__c.Link_to_File__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account_Bill__c.Message_to_put_on_Bill__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -2986,11 +2971,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account_Bill__c.Number_of_Pages_in_Template__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account_Bill__c.Outstanding_Balance_Rollup__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -3007,11 +2987,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account_Bill__c.Past_Due_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account_Bill__c.Past_Overpayment_and_Overdue__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -29151,11 +29126,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>System_Bill__c.XXBalance_Adjustments_Formula__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>System_Bill__c.YTD_Billed__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -29747,11 +29717,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>UASB__c.NMC_Rate__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>UASB__c.NMCs_Allocated__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
