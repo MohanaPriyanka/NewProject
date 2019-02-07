@@ -196,15 +196,26 @@
       <div class="slds-text-body--regular slds-align_absolute-center">
         {!v.loadingText}
       </div>
-    </aura:if>
       <div class="slds-align--absolute-center slds-p-top_medium slds-text-body--regular slds-align_absolute-center">Pulling credit report... This process may take up to a minute.</div></aura:if>
+    </aura:if>
 
-    <div aura:id="creditStatus" class="slds-align--absolute-center slds-p-top_medium no-display slds-text-body--regular slds-align_absolute-center">
+
+    <div aura:id="creditStatus" class="slds-align--absolute-center slds-p-top_medium no-display slds-text-body--large--blue slds-align_absolute-center">
       <ui:outputText value="{!v.creditStatusText}"/>
     </div>
-    <div aura:id="creditResultError" class="no-display center">
-      <ui:outputText value="{!'There was an error: ' + v.creditStatusErrorText + ' You can refresh the page and log back into the application to check status or retry the credit check.'}"/>
-    </div>
+    
+    <lightning:layout aura:id="creditResultError" class="no-display animated" multipleRows="true" horizontalAlign="center">
+      <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+        <div class="slds-align--absolute-center">
+          <b class="slds-text-body--large--blue">There was an error checking your credit: <ui:outputText value="{!v.creditStatusErrorText}"/></b>
+	    </div>
+      </lightning:layoutItem>
+      <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+        <div class="slds-align--absolute-center">
+          <b class="slds-text-body--large--blue">This may be due to your credit being frozen. Contact your credit agency or BlueWave support for more details.</b>
+        </div>
+      </lightning:layoutItem>
+    </lightning:layout>
 
     
     <aura:if isTrue="{!v.creditChecked}">
