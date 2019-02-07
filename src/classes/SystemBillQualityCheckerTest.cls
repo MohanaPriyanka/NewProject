@@ -16,9 +16,9 @@ public with sharing class SystemBillQualityCheckerTest {
                 Date__c, Date_of_Last_Payment__c, Late_Fee_Payments__c, Late_Fees__c, Late_Payments__c,
                 Payments_Net_Previous_Balances__c, Previous_Month_Overdue_Balance__c, Total_Payments_This_Month__c,
                 Waive_Late_Fees__c, Recurring_Billing__c, Payment_Plan_Balance__c, Payment_Plan_Balance_to_Distribute__c,
-                Distribute_This_Balance_as_Payment_Plan__c, Past_Bill_Amount__c, Past_Bill_Payment__c, Refund_this_Balance__c,
-                Date_Refunded__c, Adjustments__c, Amount_to_Add__c, Amount_to_Deduct__c, Early_Payments__c,
-                Carry_Forward_Adjustments__c, Distribute_This_Balance_12mo__c, Carry_Forward_Payments__c, Balance_Adjustments__c
+                Distribute_This_Balance_as_Payment_Plan__c, Past_Bill_Amount__c, Past_Bill_Payment__c,
+                Date_Refunded__c, Adjustments__c,
+                Distribute_This_Balance_12mo__c
             FROM System_Bill__c
             LIMIT 1
         ];
