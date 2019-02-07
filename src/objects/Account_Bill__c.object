@@ -269,17 +269,6 @@
         <type>Summary</type>
     </fields>
     <fields>
-        <fullName>Bill_Due_Date__c</fullName>
-        <externalId>false</externalId>
-        <formula>Date__c + 20</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXBill Due Date</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
         <fullName>Bill_Message__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>For use with PrintSF cover letter</inlineHelpText>
@@ -609,16 +598,6 @@ CASE(
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Date_Sent__c</fullName>
-        <externalId>false</externalId>
-        <label>xx Time Sent</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>DateTime</type>
-    </fields>
-    <fields>
         <fullName>Date__c</fullName>
         <externalId>false</externalId>
         <label>Bill Statment Date</label>
@@ -865,16 +844,6 @@ IF( Balance_Net_Late_Payments__c &gt; 1, (TODAY() - Due_Date_SB__c), 0))</formul
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Link_to_File__c</fullName>
-        <externalId>false</externalId>
-        <label>XX Link to File</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Url</type>
-    </fields>
-    <fields>
         <fullName>Message_to_put_on_Bill__c</fullName>
         <externalId>false</externalId>
         <formula>IF( Payment_Plan_Balance__c &gt; 0 , &quot;You are currently on a payment plan and your payment will be made via autopay.&quot;,
@@ -925,22 +894,6 @@ IF(Parent_Account__r.Recurring_Billing__c = TRUE, &quot;You are currently on aut
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Number_of_Pages_in_Template__c</fullName>
-        <description>This field is not needed anymore now that the actual number of pages in a bill pdf is determined and set in the Bill PDF Page Count field on Account Bills.</description>
-        <externalId>false</externalId>
-        <formula>Bill_PDF_Page_Count__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>This field is not needed anymore now that the actual number of pages in a bill pdf is determined and set in the Bill PDF Page Count field on Account Bills.</inlineHelpText>
-        <label>xxNumber of Pages in Template</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Outstanding_Balance_Rollup__c</fullName>
@@ -1002,20 +955,6 @@ IF(Parent_Account__r.Recurring_Billing__c = TRUE, &quot;You are currently on aut
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Past_Overpayment_and_Overdue__c</fullName>
-        <externalId>false</externalId>
-        <formula>Previous_Month_Overdue_Balance__c + Previous_Overpayment__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Merge field to combine Overdue and Overpayment into one merge field for document generation. Should be one or the other unless the bill is across multiple project companies and payments are unequal</inlineHelpText>
-        <label>XX Past Overpayment and Overdue</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Past_Payment__c</fullName>
@@ -1562,7 +1501,6 @@ New Charges...</inlineHelpText>
         <columns>Due_This_Month__c</columns>
         <columns>Total_Due_This_Month__c</columns>
         <columns>Due_Date_SB__c</columns>
-        <columns>Bill_Due_Date__c</columns>
         <columns>Checks_Address_Line__c</columns>
         <columns>Balance_Net_Late_Payments__c</columns>
         <filterScope>Everything</filterScope>
