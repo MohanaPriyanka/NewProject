@@ -637,19 +637,7 @@ public class TestBillCreationandPayment {
 
     @isTest public static void testPaymentPlan() {
         Test.startTest();
-        List<System_Bill__c> systemBillList =
-        [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
-            Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
-            Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
-            Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c,
-            Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
-            Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-            Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
-            Waive_Late_Fees__c, Balance_Adjustment__c,
-            Adjustments_UASB__c,
-            Billing_Period_End_Date__c, Billing_Period_Start_Date__c
-        FROM System_Bill__c
-        ORDER BY Bill_Number__c];
+        List<System_Bill__c> systemBillList = SystemBillsSelector.selectAllSystemBills();
 
         List <UASB__c> uablist =
         [SELECT Id, Name, Bill_Date__c, System_Bill__r.Bill_Number__c,
@@ -721,19 +709,7 @@ public class TestBillCreationandPayment {
         }
         update abList;
 
-        List<System_Bill__c> updatedsystemBillList =
-        [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
-            Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
-            Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
-            Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c,
-            Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
-            Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-            Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
-            Waive_Late_Fees__c, Balance_Adjustment__c,
-            Adjustments_UASB__c,
-            Billing_Period_End_Date__c, Billing_Period_Start_Date__c
-        FROM System_Bill__c
-        ORDER BY Bill_Number__c];
+        List<System_Bill__c> updatedsystemBillList = SystemBillsSelector.selectAllSystemBills();
 
         System.assertEquals(9, updatedsystemBillList.size());
         for (System_Bill__c sbs : updatedsystemBillList) {
@@ -750,19 +726,7 @@ public class TestBillCreationandPayment {
 
     @isTest public static void testSystemBills() {
         Test.startTest();
-        List<System_Bill__c> systemBillList =
-        [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
-            Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
-            Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
-            Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c,
-            Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
-            Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-            Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
-            Waive_Late_Fees__c, Previous_Overpayment__c, Balance_Adjustment__c,
-            Adjustments_UASB__c,
-            Billing_Period_End_Date__c, Billing_Period_Start_Date__c
-        FROM System_Bill__c
-        ORDER BY Bill_Number__c];
+        List<System_Bill__c> systemBillList = SystemBillsSelector.selectAllSystemBills();
 
         // Month 1 [0]: 258.96 (due this month) + 24 (adjust) = 282.96 (total due)
         // Month 2 [1]: 345.28 (due this month) + 282.96 (previous overdue) + 2.83 (late fees) = 631.07 (total due)
@@ -795,7 +759,7 @@ public class TestBillCreationandPayment {
             Monthly_Late_Fee_Interest__c,
             Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
             Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-            Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
+            Adjustments__c, Bill_Date__c,
             Waive_Late_Fees__c, Balance_Adjustment__c,
             Adjustments_UASB__c,
             Billing_Period_End_Date__c, Billing_Period_Start_Date__c
@@ -869,7 +833,7 @@ public class TestBillCreationandPayment {
                 Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c,
                 Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
                 Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-                Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
+                Adjustments__c, Bill_Date__c,
                 Waive_Late_Fees__c, Balance_Adjustment__c,
                 Adjustments_UASB__c,
                 Billing_Period_End_Date__c, Billing_Period_Start_Date__c
@@ -1129,20 +1093,7 @@ public class TestBillCreationandPayment {
         System.assertEquals(1, adjustApp.size());
         System.assertEquals(0, adjustApp[0].Bill_Adjustment__r.Outstanding__c);
 
-        List<System_Bill__c> updatedsystemBillListOne =
-        [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
-            Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
-            Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
-            Total_Due__c, Balance_Net_Late_Payments__c, Late_Fee_Payments__c, Total_Payments_This_Month__c,
-            Payments_Net_Previous_Balances__c,
-            Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
-            Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-            Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
-            Waive_Late_Fees__c, Balance_Adjustment__c,
-            Adjustments_UASB__c,
-            Billing_Period_End_Date__c, Billing_Period_Start_Date__c
-        FROM System_Bill__c
-        ORDER BY Bill_Number__c];
+        List<System_Bill__c> updatedsystemBillListOne = SystemBillsSelector.selectAllSystemBills();
 
         System.assertEquals(282.96, updatedsystemBillListOne[0].Total_Due__c);
         System.assertEquals(282.96, updatedsystemBillListOne[0].Late_Payments__c);
@@ -1251,19 +1202,7 @@ public class TestBillCreationandPayment {
         System.assertEquals(1, secondOverpay.size());
         System.assertEquals(-121.76, secondOverpay[0].Overpayment_Amount__c);
 
-        List<System_Bill__c> updatedsystemBillList =
-        [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
-            Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
-            Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
-            Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c,
-            Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
-            Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-            Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
-            Waive_Late_Fees__c, Previous_Overpayment__c, Balance_Adjustment__c,
-            Adjustments_UASB__c,
-            Billing_Period_End_Date__c, Billing_Period_Start_Date__c
-        FROM System_Bill__c
-        ORDER BY Bill_Number__c];
+        List<System_Bill__c> updatedsystemBillList = SystemBillsSelector.selectAllSystemBills();
 
         // Waiving late fees
         System.assertEquals(281.07, updatedsystemBillList[2].Total_Due__c );
@@ -1601,7 +1540,7 @@ public class TestBillCreationandPayment {
                 Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c,
                 Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
                 Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-                Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
+                Adjustments__c, Bill_Date__c,
                 Waive_Late_Fees__c, Previous_Overpayment__c, Balance_Adjustment__c,
                 Adjustments_UASB__c,
                 Billing_Period_End_Date__c, Billing_Period_Start_Date__c,
@@ -1623,7 +1562,7 @@ public class TestBillCreationandPayment {
                 Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c,
                 Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
                 Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-                Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
+                Adjustments__c, Bill_Date__c,
                 Waive_Late_Fees__c, Previous_Overpayment__c, Balance_Adjustment__c,
                 Adjustments_UASB__c,
                 Billing_Period_End_Date__c, Billing_Period_Start_Date__c,
@@ -1968,20 +1907,7 @@ public class TestBillCreationandPayment {
     static testMethod void testOnlyAllowApprovedAdjustments() {
         Test.startTest();
 
-        List<System_Bill__c> systemBillBefore =
-        [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
-            Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
-            Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
-            Total_Due__c, Balance_Net_Late_Payments__c, Late_Fee_Payments__c, Total_Payments_This_Month__c,
-            Payments_Net_Previous_Balances__c,
-            Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
-            Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-            Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
-            Waive_Late_Fees__c, Previous_Overpayment__c, Balance_Adjustment__c,
-            Adjustments_UASB__c,
-            Billing_Period_End_Date__c, Billing_Period_Start_Date__c
-        FROM System_Bill__c
-        ORDER BY Bill_Number__c];
+        List<System_Bill__c> systemBillBefore = SystemBillsSelector.selectAllSystemBills();
 
         // Before the adjustment is set to approved, only the 1 approved adjustment of $24 in testSetup is applied
         System.assertEquals(282.96, systemBillBefore[0].Total_Due__c);
@@ -2022,20 +1948,7 @@ public class TestBillCreationandPayment {
         update newConga;
 
         // This time the bill should be for $30 more since the adjustment should be applied
-        List<System_Bill__c> systemBillsAfter =
-        [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
-            Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
-            Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
-            Total_Due__c, Balance_Net_Late_Payments__c, Late_Fee_Payments__c, Total_Payments_This_Month__c,
-            Payments_Net_Previous_Balances__c,
-            Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
-            Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-            Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
-            Waive_Late_Fees__c, Previous_Overpayment__c, Balance_Adjustment__c,
-            Adjustments_UASB__c, (SELECT  Id, Name FROM Adjustment_Applications__r),
-            Billing_Period_End_Date__c, Billing_Period_Start_Date__c
-        FROM System_Bill__c
-        ORDER BY Bill_Number__c];
+        List<System_Bill__c> systemBillsAfter = SystemBillsSelector.selectAllSystemBills();
 
         // The $30 adjustment is now applied
         System.assertEquals(312.96, systemBillsAfter[0].Total_Due__c);

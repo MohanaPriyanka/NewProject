@@ -194,21 +194,7 @@ public class PublicCSTest {
     }
 
     @isTest public static void testBillCreation() {    
-        List<System_Bill__c> systemBillList = 
-            [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c, 
-             Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c, 
-             Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c, 
-             Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c, 
-             Property_Account__r.Directions_To_Write_Paper_Check__c,
-             Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
-             Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c, 
-             Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
-             Waive_Late_Fees__c, Previous_Overpayment__c, Balance_Adjustment__c,
-             Net_Metering_Credits_Allocated__c, Production_kWH__c,
-             Adjustments_UASB__c, 
-             Billing_Period_End_Date__c, Billing_Period_Start_Date__c
-             FROM System_Bill__c
-             ORDER BY Bill_Number__c];
+        List<System_Bill__c> systemBillList = SystemBillsSelector.selectAllSystemBills();
 
         List<UASB__c> uablist = 
             [SELECT Id, Name, Bill_Date__c, System_Bill__r.Bill_Number__c, Above_NM_Rate_Floor__c, 
