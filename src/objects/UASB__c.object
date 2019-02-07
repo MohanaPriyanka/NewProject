@@ -355,24 +355,6 @@ MONTH(Billing_Period_End_Date__c),
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>NMCs_Allocated__c</fullName>
-        <description>The same as the other NMCs allocated, but as a currency field. Needed for Accounting reporting.</description>
-        <externalId>false</externalId>
-        <formula>ROUND(IF(Size_off_NMCs__c = TRUE, 
-(ROUND(Share_of_System__c,4)/100) * Total_System_NMCs__c, 
-ROUND((NMC_Rate__c - 0.02) * Subscription_Production_kWh_Static__c,2)+ROUND(0.02 * Subscription_Production_kWh_Static__c,2) 
-),2)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>The same as the other NMCs allocated field, but as a currency field. Needed for Accounting reporting.</inlineHelpText>
-        <label>XXX NMCs Allocated</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>NM_Rate_Floor__c</fullName>
         <externalId>false</externalId>
         <label>NM Rate Floor</label>
