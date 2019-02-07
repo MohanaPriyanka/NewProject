@@ -1221,6 +1221,19 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Project_Location_and_Customer_Allocation__c</fullName>
+        <description>Displayed in the CS Customer Disclosure Form</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Displayed in the CS Customer Disclosure Form</inlineHelpText>
+        <label>Project Location and Customer Allocation</label>
+        <length>10000</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>5</visibleLines>
+    </fields>
+    <fields>
         <fullName>Project_Management__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -1365,6 +1378,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <fullName>EnergySage</fullName>
                     <default>false</default>
                     <label>EnergySage</label>
+                </value>
+                <value>
+                    <fullName>First Parish in Wayland</fullName>
+                    <default>false</default>
+                    <label>First Parish in Wayland</label>
                 </value>
                 <value>
                     <fullName>Grace Episcopal Church</fullName>
@@ -2359,6 +2377,10 @@ null)</formula>
                 <default>false</default>
             </values>
             <values>
+                <fullName>First Parish In Wayland</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Grace Episcopal Church</fullName>
                 <default>false</default>
             </values>
@@ -2752,6 +2774,10 @@ null)</formula>
             </values>
             <values>
                 <fullName>EnergySage</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>First Parish in Wayland</fullName>
                 <default>false</default>
             </values>
             <values>

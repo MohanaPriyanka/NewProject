@@ -36,7 +36,7 @@
       <div aria-labelledby="aboutYourselfForm">
         <fieldset class="slds-box slds-theme--default slds-container_center">
           <legend id="aboutYourselfForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-            <b class=" slds-section__title--large">Tell us a little bit about yourself</b>
+            <b class=" slds-section__title--large slds-p-horizontal_large">  Tell us a little bit about yourself  </b>
           </legend>
           <form class="slds-form--stacked">
             <lightning:layout multipleRows="true">
@@ -98,11 +98,11 @@
       <div aria-labelledby="applyingForForm">
         <fieldset class="slds-box slds-theme--default slds-container_center">
           <legend id="ApplyingFor" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-            <b class="slds-section__title--large">Select which kind of Community Solar you are applying for!</b>
+            <b class="slds-section__title--large slds-p-horizontal_large"> Select which kind of Community Solar you are applying for! </b>
           </legend>
           <lightning:layout multipleRows="true" horizontalAlign="center">
             <lightning:layoutItem size="3" smallDeviceSize="6" mediumDeviceSize="3">
-              <div class="slds-visual-picker slds-visual-picker_medium">
+              <div class="slds-visual-picker slds-visual-picker_medium slds-align--absolute-center">
                 <input type="radio" id="visual-picker-residential" onchange="{!c.setCSApplicationResidential}" checked="{!v.Residential}"/>
                 <label for="visual-picker-residential">
                 <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">
@@ -133,7 +133,7 @@
               </div>
             </lightning:layoutItem>
             <lightning:layoutItem size="3" smallDeviceSize="6" mediumDeviceSize="3">
-              <div class="slds-visual-picker slds-visual-picker_medium">
+              <div class="slds-visual-picker slds-visual-picker_medium slds-align--absolute-center">
                 <input type="radio" id="visual-picker-non-residential" onchange="{!c.setCSApplicationNonResidential}" checked="{!v.NonResidential}"/>
                 <label for="visual-picker-non-residential">
                 <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">
@@ -187,7 +187,7 @@
         <aura:if isTrue="{!v.lead.Application_Type__c != ''}">
           <fieldset class="slds-box slds-theme--default slds-container_center">
             <legend id="homeAddressForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-              <b class="slds-section__title--large">Where would you like to receive Community Solar?</b>
+              <b class="slds-section__title--large slds-p-horizontal_large"> Where would you like to receive Community Solar? </b>
             </legend>
             <form class="slds-form--stacked">
               <div class="slds-p-around--small slds-text-body--regular">
@@ -272,8 +272,8 @@
       <aura:if isTrue="{!v.sendBillToHome == 'No'}">
         <div aria-labelledby="billingAddressForm">
           <fieldset class="slds-box slds-theme--default slds-container_center">
-            <legend id="billingAddressForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-              <b class="slds-section__title--large">Where would you like us to send your Community Solar Bill?</b>
+            <legend id="billingAddressForm" class="slds-text-heading--small slds-align_absolute-center slds-p-vertical--medium ">
+              <b class="slds-section__title--large slds-p-horizontal_large">Where would you like us to send your Community Solar Bill?</b>
             </legend>
             <form class="slds-form--stacked">
               <lightning:layout multipleRows="true">
@@ -320,8 +320,7 @@
         <div aria-labelledby="businessForm">
           <fieldset class="slds-box slds-theme--default slds-container_center">
             <legend id="businessForm" class="slds-text-heading--small slds-p-vertical--medium slds-section__title--large slds-align_absolute-center">
-              <b class="slds-section__title--large">Tell us a bit about your</b>
-              <b class="slds-section__title--large--stream"> business</b>
+              <b class="slds-section__title--large slds-p-horizontal_large"> Tell us a bit about your business  </b>
             </legend>
             <form class="slds-form--stacked">
               <lightning:layout multipleRows="true">
@@ -430,7 +429,7 @@
       <div>
         <fieldset class="slds-box slds-theme--default slds-container_center">
           <legend id="homeAddressForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-            <b class="slds-section__title--large">Help us find you</b>
+            <b class="slds-section__title--large slds-p-horizontal_large"> Help us find you </b>
           </legend>
           <form class="slds-form--stacked">
             <div class="slds-p-around--small slds-text-body--regular">

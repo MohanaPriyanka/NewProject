@@ -1,6 +1,7 @@
 @isTest
 public class TestBillCreationandPayment {
     @testSetup public static void csTestRecordWarehouse(){
+        Test.startTest();
         Utility__c eversource = new Utility__c(
             Name = 'Eversource',
             Number_of_Decimal_Places__c = 2
@@ -386,6 +387,9 @@ public class TestBillCreationandPayment {
 
         setBillsToPublished();
 
+        // As of Jan 2019, 65 of 100 queries used. Generating bills consumes 35 queries
+        Test.stopTest();
+
         productionupdateA2.Generate_Bills__c = true;
         update productionupdateA2;
     }
@@ -619,7 +623,8 @@ public class TestBillCreationandPayment {
         Schedule_Z__c scheduleZ = new Schedule_Z__c(
             Name = '18-0515 Oxford Barrett St. P1',
             Shared_Solar_System__c = productionUpdate.Shared_Solar_System__c,
-            Status__c = 'Enacted by Utility'
+            Status__c = 'Enacted by Utility',
+            Date_Enacted_by_Utility__c = Date.today()
         );
 
         insert scheduleZ;
@@ -721,7 +726,6 @@ public class TestBillCreationandPayment {
             Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
             Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
             Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c,
-            Property_Account__r.Directions_To_Write_Paper_Check__c,
             Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
             Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
             Adjustments__c, Bill_Date__c, Refund_this_Balance__c,
@@ -1805,7 +1809,8 @@ public class TestBillCreationandPayment {
         Schedule_Z__c scheduleZ = new Schedule_Z__c(
             Name = '18-0615 Oxford Barrett St. P1',
             Shared_Solar_System__c = productionUpdates[0].Shared_Solar_System__c,
-            Status__c = 'Enacted by Utility'
+            Status__c = 'Enacted by Utility',
+            Date_Enacted_by_Utility__c = Date.today()
         );
 
         insert scheduleZ;

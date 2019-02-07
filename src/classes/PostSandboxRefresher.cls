@@ -677,14 +677,16 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
                 Name = '2016 - sssA',
                 Shared_Solar_System__c = sssList[0].Id,
-                Status__c = 'Enacted by Utility'
+                Status__c = 'Billing',
+                Date_Enacted_by_Utility__c = Date.today()-90
             );
             insert scheduleZ1;
 
             Schedule_Z__c scheduleZ2 = new Schedule_Z__c(
                 Name = '2016 - sssB',
                 Shared_Solar_System__c = sssList[1].Id,
-                Status__c = 'Enacted by Utility'
+                Status__c = 'Billing',
+                Date_Enacted_by_Utility__c = Date.today()-90
             );
             insert scheduleZ2;
 
@@ -701,32 +703,6 @@ global class PostSandboxRefresher implements SandboxPostCopy {
 
             insert productionupdateA1;
 
-            Energy_Usage_Update__c productionupdateB2 = new Energy_Usage_Update__c (
-                Name = 'sssA - September 2016',
-                Shared_Solar_System__c = sssList[0].Id,
-                Production__c = 73072.00,
-                Due_Date__c = twoMonthsAgo,
-                Billing_Period_End_Date__c = oneMonthAgo,
-                Total_System_NMCs__c = 12033.73,
-                Date__c = twoMonthsAgo,
-                Schedule_Z__c =  scheduleZ1.Id
-            );
-
-            insert productionupdateB2;
-
-            Energy_Usage_Update__c productionupdateB3 = new Energy_Usage_Update__c (
-                Name = 'sssA - October 2016',
-                Shared_Solar_System__c = sssList[0].Id,
-                Production__c = 327001.00,
-                Due_Date__c = oneMonthAgo,
-                Billing_Period_End_Date__c = today,
-                Total_System_NMCs__c = 36424.44,
-                Date__c = oneMonthAgo,
-                Schedule_Z__c =  scheduleZ1.Id
-            );
-
-            insert productionupdateB3;
-
             Energy_Usage_Update__c prodUpdateBB = new Energy_Usage_Update__c (
                 Name = 'sssB - August 2016',
                 Shared_Solar_System__c = sssList[1].Id,
@@ -739,6 +715,47 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             );
 
             insert prodUpdateBB;
+
+            productionupdateA1.Generate_Bills__c = true;
+            prodUpdateBB.Generate_Bills__c = true;
+            update productionupdateA1;
+            update prodUpdateBB;
+
+            if (!Test.isRunningTest()) {
+                System.enqueueJob(new PostSandboxRefresher.ProductionUpdateHelper2());
+            }
+        }
+    }
+
+    global class ProductionUpdateHelper2 implements Queueable {
+        global void execute(QueueableContext context) {
+            List<Shared_Solar_System__c> sssList = [
+                SELECT Id, Name, BWC_Project_Entity_Manual__r.Id, Product__r.Id
+                FROM Shared_Solar_System__c
+                WHERE BWC_Project_Entity_Manual__r.Id != NULL
+                ORDER BY Name DESC
+            ];
+
+            Date today = Date.today();
+            Date threeMonthsAgo = today.addMonths(-3);
+            Date twoMonthsAgo = today.addMonths(-2);
+            Date oneMonthAgo = today.addMonths(-1);
+
+            Schedule_Z__c scheduleZ1 = [SELECT Id FROM Schedule_Z__c WHERE Name = '2016 - sssA'];
+            Schedule_Z__c scheduleZ2 = [SELECT Id FROM Schedule_Z__c WHERE Name = '2016 - sssB'];
+
+            Energy_Usage_Update__c productionupdateB2 = new Energy_Usage_Update__c (
+                Name = 'sssA - September 2016',
+                Shared_Solar_System__c = sssList[0].Id,
+                Production__c = 73072.00,
+                Due_Date__c = twoMonthsAgo,
+                Billing_Period_End_Date__c = oneMonthAgo,
+                Total_System_NMCs__c = 12033.73,
+                Date__c = twoMonthsAgo,
+                Schedule_Z__c =  scheduleZ1.Id
+            );
+
+            insert productionupdateB2;
 
             Energy_Usage_Update__c prodUpdateCC = new Energy_Usage_Update__c (
                 Name = 'sssB - September 2016',
@@ -753,6 +770,47 @@ global class PostSandboxRefresher implements SandboxPostCopy {
 
             insert prodUpdateCC;
 
+            productionupdateB2.Generate_Bills__c = true;
+            prodUpdateCC.Generate_Bills__c = true;
+            update productionupdateB2;
+            update prodUpdateCC;
+
+            if (!Test.isRunningTest()) {
+                System.enqueueJob(new PostSandboxRefresher.ProductionUpdateHelper3());
+            }
+        }
+    }
+
+    global class ProductionUpdateHelper3 implements Queueable {
+        global void execute(QueueableContext context) {
+            List<Shared_Solar_System__c> sssList = [
+                SELECT Id, Name, BWC_Project_Entity_Manual__r.Id, Product__r.Id
+                FROM Shared_Solar_System__c
+                WHERE BWC_Project_Entity_Manual__r.Id != NULL
+                ORDER BY Name DESC
+            ];
+
+            Date today = Date.today();
+            Date threeMonthsAgo = today.addMonths(-3);
+            Date twoMonthsAgo = today.addMonths(-2);
+            Date oneMonthAgo = today.addMonths(-1);
+
+            Schedule_Z__c scheduleZ1 = [SELECT Id FROM Schedule_Z__c WHERE Name = '2016 - sssA'];
+            Schedule_Z__c scheduleZ2 = [SELECT Id FROM Schedule_Z__c WHERE Name = '2016 - sssB'];
+
+            Energy_Usage_Update__c productionupdateB3 = new Energy_Usage_Update__c (
+                Name = 'sssA - October 2016',
+                Shared_Solar_System__c = sssList[0].Id,
+                Production__c = 327001.00,
+                Due_Date__c = oneMonthAgo,
+                Billing_Period_End_Date__c = today,
+                Total_System_NMCs__c = 36424.44,
+                Date__c = oneMonthAgo,
+                Schedule_Z__c =  scheduleZ1.Id
+            );
+
+            insert productionupdateB3;
+
             Energy_Usage_Update__c prodUpdateDD = new Energy_Usage_Update__c (
                 Name = 'sssB - October 2016',
                 Shared_Solar_System__c = sssList[1].Id,
@@ -766,17 +824,9 @@ global class PostSandboxRefresher implements SandboxPostCopy {
 
             insert prodUpdateDD;
 
-            productionupdateA1.Generate_Bills__c = true;
-            productionupdateB2.Generate_Bills__c = true;
             productionupdateB3.Generate_Bills__c = true;
-            prodUpdateBB.Generate_Bills__c = true;
-            prodUpdateCC.Generate_Bills__c = true;
             prodUpdateDD.Generate_Bills__c = true;
-            update productionupdateA1;
-            update productionupdateB2;
             update productionupdateB3;
-            update prodUpdateBB;
-            update prodUpdateCC;
             update prodUpdateDD;
 
             if (!Test.isRunningTest()) {
@@ -897,7 +947,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             Customer_Group__c = 'Residential',
             Product__c = sss.Product__r.Id,
             CloseDate = System.today(),
-            RecordTypeId = '012j00000010HPE'
+            RecordTypeId = '012j00000010HPE',
+            Product_Line__c = 'Community Solar'
         );
         return opportunity1;
     }
@@ -1012,8 +1063,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         if (o.IsSandbox || Test.isRunningTest()) {
             delete [SELECT Id FROM ChargentOrders__Transaction__c];
             delete [SELECT Id FROM ChargentOrders__ChargentOrder__c];
-            delete [SELECT Id FROM Account_Bill__c];
             delete [SELECT Id FROM Utility_Account_Bill__c];
+            delete [SELECT Id FROM Account_Bill__c];
             delete [SELECT Id FROM System_Bill__c];
             delete [SELECT Id FROM UASB__c];
             delete [SELECT Id FROM Energy_Usage_Update__c];
@@ -1022,6 +1073,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             delete [SELECT Id FROM Utility_Account_Subscription__c];
             delete [SELECT Id FROM Utility_Account_Log__c];
             delete [SELECT Id FROM Opportunity];
+            delete [SELECT Id FROM Case];
             delete [SELECT Id FROM Contact];
             delete [SELECT Id FROM Account];
             delete [SELECT Id FROM ChargentBase__Gateway__c];

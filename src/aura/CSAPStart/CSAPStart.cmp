@@ -13,7 +13,7 @@
     <div aria-labelledby="aboutYourselfForm">
       <fieldset class="slds-box slds-theme--default slds-container_center">
         <legend id="aboutYourselfForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-          <b class=" slds-section__title--large">Before you begin</b>
+          <b class="slds-section__title--large slds-p-horizontal_large">Before you begin</b>
         </legend>
         <form class="slds-form--stacked">
           <lightning:layout multipleRows="true">

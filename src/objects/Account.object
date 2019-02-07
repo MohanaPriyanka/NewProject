@@ -14959,10 +14959,15 @@ $User.Id=&quot;0050a00000Jc6mh&quot;)))</errorConditionFormula>
     <validationRules>
         <fullName>Require_Cancellation_Reason</fullName>
         <active>true</active>
-        <description>Cancellation Reason is required before filling out Cancellation Request Date</description>
-        <errorConditionFormula>AND(NOT(ISBLANK(Cancellation_Request_Date__c )), ISBLANK( (TEXT(Cancellation_Reason__c))))</errorConditionFormula>
+        <errorConditionFormula>OR(
+   AND(NOT(ISBLANK(Cancellation_Request_Date__c)),
+       ISBLANK(TEXT(Cancellation_Reason__c))),
+   AND(ISBLANK(Cancellation_Request_Date__c),
+       NOT(ISBLANK(TEXT(Cancellation_Reason__c)))),
+   Cancellation_Request_Date__c &gt; Today()
+   )</errorConditionFormula>
         <errorDisplayField>Cancellation_Reason__c</errorDisplayField>
-        <errorMessage>Cancellation Reason required before selecting Cancellation Request Date</errorMessage>
+        <errorMessage>Cancellation Reason and Cancellation Request Date need to be filled out at the same time, and the Cancellation Request Date can&apos;t be future dated. Once the customer has requested to cancel, their UASes will be marked Inactive.</errorMessage>
     </validationRules>
     <webLinks>
         <fullName>APXTConga4__Conga_Composer_OAuth</fullName>

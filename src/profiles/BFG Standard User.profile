@@ -139,6 +139,22 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>Accounts</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>AccountsSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>AccountsSelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>AccountsTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>AutopayChecker</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -204,6 +220,22 @@
     </classAccesses>
     <classAccesses>
         <apexClass>CSCPChartHandlerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CSCancellationScheduler</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CSCancellationSchedulerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CSCancellationService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CSCancellationServiceTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -563,6 +595,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>MessagingServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>MultipleMonthProductionUpdateTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -584,6 +620,22 @@
     </classAccesses>
     <classAccesses>
         <apexClass>NavHeaderControllerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>Opportunities</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>OpportunitiesSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>OpportunitiesSelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>OpportunitiesTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -867,6 +919,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>UASSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UASSelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>UASTestClass</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -904,6 +964,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>UtilityAccountLogTriggerHandlerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>UtilityAccountSubscriptions</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -28061,6 +28125,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Project_Location_and_Customer_Allocation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Shared_Solar_System__c.Project_Management__c</field>
         <readable>true</readable>
@@ -30661,6 +30730,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Log__c.Last_Date_UAS_Removed_From_Project__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Account_Log__c.Lead__c</field>
         <readable>true</readable>
@@ -30693,6 +30767,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Log__c.Number_of_Non_Cancelled_UASes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Log__c.Number_of_Removed_UASes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Log__c.Number_of_Subscribed_UASes__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -30918,6 +31002,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Dover_Updated_NMC__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Subscription__c.Finaled__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
