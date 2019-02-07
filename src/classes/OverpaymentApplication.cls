@@ -100,7 +100,7 @@ public without sharing class OverpaymentApplication {
             List<System_Bill__c> systemBills = [
                 SELECT Id, Name, Account_Bill__c, Due_This_Month__c, Entity_Id__c, Account_Bill__r.Bill_Number__c,
                     Account_Bill__r.Parent_Account__c, Balance_Net_Late_Payments__c, Bill_Number__c,
-                    Balance_Adjustments__c, Opportunity__c, Shared_Solar_System__r.BWC_Project_Entity_Manual__c
+                    Opportunity__c, Shared_Solar_System__r.BWC_Project_Entity_Manual__c
                 FROM System_Bill__c
                 WHERE Account_Bill__r.Published__c = false
                 AND Account_Bill__r.Parent_Account__c IN : propertyAccountIdList
