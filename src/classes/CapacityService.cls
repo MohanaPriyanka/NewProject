@@ -1,0 +1,77 @@
+/**
+ * Created by mstackhouse on 1/23/2019.
+ * Description: Provides a service to input a zipcode and find whether we have utilities, load zones,
+ * products and shared solar systems for this location.
+ *
+ * Test: CapacityServiceTest
+ */
+
+
+public without sharing class CapacityService {
+
+    public ZipcodeResponse findCapacityByZipcode(String zipcode) {
+        ZipcodeResponse zipcodeResponse = new ZipcodeResponse();
+        // get first 5 characters incase a Zip+4 was sent
+        zipcode = zipcode.left(5);
+        if (!isZipcodeValid(zipcode)) {
+            return zipcodeResponse;
+        }
+        zipcodeResponse.zipcode = zipcode;
+        setUtilitiesAndLoadZones(zipcodeResponse);
+        setProductsAndSharedSolarSystems(zipcodeResponse);
+
+        return zipcodeResponse;
+    }
+
+    public void setUtilitiesAndLoadZones(ZipcodeResponse zipcodeResponse) {
+        String zipcode = zipcodeResponse.zipcode;
+        List<ZipCode_Utility_Junction__c> zipcodeUtilities = ZipcodeUtilitiesSelector.selectZipcodeUtilitiesAndLoadzones(zipcode);
+
+        for (ZipCode_Utility_Junction__c zipCodeUtility : zipcodeUtilities) {
+            zipcodeResponse.utilities.add(zipCodeUtility.Utility__r);
+            zipcodeResponse.utilityIds.add(zipCodeUtility.Utility__r.Id);
+
+            zipcodeResponse.loadZones.add(zipCodeUtility.Load_Zone_Utility__r);
+            zipcodeResponse.loadZoneNames.add(zipCodeUtility.Load_Zone_Utility__r.LZ__c);
+        }
+    }
+
+    public void setProductsAndSharedSolarSystems(ZipcodeResponse zipcodeResponse) {
+        List<Shared_Solar_System__c> sharedSolarSystems =
+            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
+                zipcodeResponse.utilityIds,
+                zipcodeResponse.loadZoneNames
+            );
+
+        for (Shared_Solar_System__c sharedSolarSystem: sharedSolarSystems) {
+            zipcodeResponse.sharedSolarSystems.add(sharedSolarSystem);
+            zipcodeResponse.products.add(sharedSolarSystem.Product__r);
+        }
+    }
+
+    public class ZipcodeResponse {
+        public String zipcode;
+        public Set<Utility__c> utilities = new Set<Utility__c>();
+        public Set<Load_U__c> loadZones = new Set<Load_U__c>();
+        public Set<Product2> products = new Set<Product2>();
+        public Set<Shared_Solar_System__c> sharedSolarSystems = new Set<Shared_Solar_System__c>();
+        public Set<Id> utilityIds = new Set<Id>();
+        public Set<String> loadZoneNames = new Set<String>();
+    }
+
+    @TestVisible
+    private Boolean isZipcodeValid(String zipcode) {
+        // check that the zipcode can be a number
+        Boolean invalidNumber = false;
+        try {
+            Integer zipInt = Integer.valueOf(zipcode);
+        } catch (Exception e) {
+            invalidNumber = true;
+        }
+
+        Boolean notFiveDigitsLong = zipcode.length() != 5;
+
+        // zipcode is invalid if it isn't 5 digits long or it cannot be converted to a number
+        return !(notFiveDigitsLong || invalidNumber);
+    }
+}

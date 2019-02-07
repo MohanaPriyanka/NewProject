@@ -43,7 +43,7 @@
   <!-- CONFIRMATION -->
   <aura:if isTrue="{!v.page == 'LoanConfirmation'}">
     <div class="slds-col slds-col--padded slds-p-top--small">
-      <div class="slds-text-heading--medium">
+      <div class="slds-form-element__control">
         <b>{!$Label.c.START_Lets_Get_Started}</b>
       </div>
       <div class="slds-form slds-form_compound slds-p-top--large">
@@ -99,7 +99,7 @@
   <!-- DISCLAIMER -->
   <aura:if isTrue="{!v.page == 'LoanDisclaimer'}">
     <div class="slds-col slds-col--padded">
-      <p class="slds-p-left--large slds-text-body--large">
+      <p class="slds-p-left--large slds-form-element__control">
         <aura:if isTrue="{!v.lead.Product_Program__c == 'MSLP'}">
           {!$Label.c.START_Disclosure_PreQual_MSLP}
           <aura:set attribute="else">

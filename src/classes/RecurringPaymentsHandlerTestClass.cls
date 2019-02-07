@@ -1573,7 +1573,7 @@ private class RecurringPaymentsHandlerTestClass {
         ];
 
         List<System_Bill__c> firstSystemBills = [
-            SELECT Id, Due_Date__c, Total_Due__c
+            SELECT Id, Total_Due__c
             FROM System_Bill__c
             WHERE Account_Bill__r.Parent_Account__r.Name = 'PaymentTestPropertyD'
         ];
@@ -1622,7 +1622,7 @@ private class RecurringPaymentsHandlerTestClass {
         }
         update firstSystemBills;
         firstSystemBills = [
-            SELECT Id, Due_Date__c, Total_Due__c
+            SELECT Id, Total_Due__c
             FROM System_Bill__c
             WHERE Account_Bill__r.Parent_Account__r.Name = 'PaymentTestPropertyD'
         ];
@@ -1664,7 +1664,7 @@ private class RecurringPaymentsHandlerTestClass {
         ];
 
         List<System_Bill__c> firstSystemBills = [
-            SELECT Id, Due_Date__c, Total_Due__c
+            SELECT Id, Total_Due__c
             FROM System_Bill__c
             WHERE Account_Bill__r.Parent_Account__r.Name = 'PaymentTestPropertyD'
         ];
@@ -1740,7 +1740,7 @@ private class RecurringPaymentsHandlerTestClass {
         ];
 
         List<System_Bill__c> firstSystemBills = [
-            SELECT Id, Due_Date__c, Total_Due__c
+            SELECT Id, Total_Due__c
             FROM System_Bill__c
             WHERE Account_Bill__r.Parent_Account__r.Name = 'PaymentTestPropertyD'
         ];
