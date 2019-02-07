@@ -24,6 +24,7 @@ public with sharing class SystemBillsSelector {
                 Previous_Overpayment__c, Net_Metering_Credits_Allocated__c, Adjustments_UASB__c, Balance_Adjustment__c,
                 Production_kWH__c, Bill_Date__c, Billing_Period_End_Date__c, Billing_Period_Start_Date__c,
                 Property_Account__r.Parent_Account__r.Id, Property_Account__r.Id, Shared_Solar_System_ID__c,
+                Opportunity__r.Id,
                 SystemModstamp
             FROM System_Bill__c
             ORDER BY Bill_Number__c
