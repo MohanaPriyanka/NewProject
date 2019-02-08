@@ -4,4 +4,5 @@
     <aura:attribute name="errors" type="Object[]" access="global"/>
     <aura:attribute name="developerInfo" type="Object" access="global"/>
     <aura:attribute name="options" type="Object" access="global" description="See LightningErrorHandleController for options"/>
+    <aura:attribute name="stacktrace" type="String" access="global"/>
 </aura:event>
