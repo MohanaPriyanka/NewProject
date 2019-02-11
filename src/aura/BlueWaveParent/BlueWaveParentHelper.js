@@ -106,6 +106,7 @@
     },
 
     saveSObjectErrorOption : function(component, id, objectName, field, value, objToUpdate, messageOption) {
+        let stacktrace = this.getStackTrace();
         return new Promise(function(resolve, reject) {
             var sobj = new Object();
             if (!objToUpdate) {
@@ -123,11 +124,14 @@
                     resolve(retVal);
                 } else if (resp.getState() === "ERROR") {
                     var appEvent = $A.get("e.c:ApexCallbackError");
-                    appEvent.setParams({"className" : "BlueWaveParentHelper",
-                                        "methodName" : "updateSObject",
-                                        "errors" : resp.getError(),
-                                        "developerInfo" : sobj,
-                                        "options" : messageOption});
+                    appEvent.setParams({
+                        "className" : "BlueWaveParentHelper",
+                        "methodName" : "updateSObject",
+                        "errors" : resp.getError(),
+                        "developerInfo" : sobj,
+                        "options" : messageOption,
+                        "stacktrace" : stacktrace
+                    });
                     appEvent.fire();                    
                     reject(resp.getError());
                 } else {
@@ -139,6 +143,7 @@
     },
 
     insertSObject : function(component, sObject) {
+        let stacktrace = this.getStackTrace();
         return new Promise(function(resolve, reject) {
             var action = component.get("c.insertSObject");
             action.setParams({"sobj": sObject});
@@ -148,10 +153,13 @@
                     resolve(retVal);
                 } else if (resp.getState() === "ERROR") {
                     var appEvent = $A.get("e.c:ApexCallbackError");
-                    appEvent.setParams({"className" : "BlueWaveParentHelper",
-                                        "methodName" : "insertSObject",
-                                        "errors" : resp.getError(),
-                                        "developerInfo" : sObject});
+                    appEvent.setParams({
+                        "className" : "BlueWaveParentHelper",
+                        "methodName" : "insertSObject",
+                        "errors" : resp.getError(),
+                        "developerInfo" : sObject,
+                        "stacktrace" : stacktrace
+                    });
                     appEvent.fire();
                     reject(resp.getError());
                 } else {
@@ -291,10 +299,13 @@
 
     logError : function(className, methodName, errorMessage, developerInfo) {
         var appEvent = $A.get("e.c:ApexCallbackError");
-        appEvent.setParams({"className" : className,
-                            "methodName" : methodName,
-                            "errors" : errorMessage,
-                            "developerInfo" : developerInfo});
+        appEvent.setParams({
+            "className" : className,
+            "methodName" : methodName,
+            "errors" : errorMessage,
+            "developerInfo" : developerInfo,
+            "stacktrace" : this.getStackTrace()
+        });
         appEvent.fire();
     },
 
@@ -305,7 +316,9 @@
             "methodName" : methodName,
             "errors" : errorMessage,
             "developerInfo" : developerInfo,
-            "options" : options});
+            "options" : options,
+            "stacktrace" : this.getStackTrace()
+        });
         appEvent.fire();
     },
 
@@ -519,5 +532,18 @@
         link += "&instructions=" + instructions.replace(' ', "%20");
         link += "&isDescriptionFieldShown=1&isEmailRequired=1&width=385&height=420&token=nzwxuyckgi5aqvj6dhg2ppn1ws6y1n6s"
         window.open(link);
+    },
+
+    // Per https://stackoverflow.com/a/28118170
+    getStackTrace : function() {
+        let stack;
+        try {
+            // noinspection ExceptionCaughtLocallyJS
+            throw new Error('');
+        } catch (error) {
+            stack = error.stack || '';
+        }
+        stack = stack.split('\n').map(function (line) { return line.trim(); });
+        return stack.splice(stack[0] === 'Error' ? 2 : 1).join('\n');
     }
 })
