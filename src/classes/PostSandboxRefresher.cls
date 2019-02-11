@@ -367,6 +367,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             Product2 normalCSProduct = new Product2(Name = 'BlueWave SMART',
                 Family = 'Community Solar',
                 Product_Type__c = 'Community Solar',
+                Program__c = 'SMART - Community Solar',
+                Customer_Subscription_Type__c = 'kWh',
                 State__c = 'MA',
                 ProductCode = 'CS - BlueWave - 10%',
                 IsActive = true,
@@ -374,13 +376,14 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 NMC_Discount__c = 10,
                 Annual_kWh_Maximum__c = 100000000,
                 NM_Rate_Floor__c = 0,
-                Program__c = 'SREC - Community Solar',
                 Credit_Minimum__c = '200',
                 Monthly_Late_Fee__c = 1);
 
             Product2 normalSRECProduct = new Product2(Name = 'BlueWave SREC',
                 Family = 'Community Solar',
                 Product_Type__c = 'Community Solar',
+                Program__c = 'SREC - Community Solar',
+                Customer_Subscription_Type__c = 'Electricity Cost ($)',
                 State__c = 'MA',
                 ProductCode = 'CS - BlueWave - 10%',
                 IsActive = true,
@@ -388,7 +391,6 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 NMC_Discount__c = 10,
                 Annual_kWh_Maximum__c = 100000000,
                 NM_Rate_Floor__c = 0,
-                Program__c = 'SMART - Community Solar',
                 Credit_Minimum__c = '200',
                 Monthly_Late_Fee__c = 1);
 
@@ -396,6 +398,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 normalCSProduct,
                 normalSRECProduct
             };
+
 
             Utility_NMC_Tariff__c eversizeNMC = [SELECT Id FROM Utility_NMC_Tariff__c WHERE Name = 'Eversource SEMA Class 2' LIMIT 1];
             Utility_NMC_Tariff__c nationalGridNMC = [SELECT Id FROM Utility_NMC_Tariff__c WHERE Name = 'National Grid WCMA Class 2 Billing Rate' LIMIT 1];
@@ -415,6 +418,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             insert eversource;
             Utility__c nationalGrid = new Utility__c(Name = 'National Grid', Number_of_Decimal_Places__c = 2);
             insert nationalGrid;
+
+            insertTariffsForProduct(normalCSProduct.Id, eversource.Id, nationalGrid.Id);
 
             Load_U__c everLZU = new Load_U__c(Name = '02633',
                 Load_Zone__c = 'SEMA Eversource',
@@ -453,6 +458,94 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             if (!Test.isRunningTest()) {
                 System.enqueueJob(new PostSandboxRefresher.GatewayHelper());
             }
+        }
+
+        public void insertTariffsForProduct(Id productId, Id eversourceId, Id nationalGridId) {
+            Utility_NMC_Tariff__c eversourceG1 =  new Utility_NMC_Tariff__c(
+                Value_of_Net_Metering_Credit__c = .70578,
+                Name = 'Eversource G1',
+                Utility_Relationship__c = eversourceId,
+                Customer_Type__c = 'Non-Residential',
+                Maximum_kWh__c = 10000,
+                Date__c = Date.today()
+            );
+            Utility_NMC_Tariff__c eversourceG2 =  new Utility_NMC_Tariff__c(
+                Value_of_Net_Metering_Credit__c = .70578,
+                Name = 'Eversource G2',
+                Utility_Relationship__c = eversourceId,
+                Customer_Type__c = 'Non-Residential',
+                Minimum_kWh__c = 10000,
+                Date__c = Date.today()
+            );
+            Utility_NMC_Tariff__c eversourceR1 =  new Utility_NMC_Tariff__c(
+                Value_of_Net_Metering_Credit__c = .70578,
+                Name = 'Eversource R1',
+                Utility_Relationship__c = eversourceId,
+                Customer_Type__c = 'Residential',
+                Date__c = Date.today()
+            );
+            Utility_NMC_Tariff__c nationalGridG1 =  new Utility_NMC_Tariff__c(
+                Value_of_Net_Metering_Credit__c = .70578,
+                Name = 'National Grid G1',
+                Utility_Relationship__c = nationalGridId,
+                Customer_Type__c = 'Non-Residential',
+                Maximum_kWh__c = 10000,
+                Date__c = Date.today()
+            );
+            Utility_NMC_Tariff__c nationalGridG2 =  new Utility_NMC_Tariff__c(
+                Value_of_Net_Metering_Credit__c = .70578,
+                Name = 'National Grid G2',
+                Utility_Relationship__c = nationalGridId,
+                Customer_Type__c = 'Non-Residential',
+                Minimum_kWh__c = 10000,
+                Date__c = Date.today()
+            );
+            Utility_NMC_Tariff__c nationalGridR1 =  new Utility_NMC_Tariff__c(
+                Value_of_Net_Metering_Credit__c = .70578,
+                Name = 'National Grid R1',
+                Utility_Relationship__c = nationalGridId,
+                Customer_Type__c = 'Residential',
+                Date__c = Date.today()
+            );
+
+            insert new List<Utility_NMC_Tariff__c>{
+                eversourceG1, eversourceG2, eversourceR1, nationalGridG1, nationalGridG2, nationalGridR1
+            };
+
+            Product_Tariff__c smartER1 = new Product_Tariff__c(
+                Product__c = productId,
+                Utility_NMC_Tariff__c = eversourceR1.Id,
+                Size_Ratio__c = 1.5
+            );
+            Product_Tariff__c smartEG1 = new Product_Tariff__c(
+                Product__c = productId,
+                Utility_NMC_Tariff__c = eversourceG1.Id,
+                Size_Ratio__c = 1.4
+            );
+            Product_Tariff__c smartEG2 = new Product_Tariff__c(
+                Product__c = productId,
+                Utility_NMC_Tariff__c = eversourceG2.Id,
+                Size_Ratio__c = 1.3
+            );
+            Product_Tariff__c smartNGR1 = new Product_Tariff__c(
+                Product__c = productId,
+                Utility_NMC_Tariff__c = nationalGridR1.Id,
+                Size_Ratio__c = 1.35
+            );
+            Product_Tariff__c smartNGG1 = new Product_Tariff__c(
+                Product__c = productId,
+                Utility_NMC_Tariff__c = nationalGridG1.Id,
+                Size_Ratio__c = 1.45
+            );
+            Product_Tariff__c smartNGG2 = new Product_Tariff__c(
+                Product__c = productId,
+                Utility_NMC_Tariff__c = nationalGridG2.Id,
+                Size_Ratio__c = 1.55
+            );
+
+            insert new List<Product_Tariff__c>{
+                smartER1, smartEG1, smartEG2, smartNGR1, smartNGG1, smartNGG2
+            };
         }
 
         private Shared_Solar_System__c getSolarSystem(String name, String order, Account clientAccount,
@@ -584,14 +677,16 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
                 Name = '2016 - sssA',
                 Shared_Solar_System__c = sssList[0].Id,
-                Status__c = 'Enacted by Utility'
+                Status__c = 'Billing',
+                Date_Enacted_by_Utility__c = Date.today()-90
             );
             insert scheduleZ1;
 
             Schedule_Z__c scheduleZ2 = new Schedule_Z__c(
                 Name = '2016 - sssB',
                 Shared_Solar_System__c = sssList[1].Id,
-                Status__c = 'Enacted by Utility'
+                Status__c = 'Billing',
+                Date_Enacted_by_Utility__c = Date.today()-90
             );
             insert scheduleZ2;
 
@@ -608,32 +703,6 @@ global class PostSandboxRefresher implements SandboxPostCopy {
 
             insert productionupdateA1;
 
-            Energy_Usage_Update__c productionupdateB2 = new Energy_Usage_Update__c (
-                Name = 'sssA - September 2016',
-                Shared_Solar_System__c = sssList[0].Id,
-                Production__c = 73072.00,
-                Due_Date__c = twoMonthsAgo,
-                Billing_Period_End_Date__c = oneMonthAgo,
-                Total_System_NMCs__c = 12033.73,
-                Date__c = twoMonthsAgo,
-                Schedule_Z__c =  scheduleZ1.Id
-            );
-
-            insert productionupdateB2;
-
-            Energy_Usage_Update__c productionupdateB3 = new Energy_Usage_Update__c (
-                Name = 'sssA - October 2016',
-                Shared_Solar_System__c = sssList[0].Id,
-                Production__c = 327001.00,
-                Due_Date__c = oneMonthAgo,
-                Billing_Period_End_Date__c = today,
-                Total_System_NMCs__c = 36424.44,
-                Date__c = oneMonthAgo,
-                Schedule_Z__c =  scheduleZ1.Id
-            );
-
-            insert productionupdateB3;
-
             Energy_Usage_Update__c prodUpdateBB = new Energy_Usage_Update__c (
                 Name = 'sssB - August 2016',
                 Shared_Solar_System__c = sssList[1].Id,
@@ -646,6 +715,47 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             );
 
             insert prodUpdateBB;
+
+            productionupdateA1.Generate_Bills__c = true;
+            prodUpdateBB.Generate_Bills__c = true;
+            update productionupdateA1;
+            update prodUpdateBB;
+
+            if (!Test.isRunningTest()) {
+                System.enqueueJob(new PostSandboxRefresher.ProductionUpdateHelper2());
+            }
+        }
+    }
+
+    global class ProductionUpdateHelper2 implements Queueable {
+        global void execute(QueueableContext context) {
+            List<Shared_Solar_System__c> sssList = [
+                SELECT Id, Name, BWC_Project_Entity_Manual__r.Id, Product__r.Id
+                FROM Shared_Solar_System__c
+                WHERE BWC_Project_Entity_Manual__r.Id != NULL
+                ORDER BY Name DESC
+            ];
+
+            Date today = Date.today();
+            Date threeMonthsAgo = today.addMonths(-3);
+            Date twoMonthsAgo = today.addMonths(-2);
+            Date oneMonthAgo = today.addMonths(-1);
+
+            Schedule_Z__c scheduleZ1 = [SELECT Id FROM Schedule_Z__c WHERE Name = '2016 - sssA'];
+            Schedule_Z__c scheduleZ2 = [SELECT Id FROM Schedule_Z__c WHERE Name = '2016 - sssB'];
+
+            Energy_Usage_Update__c productionupdateB2 = new Energy_Usage_Update__c (
+                Name = 'sssA - September 2016',
+                Shared_Solar_System__c = sssList[0].Id,
+                Production__c = 73072.00,
+                Due_Date__c = twoMonthsAgo,
+                Billing_Period_End_Date__c = oneMonthAgo,
+                Total_System_NMCs__c = 12033.73,
+                Date__c = twoMonthsAgo,
+                Schedule_Z__c =  scheduleZ1.Id
+            );
+
+            insert productionupdateB2;
 
             Energy_Usage_Update__c prodUpdateCC = new Energy_Usage_Update__c (
                 Name = 'sssB - September 2016',
@@ -660,6 +770,47 @@ global class PostSandboxRefresher implements SandboxPostCopy {
 
             insert prodUpdateCC;
 
+            productionupdateB2.Generate_Bills__c = true;
+            prodUpdateCC.Generate_Bills__c = true;
+            update productionupdateB2;
+            update prodUpdateCC;
+
+            if (!Test.isRunningTest()) {
+                System.enqueueJob(new PostSandboxRefresher.ProductionUpdateHelper3());
+            }
+        }
+    }
+
+    global class ProductionUpdateHelper3 implements Queueable {
+        global void execute(QueueableContext context) {
+            List<Shared_Solar_System__c> sssList = [
+                SELECT Id, Name, BWC_Project_Entity_Manual__r.Id, Product__r.Id
+                FROM Shared_Solar_System__c
+                WHERE BWC_Project_Entity_Manual__r.Id != NULL
+                ORDER BY Name DESC
+            ];
+
+            Date today = Date.today();
+            Date threeMonthsAgo = today.addMonths(-3);
+            Date twoMonthsAgo = today.addMonths(-2);
+            Date oneMonthAgo = today.addMonths(-1);
+
+            Schedule_Z__c scheduleZ1 = [SELECT Id FROM Schedule_Z__c WHERE Name = '2016 - sssA'];
+            Schedule_Z__c scheduleZ2 = [SELECT Id FROM Schedule_Z__c WHERE Name = '2016 - sssB'];
+
+            Energy_Usage_Update__c productionupdateB3 = new Energy_Usage_Update__c (
+                Name = 'sssA - October 2016',
+                Shared_Solar_System__c = sssList[0].Id,
+                Production__c = 327001.00,
+                Due_Date__c = oneMonthAgo,
+                Billing_Period_End_Date__c = today,
+                Total_System_NMCs__c = 36424.44,
+                Date__c = oneMonthAgo,
+                Schedule_Z__c =  scheduleZ1.Id
+            );
+
+            insert productionupdateB3;
+
             Energy_Usage_Update__c prodUpdateDD = new Energy_Usage_Update__c (
                 Name = 'sssB - October 2016',
                 Shared_Solar_System__c = sssList[1].Id,
@@ -673,17 +824,9 @@ global class PostSandboxRefresher implements SandboxPostCopy {
 
             insert prodUpdateDD;
 
-            productionupdateA1.Generate_Bills__c = true;
-            productionupdateB2.Generate_Bills__c = true;
             productionupdateB3.Generate_Bills__c = true;
-            prodUpdateBB.Generate_Bills__c = true;
-            prodUpdateCC.Generate_Bills__c = true;
             prodUpdateDD.Generate_Bills__c = true;
-            update productionupdateA1;
-            update productionupdateB2;
             update productionupdateB3;
-            update prodUpdateBB;
-            update prodUpdateCC;
             update prodUpdateDD;
 
             if (!Test.isRunningTest()) {
@@ -804,7 +947,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             Customer_Group__c = 'Residential',
             Product__c = sss.Product__r.Id,
             CloseDate = System.today(),
-            RecordTypeId = '012j00000010HPE'
+            RecordTypeId = '012j00000010HPE',
+            Product_Line__c = 'Community Solar'
         );
         return opportunity1;
     }
@@ -919,8 +1063,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         if (o.IsSandbox || Test.isRunningTest()) {
             delete [SELECT Id FROM ChargentOrders__Transaction__c];
             delete [SELECT Id FROM ChargentOrders__ChargentOrder__c];
-            delete [SELECT Id FROM Account_Bill__c];
             delete [SELECT Id FROM Utility_Account_Bill__c];
+            delete [SELECT Id FROM Account_Bill__c];
             delete [SELECT Id FROM System_Bill__c];
             delete [SELECT Id FROM UASB__c];
             delete [SELECT Id FROM Energy_Usage_Update__c];
@@ -929,6 +1073,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             delete [SELECT Id FROM Utility_Account_Subscription__c];
             delete [SELECT Id FROM Utility_Account_Log__c];
             delete [SELECT Id FROM Opportunity];
+            delete [SELECT Id FROM Case];
             delete [SELECT Id FROM Contact];
             delete [SELECT Id FROM Account];
             delete [SELECT Id FROM ChargentBase__Gateway__c];

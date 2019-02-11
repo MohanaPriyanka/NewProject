@@ -362,6 +362,31 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>APXTConga4__Conga_Template__c.Active__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>APXTConga4__Conga_Template__c.Anchor__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>APXTConga4__Conga_Template__c.Autopay__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>APXTConga4__Conga_Template__c.Brand_Key__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>APXTConga4__Conga_Template__c.Max_Number_of_UASBs__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>APXT_BPM__Conductor__c.APXT_BPM__Conductor_Environment__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -443,6 +468,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>APXT_BPM__Conductor__c.Apply_Overpay_Adjust__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>APXT_BPM__Conductor__c.Assign_Templates__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

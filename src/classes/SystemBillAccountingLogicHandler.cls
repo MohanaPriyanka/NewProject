@@ -14,8 +14,6 @@ public without sharing class SystemBillAccountingLogicHandler {
         Decimal carryoverbalance = 0;  
         Decimal pastbillamount = 0;
         Decimal pastbillpayment = 0;
-        Decimal pastbilloverpayment = 0;
-        Decimal pastbilloveradjust = 0;
         List<Id> propertyAccountIDs = new List<Id>();
         List<System_Bill__c> unPublishedBillList = new List<System_Bill__c>();
 
@@ -39,23 +37,21 @@ public without sharing class SystemBillAccountingLogicHandler {
                                                     Total_Payments_This_Month__c, Carry_Over_Balance__c, 
                                                     Late_Payments__c, Balance_Net_Late_Payments__c, 
                                                     Distribute_This_Balance_12mo__c, Adjustments__c,
-                                                    Late_Fee_Payments__c, Late_Fees__c, 
-                                                    Carry_Forward_Payments__c, Early_Payments__c,
-                                                    Carry_Forward_Adjustments__c, Due_This_Month__c, 
+                                                    Late_Fee_Payments__c, Late_Fees__c,
+                                                    Due_This_Month__c,
                                                     Payment_Plan_Balance__c, Total_Due__c, 
                                                     Distribute_This_Balance_as_Payment_Plan__c,
                                                     Payment_Plan_Balance_to_Distribute__c, 
-                                                    Savings__c, Opportunity_ID__c, 
+                                                    Savings__c, Opportunity__c,
                                                     Production_kWH__c,
                                                     Entity_ID__c
                                                 FROM System_Bill__c
                                                 WHERE Property_Account__c
                                                 IN : propertyAccountIDs
                                                 ORDER BY Bill_Number__c DESC];
-        
         for (System_Bill__c trigsb : unPublishedBillList) {
             // Things that reset for each triggered SB
-            String parentID = trigsb.Opportunity_ID__c;          
+            String parentID = trigsb.Opportunity__c;
             Decimal currentbill = trigsb.Bill_Number__c;
             Decimal previousbill = currentbill-1 ; 
             Decimal pastsixbills = 0;
@@ -89,7 +85,7 @@ public without sharing class SystemBillAccountingLogicHandler {
             }
 
             for (System_Bill__c newerbills : listsystemBills) {
-                if (newerbills.Opportunity_ID__c == parentID 
+                if (newerbills.Opportunity__c == parentID
                     && newerbills.Bill_Number__c > currentbill ) {
                         moreRecentBills = TRUE;
                 }
@@ -102,13 +98,11 @@ public without sharing class SystemBillAccountingLogicHandler {
                 trigsb.Payment_Plan_Balance__c = 0;
                 trigsb.Adjustments__c = trigsb.Adjustments_UASB__c;
             } else {
-                for (System_Bill__c sbill: listsystemBills) {   
-                    if ( sbill.Opportunity_ID__c == parentID ) {
+                for (System_Bill__c sbill: listsystemBills) {
+                    if ( sbill.Opportunity__c == parentID ) {
                         if (sbill.Bill_Number__c == previousbill) {
                             pastbillamount = sbill.Total_Due__c;
                             pastbillpayment = sbill.Total_Payments_This_Month__c;
-                            pastbilloverpayment = sbill.Carry_Forward_Payments__c;
-                            pastbilloveradjust = sbill.Carry_Forward_Adjustments__c;
                             if (sbill.Distribute_This_Balance_as_Payment_Plan__c
                                 || sbill.Distribute_This_Balance_12mo__c) {
                                 carryoverbalance = 0;
@@ -152,7 +146,7 @@ public without sharing class SystemBillAccountingLogicHandler {
                 } else if (trigsb.Waive_Late_Fees__c) {
                     trigsb.Late_Fees__c = 0;
                 }
-                trigsb.Adjustments__c = trigsb.Adjustments_UASB__c; 
+                trigsb.Adjustments__c = trigsb.Adjustments_UASB__c;
                 trigsb.Total_Due__c = dueThisMonth + trigsb.Late_Fees__c + overdue + trigsb.Payment_Plan_Balance__c + trigsb.Adjustments__c + trigsb.Previous_Overpayment__c;
             }
             balanceCalculations(trigsb, moreRecentBills);
@@ -168,9 +162,6 @@ public without sharing class SystemBillAccountingLogicHandler {
         trigsb.Late_Fee_Payments__c = Util.nullToZero(trigsb.Late_Fee_Payments__c);
         trigsb.Late_Fees__c = Util.nullToZero(trigsb.Late_Fees__c);
         trigsb.Adjustments__c = Util.nullToZero(trigsb.Adjustments__c);
-        trigsb.Carry_Forward_Adjustments__c = Util.nullToZero(trigsb.Carry_Forward_Adjustments__c);
-        trigsb.Carry_Forward_Payments__c = Util.nullToZero(trigsb.Carry_Forward_Payments__c);
-        trigsb.Early_Payments__c = Util.nullToZero(trigsb.Early_Payments__c);
     }
 
     private static void balanceCalculations (System_Bill__c trigsb, Boolean moreRecentBills) {

@@ -406,11 +406,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account_Bill__c.Bill_Due_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account_Bill__c.Bill_Message__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -481,11 +476,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account_Bill__c.Date_Sent__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account_Bill__c.Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -542,11 +532,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account_Bill__c.Late_Payments__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account_Bill__c.Link_to_File__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3631,7 +3616,7 @@
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
-        <allowCreate>true</allowCreate>
+        <allowCreate>false</allowCreate>
         <allowDelete>false</allowDelete>
         <allowEdit>false</allowEdit>
         <allowRead>true</allowRead>

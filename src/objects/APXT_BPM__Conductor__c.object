@@ -321,6 +321,15 @@ Conga_Letter_Stream_Merge__c (Print)</inlineHelpText>
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Assign_Templates__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Assign Templates</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Emails_Sent__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -735,6 +744,44 @@ else
         <url>/00O0a000005FJzY</url>
     </webLinks>
     <webLinks>
+        <fullName>Preview_Monthly_SREC_Payments</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Preview Monthly SREC Payments</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/00O0a000005FJcy</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Preview_Quarterly_SREC_Payments</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Preview Quarterly SREC Payments</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/00O8A000000SaVp</url>
+    </webLinks>
+    <webLinks>
         <fullName>Preview_SREC_Payments</fullName>
         <availability>online</availability>
         <displayType>link</displayType>
@@ -833,9 +880,25 @@ else
         <url>{!REQUIRESCRIPT(&quot;/soap/ajax/31.0/connection.js&quot;)} 
 {!REQUIRESCRIPT(&quot;/soap/ajax/31.0/apex.js&quot;)} 
 
-sforce.apex.execute(&quot;ScheduledAccountBillLetterStreamMailer&quot;,&quot;batchAccountBills&quot;,{}); 
+sforce.apex.execute(&quot;AccountBillController&quot;,&quot;sendAllReadyBillsToLetterStream&quot;,{}); 
 location.reload(true);
 alert(&apos;Bills have been Queued for sending to LetterStream. Check \&apos;View Paper Bills to be Added \&apos; in ~5 min to confirm all bills have been sent. Contact Product Team if there are bills in that list.&apos;);</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Send_Monthly_SREC_Payments</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Send Monthly SREC Payments</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/29.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/29.0/apex.js&quot;)} 
+if (confirm(&apos;Are you sure you want to send SREC Payments?&apos;)) { 
+var result = sforce.apex.execute(&quot;BatchCreditSRECHandler&quot;, &quot;executeBatch&quot;, {type:&quot;monthly&quot;}); 
+alert(result); 
+window.location.reload(); 
+}</url>
     </webLinks>
     <webLinks>
         <fullName>Send_PDFs_Via_Email</fullName>

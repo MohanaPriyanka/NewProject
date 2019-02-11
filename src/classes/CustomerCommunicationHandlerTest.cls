@@ -1,6 +1,7 @@
 @isTest
 public class CustomerCommunicationHandlerTest{
     @testSetup public static void setupData() {
+        Test.startTest();
         Utility__c eversource = new Utility__c(
             Name = 'Eversource',
             Number_of_Decimal_Places__c = 2
@@ -133,14 +134,17 @@ public class CustomerCommunicationHandlerTest{
             Account propAcct1 = new Account( Name = 'Prop Account 1',
                                             Parent_Account__c = accountParent1.Id,
                                             Send_Bills_Contact__c = contactA.Id,
+                                            RecordTypeId = '012j00000010HeQ',
                                             Client_Brand_Key__c = 'BluewaveLogo');
             Account propAcct2 = new Account( Name = 'Prop Account 2',
                                             Parent_Account__c = accountParent2.Id,
                                             Send_Bills_Contact__c = contactB.Id,
+                                            RecordTypeId = '012j00000010HeQ',
                                             Client_Brand_Key__c = 'AmpRed');
             Account propAcct3 = new Account( Name = 'Prop Account 3',
                                             Parent_Account__c = accountParent3.Id,
                                             Send_Bills_Contact__c = contactC.Id,
+                                            RecordTypeId = '012j00000010HeQ',
                                             Client_Brand_Key__c = 'BluewaveLogo');
 
             insert new List<Account>{propAcct1, propAcct2, propAcct3};
@@ -198,6 +202,7 @@ public class CustomerCommunicationHandlerTest{
                                 Shared_Solar_System__c = sss1.Id,
                                 StageName = 'Complete',
                                 Product__c = normalCSProduct.Id,
+                                Product_Line__c = 'Community Solar',
                                 CloseDate = System.today());
 
             Opportunity opportunitytwo =
@@ -206,6 +211,7 @@ public class CustomerCommunicationHandlerTest{
                                 Shared_Solar_System__c = sss2.Id,
                                 StageName = 'Complete',
                                 Product__c = normalCSProduct.Id,
+                                Product_Line__c = 'Community Solar',
                                 CloseDate = System.today());
 
             Opportunity opportunitythree =
@@ -214,6 +220,7 @@ public class CustomerCommunicationHandlerTest{
                                 Shared_Solar_System__c = sss3.Id,
                                 StageName = 'Complete',
                                 Product__c = normalCSProduct.Id,
+                                Product_Line__c = 'Community Solar',
                                 CloseDate = System.today());
             insert new List<Opportunity>{opportunityone, opportunitytwo, opportunitythree};
 
@@ -251,12 +258,26 @@ public class CustomerCommunicationHandlerTest{
         Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
             Name = '18-0515 Oxford Barrett St. P1',
             Shared_Solar_System__c = sss1.Id,
+            Date_Enacted_by_Utility__c = Date.newInstance(2018,1,1),
             Status__c = 'Billing'
         );
 
-        insert scheduleZ1;
+        Schedule_Z__c scheduleZ2 = new Schedule_Z__c(
+            Name = '18-0515 Oxford Barrett St. P2',
+            Shared_Solar_System__c = sss2.Id,
+            Date_Enacted_by_Utility__c = Date.newInstance(2018,1,1),
+            Status__c = 'Billing'
+        );
 
+        Schedule_Z__c scheduleZ3 = new Schedule_Z__c(
+            Name = '18-0515 Oxford Barrett St. P3',
+            Shared_Solar_System__c = sss3.Id,
+            Date_Enacted_by_Utility__c = Date.newInstance(2018,1,1),
+            Status__c = 'Billing'
+        );
 
+        insert new List<Schedule_Z__c>{scheduleZ1, scheduleZ2, scheduleZ3};
+        Test.stopTest();
     }
 
     public static void createBills(Date billDate, Id sssID){
@@ -323,7 +344,6 @@ public class CustomerCommunicationHandlerTest{
         List<Error_Log__c> errorList = [SELECT Id, Class__c, Method__c, User__c
                                         FROM Error_Log__c];
         System.assertEquals(0, errorList.size());
-        System.debug(errorList);
 
         System.assertNotEquals(MessagingService.emailsSent.size(), 0);
     }
@@ -369,7 +389,6 @@ public class CustomerCommunicationHandlerTest{
         List<Error_Log__c> errorList = [SELECT Id, Class__c, Method__c, User__c
         FROM Error_Log__c];
         System.assertEquals(0, errorList.size());
-        System.debug(errorList);
 
         System.assertNotEquals(MessagingService.emailsSent.size(), 0);
     }
@@ -415,8 +434,59 @@ public class CustomerCommunicationHandlerTest{
         List<Error_Log__c> errorList = [SELECT Id, Class__c, Method__c, User__c
         FROM Error_Log__c];
         System.assertEquals(0, errorList.size());
-        System.debug(errorList);
 
         System.assertNotEquals(MessagingService.emailsSent.size(), 0);
+    }
+
+    public static testmethod void testCaseCreation(){
+        Test.startTest();
+
+        List<Shared_Solar_System__c> sss = [SELECT Id FROM Shared_Solar_System__c ORDER BY Name ASC ];
+
+        createBills(System.Today() - 50, sss[1].Id); // 30 days late, should create case
+
+        List <Account_Bill__c> listaccountBills = [ SELECT Id, Published__c
+        FROM Account_Bill__c];
+
+        for (Account_Bill__c acctBill : listaccountBills) {
+            acctBill.Published__c = True;
+        }
+        update listaccountBills;
+
+        CustomerCommunicationHandler m = new CustomerCommunicationHandler();
+        Database.executeBatch(m, 10);
+        Test.stopTest();
+
+        List<Case> caseList = [SELECT Id, Subject
+                                FROM Case
+                                WHERE Subject LIKE '%Collections Call:%'];
+
+        System.assertNotEquals(0, caseList.size());
+    }
+
+    public static testmethod void testCaseNotCreated(){
+        Test.startTest();
+
+        List<Shared_Solar_System__c> sss = [SELECT Id FROM Shared_Solar_System__c ORDER BY Name ASC ];
+
+        createBills(System.Today() - 27, sss[1].Id); // 7 days late, should not create case
+
+        List <Account_Bill__c> listaccountBills = [ SELECT Id, Published__c
+        FROM Account_Bill__c];
+
+        for (Account_Bill__c acctBill : listaccountBills) {
+            acctBill.Published__c = True;
+        }
+        update listaccountBills;
+
+        CustomerCommunicationHandler m = new CustomerCommunicationHandler();
+        Database.executeBatch(m, 10);
+        Test.stopTest();
+
+        List<Case> caseList = [SELECT Id, Subject
+        FROM Case
+        WHERE Subject LIKE '%Collections Call:%'];
+
+        System.assertEquals(0, caseList.size());
     }
  }

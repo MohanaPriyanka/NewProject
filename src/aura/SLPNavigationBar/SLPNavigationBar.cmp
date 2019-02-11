@@ -12,50 +12,7 @@
 <aura:attribute name="referralCode" type="String"/>
 <aura:attribute name="showCSTab" type="Boolean" default="true"/>
 <aura:attribute name="currentTab" type="String"/>
-
-<style>
-    @font-face {
-    font-family: proximaNovaFont;
-    src: url('{!$Resource.ProximaNova}');
-    }
-    .proximaNova95 {
-        font-family: proximaNovaFont;   
-        font-size:95%;
-        color: #216093;
-    }
-    @font-face {
-    font-family: proximaNovaFont;
-    src: url('{!$Resource.ProximaNova}');
-    }
-    .proximaNovaDataStream {
-        font-family: proximaNovaFont;   
-    font-size:90%;
-      color: #00b2a9;
-    }
-    @font-face {
-    font-family: proximaNovaFont;
-    src: url('{!$Resource.ProximaNova}');
-    }
-    .proximaNovaDataMountaintop {
-        font-family: proximaNovaFont;
-    font-size:100%;
-      color: #7C98AB;
-    }    
-    @font-face {
-    font-family: proximaNovaFont;
-    src: url('{!$Resource.ProximaNova}');
-    }
-    .proximaNovaDataMountaintopSmall {
-        font-family: proximaNovaFont;   
-    font-size:90%;
-      color: #7C98AB;
-    }  
-    .proximaNovaStreamSmall {
-      font-family: proximaNovaFont;   
-      font-size:95%;
-      color: #00b2a9;
-    }
-</style>
+  
 <div id="emailCustomerModalBackground" aura:id="emailCustomerModalBackground" class="slds-backdrop slds-backdrop--hide"></div>   
 <div aura:id="header" class="slds-context-bar" style="height: fit-content">
   <!-- if adding other navigation targets, update SLPNavigationBarRenderer to remove button styling -->
@@ -120,8 +77,8 @@
   <div>
     <section aura:id="smallWindow" role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
       <div class="slds-modal__container">
-        <header class="slds-modal__header blueBackground">
-            <h3 class="slds-text-body_small white">
+        <header class="slds-modal__header ">
+            <h3 class="slds-text-heading_small">
               Community Solar Application
             <lightning:buttonIcon aura:id="closeButton" name="close" class="closeButton" iconName="utility:close" variant="bare" onclick="{!c.closeCSWindow}" size="small" alternativeText="close" />
             </h3>

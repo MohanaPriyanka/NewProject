@@ -1,16 +1,22 @@
 ({
     doInit: function(component, event, helper) {
+        component.set("v.STAGENAME", "NAV_Getting_Started");
+        component.set("v.page", "ApplicationPrep");
         var leadId = component.get("v.leadId");
         if(leadId){
-            component.set("v.page", "Login");
+            component.set("v.page","Login");
         }
     },
+
     handleNavEvent : function(component, event, helper) {
-        var leadId = component.get("v.leadId");
-        if(leadId){
-            helper.handleNavEvent(component, event, helper, "Login");
-        }
     },
+
+    beginApplication : function(component, event, helper) {
+        var lead = component.get("v.lead");
+        component.set("v.page", "AboutYourself");
+        helper.raiseNavEvent("INITIATED", {"stageName": "NAV_Personal_Information", "lead": lead, "page": "AboutYourself"});
+    },
+
     checkForEnter : function(component, event, helper) {
         if (event.getParams().keyCode == 13) {
             helper.login(component, event, helper);

@@ -16,6 +16,31 @@ private class RecurringPaymentsHandlerTestClass {
         Test.stopTest();
     }
 
+    @IsTest static void testBatchExecution() {
+        Test.startTest();
+        List<Energy_Usage_Update__c> productionUpdateList = [
+            SELECT Name, Id, Shared_Solar_System__c, Schedule_Z__c,
+                YearDate__c, Credits_on_Bill_Period__c,
+                MonthDate__c, Total_System_NMCs__c, Production__c,
+                Generate_Bills__c, Total_System_NMCs_2_of_4__c,
+                Total_System_NMCs_3_of_4__c, Production_kWh_2_of_4__c,
+                Production_kWh_3_of_4__c, Total_System_NMCs_4_of_4__c,
+                Production_kWh_4_of_4__c, Net_Metering_Rate_Applied__c,
+                Billing_Method__c, Date__c, Billing_Period_Start_Date__c,
+                Billing_Period_End_Date__c, Month_Number__c,
+                Net_Metering_Rate_Applied_2_of_4__c,
+                Net_Metering_Rate_Applied_3_of_4__c,
+                Net_Metering_Rate_Applied_4_of_4__c
+            FROM Energy_Usage_Update__c
+            WHERE Name = 'sssB - March 2016'
+            OR Name = 'sssA - March 2016'
+            LIMIT 1
+        ];
+        EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(productionUpdateList);
+        Database.executeBatch(ee, 50);
+        Test.stopTest();
+    }
+
     @IsTest static void testScheduledJobResults() {
         Test.startTest();
         List<Energy_Usage_Update__c> productionUpdateList = [SELECT Name, Id, Shared_Solar_System__c, Schedule_Z__c,
@@ -138,16 +163,16 @@ private class RecurringPaymentsHandlerTestClass {
         WHERE ChargentOrders__Gateway__r.Name = 'Chargent Gateway One'
         AND ChargentOrders__Charge_Date__c = '30'
         AND (NOT ChargentOrders__Billing_Last_Name__c LIKE '%CaseCreation%')
+        AND (NOT ChargentOrders__Billing_Last_Name__c LIKE '%AutoEmailer%')
         LIMIT 1];
         delete orderToDelete;
 
         List<ChargentOrders__ChargentOrder__c> originalOrderCount = [
-            SELECT Id, ChargentOrders__Billing_Last_Name__c
+            SELECT Id, ChargentOrders__Billing_Last_Name__c, ChargentOrders__Charge_Date__c, ChargentOrders__Gateway__r.Name
             FROM ChargentOrders__ChargentOrder__c
             WHERE (NOT ChargentOrders__Billing_Last_Name__c LIKE '%CaseCreation%')
             AND (NOT ChargentOrders__Billing_Last_Name__c LIKE '%AutoEmailer%')
         ];
-
         System.assertEquals(6,originalOrderCount.size());
 
         List<System_Bill__c> systemBillListtwo = [
@@ -1548,7 +1573,7 @@ private class RecurringPaymentsHandlerTestClass {
         ];
 
         List<System_Bill__c> firstSystemBills = [
-            SELECT Id, Due_Date__c, Total_Due__c
+            SELECT Id, Total_Due__c
             FROM System_Bill__c
             WHERE Account_Bill__r.Parent_Account__r.Name = 'PaymentTestPropertyD'
         ];
@@ -1597,7 +1622,7 @@ private class RecurringPaymentsHandlerTestClass {
         }
         update firstSystemBills;
         firstSystemBills = [
-            SELECT Id, Due_Date__c, Total_Due__c
+            SELECT Id, Total_Due__c
             FROM System_Bill__c
             WHERE Account_Bill__r.Parent_Account__r.Name = 'PaymentTestPropertyD'
         ];
@@ -1639,7 +1664,7 @@ private class RecurringPaymentsHandlerTestClass {
         ];
 
         List<System_Bill__c> firstSystemBills = [
-            SELECT Id, Due_Date__c, Total_Due__c
+            SELECT Id, Total_Due__c
             FROM System_Bill__c
             WHERE Account_Bill__r.Parent_Account__r.Name = 'PaymentTestPropertyD'
         ];
@@ -1715,7 +1740,7 @@ private class RecurringPaymentsHandlerTestClass {
         ];
 
         List<System_Bill__c> firstSystemBills = [
-            SELECT Id, Due_Date__c, Total_Due__c
+            SELECT Id, Total_Due__c
             FROM System_Bill__c
             WHERE Account_Bill__r.Parent_Account__r.Name = 'PaymentTestPropertyD'
         ];

@@ -1,9 +1,9 @@
 /**
  * Created by mstackhouse on 8/1/2018.
  * Description: Queues collection of accountBills with their pdf versions (ContentDocument) for sending to LetterStream.
- * Called from ScheduledAccountBillLetterStreamMailer which batches collections to avoid APEX heap size limits.
+ * Called from AccountBillLetterStreamImpl which batches collections to avoid APEX heap size limits.
  *
- * Test: 
+ * Test: LetterStreamServiceTests
  */
 
 
@@ -69,7 +69,7 @@ public without sharing class QueueAccountBillLetterStreamMailer implements Queue
 
         Blob csvBlob = Blob.valueOf(lss.csv);
 
-        String jobName = 'Job_' +  + '_' + DateTime.now().format('MM-dd-yyyy_HH:mm:ss') + '_' + jobNumber + '.csv';
+        String jobName = 'Job_' +  + '_' + DateTime.now().format('MM-dd-yyyy_HH:mm:ss:SSS') + '_' + jobNumber + '.csv';
 
         lettersToSend.addFile(jobName, csvBlob, null);
 
@@ -83,7 +83,9 @@ public without sharing class QueueAccountBillLetterStreamMailer implements Queue
         response = http.send(request);
         Dom.Document responseXML = response.getBodyDocument();
         String responseXMLString = responseXML.toXmlString();
-        System.enqueueJob(new QueueAccountBillLetterStreamMailer.QueueHandleResponse(responseXMLString, accountBillIds, lss.csv));
+        System.enqueueJob(
+            new QueueAccountBillLetterStreamMailer.QueueHandleResponse(responseXMLString, accountBillIds, lss.csv, accountBillsByDocIds, makeCallout)
+        );
     }
 
     public static List<Account_Bill__c> markAccountBillsAsMailed(Set<Id> accountBillIds, Id newJobId) {
@@ -104,15 +106,24 @@ public without sharing class QueueAccountBillLetterStreamMailer implements Queue
         public String responseXMLString;
         public Set<Id> accountBillIds;
         public String csv;
+        public Map<Id, Account_Bill__c> accountBillsByDocIds;
+        public Boolean makeCallout;
 
-        public QueueHandleResponse(String responseXMLString, Set<Id> accountBillIds, String csv) {
+        public QueueHandleResponse(String responseXMLString, Set<Id> accountBillIds, String csv, Map<Id, Account_Bill__c> accountBillsByDocIds, Boolean makeCallout) {
             this.responseXMLString = responseXMLString;
             this.accountBillIds = accountBillIds;
             this.csv = csv;
+            this.accountBillsByDocIds = accountBillsByDocIds;
+            this.makeCallout = makeCallout;
         }
 
         public void execute(QueueableContext contact) {
+            handleResponse();
+        }
+
+        public void handleResponse() {
             LetterStreamService lss = new LetterStreamService();
+            // newJob gets inserted within here
             LetterStreamJob__c newJob = lss.parseLetterStreamResponse(responseXMLString);
 
             if (newJob == null) {

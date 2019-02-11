@@ -1,24 +1,22 @@
 ### Work Items Covered
 <!-- Please provide links to the work items covered in PR -->
-#### Features
-[Item Title](url)
-
-#### Bug Fixes
+#### Copado User Story
 [Item Title](url)
 
 ### Deployment Steps
-<!-- If there are configuration changes necessary -->
-#### Change Set <!-- delete if no change sets -->
-UAT: [Change Set Name](url to inbound in UAT)
+<!-- Are there additional deployment steps in the user story? -->
+- [ ] No
+- [ ] Yes
 
-Prod: [Change Set Name](url to inbound in Prod)
-
+  Details:
 
 ### How has this been tested?
-- [ ] Deployment has been Tested
-- [ ] Automated Tests <!-- Describe Testing Approach -->
-- [ ] Manual Tests <!-- Provide any steps needed to test this PR manually -->
-
+- [ ] Automated Tests 
+<!-- Describe Testing Approach -->
+- [ ] Manual Tests 
+<!-- Describe the steps taken when testing this PR manually -->
+- [ ] Screenshots or screen recordings of test results 
+<!-- Include test documentation to make it easier to review the PR -->
 
 ### Other Information
 <!--

@@ -400,7 +400,7 @@
         <fullName>ACH_Name_on_Account__c</fullName>
         <externalId>false</externalId>
         <label>ACH Name on Account</label>
-        <length>30</length>
+        <length>100</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -2166,9 +2166,9 @@ TEXT(DAY(Commencement_Date__c))
     <fields>
         <fullName>Cosigner_Notice_Signed__c</fullName>
         <defaultValue>false</defaultValue>
-        <description>Only for New York Loans</description>
+        <description>Only for New York and Florida Loans</description>
         <externalId>false</externalId>
-        <inlineHelpText>Only for New York Loans</inlineHelpText>
+        <inlineHelpText>Only for New York and Florida Loans</inlineHelpText>
         <label>Cosigner Notice Signed</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -4157,6 +4157,18 @@ TEXT(DAY(Interest_Only_Start_Date__c))
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>LoadZone__c</fullName>
+        <externalId>false</externalId>
+        <label>Load Zone</label>
+        <length>200</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Load_Z__c</fullName>
         <externalId>false</externalId>
         <formula>IF(
@@ -4174,7 +4186,7 @@ TEXT( Load_Zone_Utility_4__c  ) = &apos;Manual Lookup Required&apos;,
 
 &apos;Manual Lookup Required&apos;, null))</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Load Zone</label>
+        <label>XXXX Load Zone</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -4322,7 +4334,7 @@ TEXT( Load_Zone_Utility_4__c  ) = &apos;Manual Lookup Required&apos;,
         <externalId>false</externalId>
         <formula>Load_Z__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Load Zone</label>
+        <label>XXXX Load Zone</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -5300,7 +5312,7 @@ MAX(Personal_Credit_Report2__r.Credit_Score_Integer_2__c, Personal_Credit_Report
     <fields>
         <fullName>Parent_Account_ID__c</fullName>
         <externalId>false</externalId>
-        <formula>Account.Parent_Account__r.Id</formula>
+        <formula>CASESAFEID(Account.Parent_Account__r.Id)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Parent Account ID</label>
         <required>false</required>
@@ -5718,6 +5730,20 @@ IF(INCLUDES(Customer_Type__c, &quot;Private Affordable&quot;),&quot;Error&quot;,
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Product_Escalation_Schedule__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Product Escalation Schedule</label>
+        <referenceTo>Product_Escalation_Schedule__c</referenceTo>
+        <relationshipLabel>Opportunities</relationshipLabel>
+        <relationshipName>Opportunities</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Product_Line__c</fullName>
@@ -6646,7 +6672,7 @@ if(and( isnull(Disbursal_1_Contract_Signature_Checkbox__c )=False,isnull( Disbur
     <fields>
         <fullName>Service_Territory__c</fullName>
         <externalId>false</externalId>
-        <label>Service Territory</label>
+        <label>XXXX Service Territory</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>

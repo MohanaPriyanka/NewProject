@@ -448,7 +448,7 @@
     <fields>
         <fullName>MA_Registration__c</fullName>
         <externalId>false</externalId>
-        <label>MA Registration</label>
+        <label>XXXXXXMA Registration</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>

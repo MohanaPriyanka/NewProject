@@ -22,3 +22,5 @@ TestAccountForCaseCreator-WithBill,Account CaseCreator-WithBill,Property,012j000
 TestAccountForAutoEmailer,AutoEmailer Account A,Property,012j00000010HeQ,United States,United States,true,,,,AutoEmailerContact
 APizza,APizza Shop,Landowner,012j00000010HeQAAU,United States,United States,true,,,APizza Shop Parent
 APizzaParentAccount,APizza Shop Parent,Landowner,012j00000010Ha3AAE,United States,United States,true,,,""
+ABike,ABike Shop,Landowner,012j00000010HeQAAU,United States,United States,true,,,ABike Shop Parent
+ABikeParentAccount,ABike Shop Parent,Landowner,012j00000010Ha3AAE,United States,United States,true,,,""

@@ -1176,22 +1176,6 @@ IF (YTD_kWh_Production__c/Opportunity__r.Product__r.Annual_kWh_Maximum__c &gt; 0
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>XXBalance_Adjustments_Formula__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF (
-AND( Adjustments_UASB__c&lt;0, ABS(Adjustments_UASB__c) &gt; Due_This_Month__c)
-, -1 * Due_This_Month__c , 
-Adjustments_UASB__c)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>XXBalance Adjustments Formula</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>YTD_Billed__c</fullName>
         <externalId>false</externalId>
         <label>YTD Billed</label>

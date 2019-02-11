@@ -62,7 +62,6 @@ private class mapSharedSolarSytemTestClass{
             StageName='New',
             Product_line__c = 'Community Solar',
             Project_assignment__c = 'Automatic - COD Date/Available Capacity',
-            Service_Territory__c = 'SEMA',
             UtilityMapper__c = 'Eversource',
             Personal_Credit_Report2__c = creditReport.id); 
             
@@ -73,7 +72,6 @@ private class mapSharedSolarSytemTestClass{
             StageName='New',
             Product_line__c = 'Community Solar',
             Project_assignment__c = 'Automatic - Assignment Order',
-            Service_Territory__c = 'SEMA',
             UtilityMapper__c = 'Eversource',
             Personal_Credit_Report2__c = creditReport.id); 
 

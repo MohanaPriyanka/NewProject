@@ -63,6 +63,8 @@ public without sharing class CSAPController {
             if (crList[0].LASERCA__Personal_Credit_Report__r.LASERCA__Credit_Score__c != null) {
                 creditScore = Decimal.valueOf(crList[0].LASERCA__Personal_Credit_Report__r.LASERCA__Credit_Score__c);
                 result = checkCreditReport(leadId, creditScore);
+            } else {
+                result.sssCreditQualification = 'Credit Report was returned without a credit score.';
             }
         }
         return result;
@@ -209,7 +211,11 @@ public without sharing class CSAPController {
     }
     @AuraEnabled
     public static Boolean hasAvailableCapacity(Id leadId) {
-        Lead lead = [SELECT Id, LoadZone__c, Utility_relationship__c, Partner_Name__c, Application_Source_Phase_2__c, System_Assignment__c FROM Lead WHERE Id = :leadId];
+        Lead lead = [
+            SELECT Id, Partner_Name__c, Application_Source_Phase_2__c, System_Assignment__c,
+                LASERCA__Home_State__c, Application_Type__c, Utility_relationship__c, LoadZone__c
+            FROM Lead
+            WHERE Id = :leadId];
         String sssQuery = 'SELECT Id, Product__r.Name  ';
         sssQuery +=       'FROM Shared_Solar_System__c ';
         sssQuery +=       'WHERE Open__c = true ';
@@ -262,7 +268,12 @@ public without sharing class CSAPController {
 
     @AuraEnabled
     public static Product2 getProduct (String productId) {
-        return [SELECT Id, Name, Program__c FROM Product2 WHERE Id =: productId];
+        return [SELECT Id, Name, Program__c, Customer_Subscription_Type__c FROM Product2 WHERE Id =: productId];
+    }
+
+    @AuraEnabled
+    public static Utility__c getUtility (String utilityId) {
+        return [SELECT Id, Name FROM Utility__c WHERE Id =: utilityId];
     }
 
     @AuraEnabled

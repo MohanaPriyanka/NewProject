@@ -54,6 +54,16 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ControlledByParent</externalSharingModel>
     <fields>
+        <fullName>Applied_to_Production_Starting__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Manual entry provided by utility. It is the start of the production period to which the schedule z is applied</inlineHelpText>
+        <label>Applied to Production Starting</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>Asset_Owner__c</fullName>
         <externalId>false</externalId>
         <label>Asset Owner</label>
@@ -88,6 +98,15 @@
         <fullName>Date_Billing__c</fullName>
         <externalId>false</externalId>
         <label>Date Billing</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Date_Done_Billing__c</fullName>
+        <externalId>false</externalId>
+        <label>Date Done Billing</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
@@ -138,6 +157,16 @@
         <externalId>false</externalId>
         <inlineHelpText>Stamped by status change</inlineHelpText>
         <label>Date Replaced with Newly Enacted Sch Z</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Date_Schedule_Z_Retired_by_Utility__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Populated by status change of next schedule z enacted</inlineHelpText>
+        <label>Date Schedule Z Retired by Utility</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
@@ -239,39 +268,39 @@
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
-                    <fullName>New</fullName>
+                    <fullName>QC in Process</fullName>
                     <default>true</default>
-                    <label>New &gt;&gt;&gt; Complete Subscription QC</label>
+                    <label>QC in Process</label>
                 </value>
                 <value>
                     <fullName>QC Complete</fullName>
                     <default>false</default>
-                    <label>Subscription QC Completed &gt;&gt;&gt; Complete Front Page QC</label>
+                    <label>QC Complete</label>
                 </value>
                 <value>
-                    <fullName>Front Page QC Completed &gt;&gt;&gt; Submit to Asset Owner</fullName>
+                    <fullName>Rejected Internal</fullName>
                     <default>false</default>
-                    <label>Front Page QC Completed &gt;&gt;&gt; Submit to Asset Owner</label>
+                    <label>Rejected Internal</label>
                 </value>
                 <value>
-                    <fullName>Submitted to Asset Owner &gt;&gt;&gt; Contact Asset Owner to get it Executed</fullName>
+                    <fullName>Submitted to Asset Owner</fullName>
                     <default>false</default>
-                    <label>Submitted to Asset Owner &gt;&gt;&gt; Contact Asset Owner to get it Executed</label>
+                    <label>Submitted to Asset Owner</label>
                 </value>
                 <value>
                     <fullName>Executed by Asset Owner</fullName>
                     <default>false</default>
-                    <label>Executed by Asset Owner &gt;&gt;&gt; Submit to Utility</label>
+                    <label>Executed by Asset Owner</label>
                 </value>
                 <value>
                     <fullName>Submitted to Utility</fullName>
                     <default>false</default>
-                    <label>Submitted to Utility &gt;&gt;&gt; Contact Utility to get it Enacted</label>
+                    <label>Submitted to Utility</label>
                 </value>
                 <value>
                     <fullName>Rejected by Utility</fullName>
                     <default>false</default>
-                    <label>Rejected</label>
+                    <label>Rejected by Utility</label>
                 </value>
                 <value>
                     <fullName>Enacted by Utility</fullName>
@@ -284,9 +313,57 @@
                     <label>Billing</label>
                 </value>
                 <value>
+                    <fullName>Replaced</fullName>
+                    <default>false</default>
+                    <label>Replaced</label>
+                </value>
+                <value>
+                    <fullName>Executed by Asset Owner (old version)</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Executed by Asset Owner &gt;&gt;&gt; Submit to Utility</label>
+                </value>
+                <value>
+                    <fullName>Front Page QC Completed &gt;&gt;&gt; Submit to Asset Owner</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Front Page QC Completed &gt;&gt;&gt; Submit to Asset Owner</label>
+                </value>
+                <value>
+                    <fullName>New</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>New &gt;&gt;&gt; Complete Subscription QC</label>
+                </value>
+                <value>
+                    <fullName>Rejected by Utility (old version)</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Rejected</label>
+                </value>
+                <value>
                     <fullName>Replaced with newly Enacted Schedule Z</fullName>
                     <default>false</default>
+                    <isActive>false</isActive>
                     <label>Replaced with newly Enacted Schedule Z</label>
+                </value>
+                <value>
+                    <fullName>Submitted to Asset Owner &gt;&gt;&gt; Contact Asset Owner to get it Executed</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Submitted to Asset Owner &gt;&gt;&gt; Contact Asset Owner to get it Executed</label>
+                </value>
+                <value>
+                    <fullName>Submitted to Utility (old version)</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Submitted to Utility &gt;&gt;&gt; Contact Utility to get it Enacted</label>
+                </value>
+                <value>
+                    <fullName>QC Complete (old version)</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Subscription QC Completed &gt;&gt;&gt; Complete Front Page QC</label>
                 </value>
             </valueSetDefinition>
         </valueSet>

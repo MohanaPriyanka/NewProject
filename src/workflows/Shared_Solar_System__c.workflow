@@ -5,16 +5,8 @@
         <description>CS System Started Billing</description>
         <protected>false</protected>
         <recipients>
-            <recipient>eglynn@bluewavesolar.com</recipient>
-            <type>user</type>
-        </recipients>
-        <recipients>
-            <recipient>falabdulmuhsen@bluewavesolar.com</recipient>
-            <type>user</type>
-        </recipients>
-        <recipients>
-            <recipient>laller@bluewavesolar.com</recipient>
-            <type>user</type>
+            <recipient>CS_System_Production_Billing</recipient>
+            <type>group</type>
         </recipients>
         <senderAddress>noreply@bluewavesolar.com</senderAddress>
         <senderType>OrgWideEmailAddress</senderType>

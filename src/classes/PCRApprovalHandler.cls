@@ -238,10 +238,6 @@ public without sharing class PCRApprovalHandler {
             } else {
                 lead.Product__c = creditSummary.leastExpensiveQualifiedProduct;
             }
-        } else {
-            if (creditSummary.bestStatus == APPROVED && !creditSummary.approvedProducts.contains(lead.Product__c)) {
-                lead.Product__c = creditSummary.mostExpensiveQualifiedProduct;
-            }
         }
 
         // set to pending if any codes are present

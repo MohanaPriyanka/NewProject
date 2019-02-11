@@ -1,11 +1,13 @@
 ({
     log : function(component, event) {
-        var defaultOptions = {
+        let defaultOptions = {
             suppressAlert: false,
-            suppressDBSave: false
+            suppressDBSave: false,
+            severity: 'Error'
         };
-        var errors = event.getParam("errors");
-        var options = event.getParam('options');
+        let errors = event.getParam("errors");
+        let options = event.getParam('options');
+        let stacktrace = event.getParam('stacktrace');
         if (!options) {
             options = defaultOptions;
         }
@@ -38,9 +40,12 @@
                             return blacklist.indexOf(key) === -1 ? value : undefined
                         },
                         2);
-                    action.setParams({className : event.getParam("className"),
+                    action.setParams({
+                        className : event.getParam("className"),
                         methodName : event.getParam("methodName"),
-                        message : messageText + "\n\n" + (devInfo?devInfo:'')});
+                        message : messageText + '\n\n' + (devInfo?devInfo:'') + (stacktrace?('\n\n'+stacktrace):''),
+                        severity : options.severity?options.severity:"Error"
+                    });
                     action.setCallback(this, function(resp){});
                     $A.enqueueAction(action);
                 }
