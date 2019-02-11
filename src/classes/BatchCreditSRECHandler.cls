@@ -6,10 +6,17 @@
  + *************************************************************************************/
 
 global class BatchCreditSRECHandler implements Database.Batchable<sObject>,Database.AllowsCallouts,Database.Stateful {
-    webservice static void executeBatch (String type){
+    webService static String executeBatch (String type) {
+        // As of Feb 2019, we want to explicitly restrict users that can send SREC payments via this class. We can't
+        // use apex class permissions, because users that have Author Apex get permission to run all classes. Instead,
+        // we'll see if permission is also assigned through a permission set.
+        if (!PermissionService.userHasPermissionSetForClass(UserInfo.getUserId(), 'BatchCreditSRECHandler')) {
+            return 'You do not have permission to start this job. Log a case if you should.';
+        }
         BatchCreditSRECHandler batchJob = new BatchCreditSRECHandler();
         batchJob.srecType = type;
-        Database.executeBatch(batchJob, 1);
+        Id batchId = Database.executeBatch(batchJob, 1);
+        return 'Started batch ' + batchId + ' to send SREC payments';
     }
     public List<ChargentOrders__ChargentOrder__c> updatedChOrders;
     public List<Id> successSRECList = new List<Id>();
