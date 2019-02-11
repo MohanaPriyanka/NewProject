@@ -7,65 +7,6 @@
   <div aura:id="footerBreak" class="footerBreak slds-align--absolute-center"/>
 
   <aura:if isTrue="{!v.partnerFooter}">
-    <div aura:id="header" class="header paddingTop">
-      <div>
-        <ui:outputText class="slds-truncate proximaNovaDataMountaintop95 slds-align--absolute-center" value="Have a question? Contact the BlueWave Support Team:"/>
-      </div>
-      <div class="slds-align--absolute-center">
-        <a href="mailto:learnmore@bluewavesolar.com">
-          <ui:outputText class="slds-truncate proximaNovaDataMountaintop95" value="learnmore@bluewavesolar.com"/>
-        </a>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="tel:6176814119 ">
-          <ui:outputText class="slds-truncate proximaNovaDataMountaintop95" value="617-681-4119"/>
-        </a>
-      </div>
-      <aura:if isTrue="{!v.lenderOfRecord == 'Avidia'}">
-        <div class="slds-align--absolute-center slds-p-top_small">
-          <p class="proximaNovaDataMountaintop95">Loan Underwriting by: Avidia Bank - 42 Main St. Hudson, MA 01749</p>
-        </div>
-        <div class="slds-align--absolute-center">
-          <img class="slds-p-right_small" src="{!$Resource.avidiaLogo}" width="200"/>
-          <img class="slds-p-left_small" src="{!$Resource.avidiaFooterWhite}" width="300"/>
-        </div>
-      </aura:if>
-    </div>
-  </aura:if>
-  <aura:if isTrue="{!not(v.partnerFooter)}">
-    <div aura:id="header" class="header paddingTop">
-      <div>
-        <ui:outputText class="slds-truncate proximaNovaDataMountaintop95 slds-align--absolute-center" value="Have a question? Contact the Customer Care Team:"/>
-      </div>
-      <div class="slds-align--absolute-center">
-        <a href="mailto:customercare@bluewavesolar.com">
-          <ui:outputText class="slds-truncate proximaNovaDataMountaintop95" value="customercare@bluewavesolar.com"/>
-        </a>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="tel:8447864100">
-          <ui:outputText class="slds-truncate proximaNovaDataMountaintop95" value="844-786-4100"/>
-        </a>
-      </div>
-      <aura:if isTrue="{!v.lenderOfRecord == 'Avidia'}">
-        <div class="slds-align--absolute-center slds-p-top_small">
-          <p class="proximaNovaDataMountaintop95">Loan Underwriting by: Avidia Bank - 42 Main St. Hudson, MA 01749</p>
-        </div>
-        <div class="slds-align--absolute-center">
-          <img class="slds-p-right_small" src="{!$Resource.avidiaLogo}" width="200"/>
-          <img class="slds-p-left_small" src="{!$Resource.avidiaFooterWhite}" width="300"/>
-        </div>
-      </aura:if>
-    </div>
-  </aura:if>
-=======
-<aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPCustomerHandler" access="global" extends="c.BlueWaveParent">
-  <aura:handler event="c:CAPNavigationEvent" action="{!c.handleNavEvent}"/>
-  <aura:attribute name="partnerFooter" type="Boolean" default="true"/>
-  <aura:attribute name="lenderOfRecord" type="String"/>
-  
-  <div aura:id="divider" class="divider slds-align--absolute-center"/>
-  <div aura:id="footerBreak" class="footerBreak slds-align--absolute-center"/>
-
-  <aura:if isTrue="{!v.partnerFooter}">
     <div aura:id="header" class="header paddingTop slds-text-color_weak">
       <div>
         <ui:outputText class="slds-truncate slds-align--absolute-center" value="Have a question? Contact the BlueWave Partner Support Team:"/>
@@ -115,5 +56,4 @@
       </aura:if>
     </div>
   </aura:if>
-
 </aura:component>
