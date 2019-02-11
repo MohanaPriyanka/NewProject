@@ -250,10 +250,9 @@ public class LoanHandlerTestClass {
         List<Opportunity> oppListToUpdate = new List<Opportunity>();
         List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
         Opportunity jointOpp = new Opportunity();
-        Test.startTest();
 
         convertLeads(leadlist, 0);
-
+        Test.startTest();
         List<Partner_Task__c> partnerTasks = [
             SELECT Id, Name, Status__c, Loan__r.DOER_Solar_Loann__c
             FROM Partner_Task__c
@@ -448,9 +447,9 @@ public class LoanHandlerTestClass {
 
       List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
         Date myDate = Date.newInstance(2015, 2, 17);
-        Test.startTest();
 
         convertLeads(leadList, 0);
+        Test.startTest();
 
       List<Residential_Equipment__c> equipmentList = [SELECT Id, Mechanically_Installed__c, Interconnected__c, DOER_Solar_Loan__c 
                                                         FROM Residential_Equipment__c];
@@ -707,9 +706,9 @@ public class LoanHandlerTestClass {
         List<Lead> leadList = [SELECT Id FROM Lead WHERE DOER_Solar_Loan__c = TRUE];
         List<Opportunity> oppListToUpdate = new List<Opportunity>();
         List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
-        Test.startTest();
 
         convertLeads(leadList, 0);
+        Test.startTest();
 
         List<Partner_Task__c> partnerTasks = [
             SELECT Id, Name, Status__c, Loan__r.DOER_Solar_Loann__c
@@ -791,9 +790,9 @@ public class LoanHandlerTestClass {
         List<Attachment> attachList = new List<Attachment>();        
         List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
         Date myDate = Date.newInstance(2015, 2, 17);
-        Test.startTest();
 
         convertLeads(leadList, 0);
+        Test.startTest();
 
         List<Residential_Equipment__c> equipmentList = [SELECT Id, Mechanically_Installed__c, Interconnected__c, DOER_Solar_Loan__c 
                                                         FROM Residential_Equipment__c
@@ -891,10 +890,9 @@ public class LoanHandlerTestClass {
         List<Attachment> attachList = new List<Attachment>();
         List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
         Date myDate = Date.newInstance(2015, 2, 17);
-        Test.startTest();
-
 
         convertLeads(leadList, 0);
+        Test.startTest();
 
         List<Residential_Equipment__c> equipmentList = [
             SELECT Id, Mechanically_Installed__c, Interconnected__c, DOER_Solar_Loan__c
@@ -1194,13 +1192,13 @@ public class LoanHandlerTestClass {
         List<Loan__c> loanListToUpdate = new List<Loan__c>();
         List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
 
-        Test.startTest();
         List<Lead> leadList = [
             SELECT Id, Update_Dummy__c, Retired__c, Self_Employed__c, Product__r.Name, DOER_Solar_Loan__c, ConvertedContactId
             FROM Lead
             WHERE DOER_Solar_Loan__c = TRUE
         ];
         convertLeads(leadList, 0);
+        Test.startTest();
         leadList = [
             SELECT Id, Update_Dummy__c, Retired__c, Self_Employed__c, Product__r.Name, DOER_Solar_Loan__c, ConvertedContactId
             FROM Lead
