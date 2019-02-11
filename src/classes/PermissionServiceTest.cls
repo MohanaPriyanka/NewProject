@@ -12,7 +12,7 @@ public with sharing class PermissionServiceTest {
 
     @IsTest
     public static void testUserHasPermissionSetForClass() {
-        User standardUser = [SELECT Id FROM User WHERE Username = 'foo@bar.com'];
+        User standardUser = [SELECT Id FROM User WHERE Email = 'foo@bar.com'];
         System.assertEquals(true, PermissionService.userHasPermissionSetForClass(standardUser.Id, 'PermissionsSelector'));
         System.assertEquals(false, PermissionService.userHasPermissionSetForClass(standardUser.Id, 'PermissionsSelectorTest'));
         System.assertEquals(true, PermissionService.userHasPermissionSetForClass(UserInfo.getUserId(), 'PermissionsSelector'));
