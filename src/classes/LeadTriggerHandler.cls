@@ -55,9 +55,9 @@ public without sharing class LeadTriggerHandler {
 
     public void onBeforeInsert(List<Lead> leadList){
         List<Lead> communitySolarLeads = new List<Lead>();
-        User apiUser = [SELECT Id FROM User WHERE Name = 'API' LIMIT 1 ];
+        //User apiUser = [SELECT Id FROM User WHERE Name = 'API' LIMIT 1 ];
         for (Lead lead : leadList) {
-            lead.OwnerId = apiUser.Id;
+            //lead.OwnerId = apiUser.Id;
             if (lead.Product_Line__c == 'Community Solar') {
                 communitySolarLeads.add(lead);
             }
