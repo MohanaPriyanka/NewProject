@@ -9,7 +9,7 @@
   <aura:if isTrue="{!v.partnerFooter}">
     <div aura:id="header" class="header paddingTop">
       <div>
-        <ui:outputText class="slds-truncate proximaNovaDataMountaintop95 slds-align--absolute-center" value="Have a question? Contact the BlueWave Partner Support Team:"/>
+        <ui:outputText class="slds-truncate proximaNovaDataMountaintop95 slds-align--absolute-center" value="Have a question? Contact the BlueWave Support Team:"/>
       </div>
       <div class="slds-align--absolute-center">
         <a href="mailto:learnmore@bluewavesolar.com">
