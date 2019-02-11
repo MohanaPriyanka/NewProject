@@ -172,6 +172,7 @@ private class PartnerHealthBatchTest {
             Stage__c = 'Open'
         );
         insert lt;
+        Test.startTest();
         List<Loan__c> loanList = new List<Loan__c>();
         for (Opportunity opp : oppList) {
             loanList.add(new Loan__c(Partner__c = prt.Id,
@@ -189,7 +190,7 @@ private class PartnerHealthBatchTest {
             opp.StageName = 'Complete';
         }
         update oppList;
-        Test.startTest();
+
         String jobId = System.schedule('TestPartnerHealthBatch', '0 0 * * * ?', new PartnerHealthBatch());
         PartnerHealthBatch partnerHealthBatchRun = new PartnerHealthBatch();
         partnerHealthBatchRun.query = 'SELECT Name FROM Partner__c WHERE Products__c INCLUDES (\'Residential Loan\') OR Products__c = null';
