@@ -1,6 +1,6 @@
-@isTest
-private class RecurringSRECHandlerTest{
-    @testSetup public static void setupData() {
+@IsTest
+private class RecurringSRECHandlerTest {
+    @TestSetup public static void setupData() {
         Loan_Data__c capitalPool = new Loan_Data__c(Name = 'Revolving Credit Line',
                                                     Total_Capital__c = 10000000,
                                                     Investor__c = 'The Bank',
@@ -206,6 +206,18 @@ private class RecurringSRECHandlerTest{
         monthlyAlreadyReady.SREC_Invoice__c = invoice.Id;
         quarterlyAlreadyReady.Related_SREC__c = srecOne.Id;
         update new List<ChargentOrders__ChargentOrder__c>{monthlyAlreadyReady, quarterlyAlreadyReady};
+
+        // We get the error below unless we use runAs:
+        // MIXED_DML_OPERATION, DML operation on setup object is not permitted after you have updated a non-setup object (or vice versa)
+        User u = new User(Id = UserInfo.getUserId());
+        System.runAs(u) {
+            PermissionSet ps = [SELECT Id FROM PermissionSet WHERE Label = 'Permission to Run Batch SREC Payments'];
+            PermissionSetAssignment psa = new PermissionSetAssignment(
+                PermissionSetId = ps.Id,
+                AssigneeId = UserInfo.getUserId()
+            );
+            insert psa;
+        }
     }
 
     static testMethod void updateSRECandOrder() {
@@ -404,5 +416,40 @@ private class RecurringSRECHandlerTest{
 
         // only 3 SRECs in this batch, so even with a batch size of 4 only 3 are processed
         System.AssertEquals(3, postBatchList.size());
+    }
+
+    static testMethod void testUserWithoutPermission() {
+        // Get some other system admin that won't have the permission set to run BatchCreditSREC
+        User systemAdmin = [
+            SELECT Id
+            FROM User
+            WHERE Profile.Name = 'System Administrator'
+            AND IsActive = TRUE
+            AND Id != :UserInfo.getUserId()
+            LIMIT 1
+        ];
+        System.assertEquals(false, PermissionService.userHasPermissionSetForClass(systemAdmin.Id, 'BatchCreditSRECHandler'));
+        System.runAs(systemAdmin) {
+            Test.startTest();
+            String result = BatchCreditSRECHandler.executeBatch('monthly');
+            System.assertEquals('You do not have permission to start this job. Log a case if you should.', result);
+            Test.stopTest();
+        }
+
+        ChargentOrders__ChargentOrder__c updatedCho = [ SELECT Id, Name,
+            SREC_Status__c,
+            SREC_Invoice__c,
+            ChargentOrders__Credit_Amount__c,
+            ChargentOrders__Bank_Routing_Number__c,
+            ChargentOrders__Bank_Account_Number__c,
+            ChargentOrders__Bank_Account_Type__c,
+            ChargentOrders__Bank_Name__c,
+            ChargentOrders__Subtotal__c,
+            ChargentOrders__Bank_Account_Name__c
+        FROM ChargentOrders__ChargentOrder__c
+        WHERE ChargentOrders__Bank_Name__c = 'Monthly Originally Set to Ready'
+        LIMIT 1];
+
+        System.assertEquals('Ready', updatedCho.SREC_Status__c);
     }
 }
