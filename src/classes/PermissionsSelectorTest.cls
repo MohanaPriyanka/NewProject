@@ -20,6 +20,15 @@ public with sharing class PermissionsSelectorTest {
         insert sea;
 
         Profile profileRecord = [SELECT Id FROM Profile WHERE Name = 'Standard User'];
+
+        // To avoid DUPLICATE_USERNAME, we use the suggestion here:
+        // https://help.salesforce.com/articleView?id=000182266&type=1
+        String orgId = UserInfo.getOrganizationId();
+        String dateString =
+            String.valueOf(Datetime.now()).replace(' ','').replace(':','').replace('-','');
+        Integer randomInt = Integer.valueOf(Math.rint(Math.random()*1000000));
+        String uniqueName = orgId + dateString + randomInt;
+
         User standardUser = new User(
             FirstName = 'First',
             LastName = 'Last',
@@ -32,7 +41,7 @@ public with sharing class PermissionsSelectorTest {
             Country = 'United States',
             IsActive = true,
             TimeZoneSidKey = 'America/New_York',
-            Username = 'foo@bar.com'
+            Username = uniqueName + '@test' + orgId + '.org'
         );
         insert standardUser;
 
