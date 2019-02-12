@@ -12,12 +12,12 @@
         <ui:outputText class="slds-truncate slds-align--absolute-center" value="Have a question? Contact the BlueWave Partner Support Team:"/>
       </div>
       <div class="slds-align--absolute-center">
-        <a href="mailto:partnersupport@bluewavesolar.com">
-          <ui:outputText class="slds-truncate" value="partnersupport@bluewavesolar.com"/>
+        <a href="mailto:learnmore@bluewavesolar.com">
+          <ui:outputText class="slds-truncate" value="learnmore@bluewavesolar.com"/>
         </a>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="tel:8888172703">
-          <ui:outputText class="slds-truncate" value="888-817-2703"/>
+        <a href="tel:6176814119 ">
+          <ui:outputText class="slds-truncate" value="617-681-4119"/>
         </a>
       </div>
       <aura:if isTrue="{!v.lenderOfRecord == 'Avidia'}">
@@ -34,15 +34,15 @@
   <aura:if isTrue="{!not(v.partnerFooter)}">
     <div aura:id="header" class="header paddingTop slds-text-color_weak ">
       <div>
-        <ui:outputText class="slds-truncate slds-align--absolute-center" value="Have a question? Contact the Customer Care Team:"/>
+        <ui:outputText class="slds-truncate slds-align--absolute-center" value="Have a question? Contact the Support Team:"/>
       </div>
       <div class="slds-align--absolute-center">
-        <a href="mailto:customercare@bluewavesolar.com">
-          <ui:outputText class="slds-truncate" value="customercare@bluewavesolar.com"/>
+        <a href="mailto:learnmore@bluewavesolar.com">
+          <ui:outputText class="slds-truncate" value="learnmore@bluewavesolar.com"/>
         </a>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="tel:8447864100">
-          <ui:outputText class="slds-truncate" value="844-786-4100"/>
+        <a href="tel:6176814119">
+          <ui:outputText class="slds-truncate" value="617-681-4119"/>
         </a>
       </div>
       <aura:if isTrue="{!v.lenderOfRecord == 'Avidia'}">
