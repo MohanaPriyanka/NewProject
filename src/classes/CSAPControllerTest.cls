@@ -633,31 +633,6 @@ public with sharing class CSAPControllerTest {
         Test.stopTest();
     }
 
-    @IsTest static void testCreditCheckReturnsResultIfNoCreditScore() {
-        Lead leadToInsert = getLeadForTest();
-        insert leadToInsert;
-
-        LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
-            LASERCA__Lead__c = leadToInsert.Id,
-            LASERCA__Credit_Score__c = null,
-            LASERCA__Credit_Score_TransUnion__c = null
-        );
-        insert pcr;
-
-        LASERCA__Credit_Report_Log__c crLog = new LASERCA__Credit_Report_Log__c(
-            LASERCA__Lead__c = leadToInsert.Id,
-            LASERCA__Personal_Credit_Report__c = pcr.Id,
-            LASERCA__Status__c = 'Completed'
-        );
-        insert crLog;
-
-        //Check for qualified since credit score is 700
-        CSAPController.SSSResult result = CSAPController.checkLeadCreditIfQualified(leadToInsert.Id);
-        System.assertNotEquals('Ready for Credit Check', result.sssCreditQualification);
-        String message = 'Credit Report was returned without a credit score.';
-        System.assertEquals(message, result.sssCreditQualification);
-    }
-
     @IsTest static void testSplitZone() {
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
         BSST__c salesRep = [SELECT Id FROM BSST__c LIMIT 1];
@@ -737,7 +712,6 @@ public with sharing class CSAPControllerTest {
             lead.LoadZone__c = 'SEMA';
             lead.Utility_relationship__c = eversource.Id;
             CSAPController.unsplitLead(lead);
-            System.assertEquals('Eversource', CSAPController.getUtility(eversource.Id).Name);
         }
 
         System.assert(CSAPController.hasAvailableCapacity(lead.Id),
@@ -1109,5 +1083,12 @@ public with sharing class CSAPControllerTest {
         System.assertEquals(defaultEntity.Gateway__c, newOrders[0].ChargentOrders__Gateway__c);
         System.assertEquals(defaultEntity.Id, newOrders[1].Entity__c);
         System.assertEquals(defaultEntity.Gateway__c, newOrders[1].ChargentOrders__Gateway__c);
+    }
+    @IsTest
+    public static void testHasCapacity() {
+        System.assertEquals(true, CSAPController.hasCapacity('02052'));
+        System.assertEquals(false, CSAPController.hasCapacity('874321'), 'Zipcode is too long');
+        System.assertEquals(false, CSAPController.hasCapacity('02115'), 'Zipcode is not in load zone');
+        System.assertEquals(false, CSAPController.hasCapacity('015'), 'Zipcode is too short');
     }
 }
