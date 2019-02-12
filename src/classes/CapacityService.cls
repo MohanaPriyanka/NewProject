@@ -57,6 +57,15 @@ public without sharing class CapacityService {
         public Set<Shared_Solar_System__c> sharedSolarSystems = new Set<Shared_Solar_System__c>();
         public Set<Id> utilityIds = new Set<Id>();
         public Set<String> loadZoneNames = new Set<String>();
+
+        public Boolean hasCapacity() {
+            return (
+                sharedSolarSystems.size() >= 1
+                    && products.size() >= 1
+                    && loadZones.size() >= 1
+                    && utilities.size() >= 1
+            );
+        }
     }
 
     @TestVisible
