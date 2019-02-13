@@ -73,8 +73,6 @@ public without sharing class SystemBillAccountingLogicHandler {
             Decimal paymentPlanToDistribute = 0;
             Integer paymentPlanStartingBill = 0;
             Integer paymentPlanDistributions = 0;
-            Decimal ytdbilled = 0;
-            Decimal ytdpayments = 0;
             Decimal ytdProduction = 0;
             Boolean moreRecentBills = FALSE;
             Decimal dueThisMonth = trigsb.Discounted_Bill__c ;
@@ -129,8 +127,6 @@ public without sharing class SystemBillAccountingLogicHandler {
                         }
                         if ( sbill.Bill_Number__c <= currentbill
                               && sbill.Bill_Number__c >= pasttwelvebills) {
-                                ytdbilled = ytdbilled + sbill.Discounted_Bill__c + sbill.Late_Fees__c + sbill.Adjustments__c;
-                                ytdpayments = ytdpayments + sbill.Total_Payments_This_Month__c;
                                 ytdProduction = ytdProduction + sbill.Production_kWH__c;
                         } 
                     }      
