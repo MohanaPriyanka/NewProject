@@ -4199,7 +4199,7 @@ TEXT( Load_Zone_Utility_4__c  ) = &apos;Manual Lookup Required&apos;,
         <externalId>false</externalId>
         <inlineHelpText>•	For SMART products verify: 1) utility,  2) rate class
 •	For SREC products verify:     1) utility,  2) load zone
-•	For NY products verify:         1) utility,  2) rate class, 3) load zone</inlineHelpText>
+•	For NY products verify:         1) utility,  2) rate class</inlineHelpText>
         <label>Load Zone / Utility Check / Rate Class</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
