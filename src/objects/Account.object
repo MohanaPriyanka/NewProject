@@ -1108,8 +1108,8 @@ CASE(Days_Past_Due__c,
     <fields>
         <fullName>Date_Removed_from_Project__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Automatically filled when all UAS&apos;s have been cancelled</inlineHelpText>
-        <label>Date Removed from Project</label>
+        <inlineHelpText>Automatically filled when this Property Account has been removed from all enacted Schedule Z&apos;s.</inlineHelpText>
+        <label>Date Removed from Last Project</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>

@@ -4,8 +4,7 @@
     <customButtons>Account_info_Page</customButtons>
     <customButtons>Customer_Billing_Summary</customButtons>
     <customButtons>Submit_Bill_Adjustment</customButtons>
-    <excludeButtons>DataDotComAccountInsights</excludeButtons>
-    <excludeButtons>DataDotComClean</excludeButtons>
+    <excludeButtons>DataDotComCompanyHierarchy</excludeButtons>
     <excludeButtons>DisableCustomerPortalAccount</excludeButtons>
     <excludeButtons>DisablePartnerPortalAccount</excludeButtons>
     <excludeButtons>IncludeOffline</excludeButtons>
@@ -245,6 +244,10 @@
                 <behavior>Edit</behavior>
                 <field>Cancellation_Fees_Paid__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Date_Removed_from_Project__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -311,6 +314,7 @@
         <fields>Name</fields>
         <fields>ParentId</fields>
         <fields>Recurring_Billing__c</fields>
+        <fields>Total_Outstanding_Balance__c</fields>
     </miniLayout>
     <quickActionList>
         <quickActionListItems>
