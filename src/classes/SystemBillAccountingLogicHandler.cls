@@ -70,8 +70,9 @@ public without sharing class SystemBillAccountingLogicHandler {
                 }
                         
             Decimal overdue = 0;
-            Decimal ppbalance = 0;
-            Decimal twelveppbalance = 0;
+            Decimal paymentPlanToDistribute = 0;
+            Integer paymentPlanStartingBill = 0;
+            Integer paymentPlanDistributions = 0;
             Decimal ytdbilled = 0;
             Decimal ytdpayments = 0;
             Decimal ytdProduction = 0;
@@ -109,17 +110,24 @@ public without sharing class SystemBillAccountingLogicHandler {
                             } else {
                                 carryoverbalance = sbill.Carry_Over_Balance__c;
                             }
-                        } if ( sbill.Bill_Number__c < currentbill 
+                        }
+                        if ( sbill.Bill_Number__c < currentbill
                               && sbill.Bill_Number__c > pastsixbills
                               && sbill.Distribute_This_Balance_as_Payment_Plan__c
-                              && ppbalance == 0) {
-                                ppbalance = sbill.Payment_Plan_Balance_to_Distribute__c / 6 ;
-                        } if ( sbill.Bill_Number__c < currentbill 
+                              && paymentPlanToDistribute == 0) {
+                            paymentPlanToDistribute = sbill.Payment_Plan_Balance_to_Distribute__c;
+                            paymentPlanStartingBill = (Integer) sbill.Bill_Number__c;
+                            paymentPlanDistributions = 6;
+                        }
+                        if ( sbill.Bill_Number__c < currentbill
                               && sbill.Bill_Number__c > pasttwelvebills
                               && sbill.Distribute_This_Balance_12mo__c
-                              && ppbalance == 0) {
-                                twelveppbalance = sbill.Payment_Plan_Balance_to_Distribute__c / 12 ;
-                        } if ( sbill.Bill_Number__c <= currentbill 
+                              && paymentPlanToDistribute == 0) {
+                            paymentPlanToDistribute = sbill.Payment_Plan_Balance_to_Distribute__c;
+                            paymentPlanStartingBill = (Integer) sbill.Bill_Number__c;
+                            paymentPlanDistributions = 12;
+                        }
+                        if ( sbill.Bill_Number__c <= currentbill
                               && sbill.Bill_Number__c >= pasttwelvebills) {
                                 ytdbilled = ytdbilled + sbill.Discounted_Bill__c + sbill.Late_Fees__c + sbill.Adjustments__c;
                                 ytdpayments = ytdpayments + sbill.Total_Payments_This_Month__c;
@@ -130,18 +138,15 @@ public without sharing class SystemBillAccountingLogicHandler {
                 overdue = carryoverbalance.setScale(2);
                 trigsb.Due_This_Month__c = dueThisMonth;
                 trigsb.Previous_Month_Overdue_Balance__c = overdue;
-                trigsb.Past_Bill_Amount__c = pastbillamount;
                 trigsb.Past_Bill_Payment__c = pastbillpayment;
-                trigsb.YTD_Billed__c = ytdbilled;
-                trigsb.YTD_Payments__c = ytdpayments;
                 trigsb.YTD_kWh_Production__c = ytdProduction;
-                trigsb.Adjustments__c = 0;     
-                if (ppbalance > 0) {
-                    trigsb.Payment_Plan_Balance__c = ppbalance.setScale(2);
-                } else if (twelveppbalance > 0) {
-                    trigsb.Payment_Plan_Balance__c = twelveppbalance.setScale(2);
-                }           
-                if (!trigsb.Waive_Late_Fees__c && overdue > 0) { 
+                trigsb.Adjustments__c = 0;
+                trigsb.Payment_Plan_Balance__c = calculatePaymentPlanBalance(
+                    (Integer) currentbill - paymentPlanStartingBill,
+                    paymentPlanDistributions,
+                    paymentPlanToDistribute
+                );
+                if (!trigsb.Waive_Late_Fees__c && overdue > 0) {
                     trigsb.Late_Fees__c = ((trigsb.Monthly_Late_Fee_Interest__c/100)*overdue).setScale(2);
                 } else if (trigsb.Waive_Late_Fees__c) {
                     trigsb.Late_Fees__c = 0;
@@ -150,6 +155,25 @@ public without sharing class SystemBillAccountingLogicHandler {
                 trigsb.Total_Due__c = dueThisMonth + trigsb.Late_Fees__c + overdue + trigsb.Payment_Plan_Balance__c + trigsb.Adjustments__c + trigsb.Previous_Overpayment__c;
             }
             balanceCalculations(trigsb, moreRecentBills);
+        }
+    }
+
+    @TestVisible
+    private static Decimal calculatePaymentPlanBalance(Integer distributionNumber, Integer numberOfDistributions, Decimal amountToDistribute) {
+        if (distributionNumber <= 0 ||
+            distributionNumber > numberOfDistributions ||
+            numberOfDistributions <= 0 ||
+            amountToDistribute <= 0) {
+            return 0;
+        }
+
+        Decimal defaultDistribution = ((Decimal) amountToDistribute / numberOfDistributions).setScale(2);
+
+        if (distributionNumber == numberOfDistributions) {
+            Decimal amountAlreadyDistributed = defaultDistribution * (numberOfDistributions-1);
+            return amountToDistribute.setScale(2) - amountAlreadyDistributed;
+        } else {
+            return defaultDistribution;
         }
     }
 

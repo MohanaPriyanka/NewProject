@@ -216,7 +216,7 @@ private class RecurringSRECHandlerTest {
                 PermissionSetId = ps.Id,
                 AssigneeId = UserInfo.getUserId()
             );
-            insert psa;
+            Util.insertSObj(psa);
         }
     }
 

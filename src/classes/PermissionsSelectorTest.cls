@@ -49,12 +49,12 @@ public with sharing class PermissionsSelectorTest {
             PermissionSetId = pr.Id,
             AssigneeId = standardUser.Id
         );
-        insert psa;
+        Util.insertSObj(psa);
         PermissionSetAssignment psa2 = new PermissionSetAssignment(
             PermissionSetId = pr.Id,
             AssigneeId = UserInfo.getUserId()
         );
-        insert psa2;
+        Util.insertSObj(psa2);
     }
 
     @IsTest
