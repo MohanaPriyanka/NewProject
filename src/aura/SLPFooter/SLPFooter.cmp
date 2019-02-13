@@ -9,7 +9,7 @@
   <aura:if isTrue="{!v.partnerFooter}">
     <div aura:id="header" class="header paddingTop slds-text-color_weak">
       <div>
-        <ui:outputText class="slds-truncate slds-align--absolute-center" value="Have a question? Contact the BlueWave Partner Support Team:"/>
+        <ui:outputText class="slds-truncate slds-align--absolute-center" value="Have a question? Contact the BlueWave Support Team:"/>
       </div>
       <div class="slds-align--absolute-center">
         <a href="mailto:learnmore@bluewavesolar.com">
@@ -34,7 +34,7 @@
   <aura:if isTrue="{!not(v.partnerFooter)}">
     <div aura:id="header" class="header paddingTop slds-text-color_weak ">
       <div>
-        <ui:outputText class="slds-truncate slds-align--absolute-center" value="Have a question? Contact the Support Team:"/>
+        <ui:outputText class="slds-truncate slds-align--absolute-center" value="Have a question? Contact the BlueWave Support Team:"/>
       </div>
       <div class="slds-align--absolute-center">
         <a href="mailto:learnmore@bluewavesolar.com">
