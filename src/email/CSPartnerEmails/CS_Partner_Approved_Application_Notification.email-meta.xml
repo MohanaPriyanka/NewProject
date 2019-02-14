@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Notifies CS partner that a CS application has been approved/converted</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>CS Partner - Approved Application Notification</name>
+    <style>none</style>
+    <subject>{!Opportunity.Name}’s CS Application Has Been Submitted!</subject>
+    <textOnly>Dear {!Opportunity.Sales_tag__c},
+
+Good news - {!Opportunity.Name}&apos;s community solar application has been submitted!
+
+We have sent them their customer sales agreement via DocuSign. These emails occasionally end up in a Junk/Spam folder, so please notify your customer if they are having difficulty finding their contract.
+
+Also, please note that each community solar subscription agreement needs to be signed for separately, and depending on the size of the subscription, the customer may be emailed multiple agreements to sign.
+
+Thanks for partnering with us to revolutionize energy.
+
+- All of us here at BlueWave
+
+BlueWave Partner Support
+888.817.2703 | partnersupport@bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

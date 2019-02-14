@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>When Account Bill tracks a new payment</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>CS Customer - Payment Received AmpRed</name>
+    <style>none</style>
+    <subject>We Received Your Payment!</subject>
+    <textOnly>Hey {!Account.Name},  
+
+Thanks for your payment made on {!Account.Date_of_Last_Payment_c}. 
+
+P.S. You can log into your portal to check the status of your account at any time.
+
+We look forward to a bright future ahead
+
+- All of us here at AMP and BlueWave
+
+BlueWave Customer Care
+844.786.4100 | customercare@bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

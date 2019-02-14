@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>When Account Bill tracks a new payment</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>CS Customer - Payment Received</name>
+    <style>none</style>
+    <subject>We Received Your Payment!</subject>
+    <textOnly>Hey {!Account.Name},  
+
+Thanks for your payment made on {!Account.Date_of_Last_Payment_c}. 
+
+P.S. You can log into your portal to check the status of your account at any time.
+
+Log Into Your Portal Here
+
+Thanks for being part of the the Wave, we&apos;re happy you&apos;re here.
+
+- All of us here at BlueWave
+
+BlueWave Customer Care
+844.786.4100 | customercare@bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>
