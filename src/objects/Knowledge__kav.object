@@ -32,6 +32,31 @@
         <visibleLines>25</visibleLines>
     </fields>
     <fields>
+        <fullName>Approval_Status__c</fullName>
+        <description>In order to have an articles available publicly, they have to be approved. You will not be able to publish an article publicly without this. Click the Submit For Approval button to submit it for approval.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>In order to have an articles available publicly, they have to be approved. You will not be able to publish an article publicly without this. Click the Submit For Approval button to submit it for approval.</inlineHelpText>
+        <label>Approval Status</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Pending Approval</fullName>
+                    <default>false</default>
+                    <label>Pending Approval</label>
+                </value>
+                <value>
+                    <fullName>Approved</fullName>
+                    <default>false</default>
+                    <label>Approved</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Cause__c</fullName>
         <externalId>false</externalId>
         <label>Cause</label>
