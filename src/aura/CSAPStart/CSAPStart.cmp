@@ -85,7 +85,7 @@
         <b class="slds-section__title--large slds-p-horizontal_large">We're Sorry</b>
       </legend>
       <div class="slds-align--absolute-center slds-text-body--large--blue">
-        <b>It seems like there aren't any projects currently available in your area. We're working hard to expand our Community Solar availability, please check back later.</b>
+        <b>It seems that we don't have any Community Solar currently available in your area. We're working hard to expand our Community Solar availability, so please check back at a later date.</b>
       </div>
     </fieldset>
   </aura:if>
