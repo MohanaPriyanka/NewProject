@@ -18,7 +18,7 @@
           <b class="slds-section__title--large slds-p-horizontal_large">Before you begin</b>
         </legend>
         <form class="slds-form--stacked">
-          <lightning:layout multipleRows="true">
+          <lightning:layout multipleRows="true" horizontalAlign="center">
             <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
               <b>Here are a few things to keep in mind as you go through the application process:</b>
               <ul>
@@ -63,17 +63,19 @@
         <legend id="aboutYourselfForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
           <b class="slds-section__title--large slds-p-horizontal_large">Let's Begin</b>
         </legend>
-        <lightning:layout horizontalAlign="center">
-          <lightning:layoutItem size="5" smallDeviceSize="5" mediumDeviceSize="5">
-            <b>Before we begin, we'll need the following to determine your energy needs and credit eligibility:</b>
-          </lightning:layoutItem>
-        </lightning:layout>
-        <lightning:layout horizontalAlign="center">
-          <lightning:layoutItem size="2" smallDeviceSize="2" mediumDeviceSize="2">
-            A copy of your most recent utility bill
-          </lightning:layoutItem>
-        </lightning:layout>
-        <c:CSAPZipcodeCapacity hasCapacity="{!v.hasCapacity}" zipcode="{!v.lead.LASERCA__Home_Zip__c}"/>
+        <form class="slds-form--stacked" style="text-align: center">
+          <lightning:layout horizontalAlign="center">
+            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12">
+              <b>Before we begin, we'll need the following to determine your energy needs and credit eligibility:</b>
+            </lightning:layoutItem>
+          </lightning:layout>
+          <lightning:layout horizontalAlign="center">
+            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12">
+              A copy of your most recent utility bill
+            </lightning:layoutItem>
+          </lightning:layout>
+          <c:CSAPZipcodeCapacity hasCapacity="{!v.hasCapacity}" zipcode="{!v.lead.LASERCA__Home_Zip__c}"/>
+        </form>
       </fieldset>
   </aura:if>
 
@@ -83,7 +85,7 @@
         <b class="slds-section__title--large slds-p-horizontal_large">We're Sorry</b>
       </legend>
       <div class="slds-align--absolute-center slds-text-body--large--blue">
-        <b>It seems like there aren't any projects currently available in your area. We're working hard to expand our Community Solar Availability, please check back later.</b>
+        <b>It seems like there aren't any projects currently available in your area. We're working hard to expand our Community Solar availability, please check back later.</b>
       </div>
     </fieldset>
   </aura:if>
