@@ -29,7 +29,7 @@ public without sharing class CSAPController {
                     Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c, Application_Source_Phase_2__c,
                     LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c, ZipCode__c,
                     Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Customer_Referral__c, Owner.Id,
-                    LoadZone__c, Utility_relationship__c
+                    LoadZone__c, Utility_relationship__c, Utility_relationship__r.Name, Product__r.Customer_Subscription_Type__c
             FROM Lead
             WHERE Id = :leadId
             AND Email = :email
@@ -198,7 +198,7 @@ public without sharing class CSAPController {
         }
 
 
-        insert lead;
+        upsert lead;
         Lead insertedLead = [
             SELECT LoadZone__c, Utility_relationship__c, Confirm_Utility__c
             FROM Lead
@@ -395,5 +395,22 @@ public without sharing class CSAPController {
     @AuraEnabled
     public static List<String> getStates() {
         return BlueWaveParent.getUSStates(true);
+    }
+    @AuraEnabled
+    public static Boolean hasCapacity(String zipcode) {
+        CapacityService service = new CapacityService();
+        CapacityService.ZipcodeResponse capacityServiceResponse = service.findCapacityByZipcode(zipcode);
+        return capacityServiceResponse.hasCapacity();
+        
+    }
+
+    @AuraEnabled
+    public static void sendEmailForPaymentInfo(Lead lead) {
+        Lead customerLead = getLead(lead.Id, lead.Email);
+
+        customerLead.CSAP_Stage__c = 'NAV_Energy_Information';
+        update customerLead;
+
+        // placeholder until implemented
     }
 }

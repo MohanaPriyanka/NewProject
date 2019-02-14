@@ -6,8 +6,9 @@
             helper.handleNavEvent(component, event, helper, "UtilityAccountInformation");
         }
         if (component.get('v.STAGENAME') === 'NAV_Energy_Information' && component.get('v.page') === 'UtilityAccountInformation') {
+            var lead = component.get('v.lead');
             var action = component.get("c.getProduct");
-            var productId = event.getParam("lead").Product__c;
+            var productId = lead.Product__c;
             action.setParams({"productId" : productId});
             action.setCallback(this, function(resp) {
                 if (resp.getState() === "SUCCESS") {
@@ -16,9 +17,11 @@
                     helper.logError("CSAPEnergyInfoController", "getProduct", resp.getError(), lead);
                 }
             });
-            $A.enqueueAction(action);
+            if (lead.Product__c) {
+                $A.enqueueAction(action);
+            }
             var utilityAction = component.get("c.getUtility");
-            var utilId = event.getParam("lead").Utility_relationship__c;
+            var utilId = lead.Utility_relationship__c;
             utilityAction.setParams({"utilityId" : utilId});
             utilityAction.setCallback(this, function(resp) {
                 if (resp.getState() === "SUCCESS") {
@@ -27,7 +30,9 @@
                     helper.logError("CSAPEnergyInfoController", "getUtility", resp.getError(), lead);
                 }
             });
-            $A.enqueueAction(utilityAction);
+            if (lead.Utility_relationship__c) {
+                $A.enqueueAction(utilityAction);
+            }
         }
         if (component.get("v.abbrevStates") && component.get("v.abbrevStates").length === 0) {
             helper.getUSStates(component, "v.abbrevStates", true);
@@ -38,7 +43,7 @@
     goToUtilityAccountInformation : function(component, event, helper) {
         component.set("v.page", "UtilityAccountInformation");
     },
-    goToGridUsageHistory : function(component, event, helper) {
+    goToAddMore : function(component, event, helper) {
         //Upsert UAL record
         if(helper.validatePageFields(component)){
             var ual = component.get("v.ual");
@@ -58,43 +63,15 @@
                 var ualPromise = helper.saveSObject(component, ual.Id, "Utility_Account_Log__c", null, null, ual);
                 ualPromise.then($A.getCallback(function resolve(retVal) {
                     component.set("v.ual", retVal);
-                    component.set("v.page", "GridUsageHistory");
+                    component.set("v.page", "AddMoreUAL");
                     component.set("v.loading", false);
                 }));
             }else{
                 var ualPromise = helper.insertSObject(component, ual);
                 ualPromise.then($A.getCallback(function resolve(retVal) {
                     component.set("v.ual", retVal);
-                    component.set("v.page", "GridUsageHistory");
-                    component.set("v.loading", false);
-                }));
-            }
-        }
-    },
-    goToUAServiceAddress : function(component, event, helper) {
-        if (!component.get("v.electricBill1") && !component.get('v.isLargeFile')) {
-            alert("Please upload your recent electric bill");
-            return;
-        }
-
-        if(helper.validatePageFields(component)){
-            var ual = component.get("v.ual");
-            var ualPromise = helper.saveSObject(component, ual.Id, "Utility_Account_Log__c", null, null, ual);
-            ualPromise.then($A.getCallback(function resolve(retVal) {
-                component.set("v.page", "UAServiceAddress");
-            }));
-        }
-    },
-    goToAddMore : function(component, event, helper) {
-        if(helper.validatePageFields(component)){
-            var ual = component.get("v.ual");
-            if(ual.Id){
-                var ualPromise = helper.saveSObject(component, ual.Id, "Utility_Account_Log__c", null, null, ual);
-                ualPromise.then($A.getCallback(function resolve(retVal) {
                     component.set("v.page", "AddMoreUAL");
-                    component.set("v.ual", {
-                        sobjectType: "Utility_Account_Log__c"
-                    });
+                    component.set("v.loading", false);
                 }));
             }
         }
@@ -117,19 +94,22 @@
         component.set("v.page", "UtilityAccountInformation");
         helper.clearAttachments(component, event, helper);
     },
-    handleEBill1 : function(component, event, helper) {
-        helper.handleAttachment(component, event, helper, helper.ELECTRIC_BILL_1);
-    },
 
-    handleEBill2 : function(component, event, helper) {
-        helper.handleAttachment(component, event, helper, helper.ELECTRIC_BILL_2);
-    },
-
-    handleAnnualElectricHistory : function(component, event, helper) {
-        helper.handleAttachment(component, event, helper, helper.ANNUAL_ELECTRIC_HISTORY);
-    },
-    
     finishStage : function(component, event, helper) {
-        helper.finishStage(component, event, helper);
+        var lead = component.get("v.lead");
+        var action = component.get('c.sendEmailForPaymentInfo');
+        action.setParams({
+            "lead": lead
+        });
+        action.setCallback(this, function(resp) {
+            if (resp.getState() === "SUCCESS") {
+                component.set('v.page', 'CompletedUtilityInfo');
+            } else {
+                helper.logError("CSAPEnergyInfoController", "finishStage",
+                    "There was an issue running credit, but has been logged. Please call Customer Care at the number below for assistance.",
+                    resp.getError());
+            }
+        })
+        $A.enqueueAction(action);
     },
 })
