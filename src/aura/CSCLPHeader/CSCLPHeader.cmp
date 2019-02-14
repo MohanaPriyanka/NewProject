@@ -7,7 +7,7 @@
   <div aura:id="header" class="header ">
     <a href="{!v.link}">
       <div class="w3-container">
-        <img src="{!$Resource.RenewablesWhiteLogo}" class="logo fadeIn" />
+        <img src="{!$Resource.NewBlueWaveWhite}" class="logo fadeIn" />
       </div>
     </a>
     <aura:if isTrue="{!v.showLogout}">

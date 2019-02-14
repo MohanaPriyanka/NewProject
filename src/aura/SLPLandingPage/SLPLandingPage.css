@@ -1,7 +1,3 @@
-.THIS .paddingTop {
-    padding-top:20%;
-}
-
 .THIS .fadeIn {
 
     -webkit-animation: fadein 3s; /* Safari, Chrome and Opera > 12.1 */
@@ -38,4 +34,12 @@
 @-o-keyframes fadein {
     from { opacity: 0; }
     to   { opacity: 1; }
+}
+
+.THIS .logoImg {
+    width: 55%;
+}
+
+.THIS .logoHeader{
+    height: 30%;
 }

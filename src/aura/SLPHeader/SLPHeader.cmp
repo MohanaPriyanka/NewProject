@@ -7,13 +7,13 @@
   <div aura:id="header" class="header">
     <a href="{!v.link}">
       <div class="w3-container">
-        <img src="{!$Resource.RenewablesWhiteLogo}" class="logo fadeIn" />
+        <img src="{!$Resource.NewBlueWaveWhite}" class="logo fadeIn" />
       </div>
     </a>
     <aura:if isTrue="{!v.showLogout}">
-      <div class="logout">
+      <div class="logout slds-align--absolute-center">
         <a href="/slportal/secur/logout.jsp">
-          <span class="slds-truncate proximaNovaWhite">Logout</span>
+          <span class="slds-truncate logoutText">Logout</span>
         </a>
       </div>
   </aura:if>
