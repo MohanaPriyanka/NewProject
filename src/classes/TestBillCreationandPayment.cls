@@ -715,8 +715,10 @@ public class TestBillCreationandPayment {
         for (System_Bill__c sbs : updatedsystemBillList) {
             if (sbs.Bill_Number__c == 2) {
                 System.assertEquals(628.24, sbs.Payment_Plan_Balance_to_Distribute__c);
-            } else if (sbs.Bill_Number__c == 3 || sbs.Bill_Number__c == 4  || sbs.Bill_Number__c == 8) {
+            } else if (sbs.Bill_Number__c >= 3 && sbs.Bill_Number__c <= 7) {
                 System.assertEquals(104.71, sbs.Payment_Plan_Balance__c);
+            } else if (sbs.Bill_Number__c == 8) {
+                System.assertEquals(104.69, sbs.Payment_Plan_Balance__c);
             } else if (sbs.Bill_Number__c == 9) {
                 System.assertEquals(0, sbs.Payment_Plan_Balance__c);
             }
@@ -751,21 +753,7 @@ public class TestBillCreationandPayment {
         Test.startTest();
         setBillsToPublished();
 
-        List<System_Bill__c> systemBillList =
-        [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
-            Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
-            Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
-            Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c,
-            Monthly_Late_Fee_Interest__c,
-            Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
-            Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-            Adjustments__c, Bill_Date__c,
-            Waive_Late_Fees__c, Balance_Adjustment__c,
-            Adjustments_UASB__c,
-            Billing_Period_End_Date__c, Billing_Period_Start_Date__c
-        FROM System_Bill__c
-        WHERE Account_Bill__r.Published__c = true
-        ORDER BY Bill_Number__c];
+        List<System_Bill__c> systemBillList = SystemBillsSelector.selectAllSystemBills('Account_Bill__r.Published__c = TRUE', null);
 
         // Month 1 [0]: 258.96 (due this month) + 24 (adjust) = 282.96 (total due)
         // Month 2 [1]: 345.28 (due this month) + 282.96 (previous overdue) + 2.83 (late fees) = 631.07 (total due)
@@ -826,20 +814,7 @@ public class TestBillCreationandPayment {
             }
             System.assert(hitError, 'Should have hit validation \'Cannot update Due This Month on an already published bill\' but didn\'t');
 
-            List<System_Bill__c> updatedSBs =
-            [SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
-                Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
-                Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
-                Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c,
-                Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
-                Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-                Adjustments__c, Bill_Date__c,
-                Waive_Late_Fees__c, Balance_Adjustment__c,
-                Adjustments_UASB__c,
-                Billing_Period_End_Date__c, Billing_Period_Start_Date__c
-            FROM System_Bill__c
-            WHERE Account_Bill__r.Published__c = TRUE
-            ORDER BY Bill_Number__c];
+            List<System_Bill__c> updatedSBs = SystemBillsSelector.selectAllSystemBills('Account_Bill__r.Published__c = TRUE', null);
 
             // Bill fields should NOT change:
             System.assertEquals(282.96,updatedSBs[0].Total_Due__c);
@@ -895,13 +870,7 @@ public class TestBillCreationandPayment {
         update productionUpdates[1];
         setBillsToPublished();
 
-        List<System_Bill__c> systemBillList = [
-            SELECT Id, Total_Due__c, Previous_Overpayment__c,
-                Account_Bill__r.Parent_Account__c,
-                Account_Bill__r.Id, Due_This_Month__c, Bill_Number__c,
-                Account_Bill__r.Total_Due__c
-            FROM System_Bill__c
-            ORDER BY Opportunity__r.Name, Bill_Number__c];
+        List<System_Bill__c> systemBillList = SystemBillsSelector.selectAllSystemBills(null, 'Opportunity__r.Name, Bill_Number__c');
 
         System.assertEquals(4,systemBillList.size());
 
@@ -1533,21 +1502,7 @@ public class TestBillCreationandPayment {
         prodUpdate.Generate_Bills__c = true;
         update prodUpdate;
 
-        List<System_Bill__c> originalSystemBillList = [
-            SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
-                Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
-                Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
-                Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c,
-                Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
-                Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-                Adjustments__c, Bill_Date__c,
-                Waive_Late_Fees__c, Previous_Overpayment__c, Balance_Adjustment__c,
-                Adjustments_UASB__c,
-                Billing_Period_End_Date__c, Billing_Period_Start_Date__c,
-                Account_Bill__r.Published__c
-            FROM System_Bill__c
-            ORDER BY Bill_Number__c
-        ];
+        List<System_Bill__c> originalSystemBillList = SystemBillsSelector.selectAllSystemBills();
 
         APXT_BPM__Conductor__c congaRecord = new APXT_BPM__Conductor__c (APXT_BPM__Title__c = 'Conga Record');
         insert congaRecord;
@@ -1555,21 +1510,7 @@ public class TestBillCreationandPayment {
         update congaRecord;
         Test.stopTest();
 
-        List<System_Bill__c> updatedSystemBillList = [
-            SELECT Id, Late_Fees__c, Late_Payments__c, YTD_Billed__c, YTD_Payments__c,
-                Shared_Solar_System_ID__c, Payment_Plan_Balance_to_Distribute__c, Bill_Number__c,
-                Payment_Plan_Balance__c, Name, Due_This_Month__c, Previous_Month_Overdue_Balance__c,
-                Total_Due__c, Balance_Net_Late_Payments__c, Total_Payments_This_Month__c,
-                Property_Account__r.Parent_Account__r.Id, Opportunity__r.Id,
-                Property_Account__r.Id, Shared_Solar_System__c, Property_Account_ID__c,
-                Adjustments__c, Bill_Date__c,
-                Waive_Late_Fees__c, Previous_Overpayment__c, Balance_Adjustment__c,
-                Adjustments_UASB__c,
-                Billing_Period_End_Date__c, Billing_Period_Start_Date__c,
-                Account_Bill__r.Published__c
-            FROM System_Bill__c
-            ORDER BY Bill_Number__c
-        ];
+        List<System_Bill__c> updatedSystemBillList = SystemBillsSelector.selectAllSystemBills();
 
         // don't apply overpayments to already published bills
         System.assertEquals(true, originalSystemBillList[0].Account_Bill__r.Published__c);
@@ -1955,5 +1896,16 @@ public class TestBillCreationandPayment {
 
 
         Test.stopTest();
+    }
+
+    @IsTest
+    public static void testPaymentPlanBalanceCalculation() {
+        System.assertEquals(16.67, SystemBillAccountingLogicHandler.calculatePaymentPlanBalance(1, 6, 100));
+        System.assertEquals(16.67, SystemBillAccountingLogicHandler.calculatePaymentPlanBalance(5, 6, 100));
+        System.assertEquals(16.65, SystemBillAccountingLogicHandler.calculatePaymentPlanBalance(6, 6, 100));
+        System.assertEquals(16.66, SystemBillAccountingLogicHandler.calculatePaymentPlanBalance(6, 6, 100.006789));
+        System.assertEquals(0, SystemBillAccountingLogicHandler.calculatePaymentPlanBalance(0, 6, 100));
+        System.assertEquals(0, SystemBillAccountingLogicHandler.calculatePaymentPlanBalance(7, 6, 100));
+        System.assertEquals(0, SystemBillAccountingLogicHandler.calculatePaymentPlanBalance(1, 6, 0));
     }
 }
