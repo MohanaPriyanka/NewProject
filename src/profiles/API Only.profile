@@ -4689,6 +4689,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.Email__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Case.Expand__c</field>
         <readable>true</readable>
@@ -4696,6 +4701,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.Finance_Category__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.First_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4727,6 +4737,11 @@
         <editable>false</editable>
         <field>Case.IsEscalated</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.Last_Name__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -45689,11 +45704,11 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Knowledge__kav-Article Layout</layout>
-        <recordType>Knowledge__kav.How_To</recordType>
+        <recordType>Knowledge__kav.Q_A</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Knowledge__kav-Article Layout</layout>
-        <recordType>Knowledge__kav.Q_A</recordType>
+        <recordType>Knowledge__kav.How_To</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Knowledge__kav-Article Layout</layout>
