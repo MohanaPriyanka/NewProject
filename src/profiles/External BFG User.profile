@@ -48745,7 +48745,6 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>true</default>
-        <personAccountDefault>true</personAccountDefault>
         <recordType>Knowledge__kav.Q_A</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
