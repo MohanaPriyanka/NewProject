@@ -29,7 +29,7 @@ public without sharing class CSAPController {
                     Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c, Application_Source_Phase_2__c,
                     LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c, ZipCode__c,
                     Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Customer_Referral__c, Owner.Id,
-                    LoadZone__c, Utility_relationship__c, Utility_relationship__r.Name, Product__r.Customer_Subscription_Type__c
+                    LoadZone__c, Utility_relationship__c
             FROM Lead
             WHERE Id = :leadId
             AND Email = :email
@@ -253,12 +253,29 @@ public without sharing class CSAPController {
     // there's no credit report. Customer Care can always pull credit through the UI if needed
     @AuraEnabled
     public static void pullCreditStatus(Lead lead) {
-        Lead l = [SELECT Id, Personal_Credit_Report__c, Date_of_Application__c, Application_Source_Phase_2__c
+        Lead l = [SELECT Id, Name, Personal_Credit_Report__c, Date_of_Application__c, Application_Source_Phase_2__c
                   FROM Lead
                   WHERE Id =:lead.Id];
+        Organization o = [SELECT IsSandbox FROM Organization LIMIT 1];
+        String name = l.Name.toLowerCase();
+        if (o.isSandbox || name.contains('testcase')) {
+            // Per Tracy: sandboxes always need to have an SSN for a credit pull in sandboxes / testcases
+            if (name.contains('frozen')) {
+                // let's give a way to submit frozen apps
+                lead.LASERCA__SSN__c = '000000010';
+            } else if (name.contains('fail')) {
+                // returns a 498 credit score
+                lead.LASERCA__SSN__c = '000000008';
+            } else {
+                lead.LASERCA__SSN__c = '000000001';
+            }
+        } else {
+            // for Prod, we need SSN to be all zeros
+            lead.LASERCA__SSN__c = '000000000';
+        }
 
         if (l != null && l.Personal_Credit_Report__c == null) {
-            lead.LASERCA__Pull_Credit_Report__c = true;
+            lead.Soft_Pull_Credit_Report__c = true;
         }
         if (l.Date_of_Application__c == null ||
             (l != null && l.Personal_Credit_Report__c == null)) {
@@ -405,12 +422,21 @@ public without sharing class CSAPController {
     }
 
     @AuraEnabled
-    public static void sendEmailForPaymentInfo(Lead lead) {
-        Lead customerLead = getLead(lead.Id, lead.Email);
+    public static Boolean sendEmailForPaymentInfo(Lead lead) {
+        lead = getLead(lead.Id, lead.Email);
 
-        customerLead.CSAP_Stage__c = 'NAV_Energy_Information';
-        update customerLead;
+        lead.CSAP_Stage__c = 'NAV_Energy_Information';
+        update lead;
 
-        // placeholder until implemented
+        EmailService.createCSCustomerRequestPaymentInfoEmails(new List<Lead>{lead});
+        Messaging.SendEmailResult[] result = EmailService.sendMessages();
+        
+        if (!result.isEmpty() && result[0].isSuccess()) {
+            return true;
+        } else {
+            String message = 'Message did not send for lead: ' + lead.Id + '. Error: ' + result[0].getErrors();
+            Logger.logNow('CSAPController', 'sendEmailForPaymentInfo', message , 'Error');
+            return false;
+        }
     }
 }
