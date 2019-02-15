@@ -695,6 +695,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>PermissionsSelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>PortalLoginHistoryController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -872,6 +876,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>SystemBillQualityCheckerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SystemBillsSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -29150,12 +29158,12 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>System_Bill__c.Distribute_This_Balance_12mo__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>System_Bill__c.Distribute_This_Balance_as_Payment_Plan__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -31156,21 +31164,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Utility_Bill_Line_Item__c.Type__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Utility_Bill_Line_Item__c.Amount__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Utility_Bill_Line_Item__c.Group__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Utility_Bill_Line_Item__c.Type__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -47526,15 +47519,6 @@
         <modifyAllRecords>false</modifyAllRecords>
         <object>Utility_Bill_Line_Item__c</object>
         <viewAllRecords>false</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
-        <object>Utility_Bill_Line_Item__c</object>
-        <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
