@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Notifies CS Partner Opportunity Signed Contract</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>CS Partner - Contract Signed by Customer</name>
+    <style>none</style>
+    <subject>{!Opportunity.Name} Has Signed Their Community Solar Subscription!</subject>
+    <textOnly>Dear {!Opportunity.BS_Sales_ID_c},
+
+{!Opportunity.Name} has signed their community solar subscription agreement!
+
+We still need to review their utility account information and size their subscription before their contract will be complete.
+
+Once this has happened we&apos;ll notify you, at which point their contract will be fully executed.
+
+Thanks for partnering with us to revolutionize energy.
+
+- All of us here at BlueWave
+
+BlueWave Partner Support
+888.997.2432 | partnersupport@bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>
