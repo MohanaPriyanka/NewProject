@@ -3,11 +3,13 @@
   <aura:attribute name="bk" type="String"/>
   <aura:attribute name="showBW" type="Boolean"/> 
      
-  <div style="height:100px;" class="slds-align--absolute-center slds-p-bottom_large">
+  <div style="height:110px;" class="slds-align--absolute-center slds-p-bottom_xx-large">
     <aura:if isTrue="{!v.showBW}">
-       <img src="{!'/resource/ClientLogosWhiteBackground/BluewaveLogo.png'}" style="max-height:110px;"/>
+        <img src="{!$Resource.NewBlueWaveBlue}" class="logo fadeIn" style="max-height:130px;"/>
+       <!--<img src="{!'/resource/ClientLogosWhiteBackground/NewBlueWaveBlue.png'}" style="max-height:110px;"/>-->
        <aura:set attribute="else">
-          <img src="{!'/resource/ClientLogosWhiteBackground/' + v.bk + '.png'}" style="max-height:110px;" class="fadeIn"/>
+         <img src="{!$Resource.AmpRed}" class="logo fadeIn" style="max-height:130px;"/>
+          <!--<img src="{!'/resource/ClientLogosWhiteBackground/' + v.bk + '.png'}" style="max-height:110px;" class="fadeIn"/>-->
        </aura:set>
     </aura:if>
   </div>
