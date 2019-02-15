@@ -1,19 +1,25 @@
 <aura:component controller="CSAPController" access="global" extends="c:CSAPParent">
   <aura:attribute name="leadId" type="String"/>
   <aura:attribute name="applyingFor" type="String"/>
-  <aura:attribute name="sendBillToHome" type="String"/>
+  <!--<aura:attribute name="sendBillToHome" type="String"/>-->
   <aura:attribute name="hasCapacity" type="String"/>
   <aura:attribute name="abbrevStates" type="String[]"/>
   <aura:attribute name="partnerId" type="String"/>
   <aura:attribute name="salesRepId" type="String"/>
   <aura:attribute name="loading" type="Boolean"/>
   <aura:attribute name="loadingText" type="Boolean"/>
-  <aura:attribute name="Residential" type="Boolean"/>
-  <aura:attribute name="NonResidential" type="Boolean"/>
+  <!--<aura:attribute name="Residential" type="Boolean"/>-->
+  <!--<aura:attribute name="NonResidential" type="Boolean"/>-->
   <aura:attribute name="referralCode" type="String"/>
   <aura:attribute name="ShowDateError" type="Boolean"/>
   <aura:attribute name="splitZones" type="String[]"/>
   <aura:attribute name="splitUtilities" type="Object[]"/>
+
+  <aura:attribute name="options" type="List" default="[
+      {'label': 'This is my home', 'value': 'Residential'},
+      {'label': 'This is my business', 'value': 'Non-Residential'}
+      ]"/>
+  <aura:attribute name="applicationType" type="String"/>
 
   <aura:set attribute="STAGENAME" value="NAV_Personal_Information"/>
   <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
@@ -95,7 +101,7 @@
             <lightning:layout multipleRows="true">
               <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
                 <lightning:input aura:id="field" name="leadHomeAddress"
-                                 label="Street Address"
+                                 label="Billing Address"
                                  value="{!v.lead.LASERCA__Home_Address__c}"
                                  required="true"/>
               </lightning:layoutItem>
@@ -127,270 +133,62 @@
                                  minlength="5"
                                  messageWhenBadInput="Please enter a 5 digit zip-code"/>
               </lightning:layoutItem>
-              <aura:if isTrue="{!and(v.lead.LASERCA__Home_State__c == 'NY', v.lead.Application_Type__c == 'Residential' )}">
-                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
-                  <lightning:select aura:id="field" name="haveSolarPanelsOnPropertySelectList"
-                                    label="Do you have solar panels on your property?"
-                                    value="{!v.lead.Loan_System_Information__c}"
-                                    required="true">
-                    <option value="">Choose one...</option>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                  </lightning:select>
+              <lightning:layout>
+                <lightning:layoutItem>
+                  <div class="slds-align--absolute-center slds-text-body--regular">
+                    <lightning:radioGroup aura:id="field"
+                                          name="radioApplicationType"
+                                          options="{!v.options}"
+                                          value="{!v.applicationType}"
+                                          type="radio"
+                                          required="true"
+                                          class="horizontalRadio slds-form-element__horizontal"/>
+                  </div>
                 </lightning:layoutItem>
-              </aura:if>
+              </lightning:layout>
+              <!--<aura:if isTrue="{!and(v.lead.LASERCA__Home_State__c == 'NY', v.applicationType == 'Residential' )}">-->
+              <!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >-->
+              <!--<lightning:select aura:id="field" name="haveSolarPanelsOnPropertySelectList"-->
+              <!--label="Do you have solar panels on your property?"-->
+              <!--value="{!v.lead.Loan_System_Information__c}"-->
+              <!--required="true">-->
+              <!--<option value="">Choose one...</option>-->
+              <!--<option value="Yes">Yes</option>-->
+              <!--<option value="No">No</option>-->
+              <!--</lightning:select>-->
+              <!--</lightning:layoutItem>-->
+              <!--</aura:if>-->
             </lightning:layout>
-            <lightning:layout multipleRows="true">
-              <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
-                <lightning:select aura:id="field" name="sendBillToHome"
-                                  label="Is this where you would like us to send your bill?"
-                                  value="{!v.sendBillToHome}"
-                                  required="true">
-                  <option value="">Choose one...</option>
-                  <option value="Yes">Yes</option>
-                  <option value="No">No</option>
-                </lightning:select>
-              </lightning:layoutItem>
-              <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
-              </lightning:layoutItem>
-            </lightning:layout>
+            <!--<lightning:layout multipleRows="true">-->
+            <!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">-->
+            <!--<lightning:select aura:id="field" name="sendBillToHome"-->
+            <!--label="Is this where you would like us to send your bill?"-->
+            <!--value="{!v.sendBillToHome}"-->
+            <!--required="true">-->
+            <!--<option value="">Choose one...</option>-->
+            <!--<option value="Yes">Yes</option>-->
+            <!--<option value="No">No</option>-->
+            <!--</lightning:select>-->
+            <!--</lightning:layoutItem>-->
+            <!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >-->
+            <!--</lightning:layoutItem>-->
+            <!--</lightning:layout>-->
 
-            <div class="slds-clearfix slds-p-top_medium">
-              <div class="slds-float_left">
-              </div>
-              <div class="slds-float_right">
-                <lightning:button label="Next" onclick="{!c.goToApplyingFor}"/>
-              </div>
-            </div>
+
+            <!--<div class="slds-clearfix slds-p-top_medium">-->
+            <!--<div class="slds-float_left">-->
+            <!--</div>-->
+            <!--<div class="slds-float_right">-->
+            <!--&lt;!&ndash;CHANGE WHRE THE BUTTON TAKES CUSTOMER&ndash;&gt;-->
+            <!--<lightning:button label="Next" onclick="{!c.goToApplyingFor}"/>-->
+            <!--</div>-->
+            <!--</div>-->
           </form>
         </fieldset>
       </div>
-    </aura:if>
-    <!-- / ABOUT_YOURSELF -->
-    <!-- ADDRESS_FORM -->
-    <aura:if isTrue="{!v.page == 'ApplyingFor'}">
-      <div aria-labelledby="applyingForForm">
-        <fieldset class="slds-box slds-theme--default slds-container_center">
-          <legend id="ApplyingFor" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-            <b class="slds-section__title--large slds-p-horizontal_large"> Select which kind of Community Solar you are applying for! </b>
-          </legend>
-          <lightning:layout multipleRows="true" horizontalAlign="center">
-            <lightning:layoutItem size="3" smallDeviceSize="6" mediumDeviceSize="3">
-              <div class="slds-visual-picker slds-visual-picker_medium slds-align--absolute-center">
-                <input type="radio" id="visual-picker-residential" onchange="{!c.setCSApplicationResidential}" checked="{!v.Residential}"/>
-                <label for="visual-picker-residential">
-                <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">
-                  <span class="slds-is-selected">
-                    <span class="slds-icon_container" title="description of icon when needed">
-                      <lightning:icon class="whiteIcon" iconName="utility:check" size="x-large"/>
-                    </span>
-                  </span>
-                  <span class="slds-is-not-selected">
-                    <span class="slds-icon_container" title="description of icon when needed">
-                      <lightning:icon class="blueIcon" iconName="utility:home" size="x-large"/>
-                    </span>
-                  </span>
-                </span>
-                  <aura:if isTrue="{!or(v.lead.Application_Type__c != 'Residential', v.lead.Application_Type__c == '')}">
-                  <span class="slds-visual-picker__body ">
-                    <div class="slds-text-body--large">for my </div>
-                    <div class="slds-text-body--large--stream">Home</div>
-                  </span>
-                  </aura:if>
-                  <aura:if isTrue="{!v.lead.Application_Type__c == 'Residential'}">
-                  <span class="slds-visual-picker__body">
-                    <div class="slds-text-body--large--blue"><b>for my </b></div>
-                    <div class="slds-text-body--large--stream"><b>Home</b></div>
-                  </span>
-                  </aura:if>
-                </label>
-              </div>
-            </lightning:layoutItem>
-            <lightning:layoutItem size="3" smallDeviceSize="6" mediumDeviceSize="3">
-              <div class="slds-visual-picker slds-visual-picker_medium slds-align--absolute-center">
-                <input type="radio" id="visual-picker-non-residential" onchange="{!c.setCSApplicationNonResidential}" checked="{!v.NonResidential}"/>
-                <label for="visual-picker-non-residential">
-                <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">
-                  <span class="slds-is-selected">
-                    <span class="slds-icon_container" title="description of icon when needed">
-                      <lightning:icon class="whiteIcon" iconName="utility:check" size="x-large"/>
-                    </span>
-                  </span>
-                  <span class="slds-is-not-selected">
-                    <span class="slds-icon_container" title="description of icon when needed">
-                      <lightning:icon class="blueIcon" iconName="utility:company" size="x-large"/>
-                    </span>
-                  </span>
-                </span>
-                  <aura:if isTrue="{!or(v.lead.Application_Type__c != 'Non-Residential', v.lead.Application_Type__c == '')}">
-                  <span class="slds-visual-picker__body">
-                    <div class="slds-text-body--large">for my </div>
-                    <div class="slds-text-body--large--stream">Business</div>
-                  </span>
-                  </aura:if>
-                  <aura:if isTrue="{!v.lead.Application_Type__c == 'Non-Residential'}">
-                  <span class="slds-visual-picker__body">
-                    <div class="slds-text-body--large--blue"><b>for my </b></div>
-                    <div class="slds-text-body--large--stream"><b>Business</b></div>
-                  </span>
-                  </aura:if>
-                </label>
-              </div>
-            </lightning:layoutItem>
-          </lightning:layout>
-        </fieldset>
-      </div>
-      <div class="slds-clearfix">
-        <div class="slds-clearfix slds-p-top_medium">
-          <div class="slds-float_left">
-            <lightning:button label="Previous" onclick="{!c.goToAboutYourself}"/>
-          </div>
-          <aura:if isTrue="{!or(v.lead.Application_Type__c == 'Residential', v.lead.Application_Type__c == 'Non-Residential')}">
-            <div class="slds-float_right">
-              <aura:if isTrue="{!v.lead.Application_Source_Phase_2__c != null}">
-                <lightning:button label="Cancel Adding Property" onclick="{!c.cancelAddProperty}"/>
-              </aura:if>
-              <lightning:button label="Next" onclick="{!c.goToAddressForm}"/>
-            </div>
-          </aura:if>
-        </div>
-      </div>
-    </aura:if>
-    <aura:if isTrue="{!v.page == 'AddressForm'}">
-      <div aria-labelledby="homeAddressForm">
-        <aura:if isTrue="{!v.lead.Application_Type__c != ''}">
-          <fieldset class="slds-box slds-theme--default slds-container_center">
-            <legend id="homeAddressForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-              <b class="slds-section__title--large slds-p-horizontal_large"> Where would you like to receive Community Solar? </b>
-            </legend>
-            <form class="slds-form--stacked">
-              <div class="slds-p-around--small slds-text-body--regular">
-                <b>Please provide the address of the property that will receive Community Solar credits.</b>
-              </div>
-              <!--<lightning:layout multipleRows="true">-->
-                <!--<aura:if isTrue="{!and(v.lead.Application_Source_Phase_2__c != null, v.lead.Application_Type__c != 'Non-Residential')}">-->
-                  <!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">-->
-                    <!--<lightning:input aura:id="field" name="name"-->
-                                     <!--label="Property Name"-->
-                                     <!--value="{!v.lead.Company}"-->
-                                     <!--required="true"/>-->
-                  <!--</lightning:layoutItem>-->
-                <!--</aura:if>-->
-              <!--</lightning:layout>-->
-              <!--<lightning:layout multipleRows="true">-->
-                <!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">-->
-                  <!--<lightning:input aura:id="field" name="leadHomeAddress"-->
-                                   <!--label="Street Address"-->
-                                   <!--value="{!v.lead.LASERCA__Home_Address__c}"-->
-                                   <!--required="true"/>-->
-                <!--</lightning:layoutItem>-->
-                <!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >-->
-                  <!--<lightning:input aura:id="field" name="leadHomeCity"-->
-                                   <!--label="City"-->
-                                   <!--value="{!v.lead.LASERCA__Home_City__c}"-->
-                                   <!--required="true"/>-->
-                <!--</lightning:layoutItem>-->
-              <!--</lightning:layout>-->
-              <!--<lightning:layout multipleRows="true">-->
-                <!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">-->
-                  <!--<lightning:select aura:id="field" name="leadHomeState"-->
-                                    <!--label="State"-->
-                                    <!--value="{!v.lead.LASERCA__Home_State__c}"-->
-                                    <!--required="true">-->
-                    <!--<option value="">Choose state...</option>-->
-                    <!--<aura:iteration items="{!v.abbrevStates}" var="s">-->
-                      <!--<option value="{!s}" text="{!s}"></option>-->
-                    <!--</aura:iteration>-->
-                  <!--</lightning:select>-->
-                <!--</lightning:layoutItem>-->
-                <!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >-->
-                  <!--<lightning:input aura:id="field" name="leadHomeZip"-->
-                                   <!--label="Zip Code"-->
-                                   <!--value="{!v.lead.LASERCA__Home_Zip__c}"-->
-                                   <!--required="true"-->
-                                   <!--maxlength="5"-->
-                                   <!--minlength="5"-->
-                                   <!--messageWhenBadInput="Please enter a 5 digit zip-code"/>-->
-                <!--</lightning:layoutItem>-->
-                <!--<aura:if isTrue="{!and(v.lead.LASERCA__Home_State__c == 'NY', v.lead.Application_Type__c == 'Residential' )}">-->
-                  <!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >-->
-                    <!--<lightning:select aura:id="field" name="haveSolarPanelsOnPropertySelectList"-->
-                                      <!--label="Do you have solar panels on your property?"-->
-                                      <!--value="{!v.lead.Loan_System_Information__c}"-->
-                                      <!--required="true">-->
-                      <!--<option value="">Choose one...</option>-->
-                      <!--<option value="Yes">Yes</option>-->
-                      <!--<option value="No">No</option>-->
-                    <!--</lightning:select>-->
-                  <!--</lightning:layoutItem>-->
-                <!--</aura:if>-->
-              <!--</lightning:layout>-->
-              <!--<lightning:layout multipleRows="true">-->
-                <!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">-->
-                  <!--<lightning:select aura:id="field" name="sendBillToHome"-->
-                                    <!--label="Is this where you would like us to send your bill?"-->
-                                    <!--value="{!v.sendBillToHome}"-->
-                                    <!--required="true">-->
-                    <!--<option value="">Choose one...</option>-->
-                    <!--<option value="Yes">Yes</option>-->
-                    <!--<option value="No">No</option>-->
-                  <!--</lightning:select>-->
-                <!--</lightning:layoutItem>-->
-                <!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >-->
-                <!--</lightning:layoutItem>-->
-              <!--</lightning:layout>-->
-            </form>
-          </fieldset>
-        </aura:if>
-      </div>
-      <aura:if isTrue="{!v.sendBillToHome == 'No'}">
-        <div aria-labelledby="billingAddressForm">
-          <fieldset class="slds-box slds-theme--default slds-container_center">
-            <legend id="billingAddressForm" class="slds-text-heading--small slds-align_absolute-center slds-p-vertical--medium ">
-              <b class="slds-section__title--large slds-p-horizontal_large">Where would you like us to send your Community Solar Bill?</b>
-            </legend>
-            <form class="slds-form--stacked">
-              <lightning:layout multipleRows="true">
-                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
-                  <lightning:input aura:id="field" name="leadStreet"
-                                   label="Street Address"
-                                   value="{!v.lead.Street}"
-                                   required="true"/>
-                </lightning:layoutItem>
-                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
-                  <lightning:input aura:id="field" name="leadCity"
-                                   label="City"
-                                   value="{!v.lead.City}"
-                                   required="true"/>
-                </lightning:layoutItem>
-              </lightning:layout>
-              <lightning:layout multipleRows="true">
-                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
-                  <lightning:select aura:id="field" name="leadState"
-                                    label="State"
-                                    value="{!v.lead.State}"
-                                    required="true">
-                    <option value="">Choose state...</option>
-                    <aura:iteration items="{!v.abbrevStates}" var="s">
-                      <option value="{!s}" text="{!s}"></option>
-                    </aura:iteration>
-                  </lightning:select>
-                </lightning:layoutItem>
-                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
-                  <lightning:input aura:id="field" name="leadZip"
-                                   label="Zip Code"
-                                   value="{!v.lead.PostalCode}"
-                                   required="true"/>
-                </lightning:layoutItem>
-              </lightning:layout>
-            </form>
-          </fieldset>
-        </div>
-      </aura:if>
 
-
-
-      <aura:if isTrue="{!v.lead.Application_Type__c == 'Non-Residential'}">
+      <!--BUSINESS FORM-->
+      <aura:if isTrue="{!v.applicationType == 'Non-Residential'}">
         <div aria-labelledby="businessForm">
           <fieldset class="slds-box slds-theme--default slds-container_center">
             <legend id="businessForm" class="slds-text-heading--small slds-p-vertical--medium slds-section__title--large slds-align_absolute-center">
@@ -482,13 +280,15 @@
         </div>
       </aura:if>
 
+
+      <!--BUTTON FOR PAGE-->
       <div class="slds-clearfix">
         <div class="slds-clearfix slds-p-top_medium">
-          <div class="slds-float_left">
-            <aura:if isTrue="{!empty(v.lead.Personal_Credit_Report__c)}">
-              <lightning:button label="Previous" onclick="{!c.goToApplyingFor}"/>
-            </aura:if>
-          </div>
+          <!--<div class="slds-float_left">-->
+          <!--<aura:if isTrue="{!empty(v.lead.Personal_Credit_Report__c)}">-->
+          <!--<lightning:button label="Previous" onclick="{!c.goToApplyingFor}"/>-->
+          <!--</aura:if>-->
+          <!--</div>-->
           <div class="slds-float_right">
             <aura:if isTrue="{!v.lead.Application_Source_Phase_2__c != null}">
               <lightning:button label="Cancel Adding Property" onclick="{!c.cancelAddProperty}"/>
@@ -497,8 +297,10 @@
           </div>
         </div>
       </div>
-
     </aura:if>
+
+
+
     <aura:if isTrue="{!v.page == 'SplitLoadZone'}">
       <div>
         <fieldset class="slds-box slds-theme--default slds-container_center">
@@ -553,7 +355,7 @@
                                     required="true">
                     <option value="{!v.lead.Utility_relationship__c}">Choose Utility...</option>
                     <aura:iteration items="{!v.splitUtilities}" var="utility">
-                      <option value="{!utility.Id}" label="{!utility.Name}">{!utility}</option>
+                      <option value="{!utility.Id}" label="{!utility.Name}">{!utility.Name}</option>
                     </aura:iteration>
                   </lightning:select>
                 </lightning:layoutItem>
@@ -577,3 +379,342 @@
     </aura:if>
   </aura:if>
 </aura:component>
+
+
+
+
+<!-- / ABOUT_YOURSELF -->
+<!-- ADDRESS_FORM -->
+<!--<aura:if isTrue="{!v.page == 'ApplyingFor'}">-->
+<!--<div aria-labelledby="applyingForForm">-->
+<!--<fieldset class="slds-box slds-theme&#45;&#45;default slds-container_center">-->
+<!--<legend id="ApplyingFor" class="slds-text-heading&#45;&#45;small slds-p-vertical&#45;&#45;medium slds-align_absolute-center">-->
+<!--<b class="slds-section__title&#45;&#45;large slds-p-horizontal_large"> Select which kind of Community Solar you are applying for! </b>-->
+<!--</legend>-->
+<!--<lightning:layout multipleRows="true" horizontalAlign="center">-->
+<!--<lightning:layoutItem size="3" smallDeviceSize="6" mediumDeviceSize="3">-->
+<!--<div class="slds-visual-picker slds-visual-picker_medium slds-align&#45;&#45;absolute-center">-->
+<!--<input type="radio" id="visual-picker-residential" onchange="{!c.setCSApplicationResidential}" checked="{!v.Residential}"/>-->
+<!--<label for="visual-picker-residential">-->
+<!--<span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">-->
+<!--<span class="slds-is-selected">-->
+<!--<span class="slds-icon_container" title="description of icon when needed">-->
+<!--<lightning:icon class="whiteIcon" iconName="utility:check" size="x-large"/>-->
+<!--</span>-->
+<!--</span>-->
+<!--<span class="slds-is-not-selected">-->
+<!--<span class="slds-icon_container" title="description of icon when needed">-->
+<!--<lightning:icon class="blueIcon" iconName="utility:home" size="x-large"/>-->
+<!--</span>-->
+<!--</span>-->
+<!--</span>-->
+<!--<aura:if isTrue="{!or(v.lead.Application_Type__c != 'Residential', v.lead.Application_Type__c == '')}">-->
+<!--<span class="slds-visual-picker__body ">-->
+<!--<div class="slds-text-body&#45;&#45;large">for my </div>-->
+<!--<div class="slds-text-body&#45;&#45;large&#45;&#45;stream">Home</div>-->
+<!--</span>-->
+<!--</aura:if>-->
+<!--<aura:if isTrue="{!v.lead.Application_Type__c == 'Residential'}">-->
+<!--<span class="slds-visual-picker__body">-->
+<!--<div class="slds-text-body&#45;&#45;large&#45;&#45;blue"><b>for my </b></div>-->
+<!--<div class="slds-text-body&#45;&#45;large&#45;&#45;stream"><b>Home</b></div>-->
+<!--</span>-->
+<!--</aura:if>-->
+<!--</label>-->
+<!--</div>-->
+<!--</lightning:layoutItem>-->
+<!--<lightning:layoutItem size="3" smallDeviceSize="6" mediumDeviceSize="3">-->
+<!--<div class="slds-visual-picker slds-visual-picker_medium slds-align&#45;&#45;absolute-center">-->
+<!--<input type="radio" id="visual-picker-non-residential" onchange="{!c.setCSApplicationNonResidential}" checked="{!v.NonResidential}"/>-->
+<!--<label for="visual-picker-non-residential">-->
+<!--<span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">-->
+<!--<span class="slds-is-selected">-->
+<!--<span class="slds-icon_container" title="description of icon when needed">-->
+<!--<lightning:icon class="whiteIcon" iconName="utility:check" size="x-large"/>-->
+<!--</span>-->
+<!--</span>-->
+<!--<span class="slds-is-not-selected">-->
+<!--<span class="slds-icon_container" title="description of icon when needed">-->
+<!--<lightning:icon class="blueIcon" iconName="utility:company" size="x-large"/>-->
+<!--</span>-->
+<!--</span>-->
+<!--</span>-->
+<!--<aura:if isTrue="{!or(v.lead.Application_Type__c != 'Non-Residential', v.lead.Application_Type__c == '')}">-->
+<!--<span class="slds-visual-picker__body">-->
+<!--<div class="slds-text-body&#45;&#45;large">for my </div>-->
+<!--<div class="slds-text-body&#45;&#45;large&#45;&#45;stream">Business</div>-->
+<!--</span>-->
+<!--</aura:if>-->
+<!--<aura:if isTrue="{!v.lead.Application_Type__c == 'Non-Residential'}">-->
+<!--<span class="slds-visual-picker__body">-->
+<!--<div class="slds-text-body&#45;&#45;large&#45;&#45;blue"><b>for my </b></div>-->
+<!--<div class="slds-text-body&#45;&#45;large&#45;&#45;stream"><b>Business</b></div>-->
+<!--</span>-->
+<!--</aura:if>-->
+<!--</label>-->
+<!--</div>-->
+<!--</lightning:layoutItem>-->
+<!--</lightning:layout>-->
+<!--</fieldset>-->
+<!--</div>-->
+<!--<div class="slds-clearfix">-->
+<!--<div class="slds-clearfix slds-p-top_medium">-->
+<!--<div class="slds-float_left">-->
+<!--<lightning:button label="Previous" onclick="{!c.goToAboutYourself}"/>-->
+<!--</div>-->
+<!--<aura:if isTrue="{!or(v.lead.Application_Type__c == 'Residential', v.lead.Application_Type__c == 'Non-Residential')}">-->
+<!--<div class="slds-float_right">-->
+<!--<aura:if isTrue="{!v.lead.Application_Source_Phase_2__c != null}">-->
+<!--<lightning:button label="Cancel Adding Property" onclick="{!c.cancelAddProperty}"/>-->
+<!--</aura:if>-->
+<!--<lightning:button label="Next" onclick="{!c.goToAddressForm}"/>-->
+<!--</div>-->
+<!--</aura:if>-->
+<!--</div>-->
+<!--</div>-->
+<!--</aura:if>-->
+
+
+<!--<aura:if isTrue="{!v.page == 'AddressForm'}">-->
+<!--<div aria-labelledby="homeAddressForm">-->
+<!--<aura:if isTrue="{!v.lead.Application_Type__c != ''}">-->
+<!--<fieldset class="slds-box slds-theme&#45;&#45;default slds-container_center">-->
+<!--<legend id="homeAddressForm" class="slds-text-heading&#45;&#45;small slds-p-vertical&#45;&#45;medium slds-align_absolute-center">-->
+<!--<b class="slds-section__title&#45;&#45;large slds-p-horizontal_large"> Where would you like to receive Community Solar? </b>-->
+<!--</legend>-->
+<!--<form class="slds-form&#45;&#45;stacked">-->
+<!--<div class="slds-p-around&#45;&#45;small slds-text-body&#45;&#45;regular">-->
+<!--<b>Please provide the address of the property that will receive Community Solar credits.</b>-->
+<!--</div>-->
+<!--<lightning:layout multipleRows="true">-->
+<!--<aura:if isTrue="{!and(v.lead.Application_Source_Phase_2__c != null, v.lead.Application_Type__c != 'Non-Residential')}">-->
+<!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">-->
+<!--<lightning:input aura:id="field" name="name"-->
+<!--label="Property Name"-->
+<!--value="{!v.lead.Company}"-->
+<!--required="true"/>-->
+<!--</lightning:layoutItem>-->
+<!--</aura:if>-->
+<!--</lightning:layout>-->
+<!--<lightning:layout multipleRows="true">-->
+<!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">-->
+<!--<lightning:input aura:id="field" name="leadHomeAddress"-->
+<!--label="Street Address"-->
+<!--value="{!v.lead.LASERCA__Home_Address__c}"-->
+<!--required="true"/>-->
+<!--</lightning:layoutItem>-->
+<!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >-->
+<!--<lightning:input aura:id="field" name="leadHomeCity"-->
+<!--label="City"-->
+<!--value="{!v.lead.LASERCA__Home_City__c}"-->
+<!--required="true"/>-->
+<!--</lightning:layoutItem>-->
+<!--</lightning:layout>-->
+<!--<lightning:layout multipleRows="true">-->
+<!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">-->
+<!--<lightning:select aura:id="field" name="leadHomeState"-->
+<!--label="State"-->
+<!--value="{!v.lead.LASERCA__Home_State__c}"-->
+<!--required="true">-->
+<!--<option value="">Choose state...</option>-->
+<!--<aura:iteration items="{!v.abbrevStates}" var="s">-->
+<!--<option value="{!s}" text="{!s}"></option>-->
+<!--</aura:iteration>-->
+<!--</lightning:select>-->
+<!--</lightning:layoutItem>-->
+<!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >-->
+<!--<lightning:input aura:id="field" name="leadHomeZip"-->
+<!--label="Zip Code"-->
+<!--value="{!v.lead.LASERCA__Home_Zip__c}"-->
+<!--required="true"-->
+<!--maxlength="5"-->
+<!--minlength="5"-->
+<!--messageWhenBadInput="Please enter a 5 digit zip-code"/>-->
+<!--</lightning:layoutItem>-->
+<!--<aura:if isTrue="{!and(v.lead.LASERCA__Home_State__c == 'NY', v.lead.Application_Type__c == 'Residential' )}">-->
+<!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >-->
+<!--<lightning:select aura:id="field" name="haveSolarPanelsOnPropertySelectList"-->
+<!--label="Do you have solar panels on your property?"-->
+<!--value="{!v.lead.Loan_System_Information__c}"-->
+<!--required="true">-->
+<!--<option value="">Choose one...</option>-->
+<!--<option value="Yes">Yes</option>-->
+<!--<option value="No">No</option>-->
+<!--</lightning:select>-->
+<!--</lightning:layoutItem>-->
+<!--</aura:if>-->
+<!--</lightning:layout>-->
+<!--<lightning:layout multipleRows="true">-->
+<!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">-->
+<!--<lightning:select aura:id="field" name="sendBillToHome"-->
+<!--label="Is this where you would like us to send your bill?"-->
+<!--value="{!v.sendBillToHome}"-->
+<!--required="true">-->
+<!--<option value="">Choose one...</option>-->
+<!--<option value="Yes">Yes</option>-->
+<!--<option value="No">No</option>-->
+<!--</lightning:select>-->
+<!--</lightning:layoutItem>-->
+<!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >-->
+<!--</lightning:layoutItem>-->
+<!--</lightning:layout>-->
+<!--</form>-->
+<!--</fieldset>-->
+<!--</aura:if>-->
+<!--</div>-->
+<!--<aura:if isTrue="{!v.sendBillToHome == 'No'}">-->
+<!--<div aria-labelledby="billingAddressForm">-->
+<!--<fieldset class="slds-box slds-theme&#45;&#45;default slds-container_center">-->
+<!--<legend id="billingAddressForm" class="slds-text-heading&#45;&#45;small slds-align_absolute-center slds-p-vertical&#45;&#45;medium ">-->
+<!--<b class="slds-section__title&#45;&#45;large slds-p-horizontal_large">Where would you like us to send your Community Solar Bill?</b>-->
+<!--</legend>-->
+<!--<form class="slds-form&#45;&#45;stacked">-->
+<!--<lightning:layout multipleRows="true">-->
+<!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">-->
+<!--<lightning:input aura:id="field" name="leadStreet"-->
+<!--label="Street Address"-->
+<!--value="{!v.lead.Street}"-->
+<!--required="true"/>-->
+<!--</lightning:layoutItem>-->
+<!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >-->
+<!--<lightning:input aura:id="field" name="leadCity"-->
+<!--label="City"-->
+<!--value="{!v.lead.City}"-->
+<!--required="true"/>-->
+<!--</lightning:layoutItem>-->
+<!--</lightning:layout>-->
+<!--<lightning:layout multipleRows="true">-->
+<!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">-->
+<!--<lightning:select aura:id="field" name="leadState"-->
+<!--label="State"-->
+<!--value="{!v.lead.State}"-->
+<!--required="true">-->
+<!--<option value="">Choose state...</option>-->
+<!--<aura:iteration items="{!v.abbrevStates}" var="s">-->
+<!--<option value="{!s}" text="{!s}"></option>-->
+<!--</aura:iteration>-->
+<!--</lightning:select>-->
+<!--</lightning:layoutItem>-->
+<!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >-->
+<!--<lightning:input aura:id="field" name="leadZip"-->
+<!--label="Zip Code"-->
+<!--value="{!v.lead.PostalCode}"-->
+<!--required="true"/>-->
+<!--</lightning:layoutItem>-->
+<!--</lightning:layout>-->
+<!--</form>-->
+<!--</fieldset>-->
+<!--</div>-->
+<!--</aura:if>-->
+
+
+
+<!--<aura:if isTrue="{!v.lead.Application_Type__c == 'Non-Residential'}">-->
+<!--<div aria-labelledby="businessForm">-->
+<!--<fieldset class="slds-box slds-theme&#45;&#45;default slds-container_center">-->
+<!--<legend id="businessForm" class="slds-text-heading&#45;&#45;small slds-p-vertical&#45;&#45;medium slds-section__title&#45;&#45;large slds-align_absolute-center">-->
+<!--<b class="slds-section__title&#45;&#45;large slds-p-horizontal_large"> Tell us a bit about your business  </b>-->
+<!--</legend>-->
+<!--<form class="slds-form&#45;&#45;stacked">-->
+<!--<lightning:layout multipleRows="true">-->
+<!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">-->
+<!--<lightning:input aura:id="field" name="leadCompany"-->
+<!--label="Name of Business"-->
+<!--value="{!v.lead.Company}"-->
+<!--maxlength="80"-->
+<!--required="true"/>-->
+<!--</lightning:layoutItem>-->
+<!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >-->
+<!--<lightning:select aura:id="field" name="leadTypeOfBusiness"-->
+<!--label="Type of Business"-->
+<!--value="{!v.lead.Type_of_Business__c}"-->
+<!--required="false">-->
+<!--<option value="">Choose one...</option>-->
+<!--<option value="Arts/Entertainment/Media">Arts/Entertainment/Media</option>-->
+<!--<option value="Automotive">Automotive</option>-->
+<!--<option value="Biotechnology/Chemicals">Biotechnology/Chemicals</option>-->
+<!--<option value="Construction">Construction</option>-->
+<!--<option value="Education">Education</option>-->
+<!--<option value="Engineering">Engineering</option>-->
+<!--<option value="Facilities">Facilities</option>-->
+<!--<option value="Financial Services">Financial Services</option>-->
+<!--<option value="Government">Government</option>-->
+<!--<option value="Healthcare">Healthcare</option>-->
+<!--<option value="Hospitality">Hospitality</option>-->
+<!--<option value="Information Technology">Information Technology</option>-->
+<!--<option value="Insurance">Insurance</option>-->
+<!--<option value="Legal">Legal</option>-->
+<!--<option value="Manufacturing/Production">Manufacturing/Production</option>-->
+<!--<option value="Marketing">Marketing</option>-->
+<!--<option value="Non-Profit">Non-Profit</option>-->
+<!--<option value="Real Estate">Real Estate</option>-->
+<!--<option value="Religious Organization">Religious Organization</option>-->
+<!--<option value="Retail/Wholesale">Retail/Wholesale</option>-->
+<!--<option value="Transportation/Warehouse">Transportation/Warehouse</option>-->
+<!--</lightning:select>-->
+<!--</lightning:layoutItem>-->
+<!--</lightning:layout>-->
+
+
+<!--<lightning:layout multipleRows="true">-->
+<!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">-->
+<!--<lightning:input aura:id="field" name="leadBusinessTitle"-->
+<!--label="Business Title of Applicant"-->
+<!--value="{!v.lead.Business_Title__c}"-->
+<!--maxlength="25"-->
+<!--messageWhenValueMissing="Please Complete this field. For example: CEO, President, Manager"-->
+<!--required="true"/>-->
+<!--</lightning:layoutItem>-->
+<!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >-->
+<!--</lightning:layoutItem>-->
+<!--</lightning:layout>-->
+
+<!--<lightning:layout multipleRows="true">-->
+<!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">-->
+<!--<lightning:input aura:id="field" name="leadNumberOfYearsinBusiness"-->
+<!--type="number"-->
+<!--min="0"-->
+<!--max="200"-->
+<!--label="How many years has the business been in operation?"-->
+<!--value="{!v.lead.Number_of_Years_in_Business__c}"-->
+<!--required="true"/>-->
+<!--</lightning:layoutItem>-->
+<!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >-->
+<!--</lightning:layoutItem>-->
+<!--</lightning:layout>-->
+<!--<lightning:layout multipleRows="true">-->
+<!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">-->
+<!--<lightning:input aura:id="field" name="leadNumberOfYearsatLocation"-->
+<!--type="number"-->
+<!--min="0"-->
+<!--max="200"-->
+<!--label="How many years has the business been at its current location?"-->
+<!--value="{!v.lead.Number_of_Years_at_Location__c}"-->
+<!--required="false"/>-->
+<!--</lightning:layoutItem>-->
+<!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >-->
+<!--</lightning:layoutItem>-->
+<!--</lightning:layout>-->
+
+<!--</form>-->
+<!--</fieldset>-->
+<!--</div>-->
+<!--</aura:if>-->
+
+<!--<div class="slds-clearfix">-->
+<!--<div class="slds-clearfix slds-p-top_medium">-->
+<!--<div class="slds-float_left">-->
+<!--<aura:if isTrue="{!empty(v.lead.Personal_Credit_Report__c)}">-->
+<!--<lightning:button label="Previous" onclick="{!c.goToApplyingFor}"/>-->
+<!--</aura:if>-->
+<!--</div>-->
+<!--<div class="slds-float_right">-->
+<!--<aura:if isTrue="{!v.lead.Application_Source_Phase_2__c != null}">-->
+<!--<lightning:button label="Cancel Adding Property" onclick="{!c.cancelAddProperty}"/>-->
+<!--</aura:if>-->
+<!--<lightning:button label="Next" onclick="{!c.goToCheckCapacity}"/>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+
+<!--</aura:if>-->

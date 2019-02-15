@@ -1,13 +1,17 @@
 ({
     processLead : function(component, event, helper) {
         var lead = component.get("v.lead");
-        var sendBillToHome = component.get("v.sendBillToHome");
-        if(sendBillToHome === "Yes"){
+
+        lead.Application_Type__c = component.get("v.applicationType");
+        //var sendBillToHome = component.get("v.sendBillToHome");
+        //if(sendBillToHome === "Yes"){
+
+        //Setting the Billing Address as well as the address for the credit check
             lead.Street = lead.LASERCA__Home_Address__c;
-            lead.City = lead.LASERCA__Home_City__c
-            lead.State = lead.LASERCA__Home_State__c
-            lead.PostalCode = lead.LASERCA__Home_Zip__c
-        }
+            lead.City = lead.LASERCA__Home_City__c;
+            lead.State = lead.LASERCA__Home_State__c;
+            lead.PostalCode = lead.LASERCA__Home_Zip__c;
+        //}
         if(lead.Application_Type__c === "Residential" && lead.Company == null){
             lead.Company = lead.FirstName + " " + lead.LastName;
         }
@@ -68,6 +72,8 @@
 
     populateUtilityPicklist : function(component, event, helper, lead) {
         var utilityList = [];
+
+
         if ((lead.Confirm_Utility__c && lead.Confirm_Utility__c.includes('/'))
             || (lead.LoadZone__c && lead.LoadZone__c.includes('/'))){
             var splitNamesFromId = lead.Confirm_Utility__c.split('>');
@@ -86,11 +92,19 @@
             component.set('v.page', 'SplitLoadZone');
             component.set('v.splitUtilities', utilityList);
             if (lead.LoadZone__c.includes('/')){
-                component.set('v.splitZones', lead.LoadZone__c.split('/'));
+                var allZones = lead.LoadZone__c.split('/');
+                if (lead.LASERCA__Home_State__c == 'NY'){
+                    component.set('v.splitZones', null);
+                    lead.LoadZone__c = allZones[0];
+                } else {
+                    component.set('v.splitZones', lead.LoadZone__c.split('/'));
+                }
             }
         } else {
             helper.finishStage(component, event, helper);
         }
+
+
     },
 
 })
