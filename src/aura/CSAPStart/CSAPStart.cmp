@@ -61,17 +61,12 @@
   <aura:if isTrue="{!v.page == 'ZipcodeChecker'}">
       <fieldset class="slds-box slds-theme--default slds-container_center">
         <legend id="aboutYourselfForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-          <b class="slds-section__title--large slds-p-horizontal_large">Let's Begin</b>
+          <b class="slds-section__title--large slds-p-horizontal_large">Go Solar!</b>
         </legend>
         <form class="slds-form--stacked" style="text-align: center">
           <lightning:layout horizontalAlign="center">
             <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12">
-              <b>Before we begin, we'll need the following to determine your energy needs and credit eligibility:</b>
-            </lightning:layoutItem>
-          </lightning:layout>
-          <lightning:layout horizontalAlign="center">
-            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12">
-              A copy of your most recent utility bill
+              <b>Before we begin, we'll need a copy of your most recent utility bill to determine your energy needs and credit eligibility.</b>
             </lightning:layoutItem>
           </lightning:layout>
           <c:CSAPZipcodeCapacity hasCapacity="{!v.hasCapacity}" zipcode="{!v.lead.LASERCA__Home_Zip__c}"/>

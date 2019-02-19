@@ -5,7 +5,7 @@
       <form class="slds-form--stacked">
         <lightning:layout horizontalAlign="center">
           <div class="slds-p-around--large slds-text-body--large">
-            <b>To determine if there's a project in your area, enter your zip code below.</b>
+            <b>Enter your zip code below to see if there is a project in your area.</b>
           </div>
         </lightning:layout>
         <lightning:layout horizontalAlign="center" multipleRows="true">
