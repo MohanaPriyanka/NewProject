@@ -7951,11 +7951,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Energy_Usage_Update__c.Utility_Bill_Line_Total_2__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Energy_Usage_Update__c.Utility_Bill_Line_Total_3__c</field>
         <readable>true</readable>
     </fieldPermissions>
