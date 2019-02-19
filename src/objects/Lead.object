@@ -3902,9 +3902,9 @@ IF(ISPICKVAL(Personal_Credit_Report__r.Solar_Loan_Pre_Qualification_Status__c, &
                     <label>Providing rooftop solar financing</label>
                 </value>
                 <value>
-                    <fullName>Community Solar sales</fullName>
+                    <fullName>Selling community solar</fullName>
                     <default>false</default>
-                    <label>Community Solar sales</label>
+                    <label>Selling community solar</label>
                 </value>
                 <value>
                     <fullName>Community Solar services</fullName>
@@ -3912,14 +3912,19 @@ IF(ISPICKVAL(Personal_Credit_Report__r.Solar_Loan_Pre_Qualification_Status__c, &
                     <label>Community Solar services</label>
                 </value>
                 <value>
-                    <fullName>Developing Solar</fullName>
+                    <fullName>Solar project development</fullName>
                     <default>false</default>
-                    <label>Developing Solar</label>
+                    <label>Solar project development</label>
                 </value>
                 <value>
-                    <fullName>Something else</fullName>
+                    <fullName>Something else...</fullName>
                     <default>false</default>
-                    <label>Something else</label>
+                    <label>Something else...</label>
+                </value>
+                <value>
+                    <fullName>Joining the BlueWave team</fullName>
+                    <default>false</default>
+                    <label>Joining the BlueWave team</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -6970,6 +6975,45 @@ SEMA = 13 -14</inlineHelpText>
         <description>Community Solar Lead</description>
         <label>BFG - Community Solar (Residential)</label>
         <picklistValues>
+            <picklist>Product_Interest__c</picklist>
+            <values>
+                <fullName>Community Solar services</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Joining the BlueWave team</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Providing rooftop solar financing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Selling community solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my home</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my land</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar project development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Something else%2E%2E%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Approval_Status__c</picklist>
             <values>
                 <fullName>Approved</fullName>
@@ -7586,41 +7630,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Phone</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Product_Interest__c</picklist>
-            <values>
-                <fullName>Community Solar sales</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Community Solar services</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Developing Solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Providing rooftop solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my home</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my land</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Something else</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -7966,6 +7975,45 @@ SEMA = 13 -14</inlineHelpText>
         <businessProcess>CS</businessProcess>
         <label>BFG - Community Solar (Anchor)</label>
         <picklistValues>
+            <picklist>Product_Interest__c</picklist>
+            <values>
+                <fullName>Community Solar services</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Joining the BlueWave team</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Providing rooftop solar financing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Selling community solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my home</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my land</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar project development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Something else%2E%2E%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Approval_Status__c</picklist>
             <values>
                 <fullName>Approved</fullName>
@@ -8582,41 +8630,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Product_Interest__c</picklist>
-            <values>
-                <fullName>Community Solar sales</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Community Solar services</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Developing Solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Providing rooftop solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my home</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my land</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Something else</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Product_Program__c</picklist>
             <values>
                 <fullName>BlueWave Solar Loan</fullName>
@@ -8957,6 +8970,45 @@ SEMA = 13 -14</inlineHelpText>
         <active>true</active>
         <businessProcess>CS</businessProcess>
         <label>BFG - Community Solar (Business)</label>
+        <picklistValues>
+            <picklist>Product_Interest__c</picklist>
+            <values>
+                <fullName>Community Solar services</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Joining the BlueWave team</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Providing rooftop solar financing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Selling community solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my home</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my land</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar project development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Something else%2E%2E%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Approval_Status__c</picklist>
             <values>
@@ -9578,41 +9630,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Product_Interest__c</picklist>
-            <values>
-                <fullName>Community Solar sales</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Community Solar services</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Developing Solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Providing rooftop solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my home</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my land</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Something else</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Product_Program__c</picklist>
             <values>
                 <fullName>BlueWave Solar Loan</fullName>
@@ -9953,6 +9970,45 @@ SEMA = 13 -14</inlineHelpText>
         <active>true</active>
         <businessProcess>Residential Loan</businessProcess>
         <label>BFG - DOER Solar Loan</label>
+        <picklistValues>
+            <picklist>Product_Interest__c</picklist>
+            <values>
+                <fullName>Community Solar services</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Joining the BlueWave team</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Providing rooftop solar financing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Selling community solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my home</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my land</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar project development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Something else%2E%2E%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Approval_Status__c</picklist>
             <values>
@@ -10589,41 +10645,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Phone</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Product_Interest__c</picklist>
-            <values>
-                <fullName>Community Solar sales</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Community Solar services</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Developing Solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Providing rooftop solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my home</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my land</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Something else</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -10977,6 +10998,45 @@ SEMA = 13 -14</inlineHelpText>
         <businessProcess>Residential Loan</businessProcess>
         <label>BFG - DOER Solar Loan (Co-Applicant)</label>
         <picklistValues>
+            <picklist>Product_Interest__c</picklist>
+            <values>
+                <fullName>Community Solar services</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Joining the BlueWave team</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Providing rooftop solar financing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Selling community solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my home</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my land</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar project development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Something else%2E%2E%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Approval_Status__c</picklist>
             <values>
                 <fullName>Approved</fullName>
@@ -11616,41 +11676,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Product_Interest__c</picklist>
-            <values>
-                <fullName>Community Solar sales</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Community Solar services</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Developing Solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Providing rooftop solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my home</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my land</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Something else</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Product_Program__c</picklist>
             <values>
                 <fullName>BlueWave Solar Loan</fullName>
@@ -11999,6 +12024,45 @@ SEMA = 13 -14</inlineHelpText>
         <active>true</active>
         <businessProcess>Residential Loan</businessProcess>
         <label>BFG - MA Solar Loan (Co-Applicant)</label>
+        <picklistValues>
+            <picklist>Product_Interest__c</picklist>
+            <values>
+                <fullName>Community Solar services</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Joining the BlueWave team</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Providing rooftop solar financing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Selling community solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my home</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my land</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar project development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Something else%2E%2E%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Approval_Status__c</picklist>
             <values>
@@ -12627,41 +12691,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Phone</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Product_Interest__c</picklist>
-            <values>
-                <fullName>Community Solar sales</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Community Solar services</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Developing Solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Providing rooftop solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my home</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my land</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Something else</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -13016,6 +13045,45 @@ SEMA = 13 -14</inlineHelpText>
         <description>Record Type for All NC Residential Solar Loans</description>
         <label>BFG - NC Solar Loan</label>
         <picklistValues>
+            <picklist>Product_Interest__c</picklist>
+            <values>
+                <fullName>Community Solar services</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Joining the BlueWave team</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Providing rooftop solar financing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Selling community solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my home</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my land</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar project development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Something else%2E%2E%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Approval_Status__c</picklist>
             <values>
                 <fullName>Approved</fullName>
@@ -13643,41 +13711,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Phone</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Product_Interest__c</picklist>
-            <values>
-                <fullName>Community Solar sales</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Community Solar services</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Developing Solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Providing rooftop solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my home</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my land</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Something else</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -14039,6 +14072,45 @@ SEMA = 13 -14</inlineHelpText>
         <businessProcess>Residential Loan</businessProcess>
         <label>BFG - NC Solar Loan (Co-Applicant)</label>
         <picklistValues>
+            <picklist>Product_Interest__c</picklist>
+            <values>
+                <fullName>Community Solar services</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Joining the BlueWave team</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Providing rooftop solar financing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Selling community solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my home</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my land</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar project development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Something else%2E%2E%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Approval_Status__c</picklist>
             <values>
                 <fullName>Approved</fullName>
@@ -14666,41 +14738,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Phone</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Product_Interest__c</picklist>
-            <values>
-                <fullName>Community Solar sales</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Community Solar services</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Developing Solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Providing rooftop solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my home</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my land</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Something else</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -15063,6 +15100,45 @@ SEMA = 13 -14</inlineHelpText>
         <description>Record Type for All SC Residential Solar Loans</description>
         <label>BFG - SC Solar Loan</label>
         <picklistValues>
+            <picklist>Product_Interest__c</picklist>
+            <values>
+                <fullName>Community Solar services</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Joining the BlueWave team</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Providing rooftop solar financing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Selling community solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my home</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my land</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar project development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Something else%2E%2E%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Approval_Status__c</picklist>
             <values>
                 <fullName>Approved</fullName>
@@ -15690,41 +15766,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Phone</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Product_Interest__c</picklist>
-            <values>
-                <fullName>Community Solar sales</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Community Solar services</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Developing Solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Providing rooftop solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my home</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my land</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Something else</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -16086,6 +16127,45 @@ SEMA = 13 -14</inlineHelpText>
         <businessProcess>Residential Loan</businessProcess>
         <label>BFG - SC Solar Loan (Co-Applicant)</label>
         <picklistValues>
+            <picklist>Product_Interest__c</picklist>
+            <values>
+                <fullName>Community Solar services</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Joining the BlueWave team</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Providing rooftop solar financing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Selling community solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my home</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my land</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar project development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Something else%2E%2E%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Approval_Status__c</picklist>
             <values>
                 <fullName>Approved</fullName>
@@ -16713,41 +16793,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Phone</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Product_Interest__c</picklist>
-            <values>
-                <fullName>Community Solar sales</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Community Solar services</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Developing Solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Providing rooftop solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my home</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my land</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Something else</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -17109,6 +17154,45 @@ SEMA = 13 -14</inlineHelpText>
         <businessProcess>Residential Loan</businessProcess>
         <label>BFG - MA Solar Loan</label>
         <picklistValues>
+            <picklist>Product_Interest__c</picklist>
+            <values>
+                <fullName>Community Solar services</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Joining the BlueWave team</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Providing rooftop solar financing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Selling community solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my home</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my land</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar project development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Something else%2E%2E%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Approval_Status__c</picklist>
             <values>
                 <fullName>Approved</fullName>
@@ -17740,41 +17824,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Product_Interest__c</picklist>
-            <values>
-                <fullName>Community Solar sales</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Community Solar services</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Developing Solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Providing rooftop solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my home</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my land</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Something else</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Product_Program__c</picklist>
             <values>
                 <fullName>BlueWave Solar Loan</fullName>
@@ -18123,6 +18172,45 @@ SEMA = 13 -14</inlineHelpText>
         <active>true</active>
         <businessProcess>Residential Loan</businessProcess>
         <label>BlueWave Solar Loan</label>
+        <picklistValues>
+            <picklist>Product_Interest__c</picklist>
+            <values>
+                <fullName>Community Solar services</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Joining the BlueWave team</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Providing rooftop solar financing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Selling community solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my home</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my land</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar project development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Something else%2E%2E%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Approval_Status__c</picklist>
             <values>
@@ -18759,41 +18847,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Phone</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Product_Interest__c</picklist>
-            <values>
-                <fullName>Community Solar sales</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Community Solar services</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Developing Solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Providing rooftop solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my home</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my land</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Something else</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -19162,12 +19215,90 @@ SEMA = 13 -14</inlineHelpText>
         <active>true</active>
         <businessProcess>CS</businessProcess>
         <label>C&amp;I</label>
+        <picklistValues>
+            <picklist>Product_Interest__c</picklist>
+            <values>
+                <fullName>Community Solar services</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Joining the BlueWave team</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Providing rooftop solar financing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Selling community solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my home</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my land</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar project development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Something else%2E%2E%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
     </recordTypes>
     <recordTypes>
         <fullName>Lead</fullName>
         <active>true</active>
         <businessProcess>CS</businessProcess>
         <label>Lead</label>
+        <picklistValues>
+            <picklist>Product_Interest__c</picklist>
+            <values>
+                <fullName>Community Solar services</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Joining the BlueWave team</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Providing rooftop solar financing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Selling community solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my home</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my land</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar project development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Something else%2E%2E%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Approval_Status__c</picklist>
             <values>
@@ -19789,41 +19920,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Product_Interest__c</picklist>
-            <values>
-                <fullName>Community Solar sales</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Community Solar services</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Developing Solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Providing rooftop solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my home</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my land</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Something else</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Product_Program__c</picklist>
             <values>
                 <fullName>BlueWave Solar Loan</fullName>
@@ -20156,6 +20252,45 @@ SEMA = 13 -14</inlineHelpText>
         <active>true</active>
         <businessProcess>CS</businessProcess>
         <label>Lead (General)</label>
+        <picklistValues>
+            <picklist>Product_Interest__c</picklist>
+            <values>
+                <fullName>Community Solar services</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Joining the BlueWave team</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Providing rooftop solar financing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Selling community solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my home</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my land</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar project development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Something else%2E%2E%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Approval_Status__c</picklist>
             <values>
@@ -20796,41 +20931,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Phone</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Product_Interest__c</picklist>
-            <values>
-                <fullName>Community Solar sales</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Community Solar services</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Developing Solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Providing rooftop solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my home</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my land</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Something else</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
