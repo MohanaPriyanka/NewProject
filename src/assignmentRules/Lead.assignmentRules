@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AssignmentRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <assignmentRule>
+        <fullName>Lead Assignment Rule</fullName>
+        <active>true</active>
+        <ruleEntry>
+            <assignedTo>CS_Inside_Sales</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>1 OR 2</booleanFilter>
+            <criteriaItems>
+                <field>Lead.Product_Interest__c</field>
+                <operation>equals</operation>
+                <value>Solar for my home</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Lead.Product_Interest__c</field>
+                <operation>equals</operation>
+                <value>Solar for my business</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>BPD</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>1 OR 2</booleanFilter>
+            <criteriaItems>
+                <field>Lead.Product_Interest__c</field>
+                <operation>equals</operation>
+                <value>Solar for my land</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Lead.Product_Interest__c</field>
+                <operation>equals</operation>
+                <value>Solar project development</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>CSBD_Partners</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Lead.Product_Interest__c</field>
+                <operation>equals</operation>
+                <value>Selling community solar</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>CSBD_Clients</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Lead.Product_Interest__c</field>
+                <operation>equals</operation>
+                <value>Community Solar services</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Loan_BD</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Lead.Product_Interest__c</field>
+                <operation>equals</operation>
+                <value>Providing rooftop solar financing</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>People</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Lead.Product_Interest__c</field>
+                <operation>equals</operation>
+                <value>Joining the BlueWave team</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Marketing</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Lead.Product_Interest__c</field>
+                <operation>notEqual</operation>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>nate@questenergysolutions.com</assignedTo>
+            <assignedToType>User</assignedToType>
+            <criteriaItems>
+                <field>Lead.Partner_Name__c</field>
+                <operation>equals</operation>
+                <value>Quest Energy Solutions</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>api@bluewavesolar.com</assignedTo>
+            <assignedToType>User</assignedToType>
+        </ruleEntry>
+    </assignmentRule>
+</AssignmentRules>
