@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Notice to customer that CS bill is 60 days past due</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Branded AmpRed 60 Days</name>
+    <style>none</style>
+    <subject>Your Community Solar Account is 60 Days Past Due</subject>
+    <textOnly>*|MC:SUBJECT|*
+
+Hello {!Account.Name},
+
+Your BlueWave account is 15 days past due.
+
+Your outstanding account balance is {!Account.Total_Outstanding_Balance__c}.
+
+Please make a payment as soon as possible so your account does not incur late fees.
+
+To check the status of your account and make a payment online, please login to your BlueWave portal. You can also access your portal at www.bluewavesolar.com.
+
+Per your Community Solar Share Agreement, BlueWave reserves the right to cancel your agreement at any point after your account becomes ten days past due.
+- All of us here at BlueWave
+P.S. If you have any questions, please feel free
+to contact us at customercare@bluewavesolar.com or
+(844) 786 - 4100. We’re happy to help.</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>
