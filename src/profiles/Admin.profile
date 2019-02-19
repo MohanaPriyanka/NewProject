@@ -46180,9 +46180,6 @@
         <layout>Product2-Product Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Product_Escalator__c-Product Escalator Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Product_Group_Assignment__c-Product Group Assignment Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
