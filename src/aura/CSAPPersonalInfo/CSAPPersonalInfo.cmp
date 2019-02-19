@@ -38,9 +38,13 @@
     <aura:if isTrue="{!v.page == 'AboutYourself'}">
       <div aria-labelledby="aboutYourselfForm">
         <fieldset class="slds-box slds-theme--default slds-container_center">
-          <legend id="aboutYourselfForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-            <b class=" slds-section__title--large slds-p-horizontal_large">  Tell us a little bit about yourself  </b>
+          <legend id="aboutYourselfForm" class="slds-text-heading--small slds-align_absolute-center">
+            <b class=" slds-section__title--large slds-p-horizontal_large">  Great News!  </b>
           </legend>
+          <div class="slds-p-bottom--medium slds-text-body--regular slds-align--absolute-center">
+            <b> There is a project in your area! We'll need more information:
+            </b>
+          </div>
           <form class="slds-form--stacked">
             <lightning:layout multipleRows="true">
               <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
@@ -270,7 +274,6 @@
           <form class="slds-form--stacked">
             <div class="slds-p-around--small slds-text-body--regular">
               <b>
-                Please select your Utility or Load Zone from the list below. You can find this information on your utility bill.
                 <aura:if isTrue="{!v.lead.State == 'Massachusetts'}">
                   Your zip code is serviced by multiple Load Zones or multiple Utilities. Please consult your utility bill
                   (for National Grid customers) or
@@ -290,7 +293,6 @@
                     </aura:if>
                   </aura:set>
                 </aura:if>
-
               </b>
             </div>
             <lightning:layout multipleRows="true">
