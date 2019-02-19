@@ -847,10 +847,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ScheduledAccountBillLetterStreamMailer</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>SharedSolarSystemHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -7927,11 +7923,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Energy_Usage_Update__c.Total_Billed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Energy_Usage_Update__c.Total_NMCs_3_of_4__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
