@@ -7932,11 +7932,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Energy_Usage_Update__c.Total_NMCs__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Energy_Usage_Update__c.Total_System_Capacity_kW_DC__c</field>
         <readable>true</readable>
     </fieldPermissions>
