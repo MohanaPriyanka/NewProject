@@ -46376,9 +46376,6 @@
         <recordType>Utility_Account_Subscription__c.Utility_Account_Subscription_on_Schedule_Z</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Utility_Bill_Line_Item__c-Utility Bill Line Item Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Utility_NMC_Tariff__c-Utility NMC Tariff Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
