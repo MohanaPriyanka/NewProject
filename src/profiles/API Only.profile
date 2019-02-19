@@ -50514,7 +50514,6 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>true</default>
-        <personAccountDefault>true</personAccountDefault>
         <recordType>Lead.Lead_General</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
