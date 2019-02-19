@@ -78,9 +78,6 @@
         });
 
         $A.enqueueAction(incompleteLoanDisbursals);
-
-        var mslpVar = component.get("v.customer.Loan__r.DOER_Solar_Loann__c");
-        helper.getProgressBarDataMethod(component, event, helper);
     },
 
     closeDisbursalModal : function(component, event, helper) {
