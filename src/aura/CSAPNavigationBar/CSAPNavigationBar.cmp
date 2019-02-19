@@ -1,9 +1,12 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" access="global" extends="c:CSAPParent">
+  <aura:attribute name="leadId" type="String"/>
   <aura:attribute name="showNavBar" type="Boolean" default="true"/>
   <aura:attribute name="stageIndex" type="Integer" default="0"/>
   <!-- Set when handling the NavigationEvent -->
   <aura:attribute name="lead" type="Lead"/>
   <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
   <aura:set attribute="supressWaiting" value="true"/>
   
   <aura:registerEvent name="CSAPNavigationEvent" type="c:CSAPNavigationEvent"/>

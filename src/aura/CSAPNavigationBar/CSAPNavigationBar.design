@@ -1,0 +1,7 @@
+<!--
+ - Created by mstackhouse on 2/19/2019.
+ -->
+
+<design:component>
+  <design:attribute name="leadId" label="Id from URL" description="Hack to get value from URL, should be {!leadId}"/>
+</design:component>
