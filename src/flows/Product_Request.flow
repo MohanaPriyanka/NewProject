@@ -261,7 +261,7 @@
             <assignToReference>varSubject</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>dlTopic_SW</elementReference>
+                <elementReference>inpTitle_SW</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -2410,6 +2410,12 @@ P4 = This would be nice to have</helpText>
                     <stringValue>IsActive = TRUE AND License_Type__c = &apos;Standard&apos;</stringValue>
                 </value>
             </inputParameters>
+            <inputParameters>
+                <name>defaultValue</name>
+                <value>
+                    <elementReference>forCurrentUserName</elementReference>
+                </value>
+            </inputParameters>
             <isRequired>true</isRequired>
             <outputParameters>
                 <assignToReference>varRequestorId</assignToReference>
@@ -2438,13 +2444,14 @@ P4 = This would be nice to have</helpText>
         <showHeader>true</showHeader>
     </screens>
     <screens>
+        <description>What group is your request for?</description>
         <name>What_group_is_your_request_for</name>
         <label>What group is your request for?</label>
         <locationX>487</locationX>
         <locationY>209</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <connector>
             <targetReference>asgSet_Stage_to_Select_Team</targetReference>
         </connector>
@@ -2465,6 +2472,11 @@ P4 = This would be nice to have</helpText>
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>dispGroupSelectionText</name>
+            <fieldText>&lt;p style=&quot;text-align:center;&quot;&gt;&lt;font size=&quot;5&quot;&gt;What group will be fulfilling your request?&lt;/font&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
             <name>categoryPicklist</name>
@@ -2534,7 +2546,7 @@ P4 = This would be nice to have</helpText>
         <stageOrder>5</stageOrder>
     </stages>
     <startElementReference>rlFind_Contact_Id_for_User</startElementReference>
-    <status>Draft</status>
+    <status>Active</status>
     <textTemplates>
         <name>ttLegalDescription</name>
         <text>Supervisor Name: {!scrSupervisor_Name_Lgl}
