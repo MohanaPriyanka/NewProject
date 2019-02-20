@@ -2,7 +2,7 @@
  - Created by mstackhouse on 10/25/2018.
  -->
 
-<aura:component controller="CSAPController" access="global" extends="c:CSAPParent">
+<aura:component controller="CSAPController" implements="forceCommunity:availableForAllPageTypes" access="global" extends="c:CSAPParent">
   <aura:set attribute="STAGENAME" value="NAV_Payment_Information"/>
   <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
   <aura:attribute name="chOrder" type="ChargentOrders__ChargentOrder__c"
