@@ -114,7 +114,7 @@
                     <label>Our Values</label>
                     <position>0</position>
                     <publiclyAvailable>true</publiclyAvailable>
-                    <target>bluewavesolar.com/about/our-values</target>
+                    <target>https://bluewavesolar.com/about/our-values</target>
                     <targetPreference>OpenExternalLinkInSameTab</targetPreference>
                     <type>ExternalLink</type>
                 </navigationMenuItem>
@@ -122,7 +122,7 @@
                     <label>Our Team</label>
                     <position>1</position>
                     <publiclyAvailable>true</publiclyAvailable>
-                    <target>bluewavesolar.com/about/our-team</target>
+                    <target>https://bluewavesolar.com/about/our-team</target>
                     <targetPreference>OpenExternalLinkInSameTab</targetPreference>
                     <type>ExternalLink</type>
                 </navigationMenuItem>
@@ -130,7 +130,7 @@
                     <label>Contact Us</label>
                     <position>2</position>
                     <publiclyAvailable>true</publiclyAvailable>
-                    <target>http://bluewavesolar.com/contact</target>
+                    <target>https://bluewavesolar.com/contact</target>
                     <targetPreference>OpenExternalLinkInSameTab</targetPreference>
                     <type>ExternalLink</type>
                 </navigationMenuItem>
@@ -143,42 +143,42 @@
             <publiclyAvailable>true</publiclyAvailable>
             <subMenu>
                 <navigationMenuItem>
-                    <label>News</label>
+                    <label>Success Stories</label>
                     <position>0</position>
                     <publiclyAvailable>true</publiclyAvailable>
-                    <target>bluewavesolar.com/bw-resources/news</target>
+                    <target>https://bluewavesolar.com/bw-resources/success-stories</target>
+                    <targetPreference>OpenExternalLinkInSameTab</targetPreference>
+                    <type>ExternalLink</type>
+                </navigationMenuItem>
+                <navigationMenuItem>
+                    <label>News</label>
+                    <position>1</position>
+                    <publiclyAvailable>true</publiclyAvailable>
+                    <target>https://bluewavesolar.com/bw-resources/news</target>
                     <targetPreference>OpenExternalLinkInSameTab</targetPreference>
                     <type>ExternalLink</type>
                 </navigationMenuItem>
                 <navigationMenuItem>
                     <label>Events</label>
-                    <position>1</position>
+                    <position>2</position>
                     <publiclyAvailable>true</publiclyAvailable>
-                    <target>bluewavesolar.com/bw-resources/events</target>
+                    <target>https://bluewavesolar.com/bw-resources/events</target>
                     <targetPreference>OpenExternalLinkInSameTab</targetPreference>
                     <type>ExternalLink</type>
                 </navigationMenuItem>
                 <navigationMenuItem>
                     <label>Blog</label>
-                    <position>2</position>
+                    <position>3</position>
                     <publiclyAvailable>true</publiclyAvailable>
-                    <target>http://bluewavesolar.com/bw-resources/blog</target>
+                    <target>https://bluewavesolar.com/bw-resources/blog</target>
                     <targetPreference>OpenExternalLinkInSameTab</targetPreference>
                     <type>ExternalLink</type>
                 </navigationMenuItem>
                 <navigationMenuItem>
                     <label>Education</label>
-                    <position>3</position>
-                    <publiclyAvailable>true</publiclyAvailable>
-                    <target>http://bluewavesolar.com/bw-resources/education</target>
-                    <targetPreference>OpenExternalLinkInSameTab</targetPreference>
-                    <type>ExternalLink</type>
-                </navigationMenuItem>
-                <navigationMenuItem>
-                    <label>Success Stories</label>
                     <position>4</position>
                     <publiclyAvailable>true</publiclyAvailable>
-                    <target>http://bluewavesolar.com/bw-resources/success-stories</target>
+                    <target>https://bluewavesolar.com/bw-resources/education</target>
                     <targetPreference>OpenExternalLinkInSameTab</targetPreference>
                     <type>ExternalLink</type>
                 </navigationMenuItem>
@@ -187,11 +187,11 @@
         </navigationMenuItem>
     </navigationLinkSet>
     <networkMemberGroups>
-        <profile>Admin</profile>
-        <profile>BWC Executive</profile>
-        <profile>BFG Standard User</profile>
+        <profile>admin</profile>
+        <profile>bwc executive</profile>
+        <profile>bfg standard user</profile>
         <profile>force.com user</profile>
-        <profile>API Only</profile>
+        <profile>api only</profile>
         <profile>bfg marketing user</profile>
     </networkMemberGroups>
     <networkPageOverrides>
