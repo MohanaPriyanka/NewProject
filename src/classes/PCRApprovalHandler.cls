@@ -301,6 +301,10 @@ public without sharing class PCRApprovalHandler {
                 pcrIds.add(crl.LASERCA__Personal_Credit_Report__c);
             }
 
+            if (pcrIds.isEmpty()) {
+                return;
+            }
+
             List<LASERCA__Personal_Credit_Report__c> pcrs = getPCRsForCreditAnalysis(pcrIds);
 
             List<Lead> leadList = [

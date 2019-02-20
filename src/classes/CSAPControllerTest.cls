@@ -351,6 +351,85 @@ public with sharing class CSAPControllerTest {
         Test.stopTest();
     }
 
+    @IsTest
+    static void testSSNDefaultsInSandbox() {
+        Lead residentialLead = getLeadForTest();
+        insert residentialLead;
+
+        CSAPController.pullCreditStatus(residentialLead);
+
+        Lead leadAfterPull = [
+            SELECT Id, LASERCA__SSN__c
+            FROM Lead
+            WHERE Id =: residentialLead.Id
+            LIMIT 1
+        ];
+
+        Organization o = [SELECT IsSandbox FROM Organization LIMIT 1];
+
+        if (o.IsSandbox) {
+            System.assertEquals('000000001', leadAfterPull.LASERCA__SSN__c);
+        } else {
+            System.assertEquals('000000000', leadAfterPull.LASERCA__SSN__c);
+        }
+    }
+
+    @IsTest
+    static void testSSNDefaultsToPAssesForTestcases() {
+        Lead residentialLead = getLeadForTest();
+        residentialLead.LastName = 'testcase';
+        insert residentialLead;
+
+        CSAPController.pullCreditStatus(residentialLead);
+
+        Lead leadAfterPull = [
+            SELECT Id, LASERCA__SSN__c
+            FROM Lead
+            WHERE Id =: residentialLead.Id
+            LIMIT 1
+        ];
+
+        System.assertEquals('000000001', leadAfterPull.LASERCA__SSN__c);
+    }
+
+    @IsTest
+    static void testSSNDefaultsToFailForFailTestcases() {
+        Lead residentialLead = getLeadForTest();
+        residentialLead.LastName = 'testcase';
+        residentialLead.FirstName = 'maxfrozen';
+        insert residentialLead;
+
+        CSAPController.pullCreditStatus(residentialLead);
+
+        Lead leadAfterPull = [
+            SELECT Id, LASERCA__SSN__c
+            FROM Lead
+            WHERE Id =: residentialLead.Id
+            LIMIT 1
+        ];
+
+        System.assertEquals('000000010', leadAfterPull.LASERCA__SSN__c);
+    }
+
+    @IsTest
+    static void testSSNDefaultsToFrozenForFrozenTestcases() {
+        Lead residentialLead = getLeadForTest();
+        residentialLead.LastName = 'testcase';
+        residentialLead.FirstName = 'maxfail';
+        insert residentialLead;
+
+        CSAPController.pullCreditStatus(residentialLead);
+
+        Lead leadAfterPull = [
+            SELECT Id, LASERCA__SSN__c
+            FROM Lead
+            WHERE Id =: residentialLead.Id
+            LIMIT 1
+        ];
+
+        System.assertEquals('000000008', leadAfterPull.LASERCA__SSN__c);
+    }
+
     @isTest static void testDefaultReferral(){
         Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Community Login User (Custom)'];
         Contact customerContact = [SELECT Id FROM Contact WHERE Lastname='Customer' LIMIT 1];
@@ -1109,5 +1188,38 @@ public with sharing class CSAPControllerTest {
         System.assertEquals(defaultEntity.Gateway__c, newOrders[0].ChargentOrders__Gateway__c);
         System.assertEquals(defaultEntity.Id, newOrders[1].Entity__c);
         System.assertEquals(defaultEntity.Gateway__c, newOrders[1].ChargentOrders__Gateway__c);
+    }
+    @IsTest
+    public static void testHasCapacity() {
+        System.assertEquals(true, CSAPController.hasCapacity('02052'));
+        System.assertEquals(false, CSAPController.hasCapacity('874321'), 'Zipcode is too long');
+        System.assertEquals(false, CSAPController.hasCapacity('02115'), 'Zipcode is not in load zone');
+        System.assertEquals(false, CSAPController.hasCapacity('015'), 'Zipcode is too short');
+    }
+
+    @IsTest
+    public static void testSendEmailForPaymentInfo() {
+        Lead residentialLead = getLeadForTest();
+        insert residentialLead;
+
+        // iSSuccess is dependant on the deliverability setting and those cannot be access from apex
+        // So here, we're testing that we can call the method, not the result
+        Boolean isSuccess = CSAPController.sendEmailForPaymentInfo(residentialLead);
+
+        System.assertNotEquals(null, isSuccess);
+
+        Organization o = [SELECT IsSandbox FROM Organization LIMIT 1];
+        if (!o.IsSandbox) {
+            System.assert(isSuccess, 'failed email send in Prod, deliverability may be off');
+        }
+
+        residentialLead = [
+            SELECT Id, CSAP_Stage__c
+            FROM Lead
+            WHERE id = :residentialLead.Id
+            LIMIT 1
+        ];
+
+        System.assertEquals('NAV_Energy_Information', residentialLead.CSAP_Stage__c);
     }
 }
