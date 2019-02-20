@@ -1,5 +1,14 @@
 ({
+    doInit: function(component, event, helper) {
+        var leadId = component.get("v.leadId");
+        // hides nav bar if the customer needs to log in
+        if (leadId != null) {
+            component.set("v.showNavBar", false);
+        }
+    },
+
     handleNavEvent : function(component, event, helper) {
+        component.set("v.showNavBar", true);
         if (event.getParam("lead")) {
             component.set("v.lead", event.getParam("lead"));
         }
