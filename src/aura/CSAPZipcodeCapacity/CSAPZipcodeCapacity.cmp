@@ -4,12 +4,14 @@
   <div aria-labelledby="zipForm">
       <form class="slds-form--stacked">
         <lightning:layout horizontalAlign="center">
-          <div class="slds-p-around--small slds-text-body--large">
-            <b>To determine if there's a project in your area, enter your zip code below.</b>
+          <div class="slds-p-around--large slds-text-body--large">
+            <b>Enter your zip code below to see if there is a project in your area.</b>
           </div>
         </lightning:layout>
         <lightning:layout horizontalAlign="center" multipleRows="true">
-          <lightning:layoutItem padding="around-small" size="2" smallDeviceSize="2" mediumDeviceSize="2"  >
+          <lightning:layoutItem size="2" smallDeviceSize="2" mediumDeviceSize="2"  >
+            <!--pressing enter inside an aura input refreshes the page!-->
+            <span onkeypress="{!c.keyCheck}">
             <lightning:input aura:id="field" name="zip"
                              label="Zip Code"
                              class="slds-align_absolute-center"
@@ -18,6 +20,7 @@
                              maxlength="5"
                              minlength="5"
                              messageWhenBadInput="Please enter a 5 digit zip-code"/>
+            </span>
           </lightning:layoutItem>
         </lightning:layout>
         <lightning:layout horizontalAlign="end"  multipleRows="true">
