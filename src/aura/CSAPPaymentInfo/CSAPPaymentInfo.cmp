@@ -47,13 +47,13 @@
       <span class="slds-assistive-text">Loading</span>
     </div>
     <div class="slds-text-body--regular slds-align_absolute-center">
-      {!v.loadingText}info
+      {!v.loadingText}
     </div>
     <aura:set attribute="else">
       <aura:if isTrue="{!v.page == 'PaymentInfo'}">
           <div aria-labelledby="paymentInformationForm">
             <fieldset class="slds-box slds-theme--default slds-container_center">
-              <legend id="aboutYourselfForm" class="slds-text-heading--small slds-align_absolute-center">
+              <legend id="paymentInformation" class="slds-text-heading--small slds-align_absolute-center">
                 <b class="slds-section__title--large slds-p-horizontal_large">Billing and Payment Info</b>
               </legend>
               <div class="slds-p-bottom--medium slds-text-body--regular slds-align--absolute-center">
