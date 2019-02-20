@@ -14,7 +14,7 @@
 
   <aura:attribute name="options" type="List" default="[
       {'label': 'This is my home', 'value': 'Residential'},
-      {'label': 'This is my business', 'value': 'Non-Residential'}
+      {'label': 'This is my business/organization', 'value': 'Non-Residential'}
       ]"/>
   <aura:attribute name="applicationType" type="String" default="Residential"/>
 
