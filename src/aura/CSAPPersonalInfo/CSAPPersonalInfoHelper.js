@@ -14,11 +14,10 @@
             lead.Company = lead.FirstName + " " + lead.LastName;
         }
 
-        //DO WE WANT TO CHANGE TO TRACK WEBSITE VERSUS PARTNER?
         if (component.get('v.partnerId') != null) {
-            lead.Application_Source_Phase_1__c = 'CSAP with Partner';
+            lead.Application_Source_Phase_1__c = 'CSAP 2.1 with Partner';
         } else {
-            lead.Application_Source_Phase_1__c = 'CSAP without Partner';
+            lead.Application_Source_Phase_1__c = 'CSAP 2.1 Website';
         }
         lead.Product_line__c = "Community Solar";
         component.set("v.lead", lead);
@@ -95,7 +94,7 @@
                     component.set('v.splitZones', null);
                     lead.LoadZone__c = allZones[0];
                 } else {
-                    component.set('v.splitZones', lead.LoadZone__c.split('/'));
+                    component.set('v.splitZones', allZones);
                 }
             }
         } else {

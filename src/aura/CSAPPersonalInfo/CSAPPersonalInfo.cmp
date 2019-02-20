@@ -248,11 +248,6 @@
       <!--BUTTON FOR PAGE-->
       <div class="slds-clearfix">
         <div class="slds-clearfix slds-p-top_medium">
-          <!--<div class="slds-float_left">-->
-          <!--<aura:if isTrue="{!empty(v.lead.Personal_Credit_Report__c)}">-->
-          <!--<lightning:button label="Previous" onclick="{!c.goToApplyingFor}"/>-->
-          <!--</aura:if>-->
-          <!--</div>-->
           <div class="slds-float_right">
             <aura:if isTrue="{!v.lead.Application_Source_Phase_2__c != null}">
               <lightning:button label="Cancel Adding Property" onclick="{!c.cancelAddProperty}"/>
@@ -264,7 +259,9 @@
     </aura:if>
 
 
-
+    <!--SPLIT LOAD ZONE PAGE-->
+    <!--Page only shows to customer if Zipcode is in Split Load Zone -->
+    <!--For NY, does not ask for Load Zone - uses first returned -->
     <aura:if isTrue="{!v.page == 'SplitLoadZone'}">
       <div>
         <fieldset class="slds-box slds-theme--default slds-container_center">
@@ -328,11 +325,6 @@
       </div>
       <div class="slds-clearfix">
         <div class="slds-clearfix slds-p-top_medium">
-          <div class="slds-float_left">
-            <aura:if isTrue="{!empty(v.lead.Personal_Credit_Report__c)}">
-              <lightning:button label="Previous" onclick="{!c.goToAddressForm}"/>
-            </aura:if>
-          </div>
           <div class="slds-float_right">
             <lightning:button label="Next" onclick="{!c.saveUnsplitZone}"/>
           </div>

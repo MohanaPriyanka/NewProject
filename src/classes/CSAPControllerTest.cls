@@ -178,7 +178,7 @@ public with sharing class CSAPControllerTest {
             System_Assignment__c = 'Automatic - COD Date/Available Capacity',
             Status = 'Ready for Credit Check',
             Electricity_Provider__c = 'Eversource',
-            Application_Source_Phase_1__c = 'CSAP with Partner'
+            Application_Source_Phase_1__c = 'CSAP 2.1 with Partner'
         );
         return lead;
     }
@@ -256,7 +256,7 @@ public with sharing class CSAPControllerTest {
                 Phone = leadToInsert.Phone,
                 LASERCA__Birthdate__c = leadToInsert.LASERCA__Birthdate__c,
                 LASERCA__SSN__c = leadToInsert.LASERCA__SSN__c,
-                Application_Source_Phase_1__c = 'CSAP with Partner',
+                Application_Source_Phase_1__c = 'CSAP 2.1 with Partner',
                 Application_Source_Phase_2__c = 'CSAP Additional Property',
                 Product_line__c = 'Community Solar',
                 OwnerId = leadToInsert.OwnerId,
