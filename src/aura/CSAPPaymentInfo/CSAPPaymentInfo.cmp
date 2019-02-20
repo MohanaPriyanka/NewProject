@@ -2,7 +2,7 @@
  - Created by mstackhouse on 10/25/2018.
  -->
 
-<aura:component controller="CSAPController" implements="forceCommunity:availableForAllPageTypes" access="global" extends="c:CSAPParent">
+<aura:component controller="CSAPController" access="global" extends="c:CSAPParent">
   <aura:set attribute="STAGENAME" value="NAV_Payment_Information"/>
   <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
   <aura:attribute name="chOrder" type="ChargentOrders__ChargentOrder__c"
@@ -47,25 +47,30 @@
       <span class="slds-assistive-text">Loading</span>
     </div>
     <div class="slds-text-body--regular slds-align_absolute-center">
-      {!v.loadingText}
+      {!v.loadingText}info
     </div>
     <aura:set attribute="else">
       <aura:if isTrue="{!v.page == 'PaymentInfo'}">
           <div aria-labelledby="paymentInformationForm">
             <fieldset class="slds-box slds-theme--default slds-container_center">
-              <legend id="paymentInformation" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-                <b class="slds-section__title--large slds-p-horizontal_large"> Now we need to collect a Payment Method for autopay. </b>
+              <legend id="aboutYourselfForm" class="slds-text-heading--small slds-align_absolute-center">
+                <b class="slds-section__title--large slds-p-horizontal_large">Billing and Payment Info</b>
               </legend>
-                <div class="slds-p-around--small slds-text-body--regular slds-align_absolute-center">
-                  <b>We require all Community Solar customers to sign up for Autopay. You will not be charged at this time. Payments will begin automatically once we begin to transfer credits to your utility account. We will provide at least 10 days written notice before initiating charges to the account provided.</b>
-                </div>
-              <lightning:layout aura:id="passedCreditText" class="animated" multipleRows="true">
-
+              <div class="slds-p-bottom--medium slds-text-body--regular slds-align--absolute-center">
+                <b> We require that all Community Solar Customers sign up for Autopay.
+                </b>
+              </div>
+              <div class="slds-p-bottom--medium slds-text-align--center slds-text-body--regular slds-align--absolute-center slds-m-horizontal--xx-large">
+                <b> You will not be charged at this time. Payments will begin automatically once we begin to transfer credits to your utility account.
+                  We will provide at least 10 days written notice before initiating charges to the account provided. </b>
+              </div>
+              <lightning:layout aura:id="passedCreditText" class="animated slds-align--absolute-center" multipleRows="true">
               <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
                 <lightning:select
                   aura:id="field"
                   name="Select Payment Method"
                   label="Select Payment Method:"
+                  class="slds-text-align--center"
                   value="{!v.SelectedPaymentMethod}"
                   required="true">
                     <option text="" value=""/>
