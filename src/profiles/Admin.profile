@@ -34932,6 +34932,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>agf__ADM_Scrum_Team__c.Category__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>agf__ADM_Scrum_Team__c.Email_Send_Triggers__c</field>
         <readable>true</readable>
     </fieldPermissions>
