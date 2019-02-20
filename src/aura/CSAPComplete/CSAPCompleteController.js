@@ -5,7 +5,8 @@
             return;
         }
         var lead = component.get('v.lead');
-        helper.handleNavEvent(component, event, helper, "AddMore");
+        //Set default page to Complete
+        helper.handleNavEvent(component, event, helper, "Complete");
         if (lead.LASERCA__Home_State__c === 'NY') {
             var finishStage = component.get('c.finishStage');
             $A.enqueueAction(finishStage);
