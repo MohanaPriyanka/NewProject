@@ -7,15 +7,12 @@
                 helper.copyCreditFromPrevious(component, event, helper, lead);
             }
         } else {
-            helper.handleNavEvent(component, event, helper, "SSNPage");
+            helper.handleNavEvent(component, event, helper, "PersonalInfoConfirmation");
         }
         
         if (component.get("v.abbrevStates") && component.get("v.abbrevStates").length === 0) {
             helper.getUSStates(component, "v.abbrevStates", true);
         }
-    },
-    goToSSNPage : function(component, event, helper) {
-        component.set("v.page", "SSNPage");
     },
     goToPersonalInfoConfirmation : function(component, event, helper) {
         var errorMessage = helper.checkBirthDate(component, event, helper);
