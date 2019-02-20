@@ -3,7 +3,7 @@
         component.set("v.STAGENAME", "NAV_Getting_Started");
         component.set("v.page", "ZipcodeChecker");
         var leadId = component.get("v.leadId");
-        if(leadId){
+        if (leadId != null && leadId != '' && leadId != undefined) {
             component.set("v.page","Login");
         }
     },
