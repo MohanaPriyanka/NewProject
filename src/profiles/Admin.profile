@@ -36311,6 +36311,16 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>agf__ADM_Work__c.Outside_Counsel_Involvement__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>agf__ADM_Work__c.Outside_Counsel_Spend__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Work__c.Planned_Completion_Date__c</field>
         <readable>true</readable>
