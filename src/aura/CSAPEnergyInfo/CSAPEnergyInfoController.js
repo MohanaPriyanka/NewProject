@@ -106,7 +106,7 @@
                 component.set('v.page', 'CompletedUtilityInfo');
             } else {
                 helper.logError("CSAPEnergyInfoController", "finishStage",
-                    "There was an issue running credit, but has been logged. Please call Customer Care at the number below for assistance.",
+                    "There was an issue saving this information. We have recorded this error and will review it.",
                     resp.getError());
             }
         })
