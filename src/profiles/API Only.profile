@@ -267,10 +267,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>CheckAddressFieldUpdate</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>CoApplicantConvertTestClass</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -784,10 +780,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ScheduleZTriggerHandlerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ScheduledAccountBillLetterStreamMailer</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>

@@ -29178,12 +29178,12 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>System_Bill__c.Distribute_This_Balance_12mo__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>System_Bill__c.Distribute_This_Balance_as_Payment_Plan__c</field>
         <readable>true</readable>
     </fieldPermissions>
