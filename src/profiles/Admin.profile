@@ -34937,6 +34937,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>agf__ADM_Scrum_Team__c.Category__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>agf__ADM_Scrum_Team__c.Email_Send_Triggers__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -36313,6 +36318,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Work__c.Link__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>agf__ADM_Work__c.Outside_Counsel_Involvement__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>agf__ADM_Work__c.Outside_Counsel_Spend__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
