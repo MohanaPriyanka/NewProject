@@ -33,17 +33,18 @@ public with sharing class CapacityServiceTest {
             LZ__c = 'SEMA',
             Town__c= 'Medfield'
         );
+
         Load_U__c everLZU4 = new Load_U__c (
             Name = '65432',
-            LZ__c = 'SEMA',
+            LZ__c = 'SEMA/NEMA',
             Town__c= 'Medfield'
         );
-        Load_U__c everLZU5 = new Load_U__c (
-            Name = '65432',
-            LZ__c = 'NEMA',
-            Town__c= 'Medfield'
-        );
-        insert new List<Load_U__c>{everLZU, everLZU2, everLZU3, everLZU4, everLZU5};
+//        Load_U__c everLZU5 = new Load_U__c (
+//            Name = '65432',
+//            LZ__c = 'NEMA',
+//            Town__c= 'Medfield'
+//        );
+        insert new List<Load_U__c>{everLZU, everLZU2, everLZU3, everLZU4};
 
         ZipCode_Utility_Junction__c junction = new ZipCode_Utility_Junction__c(
             Load_Zone_Utility__c = everLZU.Id,
@@ -62,7 +63,7 @@ public with sharing class CapacityServiceTest {
             Utility__c = nationalGrid.Id
         );
         ZipCode_Utility_Junction__c junction5 = new ZipCode_Utility_Junction__c(
-            Load_Zone_Utility__c = everLZU5.Id,
+            Load_Zone_Utility__c = everLZU4.Id,
             Utility__c = eversource.Id
         );
         insert new List<ZipCode_Utility_Junction__c>{junction,junction2,junction3,junction4,junction5};
@@ -235,7 +236,8 @@ public with sharing class CapacityServiceTest {
 
         System.assertEquals('65432', response.zipcode);
         System.assertEquals(2, response.utilities.size());
-        System.assertEquals(2, response.loadZones.size());
+        System.assertEquals(1, response.loadZones.size());
+        System.assertEquals(2, response.loadZoneNames.size());
         System.assertEquals(2, response.products.size());
         System.assertEquals(4, response.sharedSolarSystems.size());
     }
@@ -247,7 +249,8 @@ public with sharing class CapacityServiceTest {
 
         System.assertEquals('65432', response.zipcode);
         System.assertEquals(2, response.utilities.size());
-        System.assertEquals(2, response.loadZones.size());
+        System.assertEquals(1, response.loadZones.size());
+        System.assertEquals(2, response.loadZoneNames.size());
         System.assertEquals(2, response.products.size());
         System.assertEquals(4, response.sharedSolarSystems.size());
 
@@ -267,7 +270,8 @@ public with sharing class CapacityServiceTest {
 
         System.assertEquals('65432', response.zipcode);
         System.assertEquals(2, response.utilities.size());
-        System.assertEquals(2, response.loadZones.size());
+        System.assertEquals(1, response.loadZones.size());
+        System.assertEquals(2, response.loadZoneNames.size());
         System.assertEquals(2, response.products.size());
         System.assertEquals(4, response.sharedSolarSystems.size());
         System.debug(response);
