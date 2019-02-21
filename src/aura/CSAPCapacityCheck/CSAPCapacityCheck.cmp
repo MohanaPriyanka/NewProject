@@ -33,14 +33,10 @@
           </legend>
           <form class="slds-form--stacked">
         <lightning:layout aura:id="greatNews" class="animated" multipleRows="true" horizontalAlign="center">
-          <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-              We'll need a copy of your most recent utility bill and your permission before continuing.
-          </lightning:layoutItem>
-
-          <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+          <lightning:layoutItem class="slds-align--absolute-center" padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
             <lightning:input aura:id="field" type="file" label="Please upload a Recent Electric Bill. You may upload multiple items through this form." name="files" multiple="true" onchange="{!c.handleEBill1}"/>
           </lightning:layoutItem>
-          <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+          <lightning:layoutItem class="slds-align--absolute-center" padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
             <aura:if isTrue="{!not(empty(v.electricBill1)) || not(empty(v.electricBill2))}">
               Uploaded Bills:
               <ul>
@@ -54,37 +50,24 @@
             </aura:if>
           </lightning:layoutItem>
 
-          <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-            Please take a moment to review our <b><lightning:formattedUrl value="https://bluewavesolar.com/privacy-policy/" label="Privacy Policy" target="_blank" class="slds-p-around--small "/>
-            </b>
+          <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+            <div class="slds-align--absolute-center" >
+              <b><lightning:formattedUrl value="https://bluewavesolar.com/privacy-policy/" label="Please Review our Privacy Policy" target="_blank"/></b>
+            </div>
+            <div class="slds-align--absolute-center" >
+              By clicking submit, I agree to BlueWave's Privacy Policy. I also grant BlueWave permission to perform a soft pull of my credit history (which will NOT impact my credit score), to use my credit history to process my application and for any other lawful purpose, and to access my electric utility billing history.
+            </div>
           </lightning:layoutItem>
 
-          <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+          <lightning:layoutItem class="slds-align--absolute-center" padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
             <lightning:input aura:id="field" name="leadPrivacyPolicyAcknowledged"
-                             label="I acknowledge BlueWave&apos;s privacy policy and accept its terms."
+                             label="I agree BlueWave&apos;s Privacy Policy and Terms."
                              type="checkbox"
                              checked="{!v.lead.Privacy_Policy_Acknowledged__c}"
                              required="true"/>
           </lightning:layoutItem>
 
           <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-            <lightning:input aura:id="field" name="leadCreditCheckAcknowledged"
-                             label="I give BlueWave permission to access my credit history."
-                             type="checkbox"
-                             checked="{!v.lead.Credit_Check_Acknowledged__c}"
-                             required="true"/>
-          </lightning:layoutItem>
-
-          <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-            <lightning:input aura:id="field" name="leadUtilityBillAccessAcknowledged"
-                             label="I give BlueWave and its affiliates permission to access my energy billing history."
-                             type="checkbox"
-                             checked="{!v.lead.Utility_Bill_Access_Acknowledged__c}"
-                             required="true"/>
-          </lightning:layoutItem>
-
-
-          <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12" >
             <div class="slds-float_right">
               <lightning:button label="Submit Application" onclick="{!c.finishStage}"/>
             </div>
