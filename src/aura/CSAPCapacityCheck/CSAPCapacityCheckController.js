@@ -59,19 +59,16 @@
     },
 
     finishStage : function(component, event, helper) {
-        var lead = component.get("v.lead");
-        helper.saveSObject(component, lead.Id, "Lead", null, null, lead);
+        var billNotUploaded = !component.get("v.electricBill1") && !component.get('v.isLargeFile');
+        if (billNotUploaded) {
+            alert("Please upload your recent electric bill");
+        }
+        if (helper.validatePageFields(component) && !billNotUploaded) {
+            var lead = component.get("v.lead");
+            lead.CSAP_Stage__c = 'NAV_Capacity_Check';
+            helper.saveSObject(component, lead.Id, "Lead", null, null, lead);
 
-        if (lead.Application_Source_Phase_2__c === 'CSAP Additional Property') {
-            component.set('v.page', 'Done');
-            var stageChangeEvent = $A.get("e.c:CSAPNavigationEvent");
-            stageChangeEvent.setParams({"stageName": "NAV_Credit_Check"});
-            stageChangeEvent.setParams({"options": {"pageName": "CreditAlreadyRun"}});
-            stageChangeEvent.setParams({"eventType": "INITIATED"});
-            stageChangeEvent.setParams({"lead": lead});
-            stageChangeEvent.fire();
-        } else {
-            helper.finishStage(component, event, helper);
+            component.set('v.page', 'ApplicationComplete');
         }
     },
 
@@ -88,4 +85,8 @@
                 $A.enqueueAction(skipToEnd);
             }), 5000);
     },
+
+    handleEBill1 : function(component, event, helper) {
+        helper.handleAttachment(component, event, helper, helper.ELECTRIC_BILL_1);
+    }
 })
