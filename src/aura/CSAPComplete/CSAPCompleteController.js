@@ -4,10 +4,12 @@
         if (options && options.stageName !== 'NAV_Complete') {
             return;
         }
-        var lead = component.get('v.lead');
-        // We don't want to add multiple properties with the same loop. Let's automatically convert the lead
-        var finishStage = component.get('c.finishStage');
-        $A.enqueueAction(finishStage);
+        helper.handleNavEvent(component, event, helper, "Submitting Application");
+        var page = component.get("v.page");
+        if (page === 'Submitting Application') {
+            var finishStage = component.get('c.finishStage');
+            $A.enqueueAction(finishStage);
+        }
     },
     addResidence : function(component, event, helper) {
         helper.addNewLead(component, event, helper,"Residential");
@@ -18,7 +20,7 @@
     finishStage : function(component, event, helper) {
         component.set('v.loading', true);
         component.set('v.loadingText', 'Submitting your application...');
-        helper.convertLeadFunction(component, event, helper);
         component.set("v.page", "Complete");
+        helper.convertLeadFunction(component, event, helper);
     },
 })
