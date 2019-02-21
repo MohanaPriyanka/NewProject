@@ -34974,6 +34974,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>agf__ADM_Scrum_Team__c.Category__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>agf__ADM_Scrum_Team__c.Email_Send_Triggers__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -36350,6 +36355,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Work__c.Link__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Work__c.Outside_Counsel_Involvement__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Work__c.Outside_Counsel_Spend__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -49997,7 +50012,15 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
+        <name>CreateTopics</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
         <name>DataExport</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>DeleteTopics</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -50038,6 +50061,10 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>EditTask</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>EditTopics</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
