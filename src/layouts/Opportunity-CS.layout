@@ -110,19 +110,11 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Utility_Bill_Received__c</field>
+                <field>Utility_Account_Information_Verified__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Current_Utility_Bill__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Green_Button_Data_Received__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Confirmed_Subscription_Size_Correct__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -134,23 +126,15 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Service_Address_and_Name_on_Account_Chk__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Utility_Acct_Verified_on_Contract__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>Contract_Fully_Populated__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Personal_Credit_Report_Reviewed__c</field>
+                <field>Green_Button_Data_Received__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>QC_Call_Complete__c</field>
+                <field>Confirmed_Subscription_Size_Correct__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -330,6 +314,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Customer_Referral__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>QC_Call_Complete__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
