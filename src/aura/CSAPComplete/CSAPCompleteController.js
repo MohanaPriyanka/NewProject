@@ -20,7 +20,6 @@
     finishStage : function(component, event, helper) {
         component.set('v.loading', true);
         component.set('v.loadingText', 'Submitting your application...');
-        component.set("v.page", "Complete");
         helper.convertLeadFunction(component, event, helper);
     },
 })
