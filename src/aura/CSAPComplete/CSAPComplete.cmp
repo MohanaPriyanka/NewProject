@@ -18,49 +18,49 @@
 
       <!--Add More Properties-->
       <aura:if isTrue="{!v.page == 'AddMore'}">
-        <div aria-labelledby="addToApplicationForm">
-          <fieldset class="slds-box slds-theme--default slds-container_center">
-            <legend id="ApplyingFor" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-              <b class="slds-section__title--large slds-p-horizontal_large"> Would you like to add anything to your application? </b>
-            </legend>
-            <lightning:layout multipleRows="true" horizontalAlign="center">
-              <lightning:layoutItem size="3" smallDeviceSize="6" mediumDeviceSize="3">
-              <div class="slds-visual-picker slds-visual-picker_large slds-align--absolute-center">
-                <a onclick="{!c.addResidence}">
-                  <label for="visual-picker-residential">
-                    <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">
-                      <span class="slds-icon_container" title="description of icon when needed">
-                        <lightning:icon class="blueIcon" iconName="utility:home" size="x-large"/>
-                      </span>
-                    </span>
-                    <span class="slds-visual-picker__body">
-                      <div class="slds-text-body--large--blue"><b>Add an entirely different</b></div>
-                      <div class="slds-text-body--large--stream"><b>Home</b></div>
-                    </span>
-                  </label>
-                </a>
-              </div>
-              </lightning:layoutItem>
-              <lightning:layoutItem size="3" smallDeviceSize="6" mediumDeviceSize="3">
-              <div class="slds-visual-picker slds-visual-picker_large slds-align--absolute-center">
-                <a onclick="{!c.addBusiness}">
-                  <label for="visual-picker-business">
-                    <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">
-                      <span class="slds-icon_container" title="description of icon when needed">
-                        <lightning:icon class="blueIcon" iconName="utility:company" size="x-large"/>
-                      </span>
-                    </span>
-                    <span class="slds-visual-picker__body">
-                      <div class="slds-text-body--large--blue"><b>Add an entirely different</b></div>
-                      <div class="slds-text-body--large--stream"><b>Business</b></div>
-                    </span>
-                  </label>
-                </a>
-              </div>
-              </lightning:layoutItem>
-            </lightning:layout>
-          </fieldset>
-        </div>
+        <!--<div aria-labelledby="addToApplicationForm">-->
+          <!--<fieldset class="slds-box slds-theme&#45;&#45;default slds-container_center">-->
+            <!--<legend id="ApplyingFor" class="slds-text-heading&#45;&#45;small slds-p-vertical&#45;&#45;medium slds-align_absolute-center">-->
+              <!--<b class="slds-section__title&#45;&#45;large slds-p-horizontal_large"> Would you like to add anything to your application? </b>-->
+            <!--</legend>-->
+            <!--<lightning:layout multipleRows="true" horizontalAlign="center">-->
+              <!--<lightning:layoutItem size="3" smallDeviceSize="6" mediumDeviceSize="3">-->
+              <!--<div class="slds-visual-picker slds-visual-picker_large slds-align&#45;&#45;absolute-center">-->
+                <!--<a onclick="{!c.addResidence}">-->
+                  <!--<label for="visual-picker-residential">-->
+                    <!--<span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">-->
+                      <!--<span class="slds-icon_container" title="description of icon when needed">-->
+                        <!--<lightning:icon class="blueIcon" iconName="utility:home" size="x-large"/>-->
+                      <!--</span>-->
+                    <!--</span>-->
+                    <!--<span class="slds-visual-picker__body">-->
+                      <!--<div class="slds-text-body&#45;&#45;large&#45;&#45;blue"><b>Add an entirely different</b></div>-->
+                      <!--<div class="slds-text-body&#45;&#45;large&#45;&#45;stream"><b>Home</b></div>-->
+                    <!--</span>-->
+                  <!--</label>-->
+                <!--</a>-->
+              <!--</div>-->
+              <!--</lightning:layoutItem>-->
+              <!--<lightning:layoutItem size="3" smallDeviceSize="6" mediumDeviceSize="3">-->
+              <!--<div class="slds-visual-picker slds-visual-picker_large slds-align&#45;&#45;absolute-center">-->
+                <!--<a onclick="{!c.addBusiness}">-->
+                  <!--<label for="visual-picker-business">-->
+                    <!--<span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">-->
+                      <!--<span class="slds-icon_container" title="description of icon when needed">-->
+                        <!--<lightning:icon class="blueIcon" iconName="utility:company" size="x-large"/>-->
+                      <!--</span>-->
+                    <!--</span>-->
+                    <!--<span class="slds-visual-picker__body">-->
+                      <!--<div class="slds-text-body&#45;&#45;large&#45;&#45;blue"><b>Add an entirely different</b></div>-->
+                      <!--<div class="slds-text-body&#45;&#45;large&#45;&#45;stream"><b>Business</b></div>-->
+                    <!--</span>-->
+                  <!--</label>-->
+                <!--</a>-->
+              <!--</div>-->
+              <!--</lightning:layoutItem>-->
+            <!--</lightning:layout>-->
+          <!--</fieldset>-->
+        <!--</div>-->
 
         <div class="slds-clearfix slds-p-top_medium slds-align_absolute-center">
           <lightning:button label="Submit Application" onclick="{!c.finishStage}"/>

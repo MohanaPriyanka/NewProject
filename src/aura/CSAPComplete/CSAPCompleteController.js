@@ -5,11 +5,9 @@
             return;
         }
         var lead = component.get('v.lead');
-        helper.handleNavEvent(component, event, helper, "AddMore");
-        if (lead.LASERCA__Home_State__c === 'NY') {
-            var finishStage = component.get('c.finishStage');
-            $A.enqueueAction(finishStage);
-        }
+        // We don't want to add multiple properties with the same loop. Let's automatically convert the lead
+        var finishStage = component.get('c.finishStage');
+        $A.enqueueAction(finishStage);
     },
     addResidence : function(component, event, helper) {
         helper.addNewLead(component, event, helper,"Residential");
