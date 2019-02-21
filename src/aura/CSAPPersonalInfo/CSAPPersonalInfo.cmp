@@ -170,7 +170,7 @@
                 <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
                   <lightning:input aura:id="field" name="leadPhone"
                                    type="tel"
-                                   label="Home Phone (optional)"
+                                   label="Phone (optional)"
                                    value="{!v.lead.Phone}"
                                    maxlength="10"/>
                 </lightning:layoutItem>
