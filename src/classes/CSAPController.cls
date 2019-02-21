@@ -196,14 +196,16 @@ public without sharing class CSAPController {
                 Logger.logNow('CSAPController', 'upsertCSAPRecords', 'Bad referral code: ' + referralCode + ', for lead under parent account id: ' + account.Id);
             }
         }
-        String continueApplicationUrl = Util.getCommunitySiteURL('Apply') + '/s/csap?leadId=' + lead.Id;
-        lead.Continue_Application_Link__c = continueApplicationUrl;
 
         upsert lead;
         Lead insertedLead = [
             SELECT LoadZone__c, Utility_relationship__c, Confirm_Utility__c
             FROM Lead
             WHERE Id = :lead.Id];
+
+        String continueApplicationUrl = Util.getCommunitySiteURL('Apply') + '/s/csap?leadId=' + lead.Id;
+        insertedLead.Continue_Application_Link__c = continueApplicationUrl;
+        update insertedLead;
 
         lead.LoadZone__c = insertedLead.LoadZone__c;
         lead.Utility_relationship__c = insertedLead.Utility_relationship__c;
