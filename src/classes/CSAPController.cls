@@ -29,7 +29,7 @@ public without sharing class CSAPController {
                     Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c, Application_Source_Phase_2__c,
                     LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c, ZipCode__c,
                     Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Customer_Referral__c, Owner.Id,
-                    LoadZone__c, Utility_relationship__c
+                    LoadZone__c, Utility_relationship__c, Continue_Application_Link__c
             FROM Lead
             WHERE Id = :leadId
             AND Email = :email

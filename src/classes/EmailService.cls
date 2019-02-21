@@ -46,12 +46,7 @@ public without sharing class EmailService {
             String lastName = lead.LastName;
             String email = lead.Email;
 
-            String continueApplicationUrl;
-            if (lead.Continue_Application_Link__c != null) {
-                continueApplicationUrl = lead.Continue_Application_Link__c;
-            } else {
-                continueApplicationUrl = Util.getCommunitySiteURL('Apply') + '/s/csap?leadId=' + lead.Id;
-            }
+            String continueApplicationUrl = lead.Continue_Application_Link__c;
 
 
 
