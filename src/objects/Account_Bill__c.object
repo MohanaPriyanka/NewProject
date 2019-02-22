@@ -539,6 +539,18 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Credit_Adjustments__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Adjusted Savings from Production type Bill Adjustments</inlineHelpText>
+        <label>Credit Adjustments</label>
+        <summarizedField>System_Bill__c.Credit_Adjustments__c</summarizedField>
+        <summaryForeignKey>System_Bill__c.Account_Bill__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
         <fullName>Credits_on_Bill_Period__c</fullName>
         <externalId>false</externalId>
         <formula>CASE(
@@ -1235,6 +1247,18 @@ New Charges...</inlineHelpText>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Savings_Adjustments__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Adjusted Savings from Production type Bill Adjustments</inlineHelpText>
+        <label>Savings Adjustments</label>
+        <summarizedField>System_Bill__c.Savings_Adjustments__c</summarizedField>
+        <summaryForeignKey>System_Bill__c.Account_Bill__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
     </fields>
     <fields>
         <fullName>Savings_Rollup__c</fullName>
