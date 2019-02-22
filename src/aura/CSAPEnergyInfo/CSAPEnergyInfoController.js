@@ -55,6 +55,8 @@
             if(ual.Lead__c == null){
                 ual.Lead__c = lead.Id;
             }
+            var utility = component.get('v.utility');
+            ual.Name = utility.Name;
             var saveUAL = component.get('c.saveUtilityAccountLog');
             saveUAL.setParams({'ual' : ual});
             saveUAL.setCallback(this, function(resp) {
