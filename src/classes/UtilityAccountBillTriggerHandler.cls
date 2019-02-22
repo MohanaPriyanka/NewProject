@@ -53,20 +53,16 @@ public without sharing class UtilityAccountBillTriggerHandler {
 
         // Get Adjustment List for UAS that belong to the Utility Account Logs
         // Do I need to look into Bill_Adjustments?
-        List<Bill_Adjustment__c> adjustmentList = [ SELECT Id, Name, UASB__c,
-                                                Utility_Account_Subscription__c,
-                                                Adjustment_Amount__c, Discounted_Bill__c,
-                                                Utility_Account_Subscription__r.Id,
-                                                Approval_Status__c
-                                                FROM Bill_Adjustment__c
-                                                WHERE Utility_Account_Subscription__r.Utility_Account_Log__c
-                                                IN : utilityAccountLogIdToUABMap.keySet()
-                                                AND Applied_to_Bill__c = false
-                                                AND Overpayment__c = false
-                                                AND Approval_Status__c = 'Approved'
-                                                ORDER BY CreatedDate];
-
-
+        List<Bill_Adjustment__c> adjustmentList = [
+            SELECT Id, Name, UASB__c, Utility_Account_Subscription__c, Adjustment_Amount__c, Discounted_Bill__c,
+                Utility_Account_Subscription__r.Id, Approval_Status__c, Credits_Allocated__c, Adjustment_Type__c, Discount__c
+            FROM Bill_Adjustment__c
+            WHERE Utility_Account_Subscription__r.Utility_Account_Log__c
+                IN : utilityAccountLogIdToUABMap.keySet()
+            AND Applied_to_Bill__c = FALSE
+            AND Overpayment__c = FALSE
+            AND Approval_Status__c = 'Approved'
+            ORDER BY CreatedDate];
 
         Set<UASB__c> uasbSet = new Set<UASB__c>();
         Map<String, List<Bill_Adjustment__c>> adjustmentsToUpdateMap = new Map<String, List<Bill_Adjustment__c>>();
@@ -125,11 +121,18 @@ public without sharing class UtilityAccountBillTriggerHandler {
                             }
                         }
                         for (Bill_Adjustment__c adjust : adjustmentList) {
-                            if (uasb.Adjustment_Amount__c == NULL) {
-                                uasb.Adjustment_Amount__c = 0;
-                            }
                             if (adjust.Utility_Account_Subscription__r.Id == uasb.Utility_Account_Subscription__c) {
-                                uasb.Adjustment_Amount__c = uasb.Adjustment_Amount__c + adjust.Adjustment_Amount__c;
+                                uasb.Adjustment_Amount__c =
+                                    Util.nullToZero(uasb.Adjustment_Amount__c) + Util.nullToZero(adjust.Adjustment_Amount__c);
+                                // We should only include Production type adjustments in the UASB Adjusted Credit which is
+                                // rolled up to the property account for reporting, since adjustments like BW Credit
+                                // or Client Credit are compensating for BW servicing issues or writing off a balance
+                                if (adjust.Adjustment_Type__c == 'Production') {
+                                    uasb.Adjusted_Credits__c =
+                                        Util.nullToZero(uasb.Adjusted_Credits__c) + Util.nullToZero(adjust.Credits_Allocated__c);
+                                    uasb.Adjusted_Discount__c =
+                                        Util.nullToZero(uasb.Adjusted_Discount__c) + Util.nullToZero(adjust.Discount__c);
+                                }
                                 List<Bill_Adjustment__c> adjustments = new List<Bill_Adjustment__c>();
                                 if (adjustmentsToUpdateMap.containsKey(uasb.Unique_Id__c)) {
                                     adjustments = adjustmentsToUpdateMap.get(uasb.Unique_Id__c);

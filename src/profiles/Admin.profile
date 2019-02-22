@@ -1886,6 +1886,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Credit_Adjustments__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.Credit_Bureau__c</field>
         <readable>true</readable>
@@ -2506,6 +2511,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Savings_Adjustments__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.Scout_Contact__c</field>
         <readable>true</readable>
@@ -2658,6 +2668,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Total_Late_Fees__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Total_Lifetime_Credits_Allocated__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Total_Lifetime_Savings__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2927,6 +2947,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account_Bill__c.Credit_Adjustments__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account_Bill__c.Credits_on_Bill_Period__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -3188,6 +3213,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account_Bill__c.Reason_For_Unpublish__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account_Bill__c.Savings_Adjustments__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -29111,6 +29141,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>System_Bill__c.Credit_Adjustments__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>System_Bill__c.Date_Refunded__c</field>
         <readable>true</readable>
@@ -29338,6 +29373,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>System_Bill__c.Refund_this_Balance__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>System_Bill__c.Savings_Adjustments__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -29913,6 +29953,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>UASB__c.Account_Bill_ID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>UASB__c.Adjusted_Credits__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>UASB__c.Adjusted_Discount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
