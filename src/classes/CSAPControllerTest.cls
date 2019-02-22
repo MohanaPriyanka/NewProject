@@ -178,7 +178,7 @@ public with sharing class CSAPControllerTest {
             System_Assignment__c = 'Automatic - COD Date/Available Capacity',
             Status = 'Ready for Credit Check',
             Electricity_Provider__c = 'Eversource',
-            Application_Source_Phase_1__c = 'CSAP with Partner'
+            Application_Source_Phase_1__c = 'CSAP 2.1 with Partner'
         );
         return lead;
     }
@@ -256,7 +256,7 @@ public with sharing class CSAPControllerTest {
                 Phone = leadToInsert.Phone,
                 LASERCA__Birthdate__c = leadToInsert.LASERCA__Birthdate__c,
                 LASERCA__SSN__c = leadToInsert.LASERCA__SSN__c,
-                Application_Source_Phase_1__c = 'CSAP with Partner',
+                Application_Source_Phase_1__c = 'CSAP 2.1 with Partner',
                 Application_Source_Phase_2__c = 'CSAP Additional Property',
                 Product_line__c = 'Community Solar',
                 OwnerId = leadToInsert.OwnerId,
@@ -349,6 +349,85 @@ public with sharing class CSAPControllerTest {
         System.assertEquals('Unqualified', CSAPController.checkLeadCreditIfQualified(residentialLead.Id).sssCreditQualification);
 
         Test.stopTest();
+    }
+
+    @IsTest
+    static void testSSNDefaultsInSandbox() {
+        Lead residentialLead = getLeadForTest();
+        insert residentialLead;
+
+        CSAPController.pullCreditStatus(residentialLead);
+
+        Lead leadAfterPull = [
+            SELECT Id, LASERCA__SSN__c
+            FROM Lead
+            WHERE Id =: residentialLead.Id
+            LIMIT 1
+        ];
+
+        Organization o = [SELECT IsSandbox FROM Organization LIMIT 1];
+
+        if (o.IsSandbox) {
+            System.assertEquals('000000001', leadAfterPull.LASERCA__SSN__c);
+        } else {
+            System.assertEquals('000000000', leadAfterPull.LASERCA__SSN__c);
+        }
+    }
+
+    @IsTest
+    static void testSSNDefaultsToPAssesForTestcases() {
+        Lead residentialLead = getLeadForTest();
+        residentialLead.LastName = 'testcase';
+        insert residentialLead;
+
+        CSAPController.pullCreditStatus(residentialLead);
+
+        Lead leadAfterPull = [
+            SELECT Id, LASERCA__SSN__c
+            FROM Lead
+            WHERE Id =: residentialLead.Id
+            LIMIT 1
+        ];
+
+        System.assertEquals('000000001', leadAfterPull.LASERCA__SSN__c);
+    }
+
+    @IsTest
+    static void testSSNDefaultsToFailForFailTestcases() {
+        Lead residentialLead = getLeadForTest();
+        residentialLead.LastName = 'testcase';
+        residentialLead.FirstName = 'maxfrozen';
+        insert residentialLead;
+
+        CSAPController.pullCreditStatus(residentialLead);
+
+        Lead leadAfterPull = [
+            SELECT Id, LASERCA__SSN__c
+            FROM Lead
+            WHERE Id =: residentialLead.Id
+            LIMIT 1
+        ];
+
+        System.assertEquals('000000010', leadAfterPull.LASERCA__SSN__c);
+    }
+
+    @IsTest
+    static void testSSNDefaultsToFrozenForFrozenTestcases() {
+        Lead residentialLead = getLeadForTest();
+        residentialLead.LastName = 'testcase';
+        residentialLead.FirstName = 'maxfail';
+        insert residentialLead;
+
+        CSAPController.pullCreditStatus(residentialLead);
+
+        Lead leadAfterPull = [
+            SELECT Id, LASERCA__SSN__c
+            FROM Lead
+            WHERE Id =: residentialLead.Id
+            LIMIT 1
+        ];
+
+        System.assertEquals('000000008', leadAfterPull.LASERCA__SSN__c);
     }
 
     @isTest static void testDefaultReferral(){
@@ -719,7 +798,7 @@ public with sharing class CSAPControllerTest {
                 LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c,
                 Parent_Account__r.Owner.Name, Parent_Account__r.Owner.Id, LoadZone__c, Product_line__c, Utility_relationship__c,
                 Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Date_of_Application__c, Customer_Referral__c,
-                Zipcode__r.LZ__c, Zipcode__r.Utility_Junction_Count__c , Confirm_Utility__c
+                Zipcode__r.LZ__c, Zipcode__r.Utility_Junction_Count__c , Confirm_Utility__c, Continue_Application_Link__c
             FROM Lead
             WHERE Id = :lead.Id];
 
@@ -732,6 +811,8 @@ public with sharing class CSAPControllerTest {
 
         // Check Load Zone (01Qj0000000EZU9) wfr sets lead status
         System.assertEquals('Load Zone Check Needed', lead.Status);
+        System.assert(lead.Continue_Application_Link__c.contains('apply'),'Application Link should contain Apply');
+        System.assert(lead.Continue_Application_Link__c.contains(lead.Id),'Application Link should contain Lead Id');
 
         System.runAs(userRecord) {
             lead.LoadZone__c = 'SEMA';
@@ -1109,5 +1190,89 @@ public with sharing class CSAPControllerTest {
         System.assertEquals(defaultEntity.Gateway__c, newOrders[0].ChargentOrders__Gateway__c);
         System.assertEquals(defaultEntity.Id, newOrders[1].Entity__c);
         System.assertEquals(defaultEntity.Gateway__c, newOrders[1].ChargentOrders__Gateway__c);
+    }
+    @IsTest
+    public static void testHasCapacity() {
+        System.assertEquals(true, CSAPController.hasCapacity('02052'));
+        System.assertEquals(false, CSAPController.hasCapacity('874321'), 'Zipcode is too long');
+        System.assertEquals(false, CSAPController.hasCapacity('02115'), 'Zipcode is not in load zone');
+        System.assertEquals(false, CSAPController.hasCapacity('015'), 'Zipcode is too short');
+    }
+
+    @IsTest
+    public static void testSendEmailForPaymentInfo() {
+        Lead residentialLead = getLeadForTest();
+        insert residentialLead;
+
+        // iSSuccess is dependant on the deliverability setting and those cannot be access from apex
+        // So here, we're testing that we can call the method, not the result
+        Boolean isSuccess = CSAPController.sendEmailForPaymentInfo(residentialLead);
+
+        System.assertNotEquals(null, isSuccess);
+
+        Organization o = [SELECT IsSandbox FROM Organization LIMIT 1];
+        if (!o.IsSandbox) {
+            System.assert(isSuccess, 'failed email send in Prod, deliverability may be off');
+        }
+
+        residentialLead = [
+            SELECT Id, CSAP_Stage__c
+            FROM Lead
+            WHERE id = :residentialLead.Id
+            LIMIT 1
+        ];
+
+        System.assertEquals('NAV_Energy_Information', residentialLead.CSAP_Stage__c);
+    }
+
+    @IsTest
+    public static void testLeadAttachmentsMovedToUAL() {
+        Lead residentialLead = getLeadForTest();
+        insert residentialLead;
+
+        Attachment bill = new Attachment(
+            Name = 'file.pdf',
+            Body = Blob.valueOf('body'),
+            ParentId = residentialLead.Id,
+            Description = 'Electric Bill'
+        );
+        Attachment notBill = new Attachment(
+            Name = 'file.pdf',
+            Body = Blob.valueOf('body'),
+            ParentId = residentialLead.Id,
+            Description = 'Other Document'
+        );
+
+        insert new List<Attachment>{bill, notBill};
+
+        Utility_Account_Log__c utilityAccountLog = new Utility_Account_Log__c(
+            Name = 'testLeadAttachmentsMovedToUAL',
+            Lead__c = residentialLead.Id
+        );
+
+        CSAPController.saveUtilityAccountLog(utilityAccountLog);
+
+        Utility_Account_Log__c ual = [
+            SELECT Id, Lead__c
+            FROM Utility_Account_Log__c
+            WHERE Name = 'testLeadAttachmentsMovedToUAL'
+        ];
+
+        List<Attachment> leadAttachments = [
+            SELECT Name, Description
+            FROM Attachment
+            WHERE ParentId = : ual.Lead__c
+        ];
+
+        List<Attachment> ualAttachments = [
+            SELECT Name, Description
+            FROM Attachment
+            WHERE ParentId = : ual.Id
+        ];
+
+        System.assertEquals(1, leadAttachments.size());
+        System.assertEquals('Other Document', leadAttachments[0].Description);
+        System.assertEquals(1, ualAttachments.size());
+        System.assertEquals('Electric Bill', ualAttachments[0].Description);
     }
 }
