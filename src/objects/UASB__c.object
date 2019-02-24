@@ -76,6 +76,30 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Adjusted_Credits__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of Adjusted Credits Allocated to this UASB from Production Bill Adjustments, used to summarize total savings and total credits on the property account.</inlineHelpText>
+        <label>Adjusted Credits</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Adjusted_Discount__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of Adjusted Discounts to this UASB from Production Bill Adjustments, used to summarize total savings</inlineHelpText>
+        <label>Adjusted Discount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>Adjustment_Amount__c</fullName>
         <defaultValue>0</defaultValue>
         <externalId>false</externalId>
@@ -924,7 +948,7 @@ MONTH(Billing_Period_End_Date__c),
     <sharingModel>ControlledByParent</sharingModel>
     <validationRules>
         <fullName>UASB_Cannot_Be_Edited_After_Published</fullName>
-        <active>true</active>
+        <active>false</active>
         <errorConditionFormula>System_Bill__r.Account_Bill__r.Published__c = True</errorConditionFormula>
         <errorMessage>UASB Cannot Be Edited after Bill is Published</errorMessage>
     </validationRules>

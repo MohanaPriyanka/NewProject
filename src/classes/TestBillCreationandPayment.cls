@@ -393,6 +393,128 @@ public class TestBillCreationandPayment {
         productionupdateA2.Generate_Bills__c = true;
         update productionupdateA2;
     }
+    
+    @IsTest
+    private static void testAdjustmentRollups() {
+        assertAccountTotalRollupsEqualToCalculatedTotals();
+
+        Account accountA = [SELECT Id FROM Account WHERE Name = 'Account A'];
+        List<Bill_Adjustment__c> billAdjustments = [
+            SELECT Id, Credits_Allocated__c, Adjustment_Amount__c, UASB__c, Utility_Account_Subscription__c
+            FROM Bill_Adjustment__c
+            WHERE Utility_Account_Subscription__r.Utility_Account_Log__r.Account__c = : accountA.Id
+            AND Approval_Status__c = 'Unapproved'
+        ];
+        System.assertEquals(1, billAdjustments.size());
+        System.assertEquals(null, billAdjustments[0].Credits_Allocated__c);
+        System.assertEquals(30, billAdjustments[0].Adjustment_Amount__c);
+        System.assertEquals(null, billAdjustments[0].UASB__c);
+
+        billAdjustments[0].Approval_Status__c = 'Approved';
+        billAdjustments[0].Adjustment_Type__c = 'BW Credit';
+        billAdjustments[0].Credits_Allocated__c = 30;
+        update billAdjustments[0];
+
+        Bill_Adjustment__c newAdjustment = new Bill_Adjustment__c(
+            Utility_Account_Subscription__c = billAdjustments[0].Utility_Account_Subscription__c,
+            Adjustment_Type__c = 'Production',
+            Adjustment_Amount__c = 90,
+            Credits_Allocated__c = 100,
+            Approval_Status__c = 'Approved',
+            Reason_For_Adjustment__c = 'Production adjustment'
+        );
+        insert newAdjustment;
+
+        Test.startTest();
+        // We need to create a new production update, generate bills, and publish it to get new adjustments reflected
+        List<Energy_Usage_Update__c> energyUsageUpdates = [
+            SELECT Id, Name, Shared_Solar_System__c, Schedule_Z__c, Production__c, Net_Metering_Rate_Applied__c,
+                Billing_Period_End_Date__c, Total_System_NMCs__c, Date__c
+            FROM Energy_Usage_Update__c
+            WHERE Name = 'sssA - March 2016'
+        ];
+        System.assertEquals(1, energyUsageUpdates.size());
+        Energy_Usage_Update__c aprilEUU = energyUsageUpdates[0].clone(false);
+        aprilEUU.Date__c = aprilEUU.Date__c.addMonths(1);
+        insert aprilEUU;
+        aprilEUU.Generate_Bills__c = true;
+        update aprilEUU;
+        setBillsToPublished();
+
+        billAdjustments = [
+            SELECT Id, UASB__c, UASB__r.Adjustment_Amount__c, Adjustment_Amount__c
+            FROM Bill_Adjustment__c
+            WHERE Id IN (:billAdjustments[0].Id, :newAdjustment.Id)
+        ];
+        System.assertEquals(billAdjustments[0].Adjustment_Amount__c + billAdjustments[1].Adjustment_Amount__c, billAdjustments[0].UASB__r.Adjustment_Amount__c);
+        assertAccountTotalRollupsEqualToCalculatedTotals();
+        Test.stopTest();
+    }
+
+    private static void assertAccountTotalRollupsEqualToCalculatedTotals() {
+        Map<Id, Account> accountMap = new Map<Id, Account>([
+            SELECT Id, Name, Total_Savings__c, Total_Net_Metering_Credits_Allocated__c, Savings_Adjustments__c, Credit_Adjustments__c,
+            (
+                SELECT Id, Savings__c FROM System_Bills__r
+            )
+            FROM Account
+            WHERE Total_Savings__c > 0
+        ]);
+
+        Map<Id, AccountWrapper> calculatedAccountTotalMap = getCalculatedAccountTotalsMap();
+        for (Account account : accountMap.values()) {
+            if (calculatedAccountTotalMap.containsKey(account.Id)) {
+                System.assertEquals(calculatedAccountTotalMap.get(account.Id).totalSavings, account.Total_Savings__c + account.Savings_Adjustments__c);
+                System.debug(LoggingLevel.ERROR, account.Total_Savings__c);
+                System.assertEquals(calculatedAccountTotalMap.get(account.Id).totalNMCs, account.Total_Net_Metering_Credits_Allocated__c + account.Credit_Adjustments__c);
+            } else {
+                System.assert(false, 'Expected all accounts with a total savings to have a calculated total too:' + account);
+            }
+        }
+    }
+
+    private static Map<Id, AccountWrapper> getCalculatedAccountTotalsMap() {
+        List<UASB__c> uasbs = [
+            SELECT Id, System_Bill__r.Account_Bill__r.Parent_Account__c, Credits_Allocated__c, Discounted_Bill__c, Savings__c,
+            (
+                SELECT Id, Credits_Allocated__c, Discount__c, Adjustment_Amount__c
+                FROM Bill_Adjustments__r
+                WHERE Adjustment_Type__c = 'Production'
+            )
+            FROM UASB__c
+        ];
+
+        Map<Id, AccountWrapper> accountIdToAccountMap = new Map<Id, AccountWrapper>();
+        // Calculate Total Savings and Total Credits Allocated including adjustments
+        for (UASB__c uasb : uasbs) {
+            Decimal adjustedSavings = 0, adjustedCredits = 0;
+            for (Bill_Adjustment__c billAdjustment : uasb.Bill_Adjustments__r) {
+                adjustedSavings += Util.nullToZero(billAdjustment.Discount__c);
+                adjustedCredits += Util.nullToZero(billAdjustment.Credits_Allocated__c);
+            }
+
+            AccountWrapper acct = accountIdToAccountMap.get(uasb.System_Bill__r.Account_Bill__r.Parent_Account__c);
+            if (acct == null) {
+                acct = new AccountWrapper();
+                accountIdToAccountMap.put(uasb.System_Bill__r.Account_Bill__r.Parent_Account__c, acct);
+            }
+            acct.accountId = uasb.System_Bill__r.Account_Bill__r.Parent_Account__c;
+            acct.totalSavings += uasb.Credits_Allocated__c + adjustedSavings - uasb.Discounted_Bill__c;
+            acct.totalNMCs += uasb.Credits_Allocated__c + adjustedCredits;
+        }
+        return accountIdToAccountMap;
+    }
+
+    private class AccountWrapper {
+        public Id accountId;
+        public Decimal totalSavings;
+        public Decimal totalNMCs;
+
+        public AccountWrapper() {
+            totalSavings = 0;
+            totalNMCs = 0;
+        }
+    }
 
     static void setBillsToPublished() {
         List <Account_Bill__c> listAccountBills = [
