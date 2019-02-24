@@ -4,7 +4,8 @@
     <customButtons>Account_info_Page</customButtons>
     <customButtons>Customer_Billing_Summary</customButtons>
     <customButtons>Submit_Bill_Adjustment</customButtons>
-    <excludeButtons>DataDotComCompanyHierarchy</excludeButtons>
+    <excludeButtons>DataDotComAccountInsights</excludeButtons>
+    <excludeButtons>DataDotComClean</excludeButtons>
     <excludeButtons>DisableCustomerPortalAccount</excludeButtons>
     <excludeButtons>DisablePartnerPortalAccount</excludeButtons>
     <excludeButtons>IncludeOffline</excludeButtons>
@@ -68,9 +69,6 @@
         <label>Billing Address</label>
         <layoutColumns>
             <layoutItems>
-                <emptySpace>true</emptySpace>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Address_Attn__c</field>
             </layoutItems>
@@ -100,6 +98,9 @@
                 <emptySpace>true</emptySpace>
             </layoutItems>
             <layoutItems>
+                <emptySpace>true</emptySpace>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Last_Bill_Send_Date__c</field>
             </layoutItems>
@@ -117,6 +118,14 @@
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Net_Metering_Credits_Allocated__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Credit_Adjustments__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Total_Lifetime_Credits_Allocated__c</field>
             </layoutItems>
             <layoutItems>
                 <emptySpace>true</emptySpace>
@@ -167,6 +176,14 @@
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Total_Savings__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Savings_Adjustments__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Total_Lifetime_Savings__c</field>
             </layoutItems>
             <layoutItems>
                 <emptySpace>true</emptySpace>
