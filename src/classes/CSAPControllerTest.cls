@@ -798,7 +798,7 @@ public with sharing class CSAPControllerTest {
                 LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c,
                 Parent_Account__r.Owner.Name, Parent_Account__r.Owner.Id, LoadZone__c, Product_line__c, Utility_relationship__c,
                 Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Date_of_Application__c, Customer_Referral__c,
-                Zipcode__r.LZ__c, Zipcode__r.Utility_Junction_Count__c , Confirm_Utility__c
+                Zipcode__r.LZ__c, Zipcode__r.Utility_Junction_Count__c , Confirm_Utility__c, Continue_Application_Link__c
             FROM Lead
             WHERE Id = :lead.Id];
 
@@ -811,6 +811,8 @@ public with sharing class CSAPControllerTest {
 
         // Check Load Zone (01Qj0000000EZU9) wfr sets lead status
         System.assertEquals('Load Zone Check Needed', lead.Status);
+        System.assert(lead.Continue_Application_Link__c.contains('apply'),'Application Link should contain Apply');
+        System.assert(lead.Continue_Application_Link__c.contains(lead.Id),'Application Link should contain Lead Id');
 
         System.runAs(userRecord) {
             lead.LoadZone__c = 'SEMA';
