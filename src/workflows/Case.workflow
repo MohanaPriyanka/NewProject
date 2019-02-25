@@ -63,11 +63,11 @@
     <rules>
         <fullName>Case Close %3A Response to Customer Email</fullName>
         <actions>
-            <name>Case_Close_Response_to_Customer_Email</name>
+            <name>Case_Close_Email_Alert_to_Customer</name>
             <type>Alert</type>
         </actions>
         <active>true</active>
-        <formula>AND( ISCHANGED(IsClosed),        IsClosed = TRUE,        OR( ISPICKVAL(Origin,  &quot;Email&quot;),           ISPICKVAL(Origin,  &quot;Web&quot;)),      CreatedDate &gt; DATETIMEVALUE(DATE(2017,05,09)),      RecordType.Id =&quot;012j00000000HA8AAM&quot;,       Disable_Followup_Email__c != true,      SuppliedEmail != &apos;mailer-daemon@salesforce.com&apos;  )</formula>
+        <formula>AND( ISCHANGED(IsClosed),        IsClosed = TRUE,        OR( ISPICKVAL(Origin,  &quot;Email&quot;),           ISPICKVAL(Origin,  &quot;Web&quot;)),      CreatedDate &gt; DATETIMEVALUE(DATE(2017,05,09)),      RecordType.Id !=&quot;012j0000000uhAOAAY&quot;,       Disable_Followup_Email__c = true,      SuppliedEmail != &apos;mailer-daemon@salesforce.com&apos;  )</formula>
         <triggerType>onAllChanges</triggerType>
     </rules>
     <rules>
