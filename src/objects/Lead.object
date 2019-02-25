@@ -1430,6 +1430,17 @@ This field can be changed to a formula consistent with the other factors if LASE
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Continue_Application_Link__c</fullName>
+        <description>A generic URL field that can be set by a UI to provide a link specific to this lead</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Stores URL to visit an application as this lead</inlineHelpText>
+        <label>Continue Application Link</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Url</type>
+    </fields>
+    <fields>
         <fullName>Continue_Loan_Application_Link__c</fullName>
         <externalId>false</externalId>
         <formula>&quot;https://bluewavememberportal.force.com/apply/s/loan-application?leadId=&quot; &amp; Id</formula>

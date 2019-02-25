@@ -46,9 +46,10 @@ public without sharing class EmailService {
             String lastName = lead.LastName;
             String email = lead.Email;
 
-            String continueApplicationUrl =
-                Util.getCommunitySiteURL('Apply') + '/s/csap?leadId=' + lead.Id;
-
+            String continueApplicationUrl = lead.Continue_Application_Link__c;
+            if (continueApplicationUrl == null) {
+                continueApplicationUrl = Util.getCommunitySiteURL('Apply') + '/s/csap?leadId=' + lead.Id;
+            }
 
             String htmlbody = getCSCustomerRequestPaymentInfoHtml();
             String subject = 'Congrats! ' +  firstName +
