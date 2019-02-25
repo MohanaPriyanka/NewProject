@@ -4,9 +4,9 @@
         if (options && options.stageName !== 'NAV_Complete') {
             return;
         }
-        var lead = component.get('v.lead');
-        helper.handleNavEvent(component, event, helper, "AddMore");
-        if (lead.LASERCA__Home_State__c === 'NY') {
+        helper.handleNavEvent(component, event, helper, "Submitting Application");
+        var page = component.get("v.page");
+        if (page === 'Submitting Application') {
             var finishStage = component.get('c.finishStage');
             $A.enqueueAction(finishStage);
         }
@@ -21,6 +21,5 @@
         component.set('v.loading', true);
         component.set('v.loadingText', 'Submitting your application...');
         helper.convertLeadFunction(component, event, helper);
-        component.set("v.page", "Complete");
     },
 })

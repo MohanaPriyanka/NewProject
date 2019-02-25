@@ -38,10 +38,10 @@
     <aura:if isTrue="{!v.page == 'AboutYourself'}">
       <div aria-labelledby="aboutYourselfForm">
         <fieldset class="slds-box slds-theme--default slds-container_center">
-          <legend id="aboutYourselfForm" class="slds-text-heading--small slds-align_absolute-center">
+          <legend id="aboutYourselfForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
             <b class=" slds-section__title--large slds-p-horizontal_large">  Great News!  </b>
           </legend>
-          <div class="slds-p-bottom--medium slds-text-body--regular slds-align--absolute-center">
+          <div class="slds-p-bottom--medium slds-align--absolute-center">
             <b> There is a project in your area! We'll need more information:
             </b>
           </div>

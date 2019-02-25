@@ -14,74 +14,21 @@
     <div class="slds-text-body--regular slds-align_absolute-center">
       {!v.loadingText}
     </div>
-    <aura:set attribute="else">
+  </aura:if>
 
-      <!--Add More Properties-->
-      <aura:if isTrue="{!v.page == 'AddMore'}">
-        <div aria-labelledby="addToApplicationForm">
-          <fieldset class="slds-box slds-theme--default slds-container_center">
-            <legend id="ApplyingFor" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-              <b class="slds-section__title--large slds-p-horizontal_large"> Would you like to add anything to your application? </b>
-            </legend>
-            <lightning:layout multipleRows="true" horizontalAlign="center">
-              <lightning:layoutItem size="3" smallDeviceSize="6" mediumDeviceSize="3">
-              <div class="slds-visual-picker slds-visual-picker_large slds-align--absolute-center">
-                <a onclick="{!c.addResidence}">
-                  <label for="visual-picker-residential">
-                    <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">
-                      <span class="slds-icon_container" title="description of icon when needed">
-                        <lightning:icon class="blueIcon" iconName="utility:home" size="x-large"/>
-                      </span>
-                    </span>
-                    <span class="slds-visual-picker__body">
-                      <div class="slds-text-body--large--blue"><b>Add an entirely different</b></div>
-                      <div class="slds-text-body--large--stream"><b>Home</b></div>
-                    </span>
-                  </label>
-                </a>
-              </div>
-              </lightning:layoutItem>
-              <lightning:layoutItem size="3" smallDeviceSize="6" mediumDeviceSize="3">
-              <div class="slds-visual-picker slds-visual-picker_large slds-align--absolute-center">
-                <a onclick="{!c.addBusiness}">
-                  <label for="visual-picker-business">
-                    <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">
-                      <span class="slds-icon_container" title="description of icon when needed">
-                        <lightning:icon class="blueIcon" iconName="utility:company" size="x-large"/>
-                      </span>
-                    </span>
-                    <span class="slds-visual-picker__body">
-                      <div class="slds-text-body--large--blue"><b>Add an entirely different</b></div>
-                      <div class="slds-text-body--large--stream"><b>Business</b></div>
-                    </span>
-                  </label>
-                </a>
-              </div>
-              </lightning:layoutItem>
-            </lightning:layout>
-          </fieldset>
-        </div>
-
-        <div class="slds-clearfix slds-p-top_medium slds-align_absolute-center">
-          <lightning:button label="Submit Application" onclick="{!c.finishStage}"/>
-        </div>
-      </aura:if>
-
-      <!--Completed App Message-->
-      <aura:if isTrue="{!v.page == 'Complete'}">
-            <lightning:layout aura:id="passedCreditText" class="animated" multipleRows="true" horizontalAlign="center">
-              <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-                <div class="slds-align--absolute-center">
-                  <p><b class="slds-text-body--large--blue">Thanks for your Community Solar Application! We’ll email you your contract shortly!</b></p>
-                </div>
-              </lightning:layoutItem>
-              <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-                <div class="slds-align--absolute-center">
-                  <p><b class="slds-text-body--xx_large--stream"> Thank you!</b></p>
-                </div>
-              </lightning:layoutItem>
-            </lightning:layout>
-      </aura:if>
-    </aura:set>
+  <!--Completed App Message-->
+  <aura:if isTrue="{!v.page == 'Complete'}">
+    <fieldset class="slds-box slds-theme--default slds-container_center slds-size--2-of-3">
+      <legend id="aboutYourselfForm" class="slds-text-heading--medium slds-p-vertical--medium slds-align_absolute-center">
+        <b class="slds-p-horizontal_large"> Congratulations! </b>
+      </legend>
+      <div class="slds-p-bottom--medium slds-align--absolute-center">
+        <b> Your Community Solar application is now complete!
+        </b>
+      </div>
+      <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
+        <b> Check your email for your contract! </b>
+      </div>
+    </fieldset>
   </aura:if>
 </aura:component>

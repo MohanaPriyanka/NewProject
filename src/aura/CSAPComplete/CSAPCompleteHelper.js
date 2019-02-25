@@ -75,6 +75,7 @@
                 this.logError("CSAPCompleteHelper", "convertLeadFunction", resp.getError(), component.get("v.lead"));
             }
             component.set('v.loading', false);
+            component.set('v.page', 'Complete');
         });
         $A.enqueueAction(action);
     }
