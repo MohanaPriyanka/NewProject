@@ -332,6 +332,14 @@ public with sharing class CSAPControllerTest {
         System.assertEquals(true, containsSmartProduct);
         System.assertEquals(false, containsNonSmartProduct);
 
+        Group csInsideSales = [
+            SELECT Id, Name
+            FROM Group
+            WHERE Type = 'Queue'
+            AND DeveloperName = 'CS_Inside_Sales'
+            LIMIT 1
+        ];
+
         User apiUser = [SELECT Id, Name, Username
         FROM User
         WHERE Name = 'API'
@@ -340,7 +348,7 @@ public with sharing class CSAPControllerTest {
 
         System.assertEquals('API', residentialLead.Parent_Account__r.Owner.Name);
         System.assertNotEquals('User Testing', residentialLead.Parent_Account__r.Owner.Name);
-        System.assertEquals(apiUser.Id, residentialLead.OwnerId);
+        System.assertEquals(csInsideSales.Id, residentialLead.OwnerId);
 
         //Check for un-qualified
         LASERCA__Personal_Credit_Report__c pcr = [SELECT LASERCA__Credit_Score__c FROM LASERCA__Personal_Credit_Report__c WHERE LASERCA__Lead__c = :leadToInsert.Id];

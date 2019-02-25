@@ -300,11 +300,29 @@ public without sharing class CSAPController {
     public static Lead convertCSLead(Id leadId, String email) {
         Lead primaryLead = getLead(leadId, email);
         List<Lead> leads = [
-            SELECT Id
+            SELECT Id, OwnerId
             FROM Lead
             WHERE Parent_Account__c = :primaryLead.Parent_Account__c
             AND Status = 'Qualified'
         ];
+
+        // make sure that the lead owner is a user, if not set it to API
+        Boolean updatedLeadOwner = false;
+        User apiUser = [SELECT Id, Name, Username
+        FROM User
+        WHERE Name = 'API'
+        AND IsActive = True
+        LIMIT 1];
+        for (Lead lead : leads) {
+            String ownerId = (String) lead.OwnerId;
+            if (!ownerId.substring(0,2).contains('005')) {
+                lead.OwnerId = apiUser.Id;
+                updatedLeadOwner = true;
+            }
+        }
+        if (updatedLeadOwner) {
+            update leads;
+        }
 
         List<Database.LeadConvert> leadConverts = new List<Database.LeadConvert>();
         for (Lead leadToConvert : leads) {
@@ -348,6 +366,13 @@ public without sharing class CSAPController {
         AND IsActive = TRUE
         LIMIT 1];
 
+        Group csInsideSales = [
+            SELECT Id, Name
+            FROM Group
+            WHERE Type = 'Queue'
+            AND DeveloperName = 'CS_Inside_Sales'
+            LIMIT 1
+        ];
 
         Account account = new Account(
             RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId(),
@@ -365,7 +390,7 @@ public without sharing class CSAPController {
         );
         insert account;
         lead.Parent_Account__c = account.Id;
-        lead.OwnerId = apiUser.Id;
+        lead.OwnerId = csInsideSales.Id;
 
         lead.Partner_Lookup__c = customerPartner.Id;
         if(customerPartner.Email__c != null){
