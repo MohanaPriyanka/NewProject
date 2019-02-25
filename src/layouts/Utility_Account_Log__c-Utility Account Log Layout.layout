@@ -88,6 +88,10 @@
                 <behavior>Edit</behavior>
                 <field>Date_Utility_Account_Cancelled__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Rate_Class__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
