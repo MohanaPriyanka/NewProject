@@ -3962,12 +3962,27 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>BlueWave_Blog__c.Audience__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>BlueWave_Blog__c.Blog_Type__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>BlueWave_Blog__c.Body__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>BlueWave_Blog__c.Estimated_Publish_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>BlueWave_Blog__c.Example_Blogs__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
