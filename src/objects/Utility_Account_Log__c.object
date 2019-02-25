@@ -443,6 +443,20 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Rate_Class__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Rate Class entered from utility bill. Only populate for SMART and NY product subscriptions.</inlineHelpText>
+        <label>Rate Class</label>
+        <referenceTo>Utility_NMC_Tariff__c</referenceTo>
+        <relationshipLabel>Utility Account Logs (Rate Class)</relationshipLabel>
+        <relationshipName>Utility_Account_Logs1</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Service_Address_Formula__c</fullName>
         <externalId>false</externalId>
         <formula>Account__r.Street_Address__c</formula>
