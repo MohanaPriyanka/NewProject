@@ -24242,6 +24242,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Opportunity.Utility_Account_Information_Verified__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.Utility_Account__c</field>
         <readable>true</readable>
     </fieldPermissions>
