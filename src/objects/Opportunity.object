@@ -7823,18 +7823,6 @@ Product_Line__c = &apos;Community Solar&apos;,  Utility_Account__c, null)</formu
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Utility_Account_Information_Verified__c</fullName>
-        <defaultValue>false</defaultValue>
-        <description>Used in utility account QC for CS app</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Used in utility account QC for CS app</inlineHelpText>
-        <label>Utility Account Information Verified</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Utility_Account__c</fullName>
         <externalId>false</externalId>
         <label>Utility Account #</label>
