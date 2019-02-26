@@ -548,7 +548,7 @@ IF(Contract_Status__c =&quot;Completed&quot;,&quot;Completed&quot;,&quot;Incompl
 and(
 Contract_Fully_Populated__c =true,    
 Confirmed_Subscription_Size_Correct__c =true,  
-Utility_Account_Information_Verified__c =true,
+Service_Address_and_Name_on_Account_Chk__c =true,
  Load_Zone_Quality_Check__c =true,
  Current_Utility_Bill__c = true,
  Green_Button_Data_Received__c = true
@@ -6659,8 +6659,10 @@ if(and( isnull(Disbursal_1_Contract_Signature_Checkbox__c )=False,isnull( Disbur
     <fields>
         <fullName>Service_Address_and_Name_on_Account_Chk__c</fullName>
         <defaultValue>false</defaultValue>
+        <description>Used in utility account QC for CS app</description>
         <externalId>false</externalId>
-        <label>Service Address and Name on Account Chk</label>
+        <inlineHelpText>Used in utility account QC for CS app</inlineHelpText>
+        <label>Utility Account Information Verified</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
