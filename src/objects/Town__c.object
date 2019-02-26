@@ -170,7 +170,9 @@
     </fields>
     <fields>
         <fullName>State__c</fullName>
+        <description>List of States</description>
         <externalId>false</externalId>
+        <inlineHelpText>List of States</inlineHelpText>
         <label>State</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
@@ -179,74 +181,7 @@
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>CA</fullName>
-                    <default>false</default>
-                    <label>CA</label>
-                </value>
-                <value>
-                    <fullName>CT</fullName>
-                    <default>false</default>
-                    <label>CT</label>
-                </value>
-                <value>
-                    <fullName>MA</fullName>
-                    <default>false</default>
-                    <label>MA</label>
-                </value>
-                <value>
-                    <fullName>ME</fullName>
-                    <default>false</default>
-                    <label>ME</label>
-                </value>
-                <value>
-                    <fullName>NC</fullName>
-                    <default>false</default>
-                    <label>NC</label>
-                </value>
-                <value>
-                    <fullName>NJ</fullName>
-                    <default>false</default>
-                    <label>NJ</label>
-                </value>
-                <value>
-                    <fullName>NY</fullName>
-                    <default>false</default>
-                    <label>NY</label>
-                </value>
-                <value>
-                    <fullName>RI</fullName>
-                    <default>false</default>
-                    <label>RI</label>
-                </value>
-                <value>
-                    <fullName>SC</fullName>
-                    <default>false</default>
-                    <label>SC</label>
-                </value>
-                <value>
-                    <fullName>TX</fullName>
-                    <default>false</default>
-                    <label>TX</label>
-                </value>
-                <value>
-                    <fullName>VA</fullName>
-                    <default>false</default>
-                    <label>VA</label>
-                </value>
-                <value>
-                    <fullName>VT</fullName>
-                    <default>false</default>
-                    <label>VT</label>
-                </value>
-                <value>
-                    <fullName>OR</fullName>
-                    <default>false</default>
-                    <label>OR</label>
-                </value>
-            </valueSetDefinition>
+            <valueSetName>State_abbreviations</valueSetName>
         </valueSet>
     </fields>
     <fields>
