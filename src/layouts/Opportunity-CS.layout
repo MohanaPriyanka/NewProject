@@ -110,7 +110,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Utility_Account_Information_Verified__c</field>
+                <field>Service_Address_and_Name_on_Account_Chk__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
