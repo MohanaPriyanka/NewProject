@@ -13,10 +13,6 @@
                 component.set("v.loading", false);
                 component.set("v.hasCapacity", "No");
                 component.set("v.noCapacityReason", "NYHasSolar");
-            } else if (lead && lead.LASERCA__Home_State__c === 'NY' && lead.Application_Type__c === 'Non-Residential') {
-                component.set("v.loading", false);
-                component.set("v.hasCapacity", "No");
-                component.set("v.noCapacityReason", "NYNonResidential");
             } else if (lead && lead.Id) {
                 component.set("v.loadingText", "Returning the results...");
                 var hasAvailableCapacityAction = component.get("c.hasAvailableCapacity");
