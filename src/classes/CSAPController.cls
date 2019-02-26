@@ -308,11 +308,13 @@ public without sharing class CSAPController {
 
         // make sure that the lead owner is a user, if not set it to API
         Boolean updatedLeadOwner = false;
-        User apiUser = [SELECT Id, Name, Username
-        FROM User
-        WHERE Name = 'API'
-        AND IsActive = True
-        LIMIT 1];
+        User apiUser = [
+            SELECT Id, Name, Username
+            FROM User
+            WHERE Name = 'API'
+            AND IsActive = True
+            LIMIT 1
+        ];
         for (Lead lead : leads) {
             String ownerId = (String) lead.OwnerId;
             if (!ownerId.substring(0,2).contains('005')) {
@@ -470,18 +472,15 @@ public without sharing class CSAPController {
         lead.CSAP_Stage__c = 'NAV_Energy_Information';
         update lead;
 
-        // *** Turning this off per Inside Sales 2/21/2019, emails will be sent manually
-        // *** To turn back on, remove the 'return true;' line below this and uncomment the remainder of the method
-        return true;
-//        EmailService.createCSCustomerRequestPaymentInfoEmails(new List<Lead>{lead});
-//        Messaging.SendEmailResult[] result = EmailService.sendMessages();
-//
-//        if (!result.isEmpty() && result[0].isSuccess()) {
-//            return true;
-//        } else {
-//            String message = 'Message did not send for lead: ' + lead.Id + '. Error: ' + result[0].getErrors();
-//            Logger.logNow('CSAPController', 'sendEmailForPaymentInfo', message , 'Error');
-//            return false;
-//        }
+        EmailService.createCSCustomerRequestPaymentInfoEmails(new List<Lead>{lead});
+        Messaging.SendEmailResult[] result = EmailService.sendMessages();
+
+        if (!result.isEmpty() && result[0].isSuccess()) {
+            return true;
+        } else {
+            String message = 'Message did not send for lead: ' + lead.Id + '. Error: ' + result[0].getErrors();
+            Logger.logNow('CSAPController', 'sendEmailForPaymentInfo', message , 'Error');
+            return false;
+        }
     }
 }
