@@ -1,0 +1,15 @@
+/**
+ * Created by Sarah Renfro on 2/15/2019.
+ */
+.THIS .horizontalRadio .slds-form-element__control .slds-radio{
+    display : inline-block !important;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: 260px;
+    margin-right: 50px;
+    margin-left: 80px;
+
+}
+.THIS .horizontalRadio .slds-form-element__label {
+    font-size: medium;
+}

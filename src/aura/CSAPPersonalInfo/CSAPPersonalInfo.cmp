@@ -11,10 +11,9 @@
   <aura:attribute name="ShowDateError" type="Boolean"/>
   <aura:attribute name="splitZones" type="String[]"/>
   <aura:attribute name="splitUtilities" type="Object[]"/>
-
   <aura:attribute name="options" type="List" default="[
       {'label': 'This is my home', 'value': 'Residential'},
-      {'label': 'This is my business/organization', 'value': 'Non-Residential'}
+      {'label': 'This is my business or non-profit', 'value': 'Non-Residential'}
       ]"/>
   <aura:attribute name="applicationType" type="String" default="Residential"/>
 
@@ -37,14 +36,18 @@
   <aura:if isTrue="{!not(v.loading)}">
     <aura:if isTrue="{!v.page == 'AboutYourself'}">
       <div aria-labelledby="aboutYourselfForm">
-        <fieldset class="slds-box slds-theme--default slds-container_center">
-          <legend id="aboutYourselfForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-            <b class=" slds-section__title--large slds-p-horizontal_large">  Great News!  </b>
+        <fieldset class="slds-box slds-theme--default slds-container_center slds-size--2-of-3">
+          <legend id="aboutYourselfForm" class="slds-text-heading--medium slds-p-vertical--small slds-align_absolute-center">
+            <b class="slds-p-horizontal_large">  Great news, we have a project in your area!  </b>
           </legend>
-          <div class="slds-p-bottom--medium slds-align--absolute-center">
-            <b> There is a project in your area! We'll need more information:
-            </b>
+          <div class="slds-align--absolute-center slds-p-horizontal--medium slds-text-align--center">
+            <b> To continue, please provide your contact information and billing address so we can verify your eligibility
+              for this community solar project and contact you regarding your application. We take privacy and security
+              seriously, and never share your personal information without your consent. </b>
           </div>
+           <div class="slds-p-bottom--medium slds-align--absolute-center">
+             <b>Check out our <lightning:formattedUrl value="https://bluewavesolar.com/privacy-policy" label="Privacy Policy" tooltip="Go to Privacy Policy"/></b>
+           </div>
           <form class="slds-form--stacked">
             <lightning:layout multipleRows="true">
               <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
@@ -136,27 +139,39 @@
               </lightning:layoutItem>
             </lightning:layout>
             <lightning:layout>
-              <lightning:layoutItem size="12" smallDeviceSize="12" flexibility="auto" class="slds-align--absolute-center">
+              <lightning:layoutItem size="12" smallDeviceSize="12" class="slds-align--absolute-center">
                 <div class="slds-align--absolute-center slds-text-body--regular">
                   <lightning:radioGroup aura:id="field"
                                         name="radioApplicationType"
                                         options="{!v.options}"
                                         value="{!v.applicationType}"
                                         type="radio"
-                                        class="horizontalRadio slds-form-element__horizontal"/>
+                                        class="horizontalRadio slds-text-align--center slds-form-element__horizontal"/>
                 </div>
               </lightning:layoutItem>
             </lightning:layout>
           </form>
+          <aura:if isTrue="{!v.applicationType == 'Residential'}">
+            <div class="slds-clearfix">
+              <div class="slds-clearfix slds-p-top_medium">
+                <div class="slds-float_right">
+                  <aura:if isTrue="{!v.lead.Application_Source_Phase_2__c != null}">
+                    <lightning:button label="Cancel Adding Property" onclick="{!c.cancelAddProperty}"/>
+                  </aura:if>
+                  <lightning:button label="Next" onclick="{!c.goToCheckCapacity}"/>
+                </div>
+              </div>
+            </div>
+          </aura:if>
         </fieldset>
       </div>
 
       <!--BUSINESS FORM-->
       <aura:if isTrue="{!v.applicationType == 'Non-Residential'}">
         <div aria-labelledby="businessForm">
-          <fieldset class="slds-box slds-theme--default slds-container_center">
-            <legend id="businessForm" class="slds-text-heading--small slds-p-vertical--medium slds-section__title--large slds-align_absolute-center">
-              <b class="slds-section__title--large slds-p-horizontal_large"> Tell us a bit about your business  </b>
+          <fieldset class="slds-box slds-theme--default slds-container_center slds-size--2-of-3">
+            <legend id="businessForm" class="slds-text-heading--medium slds-p-vertical--medium slds-align_absolute-center">
+              <b class="slds-p-horizontal_large"> Tell us a bit about your business or non-profit </b>
             </legend>
             <form class="slds-form--stacked">
               <lightning:layout multipleRows="true">
@@ -215,44 +230,20 @@
                                    required="true"/>
                 </lightning:layoutItem>
               </lightning:layout>
-
-              <lightning:layout multipleRows="true">
-                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
-                  <lightning:input aura:id="field" name="leadNumberOfYearsinBusiness"
-                                   type="number"
-                                   min="0"
-                                   max="200"
-                                   label="How many years has the business been in operation?"
-                                   value="{!v.lead.Number_of_Years_in_Business__c}"
-                                   required="true"/>
-                </lightning:layoutItem>
-                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
-                  <lightning:input aura:id="field" name="leadNumberOfYearsatLocation"
-                                   type="number"
-                                   min="0"
-                                   max="200"
-                                   label="How many years has the business been at its current location?"
-                                   value="{!v.lead.Number_of_Years_at_Location__c}"
-                                   required="false"/>
-                </lightning:layoutItem>
-              </lightning:layout>
             </form>
+            <div class="slds-clearfix">
+              <div class="slds-clearfix slds-p-top_medium">
+                <div class="slds-float_right">
+                  <aura:if isTrue="{!v.lead.Application_Source_Phase_2__c != null}">
+                    <lightning:button label="Cancel Adding Property" onclick="{!c.cancelAddProperty}"/>
+                  </aura:if>
+                  <lightning:button label="Next" onclick="{!c.goToCheckCapacity}"/>
+                </div>
+              </div>
+            </div>
           </fieldset>
         </div>
       </aura:if>
-
-
-      <!--BUTTON FOR PAGE-->
-      <div class="slds-clearfix">
-        <div class="slds-clearfix slds-p-top_medium">
-          <div class="slds-float_right">
-            <aura:if isTrue="{!v.lead.Application_Source_Phase_2__c != null}">
-              <lightning:button label="Cancel Adding Property" onclick="{!c.cancelAddProperty}"/>
-            </aura:if>
-            <lightning:button label="Next" onclick="{!c.goToCheckCapacity}"/>
-          </div>
-        </div>
-      </div>
     </aura:if>
 
 
@@ -261,40 +252,38 @@
     <!--For NY, does not ask for Load Zone - uses first returned -->
     <aura:if isTrue="{!v.page == 'SplitLoadZone'}">
       <div>
-        <fieldset class="slds-box slds-theme--default slds-container_center">
-          <legend id="homeAddressForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-            <b class="slds-section__title--large slds-p-horizontal_large"> Help us find you </b>
+        <fieldset class="slds-box slds-theme--default slds-container_center slds-size--2-of-3">
+          <legend id="utilityCheck" class="slds-text-heading--medium slds-p-vertical--medium slds-align_absolute-center">
+            <b class="slds-p-horizontal_large"> Help us find you </b>
           </legend>
           <form class="slds-form--stacked">
-            <div class="slds-p-around--small slds-text-body--regular">
+            <div class="slds-p-horizontal--medium slds-p-bottom--medium slds-text-align--center">
               <b>
                 <aura:if isTrue="{!v.lead.State == 'Massachusetts'}">
-                  Your zip code is serviced by multiple Load Zones or multiple Utilities. Please consult your utility bill
+                  <b>Your zip code is serviced by multiple Load Zones or multiple Utilities. Please consult your utility bill
                   (for National Grid customers) or
-                  <a target="_blank" href="https://static1.squarespace.com/static/56fbfd2d37013b142d331d72/t/580fcb5a9de4bb7cf17a798b/1477430108492/RE_MA_Utility_Load_Zones_web.pdf">
-                    this map
-                  </a>
-                  (for Eversource) to provide us with your Load Zone or Utility so we can see if we have solar projects that can service you.
+                    <lightning:formattedUrl value="https://static1.squarespace.com/static/56fbfd2d37013b142d331d72/t/580fcb5a9de4bb7cf17a798b/1477430108492/RE_MA_Utility_Load_Zones_web.pdf" label="this map" tooltip="Go to Eversource Map"/>
+                    (for Eversource) to provide us with your Load Zone or Utility so we can see if we have solar projects that can service you. </b>
                   <aura:set attribute="else">
                     <aura:if isTrue="{!v.lead.State == 'New York'}">
-                      Please select your Utility or Load Zone from the list below. You can find this information on your utility bill, or by entering your address in
-                      <a target="_blank" href="https://www.arcgis.com/home/webmap/viewer.html?url=https://services1.arcgis.com/Lsfphzk53dXVltQC/ArcGIS/rest/services/NYISO_Zones/FeatureServer/0&amp;source=sd">
-                        this map
-                      </a>.
+                      <b>Please select your Utility or Load Zone from the list below. You can find this information on your utility bill, or by entering your address in
+                        <lightning:formattedUrl value="https://www.arcgis.com/home/webmap/viewer.html?url=https://services1.arcgis.com/Lsfphzk53dXVltQC/ArcGIS/rest/services/NYISO_Zones/FeatureServer/0&amp;source=sd" label="this map." tooltip="Go to NY Map"/>
+                      </b>
                       <aura:set attribute="else">
-                        Please select your Utility or Load Zone from the list below. You can find this information on your utility bill.
+                        <b>Please select your Utility or Load Zone from the list below. You can find this information on your utility bill. </b>
                       </aura:set>
                     </aura:if>
                   </aura:set>
                 </aura:if>
               </b>
             </div>
-            <lightning:layout multipleRows="true">
+            <lightning:layout multipleRows="true" horizontalAlign="center">
               <aura:if isTrue="{!v.splitZones.length > 1}">
-                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                <lightning:layoutItem padding="around-small" size="4" smallDeviceSize="12" mediumDeviceSize="6">
                   <lightning:select aura:id="loadZone" name="loadZone"
                                     label="Load Zone"
                                     value="{!v.lead.LoadZone__c}"
+                                    class="slds-align--absolute-center"
                                     required="true">
                     <option value="{!v.lead.LoadZone__c}">Choose Load Zone...</option>
                     <aura:iteration items="{!v.splitZones}" var="loadZone">
@@ -304,9 +293,10 @@
                 </lightning:layoutItem>
               </aura:if>
               <aura:if isTrue="{!v.splitUtilities.length > 1}">
-                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                <lightning:layoutItem padding="around-small" size="4" smallDeviceSize="12" mediumDeviceSize="6">
                   <lightning:select aura:id="utility" name="utility"
-                                    label="Utility"
+                                    label="Utility:"
+                                    class="slds-align--absolute-center"
                                     value="{!v.lead.Utility_relationship__c}"
                                     required="true">
                     <option value="{!v.lead.Utility_relationship__c}">Choose Utility...</option>
@@ -318,14 +308,14 @@
               </aura:if>
             </lightning:layout>
           </form>
-        </fieldset>
-      </div>
-      <div class="slds-clearfix">
-        <div class="slds-clearfix slds-p-top_medium">
-          <div class="slds-float_right">
-            <lightning:button label="Next" onclick="{!c.saveUnsplitZone}"/>
+          <div class="slds-clearfix">
+            <div class="slds-clearfix slds-p-top_medium">
+              <div class="slds-float_right">
+                <lightning:button label="Next" onclick="{!c.saveUnsplitZone}"/>
+              </div>
+            </div>
           </div>
-        </div>
+        </fieldset>
       </div>
     </aura:if>
   </aura:if>

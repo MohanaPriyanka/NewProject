@@ -27,7 +27,8 @@
     },
 
     checkForEnter : function(component, event, helper) {
-        if (event.getParams().keyCode == 13) {
+        if (event.which === 13) {
+            event.preventDefault();
             helper.login(component, event, helper);
         }
     },

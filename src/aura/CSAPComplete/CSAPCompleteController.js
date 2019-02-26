@@ -11,12 +11,12 @@
             $A.enqueueAction(finishStage);
         }
     },
-    addResidence : function(component, event, helper) {
-        helper.addNewLead(component, event, helper,"Residential");
-    },
-    addBusiness : function(component, event, helper) {
-        helper.addNewLead(component, event, helper,"Non-Residential");
-    },
+    // addResidence : function(component, event, helper) {
+    //     helper.addNewLead(component, event, helper,"Residential");
+    // },
+    // addBusiness : function(component, event, helper) {
+    //     helper.addNewLead(component, event, helper,"Non-Residential");
+    // },
     finishStage : function(component, event, helper) {
         component.set('v.loading', true);
         component.set('v.loadingText', 'Submitting your application...');
