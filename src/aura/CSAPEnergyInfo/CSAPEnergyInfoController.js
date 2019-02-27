@@ -37,7 +37,6 @@
         if (component.get("v.abbrevStates") && component.get("v.abbrevStates").length === 0) {
             helper.getUSStates(component, "v.abbrevStates", true);
         }
-        helper.clearAttachments(component, event, helper);
     },
 
     goToUtilityAccountInformation : function(component, event, helper) {
