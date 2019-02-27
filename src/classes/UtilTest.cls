@@ -185,4 +185,54 @@ public with sharing class UtilTest {
         System.assertEquals(expectedSameAsLength, Util.obscureText(textToObscure, textToObscure.length()));
         System.assertEquals(expectedSameAsLength, Util.obscureText(textToObscure, 9999));
     }
+
+    @IsTest
+    public static void testReparentAttachment() {
+        Lead residentialLead = new Lead(
+            LastName = 'testcase',
+            Company = 'Util'
+        );
+        insert residentialLead;
+
+        Attachment bill = new Attachment(
+            Name = 'file.pdf',
+            Body = Blob.valueOf('body'),
+            ParentId = residentialLead.Id,
+            Description = 'Electric Bill'
+        );
+        Attachment notBill = new Attachment(
+            Name = 'file.pdf',
+            Body = Blob.valueOf('body'),
+            ParentId = residentialLead.Id,
+            Description = 'Other Document'
+        );
+
+        List<Attachment> newLeadAttachments = new List<Attachment>{bill, notBill};
+
+        insert newLeadAttachments ;
+
+        Utility_Account_Log__c utilityAccountLog = new Utility_Account_Log__c(
+            Name = 'testLeadAttachmentsMovedToUAL',
+            Lead__c = residentialLead.Id
+        );
+
+        insert utilityAccountLog;
+
+        Util.reparentAttachments(newLeadAttachments , utilityAccountLog.Id);
+
+        List<Attachment> leadAttachments = [
+            SELECT Name, Description
+            FROM Attachment
+            WHERE ParentId = : utilityAccountLog.Lead__c
+        ];
+
+        List<Attachment> ualAttachments = [
+            SELECT Name, Description
+            FROM Attachment
+            WHERE ParentId = : utilityAccountLog.Id
+        ];
+
+        System.assertEquals(0, leadAttachments.size());
+        System.assertEquals(2, ualAttachments.size());
+    }
 }

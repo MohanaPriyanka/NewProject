@@ -1670,6 +1670,14 @@
         <picklistValues>
             <picklist>Task_Performed__c</picklist>
             <values>
+                <fullName>25%25 ISA Payment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>75%25 ISA Payment</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Acquisition</fullName>
                 <default>false</default>
             </values>
@@ -1826,6 +1834,10 @@
                 <default>false</default>
             </values>
             <values>
+                <fullName>MassACA</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Meeting</fullName>
                 <default>false</default>
             </values>
@@ -1918,6 +1930,10 @@
                 <default>false</default>
             </values>
             <values>
+                <fullName>SIS Payment</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>SMART</fullName>
                 <default>false</default>
             </values>
@@ -1999,6 +2015,10 @@
             </values>
             <values>
                 <fullName>Utility Construction</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Utility Design</fullName>
                 <default>false</default>
             </values>
         </picklistValues>

@@ -37,7 +37,6 @@
         if (component.get("v.abbrevStates") && component.get("v.abbrevStates").length === 0) {
             helper.getUSStates(component, "v.abbrevStates", true);
         }
-        helper.clearAttachments(component, event, helper);
     },
 
     goToUtilityAccountInformation : function(component, event, helper) {
@@ -49,31 +48,25 @@
             var ual = component.get("v.ual");
             var lead = component.get("v.lead");
 
-            //TODO - Add the Electricty_Provider__c on the ual
-            //Save the lead record for the Utility
-            //lead.Electricty_Provider__c = ual.Electricty_Provider__c;
             component.set("v.loading", true);
             component.set("v.loadingText", "Saving utility account information...");
-            helper.saveSObject(component, lead.Id, "Lead", null, null, lead);
 
             if(ual.Lead__c == null){
                 ual.Lead__c = lead.Id;
             }
-            if(ual.Id){
-                var ualPromise = helper.saveSObject(component, ual.Id, "Utility_Account_Log__c", null, null, ual);
-                ualPromise.then($A.getCallback(function resolve(retVal) {
-                    component.set("v.ual", retVal);
+            var utility = component.get('v.utility');
+            ual.Name = utility.Name;
+            var saveUAL = component.get('c.saveUtilityAccountLog');
+            saveUAL.setParams({'ual' : ual});
+            saveUAL.setCallback(this, function(resp) {
+                if (resp.getState() === 'SUCCESS') {
                     component.set("v.page", "AddMoreUAL");
                     component.set("v.loading", false);
-                }));
-            }else{
-                var ualPromise = helper.insertSObject(component, ual);
-                ualPromise.then($A.getCallback(function resolve(retVal) {
-                    component.set("v.ual", retVal);
-                    component.set("v.page", "AddMoreUAL");
-                    component.set("v.loading", false);
-                }));
-            }
+                }else{
+                    helper.logError("CSAPEnergyInfoController", "goToAddMore", resp.getError(), lead);
+                }
+            });
+            $A.enqueueAction(saveUAL);
         }
     },
     cancelAddUAL : function(component, event, helper) {
