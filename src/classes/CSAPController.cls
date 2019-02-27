@@ -219,6 +219,9 @@ public without sharing class CSAPController {
                 LASERCA__Home_State__c, Application_Type__c, Utility_relationship__c, LoadZone__c
             FROM Lead
             WHERE Id = :leadId];
+        if (lead.Utility_relationship__c == null || lead.LoadZone__c == null) {
+            return false;
+        }
         String sssQuery = 'SELECT Id, Product__r.Name  ';
         sssQuery +=       'FROM Shared_Solar_System__c ';
         sssQuery +=       'WHERE Open__c = true ';

@@ -1283,4 +1283,15 @@ public with sharing class CSAPControllerTest {
         System.assertEquals(1, ualAttachments.size());
         System.assertEquals('Electric Bill', ualAttachments[0].Description);
     }
+
+    @IsTest
+    public static void testZipcodeNotFoundLoadZone() {
+        Lead residentialLead = getLeadForTest();
+        residentialLead.Parcel_Zip__c = '12345';
+        residentialLead.LASERCA__Home_Zip__c = '12345';
+
+        insert residentialLead;
+
+        System.assertEquals(false, CSAPController.hasAvailableCapacity(residentialLead.Id));
+    }
 }
