@@ -1363,9 +1363,19 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
+                    <fullName>Bug</fullName>
+                    <default>false</default>
+                    <label>Bug</label>
+                </value>
+                <value>
                     <fullName>Data Update</fullName>
                     <default>false</default>
                     <label>Data Update</label>
+                </value>
+                <value>
+                    <fullName>Duplicate</fullName>
+                    <default>false</default>
+                    <label>Duplicate</label>
                 </value>
                 <value>
                     <fullName>Enhanced Code</fullName>
@@ -1398,24 +1408,9 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
                     <label>No Longer an Issue</label>
                 </value>
                 <value>
-                    <fullName>Question</fullName>
+                    <fullName>Not a support case</fullName>
                     <default>false</default>
-                    <label>Question</label>
-                </value>
-                <value>
-                    <fullName>User Error</fullName>
-                    <default>false</default>
-                    <label>User Error</label>
-                </value>
-                <value>
-                    <fullName>Resolved with KB article</fullName>
-                    <default>false</default>
-                    <label>Resolved with KB article</label>
-                </value>
-                <value>
-                    <fullName>Resolved by external team</fullName>
-                    <default>false</default>
-                    <label>Resolved by external team</label>
+                    <label>Not a support case</label>
                 </value>
                 <value>
                     <fullName>Other</fullName>
@@ -1423,20 +1418,24 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
                     <label>Other</label>
                 </value>
                 <value>
-                    <fullName>Duplicate</fullName>
+                    <fullName>Question</fullName>
                     <default>false</default>
-                    <label>Duplicate</label>
+                    <label>Question</label>
                 </value>
                 <value>
-                    <fullName>Not a support case</fullName>
+                    <fullName>Resolved by external team</fullName>
                     <default>false</default>
-                    <label>Not a support case</label>
+                    <label>Resolved by external team</label>
                 </value>
                 <value>
-                    <fullName>Bug</fullName>
+                    <fullName>Resolved with KB article</fullName>
                     <default>false</default>
-                    <isActive>false</isActive>
-                    <label>Bug</label>
+                    <label>Resolved with KB article</label>
+                </value>
+                <value>
+                    <fullName>User Error</fullName>
+                    <default>false</default>
+                    <label>User Error</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -3640,6 +3639,37 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <businessProcess>Product Support</businessProcess>
         <label>Product Support</label>
         <picklistValues>
+            <picklist>Resolution__c</picklist>
+            <values>
+                <fullName>Bug</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Data Update</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Duplicate</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Modify Access</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No Longer an Issue</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Question</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>User Error</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Assignee_If_Different__c</picklist>
             <values>
                 <fullName>Alex Schulte</fullName>
@@ -3987,33 +4017,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
             <values>
                 <fullName>User didn%27t attend training</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Resolution__c</picklist>
-            <values>
-                <fullName>Data Update</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Duplicate</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Modify Access</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>No Longer an Issue</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Question</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>User Error</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
