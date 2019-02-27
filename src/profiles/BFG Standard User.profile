@@ -28374,6 +28374,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Snapshot_Report_Object__c.Customer_Care_Cases__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Snapshot_Report_Object__c.Days_Since_Last_Contact__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -28385,6 +28390,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Snapshot_Report_Object__c.Last_Contact_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Snapshot_Report_Object__c.Partner_Support_Cases__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

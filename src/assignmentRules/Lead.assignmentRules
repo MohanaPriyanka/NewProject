@@ -17,6 +17,7 @@
                 <operation>equals</operation>
                 <value>Solar for my business</value>
             </criteriaItems>
+            <template>CS_Application_Email_Notifications/Lead_Assignment_Notification</template>
         </ruleEntry>
         <ruleEntry>
             <assignedTo>BPD</assignedTo>
@@ -32,6 +33,7 @@
                 <operation>equals</operation>
                 <value>Solar project development</value>
             </criteriaItems>
+            <template>CS_Application_Email_Notifications/Lead_Assignment_Notification</template>
         </ruleEntry>
         <ruleEntry>
             <assignedTo>CSBD_Partners</assignedTo>
@@ -41,6 +43,7 @@
                 <operation>equals</operation>
                 <value>Selling community solar</value>
             </criteriaItems>
+            <template>CS_Application_Email_Notifications/Lead_Assignment_Notification</template>
         </ruleEntry>
         <ruleEntry>
             <assignedTo>CSBD_Clients</assignedTo>
@@ -50,15 +53,7 @@
                 <operation>equals</operation>
                 <value>Community Solar services</value>
             </criteriaItems>
-        </ruleEntry>
-        <ruleEntry>
-            <assignedTo>C_I</assignedTo>
-            <assignedToType>Queue</assignedToType>
-            <criteriaItems>
-                <field>Lead.Record_Type_ID__c</field>
-                <operation>equals</operation>
-                <value>0120a000000LT8n</value>
-            </criteriaItems>
+            <template>CS_Application_Email_Notifications/Lead_Assignment_Notification</template>
         </ruleEntry>
         <ruleEntry>
             <assignedTo>Loan_BD</assignedTo>
@@ -68,6 +63,7 @@
                 <operation>equals</operation>
                 <value>Providing rooftop solar financing</value>
             </criteriaItems>
+            <template>CS_Application_Email_Notifications/Lead_Assignment_Notification</template>
         </ruleEntry>
         <ruleEntry>
             <assignedTo>People</assignedTo>
@@ -77,6 +73,7 @@
                 <operation>equals</operation>
                 <value>Joining the BlueWave team</value>
             </criteriaItems>
+            <template>CS_Application_Email_Notifications/Lead_Assignment_Notification</template>
         </ruleEntry>
         <ruleEntry>
             <assignedTo>Marketing</assignedTo>
@@ -85,6 +82,7 @@
                 <field>Lead.Product_Interest__c</field>
                 <operation>notEqual</operation>
             </criteriaItems>
+            <template>CS_Application_Email_Notifications/Lead_Assignment_Notification</template>
         </ruleEntry>
         <ruleEntry>
             <assignedTo>nate@questenergysolutions.com</assignedTo>

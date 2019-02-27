@@ -1,0 +1,7 @@
+<p>A new lead has been assigned to you or a queue you belong to:</p>
+<p>&nbsp;</p>
+<p>Name: {!Lead.FirstName} {!Lead.LastName}</p>
+<p>&nbsp;</p>
+<p>Email: {!Lead.Email}</p>
+<p>&nbsp;</p>
+<p><a href="{!Lead.Link}">Link to Lead</a></p>
