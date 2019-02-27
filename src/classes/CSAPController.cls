@@ -220,6 +220,9 @@ public without sharing class CSAPController {
                 LASERCA__Home_State__c, Application_Type__c, Utility_relationship__c, LoadZone__c
             FROM Lead
             WHERE Id = :leadId];
+        if (lead.Utility_relationship__c == null || lead.LoadZone__c == null) {
+            return false;
+        }
         String sssQuery = 'SELECT Id, Product__r.Name  ';
         sssQuery +=       'FROM Shared_Solar_System__c ';
         sssQuery +=       'WHERE Open__c = true ';
@@ -301,11 +304,31 @@ public without sharing class CSAPController {
     public static Lead convertCSLead(Id leadId, String email) {
         Lead primaryLead = getLead(leadId, email);
         List<Lead> leads = [
-            SELECT Id
+            SELECT Id, OwnerId
             FROM Lead
             WHERE Parent_Account__c = :primaryLead.Parent_Account__c
             AND Status = 'Qualified'
         ];
+
+        // make sure that the lead owner is a user, if not set it to API
+        Boolean updatedLeadOwner = false;
+        User apiUser = [
+            SELECT Id, Name, Username
+            FROM User
+            WHERE Name = 'API'
+            AND IsActive = True
+            LIMIT 1
+        ];
+        for (Lead lead : leads) {
+            String ownerId = (String) lead.OwnerId;
+            if (lead.OwnerId.getSobjectType() != User.SObjectType) {
+                lead.OwnerId = apiUser.Id;
+                updatedLeadOwner = true;
+            }
+        }
+        if (updatedLeadOwner) {
+            update leads;
+        }
 
         List<Database.LeadConvert> leadConverts = new List<Database.LeadConvert>();
         for (Lead leadToConvert : leads) {
@@ -349,6 +372,13 @@ public without sharing class CSAPController {
         AND IsActive = TRUE
         LIMIT 1];
 
+        Group csInsideSales = [
+            SELECT Id, Name
+            FROM Group
+            WHERE Type = 'Queue'
+            AND DeveloperName = 'CS_Inside_Sales'
+            LIMIT 1
+        ];
 
         Account account = new Account(
             RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId(),
@@ -366,7 +396,7 @@ public without sharing class CSAPController {
         );
         insert account;
         lead.Parent_Account__c = account.Id;
-        lead.OwnerId = apiUser.Id;
+        lead.OwnerId = csInsideSales.Id;
 
         lead.Partner_Lookup__c = customerPartner.Id;
         if(customerPartner.Email__c != null){
@@ -426,6 +456,20 @@ public without sharing class CSAPController {
     }
 
     @AuraEnabled
+    public static void saveUtilityAccountLog(Utility_Account_Log__c ual) {
+        upsert ual;
+
+        List<Attachment> utilityBills = [
+            SELECT Name, Body, ContentType, Description
+            FROM Attachment
+            WHERE ParentId = : ual.Lead__c
+            AND Description LIKE '%electric bill%'
+        ];
+
+        Util.reparentAttachments(utilityBills, ual.Id);
+    }
+
+    @AuraEnabled
     public static Boolean sendEmailForPaymentInfo(Lead lead) {
         lead = getLead(lead.Id, lead.Email);
 
@@ -433,18 +477,15 @@ public without sharing class CSAPController {
         update lead;
 
 
-        // *** Turning this off per Inside Sales 2/21/2019, emails will be sent manually
-        // *** To turn back on, remove the 'return true;' line below this and uncomment the remainder of the method
-        return true;
-//        EmailService.createCSCustomerRequestPaymentInfoEmails(new List<Lead>{lead});
-//        Messaging.SendEmailResult[] result = EmailService.sendMessages();
-//
-//        if (!result.isEmpty() && result[0].isSuccess()) {
-//            return true;
-//        } else {
-//            String message = 'Message did not send for lead: ' + lead.Id + '. Error: ' + result[0].getErrors();
-//            Logger.logNow('CSAPController', 'sendEmailForPaymentInfo', message , 'Error');
-//            return false;
-//        }
+        EmailService.createCSCustomerRequestPaymentInfoEmails(new List<Lead>{lead});
+        Messaging.SendEmailResult[] result = EmailService.sendMessages();
+
+        if (!result.isEmpty() && result[0].isSuccess()) {
+            return true;
+        } else {
+            String message = 'Message did not send for lead: ' + lead.Id + '. Error: ' + result[0].getErrors();
+            Logger.logNow('CSAPController', 'sendEmailForPaymentInfo', message , 'Error');
+            return false;
+        }
     }
 }

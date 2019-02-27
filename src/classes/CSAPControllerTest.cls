@@ -332,6 +332,14 @@ public with sharing class CSAPControllerTest {
         System.assertEquals(true, containsSmartProduct);
         System.assertEquals(false, containsNonSmartProduct);
 
+        Group csInsideSales = [
+            SELECT Id, Name
+            FROM Group
+            WHERE Type = 'Queue'
+            AND DeveloperName = 'CS_Inside_Sales'
+            LIMIT 1
+        ];
+
         User apiUser = [SELECT Id, Name, Username
         FROM User
         WHERE Name = 'API'
@@ -340,7 +348,7 @@ public with sharing class CSAPControllerTest {
 
         System.assertEquals('API', residentialLead.Parent_Account__r.Owner.Name);
         System.assertNotEquals('User Testing', residentialLead.Parent_Account__r.Owner.Name);
-        System.assertEquals(apiUser.Id, residentialLead.OwnerId);
+        System.assertEquals(csInsideSales.Id, residentialLead.OwnerId);
 
         //Check for un-qualified
         LASERCA__Personal_Credit_Report__c pcr = [SELECT LASERCA__Credit_Score__c FROM LASERCA__Personal_Credit_Report__c WHERE LASERCA__Lead__c = :leadToInsert.Id];
@@ -1223,5 +1231,67 @@ public with sharing class CSAPControllerTest {
         ];
 
         System.assertEquals('NAV_Energy_Information', residentialLead.CSAP_Stage__c);
+    }
+
+    @IsTest
+    public static void testLeadAttachmentsMovedToUAL() {
+        Lead residentialLead = getLeadForTest();
+        insert residentialLead;
+
+        Attachment bill = new Attachment(
+            Name = 'file.pdf',
+            Body = Blob.valueOf('body'),
+            ParentId = residentialLead.Id,
+            Description = 'Electric Bill'
+        );
+        Attachment notBill = new Attachment(
+            Name = 'file.pdf',
+            Body = Blob.valueOf('body'),
+            ParentId = residentialLead.Id,
+            Description = 'Other Document'
+        );
+
+        insert new List<Attachment>{bill, notBill};
+
+        Utility_Account_Log__c utilityAccountLog = new Utility_Account_Log__c(
+            Name = 'testLeadAttachmentsMovedToUAL',
+            Lead__c = residentialLead.Id
+        );
+
+        CSAPController.saveUtilityAccountLog(utilityAccountLog);
+
+        Utility_Account_Log__c ual = [
+            SELECT Id, Lead__c
+            FROM Utility_Account_Log__c
+            WHERE Name = 'testLeadAttachmentsMovedToUAL'
+        ];
+
+        List<Attachment> leadAttachments = [
+            SELECT Name, Description
+            FROM Attachment
+            WHERE ParentId = : ual.Lead__c
+        ];
+
+        List<Attachment> ualAttachments = [
+            SELECT Name, Description
+            FROM Attachment
+            WHERE ParentId = : ual.Id
+        ];
+
+        System.assertEquals(1, leadAttachments.size());
+        System.assertEquals('Other Document', leadAttachments[0].Description);
+        System.assertEquals(1, ualAttachments.size());
+        System.assertEquals('Electric Bill', ualAttachments[0].Description);
+    }
+
+    @IsTest
+    public static void testZipcodeNotFoundLoadZone() {
+        Lead residentialLead = getLeadForTest();
+        residentialLead.Parcel_Zip__c = '12345';
+        residentialLead.LASERCA__Home_Zip__c = '12345';
+
+        insert residentialLead;
+
+        System.assertEquals(false, CSAPController.hasAvailableCapacity(residentialLead.Id));
     }
 }
