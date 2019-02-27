@@ -320,7 +320,7 @@ public without sharing class CSAPController {
         ];
         for (Lead lead : leads) {
             String ownerId = (String) lead.OwnerId;
-            if (!ownerId.substring(0,2).contains('005')) {
+            if (lead.OwnerId.getSobjectType() != User.SObjectType) {
                 lead.OwnerId = apiUser.Id;
                 updatedLeadOwner = true;
             }
