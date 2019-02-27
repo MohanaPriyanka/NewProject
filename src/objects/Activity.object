@@ -838,69 +838,14 @@
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
-                    <fullName>IX Applications</fullName>
+                    <fullName>25% ISA Payment</fullName>
                     <default>false</default>
-                    <label>IX Applications</label>
+                    <label>25% ISA Payment</label>
                 </value>
                 <value>
-                    <fullName>ESS Application</fullName>
+                    <fullName>75% ISA Payment</fullName>
                     <default>false</default>
-                    <label>ESS Application</label>
-                </value>
-                <value>
-                    <fullName>SIS</fullName>
-                    <default>false</default>
-                    <label>SIS</label>
-                </value>
-                <value>
-                    <fullName>Detailed Study</fullName>
-                    <default>false</default>
-                    <label>Detailed Study</label>
-                </value>
-                <value>
-                    <fullName>Net-Metering</fullName>
-                    <default>false</default>
-                    <label>Net-Metering</label>
-                </value>
-                <value>
-                    <fullName>SRECS</fullName>
-                    <default>false</default>
-                    <label>SRECS</label>
-                </value>
-                <value>
-                    <fullName>SMART</fullName>
-                    <default>false</default>
-                    <label>SMART</label>
-                </value>
-                <value>
-                    <fullName>ISA</fullName>
-                    <default>false</default>
-                    <label>ISA</label>
-                </value>
-                <value>
-                    <fullName>Payment/Deadline</fullName>
-                    <default>false</default>
-                    <label>Payment/Deadline</label>
-                </value>
-                <value>
-                    <fullName>EPC</fullName>
-                    <default>false</default>
-                    <label>EPC Construction</label>
-                </value>
-                <value>
-                    <fullName>Telcom Construction</fullName>
-                    <default>false</default>
-                    <label>Telcom Construction</label>
-                </value>
-                <value>
-                    <fullName>Utility Construction</fullName>
-                    <default>false</default>
-                    <label>Utility Construction</label>
-                </value>
-                <value>
-                    <fullName>Asset Management</fullName>
-                    <default>false</default>
-                    <label>Asset Management</label>
+                    <label>75% ISA Payment</label>
                 </value>
                 <value>
                     <fullName>Acquisition</fullName>
@@ -911,6 +856,11 @@
                     <fullName>Admin (Salesforce, organization, planning, management)</fullName>
                     <default>false</default>
                     <label>Admin (Salesforce, organization, planning, management)</label>
+                </value>
+                <value>
+                    <fullName>Asset Management</fullName>
+                    <default>false</default>
+                    <label>Asset Management</label>
                 </value>
                 <value>
                     <fullName>Blast Letter</fullName>
@@ -976,6 +926,16 @@
                     <fullName>Engagement</fullName>
                     <default>false</default>
                     <label>Engagement</label>
+                </value>
+                <value>
+                    <fullName>EPC</fullName>
+                    <default>false</default>
+                    <label>EPC Construction</label>
+                </value>
+                <value>
+                    <fullName>ESS Application</fullName>
+                    <default>false</default>
+                    <label>ESS Application</label>
                 </value>
                 <value>
                     <fullName>Event</fullName>
@@ -1048,9 +1008,19 @@
                     <label>Investor Relations</label>
                 </value>
                 <value>
+                    <fullName>ISA</fullName>
+                    <default>false</default>
+                    <label>ISA</label>
+                </value>
+                <value>
                     <fullName>ISO NE</fullName>
                     <default>false</default>
                     <label>ISO NE</label>
+                </value>
+                <value>
+                    <fullName>IX Applications</fullName>
+                    <default>false</default>
+                    <label>IX Applications</label>
                 </value>
                 <value>
                     <fullName>IX Meetings</fullName>
@@ -1068,6 +1038,11 @@
                     <label>Mailer</label>
                 </value>
                 <value>
+                    <fullName>MassACA</fullName>
+                    <default>false</default>
+                    <label>MassACA</label>
+                </value>
+                <value>
                     <fullName>Meeting</fullName>
                     <default>false</default>
                     <label>Meeting</label>
@@ -1081,6 +1056,11 @@
                     <fullName>Modeling</fullName>
                     <default>false</default>
                     <label>Modeling</label>
+                </value>
+                <value>
+                    <fullName>Net-Metering</fullName>
+                    <default>false</default>
+                    <label>Net-Metering</label>
                 </value>
                 <value>
                     <fullName>Off-site meetings</fullName>
@@ -1101,6 +1081,11 @@
                     <fullName>Partnerships</fullName>
                     <default>false</default>
                     <label>Partnerships</label>
+                </value>
+                <value>
+                    <fullName>Payment/Deadline</fullName>
+                    <default>false</default>
+                    <label>Payment/Deadline</label>
                 </value>
                 <value>
                     <fullName>Permitting</fullName>
@@ -1178,6 +1163,21 @@
                     <label>Sent to Scout</label>
                 </value>
                 <value>
+                    <fullName>Detailed Study</fullName>
+                    <default>false</default>
+                    <label>SIS (Detailed)</label>
+                </value>
+                <value>
+                    <fullName>SIS</fullName>
+                    <default>false</default>
+                    <label>SIS (Impact)</label>
+                </value>
+                <value>
+                    <fullName>SIS Payment</fullName>
+                    <default>false</default>
+                    <label>SIS Payment</label>
+                </value>
+                <value>
                     <fullName>Site Origination</fullName>
                     <default>false</default>
                     <label>Site Origination</label>
@@ -1188,9 +1188,24 @@
                     <label>Site Visit</label>
                 </value>
                 <value>
+                    <fullName>SMART</fullName>
+                    <default>false</default>
+                    <label>SMART</label>
+                </value>
+                <value>
                     <fullName>Social Media</fullName>
                     <default>false</default>
                     <label>Social Media</label>
+                </value>
+                <value>
+                    <fullName>SREC (and other Incentive Programs)</fullName>
+                    <default>false</default>
+                    <label>SREC (and other Incentive Programs)</label>
+                </value>
+                <value>
+                    <fullName>SRECS</fullName>
+                    <default>false</default>
+                    <label>SRECS</label>
                 </value>
                 <value>
                     <fullName>Stage 1 Pre-Development - DD Stage and Site Acq</fullName>
@@ -1243,14 +1258,24 @@
                     <label>System Operations</label>
                 </value>
                 <value>
+                    <fullName>Telcom Construction</fullName>
+                    <default>false</default>
+                    <label>Telcom Construction</label>
+                </value>
+                <value>
                     <fullName>Third Party Interests (Scouts &amp; Offtake)</fullName>
                     <default>false</default>
                     <label>Third Party Interests (Scouts &amp; Offtake)</label>
                 </value>
                 <value>
-                    <fullName>SREC (and other Incentive Programs)</fullName>
+                    <fullName>Utility Construction</fullName>
                     <default>false</default>
-                    <label>SREC (and other Incentive Programs)</label>
+                    <label>Utility Construction</label>
+                </value>
+                <value>
+                    <fullName>Utility Design</fullName>
+                    <default>false</default>
+                    <label>Utility Design</label>
                 </value>
             </valueSetDefinition>
             <valueSettings>
@@ -1344,6 +1369,10 @@
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
+                <valueName>SREC (and other Incentive Programs)</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
                 <valueName>Stage 1 Pre-Development - DD Stage and Site Acq</valueName>
             </valueSettings>
             <valueSettings>
@@ -1379,12 +1408,21 @@
                 <valueName>Third Party Interests (Scouts &amp; Offtake)</valueName>
             </valueSettings>
             <valueSettings>
-                <controllingFieldValue>Project Management - Project Development</controllingFieldValue>
-                <valueName>SREC (and other Incentive Programs)</valueName>
+                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+                <valueName>25% ISA Payment</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>IX Applications</valueName>
+                <valueName>75% ISA Payment</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+                <valueName>Asset Management</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+                <controllingFieldValue>Project Management - Construction</controllingFieldValue>
+                <valueName>EPC</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
@@ -1392,11 +1430,23 @@
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>SIS</valueName>
+                <valueName>ISA</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>Detailed Study</valueName>
+                <valueName>ISO NE</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+                <valueName>IX Applications</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+                <valueName>IX Meetings</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+                <valueName>MassACA</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
@@ -1404,15 +1454,7 @@
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>SRECS</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>SMART</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>ISA</valueName>
+                <valueName>Ongoing Tasks</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
@@ -1420,8 +1462,23 @@
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <controllingFieldValue>Project Management - Construction</controllingFieldValue>
-                <valueName>EPC</valueName>
+                <valueName>Detailed Study</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+                <valueName>SIS</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+                <valueName>SIS Payment</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+                <valueName>SMART</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+                <valueName>SRECS</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
@@ -1433,7 +1490,7 @@
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>Asset Management</valueName>
+                <valueName>Utility Design</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Construction</controllingFieldValue>
