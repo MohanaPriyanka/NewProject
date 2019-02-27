@@ -214,4 +214,22 @@ public without sharing class Util {
         obscuredText += remainingCharacters;
         return obscuredText;
     }
+
+    public static void reparentAttachments(List<Attachment> attachmentsToReparent, Id newParentId) {
+        List<Attachment> reparentedAttachments = new List<Attachment>();
+        for (Attachment attachment : attachmentsToReparent) {
+            reparentedAttachments.add(new Attachment(
+                Name = attachment.Name,
+                Body = attachment.Body,
+                parentId = newParentId,
+                ContentType = attachment.ContentType,
+                Description = attachment.Description
+            ));
+        }
+
+        if (!reparentedAttachments.isEmpty()) {
+            insert reparentedAttachments;
+            delete attachmentsToReparent;
+        }
+    }
 }
