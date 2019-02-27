@@ -126,6 +126,19 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Customer_Care_Cases__c</fullName>
+        <description>Holding field in snapshot object to capture cases created each month.  Putting in snapshot field lets you avoid joined report and associated limitations.</description>
+        <externalId>false</externalId>
+        <label>Customer Care Cases</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Days_Since_Last_Contact__c</fullName>
         <externalId>false</externalId>
         <formula>TODAY() -  Last_Contact_Date__c</formula>
@@ -160,6 +173,19 @@
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Partner_Support_Cases__c</fullName>
+        <description>Partner Support Cases snapshot field.  Allows for reporting without using joined reports.</description>
+        <externalId>false</externalId>
+        <label>Partner Support Cases</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Promoters__c</fullName>
