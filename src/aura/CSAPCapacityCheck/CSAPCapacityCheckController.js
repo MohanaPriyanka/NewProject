@@ -82,6 +82,14 @@
             }), 5000);
     },
 
+    storeTermsConditions : function(component, event, helper) {
+        var lead = component.get('v.lead');
+        var termsConditions = component.get('v.termsConditions');
+        var today = new Date();
+        lead.Terms_Conditions_Acknowledged__c = new Date();
+        lead.Terms_Conditions__c = termsConditions;
+    },
+
     handleEBill1 : function(component, event, helper) {
         helper.handleAttachment(component, event, helper, helper.ELECTRIC_BILL_1);
     }

@@ -6,6 +6,10 @@
   <aura:attribute name="attachments" type="Attachment[]"/>
   <aura:attribute name="electricBill1" type="Object"/>
   <aura:attribute name="isLargeFile" type="Boolean"/>
+  <aura:attribute name="termsConditions" type="String" default="I agree to BlueWave's Privacy Policy. I also grant BlueWave
+             permission to perform a soft pull of my credit history (which will NOT impact my credit score), to use my
+             credit history to process my application and for any other lawful purpose, and to access my electric utility billing history. "/>
+
 
   <aura:set attribute="STAGENAME" value="NAV_Capacity_Check"/>
   <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
@@ -66,11 +70,13 @@
                   <b> Terms and Conditions </b>
                 </div>
                 <lightning:input aura:id="field" name="leadPrivacyPolicyAcknowledged"
-                                 label="I agree to BlueWave's Privacy Policy. I also grant BlueWave permission to perform a soft pull of my credit history (which will NOT impact my credit score), to use my credit history to process my application and for any other lawful purpose, and to access my electric utility billing history. "
+                                 label= "{!v.termsConditions}"
                                  type="checkbox"
                                  class="slds-text-body--regular slds-align--absolute-center slds-size--2-of-3"
                                  checked="{!v.lead.Privacy_Policy_Acknowledged__c}"
+                                 onchange="{!c.storeTermsConditions}"
                                  required="true"/>
+                <!--onchange="{!c.storeTermsConditions}"-->
               </lightning:layoutItem>
               <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
                 <div class="slds-align--absolute-center">
