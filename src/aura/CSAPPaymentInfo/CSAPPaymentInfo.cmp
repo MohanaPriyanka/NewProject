@@ -52,20 +52,25 @@
     <aura:set attribute="else">
       <aura:if isTrue="{!v.page == 'PaymentInfo'}">
           <div aria-labelledby="paymentInformationForm">
-            <fieldset class="slds-box slds-theme--default slds-container_center">
-              <legend id="paymentInformation" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-                <b class="slds-section__title--large slds-p-horizontal_large"> Now we need to collect a Payment Method for autopay. </b>
+            <fieldset class="slds-box slds-theme--default slds-container_center slds-size--2-of-3">
+              <legend id="paymentInformation" class="slds-text-heading--medium slds-p-vertical--medium slds-align_absolute-center">
+                <b class="slds-p-horizontal_large">Billing and Payment Info</b>
               </legend>
-                <div class="slds-p-around--small slds-text-body--regular slds-align_absolute-center">
-                  <b>We require all Community Solar customers to sign up for Autopay. You will not be charged at this time. Payments will begin automatically once we begin to transfer credits to your utility account. We will provide at least 10 days written notice before initiating charges to the account provided.</b>
-                </div>
-              <lightning:layout aura:id="passedCreditText" class="animated" multipleRows="true">
-
-              <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+              <div class="slds-p-bottom--medium slds-align--absolute-center">
+                <b> We require that all Community Solar Customers sign up for Autopay.
+                </b>
+              </div>
+              <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
+                <b> You will not be charged at this time. Payments will begin automatically once we begin to transfer credits to your utility account.
+                  We will provide at least 10 days written notice before initiating charges to the account provided. </b>
+              </div>
+              <lightning:layout aura:id="passedCreditText" class="animated slds-align--absolute-center" multipleRows="true">
+              <lightning:layoutItem padding="around-small" size="4" smallDeviceSize="4" mediumDeviceSize="4">
                 <lightning:select
                   aura:id="field"
                   name="Select Payment Method"
                   label="Select Payment Method:"
+                  class="slds-text-align--center"
                   value="{!v.SelectedPaymentMethod}"
                   required="true">
                     <option text="" value=""/>
@@ -221,18 +226,16 @@
                   <div class="slds-p-left_small slds-p-right_small">
                     <div class="slds-text-body_small slds-text-color_default">
                       I hereby authorize BlueWave or its servicer(s) to initiate debit entries (ACH) on my bank account or automatically charge the credit card I designate in this form. I understand that any debit entry from my account that is returned unpaid may be collected in the same manner as an unpaid paper check. I understand that the monthly payment amount debited from my bank account may vary from month to month based on variable generation from my Shared Solar System.
-
                       My authorization for debit entries to my designated bank account shall remain in full force and effect until BlueWave or its servicer(s) has received written notification from me at least thirty (30) days in advance of my intent to change or cancel this Authorization for pre-arranged payments. I hereby release BlueWave or its servicer(s) from any and all claims resulting from this authorization.
                     </div>
                     <div class="slds-p-top_medium">
                       <h3 class="slds-text-body_small slds-text-color_default">
-                        <lightning:input type="checkbox" required="true" checked="{!v.AutopayAcknowledgement}"/><b>I Agree</b>
+                        <lightning:input type="checkbox" required="true" label="I Agree" checked="{!v.AutopayAcknowledgement}"/>
                       </h3>
                     </div>
                   </div>
                 </fieldset>
               </aura:if>
-
               <aura:if isTrue="{!v.AutopayAcknowledgement}">
                 <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12" >
                   <div class="slds-align--absolute-center">
