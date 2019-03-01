@@ -73,6 +73,8 @@
         }
     },
     finishStage : function(component, event, helper) {
+        var lead = component.get("v.lead");
+        helper.saveSObject(component, lead.Id, 'Lead', 'Product__c', lead.Product__c);
         component.set('v.programType','SREC');
         helper.finishStage(component, event, helper);
     },
