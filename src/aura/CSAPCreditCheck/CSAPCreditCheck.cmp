@@ -18,7 +18,7 @@
 
   <aura:if isTrue="{!v.page == 'SSNPage'}">
     <div aria-labelledby="ssnForm">
-        <fieldset class="slds-box slds-theme--default slds-contstaainer_center">
+        <fieldset class="slds-box slds-theme--default slds-container_center slds-size--2-of-3">
         <legend id="ssnForm" class="slds-text-heading--small slds-p-vertical--medium slds-section__title--large slds-align_absolute-center">
           <b class="slds-section__title--large slds-p-horizontal_large"> We need to check that you qualify for Community Solar </b>
         </legend>
