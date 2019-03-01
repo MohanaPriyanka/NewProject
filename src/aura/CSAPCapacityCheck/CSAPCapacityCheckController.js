@@ -88,8 +88,6 @@
         var today = new Date();
         lead.Terms_Conditions_Acknowledged__c = new Date();
         lead.Terms_Conditions__c = termsConditions;
-        console.log('Terms: ' + termsConditions);
-        console.log('Date: ' + today );
 
     },
 
