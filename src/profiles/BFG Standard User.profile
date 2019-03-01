@@ -3883,7 +3883,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Bill_Adjustment__c.Client__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6373,7 +6373,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>ChargentOrders__Transaction__c.Client__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -29178,7 +29178,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>System_Bill__c.Client__c</field>
         <readable>true</readable>
     </fieldPermissions>
