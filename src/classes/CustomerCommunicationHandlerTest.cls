@@ -197,7 +197,7 @@ public class CustomerCommunicationHandlerTest{
             insert new List<Product2>{normalCSProduct, publicCSProduct};
 
             Opportunity opportunityone =
-                new Opportunity(Name = 'Jordan Jordan',
+                new Opportunity(Name = 'Jordan Jordan 0000234',
                                 AccountId = propAcct1.Id,
                                 Shared_Solar_System__c = sss1.Id,
                                 StageName = 'Complete',
@@ -206,7 +206,7 @@ public class CustomerCommunicationHandlerTest{
                                 CloseDate = System.today());
 
             Opportunity opportunitytwo =
-                new Opportunity(Name = 'Jordan Jordan',
+                new Opportunity(Name = 'Jordan Jordan 0000236',
                                 AccountId = propAcct2.Id,
                                 Shared_Solar_System__c = sss2.Id,
                                 StageName = 'Complete',
@@ -215,7 +215,7 @@ public class CustomerCommunicationHandlerTest{
                                 CloseDate = System.today());
 
             Opportunity opportunitythree =
-                new Opportunity(Name = 'Jordan Jordan',
+                new Opportunity(Name = 'Jordan Jordan 0000238',
                                 AccountId = propAcct3.Id,
                                 Shared_Solar_System__c = sss3.Id,
                                 StageName = 'Complete',
