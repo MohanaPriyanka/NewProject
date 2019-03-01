@@ -22,6 +22,16 @@
                 errorMessage = errorMessage + "Please enter a number less than 99,999 for the number of modules field." + "\n" + "\n";
             }
         }
+        if (component.get('v.systemInfoObj.Estimated_Completion_Date__c')) {
+            errorMessage = errorMessage +
+                           helper.getFieldError(component,
+                               {
+                                   'fieldValue': component.get('v.systemInfoObj.Estimated_Completion_Date__c'),
+                                   'fieldId': "dateOfCompletion",
+                                   'fieldType': 'date',
+                                   'errorMessage': 'Please enter a valid date with leading zeros'
+                               });
+        }
         errorMessage = errorMessage +
                        helper.getFieldError(component,
                            {'fieldValue': lead.System_Cost__c, 'fieldId': "systemCostElement", 'fieldType': 'currency', 'errorMessage': 'Please enter a System Cost'});
