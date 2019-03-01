@@ -35,7 +35,8 @@ public without sharing class CSSubscriptionEnroller {
         }
         ualList = [
             SELECT Id, Name, Annual_Cost_of_Electricity__c, Name_on_Account__c, Lead__c, Utility__c,
-                Annual_kWh__c, Proposed_kWh__c, Lead__r.Product__r.Customer_Subscription_Type__c
+                Annual_kWh__c, Proposed_kWh__c, Lead__r.Product__r.Customer_Subscription_Type__c,
+                Utility_NMC_Tariff__c
             FROM Utility_Account_Log__c
             WHERE Lead__c IN :leadIds
             ORDER BY Annual_Cost_of_Electricity__c DESC
@@ -80,7 +81,7 @@ public without sharing class CSSubscriptionEnroller {
             SELECT Id, Program__c,
                 (SELECT Id, Name, Size_Ratio__c, Utility_NMC_Tariff__r.Customer_Type__c,
                     Utility_NMC_Tariff__r.Minimum_kWh__c, Utility_NMC_Tariff__r.Maximum_kWh__c,
-                    Utility_NMC_Tariff__r.Utility_Relationship__c
+                    Utility_NMC_Tariff__r.Utility_Relationship__c, Utility_NMC_Tariff__c
                 FROM Product_Tariffs__r)
             FROM Product2
             WHERE Product_Type__c = 'Community Solar'
@@ -239,7 +240,13 @@ public without sharing class CSSubscriptionEnroller {
                 ual.Utility_NMC_Tariff__c = tariff.Utility_NMC_Tariff__c;
                 ual.Product_Tariff__c = tariff.Id;
                 // Currently, we only need to have a sizing ratio for SMART
-                ual.Proposed_kWh__c = ual.Annual_kWh__c * tariff.Size_Ratio__c;
+                Decimal sizeRatio;
+                if (tariff.Size_Ratio__c != null) {
+                    sizeRatio = tariff.Size_Ratio__c;
+                } else {
+                    sizeRatio = 1.0;
+                }
+                ual.Proposed_kWh__c = ual.Annual_kWh__c * sizeRatio;
             } else {
                 ual.Proposed_kWh__c = ual.Annual_kWh__c;
             }
@@ -250,6 +257,9 @@ public without sharing class CSSubscriptionEnroller {
 
     public static Product_Tariff__c assignUtilityTariff(Utility_Account_Log__c ual, Lead lead, List<Product_Tariff__c> tariffs) {
         Product_Tariff__c assignedTariff;
+        if (tariffs == null) {
+            return assignedTariff;
+        }
         for (Product_Tariff__c tariff : tariffs) {
             if (lead.Customer_type__c == tariff.Utility_NMC_Tariff__r.Customer_type__c
                 && lead.Utility_relationship__c == tariff.Utility_NMC_Tariff__r.Utility_Relationship__c
