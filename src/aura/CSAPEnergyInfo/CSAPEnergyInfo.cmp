@@ -13,6 +13,7 @@
   <aura:attribute name="loadingText" type="String"/>
   <aura:attribute name="isLargeFile" type="Boolean"/>
   <aura:attribute name="utility" type="Object"/>
+  <aura:attribute name="rateClasses" type="Object[]"/>
   <lightning:notificationsLibrary aura:id="notifLib"/>
 
   <aura:set attribute="STAGENAME" value="NAV_Energy_Information"/>
@@ -49,6 +50,20 @@
                                    disabled="true"
                                    required="true"/>
                 </lightning:layoutItem>
+                <aura:if isTrue="{!v.rateClasses.length > 0}">
+                  <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
+                    <lightning:select aura:id="field" name="ualRateClass"
+                                     label="Rate Class"
+                                     value="{!v.ual.Rate_Class__c}"
+                                     required="true">
+                      <option value="">Choose Rate Class</option>
+                      <aura:iteration items="{!v.rateClasses}" var="rateClass">
+                        <option value="{!rateClass.Id}">{!rateClass.Name}</option>
+                      </aura:iteration>
+                      <option value="Rate Class Not in List">Rate Class Not in List</option>
+                    </lightning:select>
+                  </lightning:layoutItem>
+                </aura:if>
                 <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
                   <lightning:input aura:id="field" name="ualUtilityAccountNumber"
                                    type="text"

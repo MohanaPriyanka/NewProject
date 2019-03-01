@@ -320,15 +320,12 @@ public without sharing class CSAPController {
             LIMIT 1
         ];
         for (Lead lead : leads) {
-            String ownerId = (String) lead.OwnerId;
             if (lead.OwnerId.getSobjectType() != User.SObjectType) {
                 lead.OwnerId = apiUser.Id;
-                updatedLeadOwner = true;
             }
+            lead.CSAP_Stage__c = 'NAV_Complete';
         }
-        if (updatedLeadOwner) {
-            update leads;
-        }
+        update leads;
 
         List<Database.LeadConvert> leadConverts = new List<Database.LeadConvert>();
         for (Lead leadToConvert : leads) {
