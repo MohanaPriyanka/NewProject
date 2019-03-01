@@ -1021,6 +1021,26 @@ CASE(Days_Past_Due__c,
         <type>Summary</type>
     </fields>
     <fields>
+        <fullName>Count_of_Large_Offtake_Opps__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Count of non-Cancelled Anchor or Public Offtake opportunities that indicate whether this Property Account is large offtake, in which case the cancellation process is manual.</inlineHelpText>
+        <label>Count of Large Offtake Opps</label>
+        <summaryFilterItems>
+            <field>Opportunity.Customer_Group__c</field>
+            <operation>equals</operation>
+            <value>Anchor, Public Offtake</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Opportunity.StageName</field>
+            <operation>notEqual</operation>
+            <value>Cancelled</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Opportunity.AccountId</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <type>Summary</type>
+    </fields>
+    <fields>
         <fullName>Count_of_RL_Opportunities__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Used to determine Product Line</inlineHelpText>
@@ -14983,6 +15003,16 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <searchResultsAdditionalFields>Account_Number__c</searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Cancel_Large_Offtake_Manually</fullName>
+        <active>true</active>
+        <description>We don&apos;t want to accidentally cancel Anchor or Public Offtake accounts</description>
+        <errorConditionFormula>AND( Count_of_Large_Offtake_Opps__c &gt; 0,
+     ISBLANK(PRIORVALUE(Cancellation_Request_Date__c)),
+     NOT(ISBLANK(Cancellation_Request_Date__c)))</errorConditionFormula>
+        <errorDisplayField>Cancellation_Request_Date__c</errorDisplayField>
+        <errorMessage>This account has Anchor or Public Offtake opportunities (that aren&apos;t already cancelled). Please cancel them manually by updating Utility Account Subscriptions.</errorMessage>
+    </validationRules>
     <validationRules>
         <fullName>Cannot_Update_Address_to_Blank</fullName>
         <active>true</active>
