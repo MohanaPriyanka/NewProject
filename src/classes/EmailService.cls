@@ -30,7 +30,6 @@ public without sharing class EmailService {
             WHERE DeveloperName = 'X19_0227_CSAP_Payment_Email'
             LIMIT 1];
         }
-        System.debug(csCustomerRequestPaymentInfo);
         return csCustomerRequestPaymentInfo.HtmlValue;
     }
 
@@ -55,7 +54,6 @@ public without sharing class EmailService {
                     ', you have been prequalified for a BlueWave Solar Loan';
             htmlBody = htmlBody.replace('{!Lead.Continue_Application_Link__c}', continueApplicationUrl);
             htmlBody = htmlBody.replace('{!Lead.FirstName}', firstName);
-            System.debug(htmlBody);
             Messaging.SingleEmailMessage emailMessage =
                 createCustomSingleMessage(subject, htmlBody, lead.Partner_Email__c, lead.Id);
             emailsToSend.add(emailMessage);
