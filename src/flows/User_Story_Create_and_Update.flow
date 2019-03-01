@@ -224,7 +224,7 @@ ISCHANGED([copado__User_Story__c].copado__Environment__c )
 {!myVariable_current.copado__Environment__r.copado__Org_ID__c} = &quot;00D540000004oYZEAY&quot; &amp;&amp;
 ISCHANGED({!myVariable_current.copado__Environment__c} )</expression>
     </formulas>
-    <interviewLabel>User_Story_Create_and_Update-8_InterviewLabel</interviewLabel>
+    <interviewLabel>User_Story_Create_and_Update-9_InterviewLabel</interviewLabel>
     <label>User Story: Create and Update</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -448,7 +448,7 @@ ISCHANGED({!myVariable_current.copado__Environment__c} )</expression>
             </processMetadataValues>
             <field>copado__Promotion_Test_Level__c</field>
             <value>
-                <stringValue>RunLocalTests</stringValue>
+                <stringValue>RunSpecifiedTests</stringValue>
             </value>
         </inputAssignments>
         <object>copado__User_Story__c</object>
