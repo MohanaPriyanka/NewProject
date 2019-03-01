@@ -76,6 +76,7 @@
                     <span class="slds-path__title">Payment Info</span>
                   </a>
                 </li>
+
                 <li class="{! 'slds-path__item ' +
                            (v.stageIndex==6?'slds-is-current slds-is-active':
                            (v.stageIndex>6?'slds-is-active':
