@@ -52,7 +52,7 @@
                 ual.Lead__c = lead.Id;
             }
             var utility = component.get('v.utility');
-            ual.Utility_Relationship__c = utility.Id;
+            ual.Utility__c = utility.Id;
             var saveUAL = component.get('c.saveUtilityAccountLog');
             saveUAL.setParams({'ual' : ual});
             saveUAL.setCallback(this, function(resp) {
