@@ -27,9 +27,10 @@ public without sharing class EmailService {
         if (csCustomerRequestPaymentInfo == null) {
             csCustomerRequestPaymentInfo = [SELECT Id, HtmlValue, Body, TemplateType
             FROM EmailTemplate
-            WHERE DeveloperName = 'RS_PreQualification_Approval'
+            WHERE DeveloperName = 'X19_0227_CSAP_Payment_Email'
             LIMIT 1];
         }
+        System.debug(csCustomerRequestPaymentInfo);
         return csCustomerRequestPaymentInfo.HtmlValue;
     }
 
@@ -43,8 +44,6 @@ public without sharing class EmailService {
         emailsToSend = new List<Messaging.SingleEmailMessage>();
         for (Lead lead : leads) {
             String firstName = lead.FirstName;
-            String lastName = lead.LastName;
-            String email = lead.Email;
 
             String continueApplicationUrl = lead.Continue_Application_Link__c;
             if (continueApplicationUrl == null) {
@@ -54,10 +53,9 @@ public without sharing class EmailService {
             String htmlbody = getCSCustomerRequestPaymentInfoHtml();
             String subject = 'Congrats! ' +  firstName +
                     ', you have been prequalified for a BlueWave Solar Loan';
-            htmlBody = htmlBody.replace('{!Lead.Continue_Loan_Application_Link__c}', continueApplicationUrl);
-            htmlBody = htmlBody.replace('{!Lead.Name}', firstName);
+            htmlBody = htmlBody.replace('{!Lead.Continue_Application_Link__c}', continueApplicationUrl);
             htmlBody = htmlBody.replace('{!Lead.FirstName}', firstName);
-            htmlBody = htmlBody.replace('{!Lead.Lead_ID__c}', lead.Id);
+            System.debug(htmlBody);
             Messaging.SingleEmailMessage emailMessage =
                 createCustomSingleMessage(subject, htmlBody, lead.Partner_Email__c, lead.Id);
             emailsToSend.add(emailMessage);
