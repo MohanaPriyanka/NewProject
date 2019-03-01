@@ -9,6 +9,12 @@
     },
 
     handleNavEvent : function(component, event, helper) {
+        const options = event.getParam("options");
+        if (options && options.pageName) {
+            helper.handleNavEvent(component, event, helper, options.pageName);
+        }else{
+            helper.handleNavEvent(component, event, helper, "ZipcodeChecker");
+        }
     },
 
     capacityChecked : function(component, event, helper) {

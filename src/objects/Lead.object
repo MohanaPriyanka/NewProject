@@ -4613,6 +4613,29 @@ if( or(text(Status) = &quot;Cancelled&quot;, text(Status) = &quot;Not Interested
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Terms_Conditions_Acknowledged__c</fullName>
+        <description>Date and Time the customer agreed to the Terms and Conditions</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Date and Time the customer agreed to the Terms and Conditions</inlineHelpText>
+        <label>Terms &amp; Conditions Acknowledged</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Terms_Conditions__c</fullName>
+        <description>The Terms &amp; Conditions that the customer agreed to in CS Application</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The Terms &amp; Conditions that the customer agreed to in CS Application</inlineHelpText>
+        <label>Terms &amp; Conditions</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
         <fullName>Test_Field__c</fullName>
         <externalId>false</externalId>
         <formula>PCR_Relationship__r.Name</formula>
