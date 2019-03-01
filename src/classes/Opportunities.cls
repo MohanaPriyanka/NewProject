@@ -49,6 +49,30 @@ public class Opportunities {
         }
     }
 
+    public static Boolean hasActiveUASes(Opportunity opp) {
+        if (opp.Utility_Account_Subscriptions__r.isEmpty()) {
+            return false;
+        }
+        for (Utility_Account_Subscription__c uas : opp.Utility_Account_Subscriptions__r) {
+            if (uas.Next_Schedule_Z_Status__c == 'Active Subscription') {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static Boolean allUASesTransferring(Opportunity opp) {
+        if (opp.Utility_Account_Subscriptions__r.isEmpty()) {
+            return false;
+        }
+        for (Utility_Account_Subscription__c uas : opp.Utility_Account_Subscriptions__r) {
+            if (!uas.Transferring_Subsc_to_Another_UAS__c) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void cancel() {
         for (Opportunity opp : records) {
             opp.StageName = 'Cancelled';
