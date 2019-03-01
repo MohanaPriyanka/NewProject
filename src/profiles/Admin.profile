@@ -45742,6 +45742,9 @@
         <layout>ChannelProgramMember-Channel Program Member Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>ChargentOrders__Transaction__c-ChargentOrders__Transaction Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>CollaborationGroup-BW Community Solar Member Portal</layout>
     </layoutAssignments>
     <layoutAssignments>
