@@ -30,23 +30,8 @@
                     helper.logError("CSAPEnergyInfoController", "getUtility", resp.getError(), lead);
                 }
             });
-            var rateClassAction = component.get("c.getRateClasses");
-            rateClassAction.setParams({
-                "utilityId" : utilId,
-                "productId" : productId
-            });
-            rateClassAction.setCallback(this, function(resp) {
-                if (resp.getState() === "SUCCESS") {
-                    component.set('v.rateClasses', resp.getReturnValue());
-                } else {
-                    helper.logError("CSAPEnergyInfoController", "getUtilityTariffs", resp.getError(), lead);
-                }
-            });
             if (lead.Utility_relationship__c) {
                 $A.enqueueAction(utilityAction);
-            }
-            if (lead.Utility_relationship__c && lead.Product__c) {
-                $A.enqueueAction(rateClassAction);
             }
         }
         if (component.get("v.abbrevStates") && component.get("v.abbrevStates").length === 0) {
