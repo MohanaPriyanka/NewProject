@@ -46,12 +46,12 @@ public without sharing class EmailService {
 
             String continueApplicationUrl = lead.Continue_Application_Link__c;
             if (continueApplicationUrl == null) {
-                continueApplicationUrl = Util.getCommunitySiteURL('Apply') + '/s/csap?leadId=' + lead.Id;
+                continueApplicationUrl = Util.getCommunitySiteURL('Apply') + '/s/csap-payment?leadId=' + lead.Id;
             }
 
             String htmlbody = getCSCustomerRequestPaymentInfoHtml();
             String subject = 'Congrats! ' +  firstName +
-                    ', you have been prequalified for a BlueWave Solar Loan';
+                ', you have been prequalified for a BlueWave Solar Loan';
             htmlBody = htmlBody.replace('{!Lead.Continue_Application_Link__c}', continueApplicationUrl);
             htmlBody = htmlBody.replace('{!Lead.FirstName}', firstName);
             Messaging.SingleEmailMessage emailMessage =
