@@ -77,6 +77,14 @@
         <description>CS Lead Process</description>
         <isActive>true</isActive>
         <values>
+            <fullName>Contacting</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Engaging</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Expired</fullName>
             <default>false</default>
         </values>
@@ -85,12 +93,28 @@
             <default>false</default>
         </values>
         <values>
+            <fullName>Marketing Qualified</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>No Response</fullName>
+            <default>false</default>
+        </values>
+        <values>
             <fullName>Qualified</fullName>
             <default>false</default>
         </values>
         <values>
             <fullName>Ready for Credit Check</fullName>
-            <default>true</default>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sales Qualified</fullName>
+            <default>false</default>
         </values>
         <values>
             <fullName>Unfinished</fullName>
@@ -102,6 +126,42 @@
         </values>
         <values>
             <fullName>Waitlist</fullName>
+            <default>false</default>
+        </values>
+    </businessProcesses>
+    <businessProcesses>
+        <fullName>General</fullName>
+        <isActive>true</isActive>
+        <values>
+            <fullName>Contacting</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Engaging</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Marketing Qualified</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>No Response</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Qualified</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sales Qualified</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Unqualified</fullName>
             <default>false</default>
         </values>
     </businessProcesses>
@@ -171,6 +231,15 @@
         </values>
     </businessProcesses>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>CS_BD_Compact</fullName>
+        <fields>Name</fields>
+        <fields>Customer_type__c</fields>
+        <fields>Email</fields>
+        <fields>Phone</fields>
+        <fields>MobilePhone</fields>
+        <label>CS BD Compact</label>
+    </compactLayouts>
     <enableFeeds>true</enableFeeds>
     <enableHistory>true</enableHistory>
     <fieldSets>
@@ -2848,6 +2917,17 @@ https://success.salesforce.com/_ui/core/chatter/groups/GroupProfilePage?g=0F9300
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Lead_QC_Complete__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>This is checked as part of Sales&apos; QC of CS leads.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is checked as part of Sales&apos; QC of CS leads.</inlineHelpText>
+        <label>Lead QC Complete</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Leads_List__c</fullName>
         <externalId>false</externalId>
         <label>Leads List</label>
@@ -3543,6 +3623,74 @@ Monthly_Payment__c)</formula>
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Objections__c</fullName>
+        <description>This field is used by Sales to convey why they think a lead wasn&apos;t interested in a product.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This field is used by Sales to convey why they think a lead wasn&apos;t interested in a product.</inlineHelpText>
+        <label>Objections</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Credit check</fullName>
+                    <default>false</default>
+                    <label>Credit check</label>
+                </value>
+                <value>
+                    <fullName>Lack of savings</fullName>
+                    <default>false</default>
+                    <label>Lack of savings</label>
+                </value>
+                <value>
+                    <fullName>Double bill</fullName>
+                    <default>false</default>
+                    <label>Double bill</label>
+                </value>
+                <value>
+                    <fullName>Length of contract</fullName>
+                    <default>false</default>
+                    <label>Length of contract</label>
+                </value>
+                <value>
+                    <fullName>Autopay</fullName>
+                    <default>false</default>
+                    <label>Autopay</label>
+                </value>
+                <value>
+                    <fullName>Termination period</fullName>
+                    <default>false</default>
+                    <label>Termination period</label>
+                </value>
+                <value>
+                    <fullName>Not convinced of env. benefits</fullName>
+                    <default>false</default>
+                    <label>Not convinced of env. benefits</label>
+                </value>
+                <value>
+                    <fullName>Distrust/Misunderstanding</fullName>
+                    <default>false</default>
+                    <label>Distrust/Misunderstanding</label>
+                </value>
+                <value>
+                    <fullName>Too busy</fullName>
+                    <default>false</default>
+                    <label>Too busy</label>
+                </value>
+                <value>
+                    <fullName>Wait Time</fullName>
+                    <default>false</default>
+                    <label>Wait Time</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
         <fullName>Obtained_Utility_Data__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -3818,6 +3966,17 @@ Monthly_Payment__c)</formula>
                 </value>
             </valueSetDefinition>
         </valueSet>
+    </fields>
+    <fields>
+        <fullName>Pitched__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Used by Sales to signify they have been able to give someone a full sales pitch.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Used by Sales to signify they have been able to give someone a full sales pitch.</inlineHelpText>
+        <label>Pitched</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>PreApproval_Email_Sent__c</fullName>
@@ -6988,8 +7147,52 @@ SEMA = 13 -14</inlineHelpText>
         <fullName>BFG_Community_Solar</fullName>
         <active>true</active>
         <businessProcess>CS</businessProcess>
+        <compactLayoutAssignment>CS_BD_Compact</compactLayoutAssignment>
         <description>Community Solar Lead</description>
         <label>BFG - Community Solar (Residential)</label>
+        <picklistValues>
+            <picklist>Objections__c</picklist>
+            <values>
+                <fullName>Autopay</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Credit check</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Distrust%2FMisunderstanding</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Double bill</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of savings</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Length of contract</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not convinced of env%2E benefits</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Termination period</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Too busy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Wait Time</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Product_Interest__c</picklist>
             <values>
@@ -7991,6 +8194,45 @@ SEMA = 13 -14</inlineHelpText>
         <businessProcess>CS</businessProcess>
         <label>BFG - Community Solar (Anchor)</label>
         <picklistValues>
+            <picklist>Objections__c</picklist>
+            <values>
+                <fullName>Autopay</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Credit check</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Distrust%2FMisunderstanding</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Double bill</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of savings</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Length of contract</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not convinced of env%2E benefits</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Termination period</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Too busy</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Product_Interest__c</picklist>
             <values>
                 <fullName>Community Solar services</fullName>
@@ -8985,7 +9227,51 @@ SEMA = 13 -14</inlineHelpText>
         <fullName>BFG_Community_Solar_Business</fullName>
         <active>true</active>
         <businessProcess>CS</businessProcess>
+        <compactLayoutAssignment>CS_BD_Compact</compactLayoutAssignment>
         <label>BFG - Community Solar (Business)</label>
+        <picklistValues>
+            <picklist>Objections__c</picklist>
+            <values>
+                <fullName>Autopay</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Credit check</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Distrust%2FMisunderstanding</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Double bill</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of savings</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Length of contract</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not convinced of env%2E benefits</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Termination period</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Too busy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Wait Time</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Product_Interest__c</picklist>
             <values>
@@ -19277,6 +19563,49 @@ SEMA = 13 -14</inlineHelpText>
         <businessProcess>CS</businessProcess>
         <label>Lead</label>
         <picklistValues>
+            <picklist>Objections__c</picklist>
+            <values>
+                <fullName>Autopay</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Credit check</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Distrust%2FMisunderstanding</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Double bill</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of savings</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Length of contract</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not convinced of env%2E benefits</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Termination period</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Too busy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Wait Time</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Product_Interest__c</picklist>
             <values>
                 <fullName>Community Solar services</fullName>
@@ -20266,8 +20595,51 @@ SEMA = 13 -14</inlineHelpText>
     <recordTypes>
         <fullName>Lead_General</fullName>
         <active>true</active>
-        <businessProcess>CS</businessProcess>
+        <businessProcess>General</businessProcess>
         <label>Lead (General)</label>
+        <picklistValues>
+            <picklist>Objections__c</picklist>
+            <values>
+                <fullName>Autopay</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Credit check</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Distrust%2FMisunderstanding</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Double bill</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lack of savings</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Length of contract</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not convinced of env%2E benefits</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Termination period</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Too busy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Wait Time</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Product_Interest__c</picklist>
             <values>

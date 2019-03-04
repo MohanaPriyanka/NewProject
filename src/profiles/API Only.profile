@@ -11452,6 +11452,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Lead.Lead_QC_Complete__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Lead.Leads_List__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -11732,6 +11737,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Lead.Objections__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Lead.Obtained_Utility_Data__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -11848,6 +11858,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Lead.Phone_or_emal__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Pitched__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
