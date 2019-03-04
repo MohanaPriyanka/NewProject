@@ -1,0 +1,22 @@
+/**
+ * Created by SarahRenfro on 3/1/2019.
+ */
+.THIS .slds-file-selector__dropzone {
+    width: 300px;
+    height: 100px;
+    border-radius: 20px;
+}
+
+.THIS .slds-file-selector__body {
+    align-content: center;
+    display: block;
+    text-align: center;
+}
+
+.THIS .slds-file-selector__button {
+    margin-right: 83px;
+    margin-left: 80px;
+    width: 144px;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}

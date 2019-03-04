@@ -42,14 +42,17 @@
           <form class="slds-form--stacked">
             <lightning:layout aura:id="uploadBill" class="animated" multipleRows="true" horizontalAlign="center">
               <div class="slds-align--absolute-center slds-text-align--center slds-p-horizontal--large">
-                Please upload a recent electric bill so we can determine your unique subscription size.
+                Please upload a recent electric bill so we can determine how much community solar is right for you.
               </div>
               <lightning:layoutItem class="slds-align--absolute-center" padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-                <lightning:input aura:id="field" type="file" name="files" multiple="true" onchange="{!c.handleEBill1}"/>
-          </lightning:layoutItem>
-          <lightning:layoutItem class="slds-align--absolute-center" padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-            <aura:if isTrue="{!not(empty(v.electricBill1)) || not(empty(v.electricBill2))}">
-              Uploaded Bills:
+                <lightning:input  aura:id="field" type="file" name="files" multiple="true" onchange="{!c.handleEBill1}"/>
+              </lightning:layoutItem>
+
+                <aura:if isTrue="{!not(empty(v.electricBill1)) || not(empty(v.electricBill2))}">
+                  <lightning:layoutItem class="slds-align--absolute-center" padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                  Uploaded Bills:
+                  </lightning:layoutItem>
+                 <lightning:layoutItem class="slds-align--absolute-center" size="4">
               <ul>
                 <aura:iteration items="{!v.electricBill1}" var="attachment">
                   <li class="slds-text-body--regular">{!attachment}</li>
@@ -58,8 +61,8 @@
                   <li>{!attachment}</li>
                 </aura:iteration>
               </ul>
-            </aura:if>
-          </lightning:layoutItem>
+                 </lightning:layoutItem>
+                </aura:if>
 
               <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
                 <div class="slds-align--absolute-center" >
@@ -67,7 +70,19 @@
                 </div>
                 <div class="slds-align--absolute-center slds-text-align--center slds-p-horizontal--large" >
                   We’ll review your application to ensure everything fits with the community solar farm in your area. We’ll be in touch soon to finalize your subscription and answer any questions you may have before enrolling.
+                </div>
+              </lightning:layoutItem>
+              <lightning:layoutItem padding="around-medium" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                <div class="slds-align--absolute-center" >
+                  <b> Terms and Conditions </b>
             </div>
+                <lightning:input aura:id="field" name="leadPrivacyPolicyAcknowledged"
+                                 label= "{!v.termsConditions}"
+                                 type="checkbox"
+                                 class="slds-text-body--regular slds-align--absolute-center slds-size--2-of-3"
+                                 checked="{!v.lead.Privacy_Policy_Acknowledged__c}"
+                                 onchange="{!c.storeTermsConditions}"
+                                 required="true"/>
               </lightning:layoutItem>
               <lightning:layoutItem padding="around-medium" size="12" smallDeviceSize="12" mediumDeviceSize="12">
                 <div class="slds-align--absolute-center" >
@@ -149,7 +164,7 @@
 
   <aura:if isTrue="{!v.page == 'ApplicationComplete'}">
     <fieldset class="slds-box slds-theme--default slds-container_center slds-size--2-of-3">
-      <legend id="ssnForm" class="slds-text-heading--medium slds-p-vertical--medium slds-align_absolute-center">
+      <legend id="ssnForm" class="slds-text-heading--medium slds-p-vertical--small slds-align_absolute-center">
         <b class="slds-p-horizontal_large"> All set! We'll take it from here! </b>
       </legend>
       <form class="slds-form--stacked">
@@ -157,12 +172,12 @@
           <lightning:layoutItem class="slds-align_absolute-center slds-p-horizontal--large slds-text-align--center" padding="around-medium" size="12" smallDeviceSize="12" mediumDeviceSize="12">
             Thank you for your application. We'll review your utility bill and energy usage, then contact you soon about next steps.
           </lightning:layoutItem>
-          <lightning:layoutItem class="slds-align_absolute-center slds-p-horizontal--large" padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+          <lightning:layoutItem class="slds-align_absolute-center slds-p-horizontal--large slds-text-align--center" padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
             In the meantime, check out our
-              <lightning:formattedUrl value="https://bluewavesolar.com/bw-resources/blog" label="&nbsp;Blog&nbsp;" tooltip="Go to Blog"/>
+            <b><lightning:formattedUrl value="https://bluewavesolar.com/bw-resources/blog" label="&nbsp;Blog&nbsp;" tooltip="Go to Blog"/></b>
               and
-            <lightning:formattedUrl value="https://bluewavememberportal.force.com/Support/s/?_ga=2.183388271.870291340.1551394202-1521039906.1540480948" label="&nbsp;Knowledge Base&nbsp;" tooltip="Go to Knowledge Base"/>
-            to learn more about BlueWave Community Solar.
+            <b><lightning:formattedUrl value="https://bluewavememberportal.force.com/Support/s/?_ga=2.183388271.870291340.1551394202-1521039906.1540480948" label="&nbsp;Resource Center&nbsp;" tooltip="Go to Knowledge Base"/></b>
+            to learn more about BlueWave community solar.
           </lightning:layoutItem>
         </lightning:layout>
       </form>

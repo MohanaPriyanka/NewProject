@@ -60,13 +60,13 @@
 
   <aura:if isTrue="{!v.page == 'ZipcodeChecker'}">
       <fieldset class="slds-box slds-theme--default slds-container_center slds-size--2-of-3">
-        <legend id="zipcodeChecker" class="slds-text-heading--medium slds-p-vertical--medium slds-align_absolute-center">
+        <legend id="zipcodeChecker" class="slds-text-heading--medium slds-p-vertical--small slds-align_absolute-center">
           <b class="slds-p-horizontal_large">Find a community solar farm near you. </b>
         </legend>
         <form class="slds-form--stacked" style="text-align: center">
           <lightning:layout horizontalAlign="center">
             <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" class="slds-p-bottom--medium slds-p-horizontal--large">
-              To see if we have a solar farm available in your community, please enter the zip code of the location that will receive Community Solar Credits.
+              To see if we have a solar farm available in your community, please enter the ZIP code of the location that will receive community solar credits.
             </lightning:layoutItem>
           </lightning:layout>
           <c:CSAPZipcodeCapacity hasCapacity="{!v.hasCapacity}" zipcode="{!v.lead.LASERCA__Home_Zip__c}"/>
@@ -75,12 +75,12 @@
   </aura:if>
 
   <aura:if isTrue="{!v.page == 'NoProjects'}">
-    <fieldset class="slds-box slds-theme--default slds-container_center">
+    <fieldset class="slds-box slds-theme--default slds-container_center slds-size--2-of-3">
       <legend id="aboutYourselfForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
         <b class="slds-section__title--large slds-p-horizontal_large">We're Sorry</b>
       </legend>
-      <div class="slds-align--absolute-center slds-text-body--large--blue">
-        <b>It seems that we don't have any Community Solar currently available in your area. We're working hard to expand our Community Solar availability, so please check back at a later date.</b>
+      <div class="slds-align--absolute-center slds-text-align--center ">
+        It seems that we don't have any Community Solar currently available in your area. We're working hard to expand our Community Solar availability, so please check back at a later date.
       </div>
     </fieldset>
   </aura:if>
