@@ -204,7 +204,8 @@ public without sharing class CSAPController {
             FROM Lead
             WHERE Id = :lead.Id];
 
-        String continueApplicationUrl = Util.getCommunitySiteURL('Apply') + '/s/csap?leadId=' + lead.Id;
+
+        String continueApplicationUrl = Util.getCommunitySiteURL('Apply') + '/s/csap-payment?leadId=' + lead.Id;
         insertedLead.Continue_Application_Link__c = continueApplicationUrl;
         update insertedLead;
 
@@ -298,6 +299,14 @@ public without sharing class CSAPController {
     @AuraEnabled
     public static Utility__c getUtility (String utilityId) {
         return [SELECT Id, Name FROM Utility__c WHERE Id =: utilityId];
+    }
+
+    @AuraEnabled
+    public static List<Utility_NMC_Tariff__c> getRateClasses(String utilityId, String productId) {
+
+        List<Utility_NMC_Tariff__c> validUtilityNMCTariffs = new List<Utility_NMC_Tariff__c>();
+
+        return validUtilityNMCTariffs;
     }
 
     @AuraEnabled
