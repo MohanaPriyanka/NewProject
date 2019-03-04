@@ -3891,6 +3891,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Bill_Adjustment__c.Client__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Bill_Adjustment__c.Credits_Allocated__c</field>
         <readable>true</readable>
@@ -6388,6 +6393,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>ChargentOrders__Transaction__c.ChargentOrders__Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>ChargentOrders__Transaction__c.Client__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -29226,6 +29236,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>System_Bill__c.Client__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>System_Bill__c.Comments__c</field>
         <readable>true</readable>
@@ -45850,6 +45865,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>ChannelProgramMember-Channel Program Member Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>ChargentOrders__Transaction__c-ChargentOrders__Transaction Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>CollaborationGroup-Group Layout</layout>
