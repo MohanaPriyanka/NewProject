@@ -50,8 +50,7 @@ public without sharing class EmailService {
             }
 
             String htmlbody = getCSCustomerRequestPaymentInfoHtml();
-            String subject = 'Congrats! ' +  firstName +
-                ', you have been prequalified for a BlueWave Solar Loan';
+            String subject = 'You\'re approved for community solar! What\'s next?';
             htmlBody = htmlBody.replace('{!Lead.Continue_Application_Link__c}', continueApplicationUrl);
             htmlBody = htmlBody.replace('{!Lead.FirstName}', firstName);
             Messaging.SingleEmailMessage emailMessage =
