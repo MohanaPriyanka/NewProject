@@ -2,7 +2,11 @@
     doInit: function(component, event, helper) {
         var leadId = component.get("v.leadId");
         if (component.get("v.abbrevStates") && component.get("v.abbrevStates").length === 0) {
-            helper.getUSStates(component, "v.abbrevStates", true);
+            var states = [];
+            for (var state in helper.US_STATES) {
+                states.push({"label": helper.US_STATES[state], "value": state});
+            }
+            component.set('v.abbrevStates', states);
         }
     },
     handleNavEvent : function(component, event, helper) {
@@ -13,40 +17,10 @@
             helper.handleNavEvent(component, event, helper, "AboutYourself");
         }
     },
-    goToAboutYourself : function(component, event, helper) {
-        component.set("v.page", "AboutYourself");
-    },
-    goToApplyingFor : function(component, event, helper) {
-        if (event.getSource().get("v.label") == "Previous") {
-            component.set("v.page", "ApplyingFor");
-        } else if (helper.validatePageFields(component)) {
-            component.set("v.page", "ApplyingFor")
-        }
-    },
-    goToAddressForm : function(component, event, helper) {
-        if(component.get("v.lead.Application_Type__c") != null) {
-            component.set("v.page", "AddressForm");
-        } else {
-            var toastEvent = $A.get("e.force:showToast");
-            toastEvent.setParams({
-                "title": "You forgot something!",
-                "message": 'Please select whether you are applying for Community Solar for your home or for your business.'
-            });
-            toastEvent.fire();
-        }
-    },
-    setCSApplicationResidential : function(component, event, helper) {
-        component.set("v.lead.Application_Type__c", "Residential");
-        component.set("v.Residential", true);
-        component.set("v.NonResidential", false);
-    },
-    setCSApplicationNonResidential : function(component, event, helper) {
-        component.set("v.lead.Application_Type__c", "Non-Residential");
-        component.set("v.Residential", false);
-        component.set("v.NonResidential", true);
-    },
     goToCheckCapacity : function(component, event, helper) {
-        if(helper.validatePageFields(component)){
+        var address = component.find("billingAddress");
+        var isValid = address.checkValidity();
+        if(helper.validatePageFields(component) && isValid){
             component.set('v.loading', true);
             component.set("v.loadingText", "Locating your address...");
             helper.processLead(component, event, helper);

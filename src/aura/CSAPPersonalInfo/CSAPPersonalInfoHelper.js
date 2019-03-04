@@ -1,20 +1,22 @@
 ({
     processLead : function(component, event, helper) {
         var lead = component.get("v.lead");
-        var sendBillToHome = component.get("v.sendBillToHome");
-        if(sendBillToHome === "Yes"){
-            lead.Street = lead.LASERCA__Home_Address__c;
-            lead.City = lead.LASERCA__Home_City__c
-            lead.State = lead.LASERCA__Home_State__c
-            lead.PostalCode = lead.LASERCA__Home_Zip__c
-        }
+
+        lead.Application_Type__c = component.get("v.applicationType");
+
+        //Both Billing Address and address for Credit Check are populated
+        lead.Street = lead.LASERCA__Home_Address__c;
+        lead.City = lead.LASERCA__Home_City__c;
+        lead.State = lead.LASERCA__Home_State__c;
+
         if(lead.Application_Type__c === "Residential" && lead.Company == null){
             lead.Company = lead.FirstName + " " + lead.LastName;
         }
+
         if (component.get('v.partnerId') != null) {
-            lead.Application_Source_Phase_1__c = 'CSAP with Partner';
+            lead.Application_Source_Phase_1__c = 'CSAP 2.1 with Partner';
         } else {
-            lead.Application_Source_Phase_1__c = 'CSAP without Partner';
+            lead.Application_Source_Phase_1__c = 'CSAP 2.1 Website';
         }
         lead.Product_line__c = "Community Solar";
         component.set("v.lead", lead);
@@ -86,7 +88,13 @@
             component.set('v.page', 'SplitLoadZone');
             component.set('v.splitUtilities', utilityList);
             if (lead.LoadZone__c.includes('/')){
-                component.set('v.splitZones', lead.LoadZone__c.split('/'));
+                var allZones = lead.LoadZone__c.split('/');
+                if (lead.LASERCA__Home_State__c == 'NY'){
+                    component.set('v.splitZones', null);
+                    lead.LoadZone__c = allZones[0];
+                } else {
+                    component.set('v.splitZones', allZones);
+                }
             }
         } else {
             helper.finishStage(component, event, helper);
