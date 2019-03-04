@@ -25,7 +25,7 @@ public without sharing class EmailService {
 
     public static String getCSCustomerRequestPaymentInfoHtml() {
         if (csCustomerRequestPaymentInfo == null) {
-            csCustomerRequestPaymentInfo = [SELECT Id, HtmlValue, Body, TemplateType
+            csCustomerRequestPaymentInfo = [SELECT Id, HtmlValue, Body, TemplateType, Subject
             FROM EmailTemplate
             WHERE DeveloperName = 'X19_0227_CSAP_Payment_Email'
             LIMIT 1];
