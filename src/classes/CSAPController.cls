@@ -241,7 +241,6 @@ public without sharing class CSAPController {
         }
         List<Shared_Solar_System__c> sssList = Database.query(sssQuery);
 
-        System.debug(sssList);
         return (sssList.size() > 0);
     }
 
