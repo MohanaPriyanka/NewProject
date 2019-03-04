@@ -1325,7 +1325,7 @@ IF(Number_of_Periods__c&gt;120, max(1250,0.07*Loan_Amount__c), max(1250,0.05*Loa
             <name>SC_Pre_Qualified_Homeowner</name>
             <type>Alert</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <criteriaItems>
             <field>Lead.LASERCA__Home_State__c</field>
             <operation>equals</operation>
