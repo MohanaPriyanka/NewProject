@@ -91,29 +91,7 @@
             <!--maxlength="10"/>-->
             <!--</lightning:layoutItem>-->
             <!--</lightning:layout>-->
-
-            <lightning:layout multipleRows="true">
-              <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
-                <lightning:inputAddress
-                  aura:id="billingAddress"
-                  addressLabel="Address"
-                  streetLabel="Street"
-                  cityLabel="City"
-                  provinceLabel="State"
-                  provinceOptions="{!v.abbrevStates}"
-                  postalCodeLabel="PostalCode"
-                  street="{!v.lead.LASERCA__Home_Address__c}"
-                  city="{!v.lead.LASERCA__Home_City__c}"
-                  province="{!v.lead.LASERCA__Home_State__c}"
-                  country="US"
-                  postalCode="{!v.lead.LASERCA__Home_Zip__c}"
-                  required="true"
-                  fieldLevelHelp="Help Text for inputAddress field"
-                  showAddressLookup="true"
-                />
-                <ui:outputText value="{!v.abbrevStates}"></ui:outputText>
-              </lightning:layoutItem>
-            </lightning:layout>
+            
             <lightning:layout multipleRows="true">
               <aura:if isTrue="{!and(v.lead.Application_Source_Phase_2__c != null, v.lead.Application_Type__c != 'Non-Residential')}">
                 <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
@@ -125,40 +103,40 @@
               </aura:if>
             </lightning:layout>
               <lightning:layout multipleRows="true">
-              <!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">-->
-                <!--<lightning:input aura:id="field" name="leadHomeAddress"-->
-                                 <!--label="Billing Address"-->
-                                 <!--value="{!v.lead.LASERCA__Home_Address__c}"-->
-                                 <!--required="true"/>-->
-              <!--</lightning:layoutItem>-->
-              <!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >-->
-                <!--<lightning:input aura:id="field" name="leadHomeCity"-->
-                                 <!--label="City"-->
-                                 <!--value="{!v.lead.LASERCA__Home_City__c}"-->
-                                 <!--required="true"/>-->
-              <!--</lightning:layoutItem>-->
-            <!--</lightning:layout>-->
-            <!--<lightning:layout multipleRows="true">-->
-              <!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">-->
-                <!--<lightning:select aura:id="field" name="leadHomeState"-->
-                                  <!--label="State"-->
-                                  <!--value="{!v.lead.LASERCA__Home_State__c}"-->
-                                  <!--required="true">-->
-                  <!--<option value="">Choose state...</option>-->
-                  <!--<aura:iteration items="{!v.abbrevStates}" var="s">-->
-                    <!--<option value="{!s}" text="{!s}"></option>-->
-                  <!--</aura:iteration>-->
-                <!--</lightning:select>-->
-              <!--</lightning:layoutItem>-->
-              <!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >-->
-                <!--<lightning:input aura:id="field" name="leadHomeZip"-->
-                                 <!--label="Zip Code"-->
-                                 <!--value="{!v.lead.LASERCA__Home_Zip__c}"-->
-                                 <!--required="true"-->
-                                 <!--maxlength="5"-->
-                                 <!--minlength="5"-->
-                                 <!--messageWhenBadInput="Please enter a 5 digit zip-code"/>-->
-              <!--</lightning:layoutItem>-->
+              <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                <lightning:input aura:id="field" name="leadHomeAddress"
+                                 label="Billing Address"
+                                 value="{!v.lead.LASERCA__Home_Address__c}"
+                                 required="true"/>
+              </lightning:layoutItem>
+              <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
+                <lightning:input aura:id="field" name="leadHomeCity"
+                                 label="City"
+                                 value="{!v.lead.LASERCA__Home_City__c}"
+                                 required="true"/>
+              </lightning:layoutItem>
+            </lightning:layout>
+            <lightning:layout multipleRows="true">
+              <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                <lightning:select aura:id="field" name="leadHomeState"
+                                  label="State"
+                                  value="{!v.lead.LASERCA__Home_State__c}"
+                                  required="true">
+                  <option value="">Choose state...</option>
+                  <aura:iteration items="{!v.abbrevStates}" var="s">
+                    <option value="{!s}" text="{!s}"></option>
+                  </aura:iteration>
+                </lightning:select>
+              </lightning:layoutItem>
+              <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
+                <lightning:input aura:id="field" name="leadHomeZip"
+                                 label="Zip Code"
+                                 value="{!v.lead.LASERCA__Home_Zip__c}"
+                                 required="true"
+                                 maxlength="5"
+                                 minlength="5"
+                                 messageWhenBadInput="Please enter a 5 digit zip-code"/>
+              </lightning:layoutItem>
             </lightning:layout>
             <lightning:layout>
               <lightning:layoutItem size="12" smallDeviceSize="12" class="slds-align--absolute-center">

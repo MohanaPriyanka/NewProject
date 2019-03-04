@@ -2,11 +2,7 @@
     doInit: function(component, event, helper) {
         var leadId = component.get("v.leadId");
         if (component.get("v.abbrevStates") && component.get("v.abbrevStates").length === 0) {
-            var states = [];
-            for (var state in helper.US_STATES) {
-                states.push({"label": helper.US_STATES[state], "value": state});
-            }
-            component.set('v.abbrevStates', states);
+            helper.getUSStates(component, "v.abbrevStates", true);
         }
     },
     handleNavEvent : function(component, event, helper) {
@@ -18,9 +14,7 @@
         }
     },
     goToCheckCapacity : function(component, event, helper) {
-        var address = component.find("billingAddress");
-        var isValid = address.checkValidity();
-        if(helper.validatePageFields(component) && isValid){
+        if(helper.validatePageFields(component)){
             component.set('v.loading', true);
             component.set("v.loadingText", "Locating your address...");
             helper.processLead(component, event, helper);
