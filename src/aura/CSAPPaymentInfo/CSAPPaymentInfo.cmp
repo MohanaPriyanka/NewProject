@@ -30,7 +30,7 @@
   <aura:attribute name="AutopayAcknowledgement" type="Boolean" default="false"/>
   <aura:attribute name="SelectedPaymentMethod" type="String" default=""/>
   <aura:handler name="change" value="{!v.SelectedPaymentMethod}" action="{!c.clearFields}"/>
-  <aura:attribute name="PaymentMethodsAccepted" type="String[]" default="[['Bank Account', 'ACH'],['Credit Card', 'Credit Card']]"/>
+  <aura:attribute name="PaymentMethodsAccepted" type="String[]" default="[['Bank Account', 'ACH'],['Credit/Debit Card', 'Credit Card']]"/>
   <aura:attribute name="States" type="String[]"/>
   <aura:attribute name="expirationYears" type="String[]"/>
   <aura:attribute name="ErrorText" type="String"/>
@@ -57,7 +57,7 @@
                 <b class="slds-p-horizontal_large">Billing and Payment Info</b>
               </legend>
               <div class="slds-p-bottom--medium slds-align--absolute-center">
-                <b> We require that all Community Solar Customers sign up for Autopay.
+                <b> We require that all Community Solar Customers sign up for autopay.
                 </b>
               </div>
               <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">

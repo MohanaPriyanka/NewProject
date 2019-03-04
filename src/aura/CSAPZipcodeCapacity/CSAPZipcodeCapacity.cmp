@@ -8,7 +8,7 @@
             <!--pressing enter inside an aura input refreshes the page!-->
             <span onkeypress="{!c.keyCheck}">
             <lightning:input aura:id="field" name="zip"
-                             label="Zip Code"
+                             label="ZIP Code:"
                              class="slds-align_absolute-center"
                              value="{!v.zipcode}"
                              required="true"
