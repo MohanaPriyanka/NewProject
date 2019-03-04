@@ -1248,21 +1248,6 @@
         <field>UASB__c.Utility_Account_Subscription__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Utility_Bill_Line_Item__c.Amount__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Utility_Bill_Line_Item__c.Group__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Utility_Bill_Line_Item__c.Type__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>CS Billing</label>
     <objectPermissions>
@@ -1372,15 +1357,6 @@
         <modifyAllRecords>false</modifyAllRecords>
         <object>Utility_Account_Bill__c</object>
         <viewAllRecords>false</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
-        <object>Utility_Bill_Line_Item__c</object>
-        <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <recordTypeVisibilities>
         <recordType>Energy_Usage_Update__c.Production_Update_CS</recordType>
