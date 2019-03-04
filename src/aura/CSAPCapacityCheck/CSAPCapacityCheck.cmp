@@ -53,16 +53,17 @@
                   Uploaded Bills:
                   </lightning:layoutItem>
                  <lightning:layoutItem class="slds-align--absolute-center" size="4">
-              <ul>
-                <aura:iteration items="{!v.electricBill1}" var="attachment">
-                  <li class="slds-text-body--regular">{!attachment}</li>
-                </aura:iteration>
-                <aura:iteration items="{!v.electricBill2}" var="attachment">
-                  <li>{!attachment}</li>
-                </aura:iteration>
-              </ul>
+                  <ul>
+                    <aura:iteration items="{!v.electricBill1}" var="attachment">
+                      <li class="slds-text-body--regular">{!attachment}</li>
+                    </aura:iteration>
+                    <aura:iteration items="{!v.electricBill2}" var="attachment">
+                      <li>{!attachment}</li>
+                    </aura:iteration>
+                  </ul>
                  </lightning:layoutItem>
                 </aura:if>
+
 
               <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
                 <div class="slds-align--absolute-center" >
@@ -71,18 +72,6 @@
                 <div class="slds-align--absolute-center slds-text-align--center slds-p-horizontal--large" >
                   We’ll review your application to ensure everything fits with the community solar farm in your area. We’ll be in touch soon to finalize your subscription and answer any questions you may have before enrolling.
                 </div>
-              </lightning:layoutItem>
-              <lightning:layoutItem padding="around-medium" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-                <div class="slds-align--absolute-center" >
-                  <b> Terms and Conditions </b>
-            </div>
-                <lightning:input aura:id="field" name="leadPrivacyPolicyAcknowledged"
-                                 label= "{!v.termsConditions}"
-                                 type="checkbox"
-                                 class="slds-text-body--regular slds-align--absolute-center slds-size--2-of-3"
-                                 checked="{!v.lead.Privacy_Policy_Acknowledged__c}"
-                                 onchange="{!c.storeTermsConditions}"
-                                 required="true"/>
               </lightning:layoutItem>
               <lightning:layoutItem padding="around-medium" size="12" smallDeviceSize="12" mediumDeviceSize="12">
                 <div class="slds-align--absolute-center" >
@@ -99,14 +88,8 @@
               <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
                 <div class="slds-align--absolute-center">
                   <lightning:button label="Submit Application" onclick="{!c.finishStage}"/>
-            </div>
-                <lightning:input aura:id="field" name="leadPrivacyPolicyAcknowledged"
-                                 label="I agree to BlueWave's Privacy Policy. I also grant BlueWave permission to perform a soft pull of my credit history (which will NOT impact my credit score), to use my credit history to process my application and for any other lawful purpose, and to access my electric utility billing history. "
-                                 type="checkbox"
-                                 class="slds-text-body--regular slds-align--absolute-center slds-size--2-of-3"
-                                 checked="{!v.lead.Privacy_Policy_Acknowledged__c}"
-                                 required="true"/>
-          </lightning:layoutItem>
+                </div>
+              </lightning:layoutItem>
             </lightning:layout>
           </form>
         </fieldset>
