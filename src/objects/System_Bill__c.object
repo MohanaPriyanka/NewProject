@@ -401,6 +401,21 @@ Date__c and Bill_Due_Date__c are set on creation by the PU. Can be used in formu
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Client__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Stamped at bill creation with the entity owner&apos;s account</inlineHelpText>
+        <label>Client</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>System Bills (Client)</relationshipLabel>
+        <relationshipName>System_Bills1</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Comments__c</fullName>
         <externalId>false</externalId>
         <label>Comments</label>
