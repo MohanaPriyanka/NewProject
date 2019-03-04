@@ -50,7 +50,7 @@ public without sharing class EmailService {
             }
 
             String htmlbody = getCSCustomerRequestPaymentInfoHtml();
-            String subject = 'You\'re approved for community solar! What\'s next?';
+            String subject = csCustomerRequestPaymentInfo.Subject;
             htmlBody = htmlBody.replace('{!Lead.Continue_Application_Link__c}', continueApplicationUrl);
             htmlBody = htmlBody.replace('{!Lead.FirstName}', firstName);
             Messaging.SingleEmailMessage emailMessage =
