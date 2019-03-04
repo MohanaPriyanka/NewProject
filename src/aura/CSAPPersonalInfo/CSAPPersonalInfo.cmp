@@ -231,22 +231,20 @@
           </legend>
           <form class="slds-form--stacked">
             <div class="slds-p-horizontal--medium slds-p-bottom--medium slds-text-align--center">
-              <b>
                 <aura:if isTrue="{!v.lead.State == 'Massachusetts'}">
-                  <b>Your zip code is serviced by multiple Load Zones or multiple Utilities. Please consult your utility bill
+                  Your zip code is serviced by multiple Load Zones or multiple Utilities. Please consult your utility bill
                   (for National Grid customers) or
                     <lightning:formattedUrl value="https://static1.squarespace.com/static/56fbfd2d37013b142d331d72/t/580fcb5a9de4bb7cf17a798b/1477430108492/RE_MA_Utility_Load_Zones_web.pdf" label="this map" tooltip="Go to Eversource Map"/>
-                    (for Eversource) to provide us with your Load Zone or Utility so we can see if we have solar projects that can service you. </b>
+                    (for Eversource) to provide us with your Load Zone or Utility so we can see if we have solar projects that can service you.
                   <aura:set attribute="else">
                     <aura:if isTrue="{!v.lead.State == 'New York'}">
-                      <b>Please select your electric utility from the list below. You can find this information on your utility bill. </b>
+                      Please select your electric utility from the list below. You can find this information on your utility bill.
                       <aura:set attribute="else">
-                        <b>Please select your electric utility or Load Zone from the list below. You can find this information on your utility bill. </b>
+                        Please select your electric utility or Load Zone from the list below. You can find this information on your utility bill.
                       </aura:set>
                     </aura:if>
                   </aura:set>
                 </aura:if>
-              </b>
             </div>
             <lightning:layout multipleRows="true" horizontalAlign="center">
               <aura:if isTrue="{!v.splitZones.length > 1}">
