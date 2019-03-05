@@ -1110,4 +1110,11 @@ public with sharing class CSAPControllerTest {
         System.assertEquals(defaultEntity.Id, newOrders[1].Entity__c);
         System.assertEquals(defaultEntity.Gateway__c, newOrders[1].ChargentOrders__Gateway__c);
     }
+    @IsTest
+    public static void testHasCapacity() {
+        System.assertEquals(true, CSAPController.hasCapacity('02052'));
+        System.assertEquals(false, CSAPController.hasCapacity('874321'), 'Zipcode is too long');
+        System.assertEquals(false, CSAPController.hasCapacity('02115'), 'Zipcode is not in load zone');
+        System.assertEquals(false, CSAPController.hasCapacity('015'), 'Zipcode is too short');
+    }
 }

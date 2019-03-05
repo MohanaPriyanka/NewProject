@@ -396,4 +396,11 @@ public without sharing class CSAPController {
     public static List<String> getStates() {
         return BlueWaveParent.getUSStates(true);
     }
+    @AuraEnabled
+    public static Boolean hasCapacity(String zipcode) {
+        CapacityService service = new CapacityService();
+        CapacityService.ZipcodeResponse capacityServiceResponse = service.findCapacityByZipcode(zipcode);
+        return capacityServiceResponse.hasCapacity();
+        
+    }
 }

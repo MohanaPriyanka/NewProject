@@ -176,8 +176,9 @@ public with sharing class CapacityServiceTest {
         System.assertEquals('11111', response.zipcode);
         System.assertEquals(0, response.utilities.size());
         System.assertEquals(0, response.products.size());
-        System.assertEquals(0, response.products.size());
+        System.assertEquals(0, response.loadZones.size());
         System.assertEquals(0, response.sharedSolarSystems.size());
+        System.assertEquals(false, response.hasCapacity());
     }
 
     @IsTest
@@ -187,9 +188,10 @@ public with sharing class CapacityServiceTest {
 
         System.assertEquals(null, response.zipcode);
         System.assertEquals(0, response.utilities.size());
-        System.assertEquals(0, response.products.size());
+        System.assertEquals(0, response.loadZones.size());
         System.assertEquals(0, response.products.size());
         System.assertEquals(0, response.sharedSolarSystems.size());
+        System.assertEquals(false, response.hasCapacity());
     }
 
     @IsTest
@@ -200,8 +202,9 @@ public with sharing class CapacityServiceTest {
         System.assertEquals(null, response.zipcode);
         System.assertEquals(0, response.utilities.size());
         System.assertEquals(0, response.products.size());
-        System.assertEquals(0, response.products.size());
+        System.assertEquals(0, response.loadZones.size());
         System.assertEquals(0, response.sharedSolarSystems.size());
+        System.assertEquals(false, response.hasCapacity());
     }
 
     @IsTest
@@ -214,6 +217,7 @@ public with sharing class CapacityServiceTest {
         System.assertEquals(1, response.loadZones.size());
         System.assertEquals(1, response.products.size());
         System.assertEquals(1, response.sharedSolarSystems.size());
+        System.assertEquals(true, response.hasCapacity());
     }
 
     @IsTest
@@ -226,6 +230,7 @@ public with sharing class CapacityServiceTest {
         System.assertEquals(1, response.loadZones.size());
         System.assertEquals(2, response.products.size());
         System.assertEquals(2, response.sharedSolarSystems.size());
+        System.assertEquals(true, response.hasCapacity());
     }
 
     @IsTest
@@ -250,6 +255,7 @@ public with sharing class CapacityServiceTest {
         System.assertEquals(2, response.loadZones.size());
         System.assertEquals(2, response.products.size());
         System.assertEquals(4, response.sharedSolarSystems.size());
+        System.assertEquals(true, response.hasCapacity());
 
         response = service.findCapacityByZipcode('23456');
 
@@ -258,6 +264,7 @@ public with sharing class CapacityServiceTest {
         System.assertEquals(1, response.loadZones.size());
         System.assertEquals(2, response.products.size());
         System.assertEquals(2, response.sharedSolarSystems.size());
+        System.assertEquals(true, response.hasCapacity());
     }
 
     @IsTest
@@ -270,7 +277,7 @@ public with sharing class CapacityServiceTest {
         System.assertEquals(2, response.loadZones.size());
         System.assertEquals(2, response.products.size());
         System.assertEquals(4, response.sharedSolarSystems.size());
-        System.debug(response);
+        System.assertEquals(true, response.hasCapacity());
     }
 
     @IsTest
