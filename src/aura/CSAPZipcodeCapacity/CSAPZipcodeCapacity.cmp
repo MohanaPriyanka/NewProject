@@ -3,11 +3,6 @@
   <aura:attribute name="zipcode" type="string"/>
   <div aria-labelledby="zipForm">
       <form class="slds-form--stacked">
-        <lightning:layout horizontalAlign="center">
-          <div class="slds-p-around--large slds-text-body--large">
-            <b>Enter your zip code below to see if there is a project in your area.</b>
-          </div>
-        </lightning:layout>
         <lightning:layout horizontalAlign="center" multipleRows="true">
           <lightning:layoutItem size="2" smallDeviceSize="2" mediumDeviceSize="2"  >
             <!--pressing enter inside an aura input refreshes the page!-->

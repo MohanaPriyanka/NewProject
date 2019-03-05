@@ -31,8 +31,10 @@ public without sharing class CapacityService {
             zipcodeResponse.utilities.add(zipCodeUtility.Utility__r);
             zipcodeResponse.utilityIds.add(zipCodeUtility.Utility__r.Id);
 
+            
+            List<String> allZones = zipCodeUtility.Load_Zone_Utility__r.LZ__c.split('/');
             zipcodeResponse.loadZones.add(zipCodeUtility.Load_Zone_Utility__r);
-            zipcodeResponse.loadZoneNames.add(zipCodeUtility.Load_Zone_Utility__r.LZ__c);
+            zipcodeResponse.loadZoneNames.addAll(allZones);
         }
     }
 
