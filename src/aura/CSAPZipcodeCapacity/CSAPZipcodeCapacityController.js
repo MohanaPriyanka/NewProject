@@ -18,5 +18,16 @@
             }
         });
         $A.enqueueAction(action);
+    },
+
+    keyCheck : function(component, event, helper) {
+        var zipcode = component.get('v.zipcode');
+        if (event.which === 13) {
+            event.preventDefault();
+            if (zipcode.length === 5) {
+                var action = component.get("c.onSubmit");
+                $A.enqueueAction(action);
+            }
+        }
     }
 });

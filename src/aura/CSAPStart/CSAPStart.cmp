@@ -1,7 +1,9 @@
 <aura:component controller="CSAPController" access="global" extends="c:CSAPParent">
   <aura:attribute name="leadId" type="String"/>
   <aura:attribute name="leadEmail" type="String"/>
-  
+  <aura:attribute name="hasCapacity" type="Boolean"/>
+  <aura:handler name="change" value="{!v.hasCapacity}" action="{!c.capacityChecked}"/>
+
   <aura:set attribute="STAGENAME" value="NAV_Getting_Started"/>
   <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
   <aura:registerEvent name="CSAPNavigationEvent" type="c:CSAPNavigationEvent"/>
@@ -9,14 +11,14 @@
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
 
 
-  <aura:if isTrue="{!v.page == 'ApplicationPrep' || v.page == 'Login'}">
+  <aura:if isTrue="{!v.page == 'ApplicationPrep'}">
     <div aria-labelledby="aboutYourselfForm">
       <fieldset class="slds-box slds-theme--default slds-container_center">
         <legend id="aboutYourselfForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
           <b class="slds-section__title--large slds-p-horizontal_large">Before you begin</b>
         </legend>
         <form class="slds-form--stacked">
-          <lightning:layout multipleRows="true">
+          <lightning:layout multipleRows="true" horizontalAlign="center">
             <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
               <b>Here are a few things to keep in mind as you go through the application process:</b>
               <ul>
@@ -54,6 +56,33 @@
         </form>
       </fieldset>
     </div>
+  </aura:if>
+
+  <aura:if isTrue="{!v.page == 'ZipcodeChecker'}">
+      <fieldset class="slds-box slds-theme--default slds-container_center">
+        <legend id="aboutYourselfForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
+          <b class="slds-section__title--large slds-p-horizontal_large">Go Solar!</b>
+        </legend>
+        <form class="slds-form--stacked" style="text-align: center">
+          <lightning:layout horizontalAlign="center">
+            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12">
+              <b>Before we begin, we'll need a copy of your most recent utility bill to determine your energy needs and credit eligibility.</b>
+            </lightning:layoutItem>
+          </lightning:layout>
+          <c:CSAPZipcodeCapacity hasCapacity="{!v.hasCapacity}" zipcode="{!v.lead.LASERCA__Home_Zip__c}"/>
+        </form>
+      </fieldset>
+  </aura:if>
+
+  <aura:if isTrue="{!v.page == 'NoProjects'}">
+    <fieldset class="slds-box slds-theme--default slds-container_center">
+      <legend id="aboutYourselfForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
+        <b class="slds-section__title--large slds-p-horizontal_large">We're Sorry</b>
+      </legend>
+      <div class="slds-align--absolute-center slds-text-body--large--blue">
+        <b>It seems that we don't have any Community Solar currently available in your area. We're working hard to expand our Community Solar availability, so please check back at a later date.</b>
+      </div>
+    </fieldset>
   </aura:if>
 
   <!-- LOGIN FORM -->
