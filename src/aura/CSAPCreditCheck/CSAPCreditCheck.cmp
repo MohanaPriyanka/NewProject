@@ -51,7 +51,7 @@
       </fieldset>
     </div>
   </aura:if>
-`
+
   <aura:if isTrue="{!v.page == 'PersonalInfoConfirmation'}">
     <div aria-labelledby="informationConfirmationForm">
         <fieldset class="slds-box slds-theme--default slds-container_center">
