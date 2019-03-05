@@ -48,14 +48,13 @@
             var ual = component.get("v.ual");
             var lead = component.get("v.lead");
 
-            component.set("v.loading", true);
-            component.set("v.loadingText", "Saving utility account information...");
 
             if(ual.Lead__c == null){
                 ual.Lead__c = lead.Id;
             }
             var utility = component.get('v.utility');
-            ual.Name = utility.Name;
+            
+            ual.Utility__c = utility.Id;
             var saveUAL = component.get('c.saveUtilityAccountLog');
             saveUAL.setParams({'ual' : ual});
             saveUAL.setCallback(this, function(resp) {
@@ -66,7 +65,14 @@
                     helper.logError("CSAPEnergyInfoController", "goToAddMore", resp.getError(), lead);
                 }
             });
-            $A.enqueueAction(saveUAL);
+
+            if(ual.Rate_Class__c === 'Rate Class Not in List') {
+                alert('Only rate classes in the list are eligible for this product. Please close this window and mark the lead as unqualified.');
+            } else {
+                component.set("v.loading", true);
+                component.set("v.loadingText", "Saving utility account information...");
+                $A.enqueueAction(saveUAL);
+            }
         }
     },
     cancelAddUAL : function(component, event, helper) {
@@ -85,7 +91,6 @@
         component.set("v.ual", ual);
         component.set("v.ualList", ualList);
         component.set("v.page", "UtilityAccountInformation");
-        helper.clearAttachments(component, event, helper);
     },
 
     finishStage : function(component, event, helper) {

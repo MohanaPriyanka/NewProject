@@ -38,7 +38,7 @@ public without sharing class CSOpportunityFactory {
                     Product__c = sss.Product__c,
                     System_Assigned__c = true,
                     NMC_Tariff__c = sss.Utility_NMC_Tariff__c,
-                    StageName = 'New',
+                    StageName = 'Contract Pending',
                     CloseDate = Date.today(),
                     UAS_Created__c = true,
                     Annual_Electricity_Cost__c = annualElectricityCostAssigned,
