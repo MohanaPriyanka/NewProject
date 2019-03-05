@@ -94,6 +94,16 @@
             </criteriaItems>
         </ruleEntry>
         <ruleEntry>
+            <assignedTo>C_I</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Lead.Record_Type_ID__c</field>
+                <operation>equals</operation>
+                <value>0120a000000LT8n</value>
+            </criteriaItems>
+            <template>CS_Application_Email_Notifications/Lead_Assignment_Notification</template>
+        </ruleEntry>
+        <ruleEntry>
             <assignedTo>api@bluewavesolar.com</assignedTo>
             <assignedToType>User</assignedToType>
         </ruleEntry>
