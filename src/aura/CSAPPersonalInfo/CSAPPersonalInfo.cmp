@@ -12,14 +12,8 @@
   <aura:attribute name="splitZones" type="String[]"/>
   <aura:attribute name="splitUtilities" type="Object[]"/>
   <aura:attribute name="options" type="List" default="[
-      {'label': 'This is my home', 'value': 'Residential'},
-      {'label': 'This is my business or non-profit', 'value': 'Non-Residential'}
-      ]"/>
-  <aura:attribute name="applicationType" type="String" default="Residential"/>
-
-  <aura:attribute name="options" type="List" default="[
-      {'label': 'This is my home', 'value': 'Residential'},
-      {'label': 'This is my business/organization', 'value': 'Non-Residential'}
+      {'label': 'Home', 'value': 'Residential'},
+      {'label': 'Business or non-profit', 'value': 'Non-Residential'}
       ]"/>
   <aura:attribute name="applicationType" type="String" default="Residential"/>
 
@@ -47,12 +41,12 @@
             <b class="slds-p-horizontal_large">  Great news, we have a project in your area!  </b>
           </legend>
           <div class="slds-align--absolute-center slds-p-horizontal--medium slds-text-align--center">
-            <b> To continue, please provide your contact information and billing address so we can verify your eligibility
+            To continue, please provide your contact information and billing address so we can verify your eligibility
               for this community solar project and contact you regarding your application. We take privacy and security
-              seriously, and never share your personal information without your consent. </b>
+              seriously, and never share your personal information without your consent.
           </div>
            <div class="slds-p-bottom--medium slds-align--absolute-center">
-             <b>Check out our <lightning:formattedUrl value="https://bluewavesolar.com/privacy-policy" label="Privacy Policy" tooltip="Go to Privacy Policy"/></b>
+             Check out our <lightning:formattedUrl value="https://bluewavesolar.com/privacy-policy" label="&nbsp;Privacy Policy" tooltip="Go to Privacy Policy"/>
           </div>
           <form class="slds-form--stacked">
             <lightning:layout multipleRows="true">
@@ -149,6 +143,7 @@
                 <div class="slds-align--absolute-center slds-text-body--regular">
                   <lightning:radioGroup aura:id="field"
                                         name="radioApplicationType"
+                                        label="I want community solar for my: "
                                         options="{!v.options}"
                                         value="{!v.applicationType}"
                                         type="radio"

@@ -12,6 +12,15 @@
         if (event.getParam("lead")) {
             component.set("v.lead", event.getParam("lead"));
         }
+
+        if (event.getParam("eventType") === "INITIATED") {
+            //Get current stage to set current index
+            var currentStage = event.getParam("stageName");
+            var currentIndex = helper.getStage(currentStage);
+            component.set("v.stageIndex", currentIndex);
+        }
+
+
         if (event.getParam("eventType") === "COMPLETED") {
             var nextStageIndex = helper.getNextStageIndex(event.getParam("stageName"), helper);
             var nextStageName = helper.getStage(nextStageIndex);
