@@ -216,7 +216,7 @@
                         <stringValue>String</stringValue>
                     </value>
                 </processMetadataValues>
-                <leftValueReference>myVariable_current.Opp_Product_Line__c</leftValueReference>
+                <leftValueReference>myVariable_current.dsfs__Parent_Status_Record__r.dsfs__Opportunity__r.Product_Line__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Community Solar</stringValue>
@@ -961,7 +961,7 @@
         </rules>
     </decisions>
     <description>Update incase opportunity is missing</description>
-    <interviewLabel>Opportunity_Map_DocuSign_Recipient_Status-32_InterviewLabel</interviewLabel>
+    <interviewLabel>Opportunity_Map_DocuSign_Recipient_Status-34_InterviewLabel</interviewLabel>
     <label>Map Recipient Status to Opportunity Layout (CS)</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -1448,7 +1448,7 @@
         <object>Opportunity</object>
     </recordUpdates>
     <startElementReference>myVariable_waitStartTimeAssignment</startElementReference>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>myVariable_current</name>
         <dataType>SObject</dataType>
