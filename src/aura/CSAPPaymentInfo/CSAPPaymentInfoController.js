@@ -62,7 +62,9 @@
 
             }
         })
-        $A.enqueueAction(getProduct);
+        if (lead.Product__c) {
+            $A.enqueueAction(getProduct);
+        }
     },
 
     submitPaymentInfo : function(component, event, helper) {
