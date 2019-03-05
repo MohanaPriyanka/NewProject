@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Asking customers to enter payment info</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>19-0227 CSAP Payment Email</name>
+    <style>none</style>
+    <subject>You&apos;re approved for community solar! What&apos;s next?</subject>
+    <textOnly>Hi {!Lead.FirstName},
+
+Congratulations! You have been approved for the {!Opportunity.Shared_Solar_System__c} solar farm. Only two more steps to complete your enrollment:
+
+First, enter your preferred payment method in our secure portal.
+
+Enter Payment Information: {!Lead.Continue_Application_Link__c}
+
+Then, check your email. Once we&apos;ve verified your payment details, we&apos;ll email a link to your subscription agreement, which you can review and sign using DocuSign. That&apos;s it!
+
+Thanks for joining the wave, we&apos;re happy you&apos;re here.
+
+- All of us here at BlueWave
+
+BlueWave Sales Support
+617.681.4119 | learnmore@bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>
