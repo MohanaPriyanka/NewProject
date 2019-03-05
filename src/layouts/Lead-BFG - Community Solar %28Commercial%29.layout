@@ -48,6 +48,10 @@
                 <behavior>Edit</behavior>
                 <field>Unfinished_Lead__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Continue_Application_Link__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

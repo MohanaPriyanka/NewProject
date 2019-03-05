@@ -403,6 +403,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>EmailService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>EmailServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>EnergyUsageUpdateTriggerHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -10918,6 +10926,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Lead.Contingent_Contract__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Continue_Application_Link__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
