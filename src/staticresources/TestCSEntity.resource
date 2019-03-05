@@ -1,8 +1,8 @@
-Id,Name,RecordTypeId,Status__c,Gateway__c
-TestEntityBarrett,BarrettProjCo,012j0000000uSSDAA2,Not Started,TestGatewayOne
-TestEntityNotBarrett,NotBarrettProjCo,012j0000000uSSDAA2,Not Started,TestGatewayTwo
-TestEntityA,EntityA,012j0000000uSSDAA2,,TestGatewayOne
-TestEntityB,EntityB,012j0000000uSSDAA2,,TestGatewayOne
-TestEntityC,EntityC,012j0000000uSSDAA2,,TestGatewayOne
-TestEntityD,EntityD,012j0000000uSSDAA2,,TestGatewayOne
-TestEntityPlaceholder,"BWC Holdings, LLC",012j0000000uSSDAA2,Not Started,TestGatewayTwo
+Id,Name,RecordTypeId,Status__c,Gateway__c,Client_Account__c
+TestEntityBarrett,BarrettProjCo,012j0000000uSSDAA2,Not Started,TestGatewayOne,AMP
+TestEntityNotBarrett,NotBarrettProjCo,012j0000000uSSDAA2,Not Started,TestGatewayTwo,Goldman
+TestEntityA,EntityA,012j0000000uSSDAA2,,TestGatewayOne,Goldman
+TestEntityB,EntityB,012j0000000uSSDAA2,,TestGatewayOne,Goldman
+TestEntityC,EntityC,012j0000000uSSDAA2,,TestGatewayOne,Goldman
+TestEntityD,EntityD,012j0000000uSSDAA2,,TestGatewayOne,Goldman
+TestEntityPlaceholder,"BWC Holdings, LLC",012j0000000uSSDAA2,Not Started,TestGatewayTwo,Goldman

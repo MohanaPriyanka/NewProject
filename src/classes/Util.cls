@@ -200,6 +200,30 @@ public without sharing class Util {
             insert property;
         }
     }
+    public static void disableAllTriggers() {
+        toggleAllTriggers(true);
+    }
+    public static void enableAllTriggers() {
+        toggleAllTriggers(false);
+    }
+    private static void toggleAllTriggers(Boolean onOrOff) {
+        System_Properties__c property;
+        List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
+        if (systemProperties.size() > 0) {
+            property = systemProperties[0];
+        } else {
+            property = new System_Properties__c(Name = 'System');
+        }
+
+        DescribeSObjectResult soDescribe = System_Properties__c.SObjectType.getDescribe();
+        for (SObjectField soField : soDescribe.fields.getMap().values()) {
+            DescribeFieldResult field = soField.getDescribe();
+            if (field.getName().contains('Disable') && field.getName().contains('Trigger')) {
+                property.put(field.getName(), onOrOff);
+            }
+        }
+        upsert property;
+    }
 
     public static String obscureText(String text, Integer trailingCharacters) {
         Integer length = text.length();

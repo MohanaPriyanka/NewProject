@@ -166,6 +166,21 @@ public with sharing class UtilTest {
         // All This shouldn't use any SOQL queries
         System.assertEquals(0, Limits.getQueries());
     }
+    @IsTest
+    public static void testAllTriggerToggle() {
+        // By default, if there's no system property, triggers are not disabled
+        System.assertEquals(false, Util.isDisabled('Disable_LoanTrigger__c'));
+        Util.disableAllTriggers();
+        System.assertEquals(true, Util.isDisabled('Disable_LoanTrigger__c'));
+        System.assertEquals(true, Util.isDisabled('Disable_LeadTrigger__c'));
+        Util.enableAllTriggers();
+        System.assertEquals(false, Util.isDisabled('Disable_LoanTrigger__c'));
+        System.assertEquals(false, Util.isDisabled('Disable_LeadTrigger__c'));
+        // And test that it still works with an existing system property
+        Util.disableAllTriggers();
+        System.assertEquals(true, Util.isDisabled('Disable_LoanTrigger__c'));
+        System.assertEquals(true, Util.isDisabled('Disable_LeadTrigger__c'));
+    }
 
     @IsTest
     public static void testObscureText() {
