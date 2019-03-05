@@ -1,4 +1,4 @@
-<messaging:emailTemplate subject="Your Community Solar Portal is Live!" recipientType="User" relatedToType="Account">
+<messaging:emailTemplate subject="Welcome to BlueWave!" recipientType="User" relatedToType="Account">
   <messaging:htmlEmailBody >
     <apex:outputPanel rendered="{!recipient.Client_Brand_Key__c=='AmpRed' || recipient.Client_Brand_Key__c=='AmpBlack'}">
 
@@ -463,21 +463,25 @@
                                           <table cellpadding="0" cellspacing="0" width="100%" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper">
                                             <tr>
                                               <td style="padding: 18px 5px 5px; " class="stylingblock-content-wrapper camarker-inner">
-                                                <font face="arial, helvetica, sans-serif">Dear&nbsp;
+                                                <font face="arial, helvetica, sans-serif">Hey&nbsp;
                                                 </font>
                                                 <span style="font-family: arial, helvetica, sans-serif;">{!recipient.FirstName},&nbsp;
                                               </span>
                                                 <h1 style="color: rgb(51, 52, 52); font-size: 15px; font-style: normal; font-weight: bold; line-height: 150%;">
-                                                  <font face="arial, helvetica, sans-serif">Your BlueWave Community Solar portal is now live!
+                                                  <font face="arial, helvetica, sans-serif">Welcome to BlueWave — our energy future starts with you!
                                                   </font>
-                                                </h1>Log into your portal to:
+                                                </h1>Thanks for choosing BlueWave as your community solar provider and supporting local solar energy. Your community solar subscription has been approved!
                                                 <br />
                                                 <br />
-                                                • View your statements&nbsp; <br />
-                                                &bull; Make payments and view your payment history <br />
-                                                &bull; Sign up for autopay <br />
+                                                Now that you're a BlueWaver, you can <a alias="log into your community solar portal" conversion="true" data-linkto="http://" href="http://bluewavememberportal.force.com/s/login/?inst=j&startURL=%2Fs%2F" style="color:#387CDF;text-decoration:underline;" title="log into your community solar portal">log into your community solar portal</a> to:
                                                 <br />
-                                                Click the link below and login using the username, {!recipient.Username}.&nbsp;If&nbsp;this is your first time logging into the portal, please click&nbsp;the link to create&nbsp;a new password.
+                                                <br />
+                                                • Chat with a member of the BlueWave Customer Care team <br />
+                                                &bull; Submit and manage support cases&nbsp; <br />
+                                                &bull; View your statements and make payments <br />
+                                                &bull; Access support articles&nbsp; <br />
+                                                <br />
+                                                To access your portal, click the link below and login using the username, {!recipient.Username}.&nbsp;If&nbsp;this is your first time logging into the portal, please click&nbsp;the link to create&nbsp;a new password.
                                               </td>
                                             </tr>
                                           </table>
@@ -486,10 +490,16 @@
                                 </tr>
                                 <tr>
                                   <td align="left" class="" valign="top">
-                                    <table cellpadding="0" cellspacing="0" width="100%" class="slot-styling" style="min-width: 100%; "><tr><td class="stylingblock-content-margin-cell" style="padding: 14px 14px 14px 3px; "><table cellpadding="0" cellspacing="0" width="100%" style="background-color: transparent; min-width: 100%; border-top: 0px; border-right: 0px; border-bottom: 1px solid transparent; border-left: 0px; " class="slot-styling"><tr><td style="padding: 4px 5px 10px; " class="slot-styling camarker-inner"><table cellpadding="0" cellspacing="0" width="100%" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 0px 5px; " class="stylingblock-content-wrapper camarker-inner"><div style="line-height: 100%;">
-                                      <span style="color:#333434;"><span style="font-size:15px;"><span style="font-family:arial,helvetica,sans-serif;">Thanks for joining the Wave, we're happy you're here.</span></span></span></div><div style="line-height: 100%;">
+                                    <table cellpadding="0" cellspacing="0" width="100%" class="slot-styling" style="min-width: 100%; "><tr><td class="stylingblock-content-margin-cell" style="padding: 14px 14px 14px 3px; "><table cellpadding="0" cellspacing="0" width="100%" style="background-color: transparent; min-width: 100%; border-top: 0px; border-right: 0px; border-bottom: 1px solid transparent; border-left: 0px; font-size:12; " class="slot-styling"><tr><td style="padding: 4px 5px 10px; " class="slot-styling camarker-inner"><table cellpadding="0" cellspacing="0" width="100%" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 0px 5px; " class="stylingblock-content-wrapper camarker-inner"><div style="line-height: 100%;">
+                                      <span style="color:#333434;"><span style="font-size:14px;"><span style="font-family:arial,helvetica,sans-serif;"><b>Have questions?</b></span></span></span>
                                       <br />
-                                      <span style="font-size:15px;"><span style="color:#333434;"><span style="font-family:arial,helvetica,sans-serif;">- All of us here at BlueWave&nbsp;</span></span></span></div></td></tr></table></td></tr></table></td></tr></table>
+                                      <br></br>
+                                      <span style="font-size:14px;">Check out our <a alias="FAQs" conversion="false" data-linkto="https://" href="https://bluewavememberportal.force.com/Support/s/?_ga=2.10154293.1057352766.1550682164-1693724394.1525181764" style="color:#387CDF;text-decoration:underline;" title="FAQs">FAQs</a> or log into your <a alias="portal" conversion="false" data-linkto="http://" href="http://bluewavememberportal.force.com/s/login/?inst=j&startURL=%2Fs%2F" style="color:#387CDF;text-decoration:underline;" title="portal">portal</a> to chat with a member of our Customer Care team.You can also reach us at 844.786.4100 or <a data-linkto="mailto:" href="mailto:customercare@bluewavesolar.com?subject=" style="color: rgb(56, 124, 223);" title="customercare@bluewavesolar.com ">customercare@bluewavesolar.com</a>. We're happy to help.<br /></span>
+                                    
+                                      <br />
+                                      <span style="color:#333434;"><span style="font-size:14px;"><span style="font-family:arial,helvetica,sans-serif;">Thanks for joining the Wave, we're happy you're here.</span></span></span></div><div style="line-height: 100%;">
+                                      <br />
+                                      <span style="font-size:14px;"><span style="color:#333434;"><span style="font-family:arial,helvetica,sans-serif;">- All of us here at BlueWave&nbsp;</span></span></span></div></td></tr></table></td></tr></table></td></tr></table>
                                   </td>
                                 </tr>
                                 <tr>

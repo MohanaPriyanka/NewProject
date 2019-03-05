@@ -91,7 +91,7 @@
         </recipients>
         <senderAddress>partnersupport@bluewavesolar.com</senderAddress>
         <senderType>OrgWideEmailAddress</senderType>
-        <template>CS_Application_Email_Notifications/CS_Partner_Contract_Complete_Notification</template>
+        <template>CSPartnerEmails/Cust_Application_Finalized</template>
     </alerts>
     <alerts>
         <fullName>CS_Partner_Contract_Signed_by_Customer</fullName>
