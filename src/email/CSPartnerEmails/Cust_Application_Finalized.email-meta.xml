@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Cust. Application Finalized</name>
+    <style>none</style>
+    <subject>{!Opportunity.Name}’s Community Solar Contract Has Been Approved!</subject>
+    <textOnly>Hey {!Opportunity.BS_Sales_ID__c},
+
+Congratulations - {!Opportunity.Name}&apos;s community solar subscription contract has been approved and fully executed!
+
+{!Opportunity.Name} will receive a welcome package which guides them through the billing process and helps them set up their BlueWave Community Solar portal. If they have any questions, they can contact our Customer Support team at 844.786.4100 or customercare@buewavesolar.com.
+
+Thanks for partnering with us to revolutionize energy.
+
+- All of us here at BlueWave
+
+BlueWave Partner Support
+888.997.2432 | partnersupport@bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>
