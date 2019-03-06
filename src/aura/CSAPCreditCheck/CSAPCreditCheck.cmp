@@ -18,43 +18,12 @@
 
   <aura:if isTrue="{!v.page == 'SSNPage'}">
     <div aria-labelledby="ssnForm">
-        <fieldset class="slds-box slds-theme--default slds-contstaainer_center">
+        <fieldset class="slds-box slds-theme--default slds-container_center slds-size--2-of-3">
         <legend id="ssnForm" class="slds-text-heading--small slds-p-vertical--medium slds-section__title--large slds-align_absolute-center">
           <b class="slds-section__title--large slds-p-horizontal_large"> We need to check that you qualify for Community Solar </b>
         </legend>
         <form class="slds-form--stacked">
           <lightning:layout multipleRows="true">
-            <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
-              <lightning:helptext
-                title="Social Security Number Help Text"
-                content="In order to qualify for Community Solar, we need your social security number to check your credit score, to see which solar projects you qualify for. This information is securely stored and we do not disclose it to any outside party."/>
-              <lightning:input aura:id="field" name="leadSSN"
-                       type="password"
-                       label="Social Security Number"
-                       value="{!v.lead.LASERCA__SSN__c}"
-                       placeholder="XXX-XX-XXXX"
-                       pattern="^(\d{3}-?\d{2}-?\d{4}|XXX-XX-XXXX)$"
-                       messageWhenPatternMismatch="Please enter your Social Security Number in the format of XXX-XX-XXXX (Ex. 123-45-6789)"
-                       required="true"/> 
-            </lightning:layoutItem>
-          </lightning:layout>
-          <lightning:layout multipleRows="true">
-            <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
-              <div aura:id="birthdateElement">
-                <label class="slds-form-element__label">
-                  <span class="slds-text-color_error">*</span>
-                  Date of Birth
-                </label>
-                <c:BlueWaveDate value="{!v.lead.LASERCA__Birthdate__c}" required="true"/>
-                <!--<aura:method name="BirthDate" action="{!c.confirmBirthDate}"/>-->
-                <aura:if isTrue="{!v.ShowDateError}">
-                  <div class="slds-text-color_error slds-text-body_small">
-                    Please enter birth date in the format 01/01/2000
-                  </div>
-                </aura:if>
-              </div>
-            </lightning:layoutItem>
-          </lightning:layout>
 
           <lightning:formattedUrl value="https://bluewavesolar.com/about-us/privacy-policy/" label="Please take a moment to review our Privacy Policy" target="_blank" class="slds-p-around--small "/>
 
@@ -77,27 +46,7 @@
                        required="true"/> 
             </lightning:layoutItem>
           </lightning:layout>
-
-
-          <lightning:layout multipleRows="true">
-            <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-              <lightning:input aura:id="field" name="leadUtilityBillAccessAcknowledged"
-                       label="I give BlueWave and its affiliates permission to access my energy billing history."
-                       type="checkbox"
-                       checked="{!v.lead.Utility_Bill_Access_Acknowledged__c}"
-                       required="true"/> 
-            </lightning:layoutItem>
           </lightning:layout>
-
-          <div class="slds-clearfix slds-p-top_medium">
-            <div class="slds-float_left">
-            </div>
-            <div class="slds-float_right">
-              <lightning:button label="Next" onclick="{!c.goToPersonalInfoConfirmation}"/>
-            </div>
-          </div>
-      
-
         </form>
       </fieldset>
     </div>
@@ -107,7 +56,7 @@
     <div aria-labelledby="informationConfirmationForm">
         <fieldset class="slds-box slds-theme--default slds-container_center">
         <legend id="informationConfirmationForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-          <b class="slds-section__title--large slds-p-horizontal_large"> Please verify your information is correct before we check your score. </b>
+          <b class="slds-section__title--large slds-p-horizontal_large"> Please verify the information is correct before check the customer's credit </b>
         </legend>
 
         <form class="slds-form--stacked">
@@ -116,30 +65,35 @@
               <lightning:input aura:id="field" name="leadFirstName"
                        label="First Name"
                        value="{!v.lead.FirstName}"
-                       required="true"/> 
+                       disabled="true"
+                       required="true"/>
             </lightning:layoutItem>
             <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
               <lightning:input aura:id="field" name="leadLastName"
                        label="Last Name"
                        value="{!v.lead.LastName}"
-                       required="true"/> 
+                       disabled="true"
+                       required="true"/>
             </lightning:layoutItem>
             <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
               <lightning:input aura:id="field" name="leadHomeAddress"
                        label="Street Address"
                        value="{!v.lead.LASERCA__Home_Address__c}"
+                       disabled="true"
                        required="true"/> 
             </lightning:layoutItem>
             <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
               <lightning:input aura:id="field" name="leadHomeCity"
                        label="City"
                        value="{!v.lead.LASERCA__Home_City__c}"
+                       disabled="true"
                        required="true"/> 
             </lightning:layoutItem>
             <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
               <lightning:select aura:id="field" name="leadHomeState" 
                                 label="State" 
                                 value="{!v.lead.LASERCA__Home_State__c}"
+                                disabled="true"
                                 required="true">
                   <option value="">Choose state...</option>
                   <aura:iteration items="{!v.abbrevStates}" var="s">
@@ -151,14 +105,12 @@
               <lightning:input aura:id="field" name="leadHomeZip"
                                label="Zip Code"
                                value="{!v.lead.LASERCA__Home_Zip__c}"
+                               disabled="true"
                                required="true"/> 
             </lightning:layoutItem>
           </lightning:layout>
 
           <div class="slds-clearfix slds-p-top_medium">
-            <div class="slds-float_left">
-              <lightning:button label="Previous" onclick="{!c.goToSSNPage}"/>
-            </div>
             <div class="slds-float_right">
               <lightning:button label="Run Credit Check" onclick="{!c.checkCredit}"/>
             </div>

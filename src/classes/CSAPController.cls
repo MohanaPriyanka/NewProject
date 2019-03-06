@@ -29,7 +29,7 @@ public without sharing class CSAPController {
                     Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c, Application_Source_Phase_2__c,
                     LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c, ZipCode__c,
                     Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Customer_Referral__c, Owner.Id,
-                    LoadZone__c, Utility_relationship__c
+                    LoadZone__c, Utility_relationship__c, Continue_Application_Link__c, Partner_Email__c
             FROM Lead
             WHERE Id = :leadId
             AND Email = :email
@@ -198,11 +198,16 @@ public without sharing class CSAPController {
         }
 
 
-        insert lead;
+        upsert lead;
         Lead insertedLead = [
             SELECT LoadZone__c, Utility_relationship__c, Confirm_Utility__c
             FROM Lead
             WHERE Id = :lead.Id];
+
+
+        String continueApplicationUrl = Util.getCommunitySiteURL('Apply') + '/s/csap-payment?leadId=' + lead.Id;
+        insertedLead.Continue_Application_Link__c = continueApplicationUrl;
+        update insertedLead;
 
         lead.LoadZone__c = insertedLead.LoadZone__c;
         lead.Utility_relationship__c = insertedLead.Utility_relationship__c;
@@ -216,6 +221,9 @@ public without sharing class CSAPController {
                 LASERCA__Home_State__c, Application_Type__c, Utility_relationship__c, LoadZone__c
             FROM Lead
             WHERE Id = :leadId];
+        if (lead.Utility_relationship__c == null || lead.LoadZone__c == null) {
+            return false;
+        }
         String sssQuery = 'SELECT Id, Product__r.Name  ';
         sssQuery +=       'FROM Shared_Solar_System__c ';
         sssQuery +=       'WHERE Open__c = true ';
@@ -253,12 +261,29 @@ public without sharing class CSAPController {
     // there's no credit report. Customer Care can always pull credit through the UI if needed
     @AuraEnabled
     public static void pullCreditStatus(Lead lead) {
-        Lead l = [SELECT Id, Personal_Credit_Report__c, Date_of_Application__c, Application_Source_Phase_2__c
+        Lead l = [SELECT Id, Name, Personal_Credit_Report__c, Date_of_Application__c, Application_Source_Phase_2__c
                   FROM Lead
                   WHERE Id =:lead.Id];
+        Organization o = [SELECT IsSandbox FROM Organization LIMIT 1];
+        String name = l.Name.toLowerCase();
+        if (o.isSandbox || name.contains('testcase')) {
+            // Per Tracy: sandboxes always need to have an SSN for a credit pull in sandboxes / testcases
+            if (name.contains('frozen')) {
+                // let's give a way to submit frozen apps
+                lead.LASERCA__SSN__c = '000000010';
+            } else if (name.contains('fail')) {
+                // returns a 498 credit score
+                lead.LASERCA__SSN__c = '000000008';
+            } else {
+                lead.LASERCA__SSN__c = '000000001';
+            }
+        } else {
+            // for Prod, we need SSN to be all zeros
+            lead.LASERCA__SSN__c = '000000000';
+        }
 
         if (l != null && l.Personal_Credit_Report__c == null) {
-            lead.LASERCA__Pull_Credit_Report__c = true;
+            lead.Soft_Pull_Credit_Report__c = true;
         }
         if (l.Date_of_Application__c == null ||
             (l != null && l.Personal_Credit_Report__c == null)) {
@@ -277,14 +302,39 @@ public without sharing class CSAPController {
     }
 
     @AuraEnabled
+    public static List<Utility_NMC_Tariff__c> getRateClasses(String utilityId, String productId) {
+
+        List<Utility_NMC_Tariff__c> validUtilityNMCTariffs = new List<Utility_NMC_Tariff__c>();
+
+        return validUtilityNMCTariffs;
+    }
+
+    @AuraEnabled
     public static Lead convertCSLead(Id leadId, String email) {
         Lead primaryLead = getLead(leadId, email);
         List<Lead> leads = [
-            SELECT Id
+            SELECT Id, OwnerId
             FROM Lead
             WHERE Parent_Account__c = :primaryLead.Parent_Account__c
             AND Status = 'Qualified'
         ];
+
+        // make sure that the lead owner is a user, if not set it to API
+        Boolean updatedLeadOwner = false;
+        User apiUser = [
+            SELECT Id, Name, Username
+            FROM User
+            WHERE Name = 'API'
+            AND IsActive = True
+            LIMIT 1
+        ];
+        for (Lead lead : leads) {
+            if (lead.OwnerId.getSobjectType() != User.SObjectType) {
+                lead.OwnerId = apiUser.Id;
+            }
+            lead.CSAP_Stage__c = 'NAV_Complete';
+        }
+        update leads;
 
         List<Database.LeadConvert> leadConverts = new List<Database.LeadConvert>();
         for (Lead leadToConvert : leads) {
@@ -328,6 +378,13 @@ public without sharing class CSAPController {
         AND IsActive = TRUE
         LIMIT 1];
 
+        Group csInsideSales = [
+            SELECT Id, Name
+            FROM Group
+            WHERE Type = 'Queue'
+            AND DeveloperName = 'CS_Inside_Sales'
+            LIMIT 1
+        ];
 
         Account account = new Account(
             RecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Parent Account').getRecordTypeId(),
@@ -345,7 +402,7 @@ public without sharing class CSAPController {
         );
         insert account;
         lead.Parent_Account__c = account.Id;
-        lead.OwnerId = apiUser.Id;
+        lead.OwnerId = csInsideSales.Id;
 
         lead.Partner_Lookup__c = customerPartner.Id;
         if(customerPartner.Email__c != null){
@@ -395,5 +452,46 @@ public without sharing class CSAPController {
     @AuraEnabled
     public static List<String> getStates() {
         return BlueWaveParent.getUSStates(true);
+    }
+    @AuraEnabled
+    public static Boolean hasCapacity(String zipcode) {
+        CapacityService service = new CapacityService();
+        CapacityService.ZipcodeResponse capacityServiceResponse = service.findCapacityByZipcode(zipcode);
+        return capacityServiceResponse.hasCapacity();
+        
+    }
+
+    @AuraEnabled
+    public static void saveUtilityAccountLog(Utility_Account_Log__c ual) {
+        upsert ual;
+
+        List<Attachment> utilityBills = [
+            SELECT Name, Body, ContentType, Description
+            FROM Attachment
+            WHERE ParentId = : ual.Lead__c
+            AND Description LIKE '%electric bill%'
+        ];
+
+        Util.reparentAttachments(utilityBills, ual.Id);
+    }
+
+    @AuraEnabled
+    public static Boolean sendEmailForPaymentInfo(Lead lead) {
+        lead = getLead(lead.Id, lead.Email);
+
+        lead.CSAP_Stage__c = 'NAV_Energy_Information';
+        update lead;
+
+
+        EmailService.createCSCustomerRequestPaymentInfoEmails(new List<Lead>{lead});
+        Messaging.SendEmailResult[] result = EmailService.sendMessages();
+
+        if (!result.isEmpty() && result[0].isSuccess()) {
+            return true;
+        } else {
+            String message = 'Message did not send for lead: ' + lead.Id + '. Error: ' + result[0].getErrors();
+            Logger.logNow('CSAPController', 'sendEmailForPaymentInfo', message , 'Error');
+            return false;
+        }
     }
 }

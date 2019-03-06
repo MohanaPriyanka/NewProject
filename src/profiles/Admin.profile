@@ -443,6 +443,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>EmailService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>EmailServiceTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>EnergyUsageUpdateTriggerHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -11051,6 +11059,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Continue_Application_Link__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Continue_Loan_Application_Link__c</field>
         <readable>true</readable>
@@ -12248,6 +12261,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Lead.Technology_Platform_Fee__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Terms_Conditions_Acknowledged__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Terms_Conditions__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

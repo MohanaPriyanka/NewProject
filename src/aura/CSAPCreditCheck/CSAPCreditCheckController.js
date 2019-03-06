@@ -7,15 +7,12 @@
                 helper.copyCreditFromPrevious(component, event, helper, lead);
             }
         } else {
-            helper.handleNavEvent(component, event, helper, "SSNPage");
+            helper.handleNavEvent(component, event, helper, "PersonalInfoConfirmation");
         }
         
         if (component.get("v.abbrevStates") && component.get("v.abbrevStates").length === 0) {
             helper.getUSStates(component, "v.abbrevStates", true);
         }
-    },
-    goToSSNPage : function(component, event, helper) {
-        component.set("v.page", "SSNPage");
     },
     goToPersonalInfoConfirmation : function(component, event, helper) {
         var errorMessage = helper.checkBirthDate(component, event, helper);
@@ -76,6 +73,8 @@
         }
     },
     finishStage : function(component, event, helper) {
+        var lead = component.get("v.lead");
+        helper.saveSObject(component, lead.Id, 'Lead', 'Product__c', lead.Product__c);
         component.set('v.programType','SREC');
         helper.finishStage(component, event, helper);
     },
