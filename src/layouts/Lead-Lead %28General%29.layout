@@ -210,7 +210,7 @@
         <fields>et4ae5__Reports__c</fields>
         <relatedList>et4ae5__SendDefinition__c.et4ae5__Lead__c</relatedList>
     </relatedLists>
-    <runAssignmentRulesDefault>true</runAssignmentRulesDefault>
+    <runAssignmentRulesDefault>false</runAssignmentRulesDefault>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
     <showInteractionLogPanel>false</showInteractionLogPanel>
