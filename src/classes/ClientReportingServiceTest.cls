@@ -88,6 +88,7 @@ public with sharing class ClientReportingServiceTest {
             uas.Opportunity__r.Shared_Solar_System__c,
             billAdjustment.UASB__r.System_Bill__r.Shared_Solar_System__c
         );
+        System.assertNotEquals(null, billAdjustment.Client__c);
         System.assertEquals(
             uas.Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c,
             billAdjustment.Client__c
@@ -130,6 +131,7 @@ public with sharing class ClientReportingServiceTest {
             FROM ChargentOrders__Transaction__c
             WHERE Id = :trx.Id
         ];
+        System.assertNotEquals(null, transactions[0].Client__c);
         System.assertEquals(entities[0].Client_Account__c, transactions[0].Client__c);
     }
 }
