@@ -11965,6 +11965,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Lead.Reason_Unqualified__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Lead.Reason_for_Decline__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -46003,6 +46008,10 @@
         <recordType>Opportunity.Business_Development</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Opportunity-C and I</layout>
+        <recordType>Opportunity.C_and_I</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Opportunity-CS</layout>
         <recordType>Opportunity.Community_Solar</recordType>
     </layoutAssignments>
@@ -50724,6 +50733,11 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Opportunity.Business_Development</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Opportunity.C_and_I</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>

@@ -11895,6 +11895,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Lead.Reason_Unqualified__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Lead.Reason_for_Decline__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -45659,6 +45664,10 @@
         <recordType>Lead.BFG_SC_Solar_Loan_Co_Applicant</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Lead-C%26I</layout>
+        <recordType>Lead.C_I</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Lead-Lead %28General%29</layout>
         <recordType>Lead.Lead_General</recordType>
     </layoutAssignments>
@@ -45814,6 +45823,10 @@
     <layoutAssignments>
         <layout>Opportunity-Business Development</layout>
         <recordType>Opportunity.Business_Development</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Opportunity-C and I</layout>
+        <recordType>Opportunity.C_and_I</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-CS</layout>
@@ -48998,6 +49011,11 @@
         <default>false</default>
         <recordType>Opportunity.Business_Development</recordType>
         <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Opportunity.C_and_I</recordType>
+        <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
