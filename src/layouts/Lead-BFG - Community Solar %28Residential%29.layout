@@ -303,9 +303,6 @@
             <actionName>Lead.Log_a_Call</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>1</sortOrder>
-            <actionName>Lead.Log_a_Call</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>2</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
             <actionName>Lead.Event</actionName>
