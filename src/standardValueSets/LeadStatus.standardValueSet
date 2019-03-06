@@ -35,6 +35,7 @@
         <fullName>Unfinished</fullName>
         <default>false</default>
         <label>Unfinished</label>
+        <converted>false</converted>
     </standardValue>
     <standardValue>
         <fullName>Ready for Credit Check</fullName>
@@ -88,10 +89,6 @@
         <fullName>Insufficient Capacity</fullName>
         <default>false</default>
         <label>Insufficient Capacity</label>
-    <standardValue>
-        <fullName>Declined</fullName>
-        <default>false</default>
-        <label>Declined</label>
         <converted>false</converted>
     </standardValue>
     <standardValue>
@@ -170,6 +167,12 @@
         <fullName>Cancelled</fullName>
         <default>false</default>
         <label>Cancelled</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Declined</fullName>
+        <default>false</default>
+        <label>Declined</label>
         <converted>false</converted>
     </standardValue>
 </StandardValueSet>
