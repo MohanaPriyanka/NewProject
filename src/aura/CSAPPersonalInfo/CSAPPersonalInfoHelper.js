@@ -8,6 +8,7 @@
         lead.Street = lead.LASERCA__Home_Address__c;
         lead.City = lead.LASERCA__Home_City__c;
         lead.State = lead.LASERCA__Home_State__c;
+        lead.PostalCode = lead.LASERCA__Home_Zip__c;
 
         if(lead.Application_Type__c === "Residential" && lead.Company == null){
             lead.Company = lead.FirstName + " " + lead.LastName;
