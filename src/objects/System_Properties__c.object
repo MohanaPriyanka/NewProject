@@ -65,6 +65,14 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Disable_BillAdjustmentTrigger__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Disable BillAdjustmentTrigger</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Disable_ChargentOrderTrigger__c</fullName>
         <defaultValue>false</defaultValue>
         <description>Disables chargent order trigger if checked</description>
