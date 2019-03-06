@@ -41,6 +41,7 @@ public with sharing class ClientReportingServiceTest {
             FROM System_Bill__c
         ];
         for (System_Bill__c systemBill : systemBills) {
+            System.assertNotEquals(null, systemBill.Client__c);
             System.assertEquals(
                 energyUsageUpdate.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c,
                 systemBill.Client__c
