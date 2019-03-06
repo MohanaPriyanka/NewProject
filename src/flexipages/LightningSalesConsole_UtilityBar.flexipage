@@ -6,10 +6,58 @@
             <componentName>console:history</componentName>
         </componentInstances>
         <componentInstances>
-            <componentName>notes:utilityBarNoteList</componentName>
+            <componentName>macros:macroUtilityItem</componentName>
+        </componentInstances>
+        <componentInstances>
+            <componentInstanceProperties>
+                <name>eager</name>
+                <type>decorator</type>
+                <value>false</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>flowArguments</name>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>flowLayout</name>
+                <value>oneColumn</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>flowName</name>
+                <value>Product_Request</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>height</name>
+                <type>decorator</type>
+                <value>500</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>icon</name>
+                <type>decorator</type>
+                <value>contact_request</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>label</name>
+                <type>decorator</type>
+                <value>Work Request</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>scrollable</name>
+                <type>decorator</type>
+                <value>true</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>width</name>
+                <type>decorator</type>
+                <value>680</value>
+            </componentInstanceProperties>
+            <componentName>flowruntime:interview</componentName>
         </componentInstances>
         <name>utilityItems</name>
         <type>Region</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <name>backgroundComponents</name>
+        <type>Background</type>
     </flexiPageRegions>
     <masterLabel>Sales Console App Utility Bar</masterLabel>
     <template>
