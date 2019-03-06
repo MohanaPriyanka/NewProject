@@ -38,27 +38,15 @@
         <converted>false</converted>
     </standardValue>
     <standardValue>
-        <fullName>Ready for Credit Check</fullName>
-        <default>false</default>
-        <label>Ready for Credit Check</label>
-        <converted>false</converted>
-    </standardValue>
-    <standardValue>
         <fullName>Load Zone Check Needed</fullName>
         <default>false</default>
         <label>Load Zone Check Needed</label>
         <converted>false</converted>
     </standardValue>
     <standardValue>
-        <fullName>Qualified</fullName>
+        <fullName>Ready for Credit Check</fullName>
         <default>false</default>
-        <label>Qualified</label>
-        <converted>true</converted>
-    </standardValue>
-    <standardValue>
-        <fullName>Unqualified</fullName>
-        <default>false</default>
-        <label>Unqualified</label>
+        <label>Ready for Credit Check</label>
         <converted>false</converted>
     </standardValue>
     <standardValue>
@@ -122,12 +110,6 @@
         <converted>false</converted>
     </standardValue>
     <standardValue>
-        <fullName>Cancelled</fullName>
-        <default>false</default>
-        <label>Cancelled</label>
-        <converted>false</converted>
-    </standardValue>
-    <standardValue>
         <fullName>QC in Process</fullName>
         <default>false</default>
         <label>QC in Process</label>
@@ -155,6 +137,42 @@
         <fullName>No Response</fullName>
         <default>false</default>
         <label>No Response</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Under Review</fullName>
+        <default>false</default>
+        <label>Under Review</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Reviewed</fullName>
+        <default>false</default>
+        <label>Reviewed</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Negotiating</fullName>
+        <default>false</default>
+        <label>Negotiating</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Qualified</fullName>
+        <default>false</default>
+        <label>Qualified</label>
+        <converted>true</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Unqualified</fullName>
+        <default>false</default>
+        <label>Unqualified</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Cancelled</fullName>
+        <default>false</default>
+        <label>Cancelled</label>
         <converted>false</converted>
     </standardValue>
 </StandardValueSet>
