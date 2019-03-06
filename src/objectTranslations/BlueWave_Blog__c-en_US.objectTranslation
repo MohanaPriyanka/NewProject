@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>BlueWave Resource Page</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>BlueWave Resource Page</value>
+    </caseValues>
+    <fields>
+        <help><!-- Who are we writing this content for and why will they care about it? --></help>
+        <label><!-- Audience --></label>
+        <name>Audience__c</name>
+    </fields>
+    <fields>
+        <help><!-- List name of the author of this content --></help>
+        <label><!-- Author --></label>
+        <name>Author__c</name>
+    </fields>
+    <fields>
+        <label><!-- Blog Type --></label>
+        <name>Blog_Type__c</name>
+        <picklistValues>
+            <masterLabel>Community Solar</masterLabel>
+            <translation><!-- Community Solar --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>General</masterLabel>
+            <translation><!-- General --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Solar Loan</masterLabel>
+            <translation><!-- Solar Loan --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Body --></label>
+        <name>Body__c</name>
+    </fields>
+    <fields>
+        <help><!-- What business line does this content serve? --></help>
+        <label><!-- Business Line --></label>
+        <name>Business__c</name>
+        <picklistValues>
+            <masterLabel>Community Solar</masterLabel>
+            <translation><!-- Community Solar --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Corporate</masterLabel>
+            <translation><!-- Corporate --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Home Solar Loan</masterLabel>
+            <translation><!-- Home Solar Loan --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Other</masterLabel>
+            <translation><!-- Other --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Project Development</masterLabel>
+            <translation><!-- Project Development --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- When do you want this content to be published? --></help>
+        <label><!-- Estimated Publish Date --></label>
+        <name>Estimated_Publish_Date__c</name>
+    </fields>
+    <fields>
+        <help><!-- Example or relevant content that we or others have published on the topic --></help>
+        <label><!-- Example Blogs --></label>
+        <name>Example_Blogs__c</name>
+    </fields>
+    <fields>
+        <label><!-- Short Description --></label>
+        <name>Short_Description__c</name>
+    </fields>
+    <fields>
+        <help><!-- Type of content to be presented --></help>
+        <label><!-- Type of Content --></label>
+        <name>Type_of_Content__c</name>
+        <picklistValues>
+            <masterLabel>Blog</masterLabel>
+            <translation><!-- Blog --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Contributed Content (external)</masterLabel>
+            <translation><!-- Contributed Content (external) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Education</masterLabel>
+            <translation><!-- Education --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Event</masterLabel>
+            <translation><!-- Event --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>News</masterLabel>
+            <translation><!-- News --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Success Story</masterLabel>
+            <translation><!-- Success Story --></translation>
+        </picklistValues>
+    </fields>
+    <layouts>
+        <layout>BlueWave Blog Layout</layout>
+        <sections>
+            <label><!-- Content Detail --></label>
+            <section>Content Detail</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>
