@@ -9,7 +9,7 @@
     <applicationVisibilities>
         <application>BlueWave_Inside_Sales</application>
         <default>false</default>
-        <visible>false</visible>
+        <visible>true</visible>
     </applicationVisibilities>
     <applicationVisibilities>
         <application>Bluewave</application>
@@ -3967,12 +3967,27 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>BlueWave_Blog__c.Audience__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>BlueWave_Blog__c.Blog_Type__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>BlueWave_Blog__c.Body__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>BlueWave_Blog__c.Estimated_Publish_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>BlueWave_Blog__c.Example_Blogs__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -10853,7 +10868,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.CSAP_Stage__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -11627,6 +11642,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Lead.Lead_QC_Complete__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Lead.Leads_List__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -11906,6 +11926,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Objections__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Obtained_Utility_Data__c</field>
         <readable>false</readable>
@@ -12023,6 +12048,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Lead.Phone_or_emal__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Pitched__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -24308,6 +24338,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Utility_Account_Holder_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.Utility_Account_Information_Verified__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -46698,6 +46733,15 @@
         <modifyAllRecords>false</modifyAllRecords>
         <object>BSST__c</object>
         <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>BlueWave_Blog__c</object>
+        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>false</allowCreate>
