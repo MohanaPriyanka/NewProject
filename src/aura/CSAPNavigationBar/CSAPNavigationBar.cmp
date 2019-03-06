@@ -35,9 +35,6 @@
                     <span class="slds-path__title">Enter Contact Information</span>
                   </a>
                 </li>
-            </aura:if>
-              <!--only show for Bluewave Backend stages-->
-              <aura:if isTrue="{!and(greaterthanorequal(v.stageIndex, 3), lessthan(v.stageIndex, 5))}">
                 <li class="{! 'slds-path__item ' +
                            (v.stageIndex==2?'slds-is-current slds-is-active':
                            (v.stageIndex>2?'slds-is-active':

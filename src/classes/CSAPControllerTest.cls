@@ -375,11 +375,7 @@ public with sharing class CSAPControllerTest {
 
         Organization o = [SELECT IsSandbox FROM Organization LIMIT 1];
 
-        if (o.IsSandbox) {
             System.assertEquals('000000001', leadAfterPull.LASERCA__SSN__c);
-        } else {
-            System.assertEquals('000000000', leadAfterPull.LASERCA__SSN__c);
-        }
     }
 
     @IsTest
