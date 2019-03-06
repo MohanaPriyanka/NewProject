@@ -4139,6 +4139,19 @@ IF(AND(Risk_Level_Business_Type__c = &quot;Not Risky&quot;, VALUE(Number_of_Year
         <type>Picklist</type>
     </fields>
     <fields>
+        <fullName>Reason_Unqualified__c</fullName>
+        <description>This is the reason a lead was unqualified. It&apos;s populated by the user who marks the lead as unqualified.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the reason a lead was unqualified. It&apos;s populated by the user who marks the lead as unqualified.</inlineHelpText>
+        <label>Reason Unqualified</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Reason_for_Decline__c</fullName>
         <externalId>false</externalId>
         <label>Reason for Decline</label>
@@ -19263,7 +19276,7 @@ SEMA = 13 -14</inlineHelpText>
     <recordTypes>
         <fullName>C_I</fullName>
         <active>true</active>
-        <businessProcess>CS</businessProcess>
+        <businessProcess>C %26 I</businessProcess>
         <label>C&amp;I</label>
         <picklistValues>
             <picklist>Product_Interest__c</picklist>
@@ -23382,6 +23395,23 @@ PRIORVALUE(Technical_Approval_Verified__c )= FALSE,
 PRIORVALUE(Income_Verified__c)= FALSE,
 PRIORVALUE(Is_there_a_Partner_Record__c )= FALSE))</errorConditionFormula>
         <errorMessage>Income Verification, Partner Verification, and MCEC Technical Verification Boxes must be checked</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Require_Reason_Unqualified</fullName>
+        <active>true</active>
+        <description>Currently only for C and I record types.</description>
+        <errorConditionFormula>AND(
+
+RecordTypeId=&quot;0120a000000LT8n&quot;,
+
+ISPICKVAL(Status,&quot;Unqualified&quot;),
+
+ISBLANK(Reason_Unqualified__c),
+
+ISCHANGED(Status) 
+
+)</errorConditionFormula>
+        <errorMessage>Please fill in the Reason Unqualified field with the reason why the lead is being unqualified.</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>Underwriting_Permission_Restriction</fullName>
