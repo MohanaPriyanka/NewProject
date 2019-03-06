@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Queue xmlns="http://soap.sforce.com/2006/04/metadata">
-    <doesSendEmailToMembers>false</doesSendEmailToMembers>
-    <email>lalexander@bluewavesolar.com</email>
+    <doesSendEmailToMembers>true</doesSendEmailToMembers>
+    <email>ladelman@bluewavesolar.com</email>
     <name>Marketing</name>
     <queueMembers>
         <users>
+            <user>bstrachan@bluewavesolar.com</user>
+            <user>hfairman@bluewavesolar.com</user>
+            <user>iouellette@bluewavesolar.com</user>
             <user>ladelman@bluewavesolar.com</user>
         </users>
     </queueMembers>
+    <queueSobject>
+        <sobjectType>BlueWave_Blog__c</sobjectType>
+    </queueSobject>
     <queueSobject>
         <sobjectType>KnowledgeArticleVersion</sobjectType>
     </queueSobject>

@@ -204,16 +204,16 @@
                 </lightning:layoutItem>
               </lightning:layout>
             </form>
-      <div class="slds-clearfix">
-        <div class="slds-clearfix slds-p-top_medium">
-          <div class="slds-float_right">
-            <aura:if isTrue="{!v.lead.Application_Source_Phase_2__c != null}">
-              <lightning:button label="Cancel Adding Property" onclick="{!c.cancelAddProperty}"/>
-            </aura:if>
-            <lightning:button label="Next" onclick="{!c.goToCheckCapacity}"/>
-          </div>
-        </div>
-      </div>
+            <div class="slds-clearfix">
+              <div class="slds-clearfix slds-p-top_medium">
+                <div class="slds-float_right">
+                  <aura:if isTrue="{!v.lead.Application_Source_Phase_2__c != null}">
+                    <lightning:button label="Cancel Adding Property" onclick="{!c.cancelAddProperty}"/>
+                  </aura:if>
+                  <lightning:button label="Next" onclick="{!c.goToCheckCapacity}"/>
+                </div>
+              </div>
+            </div>
           </fieldset>
         </div>
       </aura:if>
@@ -277,13 +277,13 @@
               </aura:if>
             </lightning:layout>
           </form>
-      <div class="slds-clearfix">
-        <div class="slds-clearfix slds-p-top_medium">
-          <div class="slds-float_right">
-            <lightning:button label="Next" onclick="{!c.saveUnsplitZone}"/>
+          <div class="slds-clearfix">
+            <div class="slds-clearfix slds-p-top_medium">
+              <div class="slds-float_right">
+                <lightning:button label="Next" onclick="{!c.saveUnsplitZone}"/>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
         </fieldset>
       </div>
     </aura:if>
