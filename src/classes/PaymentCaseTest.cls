@@ -6,16 +6,15 @@
 private class PaymentCaseTest {
 
     @TestSetup public static void setupData() {
-
-
+        Util.disableAllTriggers();
         Test.loadData(Utility__c.SObjectType, 'TestCSUtility');
         Test.loadData(Utility_NMC_Tariff__c.SObjectType, 'TestCSUtilityNMCTariff');
         Test.loadData(Load_U__c.SObjectType, 'TestCSLoadU');
         Test.loadData(ChargentBase__Gateway__c.SObjectType, 'TestCSGateway');
-        Test.loadData(Entity__c.SObjectType, 'TestCSEntity');
-        Test.loadData(Shared_Solar_System__c.SObjectType, 'TestCSSharedSolarSystem');
         Test.loadData(Contact.SObjectType, 'TestCSContact');
         Test.loadData(Account.SObjectType, 'TestCSAccount');
+        Test.loadData(Entity__c.SObjectType, 'TestCSEntity');
+        Test.loadData(Shared_Solar_System__c.SObjectType, 'TestCSSharedSolarSystem');
         Test.loadData(Utility_Account_Log__c.SObjectType, 'TestCSUtilityAccountLog');
         Test.loadData(Opportunity.SObjectType, 'TestCSOpportunity');
         Test.loadData(Utility_Account_Subscription__c.SObjectType, 'TestCSUtilityAccountSubscription');
@@ -26,7 +25,6 @@ private class PaymentCaseTest {
         Test.loadData(ChargentOrders__ChargentOrder__c.SObjectType, 'TestCSChargentOrder');
         Test.loadData(ChargentOrders__Transaction__c.SObjectType, 'TestCSTransaction');
         Test.loadData(Case.SObjectType, 'TestCSCase');
-
 
         // Altering next transaction dates
 
@@ -54,7 +52,7 @@ private class PaymentCaseTest {
         orderWithBadNextTransDate.ChargentOrders__Charge_Date__c = String.valueOf(Date.today().day());
 
         update orderWithBadNextTransDate;
-
+        Util.enableAllTriggers();
     }
 
     @IsTest
