@@ -23741,6 +23741,15 @@ SEMA = 13 -14</inlineHelpText>
         <errorMessage>Please enter in a loan amount on the lead record.</errorMessage>
     </validationRules>
     <validationRules>
+        <fullName>Prevent_Hard_Pulls_for_CS</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+ Product_line__c =&quot;Community Solar&quot;,
+ISCHANGED( LASERCA__Pull_Credit_Report__c )=true,
+LASERCA__Pull_Credit_Report__c=true)</errorConditionFormula>
+        <errorMessage>You cannot do a hard credit pull on a Community Solar application.</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>QC_Measures_Complete</fullName>
         <active>false</active>
         <description>Checks to see that the Income Verification, Partner Verification, and MCEC Technical Verification boxes have been complete for DOER Loan records.</description>

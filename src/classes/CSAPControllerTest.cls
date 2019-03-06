@@ -376,7 +376,7 @@ public with sharing class CSAPControllerTest {
         Organization o = [SELECT IsSandbox FROM Organization LIMIT 1];
 
             System.assertEquals('000000001', leadAfterPull.LASERCA__SSN__c);
-   }
+    }
 
     @IsTest
     static void testSSNDefaultsToPAssesForTestcases() {
