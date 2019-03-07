@@ -2,10 +2,52 @@
 <StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <sorted>false</sorted>
     <standardValue>
-        <fullName>Qualified</fullName>
+        <fullName>New</fullName>
+        <default>true</default>
+        <label>New</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Marketing Qualified</fullName>
         <default>false</default>
-        <label>Qualified</label>
-        <converted>true</converted>
+        <label>Marketing Qualified</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Contacted</fullName>
+        <default>false</default>
+        <label>Contacting</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Engaged</fullName>
+        <default>false</default>
+        <label>Engaging</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Sales Qualified</fullName>
+        <default>false</default>
+        <label>Sales Qualified</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Unfinished</fullName>
+        <default>false</default>
+        <label>Unfinished</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Load Zone Check Needed</fullName>
+        <default>false</default>
+        <label>Load Zone Check Needed</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Ready for Credit Check</fullName>
+        <default>false</default>
+        <label>Ready for Credit Check</label>
+        <converted>false</converted>
     </standardValue>
     <standardValue>
         <fullName>Pre-Qualified</fullName>
@@ -17,12 +59,6 @@
         <fullName>Pending Credit Review</fullName>
         <default>false</default>
         <label>Pending Credit Review</label>
-        <converted>false</converted>
-    </standardValue>
-    <standardValue>
-        <fullName>Ready for Credit Check</fullName>
-        <default>false</default>
-        <label>Ready for Credit Check</label>
         <converted>false</converted>
     </standardValue>
     <standardValue>
@@ -38,12 +74,6 @@
         <converted>false</converted>
     </standardValue>
     <standardValue>
-        <fullName>Unqualified</fullName>
-        <default>false</default>
-        <label>Unqualified</label>
-        <converted>false</converted>
-    </standardValue>
-    <standardValue>
         <fullName>Denied pending Avidia Review</fullName>
         <default>false</default>
         <label>Denied pending Avidia Review</label>
@@ -53,12 +83,6 @@
         <fullName>Not Interested</fullName>
         <default>false</default>
         <label>Not Interested</label>
-        <converted>false</converted>
-    </standardValue>
-    <standardValue>
-        <fullName>Contacted</fullName>
-        <default>false</default>
-        <label>Contacted</label>
         <converted>false</converted>
     </standardValue>
     <standardValue>
@@ -80,27 +104,9 @@
         <converted>false</converted>
     </standardValue>
     <standardValue>
-        <fullName>Unfinished</fullName>
-        <default>true</default>
-        <label>Unfinished</label>
-        <converted>false</converted>
-    </standardValue>
-    <standardValue>
-        <fullName>Load Zone Check Needed</fullName>
-        <default>false</default>
-        <label>Load Zone Check Needed</label>
-        <converted>false</converted>
-    </standardValue>
-    <standardValue>
         <fullName>Uncontacted</fullName>
         <default>false</default>
         <label>Uncontacted</label>
-        <converted>false</converted>
-    </standardValue>
-    <standardValue>
-        <fullName>Cancelled</fullName>
-        <default>false</default>
-        <label>Cancelled</label>
         <converted>false</converted>
     </standardValue>
     <standardValue>
@@ -126,5 +132,47 @@
         <default>false</default>
         <label>Interested</label>
         <converted>true</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>No Response</fullName>
+        <default>false</default>
+        <label>No Response</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Under Review</fullName>
+        <default>false</default>
+        <label>Under Review</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Reviewed</fullName>
+        <default>false</default>
+        <label>Reviewed</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Negotiating</fullName>
+        <default>false</default>
+        <label>Negotiating</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Qualified</fullName>
+        <default>false</default>
+        <label>Qualified</label>
+        <converted>true</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Unqualified</fullName>
+        <default>false</default>
+        <label>Unqualified</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Cancelled</fullName>
+        <default>false</default>
+        <label>Cancelled</label>
+        <converted>false</converted>
     </standardValue>
 </StandardValueSet>

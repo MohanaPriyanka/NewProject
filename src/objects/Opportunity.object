@@ -546,7 +546,7 @@ IF(Contract_Status__c =&quot;Completed&quot;,&quot;Completed&quot;,&quot;Incompl
         <formula>IF(
  Product_Line__c=&quot;Community Solar&quot;,
 and(
-Contract_Fully_Populated__c =true,    
+Contract_Fully_Populated__c =true,  
 Confirmed_Subscription_Size_Correct__c =true,  
 Service_Address_and_Name_on_Account_Chk__c =true,
  Load_Zone_Quality_Check__c =true,
@@ -4194,8 +4194,10 @@ TEXT( Load_Zone_Utility_4__c  ) = &apos;Manual Lookup Required&apos;,
         <fullName>Load_Zone_Quality_Check__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <inlineHelpText>For SMART products, this is a utility check. For SREC products, this is a utility and load zone check.</inlineHelpText>
-        <label>Load Zone / Utility Check</label>
+        <inlineHelpText>•	For SMART products verify: 1) utility,  2) rate class
+•	For SREC products verify:     1) utility,  2) load zone
+•	For NY products verify:         1) utility,  2) rate class</inlineHelpText>
+        <label>Load Zone / Utility Check / Rate Class</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>

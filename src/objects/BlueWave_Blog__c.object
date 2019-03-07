@@ -54,6 +54,29 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ReadWrite</externalSharingModel>
     <fields>
+        <fullName>Audience__c</fullName>
+        <description>Who are we writing this content for and why will they care about it?</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Who are we writing this content for and why will they care about it?</inlineHelpText>
+        <label>Audience</label>
+        <length>32768</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Author__c</fullName>
+        <description>List name of the author of this content</description>
+        <externalId>false</externalId>
+        <inlineHelpText>List name of the author of this content</inlineHelpText>
+        <label>Author</label>
+        <length>40</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Blog_Type__c</fullName>
         <externalId>false</externalId>
         <label>Blog Type</label>
@@ -92,6 +115,67 @@
         <visibleLines>25</visibleLines>
     </fields>
     <fields>
+        <fullName>Business__c</fullName>
+        <description>What business line does this blog content serve?</description>
+        <externalId>false</externalId>
+        <inlineHelpText>What business line does this content serve?</inlineHelpText>
+        <label>Business Line</label>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Community Solar</fullName>
+                    <default>false</default>
+                    <label>Community Solar</label>
+                </value>
+                <value>
+                    <fullName>Home Solar Loan</fullName>
+                    <default>false</default>
+                    <label>Home Solar Loan</label>
+                </value>
+                <value>
+                    <fullName>Project Development</fullName>
+                    <default>false</default>
+                    <label>Project Development</label>
+                </value>
+                <value>
+                    <fullName>Corporate</fullName>
+                    <default>false</default>
+                    <label>Corporate</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <label>Other</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Estimated_Publish_Date__c</fullName>
+        <description>When do you want this content to be published?</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When do you want this content to be published?</inlineHelpText>
+        <label>Estimated Publish Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Example_Blogs__c</fullName>
+        <description>Example or relevant content that we or others have published on the topic</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Example or relevant content that we or others have published on the topic</inlineHelpText>
+        <label>Example Blogs</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
         <fullName>Short_Description__c</fullName>
         <externalId>false</externalId>
         <label>Short Description</label>
@@ -99,6 +183,52 @@
         <trackTrending>false</trackTrending>
         <type>Html</type>
         <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Type_of_Content__c</fullName>
+        <description>Type of content to be presented</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Type of content to be presented</inlineHelpText>
+        <label>Type of Content</label>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Blog</fullName>
+                    <default>false</default>
+                    <label>Blog</label>
+                </value>
+                <value>
+                    <fullName>Success Story</fullName>
+                    <default>false</default>
+                    <label>Success Story</label>
+                </value>
+                <value>
+                    <fullName>News</fullName>
+                    <default>false</default>
+                    <label>News</label>
+                </value>
+                <value>
+                    <fullName>Education</fullName>
+                    <default>false</default>
+                    <label>Education</label>
+                </value>
+                <value>
+                    <fullName>Event</fullName>
+                    <default>false</default>
+                    <label>Event</label>
+                </value>
+                <value>
+                    <fullName>Contributed Content (external)</fullName>
+                    <default>false</default>
+                    <label>Contributed Content (external)</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
     </fields>
     <label>BlueWave Blog</label>
     <listViews>

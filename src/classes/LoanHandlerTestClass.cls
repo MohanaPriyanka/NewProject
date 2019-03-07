@@ -441,39 +441,39 @@ public class LoanHandlerTestClass {
     }
 
     @isTest static void testEquipmentUpdates() {
-        List<Lead> leadList = [SELECT Id FROM Lead WHERE DOER_Solar_Loan__c = false];
-        List<Opportunity> oppListToUpdate = new List<Opportunity>();
+      List<Lead> leadList = [SELECT Id FROM Lead WHERE DOER_Solar_Loan__c = false];
+      List<Opportunity> oppListToUpdate = new List<Opportunity>();
         List<Attachment> attachList = new List<Attachment>();
 
-        List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
+      List<Residential_Equipment__c> equipmentListToUpdate = new List<Residential_Equipment__c>();
         Date myDate = Date.newInstance(2015, 2, 17);
 
         convertLeads(leadList, 0);
         Test.startTest();
 
-        List<Residential_Equipment__c> equipmentList = [SELECT Id, Mechanically_Installed__c, Interconnected__c, DOER_Solar_Loan__c
-        FROM Residential_Equipment__c];
-        for (Residential_Equipment__c equipment : equipmentList){
+      List<Residential_Equipment__c> equipmentList = [SELECT Id, Mechanically_Installed__c, Interconnected__c, DOER_Solar_Loan__c 
+                                                        FROM Residential_Equipment__c];
+      for (Residential_Equipment__c equipment : equipmentList){
             if (!equipment.DOER_Solar_Loan__c) {
                 equipment.Mechanically_Installed__c = true;
                 equipmentListToUpdate.add(equipment);
             }
-        }
-        update equipmentListToUpdate;
-        equipmentListToUpdate.clear();
-
-        for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c
-        FROM Partner_Task__c
-        WHERE Loan__r.DOER_Solar_Loann__c = FALSE
-        AND Loan__r.State__c = 'MA']) {
+      }
+      update equipmentListToUpdate;
+      equipmentListToUpdate.clear();
+      
+        for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c 
+                                                     FROM Partner_Task__c
+                                                     WHERE Loan__r.DOER_Solar_Loann__c = FALSE
+                                                     AND Loan__r.State__c = 'MA']) {
             if (partnerTaskAssertion.Name == 'Mechanical Installation') {
                 System.assertEquals('Complete', partnerTaskAssertion.Status__c);
-            }
+            }    
             if (partnerTaskAssertion.Name == 'Interconnection') {
                 System.assertEquals('Pending', partnerTaskAssertion.Status__c);
-            }
-        }
-        for (Residential_Equipment__c equipment : equipmentList){
+            }              
+      }
+      for (Residential_Equipment__c equipment : equipmentList){
             equipment.Interconnected__c = true;
             equipment.Annual_Production_kWh_kW__c = 1400;
             equipment.Interconnection_Date__c = mydate;
@@ -502,40 +502,40 @@ public class LoanHandlerTestClass {
             equipment.Remote_Monitorin_Systegm_Identifier__c = '302948';
             equipment.Number_of_Meters__c = 3;
             equipment.Solar_Meter_Manufacturer__c = 'Eversource';
-            equipment.Solar_Meter_Model__c = 'EV200';
+            equipment.Solar_Meter_Model__c = 'EV200'; 
             equipment.Solar_Meter_Serial_Number__c = '2304938';
             equipment.Initial_Solar_Meter_Reading__c = 45000;
-            equipment.Initial_Solar_Meter_Reading_Date__c = myDate;
+            equipment.Initial_Solar_Meter_Reading_Date__c = myDate;            
             equipmentListToUpdate.add(equipment);
 
-            Attachment attach=new Attachment();
+            Attachment attach=new Attachment();     
             attach.Name='Unit Test Attachment';
             Blob bodyBlob=Blob.valueOf('Unit Test Attachment Body');
             attach.Body=bodyBlob;
             attach.ParentId=equipment.id;
             attach.Description = 'PTO Documentation';
-            attachList.add(attach);
+            attachList.add(attach);            
         }
+        
+        insert attachList;            
 
-        insert attachList;
-
-        if(equipmentListToUpdate.size() > 0 ) {
-            update equipmentListToUpdate;
-        }
-
-        for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c, Loan__r.DOER_Solar_Loann__c
-        FROM Partner_Task__c
-        WHERE Loan__r.State__c = 'MA']) {
+      if(equipmentListToUpdate.size() > 0 ) {
+            update equipmentListToUpdate;        
+      }
+      
+        for (Partner_Task__c partnerTaskAssertion : [SELECT Id, Name, Status__c, Loan__r.DOER_Solar_Loann__c 
+                                                     FROM Partner_Task__c
+                                                     WHERE Loan__r.State__c = 'MA']) {
             if(!partnerTaskAssertion.Loan__r.DOER_Solar_Loann__c) {
                 if(partnerTaskAssertion.Name == 'Interconnection') {
                     System.assertEquals('Complete', partnerTaskAssertion.Status__c);
-                }
+                }   
             }else {
                 if(partnerTaskAssertion.Name == 'Report Interconnection to MCEC') {
                     System.assertEquals('Complete', partnerTaskAssertion.Status__c);
-                }
-            }
-        }
+                }                       
+            }              
+      }              
         Test.stopTest();
     }
 
