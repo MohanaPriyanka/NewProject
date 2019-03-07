@@ -38,15 +38,15 @@
         <converted>false</converted>
     </standardValue>
     <standardValue>
-        <fullName>Load Zone Check Needed</fullName>
-        <default>false</default>
-        <label>Load Zone Check Needed</label>
-        <converted>false</converted>
-    </standardValue>
-    <standardValue>
         <fullName>Ready for Credit Check</fullName>
         <default>false</default>
         <label>Ready for Credit Check</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Load Zone Check Needed</fullName>
+        <default>false</default>
+        <label>Load Zone Check Needed</label>
         <converted>false</converted>
     </standardValue>
     <standardValue>
@@ -89,12 +89,6 @@
         <fullName>Insufficient Capacity</fullName>
         <default>false</default>
         <label>Insufficient Capacity</label>
-        <converted>false</converted>
-    </standardValue>
-    <standardValue>
-        <fullName>Declined</fullName>
-        <default>false</default>
-        <label>Declined</label>
         <converted>false</converted>
     </standardValue>
     <standardValue>
@@ -173,6 +167,12 @@
         <fullName>Cancelled</fullName>
         <default>false</default>
         <label>Cancelled</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Declined</fullName>
+        <default>false</default>
+        <label>Declined</label>
         <converted>false</converted>
     </standardValue>
 </StandardValueSet>

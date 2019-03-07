@@ -73,6 +73,38 @@
         <type>Default</type>
     </actionOverrides>
     <businessProcesses>
+        <fullName>C %26 I</fullName>
+        <isActive>true</isActive>
+        <values>
+            <fullName>Negotiating</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Pending Information</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Qualified</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reviewed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Under Review</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Unqualified</fullName>
+            <default>false</default>
+        </values>
+    </businessProcesses>
+    <businessProcesses>
         <fullName>CS</fullName>
         <description>CS Lead Process</description>
         <isActive>true</isActive>
@@ -4296,6 +4328,19 @@ IF(AND(Risk_Level_Business_Type__c = &quot;Not Risky&quot;, VALUE(Number_of_Year
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Reason_Unqualified__c</fullName>
+        <description>This is the reason a lead was unqualified. It&apos;s populated by the user who marks the lead as unqualified.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the reason a lead was unqualified. It&apos;s populated by the user who marks the lead as unqualified.</inlineHelpText>
+        <label>Reason Unqualified</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Reason_for_Decline__c</fullName>
@@ -19549,7 +19594,7 @@ SEMA = 13 -14</inlineHelpText>
     <recordTypes>
         <fullName>C_I</fullName>
         <active>true</active>
-        <businessProcess>CS</businessProcess>
+        <businessProcess>C %26 I</businessProcess>
         <label>C&amp;I</label>
         <picklistValues>
             <picklist>Product_Interest__c</picklist>
@@ -23763,6 +23808,23 @@ PRIORVALUE(Technical_Approval_Verified__c )= FALSE,
 PRIORVALUE(Income_Verified__c)= FALSE,
 PRIORVALUE(Is_there_a_Partner_Record__c )= FALSE))</errorConditionFormula>
         <errorMessage>Income Verification, Partner Verification, and MCEC Technical Verification Boxes must be checked</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Require_Reason_Unqualified</fullName>
+        <active>true</active>
+        <description>Currently only for C and I record types.</description>
+        <errorConditionFormula>AND(
+
+RecordTypeId=&quot;0120a000000LT8n&quot;,
+
+ISPICKVAL(Status,&quot;Unqualified&quot;),
+
+ISBLANK(Reason_Unqualified__c),
+
+ISCHANGED(Status) 
+
+)</errorConditionFormula>
+        <errorMessage>Please fill in the Reason Unqualified field with the reason why the lead is being unqualified.</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>Underwriting_Permission_Restriction</fullName>
