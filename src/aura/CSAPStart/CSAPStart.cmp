@@ -66,10 +66,10 @@
         <form class="slds-form--stacked" style="text-align: center">
           <lightning:layout horizontalAlign="center">
             <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" class="slds-p-bottom--medium slds-p-horizontal--large">
-              To see if we have a solar farm available in your community, please enter the ZIP code of the location that will receive community solar credits.
+              To see if we have a solar farm available in your community, please enter the zip code of the location that will receive Community Solar Credits.
             </lightning:layoutItem>
           </lightning:layout>
-          <c:CSAPZipcodeCapacity hasCapacity="{!v.hasCapacity}" zipcode="{!v.lead.LASERCA__Home_Zip__c}"/>
+          <c:CSAPZipcodeCapacity hasCapacity="{!v.hasCapacity}" zipcode="{!v.lead.Parcel_Zip__c}"/>
         </form>
       </fieldset>
   </aura:if>
