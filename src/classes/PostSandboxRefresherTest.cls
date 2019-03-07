@@ -17,10 +17,10 @@ private class PostSandboxRefresherTest {
         Test.loadData(Utility_NMC_Tariff__c.SObjectType, 'TestCSUtilityNMCTariff');
         Test.loadData(Load_U__c.SObjectType, 'TestCSLoadU');
         Test.loadData(ChargentBase__Gateway__c.SObjectType, 'TestCSGateway');
-        Test.loadData(Entity__c.SObjectType, 'TestCSEntity');
-        Test.loadData(Shared_Solar_System__c.SObjectType, 'TestCSSharedSolarSystem');
         Test.loadData(Contact.SObjectType, 'TestCSContact');
         Test.loadData(Account.SObjectType, 'TestCSAccount');
+        Test.loadData(Entity__c.SObjectType, 'TestCSEntity');
+        Test.loadData(Shared_Solar_System__c.SObjectType, 'TestCSSharedSolarSystem');
         Test.loadData(Opportunity.SObjectType, 'TestCSOpportunity');
         Test.loadData(Account_Bill__c.SObjectType, 'TestCSAccountBill');
         Test.loadData(ChargentOrders__ChargentOrder__c.SObjectType, 'TestCSChargentOrder');
