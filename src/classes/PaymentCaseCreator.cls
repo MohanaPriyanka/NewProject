@@ -23,8 +23,6 @@ public without sharing class PaymentCaseCreator implements Schedulable {
         NoCaseNeeded
     }
 
-    public static CaseFactory caseFactory = new CaseFactory();
-
     OrgWideEmailAddress customerCareEmail = [
         SELECT Id, Address
         FROM OrgWideEmailAddress
@@ -270,6 +268,7 @@ public without sharing class PaymentCaseCreator implements Schedulable {
             return null;
         }
 
+        CaseFactory caseFactory = new CaseFactory();
         Case newCase;
 
         if (type == OrderCaseType.PaymentStatusError) {
