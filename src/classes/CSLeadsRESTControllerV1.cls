@@ -13,7 +13,9 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
         try {
             controller.patchRecords();
         } catch(Exception e) {
-            RestContext.response.responseBody = new CSLeadsRESTControllerV1.ResponseEnvelope().asBlob();
+            CSLeadsRESTControllerV1.ResponseEnvelope envelope =  new CSLeadsRESTControllerV1.ResponseEnvelope();
+            envelope.addError(e.getMessage());
+            RestContext.response.responseBody = envelope.asBlob();
             RestContext.response.statusCode = 500;
         }
     }
@@ -23,7 +25,9 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
         try {
             controller.postRecords();
         } catch(Exception e) {
-            RestContext.response.responseBody = new CSLeadsRESTControllerV1.ResponseEnvelope().asBlob();
+            CSLeadsRESTControllerV1.ResponseEnvelope envelope =  new CSLeadsRESTControllerV1.ResponseEnvelope();
+            envelope.addError(e.getMessage());
+            RestContext.response.responseBody = envelope.asBlob();
             RestContext.response.statusCode = 500;
         }
     }

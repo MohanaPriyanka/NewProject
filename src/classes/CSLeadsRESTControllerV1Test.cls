@@ -252,6 +252,31 @@ public with sharing class CSLeadsRESTControllerV1Test {
     }
 
     @IsTest
+    public static void testPatchServerError() {
+        String jsonRequest = 'bogusJSONString';
+
+        RestRequest req = new RestRequest();
+        req.requestURI = '/services/apexrest/v1/CSLeads';
+        req.httpMethod = 'PATCH';
+        req.addHeader('Content-Type', 'application/json');
+        req.requestBody = Blob.valueOf(jsonRequest);
+
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+
+        CSLeadsRESTControllerV1.patchRequest();
+
+        RestResponse response = RestContext.response;
+        System.assertEquals(500, response.statuscode);
+        String jsonResponse = response.responseBody.toString();
+        PatchResponseEnvelope patchResponseEnvelope = (PatchResponseEnvelope) JSON.deserialize(jsonResponse, PatchResponseEnvelope.class);
+
+        System.assertEquals(null, patchResponseEnvelope.data);
+        System.assertEquals(false, patchResponseEnvelope.errors.isEmpty());
+        System.assertEquals(true, patchResponseEnvelope.messages.isEmpty());
+    }
+
+    @IsTest
     public static void testPostNonResiLead() {
         Product2 testProduct = [
             SELECT Id
@@ -331,6 +356,31 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertEquals(null, patchResponseEnvelope.data);
         System.assertEquals(false, patchResponseEnvelope.errors.isEmpty());
         System.assertEquals('Request may be missing required fields.', patchResponseEnvelope.errors[0]);
+        System.assertEquals(true, patchResponseEnvelope.messages.isEmpty());
+    }
+
+    @IsTest
+    public static void testPostServerError() {
+        String jsonRequest = 'bogusJSONString';
+
+        RestRequest req = new RestRequest();
+        req.requestURI = '/services/apexrest/v1/CSLeads';
+        req.httpMethod = 'POST';
+        req.addHeader('Content-Type', 'application/json');
+        req.requestBody = Blob.valueOf(jsonRequest);
+
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+
+        CSLeadsRESTControllerV1.postRequest();
+
+        RestResponse response = RestContext.response;
+        System.assertEquals(500, response.statuscode);
+        String jsonResponse = response.responseBody.toString();
+        PatchResponseEnvelope patchResponseEnvelope = (PatchResponseEnvelope) JSON.deserialize(jsonResponse, PatchResponseEnvelope.class);
+
+        System.assertEquals(null, patchResponseEnvelope.data);
+        System.assertEquals(false, patchResponseEnvelope.errors.isEmpty());
         System.assertEquals(true, patchResponseEnvelope.messages.isEmpty());
     }
 
@@ -518,56 +568,6 @@ public with sharing class CSLeadsRESTControllerV1Test {
 
         lead.applicationType = 'Loan';
         System.assert(!lead.hasValidApplicationType(), 'RequestLead should be an invalid type');
-    }
-
-    @IsTest
-    public static void testPatchServerError() {
-        String jsonRequest = 'bogusJSONString';
-
-        RestRequest req = new RestRequest();
-        req.requestURI = '/services/apexrest/v1/CSLeads';
-        req.httpMethod = 'PATCH';
-        req.addHeader('Content-Type', 'application/json');
-        req.requestBody = Blob.valueOf(jsonRequest);
-
-        RestContext.request = req;
-        RestContext.response = new RestResponse();
-
-        CSLeadsRESTControllerV1.patchRequest();
-
-        RestResponse response = RestContext.response;
-        System.assertEquals(500, response.statuscode);
-        String jsonResponse = response.responseBody.toString();
-        PatchResponseEnvelope patchResponseEnvelope = (PatchResponseEnvelope) JSON.deserialize(jsonResponse, PatchResponseEnvelope.class);
-
-        System.assertEquals(null, patchResponseEnvelope.data);
-        System.assertEquals(true, patchResponseEnvelope.errors.isEmpty());
-        System.assertEquals(true, patchResponseEnvelope.messages.isEmpty());
-    }
-
-    @IsTest
-    public static void testPostServerError() {
-        String jsonRequest = 'bogusJSONString';
-
-        RestRequest req = new RestRequest();
-        req.requestURI = '/services/apexrest/v1/CSLeads';
-        req.httpMethod = 'POST';
-        req.addHeader('Content-Type', 'application/json');
-        req.requestBody = Blob.valueOf(jsonRequest);
-
-        RestContext.request = req;
-        RestContext.response = new RestResponse();
-
-        CSLeadsRESTControllerV1.postRequest();
-
-        RestResponse response = RestContext.response;
-        System.assertEquals(500, response.statuscode);
-        String jsonResponse = response.responseBody.toString();
-        PatchResponseEnvelope patchResponseEnvelope = (PatchResponseEnvelope) JSON.deserialize(jsonResponse, PatchResponseEnvelope.class);
-
-        System.assertEquals(null, patchResponseEnvelope.data);
-        System.assertEquals(true, patchResponseEnvelope.errors.isEmpty());
-        System.assertEquals(true, patchResponseEnvelope.messages.isEmpty());
     }
 
     public class PatchResponseEnvelope {
