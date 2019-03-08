@@ -31500,11 +31500,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Utility_NMC_Tariff__c.Rate_Code__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Utility_NMC_Tariff__c.September_Previous_Year__c</field>
         <readable>true</readable>
     </fieldPermissions>
