@@ -73,6 +73,8 @@
         var utilityList = [];
         if ((lead.Confirm_Utility__c && lead.Confirm_Utility__c.includes('/'))
             || (lead.LoadZone__c && lead.LoadZone__c.includes('/'))){
+
+
             var splitNamesFromId = lead.Confirm_Utility__c.split('>');
             var namesList = splitNamesFromId[0].split('/');
             var idsList = splitNamesFromId[1].split('/');
@@ -85,17 +87,25 @@
                 };
                 utilityList.push(newUtility);
             };
-            component.set('v.loading', false);
-            component.set('v.page', 'SplitLoadZone');
-            component.set('v.splitUtilities', utilityList);
+
             if (lead.LoadZone__c.includes('/')){
                 var allZones = lead.LoadZone__c.split('/');
                 if (lead.LASERCA__Home_State__c == 'NY'){
-                    component.set('v.splitZones', null);
                     lead.LoadZone__c = allZones[0];
+                    component.set('v.splitZones', null);
+
                 } else {
                     component.set('v.splitZones', allZones);
                 }
+            }
+
+
+            if (utilityList.length == 1 && lead.LASERCA__Home_State__c =='NY') {
+                helper.finishStage(component, event, helper);
+            } else {
+                component.set('v.loading', false);
+                component.set('v.page', 'SplitLoadZone');
+                component.set('v.splitUtilities', utilityList);
             }
         } else {
             helper.finishStage(component, event, helper);
