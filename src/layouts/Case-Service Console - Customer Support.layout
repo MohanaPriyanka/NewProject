@@ -374,11 +374,6 @@
             <posY>2</posY>
         </summaryLayoutItems>
         <summaryLayoutItems>
-            <field>Description</field>
-            <posX>1</posX>
-            <posY>3</posY>
-        </summaryLayoutItems>
-        <summaryLayoutItems>
             <field>OwnerId</field>
             <posX>2</posX>
             <posY>0</posY>
