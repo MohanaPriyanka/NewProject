@@ -92,6 +92,7 @@
                 var allZones = lead.LoadZone__c.split('/');
                 if (lead.LASERCA__Home_State__c == 'NY'){
                     lead.LoadZone__c = allZones[0];
+                    component.set('v.lead', lead);
                     component.set('v.splitZones', null);
 
                 } else {
@@ -101,7 +102,8 @@
 
 
             if (utilityList.length == 1 && lead.LASERCA__Home_State__c =='NY') {
-                helper.finishStage(component, event, helper);
+                var saveSplitZip = component.get('c.saveUnsplitZone');
+                $A.enqueueAction(saveSplitZip);
             } else {
                 component.set('v.loading', false);
                 component.set('v.page', 'SplitLoadZone');
