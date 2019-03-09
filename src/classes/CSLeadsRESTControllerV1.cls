@@ -224,8 +224,10 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
                 newLead.Utility_Relationship__c = utility.Id;
             }
 
+            // we want to be able to pick up this customer at the credit check / utility info stage
             String continueApplicationUrl = Util.getCommunitySiteURL('Apply') + '/s/csap-payment?leadId=' + lead.Id;
             newLead.Continue_Application_Link__c = continueApplicationUrl;
+            newLead.CSAP_Stage__c = 'NAv_Capacity_Check';
 
             return newLead;
         }
