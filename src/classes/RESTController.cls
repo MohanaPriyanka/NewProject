@@ -56,8 +56,9 @@ global virtual class RESTController {
             messages.add(messageToAdd);
         }
 
-        public Blob asBlob() {
-            return Blob.valueOf(JSON.serialize(this));
+        public void setJSONResponse(RestResponse response) {
+            response.responseBody = Blob.valueOf(JSON.serialize(this));
+            response.addHeader('Content-Type', 'application/json');
         }
     }
 

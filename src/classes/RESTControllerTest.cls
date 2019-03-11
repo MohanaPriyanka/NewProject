@@ -159,7 +159,7 @@ public with sharing class RESTControllerTest {
     }
 
     @IsTest
-    public static void TestNewRequestEnvelope() {
+    public static void testNewRequestEnvelope() {
         String jsonRequest = '{\"data\": {' +
              '\"firstName\": \"Von\",' +
              '\"lastName\": \"Miller\"' +
@@ -172,7 +172,7 @@ public with sharing class RESTControllerTest {
     }
 
     @IsTest
-    public static void TestEnheritedRequestEnvelope() {
+    public static void testInheritedRequestEnvelope() {
         String jsonRequest = '{\"data\": \"expectedData\"}';
 
         String expectedData = 'expectedData';
@@ -183,7 +183,7 @@ public with sharing class RESTControllerTest {
     }
 
     @IsTest
-    public static void TestResponseEnvelopeMethods() {
+    public static void testResponseEnvelopeMethods() {
         RESTController.ResponseEnvelope envelope = new RESTController.ResponseEnvelope();
 
         System.assertNotEquals(null, envelope.errors);
@@ -210,8 +210,6 @@ public with sharing class RESTControllerTest {
         envelope.addMessages(new List<String>{'Message 2', 'Message 3'});
         System.assertEquals('Message 2', envelope.messages[1]);
         System.assertEquals('Message 3', envelope.messages[2]);
-
-        System.assertEquals(Blob.valueOf(JSON.serialize(envelope)), envelope.asBlob());
     }
 
     public static TestResponseEnvelope getResponseEnvelope(RestResponse response) {
