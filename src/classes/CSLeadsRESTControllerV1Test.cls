@@ -25,11 +25,11 @@ public with sharing class CSLeadsRESTControllerV1Test {
 
         System.assertEquals(false, insertedLead.Privacy_Policy_Acknowledged__c, 'privacy policy should default to false');
 
-        String jsonRequest = '{"data":{' +
+        String jsonRequest = '{' +
             '"id":"' + leadToPatch.Id + '",' +
             '"customerAcknowledgement":true,' +
             '"customerAgreementText":"I Agree"' +
-            '}}';
+            '}';
 
         RestRequest req = new RestRequest();
         req.requestURI = '/services/apexrest/v1/CSLeads';
@@ -81,11 +81,11 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertEquals(null, insertedLead.Zuora_Payment_Ref_Id__c);
         System.assertEquals(null, insertedLead.Zuora_Payment_Ref_Id_Expiration_Date__c);
 
-        String jsonRequest = '{"data":{' +
+        String jsonRequest = '{' +
             '"id":"' + leadToPatch.Id + '",' +
             '"zuoraPaymentRefId":"mock-zuoraId",' +
             '"zuoraPaymentRefIdExpirationDate":"2019-01-05T14:00-05:00"' +
-            '}}';
+            '}';
 
         RestRequest req = new RestRequest();
         req.requestURI = '/services/apexrest/v1/CSLeads';
@@ -136,10 +136,10 @@ public with sharing class CSLeadsRESTControllerV1Test {
             LIMIT 1
         ];
 
-        String jsonRequest = '{"data":{' +
+        String jsonRequest = '{' +
             '"id":"' + leadToPatch.Id + '",' +
             '"Name":"UpdateName"' +
-            '}}';
+            '}';
 
         RestRequest req = new RestRequest();
         req.requestURI = '/services/apexrest/v1/CSLeads';
@@ -165,10 +165,10 @@ public with sharing class CSLeadsRESTControllerV1Test {
 
     @IsTest
     public static void testPatchNoLead() {
-        String jsonRequest = '{"data":{' +
+        String jsonRequest = '{' +
             '"id":"00Q000000000000",' +
             '"Name":"UpdateName"' +
-            '}}';
+            '}';
 
         RestRequest req = new RestRequest();
         req.requestURI = '/services/apexrest/v1/CSLeads';

@@ -19,15 +19,14 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
             RestContext.response.statusCode = 500;
             String errorMessage = 'Error: ' + e.getMessage();
             errorMessage += '. Request: ' + RestContext.request;
-            Logger.logNow('CSLeadsRESTControllerV1', 'patchRequest', errorMessage);
+            Logger.logNow('CSLeadsRESTControllerV1', 'patchRequest', errorMessage, 'Error');
         }
     }
 
 
     protected override void patchRecords() {
         String jsonRequest = request.requestBody.toString();
-        RequestEnvelope requestEnvelope = new RequestEnvelope(jsonRequest);
-        RequestLead requestLead = requestEnvelope.data;
+        RequestLead requestLead = (RequestLead) JSON.deserialize(jsonRequest, RequestLead.class);
         List<Lead> leads = [
             SELECT Id, Privacy_Policy_Acknowledged__c
             FROM Lead
@@ -60,15 +59,6 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
         }
 
         envelope.setJSONResponse(response);
-    }
-
-    public class RequestEnvelope {
-        public RequestLead data;
-
-        public RequestEnvelope(String jsonRequest) {
-            RequestEnvelope request = (RequestEnvelope) JSON.deserialize(jsonRequest, RequestEnvelope.class);
-            data = request.data;
-        }
     }
 
     public class RequestLead {
