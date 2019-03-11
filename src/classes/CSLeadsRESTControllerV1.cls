@@ -15,8 +15,11 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
         } catch(Exception e) {
             CSLeadsRESTControllerV1.ResponseEnvelope envelope =  new CSLeadsRESTControllerV1.ResponseEnvelope();
             envelope.addError(e.getMessage());
-            RestContext.response.responseBody = envelope.asBlob();
+            envelope.setJSONResponse(RestContext.response);
             RestContext.response.statusCode = 500;
+            String errorMessage = 'Error: ' + e.getMessage();
+            errorMessage += '. Request: ' + RestContext.request;
+            Logger.logNow('CSLeadsRESTControllerV1', 'patchRequest', errorMessage, 'Error');
         }
     }
 
@@ -25,10 +28,13 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
         try {
             controller.postRecords();
         } catch(Exception e) {
-            CSLeadsRESTControllerV1.ResponseEnvelope envelope =  new CSLeadsRESTControllerV1.ResponseEnvelope();
+            RESTController.ResponseEnvelope envelope =  new RESTController.ResponseEnvelope();
             envelope.addError(e.getMessage());
-            RestContext.response.responseBody = envelope.asBlob();
+            envelope.setJSONResponse(RestContext.response);
             RestContext.response.statusCode = 500;
+            String errorMessage = 'Error: ' + e.getMessage();
+            errorMessage += '. Request: ' + RestContext.request;
+            Logger.logNow('CSLeadsRESTControllerV1', 'postRequest', errorMessage, 'Error');
         }
     }
 
@@ -49,6 +55,8 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
             Lead leadToUpdate = leads[0];
             if (requestLead.hasAcknowledgement()) {
                 leadToUpdate.Privacy_Policy_Acknowledged__c = requestLead.customerAcknowledgement;
+                leadToUpdate.Terms_Conditions_Acknowledged__c = Datetime.now();
+                leadToUpdate.Terms_Conditions__c = requestLead.customerAgreementText;
             }
             if (requestLead.hasZuoraPaymentInfo()) {
                 leadToUpdate.Zuora_Payment_Ref_Id__c = requestLead.zuoraPaymentRefId;
@@ -65,17 +73,14 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
             response.statusCode = statusCode.badRequest;
         }
 
-        response.addHeader('Content-Type', 'application/json');
-        response.responseBody = envelope.asBlob();
-     }
+        envelope.setJSONResponse(response);
+    }
 
     protected override void postRecords() {
         String jsonRequest = request.requestBody.toString();
         RequestEnvelope requestEnvelope = new RequestEnvelope(jsonRequest);
         RequestLead requestLead = requestEnvelope.data;
 
-        System.debug(requestLead.hasRequiredPostFields());
-        System.debug(requestLead);
         if (requestLead.hasRequiredPostFields()) {
             Lead newLead = requestLead.asLead();
 
@@ -89,8 +94,7 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
             response.statusCode = statusCode.badRequest;
         }
 
-        response.addHeader('Content-Type', 'application/json');
-        response.responseBody = envelope.asBlob();
+        envelope.setJSONResponse(response);
     }
 
     public class RequestEnvelope {
@@ -105,6 +109,7 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
     public class RequestLead {
         public Id id;
         public Boolean customerAcknowledgement;
+        public String customerAgreementText;
         public String zuoraPaymentRefId;
         public DateTime zuoraPaymentRefIdExpirationDate;
         public String firstName;
@@ -128,7 +133,8 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
         public Id productId;
 
         public Boolean hasAcknowledgement() {
-            return customerAcknowledgement != null;
+            return (customerAcknowledgement != null
+                && customerAgreementText != null);
         }
 
         public Boolean hasZuoraPaymentInfo() {
@@ -224,10 +230,8 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
                 newLead.Utility_Relationship__c = utility.Id;
             }
 
-            // we want to be able to pick up this customer at the credit check / utility info stage
             String continueApplicationUrl = Util.getCommunitySiteURL('Apply') + '/s/csap-payment?leadId=' + lead.Id;
             newLead.Continue_Application_Link__c = continueApplicationUrl;
-            newLead.CSAP_Stage__c = 'NAv_Capacity_Check';
 
             return newLead;
         }

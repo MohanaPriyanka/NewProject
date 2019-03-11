@@ -40,7 +40,8 @@ public with sharing class CSLeadsRESTControllerV1Test {
 
         String jsonRequest = '{"data":{' +
             '"id":"' + leadToPatch.Id + '",' +
-            '"customerAcknowledgement":true' +
+            '"customerAcknowledgement":true,' +
+            '"customerAgreementText":"I Agree"' +
             '}}';
 
         RestRequest req = new RestRequest();
@@ -274,6 +275,15 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertEquals(null, patchResponseEnvelope.data);
         System.assertEquals(false, patchResponseEnvelope.errors.isEmpty());
         System.assertEquals(true, patchResponseEnvelope.messages.isEmpty());
+
+        List<Error_Log__c> errorLogs = [
+            SELECT Id, Class__c, Method__c
+            FROM Error_Log__c
+            WHERE Class__c = 'CSLeadsRESTControllerV1'
+            AND Method__c = 'patchRequest'
+        ];
+
+        System.assertEquals(1, errorLogs.size());
     }
 
     @IsTest
@@ -382,6 +392,16 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertEquals(null, patchResponseEnvelope.data);
         System.assertEquals(false, patchResponseEnvelope.errors.isEmpty());
         System.assertEquals(true, patchResponseEnvelope.messages.isEmpty());
+
+
+        List<Error_Log__c> errorLogs = [
+            SELECT Id, Class__c, Method__c
+            FROM Error_Log__c
+            WHERE Class__c = 'CSLeadsRESTControllerV1'
+            AND Method__c = 'postRequest'
+        ];
+
+        System.assertEquals(1, errorLogs.size());
     }
 
     @IsTest
@@ -396,133 +416,10 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assert(!lead.hasValidApplicationType(), 'RequestLead is empty, validations should be false');
 
         lead.customerAcknowledgement = true;
-        System.assert(lead.hasAcknowledgement(), 'RequestLead hasAcknowledgements');
+        lead.customerAgreementText = 'I agree';
+        System.assert(lead.hasAcknowledgement(), 'RequestLead should have Acknowledgements');
         lead.customerAcknowledgement = false;
-        System.assert(lead.hasAcknowledgement(), 'RequestLead hasAcknowledgements');
-
-        lead.zuoraPaymentRefId = 'zuoraId';
-        lead.zuoraPaymentRefIdExpirationDate = Datetime.now();
-        System.assert(lead.hasZuoraPaymentInfo(), 'RequestLead zuora payment info');
-
-        lead.firstName = 'max';
-        lead.lastName = 'testcase';
-        lead.email = 'max@email.com';
-        System.assert(!lead.hasRequiredPostFields(), 'RequestLead is empty, validations should be false');
-        System.assert(!lead.hasBasicFields(), 'RequestLead is empty, validations should be false');
-        System.assert(!lead.hasBusinessFieldsIfRequired(), 'RequestLead is empty, validations should be false');
-        System.assert(!lead.hasValidApplicationType(), 'RequestLead is empty, validations should be false');
-
-        lead.mobilePhone = '1231231234';
-        lead.billingStreetAddress = 'street';
-        lead.billingCity = 'city';
-        lead.billingState = 'state';
-        lead.billingZIPCode = 'zipcode';
-        lead.serviceZIPCode = 'zipcode';
-        lead.loadZone = 'loadzone';
-        lead.utilityName = 'utility name';
-        lead.productId = '00Q000000000000';
-        lead.applicationType = 'Residential';
-
-        System.assert(lead.hasRequiredPostFields(), 'RequestLead has required fields');
-        System.assert(lead.hasBasicFields(), 'RequestLead has basic required fields');
-        System.assert(lead.hasBusinessFieldsIfRequired(), 'RequestLead is residential, does not need business fields');
-        System.assert(lead.hasValidApplicationType(), 'RequestLead is Residential');
-
-        lead.applicationType = 'Non-Residential';
-        System.assert(!lead.hasRequiredPostFields(), 'RequestLead is missing non-residential fields');
-        System.assert(lead.hasBasicFields(), 'RequestLead has basic required fields');
-        System.assert(!lead.hasBusinessFieldsIfRequired(), 'RequestLead is non-residential, missing fields');
-        System.assert(lead.hasValidApplicationType(), 'RequestLead is Non-Residential');
-
-        lead.businessName = 'business';
-        lead.businessPhone = '1231231234';
-        lead.businessTitle = 'owner';
-        System.assert(lead.hasRequiredPostFields(), 'RequestLead has required fields');
-        System.assert(lead.hasBasicFields(), 'RequestLead has basic required fields');
-        System.assert(lead.hasBusinessFieldsIfRequired(), 'RequestLead is residential, does not need business fields');
-        System.assert(lead.hasValidApplicationType(), 'RequestLead is Non-Residential');
-
-        lead.applicationType = 'Loan';
-        System.assert(!lead.hasValidApplicationType(), 'RequestLead should be an invalid type');
-    }
-
-    @IsTest
-    public static void testRequestLeadAsResiLead() {
-        CSLeadsRESTControllerV1.RequestLead lead = new CSLeadsRESTControllerV1.RequestLead();
-
-        System.assert(!lead.hasAcknowledgement(), 'RequestLead is empty, validations should be false');
-        System.assert(!lead.hasZuoraPaymentInfo(), 'RequestLead is empty, validations should be false');
-        System.assert(!lead.hasRequiredPostFields(), 'RequestLead is empty, validations should be false');
-        System.assert(!lead.hasBasicFields(), 'RequestLead is empty, validations should be false');
-        System.assert(!lead.hasBusinessFieldsIfRequired(), 'RequestLead is empty, validations should be false');
-        System.assert(!lead.hasValidApplicationType(), 'RequestLead is empty, validations should be false');
-
-        lead.customerAcknowledgement = true;
-        System.assert(lead.hasAcknowledgement(), 'RequestLead hasAcknowledgements');
-        lead.customerAcknowledgement = false;
-        System.assert(lead.hasAcknowledgement(), 'RequestLead hasAcknowledgements');
-
-        lead.zuoraPaymentRefId = 'zuoraId';
-        lead.zuoraPaymentRefIdExpirationDate = Datetime.now();
-        System.assert(lead.hasZuoraPaymentInfo(), 'RequestLead zuora payment info');
-
-        lead.firstName = 'max';
-        lead.lastName = 'testcase';
-        lead.email = 'max@email.com';
-        System.assert(!lead.hasRequiredPostFields(), 'RequestLead is empty, validations should be false');
-        System.assert(!lead.hasBasicFields(), 'RequestLead is empty, validations should be false');
-        System.assert(!lead.hasBusinessFieldsIfRequired(), 'RequestLead is empty, validations should be false');
-        System.assert(!lead.hasValidApplicationType(), 'RequestLead is empty, validations should be false');
-
-        lead.mobilePhone = '1231231234';
-        lead.billingStreetAddress = 'street';
-        lead.billingCity = 'city';
-        lead.billingState = 'state';
-        lead.billingZIPCode = 'zipcode';
-        lead.serviceZIPCode = 'zipcode';
-        lead.loadZone = 'loadzone';
-        lead.utilityName = 'utility name';
-        lead.productId = '00Q000000000000';
-        lead.applicationType = 'Residential';
-
-        System.assert(lead.hasRequiredPostFields(), 'RequestLead has required fields');
-        System.assert(lead.hasBasicFields(), 'RequestLead has basic required fields');
-        System.assert(lead.hasBusinessFieldsIfRequired(), 'RequestLead is residential, does not need business fields');
-        System.assert(lead.hasValidApplicationType(), 'RequestLead is Residential');
-
-        lead.applicationType = 'Non-Residential';
-        System.assert(!lead.hasRequiredPostFields(), 'RequestLead is missing non-residential fields');
-        System.assert(lead.hasBasicFields(), 'RequestLead has basic required fields');
-        System.assert(!lead.hasBusinessFieldsIfRequired(), 'RequestLead is non-residential, missing fields');
-        System.assert(lead.hasValidApplicationType(), 'RequestLead is Non-Residential');
-
-        lead.businessName = 'business';
-        lead.businessPhone = '1231231234';
-        lead.businessTitle = 'owner';
-        System.assert(lead.hasRequiredPostFields(), 'RequestLead has required fields');
-        System.assert(lead.hasBasicFields(), 'RequestLead has basic required fields');
-        System.assert(lead.hasBusinessFieldsIfRequired(), 'RequestLead is residential, does not need business fields');
-        System.assert(lead.hasValidApplicationType(), 'RequestLead is Non-Residential');
-
-        lead.applicationType = 'Loan';
-        System.assert(!lead.hasValidApplicationType(), 'RequestLead should be an invalid type');
-    }
-
-    @IsTest
-    public static void testRequestLeadAsNonResiLead() {
-        CSLeadsRESTControllerV1.RequestLead lead = new CSLeadsRESTControllerV1.RequestLead();
-
-        System.assert(!lead.hasAcknowledgement(), 'RequestLead is empty, validations should be false');
-        System.assert(!lead.hasZuoraPaymentInfo(), 'RequestLead is empty, validations should be false');
-        System.assert(!lead.hasRequiredPostFields(), 'RequestLead is empty, validations should be false');
-        System.assert(!lead.hasBasicFields(), 'RequestLead is empty, validations should be false');
-        System.assert(!lead.hasBusinessFieldsIfRequired(), 'RequestLead is empty, validations should be false');
-        System.assert(!lead.hasValidApplicationType(), 'RequestLead is empty, validations should be false');
-
-        lead.customerAcknowledgement = true;
-        System.assert(lead.hasAcknowledgement(), 'RequestLead hasAcknowledgements');
-        lead.customerAcknowledgement = false;
-        System.assert(lead.hasAcknowledgement(), 'RequestLead hasAcknowledgements');
+        System.assert(lead.hasAcknowledgement(), 'RequestLead should have Acknowledgements');
 
         lead.zuoraPaymentRefId = 'zuoraId';
         lead.zuoraPaymentRefIdExpirationDate = Datetime.now();
