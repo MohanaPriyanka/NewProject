@@ -41,7 +41,7 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
             Lead leadToUpdate = leads[0];
             if (requestLead.hasAcknowledgement()) {
                 leadToUpdate.Privacy_Policy_Acknowledged__c = requestLead.customerAcknowledgement;
-                leadToUpdate.Terms_Conditions_Acknowledged__c = Date.today();
+                leadToUpdate.Terms_Conditions_Acknowledged__c = Datetime.now();
                 leadToUpdate.Terms_Conditions__c = requestLead.customerAgreementText;
             }
             if (requestLead.hasZuoraPaymentInfo()) {
