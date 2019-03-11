@@ -69,8 +69,7 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
         public DateTime zuoraPaymentRefIdExpirationDate;
 
         public Boolean hasAcknowledgement() {
-            return (customerAcknowledgement != null
-                && customerAgreementText != null);
+            return (customerAcknowledgement != null);
         }
 
         public Boolean hasZuoraPaymentInfo() {
