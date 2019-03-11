@@ -15,7 +15,7 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
         } catch(Exception e) {
             CSLeadsRESTControllerV1.ResponseEnvelope envelope =  new CSLeadsRESTControllerV1.ResponseEnvelope();
             envelope.addError(e.getMessage());
-            RestContext.response.responseBody = envelope.asBlob();
+            envelope.setJSONResponse(RestContext.response);
             RestContext.response.statusCode = 500;
             String errorMessage = 'Error: ' + e.getMessage();
             errorMessage += '. Request: ' + RestContext.request;
@@ -41,7 +41,7 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
             Lead leadToUpdate = leads[0];
             if (requestLead.hasAcknowledgement()) {
                 leadToUpdate.Privacy_Policy_Acknowledged__c = requestLead.customerAcknowledgement;
-                leadToUpdate.Terms_Conditions_Acknowledged__c = Datetime.now();
+                leadToUpdate.Terms_Conditions_Acknowledged__c = Date.today();
                 leadToUpdate.Terms_Conditions__c = requestLead.customerAgreementText;
             }
             if (requestLead.hasZuoraPaymentInfo()) {
@@ -59,9 +59,8 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
             response.statusCode = statusCode.badRequest;
         }
 
-        response.addHeader('Content-Type', 'application/json');
-        response.responseBody = envelope.asBlob();
-     }
+        envelope.setJSONResponse(response);
+    }
 
     public class RequestEnvelope {
         public RequestLead data;
