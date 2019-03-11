@@ -68,7 +68,7 @@
         <fullName>Author__c</fullName>
         <description>List name of the author of this content</description>
         <externalId>false</externalId>
-        <inlineHelpText>List name of the author of this content</inlineHelpText>
+        <inlineHelpText>List name of the author of this content. This is the person or persons who will be identified online as writer of the article.</inlineHelpText>
         <label>Author</label>
         <length>40</length>
         <required>true</required>
@@ -245,5 +245,19 @@
     <pluralLabel>BlueWave Blog</pluralLabel>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Audience_Required</fullName>
+        <active>true</active>
+        <description>Prevents record from being created/saved with blank Audience field</description>
+        <errorConditionFormula>LEN( Audience__c ) = 0</errorConditionFormula>
+        <errorMessage>Audience is a required field</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Short_Description_Required</fullName>
+        <active>true</active>
+        <description>Requires entry in Short Description field</description>
+        <errorConditionFormula>LEN( Short_Description__c )= 0</errorConditionFormula>
+        <errorMessage>Short Description is a required field</errorMessage>
+    </validationRules>
     <visibility>Public</visibility>
 </CustomObject>
