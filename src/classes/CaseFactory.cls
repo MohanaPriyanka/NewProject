@@ -6,51 +6,57 @@
 
 
 public without sharing class CaseFactory {
-    public RecordType customerCare;
-    public RecordType productSupport;
-    public OrgWideEmailAddress customerCareEmail;
-    public Group CustomerCareQueue;
-    public Group ProductQueue;
-    public Group CollectionsQueue;
-    public Case newCase;
+    public static RecordType customerCare;
+    public static RecordType productSupport;
+    public static OrgWideEmailAddress customerCareEmail;
+    public static Group CustomerCareQueue;
+    public static Group ProductQueue;
+    public static Group CollectionsQueue;
+    public static Case newCase;
 
     public caseFactory() {
-        List<RecordType> caseRecordTypes = [
-            SELECT Id, Name
-            FROM RecordType
-            WHERE SobjectType = 'Case'
-            AND (DeveloperName = 'Product_Support' OR DeveloperName = 'Customer_Care')
-            ORDER BY DeveloperName
-        ];
+        if (customerCare == null || productSupport == null) {
+            List<RecordType> caseRecordTypes = [
+                SELECT Id, Name
+                FROM RecordType
+                WHERE SobjectType = 'Case'
+                AND (DeveloperName = 'Product_Support' OR DeveloperName = 'Customer_Care')
+                ORDER BY DeveloperName
+            ];
 
-        if (caseRecordTypes.size() != 2) {
-            Logger.logNow('CaseFactory', 'constructor', 'Missing RecordType for case. Available RecordTypes: ' + caseRecordTypes);
-        } else {
-            customerCare = caseRecordTypes[0];
-            productSupport = caseRecordTypes[1];
+            if (caseRecordTypes.size() != 2) {
+                Logger.logNow('CaseFactory', 'constructor', 'Missing RecordType for case. Available RecordTypes: ' + caseRecordTypes);
+            } else {
+                customerCare = caseRecordTypes[0];
+                productSupport = caseRecordTypes[1];
+            }
         }
 
-        customerCareEmail = [
-            SELECT Id, Address
-            FROM OrgWideEmailAddress
-            WHERE Address = 'customercare@bluewavesolar.com'
-            LIMIT 1
-        ];
+        if (customerCareEmail == null) {
+            customerCareEmail = [
+                SELECT Id, Address
+                FROM OrgWideEmailAddress
+                WHERE Address = 'customercare@bluewavesolar.com'
+                LIMIT 1
+            ];
+        }
 
-        List<Group> assignmentGroups = [
-            SELECT Id, DeveloperName
-            FROM Group
-            WHERE Type = 'Queue'
-            AND (DeveloperName = 'Product_Support' OR DeveloperName = 'Customer_Care' OR DeveloperName = 'Collections')
-            ORDER BY DeveloperName
-        ];
+        if (CollectionsQueue == null || CustomerCareQueue == null || ProductQueue == null){
+            List<Group> assignmentGroups = [
+                SELECT Id, DeveloperName
+                FROM Group
+                WHERE Type = 'Queue'
+                AND (DeveloperName = 'Product_Support' OR DeveloperName = 'Customer_Care' OR DeveloperName = 'Collections')
+                ORDER BY DeveloperName
+            ];
 
-        if (assignmentGroups.size() != 3) {
-            Logger.logNow('CaseFactory', 'constructor', 'Missing Groups for assignment. Available Groups: ' + assignmentGroups);
-        } else {
-            CollectionsQueue = assignmentGroups[0];
-            CustomerCareQueue = assignmentGroups[1];
-            ProductQueue = assignmentGroups[2];
+            if (assignmentGroups.size() != 3) {
+                Logger.logNow('CaseFactory', 'constructor', 'Missing Groups for assignment. Available Groups: ' + assignmentGroups);
+            } else {
+                CollectionsQueue = assignmentGroups[0];
+                CustomerCareQueue = assignmentGroups[1];
+                ProductQueue = assignmentGroups[2];
+            }
         }
     }
 
