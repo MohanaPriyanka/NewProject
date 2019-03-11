@@ -159,31 +159,7 @@ public with sharing class RESTControllerTest {
     }
 
     @IsTest
-    public static void testNewRequestEnvelope() {
-        String jsonRequest = '{\"data\": {' +
-             '\"firstName\": \"Von\",' +
-             '\"lastName\": \"Miller\"' +
-             '}}';
-        TestRESTController.RequestEnvelope envelope = new TestRESTController.RequestEnvelope(jsonRequest);
-
-        System.assertNotEquals(null, envelope.data);
-        System.assertEquals('Von', envelope.data.firstName);
-        System.assertEquals('Miller', envelope.data.lastName);
-    }
-
-    @IsTest
-    public static void testInheritedRequestEnvelope() {
-        String jsonRequest = '{\"data\": \"expectedData\"}';
-
-        String expectedData = 'expectedData';
-        RESTController.RequestEnvelope envelope = new RESTController.RequestEnvelope(jsonRequest);
-
-        System.assertNotEquals(null, envelope.data);
-        System.assertEquals(expectedData, envelope.data);
-    }
-
-    @IsTest
-    public static void testResponseEnvelopeMethods() {
+    public static void TestResponseEnvelopeMethods() {
         RESTController.ResponseEnvelope envelope = new RESTController.ResponseEnvelope();
 
         System.assertNotEquals(null, envelope.errors);
