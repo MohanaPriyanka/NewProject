@@ -3012,6 +3012,19 @@ null)</formula>
     <searchLayouts/>
     <sharingModel>Private</sharingModel>
     <validationRules>
+        <fullName>NMC_Tariff_Not_Retired</fullName>
+        <active>true</active>
+        <description>A Shared Solar System shouldn&apos;t have a retired tariff.</description>
+        <errorConditionFormula>AND(
+
+ISPICKVAL(Utility_NMC_Tariff__r.Status__c,&quot;Retired&quot;) ,
+
+ISCHANGED(Utility_NMC_Tariff__c)
+
+)</errorConditionFormula>
+        <errorMessage>You cannot use an NMC Tariff with Status=Retired. Use an active tariff, or change the tariff status to active if it is active.</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>PM_Team_Locks</fullName>
         <active>true</active>
         <description>Allows only Shauna and Sandra to edit certain fields</description>
