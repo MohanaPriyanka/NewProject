@@ -38,11 +38,11 @@ public with sharing class CSLeadsRESTControllerV1Test {
 
         System.assertEquals(false, insertedLead.Privacy_Policy_Acknowledged__c, 'privacy policy should default to false');
 
-        String jsonRequest = '{"data":{' +
+        String jsonRequest = '{' +
             '"id":"' + leadToPatch.Id + '",' +
             '"customerAcknowledgement":true,' +
             '"customerAgreementText":"I Agree"' +
-            '}}';
+            '}';
 
         RestRequest req = new RestRequest();
         req.requestURI = '/services/apexrest/v1/CSLeads';
@@ -94,11 +94,11 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertEquals(null, insertedLead.Zuora_Payment_Ref_Id__c);
         System.assertEquals(null, insertedLead.Zuora_Payment_Ref_Id_Expiration_Date__c);
 
-        String jsonRequest = '{"data":{' +
+        String jsonRequest = '{' +
             '"id":"' + leadToPatch.Id + '",' +
             '"zuoraPaymentRefId":"mock-zuoraId",' +
             '"zuoraPaymentRefIdExpirationDate":"2019-01-05T14:00-05:00"' +
-            '}}';
+            '}';
 
         RestRequest req = new RestRequest();
         req.requestURI = '/services/apexrest/v1/CSLeads';
@@ -149,10 +149,10 @@ public with sharing class CSLeadsRESTControllerV1Test {
             LIMIT 1
         ];
 
-        String jsonRequest = '{"data":{' +
+        String jsonRequest = '{' +
             '"id":"' + leadToPatch.Id + '",' +
             '"Name":"UpdateName"' +
-            '}}';
+            '}';
 
         RestRequest req = new RestRequest();
         req.requestURI = '/services/apexrest/v1/CSLeads';
@@ -178,10 +178,10 @@ public with sharing class CSLeadsRESTControllerV1Test {
 
     @IsTest
     public static void testPatchNoLead() {
-        String jsonRequest = '{"data":{' +
+        String jsonRequest = '{' +
             '"id":"00Q000000000000",' +
             '"Name":"UpdateName"' +
-            '}}';
+            '}';
 
         RestRequest req = new RestRequest();
         req.requestURI = '/services/apexrest/v1/CSLeads';
@@ -213,7 +213,6 @@ public with sharing class CSLeadsRESTControllerV1Test {
         ];
 
         String jsonRequest = '{' +
-            '"data": {' +
             '"firstName": "string", ' +
             '"lastName": "string", ' +
             '"email": "test@example.com", ' +
@@ -226,7 +225,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
             '"serviceZIPCode":	"12345", ' +
             '"loadZone":	"string", ' +
             '"utilityName": "Utility",' +
-            '"productId":	"' + testProduct.Id + '"}}';
+            '"productId":	"' + testProduct.Id + '"}';
 
         System.debug(jsonRequest);
 
@@ -295,7 +294,6 @@ public with sharing class CSLeadsRESTControllerV1Test {
         ];
 
         String jsonRequest = '{' +
-            '"data": {' +
             '"firstName": "string", ' +
             '"lastName": "string", ' +
             '"email": "test@example.com", ' +
@@ -308,7 +306,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
             '"serviceZIPCode":	"12345", ' +
             '"loadZone":	"string", ' +
             '"utilityName": "Utility",' +
-            '"productId":	"' + testProduct.Id + '"}}';
+            '"productId":	"' + testProduct.Id + '"}';
 
         RestRequest req = new RestRequest();
         req.requestURI = '/services/apexrest/v1/CSLeads';
@@ -335,7 +333,6 @@ public with sharing class CSLeadsRESTControllerV1Test {
     @IsTest
     public static void testPostMissingFields() {
         String jsonRequest = '{' +
-            '"data": {' +
             '"firstName": "string", ' +
             '"lastName": "string", ' +
             '"email": "test@example.com", ' +
@@ -343,7 +340,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
             '"applicationType": "Residential", ' +
             '"serviceZIPCode":	"12345", ' +
             '"loadZone":	"string", ' +
-            '"utilityName": "Utility"}}';
+            '"utilityName": "Utility"}';
 
 
         RestRequest req = new RestRequest();

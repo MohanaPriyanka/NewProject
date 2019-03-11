@@ -40,8 +40,7 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
 
     protected override void patchRecords() {
         String jsonRequest = request.requestBody.toString();
-        RequestEnvelope requestEnvelope = new RequestEnvelope(jsonRequest);
-        RequestLead requestLead = requestEnvelope.data;
+        RequestLead requestLead = (RequestLead) JSON.deserialize(jsonRequest, RequestLead.class);
         List<Lead> leads = [
             SELECT Id, Privacy_Policy_Acknowledged__c
             FROM Lead
@@ -78,8 +77,7 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
 
     protected override void postRecords() {
         String jsonRequest = request.requestBody.toString();
-        RequestEnvelope requestEnvelope = new RequestEnvelope(jsonRequest);
-        RequestLead requestLead = requestEnvelope.data;
+        RequestLead requestLead = (RequestLead) JSON.deserialize(jsonRequest, RequestLead.class);
 
         if (requestLead.hasRequiredPostFields()) {
             Lead newLead = requestLead.asLead();
@@ -95,15 +93,6 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
         }
 
         envelope.setJSONResponse(response);
-    }
-
-    public class RequestEnvelope {
-        public RequestLead data;
-
-        public RequestEnvelope(String jsonRequest) {
-            RequestEnvelope request = (RequestEnvelope) JSON.deserialize(jsonRequest, RequestEnvelope.class);
-            data = request.data;
-        }
     }
 
     public class RequestLead {
@@ -229,9 +218,6 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
 
                 newLead.Utility_Relationship__c = utility.Id;
             }
-
-            String continueApplicationUrl = Util.getCommunitySiteURL('Apply') + '/s/csap-payment?leadId=' + lead.Id;
-            newLead.Continue_Application_Link__c = continueApplicationUrl;
 
             return newLead;
         }
