@@ -22,8 +22,6 @@ public without sharing class PaymentCaseCreator implements Schedulable {
         AccountBillError,
         NoCaseNeeded
     }
-    public CaseFactory caseFactory = new CaseFactory();
-
 
     OrgWideEmailAddress customerCareEmail = [
         SELECT Id, Address
@@ -237,7 +235,7 @@ public without sharing class PaymentCaseCreator implements Schedulable {
                 'closeAndOpenNecessaryCases',
                 '# of cases opened: ' + numOpened + '; # of cases closed: ' + numClosed +
                     openLogString +
-                    closedLogString);
+                    closedLogString, 'Info');
         }
 
 
@@ -270,6 +268,7 @@ public without sharing class PaymentCaseCreator implements Schedulable {
             return null;
         }
 
+        CaseFactory caseFactory = new CaseFactory();
         Case newCase;
 
         if (type == OrderCaseType.PaymentStatusError) {
@@ -381,7 +380,7 @@ public without sharing class PaymentCaseCreator implements Schedulable {
                     for (Messaging.SendEmailError error : errors) {
                         logString += error.getMessage() + '\n';
                     }
-                    Logger.logLater('PaymentCaseCreator', 'sendAllRequiredEmails',logString);
+                    Logger.logLater('PaymentCaseCreator', 'sendAllRequiredEmails',logString,'Error');
                 }
             }
 
