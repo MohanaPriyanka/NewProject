@@ -26,6 +26,10 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
 
     protected override void patchRecords() {
         String jsonRequest = request.requestBody.toString();
+        if (jsonRequest.toLowerCase().contains('acknowledgment')) {
+            jsonRequest = jsonRequest.replaceAll('(a{1}+|A{1}+)(cknowledgment)', 'acknowledgement');
+            envelope.addMessage('Autocorreted the request to update the spelling of acknowledgment to acknowledgement, with an e.');
+        }
         RequestLead requestLead = (RequestLead) JSON.deserialize(jsonRequest, RequestLead.class);
         List<Lead> leads = [
             SELECT Id, Privacy_Policy_Acknowledged__c
