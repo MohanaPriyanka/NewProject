@@ -16,7 +16,6 @@ public without sharing class ReturnedTransactionHandler {
     public List<ChargentOrders__Transaction__c> reverseTransactions = new List<ChargentOrders__Transaction__c>();
     public List<Overpayment__c> overpayList;
     public List<Case> caseList = new List<Case>();
-    public CaseFactory caseFactory = new CaseFactory();
 
     public void unrollPayment(Set<Id> transactionIds) {
         List<ChargentOrders__Transaction__c> chTransactions;
@@ -177,7 +176,8 @@ public without sharing class ReturnedTransactionHandler {
     }
 
     public void createCaseForTransaction(ChargentOrders__Transaction__c transactionToReverse) {
-        Case newCase = caseFactory.getCase('CustomerSupport');
+        CaseFactory caseFactory = new CaseFactory();
+        Case newCase = caseFactory.getCase('Customer_Care');
 
         newCase.Subject = 'Customer Transaction Marked as Returned';
         newCase.Priority = 'Medium';
