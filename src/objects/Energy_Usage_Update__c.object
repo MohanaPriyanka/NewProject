@@ -888,6 +888,11 @@ if( month( Date__c ) == 12, &quot;December&quot;, null))))))))))))</formula>
             <operation>equals</operation>
             <value>2</value>
         </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Utility_Bill_Line_Item__c.Category__c</field>
+            <operation>equals</operation>
+            <value>Fees &amp; Credits</value>
+        </summaryFilterItems>
         <summaryForeignKey>Utility_Bill_Line_Item__c.Production_Update__c</summaryForeignKey>
         <summaryOperation>sum</summaryOperation>
         <trackHistory>false</trackHistory>
@@ -904,6 +909,11 @@ if( month( Date__c ) == 12, &quot;December&quot;, null))))))))))))</formula>
             <field>Utility_Bill_Line_Item__c.Group__c</field>
             <operation>equals</operation>
             <value>3</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Utility_Bill_Line_Item__c.Category__c</field>
+            <operation>equals</operation>
+            <value>Fees &amp; Credits</value>
         </summaryFilterItems>
         <summaryForeignKey>Utility_Bill_Line_Item__c.Production_Update__c</summaryForeignKey>
         <summaryOperation>sum</summaryOperation>
@@ -922,6 +932,11 @@ if( month( Date__c ) == 12, &quot;December&quot;, null))))))))))))</formula>
             <operation>equals</operation>
             <value>4</value>
         </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Utility_Bill_Line_Item__c.Category__c</field>
+            <operation>equals</operation>
+            <value>Fees &amp; Credits</value>
+        </summaryFilterItems>
         <summaryForeignKey>Utility_Bill_Line_Item__c.Production_Update__c</summaryForeignKey>
         <summaryOperation>sum</summaryOperation>
         <trackHistory>false</trackHistory>
@@ -938,6 +953,11 @@ if( month( Date__c ) == 12, &quot;December&quot;, null))))))))))))</formula>
             <field>Utility_Bill_Line_Item__c.Group__c</field>
             <operation>equals</operation>
             <value>1 (Default)</value>
+        </summaryFilterItems>
+        <summaryFilterItems>
+            <field>Utility_Bill_Line_Item__c.Category__c</field>
+            <operation>equals</operation>
+            <value>Fees &amp; Credits</value>
         </summaryFilterItems>
         <summaryForeignKey>Utility_Bill_Line_Item__c.Production_Update__c</summaryForeignKey>
         <summaryOperation>sum</summaryOperation>

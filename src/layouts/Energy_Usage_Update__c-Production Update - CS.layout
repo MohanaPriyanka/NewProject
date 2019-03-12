@@ -68,16 +68,16 @@
                 <emptySpace>true</emptySpace>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Total_System_NMCs__c</field>
+                <behavior>Readonly</behavior>
+                <field>Total_NMCs__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Utility_Bill_Line_Total__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Total_NMCs__c</field>
+                <behavior>Edit</behavior>
+                <field>Total_System_NMCs__c</field>
             </layoutItems>
             <layoutItems>
                 <emptySpace>true</emptySpace>

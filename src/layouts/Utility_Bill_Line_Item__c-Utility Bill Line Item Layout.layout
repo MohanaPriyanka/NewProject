@@ -16,8 +16,8 @@
                 <field>Production_Update__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Group__c</field>
+                <behavior>Required</behavior>
+                <field>Category__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -26,6 +26,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Amount__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Group__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns/>
@@ -66,7 +70,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h22000000J0pc</masterLabel>
+        <masterLabel>00hq0000001a2ad</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>
