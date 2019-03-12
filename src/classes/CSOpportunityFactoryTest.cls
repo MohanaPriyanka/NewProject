@@ -110,7 +110,7 @@ public without sharing class CSOpportunityFactoryTest {
         System.assertEquals(null, creditOpp.ACH_Name_on_Account__c);
         System.assertNotEquals(null, creditOpp.CC_Card_Type__c);
         System.assertNotEquals(null, creditOpp.CC_Account_Number__c);
-        System.assertNotEquals(null, creditOpp.CC_CardHolder_Name__c);
+        System.assertEquals('Testy McTesterson', creditOpp.CC_CardHolder_Name__c);
         System.assertNotEquals(null, creditOpp.CC_Expiration_Month__c);
         System.assertNotEquals(null, creditOpp.CC_Expiration_Year__c);
 
