@@ -178,6 +178,7 @@
     <fields>
         <fullName>Short_Description__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>What are the 1-3 main points that we want to make in the article?</inlineHelpText>
         <label>Short Description</label>
         <length>32768</length>
         <trackTrending>false</trackTrending>
