@@ -74,6 +74,64 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertEquals(true, patchedLead.Privacy_Policy_Acknowledged__c, 'privacy policy should be acknowledged');
     }
 
+    @IsTest // apparently you can spell it either acknowledgement or acknowledgment...
+    public static void testPatchAcknowledgmentSpelledWithoutAnE() {
+        Lead leadToPatch = new Lead(
+            FirstName = 'marvin',
+            LastName = 'testcase',
+            Company = 'bluewave'
+        );
+
+        insert leadToPatch;
+
+        Lead insertedLead = [
+            SELECT Id, Privacy_Policy_Acknowledged__c
+            FROM Lead
+            WHERE Id = : leadToPatch.Id
+            LIMIT 1
+        ];
+
+        System.assertEquals(false, insertedLead.Privacy_Policy_Acknowledged__c, 'privacy policy should default to false');
+
+        String jsonRequest = '{' +
+            '"id":"' + leadToPatch.Id + '",' +
+            '"customerAcknowledgment":true,' +
+            '"customerAgreementText":"I Agree"' +
+            '}';
+
+        RestRequest req = new RestRequest();
+        req.requestURI = '/services/apexrest/v1/CSLeads';
+        req.httpMethod = 'PATCH';
+        req.addHeader('Content-Type', 'application/json');
+        req.requestBody = Blob.valueOf(jsonRequest);
+
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+
+        CSLeadsRESTControllerV1.patchRequest();
+
+        RestResponse response = RestContext.response;
+        System.assertEquals(200, response.statuscode);
+
+        String jsonResponse = response.responseBody.toString();
+        PatchResponseEnvelope patchResponseEnvelope = (PatchResponseEnvelope) JSON.deserialize(jsonResponse, PatchResponseEnvelope.class);
+
+        System.assertEquals(leadToPatch.Id, patchResponseEnvelope.data.id);
+        System.assertEquals(true, patchResponseEnvelope.errors.isEmpty());
+        System.assertEquals(false, patchResponseEnvelope.messages.isEmpty());
+        String message = 'Autocorreted the request to update the spelling of ' +
+            'acknowledgment to acknowledgement, with an e.';
+        System.assertEquals(message, patchResponseEnvelope.messages[0]);
+
+        Lead patchedLead = [
+            SELECT Id, Privacy_Policy_Acknowledged__c
+            FROM Lead
+            WHERE Id = : leadToPatch.Id
+            LIMIT 1
+        ];
+        System.assertEquals(true, patchedLead.Privacy_Policy_Acknowledged__c, 'privacy policy should be acknowledged');
+    }
+
     @IsTest
     public static void testPatchUpdatesZuoraPaymentInfo() {
         Lead leadToPatch = new Lead(
@@ -274,15 +332,6 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertEquals(null, patchResponseEnvelope.data);
         System.assertEquals(false, patchResponseEnvelope.errors.isEmpty());
         System.assertEquals(true, patchResponseEnvelope.messages.isEmpty());
-
-        List<Error_Log__c> errorLogs = [
-            SELECT Id, Class__c, Method__c
-            FROM Error_Log__c
-            WHERE Class__c = 'CSLeadsRESTControllerV1'
-            AND Method__c = 'patchRequest'
-        ];
-
-        System.assertEquals(1, errorLogs.size());
     }
 
     @IsTest
@@ -389,16 +438,6 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertEquals(null, patchResponseEnvelope.data);
         System.assertEquals(false, patchResponseEnvelope.errors.isEmpty());
         System.assertEquals(true, patchResponseEnvelope.messages.isEmpty());
-
-
-        List<Error_Log__c> errorLogs = [
-            SELECT Id, Class__c, Method__c
-            FROM Error_Log__c
-            WHERE Class__c = 'CSLeadsRESTControllerV1'
-            AND Method__c = 'postRequest'
-        ];
-
-        System.assertEquals(1, errorLogs.size());
     }
 
     @IsTest
@@ -413,10 +452,9 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assert(!lead.hasValidApplicationType(), 'RequestLead is empty, validations should be false');
 
         lead.customerAcknowledgement = true;
-        lead.customerAgreementText = 'I agree';
-        System.assert(lead.hasAcknowledgement(), 'RequestLead should have Acknowledgements');
+        System.assert(lead.hasAcknowledgement(), 'RequestLead hasAcknowledgements');
         lead.customerAcknowledgement = false;
-        System.assert(lead.hasAcknowledgement(), 'RequestLead should have Acknowledgements');
+        System.assert(lead.hasAcknowledgement(), 'RequestLead hasAcknowledgements');
 
         lead.zuoraPaymentRefId = 'zuoraId';
         lead.zuoraPaymentRefIdExpirationDate = Datetime.now();

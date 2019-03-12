@@ -28,18 +28,22 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
         try {
             controller.postRecords();
         } catch(Exception e) {
-            RESTController.ResponseEnvelope envelope =  new RESTController.ResponseEnvelope();
+            CSLeadsRESTControllerV1.ResponseEnvelope envelope = new CSLeadsRESTControllerV1.ResponseEnvelope();
             envelope.addError(e.getMessage());
             envelope.setJSONResponse(RestContext.response);
             RestContext.response.statusCode = 500;
             String errorMessage = 'Error: ' + e.getMessage();
             errorMessage += '. Request: ' + RestContext.request;
-            Logger.logNow('CSLeadsRESTControllerV1', 'postRequest', errorMessage, 'Error');
+            Logger.logNow('CSLeadsRESTControllerV1', 'patchRequest', errorMessage, 'Error');
         }
     }
 
     protected override void patchRecords() {
         String jsonRequest = request.requestBody.toString();
+        if (jsonRequest.toLowerCase().contains('acknowledgment')) {
+            jsonRequest = jsonRequest.replaceAll('(a{1}+|A{1}+)(cknowledgment)', 'acknowledgement');
+            envelope.addMessage('Autocorreted the request to update the spelling of acknowledgment to acknowledgement, with an e.');
+        }
         RequestLead requestLead = (RequestLead) JSON.deserialize(jsonRequest, RequestLead.class);
         List<Lead> leads = [
             SELECT Id, Privacy_Policy_Acknowledged__c
@@ -73,12 +77,14 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
         }
 
         envelope.setJSONResponse(response);
-    }
+     }
 
     protected override void postRecords() {
         String jsonRequest = request.requestBody.toString();
         RequestLead requestLead = (RequestLead) JSON.deserialize(jsonRequest, RequestLead.class);
 
+        System.debug(requestLead.hasRequiredPostFields());
+        System.debug(requestLead);
         if (requestLead.hasRequiredPostFields()) {
             Lead newLead = requestLead.asLead();
 
@@ -122,8 +128,7 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
         public Id productId;
 
         public Boolean hasAcknowledgement() {
-            return (customerAcknowledgement != null
-                && customerAgreementText != null);
+            return (customerAcknowledgement != null);
         }
 
         public Boolean hasZuoraPaymentInfo() {
@@ -218,6 +223,9 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
 
                 newLead.Utility_Relationship__c = utility.Id;
             }
+
+            String continueApplicationUrl = Util.getCommunitySiteURL('Apply') + '/s/csap-payment?leadId=' + lead.Id;
+            newLead.Continue_Application_Link__c = continueApplicationUrl;
 
             return newLead;
         }
