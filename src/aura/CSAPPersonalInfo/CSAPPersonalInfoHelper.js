@@ -21,6 +21,8 @@
         }
         lead.Product_line__c = "Community Solar";
         component.set("v.lead", lead);
+        // helper.validateLeadFields(component, event, helper);
+
     },
 
     upsertRecords : function(component, event, helper) {
@@ -113,5 +115,18 @@
             helper.finishStage(component, event, helper);
         }
     },
+
+    // validateLeadFields : function (component, event, helper, lead){
+    //     var lead = component.get("v.lead");
+    //     if (lead.FirstName != "" && lead.LastName != ""
+    //         && lead.Email != "" && lead.MobilePhone != ""
+    //         && lead.Street != "" && lead.City != ""
+    //         && lead.State != "" && lead.PostalCode != "") {
+    //
+    //     } else {
+    //         // helper.rasieError('CSAPPersonalInfoHelper', 'validateLeadFields', 'Please fill out all required fields.');
+    //         alert('Please fill out all required fields.');
+    //     }
+    // }
 
 })
