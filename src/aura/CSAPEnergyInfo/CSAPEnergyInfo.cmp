@@ -54,7 +54,7 @@
                   <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
                     <lightning:select aura:id="field" name="ualRateClass"
                                      label="Rate Class"
-                                     value="{!v.ual.Rate_Class__c}"
+                                     value="{!v.ual.Utility_Rate_Class__c}"
                                      required="true">
                       <option value="">Choose Rate Class</option>
                       <aura:iteration items="{!v.rateClasses}" var="rateClass">
