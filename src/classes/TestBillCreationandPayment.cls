@@ -377,23 +377,18 @@ public class TestBillCreationandPayment {
             productionupdateA1, productionupdateA2, productionupdateA3, productionupdateB1, productionupdateB2, productionupdateB3
         };
 
-        productionupdateA1.Generate_Bills__c = TRUE;
-        update productionupdateA1;
+        runProductionUpdate(new List<Id>{productionupdateA1.Id});
 
-        APXT_BPM__Conductor__c newConga = new APXT_BPM__Conductor__c (APXT_BPM__Title__c = 'Conga Record');
-        insert newConga;
-        newConga.Apply_Overpay_Adjust__c = true;
-        update newConga;
+        InvocableCSBillOverpaymentApplication.applyOverpayments();
 
         setBillsToPublished();
 
         // As of Jan 2019, 65 of 100 queries used. Generating bills consumes 35 queries
         Test.stopTest();
 
-        productionupdateA2.Generate_Bills__c = true;
-        update productionupdateA2;
+        runProductionUpdate(new List<Id>{productionupdateA2.Id});
     }
-    
+
     @IsTest
     private static void testAdjustmentRollups() {
         assertAccountTotalRollupsEqualToCalculatedTotals();
@@ -516,7 +511,7 @@ public class TestBillCreationandPayment {
         }
     }
 
-    static void setBillsToPublished() {
+    public static void setBillsToPublished() {
         List <Account_Bill__c> listAccountBills = [
             SELECT Id, Published__c
             FROM Account_Bill__c
@@ -526,6 +521,14 @@ public class TestBillCreationandPayment {
             acctBill.Published__c = True;
         }
         update listAccountBills;
+    }
+
+    public static void runProductionUpdate(List<Id> prodUpdateIdList) {
+        List<Energy_Usage_Update__c> trigProdUp;
+        trigProdUp = ProductionUpdateSelector.getAllProductionUpdatesById(prodUpdateIdList);
+        EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(trigProdUp);
+        ee.runBills();
+        ee.runOverdueBills();
     }
 
     @isTest public static void testPreviewBills(){
@@ -544,7 +547,7 @@ public class TestBillCreationandPayment {
         System.assertEquals( 1, (PreviewProductionUpdateResults.getUASes(productionUpdateList[0].Id, true, productionUpdateList[0].Schedule_Z__r.Id)).size());
         System.assertEquals( 2, (PreviewProductionUpdateResults.getUASes(productionUpdateList[1].Id, true, productionUpdateList[1].Schedule_Z__r.Id)).size());
         System.assertEquals( 1, (PreviewProductionUpdateResults.getProperties(parId.substring(0,15), true)).size());
-        System.assertEquals( 6, (PreviewProductionUpdateResults.getUASes(acctId.substring(0,15), false, null)).size());
+        System.assertEquals( 8, (PreviewProductionUpdateResults.getUASes(acctId.substring(0,15), false, null)).size());
         Energy_Usage_Update__c productionUpdate = [
             SELECT Id, Name,  Schedule_Z__r.Id, Schedule_Z__r.Name
             FROM Energy_Usage_Update__c
@@ -691,8 +694,7 @@ public class TestBillCreationandPayment {
         System.assertEquals(1,(PreviewProductionUpdateResults.getUASes(prodUpdate.Id, TRUE, schedZ3.Id)).size());
 
         //Test whether bills have been generated for anchor bills
-        prodUpdate.Generate_Bills__c = true;
-        update  prodUpdate;
+        runProductionUpdate(new List<Id>{prodUpdate.Id});
 
         List<System_Bill__c> systemBills1 = [
             SELECT Id, Opportunity__c, Name
@@ -781,7 +783,7 @@ public class TestBillCreationandPayment {
         }
 
         String acctId = systemBillList[1].Property_Account_Id__c;
-        system.AssertEquals(6, (PreviewProductionUpdateResults.getUASes(acctId, FALSE, null)).size());
+        system.AssertEquals(8, (PreviewProductionUpdateResults.getUASes(acctId, FALSE, null)).size());
 
         systemBillList[1].Waive_Late_Fees__c = TRUE;
         systemBillList[1].Distribute_This_Balance_As_Payment_Plan__c = TRUE;
@@ -988,8 +990,7 @@ public class TestBillCreationandPayment {
         ];
 
         // Second project comes on in second month:
-        productionUpdates[1].Generate_Bills__c = true;
-        update productionUpdates[1];
+        runProductionUpdate(new List<Id>{productionUpdates[1].Id});
         setBillsToPublished();
 
         List<System_Bill__c> systemBillList = SystemBillsSelector.selectAllSystemBills(null, 'Opportunity__r.Name, Bill_Number__c');
@@ -1058,17 +1059,12 @@ public class TestBillCreationandPayment {
         System.assertEquals(120.00, overpayList[0].Overpayment_Amount__c);
 
         // New Bills are generated for SSS1 & SSS2:
-        productionUpdates[0].Generate_Bills__c = true;
-        productionUpdates[3].Generate_Bills__c = true;
-        update productionUpdates[0];
-        update productionUpdates[3];
+        runProductionUpdate(new List<Id>{productionUpdates[0].Id});
+        runProductionUpdate(new List<Id>{productionUpdates[3].Id});
 
         Util.enableTrigger('Disable_AccountBillTrigger__c');
 
-        APXT_BPM__Conductor__c newConga = new APXT_BPM__Conductor__c (APXT_BPM__Title__c = 'Conga Record');
-        insert newConga;
-        newConga.Apply_Overpay_Adjust__c = true;
-        update newConga;
+        InvocableCSBillOverpaymentApplication.applyOverpayments();
 
         List<AggregateResult> sbListUpdated = [
             SELECT SUM(Previous_Overpayment__c) sumOverpay,
@@ -1278,13 +1274,10 @@ public class TestBillCreationandPayment {
         insert chargentOrdersTransactionsToNotUpdate;
 
         Energy_Usage_Update__c prodUpdate = [SELECT Id, Name, Generate_Bills__c FROM Energy_Usage_Update__c WHERE Name = 'sssA - March 2016'];
-        prodUpdate.Generate_Bills__c = True;
-        update prodUpdate;
+        runProductionUpdate(new List<Id>{prodUpdate.Id});
 
-        APXT_BPM__Conductor__c congaRecord = new APXT_BPM__Conductor__c (APXT_BPM__Title__c = 'Conga Record');
-        insert congaRecord;
-        congaRecord.Apply_Overpay_Adjust__c = true;
-        update congaRecord;
+        InvocableCSBillOverpaymentApplication.applyOverpayments();
+
         Test.stopTest();
 
         List<Overpayment_Application__c> secondOverpay =   [SELECT Id, Name, Overpayment__c, System_Bill__c,
@@ -1621,15 +1614,12 @@ public class TestBillCreationandPayment {
             FROM Energy_Usage_Update__c
             WHERE Name = 'sssA - March 2016'
         ];
-        prodUpdate.Generate_Bills__c = true;
-        update prodUpdate;
+
+        runProductionUpdate(new List<Id>{prodUpdate.Id});
 
         List<System_Bill__c> originalSystemBillList = SystemBillsSelector.selectAllSystemBills();
 
-        APXT_BPM__Conductor__c congaRecord = new APXT_BPM__Conductor__c (APXT_BPM__Title__c = 'Conga Record');
-        insert congaRecord;
-        congaRecord.Apply_Overpay_Adjust__c = true;
-        update congaRecord;
+        OverpaymentApplication.triggerApplication();
         Test.stopTest();
 
         List<System_Bill__c> updatedSystemBillList = SystemBillsSelector.selectAllSystemBills();
@@ -1998,17 +1988,9 @@ public class TestBillCreationandPayment {
         unapprovedAdjustment.Approval_Status__c = 'Approved';
         update unapprovedAdjustment;
 
-        prodUpdate.Generate_Bills__c = false;
-        update prodUpdate;
+        runProductionUpdate(new List<Id>{prodUpdate.Id});
 
-
-        prodUpdate.Generate_Bills__c = true;
-        update prodUpdate;
-
-        APXT_BPM__Conductor__c newConga = new APXT_BPM__Conductor__c (APXT_BPM__Title__c = 'Conga Record');
-        insert newConga;
-        newConga.Apply_Overpay_Adjust__c = true;
-        update newConga;
+        OverpaymentApplication.triggerApplication();
 
         // This time the bill should be for $30 more since the adjustment should be applied
         List<System_Bill__c> systemBillsAfter = SystemBillsSelector.selectAllSystemBills();

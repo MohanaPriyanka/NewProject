@@ -187,10 +187,9 @@ public class PublicCSTest {
         // Effective NMC Rate of $0.05        
         insert productionupdateB2;
 
-        productionupdateA1.Generate_Bills__c = TRUE;
-        productionupdateB2.Generate_Bills__c = TRUE;
-        update productionupdateA1;
-        update productionupdateB2; 
+        TestBillCreationandPayment.runProductionUpdate(new List<Id>{productionupdateA1.Id});
+        TestBillCreationandPayment.setBillsToPublished();
+        TestBillCreationandPayment.runProductionUpdate(new List<Id>{productionupdateB2.Id});
     }
 
     @isTest public static void testBillCreation() {    

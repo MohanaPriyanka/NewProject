@@ -10,13 +10,8 @@ public without sharing class CongaTemplateAssigner implements Database.Batchable
         public String clientBrandKey;
     }
 
-    public CongaTemplateAssigner(Map<Id,APXT_BPM__Conductor__c> oldMap, List<APXT_BPM__Conductor__c> newList) {
-        for (APXT_BPM__Conductor__c conductor : newList) {
-            if (conductor.Assign_Templates__c && !oldMap.get(conductor.Id).Assign_Templates__c) {
-                congaTemplateList = getTemplateList();
-            }
-            break;
-        }
+    public CongaTemplateAssigner() {
+        congaTemplateList = getTemplateList();
     }
 
     public void executeBatch() {

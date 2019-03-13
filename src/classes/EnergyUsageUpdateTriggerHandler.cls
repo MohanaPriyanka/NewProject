@@ -15,6 +15,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
     public Set<String> euuYears = new Set<String>();
     public Set<Id> cancelledUASes = new Set<Id>();
     public Set<Id> cancelledOpps = new Set<Id>();
+    public Map<String, Account_Bill__c> abKeyToAccountBillMap = new Map<String, Account_Bill__c>();
 
     // Prep for batch, set list of Schedule Z Ids and Shared Solar System Map:
     public EnergyUsageUpdateTriggerHandler(List<Energy_Usage_Update__c> euuList) {
@@ -25,34 +26,22 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             euuYears.add(euu.YearDate__c);
         }
 
-        System_Properties__c sysProp = System_Properties__c.getAll().values()[0];
-        Decimal collectionsWindowDec = sysProp.Days_Generate_Bills_for_Cancelled__c;
-        Decimal minimumBalance = sysProp.Minimum_Balance_Bills_for_Cancelled__c;
-        Integer collectionsWindow = Integer.valueOf(Util.nullToZero(collectionsWindowDec));
-        minimumBalance = Util.nullToZero(minimumBalance);
-
-        Date todaysDate = Date.today();
-        Date maxPastDueDate = todaysDate.addDays(collectionsWindow * -1);
-
-        // If there is an outstanding balance, and the customer has gotten a bill in the past X days,
-        // create bill with $0 in new charges.
-        // Last Bill Send Date = newest bill date with Due_This_Month__c > 0
-        for (UASB__c uasb : [
-            SELECT Id, System_Bill__r.Unique_ID__c, System_Bill__r.Opportunity__r.Id, Utility_Account_Subscription__c,
-                System_Bill__r.Account_Bill__r.Parent_Account__r.Last_Bill_Send_Date_New_Charges__c
-            FROM UASB__c
-            WHERE System_Bill__r.Shared_Solar_System__c IN : sssIdToEUUMap.keySet()
-            AND System_Bill__r.Balance_Net_Late_Payments__c > : minimumBalance
-            AND System_Bill__r.Account_Bill__r.Parent_Account__r.Last_Bill_Send_Date_New_Charges__c >= : maxPastDueDate
+        for (Account_Bill__c accountBill : [
+            SELECT Id, Unique_ID__c
+            FROM Account_Bill__c
+            WHERE Month__c IN : euuMonths
+            AND Year__c IN : euuYears
         ]) {
-            cancelledUASes.add(uasb.Utility_Account_Subscription__c);
-            cancelledOpps.add(uasb.System_Bill__r.Opportunity__r.Id);
+            abKeyToAccountBillMap.put(accountBill.Unique_ID__c, accountBill);
         }
     }
 
     public void runBills() {
+        System_Properties__c sysProp = System_Properties__c.getAll().values()[0];
+        Decimal csBillBatchSize = sysProp.CS_Bill_Batch_Size__c;
+
         if (!Test.isRunningTest()) {
-            Database.executeBatch(this, 10);
+            Database.executeBatch(this, Integer.valueOf(csBillBatchSize));
         } else {
             List<Schedule_Z_Subscription__c> scheduleZSubscriptions = [
                 SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Name,Utility_Account_Subscription__r.Opportunity__c,
@@ -66,6 +55,39 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             ];
             createBills(scheduleZSubscriptions);
         }
+    }
+
+    /*  If there is an outstanding balance, and the customer has gotten a bill in the past X days,
+        create bill with $0 in new charges.
+        Last Bill Send Date = newest bill date with Due_This_Month__c > 0 (ie, new charges)
+
+        We don't want to create $0 overdue bills until after the normal bills have been created. Otherwise, anyone who
+        has an overdue balance will have a $0 bill generated before their real bill with new charges. */
+
+    public void runOverdueBills() {
+        System_Properties__c sysProp = System_Properties__c.getAll().values()[0];
+        Decimal collectionsWindowDec = sysProp.Days_Generate_Bills_for_Cancelled__c;
+        Decimal minimumBalance = sysProp.Minimum_Balance_Bills_for_Cancelled__c;
+        Integer collectionsWindow = Integer.valueOf(Util.nullToZero(collectionsWindowDec));
+        minimumBalance = Util.nullToZero(minimumBalance);
+
+        Date todaysDate = Date.today();
+        Date maxPastDueDate = todaysDate.addDays(collectionsWindow * -1);
+
+        for (UASB__c uasb : [
+            SELECT Id, System_Bill__r.Unique_ID__c, System_Bill__r.Opportunity__r.Id, Utility_Account_Subscription__c,
+                System_Bill__r.Account_Bill__r.Parent_Account__r.Last_Bill_Send_Date_New_Charges__c
+            FROM UASB__c
+            WHERE System_Bill__r.Shared_Solar_System__c IN : sssIdToEUUMap.keySet()
+            AND System_Bill__r.Balance_Net_Late_Payments__c > : minimumBalance
+            AND System_Bill__r.Account_Bill__r.Parent_Account__r.Last_Bill_Send_Date_New_Charges__c >= : maxPastDueDate
+            AND System_Bill__r.Account_Bill__r.Parent_Account__r.Last_Bill_Send_Date_New_Charges__c <= : todaysDate
+        ]) {
+            cancelledUASes.add(uasb.Utility_Account_Subscription__c);
+            cancelledOpps.add(uasb.System_Bill__r.Opportunity__r.Id);
+        }
+        List<Schedule_Z_Subscription__c> szsList = new List<Schedule_Z_Subscription__c>();
+        createBills(szsList);
     }
 
     private static String getDate(Energy_Usage_Update__c euu) {
@@ -91,14 +113,17 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
     public void createBills(List<Schedule_Z_Subscription__c> scheduleZSubscriptions ){
         Set<Id> scheduleZUASIds = new Set<Id>(cancelledUASes);
         Set<Id> oppIds = new Set<Id>(cancelledOpps);
+        Map<String, Account_Bill__c> abToUpsertMap = new Map<String, Account_Bill__c>();
+        Map<Id, Utility_Account_Subscription__c> uasMap = new Map<Id, Utility_Account_Subscription__c>();
 
-        for (Schedule_Z_Subscription__c scheduleZSub : scheduleZSubscriptions) {
-            scheduleZUASIds.add(scheduleZSub.Utility_Account_Subscription__c);
-            oppIds.add(scheduleZSub.Utility_Account_Subscription__r.Opportunity__c);
+        if (scheduleZSubscriptions.size() > 0) {
+            for (Schedule_Z_Subscription__c scheduleZSub : scheduleZSubscriptions) {
+                scheduleZUASIds.add(scheduleZSub.Utility_Account_Subscription__c);
+                oppIds.add(scheduleZSub.Utility_Account_Subscription__r.Opportunity__c);
+            }
+
+            uasMap = getUASFromSZS(scheduleZUASIds, oppIds);
         }
-
-        Map<Id, Utility_Account_Subscription__c> uasMap = getUASFromSZS(scheduleZUASIds, oppIds);
-
         //select the Opportunities that are related to the shared solar systems that have production updates being logged.
         List<Opportunity> oppList = [
             SELECT Id, Name, Account.Name, Shared_Solar_System__r.Name, Shared_Solar_System__r.Billing_Anchors__c,
@@ -112,16 +137,6 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
 
         //Generate a list of all System Bill Numbers for each opportunity
         Map<String, Integer> maxSysBillByOppId = maxSysBillByOppId(sssIdToEUUMap.keySet(), oppIds);
-
-        Map<String, Account_Bill__c> abKeyToAccountBillMap = new Map<String, Account_Bill__c>();
-        for (Account_Bill__c accountBill : [
-            SELECT Id, Unique_ID__c
-            FROM Account_Bill__c
-            WHERE Month__c IN : euuMonths
-            AND Year__c IN : euuYears
-        ]) {
-            abKeyToAccountBillMap.put(accountBill.Unique_ID__c, accountBill);
-        }
 
         Map<String, System_Bill__c> previousBillsSet = new Map<String, System_Bill__c>();
         for (System_Bill__c systemBill : [
@@ -141,6 +156,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
                     try {
                         Account_Bill__c ab = generateAccountBill(opp, abUniqueID, euu);
                         abKeyToAccountBillMap.put(ab.Unique_Id__c, ab);
+                        abToUpsertMap.put(ab.Unique_Id__c, ab);
                     } catch (Exception e){
                         String message = 'Account Bill Creation Failed for UniqueID ' + abUniqueID + 'Error: ' + String.valueOf(e);
                         Logger.logLater('EnergyUsageUpdateTriggerHandler', 'GenerateAccountBill', message);
@@ -150,8 +166,8 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         }
 
         //Create the Account Bills
-        if (!abKeyToAccountBillMap.isEmpty()) {
-            upsert abKeyToAccountBillMap.values() Unique_Id__c;
+        if (!abToUpsertMap.isEmpty()) {
+            upsert abToUpsertMap.values() Unique_Id__c;
         }
 
         Map<String, System_Bill__c > systemBillMap = new Map<string, System_Bill__c >();
@@ -205,17 +221,11 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
     }
 
     public void finish(Database.BatchableContext bc){
-        AsyncApexJob job = [SELECT Id, Status, NumberOfErrors,
-            JobItemsProcessed,
-            TotalJobItems, CreatedBy.Email
-        FROM AsyncApexJob
-        WHERE Id = :bc.getJobId()];
-
-        String emailBody = 'CS Bill Creation has Completed. Job Id: '+ job.Id;
-        List<String> postJobEmailAddresses = new List<String>{'product@bluewavesolar.com' , 'communitysolar@bluewavesolar.com'};
-        if(!Test.isRunningTest()){
-            MessagingService.createAndSendEmail(emailBody, 'customercare@bluewavesolar.com', 'CS Bill Creation Processing Complete', postJobEmailAddresses);
+        runOverdueBills();
+        for (Energy_Usage_Update__c productionUpdate : sssIdToEUUMap.values()){
+            productionUpdate.Generate_Bills__c = true;
         }
+        update sssIdToEUUMap.values();
     }
 
     private Account_Bill__c generateAccountBill(Opportunity opp, String abUniqueID, Energy_Usage_Update__c euu) {

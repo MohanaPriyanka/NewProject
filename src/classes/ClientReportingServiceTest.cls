@@ -76,7 +76,7 @@ public with sharing class ClientReportingServiceTest {
             AND Name = 'sssA - March 2016'
         ];
         System.assertEquals(uas.Opportunity__r.Shared_Solar_System__c, energyUsageUpdate.Shared_Solar_System__c);
-        energyUsageUpdate.Generate_Bills__c = true;
+        TestBillCreationandPayment.runProductionUpdate(new List<Id>{energyUsageUpdate.Id});
         update energyUsageUpdate;
 
         Bill_Adjustment__c billAdjustment = [
