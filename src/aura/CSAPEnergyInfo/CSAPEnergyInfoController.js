@@ -43,7 +43,6 @@
                 $A.enqueueAction(utilityAction);
                 $A.enqueueAction(rateClassesAction);
             }
-            var rateClassesAction = component.get("c.getRateClasses");
         }
         if (component.get("v.abbrevStates") && component.get("v.abbrevStates").length === 0) {
             helper.getUSStates(component, "v.abbrevStates", true);
