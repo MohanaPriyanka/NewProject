@@ -49,7 +49,7 @@
            for more details.
            </div>
           </lightning:layoutItem>
-          <form class="slds-form--stacked">
+          <form class="slds-form--stacked" autocomplete="off">
             <lightning:layout multipleRows="true">
               <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
                 <lightning:input aura:id="field" name="leadFirstName"
