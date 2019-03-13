@@ -1,6 +1,6 @@
 /*************************************************************************************
  * Created By: Peter Yao
- * Description: Tests actions taken after refreshing a sandbox
+ * Description: Tests actions taken after refreshing a sandbox to load in test data
  *************************************************************************************/
 @IsTest
 private class PostSandboxRefresherTest {
