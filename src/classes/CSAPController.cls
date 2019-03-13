@@ -165,7 +165,6 @@ public without sharing class CSAPController {
             lead.Date_of_Application__c = System.now().format('YYYY-MM-DD-hh:mm');
         }
         lead.State = BlueWaveParent.convertAbbreviationToState(lead.State);
-        lead.Parcel_Zip__c = lead.LASERCA__Home_Zip__c;
         lead.Customer_type__c = lead.Application_Type__c;
         return lead;
     }
