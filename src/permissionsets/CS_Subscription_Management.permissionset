@@ -52,6 +52,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Rate_Class__c.Utility__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Schedule_Z_Subscription__c.Billing__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -296,6 +301,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility_Account_Log__c.Rate_Class__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Log__c.Service_Address_Formula__c</field>
         <readable>true</readable>
@@ -368,6 +378,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Account_Log__c.Username__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility_Account_Log__c.Utility_Rate_Class__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -715,6 +730,15 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>Rate_Class__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>Schedule_Z_Subscription__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
@@ -763,4 +787,8 @@
         <object>Utility_NMC_Tariff__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
+    <tabSettings>
+        <tab>Rate_Class__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
 </PermissionSet>
