@@ -1,0 +1,100 @@
+<aura:component implements="lightning:availableForFlowScreens" access="global" controller="BillGenerationConsoleController">
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:attribute name="abSummary" type="String[]"/>
+  <aura:attribute name="messageText" type="String"/>
+  <aura:attribute name="intervalPoller" type="Integer"/>
+  <aura:attribute name="showNextButton" type="Boolean" default="true"/>
+
+
+
+  <div class="slds-grid slds-gutters">
+    <div class="slds-col slds-size_3-of-4 slds-p-top--large slds-p-bottom--medium">
+      <div>
+        <h1 class="slds-text-heading--medium slds-p-bottom--small"><b>{!v.abSummary[0]}</b></h1>
+      </div>
+      <div class="slds-grid slds-gutters">
+        <div class="slds-col slds-size_1-of-16 slds-p-top--small">
+          <lightning:icon iconName="utility:attach" size="medium"/>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+          <div>
+            <h1 class="slds-text-heading--small slds-p-top--small">{!v.abSummary[1]}</h1>
+          </div>
+          <div>
+            <h1 class="slds-text-heading--small"><i>{!v.abSummary[3]}</i></h1>
+          </div>
+          <div class="slds-truncate slds-p-top--small">{!v.messageText}</div>
+        </div>
+        <div class="slds-col slds-size_1-of-16 slds-p-top--small">
+          <lightning:icon iconName="utility:email" size="medium"/>
+        </div>
+        <div class="slds-col slds-size_1-of-4">
+          <div>
+            <h1 class="slds-text-heading--small slds-p-top--small">{!v.abSummary[2]}</h1>
+          </div>
+          <div>
+            <h1 class="slds-text-heading--small"><i>{!v.abSummary[4]}</i></h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slds-grid slds-gutters">
+    <div class="slds-col slds-size_3-of-4"/>
+    <div class="slds-col slds-size_1-of-4 slds-p-bottom--medium slds-align_absolute-center">
+      <aura:if isTrue="{!v.showNextButton}">
+        <lightning:button aura:id="NEXT" label="Next" variant="brand" onclick="{!c.goToNextFlowStep}" />
+      </aura:if>
+    </div>
+  </div>
+
+  <article class="slds-card">
+    <div class="slds-path">
+      <div class="slds-grid slds-path__track">
+        <div class="slds-grid slds-path__scroller-container">
+          <div class="slds-path__scroller" role="application">
+            <div class="slds-path__scroller_inner">
+              <ul class="slds-path__nav" role="listbox" aria-orientation="horizontal">
+                <li class="slds-path__item slds-is-incomplete" role="presentation">
+                  <a aria-selected="true" class="slds-path__link" id="path-1" role="option" tabindex="0">
+                  <span class="slds-path__stage">
+                  </span>
+                    <span class="slds-path__title">Generate Bill Records</span>
+                  </a>
+                </li>
+                <li class="slds-path__item slds-is-incomplete" role="presentation">
+                  <a aria-selected="false" class="slds-path__link" href="javascript:void(0);" id="path-3" role="option" tabindex="-1">
+                  <span class="slds-path__stage">
+                  </span>
+                    <span class="slds-path__title">Assign Templates</span>
+                  </a>
+                </li>
+                <li class="slds-path__item slds-is-incomplete" role="presentation">
+                  <a aria-selected="false" class="slds-path__link" href="javascript:void(0);" id="path-4" role="option" tabindex="-1">
+                  <span class="slds-path__stage">
+                  </span>
+                    <span class="slds-path__title">Generate Bill PDFs</span>
+                  </a>
+                </li>
+                <li class="slds-path__item slds-is-incomplete" role="presentation">
+                  <a aria-selected="false" class="slds-path__link" href="javascript:void(0);" id="path-4" role="option" tabindex="-1">
+                  <span class="slds-path__stage">
+                  </span>
+                    <span class="slds-path__title">Send Via Email</span>
+                  </a>
+                </li>
+                <li class="slds-path__item slds-is-incomplete" role="presentation">
+                  <a aria-selected="false" class="slds-path__link" href="javascript:void(0);" id="path-5" role="option" tabindex="-1">
+                  <span class="slds-path__stage">
+                  </span>
+                    <span class="slds-path__title">Send Via Paper</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+</aura:component>

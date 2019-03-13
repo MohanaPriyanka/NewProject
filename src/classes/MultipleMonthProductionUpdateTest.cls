@@ -226,11 +226,9 @@ public class MultipleMonthProductionUpdateTest {
         System.assertEquals( 8, (PreviewProductionUpdateResults.getUASes(prodUpdateFourMonths.Id, true, scheduleZ1.Id)).size());
         System.assertEquals( 4, (PreviewProductionUpdateResults.getUASes(prodUpdateTwoMonths.Id, true, scheduleZ1.Id)).size());
 
-        prodUpdateFourMonths.Generate_Bills__c = true;
-        prodUpdateTwoMonths.Generate_Bills__c = true;
-        update prodUpdateFourMonths;
-        update prodUpdateTwoMonths;
-
+        TestBillCreationandPayment.runProductionUpdate(new List<Id>{prodUpdateFourMonths.Id});
+        TestBillCreationandPayment.setBillsToPublished();
+        TestBillCreationandPayment.runProductionUpdate(new List<Id>{prodUpdateTwoMonths.Id});
     }
 
     @isTest public static void testBillCreation() {
@@ -279,8 +277,8 @@ public class MultipleMonthProductionUpdateTest {
 
         System.assertEquals( 2, previewedUASBs.size());
 
-        prodUpdateSizeoffKwh.Generate_Bills__c = true;
-        update prodUpdateSizeoffKwh;
+        TestBillCreationandPayment.runProductionUpdate(new List<Id>{prodUpdateSizeoffKwh.Id});
+
         Test.stopTest();
 
         UASB__c generatedBill = 
@@ -319,8 +317,8 @@ public class MultipleMonthProductionUpdateTest {
         szs.Number_of_Decimal_Places__c = 4;
         update szs;
 
-        prodUpdateSizeoffKwh.Generate_Bills__c = true;
-        update prodUpdateSizeoffKwh;
+        TestBillCreationandPayment.runProductionUpdate(new List<Id>{prodUpdateSizeoffKwh.Id});
+
         Test.stopTest();
 
         UASB__c generatedBill =
@@ -372,8 +370,7 @@ public class MultipleMonthProductionUpdateTest {
         sss1.Billing_Method__c = 'NMC';
         update sss1;
 
-        prodUpdate.Generate_Bills__c = true;
-        update prodUpdate;
+        TestBillCreationandPayment.runProductionUpdate(new List<Id>{prodUpdate.Id});
         Test.stopTest();
 
         UASB__c generatedBill =

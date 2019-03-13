@@ -66,13 +66,14 @@ public without sharing class UtilityAccountBillTriggerHandler {
 
         Set<UASB__c> uasbSet = new Set<UASB__c>();
         Map<String, List<Bill_Adjustment__c>> adjustmentsToUpdateMap = new Map<String, List<Bill_Adjustment__c>>();
+
         for(Utility_Account_Subscription__c uas : uasList){
             if (utilityAccountLogIdToUABMap.containsKey(uas.Utility_Account_Log__c)){
                 Utility_Account_Bill__c uab = utilityAccountLogIdToUABMap.get(uas.Utility_Account_Log__c);
                 Energy_Usage_Update__c prodUpdate = prodUpdateMap.get(uas.Opportunity__r.Shared_Solar_System__r.Id);
                 String systemBillKey = uas.Opportunity__r.Name + ' ' + uas.Opportunity__r.Shared_Solar_System__r.Name + ' ' + DateTime.newInstance(uab.Date__c.year(), uab.Date__c.month(),uab.Date__c.day()).format('yyyy-MM');
                 System_Bill__c systemBill = systemBillMap.get(systemBillKey);
-                if (uab.Shared_Solar_System__c == uas.Opportunity__r.Shared_Solar_System__c && systemBill != null){
+                if (systemBill != null){
                     try {
                         UASB__c uasb = catchCancelledUASes(prodUpdate,
                             uas,

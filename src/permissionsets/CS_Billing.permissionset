@@ -189,6 +189,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>APXT_BPM__Conductor__c.Link_to_Window__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.Do_not_Send_Bills__c</field>
         <readable>true</readable>

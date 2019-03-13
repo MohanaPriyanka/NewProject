@@ -46,10 +46,9 @@ private class BatchCSBillEmailHandlerTest {
     static void testSendEmails () {
         setupTestData();
         Test.StartTest();
-        APXT_BPM__Conductor__c congaConduct = new APXT_BPM__Conductor__c(APXT_BPM__Title__c = 'Conga August XX');
-        insert congaConduct;
-        congaConduct.Emails_Sent__c = true;
-        update congaConduct;
+
+        InvocableCSBillEmailBatchSend.sendEmails();
+
         Test.StopTest();
 
         AsyncApexJob job = [
@@ -57,7 +56,7 @@ private class BatchCSBillEmailHandlerTest {
                 JobItemsProcessed,
                 TotalJobItems, CreatedBy.Email
             FROM AsyncApexJob
-            WHERE Id = :BatchCSBillEmailHandler.batchJobId
+            WHERE Id =: BatchCSBillEmailHandler.batchJobId
         ];
 
         System.assertEquals(0, job.NumberOfErrors);
@@ -112,10 +111,9 @@ private class BatchCSBillEmailHandlerTest {
         }
 
         Test.StartTest();
-        APXT_BPM__Conductor__c congaConduct = new APXT_BPM__Conductor__c(APXT_BPM__Title__c = 'Conga August XX');
-        insert congaConduct;
-        congaConduct.Emails_Sent__c = true;
-        update congaConduct;
+
+        InvocableCSBillEmailBatchSend.sendEmails();
+
         Test.StopTest();
 
         List<Account_Bill__c> accountBills = [
