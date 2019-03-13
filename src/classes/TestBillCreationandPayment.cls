@@ -432,8 +432,8 @@ public class TestBillCreationandPayment {
         Energy_Usage_Update__c aprilEUU = energyUsageUpdates[0].clone(false);
         aprilEUU.Date__c = aprilEUU.Date__c.addMonths(1);
         insert aprilEUU;
-        aprilEUU.Generate_Bills__c = true;
-        update aprilEUU;
+               
+        runProductionUpdate(new List<Id>{aprilEUU.Id});
         setBillsToPublished();
 
         billAdjustments = [
