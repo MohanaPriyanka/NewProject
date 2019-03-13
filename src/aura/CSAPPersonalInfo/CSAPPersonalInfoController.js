@@ -14,8 +14,7 @@
         }
     },
     goToCheckCapacity : function(component, event, helper) {
-        var lead = component.get("v.lead");
-        if(helper.validatePageFields(component) && lead.LASERCA__Home_State__c != null && lead.LASERCA__Home_State__c != ''){
+        if(helper.validatePageFields(component)){
             component.set('v.loading', true);
             component.set("v.loadingText", "Locating your address...");
             helper.processLead(component, event, helper);
