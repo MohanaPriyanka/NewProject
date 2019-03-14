@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
     <customButtons>LASER_Credit_Access_Custom</customButtons>
-    <excludeButtons>DataDotComClean</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
     <layoutSections>
         <customLabel>false</customLabel>
@@ -92,6 +91,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Continue_Application_Link__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Zuora_Payment_Ref_Id_Expiration_Date__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
