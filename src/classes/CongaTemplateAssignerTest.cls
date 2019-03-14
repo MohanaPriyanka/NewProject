@@ -211,10 +211,7 @@ public class CongaTemplateAssignerTest {
 
         insert secondProdUpdateSSS2;
 
-        secondProdUpdateSSS1.Generate_Bills__c = true;
-        secondProdUpdateSSS2.Generate_Bills__c = true;
-        update secondProdUpdateSSS1;
-        update secondProdUpdateSSS2;
+        TestBillCreationandPayment.runProductionUpdate(new List<Id>{secondProdUpdateSSS1.Id, secondProdUpdateSSS2.Id});
     }
 
     @isTest public static void testBasicTemplates(){
@@ -252,12 +249,7 @@ public class CongaTemplateAssignerTest {
         System.assertEquals(null, prelimAccountBills[1].Bill_Template__c);
         System.assertEquals(null, prelimAccountBills[2].Bill_Template__c);
 
-        APXT_BPM__Conductor__c congaConductor = new APXT_BPM__Conductor__c (
-            APXT_BPM__Title__c = 'Conga Record'
-        );
-        insert congaConductor;
-        congaConductor.Assign_Templates__c = true;
-        update congaConductor;
+        InvocableCSBillTemplateAssigner.assignTemplates();
 
         Test.stopTest();
 
@@ -318,12 +310,7 @@ public class CongaTemplateAssignerTest {
         System.assertEquals(null, prelimAccountBills[1].Bill_Template__c);
         System.assertEquals(null, prelimAccountBills[2].Bill_Template__c);
 
-        APXT_BPM__Conductor__c congaConductor = new APXT_BPM__Conductor__c (
-            APXT_BPM__Title__c = 'Conga Record'
-        );
-        insert congaConductor;
-        congaConductor.Assign_Templates__c = true;
-        update congaConductor;
+        InvocableCSBillTemplateAssigner.assignTemplates();
 
         Test.stopTest();
 
@@ -381,12 +368,7 @@ public class CongaTemplateAssignerTest {
         System.assertEquals(null, listAccountBills[1].Bill_Template__c);
         System.assertEquals(null, listAccountBills[2].Bill_Template__c);
 
-        APXT_BPM__Conductor__c congaConductor = new APXT_BPM__Conductor__c (
-            APXT_BPM__Title__c = 'Conga Record'
-        );
-        insert congaConductor;
-        congaConductor.Assign_Templates__c = true;
-        update congaConductor;
+        InvocableCSBillTemplateAssigner.assignTemplates();
 
         Test.stopTest();
 
@@ -443,12 +425,7 @@ public class CongaTemplateAssignerTest {
         System.assertEquals(null, prelimAccountBills[1].Bill_Template__c);
         System.assertEquals(null, prelimAccountBills[2].Bill_Template__c);
 
-        APXT_BPM__Conductor__c congaConductor = new APXT_BPM__Conductor__c (
-            APXT_BPM__Title__c = 'Conga Record'
-        );
-        insert congaConductor;
-        congaConductor.Assign_Templates__c = true;
-        update congaConductor;
+        InvocableCSBillTemplateAssigner.assignTemplates();
 
         Test.stopTest();
 

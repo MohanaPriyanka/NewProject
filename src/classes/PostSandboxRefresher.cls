@@ -716,10 +716,10 @@ global class PostSandboxRefresher implements SandboxPostCopy {
 
             insert prodUpdateBB;
 
-            productionupdateA1.Generate_Bills__c = true;
-            prodUpdateBB.Generate_Bills__c = true;
-            update productionupdateA1;
-            update prodUpdateBB;
+            List<Energy_Usage_Update__c> trigProdUp;
+            trigProdUp = ProductionUpdateSelector.getAllProductionUpdatesById(new List<Id>{productionupdateA1.Id, prodUpdateBB.Id});
+            EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(trigProdUp);
+            ee.runBills();
 
             if (!Test.isRunningTest()) {
                 System.enqueueJob(new PostSandboxRefresher.ProductionUpdateHelper2());
@@ -770,10 +770,10 @@ global class PostSandboxRefresher implements SandboxPostCopy {
 
             insert prodUpdateCC;
 
-            productionupdateB2.Generate_Bills__c = true;
-            prodUpdateCC.Generate_Bills__c = true;
-            update productionupdateB2;
-            update prodUpdateCC;
+            List<Energy_Usage_Update__c> trigProdUp;
+            trigProdUp = ProductionUpdateSelector.getAllProductionUpdatesById(new List<Id>{productionupdateB2.Id, prodUpdateCC.Id});
+            EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(trigProdUp);
+            ee.runBills();
 
             if (!Test.isRunningTest()) {
                 System.enqueueJob(new PostSandboxRefresher.ProductionUpdateHelper3());
@@ -824,10 +824,10 @@ global class PostSandboxRefresher implements SandboxPostCopy {
 
             insert prodUpdateDD;
 
-            productionupdateB3.Generate_Bills__c = true;
-            prodUpdateDD.Generate_Bills__c = true;
-            update productionupdateB3;
-            update prodUpdateDD;
+            List<Energy_Usage_Update__c> trigProdUp;
+            trigProdUp = ProductionUpdateSelector.getAllProductionUpdatesById(new List<Id>{productionupdateB3.Id, prodUpdateDD.Id});
+            EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(trigProdUp);
+            ee.runBills();
 
             if (!Test.isRunningTest()) {
                 System.enqueueJob(new PostSandboxRefresher.AccountBillHelper());

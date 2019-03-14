@@ -385,12 +385,7 @@ public class TestBillCreationForCancelledCustomers {
 
         insert firstProdUpdateSSS2;
 
-        firstProdUpdateSSS1.Generate_Bills__c = TRUE;
-        update firstProdUpdateSSS1;
-
-        firstProdUpdateSSS2.Generate_Bills__c = TRUE;
-        update firstProdUpdateSSS2;
-
+        TestBillCreationandPayment.runProductionUpdate(new List<Id>{firstProdUpdateSSS1.Id, firstProdUpdateSSS2.Id});
         setBillsToPublished();
         Test.stopTest();
     }
@@ -481,10 +476,7 @@ public class TestBillCreationForCancelledCustomers {
 
         insert secondProdUpdateSSS2;
 
-        secondProdUpdateSSS1.Generate_Bills__c = true;
-        secondProdUpdateSSS2.Generate_Bills__c = true;
-        update secondProdUpdateSSS1;
-        update secondProdUpdateSSS2;
+        TestBillCreationandPayment.runProductionUpdate(new List<Id>{secondProdUpdateSSS1.Id, secondProdUpdateSSS2.Id});
     }
 
     static void makePayment(String oppName, Integer billNumber){
@@ -535,6 +527,16 @@ public class TestBillCreationForCancelledCustomers {
     @IsTest public static void baseLineNoChange() {
 
         Map<String, System_Bill__c> sbMap = queryForBills();
+
+        List<UASB__c> uasbList = [SELECT Utility_Account_Subscription__r.Name, Shared_Solar_System__c,
+            Utility_Account_Subscription__r.Name_on_Account_From_Log__c,
+            Utility_Account_Subscription__r.Share_of_System__c,
+            Production_Update__r.Name, Credits_on_Bill_Period__c,
+            Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
+            Net_Metering_Credits_Allocated__c, Discounted_Bill__c,
+            Subscription_Production_kWh__c, System_Bill__r.Opportunity__r.Name
+        FROM UASB__c];
+
         System.assertEquals(6,sbMap.values().size());
         System.assertEquals(209.94,sbMap.get('acA A_SSS1_1').Due_This_Month__c);
         System.assertEquals(83.74,sbMap.get('acB B_SSS1_1').Due_This_Month__c);

@@ -299,7 +299,7 @@ public class CustomerCommunicationHandlerTest{
                 Date__c = billDate
         );
         insert productionupdate;
-        productionUpdate.Generate_Bills__c = True;
+        TestBillCreationandPayment.runProductionUpdate(new List<Id>{productionUpdate.Id});
         update productionUpdate;
     }
 
