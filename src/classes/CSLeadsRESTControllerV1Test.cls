@@ -21,10 +21,52 @@ public with sharing class CSLeadsRESTControllerV1Test {
 
     @IsTest
     public static void testPatchUpdatesPrivacyPolicy() {
+        Utility__c utility = new Utility__c(
+            Name = 'Utility'
+        );
+        insert utility;
+
+        Product2 product = new Product2(
+            Name = 'test product'
+        );
+        insert product;
+
+        Partner__c partner = new Partner__c(
+            Name = 'Mass Renewables',
+            CS_Referral_Status__c = 'Default CS Partner',
+            Email__c = 'massRenewables@test.com');
+
+        insert partner;
+
+        BSST__c salesRep2 = new BSST__c(
+            Name = 'Dianne Martz',
+            Partner__c = partner.Id,
+            Email__c = 'martz@testemail.com');
+        insert salesRep2;
+
+        Contact contactRecord = new Contact(
+            FirstName = 'User',
+            LastName = 'Swain');
+        insert contactRecord;
+
         Lead leadToPatch = new Lead(
             FirstName = 'marvin',
             LastName = 'testcase',
-            Company = 'bluewave'
+            Company = 'bluewave',
+            Email = 'test@email.com',
+            MobilePhone = '1231231234',
+            Application_Type__c = 'Residential',
+            LASERCA__Home_Address__c = '123 fake st',
+            LASERCA__Home_City__c = 'city',
+            LASERCA__Home_State__c = 'MA',
+            LASERCA__Home_Zip__c = '12345',
+            Parcel_Zip__c = '12345',
+            LoadZone__c = 'SEMA',
+            Utility_relationship__c = utility.Id,
+            Product__c = product.Id,
+            Partner_Lookup__c = partner.Id,
+            bs_Sales_ID__c = salesRep2.Id,
+            Customer_Referral__c = contactRecord.Id
         );
 
         insert leadToPatch;
@@ -59,9 +101,28 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertEquals(200, response.statuscode);
 
         String jsonResponse = response.responseBody.toString();
-        PatchResponseEnvelope patchResponseEnvelope = (PatchResponseEnvelope) JSON.deserialize(jsonResponse, PatchResponseEnvelope.class);
+        ResponseEnvelope patchResponseEnvelope = (ResponseEnvelope) JSON.deserialize(jsonResponse, ResponseEnvelope.class);
 
-        System.assertEquals(leadToPatch.Id, patchResponseEnvelope.data.id);
+        System.assertEquals(leadToPatch.Id, patchResponseEnvelope.data.Id);
+        System.assertEquals(true, patchResponseEnvelope.data.customerAcknowledgement);
+        System.assertEquals('I Agree', patchResponseEnvelope.data.customerAgreementText);
+        System.assertNotEquals(null, patchResponseEnvelope.data.firstName);
+        System.assertNotEquals(null, patchResponseEnvelope.data.lastName);
+        System.assertNotEquals(null, patchResponseEnvelope.data.email);
+        System.assertNotEquals(null, patchResponseEnvelope.data.mobilePhone);
+        System.assertNotEquals(null, patchResponseEnvelope.data.applicationType);
+        System.assertNotEquals(null, patchResponseEnvelope.data.billingStreetAddress);
+        System.assertNotEquals(null, patchResponseEnvelope.data.billingCity);
+        System.assertNotEquals(null, patchResponseEnvelope.data.billingState);
+        System.assertNotEquals(null, patchResponseEnvelope.data.billingZIPCode);
+        System.assertNotEquals(null, patchResponseEnvelope.data.serviceZIPCode);
+        System.assertNotEquals(null, patchResponseEnvelope.data.loadZone);
+        System.assertNotEquals(null, patchResponseEnvelope.data.partnerId);
+        System.assertNotEquals(null, patchResponseEnvelope.data.salesRepId);
+        System.assertNotEquals(null, patchResponseEnvelope.data.referralCode);
+        System.assertNotEquals(null, patchResponseEnvelope.data.productId);
+        System.assertNotEquals(null, patchResponseEnvelope.data.utilityName);
+
         System.assertEquals(true, patchResponseEnvelope.errors.isEmpty());
         System.assertEquals(true, patchResponseEnvelope.messages.isEmpty());
 
@@ -114,7 +175,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertEquals(200, response.statuscode);
 
         String jsonResponse = response.responseBody.toString();
-        PatchResponseEnvelope patchResponseEnvelope = (PatchResponseEnvelope) JSON.deserialize(jsonResponse, PatchResponseEnvelope.class);
+        ResponseEnvelope patchResponseEnvelope = (ResponseEnvelope) JSON.deserialize(jsonResponse, ResponseEnvelope.class);
 
         System.assertEquals(leadToPatch.Id, patchResponseEnvelope.data.id);
         System.assertEquals(true, patchResponseEnvelope.errors.isEmpty());
@@ -173,7 +234,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertEquals(200, response.statuscode);
 
         String jsonResponse = response.responseBody.toString();
-        PatchResponseEnvelope patchResponseEnvelope = (PatchResponseEnvelope) JSON.deserialize(jsonResponse, PatchResponseEnvelope.class);
+        ResponseEnvelope patchResponseEnvelope = (ResponseEnvelope) JSON.deserialize(jsonResponse, ResponseEnvelope.class);
 
         System.assertEquals(leadToPatch.Id, patchResponseEnvelope.data.id);
         System.assertEquals(true, patchResponseEnvelope.errors.isEmpty());
@@ -226,7 +287,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
         RestResponse response = RestContext.response;
         System.assertEquals(400, response.statuscode);
         String jsonResponse = response.responseBody.toString();
-        PatchResponseEnvelope patchResponseEnvelope = (PatchResponseEnvelope) JSON.deserialize(jsonResponse, PatchResponseEnvelope.class);
+        ResponseEnvelope patchResponseEnvelope = (ResponseEnvelope) JSON.deserialize(jsonResponse, ResponseEnvelope.class);
 
         System.assertEquals(null, patchResponseEnvelope.data);
         System.assertEquals(false, patchResponseEnvelope.errors.isEmpty());
@@ -255,7 +316,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
         RestResponse response = RestContext.response;
         System.assertEquals(404, response.statuscode);
         String jsonResponse = response.responseBody.toString();
-        PatchResponseEnvelope patchResponseEnvelope = (PatchResponseEnvelope) JSON.deserialize(jsonResponse, PatchResponseEnvelope.class);
+        ResponseEnvelope patchResponseEnvelope = (ResponseEnvelope) JSON.deserialize(jsonResponse, ResponseEnvelope.class);
 
         System.assertEquals(null, patchResponseEnvelope.data);
         System.assertEquals(true, patchResponseEnvelope.errors.isEmpty());
@@ -269,6 +330,26 @@ public with sharing class CSLeadsRESTControllerV1Test {
             FROM Product2
             WHERE Name = 'test product'
         ];
+        
+        Partner__c partner = new Partner__c(
+            Name = 'Bluewave Inside Sales',
+            CS_Referral_Status__c = 'Default CS Partner',
+            Email__c = 'bluewave@bluewavesolar.com');
+
+        insert partner;
+
+        BSST__c salesRep2 = new BSST__c(
+            Name = 'Dianne Martz',
+            Partner__c = partner.Id,
+            Email__c = 'martz@testemail.com');
+        insert salesRep2;
+        partner.Default_Sales_Rep__c = salesRep2.Id;
+        update partner;
+
+        Contact contactRecord = new Contact(
+            FirstName = 'User',
+            LastName = 'Swain');
+        insert contactRecord;
 
         String jsonRequest = '{' +
             '"firstName": "string", ' +
@@ -281,9 +362,13 @@ public with sharing class CSLeadsRESTControllerV1Test {
             '"billingState":	"MA", ' +
             '"billingZIPCode":	"12345", ' +
             '"serviceZIPCode":	"12345", ' +
-            '"loadZone":	"string", ' +
+            '"loadZone":	"SEMA", ' +
             '"utilityName": "Utility",' +
-            '"productId":	"' + testProduct.Id + '"}';
+            '"productId":	"' + testProduct.Id + '",' +
+            '"partnerId": "' + partner.Id+ '",' +
+            '"salesRepId": "' + salesRep2.Id+ '",' +
+            '"referralCode": "' + contactRecord.Id+ '"' +
+            '}';
 
         System.debug(jsonRequest);
 
@@ -302,11 +387,30 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertEquals(201, response.statuscode);
 
         String jsonResponse = response.responseBody.toString();
-        PatchResponseEnvelope patchResponseEnvelope = (PatchResponseEnvelope) JSON.deserialize(jsonResponse, PatchResponseEnvelope.class);
+        ResponseEnvelope patchResponseEnvelope = (ResponseEnvelope) JSON.deserialize(jsonResponse, ResponseEnvelope.class);
 
-        System.assertNotEquals(null, patchResponseEnvelope.data.id);
         System.assertEquals(true, patchResponseEnvelope.errors.isEmpty());
         System.assertEquals(true, patchResponseEnvelope.messages.isEmpty());
+
+        System.assertNotEquals(null, patchResponseEnvelope.data.id);
+        System.assertEquals(false, patchResponseEnvelope.data.customerAcknowledgement);
+        System.assertEquals(null    , patchResponseEnvelope.data.customerAgreementText);
+        System.assertNotEquals(null, patchResponseEnvelope.data.firstName);
+        System.assertNotEquals(null, patchResponseEnvelope.data.lastName);
+        System.assertNotEquals(null, patchResponseEnvelope.data.email);
+        System.assertNotEquals(null, patchResponseEnvelope.data.mobilePhone);
+        System.assertNotEquals(null, patchResponseEnvelope.data.applicationType);
+        System.assertNotEquals(null, patchResponseEnvelope.data.billingStreetAddress);
+        System.assertNotEquals(null, patchResponseEnvelope.data.billingCity);
+        System.assertNotEquals(null, patchResponseEnvelope.data.billingState);
+        System.assertNotEquals(null, patchResponseEnvelope.data.billingZIPCode);
+        System.assertNotEquals(null, patchResponseEnvelope.data.serviceZIPCode);
+        System.assertNotEquals(null, patchResponseEnvelope.data.loadZone);
+        System.assertNotEquals(null, patchResponseEnvelope.data.referralCode);
+        System.assertNotEquals(null, patchResponseEnvelope.data.productId);
+        System.assertNotEquals(null, patchResponseEnvelope.data.utilityName);
+        System.assertNotEquals(null, patchResponseEnvelope.data.partnerId);
+        System.assertNotEquals(null, patchResponseEnvelope.data.salesRepId);
     }
 
     @IsTest
@@ -327,7 +431,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
         RestResponse response = RestContext.response;
         System.assertEquals(500, response.statuscode);
         String jsonResponse = response.responseBody.toString();
-        PatchResponseEnvelope patchResponseEnvelope = (PatchResponseEnvelope) JSON.deserialize(jsonResponse, PatchResponseEnvelope.class);
+        ResponseEnvelope patchResponseEnvelope = (ResponseEnvelope) JSON.deserialize(jsonResponse, ResponseEnvelope.class);
 
         System.assertEquals(null, patchResponseEnvelope.data);
         System.assertEquals(false, patchResponseEnvelope.errors.isEmpty());
@@ -342,20 +446,48 @@ public with sharing class CSLeadsRESTControllerV1Test {
             WHERE Name = 'test product'
         ];
 
+        Partner__c partner = new Partner__c(
+            Name = 'Bluewave Inside Sales',
+            CS_Referral_Status__c = 'Default CS Partner',
+            Email__c = 'bluewave@bluewavesolar.com');
+
+        insert partner;
+
+        BSST__c salesRep2 = new BSST__c(
+            Name = 'Dianne Martz',
+            Partner__c = partner.Id,
+            Email__c = 'martz@testemail.com');
+        insert salesRep2;
+
+        partner.Default_Sales_Rep__c = salesRep2.Id;
+        update partner;
+
+        Contact contactRecord = new Contact(
+            FirstName = 'User',
+            LastName = 'Swain');
+        insert contactRecord;
+
         String jsonRequest = '{' +
             '"firstName": "string", ' +
             '"lastName": "string", ' +
             '"email": "test@example.com", ' +
             '"mobilePhone":	"1231231234", ' +
-            '"applicationType": "Residential", ' +
+            '"applicationType": "Non-Residential", ' +
             '"billingStreetAddress": "string", ' +
             '"billingCity": "string", ' +
             '"billingState":	"MA", ' +
             '"billingZIPCode":	"12345", ' +
             '"serviceZIPCode":	"12345", ' +
-            '"loadZone":	"string", ' +
-            '"utilityName": "Utility",' +
-            '"productId":	"' + testProduct.Id + '"}';
+            '"businessName":	"Test CO", ' +
+            '"businessTitle":	"Owner", ' +
+            '"businessPhone":	"3213124321", ' +
+            '"loadZone":	"SEMA", ' +
+            '"utilityName": "Utility", ' +
+            '"productId":	"' + testProduct.Id + '", ' +
+            '"partnerId": "' + partner.Id+ '", ' +
+            '"salesRepId": "' + salesRep2.Id+ '", ' +
+            '"referralCode": "' + contactRecord.Id+ '"' +
+            '}';
 
         RestRequest req = new RestRequest();
         req.requestURI = '/services/apexrest/v1/CSLeads';
@@ -372,11 +504,33 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertEquals(201, response.statuscode);
 
         String jsonResponse = response.responseBody.toString();
-        PatchResponseEnvelope patchResponseEnvelope = (PatchResponseEnvelope) JSON.deserialize(jsonResponse, PatchResponseEnvelope.class);
+        ResponseEnvelope patchResponseEnvelope = (ResponseEnvelope) JSON.deserialize(jsonResponse, ResponseEnvelope.class);
 
-        System.assertNotEquals(null, patchResponseEnvelope.data.id);
         System.assertEquals(true, patchResponseEnvelope.errors.isEmpty());
         System.assertEquals(true, patchResponseEnvelope.messages.isEmpty());
+
+        System.assertNotEquals(null, patchResponseEnvelope.data.id);
+        System.assertEquals(false, patchResponseEnvelope.data.customerAcknowledgement);
+        System.assertEquals(null, patchResponseEnvelope.data.customerAgreementText);
+        System.assertNotEquals(null, patchResponseEnvelope.data.firstName);
+        System.assertNotEquals(null, patchResponseEnvelope.data.lastName);
+        System.assertNotEquals(null, patchResponseEnvelope.data.email);
+        System.assertNotEquals(null, patchResponseEnvelope.data.mobilePhone);
+        System.assertNotEquals(null, patchResponseEnvelope.data.applicationType);
+        System.assertNotEquals(null, patchResponseEnvelope.data.billingStreetAddress);
+        System.assertNotEquals(null, patchResponseEnvelope.data.billingCity);
+        System.assertNotEquals(null, patchResponseEnvelope.data.billingState);
+        System.assertNotEquals(null, patchResponseEnvelope.data.billingZIPCode);
+        System.assertNotEquals(null, patchResponseEnvelope.data.serviceZIPCode);
+        System.assertNotEquals(null, patchResponseEnvelope.data.loadZone);
+        System.assertNotEquals(null, patchResponseEnvelope.data.referralCode);
+        System.assertNotEquals(null, patchResponseEnvelope.data.productId);
+        System.assertNotEquals(null, patchResponseEnvelope.data.utilityName);
+        System.assertNotEquals(null, patchResponseEnvelope.data.businessName);
+        System.assertNotEquals(null, patchResponseEnvelope.data.businessPhone);
+        System.assertNotEquals(null, patchResponseEnvelope.data.businessTitle);
+        System.assertNotEquals(null, patchResponseEnvelope.data.salesRepId);
+        System.assertNotEquals(null, patchResponseEnvelope.data.partnerId);
     }
 
     @IsTest
@@ -407,7 +561,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertEquals(400, response.statuscode);
 
         String jsonResponse = response.responseBody.toString();
-        PatchResponseEnvelope patchResponseEnvelope = (PatchResponseEnvelope) JSON.deserialize(jsonResponse, PatchResponseEnvelope.class);
+        ResponseEnvelope patchResponseEnvelope = (ResponseEnvelope) JSON.deserialize(jsonResponse, ResponseEnvelope.class);
 
         System.assertEquals(null, patchResponseEnvelope.data);
         System.assertEquals(false, patchResponseEnvelope.errors.isEmpty());
@@ -433,7 +587,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
         RestResponse response = RestContext.response;
         System.assertEquals(500, response.statuscode);
         String jsonResponse = response.responseBody.toString();
-        PatchResponseEnvelope patchResponseEnvelope = (PatchResponseEnvelope) JSON.deserialize(jsonResponse, PatchResponseEnvelope.class);
+        ResponseEnvelope patchResponseEnvelope = (ResponseEnvelope) JSON.deserialize(jsonResponse, ResponseEnvelope.class);
 
         System.assertEquals(null, patchResponseEnvelope.data);
         System.assertEquals(false, patchResponseEnvelope.errors.isEmpty());
@@ -502,8 +656,8 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assert(!lead.hasValidApplicationType(), 'RequestLead should be an invalid type');
     }
 
-    public class PatchResponseEnvelope {
-        public CSLeadsRESTControllerV1.PatchResponse data;
+    public class ResponseEnvelope {
+        public CSLeadsRESTControllerV1.RequestLead data;
         public List<String> messages;
         public List<String> errors;
     }

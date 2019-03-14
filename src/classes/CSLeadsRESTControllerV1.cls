@@ -5,7 +5,7 @@
  */
 
 @RestResource(UrlMapping='/v1/CSLeads')
-global with sharing class CSLeadsRESTControllerV1 extends RESTController{
+global without sharing class CSLeadsRESTControllerV1 extends RESTController{
     private static CSLeadsRESTControllerV1 controller = new CSLeadsRESTControllerV1();
 
     @HttpPatch
@@ -25,17 +25,17 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
 
     @HttpPost
     global static void postRequest() {
-        try {
+//        try {
             controller.postRecords();
-        } catch(Exception e) {
-            CSLeadsRESTControllerV1.ResponseEnvelope envelope = new CSLeadsRESTControllerV1.ResponseEnvelope();
-            envelope.addError(e.getMessage());
-            envelope.setJSONResponse(RestContext.response);
-            RestContext.response.statusCode = 500;
-            String errorMessage = 'Error: ' + e.getMessage();
-            errorMessage += '. Request: ' + RestContext.request;
-            Logger.logNow('CSLeadsRESTControllerV1', 'patchRequest', errorMessage, 'Error');
-        }
+//        } catch(Exception e) {
+//            CSLeadsRESTControllerV1.ResponseEnvelope envelope = new CSLeadsRESTControllerV1.ResponseEnvelope();
+//            envelope.addError(e.getMessage());
+//            envelope.setJSONResponse(RestContext.response);
+//            RestContext.response.statusCode = 500;
+//            String errorMessage = 'Error: ' + e.getMessage();
+//            errorMessage += '. Request: ' + RestContext.request;
+//            Logger.logNow('CSLeadsRESTControllerV1', 'patchRequest', errorMessage, 'Error');
+//        }
     }
 
     protected override void patchRecords() {
@@ -78,15 +78,14 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
         String jsonRequest = request.requestBody.toString();
         RequestLead requestLead = (RequestLead) JSON.deserialize(jsonRequest, RequestLead.class);
 
-        System.debug(requestLead.hasRequiredPostFields());
-        System.debug(requestLead);
         if (requestLead.hasRequiredPostFields()) {
             Lead newLead = requestLead.asLead();
 
             insert newLead;
-
-            RequestLead responseLead = new RequestLead(newLead);
-            envelope.setData(responseLead );
+            List<Lead> leads = getLeadsById(new Set<Id>{newLead.Id});
+            System.debug(leads);
+            RequestLead responseLead = new RequestLead(leads[0]);
+            envelope.setData(responseLead);
             response.statusCode = statusCode.created;
         } else {
             envelope.addError('Request may be missing required fields.');
@@ -101,8 +100,8 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
             SELECT Id, Privacy_Policy_Acknowledged__c, Terms_Conditions__c, Zuora_Payment_Ref_Id__c,
                 Zuora_Payment_Ref_Id_Expiration_Date__c, FirstName, LastName, Email, MobilePhone,
                 Company, Application_Type__c, LASERCA__Home_Address__c, LASERCA__Home_City__c,
-                LASERCA__Home_State__c, LASERCA__Home_Zip__c, Parcel_Zip__c, Load_Zone__c,
-                Partner_Lookup__c, bs_Sales_ID__c, Customer_Referral__c, Product__c, Phone,
+                LASERCA__Home_State__c, LASERCA__Home_Zip__c, Parcel_Zip__c, LoadZone__c,
+                Partner_Lookup__c, Partner_Lookup__r.Id, bs_Sales_ID__c, Customer_Referral__c, Product__c, Phone,
                 Business_Title__c, Utility_Relationship__r.Name
             FROM Lead
             WHERE Id = :leadIds
@@ -153,7 +152,7 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
             this.billingState = lead.LASERCA__Home_State__c;
             this.billingZIPCode = lead.LASERCA__Home_Zip__c;
             this.serviceZIPCode = lead.Parcel_Zip__c;
-            this.loadZone = lead.Load_Zone__c;
+            this.loadZone = lead.LoadZone__c;
             this.partnerId = lead.Partner_Lookup__c;
             this.salesRepId = lead.bs_Sales_ID__c;
             this.referralCode = lead.Customer_Referral__c;
@@ -232,19 +231,25 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
                 PostalCode = billingZIPCode,
                 Parcel_Zip__c = serviceZIPCode,
                 LoadZone__c = loadZone,
-                Partner_Lookup__c = partnerId,
-                bs_Sales_ID__c = salesRepId,
                 Customer_Referral__c = referralCode,
                 Product__c = productId,
                 Product_line__c = 'Community Solar',
                 Phone = businessPhone,
-                Business_Title__c = businessTitle
+                Business_Title__c = businessTitle,
+                Customer_type__c = applicationType
             );
-
+            Partner__c customerPartner;
             if (partnerId != null) {
+                customerPartner = MyAccountController.getPartner(partnerId);
                 newLead.Application_Source_Phase_1__c = 'Flow with Partner';
             } else {
                 newLead.Application_Source_Phase_1__c = 'Flow without Partner';
+            }
+            newLead.Partner_Lookup__c = customerPartner.Id;
+            if (salesRepId != null){
+                newLead.bs_Sales_ID__c = salesRepId;
+            } else if (customerPartner != null && customerPartner.Default_Sales_Rep__c != null) {
+                newLead.bs_Sales_ID__c = customerPartner.Default_Sales_Rep__c;
             }
 
             if (applicationType == 'Residential') {
@@ -264,7 +269,7 @@ global with sharing class CSLeadsRESTControllerV1 extends RESTController{
 
             String continueApplicationUrl = Util.getCommunitySiteURL('Apply') + '/s/csap-payment?leadId=' + lead.Id;
             newLead.Continue_Application_Link__c = continueApplicationUrl;
-
+            System.debug(newLead);
             return newLead;
         }
     }
