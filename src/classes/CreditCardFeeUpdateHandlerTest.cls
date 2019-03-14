@@ -240,8 +240,9 @@ update uastwo;
         
         Test.StartTest();
         insert productionupdateB2;
-        productionupdateB2.Generate_Bills__c = TRUE;       
-        update productionupdateB2;
+
+        TestBillCreationandPayment.runProductionUpdate(new List<Id>{productionupdateB2.Id});
+
         Test.StopTest();
                
         Account_Bill__c accbilltwo = new Account_Bill__c (

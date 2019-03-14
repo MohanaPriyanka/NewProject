@@ -1,22 +1,2 @@
 trigger EnergyUsageUpdateTrigger on Energy_Usage_Update__c (after update) {
-    if (Util.isDisabled('Disable_EnergyUsageUpdateTrigger__c')) {
-        return;
-    }
-    if (Trigger.isUpdate && Trigger.isAfter){
-        List <Energy_Usage_Update__c> trigProdUpdateList = new List <Energy_Usage_Update__c> ();
-        for (Energy_Usage_Update__c productionUpdate : Trigger.new) {  
-            if (productionUpdate.Generate_Bills__c) {
-                Id newvalueID = productionUpdate.Id;
-                Boolean newBox = productionUpdate.Generate_Bills__c;
-                Boolean oldBox = Trigger.OldMap.get(newvalueID).Generate_Bills__c;
-                if (newBox && !oldBox) { 
-                    trigProdUpdateList.add(productionUpdate);
-                }
-            }
-        } 
-        if (trigProdUpdateList.size() > 0) {
-            EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(trigProdUpdateList);
-            ee.runBills();
-        }
-    }
 }

@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>EmailSendApex</name>
+        <label>EmailSendApex</label>
+        <locationX>1052</locationX>
+        <locationY>418</locationY>
+        <actionName>InvocableCSBillEmailBatchSend</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Send_to_LetterStream</targetReference>
+        </connector>
+    </actionCalls>
+    <actionCalls>
+        <name>LetterStreamApex</name>
+        <label>LetterStreamApex</label>
+        <locationX>1059</locationX>
+        <locationY>530</locationY>
+        <actionName>InvocableCSBillLetterStreamSend</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Close_Flow</targetReference>
+        </connector>
+    </actionCalls>
+    <actionCalls>
+        <name>OverpaymentApplicationApex</name>
+        <label>OverpaymentApplicationApex</label>
+        <locationX>368</locationX>
+        <locationY>26</locationY>
+        <actionName>InvocableCSBillOverpaymentApplication</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Assign_Templates</targetReference>
+        </connector>
+    </actionCalls>
+    <actionCalls>
+        <name>TemplateAssignerApex</name>
+        <label>TemplateAssignerApex</label>
+        <locationX>586</locationX>
+        <locationY>161</locationY>
+        <actionName>InvocableCSBillTemplateAssigner</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Generate_Bill_PDFs</targetReference>
+        </connector>
+    </actionCalls>
+    <interviewLabel>Bill Generation Console {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Bill Generation Console</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordCreates>
+        <name>Create_Conga_Conductor</name>
+        <label>Create Conga Conductor</label>
+        <locationX>659</locationX>
+        <locationY>289</locationY>
+        <connector>
+            <targetReference>GetCongaConductor</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>APXT_BPM__Report_Id__c</field>
+            <value>
+                <elementReference>User_Input_Report_Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>APXT_BPM__Conductor__c</object>
+    </recordCreates>
+    <recordLookups>
+        <name>GetCongaConductor</name>
+        <label>GetCongaConductor</label>
+        <locationX>791</locationX>
+        <locationY>289</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Show_Conga</targetReference>
+        </connector>
+        <object>APXT_BPM__Conductor__c</object>
+        <outputReference>CongaConductor</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Link_to_Window__c</queriedFields>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Desc</sortOrder>
+    </recordLookups>
+    <screens>
+        <name>Apply_Adjustments</name>
+        <label>Apply Adjustments</label>
+        <locationX>210</locationX>
+        <locationY>256</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Message_adjustments</name>
+            <fieldText>&lt;div class=&quot;slds-text-heading--large&quot;&gt;&lt;b&gt;
+Apply Adjustments
+&lt;/b&gt;&lt;/div&gt;
+&lt;div class=&quot;slds-text-heading--small slds-p-bottom--large&quot;&gt;
+Clicking next will apply overpayments to bills and generate adjustment applications. This step should come after all bill records have been created. 
+&lt;/div&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>BillStatusComponentThree</name>
+            <extensionName>c:BillStatusComponent</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Assign_Templates</name>
+        <label>Assign Templates</label>
+        <locationX>445</locationX>
+        <locationY>161</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>TemplateAssignerApex</targetReference>
+        </connector>
+        <fields>
+            <name>Message</name>
+            <fieldText>&lt;div class=&quot;slds-text-heading--large&quot;&gt;&lt;b&gt;
+Assign Templates
+&lt;/b&gt;&lt;/div&gt;
+&lt;div class=&quot;slds-text-heading--small slds-p-bottom--large&quot;&gt;
+Clicking next will run automation to find the appropriate template for bills, based on the client, autopay, number of UASBs etc. At the end of this stage, we expect all Account Bills to have Bill Template populated. Any bills that could not be matched will be logged in error logs.
+&lt;/div&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>BillStatusComponentFour</name>
+            <extensionName>c:BillStatusComponent</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>BillGeneration</name>
+        <label>Bill Generation</label>
+        <locationX>204</locationX>
+        <locationY>26</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>OverpaymentApplicationApex</targetReference>
+        </connector>
+        <fields>
+            <name>BillGenerationConsoleCmp</name>
+            <extensionName>c:BillGenerationConsole</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>false</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Close_Flow</name>
+        <label>Close Flow</label>
+        <locationX>1058</locationX>
+        <locationY>656</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>false</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Done</name>
+            <fieldText>&lt;div class=&quot;slds-text-heading--large&quot;&gt;&lt;b&gt;
+Done!
+&lt;/b&gt;&lt;/div&gt;
+&lt;/div&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>BillStatusComponentSeven</name>
+            <extensionName>c:BillStatusComponent</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Generate_Bill_PDFs</name>
+        <label>Generate Bill PDFs</label>
+        <locationX>521</locationX>
+        <locationY>288</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Create_Conga_Conductor</targetReference>
+        </connector>
+        <fields>
+            <name>Message_pdfs</name>
+            <fieldText>&lt;div class=&quot;slds-text-heading--large&quot;&gt;&lt;b&gt;
+Generate Bill PDFs
+&lt;/b&gt;&lt;/div&gt;
+&lt;div class=&quot;slds-text-heading--small slds-p-bottom--large&quot;&gt;
+Input the report ID of the account bill report (ID must be a column) for the bills you want to generate bill pdfs for. At the end of this stage, we would expect all account bills to have &quot;Bill Attach Document&quot; populated, and marked as &quot;Ready for Email Send&quot; &amp; &quot;Ready for Paper Bill Queue&quot;
+&lt;/div&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>User_Input_Report_Id</name>
+            <dataType>String</dataType>
+            <fieldText>Report Id</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>BillStatusComponentOne</name>
+            <extensionName>c:BillStatusComponent</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Send_to_LetterStream</name>
+        <label>Send to LetterStream</label>
+        <locationX>874</locationX>
+        <locationY>522</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>LetterStreamApex</targetReference>
+        </connector>
+        <fields>
+            <name>message_Letterstream</name>
+            <fieldText>&lt;div class=&quot;slds-text-heading--large&quot;&gt;&lt;b&gt;
+Send to LetterStream
+&lt;/b&gt;&lt;/div&gt;
+&lt;div class=&quot;slds-text-heading--small slds-p-bottom--large&quot;&gt;
+Uploads bill pdfs to LetterStream. It will query for all bills marked as &quot;Ready for Paper Bill Queue&quot;
+&lt;/div&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>BillStatusComponentSix</name>
+            <extensionName>c:BillStatusComponent</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Send_via_Email</name>
+        <label>Send via Email</label>
+        <locationX>859</locationX>
+        <locationY>410</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>EmailSendApex</targetReference>
+        </connector>
+        <fields>
+            <name>Messages_Send_Email</name>
+            <fieldText>&lt;div class=&quot;slds-text-heading--large&quot;&gt;&lt;b&gt;
+Send Via Email
+&lt;/b&gt;&lt;/div&gt;
+&lt;div class=&quot;slds-text-heading--small slds-p-bottom--large&quot;&gt;
+This will query for all bills marked as &quot;Ready for Email Send&quot; and attempt to send them. It will mark all bills as published. Any emails that fail will have a task logged on the specifc account bill record.
+&lt;/div&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>BillStatusComponentFive</name>
+            <extensionName>c:BillStatusComponent</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Show_Conga</name>
+        <label>Show Conga</label>
+        <locationX>935</locationX>
+        <locationY>289</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Send_via_Email</targetReference>
+        </connector>
+        <fields>
+            <name>Show_Conga_Record</name>
+            <fieldText>&lt;div class=&quot;slds-text-heading--large&quot;&gt;&lt;b&gt;
+Generate Bill PDFs
+&lt;/b&gt;&lt;/div&gt;
+&lt;div class=&quot;slds-text-heading--small slds-p-bottom--large&quot;&gt;
+Click the button below to open Conga in another window
+&lt;/div&gt;
+&lt;div class=&quot;slds-text-heading--medium&quot;&gt;&lt;b&gt;
+Go to this link to open conga:
+&lt;/b&gt;&lt;/div&gt;
+{!CongaConductor.Link_to_Window__c}</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>BillStatusComponentTwo</name>
+            <extensionName>c:BillStatusComponent</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <startElementReference>BillGeneration</startElementReference>
+    <status>Active</status>
+    <variables>
+        <name>CongaConductor</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>APXT_BPM__Conductor__c</objectType>
+    </variables>
+    <variables>
+        <name>New_Resources</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>Queried_Conga_Conductor</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>QueriedCongaConductor</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>
