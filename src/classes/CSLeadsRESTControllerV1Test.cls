@@ -370,8 +370,6 @@ public with sharing class CSLeadsRESTControllerV1Test {
             '"referralCode": "' + contactRecord.Id+ '"' +
             '}';
 
-        System.debug(jsonRequest);
-
         RestRequest req = new RestRequest();
         req.requestURI = '/services/apexrest/v1/CSLeads';
         req.httpMethod = 'POST';
@@ -596,7 +594,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
 
     @IsTest
     public static void testRequestLeadClass() {
-        CSLeadsRESTControllerV1.RequestLead lead = new CSLeadsRESTControllerV1.RequestLead();
+        CSLeadsRESTControllerV1.RestLead lead = new CSLeadsRESTControllerV1.RestLead();
 
         System.assert(!lead.hasAcknowledgement(), 'RequestLead is empty, validations should be false');
         System.assert(!lead.hasZuoraPaymentInfo(), 'RequestLead is empty, validations should be false');
@@ -657,7 +655,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
     }
 
     public class ResponseEnvelope {
-        public CSLeadsRESTControllerV1.RequestLead data;
+        public CSLeadsRESTControllerV1.RestLead data;
         public List<String> messages;
         public List<String> errors;
     }

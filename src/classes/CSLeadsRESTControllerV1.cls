@@ -44,7 +44,7 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
             jsonRequest = jsonRequest.replaceAll('(a{1}+|A{1}+)(cknowledgment)', 'acknowledgement');
             envelope.addMessage('Autocorreted the request to update the spelling of acknowledgment to acknowledgement, with an e.');
         }
-        RequestLead requestLead = (RequestLead) JSON.deserialize(jsonRequest, RequestLead.class);
+        RestLead requestLead = (RestLead) JSON.deserialize(jsonRequest, RestLead.class);
         List<Lead> leads = getLeadsById(new Set<Id>{requestLead.Id});
 
         if (leads.isEmpty()) {
@@ -63,7 +63,7 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
 
             update leadToUpdate;
 
-            RequestLead responseLead = new RequestLead(leadToUpdate);
+            RestLead responseLead = new RestLead(leadToUpdate);
             envelope.setData(responseLead);
             response.statusCode = statusCode.ok;
         } else {
@@ -76,14 +76,14 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
 
     protected override void postRecords() {
         String jsonRequest = request.requestBody.toString();
-        RequestLead requestLead = (RequestLead) JSON.deserialize(jsonRequest, RequestLead.class);
+        RestLead requestLead = (RestLead) JSON.deserialize(jsonRequest, RestLead.class);
 
         if (requestLead.hasRequiredPostFields()) {
             Lead newLead = requestLead.asLead();
 
             insert newLead;
             List<Lead> leads = getLeadsById(new Set<Id>{newLead.Id});
-            RequestLead responseLead = new RequestLead(leads[0]);
+            RestLead responseLead = new RestLead(leads[0]);
             envelope.setData(responseLead);
             response.statusCode = statusCode.created;
         } else {
@@ -107,7 +107,7 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
         ];
     }
 
-    public class RequestLead {
+    public class RestLead {
         public Id id;
         public Boolean customerAcknowledgement;
         public String customerAgreementText;
@@ -133,8 +133,8 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
         public Id referralCode;
         public Id productId;
 
-        public RequestLead() {}
-        public RequestLead(Lead lead) {
+        public RestLead() {}
+        public RestLead(Lead lead) {
             this.id = lead.Id;
             this.customerAcknowledgement = lead.Privacy_Policy_Acknowledged__c;
             this.customerAgreementText = lead.Terms_Conditions__c;
@@ -215,7 +215,7 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
             Lead newLead = new Lead(
                 Id = id,
                 FirstName = firstName,
-                LasTName = lastName,
+                LastName = lastName,
                 Email = email,
                 MobilePhone = mobilePhone,
                 Company = businessName,
