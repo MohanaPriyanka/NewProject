@@ -25,17 +25,17 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
 
     @HttpPost
     global static void postRequest() {
-//        try {
+        try {
             controller.postRecords();
-//        } catch(Exception e) {
-//            CSLeadsRESTControllerV1.ResponseEnvelope envelope = new CSLeadsRESTControllerV1.ResponseEnvelope();
-//            envelope.addError(e.getMessage());
-//            envelope.setJSONResponse(RestContext.response);
-//            RestContext.response.statusCode = 500;
-//            String errorMessage = 'Error: ' + e.getMessage();
-//            errorMessage += '. Request: ' + RestContext.request;
-//            Logger.logNow('CSLeadsRESTControllerV1', 'patchRequest', errorMessage, 'Error');
-//        }
+        } catch(Exception e) {
+            CSLeadsRESTControllerV1.ResponseEnvelope envelope = new CSLeadsRESTControllerV1.ResponseEnvelope();
+            envelope.addError(e.getMessage());
+            envelope.setJSONResponse(RestContext.response);
+            RestContext.response.statusCode = 500;
+            String errorMessage = 'Error: ' + e.getMessage();
+            errorMessage += '. Request: ' + RestContext.request;
+            Logger.logNow('CSLeadsRESTControllerV1', 'patchRequest', errorMessage, 'Error');
+        }
     }
 
     protected override void patchRecords() {
@@ -83,7 +83,6 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
 
             insert newLead;
             List<Lead> leads = getLeadsById(new Set<Id>{newLead.Id});
-            System.debug(leads);
             RequestLead responseLead = new RequestLead(leads[0]);
             envelope.setData(responseLead);
             response.statusCode = statusCode.created;
@@ -238,17 +237,16 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
                 Business_Title__c = businessTitle,
                 Customer_type__c = applicationType
             );
-            Partner__c customerPartner;
+            Partner__c customerPartner = MyAccountController.getPartner(partnerId);
             if (partnerId != null) {
-                customerPartner = MyAccountController.getPartner(partnerId);
-                newLead.Application_Source_Phase_1__c = 'Flow with Partner';
+                newLead.Application_Source_Phase_1__c = 'CSAP 3.0 Flow with Partner';
             } else {
-                newLead.Application_Source_Phase_1__c = 'Flow without Partner';
+                newLead.Application_Source_Phase_1__c = 'CSAP 3.0 Flow without Partner';
             }
             newLead.Partner_Lookup__c = customerPartner.Id;
             if (salesRepId != null){
                 newLead.bs_Sales_ID__c = salesRepId;
-            } else if (customerPartner != null && customerPartner.Default_Sales_Rep__c != null) {
+            } else if (customerPartner.Default_Sales_Rep__c != null) {
                 newLead.bs_Sales_ID__c = customerPartner.Default_Sales_Rep__c;
             }
 
@@ -269,7 +267,6 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
 
             String continueApplicationUrl = Util.getCommunitySiteURL('Apply') + '/s/csap-payment?leadId=' + lead.Id;
             newLead.Continue_Application_Link__c = continueApplicationUrl;
-            System.debug(newLead);
             return newLead;
         }
     }

@@ -330,7 +330,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
             FROM Product2
             WHERE Name = 'test product'
         ];
-        
+
         Partner__c partner = new Partner__c(
             Name = 'Bluewave Inside Sales',
             CS_Referral_Status__c = 'Default CS Partner',
