@@ -7,7 +7,6 @@
     <excludeButtons>ChangeOwnerOne</excludeButtons>
     <excludeButtons>ChangeRecordType</excludeButtons>
     <excludeButtons>Convert</excludeButtons>
-    <excludeButtons>DataDotComClean</excludeButtons>
     <excludeButtons>FindDup</excludeButtons>
     <excludeButtons>Share</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
@@ -31,12 +30,12 @@
                 <field>Status</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Date_of_Application_2__c</field>
+                <behavior>Edit</behavior>
+                <field>Lead_QC_Complete__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>LASERCA__Birthdate__c</field>
+                <behavior>Readonly</behavior>
+                <field>Date_of_Application_2__c</field>
             </layoutItems>
             <layoutItems>
                 <emptySpace>true</emptySpace>
@@ -54,8 +53,12 @@
                 <field>Continue_Application_Link__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Zuora_Payment_Ref_Id_Expiration_Date__c</field>
+                <behavior>Edit</behavior>
+                <field>Product_Interest__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Objections__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -80,22 +83,11 @@
                 <field>RecordTypeId</field>
             </layoutItems>
             <layoutItems>
+                <emptySpace>true</emptySpace>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>CSAP_Stage__c</field>
-            </layoutItems>
-            <layoutItems>
-                <emptySpace>true</emptySpace>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>System_Assignment__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Available_Capacity__c</field>
-            </layoutItems>
-            <layoutItems>
-                <emptySpace>true</emptySpace>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -103,7 +95,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Application_Source_Phase_2__c</field>
+                <field>Reason_Unqualified__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -128,31 +120,28 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Phone</field>
+                <field>MobilePhone</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>HasOptedOutOfEmail</field>
+                <field>Business_Phone__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Contacted__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Pitched__c</field>
+            </layoutItems>
+            <layoutItems>
+                <emptySpace>true</emptySpace>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Type_of_Business__c</field>
-            </layoutItems>
-            <layoutItems>
-                <emptySpace>true</emptySpace>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Number_of_Years_in_Business__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Number_of_Years_at_Location__c</field>
-            </layoutItems>
-            <layoutItems>
-                <emptySpace>true</emptySpace>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
@@ -179,23 +168,11 @@
                 <behavior>Edit</behavior>
                 <field>Personal_Credit_Report__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>LASERCA__SSN__c</field>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Privacy_Policy_Acknowledged__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Credit_Check_Acknowledged__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Utility_Bill_Access_Acknowledged__c</field>
+                <field>Terms_Conditions_Acknowledged__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -232,7 +209,7 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Parcel_Zip__c</field>
+                <field>ZipCode__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -284,10 +261,6 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Custom_ID__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>Partner_Lookup__c</field>
             </layoutItems>
             <layoutItems>
@@ -300,10 +273,6 @@
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Customer_Referral__c</field>
-            </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Referral_Email__c</field>
@@ -528,7 +497,7 @@
     <relatedLists>
         <relatedList>RelatedNoteList</relatedList>
     </relatedLists>
-    <runAssignmentRulesDefault>true</runAssignmentRulesDefault>
+    <runAssignmentRulesDefault>false</runAssignmentRulesDefault>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
     <showInteractionLogPanel>false</showInteractionLogPanel>

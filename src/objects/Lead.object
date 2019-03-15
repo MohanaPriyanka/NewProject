@@ -268,7 +268,6 @@
         <fields>Name</fields>
         <fields>Customer_type__c</fields>
         <fields>Email</fields>
-        <fields>Phone</fields>
         <fields>MobilePhone</fields>
         <label>CS BD Compact</label>
     </compactLayouts>
@@ -3728,6 +3727,11 @@ Monthly_Payment__c)</formula>
                     <fullName>Wait Time</fullName>
                     <default>false</default>
                     <label>Wait Time</label>
+                </value>
+                <value>
+                    <fullName>Go off the grid</fullName>
+                    <default>false</default>
+                    <label>Go off the grid</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -7271,6 +7275,10 @@ SEMA = 13 -14</inlineHelpText>
                 <default>false</default>
             </values>
             <values>
+                <fullName>Go off the grid</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Lack of savings</fullName>
                 <default>false</default>
             </values>
@@ -9347,6 +9355,10 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Double bill</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Go off the grid</fullName>
                 <default>false</default>
             </values>
             <values>
