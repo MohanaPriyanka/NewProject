@@ -160,14 +160,14 @@
             Thank you for your application. We'll review your utility bill and energy usage, then contact you soon about next steps.
           </lightning:layoutItem>
           <lightning:layoutItem class="slds-align_absolute-center slds-p-horizontal--large slds-text-align--center" padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-            In the meantime, check out our Resource Center and Blog to learn more about BlueWave community solar.
+            In the meantime, check out our Support Center and Blog to learn more about BlueWave Community Solar.
           </lightning:layoutItem>
           <!--<lightning:layoutItem size="12" largeDeviceSize="8" class="slds-grid&#45;&#45;align-center slds-align&#45;&#45;absolute-center slds-m-top&#45;&#45;medium">-->
             <lightning:layoutItem  size = "12" class="slds-align--absolute-center slds-m-top--medium">
               <div style="width: 200px">
                 <a href="https://bluewavememberportal.force.com/Support/s/?_ga=2.183388271.870291340.1551394202-1521039906.1540480948">
                   <img src="{!$Resource.resourceIcon}" style="width: 50px"/>
-                  <b class="slds-m-left--medium"> Resource&nbsp;Center </b>
+                  <b class="slds-m-left--medium"> Support&nbsp;Center </b>
                 </a>
               </div>
             </lightning:layoutItem>
