@@ -14,7 +14,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
         insert utility;
 
         Product2 product = new Product2(
-            Name = 'test product'
+            Name = 'CS Product'
         );
         insert product;
     }
@@ -27,7 +27,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
         insert utility;
 
         Product2 product = new Product2(
-            Name = 'test product'
+            Name = 'CS Product'
         );
         insert product;
 
@@ -120,7 +120,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertNotEquals(null, patchResponseEnvelope.data.partnerId);
         System.assertNotEquals(null, patchResponseEnvelope.data.salesRepId);
         System.assertNotEquals(null, patchResponseEnvelope.data.referralCode);
-        System.assertNotEquals(null, patchResponseEnvelope.data.productId);
+        System.assertNotEquals(null, patchResponseEnvelope.data.productName);
         System.assertNotEquals(null, patchResponseEnvelope.data.utilityName);
 
         System.assertEquals(true, patchResponseEnvelope.errors.isEmpty());
@@ -325,12 +325,6 @@ public with sharing class CSLeadsRESTControllerV1Test {
 
     @IsTest
     public static void testPostResiLead() {
-        Product2 testProduct = [
-            SELECT Id
-            FROM Product2
-            WHERE Name = 'test product'
-        ];
-
         Partner__c partner = new Partner__c(
             Name = 'Bluewave Inside Sales',
             CS_Referral_Status__c = 'Default CS Partner',
@@ -364,7 +358,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
             '"serviceZIPCode":	"12345", ' +
             '"loadZone":	"SEMA", ' +
             '"utilityName": "Utility",' +
-            '"productId":	"' + testProduct.Id + '",' +
+            '"productName":	"CS Product",' +
             '"partnerId": "' + partner.Id+ '",' +
             '"salesRepId": "' + salesRep2.Id+ '",' +
             '"referralCode": "' + contactRecord.Id+ '"' +
@@ -405,7 +399,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertNotEquals(null, patchResponseEnvelope.data.serviceZIPCode);
         System.assertNotEquals(null, patchResponseEnvelope.data.loadZone);
         System.assertNotEquals(null, patchResponseEnvelope.data.referralCode);
-        System.assertNotEquals(null, patchResponseEnvelope.data.productId);
+        System.assertNotEquals(null, patchResponseEnvelope.data.productName);
         System.assertNotEquals(null, patchResponseEnvelope.data.utilityName);
         System.assertNotEquals(null, patchResponseEnvelope.data.partnerId);
         System.assertNotEquals(null, patchResponseEnvelope.data.salesRepId);
@@ -438,12 +432,6 @@ public with sharing class CSLeadsRESTControllerV1Test {
 
     @IsTest
     public static void testPostNonResiLead() {
-        Product2 testProduct = [
-            SELECT Id
-            FROM Product2
-            WHERE Name = 'test product'
-        ];
-
         Partner__c partner = new Partner__c(
             Name = 'Bluewave Inside Sales',
             CS_Referral_Status__c = 'Default CS Partner',
@@ -481,7 +469,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
             '"businessPhone":	"3213124321", ' +
             '"loadZone":	"SEMA", ' +
             '"utilityName": "Utility", ' +
-            '"productId":	"' + testProduct.Id + '", ' +
+            '"productName":	"CS Product", ' +
             '"partnerId": "' + partner.Id+ '", ' +
             '"salesRepId": "' + salesRep2.Id+ '", ' +
             '"referralCode": "' + contactRecord.Id+ '"' +
@@ -522,7 +510,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertNotEquals(null, patchResponseEnvelope.data.serviceZIPCode);
         System.assertNotEquals(null, patchResponseEnvelope.data.loadZone);
         System.assertNotEquals(null, patchResponseEnvelope.data.referralCode);
-        System.assertNotEquals(null, patchResponseEnvelope.data.productId);
+        System.assertNotEquals(null, patchResponseEnvelope.data.productName);
         System.assertNotEquals(null, patchResponseEnvelope.data.utilityName);
         System.assertNotEquals(null, patchResponseEnvelope.data.businessName);
         System.assertNotEquals(null, patchResponseEnvelope.data.businessPhone);
@@ -628,7 +616,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
         lead.serviceZIPCode = 'zipcode';
         lead.loadZone = 'loadzone';
         lead.utilityName = 'utility name';
-        lead.productId = '00Q000000000000';
+        lead.productName = 'CS Product';
         lead.applicationType = 'Residential';
 
         System.assert(lead.hasRequiredPostFields(), 'RequestLead has required fields');
