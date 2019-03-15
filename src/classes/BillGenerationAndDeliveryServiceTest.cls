@@ -41,6 +41,11 @@ public class BillGenerationAndDeliveryServiceTest {
         System.assertEquals('Ready for Paper Send: 0 bills (0%)',newABSummary.substring(68,102));
     }
 
+    @isTest public static void testNoBillsInserted(){
+        String newABSummary = BillGenerationConsoleController.getAccountBillSummary();
+        System.assertEquals('Generated Account Bills: 0',newABSummary.substring(0,26));
+    }
+
     @isTest public static void simulateBatch(){
         Test.startTest();
 
