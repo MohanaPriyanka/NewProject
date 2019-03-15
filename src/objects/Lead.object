@@ -268,7 +268,6 @@
         <fields>Name</fields>
         <fields>Customer_type__c</fields>
         <fields>Email</fields>
-        <fields>Phone</fields>
         <fields>MobilePhone</fields>
         <label>CS BD Compact</label>
     </compactLayouts>
