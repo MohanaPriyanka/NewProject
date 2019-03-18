@@ -73,7 +73,11 @@ public class BillGenerationConsoleController {
     }
 
     public static String getPercentOfTotal(Decimal dividend, Decimal divisor) {
-        return '(' + (dividend.divide(divisor, 4)*100).setScale(0) + '%)';
+        if (divisor == null || divisor == 0){
+            return '(0%)';
+        } else {
+            return '(' + (dividend.divide(divisor, 4)*100).setScale(0) + '%)';
+        }
     }
 
     public class BillStatusSummary {
