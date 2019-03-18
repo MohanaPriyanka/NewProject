@@ -10,9 +10,9 @@
   <aura:set attribute="supressWaiting" value="true"/>
   
   <aura:registerEvent name="CSAPNavigationEvent" type="c:CSAPNavigationEvent"/>
-  <aura:if isTrue="{!v.showNavBar}">
+  <aura:if isTrue="{!and(v.showNavBar, !$Browser.isPhone)}">
     <div class="slds-path">
-      <div class="slds-grid slds-path__track slds-size--2-of-3 slds-align--absolute-center">
+      <div class="slds-grid slds-path__track slds-size--1-of-1 slds-large-size--2-of-3 slds-align--absolute-center">
         <div class="slds-grid slds-path__scroller-container">
           <div class="slds-path__scroller" role="application">
             <ul class="slds-path__nav" role="listbox">
