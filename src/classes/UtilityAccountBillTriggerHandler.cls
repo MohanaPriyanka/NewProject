@@ -44,6 +44,7 @@ public without sharing class UtilityAccountBillTriggerHandler {
                 Schedule_Z__r.Shared_Solar_System__r.Utility__r.Credits_Allocated_Rounding_Method__c
             FROM Schedule_Z_Subscription__c
             WHERE Schedule_Z__c IN : scheduleZIds
+            AND Stop_Credit_Transfer__c = FALSE
         ];
 
         Map<Id, Schedule_Z_Subscription__c> scheduleZSubscriptionToUABIdMap = new Map<Id, Schedule_Z_Subscription__c>();
