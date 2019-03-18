@@ -30,8 +30,18 @@
                     helper.logError("CSAPEnergyInfoController", "getUtility", resp.getError(), lead);
                 }
             });
+            var rateClassesAction = component.get("c.getRateClassesForUtility");
+            rateClassesAction.setParams({"utilityId" : utilId});
+            rateClassesAction.setCallback(this, function(resp) {
+                if (resp.getState() === "SUCCESS") {
+                    component.set('v.rateClasses', resp.getReturnValue());
+                } else {
+                    helper.logError("CSAPEnergyInfoController", "getRateClass", resp.getError(), lead);
+                }
+            });
             if (lead.Utility_relationship__c) {
                 $A.enqueueAction(utilityAction);
+                $A.enqueueAction(rateClassesAction);
             }
         }
         if (component.get("v.abbrevStates") && component.get("v.abbrevStates").length === 0) {
