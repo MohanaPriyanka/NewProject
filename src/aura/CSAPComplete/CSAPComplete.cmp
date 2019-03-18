@@ -18,11 +18,11 @@
 
   <!--Completed App Message-->
   <aura:if isTrue="{!v.page == 'Complete'}">
-    <fieldset class="slds-box slds-theme--default slds-container_center slds-size--2-of-3">
+    <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
       <legend id="completeApplication" class="slds-text-heading--medium slds-p-vertical--medium slds-align_absolute-center">
         <b class="slds-p-horizontal_large"> Congratulations! </b>
       </legend>
-      <div class="slds-p-bottom--medium slds-align--absolute-center">
+      <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
         <b> Your Community Solar application is now complete!
         </b>
       </div>
