@@ -2551,6 +2551,18 @@ IF( ISPICKVAL(Personal_Credit_Report2__r.Solar_Loan_Approval_Status__c, &quot;De
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>DS_Envelope_ID__c</fullName>
+        <externalId>false</externalId>
+        <label>DS Envelope ID</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Da_of_Monthly_Payment__c</fullName>
         <externalId>false</externalId>
         <formula>text(Day(Commencement_Date__c))</formula>
