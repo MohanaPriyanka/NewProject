@@ -40,7 +40,7 @@
           <legend id="aboutYourselfForm" class="slds-text-heading--medium slds-text-align--center slds-p-vertical--small slds-align_absolute-center">
             <b class="slds-p-horizontal_large">  Great news, community solar is in your area! </b>
           </legend>
-          <lightning:layoutItem class="slds-align_absolute-center slds-p-horizontal--large" padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+          <lightning:layoutItem class="slds-align_absolute-center slds-p-horizontal--large" padding="around-small" size="12">
            <div class="slds-text-align--center">
             To continue, please provide your contact information and billing address so we can verify your eligibility
             for this community solar project and contact you regarding your application. We take privacy and security
