@@ -52,39 +52,7 @@
     goToUtilityAccountInformation : function(component, event, helper) {
         component.set("v.page", "UtilityAccountInformation");
     },
-    goToAddMore : function(component, event, helper) {
-        //Upsert UAL record
-        if(helper.validatePageFields(component)){
-            var ual = component.get("v.ual");
-            var lead = component.get("v.lead");
 
-
-            if(ual.Lead__c == null){
-                ual.Lead__c = lead.Id;
-            }
-            var utility = component.get('v.utility');
-            
-            ual.Utility__c = utility.Id;
-            var saveUAL = component.get('c.saveUtilityAccountLog');
-            saveUAL.setParams({'ual' : ual});
-            saveUAL.setCallback(this, function(resp) {
-                if (resp.getState() === 'SUCCESS') {
-                    component.set("v.page", "AddMoreUAL");
-                    component.set("v.loading", false);
-                }else{
-                    helper.logError("CSAPEnergyInfoController", "goToAddMore", resp.getError(), lead);
-                }
-            });
-
-            if(ual.Rate_Class__c === 'Rate Class Not in List') {
-                alert('Only rate classes in the list are eligible for this product. Please close this window and mark the lead as unqualified.');
-            } else {
-                component.set("v.loading", true);
-                component.set("v.loadingText", "Saving utility account information...");
-                $A.enqueueAction(saveUAL);
-            }
-        }
-    },
     cancelAddUAL : function(component, event, helper) {
         if(confirm("Are you sure you want to cancel adding another Utility Account Log?")){
             helper.finishStage(component, event, helper);
@@ -104,13 +72,44 @@
     },
 
     finishStage : function(component, event, helper) {
-        var lead = component.get("v.lead");
+        if(helper.validatePageFields(component)){
+            var lead = component.get("v.lead");
+            var ual = component.get("v.ual");
+
+
+            if(ual.Lead__c == null){
+                ual.Lead__c = lead.Id;
+            }
+            
+            var utility = component.get('v.utility');
+            ual.Utility__c = utility.Id;
+
+            var saveUAL = component.get('c.saveUtilityAccountLog');
+            saveUAL.setParams({'ual' : ual});
+            saveUAL.setCallback(this, function(resp) {
+                if (resp.getState() === 'SUCCESS') {
+                    //component.set("v.page", "AddMoreUAL");
+                    //component.set("v.loading", false);
+                }else{
+                    helper.logError("CSAPEnergyInfoController", "goToAddMore", resp.getError(), lead);
+                }
+            });
+
+            if(ual.Rate_Class__c === 'Rate Class Not in List') {
+                alert('Only rate classes in the list are eligible for this product. Please close this window and mark the lead as unqualified.');
+            } else {
+                component.set("v.loading", true);
+                component.set("v.loadingText", "Saving utility account information...");
+                $A.enqueueAction(saveUAL);
+            }
+
         var action = component.get('c.sendEmailForPaymentInfo');
         action.setParams({
             "lead": lead
         });
         action.setCallback(this, function(resp) {
             if (resp.getState() === "SUCCESS") {
+                    component.set("v.loading", false);
                 component.set('v.page', 'CompletedUtilityInfo');
             } else {
                 helper.logError("CSAPEnergyInfoController", "finishStage",
@@ -119,5 +118,10 @@
             }
         })
         $A.enqueueAction(action);
+        }
+
+
+
+
     },
 })
