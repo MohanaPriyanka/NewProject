@@ -5,9 +5,11 @@
 @isTest
 public with sharing class LoanUnderwritingTest {
     @testSetup static void setupTestData() {
+        Test.startTest();
         System_Properties__c sysProp = new System_Properties__c(Name = 'System');
         insert sysProp;
         LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
+        Test.stopTest();
     }
 
     static testMethod void testQueries() {

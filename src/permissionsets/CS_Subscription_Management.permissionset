@@ -92,6 +92,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Schedule_Z_Subscription__c.Stop_Credit_Transfer__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Schedule_Z_Subscription__c.Submitted__c</field>
         <readable>true</readable>
     </fieldPermissions>
