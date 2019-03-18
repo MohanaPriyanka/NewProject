@@ -5270,6 +5270,29 @@ IF(load_zone_check_needed__c = TRUE,
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Zuora_Payment_Ref_Id_Expiration_Date__c</fullName>
+        <description>Date/Time of Zuora Ref Id expiration. If time has past, the Id is invalid</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The date that the customer&apos;s payment information expires in Zuora&apos;s system, if it has not be moved onto a Zuora account</inlineHelpText>
+        <label>Zuora Payment Ref Id Expiration Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Zuora_Payment_Ref_Id__c</fullName>
+        <description>Zuora Payment Reference Id should be passed from the Originations platform during their processes. The Payment Info Id will need to be associated with a customer&apos;s Zuora account once we create it. The Payment information expires, so reference Zuora_Payment_Ref_Id_Expiration_Date__c to make sure the Id is still valid.</description>
+        <externalId>false</externalId>
+        <label>Zuora Payment Ref Id</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>bs_Sales_ID__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>

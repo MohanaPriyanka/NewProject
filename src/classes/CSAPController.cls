@@ -204,8 +204,6 @@ public without sharing class CSAPController {
             WHERE Id = :lead.Id];
 
 
-        // we need to used a different url other than /s/csap due to caching issues
-        // /s/csap-payment contains the exact same components, but has a different URL therefor different cache
         String continueApplicationUrl = Util.getCommunitySiteURL('Apply') + '/s/csap-payment?leadId=' + lead.Id;
         insertedLead.Continue_Application_Link__c = continueApplicationUrl;
         update insertedLead;
@@ -303,11 +301,15 @@ public without sharing class CSAPController {
     }
 
     @AuraEnabled
-    public static List<Utility_NMC_Tariff__c> getRateClasses(String utilityId, String productId) {
+    public static List<Rate_Class__c> getRateClassesForUtility(String utilityId) {
 
-        List<Utility_NMC_Tariff__c> validUtilityNMCTariffs = new List<Utility_NMC_Tariff__c>();
+        List<Rate_Class__c> rateClasses = [
+            SELECT Id, Name, Utility__c
+            FROM Rate_Class__c
+            WHERE Utility__c =: utilityId
+        ];
 
-        return validUtilityNMCTariffs;
+        return rateClasses;
     }
 
     @AuraEnabled
@@ -482,6 +484,7 @@ public without sharing class CSAPController {
 
         lead.CSAP_Stage__c = 'NAV_Energy_Information';
         update lead;
+
 
         EmailService.createCSCustomerRequestPaymentInfoEmails(new List<Lead>{lead});
         Messaging.SendEmailResult[] result = EmailService.sendMessages();

@@ -34,6 +34,10 @@
                 <behavior>Edit</behavior>
                 <field>Webpage_Source__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Zuora_Payment_Ref_Id_Expiration_Date__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -59,10 +63,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>State_Market__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Reason_Unqualified__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -215,7 +215,7 @@
         <fields>et4ae5__Reports__c</fields>
         <relatedList>et4ae5__SendDefinition__c.et4ae5__Lead__c</relatedList>
     </relatedLists>
-    <runAssignmentRulesDefault>false</runAssignmentRulesDefault>
+    <runAssignmentRulesDefault>true</runAssignmentRulesDefault>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
     <showInteractionLogPanel>false</showInteractionLogPanel>
