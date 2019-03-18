@@ -22,7 +22,7 @@
       <legend id="completeApplication" class="slds-text-heading--medium slds-p-vertical--medium slds-align_absolute-center">
         <b class="slds-p-horizontal_large"> Congratulations! </b>
       </legend>
-      <div class="slds-p-bottom--medium slds-align--absolute-center">
+      <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
         <b> Your Community Solar application is now complete!
         </b>
       </div>
