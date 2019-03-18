@@ -347,8 +347,6 @@ public with sharing class LoanUnderwritingTest {
         WHERE FirstName = 'leadMALoanTerm10Rate699'
         LIMIT 1];
 
-        Test.startTest();
-
         LoanHandlerTestClass.convertLeads(new List<Lead>{lead});
         CAPController.createLoanAndEquipment(lead.Id, lead.Email);
         lead = [SELECT Id, ConvertedContactId FROM Lead WHERE Id = :lead.Id];
@@ -381,6 +379,8 @@ public with sharing class LoanUnderwritingTest {
         System.assertEquals('Complete', preUpdatedProvideIncomeDocTask.Status__c);
         System.assertEquals('Qualified', lead.Status);
         System.assertEquals('NAV_Income_Doc', lead.CAP_Stage__c);
+
+        Test.startTest();
 
         Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
         Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
