@@ -57,7 +57,7 @@
                 if (product.Program__c.includes('SREC')) {
                     component.set("v.PaymentMethodsAccepted", [['Bank Account', 'ACH']]);
                 } else {
-                    component.set("v.PaymentMethodsAccepted", [['Bank Account', 'ACH'],['Credit Card', 'Credit Card']]);
+                    component.set("v.PaymentMethodsAccepted", [['Bank Account', 'ACH'],['Credit/Debit Card', 'Credit Card']]);
                 }
 
             }
