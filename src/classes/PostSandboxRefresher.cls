@@ -723,7 +723,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             // the next round of bills (so that the bill number is updated appropriately)
             ee.createBills(ScheduleZSubscriptionSelector.getListForSmallOfftake(ee.scheduleZs));
             ee.finish(null);
-            TestBillCreationandPayment.setBillsToPublished();
+            setBillsToPublished();
 
             if (!Test.isRunningTest()) {
                 System.enqueueJob(new PostSandboxRefresher.ProductionUpdateHelper2());
@@ -779,7 +779,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(trigProdUp);
             ee.createBills(ScheduleZSubscriptionSelector.getListForSmallOfftake(ee.scheduleZs));
             ee.finish(null);
-            TestBillCreationandPayment.setBillsToPublished();
+            setBillsToPublished();
 
             if (!Test.isRunningTest()) {
                 System.enqueueJob(new PostSandboxRefresher.ProductionUpdateHelper3());
@@ -835,7 +835,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(trigProdUp);
             ee.createBills(ScheduleZSubscriptionSelector.getListForSmallOfftake(ee.scheduleZs));
             ee.finish(null);
-            TestBillCreationandPayment.setBillsToPublished();
+            setBillsToPublished();
 
             if (!Test.isRunningTest()) {
                 System.enqueueJob(new PostSandboxRefresher.PaymentHelper());
@@ -1047,6 +1047,18 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         insert new List<Utility_Account_Subscription__c>{
             uas1, uas2, uas3, uas4, uas5, uas6
         };
+    }
+
+    public static void setBillsToPublished() {
+        List <Account_Bill__c> listAccountBills = [
+            SELECT Id, Published__c
+            FROM Account_Bill__c
+            WHERE Published__c = FALSE
+        ];
+        for (Account_Bill__c acctBill : listAccountBills) {
+            acctBill.Published__c = True;
+        }
+        update listAccountBills;
     }
 
     public static void deleteCSRecords() {
