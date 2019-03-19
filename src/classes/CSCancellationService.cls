@@ -18,6 +18,18 @@
 
 public without sharing class CSCancellationService {
     private static String AUTOMATED_CANCELLATION_COMMENT = 'Automated Cancellation';
+    @TestVisible
+    private static final String CANCELLATION_PARAGRAPH_TWO_LABEL = '{!Cancellation_Paragraph_Two__c}';
+    @TestVisible
+    private static final String DEFAULT_CANCELLATION_PARAGRAPH_TWO = 'Because you have subscriptions that fall into different ' +
+        'regulations, your utility may process the cancellation a different times over a period of months. During this ' +
+        'time, you are responsible for all solar credits transferred to your account. Once your subscription is removed ' +
+        'and stops receiving credits you will be notified of the change via email.';
+    @TestVisible
+    private static final String CANCELLATION_PARAGRAPH_THREE_LABEL = '{!Cancellation_Paragraph_Three__c}';
+    @TestVisible
+    private static final String DEFAULT_CANCELLATION_PARAGRAPH_THREE = 'Because you have subscriptions that were made under ' +
+        'different BlueWave contracts, please refer to your contract for more details about potential termination fees.';
 
     // W-008422: Finds accounts that are overdue, and sets the Account's cancellation reason, comments, and request date,
     // which in turn triggers the cancellation process. We skip Anchor or Public Offtake accounts as well as those that
@@ -50,32 +62,76 @@ public without sharing class CSCancellationService {
     }
 
     private static void sendCancellationConfirmationEmails(List<Utility_Account_Subscription__c> uasesCancelled) {
-        Map<Id, Messaging.SingleEmailMessage> cancellationEmailMap = new Map<Id, Messaging.SingleEmailMessage>();
+        List<Messaging.SingleEmailMessage> cancellationEmails = new List<Messaging.SingleEmailMessage>();
+        Map<Account, Map<String, String>> accountToCancellationParagraphs = accountToCancellationParagraphs(uasesCancelled);
 
-        for (Utility_Account_Subscription__c uas : uasesCancelled) {
-            // Because we only want one email per property account, not per UAS, skip the uas if we already have an email for it
-            if (cancellationEmailMap.containsKey(uas.Utility_Account_Log__r.Account__c) ||
-                uas.Utility_Account_Log__r.Account__r.Cancellation_Comments__c == AUTOMATED_CANCELLATION_COMMENT) {
-                continue;
-            }
+        for (Account account : accountToCancellationParagraphs.keySet()) {
             try {
-                cancellationEmailMap.put(
-                    uas.Utility_Account_Log__r.Account__c,
+                System.debug(LoggingLevel.ERROR, accountToCancellationParagraphs.get(account));
+                cancellationEmails.add(
                     createCSEmail(
-                        uas.Utility_Account_Log__r.Account__r,
+                        account,
                         'CS_Cancellation_Request_Confirmation',
-                        'We\'ve received your cancellation request'
+                        'Cancellation Request Acknowledgement',
+                        accountToCancellationParagraphs.get(account)
                     )
                 );
             } catch (Util.BWException bwe) {
                 Logger.logLater('CSCancellationService', 'sendCancellationConfirmationEmails', bwe.getMessage());
             }
         }
-        MessagingService.sendEmail(cancellationEmailMap.values());
+        MessagingService.sendEmail(cancellationEmails);
         Logger.flushLogs();
     }
 
+    @TestVisible
+    private static Map<Account, Map<String, String>> accountToCancellationParagraphs(List<Utility_Account_Subscription__c> uasesCancelled) {
+        Map<Account, Map<String, String>> accountIdToReplacementMap = new Map<Account, Map<String, String>>();
+        for (Utility_Account_Subscription__c uas : uasesCancelled) {
+            // We don't send cancellation confirmation for automatically cancelled accounts, so we skip them
+            if (uas.Utility_Account_Log__r.Account__r.Cancellation_Comments__c == AUTOMATED_CANCELLATION_COMMENT) {
+                continue;
+            }
+            if (uas.Opportunity__r.Product__r.Cancellation_Paragraph_Two__c == null) {
+                throw new Util.BWException('While trying to cancel account: ' + uas.Utility_Account_Log__r.Account__c +
+                    ', found product: ' + uas.Opportunity__r.Product__c +
+                    ' to have a missing Cancellation Paragraph two or three');
+            }
+
+            Account account = uas.Utility_Account_Log__r.Account__r;
+            if (!accountIdToReplacementMap.containsKey(account)) {
+                accountIdToReplacementMap.put(
+                    account,
+                    new Map<String, String> {
+                        CANCELLATION_PARAGRAPH_TWO_LABEL => '',
+                        CANCELLATION_PARAGRAPH_THREE_LABEL => '',
+                        '{!Contact.FirstName}' => account.Send_Bills_Contact__r.FirstName
+                    }
+                );
+            }
+            Map<String, String> replacementMap = accountIdToReplacementMap.get(account);
+            // If two opportunities have products with conflicting cancellation information, we should show a default
+            // cancellation message
+            if (replacementMap.get(CANCELLATION_PARAGRAPH_TWO_LABEL) == '') {
+                replacementMap.put(CANCELLATION_PARAGRAPH_TWO_LABEL, uas.Opportunity__r.Product__r.Cancellation_Paragraph_Two__c);
+            } else if (replacementMap.get(CANCELLATION_PARAGRAPH_TWO_LABEL) != uas.Opportunity__r.Product__r.Cancellation_Paragraph_Two__c) {
+                replacementMap.put(CANCELLATION_PARAGRAPH_TWO_LABEL, DEFAULT_CANCELLATION_PARAGRAPH_TWO);
+            }
+            if (replacementMap.get(CANCELLATION_PARAGRAPH_THREE_LABEL) == '') {
+                replacementMap.put(CANCELLATION_PARAGRAPH_THREE_LABEL, uas.Opportunity__r.Product__r.Cancellation_Paragraph_Three__c);
+            } else if (replacementMap.get(CANCELLATION_PARAGRAPH_THREE_LABEL) != uas.Opportunity__r.Product__r.Cancellation_Paragraph_Three__c) {
+                replacementMap.put(CANCELLATION_PARAGRAPH_THREE_LABEL, DEFAULT_CANCELLATION_PARAGRAPH_THREE);
+            }
+        }
+
+        return accountIdToReplacementMap;
+    }
+
     private static Messaging.SingleEmailMessage createCSEmail(Account account, String template, String subject) {
+        return createCSEmail(account, template, subject, new Map<String, String>{'{!Contact.FirstName}' => account.Send_Bills_Contact__r.FirstName});
+    }
+
+    private static Messaging.SingleEmailMessage createCSEmail(Account account, String template, String subject, Map<String, String> replacements) {
         Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
         mail.setOrgWideEmailAddressId(MessagingService.getCustomerCareEmail().Id);
         mail.setSubject(subject);
@@ -85,8 +141,7 @@ public without sharing class CSCancellationService {
             throw new Util.BWException('Expected a Send Bills Contact Email for account (' +
                 account.Id + '), but found none');
         }
-        mail.setHtmlBody(MessagingService.getHtml(template).HtmlValue.replace('{!Account.Name}',
-            account.Send_Bills_Contact__r.FirstName));
+        mail.setHtmlBody(MessagingService.getHtmlWithReplacements(template, replacements));
         List<String> ccEmails = new List<String>();
         MessagingService.safeAddCC(account.Send_Bills_Contact__r.Additional_Email__c, ccEmails);
         MessagingService.safeAddCC(account.Additional_Contact__r.Email, ccEmails);
@@ -169,10 +224,11 @@ public without sharing class CSCancellationService {
 
         List<Opportunity> oppsToCancel = new List<Opportunity>();
         for (Opportunity opportunity : completeCSOpps) {
+            if (Opportunities.allUASesTransferring(opportunity)) {
+                continue;
+            }
             if (Opportunities.isCancelledWaitlist(opportunity) ||
-                (Opportunities.finishedBilling(opportunity) &&
-                    !Opportunities.hasActiveUASes(opportunity) &&
-                    !Opportunities.allUASesTransferring(opportunity))) {
+                (Opportunities.finishedBilling(opportunity) && !Opportunities.hasActiveUASes(opportunity))) {
                 oppsToCancel.add(opportunity);
             }
         }
@@ -188,13 +244,25 @@ public without sharing class CSCancellationService {
 
         for (Account acct : acctsReadyForCancellation) {
             if (!confirmationEmailMap.containsKey(acct.Id)) {
+                String utilityAccountNumbers = getRemovedUtilityAccountNumbers(acct);
+                Datetime dateRemovedDT = Datetime.newInstance(
+                    acct.Date_Removed_from_Project__c.year(),
+                    acct.Date_Removed_from_Project__c.month(),
+                    acct.Date_Removed_from_Project__c.day()
+                );
+                String dateRemoved = dateRemovedDT.format('MM/dd/YYYY');
                 try {
                     confirmationEmailMap.put(
                         acct.Id,
                         createCSEmail(
                             acct,
                             'CS_Project_Removal_Confirmation',
-                            'You\'ve been removed from all of your BlueWave CS Projects'
+                            'You\'ve been removed from all of your BlueWave CS Projects',
+                            new Map<String, String>{
+                                '{!Contact.FirstName}' => acct.Send_Bills_Contact__r.FirstName,
+                                '{!Date_Removed_from_Project__c}' => dateRemoved,
+                                '{!Utility_Account_Numbers}' => utilityAccountNumbers
+                            }
                         )
                     );
                 } catch (Util.BWException bwe) {
@@ -209,6 +277,28 @@ public without sharing class CSCancellationService {
             Logger.flushLogs();
         }
         return acctsReadyForCancellation;
+    }
+
+    @TestVisible
+    private static String getRemovedUtilityAccountNumbers(Account acct) {
+        Set<String> utilityAccounts = new Set<String>();
+        for (Utility_Account_Log__c ual : acct.Utility_Account_Logs__r) {
+            if (ual.Number_of_Removed_UASes__c > 0) {
+                utilityAccounts.add(ual.Name);
+            }
+        }
+        // foo,bar should read "foo and bar"
+        // foo,bar,baz should read "foo, bar, and baz"
+        String utilityAccountNumbers = String.join(new List<String>(utilityAccounts), ',');
+        if (utilityAccountNumbers.countMatches(',') == 1) {
+            utilityAccountNumbers = utilityAccountNumbers.replace(',', ' and ');
+        } else if (utilityAccountNumbers.countMatches(',') > 1) {
+            utilityAccountNumbers =
+                utilityAccountNumbers.substring(0, utilityAccountNumbers.lastIndexOf(',')) + ' and ' +
+                    utilityAccountNumbers.substring(utilityAccountNumbers.lastIndexOf(',')+1);
+            utilityAccountNumbers = utilityAccountNumbers.replace(',', ', ');
+        }
+        return utilityAccountNumbers;
     }
 
     public static List<Account> getAccountsRemovedFromAllProjects() {

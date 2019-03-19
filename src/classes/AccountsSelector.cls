@@ -26,7 +26,8 @@ public with sharing class AccountsSelector {
                 Send_Bills_Contact__c, Send_Bills_Contact__r.FirstName,
                 Send_Bills_Contact__r.Email, Send_Bills_Contact__r.Additional_Email__c,
                 Additional_Contact__r.Email, Additional_Contact__r.Additional_Email__c,
-            (SELECT Id, Number_of_Removed_UASes__c, Number_of_Subscribed_UASes__c, Last_Date_UAS_Removed_From_Project__c
+                Date_Removed_from_Project__c,
+            (SELECT Id, Name, Number_of_Removed_UASes__c, Number_of_Subscribed_UASes__c, Last_Date_UAS_Removed_From_Project__c
             FROM Utility_Account_Logs__r)
             FROM Account
             WHERE Count_of_CS_Opportunities__c > 0
