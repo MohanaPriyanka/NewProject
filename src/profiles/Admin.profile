@@ -855,6 +855,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ScheduleZSubscriptionSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ScheduleZSubscriptionSelectorTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ScheduleZTriggerHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -27704,6 +27712,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Schedule_Z_Subscription__c.Schedule_Z_Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Schedule_Z_Subscription__c.Stop_Credit_Transfer__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

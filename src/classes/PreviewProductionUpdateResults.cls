@@ -26,18 +26,25 @@ public without sharing class PreviewProductionUpdateResults{
         return scheduleZList;
     }
 
+    public static List<UASB__c> getCancelledBills (Id productionUpdateId, List<String> alreadyGeneratedList) {
+        return getCancelledBills(productionUpdateId, alreadyGeneratedList, null);
+    }
+
     @AuraEnabled
-    public static List<UASB__c> getCancelledBills (Id productionUpdateId, List<String> alreadyGeneratedList){
+    public static List<UASB__c> getCancelledBills (Id productionUpdateId, List<String> alreadyGeneratedList, Id scheduleZId) {
         Map<Id, UASB__c> cancelledUASBs = new Map<Id, UASB__c>();
 
         Energy_Usage_Update__c productionUpdate = [
-            SELECT Id, Name, Date__c, Shared_Solar_System__c
+            SELECT Id, Name, Date__c, Shared_Solar_System__c, Schedule_Z__c
             FROM Energy_Usage_Update__c
             WHERE Id = : productionUpdateId
             LIMIT 1];
+        if (scheduleZId == null) {
+            scheduleZId = productionUpdate.Schedule_Z__c;
+        }
 
         System_Properties__c sysProp = System_Properties__c.getAll().values()[0];
-        Decimal collectionsWindowDec = sysProp.Days_Generate_Bills_for_Cancelled__c;
+        Decimal collectionsWindowDec = sysProp.Days_Generate_Bills_For_Cancelled__c;
         Decimal minimumBalance = sysProp.Minimum_Balance_Bills_for_Cancelled__c;
         Integer collectionsWindow = Integer.valueOf(Util.nullToZero(collectionsWindowDec));
         minimumBalance = Util.nullToZero(minimumBalance);
@@ -82,6 +89,42 @@ public without sharing class PreviewProductionUpdateResults{
             mockBill.Name = 'Account Balance: $' + String.valueOf(uasb.System_Bill__r.Account_Bill__r.Parent_Account__r.Account_Balance__c);
             cancelledUASBs.put(mockBill.Utility_Account_Subscription__c, mockBill);
         }
+
+        // Stop Credit Transfer subscriptions aren't cancelled, but they might not be billed if there's no balance so we
+        // should show them here.
+        String whereClause = 'Schedule_Z__c = :scheduleZId ' +
+            ' AND Stop_Credit_Transfer__c = TRUE ' +
+            ' AND (Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c != \'RadianGen\' '+
+            ' OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c = \'Residential\' ' +
+            ' OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c = \'Non-Residential\' )';
+        List<Schedule_Z_Subscription__c> stoppedSZS =
+            Database.query(ScheduleZSubscriptionSelector.getQueryString(whereClause, null));
+        for (Schedule_Z_Subscription__c szs : stoppedSZS) {
+            UASB__c mockBill = new UASB__c(
+                PreGen_IsPreGen__c = true,
+                PreGen_Discounted_Bill__c = 0,
+                PreGen_NMCs_Allocated__c = 0,
+                PreGen_Name_on_Account__c = 'Stopped Credit Transfer: ' + szs.Utility_Account_Subscription__r.Name_on_Account_From_Log__c,
+                Production_Update__c = null,
+                PreGen_Schedule_Z_Status__c = szs.Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
+                PreGen_System_Share__c = 0,
+                Utility_Account_Subscription__c = szs.Utility_Account_Subscription__c,
+                PreGen_Additional_Id__c = null,
+                PreGen_Utility_Acct__c = szs.Utility_Account_Subscription__r.Utility_Account_Log__r.Name
+            );
+
+            if (szs.Utility_Account_Subscription__r.Utility_Account_Log__r.Premise_Number__c != null) {
+                mockBill.PreGen_Additional_Id__c = szs.Utility_Account_Subscription__r.Utility_Account_Log__r.Premise_Number__c;
+            }
+
+            if (!szs.Utility_Account_Subscription_Bills__r.isEmpty()) {
+                Date dateOfLastCredit = szs.Utility_Account_Subscription_Bills__r[0].System_Bill__r.Account_Bill__r.Parent_Account__r.Last_Bill_Send_Date_New_Charges__c;
+                mockBill.PreGen_CreditOnBillPeriod__c = String.valueOf(dateOfLastCredit);
+                mockBill.Name = 'Account Balance: $' + String.valueOf(szs.Utility_Account_Subscription_Bills__r[0].System_Bill__r.Account_Bill__r.Parent_Account__r.Account_Balance__c);
+            }
+            cancelledUASBs.put(mockBill.Utility_Account_Subscription__c, mockBill);
+        }
+
         return cancelledUASBs.values();
     }
 
@@ -126,31 +169,7 @@ public without sharing class PreviewProductionUpdateResults{
                 LIMIT 1
             ];
 
-            List<Schedule_Z_Subscription__c> szsList = [
-                SELECT  Name, Customer_Subscription_KW_DC__c, Utility_Account_Subscription__c, Percent_Share__c, System_Size_kW_DC__c,
-                    Utility_Account_Subscription__r.Name,
-                    Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c,
-                    Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c,
-                    Utility_Account_Subscription__r.Name_on_Account_From_Log__c,
-                    Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
-                    Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c,
-                    Utility_Account_Subscription__r.Opportunity_Stage__c,
-                    Utility_Account_Subscription__r.Opportunity__r.Product__r.Solar_Electricity_Rate__c,
-                    Utility_Account_Subscription__r.Opportunity__r.Product__r.NMC_Discount__c,
-                    Utility_Account_Subscription__r.Opportunity__r.Product__r.Pricing_Structure__c,
-                    Utility_Account_Subscription__r.Utility_Account_Log__r.Premise_Number__c,
-                    Utility_Account_Subscription__r.Utility_Account_Log__r.Name,
-                    Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Total_System_Size_kWh_DC__c,
-                    Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Method__c,
-                    Utility_Account_Subscription__r.Opportunity__r.Product__r.NM_Rate_Floor__c,
-                    Schedule_Z__r.Shared_Solar_System__r.Utility__r.Credits_Allocated_Rounding_Method__c
-                FROM Schedule_Z_Subscription__c
-                WHERE Schedule_Z__c = : scheduleZ.Id
-                AND (Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c != 'RadianGen'
-                OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c = 'Residential'
-                OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c = 'Non-Residential' )
-                ORDER BY Utility_Account_Subscription__r.Name_on_Account_From_Log__c
-            ];
+            List<Schedule_Z_Subscription__c> szsList = ScheduleZSubscriptionSelector.getListForSmallOfftake(new Set<Id>{scheduleZ.Id});
             for (Schedule_Z_Subscription__c szs: szsList) {
                 if (szs.Customer_Subscription_kW_DC__c != NULL) {
                     UASB__c newBill = getUASB(szs, production, production.Total_System_NMCs__c, production.Production__c, production.Net_Metering_Rate_Applied__c);
@@ -174,33 +193,13 @@ public without sharing class PreviewProductionUpdateResults{
             }
             return newBillList;
         } else {
-            List<Id> sssList = new List<Id> ();
-            List<Schedule_Z_Subscription__c> szsListFromAcct = [
-                SELECT Name, Customer_Subscription_KW_DC__c, Utility_Account_Subscription__c, Percent_Share__c, System_Size_kW_DC__c,
-                    Utility_Account_Subscription__r.Name,
-                    Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c,
-                    Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c,
-                    Utility_Account_Subscription__r.Name_on_Account_From_Log__c,
-                    Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
-                    Utility_Account_Subscription__r.Opportunity_Stage__c,
-                    Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c,
-                    Utility_Account_Subscription__r.Opportunity__r.Product__r.Solar_Electricity_Rate__c,
-                    Utility_Account_Subscription__r.Opportunity__r.Product__r.NMC_Discount__c,
-                    Utility_Account_Subscription__r.Opportunity__r.Product__r.Pricing_Structure__c,
-                    Utility_Account_Subscription__r.Utility_Account_Log__r.Premise_Number__c,
-                    Utility_Account_Subscription__r.Utility_Account_Log__r.Name,
-                    Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Id,
-                    Utility_Account_Subscription__r.Opportunity__r.shared_solar_system__r.Total_System_Size_kWh_DC__c,
-                    Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Method__c,
-                    Utility_Account_Subscription__r.Opportunity__r.Product__r.NM_Rate_Floor__c,
-                    Schedule_Z__r.Shared_Solar_System__r.Utility__r.Credits_Allocated_Rounding_Method__c
-                FROM Schedule_Z_Subscription__c
-                WHERE Utility_Account_Subscription__r.Utility_Account_Log__r.Account__r.Id = : parentId
-                AND (Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c = 'Bluewave'
-                OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c = 'Residential'
-                OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c = 'Non-Residential' )
-                ORDER BY Name
-            ];
+            List<Id> sssList = new List<Id>();
+            String whereClause = 'Utility_Account_Subscription__r.Utility_Account_Log__r.Account__r.Id = : parentId' +
+                ' AND (Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c = \'Bluewave\' '+
+                ' OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c = \'Residential\' ' +
+                ' OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c = \'Non-Residential\' )';
+            List<Schedule_Z_Subscription__c> szsListFromAcct =
+                Database.query(ScheduleZSubscriptionSelector.getQueryString(whereClause, null));
             for (Schedule_Z_Subscription__c szs : szsListFromAcct) {
                 sssList.add(szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c);
             }

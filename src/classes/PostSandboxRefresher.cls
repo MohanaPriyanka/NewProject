@@ -719,7 +719,11 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             List<Energy_Usage_Update__c> trigProdUp;
             trigProdUp = ProductionUpdateSelector.getAllProductionUpdatesById(new List<Id>{productionupdateA1.Id, prodUpdateBB.Id});
             EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(trigProdUp);
-            ee.runBills();
+            // We want to skip running in a batch, so that we can set the Account Bills to published before starting
+            // the next round of bills (so that the bill number is updated appropriately)
+            ee.createBills(ScheduleZSubscriptionSelector.getListForSmallOfftake(ee.scheduleZs));
+            ee.finish(null);
+            setBillsToPublished();
 
             if (!Test.isRunningTest()) {
                 System.enqueueJob(new PostSandboxRefresher.ProductionUpdateHelper2());
@@ -773,7 +777,9 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             List<Energy_Usage_Update__c> trigProdUp;
             trigProdUp = ProductionUpdateSelector.getAllProductionUpdatesById(new List<Id>{productionupdateB2.Id, prodUpdateCC.Id});
             EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(trigProdUp);
-            ee.runBills();
+            ee.createBills(ScheduleZSubscriptionSelector.getListForSmallOfftake(ee.scheduleZs));
+            ee.finish(null);
+            setBillsToPublished();
 
             if (!Test.isRunningTest()) {
                 System.enqueueJob(new PostSandboxRefresher.ProductionUpdateHelper3());
@@ -827,26 +833,9 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             List<Energy_Usage_Update__c> trigProdUp;
             trigProdUp = ProductionUpdateSelector.getAllProductionUpdatesById(new List<Id>{productionupdateB3.Id, prodUpdateDD.Id});
             EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(trigProdUp);
-            ee.runBills();
-
-            if (!Test.isRunningTest()) {
-                System.enqueueJob(new PostSandboxRefresher.AccountBillHelper());
-            }
-        }
-    }
-
-    global class AccountBillHelper implements Queueable {
-        global void execute(QueueableContext context) {
-            List <Account_Bill__c> listaccountBills = [
-                SELECT Id, Published__c
-                FROM Account_Bill__c
-            ];
-
-            for (Account_Bill__c acctBill : listaccountBills) {
-                acctBill.Published__c = true;
-            }
-
-            update listaccountBills;
+            ee.createBills(ScheduleZSubscriptionSelector.getListForSmallOfftake(ee.scheduleZs));
+            ee.finish(null);
+            setBillsToPublished();
 
             if (!Test.isRunningTest()) {
                 System.enqueueJob(new PostSandboxRefresher.PaymentHelper());
@@ -864,11 +853,12 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             ];
 
             List<Account_Bill__c> accountbilllist = [
-                SELECT Id, Name, Carry_Over_Balance__c,
-                    Bill_Number__c, Property_Account_ID__c
+                SELECT Id, Name, Carry_Over_Balance__c, Bill_Number__c, Property_Account_ID__c, (
+                    SELECT Id, Shared_Solar_System__r.BWC_Project_Entity_Manual__c FROM System_Bills__r LIMIT 1
+                )
                 FROM Account_Bill__c
                 WHERE Total_Due__c > 0
-                ORDER BY Bill_Number__c DESC
+                ORDER BY Date__c DESC
                 LIMIT 3
             ];
 
@@ -887,7 +877,9 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                         ChargentOrders__Card_Number__c = '411111111111',
                         ChargentOrders__Card_Expiration_Month__c = '02',
                         ChargentOrders__Card_Expiration_Year__c = '2018',
-                        ChargentOrders__Card_Last_4__c = '1111');
+                        ChargentOrders__Card_Last_4__c = '1111',
+                        Entity__c = accountbill.System_Bills__r[0].Shared_Solar_System__r.BWC_Project_Entity_Manual__c
+                    );
                 insert orderA;
 
                 ChargentOrders__Transaction__c transA =
@@ -1055,6 +1047,18 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         insert new List<Utility_Account_Subscription__c>{
             uas1, uas2, uas3, uas4, uas5, uas6
         };
+    }
+
+    public static void setBillsToPublished() {
+        List <Account_Bill__c> listAccountBills = [
+            SELECT Id, Published__c
+            FROM Account_Bill__c
+            WHERE Published__c = FALSE
+        ];
+        for (Account_Bill__c acctBill : listAccountBills) {
+            acctBill.Published__c = True;
+        }
+        update listAccountBills;
     }
 
     public static void deleteCSRecords() {
