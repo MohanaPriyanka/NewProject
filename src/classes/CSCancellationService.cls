@@ -93,9 +93,14 @@ public without sharing class CSCancellationService {
                 continue;
             }
             if (uas.Opportunity__r.Product__r.Cancellation_Paragraph_Two__c == null) {
-                throw new Util.BWException('While trying to cancel account: ' + uas.Utility_Account_Log__r.Account__c +
-                    ', found product: ' + uas.Opportunity__r.Product__c +
-                    ' to have a missing Cancellation Paragraph two or three');
+                String text = 'While trying to cancel this account, we found product: ' + uas.Opportunity__r.Product__c +
+                    ' to have a missing Cancellation Paragraph Two. Please ask an administrator to update it.';
+                if (Trigger.new != null) {
+                    ((Account) Trigger.new[0]).Cancellation_Request_Date__c.addError(text);
+                    return accountIdToReplacementMap;
+                } else {
+                    throw new Util.BWException(text);
+                }
             }
 
             Account account = uas.Utility_Account_Log__r.Account__r;
@@ -257,7 +262,7 @@ public without sharing class CSCancellationService {
                         createCSEmail(
                             acct,
                             'CS_Project_Removal_Confirmation',
-                            'You\'ve been removed from all of your BlueWave CS Projects',
+                            'Subscription Removal Confirmation',
                             new Map<String, String>{
                                 '{!Contact.FirstName}' => acct.Send_Bills_Contact__r.FirstName,
                                 '{!Date_Removed_from_Project__c}' => dateRemoved,
@@ -385,7 +390,7 @@ public without sharing class CSCancellationService {
                     account.Id,
                     createCSEmail(account,
                         'CS_Termination_Confirmation',
-                        'Your CS account has been terminated')
+                        'Account Closed Confirmation')
                 );
             } catch (Util.BWException bwe) {
                 Logger.logLater('CSCancellationService', 'sendTerminationConfirmationEmails', bwe.getMessage());

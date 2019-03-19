@@ -1540,8 +1540,9 @@ public with sharing class CSCancellationServiceTest {
         Boolean exceptionCaught = false;
         try {
             CSCancellationService.accountToCancellationParagraphs(UASSelector.selectByAccounts(new Set<Id>{opportunity.AccountId}));
-        } catch (Util.BWException bwe) {
+        } catch (Exception bwe) {
             exceptionCaught = true;
+            System.assert(bwe.getMessage().contains('Cancellation Paragraph Two'));
         }
         System.assertEquals(true, exceptionCaught);
 
@@ -1553,6 +1554,7 @@ public with sharing class CSCancellationServiceTest {
             CSCancellationService.accountToCancellationParagraphs(UASSelector.selectByAccounts(new Set<Id>{opportunity.AccountId}));
         } catch (Util.BWException bwe) {
             exceptionCaught = true;
+            System.assert(false);
         }
         System.assertEquals(false, exceptionCaught);
 
