@@ -605,6 +605,23 @@ IF ( Total_System_Size_kW_AC_QC__c &gt; 1000, &quot;Class 3&quot;, null)))</form
         <type>Summary</type>
     </fields>
     <fields>
+        <fullName>Count_of_Transfers__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Rollup of Production Update field. All PU where Bills Generated = true. Increases by every non zero transfer (ie, multiple transfers count as &gt;1 and $0 transfers don&apos;t count)</inlineHelpText>
+        <label>Count of Transfers</label>
+        <summarizedField>Energy_Usage_Update__c.Count_of_Transfers__c</summarizedField>
+        <summaryFilterItems>
+            <field>Energy_Usage_Update__c.Generate_Bills__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Energy_Usage_Update__c.Shared_Solar_System__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
         <fullName>Credit_Score_Requirement__c</fullName>
         <defaultValue>700</defaultValue>
         <externalId>false</externalId>
