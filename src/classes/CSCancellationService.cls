@@ -169,10 +169,11 @@ public without sharing class CSCancellationService {
 
         List<Opportunity> oppsToCancel = new List<Opportunity>();
         for (Opportunity opportunity : completeCSOpps) {
+            if (Opportunities.allUASesTransferring(opportunity)) {
+                continue;
+            }
             if (Opportunities.isCancelledWaitlist(opportunity) ||
-                (Opportunities.finishedBilling(opportunity) &&
-                    !Opportunities.hasActiveUASes(opportunity) &&
-                    !Opportunities.allUASesTransferring(opportunity))) {
+                (Opportunities.finishedBilling(opportunity) && !Opportunities.hasActiveUASes(opportunity))) {
                 oppsToCancel.add(opportunity);
             }
         }
