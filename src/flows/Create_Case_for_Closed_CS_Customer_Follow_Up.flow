@@ -759,6 +759,68 @@
                     <stringValue>Placeholder Partner</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.Partner_tag_lookup__r.Name</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>BlueWave Inside Sales</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.Partner_tag_lookup__r.Name</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>BlueWave Test Partner</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>myRule_6_pmetdec</targetReference>
             </connector>
@@ -1513,6 +1575,68 @@
                     <stringValue>Placeholder Partner</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_old.Partner_tag_lookup__r.Name</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>BlueWave Inside Sales</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_old.Partner_tag_lookup__r.Name</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>BlueWave Test Partner</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>myDecision7</targetReference>
             </connector>
@@ -1530,7 +1654,7 @@
 &apos;Contract Close Date = &apos; + text([Opportunity].Contract_Close_Date__c ) + &apos;.&apos;</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_2_myRule_1_A1_3308089278</name>
+        <name>formula_2_myRule_1_A1_0431561533</name>
         <dataType>String</dataType>
         <expression>&apos;Call &apos; + {!myVariable_current.Name} + &apos; to verify contact info and run through checkpoint list.  &apos; +
 &apos;Project = &apos; + {!myVariable_current.Shared_Solar_System_Name__c} + &apos;.  &apos; +
@@ -1544,7 +1668,7 @@
                 <stringValue>[Opportunity].Id </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_3_myRule_1_A1_7251868392</name>
+        <name>formula_3_myRule_1_A1_4920643144</name>
         <dataType>String</dataType>
         <expression>{!myVariable_current.Id}</expression>
     </formulas>
@@ -1555,11 +1679,11 @@
                 <stringValue>&apos;CS New Customer Onboarding - &apos; + [Opportunity].Name </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_4_myRule_1_A1_6756870248</name>
+        <name>formula_4_myRule_1_A1_0389192688</name>
         <dataType>String</dataType>
         <expression>&apos;CS New Customer Onboarding - &apos; + {!myVariable_current.Name}</expression>
     </formulas>
-    <interviewLabel>Create_Case_for_Closed_CS_Customer_Follow_Up-28_InterviewLabel</interviewLabel>
+    <interviewLabel>Create_Case_for_Closed_CS_Customer_Follow_Up-29_InterviewLabel</interviewLabel>
     <label>Case Create  for Closed CS Customer Follow-Up</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -1829,7 +1953,7 @@
             </processMetadataValues>
             <field>Case_Detail__c</field>
             <value>
-                <elementReference>formula_2_myRule_1_A1_3308089278</elementReference>
+                <elementReference>formula_2_myRule_1_A1_0431561533</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -1889,7 +2013,7 @@
             </processMetadataValues>
             <field>Related_Opportunity__c</field>
             <value>
-                <elementReference>formula_3_myRule_1_A1_7251868392</elementReference>
+                <elementReference>formula_3_myRule_1_A1_4920643144</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -1949,7 +2073,7 @@
             </processMetadataValues>
             <field>Subject</field>
             <value>
-                <elementReference>formula_4_myRule_1_A1_6756870248</elementReference>
+                <elementReference>formula_4_myRule_1_A1_0389192688</elementReference>
             </value>
         </inputAssignments>
         <object>Case</object>
