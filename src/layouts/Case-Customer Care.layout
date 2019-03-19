@@ -387,6 +387,9 @@
         <relatedList>BlueWave_Surveys__c.Case__c</relatedList>
     </relatedLists>
     <relatedLists>
+        <relatedList>RelatedCaseContactRoleList</relatedList>
+    </relatedLists>
+    <relatedLists>
         <relatedList>RelatedEntityHistoryList</relatedList>
     </relatedLists>
     <relatedLists>
