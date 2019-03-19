@@ -104,11 +104,11 @@ public without sharing class DocuSignHelper {
             connect();
             DocuSignAPI.VoidEnvelopeStatus result = dsAPI.VoidEnvelope(envelopeId, reason);
             if (result == null || !result.VoidSuccess) {
-                Logger.logLater('DocuSignHelper', 'checkAndRegeneratePackage', 'Unsuccessful void for envelope ' + envelopeId);
+                Logger.logLater('DocuSignHelper', 'checkAndRegeneratePackage', 'Unsuccessful void for envelope ' + envelopeId, 'Error');
             }
         } catch (CalloutException e) {
             Logger.logLater('DocuSignHelper', 'checkAndRegeneratePackage',
-                'Callout Exception caught voiding envelope ' + envelopeId + ' error message: ' + e.getMessage());
+                'Callout Exception caught voiding envelope ' + envelopeId + ' error message: ' + e.getMessage(), 'Error');
         }
     }
 
@@ -143,11 +143,11 @@ public without sharing class DocuSignHelper {
                 WHERE Id IN : oppIdList
             ];
             Integer oppNumber = 1;
-            Logger.logLater('DocuSignHelper', 'sendCSPackageFuture', 'Sending contracts for these opportunities ' + oppIdList);
+            Logger.logLater('DocuSignHelper', 'sendCSPackageFuture', 'Sending contracts for these opportunities ' + oppIdList, 'Info');
             for (Opportunity opp : oppList) {
                 try {
                     Logger.logLater('DocuSignHelper', 'sendCSPackageFuture',
-                        'Sending contract ' + opp.Id + '(' + oppNumber + ') of ' + oppList.size());
+                        'Sending contract ' + opp.Id + '(' + oppNumber + ') of ' + oppList.size(), 'Info');
                     sendCSPackage(opp, oppNumber, oppList.size());
                 } catch (Util.BWException bwe) {
                     break;
@@ -156,7 +156,7 @@ public without sharing class DocuSignHelper {
             }
         } catch (Exception e) {
             Logger.logLater('DocuSignHelper', 'sendCSPackageFuture', 'Caught unhandled exception sending contracts: ' +
-                e.getMessage());
+                e.getMessage(), 'Error');
         } finally {
             Logger.flushLogs();
         }
@@ -210,7 +210,7 @@ public without sharing class DocuSignHelper {
             } else {
                 Logger.logLater('DocuSignHelper', 'sendLoanPackage',
                     'Found unexpected recipient role: ' + System.JSON.serializePretty(r) +
-                        ' while processing Opportunity: ' + System.JSON.serializePretty(opp));
+                        ' while processing Opportunity: ' + System.JSON.serializePretty(opp), 'Error');
             }
         }
 
@@ -246,7 +246,7 @@ public without sharing class DocuSignHelper {
             } else {
                 Logger.logLater('DocuSignHelper', 'sendLoanPackage',
                     'Unsuccessful CreateEnvelopeFromTemplatesAndForms for Opportunity ' + opp.Id +
-                        ' error message: ' + e.getMessage());
+                        ' error message: ' + e.getMessage(), 'Error');
             }
         }
         if (opp.Partner_Tasks__r[0] != null && (queuedJobForSending || result != null)) {
@@ -286,7 +286,7 @@ public without sharing class DocuSignHelper {
                 r.UserName = opp.Parent_Account_Name__c;
                 r.Email = opp.Email__c;
             } else {
-                Logger.logLater('DocuSignHelper', 'sendCSPackage', 'error in mapping this recipient:' + String.valueOf(r.RoleName));
+                Logger.logLater('DocuSignHelper', 'sendCSPackage', 'error in mapping this recipient:' + String.valueOf(r.RoleName), 'Error');
             }
         }
         DocuSignAPI.InlineTemplate it = new DocuSignAPI.InlineTemplate();
@@ -317,7 +317,7 @@ public without sharing class DocuSignHelper {
             } else {
                 Logger.logLater('DocuSignHelper', 'sendCSPackage',
                     'Unsuccessful CreateEnvelopeFromTemplatesAndForms for Opportunity ' + opp.Id +
-                        ' error message: ' + e.getMessage());
+                        ' error message: ' + e.getMessage(), 'Error');
             }
         }
         // Don't flush logs here, since this is called in a loop which will result in another callout
@@ -357,7 +357,6 @@ public without sharing class DocuSignHelper {
         String json = res.getBody();
         DocuSignHelper result = (DocuSignHelper) System.JSON.deserialize(json, DocuSignHelper.class);
         if (result.errorCode != null) {
-            Logger.logLater('DocuSignHelper', 'getBaseUrl', result.message);
             throw new Util.BWException(result.message);
         }
         return result;

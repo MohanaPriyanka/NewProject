@@ -159,6 +159,16 @@
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <fields>
+        <fullName>Stop_Credit_Transfer__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>If checked, skips Account Bill creation for this subscription. Used to handle finaled utility accounts that no longer receive credits, but are still on the credit allocation schedule. Set manually when previewing bills and comparing to a transfer sheet.</inlineHelpText>
+        <label>Stop Credit Transfer</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Submitted__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -206,5 +216,13 @@
     <pluralLabel>Schedule Z Subscriptions</pluralLabel>
     <searchLayouts/>
     <sharingModel>ControlledByParent</sharingModel>
+    <validationRules>
+        <fullName>Cannot_Stop_Credit_Transfer</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(Stop_Credit_Transfer__c,
+    NOT(Utility_Account_Subscription__r.Finaled__c))</errorConditionFormula>
+        <errorDisplayField>Stop_Credit_Transfer__c</errorDisplayField>
+        <errorMessage>You cannot stop a credit transfer unless the UAS is finaled (by setting the Date Utility Account Cancelled on the UAL)</errorMessage>
+    </validationRules>
     <visibility>Public</visibility>
 </CustomObject>

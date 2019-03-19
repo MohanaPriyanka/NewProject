@@ -43,17 +43,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         if (!Test.isRunningTest()) {
             Database.executeBatch(this, Integer.valueOf(csBillBatchSize));
         } else {
-            List<Schedule_Z_Subscription__c> scheduleZSubscriptions = [
-                SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Name,Utility_Account_Subscription__r.Opportunity__c,
-                    Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c,
-                    Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c
-                FROM Schedule_Z_Subscription__c
-                WHERE Schedule_Z__c IN : scheduleZs
-                AND (Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c != 'RadianGen'
-                OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c = 'Residential'
-                OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c = 'Non-Residential')
-            ];
-            createBills(scheduleZSubscriptions);
+            createBills(ScheduleZSubscriptionSelector.getListForSmallOfftake(scheduleZs));
         }
     }
 
@@ -86,8 +76,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             cancelledUASes.add(uasb.Utility_Account_Subscription__c);
             cancelledOpps.add(uasb.System_Bill__r.Opportunity__r.Id);
         }
-        List<Schedule_Z_Subscription__c> szsList = new List<Schedule_Z_Subscription__c>();
-        createBills(szsList);
+        createBills(ScheduleZSubscriptionSelector.getListForSmallOfftake(scheduleZs));
     }
 
     private static String getDate(Energy_Usage_Update__c euu) {
@@ -96,13 +85,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
 
     // Batch into groups of Schedule Z Subscriptions:
     public Database.QueryLocator start(Database.BatchableContext bc) {
-        String query =  'SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Opportunity__c ' +
-            ' FROM Schedule_Z_Subscription__c ' +
-            ' WHERE Schedule_Z__c IN : scheduleZs ' +
-            ' AND ( Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c!= \'RadianGen\' ' +
-            ' OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c= \'Residential\' ' +
-            ' OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c= \'Non-Residential\' )';
-        return Database.getQueryLocator(query);
+        return ScheduleZSubscriptionSelector.getQueryLocatorForSmallOfftake(scheduleZs);
     }
 
     // Execute this code block in batches to avoid CPU Limit:
