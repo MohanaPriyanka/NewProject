@@ -429,6 +429,11 @@ public with sharing class CSCancellationServiceTest {
         // Simulate the customer requesting their account be cancelled, which should set the UAS to Inactive Subscription
         update accounts;
 
+        Map<Id, Opportunity> opportunityMap = new Map<Id, Opportunity>(OpportunitiesSelector.selectAllCompleteCSWithUASesAndSystemBills());
+        for (Opportunity opportunity : opportunityMap.values()) {
+            System.assert(Opportunities.isCancelledWaitlist(opportunityMap.get(opportunity.Id)));
+        }
+
         Test.startTest();
         CSCancellationService.cancelOpportunities(CSCancellationService.getOpportunitiesToCancel());
         Test.stopTest();
@@ -441,6 +446,68 @@ public with sharing class CSCancellationServiceTest {
         System.assertEquals(3, oppList.size());
         for (Opportunity opp : oppList) {
             System.assertEquals('Cancelled', opp.StageName);
+        }
+    }
+
+    // Transferring subscriptions shouldn't be cancelled, even if they are on a waitlist.
+    @IsTest static void testOppCancellationOnWaitlistButTransferring() {
+        // Delete Schedule Z Subscriptions to make it look like the customer has not been subscribed
+        List<Schedule_Z_Subscription__c> szses = [
+            SELECT Id
+            FROM Schedule_Z_Subscription__c
+        ];
+        delete szses;
+
+        // Set UASes to inactive, since a waitlist customer wouldn't have an active subscription, and transferring to test
+        List<Utility_Account_Subscription__c> uases = [
+            SELECT Id, Opportunity__c
+            FROM Utility_Account_Subscription__c
+        ];
+        for (Utility_Account_Subscription__c uas : uases) {
+            uas.Transferring_Subsc_to_Another_UAS__c = true;
+            uas.Next_Schedule_Z_Status__c = 'Inactive Subscription';
+        }
+        update uases;
+
+        List<Opportunity> oppList = [
+            SELECT Id, Account.Id, Account.Cancellation_Request_Date__c, StageName
+            FROM Opportunity
+        ];
+        System.assertEquals(3, oppList.size());
+
+        List<Account> accounts = new List<Account>();
+        for (Opportunity opportunity : oppList) {
+            System.assertEquals(null, opportunity.Account.Cancellation_Request_Date__c);
+            System.assertEquals('Complete', opportunity.StageName);
+            accounts.add(
+                new Account(
+                    Id = opportunity.Account.Id,
+                    Cancellation_Reason__c = 'Other',
+                    Cancellation_Request_Date__c = Date.today()
+                )
+            );
+        }
+        // Simulate the customer requesting their account be cancelled, which should set the UAS to Inactive Subscription
+        update accounts;
+
+        Map<Id, Opportunity> opportunityMap = new Map<Id, Opportunity>(OpportunitiesSelector.selectAllCompleteCSWithUASesAndSystemBills());
+        for (Opportunity opportunity : opportunityMap.values()) {
+            System.assert(Opportunities.isCancelledWaitlist(opportunityMap.get(opportunity.Id)));
+            System.assert(Opportunities.allUASesTransferring(opportunityMap.get(opportunity.Id)));
+        }
+
+        Test.startTest();
+        CSCancellationService.cancelOpportunities(CSCancellationService.getOpportunitiesToCancel());
+        Test.stopTest();
+
+        oppList = [
+            SELECT Id, StageName
+            FROM Opportunity
+        ];
+
+        System.assertEquals(3, oppList.size());
+        for (Opportunity opp : oppList) {
+            System.assertEquals('Complete', opp.StageName);
         }
     }
 
