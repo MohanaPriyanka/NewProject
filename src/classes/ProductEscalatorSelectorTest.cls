@@ -8,6 +8,6 @@ public with sharing class ProductEscalatorSelectorTest {
         Map<Id, List<Product_Escalator__c>> scheduleMap = ProductEscalatorSelector.getProductEscalationMap();
 
         System.assertEquals(2,scheduleMap.size());
-        System.assertEquals(20,scheduleMap.get(oldAmpSchedule.Id).size());
+        System.assertEquals(21,scheduleMap.get(oldAmpSchedule.Id).size());
     }
 }

@@ -191,27 +191,11 @@ public without sharing class UtilityAccountBillTriggerHandler {
 
     }
 
-    public static Map<Id, List<Product_Escalator__c>> getProductEscalationMap(){
-        Map<Id, List<Product_Escalator__c>> escalatorMap = new Map<Id, List<Product_Escalator__c>>();
-        for (Product_Escalation_Schedule__c productSchedule : [
-            SELECT Id,
-            ( SELECT Id, Product_Escalation_Schedule__c,
-                New_NMC_Discount__c, New_Solar_Electricity_Rate__c,
-                Number_of_Credit_Transfers__c
-            FROM Product_Escalators__r
-            ORDER BY Number_of_Credit_Transfers__c DESC)
-            FROM Product_Escalation_Schedule__c
-        ]) {
-            escalatorMap.put(productSchedule.Id, productSchedule.Product_Escalators__r);
-        }
-        return escalatorMap;
-    }
-
     // Dependent on list of escalators being ordered by Number_of_Credit_Transfers__c descending
     public static Product_Escalator__c getProductEscalator( Schedule_Z_Subscription__c szs,
                                                             Decimal transferCount){
         if (productEscalatorMap == null){
-            Map<Id, List<Product_Escalator__c>> productMap = getProductEscalationMap();
+            Map<Id, List<Product_Escalator__c>> productMap = ProductEscalatorSelector.getProductEscalationMap();
             productEscalatorMap = productMap;
         }
 
@@ -222,7 +206,7 @@ public without sharing class UtilityAccountBillTriggerHandler {
         if (productEscalatorMap.containsKey(mapKeyScheduleId)) {
             escalatorList = productEscalatorMap.get(mapKeyScheduleId);
             for (Product_Escalator__c escalator : escalatorList) {
-                if (escalator.Number_of_Credit_Transfers__c <= transferCount) {
+                if (escalator.Starting_Credit_Transfer__c <= transferCount) {
                     activeEscalator = escalator;
                     break;
                 }
@@ -292,9 +276,11 @@ public without sharing class UtilityAccountBillTriggerHandler {
                                     Shared_Solar_System__c = szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c,
                                     Billing_Period_Start_Date__c = prodUpdate.Billing_Period_Start_Date__c,
                                     Billing_Period_End_Date__c = prodUpdate.Billing_Period_End_Date__c,
+                                    NMC_Discount__c = szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.NMC_Discount__c,
                                     Total_System_Size_kW_DC__c = szs.Utility_Account_Subscription__r.Opportunity__r.shared_solar_system__r.Total_System_Size_kWh_DC__c,
                                     NM_Rate_Floor__c = szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.NM_Rate_Floor__c,
                                     Pricing_Structure__c = szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.Pricing_Structure__c,
+                                    Solar_Electricity_Rate__c = szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.Solar_Electricity_Rate__c,
                                     NMC_Rate__c = nmcRate,
                                     Total_System_NMCs__c = systemNMCs,
                                     Total_System_Production_kWh__c = systemProduction,
@@ -310,9 +296,6 @@ public without sharing class UtilityAccountBillTriggerHandler {
         if (escalatorProduct != null){
             generatedUASB.NMC_Discount__c = escalatorProduct.New_NMC_Discount__c;
             generatedUASB.Solar_Electricity_Rate__c = escalatorProduct.New_Solar_Electricity_Rate__c;
-        } else {
-            generatedUASB.NMC_Discount__c = szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.NMC_Discount__c;
-            generatedUASB.Solar_Electricity_Rate__c = szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.Solar_Electricity_Rate__c;
         }
 
         return generatedUASB;

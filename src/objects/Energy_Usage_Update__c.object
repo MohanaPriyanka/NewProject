@@ -203,30 +203,12 @@
     <fields>
         <fullName>Count_of_Transfers__c</fullName>
         <externalId>false</externalId>
-        <formula>IF(
-AND(
-Total_System_NMCs__c &gt; 0,
-Total_System_NMCs_2_of_4__c &gt; 0, 
-Total_System_NMCs_3_of_4__c &gt; 0, 
-Total_System_NMCs_4_of_4__c &gt; 0
-),4,
-IF(
-AND(
-Total_System_NMCs__c &gt; 0,
-Total_System_NMCs_2_of_4__c &gt; 0, 
-Total_System_NMCs_3_of_4__c &gt; 0
-),3,
-IF(
-AND(
-Total_System_NMCs__c &gt; 0,
-Total_System_NMCs_2_of_4__c &gt; 0
-),2,
-IF(
-Total_System_NMCs__c &gt; 0
-,1,
-0)
-)))</formula>
+        <formula>IF(Total_System_NMCs__c &gt; 0, 1, 0) + 
+IF(Total_System_NMCs_2_of_4__c &gt; 0, 1, 0) + 
+IF(Total_System_NMCs_3_of_4__c &gt; 0, 1, 0) + 
+IF(Total_System_NMCs_4_of_4__c &gt; 0, 1, 0)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Rolls up to SSS field. Increases by every non zero transfer (ie, multiple transfers count as &gt;1 and $0 transfers don&apos;t count)</inlineHelpText>
         <label>Count of Transfers</label>
         <precision>18</precision>
         <required>false</required>

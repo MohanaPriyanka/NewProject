@@ -27,7 +27,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             euuYears.add(euu.YearDate__c);
         }
 
-        productScheduleToEscalationMap = UtilityAccountBillTriggerHandler.getProductEscalationMap();
+        productScheduleToEscalationMap = ProductEscalatorSelector.getProductEscalationMap();
 
         for (Account_Bill__c accountBill : [
             SELECT Id, Unique_ID__c

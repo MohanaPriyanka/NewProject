@@ -577,12 +577,12 @@ public class ProductEscalationTest {
 
         Product_Escalator__c escalatorOne = new Product_Escalator__c (
             Product_Escalation_Schedule__c = newSchedule.Id,
-            Number_of_Credit_Transfers__c = 0,
+            Starting_Credit_Transfer__c = 1,
             New_NMC_Discount__c = 100
         );
         Product_Escalator__c escalatorTwo = new Product_Escalator__c (
             Product_Escalation_Schedule__c = newSchedule.Id,
-            Number_of_Credit_Transfers__c = 5,
+            Starting_Credit_Transfer__c = 5,
             New_NMC_Discount__c = 10
         );
         insert new List<Product_Escalator__c>{escalatorOne, escalatorTwo};
@@ -676,9 +676,9 @@ public class ProductEscalationTest {
 
         Product_Escalation_Schedule__c newSchedule = ProductService.createEscalationSchedule(0.03, 0.14, 20, 2);
 
-        System.assertEquals(4,newSchedule.Product_Escalators__r[2].Number_of_Credit_Transfers__c);
-        System.assertEquals(6,newSchedule.Product_Escalators__r[3].Number_of_Credit_Transfers__c);
-        System.assertEquals(8,newSchedule.Product_Escalators__r[4].Number_of_Credit_Transfers__c);
+        System.assertEquals(4,newSchedule.Product_Escalators__r[2].Starting_Credit_Transfer__c);
+        System.assertEquals(6,newSchedule.Product_Escalators__r[3].Starting_Credit_Transfer__c);
+        System.assertEquals(8,newSchedule.Product_Escalators__r[4].Starting_Credit_Transfer__c);
         System.assertEquals(0.1485,newSchedule.Product_Escalators__r[2].New_Solar_Electricity_Rate__c);
         System.assertEquals(0.1530,newSchedule.Product_Escalators__r[3].New_Solar_Electricity_Rate__c);
         System.assertEquals(0.1576,newSchedule.Product_Escalators__r[4].New_Solar_Electricity_Rate__c);
