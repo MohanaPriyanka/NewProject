@@ -53,8 +53,8 @@
                 <field>Shared_Solar_System__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Size_off_NMCs__c</field>
+                <behavior>Readonly</behavior>
+                <field>Billing_Method__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -70,14 +70,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Total_System_NMCs__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Utility_Bill_Line_Total__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Total_NMCs__c</field>
             </layoutItems>
             <layoutItems>
                 <emptySpace>true</emptySpace>
@@ -127,14 +119,6 @@
                 <behavior>Edit</behavior>
                 <field>Net_Metering_Rate_Applied_2_of_4__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Total_NMCs_2_of_4__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Utility_Bill_Line_Total_2__c</field>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -150,14 +134,6 @@
                 <field>Net_Metering_Rate_Applied_3_of_4__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Utility_Bill_Line_Total_3__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Total_NMCs_3_of_4__c</field>
-            </layoutItems>
-            <layoutItems>
                 <emptySpace>true</emptySpace>
             </layoutItems>
             <layoutItems>
@@ -171,14 +147,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Net_Metering_Rate_Applied_4_of_4__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Total_NMCs_4_of_4__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Utility_Bill_Line_Total_4__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -357,13 +325,6 @@
         <fields>OWNER_NAME</fields>
         <fields>CASES.PRIORITY</fields>
         <relatedList>Case.Production_Update__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <fields>Group__c</fields>
-        <fields>Type__c</fields>
-        <fields>Amount__c</fields>
-        <relatedList>Utility_Bill_Line_Item__c.Production_Update__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
