@@ -4,6 +4,17 @@
         <subtabComponents>
             <containers>
                 <isContainerAutoSizeEnabled>true</isContainerAutoSizeEnabled>
+                <region>Right</region>
+                <sidebarComponents>
+                    <componentType>KnowledgeOne</componentType>
+                    <unit>Percentage</unit>
+                </sidebarComponents>
+                <style>Stack</style>
+                <unit>Pixel</unit>
+                <width>250</width>
+            </containers>
+            <containers>
+                <isContainerAutoSizeEnabled>true</isContainerAutoSizeEnabled>
                 <region>Left</region>
                 <sidebarComponents>
                     <componentType>Lookup</componentType>
@@ -395,7 +406,7 @@
     <showEmailCheckbox>true</showEmailCheckbox>
     <showHighlightsPanel>true</showHighlightsPanel>
     <showInteractionLogPanel>true</showInteractionLogPanel>
-    <showKnowledgeComponent>true</showKnowledgeComponent>
+    <showKnowledgeComponent>false</showKnowledgeComponent>
     <showRunAssignmentRulesCheckbox>true</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>true</showSubmitAndAttachButton>
     <summaryLayout>
