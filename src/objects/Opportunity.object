@@ -5770,6 +5770,7 @@ IF(INCLUDES(Customer_Type__c, &quot;Private Affordable&quot;),&quot;Error&quot;,
         <fullName>Product_Escalation_Schedule__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
+        <inlineHelpText>Related schedule at which this opportunity&apos;s product will change over time. If blank, the product fields will be used (no escalation)</inlineHelpText>
         <label>Product Escalation Schedule</label>
         <referenceTo>Product_Escalation_Schedule__c</referenceTo>
         <relationshipLabel>Opportunities</relationshipLabel>
