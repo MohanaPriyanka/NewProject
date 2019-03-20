@@ -1866,11 +1866,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.Cancelled_After_Schedule_Z_Filing__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Opportunity.Clone_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
