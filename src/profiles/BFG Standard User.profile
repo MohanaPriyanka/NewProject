@@ -16251,11 +16251,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Energy_Usage_Update__c.Total_NMCs_2_of_4__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Energy_Usage_Update__c.Total_NMCs_3_of_4__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -28722,11 +28717,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>MPM4_BASE__Milestone1_Project__c.Project_Manager__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.Project_Owner__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
