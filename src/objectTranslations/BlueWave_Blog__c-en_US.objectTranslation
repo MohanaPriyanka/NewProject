@@ -9,113 +9,122 @@
         <value>BlueWave Resource Page</value>
     </caseValues>
     <fields>
-        <help><!-- Who are we writing this content for and why will they care about it? --></help>
-        <label><!-- Audience --></label>
+        <help></help>
+        <label></label>
         <name>Audience__c</name>
     </fields>
     <fields>
-        <help><!-- List name of the author of this content --></help>
-        <label><!-- Author --></label>
+        <help></help>
+        <label></label>
         <name>Author__c</name>
     </fields>
     <fields>
-        <label><!-- Blog Type --></label>
+        <label></label>
         <name>Blog_Type__c</name>
         <picklistValues>
             <masterLabel>Community Solar</masterLabel>
-            <translation><!-- Community Solar --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>General</masterLabel>
-            <translation><!-- General --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Solar Loan</masterLabel>
-            <translation><!-- Solar Loan --></translation>
+            <translation></translation>
         </picklistValues>
     </fields>
     <fields>
-        <label><!-- Body --></label>
+        <label></label>
         <name>Body__c</name>
     </fields>
     <fields>
-        <help><!-- What business line does this content serve? --></help>
-        <label><!-- Business Line --></label>
+        <help></help>
+        <label></label>
         <name>Business__c</name>
         <picklistValues>
             <masterLabel>Community Solar</masterLabel>
-            <translation><!-- Community Solar --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Corporate</masterLabel>
-            <translation><!-- Corporate --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Home Solar Loan</masterLabel>
-            <translation><!-- Home Solar Loan --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Other</masterLabel>
-            <translation><!-- Other --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Project Development</masterLabel>
-            <translation><!-- Project Development --></translation>
+            <translation></translation>
         </picklistValues>
     </fields>
     <fields>
-        <help><!-- When do you want this content to be published? --></help>
-        <label><!-- Estimated Publish Date --></label>
+        <help></help>
+        <label></label>
         <name>Estimated_Publish_Date__c</name>
     </fields>
     <fields>
-        <help><!-- Example or relevant content that we or others have published on the topic --></help>
-        <label><!-- Example Blogs --></label>
+        <help></help>
+        <label></label>
         <name>Example_Blogs__c</name>
     </fields>
     <fields>
-        <label><!-- Short Description --></label>
+        <help></help>
+        <label></label>
         <name>Short_Description__c</name>
     </fields>
     <fields>
-        <help><!-- Type of content to be presented --></help>
-        <label><!-- Type of Content --></label>
+        <help></help>
+        <label></label>
         <name>Type_of_Content__c</name>
         <picklistValues>
             <masterLabel>Blog</masterLabel>
-            <translation><!-- Blog --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Contributed Content (external)</masterLabel>
-            <translation><!-- Contributed Content (external) --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Education</masterLabel>
-            <translation><!-- Education --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Event</masterLabel>
-            <translation><!-- Event --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>News</masterLabel>
-            <translation><!-- News --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Success Story</masterLabel>
-            <translation><!-- Success Story --></translation>
+            <translation></translation>
         </picklistValues>
     </fields>
     <layouts>
         <layout>BlueWave Blog Layout</layout>
         <sections>
-            <label><!-- Content Detail --></label>
+            <label></label>
             <section>Content Detail</section>
         </sections>
         <sections>
-            <label><!-- Custom Links --></label>
+            <label></label>
             <section>Custom Links</section>
         </sections>
     </layouts>
     <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>Audience_Required</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>Short_Description_Required</name>
+    </validationRules>
 </CustomObjectTranslation>
