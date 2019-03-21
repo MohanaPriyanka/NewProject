@@ -390,7 +390,7 @@ public class TestBillCreationForCancelledCustomers {
         Test.stopTest();
     }
 
-    static void setBillsToPublished() {
+    public static void setBillsToPublished() {
         List <Account_Bill__c> listAccountBills = [
             SELECT Id, Published__c
             FROM Account_Bill__c
@@ -402,7 +402,7 @@ public class TestBillCreationForCancelledCustomers {
         update listAccountBills;
     }
 
-    static void setCollectionsWindow (Integer monthsToGenerate){
+    public static void setCollectionsWindow (Integer monthsToGenerate){
         System_Properties__c propertyAlreadyInserted = [Select Id FROM System_Properties__c];
         delete propertyAlreadyInserted;
 
@@ -413,7 +413,7 @@ public class TestBillCreationForCancelledCustomers {
         insert property;
     }
 
-    static void setOppToCancelled(List<String> oppIds) {
+    public static void setOppToCancelled(List<String> oppIds) {
         List<Opportunity> listOpps = [
             SELECT Id, StageName
             FROM Opportunity
@@ -425,7 +425,7 @@ public class TestBillCreationForCancelledCustomers {
         update listOpps;
     }
 
-    static void runSecondMonthProductionUpdates() {
+    public static void runSecondMonthProductionUpdates() {
         List<Shared_Solar_System__c> sssList = [
             SELECT Id, Name, BWC_Project_Entity_Manual__r.Id, Product__r.Id
             FROM Shared_Solar_System__c
@@ -479,7 +479,7 @@ public class TestBillCreationForCancelledCustomers {
         TestBillCreationandPayment.runProductionUpdate(new List<Id>{secondProdUpdateSSS1.Id, secondProdUpdateSSS2.Id});
     }
 
-    static void makePayment(String oppName, Integer billNumber){
+    public static void makePayment(String oppName, Integer billNumber){
         // Mocks making a payment because consumes too many SOQL queries to insert Order & Transaction
 
         System_Bill__c sbToPay = [
@@ -497,7 +497,7 @@ public class TestBillCreationForCancelledCustomers {
         update sbToPay;
     }
 
-    static Map<String, System_Bill__c> queryForBills() {
+    public static Map<String, System_Bill__c> queryForBills() {
         Map<String, System_Bill__c> sbMap = new Map<String, System_Bill__c>();
 
         for (System_Bill__c insertedSB : [

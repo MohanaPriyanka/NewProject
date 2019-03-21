@@ -16,6 +16,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
     public Set<Id> cancelledUASes = new Set<Id>();
     public Set<Id> cancelledOpps = new Set<Id>();
     public Map<String, Account_Bill__c> abKeyToAccountBillMap = new Map<String, Account_Bill__c>();
+    public Map<Id, List<Product_Escalator__c>> productScheduleToEscalationMap = new Map<Id, List<Product_Escalator__c>>();
 
     // Prep for batch, set list of Schedule Z Ids and Shared Solar System Map:
     public EnergyUsageUpdateTriggerHandler(List<Energy_Usage_Update__c> euuList) {
@@ -25,6 +26,8 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             euuMonths.add((Integer) euu.Month_Number__c);
             euuYears.add(euu.YearDate__c);
         }
+
+        productScheduleToEscalationMap = ProductEscalatorSelector.getProductEscalationMap();
 
         for (Account_Bill__c accountBill : [
             SELECT Id, Unique_ID__c
@@ -76,7 +79,8 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             cancelledUASes.add(uasb.Utility_Account_Subscription__c);
             cancelledOpps.add(uasb.System_Bill__r.Opportunity__r.Id);
         }
-        createBills(ScheduleZSubscriptionSelector.getListForSmallOfftake(scheduleZs));
+        List<Schedule_Z_Subscription__c> szsList = new List<Schedule_Z_Subscription__c>();
+        createBills(szsList);
     }
 
     private static String getDate(Energy_Usage_Update__c euu) {
@@ -85,7 +89,13 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
 
     // Batch into groups of Schedule Z Subscriptions:
     public Database.QueryLocator start(Database.BatchableContext bc) {
-        return ScheduleZSubscriptionSelector.getQueryLocatorForSmallOfftake(scheduleZs);
+        String query =  'SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Opportunity__c ' +
+            ' FROM Schedule_Z_Subscription__c ' +
+            ' WHERE Schedule_Z__c IN : scheduleZs ' +
+            ' AND ( Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c!= \'RadianGen\' ' +
+            ' OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c= \'Residential\' ' +
+            ' OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c= \'Non-Residential\' )';
+        return Database.getQueryLocator(query);
     }
 
     // Execute this code block in batches to avoid CPU Limit:
@@ -200,7 +210,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         Logger.flushLogs();
 
         UtilityAccountBillTriggerHandler handler = new UtilityAccountBillTriggerHandler();
-        handler.createUASB(sssIdToEUUMap, systemBillMap, utilityAccountLogIdToUABMap, uasMap.values());
+        handler.createUASB(sssIdToEUUMap, systemBillMap, utilityAccountLogIdToUABMap, uasMap.values(), productScheduleToEscalationMap);
     }
 
     public void finish(Database.BatchableContext bc){
@@ -257,6 +267,8 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
                 Opportunity__r.Shared_Solar_System__r.Id,
                 Opportunity__r.AccountId,
                 Opportunity__r.StageName,
+                Opportunity__r.Shared_Solar_System__r.Count_of_Transfers__c,
+                Opportunity__r.Product_Escalation_Schedule__c,
                 Max_Account_Bill_Number__c
             FROM Utility_Account_Subscription__c
             WHERE Id IN : scheduleZUASIds
