@@ -16251,11 +16251,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Energy_Usage_Update__c.Total_NMCs_4_of_4__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Energy_Usage_Update__c.Total_NMCs_Generated__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -36427,11 +36422,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Shared_Solar_System__c.Graph_Box__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Shared_Solar_System__c.Host_Customer_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
