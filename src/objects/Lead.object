@@ -74,6 +74,7 @@
     </actionOverrides>
     <businessProcesses>
         <fullName>C %26 I</fullName>
+        <description>This is for the C and I solar development business line</description>
         <isActive>true</isActive>
         <values>
             <fullName>Negotiating</fullName>
