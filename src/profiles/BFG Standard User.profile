@@ -16251,11 +16251,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Energy_Usage_Update__c.Total_NMCs_3_of_4__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Energy_Usage_Update__c.Total_NMCs_4_of_4__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -30108,21 +30103,6 @@
         <editable>true</editable>
         <field>MPM4_BASE__TH_TimeEntry__c.MPM4_BASE__Subject__c</field>
         <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__TH_Weekly_Comments__c.MPM4_BASE__Comment__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__TH_Weekly_Comments__c.MPM4_BASE__Time_Entry__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__TH_Weekly_Comments__c.MPM4_BASE__Week_Of__c</field>
-        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -56408,15 +56388,6 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>MPM4_BASE__TH_TimeEntry__c</object>
-        <viewAllRecords>false</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>false</allowCreate>
-        <allowDelete>false</allowDelete>
-        <allowEdit>false</allowEdit>
-        <allowRead>false</allowRead>
-        <modifyAllRecords>false</modifyAllRecords>
-        <object>MPM4_BASE__TH_Weekly_Comments__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
