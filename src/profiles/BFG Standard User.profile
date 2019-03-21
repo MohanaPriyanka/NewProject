@@ -38285,11 +38285,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Town__c.XXState__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>Transaction_Application__c.Cash_Code__c</field>
         <readable>false</readable>
