@@ -1088,10 +1088,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>CheckAddressFieldUpdate</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ClickToDial__TaskController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
