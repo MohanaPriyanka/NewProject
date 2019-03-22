@@ -13,7 +13,6 @@ public class CustomerCommunicationHandler implements Database.Batchable<sObject>
 
     public Map<String, String> templateMap;
     public String errorsToLog;
-    public CaseFactory caseFactory = new CaseFactory();
 
     public String getTemplate(String templateKey, Account acct){
         String templateHTML;
@@ -119,6 +118,7 @@ public class CustomerCommunicationHandler implements Database.Batchable<sObject>
     }
 
     public List<Case> createCollectionsCallCase(List<Case> caseToInsertList, Account acct){
+        CaseFactory caseFactory = new CaseFactory();
         Case newCase;
         newCase = caseFactory.getCase('Collections');
         newCase.ContactId = acct.Send_Bills_Contact__c;
