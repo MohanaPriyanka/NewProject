@@ -28,7 +28,11 @@
         }
 
         // Because it is a picklist, v.Autopay & v.ACH are stored as text:
-        if (!component.get("v.AutopayAcknowledgement") && component.get("v.Autopay") === 'true') {
+        if (component.get("v.Autopay") === 'Select'){
+            console.log('AUTOPAY');
+            this.unhideFieldsShowError(component, component.get("v.ErrorText") + 'Please select if you would like to sign up for autopay.');
+            this.addErrorAnimation(component,'mustAgree');
+        } else if (!component.get("v.AutopayAcknowledgement") && component.get("v.Autopay") === 'true') {
             this.unhideFieldsShowError(component, component.get("v.ErrorText") + 'You must acknowledge the autopay disclaimer to sign up for Autopay.');
             this.addErrorAnimation(component,'mustAgree');
         }
