@@ -565,6 +565,21 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
                     <default>false</default>
                     <label>Invoice</label>
                 </value>
+                <value>
+                    <fullName>Customer Management</fullName>
+                    <default>false</default>
+                    <label>Customer Management</label>
+                </value>
+                <value>
+                    <fullName>Customer Acquisition</fullName>
+                    <default>false</default>
+                    <label>Customer Acquisition</label>
+                </value>
+                <value>
+                    <fullName>Both</fullName>
+                    <default>false</default>
+                    <label>Both</label>
+                </value>
             </valueSetDefinition>
             <valueSettings>
                 <controllingFieldValue>Community Solar</controllingFieldValue>
@@ -677,6 +692,18 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
             <valueSettings>
                 <controllingFieldValue>Community Solar</controllingFieldValue>
                 <valueName>Invoice</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Customer Management</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Customer Acquisition</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Both</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Solar Loan</controllingFieldValue>
@@ -2736,6 +2763,182 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
             <values>
                 <fullName>Question</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Client_Services</fullName>
+        <active>true</active>
+        <businessProcess>Customer Care Case</businessProcess>
+        <label>Client Services</label>
+        <picklistValues>
+            <picklist>Category__c</picklist>
+            <values>
+                <fullName>Amortization Table</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Application Status</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bill %25 Incorrect%3A Rounding error</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bill %25 Incorrect%3A Unknown error</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Billing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Both</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cancellation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cancelled Utility Account</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Capacity</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Contract%2FApplication Issue</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Credit Allocation Issue</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Custom Message Update</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Acquisition</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Utility Bill</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Disbursals</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Do not send bill</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Elligibility</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Final Bill</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Invoice</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Loan Terms</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Onboarding</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Payment Plan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Poor Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Portal Issue</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Question</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Terms</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>QC Call</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SREC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SRECs</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Subscription Adjustment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Subscription Change</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>TPF%2FCollections</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Technical Assistance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Transfer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>UAS Marked as Cancelled%3A Not on Transfer Sheet</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>UAS Marked as Cancelled%3A On Transfer Sheet</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Underwriting</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Product_Line__c</picklist>
+            <values>
+                <fullName>Community Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar Loan</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
