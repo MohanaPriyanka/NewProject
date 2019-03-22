@@ -7816,17 +7816,17 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Energy_Usage_Update__c.Total_NMCs_2_of_4__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Energy_Usage_Update__c.Total_NMCs_3_of_4__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Energy_Usage_Update__c.Total_NMCs_4_of_4__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -7849,12 +7849,12 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Energy_Usage_Update__c.Total_System_NMCs_3_of_4__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Energy_Usage_Update__c.Total_System_NMCs_4_of_4__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -7876,22 +7876,22 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Energy_Usage_Update__c.Utility_Bill_Line_Total_2__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Energy_Usage_Update__c.Utility_Bill_Line_Total_3__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Energy_Usage_Update__c.Utility_Bill_Line_Total_4__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Energy_Usage_Update__c.Utility_Bill_Line_Total__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -30926,17 +30926,17 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Bill_Line_Item__c.Amount__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Utility_Bill_Line_Item__c.Group__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Bill_Line_Item__c.Type__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>

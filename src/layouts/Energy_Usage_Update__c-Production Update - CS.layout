@@ -53,8 +53,8 @@
                 <field>Shared_Solar_System__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Billing_Method__c</field>
+                <behavior>Edit</behavior>
+                <field>Size_off_NMCs__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -66,6 +66,14 @@
             </layoutItems>
             <layoutItems>
                 <emptySpace>true</emptySpace>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Total_NMCs__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Utility_Bill_Line_Total__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -109,22 +117,26 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Total_System_NMCs_2_of_4__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>Production_kWh_2_of_4__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Net_Metering_Rate_Applied_2_of_4__c</field>
             </layoutItems>
-        </layoutColumns>
-        <layoutColumns>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Total_NMCs_2_of_4__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Utility_Bill_Line_Total_2__c</field>
+            </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Total_System_NMCs_3_of_4__c</field>
+                <field>Total_System_NMCs_2_of_4__c</field>
             </layoutItems>
+        </layoutColumns>
+        <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Production_kWh_3_of_4__c</field>
@@ -134,11 +146,19 @@
                 <field>Net_Metering_Rate_Applied_3_of_4__c</field>
             </layoutItems>
             <layoutItems>
-                <emptySpace>true</emptySpace>
+                <behavior>Readonly</behavior>
+                <field>Total_NMCs_3_of_4__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Utility_Bill_Line_Total_3__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Total_System_NMCs_4_of_4__c</field>
+                <field>Total_System_NMCs_3_of_4__c</field>
+            </layoutItems>
+            <layoutItems>
+                <emptySpace>true</emptySpace>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -147,6 +167,18 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Net_Metering_Rate_Applied_4_of_4__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Total_NMCs_4_of_4__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Utility_Bill_Line_Total_4__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Total_System_NMCs_4_of_4__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -311,6 +343,10 @@
         <fields>Share_of_System__c</fields>
         <fields>Utility_Account_Subscription__c</fields>
         <relatedList>UASB__c.Production_Update__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>Utility_Bill_Line_Item__c.Production_Update__c</relatedList>
     </relatedLists>
     <relatedLists>
         <relatedList>RelatedNoteList</relatedList>
