@@ -30,7 +30,7 @@
 
   <aura:attribute name="SelectedPaymentMethod" type="String" default=""/>
   <aura:handler name="change" value="{!v.SelectedPaymentMethod}" action="{!c.clearFields}"/>
-  <aura:attribute name="Autopay" type="Boolean" default="true"/>
+  <aura:attribute name="Autopay" type="Boolean" default="Select"/>
   <aura:attribute name="AutopayAcknowledgement" type="Boolean" default="false"/>
   <aura:attribute name="Spinner" type="Boolean" default="false"/>
   <aura:attribute name="hideFields" type="Boolean" default=""/>
@@ -62,6 +62,7 @@
                     <ui:inputSelect aura:id="autopayOption"
                                     class="slds-input"
                                     value="{!v.Autopay}">
+                      <ui:inputSelectOption label="Select" text="Select"/>
                       <ui:inputSelectOption label="Yes" text="true"/>
                       <aura:if isTrue="{!v.DynamicTotalDue != 0}">
                         <ui:inputSelectOption label="No" text="false"/>
@@ -70,7 +71,7 @@
                   </div>
                 </aura:set>
               </aura:if>
-              <aura:if isTrue="{!v.Autopay}">
+              <aura:if isTrue="{!v.Autopay == 'true'}">
                 <div aura:id="autopayOnly" class="slds-form-element slds-size_1-of-1 slds-large-size_2-of-2 slds-p-top_small slds-p-bottom_medium">
                   <lightning:input type="checkbox"
                                    checked="{!v.chOrder.Autopay_Only__c}"
@@ -195,7 +196,7 @@
                 </div>
               </div>
             </aura:if>
-            <aura:if isTrue="{!v.Autopay}">
+            <aura:if isTrue="{!v.Autopay == 'true'}">
               <fieldset class="slds-box slds-theme--default slds-p-top_medium slds-container--medium slds-p-top_medium">
                 <div class="slds-p-left_small slds-p-right_small">
                   <div class="slds-text-body_small slds-text-color_default">
