@@ -53,15 +53,6 @@
               <!--only show for Bluewave Backend stages-->
               <aura:if isTrue="{!or(and(greaterthanorequal(v.stageIndex, 3), lessthan(v.stageIndex, 5)), v.partnerApp)}">
                 <li class="{! 'slds-path__item ' +
-                           (v.stageIndex==3?'slds-is-current slds-is-active':
-                           (v.stageIndex>3?'slds-is-active':
-                           'slds-is-incomplete'))}"
-                    role="presentation">
-                  <a class="slds-path__link">
-                    <span title="Credit Check" class="slds-path__title">Credit Check</span>
-                  </a>
-                </li>
-                <li class="{! 'slds-path__item ' +
                            (v.stageIndex==4?'slds-is-current slds-is-active':
                            (v.stageIndex>4?'slds-is-active':
                            'slds-is-incomplete'))}"
