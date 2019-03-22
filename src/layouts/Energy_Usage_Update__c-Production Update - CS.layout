@@ -68,16 +68,16 @@
                 <emptySpace>true</emptySpace>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Total_System_NMCs__c</field>
+                <behavior>Readonly</behavior>
+                <field>Total_NMCs__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Utility_Bill_Line_Total__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Total_NMCs__c</field>
+                <behavior>Edit</behavior>
+                <field>Total_System_NMCs__c</field>
             </layoutItems>
             <layoutItems>
                 <emptySpace>true</emptySpace>
@@ -117,10 +117,6 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Total_System_NMCs_2_of_4__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>Production_kWh_2_of_4__c</field>
             </layoutItems>
             <layoutItems>
@@ -135,12 +131,12 @@
                 <behavior>Readonly</behavior>
                 <field>Utility_Bill_Line_Total_2__c</field>
             </layoutItems>
-        </layoutColumns>
-        <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Total_System_NMCs_3_of_4__c</field>
+                <field>Total_System_NMCs_2_of_4__c</field>
             </layoutItems>
+        </layoutColumns>
+        <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Production_kWh_3_of_4__c</field>
@@ -151,18 +147,18 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>Utility_Bill_Line_Total_3__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
                 <field>Total_NMCs_3_of_4__c</field>
             </layoutItems>
             <layoutItems>
-                <emptySpace>true</emptySpace>
+                <behavior>Readonly</behavior>
+                <field>Utility_Bill_Line_Total_3__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Total_System_NMCs_4_of_4__c</field>
+                <field>Total_System_NMCs_3_of_4__c</field>
+            </layoutItems>
+            <layoutItems>
+                <emptySpace>true</emptySpace>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -179,6 +175,10 @@
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Utility_Bill_Line_Total_4__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Total_System_NMCs_4_of_4__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -345,6 +345,10 @@
         <relatedList>UASB__c.Production_Update__c</relatedList>
     </relatedLists>
     <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>Utility_Bill_Line_Item__c.Production_Update__c</relatedList>
+    </relatedLists>
+    <relatedLists>
         <relatedList>RelatedNoteList</relatedList>
     </relatedLists>
     <relatedLists>
@@ -357,13 +361,6 @@
         <fields>OWNER_NAME</fields>
         <fields>CASES.PRIORITY</fields>
         <relatedList>Case.Production_Update__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <fields>Group__c</fields>
-        <fields>Type__c</fields>
-        <fields>Amount__c</fields>
-        <relatedList>Utility_Bill_Line_Item__c.Production_Update__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
