@@ -56,6 +56,7 @@
     <fields>
         <fullName>Actual_COD_Date__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>Use Estimated COD Date if not sure, use this field for real value</inlineHelpText>
         <label>Actual COD Date</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
@@ -66,7 +67,7 @@
     <fields>
         <fullName>Actual_Credits_Flowing_Date__c</fullName>
         <externalId>false</externalId>
-        <label>Actual Utility NMC to Customer Date</label>
+        <label>XXXActual Utility NMC to Customer Date</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -103,7 +104,7 @@
         <formula>Project_Management__r.Actual_PTO_date__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>Formula field that is populated for SSS that have a relationship with a project. NOT visible on SSS Layout</inlineHelpText>
-        <label>Actual PTO Date Pull from Project</label>
+        <label>XXXActual PTO Date Pull from Project</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -116,7 +117,7 @@
         <formula>BLANKVALUE(Actual_PTO_Date_MANUAL__c,Actual_PTO_Date_Pull_from_Project__c)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>Field populated by either Actual PTO Date Pull from Project from SSS with relationships to PM or Actual PTO Date (MANUAL) if it is filled in. If the Actual PTO Date (MANUAL) is not filled in, the field is populated by the Actual PTO Date Pull from Project</inlineHelpText>
-        <label>Actual PTO Date</label>
+        <label>XXXActual PTO Date</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -125,7 +126,7 @@
     <fields>
         <fullName>Actual_Utility_NMC_Transfer_to_Host_Date__c</fullName>
         <externalId>false</externalId>
-        <label>Actual Utility NMC to Host Account Date</label>
+        <label>XActual Utility NMC to Host Account Date</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -150,7 +151,7 @@
         <externalId>false</externalId>
         <formula>Capacity_Committed_kW_DC__c +  Anchor_Capacity_Reserved__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Anchor/CS Capacity Committed</label>
+        <label>XXXAnchor/CS Capacity Committed</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -176,7 +177,7 @@
         <fullName>Anchor_Tenant__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <label>Anchor Tenant</label>
+        <label>XXXAnchor Tenant</label>
         <referenceTo>Opportunity</referenceTo>
         <relationshipLabel>Shared Solar Systems</relationshipLabel>
         <relationshipName>Shared_Solar_Systems</relationshipName>
@@ -202,7 +203,7 @@
         <fullName>Assemblage_Count__c</fullName>
         <defaultValue>1</defaultValue>
         <externalId>false</externalId>
-        <label>Assemblage Count</label>
+        <label>XXXAssemblage Count</label>
         <precision>2</precision>
         <required>false</required>
         <scale>0</scale>
@@ -217,7 +218,7 @@
         <externalId>false</externalId>
         <formula>RIGHT(Name,4)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Assemblage</label>
+        <label>XXXAssemblage</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -227,6 +228,7 @@
     <fields>
         <fullName>Assignment_Order__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>This determines the order by which customers are automatically assigned to open projects</inlineHelpText>
         <label>Assignment Order</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
@@ -296,7 +298,7 @@
         <description>This field determines whether or not the customer&apos;s portal will show the Chargent connected payment button/form or if it will show the form that simply collects payment information up front. True is the latter, false is the former.</description>
         <externalId>false</externalId>
         <inlineHelpText>This field determines whether or not the customer&apos;s portal will show the Chargent connected payment button/form or if it will show the form that simply collects payment information up front. True is the latter, false is the former.</inlineHelpText>
-        <label>Auto-Payment Form</label>
+        <label>XXXAuto-Payment Form</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -307,7 +309,7 @@
         <externalId>false</externalId>
         <formula>IF( Capacity_Available_to_be_Reserved__c &gt; 0 , &quot;There is Additional Capacity Available to be Reserved&quot;, &quot;The Project is Full&quot;)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Availability</label>
+        <label>XXXAvailability</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -317,7 +319,7 @@
     <fields>
         <fullName>Average_Subscription_Size__c</fullName>
         <externalId>false</externalId>
-        <label>Average Subscription Size</label>
+        <label>XXXAverage Subscription Size</label>
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
@@ -358,7 +360,7 @@
         <externalId>false</externalId>
         <formula>Bill_Send_Date__c + 20</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Bill Due Date</label>
+        <label>XXXBill Due Date</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -367,7 +369,7 @@
     <fields>
         <fullName>Bill_Send_Date__c</fullName>
         <externalId>false</externalId>
-        <label>Bill Send Date</label>
+        <label>XXXBill Send Date</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -425,7 +427,7 @@
     <fields>
         <fullName>Billing_Method__c</fullName>
         <externalId>false</externalId>
-        <label>Billing Method</label>
+        <label>XXXBilling Method</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -450,7 +452,7 @@
     <fields>
         <fullName>Billing_Period_End_Date__c</fullName>
         <externalId>false</externalId>
-        <label>BW Billing Period End Date</label>
+        <label>XXXBW Billing Period End Date</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -460,7 +462,7 @@
     <fields>
         <fullName>Billing_Period_Start_Date__c</fullName>
         <externalId>false</externalId>
-        <label>BW Billing Period Start Date</label>
+        <label>XXXBW Billing Period Start Date</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -484,6 +486,7 @@
     <fields>
         <fullName>Capacity_Committed_kW_DC__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>Total Sum of (UASs) with Opportunity Status &quot;Completed&quot;</inlineHelpText>
         <label>Committed Capacity (kW DC)</label>
         <precision>8</precision>
         <required>false</required>
@@ -571,7 +574,7 @@ IF ( Total_System_Size_kW_AC_QC__c &gt; 1000, &quot;Class 3&quot;, null)))</form
         <externalId>false</externalId>
         <formula>kW_needed_to_hit_payment_threshold__c  /  Average_Subscription_Size__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Contracts Needed to COD</label>
+        <label>XXXContracts Needed to COD</label>
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
@@ -637,7 +640,7 @@ IF ( Total_System_Size_kW_AC_QC__c &gt; 1000, &quot;Class 3&quot;, null)))</form
         <externalId>false</externalId>
         <formula>NTP_Target_Date__c - today()</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Days until NTP</label>
+        <label>XXXDays until NTP</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -649,7 +652,7 @@ IF ( Total_System_Size_kW_AC_QC__c &gt; 1000, &quot;Class 3&quot;, null)))</form
     <fields>
         <fullName>Description__c</fullName>
         <externalId>false</externalId>
-        <label>Description</label>
+        <label>XXXDescription</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -659,7 +662,7 @@ IF ( Total_System_Size_kW_AC_QC__c &gt; 1000, &quot;Class 3&quot;, null)))</form
     <fields>
         <fullName>Energy_Analytics_del__c</fullName>
         <externalId>false</externalId>
-        <label>Energy Analytics</label>
+        <label>XXXEnergy Analytics</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -695,7 +698,7 @@ IF ( Total_System_Size_kW_AC_QC__c &gt; 1000, &quot;Class 3&quot;, null)))</form
         <formula>Total_CS_Capacity_kW_DC_Formula__c / Maximum_Subscription_Assemblage__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>This is an estimate and is used in DocuSign.</inlineHelpText>
-        <label>Est # of Subscribers</label>
+        <label>XXXEst # of Subscribers</label>
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
@@ -707,7 +710,7 @@ IF ( Total_System_Size_kW_AC_QC__c &gt; 1000, &quot;Class 3&quot;, null)))</form
     <fields>
         <fullName>Estimated_COD_Date_Manual__c</fullName>
         <externalId>false</externalId>
-        <label>Estimated COD Date</label>
+        <label>XXXEstimated COD Date</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -719,7 +722,7 @@ IF ( Total_System_Size_kW_AC_QC__c &gt; 1000, &quot;Class 3&quot;, null)))</form
         <externalId>false</externalId>
         <formula>IF(ISBLANK( Project_Management__c ),  Estimated_COD_Date_Manual__c,Estimated_COD_Date__c  )</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Estimated COD Date</label>
+        <label>XXXEstimated COD Date</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -838,6 +841,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
     <fields>
         <fullName>Expected_Yield_kWh_kW__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>Before PV Syst calculation</inlineHelpText>
         <label>Expected Yield (kWh/kW)</label>
         <precision>12</precision>
         <required>false</required>
@@ -852,7 +856,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <fullName>Graph_Box__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <label>Graph Box</label>
+        <label>XXXGraph Box</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -875,7 +879,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <description>This field is populated with the maximum Date Enacted by Utility field on all related Schedule Z records. If it needs to be updated, please update the Schedule Z record.</description>
         <externalId>false</externalId>
         <inlineHelpText>This field is populated with the maximum Date Enacted by Utility field on all related Schedule Z records. If it needs to be updated, please update the Schedule Z record.</inlineHelpText>
-        <label>Last Sch Z Enacted Date</label>
+        <label>Enacted Date</label>
         <summarizedField>Schedule_Z__c.Date_Enacted_by_Utility__c</summarizedField>
         <summaryForeignKey>Schedule_Z__c.Shared_Solar_System__c</summaryForeignKey>
         <summaryOperation>max</summaryOperation>
@@ -888,7 +892,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <description>This field is populated by the maximum date from the Date Submitted to Utility field from all related schedule Z records where the Date Submitted to Utility field is not null.</description>
         <externalId>false</externalId>
         <inlineHelpText>This field is populated by the maximum date from the Date Submitted to Utility field from all related schedule Z records where the Date Submitted to Utility field is not null. If it needs to be updated, update the Schedule Z record.</inlineHelpText>
-        <label>Last Schedule Z Submitted:</label>
+        <label>Last Allocation Schedule Enacted Date</label>
         <summarizedField>Schedule_Z__c.Date_Submitted_to_Utility__c</summarizedField>
         <summaryFilterItems>
             <field>Schedule_Z__c.Date_Submitted_to_Utility__c</field>
@@ -905,7 +909,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <fullName>Latitude_and_Longitude__c</fullName>
         <displayLocationInDecimal>false</displayLocationInDecimal>
         <externalId>false</externalId>
-        <label>Latitude and Longitude</label>
+        <label>XXXLatitude and Longitude</label>
         <required>false</required>
         <scale>2</scale>
         <trackFeedHistory>false</trackFeedHistory>
@@ -917,7 +921,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <fullName>Maximum_Subscription_Assemblage__c</fullName>
         <defaultValue>25</defaultValue>
         <externalId>false</externalId>
-        <label>Maximum Subscription (Assemblage)</label>
+        <label>XXXMaximum Subscription (Assemblage)</label>
         <precision>7</precision>
         <required>false</required>
         <scale>2</scale>
@@ -932,6 +936,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <externalId>false</externalId>
         <formula>Assemblage_Count__c *  Maximum_Subscription_Assemblage__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Policy Dependent: Small Community Solar customer kW limit per project; Required for MA SMART and SREC</inlineHelpText>
         <label>Maximum Subscription Capacity (kW DC)</label>
         <precision>18</precision>
         <required>false</required>
@@ -957,7 +962,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
     <fields>
         <fullName>Meter_Installed_Date__c</fullName>
         <externalId>false</externalId>
-        <label>Meter Installed Date</label>
+        <label>XXXMeter Installed Date</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -1028,7 +1033,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <fullName>NTP_Target_Date__c</fullName>
         <description>Target date to hit NTP offtake</description>
         <externalId>false</externalId>
-        <label>NTP Target Date</label>
+        <label>XXXNTP Target Date</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -1040,7 +1045,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <externalId>false</externalId>
         <formula>Total_System_Size_kW_DC__c * 0.40</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>NTP Target</label>
+        <label>XXXNTP Target</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -1053,7 +1058,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <fullName>NTP_Threshold__c</fullName>
         <description>% subscribed to hit NTP for project</description>
         <externalId>false</externalId>
-        <label>NTP % Threshold</label>
+        <label>XXXNTP % Threshold</label>
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
@@ -1067,7 +1072,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <description>This field is populated with the maximum Next Schedule Z Date field on all related Schedule Z records. If it needs to be updated, please update the Schedule Z record.</description>
         <externalId>false</externalId>
         <inlineHelpText>This field is populated with the maximum Next Schedule Z Date field on all related Schedule Z records. If it needs to be updated, please update the Schedule Z record.</inlineHelpText>
-        <label>Next Schedule Z Date</label>
+        <label>XXXNext Schedule Z Date</label>
         <summarizedField>Schedule_Z__c.Next_Schedule_Z_Date__c</summarizedField>
         <summaryForeignKey>Schedule_Z__c.Shared_Solar_System__c</summaryForeignKey>
         <summaryOperation>max</summaryOperation>
@@ -1080,7 +1085,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <externalId>false</externalId>
         <formula>Name&amp;&quot; #&quot;&amp; TEXT(Count_of_Schedule_Zs__c + 1)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Next Schedule Z Label</label>
+        <label>XXXNext Schedule Z Label</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -1100,7 +1105,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
     <fields>
         <fullName>Partner_Assignment__c</fullName>
         <externalId>false</externalId>
-        <label>Partner Assignment</label>
+        <label>XXXPartner Assignment</label>
         <length>100</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
@@ -1112,7 +1117,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
     <fields>
         <fullName>Partner__c</fullName>
         <externalId>false</externalId>
-        <label>Partners</label>
+        <label>XXXPartners</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -1139,7 +1144,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <fullName>Payment_Threshold__c</fullName>
         <description>Percent of project that needs to be filled to get paid</description>
         <externalId>false</externalId>
-        <label>Payment Threshold %</label>
+        <label>XXXPayment Threshold %</label>
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
@@ -1153,7 +1158,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <description>This is the name of the entity that we are servicing a shared solar system on behalf of.</description>
         <externalId>false</externalId>
         <inlineHelpText>This is the name of the entity that we are servicing a shared solar system on behalf of.</inlineHelpText>
-        <label>Servicing on behalf of</label>
+        <label>XXXServicing on behalf of</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -1262,7 +1267,7 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
         <fullName>Public__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <label>Public</label>
+        <label>XXXPublic</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -1285,6 +1290,7 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
     <fields>
         <fullName>Reserved_Capacity_kW_DC__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>Total Sum of (UASs) with Opportunity Status &quot;Pending BlueWave Signature&quot;</inlineHelpText>
         <label>Reserved Capacity (kW DC)</label>
         <length>10</length>
         <required>false</required>
@@ -1298,7 +1304,7 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
         <fullName>SSS_Update__c</fullName>
         <description>Triggers workflows</description>
         <externalId>false</externalId>
-        <label>SSS Update</label>
+        <label>XXXSSS Update</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -1614,7 +1620,7 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
         <externalId>false</externalId>
         <formula>Estimated_COD_Date__c - 7</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Sales Target Date</label>
+        <label>XXXSales Target Date</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -1625,7 +1631,7 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
         <externalId>false</externalId>
         <formula>IF( ISBLANK( Min_Schedule_Z_to_Utility_Date__c ), FALSE, TRUE)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>ScheduleZ Filed</label>
+        <label>XXXScheduleZ Filed</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
@@ -1633,6 +1639,7 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
     <fields>
         <fullName>Service_Territories__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>Policy Dependent: Required for MA SREC and NY NEM</inlineHelpText>
         <label>Service Territories</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
@@ -1648,7 +1655,7 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
     <fields>
         <fullName>Service_Territory__c</fullName>
         <externalId>false</externalId>
-        <label>Service Territory</label>
+        <label>XXXService Territory</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -1712,7 +1719,7 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
     <fields>
         <fullName>System_Type__c</fullName>
         <externalId>false</externalId>
-        <label>System Type</label>
+        <label>XXXSystem Type</label>
         <length>20</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
@@ -1724,7 +1731,7 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
     <fields>
         <fullName>System_Update__c</fullName>
         <externalId>false</externalId>
-        <label>System Update</label>
+        <label>XXXSystem Update</label>
         <length>32768</length>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -1907,7 +1914,7 @@ null)</formula>
         <fullName>Update_Dummy__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <label>Update Dummy</label>
+        <label>XXXUpdate Dummy</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -1918,7 +1925,7 @@ null)</formula>
         <externalId>false</externalId>
         <formula>$User.Id</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>User</label>
+        <label>XXXUser</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -1962,7 +1969,7 @@ null)</formula>
 &quot;No&quot;)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>This was made to be used in DocuSign.</inlineHelpText>
-        <label>Waitlist Yes/No</label>
+        <label>XXXWaitlist Yes/No</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -1999,7 +2006,7 @@ null)</formula>
         <externalId>false</externalId>
         <formula>(  Total_System_Size_kW_DC__c  * NTP_Threshold__c )-( Anchor_Capacity_Reserved__c + Capacity_Committed_kW_DC__c )</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>kW Needed To Hit NTP Threshold</label>
+        <label>XXXkW Needed To Hit NTP Threshold</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -2013,7 +2020,7 @@ null)</formula>
         <externalId>false</externalId>
         <formula>( Total_System_Size_kWh_DC__c *  Payment_Threshold__c )-( Anchor_Capacity_Reserved__c + Capacity_Committed_kW_DC__c )</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>kW Needed To Hit Payment Threshold</label>
+        <label>XXXkW Needed To Hit Payment Threshold</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
