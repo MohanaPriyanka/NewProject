@@ -7849,12 +7849,12 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Energy_Usage_Update__c.Total_System_NMCs_3_of_4__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Energy_Usage_Update__c.Total_System_NMCs_4_of_4__c</field>
         <readable>true</readable>
     </fieldPermissions>
