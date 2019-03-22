@@ -364,7 +364,7 @@ public class CustomerCommunicationHandlerTest{
         update listaccountBills;
 
         Datetime dt = Datetime.now();
-        // Test both the scheduling of the class and the execution of the batch
+        // Test both the scheduling of the class and the batch execution
         CustomerCommunicationHandler m = new CustomerCommunicationHandler();
         Database.executeBatch(m, 10);
         String cronExpress = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
