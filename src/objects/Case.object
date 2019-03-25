@@ -576,9 +576,9 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
                     <label>Customer Acquisition</label>
                 </value>
                 <value>
-                    <fullName>Both</fullName>
+                    <fullName>Both_Customer_Management_and_Acquisition</fullName>
                     <default>false</default>
-                    <label>Both</label>
+                    <label>Both Customer Management and Acquisition</label>
                 </value>
             </valueSetDefinition>
             <valueSettings>
@@ -703,7 +703,7 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Community Solar</controllingFieldValue>
-                <valueName>Both</valueName>
+                <valueName>Both_Customer_Management_and_Acquisition</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Solar Loan</controllingFieldValue>
@@ -2795,7 +2795,7 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
                 <default>false</default>
             </values>
             <values>
-                <fullName>Both</fullName>
+                <fullName>Both_Customer_Management_and_Acquisition</fullName>
                 <default>false</default>
             </values>
             <values>
