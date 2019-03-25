@@ -9916,7 +9916,17 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.Account_Designation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.Account_Number__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Account_Temperature__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -10357,6 +10367,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.Jobs_per_Month_Financed__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Key_Account__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
