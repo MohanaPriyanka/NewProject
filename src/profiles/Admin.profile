@@ -7806,6 +7806,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Energy_Usage_Update__c.Count_of_Transfers__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Energy_Usage_Update__c.Credits_on_Bill_Period__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -7987,11 +7992,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Energy_Usage_Update__c.Schedule_Z__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Energy_Usage_Update__c.Shared_Solar_System__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -27972,6 +27972,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Count_of_Schedule_Zs__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Count_of_Transfers__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
