@@ -39871,6 +39871,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Utility_NMC_Tariff__c.Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Utility_NMC_Tariff__c.Tariff_Key__c</field>
         <readable>true</readable>
     </fieldPermissions>
