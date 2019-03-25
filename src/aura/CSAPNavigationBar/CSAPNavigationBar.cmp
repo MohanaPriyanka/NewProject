@@ -10,25 +10,25 @@
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
 
   <aura:set attribute="supressWaiting" value="true"/>
-  
+
   <aura:registerEvent name="CSAPNavigationEvent" type="c:CSAPNavigationEvent"/>
   <aura:if isTrue="{!and(v.showNavBar, !$Browser.isPhone)}">
     <div class="slds-path">
       <div class="{! 'slds-grid slds-path__track slds-align--absolute-center slds-size--1-of-1 ' +
                          (v.partnerApp==true?'slds-large-size--7-of-8':
                          'slds-large-size--2-of-3')}">
-      <!--<div class="{! 'slds-grid slds-path__track slds-align&#45;&#45;absolute-center slds-size&#45;&#45;1-of-1 ' + (v.partnerApp==true?'slds-large-size&#45;&#45;7-of-8' : 'slds-large-size&#45;&#45;2-of-3')}">-->
+
         <div class="slds-grid slds-path__scroller-container">
           <div class="slds-path__scroller" role="application">
             <ul class="slds-path__nav" role="listbox">
               <!--only show for initial 3 customer stages-->
-              <aura:if isTrue="{!or(lessthan(v.stageIndex, 3), v.partnerApp)}">
-              <li class="{! 'slds-path__item ' +
+              <aura:if isTrue="{!or(lessthan(v.stageIndex, 2), v.partnerApp)}">
+                <li class="{! 'slds-path__item ' +
                          (v.stageIndex==0?'slds-is-current slds-is-active':
                          'slds-is-active')}"
-                  role="presentation">
-                <a class="slds-path__link">
-                  <span title="Find a Project" class="slds-path__title">Find a Project</span>
+                    role="presentation">
+                  <a class="slds-path__link">
+                    <span title="Contact Info" class="slds-path__title">Contact Info</span>
                   </a>
                 </li>
                 <li class="{! 'slds-path__item ' +
@@ -37,24 +37,15 @@
                            'slds-is-incomplete'))}"
                     role="presentation">
                   <a class="slds-path__link">
-                    <span title="Enter Contact Information" class="slds-path__title">Contact Info</span>
-                  </a>
-                </li>
-                <li class="{! 'slds-path__item ' +
-                           (v.stageIndex==2?'slds-is-current slds-is-active':
-                           (v.stageIndex>2?'slds-is-active':
-                           'slds-is-incomplete'))}"
-                    role="presentation">
-                  <a class="slds-path__link">
                     <span title="Upload Your Bill" class="slds-path__title">Upload Bill</span>
                   </a>
                 </li>
-            </aura:if>
+              </aura:if>
               <!--only show for Bluewave Backend stages-->
-              <aura:if isTrue="{!or(and(greaterthanorequal(v.stageIndex, 3), lessthan(v.stageIndex, 5)), v.partnerApp)}">
+              <aura:if isTrue="{!or(and(greaterthanorequal(v.stageIndex, 2), lessthan(v.stageIndex, 4)), v.partnerApp)}">
                 <li class="{! 'slds-path__item ' +
-                           (v.stageIndex==4?'slds-is-current slds-is-active':
-                           (v.stageIndex>4?'slds-is-active':
+                           (v.stageIndex==3?'slds-is-current slds-is-active':
+                           (v.stageIndex>3?'slds-is-active':
                            'slds-is-incomplete'))}"
                     role="presentation">
                   <a class="slds-path__link">
@@ -62,26 +53,24 @@
                   </a>
                 </li>
               </aura:if>
-
               <!--only show for Payment Info & Submit Application-->
-              <aura:if isTrue="{!or(greaterthanorequal(v.stageIndex, 5), v.partnerApp)}">
+              <aura:if isTrue="{!or(greaterthanorequal(v.stageIndex, 4), v.partnerApp)}">
+                <li class="{! 'slds-path__item ' +
+                           (v.stageIndex==4?'slds-is-current slds-is-active':
+                           (v.stageIndex>4?'slds-is-active':
+                           'slds-is-incomplete'))}"
+                    role="presentation">
+                  <a class="slds-path__link">
+                    <span title="Payment Information" class="slds-path__title">Payment Info</span>
+                  </a>
+                </li>
                 <li class="{! 'slds-path__item ' +
                            (v.stageIndex==5?'slds-is-current slds-is-active':
                            (v.stageIndex>5?'slds-is-active':
                            'slds-is-incomplete'))}"
                     role="presentation">
                   <a class="slds-path__link">
-                    <span title="Payment Info" class="slds-path__title">Payment Info</span>
-                  </a>
-                </li>
-
-                <li class="{! 'slds-path__item ' +
-                           (v.stageIndex==6?'slds-is-current slds-is-active':
-                           (v.stageIndex>6?'slds-is-active':
-                           'slds-is-incomplete'))}"
-                    role="presentation">
-                  <a class="slds-path__link">
-                    <span title="Complete Application" class="slds-path__title">Complete </span>
+                    <span title="Complete Application" class="slds-path__title">Complete</span>
                   </a>
                 </li>
               </aura:if>

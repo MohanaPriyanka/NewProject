@@ -12,10 +12,8 @@
             var action = component.get("c.checkApplicationPartner");
             action.setParams({"partnerId": component.get("v.partnerId")});
             action.setCallback(this, function(resp) {
-                console.log('Result: ' + resp.getState());
                 if(resp.getState() === 'SUCCESS') {
                     component.set("v.partnerApp", resp.getReturnValue());
-                    console.log(' Nav Bar with ID: ' + component.get("v.partnerApp"));
                 } else {
                     this.logError('CSAPApplication', 'checkApplicationPartner', resp.getError(), component.get('v.partnerId'));
                 }
@@ -37,7 +35,6 @@
             component.set("v.lead", event.getParam("lead"));
             lead = event.getParam("lead");
         }
-        console.log('What is partner APp here? ' + component.get("v.partnerApp"));
         if (component.get("v.partnerApp") == undefined) {
             if ( lead.Application_Source_Phase_1__c == 'CSAP 2.1 with Partner'){
                 component.set("v.partnerApp", true);
