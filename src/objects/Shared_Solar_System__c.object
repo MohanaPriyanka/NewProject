@@ -45,7 +45,6 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>true</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableReports>true</enableReports>
@@ -600,6 +599,23 @@ IF ( Total_System_Size_kW_AC_QC__c &gt; 1000, &quot;Class 3&quot;, null)))</form
         <label>Count of Schedule Zs</label>
         <summaryForeignKey>Schedule_Z__c.Shared_Solar_System__c</summaryForeignKey>
         <summaryOperation>count</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Count_of_Transfers__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Rollup of Production Update field. All PU where Bills Generated = true. Increases by every non zero transfer (ie, multiple transfers count as &gt;1 and $0 transfers don&apos;t count)</inlineHelpText>
+        <label>Count of Transfers</label>
+        <summarizedField>Energy_Usage_Update__c.Count_of_Transfers__c</summarizedField>
+        <summaryFilterItems>
+            <field>Energy_Usage_Update__c.Generate_Bills__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Energy_Usage_Update__c.Shared_Solar_System__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Summary</type>
@@ -2206,6 +2222,131 @@ null)</formula>
         <active>true</active>
         <label>SSS - No PM Relationship</label>
         <picklistValues>
+            <picklist>Assignment_Order__c</picklist>
+            <values>
+                <fullName>1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>10</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>4</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>5</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>6</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>7</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>8</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>9</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Billing_Anchors__c</picklist>
+            <values>
+                <fullName>BlueWave</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>RadianGen</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Billing_Method__c</picklist>
+            <values>
+                <fullName>NMC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>kWh</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Client_Brand_Key__c</picklist>
+            <values>
+                <fullName>AmpBlack</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>AmpRed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BluewaveLogo</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Partner__c</picklist>
+            <values>
+                <fullName>BlueWave Incentive Program</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Boston Solar</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Picklist__c</picklist>
+            <values>
+                <fullName>AMP</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ameresco</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BlueWave</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NextSun</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Norton Development</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>SSS_Update__c</picklist>
+            <values>
+                <fullName>1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Sales_Partners__c</picklist>
             <values>
                 <fullName>ACE Residential Solar</fullName>
@@ -2405,116 +2546,6 @@ null)</formula>
             </values>
             <values>
                 <fullName>Yeloha</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Assignment_Order__c</picklist>
-            <values>
-                <fullName>1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>10</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>4</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>5</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>6</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>7</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>8</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>9</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Billing_Anchors__c</picklist>
-            <values>
-                <fullName>BlueWave</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>RadianGen</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Billing_Method__c</picklist>
-            <values>
-                <fullName>NMC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>kWh</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Partner__c</picklist>
-            <values>
-                <fullName>BlueWave Incentive Program</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Boston Solar</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Picklist__c</picklist>
-            <values>
-                <fullName>AMP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ameresco</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>BlueWave</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NextSun</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Norton Development</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>SSS_Update__c</picklist>
-            <values>
-                <fullName>1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -2610,6 +2641,131 @@ null)</formula>
         <active>true</active>
         <label>SSS - PM Relationship</label>
         <picklistValues>
+            <picklist>Assignment_Order__c</picklist>
+            <values>
+                <fullName>1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>10</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>4</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>5</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>6</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>7</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>8</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>9</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Billing_Anchors__c</picklist>
+            <values>
+                <fullName>BlueWave</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>RadianGen</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Billing_Method__c</picklist>
+            <values>
+                <fullName>NMC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>kWh</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Client_Brand_Key__c</picklist>
+            <values>
+                <fullName>AmpBlack</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>AmpRed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BluewaveLogo</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Partner__c</picklist>
+            <values>
+                <fullName>BlueWave Incentive Program</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Boston Solar</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Picklist__c</picklist>
+            <values>
+                <fullName>AMP</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ameresco</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BlueWave</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NextSun</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Norton Development</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>SSS_Update__c</picklist>
+            <values>
+                <fullName>1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Sales_Partners__c</picklist>
             <values>
                 <fullName>ACE Residential Solar</fullName>
@@ -2809,116 +2965,6 @@ null)</formula>
             </values>
             <values>
                 <fullName>Yeloha</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Assignment_Order__c</picklist>
-            <values>
-                <fullName>1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>10</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>4</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>5</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>6</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>7</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>8</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>9</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Billing_Anchors__c</picklist>
-            <values>
-                <fullName>BlueWave</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>RadianGen</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Billing_Method__c</picklist>
-            <values>
-                <fullName>NMC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>kWh</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Partner__c</picklist>
-            <values>
-                <fullName>BlueWave Incentive Program</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Boston Solar</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Picklist__c</picklist>
-            <values>
-                <fullName>AMP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ameresco</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>BlueWave</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NextSun</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Norton Development</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>SSS_Update__c</picklist>
-            <values>
-                <fullName>1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2</fullName>
                 <default>false</default>
             </values>
         </picklistValues>

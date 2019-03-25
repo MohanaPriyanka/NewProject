@@ -172,18 +172,18 @@ public without sharing class PreviewProductionUpdateResults{
             List<Schedule_Z_Subscription__c> szsList = ScheduleZSubscriptionSelector.getListForSmallOfftake(new Set<Id>{scheduleZ.Id});
             for (Schedule_Z_Subscription__c szs: szsList) {
                 if (szs.Customer_Subscription_kW_DC__c != NULL) {
-                    UASB__c newBill = getUASB(szs, production, production.Total_System_NMCs__c, production.Production__c, production.Net_Metering_Rate_Applied__c);
+                    UASB__c newBill = getUASB(szs, production, 1, production.Total_System_NMCs__c, production.Production__c, production.Net_Metering_Rate_Applied__c);
                     newBillList.add(newBill);
                     if (production.Total_System_NMCs_2_of_4__c > 0) {
-                        UASB__c uasbTwo  = getUASB(szs, production, production.Total_System_NMCs_2_of_4__c, production.Production_kWh_2_of_4__c, production.Net_Metering_Rate_Applied_2_of_4__c);
+                        UASB__c uasbTwo  = getUASB(szs, production, 2, production.Total_System_NMCs_2_of_4__c, production.Production_kWh_2_of_4__c, production.Net_Metering_Rate_Applied_2_of_4__c);
                         uasbTwo.PreGen_Production_Update__c = uasbTwo.PreGen_Production_Update__c + ' (2)';
                         newBillList.add(uasbTwo);
                         if (production.Total_System_NMCs_3_of_4__c > 0) {
-                            UASB__c uasbThree = getUASB(szs, production, production.Total_System_NMCs_3_of_4__c, production.Production_kWh_3_of_4__c, production.Net_Metering_Rate_Applied_3_of_4__c);
+                            UASB__c uasbThree = getUASB(szs, production, 3, production.Total_System_NMCs_3_of_4__c, production.Production_kWh_3_of_4__c, production.Net_Metering_Rate_Applied_3_of_4__c);
                             uasbThree.PreGen_Production_Update__c = uasbThree.PreGen_Production_Update__c + ' (3)';
                             newBillList.add(uasbThree);
                             if (production.Total_System_NMCs_4_of_4__c > 0) {
-                                UASB__c uasbFour = getUASB(szs, production, production.Total_System_NMCs_4_of_4__c, production.Production_kWh_4_of_4__c, production.Net_Metering_Rate_Applied_4_of_4__c);
+                                UASB__c uasbFour = getUASB(szs, production, 4, production.Total_System_NMCs_4_of_4__c, production.Production_kWh_4_of_4__c, production.Net_Metering_Rate_Applied_4_of_4__c);
                                 uasbFour.PreGen_Production_Update__c = uasbFour.PreGen_Production_Update__c + ' (4)';
                                 newBillList.add(uasbFour);
                             }
@@ -225,15 +225,15 @@ public without sharing class PreviewProductionUpdateResults{
                 for (Energy_Usage_Update__c productionUpdate : productionList) {
                     if (szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Id == productionUpdate.Shared_Solar_System__r.Id
                         && !productionUpdate.Generate_Bills__c) {
-                        UASB__c newBill = getUASB(szs, productionUpdate, productionUpdate.Total_System_NMCs__c, productionUpdate.Production__c, productionUpdate.Net_Metering_Rate_Applied__c);
+                        UASB__c newBill = getUASB(szs, productionUpdate, 1, productionUpdate.Total_System_NMCs__c, productionUpdate.Production__c, productionUpdate.Net_Metering_Rate_Applied__c);
                         newBill.PreGen_Production_Update__c =  productionUpdate.Name;
                         newBillList.add(newBill);
                         if (productionUpdate.Total_System_NMCs_2_of_4__c > 0) {
-                            UASB__c uasbTwo  = getUASB(szs, productionUpdate, productionUpdate.Total_System_NMCs_2_of_4__c, productionUpdate.Production_kWh_2_of_4__c, productionUpdate.Net_Metering_Rate_Applied_2_of_4__c);
+                            UASB__c uasbTwo  = getUASB(szs, productionUpdate, 2, productionUpdate.Total_System_NMCs_2_of_4__c, productionUpdate.Production_kWh_2_of_4__c, productionUpdate.Net_Metering_Rate_Applied_2_of_4__c);
                             uasbTwo.PreGen_Production_Update__c =  productionUpdate.Name + ' (1)';
                             newBillList.add(uasbTwo);
                             if (productionUpdate.Total_System_NMCs_3_of_4__c > 0) {
-                                UASB__c uasbThree = getUASB(szs, productionUpdate, productionUpdate.Total_System_NMCs_3_of_4__c, productionUpdate.Production_kWh_3_of_4__c, productionUpdate.Net_Metering_Rate_Applied_3_of_4__c);
+                                UASB__c uasbThree = getUASB(szs, productionUpdate, 3, productionUpdate.Total_System_NMCs_3_of_4__c, productionUpdate.Production_kWh_3_of_4__c, productionUpdate.Net_Metering_Rate_Applied_3_of_4__c);
                                 uasbThree.PreGen_Production_Update__c =  productionUpdate.Name + ' (2)';
                                 newBillList.add(uasbThree);
                             }
@@ -295,8 +295,8 @@ public without sharing class PreviewProductionUpdateResults{
         return transactionList;
     }
 
-    public static UASB__c getUASB(Schedule_Z_Subscription__c szs, Energy_Usage_Update__c production, Decimal totalNMCs, Decimal totalProduction, Decimal nmcRate){
-        UASB__c billFields = UtilityAccountBillTriggerHandler.setUASBFields(production, szs, nmcRate, totalProduction, totalNMCs);
+    public static UASB__c getUASB(Schedule_Z_Subscription__c szs, Energy_Usage_Update__c production, Decimal transferCount, Decimal totalNMCs, Decimal totalProduction, Decimal nmcRate){
+        UASB__c billFields = UtilityAccountBillTriggerHandler.setUASBFields(production, szs, transferCount, nmcRate, totalProduction, totalNMCs);
 
         Decimal discountedBill = 0;
         if (szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.Pricing_Structure__c == 'Use Solar Electric Rate'){

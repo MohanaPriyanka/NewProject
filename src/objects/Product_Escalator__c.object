@@ -105,6 +105,19 @@
         <type>MasterDetail</type>
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
+    <fields>
+        <fullName>Starting_Credit_Transfer__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The number credit transfer at which this rate will be enacted. Credit transfer is defined by the number of non-zero NMC transfers on the production updates for a SSS</inlineHelpText>
+        <label>Starting Credit Transfer</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
     <label>Product Escalator</label>
     <nameField>
         <displayFormat>PE-{00000}</displayFormat>
