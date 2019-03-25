@@ -9405,11 +9405,6 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
             <value>1</value>
         </filters>
         <filters>
-            <field>Funds_Disbursed_to_BlueWave_Account__c</field>
-            <operation>equals</operation>
-            <value>0</value>
-        </filters>
-        <filters>
             <field>OPPORTUNITY.STAGE_NAME</field>
             <operation>equals</operation>
             <value>Complete</value>
