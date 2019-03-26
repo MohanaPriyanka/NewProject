@@ -42575,6 +42575,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>agf__ADM_Product_Tag__c.Exclude_from_Work_Request_form__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Product_Tag__c.Team_Name__c</field>
         <readable>true</readable>
@@ -55123,6 +55128,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>ZipCode_Utility_Junction__c-ZipCode Utility Junction Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>agf__ADM_Product_Tag__c-agf__Product Tag Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>agf__ADM_Scrum_Team__c-agf__Scrum Team Layout</layout>
