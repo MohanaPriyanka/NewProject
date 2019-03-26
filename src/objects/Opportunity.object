@@ -9440,6 +9440,25 @@ newwindow.focus();</url>
 &amp;cas11=Phone</url>
     </webLinks>
     <webLinks>
+        <fullName>New_QC_Task</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>New QC Task</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/flow/CS_QC_Task_Flow?varOppID={!Opportunity.Id}&amp;retURL=home/home.jsp</url>
+    </webLinks>
+    <webLinks>
         <fullName>Send_DOER_Contract</fullName>
         <availability>online</availability>
         <displayType>button</displayType>
