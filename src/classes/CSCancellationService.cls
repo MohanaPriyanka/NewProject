@@ -21,15 +21,15 @@ public without sharing class CSCancellationService {
     @TestVisible
     private static final String CANCELLATION_PARAGRAPH_TWO_LABEL = '{!Cancellation_Paragraph_Two__c}';
     @TestVisible
-    private static final String DEFAULT_CANCELLATION_PARAGRAPH_TWO = '<br>Because you have subscriptions that fall into different ' +
-        'regulations, your utility may process the cancellation a different times over a period of months. During this ' +
-        'time, you are responsible for all solar credits transferred to your account. Once your subscription is removed ' +
-        'and stops receiving credits you will be notified of the change via email.</br>';
+    private static final String DEFAULT_CANCELLATION_PARAGRAPH_TWO = '<br>Per our records, you have multiple subscriptions ' +
+        'and the terms of service may vary for each. Your utility may process the cancellations at different times over ' +
+        'a period of months. During this time, you are responsible for all solar credits transferred to your account. Once ' +
+        'your all your subscriptions are removed and stop receiving credits you will be notified of the change via email.</br>';
     @TestVisible
     private static final String CANCELLATION_PARAGRAPH_THREE_LABEL = '{!Cancellation_Paragraph_Three__c}';
     @TestVisible
-    private static final String DEFAULT_CANCELLATION_PARAGRAPH_THREE = '<br><i>Because you have subscriptions that were made under ' +
-        'different BlueWave contracts, please refer to your contract for more details about potential termination fees.</i></br>';
+    private static final String DEFAULT_CANCELLATION_PARAGRAPH_THREE = '<br><i>Please refer to your contract(s) for more ' +
+        'details about the terms of service for each of your subscriptions including any applicable early termination fees.</i></br>';
 
     // W-008422: Finds accounts that are overdue, and sets the Account's cancellation reason, comments, and request date,
     // which in turn triggers the cancellation process. We skip Anchor or Public Offtake accounts as well as those that
@@ -67,7 +67,6 @@ public without sharing class CSCancellationService {
 
         for (Account account : accountToCancellationParagraphs.keySet()) {
             try {
-                System.debug(LoggingLevel.ERROR, accountToCancellationParagraphs.get(account));
                 cancellationEmails.add(
                     createCSEmail(
                         account,
