@@ -781,6 +781,18 @@ null, Annual_Electricity_Cost__c/NMC_Value__c)</formula>
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Annual_Escalator__c</fullName>
+        <externalId>false</externalId>
+        <label>Annual Escalator</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Annual_Income__c</fullName>
         <externalId>false</externalId>
         <formula>IF(ISBLANK(Personal_Credit_Report2__c),
@@ -1168,6 +1180,18 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Building_Use__c</fullName>
+        <description>Collected in C&amp;I intake form</description>
+        <externalId>false</externalId>
+        <inlineHelpText>C&amp;I intake building use</inlineHelpText>
+        <label>Building Use</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
         <fullName>Business_Title__c</fullName>
         <externalId>false</externalId>
         <label>Business Title</label>
@@ -1371,6 +1395,19 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>C_I_In_take_Form_info__c</fullName>
+        <description>Collection of text fields from C&amp;I in-take form</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Collection of text fields from C&amp;I in-take form</inlineHelpText>
+        <label>C&amp;I In-take Form info</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
     </fields>
     <fields>
         <fullName>Calculated_Annual_Spend__c</fullName>
@@ -2642,6 +2679,20 @@ IF( ISPICKVAL(Personal_Credit_Report2__r.Solar_Loan_Approval_Status__c, &quot;De
         <trackTrending>false</trackTrending>
     </fields>
     <fields>
+        <fullName>Development_Fee__c</fullName>
+        <description>C&amp;I development fee</description>
+        <externalId>false</externalId>
+        <inlineHelpText>C&amp;I development fee</inlineHelpText>
+        <label>Development Fee</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Direct_Disbursal_to_Installer_Authorized__c</fullName>
         <description>Maps from Lead Field - DOER ONLY</description>
         <externalId>false</externalId>
@@ -3010,10 +3061,60 @@ IF(AND(Application_Type__c=&quot;Joint&quot;,TEXT(Joint_Applicant_Type__c)=&quot
         </valueSet>
     </fields>
     <fields>
+        <fullName>EPC_MOU__c</fullName>
+        <externalId>false</externalId>
+        <label>EPC MOU</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Drafted</fullName>
+                    <default>false</default>
+                    <label>Drafted</label>
+                </value>
+                <value>
+                    <fullName>Sent</fullName>
+                    <default>false</default>
+                    <label>Sent</label>
+                </value>
+                <value>
+                    <fullName>Signed</fullName>
+                    <default>false</default>
+                    <label>Signed</label>
+                </value>
+                <value>
+                    <fullName>N/A</fullName>
+                    <default>false</default>
+                    <label>N/A</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>EPC_Partner__c</fullName>
         <externalId>false</externalId>
         <label>EPC Partner</label>
         <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>EPC_Pricing__c</fullName>
+        <description>EPC Pricing</description>
+        <externalId>false</externalId>
+        <inlineHelpText>EPC Pricing originally collected in C&amp;I in-take form</inlineHelpText>
+        <label>EPC Pricing</label>
+        <length>80</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -3139,9 +3240,9 @@ text(year(addmonths(Commencement_Date__c, (Product__r.First_Adjustment__c-1))))<
         <fullName>Estimated_System_Size_kW_AC__c</fullName>
         <externalId>false</externalId>
         <label>Estimated System Size (kW AC)</label>
-        <precision>18</precision>
+        <precision>10</precision>
         <required>false</required>
-        <scale>0</scale>
+        <scale>2</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -3152,13 +3253,27 @@ text(year(addmonths(Commencement_Date__c, (Product__r.First_Adjustment__c-1))))<
         <fullName>Estimated_System_Size_kW_DC__c</fullName>
         <externalId>false</externalId>
         <label>Estimated System Size (kW DC)</label>
-        <precision>18</precision>
+        <precision>7</precision>
         <required>false</required>
-        <scale>0</scale>
+        <scale>2</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Estimated_Utility_Upgrade_Cost__c</fullName>
+        <description>Collected in C&amp;I in-take form</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Collected in C&amp;I in-take form</inlineHelpText>
+        <label>Estimated Utility Upgrade Cost</label>
+        <length>80</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
@@ -3548,6 +3663,34 @@ IF(or(ISBLANK(Annual_Independent_Income__c), income_based_loan_support__c = Fals
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>ISA_Status__c</fullName>
+        <description>Collected in C&amp;I in-take form</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Collected in C&amp;I in-take form</inlineHelpText>
+        <label>ISA Status</label>
+        <length>80</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Impact_Study_Costs__c</fullName>
+        <description>Collected in C&amp;I in-take form</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Collected in C&amp;I in-take form</inlineHelpText>
+        <label>Impact Study Costs</label>
+        <length>80</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Income_Type_2__c</fullName>
@@ -3948,6 +4091,94 @@ TEXT(DAY(Interest_Only_Start_Date__c))
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Lease_Agreement__c</fullName>
+        <description>Status of Lease Agreement for C&amp;I projects</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Status of Lease Agreement for C&amp;I projects</inlineHelpText>
+        <label>Lease Agreement</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Drafted</fullName>
+                    <default>false</default>
+                    <label>Drafted</label>
+                </value>
+                <value>
+                    <fullName>Sent</fullName>
+                    <default>false</default>
+                    <label>Sent</label>
+                </value>
+                <value>
+                    <fullName>Signed</fullName>
+                    <default>false</default>
+                    <label>Signed</label>
+                </value>
+                <value>
+                    <fullName>N/A</fullName>
+                    <default>false</default>
+                    <label>N/A</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Lease_Price_MW_DC__c</fullName>
+        <description>C&amp;I Lease Price per MW DC</description>
+        <externalId>false</externalId>
+        <inlineHelpText>C&amp;I Lease Price per MW DC</inlineHelpText>
+        <label>Lease Price/MW DC</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Lease_Terms_MOU__c</fullName>
+        <externalId>false</externalId>
+        <label>Lease Terms MOU</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Drafted</fullName>
+                    <default>false</default>
+                    <label>Drafted</label>
+                </value>
+                <value>
+                    <fullName>Sent</fullName>
+                    <default>false</default>
+                    <label>Sent</label>
+                </value>
+                <value>
+                    <fullName>Signed</fullName>
+                    <default>false</default>
+                    <label>Signed</label>
+                </value>
+                <value>
+                    <fullName>N/A</fullName>
+                    <default>false</default>
+                    <label>N/A</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Lease__c</fullName>
         <externalId>false</externalId>
         <label>Lease</label>
@@ -3971,6 +4202,44 @@ TEXT(DAY(Interest_Only_Start_Date__c))
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Letter_of_Intent__c</fullName>
+        <description>Status of LOI for C&amp;I projects</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Status of LOI for C&amp;I projects</inlineHelpText>
+        <label>Letter of Intent</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Drafted</fullName>
+                    <default>false</default>
+                    <label>Drafted</label>
+                </value>
+                <value>
+                    <fullName>Sent</fullName>
+                    <default>false</default>
+                    <label>Sent</label>
+                </value>
+                <value>
+                    <fullName>Signed</fullName>
+                    <default>false</default>
+                    <label>Signed</label>
+                </value>
+                <value>
+                    <fullName>N/A</fullName>
+                    <default>false</default>
+                    <label>N/A</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
     </fields>
     <fields>
         <fullName>Level_of_Interest__c</fullName>
@@ -4758,6 +5027,20 @@ MAX(Personal_Credit_Report2__r.Credit_Score_Integer_2__c, Personal_Credit_Report
         <externalId>false</externalId>
         <label>More than five years industry experience</label>
         <length>5</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Mortgage_Lender__c</fullName>
+        <description>Mortgage Lender of record from C&amp;I in-take form</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Collected in C&amp;I in-take form</inlineHelpText>
+        <label>Mortgage Lender</label>
+        <length>80</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -5886,6 +6169,20 @@ IF((Partner_tag_lookup__r.RL_Commission_Structure__c*System_Size__c)&gt;=Partner
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Reason_Unqualified__c</fullName>
+        <description>This is the reason a lead was unqualified. It&apos;s populated by the user who marks the lead as unqualified.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the reason a lead was unqualified. It&apos;s populated by the user who marks the lead as unqualified.</inlineHelpText>
+        <label>Reason Unqualified</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Reason_for_Decline2__c</fullName>
         <externalId>false</externalId>
         <label>Reason for Decline</label>
@@ -6117,6 +6414,268 @@ if(and( isnull(Disbursal_1_Contract_Signature_Checkbox__c )=False,isnull( Disbur
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Roof_Age__c</fullName>
+        <description>Collected in C&amp;I in-take form</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Collected in C&amp;I in-take form</inlineHelpText>
+        <label>Roof Age</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Roof_Type__c</fullName>
+        <description>Collected in C&amp;I in-take form</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Collected in C&amp;I in-take form</inlineHelpText>
+        <label>Roof Type</label>
+        <length>80</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>SMART_Capacity_Block__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Expected block for SMART</inlineHelpText>
+        <label>SMART Capacity Block</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>1</fullName>
+                    <default>false</default>
+                    <label>1</label>
+                </value>
+                <value>
+                    <fullName>2</fullName>
+                    <default>false</default>
+                    <label>2</label>
+                </value>
+                <value>
+                    <fullName>3</fullName>
+                    <default>false</default>
+                    <label>3</label>
+                </value>
+                <value>
+                    <fullName>4</fullName>
+                    <default>false</default>
+                    <label>4</label>
+                </value>
+                <value>
+                    <fullName>5</fullName>
+                    <default>false</default>
+                    <label>5</label>
+                </value>
+                <value>
+                    <fullName>6</fullName>
+                    <default>false</default>
+                    <label>6</label>
+                </value>
+                <value>
+                    <fullName>7</fullName>
+                    <default>false</default>
+                    <label>7</label>
+                </value>
+                <value>
+                    <fullName>8</fullName>
+                    <default>false</default>
+                    <label>8</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>SMART_Location_Adder_Tranche__c</fullName>
+        <description>Which tranche we are expected to fall in for the SMART location adder</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Which tranche we are expected to fall in for the SMART location adder</inlineHelpText>
+        <label>SMART Location Adder Tranche</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>1</fullName>
+                    <default>false</default>
+                    <label>1</label>
+                </value>
+                <value>
+                    <fullName>2</fullName>
+                    <default>false</default>
+                    <label>2</label>
+                </value>
+                <value>
+                    <fullName>3</fullName>
+                    <default>false</default>
+                    <label>3</label>
+                </value>
+                <value>
+                    <fullName>4</fullName>
+                    <default>false</default>
+                    <label>4</label>
+                </value>
+                <value>
+                    <fullName>5</fullName>
+                    <default>false</default>
+                    <label>5</label>
+                </value>
+                <value>
+                    <fullName>6</fullName>
+                    <default>false</default>
+                    <label>6</label>
+                </value>
+                <value>
+                    <fullName>7</fullName>
+                    <default>false</default>
+                    <label>7</label>
+                </value>
+                <value>
+                    <fullName>8</fullName>
+                    <default>false</default>
+                    <label>8</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>SMART_Location_Adder__c</fullName>
+        <externalId>false</externalId>
+        <label>SMART Location Adder</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Building</fullName>
+                    <default>false</default>
+                    <label>Building</label>
+                </value>
+                <value>
+                    <fullName>Floating</fullName>
+                    <default>false</default>
+                    <label>Floating</label>
+                </value>
+                <value>
+                    <fullName>Brownfield</fullName>
+                    <default>false</default>
+                    <label>Brownfield</label>
+                </value>
+                <value>
+                    <fullName>Landfill</fullName>
+                    <default>false</default>
+                    <label>Landfill</label>
+                </value>
+                <value>
+                    <fullName>Canopy</fullName>
+                    <default>false</default>
+                    <label>Canopy</label>
+                </value>
+                <value>
+                    <fullName>Agricultural</fullName>
+                    <default>false</default>
+                    <label>Agricultural</label>
+                </value>
+                <value>
+                    <fullName>N/A</fullName>
+                    <default>false</default>
+                    <label>N/A</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>SMART_Offtake_Adder_Trance__c</fullName>
+        <description>Which Trance we are expected to fall in for the SMART oftake adder</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Which Trance we are expected to fall in for the SMART oftake adder</inlineHelpText>
+        <label>SMART Offtake Adder Trance</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>1</fullName>
+                    <default>false</default>
+                    <label>1</label>
+                </value>
+                <value>
+                    <fullName>2</fullName>
+                    <default>false</default>
+                    <label>2</label>
+                </value>
+                <value>
+                    <fullName>3</fullName>
+                    <default>false</default>
+                    <label>3</label>
+                </value>
+                <value>
+                    <fullName>4</fullName>
+                    <default>false</default>
+                    <label>4</label>
+                </value>
+                <value>
+                    <fullName>5</fullName>
+                    <default>false</default>
+                    <label>5</label>
+                </value>
+                <value>
+                    <fullName>6</fullName>
+                    <default>false</default>
+                    <label>6</label>
+                </value>
+                <value>
+                    <fullName>7</fullName>
+                    <default>false</default>
+                    <label>7</label>
+                </value>
+                <value>
+                    <fullName>8</fullName>
+                    <default>false</default>
+                    <label>8</label>
+                </value>
+                <value>
+                    <fullName>9</fullName>
+                    <default>false</default>
+                    <label>9</label>
+                </value>
+                <value>
+                    <fullName>10</fullName>
+                    <default>false</default>
+                    <label>10</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
     </fields>
     <fields>
         <fullName>SREC_Assumption__c</fullName>
@@ -7526,6 +8085,20 @@ DOER_Solar_Loan__c ==TRUE,(( Monthly_Payment__c *   Product__r.Loan_Term__c )+( 
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Upfront_Payment__c</fullName>
+        <description>Used for C&amp;I opportunities</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Upfront payment for C&amp;I project opportunities</inlineHelpText>
+        <label>Upfront Payment</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>Username__c</fullName>
         <externalId>false</externalId>
         <label>Username</label>
@@ -7541,7 +8114,7 @@ DOER_Solar_Loan__c ==TRUE,(( Monthly_Payment__c *   Product__r.Loan_Term__c )+( 
         <fullName>UtilityMapper__c</fullName>
         <externalId>false</externalId>
         <label>Utility</label>
-        <length>35</length>
+        <length>50</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -7858,6 +8431,20 @@ NULL
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Year</label>
         <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Yield_kWh_kW__c</fullName>
+        <description>Expected yield of C&amp;I rooftop installation, from in-take form</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Expected yield of C&amp;I rooftop installation, from in-take form</inlineHelpText>
+        <label>Yield (kWh/kW)</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -8553,11 +9140,6 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
             <field>DOER_Solar_Loan__c</field>
             <operation>equals</operation>
             <value>1</value>
-        </filters>
-        <filters>
-            <field>Funds_Disbursed_to_BlueWave_Account__c</field>
-            <operation>equals</operation>
-            <value>0</value>
         </filters>
         <filters>
             <field>OPPORTUNITY.STAGE_NAME</field>
