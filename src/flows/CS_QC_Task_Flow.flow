@@ -171,6 +171,12 @@ The product line and Opportunity will automatically be filled in. Click Finish t
                     <stringValue>Assignee</stringValue>
                 </value>
             </inputParameters>
+            <inputParameters>
+                <name>whereClause</name>
+                <value>
+                    <stringValue>IsActive = TRUE AND License_Type__c = &apos;Standard&apos;</stringValue>
+                </value>
+            </inputParameters>
             <isRequired>true</isRequired>
             <outputParameters>
                 <assignToReference>varAssigneeID</assignToReference>
