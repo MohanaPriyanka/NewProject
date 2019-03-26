@@ -183,7 +183,7 @@ public without sharing class LeadTriggerHandler {
     }
 
     private void customerSubscriptionProcess(List<Lead> leads) {
-        CSSubscriptionEnroller repo = new CSSubscriptionEnroller(leads, skipContractSend);
+        CSSubscriptionEnroller repo = new CSSubscriptionEnroller(leads);
         repo.enroll();
     }
 
