@@ -4,6 +4,7 @@
         // hides nav bar if the customer needs to log in
         if (leadId != null && leadId != '' && leadId != undefined) {
             component.set("v.showNavBar", false);
+            component.set("v.loading", false);
         }
 
         var partnerId = component.get("v.partnerId");
@@ -14,6 +15,7 @@
             action.setCallback(this, function(resp) {
                 if(resp.getState() === 'SUCCESS') {
                     component.set("v.partnerApp", resp.getReturnValue());
+                    component.set("v.loading", false);
                 } else {
                     this.logError('CSAPApplication', 'checkApplicationPartner', resp.getError(), component.get('v.partnerId'));
                 }
@@ -22,9 +24,6 @@
 
         }
 
-        //if partner Id is populated, set partnerApp
-
-        //if partnerId is NOT populated, need to check Source from Lead to set partnerApp
 
     },
 

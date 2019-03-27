@@ -4,6 +4,7 @@
   <aura:attribute name="stageIndex" type="Integer" default="0"/>
   <aura:attribute name="partnerId" type="String"/>
   <aura:attribute name="partnerApp" type="Boolean"/>
+  <aura:attribute name="loading" type="Boolean" default="true"/>
   <!-- Set when handling the NavigationEvent -->
   <aura:attribute name="lead" type="Lead"/>
   <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
@@ -12,6 +13,8 @@
   <aura:set attribute="supressWaiting" value="true"/>
 
   <aura:registerEvent name="CSAPNavigationEvent" type="c:CSAPNavigationEvent"/>
+
+  <aura:if isTrue="{!not(v.loading)}">
   <aura:if isTrue="{!and(v.showNavBar, !$Browser.isPhone)}">
     <div class="slds-path">
       <div class="{! 'slds-grid slds-path__track slds-align--absolute-center slds-size--1-of-1 ' +
@@ -79,5 +82,6 @@
         </div>
       </div>
     </div>
+  </aura:if>
   </aura:if>
 </aura:component>
