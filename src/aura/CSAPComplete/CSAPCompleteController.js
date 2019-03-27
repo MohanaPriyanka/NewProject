@@ -7,6 +7,7 @@
         helper.handleNavEvent(component, event, helper, "Submitting Application");
         var page = component.get("v.page");
         if (page === 'Submitting Application') {
+            console.log("EVENT TYPE: " + event.getParam("eventType"));
             var finishStage = component.get('c.finishStage');
             $A.enqueueAction(finishStage);
         }
