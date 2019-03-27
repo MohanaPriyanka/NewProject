@@ -366,7 +366,18 @@
             <label>Environment is Production</label>
         </rules>
     </decisions>
-    <interviewLabel>User_Story_Create_and_Update-11_InterviewLabel</interviewLabel>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>NOW() </stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_7_myRule_5_A1_2533694385</name>
+        <dataType>Date</dataType>
+        <expression>NOW()</expression>
+    </formulas>
+    <interviewLabel>User_Story_Create_and_Update-12_InterviewLabel</interviewLabel>
     <label>User Story: Create and Update</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -640,6 +651,42 @@
                 <elementReference>myVariable_current.Id</elementReference>
             </value>
         </filters>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>Date</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Close Date</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Formula</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>copado__Close_Date__c</field>
+            <value>
+                <elementReference>formula_7_myRule_5_A1_2533694385</elementReference>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <processMetadataValues>
                 <name>dataType</name>

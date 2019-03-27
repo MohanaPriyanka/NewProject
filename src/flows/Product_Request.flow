@@ -103,13 +103,6 @@
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>varPriority</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>dlPriority_Legal</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
             <assignToReference>varSubject</assignToReference>
             <operator>Assign</operator>
             <value>
@@ -768,8 +761,8 @@
             <label>Skunkworks</label>
         </rules>
         <rules>
-            <name>outCS_Product_Management</name>
-            <conditionLogic>and</conditionLogic>
+            <name>outProduct_Management</name>
+            <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>varTeamName</leftValueReference>
                 <operator>EqualTo</operator>
@@ -777,10 +770,17 @@
                     <stringValue>CS Product Management</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>varTeamName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Client Product Management</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>scrCS_Product_Management</targetReference>
             </connector>
-            <label>CS Product Management</label>
+            <label>Product Management</label>
         </rules>
     </decisions>
     <decisions>
@@ -845,6 +845,13 @@
         <name>drcProductTag</name>
         <dataType>String</dataType>
         <displayField>Name</displayField>
+        <filters>
+            <field>Exclude_from_Work_Request_form__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
         <filters>
             <field>agf__Active__c</field>
             <operator>EqualTo</operator>
@@ -1415,7 +1422,7 @@
     </screens>
     <screens>
         <name>scrCS_Product_Management</name>
-        <label>CS Product Management</label>
+        <label>Product Management</label>
         <locationX>370</locationX>
         <locationY>416</locationY>
         <allowBack>true</allowBack>
@@ -1779,14 +1786,6 @@
 
 P4 = Lowest Priority → P0 = Highest Priority</fieldText>
             <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>dlPriority_Legal</name>
-            <choiceReferences>pcPriority</choiceReferences>
-            <dataType>String</dataType>
-            <fieldText>Priority</fieldText>
-            <fieldType>DropdownBox</fieldType>
-            <isRequired>false</isRequired>
         </fields>
         <fields>
             <name>dlProductTag_Legal</name>
