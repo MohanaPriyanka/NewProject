@@ -57,7 +57,7 @@ public with sharing class EmailServiceTest {
             System_Assignment__c = 'Automatic - COD Date/Available Capacity',
             Status = 'Ready for Credit Check',
             Electricity_Provider__c = 'Eversource',
-            Application_Source_Phase_1__c = 'CSAP with Partner'
+            Application_Source_Phase_1__c = 'CSAP 2.1 with Partner'
         );
         return lead;
     }
