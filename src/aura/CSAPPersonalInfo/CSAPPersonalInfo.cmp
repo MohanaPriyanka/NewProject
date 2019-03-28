@@ -54,7 +54,7 @@
             Please provide your contact information and billing address so we can verify your eligibility
             for this community solar project and contact you regarding your application. We take privacy and security
             seriously. Check out our
-             <b><lightning:formattedUrl value="https://bluewavesolar.com/privacy-policy" class="slds-text-color--weak" label="Privacy Policy" tooltip="Go to Privacy Policy"/></b>
+             <b><lightning:formattedUrl value="https://bluewavesolar.com/privacy-policy" target="_blank" class="slds-text-color--weak" label="Privacy Policy" tooltip="Go to Privacy Policy"/></b>
            for more details.
            </div>
           </lightning:layoutItem>

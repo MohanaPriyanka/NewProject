@@ -26,44 +26,45 @@
     },
 
     handleNavEvent : function(component, event, helper) {
-        var actionStates = component.get("c.getStates");
-        actionStates.setCallback(this,function(resp){
-            if (resp.getState() === 'SUCCESS') {
-                component.set("v.States", resp.getReturnValue());
-            } else {
-                component.set("v.States", "MA");
-            }
-        });
-        $A.enqueueAction(actionStates);
-        let thisYear = new Date().getFullYear();
-        let years = [];
-        for (let i=0; i<8; i++) {
-            years.push(''+(thisYear + i));
-        }
-        component.set('v.expirationYears', years);
-
         if (event.getParam('options') && event.getParam('options').pageName) {
             helper.handleNavEvent(component, event, helper, event.getParam('options').pageName);
         } else {
             helper.handleNavEvent(component, event, helper, "PaymentInfo");
         }
-
-        var getProduct = component.get("c.getProduct");
-        var lead = component.get("v.lead");
-        getProduct.setParams({"productId": lead.Product__c});
-        getProduct.setCallback(this, function(response) {
-            if (response.getState() === 'SUCCESS') {
-                var product = response.getReturnValue();
-                if (product.Program__c.includes('SREC')) {
-                    component.set("v.PaymentMethodsAccepted", [['Bank Account', 'ACH']]);
+        if (component.get('v.STAGENAME') === 'NAV_Payment_Information' && component.get('v.page') === 'PaymentInfo') {
+            var actionStates = component.get("c.getStates");
+            actionStates.setCallback(this,function(resp){
+                if (resp.getState() === 'SUCCESS') {
+                    component.set("v.States", resp.getReturnValue());
                 } else {
-                    component.set("v.PaymentMethodsAccepted", [['Bank Account', 'ACH'],['Credit/Debit Card', 'Credit Card']]);
+                    component.set("v.States", "MA");
                 }
-
+            });
+            $A.enqueueAction(actionStates);
+            let thisYear = new Date().getFullYear();
+            let years = [];
+            for (let i=0; i<8; i++) {
+                years.push(''+(thisYear + i));
             }
-        })
-        if (lead.Product__c) {
-            $A.enqueueAction(getProduct);
+            component.set('v.expirationYears', years);
+
+            var getProduct = component.get("c.getProduct");
+            var lead = component.get("v.lead");
+            getProduct.setParams({"productId": lead.Product__c});
+            getProduct.setCallback(this, function(response) {
+                if (response.getState() === 'SUCCESS') {
+                    var product = response.getReturnValue();
+                    if (product.Program__c.includes('SREC')) {
+                        component.set("v.PaymentMethodsAccepted", [['Bank Account', 'ACH']]);
+                    } else {
+                        component.set("v.PaymentMethodsAccepted", [['Bank Account', 'ACH'],['Credit/Debit Card', 'Credit Card']]);
+                    }
+
+                }
+            })
+            if (lead.Product__c) {
+                $A.enqueueAction(getProduct);
+            }
         }
     },
 
