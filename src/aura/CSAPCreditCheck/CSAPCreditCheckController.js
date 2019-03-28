@@ -15,10 +15,10 @@
             var a = component.get("c.checkCredit");
             $A.enqueueAction(a);
         }
-        
-        if (component.get("v.abbrevStates") && component.get("v.abbrevStates").length === 0) {
-            helper.getUSStates(component, "v.abbrevStates", true);
-        }
+
+        // if (component.get("v.abbrevStates") && component.get("v.abbrevStates").length === 0) {
+        //     helper.getUSStates(component, "v.abbrevStates", true);
+        // }
     },
 
     checkCredit : function(component, event, helper) {
@@ -34,13 +34,13 @@
                 if (resp.getState() == "SUCCESS") {
                     window.setTimeout(function() {
                         $A.util.removeClass(component.find("creditStatus"), "noDisplay");
-                        component.set("v.creditStatusText", "Sending request to TransUnion...");
+                        component.set("v.loadingText", "Finding a solar project near you...");
                     }, 3000);
                     window.setTimeout(function() {
-                        component.set("v.creditStatusText", "Waiting for TransUnion to process...");
+                        component.set("v.loadingText", "Checking project capacity...");
                     }, 6000);
                     window.setTimeout(function() {
-                        component.set("v.creditStatusText", "Checking for results...");
+                        component.set("v.loadingText", "We're processing your application... This process may take up to a minute.");
                     }, 9000);
                     window.setTimeout(function() {
                         var creditPollerInterval = window.setInterval($A.getCallback(helper.checkCreditStatus),

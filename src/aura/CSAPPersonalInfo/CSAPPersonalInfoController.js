@@ -8,11 +8,13 @@
             component.set("v.page","Login");
             component.set("v.loading", false);
         }
-        if (component.get("v.abbrevStates") && component.get("v.abbrevStates").length === 0) {
-            helper.getUSStates(component, "v.abbrevStates", true);
-        }
+
         if (component.get("v.page") == 'AboutYourself') {
             component.set("v.loading", false);
+
+            if (component.get("v.abbrevStates") && component.get("v.abbrevStates").length === 0) {
+                helper.getUSStates(component, "v.abbrevStates", true);
+            }
         }
     },
     handleNavEvent : function(component, event, helper) {

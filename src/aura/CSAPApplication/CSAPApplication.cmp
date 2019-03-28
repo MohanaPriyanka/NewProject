@@ -10,7 +10,6 @@
 
 
   <c:LightningErrorHandler/>
-  <!--<c:CSAPStart supressWaiting="true" leadId="{!v.leadId}" leadEmail="{!v.email}" partnerApp="{!v.partnerApp}"/>-->
   <c:CSAPPersonalInfo supressWaiting="true" leadId="{!v.leadId}" leadEmail="{!v.email}" partnerId="{!v.partnerId}" salesRepId="{!v.salesRepId}" referralCode="{!v.referralCode}" partnerApp="{!v.partnerApp}"/>
   <c:CSAPCapacityCheck supressWaiting="true" partnerApp="{!v.partnerApp}"/>
   <c:CSAPCreditCheck supressWaiting="true"/>

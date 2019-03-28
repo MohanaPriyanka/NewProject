@@ -51,11 +51,11 @@
             ual.Service_State__c = lead.LASERCA__Home_State__c;
             ual.Service_Zip_Code__c = lead.Parcel_Zip__c;
 
+            if (component.get("v.abbrevStates") && component.get("v.abbrevStates").length === 0) {
+                helper.getUSStates(component, "v.abbrevStates", true);
+            }
+        }
 
-        }
-        if (component.get("v.abbrevStates") && component.get("v.abbrevStates").length === 0) {
-            helper.getUSStates(component, "v.abbrevStates", true);
-        }
     },
 
     goToUtilityAccountInformation : function(component, event, helper) {
