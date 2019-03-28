@@ -21,12 +21,10 @@ public without sharing class CSSubscriptionEnroller {
     private Map<Id, ChargentOrders__ChargentOrder__c> chOrdersByLeadId;
     private List<Id> oppIdList;
     private List<Lead> leads;
-    private Boolean skipContractSend = false;
     private Map<Id, List<Product_Tariff__c>> tariffsByProduct;
 
 
-    public CSSubscriptionEnroller(List<Lead> leads, Boolean skipContractSend) {
-        this.skipContractSend = skipContractSend;
+    public CSSubscriptionEnroller(List<Lead> leads) {
         this.leads = leads;
 
         List<Id> leadIds = new List<Id>();
@@ -123,9 +121,6 @@ public without sharing class CSSubscriptionEnroller {
         }
         insertUASes();
         updateChargentOrders();
-        if (!skipContractSend) {
-            sendContracts();
-        }
     }
 
     public List<Utility_Account_Log__c> getUALList(Lead lead) {
@@ -224,10 +219,6 @@ public without sharing class CSSubscriptionEnroller {
         if (!chargentOrdersToUpdate.isEmpty()) {
             update chargentOrdersToUpdate;
         }
-    }
-
-    public void sendContracts() {
-        DocuSignHelper.sendCSPackageFuture(oppIdList);
     }
 
     public void calculateProposedkWh(Lead lead) {

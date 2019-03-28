@@ -17,4 +17,14 @@ public class OpportunitiesSelector {
             AND Customer_Group__c NOT IN ('Anchor', 'Public Offtake')
         ];
     }
+
+    public static Opportunity selectForContractSend(Id opportunityId) {
+        return [
+            SELECT Id, Name, Parent_Account_Name__c, Salesperson_Email__c, Sales_tag__c, Application_Type__c,
+                Email__c, Co_Applicant_Email__c, Co_Applicant_Full_Name__c, Docusign_Template__c
+            FROM Opportunity
+            WHERE Id = : opportunityId
+            LIMIT 1
+        ];
+    }
 }
