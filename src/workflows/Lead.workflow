@@ -933,16 +933,8 @@ IF(Number_of_Periods__c&gt;120, max(1250,0.07*Loan_Amount__c), max(1250,0.05*Loa
     <rules>
         <fullName>CS - Installer - Notification Lead has been Created</fullName>
         <actions>
-            <name>CS_Partner_Lead_has_been_Created</name>
-            <type>Alert</type>
-        </actions>
-        <actions>
             <name>update_partner_email</name>
             <type>FieldUpdate</type>
-        </actions>
-        <actions>
-            <name>EMAIL_LOG_CS_Lead_Created_Notification_to_Partner</name>
-            <type>Task</type>
         </actions>
         <active>true</active>
         <booleanFilter>1 AND 2</booleanFilter>
