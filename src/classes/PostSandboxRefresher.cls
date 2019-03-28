@@ -364,7 +364,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
 
     global class SolarSystemHelper implements Queueable {
         global void execute(QueueableContext context) {
-            Product2 normalCSProduct = new Product2(Name = 'BlueWave SMART',
+            Product2 normalCSProduct = new Product2(
+                Name = 'BlueWave SMART',
                 Family = 'Community Solar',
                 Product_Type__c = 'Community Solar',
                 Program__c = 'SMART - Community Solar',
@@ -377,9 +378,16 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Annual_kWh_Maximum__c = 100000000,
                 NM_Rate_Floor__c = 0,
                 Credit_Minimum__c = '200',
-                Monthly_Late_Fee__c = 1);
+                Monthly_Late_Fee__c = 1,
+                Cancellation_Paragraph_Two__c = '<br>Per Massachusetts utility and state regulations, project capacity ' +
+                    'allocation forms can only be filed up to two times per year; therefore, it may take up to six ' +
+                    'months for your subscription to stop receiving solar credits. During this time, you will remain ' +
+                    'responsible for paying for all solar credits transferred to your account. Once the utility removes ' +
+                    'your subscription, we will notify you via email.</br>'
+            );
 
-            Product2 normalSRECProduct = new Product2(Name = 'BlueWave SREC',
+            Product2 normalSRECProduct = new Product2(
+                Name = 'BlueWave SREC',
                 Family = 'Community Solar',
                 Product_Type__c = 'Community Solar',
                 Program__c = 'SREC - Community Solar',
@@ -392,7 +400,16 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Annual_kWh_Maximum__c = 100000000,
                 NM_Rate_Floor__c = 0,
                 Credit_Minimum__c = '200',
-                Monthly_Late_Fee__c = 1);
+                Monthly_Late_Fee__c = 1,
+                Cancellation_Paragraph_Two__c = '<br>Per Massachusetts utility and state regulations, project capacity ' +
+                    'allocation forms can only be filed up to two times per year; therefore, it may take up to six ' +
+                    'months for your subscription to stop receiving solar credits. During this time, you will remain ' +
+                    'responsible for paying for all solar credits transferred to your account. Once the utility removes ' +
+                    'your subscription, we will notify you via email.</br>',
+                Cancellation_Paragraph_Three__c = '<i><br>Please note, per the terms of your contract, you may be charged ' +
+                    'an early termination fee to cancel your community solar subscription, unless you provide a replacement ' +
+                    'customer. Please refer to your contract for more details.</br></i>'
+            );
 
             insert new List<Product2>{
                 normalCSProduct,

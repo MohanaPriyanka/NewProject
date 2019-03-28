@@ -51,6 +51,14 @@ public class MessagingService {
         return createAndSendEmail(templateHtml, ee.orgWideEmail, ee.subjectLine, ee.addressList, ee.sobjectId);
     }
 
+    public static String getHtmlWithReplacements (String templateName, Map<String, String> keyToValueMap) {
+        String htmlValue = getHtml(templateName).HtmlValue;
+        for (String key : keyToValueMap.keySet()) {
+            htmlValue = htmlValue.replace(key, keyToValueMap.get(key)==null?'':keyToValueMap.get(key));
+        }
+        return htmlValue;
+    }
+
     @TestVisible
     private static Boolean onlyUseActiveTemplates = true;
     public static EmailTemplate getHtml (String templateName) {

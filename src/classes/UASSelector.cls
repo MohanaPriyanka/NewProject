@@ -17,7 +17,8 @@ public class UASSelector {
                 Utility_Account_Log__r.Account__r.Send_Bills_Contact__r.FirstName,
                 Utility_Account_Log__r.Account__r.Send_Bills_Contact__r.Additional_Email__c,
                 Utility_Account_Log__r.Account__r.Additional_Contact__r.Email,
-                Utility_Account_Log__r.Account__r.Additional_Contact__r.Additional_Email__c
+                Opportunity__r.Product__r.Cancellation_Paragraph_Two__c,
+                Opportunity__r.Product__r.Cancellation_Paragraph_Three__c
             FROM Utility_Account_Subscription__c
             WHERE Utility_Account_Log__r.Account__c = :accounts
         ];
