@@ -90,6 +90,28 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Cancellation_Paragraph_Three__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Pulled into the cancellation confirmation email by the CSCancellationService when the customer cancels their subscription. Intended to have termination language, and can be left blank.</inlineHelpText>
+        <label>Cancellation Paragraph Three</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Cancellation_Paragraph_Two__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Pulled into the cancellation confirmation email by the CSCancellationService when the customer cancels their subscription. Intended to contain timing information. Follows paragraph one, which is hardcoded to confirm a written cancellation request.</inlineHelpText>
+        <label>Cancellation Paragraph Two</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>5</visibleLines>
+    </fields>
+    <fields>
         <fullName>Ceiling_Rate__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>The maximum interest rate to which this variable rate product can be adjusted</inlineHelpText>
