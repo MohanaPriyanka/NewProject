@@ -105,6 +105,38 @@
         </values>
     </businessProcesses>
     <businessProcesses>
+        <fullName>C and I</fullName>
+        <isActive>true</isActive>
+        <values>
+            <fullName>Negotiating</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Pending Information</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Qualified</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reviewed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Under Review</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Unqualified</fullName>
+            <default>false</default>
+        </values>
+    </businessProcesses>
+    <businessProcesses>
         <fullName>CS</fullName>
         <description>CS Lead Process</description>
         <isActive>true</isActive>
@@ -19629,7 +19661,7 @@ SEMA = 13 -14</inlineHelpText>
     <recordTypes>
         <fullName>C_I</fullName>
         <active>true</active>
-        <businessProcess>C %26 I</businessProcess>
+        <businessProcess>C and I</businessProcess>
         <label>C&amp;I</label>
         <picklistValues>
             <picklist>Product_Interest__c</picklist>
