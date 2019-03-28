@@ -4,4 +4,5 @@
 
 <design:component>
   <design:attribute name="leadId" label="Id from URL" description="Hack to get value from URL, should be {!leadId}"/>
+  <design:attribute name="partnerId" label="partnerId from URL" description="Hack to get value from URL, should be {!partnerId}"/>
 </design:component>
