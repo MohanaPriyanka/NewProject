@@ -1,0 +1,55 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" description="DocuSign post-signing cermeony callback url">
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:attribute name="docuSignEventType" type="String"
+                  description="Used to register different urls for outcomes of the DocuSign signing ceremony"/>
+  <aura:if isTrue="{!v.docuSignEventType == 'signing_complete'}">
+    <div class="slds-align--absolute-center">
+      <h1>Signing Complete!</h1>
+    </div>
+  </aura:if>
+  <aura:if isTrue="{!v.docuSignEventType == 'decline'}">
+    <div class="slds-align--absolute-center">
+      <h1>Declined?</h1>
+    </div>
+  </aura:if>
+  <aura:if isTrue="{!v.docuSignEventType == 'exception'}">
+    <div class="slds-align--absolute-center">
+      <h1>Sorry, we had problems generating or processing your contract. Please call us at the number below.</h1>
+    </div>
+  </aura:if>
+  <aura:if isTrue="{!v.docuSignEventType == 'viewing_complete'}">
+    <div class="slds-align--absolute-center">
+      <h1>Thanks for viewing</h1>
+    </div>
+  </aura:if>
+  <aura:if isTrue="{!v.docuSignEventType == 'cancel'}">
+    <div class="slds-align--absolute-center">
+      <h1>It looks like you cancelled</h1>
+    </div>
+  </aura:if>
+  <aura:if isTrue="{!v.docuSignEventType == 'session_timeout'}">
+    <div class="slds-align--absolute-center">
+      <h1>Sorry, this session timed out</h1>
+    </div>
+  </aura:if>
+  <aura:if isTrue="{!v.docuSignEventType == 'ttl_expired'}">
+    <div class="slds-align--absolute-center">
+      <h1>Sorry, this session timed out</h1>
+    </div>
+  </aura:if>
+  <aura:if isTrue="{!v.docuSignEventType == 'failed_access_code'}">
+    <div class="slds-align--absolute-center">
+      <h1>Sorry, the access code failed</h1>
+    </div>
+  </aura:if>
+  <aura:if isTrue="{!v.docuSignEventType == 'failed_id_check'}">
+    <div class="slds-align--absolute-center">
+      <h1>Sorry, we had problems checking your id</h1>
+    </div>
+  </aura:if>
+  <aura:if isTrue="{!v.docuSignEventType == 'fax_pending'}">
+    <div class="slds-align--absolute-center">
+      <h1>Thanks, there's a fax pending</h1>
+    </div>
+  </aura:if>
+</aura:component>

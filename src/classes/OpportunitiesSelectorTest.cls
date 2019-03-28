@@ -27,4 +27,9 @@ public with sharing class OpportunitiesSelectorTest {
     @IsTest public static void testSelectAllCompleteCSWithUASesAndSystemBills() {
         System.assert(OpportunitiesSelector.selectAllCompleteCSWithUASesAndSystemBills().size() > 0, 'Expected Complete CS Opps');
     }
+
+    @IsTest public static void testSelectForContractSend() {
+        Opportunity opp = [SELECT Id FROM Opportunity LIMIT 1];
+        System.assertNotEquals(null, OpportunitiesSelector.selectForContractSend(opp.Id));
+    }
 }
