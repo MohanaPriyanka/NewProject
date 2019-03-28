@@ -6,7 +6,7 @@
   <aura:attribute name="creditStatusTimeoutID" type="Integer"/>
   <aura:attribute name="creditStatusErrorText" type="String"/>
   <aura:attribute name="loading" type="Boolean"/>
-  <aura:attribute name="loadingText" type="Boolean"/>
+  <aura:attribute name="loadingText" type="String" default="Saving your information..."/>
   <aura:attribute name="abbrevStates" type="String[]"/>
   <aura:attribute name="showProgramPicklist" type="Boolean"/>
   <aura:attribute name="productList" type="Object[]"/>
@@ -145,10 +145,10 @@
           <div class="slds-icon-eq__bar"></div>
           <span class="slds-assistive-text">Text alternative when needed</span>
         </div>
-        <div class="slds-text-body--regular slds-align_absolute-center">
+        <div class="slds-text-body--regular slds-p-top--medium slds-align_absolute-center">
           {!v.loadingText}
         </div>
-        <div class="slds-align--absolute-center slds-p-top_medium slds-text-body--regular slds-align_absolute-center">We're processing your application... This process may take up to a minute.</div></aura:if>
+      </aura:if>
     </aura:if>
 
 
@@ -218,7 +218,7 @@
             </lightning:layoutItem>
           </lightning:layout>
           <aura:set attribute="else">
-            <lightning:layout aura:id="creditResultError" class="no-display animated" multipleRows="true" horizontalAlign="center">
+            <lightning:layout aura:id="creditResultError" class="nuato-display animated" multipleRows="true" horizontalAlign="center">
               <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
                 <div class="slds-align--absolute-center slds-text-align--center">
                   <b class="slds-text-body--large--blue">There was an error checking your credit: <ui:outputText value="{!v.creditStatusErrorText}"/></b>
