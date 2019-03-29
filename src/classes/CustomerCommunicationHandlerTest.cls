@@ -180,7 +180,9 @@ public class CustomerCommunicationHandlerTest{
                 Annual_kWh_Maximum__c = 100000000,
                 NM_Rate_Floor__c = 0,
                 Days_In_Bill_Period__c = 20,
-                Monthly_Late_Fee__c = 1);
+                Monthly_Late_Fee__c = 1,
+                Cancellation_Paragraph_Two__c = 'Your cancellation will take up to 6 months',
+                Cancellation_Paragraph_Three__c = 'There is a termination fee');
 
             Product2 publicCSProduct = new Product2(  Name = 'BlueWave Public Offtake CS',
                 Family = 'Community Solar',
@@ -193,7 +195,8 @@ public class CustomerCommunicationHandlerTest{
                 Annual_kWh_Maximum__c = 63000,
                 NM_Rate_Floor__c = 0.09,
                 Days_In_Bill_Period__c = 20,
-                Monthly_Late_Fee__c = 0.8333);
+                Monthly_Late_Fee__c = 0.8333,
+                Cancellation_Paragraph_Two__c = 'Your cancellation is immediate');
             insert new List<Product2>{normalCSProduct, publicCSProduct};
 
             Opportunity opportunityone =

@@ -987,6 +987,8 @@ public with sharing class CSCancellationServiceTest {
         ];
 
         Date dateRemoved = Date.today() - 20;
+        Datetime dateRemovedDT = Datetime.newInstance(dateRemoved.year(), dateRemoved.month(), dateRemoved.day());
+        String dateRemovedString = dateRemovedDT.format('MM/dd/YYYY');
 
         for (Utility_Account_Subscription__c uas : uasToUpdate) {
             uas.Date_Removed_from_Project__c = dateRemoved;
@@ -1014,6 +1016,11 @@ public with sharing class CSCancellationServiceTest {
         System.assertEquals(dateRemoved, propAccts[0].Date_Removed_from_Project__c);
         System.assertEquals(dateRemoved, propAccts[1].Date_Removed_from_Project__c);
         System.assertEquals(dateRemoved, propAccts[2].Date_Removed_from_Project__c);
+
+        for (Messaging.Email email : MessagingService.emailsSent) {
+            Messaging.SingleEmailMessage sem = (Messaging.SingleEmailMessage) email;
+            System.assert(sem.getHtmlBody().contains(dateRemovedString));
+        }
     }
 
     @IsTest static void testSetUpDataForUASNotOnNewScheduleZ() {
@@ -1433,4 +1440,123 @@ public with sharing class CSCancellationServiceTest {
         }
     }
 
+    @IsTest
+    public static void testConflictingCancellationParagraphs() {
+        // We want to test the case where there is a single Account with multiple Opportunities assigned to products
+        // with conflicting cancellation information (for instance, SMART and SREC).
+        Product2 publicCSProduct = [SELECT Id FROM Product2 WHERE Name = 'BlueWave Public Offtake CS' LIMIT 1];
+
+        // First we need to set up a new opportunity and subscription
+        Opportunity opportunity = [
+            SELECT Id, Name, AccountId, Shared_Solar_System__c, StageName, Product__c, Product_Line__c, CloseDate
+            FROM Opportunity
+            LIMIT 1
+        ];
+        Opportunity newOpp = opportunity.clone(false);
+        newOpp.Product__c = publicCSProduct.Id;
+        insert newOpp;
+
+        Utility_Account_Subscription__c uas = [
+            SELECT Id, Name, Utility_Account_Log__c, Opportunity__c, Next_Schedule_Z_Status__c,
+                Annual_kwh_subscription_future__c, calculated_annual_cost_of_electricity__c, Subscribed_Annual_Cost_of_Electricity__c
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__c = :opportunity.Id
+            LIMIT 1
+        ];
+        Utility_Account_Subscription__c newUAS = uas.clone(false);
+        newUAS.Opportunity__c = newOpp.Id;
+        insert newUAS;
+
+        Map<Account, Map<String, String>> accountCancellationTextMap =
+            CSCancellationService.accountToCancellationParagraphs(UASSelector.selectByAccounts(new Set<Id>{opportunity.AccountId}));
+        System.assertEquals(1, accountCancellationTextMap.keySet().size());
+        System.assertEquals(1, accountCancellationTextMap.values().size());
+        List<Account> accounts = new List<Account>(accountCancellationTextMap.keySet());
+        System.assertEquals(opportunity.AccountId, accounts[0].Id);
+        System.assertEquals(
+            CSCancellationService.DEFAULT_CANCELLATION_PARAGRAPH_TWO,
+            accountCancellationTextMap.values()[0].get(CSCancellationService.CANCELLATION_PARAGRAPH_TWO_LABEL)
+        );
+        System.assertEquals(
+            CSCancellationService.DEFAULT_CANCELLATION_PARAGRAPH_THREE,
+            accountCancellationTextMap.values()[0].get(CSCancellationService.CANCELLATION_PARAGRAPH_THREE_LABEL)
+        );
+    }
+
+    @IsTest
+    public static void testNonConflictingCancellationParagraphs() {
+        // We want to test the case where there is a single Account with multiple Opportunities assigned to products
+        // with the same cancellation information (for instance, two SMART products).
+        // First we need to set up a new opportunity and subscription
+        Opportunity opportunity = [
+            SELECT Id, Name, AccountId, Shared_Solar_System__c, StageName, Product__c, Product_Line__c, CloseDate,
+                Product__r.Cancellation_Paragraph_Two__c, Product__r.Cancellation_Paragraph_Three__c
+            FROM Opportunity
+            LIMIT 1
+        ];
+        Opportunity newOpp = opportunity.clone(false);
+        insert newOpp;
+
+        Utility_Account_Subscription__c uas = [
+            SELECT Id, Name, Utility_Account_Log__c, Opportunity__c, Next_Schedule_Z_Status__c,
+                Annual_kwh_subscription_future__c, calculated_annual_cost_of_electricity__c, Subscribed_Annual_Cost_of_Electricity__c
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__c = :opportunity.Id
+            LIMIT 1
+        ];
+        Utility_Account_Subscription__c newUAS = uas.clone(false);
+        newUAS.Opportunity__c = newOpp.Id;
+        insert newUAS;
+
+        Map<Account, Map<String, String>> accountCancellationTextMap =
+            CSCancellationService.accountToCancellationParagraphs(UASSelector.selectByAccounts(new Set<Id>{opportunity.AccountId}));
+        System.assertEquals(1, accountCancellationTextMap.keySet().size());
+        System.assertEquals(1, accountCancellationTextMap.values().size());
+        List<Account> accounts = new List<Account>(accountCancellationTextMap.keySet());
+        System.assertEquals(opportunity.AccountId, accounts[0].Id);
+        System.assertNotEquals(null, opportunity.Product__r.Cancellation_Paragraph_Two__c);
+        System.assertNotEquals(null, opportunity.Product__r.Cancellation_Paragraph_Three__c);
+        System.assertEquals(
+            opportunity.Product__r.Cancellation_Paragraph_Two__c,
+            accountCancellationTextMap.values()[0].get(CSCancellationService.CANCELLATION_PARAGRAPH_TWO_LABEL)
+        );
+        System.assertEquals(
+            opportunity.Product__r.Cancellation_Paragraph_Three__c,
+            accountCancellationTextMap.values()[0].get(CSCancellationService.CANCELLATION_PARAGRAPH_THREE_LABEL)
+        );
+    }
+
+    @IsTest
+    public static void testMissingCancellationParagraphs() {
+        Opportunity opportunity = [
+            SELECT Id, Name, AccountId, Shared_Solar_System__c, StageName, Product__c, Product_Line__c, CloseDate,
+                Product__r.Cancellation_Paragraph_Two__c
+            FROM Opportunity
+            LIMIT 1
+        ];
+        opportunity.Product__r.Cancellation_Paragraph_Two__c = null;
+        update opportunity.Product__r;
+
+        Boolean exceptionCaught = false;
+        try {
+            CSCancellationService.accountToCancellationParagraphs(UASSelector.selectByAccounts(new Set<Id>{opportunity.AccountId}));
+        } catch (Exception bwe) {
+            exceptionCaught = true;
+            System.assert(bwe.getMessage().contains('Cancellation Paragraph Two'));
+        }
+        System.assertEquals(true, exceptionCaught);
+
+        opportunity.Product__r.Cancellation_Paragraph_Two__c = 'P2';
+        update opportunity.Product__r;
+
+        exceptionCaught = false;
+        try {
+            CSCancellationService.accountToCancellationParagraphs(UASSelector.selectByAccounts(new Set<Id>{opportunity.AccountId}));
+        } catch (Util.BWException bwe) {
+            exceptionCaught = true;
+            System.assert(false);
+        }
+        System.assertEquals(false, exceptionCaught);
+
+    }
 }
