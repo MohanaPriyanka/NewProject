@@ -54737,6 +54737,10 @@
         <recordType>MPM4_BASE__Milestone1_Milestone__c.Site_Summary</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>MPM4_BASE__Milestone1_Project__c-C%26I Project</layout>
+        <recordType>MPM4_BASE__Milestone1_Project__c.C_I</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>MPM4_BASE__Milestone1_Project__c-Competitor</layout>
         <recordType>MPM4_BASE__Milestone1_Project__c.Competitor</recordType>
     </layoutAssignments>
@@ -62088,6 +62092,11 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
+        <recordType>MPM4_BASE__Milestone1_Project__c.C_I</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
         <recordType>MPM4_BASE__Milestone1_Project__c.Competitor</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
@@ -63953,6 +63962,10 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>SubscribeToLightningReports</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>TransactionalEmailSend</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
