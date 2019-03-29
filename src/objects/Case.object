@@ -403,12 +403,12 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
                 <value>
                     <fullName>Billing</fullName>
                     <default>false</default>
-                    <label>Billing</label>
+                    <label>Billing Issue</label>
                 </value>
                 <value>
                     <fullName>Subscription Change</fullName>
                     <default>false</default>
-                    <label>Subscription Change</label>
+                    <label>Subscription Transfer</label>
                 </value>
                 <value>
                     <fullName>Technical Assistance</fullName>
@@ -458,7 +458,7 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
                 <value>
                     <fullName>Portal Issue</fullName>
                     <default>false</default>
-                    <label>Portal Issue</label>
+                    <label>Portal Support</label>
                 </value>
                 <value>
                     <fullName>Underwriting</fullName>
@@ -580,6 +580,21 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
                     <default>false</default>
                     <label>Both Customer Management and Acquisition</label>
                 </value>
+                <value>
+                    <fullName>Billing Payment</fullName>
+                    <default>false</default>
+                    <label>Billing Payment</label>
+                </value>
+                <value>
+                    <fullName>Partner Payment</fullName>
+                    <default>false</default>
+                    <label>Partner Payment</label>
+                </value>
+                <value>
+                    <fullName>Feedback/Feature Request</fullName>
+                    <default>false</default>
+                    <label>Feedback/Feature Request</label>
+                </value>
             </valueSetDefinition>
             <valueSettings>
                 <controllingFieldValue>Community Solar</controllingFieldValue>
@@ -588,6 +603,7 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Community Solar</controllingFieldValue>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
                 <valueName>Subscription Change</valueName>
             </valueSettings>
             <valueSettings>
@@ -597,6 +613,7 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Community Solar</controllingFieldValue>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
                 <valueName>Product Question</valueName>
             </valueSettings>
             <valueSettings>
@@ -605,6 +622,7 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Community Solar</controllingFieldValue>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
                 <valueName>Other</valueName>
             </valueSettings>
             <valueSettings>
@@ -659,10 +677,7 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Community Solar</controllingFieldValue>
-                <valueName>Transfer</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
                 <valueName>Cancellation</valueName>
             </valueSettings>
             <valueSettings>
@@ -704,6 +719,21 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
             <valueSettings>
                 <controllingFieldValue>Community Solar</controllingFieldValue>
                 <valueName>Both_Customer_Management_and_Acquisition</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
+                <valueName>Billing Payment</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
+                <valueName>Partner Payment</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
+                <valueName>Feedback/Feature Request</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Solar Loan</controllingFieldValue>
@@ -2795,6 +2825,10 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
                 <default>false</default>
             </values>
             <values>
+                <fullName>Billing Payment</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Both_Customer_Management_and_Acquisition</fullName>
                 <default>false</default>
             </values>
@@ -2847,6 +2881,10 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
                 <default>false</default>
             </values>
             <values>
+                <fullName>Feedback%2FFeature Request</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Final Bill</fullName>
                 <default>false</default>
             </values>
@@ -2864,6 +2902,10 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
             <values>
                 <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner Payment</fullName>
                 <default>false</default>
             </values>
             <values>
