@@ -92,7 +92,7 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
     <fields>
         <fullName>Cancellation_Paragraph_Three__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Pulled into the cancellation confirmation email by the CSCancellationService when the customer cancels their subscription. Intended to have termination language, and can be left blank.</inlineHelpText>
+        <inlineHelpText>CSCancellationService pulls into the cancellation confirmation email when the customer cancels. Intended to have termination language, and can be left blank. If not blank, the email template assumes the text starts and ends with &lt;br&gt; and &lt;/br&gt;.</inlineHelpText>
         <label>Cancellation Paragraph Three</label>
         <length>32768</length>
         <trackFeedHistory>false</trackFeedHistory>
@@ -103,7 +103,7 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
     <fields>
         <fullName>Cancellation_Paragraph_Two__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Pulled into the cancellation confirmation email by the CSCancellationService when the customer cancels their subscription. Intended to contain timing information. Follows paragraph one, which is hardcoded to confirm a written cancellation request.</inlineHelpText>
+        <inlineHelpText>CSCancellationService pulls into the cancellation confirmation email when the customer cancels. Intended to contain timing information. Follows paragraph one, which confirms the written cancellation request. This text should be surrounded by &lt;br&gt;.</inlineHelpText>
         <label>Cancellation Paragraph Two</label>
         <length>32768</length>
         <trackFeedHistory>false</trackFeedHistory>
