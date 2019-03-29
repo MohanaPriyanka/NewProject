@@ -23899,22 +23899,26 @@ ISCHANGED(Status)
         <active>true</active>
         <errorConditionFormula>AND(
 ISCHANGED(Status),
-OR(
+
+IF(
 
 AND(
 Product_line__c=&quot;Community Solar&quot;,
 OR(
-ISPICKVAL($User.UserType,&quot;PowerPartner&quot;)=false,
-ISPICKVAL($User.UserType,&quot;PowerPartner&quot;)=false
-),
-$Permission.CS_Lead_Status_Edit=false
+ISPICKVAL($User.UserType,&quot;PowerPartner&quot;)=true,
+$Permission.CS_Lead_Status_Edit=true,
+$Permission.Underwriting_Permission=true
 )
-,
-
+)
+,false,
+IF(
 AND(
 Product_line__c=&quot;Residential Loan&quot;,
-ISPICKVAL($User.UserType,&quot;PowerPartner&quot;)=false,
-$Permission.Underwriting_Permission=false
+OR(
+ISPICKVAL($User.UserType,&quot;PowerPartner&quot;)=true,
+$Permission.Underwriting_Permission=true
+)
+),false,true
 )
 )
 )</errorConditionFormula>
