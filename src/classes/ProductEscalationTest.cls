@@ -532,7 +532,6 @@ public class ProductEscalationTest {
         trigProdUp = ProductionUpdateSelector.getProductionUpdatesByMonth(oneMonthAgo.Month(), String.valueOf(oneMonthAgo.Year()));
         EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(trigProdUp);
         ee.runBills();
-        ee.runOverdueBills();
         TestBillCreationandPayment.setBillsToPublished();
     }
 
