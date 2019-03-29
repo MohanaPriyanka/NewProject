@@ -53,8 +53,8 @@
                 <field>Shared_Solar_System__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Size_off_NMCs__c</field>
+                <behavior>Readonly</behavior>
+                <field>Billing_Method__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
