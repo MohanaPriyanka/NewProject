@@ -40,15 +40,14 @@
         <actionName>View</actionName>
         <type>Default</type>
     </actionOverrides>
-    <allowInChatterGroups>false</allowInChatterGroups>
+    <allowInChatterGroups>true</allowInChatterGroups>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
-    <enableActivities>false</enableActivities>
+    <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
-    <enableReports>false</enableReports>
+    <enableReports>true</enableReports>
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
@@ -231,7 +230,7 @@
             </valueSetDefinition>
         </valueSet>
     </fields>
-    <label>BlueWave Blog</label>
+    <label>BlueWave Resource Page</label>
     <listViews>
         <fullName>All</fullName>
         <columns>NAME</columns>
@@ -239,12 +238,38 @@
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
+    <listViews>
+        <fullName>Marketing_BlueWave_Blog</fullName>
+        <filterScope>Queue</filterScope>
+        <label>Marketing</label>
+        <queue>Marketing</queue>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
     <nameField>
         <label>Title</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>BlueWave Blog</pluralLabel>
-    <searchLayouts/>
+    <pluralLabel>BlueWave Resource Page</pluralLabel>
+    <searchLayouts>
+        <customTabListAdditionalFields>Author__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Business__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Type_of_Content__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Author__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Business__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Type_of_Content__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Author__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Business__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Type_of_Content__c</lookupPhoneDialogsAdditionalFields>
+        <searchFilterFields>NAME</searchFilterFields>
+        <searchFilterFields>Author__c</searchFilterFields>
+        <searchFilterFields>Business__c</searchFilterFields>
+        <searchFilterFields>Type_of_Content__c</searchFilterFields>
+        <searchResultsAdditionalFields>Author__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Business__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Type_of_Content__c</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <validationRules>
         <fullName>Audience_Required</fullName>
