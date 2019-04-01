@@ -23866,10 +23866,29 @@ ISCHANGED(Status)
         <active>true</active>
         <errorConditionFormula>AND(
 ISCHANGED(Status),
-OR(Product_line__c=&quot;Community Solar&quot;,
-Product_line__c=&quot;Residential Loan&quot;),
-ISPICKVAL($User.UserType,&quot;PowerPartner&quot;)=false,
-$Permission.Underwriting_Permission=false)</errorConditionFormula>
+
+IF(
+
+AND(
+Product_line__c=&quot;Community Solar&quot;,
+OR(
+ISPICKVAL($User.UserType,&quot;PowerPartner&quot;)=true,
+$Permission.CS_Lead_Status_Edit=true,
+$Permission.Underwriting_Permission=true
+)
+)
+,false,
+IF(
+AND(
+Product_line__c=&quot;Residential Loan&quot;,
+OR(
+ISPICKVAL($User.UserType,&quot;PowerPartner&quot;)=true,
+$Permission.Underwriting_Permission=true
+)
+),false,true
+)
+)
+)</errorConditionFormula>
         <errorMessage>Changing the Lead Status on CS and RL leads requires Underwriting permission.</errorMessage>
     </validationRules>
     <validationRules>
