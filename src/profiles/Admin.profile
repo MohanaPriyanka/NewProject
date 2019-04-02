@@ -4516,6 +4516,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>CS_Bill_Setting__c.Default_Bill_Message_for_Autopay__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>CS_Bill_Setting__c.Default_Bill_Message_for_Non_Autopay__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Campaign.ActualCost</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -46052,6 +46062,9 @@
         <recordType>BlueWave_Surveys__c.Transformer_Award_Survey</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>CS_Bill_Setting__c-CS Bill Setting Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Campaign-Campaign Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -47109,6 +47122,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>BlueWave_Surveys__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>CS_Bill_Setting__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -51726,6 +51748,10 @@
     <tabVisibilities>
         <tab>BlueWave_Surveys__c</tab>
         <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>CS_Bill_Setting__c</tab>
+        <visibility>DefaultOff</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>Change_Order__c</tab>
