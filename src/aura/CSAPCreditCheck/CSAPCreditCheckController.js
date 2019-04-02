@@ -2,7 +2,7 @@
     handleNavEvent : function(component, event, helper) {
         if (event.getParam('options') && event.getParam('options').pageName) {
             helper.handleNavEvent(component, event, helper, event.getParam('options').pageName);
-            if (event.getParam('options').pageName == 'CreditAlreadyRun') {
+            if (event.getParam('options').pageName === 'CreditAlreadyRun') {
                 var lead = component.get("v.lead");
                 helper.copyCreditFromPrevious(component, event, helper, lead);
             }
@@ -27,7 +27,7 @@
             var action = component.get("c.pullCreditStatus");
             action.setParams({"lead" : lead});
             action.setCallback(this, function(resp) {
-                if (resp.getState() == "SUCCESS") {
+                if (resp.getState() === "SUCCESS") {
                     window.setTimeout(function() {
                         $A.util.removeClass(component.find("creditStatus"), "noDisplay");
                         component.set("v.loadingText", "Finding a solar project near you...");
@@ -63,26 +63,17 @@
             $A.enqueueAction(action);
         }
     },
-    // goToPersonalInfoConfirmation : function(component, event, helper) {
-    //     var errorMessage = helper.checkBirthDate(component, event, helper);
-    //     if (errorMessage != ""){
-    //         component.set("v.ShowDateError", true);
-    //     } else {
-    //         if (helper.validatePageFields(component)) {
-    //             var lead = component.get("v.lead");
-    //             helper.saveSObject(component, lead.Id, "Lead", null, null, lead);
-    //             component.set("v.page", "PersonalInfoConfirmation");
-    //         }
-    //     }
-    // },
 
     finishStage : function(component, event, helper) {
         var lead = component.get("v.lead");
         helper.saveSObject(component, lead.Id, 'Lead', 'Product__c', lead.Product__c);
         component.set('v.programType', 'SREC');
-        if (lead.Status =="Qualified" && component.get("v.creditStatusErrorText") == undefined) {
+        if (lead.Status === "Qualified" && component.get("v.creditStatusErrorText") === undefined) {
             helper.finishStage(component, event, helper);
         } else {
+            //Here we have a credit denial or a frozen account -- add something here to generate a Task for the
+            //lead so that Inside Sales can figure out how to handle the lead
+            // We can then call finishStage to ensure the partner doesnt fall out
             component.set("v.page", "Unqualified");
         }
     },

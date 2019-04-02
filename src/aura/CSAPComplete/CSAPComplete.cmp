@@ -3,6 +3,8 @@
   <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
   <aura:attribute name="loading" type="Boolean"/>
   <aura:attribute name="loadingText" type="String"/>
+  <aura:attribute name="signingURL" type="String"/>
+  <aura:attribute name="partnerApp" type="Boolean"/>
 
   <aura:if isTrue="{!v.loading}">
     <div class="slds-icon-eq slds-is-animated slds-align_absolute-center slds-p-top_medium" title="Loading">
@@ -16,6 +18,13 @@
     </div>
   </aura:if>
 
+  <!--DocuSign Signature page-->
+  <aura:if isTrue="{!v.page == 'ContractSignature'}">
+      <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
+        <iframe src="{!v.signingURL}" height="600px" width="100%" style="border:none;" id="docusignIframe"></iframe>
+      </div>
+  </aura:if>
+
   <!--Completed App Message-->
   <aura:if isTrue="{!v.page == 'Complete'}">
     <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
@@ -27,7 +36,7 @@
         </b>
       </div>
       <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
-        <b> Check your email for your contract! </b>
+        <b> We will email you your contract once BlueWave has finished processing your application! </b>
       </div>
     </fieldset>
   </aura:if>

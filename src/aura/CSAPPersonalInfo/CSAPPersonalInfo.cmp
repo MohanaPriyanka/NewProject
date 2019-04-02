@@ -92,15 +92,6 @@
                                  required="true"/>
               </lightning:layoutItem>
             </lightning:layout>
-            <!--<lightning:layout multipleRows="true">-->
-            <!--<lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >-->
-            <!--<lightning:input aura:id="field" name="leadPhone"-->
-            <!--type="tel"-->
-            <!--label="Home Phone (optional)"-->
-            <!--value="{!v.lead.Phone}"-->
-            <!--maxlength="10"/>-->
-            <!--</lightning:layoutItem>-->
-            <!--</lightning:layout>-->
 
             <lightning:layout multipleRows="true">
               <aura:if isTrue="{!and(v.lead.Application_Source_Phase_2__c != null, v.lead.Application_Type__c != 'Non-Residential')}">

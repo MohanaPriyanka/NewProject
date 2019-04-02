@@ -40,3 +40,7 @@
     background-color: #ECECEC;
     background-image: none;
 }
+
+.THIS .slds-path__item {
+    width : 15%;
+}

@@ -14,18 +14,7 @@
         });
         $A.enqueueAction(action);
     },
-    checkBirthDate : function(component, event, helper) {
-        component.set("v.ShowDateError", false);
-        var errorMessage = "";
-        var lead = component.get("v.lead");
-        errorMessage += helper.getFieldError(component, {
-            'fieldValue': lead.LASERCA__Birthdate__c,
-            'fieldId': "birthdateElement",
-            'errorMessage': "Enter or check Date of Birth (format: 01/01/2000)",
-            'fieldType': 'date'
-        });
-        return errorMessage;
-    },
+
     checkCreditResponse : function(component, helper, returnValue) {
         var lead = component.get("v.lead");
         if (returnValue.sssCreditQualification === "Ready for Credit Check") {
