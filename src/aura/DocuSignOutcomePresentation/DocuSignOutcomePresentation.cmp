@@ -3,53 +3,108 @@
   <aura:attribute name="docuSignEventType" type="String"
                   description="Used to register different urls for outcomes of the DocuSign signing ceremony"/>
   <aura:if isTrue="{!v.docuSignEventType == 'signing_complete'}">
-    <div class="slds-align--absolute-center">
-      <h1>Signing Complete!</h1>
-    </div>
+    <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
+      <legend id="completeApplication" class="slds-text-heading--medium slds-p-vertical--medium slds-align_absolute-center">
+        <b class="slds-p-horizontal_large"> Congratulations! </b>
+      </legend>
+      <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
+        <b> Your Community Solar application is now complete!
+        </b>
+      </div>
+      <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
+        <b> We will email you your contract once BlueWave has finished processing your application! </b>
+      </div>
+    </fieldset>
   </aura:if>
   <aura:if isTrue="{!v.docuSignEventType == 'decline'}">
-    <div class="slds-align--absolute-center">
-      <h1>Declined?</h1>
-    </div>
-  </aura:if>
-  <aura:if isTrue="{!v.docuSignEventType == 'exception'}">
-    <div class="slds-align--absolute-center">
-      <h1>Sorry, we had problems generating or processing your contract. Please call us at the number below.</h1>
-    </div>
+    <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
+      <legend id="completeApplication" class="slds-text-heading--medium slds-p-vertical--medium slds-align_absolute-center">
+        <b class="slds-p-horizontal_large"> Sorry you declined! </b>
+      </legend>
+      <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
+        <b>We'd love to hear from you about why you declined the contract</b>
+      </div>
+      <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
+        <b>Please let us know more at the number or email below!</b>
+      </div>
+    </fieldset>
   </aura:if>
   <aura:if isTrue="{!v.docuSignEventType == 'viewing_complete'}">
-    <div class="slds-align--absolute-center">
-      <h1>Thanks for viewing</h1>
-    </div>
+    <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
+      <legend id="completeApplication" class="slds-text-heading--medium slds-p-vertical--medium slds-align_absolute-center">
+        <b class="slds-p-horizontal_large"> Thanks for viewing! </b>
+      </legend>
+      <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
+        <b>We emailed your contract to you which you can use to complete your application.</b>
+      </div>
+      <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
+        <b>If you have any questions, please contact us at the number or email below!</b>
+      </div>
+    </fieldset>
   </aura:if>
   <aura:if isTrue="{!v.docuSignEventType == 'cancel'}">
-    <div class="slds-align--absolute-center">
-      <h1>It looks like you cancelled</h1>
-    </div>
+    <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
+      <legend id="completeApplication" class="slds-text-heading--medium slds-p-vertical--medium slds-align_absolute-center">
+        <b class="slds-p-horizontal_large"> Thanks for reviewing! </b>
+      </legend>
+      <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
+        <b>We emailed your contract to you which you can sign.</b>
+      </div>
+      <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
+        <b>If you have any questions, please contact us at the number or email below!</b>
+      </div>
+    </fieldset>
   </aura:if>
-  <aura:if isTrue="{!v.docuSignEventType == 'session_timeout'}">
-    <div class="slds-align--absolute-center">
-      <h1>Sorry, this session timed out</h1>
-    </div>
-  </aura:if>
-  <aura:if isTrue="{!v.docuSignEventType == 'ttl_expired'}">
-    <div class="slds-align--absolute-center">
-      <h1>Sorry, this session timed out</h1>
-    </div>
+  <aura:if isTrue="{!v.docuSignEventType == 'session_timeout' || v.docuSignEventType == 'ttl_expired' || v.docuSignEventType == 'exception'}">
+    <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
+      <legend id="completeApplication" class="slds-text-heading--medium slds-p-vertical--medium slds-align_absolute-center">
+        <b class="slds-p-horizontal_large"> Oops! </b>
+      </legend>
+      <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
+        <b>Sorry, there was a technical issue with your contract, but we've emailed it to you so you can complete your application.</b>
+      </div>
+      <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
+        <b>If you have any questions, please contact us at the number or email below!</b>
+      </div>
+    </fieldset>
   </aura:if>
   <aura:if isTrue="{!v.docuSignEventType == 'failed_access_code'}">
-    <div class="slds-align--absolute-center">
-      <h1>Sorry, the access code failed</h1>
-    </div>
+    <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
+      <legend id="completeApplication" class="slds-text-heading--medium slds-p-vertical--medium slds-align_absolute-center">
+        <b class="slds-p-horizontal_large"> Oops! </b>
+      </legend>
+      <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
+        <b>Sorry, your access code failed. We've emailed your contract to you which you can use to complete your application.</b>
+      </div>
+      <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
+        <b>If you have any questions, please contact us at the number or email below!</b>
+      </div>
+    </fieldset>
   </aura:if>
   <aura:if isTrue="{!v.docuSignEventType == 'failed_id_check'}">
-    <div class="slds-align--absolute-center">
-      <h1>Sorry, we had problems checking your id</h1>
-    </div>
+    <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
+      <legend id="completeApplication" class="slds-text-heading--medium slds-p-vertical--medium slds-align_absolute-center">
+        <b class="slds-p-horizontal_large"> Oops! </b>
+      </legend>
+      <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
+        <b>Sorry, your ID check failed. We've emailed your contract to you which you can use to complete your application.</b>
+      </div>
+      <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
+        <b>If you have any questions, please contact us at the number or email below!</b>
+      </div>
+    </fieldset>
   </aura:if>
   <aura:if isTrue="{!v.docuSignEventType == 'fax_pending'}">
-    <div class="slds-align--absolute-center">
-      <h1>Thanks, there's a fax pending</h1>
-    </div>
+    <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
+      <legend id="completeApplication" class="slds-text-heading--medium slds-p-vertical--medium slds-align_absolute-center">
+        <b class="slds-p-horizontal_large"> Fax Pending! </b>
+      </legend>
+      <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
+        <b>Your contract is pending a fax</b>
+      </div>
+      <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
+        <b>If you have any questions, please contact us at the number or email below!</b>
+      </div>
+    </fieldset>
   </aura:if>
 </aura:component>
