@@ -46,7 +46,7 @@ public with sharing class ScheduleZSubscriptionSelector {
         ' FROM Utility_Account_Subscription_Bills__r ' +
         ' ORDER BY Date__c DESC LIMIT 1) ';
 
-    private static String whereClauseForSmallOfftakeBilling = 'Schedule_Z__c IN : scheduleZs ' +
+    private static String whereClauseForBilling = 'Schedule_Z__c IN : scheduleZs ' +
         ' AND Stop_Credit_Transfer__c = FALSE ' +
         ' AND ( Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c!= \'RadianGen\' ' +
         ' OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c= \'Residential\' ' +
@@ -67,11 +67,7 @@ public with sharing class ScheduleZSubscriptionSelector {
 
     }
 
-    public static Database.QueryLocator getQueryLocatorForSmallOfftake(Set<Id> scheduleZs) {
-        return Database.getQueryLocator(getQueryString(whereClauseForSmallOfftakeBilling, null));
-    }
-
-    public static List<Schedule_Z_Subscription__c> getListForSmallOfftake(Set<Id> scheduleZs) {
-        return Database.query(getQueryString(whereClauseForSmallOfftakeBilling, null));
+    public static List<Schedule_Z_Subscription__c> getListForBilling(Set<Id> scheduleZs) {
+        return Database.query(getQueryString(whereClauseForBilling, null));
     }
 }
