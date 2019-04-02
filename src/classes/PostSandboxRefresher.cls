@@ -363,6 +363,17 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 CreatedDate = csDataDate
             );
 
+            CS_Bill_Setting__c csBillSetting = new CS_Bill_Setting__c(
+                Default_Bill_Message_for_Autopay__c = '<b>Go paperless today!</b><br>If you haven’t already, sign up for ' +
+                    'paperless billing! Contact our customer support team using the contact info at the bottom of your ' +
+                    'bill. Thank you for doing your part to protect the planet and create a better future for your community.',
+                Default_Bill_Message_for_Non_Autopay__c = '<b>Payment Instructions</b><br>Please note our payment address ' +
+                    'and payee name in the Payment Details section of your bill. You now only need to send us a single ' +
+                    'check made payable to:<br><br>BCS Customer Management<br>111 Huntington Ave., Suite 650,<br>Boston, MA 02199',
+                CreatedDate = csDataDate
+            );
+            insert csBillSetting;
+
             insert new List<Utility_NMC_Tariff__c>{
                 everbillNMC, ngridsizeNMC, ngridbillNMC
             };
@@ -1211,6 +1222,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
 
         if (o.IsSandbox || Test.isRunningTest()) {
             Util.disableAllTriggers();
+            delete [SELECT Id FROM CS_Bill_Setting__c];
             delete [SELECT Id FROM ChargentOrders__Transaction__c];
             delete [SELECT Id FROM ChargentOrders__ChargentOrder__c];
             delete [SELECT Id FROM Utility_Account_Bill__c];
