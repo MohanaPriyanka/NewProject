@@ -23866,6 +23866,10 @@ ISCHANGED(Status)
         <active>true</active>
         <errorConditionFormula>AND(
 ISCHANGED(Status),
+OR(
+Product_line__c=&quot;Community Solar&quot;,
+Product_line__c=&quot;Residential Loan&quot;
+),
 
 IF(
 
@@ -23885,7 +23889,7 @@ OR(
 ISPICKVAL($User.UserType,&quot;PowerPartner&quot;)=true,
 $Permission.Underwriting_Permission=true
 )
-),false,false
+),false,true
 )
 )
 )</errorConditionFormula>
