@@ -509,7 +509,7 @@ private class RecurringPaymentsHandlerTestClass {
         Entity__c entityA = new Entity__c (Name = 'BarrettProjCo', Gateway__c = chGatewayA.Id);
 
         insert entityA;
-        Test.startTest();
+
         Shared_Solar_System__c sssA = [
             SELECT Id, BWC_Project_Entity_Manual__c, BWC_Project_Entity_Manual__r.Gateway__c
             FROM Shared_Solar_System__c
@@ -593,7 +593,7 @@ private class RecurringPaymentsHandlerTestClass {
             FROM Energy_Usage_Update__c
             WHERE Name = 'sssA - March 2016'
         ];
-
+        Test.startTest();
         EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(productionUpdateList);
         ee.runBills();
         TestBillCreationandPayment.setBillsToPublished();
@@ -609,7 +609,6 @@ private class RecurringPaymentsHandlerTestClass {
         ];
 
         System.assertEquals(7, acctBillsList.size() );
-
 
         simulateBatchRecurringHandler();
         Test.stopTest();

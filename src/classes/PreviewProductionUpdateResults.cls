@@ -169,7 +169,7 @@ public without sharing class PreviewProductionUpdateResults{
                 LIMIT 1
             ];
 
-            List<Schedule_Z_Subscription__c> szsList = ScheduleZSubscriptionSelector.getListForSmallOfftake(new Set<Id>{scheduleZ.Id});
+            List<Schedule_Z_Subscription__c> szsList = ScheduleZSubscriptionSelector.getListForBilling(new Set<Id>{scheduleZ.Id});
             for (Schedule_Z_Subscription__c szs: szsList) {
                 if (szs.Customer_Subscription_kW_DC__c != NULL) {
                     UASB__c newBill = getUASB(szs, production, 1, production.Total_System_NMCs__c, production.Production__c, production.Net_Metering_Rate_Applied__c);
@@ -219,7 +219,7 @@ public without sharing class PreviewProductionUpdateResults{
                 Net_Metering_Rate_Applied_4_of_4__c
             FROM Energy_Usage_Update__c
             WHERE Shared_Solar_System__r.Id IN : sssList
-            AND Total_System_NMCs__c != null
+            AND Total_System_NMCs__c != NULL
             ORDER BY Date__c ];
             for (Schedule_Z_Subscription__c szs : szsListFromAcct) {
                 for (Energy_Usage_Update__c productionUpdate : productionList) {
