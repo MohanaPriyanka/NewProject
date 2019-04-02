@@ -8,19 +8,6 @@ public with sharing class ScheduleZSubscriptionSelectorTest {
     }
 
     @IsTest
-    public static void testGetQueryLocator() {
-        Map<Id, Schedule_Z__c> scheduleZMap= new Map<Id, Schedule_Z__c>([SELECT Id FROM Schedule_Z__c]);
-        Database.QueryLocator queryLocator = ScheduleZSubscriptionSelector.getQueryLocatorForSmallOfftake(scheduleZMap.keySet());
-        Database.QueryLocatorIterator iter = queryLocator.iterator();
-        Integer i = 0;
-        while (iter.hasNext()) {
-            iter.next();
-            i++;
-        }
-        System.assertEquals(15, i);
-    }
-
-    @IsTest
     public static void testGetList() {
         // All of the opportunities loaded are small offtake - let's change two of them to Public Offtake to test
         // that they're excluded
@@ -57,7 +44,7 @@ public with sharing class ScheduleZSubscriptionSelectorTest {
             OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c = 'Non-Residential')
         ];
 
-        List<Schedule_Z_Subscription__c> szsList = ScheduleZSubscriptionSelector.getListForSmallOfftake(scheduleZMap.keySet());
+        List<Schedule_Z_Subscription__c> szsList = ScheduleZSubscriptionSelector.getListForBilling(scheduleZMap.keySet());
         System.assertEquals(13, szsList.size());
     }
 }

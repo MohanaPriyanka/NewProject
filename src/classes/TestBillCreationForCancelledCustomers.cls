@@ -502,7 +502,10 @@ public class TestBillCreationForCancelledCustomers {
 
         for (System_Bill__c insertedSB : [
             SELECT Id, Name, Bill_Number__c, Opportunity__r.Name, Total_Payments_This_Month__c,
-                Due_This_Month__c, Total_Due__c, Carry_Over_Balance__c, Balance_Net_Late_Payments__c
+                Due_This_Month__c, Total_Due__c, Carry_Over_Balance__c, Balance_Net_Late_Payments__c, (
+                SELECT Id, CS_Billing_Log__c, Net_Metering_Credits_Allocated__c, Savings__c
+                FROM Utility_Account_Subscription_Bills__r
+            )
             FROM System_Bill__c
             ORDER BY Opportunity__r.Name, Bill_Number__c]) {
             sbMap.put(insertedSB.Opportunity__r.Name + '_' + insertedSB.Bill_Number__c,insertedSB);
@@ -648,10 +651,19 @@ public class TestBillCreationForCancelledCustomers {
         System.assertEquals(12,sbMapTwo.values().size());
         System.assertEquals(397.30,sbMapTwo.get('acA A_SSS1_2').Total_Due__c); // DTM:187.36 + PMOB:209.94 = TD:397.30
         System.assertEquals(83.74,sbMapTwo.get('acB B_SSS1_2').Total_Due__c); // DTM:0 + PMOB:83.74 = TD:83.74
+        checkUASBAndUABAssertions(sbMapTwo.get('acB B_SSS1_2'));
         System.assertEquals(417.12,sbMapTwo.get('acB B_SSS2_2').Total_Due__c); // DTM:0 + PMOB:417.12 = TD:417.12
+        checkUASBAndUABAssertions(sbMapTwo.get('acB B_SSS2_2'));
         System.assertEquals(80.38,sbMapTwo.get('acC C_SSS1_2').Total_Due__c); // DTM:37.91 + PMOB:42.47 = TD:80.38
         System.assertEquals(906.87,sbMapTwo.get('acC C_SSS2_2').Total_Due__c); // DTM:149.46 + PMOB:757.41 = TD:906.87
         System.assertEquals(365.16,sbMapTwo.get('acC C_B_SSS1_2').Total_Due__c); // DTM:172.21 + PMOB:192.95 = TD:365.16
+    }
+
+    private static void checkUASBAndUABAssertions(System_Bill__c sb) {
+        System.assertEquals(1, sb.Utility_Account_Subscription_Bills__r.size());
+        System.assertEquals(0, sb.Utility_Account_Subscription_Bills__r[0].Net_Metering_Credits_Allocated__c);
+        System.assertEquals(0, sb.Utility_Account_Subscription_Bills__r[0].Savings__c);
+        System.assertNotEquals(null, sb.Utility_Account_Subscription_Bills__r[0].CS_Billing_Log__c);
     }
 
     @IsTest public static void removalZeroOutstandingBalanceCrossSubscribed() {

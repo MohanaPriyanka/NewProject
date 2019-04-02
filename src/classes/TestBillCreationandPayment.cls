@@ -524,11 +524,9 @@ public class TestBillCreationandPayment {
     }
 
     public static void runProductionUpdate(List<Id> prodUpdateIdList) {
-        List<Energy_Usage_Update__c> trigProdUp;
-        trigProdUp = ProductionUpdateSelector.getAllProductionUpdatesById(prodUpdateIdList);
+        List<Energy_Usage_Update__c> trigProdUp = ProductionUpdateSelector.getAllProductionUpdatesById(prodUpdateIdList);
         EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(trigProdUp);
         ee.runBills();
-        ee.runOverdueBills();
     }
 
     @isTest public static void testPreviewBills(){
@@ -547,7 +545,7 @@ public class TestBillCreationandPayment {
         System.assertEquals( 1, (PreviewProductionUpdateResults.getUASes(productionUpdateList[0].Id, true, productionUpdateList[0].Schedule_Z__r.Id)).size());
         System.assertEquals( 2, (PreviewProductionUpdateResults.getUASes(productionUpdateList[1].Id, true, productionUpdateList[1].Schedule_Z__r.Id)).size());
         System.assertEquals( 1, (PreviewProductionUpdateResults.getProperties(parId.substring(0,15), true)).size());
-        System.assertEquals( 8, (PreviewProductionUpdateResults.getUASes(acctId.substring(0,15), false, null)).size());
+        System.assertEquals( 6, (PreviewProductionUpdateResults.getUASes(acctId.substring(0,15), false, null)).size());
         Energy_Usage_Update__c productionUpdate = [
             SELECT Id, Name,  Schedule_Z__r.Id, Schedule_Z__r.Name
             FROM Energy_Usage_Update__c
@@ -782,11 +780,11 @@ public class TestBillCreationandPayment {
             }
         }
 
-        String acctId = systemBillList[1].Property_Account_Id__c;
-        system.AssertEquals(8, (PreviewProductionUpdateResults.getUASes(acctId, FALSE, null)).size());
+        String acctId = systemBillList[1].Property_Account_ID__c;
+        System.assertEquals(6, (PreviewProductionUpdateResults.getUASes(acctId, false, null)).size());
 
-        systemBillList[1].Waive_Late_Fees__c = TRUE;
-        systemBillList[1].Distribute_This_Balance_As_Payment_Plan__c = TRUE;
+        systemBillList[1].Waive_Late_Fees__c = true;
+        systemBillList[1].Distribute_This_Balance_as_Payment_Plan__c = true;
         update systemBillList[1];
 
         List<Account_Bill__c> abList = new List<Account_Bill__c>();
