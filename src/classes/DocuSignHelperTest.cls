@@ -538,7 +538,7 @@ public with sharing class DocuSignHelperTest {
         System.assert(callbackURL.contains('exception'));
         List<Error_Log__c> errorLogs = [SELECT Id, Message__c FROM Error_Log__c];
         System.assertEquals(1, errorLogs.size());
-        System.assertEquals('Exceeded maximum time allotted for callout', errorLogs[0].Message__c);
+        System.assert(errorLogs[0].Message__c.contains('Exceeded maximum time allotted for callout'));
         Test.stopTest();
     }
 
