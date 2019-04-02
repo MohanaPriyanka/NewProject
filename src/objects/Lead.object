@@ -23885,7 +23885,7 @@ OR(
 ISPICKVAL($User.UserType,&quot;PowerPartner&quot;)=true,
 $Permission.Underwriting_Permission=true
 )
-),false,true
+),false,false
 )
 )
 )</errorConditionFormula>
