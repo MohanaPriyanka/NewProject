@@ -8,11 +8,10 @@
         <b class="slds-p-horizontal_large"> Congratulations! </b>
       </legend>
       <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
-        <b> Your Community Solar application is now complete!
-        </b>
+        Your Community Solar application is now complete!
       </div>
       <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
-        <b> We will email you your contract once BlueWave has finished processing your application! </b>
+        We will email you your contract once BlueWave has finished processing your application!
       </div>
     </fieldset>
   </aura:if>
@@ -22,10 +21,10 @@
         <b class="slds-p-horizontal_large"> Sorry you declined! </b>
       </legend>
       <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
-        <b>We'd love to hear from you about why you declined the contract</b>
+        We'd love to hear from you about why you declined the contract
       </div>
       <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
-        <b>Please let us know more at the number or email below!</b>
+        Please let us know more at the number or email below!
       </div>
     </fieldset>
   </aura:if>
@@ -35,10 +34,10 @@
         <b class="slds-p-horizontal_large"> Thanks for viewing! </b>
       </legend>
       <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
-        <b>We emailed your contract to you which you can use to complete your application.</b>
+        We emailed your contract to you which you can use to complete your application.
       </div>
       <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
-        <b>If you have any questions, please contact us at the number or email below!</b>
+        If you have any questions, please contact us at the number or email below!
       </div>
     </fieldset>
   </aura:if>
@@ -48,10 +47,10 @@
         <b class="slds-p-horizontal_large"> Thanks for reviewing! </b>
       </legend>
       <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
-        <b>We emailed your contract to you which you can sign.</b>
+        We emailed your contract to you which you can sign.
       </div>
       <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
-        <b>If you have any questions, please contact us at the number or email below!</b>
+        If you have any questions, please contact us at the number or email below!
       </div>
     </fieldset>
   </aura:if>
@@ -61,10 +60,10 @@
         <b class="slds-p-horizontal_large"> Oops! </b>
       </legend>
       <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
-        <b>Sorry, there was a technical issue with your contract, but we've emailed it to you so you can complete your application.</b>
+        Sorry, there was a technical issue with your contract, but we've emailed it to you so you can complete your application.
       </div>
       <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
-        <b>If you have any questions, please contact us at the number or email below!</b>
+        If you have any questions, please contact us at the number or email below!
       </div>
     </fieldset>
   </aura:if>
@@ -74,10 +73,10 @@
         <b class="slds-p-horizontal_large"> Oops! </b>
       </legend>
       <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
-        <b>Sorry, your access code failed. We've emailed your contract to you which you can use to complete your application.</b>
+        Sorry, your access code failed. We've emailed your contract to you which you can use to complete your application.
       </div>
       <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
-        <b>If you have any questions, please contact us at the number or email below!</b>
+        If you have any questions, please contact us at the number or email below!
       </div>
     </fieldset>
   </aura:if>
@@ -87,10 +86,10 @@
         <b class="slds-p-horizontal_large"> Oops! </b>
       </legend>
       <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
-        <b>Sorry, your ID check failed. We've emailed your contract to you which you can use to complete your application.</b>
+        Sorry, your ID check failed. We've emailed your contract to you which you can use to complete your application.
       </div>
       <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
-        <b>If you have any questions, please contact us at the number or email below!</b>
+        If you have any questions, please contact us at the number or email below!
       </div>
     </fieldset>
   </aura:if>
@@ -100,10 +99,10 @@
         <b class="slds-p-horizontal_large"> Fax Pending! </b>
       </legend>
       <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
-        <b>Your contract is pending a fax</b>
+        Your contract is pending a fax
       </div>
       <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
-        <b>If you have any questions, please contact us at the number or email below!</b>
+        If you have any questions, please contact us at the number or email below!
       </div>
     </fieldset>
   </aura:if>
