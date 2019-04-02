@@ -182,7 +182,7 @@ public without sharing class ReturnedTransactionHandler {
         newCase.Subject = 'Customer Transaction Marked as Returned';
         newCase.Priority = 'Medium';
         newCase.Product_Line__c = 'Community Solar';
-        newCase.Category__c = 'Billing';
+        newCase.Category__c = 'Billing-Issue';
         newCase.Chargent_Order__c = transactionToReverse.ChargentOrders__Order__c;
         newCase.Description = 'This transaction was marked as returned. There may be followup required with the customer to resolve issues with their payment method.';
         newCase.Origin = 'Other';
