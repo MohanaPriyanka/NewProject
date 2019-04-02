@@ -765,6 +765,19 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Building_Owner__c</fullName>
+        <description>Building owner for proposed C&amp;I project</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Building owner for proposed C&amp;I project</inlineHelpText>
+        <label>Building Owner</label>
+        <length>40</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Building_Use__c</fullName>
         <description>From C&amp;I intake form</description>
         <externalId>false</externalId>
