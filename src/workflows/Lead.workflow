@@ -118,7 +118,7 @@
         </recipients>
         <senderAddress>partnersupport@bluewavesolar.com</senderAddress>
         <senderType>OrgWideEmailAddress</senderType>
-        <template>CS_Application_Email_Notifications/CS_Partner_Lead_Created</template>
+        <template>CSPartnerEmails/CS_Partner_Lead_Created</template>
     </alerts>
     <alerts>
         <fullName>Co_Applicant_Link_Email</fullName>
@@ -941,7 +941,7 @@ IF(Number_of_Periods__c&gt;120, max(1250,0.07*Loan_Amount__c), max(1250,0.05*Loa
             <name>update_partner_email</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <booleanFilter>1 AND 2</booleanFilter>
         <criteriaItems>
             <field>Lead.Unfinished_Lead__c</field>
