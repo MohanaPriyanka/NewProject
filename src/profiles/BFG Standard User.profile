@@ -19126,6 +19126,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Lead.Building_Owner__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Lead.Building_Use__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -30602,6 +30607,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Board_Meeting_Dates__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.Building_Owner__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

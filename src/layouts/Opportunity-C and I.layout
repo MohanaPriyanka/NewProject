@@ -28,6 +28,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Building_Owner__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Reason_Unqualified__c</field>
             </layoutItems>
             <layoutItems>
