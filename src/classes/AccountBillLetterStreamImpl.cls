@@ -103,7 +103,7 @@ public without sharing class AccountBillLetterStreamImpl {
         newCase.Subject = 'Cannot send bill to Community Solar customer.';
         newCase.Priority = 'Medium';
         newCase.Product_Line__c = 'Community Solar';
-        newCase.Category__c = 'Billing';
+        newCase.Category__c = 'Billing-Issue';
         String description = 'The customer address is invalid, so bills cannot be sent to customer. Please update ' +
             'the address on the related Account. If the customer does not want to receive paper bills, ' +
             'please use the \'Opt Out of Paper Billing\' checkbox. [Auto-generated]' ;

@@ -196,7 +196,7 @@ public without sharing class CSCancellationService {
                 Case transferCase = new CaseFactory().getCase(caseOwner);
                 transferCase.Product_Line__c = 'Community Solar';
                 transferCase.Origin = 'Other';
-                transferCase.Category__c = 'Cancelled Utility Account';
+                transferCase.Category__c = 'Cancellation';
                 transferCase.Description = uas.Utility_Account_Log__r.Account__r.Name +
                         ' (' + uas.Utility_Account_Log__r.Account__c + ') has recently had a Utility Account ' +
                         'moved to Cancelled status. Please follow up with the customer to see if they want to transfer ' +
