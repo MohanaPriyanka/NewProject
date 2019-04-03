@@ -703,7 +703,7 @@ public class LeadTriggerHandlerTest {
             Monthly_Late_Fee__c = 1);
         insert csProduct;
 
-        PostSandboxRefresher.SolarSystemHelper helper = new PostSandboxRefresher.SolarSystemHelper();
+        PostSandboxRefresher.SolarSystemHelper helper = new PostSandboxRefresher.SolarSystemHelper(null);
         helper.insertTariffsForProduct(csProduct.Id, eversource.Id, nationalGrid.Id);
 
         Shared_Solar_System__c sss1 = getSharedSolarSystem(nmcRate, csProduct, eversource, 'Eversource P1');
