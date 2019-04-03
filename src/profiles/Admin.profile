@@ -46080,6 +46080,10 @@
         <recordType>Case.Case</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Case-Client Services</layout>
+        <recordType>Case.Client_Services</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Case-Customer Care</layout>
         <recordType>Case.Partner_Care_Case</recordType>
     </layoutAssignments>
@@ -50801,6 +50805,11 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Case.Case</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Case.Client_Services</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
