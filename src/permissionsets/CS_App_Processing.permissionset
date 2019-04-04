@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>used to process CS Aps that are pushed over from DocuSign. Provides access to ACH fields and DS Envelope ID field on Opportunity. This perm set should be removed once this process is no longer used.</description>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.ACH_Account_Number__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.ACH_Account_Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.ACH_Bank_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.ACH_Bank_Routing_Number__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.ACH_Name_on_Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.DS_Envelope_ID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>CS App Processing</label>
+</PermissionSet>

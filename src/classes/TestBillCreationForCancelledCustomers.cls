@@ -385,17 +385,12 @@ public class TestBillCreationForCancelledCustomers {
 
         insert firstProdUpdateSSS2;
 
-        firstProdUpdateSSS1.Generate_Bills__c = TRUE;
-        update firstProdUpdateSSS1;
-
-        firstProdUpdateSSS2.Generate_Bills__c = TRUE;
-        update firstProdUpdateSSS2;
-
+        TestBillCreationandPayment.runProductionUpdate(new List<Id>{firstProdUpdateSSS1.Id, firstProdUpdateSSS2.Id});
         setBillsToPublished();
         Test.stopTest();
     }
 
-    static void setBillsToPublished() {
+    public static void setBillsToPublished() {
         List <Account_Bill__c> listAccountBills = [
             SELECT Id, Published__c
             FROM Account_Bill__c
@@ -407,7 +402,7 @@ public class TestBillCreationForCancelledCustomers {
         update listAccountBills;
     }
 
-    static void setCollectionsWindow (Integer monthsToGenerate){
+    public static void setCollectionsWindow (Integer monthsToGenerate){
         System_Properties__c propertyAlreadyInserted = [Select Id FROM System_Properties__c];
         delete propertyAlreadyInserted;
 
@@ -418,7 +413,7 @@ public class TestBillCreationForCancelledCustomers {
         insert property;
     }
 
-    static void setOppToCancelled(List<String> oppIds) {
+    public static void setOppToCancelled(List<String> oppIds) {
         List<Opportunity> listOpps = [
             SELECT Id, StageName
             FROM Opportunity
@@ -430,7 +425,7 @@ public class TestBillCreationForCancelledCustomers {
         update listOpps;
     }
 
-    static void runSecondMonthProductionUpdates() {
+    public static void runSecondMonthProductionUpdates() {
         List<Shared_Solar_System__c> sssList = [
             SELECT Id, Name, BWC_Project_Entity_Manual__r.Id, Product__r.Id
             FROM Shared_Solar_System__c
@@ -481,13 +476,10 @@ public class TestBillCreationForCancelledCustomers {
 
         insert secondProdUpdateSSS2;
 
-        secondProdUpdateSSS1.Generate_Bills__c = true;
-        secondProdUpdateSSS2.Generate_Bills__c = true;
-        update secondProdUpdateSSS1;
-        update secondProdUpdateSSS2;
+        TestBillCreationandPayment.runProductionUpdate(new List<Id>{secondProdUpdateSSS1.Id, secondProdUpdateSSS2.Id});
     }
 
-    static void makePayment(String oppName, Integer billNumber){
+    public static void makePayment(String oppName, Integer billNumber){
         // Mocks making a payment because consumes too many SOQL queries to insert Order & Transaction
 
         System_Bill__c sbToPay = [
@@ -505,12 +497,15 @@ public class TestBillCreationForCancelledCustomers {
         update sbToPay;
     }
 
-    static Map<String, System_Bill__c> queryForBills() {
+    public static Map<String, System_Bill__c> queryForBills() {
         Map<String, System_Bill__c> sbMap = new Map<String, System_Bill__c>();
 
         for (System_Bill__c insertedSB : [
             SELECT Id, Name, Bill_Number__c, Opportunity__r.Name, Total_Payments_This_Month__c,
-                Due_This_Month__c, Total_Due__c, Carry_Over_Balance__c, Balance_Net_Late_Payments__c
+                Due_This_Month__c, Total_Due__c, Carry_Over_Balance__c, Balance_Net_Late_Payments__c, (
+                SELECT Id, CS_Billing_Log__c, Net_Metering_Credits_Allocated__c, Savings__c
+                FROM Utility_Account_Subscription_Bills__r
+            )
             FROM System_Bill__c
             ORDER BY Opportunity__r.Name, Bill_Number__c]) {
             sbMap.put(insertedSB.Opportunity__r.Name + '_' + insertedSB.Bill_Number__c,insertedSB);
@@ -535,6 +530,16 @@ public class TestBillCreationForCancelledCustomers {
     @IsTest public static void baseLineNoChange() {
 
         Map<String, System_Bill__c> sbMap = queryForBills();
+
+        List<UASB__c> uasbList = [SELECT Utility_Account_Subscription__r.Name, Shared_Solar_System__c,
+            Utility_Account_Subscription__r.Name_on_Account_From_Log__c,
+            Utility_Account_Subscription__r.Share_of_System__c,
+            Production_Update__r.Name, Credits_on_Bill_Period__c,
+            Utility_Account_Subscription__r.Next_Schedule_Z_Status__c,
+            Net_Metering_Credits_Allocated__c, Discounted_Bill__c,
+            Subscription_Production_kWh__c, System_Bill__r.Opportunity__r.Name
+        FROM UASB__c];
+
         System.assertEquals(6,sbMap.values().size());
         System.assertEquals(209.94,sbMap.get('acA A_SSS1_1').Due_This_Month__c);
         System.assertEquals(83.74,sbMap.get('acB B_SSS1_1').Due_This_Month__c);
@@ -646,10 +651,19 @@ public class TestBillCreationForCancelledCustomers {
         System.assertEquals(12,sbMapTwo.values().size());
         System.assertEquals(397.30,sbMapTwo.get('acA A_SSS1_2').Total_Due__c); // DTM:187.36 + PMOB:209.94 = TD:397.30
         System.assertEquals(83.74,sbMapTwo.get('acB B_SSS1_2').Total_Due__c); // DTM:0 + PMOB:83.74 = TD:83.74
+        checkUASBAndUABAssertions(sbMapTwo.get('acB B_SSS1_2'));
         System.assertEquals(417.12,sbMapTwo.get('acB B_SSS2_2').Total_Due__c); // DTM:0 + PMOB:417.12 = TD:417.12
+        checkUASBAndUABAssertions(sbMapTwo.get('acB B_SSS2_2'));
         System.assertEquals(80.38,sbMapTwo.get('acC C_SSS1_2').Total_Due__c); // DTM:37.91 + PMOB:42.47 = TD:80.38
         System.assertEquals(906.87,sbMapTwo.get('acC C_SSS2_2').Total_Due__c); // DTM:149.46 + PMOB:757.41 = TD:906.87
         System.assertEquals(365.16,sbMapTwo.get('acC C_B_SSS1_2').Total_Due__c); // DTM:172.21 + PMOB:192.95 = TD:365.16
+    }
+
+    private static void checkUASBAndUABAssertions(System_Bill__c sb) {
+        System.assertEquals(1, sb.Utility_Account_Subscription_Bills__r.size());
+        System.assertEquals(0, sb.Utility_Account_Subscription_Bills__r[0].Net_Metering_Credits_Allocated__c);
+        System.assertEquals(0, sb.Utility_Account_Subscription_Bills__r[0].Savings__c);
+        System.assertNotEquals(null, sb.Utility_Account_Subscription_Bills__r[0].CS_Billing_Log__c);
     }
 
     @IsTest public static void removalZeroOutstandingBalanceCrossSubscribed() {

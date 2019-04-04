@@ -1,13 +1,16 @@
 <aura:component controller="CSAPController" access="global" extends="c:CSAPParent">
   <aura:attribute name="leadId" type="String"/>
+  <aura:attribute name="leadEmail" type="String"/>
   <aura:attribute name="applyingFor" type="String"/>
-  <aura:attribute name="hasCapacity" type="String"/>
+  <aura:attribute name="hasProject" type="Boolean"/>
   <aura:attribute name="abbrevStates" type="String[]"/>
   <aura:attribute name="partnerId" type="String"/>
   <aura:attribute name="salesRepId" type="String"/>
-  <aura:attribute name="loading" type="Boolean"/>
+  <aura:attribute name="partnerApp" type="Boolean"/>
+  <aura:attribute name="loading" type="Boolean" default="true"/>
   <aura:attribute name="loadingText" type="Boolean"/>
   <aura:attribute name="referralCode" type="String"/>
+  <aura:attribute name="zipcode" type="String"/>
   <aura:attribute name="ShowDateError" type="Boolean"/>
   <aura:attribute name="splitZones" type="String[]"/>
   <aura:attribute name="splitUtilities" type="Object[]"/>
@@ -36,28 +39,34 @@
   <aura:if isTrue="{!not(v.loading)}">
     <aura:if isTrue="{!v.page == 'AboutYourself'}">
       <div aria-labelledby="aboutYourselfForm">
-        <fieldset class="slds-box slds-theme--default slds-container_center slds-size--2-of-3">
-          <legend id="aboutYourselfForm" class="slds-text-heading--medium slds-p-vertical--small slds-align_absolute-center">
-            <b class="slds-p-horizontal_large">  Great news, community solar is in your area! </b>
+        <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
+          <legend id="aboutYourselfForm" class="slds-text-heading--medium slds-text-align--center slds-align_absolute-center">
+            <aura:if isTrue="{!v.partnerApp}">
+              <b class="slds-p-horizontal_large"> Sign up for community solar in your area! </b>
+              <aura:set attribute="else">
+                <b class="slds-p-horizontal_large">  Great news, community solar is in your area! </b>
+              </aura:set>
+            </aura:if>
+
           </legend>
-          <lightning:layoutItem class="slds-align_absolute-center slds-p-horizontal--large" padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+          <lightning:layoutItem class="slds-align_absolute-center slds-p-horizontal--large" padding="around-small" size="12">
            <div class="slds-text-align--center">
-            To continue, please provide your contact information and billing address so we can verify your eligibility
+            Please provide your contact information and billing address so we can verify your eligibility
             for this community solar project and contact you regarding your application. We take privacy and security
             seriously. Check out our
-             <b><lightning:formattedUrl value="https://bluewavesolar.com/privacy-policy" class="slds-text-color--weak" label="Privacy Policy" tooltip="Go to Privacy Policy"/></b>
+             <b><lightning:formattedUrl value="https://bluewavesolar.com/privacy-policy" target="_blank" class="slds-text-color--weak" label="Privacy Policy" tooltip="Go to Privacy Policy"/></b>
            for more details.
            </div>
           </lightning:layoutItem>
-          <form class="slds-form--stacked">
+          <form class="slds-form--stacked" autocomplete="off">
             <lightning:layout multipleRows="true">
-              <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+              <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6">
                 <lightning:input aura:id="field" name="leadFirstName"
                                  label="First Name"
                                  value="{!v.lead.FirstName}"
                                  required="true"/>
               </lightning:layoutItem>
-              <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
+              <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6" >
                 <lightning:input aura:id="field" name="leadLastName"
                                  label="Last Name"
                                  value="{!v.lead.LastName}"
@@ -65,14 +74,14 @@
               </lightning:layoutItem>
             </lightning:layout>
             <lightning:layout multipleRows="true">
-              <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+              <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6">
                 <lightning:input aura:id="field" name="leadEmail"
                                  type="email"
                                  label="Email"
                                  value="{!v.lead.Email}"
                                  required="true"/>
               </lightning:layoutItem>
-              <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
+              <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6" >
                 <lightning:input aura:id="field" name="leadMobilePhone"
                                  type="tel"
                                  label="Mobile Phone"
@@ -95,7 +104,7 @@
 
             <lightning:layout multipleRows="true">
               <aura:if isTrue="{!and(v.lead.Application_Source_Phase_2__c != null, v.lead.Application_Type__c != 'Non-Residential')}">
-                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6">
                   <lightning:input aura:id="field" name="name"
                                    label="Property Name"
                                    value="{!v.lead.Company}"
@@ -104,19 +113,13 @@
               </aura:if>
             </lightning:layout>
             <lightning:layout multipleRows="true">
-
-              <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
-                <lightning:inputAddress
-                  showAddressLookup="true"
-                />
-              </lightning:layoutItem>
-              <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+              <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6">
                 <lightning:input aura:id="field" name="leadHomeAddress"
                                  label="Billing Address"
                                  value="{!v.lead.LASERCA__Home_Address__c}"
                                  required="true"/>
               </lightning:layoutItem>
-              <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
+              <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6" >
                 <lightning:input aura:id="field" name="leadHomeCity"
                                  label="City"
                                  value="{!v.lead.LASERCA__Home_City__c}"
@@ -124,7 +127,7 @@
               </lightning:layoutItem>
             </lightning:layout>
             <lightning:layout multipleRows="true">
-              <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+              <lightning:layoutItem padding="around-small" size="6" >
                 <lightning:select aura:id="field" name="leadHomeState"
                                   label="State"
                                   value="{!v.lead.LASERCA__Home_State__c}"
@@ -135,9 +138,9 @@
                   </aura:iteration>
                 </lightning:select>
               </lightning:layoutItem>
-              <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
+              <lightning:layoutItem padding="around-small" size="6" >
                 <lightning:input aura:id="field" name="leadHomeZip"
-                                 label="Zip Code"
+                                 label="Billing ZIP Code"
                                  value="{!v.lead.LASERCA__Home_Zip__c}"
                                  required="true"
                                  maxlength="5"
@@ -146,7 +149,7 @@
               </lightning:layoutItem>
             </lightning:layout>
             <lightning:layout>
-              <lightning:layoutItem size="12" smallDeviceSize="12" class="slds-align--absolute-center">
+              <lightning:layoutItem size="12" largeDeviceSize="6" class="slds-align--absolute-center">
                 <div class="slds-align--absolute-center slds-text-body--regular">
                   <lightning:radioGroup aura:id="field"
                                         name="radioApplicationType"
@@ -156,6 +159,15 @@
                                         type="radio"
                                         class="horizontalRadio slds-text-align--center slds-form-element__horizontal"/>
                 </div>
+              </lightning:layoutItem>
+              <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" >
+                <lightning:input aura:id="field" name="serviceZip"
+                                 label="Service ZIP Code"
+                                 value="{!v.lead.Parcel_Zip__c}"
+                                 required="true"
+                                 maxlength="5"
+                                 minlength="5"
+                                 messageWhenBadInput="Please enter a 5 digit ZIP-code"/>
               </lightning:layoutItem>
             </lightning:layout>
           </form>
@@ -177,20 +189,20 @@
       <!--BUSINESS FORM-->
       <aura:if isTrue="{!v.applicationType == 'Non-Residential'}">
         <div aria-labelledby="businessForm">
-          <fieldset class="slds-box slds-theme--default slds-container_center slds-size--2-of-3">
-            <legend id="businessForm" class="slds-text-heading--medium slds-p-vertical--medium slds-align_absolute-center">
+          <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
+            <legend id="businessForm" class="slds-text-heading--medium slds-text-align--center slds-p-vertical--medium slds-align_absolute-center">
               <b class="slds-p-horizontal_large"> Tell us a bit about your business or organization </b>
             </legend>
             <form class="slds-form--stacked">
               <lightning:layout multipleRows="true">
-                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6">
                   <lightning:input aura:id="field" name="leadCompany"
                                    label="Name of Business or organization"
                                    value="{!v.lead.Company}"
                                    maxlength="80"
                                    required="true"/>
                 </lightning:layoutItem>
-                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
+                <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6" >
                   <lightning:input aura:id="field" name="leadPhone"
                                    type="tel"
                                    label="Phone (optional)"
@@ -200,7 +212,7 @@
               </lightning:layout>
 
               <lightning:layout multipleRows="true">
-                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6">
                   <lightning:input aura:id="field" name="leadBusinessTitle"
                                    label="Your Job Title"
                                    value="{!v.lead.Business_Title__c}"
@@ -225,14 +237,25 @@
       </aura:if>
     </aura:if>
 
+    <aura:if isTrue="{!v.page == 'NoProjects'}">
+      <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
+      <legend id="aboutYourselfForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
+        <b class="slds-section__title--large slds-p-horizontal_large">We're Sorry</b>
+      </legend>
+      <div class="slds-align--absolute-center slds-text-align--center ">
+        It seems that we don't have any Community Solar currently available in your area. We're working hard to expand our Community Solar availability, so please check back at a later date.
+      </div>
+      </fieldset>
+    </aura:if>
+
 
     <!--SPLIT LOAD ZONE PAGE-->
     <!--Page only shows to customer if Zipcode is in Split Load Zone -->
     <!--For NY, does not ask for Load Zone - uses first returned -->
     <aura:if isTrue="{!v.page == 'SplitLoadZone'}">
       <div>
-        <fieldset class="slds-box slds-theme--default slds-container_center slds-size--2-of-3">
-          <legend id="utilityCheck" class="slds-text-heading--medium slds-p-vertical--medium slds-align_absolute-center">
+        <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
+          <legend id="utilityCheck" class="slds-text-heading--medium  slds-text-align--center slds-p-vertical--medium slds-align_absolute-center">
             <b class="slds-p-horizontal_large"> Help us find you </b>
           </legend>
           <form class="slds-form--stacked">
@@ -254,9 +277,9 @@
             </div>
             <lightning:layout multipleRows="true" horizontalAlign="center">
               <aura:if isTrue="{!v.splitZones.length > 1}">
-                <lightning:layoutItem padding="around-small" size="4" smallDeviceSize="12" mediumDeviceSize="6">
+                <lightning:layoutItem padding="around-small" size="11" mediumDeviceSize="6" largeDeviceSize="6">
                   <lightning:select aura:id="loadZone" name="loadZone"
-                                    label="Load Zone"
+                                    label="Load&nbsp;Zone"
                                     value="{!v.lead.LoadZone__c}"
                                     class="slds-align--absolute-center"
                                     required="true">
@@ -268,7 +291,7 @@
                 </lightning:layoutItem>
               </aura:if>
               <aura:if isTrue="{!v.splitUtilities.length > 1}">
-                <lightning:layoutItem padding="around-small" size="4" smallDeviceSize="12" mediumDeviceSize="6">
+                <lightning:layoutItem padding="around-small" size="10" largeDeviceSize="6" mediumDeviceSize="6">
                   <lightning:select aura:id="utility" name="utility"
                                     label="Utility:"
                                     class="slds-align--absolute-center"
@@ -293,5 +316,40 @@
         </fieldset>
       </div>
     </aura:if>
+  </aura:if>
+
+
+  <aura:if isTrue="{!v.page == 'Login'}">
+    <div aria-labelledby="loginForm">
+      <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
+        <legend id="loginForm" class="slds-text-heading--medium slds-p-vertical--medium slds-align_absolute-center">
+          <b class="slds-p-horizontal_large">Login</b>
+        </legend>
+        <div class="slds-form--stacked slds-text-align--center slds-m-bottom--medium">
+          Enter the email associated with this application to confirm your identity before starting or continuing your application.
+        </div>
+        <form class="slds-form--stacked" style="text-align: center">
+          <lightning:layout horizontalAlign="center">
+            <lightning:layoutItem padding="around-small" size="10" largeDeviceSize="4" mediumDeviceSize="4">
+              <span onkeypress="{!c.checkForEnter}">
+              <ui:inputEmail aura:id="field"
+                             placeholder="yourname@email.com"
+                             value="{!v.leadEmail}"
+                             required="true"
+                             updateOn="keydown,change"
+                             keydown="{!c.checkForEnter}"/>
+            </span>
+            </lightning:layoutItem>
+          </lightning:layout>
+        </form>
+        <div class="slds-clearfix slds-p-top_medium">
+          <div class="slds-float_left">
+          </div>
+          <div class="slds-float_right">
+            <lightning:button label="Next" onclick="{!c.login}"/>
+          </div>
+        </div>
+      </fieldset>
+    </div>
   </aura:if>
 </aura:component>

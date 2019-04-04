@@ -5,15 +5,19 @@
  *************************************************************************************/
 
 public without sharing class UtilityAccountBillTriggerHandler {
+    public static Map<Id, List<Product_Escalator__c>> productEscalatorMap;
+
     public void createUASB( Map<Id, Energy_Usage_Update__c> prodUpdateMap,
                             Map<String, System_Bill__c > systemBillMap, 
                             Map<Id, Utility_Account_Bill__c> utilityAccountLogIdToUABMap, 
-                            List<Utility_Account_Subscription__c> uasList){
+                            List<Utility_Account_Subscription__c> uasList,
+                            Map<Id, List<Product_Escalator__c>>  productEscalationMap ){
 
         Set<Id> scheduleZIds = new Set<Id>();
         for (Energy_Usage_Update__c productionUpdate : prodUpdateMap.Values()) {
             scheduleZIds.add(productionUpdate.Schedule_Z__c);
         }
+        productEscalatorMap = productEscalationMap;
 
         // Collect Schedule Z Subscriptions related to the Schedule Zs
         List<Schedule_Z_Subscription__c> scheduleZSubscriptions = [
@@ -29,21 +33,24 @@ public without sharing class UtilityAccountBillTriggerHandler {
                 Utility_Account_Subscription__r.Opportunity__r.AccountId,
                 Utility_Account_Subscription__r.Customer_Subscription_KW_DC_STATIC__c,
                 Utility_Account_Subscription__r.Customer_Subscription_KW_DC__c, 
-                Utility_Account_Subscription__r.Opportunity__c, 
+                Utility_Account_Subscription__r.Opportunity__c,
                 Utility_Account_Subscription__r.Opportunity__r.Product__r.NMC_Discount__c,
                 Utility_Account_Subscription__r.Opportunity__r.Product__r.NM_Rate_Floor__c,
                 Utility_Account_Subscription__r.Opportunity__r.Product__r.Solar_Electricity_Rate__c,
                 Utility_Account_Subscription__r.Opportunity__r.Product__r.Pricing_Structure__c,
                 Utility_Account_Subscription__r.Opportunity__r.Product__r.Percent_Share_Decimal_Places__c,
+                Utility_Account_Subscription__r.Opportunity__r.Product_Escalation_Schedule__c,
                 Utility_Account_Subscription__r.UAS_Number__c,
                 Utility_Account_Subscription__r.Share_of_System__c ,
                 Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Total_System_Size_kwh_dc__c, 
                 Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Method__c,
+                Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Count_of_Transfers__c,
                 Utility_Account_Subscription__r.Opportunity__r.NMC_Value__c,
                 Utility_Account_Subscription__r.Max_Account_Bill_Number__c,
                 Schedule_Z__r.Shared_Solar_System__r.Utility__r.Credits_Allocated_Rounding_Method__c
             FROM Schedule_Z_Subscription__c
             WHERE Schedule_Z__c IN : scheduleZIds
+            AND Stop_Credit_Transfer__c = FALSE
         ];
 
         Map<Id, Schedule_Z_Subscription__c> scheduleZSubscriptionToUABIdMap = new Map<Id, Schedule_Z_Subscription__c>();
@@ -66,17 +73,19 @@ public without sharing class UtilityAccountBillTriggerHandler {
 
         Set<UASB__c> uasbSet = new Set<UASB__c>();
         Map<String, List<Bill_Adjustment__c>> adjustmentsToUpdateMap = new Map<String, List<Bill_Adjustment__c>>();
+
         for(Utility_Account_Subscription__c uas : uasList){
             if (utilityAccountLogIdToUABMap.containsKey(uas.Utility_Account_Log__c)){
                 Utility_Account_Bill__c uab = utilityAccountLogIdToUABMap.get(uas.Utility_Account_Log__c);
                 Energy_Usage_Update__c prodUpdate = prodUpdateMap.get(uas.Opportunity__r.Shared_Solar_System__r.Id);
                 String systemBillKey = uas.Opportunity__r.Name + ' ' + uas.Opportunity__r.Shared_Solar_System__r.Name + ' ' + DateTime.newInstance(uab.Date__c.year(), uab.Date__c.month(),uab.Date__c.day()).format('yyyy-MM');
                 System_Bill__c systemBill = systemBillMap.get(systemBillKey);
-                if (uab.Shared_Solar_System__c == uas.Opportunity__r.Shared_Solar_System__c && systemBill != null){
+                if (systemBill != null){
                     try {
                         UASB__c uasb = catchCancelledUASes(prodUpdate,
                             uas,
                             scheduleZSubscriptionToUABIdMap,
+                            1,
                             prodUpdate.Net_Metering_Rate_Applied__c,
                             prodUpdate.Production__c,
                             prodUpdate.Total_System_NMCs__c);
@@ -87,6 +96,7 @@ public without sharing class UtilityAccountBillTriggerHandler {
                         if (prodUpdate.Total_System_NMCs_2_of_4__c > 0 && scheduleZSubscriptionToUABIdMap.containsKey(uas.Id)) {
                             UASB__c uasbTwo = setUASBFields(prodUpdate,
                                 scheduleZSubscriptionToUABIdMap.get(uas.id),
+                                2,
                                 prodUpdate.Net_Metering_Rate_Applied_2_of_4__c,
                                 prodUpdate.Production_kWh_2_of_4__c,
                                 prodUpdate.Total_System_NMCs_2_of_4__c);
@@ -98,6 +108,7 @@ public without sharing class UtilityAccountBillTriggerHandler {
                             if (prodUpdate.Total_System_NMCs_3_of_4__c > 0 && scheduleZSubscriptionToUABIdMap.containsKey(uas.Id)) {
                                 UASB__c uasbThree = setUASBFields(prodUpdate,
                                     scheduleZSubscriptionToUABIdMap.get(uas.id),
+                                    3,
                                     prodUpdate.Net_Metering_Rate_Applied_3_of_4__c,
                                     prodUpdate.Production_kWh_3_of_4__c,
                                     prodUpdate.Total_System_NMCs_3_of_4__c);
@@ -109,6 +120,7 @@ public without sharing class UtilityAccountBillTriggerHandler {
                                 if (prodUpdate.Total_System_NMCs_4_of_4__c > 0 && scheduleZSubscriptionToUABIdMap.containsKey(uas.Id)) {
                                     UASB__c uasbFour = setUASBFields(prodUpdate,
                                         scheduleZSubscriptionToUABIdMap.get(uas.id),
+                                        4,
                                         prodUpdate.Net_Metering_Rate_Applied_4_of_4__c,
                                         prodUpdate.Production_kWh_4_of_4__c,
                                         prodUpdate.Total_System_NMCs_4_of_4__c);
@@ -179,16 +191,41 @@ public without sharing class UtilityAccountBillTriggerHandler {
 
     }
 
+    // Dependent on list of escalators being ordered by Number_of_Credit_Transfers__c descending
+    public static Product_Escalator__c getProductEscalator( Schedule_Z_Subscription__c szs,
+                                                            Decimal transferCount){
+        if (productEscalatorMap == null){
+            Map<Id, List<Product_Escalator__c>> productMap = ProductEscalatorSelector.getProductEscalationMap();
+            productEscalatorMap = productMap;
+        }
+
+        List<Product_Escalator__c> escalatorList = new List<Product_Escalator__c>();
+        Product_Escalator__c activeEscalator = null;
+
+        String mapKeyScheduleId = szs.Utility_Account_Subscription__r.Opportunity__r.Product_Escalation_Schedule__c;
+        if (productEscalatorMap.containsKey(mapKeyScheduleId)) {
+            escalatorList = productEscalatorMap.get(mapKeyScheduleId);
+            for (Product_Escalator__c escalator : escalatorList) {
+                if (escalator.Starting_Credit_Transfer__c <= transferCount) {
+                    activeEscalator = escalator;
+                    break;
+                }
+            }
+        }
+        return activeEscalator;
+    }
+
     public static UASB__c catchCancelledUASes(  Energy_Usage_Update__c prodUpdate,
                                                 Utility_Account_Subscription__c uas,
                                                 Map<Id, Schedule_Z_Subscription__c> scheduleZSubscriptionToUABIdMap,
+                                                Decimal transferCount,
                                                 Decimal nmcRate,
                                                 Decimal systemProduction,
                                                 Decimal systemNMCs){
         UASB__c uasbToCreate;
 
         if ( scheduleZSubscriptionToUABIdMap.containsKey(uas.Id)){
-            uasbToCreate = setUASBFields(prodUpdate, scheduleZSubscriptionToUABIdMap.get(uas.Id), nmcRate, systemProduction, systemNMCs);
+            uasbToCreate = setUASBFields(prodUpdate, scheduleZSubscriptionToUABIdMap.get(uas.Id), transferCount, nmcRate, systemProduction, systemNMCs);
         } else {
             // Zero dollar bill for cancelled customers:
             uasbToCreate = new UASB__c( Date__c = prodUpdate.Date__c,
@@ -210,10 +247,12 @@ public without sharing class UtilityAccountBillTriggerHandler {
 
     public static UASB__c setUASBFields(Energy_Usage_Update__c prodUpdate,
                                         Schedule_Z_Subscription__c szs,
-                                        Decimal nmcRate, 
+                                        Decimal transferCount,
+                                        Decimal nmcRate,
                                         Decimal systemProduction, 
                                         Decimal systemNMCs){
-
+        transferCount =  transferCount + szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Count_of_Transfers__c;
+        Product_Escalator__c escalatorProduct = getProductEscalator(szs, transferCount);
         Decimal shareOfSystem = szs.Percent_Share__c;
         String creditsRoundingMethod = szs.Schedule_Z__r.Shared_Solar_System__r.Utility__r.Credits_Allocated_Rounding_Method__c;
         // Calculate % Share of Production (kWh)
@@ -237,8 +276,8 @@ public without sharing class UtilityAccountBillTriggerHandler {
                                     Shared_Solar_System__c = szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c,
                                     Billing_Period_Start_Date__c = prodUpdate.Billing_Period_Start_Date__c,
                                     Billing_Period_End_Date__c = prodUpdate.Billing_Period_End_Date__c,
-                                    Total_System_Size_kW_DC__c = szs.Utility_Account_Subscription__r.Opportunity__r.shared_solar_system__r.Total_System_Size_kWh_DC__c,
                                     NMC_Discount__c = szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.NMC_Discount__c,
+                                    Total_System_Size_kW_DC__c = szs.Utility_Account_Subscription__r.Opportunity__r.shared_solar_system__r.Total_System_Size_kWh_DC__c,
                                     NM_Rate_Floor__c = szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.NM_Rate_Floor__c,
                                     Pricing_Structure__c = szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.Pricing_Structure__c,
                                     Solar_Electricity_Rate__c = szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.Solar_Electricity_Rate__c,
@@ -254,7 +293,12 @@ public without sharing class UtilityAccountBillTriggerHandler {
             generatedUASB.Size_off_NMCs__c = true;
         }
 
-        return generatedUASB;     
+        if (escalatorProduct != null){
+            generatedUASB.NMC_Discount__c = escalatorProduct.New_NMC_Discount__c;
+            generatedUASB.Solar_Electricity_Rate__c = escalatorProduct.New_Solar_Electricity_Rate__c;
+        }
+
+        return generatedUASB;
     }
 
 }

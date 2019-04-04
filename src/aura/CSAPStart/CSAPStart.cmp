@@ -59,8 +59,8 @@
   </aura:if>
 
   <aura:if isTrue="{!v.page == 'ZipcodeChecker'}">
-      <fieldset class="slds-box slds-theme--default slds-container_center slds-size--2-of-3">
-        <legend id="zipcodeChecker" class="slds-text-heading--medium slds-p-vertical--small slds-align_absolute-center">
+      <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
+        <legend id="zipcodeChecker" class="slds-text-heading--medium slds-text-align--center slds-p-vertical--small slds-align_absolute-center">
           <b class="slds-p-horizontal_large">Find a community solar farm near you. </b>
         </legend>
         <form class="slds-form--stacked" style="text-align: center">
@@ -75,7 +75,7 @@
   </aura:if>
 
   <aura:if isTrue="{!v.page == 'NoProjects'}">
-    <fieldset class="slds-box slds-theme--default slds-container_center slds-size--2-of-3">
+    <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
       <legend id="aboutYourselfForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
         <b class="slds-section__title--large slds-p-horizontal_large">We're Sorry</b>
       </legend>
@@ -88,17 +88,16 @@
   <!-- LOGIN FORM -->
   <aura:if isTrue="{!v.page == 'Login'}">
     <div aria-labelledby="loginForm">
-      <fieldset class="slds-box slds-theme--default slds-container_center slds-size--2-of-3">
+      <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
         <legend id="loginForm" class="slds-text-heading--medium slds-p-vertical--medium slds-align_absolute-center">
           <b class="slds-p-horizontal_large">Login</b>
         </legend>
-        <div class="slds-form--stacked slds-text-align--center">
-         <b> Enter the email associated with this application to confirm your identity before starting or continuing your application.
-         </b>
+        <div class="slds-form--stacked slds-text-align--center slds-m-bottom--medium">
+          Enter the email associated with this application to confirm your identity before starting or continuing your application.
         </div>
           <form class="slds-form--stacked" style="text-align: center">
            <lightning:layout horizontalAlign="center">
-            <lightning:layoutItem padding="around-small" size="4" smallDeviceSize="4" mediumDeviceSize="4">
+            <lightning:layoutItem padding="around-small" size="10" largeDeviceSize="4" mediumDeviceSize="4">
               <span onkeypress="{!c.checkForEnter}">
               <ui:inputEmail aura:id="field"
                              placeholder="yourname@email.com"

@@ -467,8 +467,7 @@ public without sharing class CommunitySolarCustomerPortalTest {
             LIMIT 1
         ];
 
-        productionupdateB2.Generate_Bills__c = TRUE;
-        update productionupdateB2;
+        TestBillCreationandPayment.runProductionUpdate(new List<Id>{productionupdateB2.Id});
 
         List<Account_Bill__c> accountBills = [
             SELECT Id, Published__c, Parent_Account__c

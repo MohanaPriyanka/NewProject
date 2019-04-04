@@ -1,8 +1,11 @@
+/*
+   Tested by: RecurringPaymentsHandlerTestClass
+ */
 public without sharing class SharedSolarSystemHandler {
-    private boolean m_isExecuting = false;
+    private Boolean m_isExecuting = false;
     private Integer BatchSize = 0;
     
-    public SharedSolarSystemHandler(boolean isExecuting, Integer size){
+    public SharedSolarSystemHandler(Boolean isExecuting, Integer size){
         m_isExecuting = isExecuting;
         BatchSize = size;
     }
@@ -10,17 +13,17 @@ public without sharing class SharedSolarSystemHandler {
         summarizeCapacity(updatedSSSList);
     }
     private void summarizeCapacity(List<Shared_Solar_System__c> sssList){ 
-        List <string> sssidlist = new list <string> ();
-        list<Utility_Account_Subscription__c> reservedCapacityList = new list <Utility_Account_Subscription__c>();
-        list<Utility_Account_Subscription__c> committedCapacityList = new list <Utility_Account_Subscription__c>();
-        list<Utility_Account_Subscription__c> anchorCapacityList = new list <Utility_Account_Subscription__c>();
-        decimal summarizedReservedCapacity = 0;
-        decimal summarizedCommittedCapacity = 0;
-        decimal summarizedAnchorCapacity = 0;
+        List<String> sssidlist = new List<String>();
+        List<Utility_Account_Subscription__c> reservedCapacityList = new List<Utility_Account_Subscription__c>();
+        List<Utility_Account_Subscription__c> committedCapacityList = new List<Utility_Account_Subscription__c>();
+        List<Utility_Account_Subscription__c> anchorCapacityList = new List<Utility_Account_Subscription__c>();
+        Decimal summarizedReservedCapacity = 0;
+        Decimal summarizedCommittedCapacity = 0;
+        Decimal summarizedAnchorCapacity = 0;
 
         for(Shared_Solar_System__c sss: sssList){
-                string sssid = sss.Id;
-                string subid = sssid.substring(0,15);
+                String sssid = sss.Id;
+                String subid = sssid.substring(0,15);
                 sssidlist.add(subid);
         }
 
@@ -64,7 +67,6 @@ public without sharing class SharedSolarSystemHandler {
                     if (res.SSS_Id__c == sssSummary.Id 
                         && res.Customer_Subscription_KW_DC__c != null){
                             summarizedReservedCapacity = res.Customer_Subscription_KW_DC__c + summarizedReservedCapacity;
-                            system.debug(summarizedReservedCapacity);
                     }
                 }
             }
@@ -72,8 +74,6 @@ public without sharing class SharedSolarSystemHandler {
                 for (Utility_Account_Subscription__c comm: committedCapacityList){
                     if (comm.SSS_Id__c == sssSummary.Id 
                         && comm.Customer_Subscription_KW_DC_STATIC__c != null){
-                            system.debug('Committed Capacity List Size - ' + committedCapacityList.size());
-                            system.debug('Committed Capacity - ' + comm.Customer_Subscription_KW_DC_STATIC__c );
                             summarizedCommittedCapacity = comm.Customer_Subscription_KW_DC_STATIC__c + summarizedCommittedCapacity;
                     }
                 }
@@ -87,9 +87,9 @@ public without sharing class SharedSolarSystemHandler {
                 }
             }
             
-            sssSummary.Reserved_capacity_kW_DC__c = string.valueOf(summarizedReservedCapacity);  
-            sssSummary.Capacity_committed_kW_DC__c = summarizedCommittedCapacity; 
-            sssSummary.Anchor_capacity_reserved__c = summarizedAnchorCapacity;   
+            sssSummary.Reserved_Capacity_kW_DC__c = String.valueOf(summarizedReservedCapacity);
+            sssSummary.Capacity_Committed_kW_DC__c = summarizedCommittedCapacity;
+            sssSummary.Anchor_Capacity_Reserved__c = summarizedAnchorCapacity;
         }
 
     }

@@ -80,6 +80,9 @@
         $A.util.addClass(component.find("creditStatus"), "no-display");
         if (divToShow) {
             $A.util.removeClass(component.find(divToShow), "no-display");
+        } else if (!component.get("v.showProgramPicklist")){
+            var a = component.get("c.finishStage");
+            $A.enqueueAction(a);
         }
         window.clearInterval(component.get("v.creditStatusPoller"));
         window.clearTimeout(component.get("v.creditStatusTimeoutID"));

@@ -74,6 +74,39 @@
     </actionOverrides>
     <businessProcesses>
         <fullName>C %26 I</fullName>
+        <description>This is for the C and I solar development business line</description>
+        <isActive>true</isActive>
+        <values>
+            <fullName>Negotiating</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Pending Information</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Qualified</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reviewed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Under Review</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Unqualified</fullName>
+            <default>false</default>
+        </values>
+    </businessProcesses>
+    <businessProcesses>
+        <fullName>C and I</fullName>
         <isActive>true</isActive>
         <values>
             <fullName>Negotiating</fullName>
@@ -268,7 +301,6 @@
         <fields>Name</fields>
         <fields>Customer_type__c</fields>
         <fields>Email</fields>
-        <fields>Phone</fields>
         <fields>MobilePhone</fields>
         <label>CS BD Compact</label>
     </compactLayouts>
@@ -766,6 +798,19 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Building_Owner__c</fullName>
+        <description>Building owner for proposed C&amp;I project</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Building owner for proposed C&amp;I project</inlineHelpText>
+        <label>Building Owner</label>
+        <length>40</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Building_Use__c</fullName>
         <description>From C&amp;I intake form</description>
         <externalId>false</externalId>
@@ -950,7 +995,7 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
         <label>CSAP Stage</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <type>Picklist</type>
         <valueSet>
             <valueSetDefinition>
@@ -3729,6 +3774,11 @@ Monthly_Payment__c)</formula>
                     <default>false</default>
                     <label>Wait Time</label>
                 </value>
+                <value>
+                    <fullName>Go off the grid</fullName>
+                    <default>false</default>
+                    <label>Go off the grid</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
         <visibleLines>4</visibleLines>
@@ -5261,6 +5311,29 @@ IF(load_zone_check_needed__c = TRUE,
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>XXXXX Zip Code Qualification</label>
         <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora_Payment_Ref_Id_Expiration_Date__c</fullName>
+        <description>Date/Time of Zuora Ref Id expiration. If time has past, the Id is invalid</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The date that the customer&apos;s payment information expires in Zuora&apos;s system, if it has not be moved onto a Zuora account</inlineHelpText>
+        <label>Zuora Payment Ref Id Expiration Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Zuora_Payment_Ref_Id__c</fullName>
+        <description>Zuora Payment Reference Id should be passed from the Originations platform during their processes. The Payment Info Id will need to be associated with a customer&apos;s Zuora account once we create it. The Payment information expires, so reference Zuora_Payment_Ref_Id_Expiration_Date__c to make sure the Id is still valid.</description>
+        <externalId>false</externalId>
+        <label>Zuora Payment Ref Id</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -7245,6 +7318,10 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Double bill</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Go off the grid</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -9324,6 +9401,10 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Double bill</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Go off the grid</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -19594,7 +19675,7 @@ SEMA = 13 -14</inlineHelpText>
     <recordTypes>
         <fullName>C_I</fullName>
         <active>true</active>
-        <businessProcess>C %26 I</businessProcess>
+        <businessProcess>C and I</businessProcess>
         <label>C&amp;I</label>
         <picklistValues>
             <picklist>Product_Interest__c</picklist>
@@ -23831,10 +23912,33 @@ ISCHANGED(Status)
         <active>true</active>
         <errorConditionFormula>AND(
 ISCHANGED(Status),
-OR(Product_line__c=&quot;Community Solar&quot;,
-Product_line__c=&quot;Residential Loan&quot;),
-ISPICKVAL($User.UserType,&quot;PowerPartner&quot;)=false,
-$Permission.Underwriting_Permission=false)</errorConditionFormula>
+OR(
+Product_line__c=&quot;Community Solar&quot;,
+Product_line__c=&quot;Residential Loan&quot;
+),
+
+IF(
+
+AND(
+Product_line__c=&quot;Community Solar&quot;,
+OR(
+ISPICKVAL($User.UserType,&quot;PowerPartner&quot;)=true,
+$Permission.CS_Lead_Status_Edit=true,
+$Permission.Underwriting_Permission=true
+)
+)
+,false,
+IF(
+AND(
+Product_line__c=&quot;Residential Loan&quot;,
+OR(
+ISPICKVAL($User.UserType,&quot;PowerPartner&quot;)=true,
+$Permission.Underwriting_Permission=true
+)
+),false,true
+)
+)
+)</errorConditionFormula>
         <errorMessage>Changing the Lead Status on CS and RL leads requires Underwriting permission.</errorMessage>
     </validationRules>
     <validationRules>

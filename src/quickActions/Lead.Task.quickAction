@@ -32,5 +32,6 @@
     </quickActionLayout>
     <targetObject>Task</targetObject>
     <targetParentField>Who</targetParentField>
+    <targetRecordType>Task.Standard_Tasks</targetRecordType>
     <type>Create</type>
 </QuickAction>

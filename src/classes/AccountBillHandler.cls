@@ -23,14 +23,25 @@ public without sharing class AccountBillHandler{
             }
         }
 
-        List<ChargentOrders__ChargentOrder__c> ordersList = [ SELECT Id, ChargentOrders__Account__c, ChargentOrders__Billing_First_Name__c, ChargentOrders__Account__r.Max_Account_Bill_Number__c
-                                                                FROM ChargentOrders__ChargentOrder__c
-                                                                WHERE ChargentOrders__Account__c IN :firstABMap.keySet() ];
+        List<ChargentOrders__ChargentOrder__c> ordersList = [
+            SELECT Id, ChargentOrders__Account__c,
+                ChargentOrders__Billing_First_Name__c,
+                ChargentOrders__Account__r.Max_Account_Bill_Number__c,
+                ChargentOrders__Account__r.Total_Billed__c
+            FROM ChargentOrders__ChargentOrder__c
+            WHERE ChargentOrders__Account__c IN :firstABMap.keySet() ];
 
         if(!ordersList.isEmpty()) {
             for(ChargentOrders__ChargentOrder__c firstOrder : ordersList){
                 String billID = firstABMap.get(firstOrder.ChargentOrders__Account__c);
-                if (firstOrder.ChargentOrders__Account__r.Max_Account_Bill_Number__c <= 1) {
+
+                /*  We want this to run when the first bill has been inserted, but not yet published.
+                    Total_Billed__c will be > 0 (it includes unpublished bills)
+                    Max_Account_Bill_Number__c will 1 once the bill is published, but no sooner
+                    This would not work if the first bill was for $0, which we do not expect to happen
+                */
+                if (firstOrder.ChargentOrders__Account__r.Max_Account_Bill_Number__c == null
+                    && firstOrder.ChargentOrders__Account__r.Total_Billed__c > 0) {
                     ordersByABMap.put(billID, firstOrder );
                 }
             }

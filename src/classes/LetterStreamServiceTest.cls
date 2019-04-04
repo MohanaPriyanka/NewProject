@@ -687,7 +687,8 @@ public with sharing class LetterStreamServiceTest {
 
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, new LetterStreamAPIMock(accountBills));
-        AccountBillController.sendAllReadyBillsToLetterStream();
+        InvocableCSBillLetterStreamSend.sendLetters();
+
         Test.stopTest();
 
         RecordType customerCare = [

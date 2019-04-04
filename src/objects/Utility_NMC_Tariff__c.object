@@ -495,6 +495,19 @@ IF( ISPICKVAL(Class__c, &quot;Class 3&quot;), (Transmission_Charge__c +  Transit
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Rate_Code__c</fullName>
+        <description>This is used in the customer filing document for SMART projects.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is used in the customer filing document for SMART projects.</inlineHelpText>
+        <label>Rate Code</label>
+        <length>100</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>September_Previous_Year__c</fullName>
         <externalId>false</externalId>
         <label>September (Previous Year)</label>
@@ -524,6 +537,33 @@ IF( ISPICKVAL(Class__c, &quot;Class 3&quot;), (Transmission_Charge__c +  Transit
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <description>Status is maintained by Ops, and represents if a tariff is still being used by the utility. A Shared Solar System shouldn&apos;t have a retired tariff associated with it.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Status is maintained by Ops, and represents if a tariff is still being used by the utility. A Shared Solar System shouldn&apos;t have a retired tariff associated with it.</inlineHelpText>
+        <label>Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Active</fullName>
+                    <default>false</default>
+                    <label>Active</label>
+                </value>
+                <value>
+                    <fullName>Retired</fullName>
+                    <default>false</default>
+                    <label>Retired</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
     </fields>
     <fields>
         <fullName>Tariff_Key__c</fullName>

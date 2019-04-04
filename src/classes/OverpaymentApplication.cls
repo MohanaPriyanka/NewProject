@@ -9,22 +9,18 @@ public without sharing class OverpaymentApplication {
     public static List<Adjustment_Application__c> adjustmentsToInsertList;
     public static List<Overpayment_Application__c> overpaymentAdjustmentsToInsert;
 
-    public static void triggerApplication(Map<Id,APXT_BPM__Conductor__c> oldMap, List<APXT_BPM__Conductor__c> newList) {
+    public static void triggerApplication() {
         List<String> finalPropertyAccountIdList = new List<String>();
 
-        for (APXT_BPM__Conductor__c conductor : newList) {
-            if (conductor.Apply_Overpay_Adjust__c && !oldMap.get(conductor.Id).Apply_Overpay_Adjust__c) {
-                List<String> propertyIdList = findAdjustments();
-                if (propertyIdList.size() > 0){
-                    finalPropertyAccountIdList.addAll(propertyIdList);
-                }
-                propertyIdList = findOverpayments();
-                if (propertyIdList.size() > 0){
-                    finalPropertyAccountIdList.addAll(propertyIdList);
-                }
-                findSystemBillsAndApplyAdjust(finalPropertyAccountIdList);
-            }
+        List<String> propertyIdList = findAdjustments();
+        if (propertyIdList.size() > 0){
+            finalPropertyAccountIdList.addAll(propertyIdList);
         }
+        propertyIdList = findOverpayments();
+        if (propertyIdList.size() > 0){
+            finalPropertyAccountIdList.addAll(propertyIdList);
+        }
+        findSystemBillsAndApplyAdjust(finalPropertyAccountIdList);
     }
 
     public static List<String> findAdjustments() {

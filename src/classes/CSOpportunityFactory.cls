@@ -68,7 +68,7 @@ public without sharing class CSOpportunityFactory {
         } else if (chOrder.ChargentOrders__Payment_Method__c == 'Credit Card') {
             opp.CC_Card_Type__c = chOrder.ChargentOrders__Card_Type__c ;
             opp.CC_Account_Number__c = Util.obscureText(chOrder.ChargentOrders__Card_Number__c, 4);
-            opp.CC_CardHolder_Name__c = chOrder.ChargentOrders__Billing_Last_Name__c;
+            opp.CC_CardHolder_Name__c = chOrder.ChargentOrders__Billing_First_Name__c +' ' + chOrder.ChargentOrders__Billing_Last_Name__c;
             opp.CC_Expiration_Month__c = chOrder.ChargentOrders__Card_Expiration_Month__c;
             opp.CC_Expiration_Year__c = chOrder.ChargentOrders__Card_Expiration_Year__c;
         }

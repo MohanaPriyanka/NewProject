@@ -85,6 +85,26 @@
         <visibleLines>3</visibleLines>
     </fields>
     <fields>
+        <fullName>Conga_Template_ID__c</fullName>
+        <description>This is used in the conga composer to determine which template is used.</description>
+        <externalId>false</externalId>
+        <formula>IF(
+
+ISPICKVAL(Shared_Solar_System__r.Product__r.Program__c,&quot;SMART - Community Solar&quot;),&quot;{!Environment.VAR_CONGA_TEMPLATE_AOBC}&quot;,
+
+IF(
+
+ Utility__c =&quot;Eversource&quot;,&quot;a2F0a000001RC7W&quot;,&quot;a2F0a000001RBod&quot;)
+
+)</formula>
+        <inlineHelpText>This is used in the conga composer to determine which template is used.</inlineHelpText>
+        <label>Conga Template ID</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Contract_Assignment_Date__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Date that contracts were legally assigned to the project entity after a Schedule Z submission.</inlineHelpText>
@@ -217,6 +237,18 @@
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Project_ID__c</fullName>
+        <description>The ID for the Project Associated with the Shared Solar System.</description>
+        <externalId>false</externalId>
+        <formula>Shared_Solar_System__r.Project_Management__c</formula>
+        <inlineHelpText>The ID for the Project Associated with the Shared Solar System.</inlineHelpText>
+        <label>Project ID</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>QC_Start_Date__c</fullName>
@@ -421,8 +453,8 @@
 &amp;sessionId={!API.Session_ID} 
 &amp;serverUrl={!API.Partner_Server_URL_290} 
 &amp;Id={!Schedule_Z__c.Id} 
-&amp;QueryId=[SZSum]a270a000001El3l,[SchZ]a270a000001El3g,[SSS]a270a000001El3q 
-&amp;TemplateId={!IF(Schedule_Z__c.Utility__c=&quot;Eversource&quot;,&quot;a2F0a000001RC7W&quot;,&quot;a2F0a000001RBod&quot;)}
+&amp;QueryId=[SZSum]{!Environment.VAR_CONGA_QUERY_SZSUM},[SchZ]{!Environment.VAR_CONGA_QUERY_SchZ},[SSS]{!Environment.VAR_CONGA_Query_SSS},[smart]{!Environment.VAR_CONGA_QUERY_PrevSZ}?pv1={!Schedule_Z__c.Shared_Solar_SystemId__c},[sapp]{!Environment.VAR_CONGA_QUERY_SMART_APPID}?pv2={!Schedule_Z__c.Project_ID__c}
+&amp;TemplateId={!Schedule_Z__c.Conga_Template_ID__c}
 &amp;OFN={!Schedule_Z__c.Name}</url>
     </webLinks>
     <webLinks>

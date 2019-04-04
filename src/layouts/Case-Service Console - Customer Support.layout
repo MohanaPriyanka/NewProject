@@ -4,6 +4,17 @@
         <subtabComponents>
             <containers>
                 <isContainerAutoSizeEnabled>true</isContainerAutoSizeEnabled>
+                <region>Right</region>
+                <sidebarComponents>
+                    <componentType>KnowledgeOne</componentType>
+                    <unit>Percentage</unit>
+                </sidebarComponents>
+                <style>Stack</style>
+                <unit>Pixel</unit>
+                <width>250</width>
+            </containers>
+            <containers>
+                <isContainerAutoSizeEnabled>true</isContainerAutoSizeEnabled>
                 <region>Left</region>
                 <sidebarComponents>
                     <componentType>Lookup</componentType>
@@ -126,15 +137,27 @@
                 <field>Category__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Case_Update__c</field>
+                <behavior>Required</behavior>
+                <field>Status</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Root_Cause__c</field>
+                <field>Resolution__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>First_Response_Date_Time__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>First_Response_Age__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>RecordTypeId</field>
+            </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Case_Type__c</field>
@@ -148,12 +171,8 @@
                 <field>Priority</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
-                <field>Status</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Edit</behavior>
-                <field>First_Response_Date_Time__c</field>
+                <field>Case_Update__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
@@ -171,6 +190,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Primary_Complaint_Category__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Root_Cause__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -265,18 +288,67 @@
     </layoutSections>
     <miniLayout>
         <fields>ContactId</fields>
-        <fields>ContactPhone</fields>
-        <fields>ContactMobile</fields>
-        <fields>SuppliedEmail</fields>
-        <fields>Status</fields>
-        <fields>Origin</fields>
-        <fields>Priority</fields>
+        <fields>OwnerId</fields>
         <fields>Product_Line__c</fields>
         <fields>Category__c</fields>
+        <fields>Status</fields>
+        <fields>Case_Update__c</fields>
+        <fields>Resolution__c</fields>
+        <fields>SuppliedEmail</fields>
+        <fields>Origin</fields>
+        <fields>Priority</fields>
         <fields>Disable_Followup_Email__c</fields>
         <fields>Subject</fields>
         <fields>Description</fields>
     </miniLayout>
+    <platformActionList>
+        <actionListContext>Record</actionListContext>
+        <platformActionListItems>
+            <actionName>FeedItem.TextPost</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>0</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>ChangeOwnerOne</actionName>
+            <actionType>StandardButton</actionType>
+            <sortOrder>1</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Submit</actionName>
+            <actionType>StandardButton</actionType>
+            <sortOrder>2</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Clone</actionName>
+            <actionType>StandardButton</actionType>
+            <sortOrder>3</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>CloseCase</actionName>
+            <actionType>StandardButton</actionType>
+            <sortOrder>4</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>CaseHierarchy</actionName>
+            <actionType>StandardButton</actionType>
+            <sortOrder>5</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>PrintableView</actionName>
+            <actionType>StandardButton</actionType>
+            <sortOrder>6</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Edit</actionName>
+            <actionType>StandardButton</actionType>
+            <sortOrder>7</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>MassAccept</actionName>
+            <actionType>StandardButton</actionType>
+            <sortOrder>8</sortOrder>
+        </platformActionListItems>
+    </platformActionList>
     <quickActionList>
         <quickActionListItems>
             <quickActionName>FeedItem.TextPost</quickActionName>
@@ -320,6 +392,9 @@
         <relatedList>RelatedArticleList</relatedList>
     </relatedLists>
     <relatedLists>
+        <relatedList>RelatedCaseContactRoleList</relatedList>
+    </relatedLists>
+    <relatedLists>
         <relatedList>RelatedAttachmentList</relatedList>
     </relatedLists>
     <relatedLists>
@@ -331,7 +406,7 @@
     <showEmailCheckbox>true</showEmailCheckbox>
     <showHighlightsPanel>true</showHighlightsPanel>
     <showInteractionLogPanel>true</showInteractionLogPanel>
-    <showKnowledgeComponent>true</showKnowledgeComponent>
+    <showKnowledgeComponent>false</showKnowledgeComponent>
     <showRunAssignmentRulesCheckbox>true</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>true</showSubmitAndAttachButton>
     <summaryLayout>
@@ -372,11 +447,6 @@
             <field>Subject</field>
             <posX>1</posX>
             <posY>2</posY>
-        </summaryLayoutItems>
-        <summaryLayoutItems>
-            <field>Description</field>
-            <posX>1</posX>
-            <posY>3</posY>
         </summaryLayoutItems>
         <summaryLayoutItems>
             <field>OwnerId</field>

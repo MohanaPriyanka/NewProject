@@ -57,12 +57,10 @@
     </layoutSections>
     <relatedLists>
         <fields>NAME</fields>
-        <fields>Number_of_Credit_Transfers__c</fields>
+        <fields>Starting_Credit_Transfer__c</fields>
         <fields>New_NMC_Discount__c</fields>
         <fields>New_Solar_Electricity_Rate__c</fields>
         <relatedList>Product_Escalator__c.Product_Escalation_Schedule__c</relatedList>
-        <sortField>Number_of_Credit_Transfers__c</sortField>
-        <sortOrder>Asc</sortOrder>
     </relatedLists>
     <relatedLists>
         <fields>OPPORTUNITY.NAME</fields>
@@ -76,7 +74,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00hS00000014wk8</masterLabel>
+        <masterLabel>00hW0000000STPE</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

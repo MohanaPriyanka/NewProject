@@ -52,20 +52,15 @@
     <aura:set attribute="else">
       <aura:if isTrue="{!v.page == 'PaymentInfo'}">
           <div aria-labelledby="paymentInformationForm">
-            <fieldset class="slds-box slds-theme--default slds-container_center slds-size--2-of-3">
-              <legend id="paymentInformation" class="slds-text-heading--medium slds-p-vertical--medium slds-align_absolute-center">
-                <b class="slds-p-horizontal_large">Billing and Payment Info</b>
+            <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
+              <legend id="paymentInformation" class="slds-text-heading--medium slds-text-align--center slds-p-vertical--medium slds-align_absolute-center">
+                <b class="slds-p-horizontal_large">Select Automatic Payment Method</b>
               </legend>
-              <div class="slds-p-bottom--medium slds-align--absolute-center">
-                <b> We require that all Community Solar Customers sign up for autopay.
-                </b>
-              </div>
-              <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
-                <b> You will not be charged at this time. Payments will begin automatically once we begin to transfer credits to your utility account.
-                  We will provide at least 10 days written notice before initiating charges to the account provided. </b>
+              <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center">
+                Autopay is the easiest way to pay your community solar bill and is required for all customers. You may pay by credit or debit card, or directly from your bank account via ACH.
               </div>
               <lightning:layout aura:id="passedCreditText" class="animated slds-align--absolute-center" multipleRows="true">
-              <lightning:layoutItem padding="around-small" size="4" smallDeviceSize="4" mediumDeviceSize="4">
+              <lightning:layoutItem padding="around-small" size="6" largeDeviceSize="4" mediumDeviceSize="4">
                 <lightning:select
                   aura:id="field"
                   name="Select Payment Method"
@@ -84,18 +79,18 @@
               <lightning:layout aura:id="passedCreditText" class="animated" multipleRows="true">
 
                 <aura:if isTrue="{!v.SelectedPaymentMethod == 'ACH'}">
-                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6">
                   <lightning:input
                     aura:id="field"
                     name="BankRouting"
                     type="text"
                     label="Routing Number:"
-                    minlength="2"
-                    maxlength="11"
+                    minlength="9"
+                    maxlength="9"
                     value="{!v.chOrder.ChargentOrders__Bank_Routing_Number__c}"
                     required="true"/>
                 </lightning:layoutItem>
-                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6">
                   <lightning:input
                     aura:id="field"
                     name="BankAccountNumber"
@@ -105,7 +100,7 @@
                     value="{!v.chOrder.ChargentOrders__Bank_Account_Number__c}"
                     required="true"/>
                 </lightning:layoutItem>
-                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6">
                   <lightning:input
                     aura:id="field"
                     name="BankAccountName"
@@ -114,7 +109,7 @@
                     value="{!v.chOrder.ChargentOrders__Bank_Account_Name__c}"
                     required="true"/>
                 </lightning:layoutItem>
-                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6">
                     <lightning:input
                       aura:id="field"
                       name="BankName"
@@ -124,7 +119,7 @@
                       value="{!v.chOrder.ChargentOrders__Bank_Name__c}"
                       required="true"/>
                 </lightning:layoutItem>
-                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6">
                   <lightning:select
                     aura:id="field"
                     name="BankAccountType"
@@ -138,7 +133,7 @@
                 </lightning:layoutItem>
               </aura:if>
               <aura:if isTrue="{!v.SelectedPaymentMethod == 'Credit Card'}">
-                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6">
                   <lightning:select
                     aura:id="field"
                     name="CCType"
@@ -152,7 +147,7 @@
                     <option label="American Express" text="American Express" value="American Express"/>
                   </lightning:select>
                 </lightning:layoutItem>
-                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6">
                   <lightning:input
                     aura:id="field"
                     name="CCNumber"
@@ -162,7 +157,7 @@
                     value="{!v.chOrder.ChargentOrders__Card_Number__c}"
                     required="true"/>
                 </lightning:layoutItem>
-                <lightning:layoutItem aura:id="ExpyMonth" padding="around-small" size="3" smallDeviceSize="3" mediumDeviceSize="3">
+                <lightning:layoutItem aura:id="ExpyMonth" padding="around-small" size="6" largeDeviceSize="3" mediumDeviceSize="3">
                   <lightning:select
                     aura:id="field"
                     name="Expiration Month"
@@ -175,7 +170,7 @@
                     </aura:iteration>
                   </lightning:select>
                 </lightning:layoutItem>
-                <lightning:layoutItem aura:id="ExpyYear" padding="around-small" size="3" smallDeviceSize="3" mediumDeviceSize="3">
+                <lightning:layoutItem aura:id="ExpyYear" padding="around-small" size="6" largeDeviceSize="3" mediumDeviceSize="3">
                   <lightning:select
                     aura:id="field"
                     name="Expiration Year"
@@ -188,7 +183,7 @@
                     </aura:iteration>
                   </lightning:select>
                 </lightning:layoutItem>
-                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6">
                   <lightning:input
                     aura:id="field"
                     name="BillingZipcode"
@@ -199,7 +194,7 @@
                     value="{!v.chOrder.ChargentOrders__Billing_Zip_Postal__c}"
                     required="true"/>
                 </lightning:layoutItem>
-                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6">
                   <lightning:input
                     aura:id="field"
                     name="FirstName"
@@ -208,7 +203,7 @@
                     value="{!v.chOrder.ChargentOrders__Billing_First_Name__c}"
                     required="true"/>
                 </lightning:layoutItem>
-                <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6">
                   <lightning:input
                     aura:id="field"
                     name="LastName"
@@ -236,6 +231,10 @@
                   </div>
                 </fieldset>
               </aura:if>
+                <div class="slds-p-vertical--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--x-large">
+                  You will not be charged at this time. Payments will begin automatically once we begin to transfer credits to your utility account.
+                  We will provide at least 10 days written notice before initiating charges to the account provided.
+                </div>
               <aura:if isTrue="{!v.AutopayAcknowledgement}">
                 <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12" >
                   <div class="slds-align--absolute-center">

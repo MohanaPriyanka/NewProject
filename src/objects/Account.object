@@ -237,6 +237,43 @@
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Account_Designation__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+
+AND(
+
+ISPICKVAL(Account_Temperature__c,&quot;Hot&quot;),
+ISPICKVAL( Key_Account__c ,&quot;Key Account&quot;)
+),
+
+IMAGE(&quot;/resource/1553274837000/Crown_Icon&quot;, &quot;crown&quot;) &amp; &quot; &quot; &amp;
+IMAGE(&quot;/resource/1553274971000/Flame_Icon&quot;, &quot;flame&quot;),
+
+IF(
+
+ISPICKVAL(Account_Temperature__c,&quot;Hot&quot;),
+
+IMAGE(&quot;/resource/1553274971000/Flame_Icon&quot;, &quot;flame&quot;),
+
+IF(
+
+ISPICKVAL( Key_Account__c ,&quot;Key Account&quot;),
+
+IMAGE(&quot;/resource/1553274837000/Crown_Icon&quot;, &quot;crown&quot;),
+&quot;&quot;
+)
+)
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Controlled by the Account Temperature and Key Account fields. Flame =  Sensitive Customer. Crown = VIP treatment.</inlineHelpText>
+        <label>Account Designation</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Account_Number__c</fullName>
         <description>CS Account Number</description>
         <displayFormat>BW-{0000000}</displayFormat>
@@ -244,6 +281,28 @@
         <label>CS Account Number</label>
         <trackHistory>false</trackHistory>
         <type>AutoNumber</type>
+    </fields>
+    <fields>
+        <fullName>Account_Temperature__c</fullName>
+        <description>Select to mark sensitive due to compliant or other issue.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Select to mark sensitive due to compliant or other issue.</inlineHelpText>
+        <label>Account Temperature</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Hot</fullName>
+                    <default>false</default>
+                    <label>Hot</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
     </fields>
     <fields>
         <fullName>Active_SSA_Version__c</fullName>
@@ -1649,6 +1708,28 @@ IF(
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Key_Account__c</fullName>
+        <description>Select to mark client affiliation, state official, V.I.P., etc. to show users these accounts may require extra attention.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Select to mark client affiliation, state official, V.I.P., etc. to show users these accounts may require extra attention.</inlineHelpText>
+        <label>Key Account</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Key Account</fullName>
+                    <default>false</default>
+                    <label>Key Account</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>LASERCA__X4506_T_Email__c</fullName>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
@@ -1889,6 +1970,11 @@ IF(
         <externalId>false</externalId>
         <label>Max Account Bill Number</label>
         <summarizedField>Account_Bill__c.Bill_Number__c</summarizedField>
+        <summaryFilterItems>
+            <field>Account_Bill__c.Published__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </summaryFilterItems>
         <summaryForeignKey>Account_Bill__c.Parent_Account__c</summaryForeignKey>
         <summaryOperation>max</summaryOperation>
         <trackHistory>false</trackHistory>

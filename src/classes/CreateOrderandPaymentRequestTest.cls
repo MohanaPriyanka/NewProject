@@ -53,14 +53,15 @@ public with sharing class CreateOrderandPaymentRequestTest {
                                             FROM Loan__c
                                             WHERE Opportunity__r.Email__c = 'ddEmailTest@blue.com'];
 
-        List<ChargentOrders__ChargentOrder__c> chOrderList = [  SELECT Id, Name, ChargentOrders__Gateway__c, Entity__r.Name
+        List<ChargentOrders__ChargentOrder__c> chOrderList = [  SELECT Id, Name, ChargentOrders__Gateway__c, Entity__r.Name,
+                                                                ChargentOrders__Billing_Email__c
                                                                 FROM ChargentOrders__ChargentOrder__c];
         System.assertEquals(true, payRequest);
         System.assertEquals(1, chOrderList.size());
         System.assertEquals(1, updatedLoanList.size());
         System.assertEquals(chOrderList[0].Id, updatedLoanList[0].SREC_Direct_Deposit_Order__c);
         System.assertEquals('BlueWave Finance Group, LLC',chOrderList[0].Entity__r.Name);
-
+        System.assertEquals('compliance@bluewavesolar.com',chOrderList[0].ChargentOrders__Billing_Email__c);
     }
 
     @isTest static void testUpdateOrderToStopped() {

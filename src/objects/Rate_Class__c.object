@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>This object stores utility rate class information. It&apos;s different from NMC Tariffs.</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>Utility__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>The utility that the rate class is for.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The utility that the rate class is for.</inlineHelpText>
+        <label>Utility</label>
+        <referenceTo>Utility__c</referenceTo>
+        <relationshipLabel>Rate Classes</relationshipLabel>
+        <relationshipName>Rate_Classes</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <label>Rate Class</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>Rate Class Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Rate Classes</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

@@ -130,9 +130,8 @@ public with sharing class AutopayCheckerTest {
                 prodUpdate.Production__c = 0;
                 prodUpdate.Total_System_NMCs__c = 0;
             }
-            prodUpdate.Generate_Bills__c = true;
+            TestBillCreationandPayment.runProductionUpdate(new List<Id>{prodUpdate.Id});
         }
-        update prodUpdates;
 
         orders = [
             SELECT Id, Account_Bill__c, Account_Bill__r.Carry_Over_Balance__c, ChargentOrders__Charge_Amount__c,

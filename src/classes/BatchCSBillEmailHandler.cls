@@ -11,15 +11,7 @@
      @TestVisible
      private static Id batchJobId;
 
-    public BatchCSBillEmailHandler(Map<Id,APXT_BPM__Conductor__c> oldMap, List<APXT_BPM__Conductor__c> newList) {
-        for (APXT_BPM__Conductor__c conductor : newList) {  
-            if (conductor.Emails_Sent__c && !oldMap.get(conductor.Id).Emails_Sent__c) {
-                Database.executeBatch(this, 10);
-            }
-        }
-    } 
-
-    public Database.QueryLocator start(Database.BatchableContext bc) {
+     public Database.QueryLocator start(Database.BatchableContext bc) {
         batchJobId = bc.getJobId();
         String query = 'SELECT Id, Name,Property_Account_Name__c, Property_Account_ID__c, '+
         'Bill_Attach_Version__c, Credits_on_Bill_Period__c, '+

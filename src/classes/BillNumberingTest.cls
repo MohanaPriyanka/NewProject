@@ -234,9 +234,7 @@ public with sharing class BillNumberingTest {
 
         insert productionupdateB2;
 
-        productionupdateB1.Generate_Bills__c = TRUE;
-        update productionupdateB1;
-
+        TestBillCreationandPayment.runProductionUpdate(new List<Id>{productionupdateB1.Id});
 
 
         APXT_BPM__Conductor__c newConga = new APXT_BPM__Conductor__c (APXT_BPM__Title__c = 'Conga Record');
@@ -244,6 +242,8 @@ public with sharing class BillNumberingTest {
         newConga.Apply_Overpay_Adjust__c = true;
         update newConga;
         Test.startTest();
+
+        TestBillCreationandPayment.setBillsToPublished();
 
         TestBillCreationandPayment.simulateBatchBillCreation(new List<Energy_Usage_Update__c>{productionupdateB2});
 

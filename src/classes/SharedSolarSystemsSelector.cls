@@ -1,7 +1,7 @@
 /**
  * Created by mstackhouse on 1/23/2019.
  * Description: Used to query shared solar systems
- * Test: SharedSolarSystemSelectorTest
+ * Test: SharedSolarSystemSelectorTest, ProductionUpdateSelectorTest
  */
 
 
@@ -19,5 +19,30 @@ public class SharedSolarSystemsSelector {
         query += 'AND Service_Territories__c INCLUDES (' + loadZoneString + ')';
 
         return Database.query(query);
+    }
+
+    // Gets all SSS that have at least 1 production update
+    public static List<Shared_Solar_System__c> getAllSSSWithProductionUpdates() {
+        return getAllSSSWithProdUpdatesNotInList(null);
+    }
+
+    // Gets all SSS that have at least 1 production update, but that production update is not in list
+    public static List<Shared_Solar_System__c> getAllSSSWithProdUpdatesNotInList(List<Id> prodUpdatesToIgnore) {
+        List<Shared_Solar_System__c> sssList;
+        if(prodUpdatesToIgnore != null) {
+            sssList = [
+                SELECT Id, Name
+                FROM Shared_Solar_System__c
+                WHERE Id NOT IN (SELECT Shared_Solar_System__c FROM Energy_Usage_Update__c WHERE Id IN :prodUpdatesToIgnore)
+                AND Id IN (SELECT Shared_Solar_System__c FROM Energy_Usage_Update__c)
+            ];
+        } else {
+            sssList = [
+                SELECT Id, Name
+                FROM Shared_Solar_System__c
+                WHERE Id IN (SELECT Shared_Solar_System__c FROM Energy_Usage_Update__c)
+            ];
+        }
+        return sssList;
     }
 }

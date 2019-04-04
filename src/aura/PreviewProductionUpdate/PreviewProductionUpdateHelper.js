@@ -12,7 +12,8 @@
 
         actionGetCancelledBills.setParams({
             "productionUpdateId" : prodUpdateId,
-            "alreadyGeneratedList" : uasIdlist
+            "alreadyGeneratedList" : uasIdlist,
+            "scheduleZId" : component.get("v.selectedScheduleZ")
         });
 
         actionGetCancelledBills.setCallback(this,function(resp){

@@ -375,7 +375,7 @@ public with sharing class CSAPControllerTest {
 
         Organization o = [SELECT IsSandbox FROM Organization LIMIT 1];
 
-		System.assertEquals('000000001', leadAfterPull.LASERCA__SSN__c);
+            System.assertEquals('000000001', leadAfterPull.LASERCA__SSN__c);
     }
 
     @IsTest
@@ -1278,6 +1278,39 @@ public with sharing class CSAPControllerTest {
         System.assertEquals('Other Document', leadAttachments[0].Description);
         System.assertEquals(1, ualAttachments.size());
         System.assertEquals('Electric Bill', ualAttachments[0].Description);
+    }
+
+    @IsTest
+    public static void testGetRateClass() {
+        Utility__c eversource = [
+            SELECT Id
+            FROM Utility__c
+            WHERE Name = 'Eversource'
+        ];
+
+        Utility__c nationalGrid = [
+            SELECT Id
+            FROM Utility__c
+            WHERE Name = 'National Grid'
+        ];
+
+        List<Rate_Class__c> rateClasses = new List<Rate_Class__c>();
+        for (Integer i = 0; i < 10; i++) {
+            rateClasses.add(new Rate_Class__c(
+                Name = 'Eversource Rate Class ' + i,
+                Utility__c = eversource.Id
+            ));
+            rateClasses.add(new Rate_Class__c(
+                Name = 'National Grid Rate Class ' + i,
+                Utility__c = nationalGrid.Id
+            ));
+        }
+        insert rateClasses;
+
+        List<Rate_Class__c> queriedRateClasses = CSAPController.getRateClassesForUtility(eversource.Id);
+
+        System.assertEquals(10, queriedRateClasses.size());
+        System.assertEquals(eversource.Id, queriedRateClasses[0].Utility__c);
     }
 
     @IsTest

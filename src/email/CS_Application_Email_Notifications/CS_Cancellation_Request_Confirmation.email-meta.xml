@@ -1,48 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
-    <available>false</available>
+    <available>true</available>
     <description>Email to customers who have requested to cancel their account</description>
     <encodingKey>ISO-8859-1</encodingKey>
     <name>CS Cancellation Request Confirmation</name>
     <style>none</style>
-    <subject>Cancelling Your BlueWave Community Solar Agreement</subject>
-    <textOnly>*|MC:SUBJECT|*
-
-Hello {!Account.Name},
-
-Your Net Metering Credit Allocation Agreement (Community Solar Agreement) with BlueWave has been terminated. We are now removing you from the Community Solar project. Please note that per your agreement, this date is subject to rules set forth by your utility provider and the date of official removal may not be specified at this point. {!Account.Cancellation_Explanation__c}
-
-Please remember that there is a cancellation fee of $1,250 per each Community Solar Share. You can pay your cancellation fee online or by check. We accept bank ACH transactions and credit cards. To pay your fee online, please submit your payment information here. You are responsible for all outstanding balances on your account in addition to this termination fee. To pay by check, please see instructions below.
-
-Your Termination Fee
-
-You have {!Account.Number_of_Contracts_to_Cancel__c} Community Solar Shares. Your total Termination Fee is {!Account.Cancellation_Fees_Invoiced__c}.
-
-Attached please find
-
-1. Your mutually executed Community Solar Agreement that outlines your termination fee obligations.
-
-Replacement Customer Notice
-
-As is your right under the Community Solar Agreement, the termination fee can be waived if you are able to replace your subscription with a qualified replacement customer who subscribes to the project in your place
-
-BlueWave reserves all other rights available according to the mutually executed Net Metering Credit Allocation Agreement.
-
-If you have any questions, please call us at 844.786.4100
-
-Paper Check Payment Instructions
-
-If you would like to pay your termination fee by paper check, please address to {!Account.Step_3_Address_Check_to_Project_Co__c} and mail to:
-
-BlueWave
-111 Huntington Ave, Suite 650
-Boston, MA 02199
-
-- All of us here at BlueWave
-
-P.S. If you have any questions, please feel free
-to contact us at customercare@bluewavesolar.com or
-(844) 786 - 4100. We’re happy to help.</textOnly>
+    <subject>Cancellation Request Acknowledgement</subject>
     <type>custom</type>
     <uiType>Aloha</uiType>
 </EmailTemplate>

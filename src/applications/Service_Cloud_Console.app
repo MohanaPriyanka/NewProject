@@ -171,7 +171,7 @@
             <openNewContactSubtab>false</openNewContactSubtab>
             <openNewLeadSubtab>false</openNewLeadSubtab>
             <openNewVFPageSubtab>false</openNewVFPageSubtab>
-            <showKnowledgeArticles>true</showKnowledgeArticles>
+            <showKnowledgeArticles>false</showKnowledgeArticles>
         </liveAgentConfig>
         <primaryTabColor>#027ddb</primaryTabColor>
     </consoleConfig>

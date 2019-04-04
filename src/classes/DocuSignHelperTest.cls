@@ -499,17 +499,170 @@ public with sharing class DocuSignHelperTest {
         System.assertNotEquals(queuedJobsBefore.size(), queuedJobsAfter.size());
         System.assertEquals(0, queuedJobsBefore.size());
         System.assertNotEquals(0, queuedJobsAfter.size());
-        System.assert(queuedJobsAfter.size() > 1, 'Should have queued jobs to send');
+        // This should be the queued job from DocuSignHelper.sendCSPackage. As of inline Docusign support in the CSAP,
+        // Lead conversion no longer sends contracts automatically
+        System.assert(queuedJobsAfter.size() == 1, 'Should have queued jobs to send');
 
         List<Error_Log__c> errorLogs = [
             SELECT Id, Class__c, Method__c, Message__c
             FROM Error_Log__c
         ];
 
-        System.assert(errorLogs.size() > 1, 'We should have 1 message that logs that the Opp is sending, plus AutoRetry messages');
+        System.assert(errorLogs.size() == 1, 'We should have 1 message that logs that the Opp is sending, plus AutoRetry messages');
         // the first error log is from DocuSignHelper.sendCSPackageFuture
-        System.assertEquals('DocuSignHelper', errorLogs[1].Class__c);
-        System.assertEquals('AutoRetryContractSend', errorLogs[1].Method__c);
+        System.assertEquals('DocuSignHelper', errorLogs[0].Class__c);
+        System.assertEquals('AutoRetryContractSend', errorLogs[0].Method__c);
+    }
+
+    @IsTest
+    static void testEmbeddedContractSend() {
+        Lead lead = setupTestLead('complete');
+
+        Test.startTest();
+        Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
+        Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
+        String callbackURL = CSAPController.sendEmbeddedContract(lead);
+        System.assert(callbackURL.contains('success'));
+        Test.stopTest();
+    }
+
+    @IsTest
+    static void testEmbeddedContractException() {
+        Lead lead = setupTestLead('timeout');
+
+        Test.startTest();
+        Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
+        Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
+        String callbackURL = CSAPController.sendEmbeddedContract(lead);
+        // If we hit an exception, we expect it to be handled and for the callback URL to be the exception one
+        System.assert(callbackURL.contains('exception'));
+        List<Error_Log__c> errorLogs = [SELECT Id, Message__c FROM Error_Log__c];
+        System.assertEquals(1, errorLogs.size());
+        System.assert(errorLogs[0].Message__c.contains('Exceeded maximum time allotted for callout'));
+        Test.stopTest();
+    }
+
+    private static Lead setupTestLead(String email) {
+        List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
+
+        System_Properties__c sysProp = systemProperties[0];
+        sysProp.DocuSign_API_Account_ID__c = '123';
+        sysProp.DocuSign_Customer_Care_User__c = '123@123.com';
+        sysProp.DocuSign_Guest_User__c = '123@345.com';
+        sysProp.DocuSign_Guest_User_Credential__c = '234234';
+        sysProp.DocuSign_Integrator_Key__c = '123123-123123';
+        update sysProp;
+
+        Utility__c nationalGrid = new Utility__c(
+            Name = 'National Grid',
+            Number_of_Decimal_Places__c = 2
+        );
+
+        insert new List<Utility__c>{
+            nationalGrid
+        };
+
+        Utility_NMC_Tariff__c nmcRate = new Utility_NMC_Tariff__c(
+            Value_of_Net_Metering_Credit__c = 1,
+            Name = 'Nation Grid WCMA Class 2 - S/F 2016',
+            Sizing_Rate__c = true,
+            Date__c = Date.today()
+        );
+        insert nmcRate;
+
+        Product2 csProduct = new Product2(
+            Name = 'Community Solar - SREC 16-01',
+            Family = 'Community Solar',
+            Product_Type__c = 'Community Solar',
+            State__c = 'MA',
+            ProductCode = 'CS - BlueWave - 10%',
+            IsActive = true,
+            Lender_of_Record__c = 'BlueWave',
+            NMC_Discount__c = 10,
+            Annual_kWh_Maximum__c = 100000000,
+            NM_Rate_Floor__c = 0,
+            Monthly_Late_Fee__c = 1
+        );
+        insert csProduct;
+
+        Shared_Solar_System__c sss1 = new Shared_Solar_System__c(
+            Name = 'Oxford Barrett St. P1',
+            Service_Territories__c = 'WCMA; SEMA',
+            Open__c = true,
+            Reserved_Capacity_kW_DC__c = '0',
+            Capacity_Committed_kW_DC__c = 0,
+            Total_System_Size_kWh_DC__c = 1445.86,
+            Total_System_Size_kW_AC__c = 996,
+            Utility__c = nationalGrid.Id,
+            Credit_Score_Requirement__c = 200,
+            Assignment_Order__c = '1',
+            Utility_NMC_Tariff__c = nmcRate.Id,
+            Product__c = csProduct.Id,
+            Expected_Yield_kWh_kW__c = 1300,
+            Assemblage_Count__c = 1,
+            Maximum_Subscription_Assemblage__c = 25
+        );
+
+
+        sss1.Sales_Partners__c = 'Barbara Cerullo; Boston Solar';
+        insert sss1;
+
+        Partner__c Partner = new Partner__c(Name = 'Boston Solar');
+        insert Partner;
+
+        BSST__c newSalesTeam = new BSST__c (Name = 'Partner',
+            Partner__c = Partner.Id,
+            Custom_ID__c = 'partner');
+
+        insert newSalesTeam;
+
+        Account parentAccount = new Account(Name = 'Parent Account', Client_Brand_Key__c = 'BluewaveLogo');
+        insert parentAccount;
+
+        Lead lead = new Lead(
+            LastName = 'Chan',
+            FirstName = 'Joey',
+            Email = email + '@email.com',
+            Electricity_Provider__c = 'National Grid',
+            Utility_relationship__c = nationalGrid.Id,
+            LoadZone__c = 'WCMA',
+            Company = 'Cloud Jedi',
+            Status = 'Qualified',
+            Product_line__c = 'Community Solar',
+            Product__c = csProduct.Id,
+            Custom_ID__c = 'partner',
+            System_Assignment__c = 'Automatic - Assignment Order',
+            Parent_Account__c = parentAccount.Id
+        );
+        insert lead;
+
+        LASERCA__Personal_Credit_Report__c pcr = (LASERCA__Personal_Credit_Report__c) TestFactory.createSObject(
+            new LASERCA__Personal_Credit_Report__c(
+                LASERCA__Lead__c = lead.Id,
+                LASERCA__Credit_Score_TransUnion__c = '700'
+            ),
+            true
+        );
+
+        lead.Personal_Credit_Report__c = pcr.Id;
+        lead.Status = 'Qualified';
+        update lead;
+
+        Utility_Account_Log__c ual = new Utility_Account_Log__c(
+            Lead__c = lead.Id,
+            Annual_Cost_of_Electricity__c = 10000,
+            Name_on_Account__c = 'Joey Chan'
+        );
+        insert ual;
+
+        Database.LeadConvert lc = new Database.LeadConvert();
+        lc.setLeadId(lead.Id);
+        LeadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE IsConverted = TRUE LIMIT 1];
+        lc.setConvertedStatus(convertStatus.MasterLabel);
+        lc.setDoNotCreateOpportunity(true);
+        Database.LeadConvertResult lcr = Database.convertLead(lc);
+        System.assert(lcr.isSuccess());
+        return lead;
     }
 
     public class DocuSignTimeoutMock implements WebServiceMock, HttpCalloutMock {

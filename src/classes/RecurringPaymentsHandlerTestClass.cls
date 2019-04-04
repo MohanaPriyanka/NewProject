@@ -509,7 +509,7 @@ private class RecurringPaymentsHandlerTestClass {
         Entity__c entityA = new Entity__c (Name = 'BarrettProjCo', Gateway__c = chGatewayA.Id);
 
         insert entityA;
-        Test.startTest();
+
         Shared_Solar_System__c sssA = [
             SELECT Id, BWC_Project_Entity_Manual__c, BWC_Project_Entity_Manual__r.Gateway__c
             FROM Shared_Solar_System__c
@@ -593,9 +593,10 @@ private class RecurringPaymentsHandlerTestClass {
             FROM Energy_Usage_Update__c
             WHERE Name = 'sssA - March 2016'
         ];
-
+        Test.startTest();
         EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(productionUpdateList);
         ee.runBills();
+        TestBillCreationandPayment.setBillsToPublished();
 
         List<Account_Bill__c> acctBillsList = [
             SELECT Id, Name
@@ -608,7 +609,6 @@ private class RecurringPaymentsHandlerTestClass {
         ];
 
         System.assertEquals(7, acctBillsList.size() );
-
 
         simulateBatchRecurringHandler();
         Test.stopTest();
@@ -758,6 +758,7 @@ private class RecurringPaymentsHandlerTestClass {
 
         EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(productionUpdateList);
         ee.runBills();
+        TestBillCreationandPayment.setBillsToPublished();
 
         List<Account_Bill__c> acctBillsList = [
             SELECT Id, Name
@@ -883,15 +884,18 @@ private class RecurringPaymentsHandlerTestClass {
             FROM Energy_Usage_Update__c
             WHERE Name IN ('sssA - March 2016', 'sssB - March 2016')
         ];
+        List<Id> prodUpdateIdList = new List<Id>();
         for (Energy_Usage_Update__c prodUpdate : prodUpdates) {
             // Generate $0 bills for one system
             if (prodUpdate.Name == 'sssA - March 2016') {
                 prodUpdate.Production__c = 0;
                 prodUpdate.Total_System_NMCs__c = 0;
             }
-            prodUpdate.Generate_Bills__c = true;
+            prodUpdateIdList.add(prodUpdate.Id);
         }
         update prodUpdates;
+        TestBillCreationandPayment.runProductionUpdate(prodUpdateIdList);
+        TestBillCreationandPayment.setBillsToPublished();
 
         List<Account_Bill__c> accountBills = [
             SELECT Id
@@ -909,15 +913,16 @@ private class RecurringPaymentsHandlerTestClass {
             AND Bill_Number__c = 2
         ];
         // Should be three new System Bills, two for Account A and one for Account B.
-        // The two for Account A should be $0 since the Production Update was 0
+        // One SB for Account A should be $0, the other is zeroed out below:
         System.assertEquals(3, systemBills.size());
         for (System_Bill__c systemBill : systemBills) {
-            if (systemBill.Property_Account__r.Name == 'Account A') {
-                System.assertEquals(0, systemBill.Total_Due__c);
+            if (systemBill.Property_Account__r.Name == 'Account A' && systemBill.Total_Due__c != 0) {
+                // Set Total Due = $0
+                systemBill.Total_Payments_This_Month__c = systemBill.Total_Due__c;
+                systemBill.Payments_Net_Previous_Balances__c = systemBill.Total_Due__c;
+                update systemBill;
             } else if (systemBill.Property_Account__r.Name == 'Account B') {
                 System.assertEquals(321.33, systemBill.Total_Due__c);
-            } else {
-                System.assertEquals('Account A or B', systemBill.Property_Account__r.Name );
             }
         }
 
@@ -994,8 +999,8 @@ private class RecurringPaymentsHandlerTestClass {
         for (System_Bill__c systemBill : systemBills) {
             if (systemBill.Property_Account__c == accountA.Id) {
                 // we want to mock an extra payment for this bill, so the resulting bill has a negative balance
-                systemBill.Total_Payments_This_Month__c += 100;
-                systemBill.Payments_Net_Previous_Balances__c += 100;
+                systemBill.Total_Payments_This_Month__c += 1000;
+                systemBill.Payments_Net_Previous_Balances__c += 1000;
                 update systemBill;
             }
         }
@@ -1006,15 +1011,20 @@ private class RecurringPaymentsHandlerTestClass {
             FROM Energy_Usage_Update__c
             WHERE Name IN ('sssA - March 2016', 'sssB - March 2016')
         ];
+        List<Id> prodUpdateIdList = new List<Id>();
+
         for (Energy_Usage_Update__c prodUpdate : prodUpdates) {
             // Generate $0 bills for one system
             if (prodUpdate.Name == 'sssA - March 2016') {
                 prodUpdate.Production__c = 0;
                 prodUpdate.Total_System_NMCs__c = 0;
             }
-            prodUpdate.Generate_Bills__c = true;
+            prodUpdateIdList.add(prodUpdate.Id);
         }
         update prodUpdates;
+
+        TestBillCreationandPayment.runProductionUpdate(prodUpdateIdList);
+        TestBillCreationandPayment.setBillsToPublished();
 
         List<Account_Bill__c> accountBills = [
             SELECT Id
@@ -1026,18 +1036,21 @@ private class RecurringPaymentsHandlerTestClass {
         System.assertEquals(4, accountBills.size());
         systemBills = [
             SELECT Id, Total_Due__c, Property_Account__r.Name, Shared_Solar_System__r.Name, Carry_Over_Balance__c, Total_Payments_This_Month__c,
-                Payments_Net_Previous_Balances__c
+                Payments_Net_Previous_Balances__c, Due_This_Month__c
             FROM System_Bill__c
             WHERE (Property_Account__c = :accountA.Id
             OR Property_Account__c = :accountB.Id)
             AND Bill_Number__c = 2
         ];
         // Should be three new System Bills, two for Account A and one for Account B.
-        // The two for Account A should be $0 since the Production Update was 0
+        // One for Account A should be $0, the other is zeroed out below:
         System.assertEquals(3, systemBills.size());
         for (System_Bill__c systemBill : systemBills) {
-            if (systemBill.Property_Account__r.Name == 'Account A') {
-                System.assertEquals(-100, systemBill.Total_Due__c);
+            if (systemBill.Property_Account__r.Name == 'Account A'
+                && systemBill.Shared_Solar_System__r.Name == 'Oxford Barrett St. P1') {
+                System.assertEquals(-1000, systemBill.Total_Due__c);
+            } else if (systemBill.Property_Account__r.Name == 'Account A' ){
+                System.assertEquals(-678.67, systemBill.Total_Due__c);
             } else if (systemBill.Property_Account__r.Name == 'Account B') {
                 System.assertEquals(321.33, systemBill.Total_Due__c);
             } else {
@@ -1068,7 +1081,8 @@ private class RecurringPaymentsHandlerTestClass {
 
         chargentOrders = [
             SELECT Id, ChargentOrders__Payment_Start_Date__c, ChargentOrders__Charge_Amount__c,
-                ChargentOrders__Charge_Date__c, Account_Bill__c, Opportunity__r.Account.Name
+                ChargentOrders__Charge_Date__c, Account_Bill__c, Opportunity__r.Account.Name,
+                Opportunity__r.Shared_Solar_System__r.Name
             FROM ChargentOrders__ChargentOrder__c
             WHERE Opportunity__r.AccountId = :accountA.Id
             OR Opportunity__r.AccountId = :accountB.Id
@@ -1076,14 +1090,24 @@ private class RecurringPaymentsHandlerTestClass {
         // Two Chargent Orders for Account A should be 0 and have a Payment Start Date of the next month's charge date
         // if running on the charge date, but two months out if running before the charge date.
         for (ChargentOrders__ChargentOrder__c chargentOrder : chargentOrders) {
-            if (chargentOrder.Opportunity__r.Account.Name == 'Account A') {
+            if (chargentOrder.Opportunity__r.Account.Name == 'Account A'
+                && chargentOrder.Opportunity__r.Shared_Solar_System__r.Name == 'Oxford Barrett St. P1') {
                 Date expectedChargeDate =
                     RecurringPaymentsHandler.newPaymentStartDate(
                         Date.today(),
                         Integer.valueOf(chargentOrder.ChargentOrders__Charge_Date__c),
                         paymentStartDateMap.get(chargentOrder.Id)
                     );
-                System.assertEquals(-100, chargentOrder.ChargentOrders__Charge_Amount__c);
+                System.assertEquals(-1000, chargentOrder.ChargentOrders__Charge_Amount__c);
+                System.assertEquals(expectedChargeDate, chargentOrder.ChargentOrders__Payment_Start_Date__c);
+            } else if (chargentOrder.Opportunity__r.Account.Name == 'Account A'){
+                Date expectedChargeDate =
+                    RecurringPaymentsHandler.newPaymentStartDate(
+                        Date.today(),
+                        Integer.valueOf(chargentOrder.ChargentOrders__Charge_Date__c),
+                        paymentStartDateMap.get(chargentOrder.Id)
+                    );
+                System.assertEquals(-678.67, chargentOrder.ChargentOrders__Charge_Amount__c);
                 System.assertEquals(expectedChargeDate, chargentOrder.ChargentOrders__Payment_Start_Date__c);
             } else if (chargentOrder.Opportunity__r.Account.Name == 'Account B') {
                 System.assertEquals(321.33, chargentOrder.ChargentOrders__Charge_Amount__c);
@@ -1477,6 +1501,8 @@ private class RecurringPaymentsHandlerTestClass {
             System.assertEquals(1, systemBill.Bill_Number__c);
             System.assertEquals(1, systemBill.Account_Bill__r.Bill_Number__c);
         }
+        TestBillCreationandPayment.setBillsToPublished();
+
         // Pay off the bills to start with $0 carryover balance
         CSPaymentTest.mockMakeASinglePayment(systemBills);
 
@@ -1504,14 +1530,14 @@ private class RecurringPaymentsHandlerTestClass {
         // Now there should be two bills, one for each system for March
         System.assertEquals(2, systemBills.size());
         List<Account_Bill__c> accountBills = [
-            SELECT Id, Total_Due__c, Carry_Over_Balance__c
+            SELECT Id, Total_Due__c, Due_This_Month__c, Carry_Over_Balance__c, Adjustments__c
             FROM Account_Bill__c
             WHERE Parent_Account__r.Name = 'Account A'
             AND Bill_Number__c = 2
         ];
         System.assertEquals(1, accountBills.size());
-        System.assertEquals(345.28, accountBills[0].Total_Due__c);
-        System.assertEquals(345.28, accountBills[0].Carry_Over_Balance__c);
+        System.assertEquals(666.61, accountBills[0].Due_This_Month__c);
+        System.assertEquals(666.61, accountBills[0].Carry_Over_Balance__c);
 
         // Simulate making a payment to pay off bills
         for (System_Bill__c systemBill : systemBills) {
@@ -1536,7 +1562,7 @@ private class RecurringPaymentsHandlerTestClass {
             WHERE Parent_Account__r.Name = 'Account A'
             AND Bill_Number__c = 2
         ];
-        System.assertEquals(345.28, accountBills[0].Total_Due__c);
+        System.assertEquals(666.61, accountBills[0].Total_Due__c);
         System.assertEquals(0, accountBills[0].Carry_Over_Balance__c);
 
         List<ChargentOrders__ChargentOrder__c> chargentOrders = [
@@ -1817,6 +1843,7 @@ private class RecurringPaymentsHandlerTestClass {
         ];
         EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(productionUpdateList);
         ee.runBills();
+        TestBillCreationandPayment.setBillsToPublished();
 
         // Save the chargent orders before recurring payment handler runs
         List<ChargentOrders__ChargentOrder__c> orderListBeforeRPH = [
@@ -1892,6 +1919,7 @@ private class RecurringPaymentsHandlerTestClass {
         ];
         EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(productionUpdateList);
         ee.runBills();
+        TestBillCreationandPayment.setBillsToPublished();
 
         // Save the chargent orders before recurring payment handler runs
         List<ChargentOrders__ChargentOrder__c> orderListBeforeRPH = [

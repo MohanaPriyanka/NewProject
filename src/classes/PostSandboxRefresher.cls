@@ -9,8 +9,8 @@
                
  */
 global class PostSandboxRefresher implements SandboxPostCopy {
+    global static Date csDataDate = Date.newInstance(2000,1,1);
     global void runApexClass(SandboxContext context) {
-
         disableEmails();
         deleteScheduledJob('Recurring Billing');
         updateLetterStreamToTestConfig();
@@ -18,7 +18,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         switchChargentToTestMode();
         setupBWTestPartner();
         setupDataForReportTest();
-        System.enqueueJob(new PostSandboxRefresher.CSRecordLoader());
+        System.enqueueJob(new PostSandboxRefresher.CSRecordLoader(new PostSandboxRefresher.CSDataSetting(24)));
     }
 
     global static void deleteScheduledJob(String jobname) {
@@ -330,41 +330,69 @@ global class PostSandboxRefresher implements SandboxPostCopy {
      - Insert Chargent Orders to create transactions
      */
     global class CSRecordLoader implements Queueable {
+        global CSDataSetting csDataSetting;
+        global CSRecordLoader(CSDataSetting csDataSetting) {
+            this.csDataSetting = csDataSetting;
+        }
+
         global void execute(QueueableContext context) {
             Utility_NMC_Tariff__c everbillNMC = new Utility_NMC_Tariff__c(
                 Name = 'Eversource SEMA Class 2',
                 Utility__c = 'Eversource',
                 Class__c = 'Class 2',
                 Value_of_Net_Metering_Credit__c = 0.1848,
-                Current_Billing_Rate__c = true);
+                Current_Billing_Rate__c = true,
+                CreatedDate = csDataDate
+            );
 
             Utility_NMC_Tariff__c ngridbillNMC = new Utility_NMC_Tariff__c(
                 Name = 'National Grid WCMA Class 2 Billing Rate',
                 Utility__c = 'National Grid',
                 Class__c = 'Class 2',
                 Value_of_Net_Metering_Credit__c = 0.1848,
-                Current_Billing_Rate__c = true);
+                Current_Billing_Rate__c = true,
+                CreatedDate = csDataDate
+            );
 
             Utility_NMC_Tariff__c ngridsizeNMC = new Utility_NMC_Tariff__c(
                 Name = 'National Grid WCMA Class 2 Sizing Rate',
                 Utility__c = 'National Grid',
                 Class__c = 'Class 2',
                 Value_of_Net_Metering_Credit__c = 0.1848,
-                Sizing_Rate__c = true);
+                Sizing_Rate__c = true,
+                CreatedDate = csDataDate
+            );
+
+            CS_Bill_Setting__c csBillSetting = new CS_Bill_Setting__c(
+                Default_Bill_Message_for_Autopay__c = '<b>Go paperless today!</b><br>If you haven’t already, sign up for ' +
+                    'paperless billing! Contact our customer support team using the contact info at the bottom of your ' +
+                    'bill. Thank you for doing your part to protect the planet and create a better future for your community.',
+                Default_Bill_Message_for_Non_Autopay__c = '<b>Payment Instructions</b><br>Please note our payment address ' +
+                    'and payee name in the Payment Details section of your bill. You now only need to send us a single ' +
+                    'check made payable to:<br><br>BCS Customer Management<br>111 Huntington Ave., Suite 650,<br>Boston, MA 02199',
+                CreatedDate = csDataDate
+            );
+            insert csBillSetting;
 
             insert new List<Utility_NMC_Tariff__c>{
                 everbillNMC, ngridsizeNMC, ngridbillNMC
             };
 
             if (!Test.isRunningTest()) {
-                System.enqueueJob(new PostSandboxRefresher.SolarSystemHelper());
+                System.enqueueJob(new PostSandboxRefresher.SolarSystemHelper(csDataSetting));
             }
         }
     }
 
     global class SolarSystemHelper implements Queueable {
+        global CSDataSetting csDataSetting;
+        global SolarSystemHelper(CSDataSetting csDataSetting) {
+            this.csDataSetting = csDataSetting;
+        }
+
         global void execute(QueueableContext context) {
-            Product2 normalCSProduct = new Product2(Name = 'BlueWave SMART',
+            Product2 normalCSProduct = new Product2(
+                Name = 'BlueWave SMART',
                 Family = 'Community Solar',
                 Product_Type__c = 'Community Solar',
                 Program__c = 'SMART - Community Solar',
@@ -377,9 +405,16 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Annual_kWh_Maximum__c = 100000000,
                 NM_Rate_Floor__c = 0,
                 Credit_Minimum__c = '200',
-                Monthly_Late_Fee__c = 1);
+                Monthly_Late_Fee__c = 1,
+                Cancellation_Paragraph_Two__c = '<br>Per Massachusetts utility and state regulations, project capacity ' +
+                    'allocation forms can only be filed up to two times per year; therefore, it may take up to six ' +
+                    'months for your subscription to stop receiving solar credits. During this time, you will remain ' +
+                    'responsible for paying for all solar credits transferred to your account. Once the utility removes ' +
+                    'your subscription, we will notify you via email.</br>'
+            );
 
-            Product2 normalSRECProduct = new Product2(Name = 'BlueWave SREC',
+            Product2 normalSRECProduct = new Product2(
+                Name = 'BlueWave SREC',
                 Family = 'Community Solar',
                 Product_Type__c = 'Community Solar',
                 Program__c = 'SREC - Community Solar',
@@ -392,7 +427,16 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Annual_kWh_Maximum__c = 100000000,
                 NM_Rate_Floor__c = 0,
                 Credit_Minimum__c = '200',
-                Monthly_Late_Fee__c = 1);
+                Monthly_Late_Fee__c = 1,
+                Cancellation_Paragraph_Two__c = '<br>Per Massachusetts utility and state regulations, project capacity ' +
+                    'allocation forms can only be filed up to two times per year; therefore, it may take up to six ' +
+                    'months for your subscription to stop receiving solar credits. During this time, you will remain ' +
+                    'responsible for paying for all solar credits transferred to your account. Once the utility removes ' +
+                    'your subscription, we will notify you via email.</br>',
+                Cancellation_Paragraph_Three__c = '<i><br>Please note, per the terms of your contract, you may be charged ' +
+                    'an early termination fee to cancel your community solar subscription, unless you provide a replacement ' +
+                    'customer. Please refer to your contract for more details.</br></i>'
+            );
 
             insert new List<Product2>{
                 normalCSProduct,
@@ -402,21 +446,26 @@ global class PostSandboxRefresher implements SandboxPostCopy {
 
             Utility_NMC_Tariff__c eversizeNMC = [SELECT Id FROM Utility_NMC_Tariff__c WHERE Name = 'Eversource SEMA Class 2' LIMIT 1];
             Utility_NMC_Tariff__c nationalGridNMC = [SELECT Id FROM Utility_NMC_Tariff__c WHERE Name = 'National Grid WCMA Class 2 Billing Rate' LIMIT 1];
-            Account clientAccount = new Account(Name = 'Test Client');
+            Account clientAccount = new Account(Name = 'Test Client', CreatedDate = csDataDate);
             insert clientAccount;
 
-            Contact clientContact = new Contact(AccountId = clientAccount.Id, FirstName = 'Test', LastName = 'Client');
+            Contact clientContact = new Contact(
+                AccountId = clientAccount.Id,
+                FirstName = 'Test',
+                LastName = 'Client',
+                CreatedDate = csDataDate
+            );
             insert clientContact;
 
-            Entity__c entity1 = new Entity__c(Name = 'Project A Oak Road');
+            Entity__c entity1 = new Entity__c(Name = 'Project A Oak Road', CreatedDate = csDataDate);
             insert entity1;
 
-            Entity__c entity2 = new Entity__c(Name = 'Project B Main St');
+            Entity__c entity2 = new Entity__c(Name = 'Project B Main St', CreatedDate = csDataDate);
             insert entity2;
 
-            Utility__c eversource = new Utility__c(Name = 'Eversource', Number_of_Decimal_Places__c = 2);
+            Utility__c eversource = new Utility__c(Name = 'Eversource', Number_of_Decimal_Places__c = 2, CreatedDate = csDataDate);
             insert eversource;
-            Utility__c nationalGrid = new Utility__c(Name = 'National Grid', Number_of_Decimal_Places__c = 2);
+            Utility__c nationalGrid = new Utility__c(Name = 'National Grid', Number_of_Decimal_Places__c = 2, CreatedDate = csDataDate);
             insert nationalGrid;
 
             insertTariffsForProduct(normalCSProduct.Id, eversource.Id, nationalGrid.Id);
@@ -424,12 +473,16 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             Load_U__c everLZU = new Load_U__c(Name = '02633',
                 Load_Zone__c = 'SEMA Eversource',
                 LZ__c = 'SEMA',
-                Town__c = 'Medfield');
+                Town__c = 'Medfield',
+                CreatedDate = csDataDate
+            );
 
             Load_U__c ngridLZU = new Load_U__c(Name = '01570',
                 Load_Zone__c = 'WCMA National Grid',
                 LZ__c = 'WCMA',
-                Town__c = 'Westtown');
+                Town__c = 'Westtown',
+                CreatedDate = csDataDate
+            );
 
             insert new List<Load_U__c>{
                 everLZU, ngridLZU
@@ -437,11 +490,13 @@ global class PostSandboxRefresher implements SandboxPostCopy {
 
             ZipCode_Utility_Junction__c junction = new ZipCode_Utility_Junction__c(
                 Load_Zone_Utility__c = everLZU.Id,
-                Utility__c = eversource.Id
+                Utility__c = eversource.Id,
+                CreatedDate = csDataDate
             );
             ZipCode_Utility_Junction__c junctionTwo = new ZipCode_Utility_Junction__c(
                 Load_Zone_Utility__c = ngridLZU.Id,
-                Utility__c = nationalGrid.Id
+                Utility__c = nationalGrid.Id,
+                CreatedDate = csDataDate
             );
             insert new List<ZipCode_Utility_Junction__c>{junction, junctionTwo};
 
@@ -456,7 +511,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             };
 
             if (!Test.isRunningTest()) {
-                System.enqueueJob(new PostSandboxRefresher.GatewayHelper());
+                System.enqueueJob(new PostSandboxRefresher.GatewayHelper(csDataSetting));
             }
         }
 
@@ -467,7 +522,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Utility_Relationship__c = eversourceId,
                 Customer_Type__c = 'Non-Residential',
                 Maximum_kWh__c = 10000,
-                Date__c = Date.today()
+                Date__c = Date.today(),
+                CreatedDate = csDataDate
             );
             Utility_NMC_Tariff__c eversourceG2 =  new Utility_NMC_Tariff__c(
                 Value_of_Net_Metering_Credit__c = .70578,
@@ -475,14 +531,16 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Utility_Relationship__c = eversourceId,
                 Customer_Type__c = 'Non-Residential',
                 Minimum_kWh__c = 10000,
-                Date__c = Date.today()
+                Date__c = Date.today(),
+                CreatedDate = csDataDate
             );
             Utility_NMC_Tariff__c eversourceR1 =  new Utility_NMC_Tariff__c(
                 Value_of_Net_Metering_Credit__c = .70578,
                 Name = 'Eversource R1',
                 Utility_Relationship__c = eversourceId,
                 Customer_Type__c = 'Residential',
-                Date__c = Date.today()
+                Date__c = Date.today(),
+                CreatedDate = csDataDate
             );
             Utility_NMC_Tariff__c nationalGridG1 =  new Utility_NMC_Tariff__c(
                 Value_of_Net_Metering_Credit__c = .70578,
@@ -490,7 +548,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Utility_Relationship__c = nationalGridId,
                 Customer_Type__c = 'Non-Residential',
                 Maximum_kWh__c = 10000,
-                Date__c = Date.today()
+                Date__c = Date.today(),
+                CreatedDate = csDataDate
             );
             Utility_NMC_Tariff__c nationalGridG2 =  new Utility_NMC_Tariff__c(
                 Value_of_Net_Metering_Credit__c = .70578,
@@ -498,14 +557,16 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Utility_Relationship__c = nationalGridId,
                 Customer_Type__c = 'Non-Residential',
                 Minimum_kWh__c = 10000,
-                Date__c = Date.today()
+                Date__c = Date.today(),
+                CreatedDate = csDataDate
             );
             Utility_NMC_Tariff__c nationalGridR1 =  new Utility_NMC_Tariff__c(
                 Value_of_Net_Metering_Credit__c = .70578,
                 Name = 'National Grid R1',
                 Utility_Relationship__c = nationalGridId,
                 Customer_Type__c = 'Residential',
-                Date__c = Date.today()
+                Date__c = Date.today(),
+                CreatedDate = csDataDate
             );
 
             insert new List<Utility_NMC_Tariff__c>{
@@ -515,32 +576,38 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             Product_Tariff__c smartER1 = new Product_Tariff__c(
                 Product__c = productId,
                 Utility_NMC_Tariff__c = eversourceR1.Id,
-                Size_Ratio__c = 1.5
+                Size_Ratio__c = 1.5,
+                CreatedDate = csDataDate
             );
             Product_Tariff__c smartEG1 = new Product_Tariff__c(
                 Product__c = productId,
                 Utility_NMC_Tariff__c = eversourceG1.Id,
-                Size_Ratio__c = 1.4
+                Size_Ratio__c = 1.4,
+                CreatedDate = csDataDate
             );
             Product_Tariff__c smartEG2 = new Product_Tariff__c(
                 Product__c = productId,
                 Utility_NMC_Tariff__c = eversourceG2.Id,
-                Size_Ratio__c = 1.3
+                Size_Ratio__c = 1.3,
+                CreatedDate = csDataDate
             );
             Product_Tariff__c smartNGR1 = new Product_Tariff__c(
                 Product__c = productId,
                 Utility_NMC_Tariff__c = nationalGridR1.Id,
-                Size_Ratio__c = 1.35
+                Size_Ratio__c = 1.35,
+                CreatedDate = csDataDate
             );
             Product_Tariff__c smartNGG1 = new Product_Tariff__c(
                 Product__c = productId,
                 Utility_NMC_Tariff__c = nationalGridG1.Id,
-                Size_Ratio__c = 1.45
+                Size_Ratio__c = 1.45,
+                CreatedDate = csDataDate
             );
             Product_Tariff__c smartNGG2 = new Product_Tariff__c(
                 Product__c = productId,
                 Utility_NMC_Tariff__c = nationalGridG2.Id,
-                Size_Ratio__c = 1.55
+                Size_Ratio__c = 1.55,
+                CreatedDate = csDataDate
             );
 
             insert new List<Product_Tariff__c>{
@@ -570,12 +637,19 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                     Service_Territories__c = 'NEMA;SEMA;WCMA',
                     BWC_Project_Entity_Manual__c = entity.Id,
                     Maximum_Subscription_Assemblage__c = 25,
-                    Utility__c = utility.Id);
+                    Utility__c = utility.Id,
+                    CreatedDate = csDataDate
+                );
             return sss;
         }
     }
 
     global class GatewayHelper implements Queueable {
+        global CSDataSetting csDataSetting;
+        global GatewayHelper(CSDataSetting csDataSetting) {
+            this.csDataSetting = csDataSetting;
+        }
+
         global void execute(QueueableContext context) {
             List<Shared_Solar_System__c> sssList = [
                 SELECT Id, Name, BWC_Project_Entity_Manual__r.Id
@@ -595,7 +669,9 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                     Shared_Solar_System__c = sssList[0].Id,
                     Entity__c = sssList[0].BWC_Project_Entity_Manual__r.Id,
                     ChargentBase__Available_Payment_Methods__c = 'Credit Card;eCheck',
-                    ChargentBase__Active__c = true);
+                    ChargentBase__Active__c = true,
+                    CreatedDate = csDataDate
+                );
             insert chGateway;
 
             ChargentBase__Gateway__c chGateway2 =
@@ -609,12 +685,15 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                     Shared_Solar_System__c = sssList[1].Id,
                     Entity__c = sssList[1].BWC_Project_Entity_Manual__r.Id,
                     ChargentBase__Available_Payment_Methods__c = 'Credit Card;eCheck',
-                    ChargentBase__Active__c = true);
+                    ChargentBase__Active__c = true,
+                    CreatedDate = csDataDate
+                );
             insert chGateway2;
 
             Entity__c defaultEntity = new Entity__c(
                 Name = 'BWC Holdings, LLC',
-                Gateway__c = chGateway.Id
+                Gateway__c = chGateway.Id,
+                CreatedDate = csDataDate
             );
 
             insert defaultEntity;
@@ -626,41 +705,84 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             update new List<Entity__c>{entity1, entity2};
 
             if (!Test.isRunningTest()) {
-                System.enqueueJob(new PostSandboxRefresher.FirstAccountHelper());
+                System.enqueueJob(new PostSandboxRefresher.FirstAccountHelper(csDataSetting));
             }
         }
     }
 
     global class FirstAccountHelper implements Queueable {
-        global void execute(QueueableContext context) {
-            createSubscriptions(
-                0,
-                new List<String>{'Ashley', 'Steven', 'Marie', 'Justin', 'Russell'},
-                new List<String>{'Smith', 'Ward', 'Mitchell', 'Jenkins', 'Butler'}
-            );
+        global CSDataSetting csDataSetting;
+        global FirstAccountHelper(CSDataSetting csDataSetting) {
+            this.csDataSetting = csDataSetting;
+        }
 
+        global void execute(QueueableContext context) {
+            Util.disableAllTriggers();
+            // Can't do more than 12 because the Update SSS On Opportunity Complete PB fails with
+            // "DUPLICATE_VALUE: Maximum number of duplicate updates in one batch (12 allowed)"
+            Integer batchNumber = csDataSetting.numberOfAccountBatches;
+            List<PostSandboxRefresher.Name> names = new List<PostSandboxRefresher.Name>();
+            names.add(new Name('Ashley', 'Smith', batchNumber));
+            names.add(new Name('Steven', 'Ward', batchNumber));
+            names.add(new Name('Marie', 'Mitchell', batchNumber));
+            names.add(new Name('Justin', 'Jenkins', batchNumber));
+            names.add(new Name('Russell', 'Butler', batchNumber));
+            names.add(new Name('Cobie', 'Croft', batchNumber));
+            names.add(new Name('Ridwan', 'Conner', batchNumber));
+            names.add(new Name('Margaux', 'Maldonado', batchNumber));
+            names.add(new Name('Conor', 'Schmitt', batchNumber));
+            names.add(new Name('Akbar', 'Boyce', batchNumber));
+            names.add(new Name('Viaan', 'Faulkner', batchNumber));
+            names.add(new Name('Ritchie', 'Ho', batchNumber));
+            createSubscriptions(0, names);
             if (!Test.isRunningTest()) {
-                System.enqueueJob(new PostSandboxRefresher.SecondAccountHelper());
+                System.enqueueJob(new PostSandboxRefresher.SecondAccountHelper(csDataSetting));
             }
         }
 
     }
 
     global class SecondAccountHelper implements Queueable {
+        global CSDataSetting csDataSetting;
+        global SecondAccountHelper(CSDataSetting csDataSetting) {
+            this.csDataSetting = csDataSetting;
+        }
+
         global void execute(QueueableContext context) {
-            createSubscriptions(
-                1,
-                new List<String>{'Joshua', 'Donna', 'Keith', 'Mark', 'Albert'},
-                new List<String>{'Phillips', 'Simmons', 'Morgan', 'Allen', 'Price'}
-            );
+            Integer batchNumber = csDataSetting.numberOfAccountBatches;
+            List<PostSandboxRefresher.Name> names = new List<PostSandboxRefresher.Name>();
+            names.add(new Name('Joshua', 'Phillips', batchNumber));
+            names.add(new Name('Donna', 'Simmons', batchNumber));
+            names.add(new Name('Keith', 'Morgan', batchNumber));
+            names.add(new Name('Mark', 'Allen', batchNumber));
+            names.add(new Name('Albert', 'Price', batchNumber));
+            names.add(new Name('Naveed', 'Ventura', batchNumber));
+            names.add(new Name('Woody', 'Walsh', batchNumber));
+            names.add(new Name('Nafisa', 'Wong', batchNumber));
+            names.add(new Name('Ritik', 'Mann', batchNumber));
+            names.add(new Name('Clement', 'Aguirre', batchNumber));
+            names.add(new Name('Mollie', 'Hassan', batchNumber));
+            names.add(new Name('Harrison', 'Harris', batchNumber));
+            createSubscriptions(1, names);
 
             if (!Test.isRunningTest()) {
-                System.enqueueJob(new PostSandboxRefresher.ProductionUpdateHelper());
+                if (batchNumber > 1) {
+                    csDataSetting.numberOfAccountBatches--;
+                    System.enqueueJob(new PostSandboxRefresher.FirstAccountHelper(csDataSetting));
+                } else {
+                    Util.enableAllTriggers();
+                    System.enqueueJob(new PostSandboxRefresher.ProductionUpdateHelper(csDataSetting));
+                }
             }
         }
     }
 
     global class ProductionUpdateHelper implements Queueable {
+        global CSDataSetting csDataSetting;
+        global ProductionUpdateHelper(CSDataSetting csDataSetting) {
+            this.csDataSetting = csDataSetting;
+        }
+
         global void execute(QueueableContext context) {
             List<Shared_Solar_System__c> sssList = [
                 SELECT Id, Name, BWC_Project_Entity_Manual__r.Id, Product__r.Id
@@ -678,7 +800,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Name = '2016 - sssA',
                 Shared_Solar_System__c = sssList[0].Id,
                 Status__c = 'Billing',
-                Date_Enacted_by_Utility__c = Date.today()-90
+                Date_Enacted_by_Utility__c = Date.today()-90,
+                CreatedDate = csDataDate
             );
             insert scheduleZ1;
 
@@ -686,7 +809,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Name = '2016 - sssB',
                 Shared_Solar_System__c = sssList[1].Id,
                 Status__c = 'Billing',
-                Date_Enacted_by_Utility__c = Date.today()-90
+                Date_Enacted_by_Utility__c = Date.today()-90,
+                CreatedDate = csDataDate
             );
             insert scheduleZ2;
 
@@ -698,7 +822,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Billing_Period_End_Date__c = twoMonthsAgo,
                 Total_System_NMCs__c = 13483.66,
                 Date__c = threeMonthsAgo,
-                Schedule_Z__c =  scheduleZ1.Id
+                Schedule_Z__c =  scheduleZ1.Id,
+                CreatedDate = csDataDate
             );
 
             insert productionupdateA1;
@@ -711,23 +836,33 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Billing_Period_End_Date__c = twoMonthsAgo,
                 Total_System_NMCs__c = 40983.43,
                 Date__c = threeMonthsAgo,
-                Schedule_Z__c =  scheduleZ2.Id
+                Schedule_Z__c =  scheduleZ2.Id,
+                CreatedDate = csDataDate
             );
 
             insert prodUpdateBB;
 
-            productionupdateA1.Generate_Bills__c = true;
-            prodUpdateBB.Generate_Bills__c = true;
-            update productionupdateA1;
-            update prodUpdateBB;
+            List<Energy_Usage_Update__c> trigProdUp;
+            trigProdUp = ProductionUpdateSelector.getAllProductionUpdatesById(new List<Id>{productionupdateA1.Id, prodUpdateBB.Id});
+            EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(trigProdUp);
+            // We want to skip running in a batch, so that we can set the Account Bills to published before starting
+            // the next round of bills (so that the bill number is updated appropriately)
+            ee.createBills(ScheduleZSubscriptionSelector.getListForBilling(ee.scheduleZs));
+            ee.finish(null);
+            setBillsToPublished();
 
             if (!Test.isRunningTest()) {
-                System.enqueueJob(new PostSandboxRefresher.ProductionUpdateHelper2());
+                System.enqueueJob(new PostSandboxRefresher.ProductionUpdateHelper2(csDataSetting));
             }
         }
     }
 
     global class ProductionUpdateHelper2 implements Queueable {
+        global CSDataSetting csDataSetting;
+        global ProductionUpdateHelper2(CSDataSetting csDataSetting) {
+            this.csDataSetting = csDataSetting;
+        }
+
         global void execute(QueueableContext context) {
             List<Shared_Solar_System__c> sssList = [
                 SELECT Id, Name, BWC_Project_Entity_Manual__r.Id, Product__r.Id
@@ -752,7 +887,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Billing_Period_End_Date__c = oneMonthAgo,
                 Total_System_NMCs__c = 12033.73,
                 Date__c = twoMonthsAgo,
-                Schedule_Z__c =  scheduleZ1.Id
+                Schedule_Z__c =  scheduleZ1.Id,
+                CreatedDate = csDataDate
             );
 
             insert productionupdateB2;
@@ -765,23 +901,31 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Billing_Period_End_Date__c = oneMonthAgo,
                 Total_System_NMCs__c = 13483.66,
                 Date__c = twoMonthsAgo,
-                Schedule_Z__c =  scheduleZ2.Id
+                Schedule_Z__c =  scheduleZ2.Id,
+                CreatedDate = csDataDate
             );
 
             insert prodUpdateCC;
 
-            productionupdateB2.Generate_Bills__c = true;
-            prodUpdateCC.Generate_Bills__c = true;
-            update productionupdateB2;
-            update prodUpdateCC;
+            List<Energy_Usage_Update__c> trigProdUp;
+            trigProdUp = ProductionUpdateSelector.getAllProductionUpdatesById(new List<Id>{productionupdateB2.Id, prodUpdateCC.Id});
+            EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(trigProdUp);
+            ee.createBills(ScheduleZSubscriptionSelector.getListForBilling(ee.scheduleZs));
+            ee.finish(null);
+            setBillsToPublished();
 
             if (!Test.isRunningTest()) {
-                System.enqueueJob(new PostSandboxRefresher.ProductionUpdateHelper3());
+                System.enqueueJob(new PostSandboxRefresher.ProductionUpdateHelper3(csDataSetting));
             }
         }
     }
 
     global class ProductionUpdateHelper3 implements Queueable {
+        global CSDataSetting csDataSetting;
+        global ProductionUpdateHelper3(CSDataSetting csDataSetting) {
+            this.csDataSetting = csDataSetting;
+        }
+
         global void execute(QueueableContext context) {
             List<Shared_Solar_System__c> sssList = [
                 SELECT Id, Name, BWC_Project_Entity_Manual__r.Id, Product__r.Id
@@ -806,7 +950,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Billing_Period_End_Date__c = today,
                 Total_System_NMCs__c = 36424.44,
                 Date__c = oneMonthAgo,
-                Schedule_Z__c =  scheduleZ1.Id
+                Schedule_Z__c =  scheduleZ1.Id,
+                CreatedDate = csDataDate
             );
 
             insert productionupdateB3;
@@ -819,42 +964,31 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                 Billing_Period_End_Date__c = today,
                 Total_System_NMCs__c = 12033.73,
                 Date__c = oneMonthAgo,
-                Schedule_Z__c =  scheduleZ2.Id
+                Schedule_Z__c =  scheduleZ2.Id,
+                CreatedDate = csDataDate
             );
 
             insert prodUpdateDD;
 
-            productionupdateB3.Generate_Bills__c = true;
-            prodUpdateDD.Generate_Bills__c = true;
-            update productionupdateB3;
-            update prodUpdateDD;
+            List<Energy_Usage_Update__c> trigProdUp;
+            trigProdUp = ProductionUpdateSelector.getAllProductionUpdatesById(new List<Id>{productionupdateB3.Id, prodUpdateDD.Id});
+            EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(trigProdUp);
+            ee.createBills(ScheduleZSubscriptionSelector.getListForBilling(ee.scheduleZs));
+            ee.finish(null);
+            setBillsToPublished();
 
             if (!Test.isRunningTest()) {
-                System.enqueueJob(new PostSandboxRefresher.AccountBillHelper());
-            }
-        }
-    }
-
-    global class AccountBillHelper implements Queueable {
-        global void execute(QueueableContext context) {
-            List <Account_Bill__c> listaccountBills = [
-                SELECT Id, Published__c
-                FROM Account_Bill__c
-            ];
-
-            for (Account_Bill__c acctBill : listaccountBills) {
-                acctBill.Published__c = true;
-            }
-
-            update listaccountBills;
-
-            if (!Test.isRunningTest()) {
-                System.enqueueJob(new PostSandboxRefresher.PaymentHelper());
+                System.enqueueJob(new PostSandboxRefresher.PaymentHelper(csDataSetting));
             }
         }
     }
 
     global class PaymentHelper implements Queueable {
+        global CSDataSetting csDataSetting;
+        global PaymentHelper(CSDataSetting csDataSetting) {
+            this.csDataSetting = csDataSetting;
+        }
+
         global void execute(QueueableContext context) {
             ChargentBase__Gateway__c gatewayOne = [
                 SELECT Id, Entity__r.Id
@@ -864,11 +998,12 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             ];
 
             List<Account_Bill__c> accountbilllist = [
-                SELECT Id, Name, Carry_Over_Balance__c,
-                    Bill_Number__c, Property_Account_ID__c
+                SELECT Id, Name, Carry_Over_Balance__c, Bill_Number__c, Property_Account_ID__c, (
+                    SELECT Id, Shared_Solar_System__r.BWC_Project_Entity_Manual__c FROM System_Bills__r LIMIT 1
+                )
                 FROM Account_Bill__c
                 WHERE Total_Due__c > 0
-                ORDER BY Bill_Number__c DESC
+                ORDER BY Date__c DESC
                 LIMIT 3
             ];
 
@@ -887,7 +1022,10 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                         ChargentOrders__Card_Number__c = '411111111111',
                         ChargentOrders__Card_Expiration_Month__c = '02',
                         ChargentOrders__Card_Expiration_Year__c = '2018',
-                        ChargentOrders__Card_Last_4__c = '1111');
+                        ChargentOrders__Card_Last_4__c = '1111',
+                        Entity__c = accountbill.System_Bills__r[0].Shared_Solar_System__r.BWC_Project_Entity_Manual__c,
+                        CreatedDate = csDataDate
+                    );
                 insert orderA;
 
                 ChargentOrders__Transaction__c transA =
@@ -900,12 +1038,40 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                         ChargentOrders__Response_Message__c = 'OK',
                         ChargentOrders__Type__c = 'Charge',
                         ChargentOrders__Payment_Method__c = 'Credit Card',
-                        Activity_Type__c = 'Payment');
+                        Activity_Type__c = 'Payment',
+                        CreatedDate = csDataDate);
                 insert transA;
                 transA.Distributed_Among_System_Bills__c = true;
                 update transA;
             }
         }
+    }
+
+    global class CSDataSetting {
+        public Integer numberOfAccountBatches;
+        public CSDataSetting(Integer numberOfAccounts) {
+            this.numberOfAccountBatches = (Integer) Math.rint(numberOfAccounts/24);
+        }
+    }
+
+    public class Name {
+        public String firstName;
+        public String lastName;
+        public Name(String firstName, String lastName, Integer batchNumber) {
+            this.firstName = firstName;
+            this.lastName = lastName + (batchNumber>1?' ' + batchNumber:'');
+        }
+        public String getFullName() {
+            return firstName + ' ' + lastName;
+        }
+    }
+
+    // gets random number between min and max inclusive
+    private static Integer getRandom(Integer min, Integer max) {
+        Double d = Math.random(); // between 0 and 1
+        d = d * (max - min + 1); // scale between 0 and (max-min)
+        d = d + min; // shift up to min
+        return (Integer) Math.floor(d);
     }
 
     // Helper methods used when loading CS records
@@ -914,7 +1080,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             FirstName = firstName1,
             LastName = lastName1,
             AccountId = accountParent1.Id,
-            OwnerId = owner.Id
+            OwnerId = owner.Id,
+            CreatedDate = csDataDate
         );
         return contact1;
     }
@@ -924,7 +1091,9 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             Name = accountName1,
             Parent_Account__c = accountParent1.Id,
             Send_Bills_Contact__c = contact1.Id,
-            RecordTypeId = '012j00000010HeQ');
+            RecordTypeId = '012j00000010HeQ',
+            CreatedDate = csDataDate
+        );
         return propAccount1;
     }
 
@@ -934,7 +1103,9 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             Name = name,
             Account__c = propAccount1.Id,
             Annual_Cost_of_Electricity__c = cost,
-            Name_on_Account__c = accountName1);
+            Name_on_Account__c = accountName1,
+            CreatedDate = csDataDate
+        );
         return ualog1;
     }
 
@@ -948,7 +1119,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             Product__c = sss.Product__r.Id,
             CloseDate = System.today(),
             RecordTypeId = '012j00000010HPE',
-            Product_Line__c = 'Community Solar'
+            Product_Line__c = 'Community Solar',
+            CreatedDate = csDataDate
         );
         return opportunity1;
     }
@@ -962,12 +1134,13 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             Next_Schedule_Z_Status__c = 'Active Subscription',
             calculated_annual_cost_of_electricity__c = 1400,
             Subscribed_Annual_Cost_of_Electricity__c = 1400,
-            Customer_Subscription_KW_DC_STATIC__c = subscription
+            Customer_Subscription_KW_DC_STATIC__c = subscription,
+            CreatedDate = csDataDate
         );
         return uas1;
     }
 
-    private static void createSubscriptions(Integer sssIndex, List<String> firstNames, List<String> lastNames) {
+    private static void createSubscriptions(Integer sssIndex, List<PostSandboxRefresher.Name> names) {
         List<Shared_Solar_System__c> sssList = [
             SELECT Id, Name, BWC_Project_Entity_Manual__r.Id, Product__r.Id
             FROM Shared_Solar_System__c
@@ -975,92 +1148,81 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         ];
         User api = [SELECT Id FROM User WHERE Name = 'API' LIMIT 1];
 
-        String firstName1 = firstNames[0];
-        String firstName2 = firstNames[1];
-        String firstName3 = firstNames[2];
-        String firstName4 = firstNames[3];
-        String firstName5 = firstNames[4];
+        List<Account> parentAccounts = new List<Account>();
+        for (Integer i = 0; i < names.size(); i++) {
+            parentAccounts.add(new Account(
+                Name = names[i].getFullName(),
+                RecordTypeId = '012j00000010Ha3',
+                OwnerId = api.Id,
+                CreatedDate = csDataDate
+            ));
+        }
+        insert parentAccounts;
 
-        String lastName1 = lastNames[0];
-        String lastName2 = lastNames[1];
-        String lastName3 = lastNames[2];
-        String lastName4 = lastNames[3];
-        String lastName5 = lastNames[4];
+        List<Contact> contacts = new List<Contact>();
+        for (Integer i = 0; i < names.size(); i++) {
+            contacts.add(getContact(names[i].firstName, names[i].lastName, parentAccounts[i], api));
+        }
+        insert contacts;
 
-        String accountName1 = firstName1 + ' ' + lastName1;
-        String accountName2 = firstName2 + ' ' + lastName2;
-        String accountName3 = firstName3 + ' ' + lastName3;
-        String accountName4 = firstName4 + ' ' + lastName4;
-        String accountName5 = firstName5 + ' ' + lastName5;
+        List<Account> propertyAccounts = new List<Account>();
+        for (Integer i = 0; i < names.size(); i++) {
+            propertyAccounts.add(getPropertyAccount(names[i].getFullName(), parentAccounts[i], contacts[i]));
+        }
+        insert propertyAccounts;
 
-        Account accountParent1 = new Account(Name = accountName1, RecordTypeId = '012j00000010Ha3', OwnerId = api.Id);
-        Account accountParent2 = new Account(Name = accountName2, RecordTypeId = '012j00000010Ha3', OwnerId = api.Id);
-        Account accountParent3 = new Account(Name = accountName3, RecordTypeId = '012j00000010Ha3', OwnerId = api.Id);
-        Account accountParent4 = new Account(Name = accountName4, RecordTypeId = '012j00000010Ha3', OwnerId = api.Id);
-        Account accountParent5 = new Account(Name = accountName5, RecordTypeId = '012j00000010Ha3', OwnerId = api.Id);
+        List<Utility_Account_Log__c> uals = new List<Utility_Account_Log__c>();
+        for (Integer i = 0; i < names.size(); i++) {
+            if (i == 0) {
+                uals.add(getUtilityAccountLog('0000234', 10000, propertyAccounts[i], names[i].getFullName()));
+                uals.add(getUtilityAccountLog('0000235', 10000, propertyAccounts[i], names[i].getFullName()));
+            } else {
+                uals.add(getUtilityAccountLog('0000234' + i, 10000, propertyAccounts[i], names[i].getFullName()));
+            }
+        }
+        insert uals;
 
-        insert new List<Account>{
-            accountParent1, accountParent2, accountParent3, accountParent4, accountParent5
-        };
+        List<Opportunity> opportunities = new List<Opportunity>();
+        for (Integer i = 0; i < names.size(); i++) {
+            if (i == names.size() - 1) {
+                opportunities.add(getOpportunity(names[i].getFullName(), propertyAccounts[i], sssList[sssIndex]));
+                opportunities.add(getOpportunity(names[i].getFullName(), propertyAccounts[i], sssList[sssIndex==0?1:0]));
+            } else {
+                opportunities.add(getOpportunity(names[i].getFullName(), propertyAccounts[i], sssList[sssIndex]));
+            }
+        }
+        insert opportunities;
 
-        Contact contact1 = getContact(firstName1, lastName1, accountParent1, api);
-        Contact contact2 = getContact(firstName2, lastName2, accountParent2, api);
-        Contact contact3 = getContact(firstName3, lastName3, accountParent3, api);
-        Contact contact4 = getContact(firstName4, lastName4, accountParent4, api);
-        Contact contact5 = getContact(firstName5, lastName5, accountParent5, api);
+        List<Utility_Account_Subscription__c> subscriptions = new List<Utility_Account_Subscription__c>();
+        for (Integer i = 0; i < names.size(); i++) {
+            if (i == names.size() - 1) {
+                subscriptions.add(getUtilityAccountSubscription('000234' + i, getRandom(10, 20), uals[i], opportunities[i]));
+                subscriptions.add(getUtilityAccountSubscription('000234' + i, getRandom(10, 20), uals[i+1], opportunities[i+1]));
+            } else {
+                subscriptions.add(getUtilityAccountSubscription('000234' + i, getRandom(10, 20), uals[i], opportunities[i]));
+            }
+        }
+        insert subscriptions;
+    }
 
-        insert new List<Contact>{
-            contact1, contact2, contact3, contact4, contact5
-        };
-
-        Account propAccount1 = getPropertyAccount(accountName1, accountParent1, contact1);
-        Account propAccount2 = getPropertyAccount(accountName2, accountParent2, contact2);
-        Account propAccount3 = getPropertyAccount(accountName3, accountParent3, contact3);
-        Account propAccount4 = getPropertyAccount(accountName4, accountParent4, contact4);
-        Account propAccount5 = getPropertyAccount(accountName5, accountParent5, contact5);
-
-        insert new List<Account>{
-            propAccount1, propAccount2, propAccount3, propAccount4, propAccount5
-        };
-
-        Utility_Account_Log__c ualog1 = getUtilityAccountLog('0000234', 10000, propAccount1, accountName1);
-        Utility_Account_Log__c ualog2 = getUtilityAccountLog('0000235', 10000, propAccount2, accountName2);
-        Utility_Account_Log__c ualog3 = getUtilityAccountLog('0000236', 10000, propAccount3, accountName3);
-        Utility_Account_Log__c ualog4 = getUtilityAccountLog('0000237', 10000, propAccount4, accountName4);
-        Utility_Account_Log__c ualog5 = getUtilityAccountLog('0000238', 10000, propAccount5, accountName5);
-        Utility_Account_Log__c ualog6 = getUtilityAccountLog('0000239', 10000, propAccount5, accountName5);
-
-        insert new List<Utility_Account_Log__c>{
-            ualog1, ualog2, ualog3, ualog4, ualog5, ualog6
-        };
-
-        Opportunity opportunity1 = getOpportunity(accountName1, propAccount1, sssList[sssIndex]);
-        Opportunity opportunity2 = getOpportunity(accountName2, propAccount2, sssList[sssIndex]);
-        Opportunity opportunity3 = getOpportunity(accountName3, propAccount3, sssList[sssIndex]);
-        Opportunity opportunity4 = getOpportunity(accountName4, propAccount4, sssList[sssIndex]);
-        Opportunity opportunity5 = getOpportunity(accountName5, propAccount5, sssList[sssIndex]);
-        Opportunity opportunity6 = getOpportunity(accountName5, propAccount5, sssList[sssIndex==0?1:0]);
-
-        insert new List<Opportunity>{
-            opportunity1, opportunity2, opportunity3, opportunity4, opportunity5, opportunity6
-        };
-
-        Utility_Account_Subscription__c uas1 = getUtilityAccountSubscription('000234', 25, ualog1, opportunity1);
-        Utility_Account_Subscription__c uas2 = getUtilityAccountSubscription('000234', 10, ualog2, opportunity2);
-        Utility_Account_Subscription__c uas3 = getUtilityAccountSubscription('000234', 20, ualog3, opportunity3);
-        Utility_Account_Subscription__c uas4 = getUtilityAccountSubscription('000234', 19, ualog4, opportunity4);
-        Utility_Account_Subscription__c uas5 = getUtilityAccountSubscription('000234', 17, ualog5, opportunity5);
-        Utility_Account_Subscription__c uas6 = getUtilityAccountSubscription('000235', 17, ualog6, opportunity6);
-
-        insert new List<Utility_Account_Subscription__c>{
-            uas1, uas2, uas3, uas4, uas5, uas6
-        };
+    public static void setBillsToPublished() {
+        List <Account_Bill__c> listAccountBills = [
+            SELECT Id, Published__c
+            FROM Account_Bill__c
+            WHERE Published__c = FALSE
+        ];
+        for (Account_Bill__c acctBill : listAccountBills) {
+            acctBill.Published__c = true;
+        }
+        update listAccountBills;
     }
 
     public static void deleteCSRecords() {
         Organization o = [SELECT IsSandbox FROM Organization LIMIT 1];
 
         if (o.IsSandbox || Test.isRunningTest()) {
+            Util.disableAllTriggers();
+            delete [SELECT Id FROM CS_Bill_Setting__c];
             delete [SELECT Id FROM ChargentOrders__Transaction__c];
             delete [SELECT Id FROM ChargentOrders__ChargentOrder__c];
             delete [SELECT Id FROM Utility_Account_Bill__c];
@@ -1083,6 +1245,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             delete [SELECT Id FROM Utility_NMC_Tariff__c];
             delete [SELECT Id FROM Load_U__c];
             delete [SELECT Id FROM Product2 WHERE ProductCode = 'CS - BlueWave - 10%'];
+            Util.enableAllTriggers();
         }
     }
 

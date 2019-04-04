@@ -1580,7 +1580,17 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.Account_Designation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.Account_Number__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Account_Temperature__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2006,6 +2016,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.Jobs_per_Month_Financed__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Key_Account__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7821,12 +7836,12 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Energy_Usage_Update__c.Total_NMCs_3_of_4__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Energy_Usage_Update__c.Total_NMCs_4_of_4__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -7836,7 +7851,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Energy_Usage_Update__c.Total_NMCs__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -7849,12 +7864,12 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Energy_Usage_Update__c.Total_System_NMCs_3_of_4__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Energy_Usage_Update__c.Total_System_NMCs_4_of_4__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -7876,12 +7891,12 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Energy_Usage_Update__c.Utility_Bill_Line_Total_2__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Energy_Usage_Update__c.Utility_Bill_Line_Total_3__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -21724,11 +21739,6 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.ACH_Account_Types__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.ACH_Bank_Name__c</field>
         <readable>false</readable>
@@ -21761,11 +21771,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Added_Expenditures__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Added_To_Paper_Bill_Queue_c__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -21876,11 +21881,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Annual_SRECs_Est__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Anticipated_Cost_of_Electricity__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -22120,11 +22120,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.Cancelled_After_Schedule_Z_Filing__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Opportunity.Capacity_Alarm__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -22344,11 +22339,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Contracted_for_Net_Metering__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Copy_of_Contract_Close_Date__c</field>
         <readable>true</readable>
@@ -22371,11 +22361,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Credit_Approval_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Credit_Bureau__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -22690,16 +22675,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.FBO_Funded_Mech_Completion__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.FBO_Funded_System_Op__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Opportunity.FICO_Co_Applicant__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -22784,11 +22759,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Funds_Disbursed_to_BlueWave_Account__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Generatin_Units__c</field>
         <readable>true</readable>
@@ -22846,11 +22816,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Income_Verified__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Information_Requested__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -22926,11 +22891,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Invoice_1__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Invoice_2__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -23040,11 +23000,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.Loan_Assignment__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Opportunity.Loan_Fee_1_Description__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -23097,11 +23052,6 @@
         <editable>true</editable>
         <field>Opportunity.Mandatory_Site_Walk__c</field>
         <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Manual_Hold_on_Disbursal__c</field>
-        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -23299,11 +23249,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Opt_out_of_SREC_DD__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Owner__c</field>
         <readable>true</readable>
@@ -23485,11 +23430,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Opportunity.Procurement_Process__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Opportunity.Product_Line__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -23570,28 +23510,8 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.Ready_for_Avidia_Review__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Ready_for_Disbursal_Contract__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Opportunity.Ready_for_Disbursal_Intercon__c</field>
         <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Ready_for_Disbursal__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Ready_for_LetterStream_Queue__c</field>
-        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -23606,11 +23526,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Reason_for_Decline__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Reason_for_Manual_Hold_if_Checked__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -23921,11 +23836,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.System_Capacity_Reserved_kW_DC__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.System_Cost_Verified__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -26389,6 +26299,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Rate_Class__c.Utility__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Request_for_Information__c.BWC_Review_Responses_Due__c</field>
         <readable>true</readable>
@@ -27445,6 +27360,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Schedule_Z__c.Conga_Template_ID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Schedule_Z__c.Contract_Assignment_Date__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -27501,6 +27421,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Schedule_Z__c.Next_Schedule_Z_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Schedule_Z__c.Project_ID__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -30619,9 +30544,14 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Utility_Account_Log__c.Utility_NMC_Tariff__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility_Account_Log__c.Utility_Rate_Class__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -30904,17 +30834,17 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Utility_Bill_Line_Item__c.Amount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Utility_Bill_Line_Item__c.Group__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Utility_Bill_Line_Item__c.Type__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -31117,6 +31047,11 @@
         <editable>false</editable>
         <field>Utility_NMC_Tariff__c.Sizing_Rate__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_NMC_Tariff__c.Status__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -45606,11 +45541,11 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-BFG - Community Solar %28Commercial%29</layout>
-        <recordType>Lead.BFG_Community_Solar_Anchor</recordType>
+        <recordType>Lead.BFG_Community_Solar_Business</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-BFG - Community Solar %28Commercial%29</layout>
-        <recordType>Lead.BFG_Community_Solar_Business</recordType>
+        <recordType>Lead.BFG_Community_Solar_Anchor</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-BFG - Community Solar %28Residential%29</layout>
@@ -45984,6 +45919,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>QuoteLineItem-Quote Line Item Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Rate_Class__c-Rate Class Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Raw_Feeder_Data__x-Raw Feeder Data Layout</layout>
@@ -47144,6 +47082,15 @@
         <allowCreate>false</allowCreate>
         <allowDelete>false</allowDelete>
         <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Rate_Class__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
         <allowRead>true</allowRead>
         <customizeSetup>true</customizeSetup>
         <deleteSetup>true</deleteSetup>
@@ -47312,15 +47259,6 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>Utility_Account_Subscription__c</object>
-        <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>false</allowCreate>
-        <allowDelete>false</allowDelete>
-        <allowEdit>false</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>false</modifyAllRecords>
-        <object>Utility_Bill_Line_Item__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -48714,7 +48652,6 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>true</default>
-        <personAccountDefault>true</personAccountDefault>
         <recordType>Energy_Usage_Update__c.Production_Update_CS</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
@@ -49619,6 +49556,10 @@
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>Rate_Class__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>Residential_Equipment__c</tab>
         <visibility>DefaultOff</visibility>
     </tabVisibilities>
@@ -50030,6 +49971,10 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>SubscribeToLightningReports</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>TransactionalEmailSend</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>

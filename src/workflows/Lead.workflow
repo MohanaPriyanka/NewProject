@@ -118,7 +118,7 @@
         </recipients>
         <senderAddress>partnersupport@bluewavesolar.com</senderAddress>
         <senderType>OrgWideEmailAddress</senderType>
-        <template>CS_Application_Email_Notifications/CS_Partner_Lead_Created</template>
+        <template>CSPartnerEmails/CS_Partner_Lead_Created</template>
     </alerts>
     <alerts>
         <fullName>Co_Applicant_Link_Email</fullName>
@@ -917,7 +917,7 @@ IF(Number_of_Periods__c&gt;120, max(1250,0.07*Loan_Amount__c), max(1250,0.05*Loa
             <type>Task</type>
         </actions>
         <active>true</active>
-        <booleanFilter>1 AND 2</booleanFilter>
+        <booleanFilter>1 AND 2 AND 3</booleanFilter>
         <criteriaItems>
             <field>Lead.Product_line__c</field>
             <operation>equals</operation>
@@ -928,23 +928,20 @@ IF(Number_of_Periods__c&gt;120, max(1250,0.07*Loan_Amount__c), max(1250,0.05*Loa
             <operation>equals</operation>
             <value>Unqualified</value>
         </criteriaItems>
+        <criteriaItems>
+            <field>Lead.Credit_Approval_Status2__c</field>
+            <operation>equals</operation>
+            <value>Declined</value>
+        </criteriaItems>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <rules>
         <fullName>CS - Installer - Notification Lead has been Created</fullName>
         <actions>
-            <name>CS_Partner_Lead_has_been_Created</name>
-            <type>Alert</type>
-        </actions>
-        <actions>
             <name>update_partner_email</name>
             <type>FieldUpdate</type>
         </actions>
-        <actions>
-            <name>EMAIL_LOG_CS_Lead_Created_Notification_to_Partner</name>
-            <type>Task</type>
-        </actions>
-        <active>true</active>
+        <active>false</active>
         <booleanFilter>1 AND 2</booleanFilter>
         <criteriaItems>
             <field>Lead.Unfinished_Lead__c</field>

@@ -646,6 +646,21 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Utility_Rate_Class__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>This is populated by sales/operations. It is the utility rate class that a specific utility account has.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is populated by sales/operations. It is the utility rate class that a specific utility account has.</inlineHelpText>
+        <label>Rate Class</label>
+        <referenceTo>Rate_Class__c</referenceTo>
+        <relationshipLabel>Utility Account Logs</relationshipLabel>
+        <relationshipName>Utility_Account_Logs</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Utility__c</fullName>
         <externalId>false</externalId>
         <formula>Lead__r.Electricity_Provider__c</formula>

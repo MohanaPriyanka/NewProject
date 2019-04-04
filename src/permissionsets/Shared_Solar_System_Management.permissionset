@@ -580,6 +580,11 @@
         <field>Shared_Solar_System__c.kW_needed_to_hit_payment_threshold__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility_NMC_Tariff__c.Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Shared Solar System Management</label>
     <objectPermissions>

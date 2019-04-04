@@ -25,7 +25,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Number_of_Credit_Transfers__c</field>
+                <field>Starting_Credit_Transfer__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -91,7 +91,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00hS00000014wkI</masterLabel>
+        <masterLabel>00hW0000000STPJ</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

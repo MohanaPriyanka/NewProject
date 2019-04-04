@@ -1,8 +1,10 @@
 @isTest
 private class PCRApprovalHandlerTest {
     @testSetup public static void setupTestData() {
+        Test.startTest();
         LoanTestRecordWarehouse.partnerSetup();
         insert LoanTestRecordWarehouse.getLoanProductsVariableInterestRatesandTerms();
+        Test.stopTest();
     }
 
 
@@ -692,7 +694,6 @@ private class PCRApprovalHandlerTest {
         System.assertEquals('Pre-Qualified', lead.Status);
         System.assertEquals(1, productRepo.getApplicableProducts(lead, 650).size());
         System.assertEquals(10, productRepo.products.size());
-        System.debug(LoggingLevel.ERROR, productRepo.products);
         System.assertEquals(8, Util.getActiveProducts(new List<String>{
             'MA'
         }, partner.Id, 'Residential Loan').size());
@@ -1240,7 +1241,6 @@ private class PCRApprovalHandlerTest {
         public Decimal expectedDTIBefore, expectedDTIAfter;
         public Integer key;
         public void assert(LASERCA__Personal_Credit_Report__c pcr) {
-            System.debug(LoggingLevel.ERROR, 'Assertions for Key ' + key);
             if (expectedSLAStatus != null) {
                 System.assertEquals(expectedSLAStatus, pcr.Solar_Loan_Approval_Status__c);
             }

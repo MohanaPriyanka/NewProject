@@ -92,4 +92,14 @@ public with sharing class MessagingServiceTest {
         // But Messaging Service should save a version of the email sent:
         System.assertEquals(1, MessagingService.emailsSent.size());
     }
+
+    @IsTest
+    public static void testGetHtmlWithReplacements() {
+        String replaced = MessagingService.getHtmlWithReplacements('MessagingServiceTest_Active_Template', new Map<String, String>{
+            'NameField gets replaced' => 'The Replacement'
+        });
+        System.assert(replaced.contains('The Replacement'));
+        System.assert(!replaced.contains('NameField gets replaced'));
+    }
+
 }

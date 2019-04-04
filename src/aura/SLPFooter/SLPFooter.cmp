@@ -2,24 +2,34 @@
   <aura:handler event="c:CAPNavigationEvent" action="{!c.handleNavEvent}"/>
   <aura:attribute name="partnerFooter" type="Boolean" default="true"/>
   <aura:attribute name="lenderOfRecord" type="String"/>
-  
+
   <div aura:id="divider" class="divider slds-align--absolute-center"/>
   <div aura:id="footerBreak" class="footerBreak slds-align--absolute-center"/>
 
-  <aura:if isTrue="{!v.partnerFooter}">
+
     <div aura:id="header" class="header paddingTop slds-text-color_weak">
-      <div>
-        <ui:outputText class="slds-truncate slds-align--absolute-center" value="Have a question? Contact the BlueWave Support Team:"/>
-      </div>
-      <div class="slds-align--absolute-center">
-        <a href="mailto:learnmore@bluewavesolar.com">
-          <ui:outputText class="slds-truncate" value="learnmore@bluewavesolar.com"/>
-        </a>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="tel:6176814119 ">
-          <ui:outputText class="slds-truncate" value="617-681-4119"/>
-        </a>
-      </div>
+        <lightning:layoutItem size="12" mediumDeviceSize="6" largeDeviceSize="6" class="slds-align--absolute-center">
+        <div>
+          <ui:outputText class="slds-align--absolute-center slds-text-align--center" value="Have a question? Contact the BlueWave Support Team:"/>
+        </div>
+        </lightning:layoutItem>
+        <lightning:layout multipleRows="true">
+          <lightning:layoutItem size="12" mediumDeviceSize="12" largeDeviceSize="12" class="slds-align--absolute-center">
+            <a href="mailto:learnmore@bluewavesolar.com">
+              <ui:outputText value="learnmore@bluewavesolar.com"/>
+            </a>
+          </lightning:layoutItem>
+          <lightning:layoutItem size="12" mediumDeviceSize="12" largeDeviceSize="12" class="slds-align--absolute-center">
+            <a href="tel:6176814119 ">
+              <ui:outputText  value="617-681-4119"/>
+            </a>
+          </lightning:layoutItem>
+        </lightning:layout>
+      <!--<div class="slds-align&#45;&#45;absolute-center">-->
+        <!---->
+        <!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+        <!---->
+      <!--</div>-->
       <aura:if isTrue="{!v.lenderOfRecord == 'Avidia'}">
         <div class="slds-align--absolute-center slds-p-top_small">
           <p class="">Loan Underwriting by: Avidia Bank - 42 Main St. Hudson, MA 01749</p>
@@ -30,30 +40,4 @@
         </div>
       </aura:if>
     </div>
-  </aura:if>
-  <aura:if isTrue="{!not(v.partnerFooter)}">
-    <div aura:id="header" class="header paddingTop slds-text-color_weak ">
-      <div>
-        <ui:outputText class="slds-truncate slds-align--absolute-center" value="Have a question? Contact the BlueWave Support Team:"/>
-      </div>
-      <div class="slds-align--absolute-center">
-        <a href="mailto:learnmore@bluewavesolar.com">
-          <ui:outputText class="slds-truncate" value="learnmore@bluewavesolar.com"/>
-        </a>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="tel:6176814119">
-          <ui:outputText class="slds-truncate" value="617-681-4119"/>
-        </a>
-      </div>
-      <aura:if isTrue="{!v.lenderOfRecord == 'Avidia'}">
-        <div class="slds-align--absolute-center slds-p-top_small">
-          <p class="">Loan Underwriting by: Avidia Bank - 42 Main St. Hudson, MA 01749</p>
-        </div>
-        <div class="slds-align--absolute-center">
-          <img class="slds-p-right_small" src="{!$Resource.avidiaLogo}" width="200"/>
-          <img class="slds-p-left_small" src="{!$Resource.avidiaFooterWhite}" width="300"/>
-        </div>
-      </aura:if>
-    </div>
-  </aura:if>
 </aura:component>

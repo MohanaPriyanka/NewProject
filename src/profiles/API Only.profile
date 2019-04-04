@@ -207,6 +207,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>CSLeadsRESTControllerV1</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>CSLeadsRESTControllerV1Test</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CSOpportunityFactory</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -1580,7 +1588,17 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.Account_Designation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.Account_Number__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Account_Temperature__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2006,6 +2024,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Account.Jobs_per_Month_Financed__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Key_Account__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3850,12 +3873,27 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>BlueWave_Blog__c.Audience__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>BlueWave_Blog__c.Blog_Type__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>BlueWave_Blog__c.Body__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>BlueWave_Blog__c.Estimated_Publish_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>BlueWave_Blog__c.Example_Blogs__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -10665,6 +10703,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Lead.Building_Owner__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Lead.Building_Use__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -12316,6 +12359,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Zip_Code_Qualification__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.Zuora_Payment_Ref_Id_Expiration_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.Zuora_Payment_Ref_Id__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -20260,6 +20313,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>MPM4_BASE__Milestone1_Project__c.Project_Owner__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>MPM4_BASE__Milestone1_Project__c.Project_Risks__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -21960,6 +22018,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Opportunity.Annual_Escalator__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Opportunity.Annual_Income__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -22115,6 +22178,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Opportunity.Building_Owner__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Building_Use__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.Business_Title__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -22186,6 +22259,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.CS_Street_Address__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.C_I_In_take_Form_info__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -22550,6 +22628,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Opportunity.DS_Envelope_ID__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Opportunity.Da_of_Monthly_Payment__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -22606,6 +22689,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Description</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Development_Fee__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -22719,8 +22807,18 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.EPC_MOU__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.EPC_Partner__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.EPC_Pricing__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -22764,13 +22862,18 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Opportunity.Estimated_System_Size_kW_AC__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Opportunity.Estimated_System_Size_kW_DC__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Estimated_Utility_Upgrade_Cost__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -22934,6 +23037,16 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.ISA_Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Impact_Study_Costs__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Income_Type_2__c</field>
         <readable>true</readable>
@@ -23079,6 +23192,21 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Lease_Agreement__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Lease_Price_MW_DC__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Lease_Terms_MOU__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Lease__c</field>
         <readable>true</readable>
@@ -23086,6 +23214,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Lender_of_Record__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Letter_of_Intent__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -23296,6 +23429,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.More_than_five_years_industry_experience__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Mortgage_Lender__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -23704,6 +23842,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Reason_Unqualified__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Reason_for_Decline2__c</field>
         <readable>true</readable>
@@ -23771,6 +23914,36 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Residential_Yield__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Roof_Age__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Roof_Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.SMART_Capacity_Block__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.SMART_Location_Adder_Tranche__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.SMART_Location_Adder__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.SMART_Offtake_Adder_Trance__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -24035,6 +24208,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Opportunity.System_Cost_Verified_del__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.System_Information_Verified__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -24134,12 +24312,17 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Upfront_Payment__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Username__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Opportunity.UtilityMapper__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -24251,6 +24434,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Year__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Yield_kWh_kW__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -26495,6 +26683,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Rate_Class__c.Utility__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Request_for_Information__c.BWC_Review_Responses_Due__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -27550,6 +27743,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Schedule_Z__c.Conga_Template_ID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Schedule_Z__c.Contract_Assignment_Date__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -27606,6 +27804,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Schedule_Z__c.Next_Schedule_Z_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Schedule_Z__c.Project_ID__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -30814,6 +31017,11 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility_Account_Log__c.Utility_Rate_Class__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Log__c.Utility__c</field>
         <readable>true</readable>
@@ -31291,6 +31499,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility_NMC_Tariff__c.Sizing_Rate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility_NMC_Tariff__c.Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -45556,6 +45769,10 @@
         <recordType>Case.Case</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Case-Client Services</layout>
+        <recordType>Case.Client_Services</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Case-Customer Care</layout>
         <recordType>Case.Customer_Care</recordType>
     </layoutAssignments>
@@ -45789,11 +46006,11 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-BFG - Community Solar %28Commercial%29</layout>
-        <recordType>Lead.BFG_Community_Solar_Anchor</recordType>
+        <recordType>Lead.BFG_Community_Solar_Business</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-BFG - Community Solar %28Commercial%29</layout>
-        <recordType>Lead.BFG_Community_Solar_Business</recordType>
+        <recordType>Lead.BFG_Community_Solar_Anchor</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-BFG - Community Solar %28Residential%29</layout>
@@ -45944,6 +46161,10 @@
     <layoutAssignments>
         <layout>MPM4_BASE__Milestone1_Milestone__c-Project Task List</layout>
         <recordType>MPM4_BASE__Milestone1_Milestone__c.Site_Summary</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>MPM4_BASE__Milestone1_Project__c-C%26I Project</layout>
+        <recordType>MPM4_BASE__Milestone1_Project__c.C_I</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>MPM4_BASE__Milestone1_Project__c-Competitor</layout>
@@ -46167,6 +46388,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>QuoteLineItem-Quote Line Item Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Rate_Class__c-Rate Class Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Raw_Feeder_Data__x-Raw Feeder Data Layout</layout>
@@ -47822,6 +48046,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>Quote</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>Rate_Class__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -50219,6 +50452,11 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
+        <recordType>Case.Client_Services</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
         <recordType>Case.Customer_Care</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
@@ -50661,6 +50899,11 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
+        <recordType>MPM4_BASE__Milestone1_Project__c.C_I</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
         <recordType>MPM4_BASE__Milestone1_Project__c.Competitor</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
@@ -50676,7 +50919,6 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>true</default>
-        <personAccountDefault>true</personAccountDefault>
         <recordType>Opportunity.BFG</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
@@ -51341,6 +51583,10 @@
     <tabVisibilities>
         <tab>Quickstart</tab>
         <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Rate_Class__c</tab>
+        <visibility>DefaultOff</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>Residential_Equipment__c</tab>
@@ -52026,6 +52272,10 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>SubscribeToLightningReports</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>TransactionalEmailSend</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>

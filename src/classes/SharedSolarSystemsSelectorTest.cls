@@ -6,8 +6,7 @@
 
 @IsTest
 public with sharing class SharedSolarSystemsSelectorTest {
-    @IsTest
-    public static void testGetSharedSolarSystemsWithCapacityByUtilityAndLoadZone() {
+    @testSetup public static void setupTestData(){
         Utility__c eversource = new Utility__c(
             Name = 'Eversource',
             Number_of_Decimal_Places__c = 2
@@ -87,10 +86,17 @@ public with sharing class SharedSolarSystemsSelectorTest {
             Maximum_Subscription_Assemblage__c = 25);
 
         insert new List<Shared_Solar_System__c>{sss1, sss2, sss3, sss4};
+    }
+
+    @IsTest public static void testGetSharedSolarSystemsWithCapacityByUtilityAndLoadZone() {
+        Map<String, Id> utilityMap = new Map<String, Id>();
+        for(Utility__c utility : [SELECT Id, Name FROM Utility__c]){
+            utilityMap.put(utility.Name, utility.Id);
+        }
 
         List<Shared_Solar_System__c> noSharedSolarSystems =
             SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
-                new Set<Id>{noSSS.Id},
+                new Set<Id>{utilityMap.get('No SSS Utility')},
                 new Set<String>{'No Load Zone'}
             );
 
@@ -98,7 +104,7 @@ public with sharing class SharedSolarSystemsSelectorTest {
 
         noSharedSolarSystems =
             SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
-                new Set<Id>{eversource.Id},
+                new Set<Id>{utilityMap.get('Eversource')},
                 new Set<String>{'No Load Zone'}
             );
 
@@ -114,7 +120,7 @@ public with sharing class SharedSolarSystemsSelectorTest {
 
         noSharedSolarSystems =
             SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
-                new Set<Id>{noSSS.Id},
+                new Set<Id>{utilityMap.get('No SSS Utility')},
                 new Set<String>{'SEMA'}
             );
 
@@ -122,7 +128,7 @@ public with sharing class SharedSolarSystemsSelectorTest {
 
         List<Shared_Solar_System__c> eversourceSharedSolarSystems =
             SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
-                new Set<Id>{eversource.Id},
+                new Set<Id>{utilityMap.get('Eversource')},
                 new Set<String>{'SEMA', 'NEMA'}
             );
 
@@ -130,7 +136,7 @@ public with sharing class SharedSolarSystemsSelectorTest {
 
         List<Shared_Solar_System__c> nationalGridSharedSolarSystems =
             SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
-                new Set<Id>{nationalGrid.Id},
+                new Set<Id>{utilityMap.get('National Grid')},
                 new Set<String>{'SEMA', 'NEMA'}
             );
 
@@ -138,10 +144,30 @@ public with sharing class SharedSolarSystemsSelectorTest {
 
         List<Shared_Solar_System__c> ngAndEversourceSharedSolarSystems =
             SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
-                new Set<Id>{nationalGrid.Id, eversource.Id},
+                new Set<Id>{utilityMap.get('National Grid'),utilityMap.get('Eversource')},
                 new Set<String>{'SEMA', 'NEMA'}
             );
 
         System.assertEquals(4, ngAndEversourceSharedSolarSystems.size());
+    }
+
+    @isTest static void testGetSSSWithoutProdUpdates(){
+        Date todaysDate = Date.today();
+        List<Id> prodIdList;
+
+        List<Energy_Usage_Update__c> prodList;
+        prodList = ProductionUpdateSelector.getProductionUpdatesByMonth(todaysDate.month(),String.valueOf(todaysDate.year()));
+
+        for (Energy_Usage_Update__c prod : prodList){
+            prodIdList.add(prod.Id);
+        }
+
+        List<Shared_Solar_System__c> sssList;
+        List<Shared_Solar_System__c> sss2List;
+        sssList = SharedSolarSystemsSelector.getAllSSSWithProductionUpdates();
+        sss2List = SharedSolarSystemsSelector.getAllSSSWithProdUpdatesNotInList(prodIdList);
+
+        System.assertEquals(0,sssList.size());
+        System.assertEquals(0,sss2List.size());
     }
 }

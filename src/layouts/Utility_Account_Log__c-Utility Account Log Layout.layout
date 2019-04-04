@@ -90,7 +90,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Rate_Class__c</field>
+                <field>Utility_Rate_Class__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>

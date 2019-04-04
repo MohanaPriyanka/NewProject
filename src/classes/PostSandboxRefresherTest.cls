@@ -1,6 +1,6 @@
 /*************************************************************************************
  * Created By: Peter Yao
- * Description: Tests actions taken after refreshing a sandbox
+ * Description: Tests actions taken after refreshing a sandbox to load in test data
  *************************************************************************************/
 @IsTest
 private class PostSandboxRefresherTest {
@@ -189,17 +189,18 @@ private class PostSandboxRefresherTest {
 
     @IsTest
     static void testAccountHelper() {
-        PostSandboxRefresher.CSRecordLoader csRecordLoader = new PostSandboxRefresher.CSRecordLoader();
+        PostSandboxRefresher.CSDataSetting csDataSetting = new PostSandboxRefresher.CSDataSetting(24);
+        PostSandboxRefresher.CSRecordLoader csRecordLoader = new PostSandboxRefresher.CSRecordLoader(csDataSetting);
         csRecordLoader.execute(null);
 
-        PostSandboxRefresher.SolarSystemHelper solarSystemHelper = new PostSandboxRefresher.SolarSystemHelper();
+        PostSandboxRefresher.SolarSystemHelper solarSystemHelper = new PostSandboxRefresher.SolarSystemHelper(csDataSetting);
         solarSystemHelper.execute(null);
 
         Test.startTest();
-        PostSandboxRefresher.FirstAccountHelper firstAccountHelper = new PostSandboxRefresher.FirstAccountHelper();
+        PostSandboxRefresher.FirstAccountHelper firstAccountHelper = new PostSandboxRefresher.FirstAccountHelper(csDataSetting);
         firstAccountHelper.execute(null);
 
-        PostSandboxRefresher.SecondAccountHelper SecondAccountHelper = new PostSandboxRefresher.SecondAccountHelper();
+        PostSandboxRefresher.SecondAccountHelper SecondAccountHelper = new PostSandboxRefresher.SecondAccountHelper(csDataSetting);
         SecondAccountHelper.execute(null);
         Test.stopTest();
 
@@ -209,38 +210,38 @@ private class PostSandboxRefresherTest {
 
     @IsTest
     static void testProductionUpdateHelper() {
-        PostSandboxRefresher.CSRecordLoader csRecordLoader = new PostSandboxRefresher.CSRecordLoader();
+        PostSandboxRefresher.CSDataSetting csDataSetting = new PostSandboxRefresher.CSDataSetting(24);
+        PostSandboxRefresher.CSRecordLoader csRecordLoader = new PostSandboxRefresher.CSRecordLoader(csDataSetting);
         csRecordLoader.execute(null);
 
-        PostSandboxRefresher.SolarSystemHelper solarSystemHelper = new PostSandboxRefresher.SolarSystemHelper();
+        PostSandboxRefresher.SolarSystemHelper solarSystemHelper = new PostSandboxRefresher.SolarSystemHelper(csDataSetting);
         solarSystemHelper.execute(null);
 
         Test.startTest();
-        PostSandboxRefresher.ProductionUpdateHelper productionUpdateHelper = new PostSandboxRefresher.ProductionUpdateHelper();
+        PostSandboxRefresher.ProductionUpdateHelper productionUpdateHelper = new PostSandboxRefresher.ProductionUpdateHelper(csDataSetting);
         productionUpdateHelper.execute(null);
-        PostSandboxRefresher.ProductionUpdateHelper2 productionUpdateHelper2 = new PostSandboxRefresher.ProductionUpdateHelper2();
+        PostSandboxRefresher.ProductionUpdateHelper2 productionUpdateHelper2 = new PostSandboxRefresher.ProductionUpdateHelper2(csDataSetting);
         productionUpdateHelper2.execute(null);
-        PostSandboxRefresher.ProductionUpdateHelper3 productionUpdateHelper3 = new PostSandboxRefresher.ProductionUpdateHelper3();
+        PostSandboxRefresher.ProductionUpdateHelper3 productionUpdateHelper3 = new PostSandboxRefresher.ProductionUpdateHelper3(csDataSetting);
         productionUpdateHelper3.execute(null);
 
-        PostSandboxRefresher.accountBillHelper accountBillHelper = new PostSandboxRefresher.accountBillHelper();
-        accountBillHelper.execute(null);
         Test.stopTest();
     }
 
     @IsTest
     static void testPaymentHelper() {
-        PostSandboxRefresher.CSRecordLoader csRecordLoader = new PostSandboxRefresher.CSRecordLoader();
+        PostSandboxRefresher.CSDataSetting csDataSetting = new PostSandboxRefresher.CSDataSetting(24);
+        PostSandboxRefresher.CSRecordLoader csRecordLoader = new PostSandboxRefresher.CSRecordLoader(csDataSetting);
         csRecordLoader.execute(null);
 
-        PostSandboxRefresher.SolarSystemHelper solarSystemHelper = new PostSandboxRefresher.SolarSystemHelper();
+        PostSandboxRefresher.SolarSystemHelper solarSystemHelper = new PostSandboxRefresher.SolarSystemHelper(csDataSetting);
         solarSystemHelper.execute(null);
 
-        PostSandboxRefresher.GatewayHelper gatewayHelper = new PostSandboxRefresher.GatewayHelper();
+        PostSandboxRefresher.GatewayHelper gatewayHelper = new PostSandboxRefresher.GatewayHelper(csDataSetting);
         gatewayHelper.execute(null);
 
         Test.startTest();
-        PostSandboxRefresher.paymentHelper paymentHelper = new PostSandboxRefresher.paymentHelper();
+        PostSandboxRefresher.paymentHelper paymentHelper = new PostSandboxRefresher.paymentHelper(csDataSetting);
         paymentHelper.execute(null);
         Test.stopTest();
     }

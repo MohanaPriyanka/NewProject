@@ -289,10 +289,11 @@ public class TestBillCreationandPayment {
         uasfour.Customer_Subscription_KW_DC_STATIC__c = 10;
         update new List<Utility_Account_Subscription__c>{uasone, uastwo, uasthree, uasfour};
 
-        Date myDateJan = Date.newInstance(2016, 1, 1);
-        Date myDateFeb = Date.newInstance(2016, 2, 2);
-        Date myDateMar = Date.newInstance(2016, 3, 3);
-        Date myDateApr = Date.newInstance(2016, 4, 4);
+        // We want to make these dates current, so that generated bills are current
+        Date myDateApr = Date.newInstance(Date.today().year(), Date.today().month(), 15);
+        Date myDateMar = myDateApr.addMonths(-1);
+        Date myDateFeb = myDateApr.addMonths(-2);
+        Date myDateJan = myDateApr.addMonths(-3);
 
         Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
             Name = '18-0515 Oxford Barrett St. P1',
@@ -377,21 +378,16 @@ public class TestBillCreationandPayment {
             productionupdateA1, productionupdateA2, productionupdateA3, productionupdateB1, productionupdateB2, productionupdateB3
         };
 
-        productionupdateA1.Generate_Bills__c = TRUE;
-        update productionupdateA1;
+        runProductionUpdate(new List<Id>{productionupdateA1.Id});
 
-        APXT_BPM__Conductor__c newConga = new APXT_BPM__Conductor__c (APXT_BPM__Title__c = 'Conga Record');
-        insert newConga;
-        newConga.Apply_Overpay_Adjust__c = true;
-        update newConga;
+        InvocableCSBillOverpaymentApplication.applyOverpayments();
 
         setBillsToPublished();
 
         // As of Jan 2019, 65 of 100 queries used. Generating bills consumes 35 queries
         Test.stopTest();
 
-        productionupdateA2.Generate_Bills__c = true;
-        update productionupdateA2;
+        runProductionUpdate(new List<Id>{productionupdateA2.Id});
     }
     
     @IsTest
@@ -437,8 +433,8 @@ public class TestBillCreationandPayment {
         Energy_Usage_Update__c aprilEUU = energyUsageUpdates[0].clone(false);
         aprilEUU.Date__c = aprilEUU.Date__c.addMonths(1);
         insert aprilEUU;
-        aprilEUU.Generate_Bills__c = true;
-        update aprilEUU;
+               
+        runProductionUpdate(new List<Id>{aprilEUU.Id});
         setBillsToPublished();
 
         billAdjustments = [
@@ -465,7 +461,6 @@ public class TestBillCreationandPayment {
         for (Account account : accountMap.values()) {
             if (calculatedAccountTotalMap.containsKey(account.Id)) {
                 System.assertEquals(calculatedAccountTotalMap.get(account.Id).totalSavings, account.Total_Savings__c + account.Savings_Adjustments__c);
-                System.debug(LoggingLevel.ERROR, account.Total_Savings__c);
                 System.assertEquals(calculatedAccountTotalMap.get(account.Id).totalNMCs, account.Total_Net_Metering_Credits_Allocated__c + account.Credit_Adjustments__c);
             } else {
                 System.assert(false, 'Expected all accounts with a total savings to have a calculated total too:' + account);
@@ -516,7 +511,7 @@ public class TestBillCreationandPayment {
         }
     }
 
-    static void setBillsToPublished() {
+    public static void setBillsToPublished() {
         List <Account_Bill__c> listAccountBills = [
             SELECT Id, Published__c
             FROM Account_Bill__c
@@ -526,6 +521,12 @@ public class TestBillCreationandPayment {
             acctBill.Published__c = True;
         }
         update listAccountBills;
+    }
+
+    public static void runProductionUpdate(List<Id> prodUpdateIdList) {
+        List<Energy_Usage_Update__c> trigProdUp = ProductionUpdateSelector.getAllProductionUpdatesById(prodUpdateIdList);
+        EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(trigProdUp);
+        ee.runBills();
     }
 
     @isTest public static void testPreviewBills(){
@@ -691,8 +692,7 @@ public class TestBillCreationandPayment {
         System.assertEquals(1,(PreviewProductionUpdateResults.getUASes(prodUpdate.Id, TRUE, schedZ3.Id)).size());
 
         //Test whether bills have been generated for anchor bills
-        prodUpdate.Generate_Bills__c = true;
-        update  prodUpdate;
+        runProductionUpdate(new List<Id>{prodUpdate.Id});
 
         List<System_Bill__c> systemBills1 = [
             SELECT Id, Opportunity__c, Name
@@ -767,24 +767,24 @@ public class TestBillCreationandPayment {
         FROM UASB__c
         ORDER BY Bill_Date__c ];
 
-        Date myDateJan = Date.newInstance(2016, 1, 1);
-        Date myDateFeb = Date.newInstance(2016, 2, 2);
-        Date myDateMar = Date.newInstance(2016, 3, 3);
+        Date threeMonthsAgo = Date.newInstance(Date.today().year(), Date.today().month()-3, 15);
+        Date twoMonthsAgo = threeMonthsAgo.addMonths(1);
+        Date lastMonth = threeMonthsAgo.addMonths(2);
 
         for (UASB__c uabill : uablist) {
             if (uabill.System_Bill__r.Bill_Number__c == 1){
-                System.assertEquals(myDateFeb, uabill.Billing_Period_End_Date__c);
+                System.assertEquals(twoMonthsAgo, uabill.Billing_Period_End_Date__c);
             }
             if (uabill.System_Bill__r.Bill_Number__c == 2){
-                System.assertEquals(myDateMar, uabill.Billing_Period_End_Date__c);
+                System.assertEquals(lastMonth, uabill.Billing_Period_End_Date__c);
             }
         }
 
-        String acctId = systemBillList[1].Property_Account_Id__c;
-        system.AssertEquals(6, (PreviewProductionUpdateResults.getUASes(acctId, FALSE, null)).size());
+        String acctId = systemBillList[1].Property_Account_ID__c;
+        System.assertEquals(6, (PreviewProductionUpdateResults.getUASes(acctId, false, null)).size());
 
-        systemBillList[1].Waive_Late_Fees__c = TRUE;
-        systemBillList[1].Distribute_This_Balance_As_Payment_Plan__c = TRUE;
+        systemBillList[1].Waive_Late_Fees__c = true;
+        systemBillList[1].Distribute_This_Balance_as_Payment_Plan__c = true;
         update systemBillList[1];
 
         List<Account_Bill__c> abList = new List<Account_Bill__c>();
@@ -974,7 +974,6 @@ public class TestBillCreationandPayment {
         sssList[1].BWC_Project_Entity_Manual__c = entity.Id;
         update sssList;
 
-        Test.startTest();
         Util.disableTrigger('Disable_AccountBillTrigger__c'); // TO Avoid SOQL Limits in data setup
 
         List<Energy_Usage_Update__c> productionUpdates = [
@@ -988,8 +987,7 @@ public class TestBillCreationandPayment {
         ];
 
         // Second project comes on in second month:
-        productionUpdates[1].Generate_Bills__c = true;
-        update productionUpdates[1];
+        runProductionUpdate(new List<Id>{productionUpdates[1].Id});
         setBillsToPublished();
 
         List<System_Bill__c> systemBillList = SystemBillsSelector.selectAllSystemBills(null, 'Opportunity__r.Name, Bill_Number__c');
@@ -1050,6 +1048,8 @@ public class TestBillCreationandPayment {
         transA.Distributed_Among_System_Bills__c = true;
         update transA;
 
+        Test.startTest();
+
         List<Overpayment__c> overpayList = [
             SELECT Id, Name, Overpayment_Amount__c
             FROM Overpayment__c];
@@ -1058,17 +1058,12 @@ public class TestBillCreationandPayment {
         System.assertEquals(120.00, overpayList[0].Overpayment_Amount__c);
 
         // New Bills are generated for SSS1 & SSS2:
-        productionUpdates[0].Generate_Bills__c = true;
-        productionUpdates[3].Generate_Bills__c = true;
-        update productionUpdates[0];
-        update productionUpdates[3];
+        runProductionUpdate(new List<Id>{productionUpdates[0].Id});
+        runProductionUpdate(new List<Id>{productionUpdates[3].Id});
 
         Util.enableTrigger('Disable_AccountBillTrigger__c');
 
-        APXT_BPM__Conductor__c newConga = new APXT_BPM__Conductor__c (APXT_BPM__Title__c = 'Conga Record');
-        insert newConga;
-        newConga.Apply_Overpay_Adjust__c = true;
-        update newConga;
+        InvocableCSBillOverpaymentApplication.applyOverpayments();
 
         List<AggregateResult> sbListUpdated = [
             SELECT SUM(Previous_Overpayment__c) sumOverpay,
@@ -1278,13 +1273,10 @@ public class TestBillCreationandPayment {
         insert chargentOrdersTransactionsToNotUpdate;
 
         Energy_Usage_Update__c prodUpdate = [SELECT Id, Name, Generate_Bills__c FROM Energy_Usage_Update__c WHERE Name = 'sssA - March 2016'];
-        prodUpdate.Generate_Bills__c = True;
-        update prodUpdate;
+        runProductionUpdate(new List<Id>{prodUpdate.Id});
 
-        APXT_BPM__Conductor__c congaRecord = new APXT_BPM__Conductor__c (APXT_BPM__Title__c = 'Conga Record');
-        insert congaRecord;
-        congaRecord.Apply_Overpay_Adjust__c = true;
-        update congaRecord;
+        InvocableCSBillOverpaymentApplication.applyOverpayments();
+
         Test.stopTest();
 
         List<Overpayment_Application__c> secondOverpay =   [SELECT Id, Name, Overpayment__c, System_Bill__c,
@@ -1621,15 +1613,12 @@ public class TestBillCreationandPayment {
             FROM Energy_Usage_Update__c
             WHERE Name = 'sssA - March 2016'
         ];
-        prodUpdate.Generate_Bills__c = true;
-        update prodUpdate;
+
+        runProductionUpdate(new List<Id>{prodUpdate.Id});
 
         List<System_Bill__c> originalSystemBillList = SystemBillsSelector.selectAllSystemBills();
 
-        APXT_BPM__Conductor__c congaRecord = new APXT_BPM__Conductor__c (APXT_BPM__Title__c = 'Conga Record');
-        insert congaRecord;
-        congaRecord.Apply_Overpay_Adjust__c = true;
-        update congaRecord;
+        OverpaymentApplication.triggerApplication();
         Test.stopTest();
 
         List<System_Bill__c> updatedSystemBillList = SystemBillsSelector.selectAllSystemBills();
@@ -1998,17 +1987,9 @@ public class TestBillCreationandPayment {
         unapprovedAdjustment.Approval_Status__c = 'Approved';
         update unapprovedAdjustment;
 
-        prodUpdate.Generate_Bills__c = false;
-        update prodUpdate;
+        runProductionUpdate(new List<Id>{prodUpdate.Id});
 
-
-        prodUpdate.Generate_Bills__c = true;
-        update prodUpdate;
-
-        APXT_BPM__Conductor__c newConga = new APXT_BPM__Conductor__c (APXT_BPM__Title__c = 'Conga Record');
-        insert newConga;
-        newConga.Apply_Overpay_Adjust__c = true;
-        update newConga;
+        OverpaymentApplication.triggerApplication();
 
         // This time the bill should be for $30 more since the adjustment should be applied
         List<System_Bill__c> systemBillsAfter = SystemBillsSelector.selectAllSystemBills();
@@ -2029,5 +2010,174 @@ public class TestBillCreationandPayment {
         System.assertEquals(0, SystemBillAccountingLogicHandler.calculatePaymentPlanBalance(0, 6, 100));
         System.assertEquals(0, SystemBillAccountingLogicHandler.calculatePaymentPlanBalance(7, 6, 100));
         System.assertEquals(0, SystemBillAccountingLogicHandler.calculatePaymentPlanBalance(1, 6, 0));
+    }
+
+    @IsTest
+    private static void testFinaledUASWithoutCarryoverBalance() {
+        Utility_Account_Subscription__c uas = [
+            SELECT Id, Utility_Account_Log__c, Utility_Account_Log__r.Account__c, (
+                SELECT Id, Schedule_Z__c, Schedule_Z__r.Shared_Solar_System__c FROM Schedule_Z_Subscriptions__r
+            )
+            FROM Utility_Account_Subscription__c
+            WHERE Name = '0000234'
+            LIMIT 1
+        ];
+
+        List<System_Bill__c> systemBills = [
+            SELECT Id, Date__c, Carry_Over_Balance__c, Balance_Net_Late_Payments__c
+            FROM System_Bill__c
+            WHERE Property_Account__c = :uas.Utility_Account_Log__r.Account__c
+            ORDER BY Date__c DESC
+        ];
+        // There should be two system bills, one for each production update created in testSetup, the last one for two months ago
+        System.assertEquals(2, systemBills.size());
+        System.assertEquals(Date.newInstance(Date.today().year(), Date.today().month()-2,15), systemBills[0].Date__c);
+
+        // We'll pay off this account so that there isn't a carryover balance or overdue amount
+        systemBills[0].Total_Payments_This_Month__c = systemBills[0].Carry_Over_Balance__c;
+        systemBills[0].Late_Payments__c = systemBills[0].Balance_Net_Late_Payments__c;
+        systemBills[1].Late_Payments__c = systemBills[1].Balance_Net_Late_Payments__c;
+        update systemBills;
+
+        systemBills = [
+            SELECT Id, Date__c, Carry_Over_Balance__c, Balance_Net_Late_Payments__c
+            FROM System_Bill__c
+            WHERE Property_Account__c = :uas.Utility_Account_Log__r.Account__c
+            ORDER BY Date__c DESC
+        ];
+        System.assertEquals(0, systemBills[0].Balance_Net_Late_Payments__c);
+
+        // We'll create a new schedule z to check that the Cancelled tab on the preview bills screen can show results
+        // specific to schedule z's.
+        Schedule_Z__c scheduleZ = [
+            SELECT Id, Shared_Solar_System__c
+            FROM Schedule_Z__c
+            WHERE Name = '18-0515 Oxford Barrett St. P1'
+            LIMIT 1
+        ];
+        Schedule_Z__c newSZ = scheduleZ.clone(false);
+        insert newSZ;
+
+        // Next we'll mark the UAL as Finaled, the UAS as removed, and the SZS as Stopped for Credit Transfer
+        Utility_Account_Log__c ual = new Utility_Account_Log__c(
+            Id = uas.Utility_Account_Log__c,
+            Date_Utility_Account_Cancelled__c = System.today()
+        );
+        update ual;
+
+        uas.Date_Removed_from_Project__c = System.today();
+        update uas;
+
+        System.assertEquals(1, uas.Schedule_Z_Subscriptions__r.size());
+        uas.Schedule_Z_Subscriptions__r[0].Stop_Credit_Transfer__c = true;
+        update uas.Schedule_Z_Subscriptions__r[0];
+
+        // Now, a new production update and bill run shouldn't create a bill for this customer, even though they have a
+        // uas
+        Energy_Usage_Update__c prodUpdate = [
+            SELECT Id, Shared_Solar_System__c, Schedule_Z__c, Production__c, Net_Metering_Rate_Applied__c, Billing_Period_End_Date__c,
+                Total_System_NMCs__c, Date__c
+            FROM Energy_Usage_Update__c
+            WHERE Name = 'sssA - March 2016'
+            LIMIT 1
+        ];
+        prodUpdate = prodUpdate.clone(false,false,false,false);
+        prodUpdate.Name = 'sssA - April 2016';
+        prodUpdate.Billing_Period_End_Date__c = prodUpdate.Billing_Period_End_Date__c.addMonths(1);
+        prodUpdate.Date__c = prodUpdate.Date__c.addMonths(1);
+        insert prodUpdate;
+        Test.startTest();
+        runProductionUpdate(new List<Id>{prodUpdate.Id});
+        InvocableCSBillOverpaymentApplication.applyOverpayments();
+        Test.stopTest();
+
+        systemBills = [
+            SELECT Id, Date__c, Total_Due__c, Due_This_Month__c
+            FROM System_Bill__c
+            WHERE Property_Account__c = :uas.Utility_Account_Log__r.Account__c
+            ORDER BY Date__c DESC
+        ];
+        // There should still be two account bills, one for each production update created in testSetup
+        System.assertEquals(2, systemBills.size());
+        System.assertEquals(Date.newInstance(Date.today().year(), Date.today().month()-2,15), systemBills[0].Date__c);
+
+        // The preview bills screen shouldn't show the anything for the new prod update, since there wasn't a bill created
+        List<UASB__c> uasbs = PreviewProductionUpdateResults.getUASes(prodUpdate.Id, true, prodUpdate.Schedule_Z__c);
+        System.assertEquals(0, uasbs.size());
+        // But the cancelled screen should
+        List<UASB__c> cancelledBillListA = PreviewProductionUpdateResults.getCancelledBills(prodUpdate.Id, new List<String>(), prodUpdate.Schedule_Z__c);
+        System.assertEquals(1, cancelledBillListA.size());
+        // And previewing bills with the new schedule z (which didn't get Stop Credit Transfer) shouldn't show any cancelled bills
+        cancelledBillListA = PreviewProductionUpdateResults.getCancelledBills(prodUpdate.Id, new List<String>(), newSZ.Id);
+        System.assertEquals(0, cancelledBillListA.size());
+    }
+
+    @IsTest
+    private static void testFinaledUASWithCarryoverBalance() {
+        Utility_Account_Subscription__c uas = [
+            SELECT Id, Utility_Account_Log__c, Utility_Account_Log__r.Account__c, (
+                SELECT Id FROM Schedule_Z_Subscriptions__r
+            )
+            FROM Utility_Account_Subscription__c
+            WHERE Name = '0000234'
+            LIMIT 1
+        ];
+
+        List<System_Bill__c> systemBills = [
+            SELECT Id, Date__c, Total_Due__c, Due_This_Month__c
+            FROM System_Bill__c
+            WHERE Property_Account__c = :uas.Utility_Account_Log__r.Account__c
+        ];
+        // There should be two account bills, one for each production update created in testSetup
+        System.assertEquals(2, systemBills.size());
+
+        // Next we'll mark the UAL as Finaled, the UAS as removed, and the SZS as Stopped for Credit Transfer
+        Utility_Account_Log__c ual = new Utility_Account_Log__c(
+            Id = uas.Utility_Account_Log__c,
+            Date_Utility_Account_Cancelled__c = System.today()
+        );
+        update ual;
+
+        uas.Date_Removed_from_Project__c = System.today();
+        update uas;
+
+        System.assertEquals(1, uas.Schedule_Z_Subscriptions__r.size());
+        uas.Schedule_Z_Subscriptions__r[0].Stop_Credit_Transfer__c = true;
+        update uas.Schedule_Z_Subscriptions__r[0];
+
+        // Now, a new production update and bill run shouldn't create a bill for this customer, even though the
+        Energy_Usage_Update__c prodUpdate = [
+            SELECT Id, Shared_Solar_System__c, Schedule_Z__c, Production__c, Net_Metering_Rate_Applied__c, Billing_Period_End_Date__c,
+                Total_System_NMCs__c, Date__c
+            FROM Energy_Usage_Update__c
+            WHERE Name = 'sssA - March 2016'
+            LIMIT 1
+        ];
+        prodUpdate = prodUpdate.clone(false,false,false,false);
+        prodUpdate.Name = 'sssA - April 2016';
+        prodUpdate.Billing_Period_End_Date__c = prodUpdate.Billing_Period_End_Date__c.addMonths(1);
+        prodUpdate.Date__c = prodUpdate.Date__c.addMonths(1);
+        insert prodUpdate;
+        Test.startTest();
+        runProductionUpdate(new List<Id>{prodUpdate.Id});
+        InvocableCSBillOverpaymentApplication.applyOverpayments();
+        Test.stopTest();
+
+        systemBills = [
+            SELECT Id, Date__c, Total_Due__c, Due_This_Month__c
+            FROM System_Bill__c
+            WHERE Property_Account__c = :uas.Utility_Account_Log__r.Account__c
+            ORDER BY Date__c
+        ];
+        // Now, there should be three account bills, but the total due for the last one should be the same as the
+        // second one, since there are no new charges
+        System.assertEquals(3, systemBills.size());
+        System.assertEquals(systemBills[1].Total_Due__c, systemBills[2].Total_Due__c);
+
+        // The stopped subscription should still show up on the cancelled list, not the new credits list
+        List<UASB__c> uasbs = PreviewProductionUpdateResults.getUASes(prodUpdate.Id, true, prodUpdate.Schedule_Z__c);
+        System.assertEquals(0, uasbs.size());
+        List<UASB__c> cancelledBillListA = PreviewProductionUpdateResults.getCancelledBills(prodUpdate.Id, new List<String>());
+        System.assertEquals(1, cancelledBillListA.size());
     }
 }

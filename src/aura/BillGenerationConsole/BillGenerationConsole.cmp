@@ -1,0 +1,170 @@
+<aura:component implements="lightning:availableForFlowScreens" access="global" controller="BillGenerationConsoleController" extends="c:BlueWaveParent">
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:attribute name="ProdUpdateList" type="Energy_Usage_Update__c[]"/>
+  <aura:attribute name="sssWithoutProdList" type="Shared_Solar_System__c[]"/>
+  <aura:attribute name="abSummary" type="String"/>
+  <aura:attribute name="generating" type="Boolean" default="false"/>
+  <aura:attribute name="doneGenerating" type="Boolean" default="false"/>
+  <aura:attribute name="messageText" type="String"/>
+  <aura:attribute name="refreshInterval" type="String"/>
+
+  <div class="slds-grid slds-gutters">
+    <div class="slds-col slds-size_1-of-4 slds-p-bottom--medium slds-p-top--medium">
+      <h1 class="slds-text-heading--large"><b>Generate Bills: </b></h1>
+    </div>
+  </div>
+
+  <div class="slds-grid slds-gutters slds-p-top--large slds-p-bottom--medium">
+    <div class="slds-col slds-size_2-of-4">
+      <h1 class="slds-text-heading--small slds-p-bottom--x-small">
+        SSS without Production Updates (Check that these should actually not get bills this month)
+      </h1>
+      <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+        <thead>
+        <tr class="slds-line-height_reset">
+          <th class="" scope="col">
+            <div class="slds-truncate" title="Shared Solar System">Shared Solar System:</div>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <aura:iteration items="{!v.sssWithoutProdList}" var="sss">
+          <tr class="slds-hint-parent">
+            <td class="" scope="col">
+              <a href="{!'/' + sss.Id}" target="_blank">
+              <div class="slds-truncate slds-text-color_error" title="Shared Solar System">
+                <lightning:icon class="slds-p-right--small" iconName="utility:alert" variant="error" size="small"/>
+                {!sss.Name}
+              </div>
+              </a>
+            </td>
+          </tr>
+        </aura:iteration>
+        </tbody>
+      </table>
+    </div>
+    <aura:if isTrue="{!v.generating}">
+      <div class="slds-align--absolute-center">
+        <a href="/apexpages/setup/listAsyncApexJobs.apexp"
+           target="_blank">
+          <h1 class="slds-text-heading--large slds-p-left--medium slds-p-top--x-small slds-p-bottom--x-small">
+            Bills are generating ... Check the apex jobs here
+          </h1>
+        </a>
+      </div>
+      <aura:set attribute="else">
+        <div class="slds-col slds-size_2-of-4">
+          <div class="slds-p-top--large slds-align--absolute-center">
+            <aura:if isTrue="{!v.doneGenerating}">
+              <div>
+                <h1 class="slds-text-heading--small slds-p-bottom--x-small slds-p-right--medium">Bills are done generating!</h1>
+              </div>
+              <div>
+                <lightning:button aura:id="NEXT" label="Apply Adjustments and Next" variant="brand" onclick="{!c.nextFlowStep}" />
+              </div>
+              <aura:set attribute="else">
+                <lightning:button aura:id="generateBills"
+                                  name="generateBills"
+                                  label="Generate Bills"
+                                  onclick="{!c.generateBills}"
+                                  class="slds-text-body_small slds-button--brand
+                                        slds-p-top_x-small slds-p-bottom_x-small slds-p-left_xx-large slds-p-right_xx-large">
+                  <lightning:buttonIcon name="smile" iconName="utility:smiley_and_people" size="Large" variant="bare-inverse"/>
+                  <h1 class="slds-text-heading--small slds-p-top--x-small slds-p-bottom--x-small">Generate Bills</h1>
+                </lightning:button>
+              </aura:set>
+            </aura:if>
+          </div>
+        </div>
+      </aura:set>
+    </aura:if>
+  </div>
+
+  <div class="slds-p-top--large slds-p-bottom--large">
+    <h1 class="slds-text-heading--small slds-p-bottom--x-small">SSS with Production Update This Month (Will Generate Bills)</h1>
+      <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+        <thead>
+        <tr class="slds-line-height_reset">
+          <th class="" scope="col">
+            <div class="slds-truncate" title="Shared Solar System">Shared Solar System</div>
+          </th>
+          <th class="" scope="col">
+            <div class="slds-truncate" title="Production Update">Production Update</div>
+          </th>
+          <th class="" scope="col">
+            <div class="slds-truncate" title="Bill Date">Bill Date</div>
+          </th>
+          <th class="" scope="col">
+            <div class="slds-truncate" title="Schedule Z">Schedule Z</div>
+          </th>
+          <th class="" scope="col">
+            <div class="slds-truncate" title="Start Date">Start Date</div>
+          </th>
+          <th class="" scope="col">
+            <div class="slds-truncate" title="End Date">End Date</div>
+          </th>
+          <th class="" scope="col">
+            <div class="slds-truncate" title="Total System NMCs">Total System NMCs</div>
+          </th>
+          <th class="" scope="col">
+            <div class="slds-truncate" title="Total kWh">Total kWh</div>
+          </th>
+          <th class="" scope="col">
+            <div class="slds-truncate" title="Bill Status">Bill Status</div>
+          </th>
+          <th class="" scope="col">
+            <div class="slds-truncate" title="Bills Generated">Bills Generated</div>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+          <aura:iteration items="{!v.ProdUpdateList}" var="prodUp">
+            <tr class="slds-hint-parent">
+              <td class="" scope="col">
+                <a href="{!'/' + prodUp.Shared_Solar_System__r.Id}" target="_blank">
+                <div class="slds-truncate" title="Shared Solar System">{!prodUp.Shared_Solar_System__r.Name}</div>
+                </a>
+              </td>
+              <td class="" scope="col">
+                <a href="{!'/' + prodUp.Id}" target="_blank">
+                <div class="slds-truncate" title="Production Update">{!prodUp.Name}</div>
+                </a>
+              </td>
+              <td class="" scope="col">
+                <div class="slds-truncate" title="Bill Date">{!prodUp.Date__c}</div>
+              </td>
+              <td class="" scope="col">
+                <a href="{!'/' + prodUp.Schedule_Z__r.Id}" target="_blank">
+                <div class="slds-truncate" title="Schedule Z">{!prodUp.Schedule_Z__r.Name}</div>
+                </a>
+              </td>
+              <td class="" scope="col">
+                <div class="slds-truncate" title="Start Date">{!prodUp.Billing_Period_Start_Date__c}</div>
+              </td>
+              <td class="" scope="col">
+                <div class="slds-truncate" title="End Date">{!prodUp.Billing_Period_End_Date__c}</div>
+              </td>
+              <td class="" scope="col">
+                <div class="slds-truncate" title="Total System NMCs">{!prodUp.Total_System_NMCs__c}</div>
+              </td>
+              <td class="" scope="col">
+                <div class="slds-truncate" title="Total kWh">{!prodUp.Production__c}</div>
+              </td>
+              <td class="" scope="col">
+                <div class="slds-truncate" title="Bill Status">{!prodUp.Bill_Status__c}</div>
+              </td>
+              <td class="" scope="col">
+                <aura:if isTrue="{!prodUp.Generate_Bills__c}">
+                  <lightning:icon iconName="utility:check" size="small" alternativeText="Generated"/>
+                  <aura:set attribute="else">
+                    <lightning:icon iconName="utility:event" size="small" alternativeText="Generated"/>
+                  </aura:set>
+                </aura:if>
+              </td>
+            </tr>
+          </aura:iteration>
+        </tbody>
+      </table>
+    </div>
+  <c.BillStatusComponent showNextButton="false"/>
+</aura:component>

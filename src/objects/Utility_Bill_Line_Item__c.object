@@ -69,6 +69,30 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Category__c</fullName>
+        <externalId>false</externalId>
+        <label>Category</label>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Fees &amp; Credits</fullName>
+                    <default>false</default>
+                    <label>Fees &amp; Credits</label>
+                </value>
+                <value>
+                    <fullName>Transfers</fullName>
+                    <default>false</default>
+                    <label>Transfers</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Group__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>This will group the values by 1 (Default), 2 (of 4), 3 (of 4), 4 (of 4) to sum the values of each</inlineHelpText>
@@ -82,7 +106,7 @@
                 <sorted>false</sorted>
                 <value>
                     <fullName>1 (Default)</fullName>
-                    <default>false</default>
+                    <default>true</default>
                     <label>1 (Default)</label>
                 </value>
                 <value>
@@ -125,33 +149,64 @@
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
-            <controllingField>Group__c</controllingField>
+            <controllingField>Category__c</controllingField>
+            <restricted>true</restricted>
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
-                    <fullName>Paperless Billing Credit</fullName>
+                    <fullName>Utility Fees/Tax</fullName>
                     <default>false</default>
-                    <label>Paperless Billing Credit</label>
+                    <label>Utility Fees/Tax</label>
                 </value>
                 <value>
-                    <fullName>Utility Fee</fullName>
+                    <fullName>Utility Credits</fullName>
                     <default>false</default>
-                    <label>Utility Fee</label>
+                    <label>Utility Credits</label>
+                </value>
+                <value>
+                    <fullName>US Paid to Client</fullName>
+                    <default>false</default>
+                    <label>US Paid to Client</label>
+                </value>
+                <value>
+                    <fullName>Main Transfer</fullName>
+                    <default>false</default>
+                    <label>Main Transfer</label>
+                </value>
+                <value>
+                    <fullName>US Payable to Client</fullName>
+                    <default>false</default>
+                    <label>US Payable to Client</label>
+                </value>
+                <value>
+                    <fullName>Special Transfer</fullName>
+                    <default>false</default>
+                    <label>Special Transfer</label>
                 </value>
             </valueSetDefinition>
             <valueSettings>
-                <controllingFieldValue>1 (Default)</controllingFieldValue>
-                <controllingFieldValue>2</controllingFieldValue>
-                <controllingFieldValue>3</controllingFieldValue>
-                <controllingFieldValue>4</controllingFieldValue>
-                <valueName>Paperless Billing Credit</valueName>
+                <controllingFieldValue>Fees &amp; Credits</controllingFieldValue>
+                <valueName>Utility Fees/Tax</valueName>
             </valueSettings>
             <valueSettings>
-                <controllingFieldValue>1 (Default)</controllingFieldValue>
-                <controllingFieldValue>2</controllingFieldValue>
-                <controllingFieldValue>3</controllingFieldValue>
-                <controllingFieldValue>4</controllingFieldValue>
-                <valueName>Utility Fee</valueName>
+                <controllingFieldValue>Fees &amp; Credits</controllingFieldValue>
+                <valueName>Utility Credits</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Fees &amp; Credits</controllingFieldValue>
+                <valueName>US Paid to Client</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Transfers</controllingFieldValue>
+                <valueName>Main Transfer</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Transfers</controllingFieldValue>
+                <valueName>US Payable to Client</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Transfers</controllingFieldValue>
+                <valueName>Special Transfer</valueName>
             </valueSettings>
         </valueSet>
     </fields>

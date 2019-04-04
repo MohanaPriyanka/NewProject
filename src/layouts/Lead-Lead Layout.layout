@@ -3,6 +3,7 @@
     <customButtons>Convert</customButtons>
     <customButtons>LASER_Credit_Access_Custom</customButtons>
     <excludeButtons>Convert</excludeButtons>
+    <excludeButtons>DataDotComClean</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
     <layoutSections>
         <customLabel>false</customLabel>
@@ -81,6 +82,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Contingent_Contract__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Zuora_Payment_Ref_Id_Expiration_Date__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>

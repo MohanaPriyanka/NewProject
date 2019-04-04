@@ -19,7 +19,7 @@ public class ProductService {
             startingRate = Util.roundValue(startingRate, 4 ,'HALF_UP');
             Product_Escalator__c escalator = new Product_Escalator__c (
                 Product_Escalation_Schedule__c = escalatorSchedule.Id,
-                Number_of_Credit_Transfers__c = creditTransfersBetweenPeriods * j,
+                Starting_Credit_Transfer__c = creditTransfersBetweenPeriods * j,
                 New_Solar_Electricity_Rate__c = startingRate
             );
             escalatorList.add(escalator);
@@ -29,9 +29,9 @@ public class ProductService {
 
         Product_Escalation_Schedule__c escalationSchedule = [
             SELECT Id,
-                (SELECT Id, Name, Number_of_Credit_Transfers__c, New_Solar_Electricity_Rate__c
+                (SELECT Id, Name, Starting_Credit_Transfer__c, New_Solar_Electricity_Rate__c
                 FROM Product_Escalators__r
-                ORDER BY Number_of_Credit_Transfers__c)
+                ORDER BY Starting_Credit_Transfer__c)
             FROM Product_Escalation_Schedule__c
             WHERE Id = : escalatorSchedule.Id];
         

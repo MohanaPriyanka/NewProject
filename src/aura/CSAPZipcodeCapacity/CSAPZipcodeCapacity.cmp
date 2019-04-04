@@ -4,7 +4,7 @@
   <div aria-labelledby="zipForm">
       <form class="slds-form--stacked">
         <lightning:layout horizontalAlign="center" multipleRows="true">
-          <lightning:layoutItem size="2" smallDeviceSize="2" mediumDeviceSize="2"  >
+          <lightning:layoutItem  size= "8" mediumDeviceSize="4" largeDeviceSize="2">
             <!--pressing enter inside an aura input refreshes the page!-->
             <span onkeypress="{!c.keyCheck}">
             <lightning:input aura:id="field" name="zip"
@@ -19,10 +19,10 @@
           </lightning:layoutItem>
         </lightning:layout>
         <lightning:layout horizontalAlign="end"  multipleRows="true">
-          <lightning:layoutItem padding="small" size="6" >
+          <lightning:layoutItem padding="medium" size="6" >
             <lightning:button label="Submit"
                               variant="neutral"
-                              class="slds-float_right"
+                              class="slds-float_right slds-m-top--medium"
                               onclick="{!c.onSubmit}"/>
           </lightning:layoutItem>
         </lightning:layout>

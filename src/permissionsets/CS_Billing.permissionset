@@ -189,6 +189,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>APXT_BPM__Conductor__c.Link_to_Window__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Account.Do_not_Send_Bills__c</field>
         <readable>true</readable>
@@ -805,6 +810,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>CS_Bill_Setting__c.Default_Bill_Message_for_Autopay__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>CS_Bill_Setting__c.Default_Bill_Message_for_Non_Autopay__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>ChargentOrders__Transaction__c.Client__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -826,6 +841,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Energy_Usage_Update__c.Comments_About_Host_Account_Bill__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Energy_Usage_Update__c.Count_of_Transfers__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -890,11 +910,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Energy_Usage_Update__c.Shared_Solar_System__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Energy_Usage_Update__c.Size_off_NMCs__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -921,6 +936,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Energy_Usage_Update__c.Year__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Count_of_Transfers__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1323,13 +1343,31 @@
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>CS_Bill_Setting__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>Energy_Usage_Update__c</object>
-        <viewAllRecords>true</viewAllRecords>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Shared_Solar_System__c</object>
+        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>false</allowCreate>
@@ -1362,4 +1400,8 @@
         <recordType>Energy_Usage_Update__c.Production_Update_CS</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
+    <tabSettings>
+        <tab>CS_Bill_Setting__c</tab>
+        <visibility>Available</visibility>
+    </tabSettings>
 </PermissionSet>

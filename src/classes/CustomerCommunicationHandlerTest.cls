@@ -180,7 +180,9 @@ public class CustomerCommunicationHandlerTest{
                 Annual_kWh_Maximum__c = 100000000,
                 NM_Rate_Floor__c = 0,
                 Days_In_Bill_Period__c = 20,
-                Monthly_Late_Fee__c = 1);
+                Monthly_Late_Fee__c = 1,
+                Cancellation_Paragraph_Two__c = 'Your cancellation will take up to 6 months',
+                Cancellation_Paragraph_Three__c = 'There is a termination fee');
 
             Product2 publicCSProduct = new Product2(  Name = 'BlueWave Public Offtake CS',
                 Family = 'Community Solar',
@@ -193,7 +195,8 @@ public class CustomerCommunicationHandlerTest{
                 Annual_kWh_Maximum__c = 63000,
                 NM_Rate_Floor__c = 0.09,
                 Days_In_Bill_Period__c = 20,
-                Monthly_Late_Fee__c = 0.8333);
+                Monthly_Late_Fee__c = 0.8333,
+                Cancellation_Paragraph_Two__c = 'Your cancellation is immediate');
             insert new List<Product2>{normalCSProduct, publicCSProduct};
 
             Opportunity opportunityone =
@@ -299,7 +302,7 @@ public class CustomerCommunicationHandlerTest{
                 Date__c = billDate
         );
         insert productionupdate;
-        productionUpdate.Generate_Bills__c = True;
+        TestBillCreationandPayment.runProductionUpdate(new List<Id>{productionUpdate.Id});
         update productionUpdate;
     }
 
@@ -364,7 +367,7 @@ public class CustomerCommunicationHandlerTest{
         update listaccountBills;
 
         Datetime dt = Datetime.now();
-        // Test both the scheduling of the class and the execution of the batch
+        // Test both the scheduling of the class and the batch execution
         CustomerCommunicationHandler m = new CustomerCommunicationHandler();
         Database.executeBatch(m, 10);
         String cronExpress = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';

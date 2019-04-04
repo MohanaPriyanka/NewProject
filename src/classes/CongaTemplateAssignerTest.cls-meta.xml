@@ -6,10 +6,5 @@
         <minorNumber>9</minorNumber>
         <namespace>APXTConga4</namespace>
     </packageVersions>
-    <packageVersions>
-        <majorNumber>8</majorNumber>
-        <minorNumber>14</minorNumber>
-        <namespace>APXT_BPM</namespace>
-    </packageVersions>
     <status>Active</status>
 </ApexClass>

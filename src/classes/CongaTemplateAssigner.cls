@@ -1,5 +1,6 @@
 public without sharing class CongaTemplateAssigner implements Database.Batchable<SObject>{
     public List<APXTConga4__Conga_Template__c> congaTemplateList;
+    public CS_Bill_Setting__c csBillSetting;
 
     public class TemplateKey {
         public Boolean isAutopay;
@@ -10,13 +11,9 @@ public without sharing class CongaTemplateAssigner implements Database.Batchable
         public String clientBrandKey;
     }
 
-    public CongaTemplateAssigner(Map<Id,APXT_BPM__Conductor__c> oldMap, List<APXT_BPM__Conductor__c> newList) {
-        for (APXT_BPM__Conductor__c conductor : newList) {
-            if (conductor.Assign_Templates__c && !oldMap.get(conductor.Id).Assign_Templates__c) {
-                congaTemplateList = getTemplateList();
-            }
-            break;
-        }
+    public CongaTemplateAssigner() {
+        congaTemplateList = getTemplateList();
+        csBillSetting = CSBillSettingSelector.getBillSetting();
     }
 
     public void executeBatch() {
@@ -69,6 +66,11 @@ public without sharing class CongaTemplateAssigner implements Database.Batchable
 
         for (Account_Bill__c accountBill : absToAssign){
             templateKey = abToTemplateKeyMap.get(accountBill.Id);
+            if (templateKey.isAutopay) {
+                accountBill.Bill_Message__c = csBillSetting.Default_Bill_Message_for_Autopay__c;
+            } else {
+                accountBill.Bill_Message__c = csBillSetting.Default_Bill_Message_for_Non_Autopay__c;
+            }
             for (APXTConga4__Conga_Template__c template : congaTemplates){
                 if (checkTemplateMatch(template, templateKey)){
                     accountBill.Bill_Template__c = template.Id;
@@ -80,7 +82,7 @@ public without sharing class CongaTemplateAssigner implements Database.Batchable
             }
 
             if (accountBill.Bill_Template__c == null){
-                Logger.logLater('CongaTemplateAssigner','Cannot find template','AB:' + String.valueOf(accountBill.Id)+ ' ' + String.valueOf(templateKey));
+                Logger.logLater('CongaTemplateAssigner','Cannot find template','AB:' + String.valueOf(accountBill.Id)+ ' ' + String.valueOf(templateKey), Logger.ERROR);
             }
         }
         update accountBillsToUpdate.values();

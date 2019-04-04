@@ -996,6 +996,11 @@ null)</formula>
                     <default>false</default>
                     <label>Sol-Ark</label>
                 </value>
+                <value>
+                    <fullName>Context</fullName>
+                    <default>false</default>
+                    <label>Conext</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
@@ -1061,6 +1066,11 @@ null)</formula>
                     <fullName>Fortress</fullName>
                     <default>false</default>
                     <label>Fortress</label>
+                </value>
+                <value>
+                    <fullName>FullRiver</fullName>
+                    <default>false</default>
+                    <label>FullRiver</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -1169,6 +1179,100 @@ null)</formula>
         <active>true</active>
         <label>BlueWave Solar Loan</label>
         <picklistValues>
+            <picklist>Storage_Inverter_Manufacturer__c</picklist>
+            <values>
+                <fullName>Context</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Delta</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>EnPhase</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Fronius</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>LG Chem</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Outback Power</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pika</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SMA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Schneider Electric</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sol-Ark</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SolarEdge</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Tesla</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Xantrex</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Storage_Manufacturer__c</picklist>
+            <values>
+                <fullName>Fortress</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>FullRiver</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>LG Chem</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Panasonic</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Simpliphi</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sonnen</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sunverge</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Tesla</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Trojan</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Labor_Performed__c</picklist>
             <values>
                 <fullName>Application for Building Permit</fullName>
@@ -1240,8 +1344,17 @@ null)</formula>
                 <default>false</default>
             </values>
         </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>MSLP</fullName>
+        <active>true</active>
+        <label>MSLP</label>
         <picklistValues>
             <picklist>Storage_Inverter_Manufacturer__c</picklist>
+            <values>
+                <fullName>Context</fullName>
+                <default>false</default>
+            </values>
             <values>
                 <fullName>Delta</fullName>
                 <default>false</default>
@@ -1275,10 +1388,6 @@ null)</formula>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Sol-Ark</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>SolarEdge</fullName>
                 <default>false</default>
             </values>
@@ -1294,7 +1403,7 @@ null)</formula>
         <picklistValues>
             <picklist>Storage_Manufacturer__c</picklist>
             <values>
-                <fullName>Fortress</fullName>
+                <fullName>FullRiver</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1326,11 +1435,6 @@ null)</formula>
                 <default>false</default>
             </values>
         </picklistValues>
-    </recordTypes>
-    <recordTypes>
-        <fullName>MSLP</fullName>
-        <active>true</active>
-        <label>MSLP</label>
         <picklistValues>
             <picklist>MA_Facility_Sector__c</picklist>
             <values>
@@ -1358,84 +1462,6 @@ null)</formula>
             </values>
             <values>
                 <fullName>Partial home backup</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Storage_Inverter_Manufacturer__c</picklist>
-            <values>
-                <fullName>Delta</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>EnPhase</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Fronius</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LG Chem</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Outback Power</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Pika</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Schneider Electric</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SolarEdge</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Tesla</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Xantrex</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Storage_Manufacturer__c</picklist>
-            <values>
-                <fullName>LG Chem</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Panasonic</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Simpliphi</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sonnen</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sunverge</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Tesla</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Trojan</fullName>
                 <default>false</default>
             </values>
         </picklistValues>

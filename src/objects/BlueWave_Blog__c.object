@@ -40,15 +40,14 @@
         <actionName>View</actionName>
         <type>Default</type>
     </actionOverrides>
-    <allowInChatterGroups>false</allowInChatterGroups>
+    <allowInChatterGroups>true</allowInChatterGroups>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
-    <enableActivities>false</enableActivities>
+    <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
-    <enableReports>false</enableReports>
+    <enableReports>true</enableReports>
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
@@ -68,7 +67,7 @@
         <fullName>Author__c</fullName>
         <description>List name of the author of this content</description>
         <externalId>false</externalId>
-        <inlineHelpText>List name of the author of this content</inlineHelpText>
+        <inlineHelpText>List name of the author of this content. This is the person or persons who will be identified online as writer of the article.</inlineHelpText>
         <label>Author</label>
         <length>40</length>
         <required>true</required>
@@ -178,6 +177,7 @@
     <fields>
         <fullName>Short_Description__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>What are the 1-3 main points that we want to make in the article?</inlineHelpText>
         <label>Short Description</label>
         <length>32768</length>
         <trackTrending>false</trackTrending>
@@ -230,7 +230,7 @@
             </valueSetDefinition>
         </valueSet>
     </fields>
-    <label>BlueWave Blog</label>
+    <label>BlueWave Resource Page</label>
     <listViews>
         <fullName>All</fullName>
         <columns>NAME</columns>
@@ -238,12 +238,52 @@
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
+    <listViews>
+        <fullName>Marketing_BlueWave_Blog</fullName>
+        <filterScope>Queue</filterScope>
+        <label>Marketing</label>
+        <queue>Marketing</queue>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
     <nameField>
         <label>Title</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>BlueWave Blog</pluralLabel>
-    <searchLayouts/>
+    <pluralLabel>BlueWave Resource Page</pluralLabel>
+    <searchLayouts>
+        <customTabListAdditionalFields>Author__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Business__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Type_of_Content__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Author__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Business__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Type_of_Content__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Author__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Business__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Type_of_Content__c</lookupPhoneDialogsAdditionalFields>
+        <searchFilterFields>NAME</searchFilterFields>
+        <searchFilterFields>Author__c</searchFilterFields>
+        <searchFilterFields>Business__c</searchFilterFields>
+        <searchFilterFields>Type_of_Content__c</searchFilterFields>
+        <searchResultsAdditionalFields>Author__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Business__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Type_of_Content__c</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Audience_Required</fullName>
+        <active>true</active>
+        <description>Prevents record from being created/saved with blank Audience field</description>
+        <errorConditionFormula>LEN( Audience__c ) = 0</errorConditionFormula>
+        <errorMessage>Audience is a required field</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Short_Description_Required</fullName>
+        <active>true</active>
+        <description>Requires entry in Short Description field</description>
+        <errorConditionFormula>LEN( Short_Description__c )= 0</errorConditionFormula>
+        <errorMessage>Short Description is a required field</errorMessage>
+    </validationRules>
     <visibility>Public</visibility>
 </CustomObject>
