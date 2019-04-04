@@ -4664,7 +4664,7 @@ IF(INCLUDES(  Load_Zone__c , &quot;SEMA/NEMA&quot;), &quot;SEMA/NEMA&quot;, &quo
 Soft Pull: bluewavesoft
 Hard Pull: Bluewave2</description>
         <externalId>false</externalId>
-        <inlineHelpText>Check this checkbox to pull a credit report using the Soft Pull Transunion account, instead of a the Hard Pull account</inlineHelpText>
+        <inlineHelpText>Check this checkbox to pull a credit report using the Soft Pull Transunion account. Use the Pull Credit Report checkbox for hard credit pulls.</inlineHelpText>
         <label>Soft Pull Credit Report</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
