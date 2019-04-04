@@ -49,12 +49,12 @@
                 <emptySpace>true</emptySpace>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>Shared_Solar_System__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Size_off_NMCs__c</field>
+                <behavior>Readonly</behavior>
+                <field>Billing_Method__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -346,6 +346,10 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>Category__c</fields>
+        <fields>Type__c</fields>
+        <fields>Group__c</fields>
+        <fields>Amount__c</fields>
         <relatedList>Utility_Bill_Line_Item__c.Production_Update__c</relatedList>
     </relatedLists>
     <relatedLists>
