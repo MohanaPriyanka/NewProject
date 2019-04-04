@@ -298,6 +298,21 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Production_Update__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>This is the production update to which this bill adjustment is related.  Used for production adjustments per W-008520.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the production update to which this bill adjustment is related.  Used for production adjustments.</inlineHelpText>
+        <label>Production Update</label>
+        <referenceTo>Energy_Usage_Update__c</referenceTo>
+        <relationshipLabel>Bill Adjustments</relationshipLabel>
+        <relationshipName>Bill_Adjustments</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Reason_For_Adjustment__c</fullName>
         <externalId>false</externalId>
         <label>Reason For Adjustment:</label>
