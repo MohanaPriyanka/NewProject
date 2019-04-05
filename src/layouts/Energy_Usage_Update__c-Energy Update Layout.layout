@@ -145,6 +145,7 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>Adjustment_Amount__c</fields>
         <relatedList>Bill_Adjustment__c.Production_Update__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
