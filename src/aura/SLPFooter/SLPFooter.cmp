@@ -1,7 +1,8 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" controller="SLPCustomerHandler" access="global" extends="c.BlueWaveParent">
   <aura:handler event="c:CAPNavigationEvent" action="{!c.handleNavEvent}"/>
-  <aura:attribute name="partnerFooter" type="Boolean" default="true"/>
+  <aura:attribute name="partnerFooter" type="Boolean" default="false"/>
   <aura:attribute name="lenderOfRecord" type="String"/>
+  <aura:attribute name="csap" type="Boolean" default="true"/>
 
   <div aura:id="divider" class="divider slds-align--absolute-center"/>
   <div aura:id="footerBreak" class="footerBreak slds-align--absolute-center"/>
@@ -13,6 +14,22 @@
           <ui:outputText class="slds-align--absolute-center slds-text-align--center" value="Have a question? Contact the BlueWave Support Team:"/>
         </div>
         </lightning:layoutItem>
+      <aura:if isTrue="{!v.partnerFooter}">
+        <lightning:layout multipleRows="true">
+          <lightning:layoutItem size="12" mediumDeviceSize="12" largeDeviceSize="12" class="slds-align--absolute-center">
+            <a href="mailto:partnersupport@bluewavesolar.com">
+              <ui:outputText value="partnersupport@bluewavesolar.com"/>
+            </a>
+          </lightning:layoutItem>
+          <lightning:layoutItem size="12" mediumDeviceSize="12" largeDeviceSize="12" class="slds-align--absolute-center">
+            <a href="tel:8888172703">
+              <ui:outputText  value="888-817-2703"/>
+            </a>
+          </lightning:layoutItem>
+        </lightning:layout>
+        </aura:if>
+
+      <aura:if isTrue="{!v.csap}">
         <lightning:layout multipleRows="true">
           <lightning:layoutItem size="12" mediumDeviceSize="12" largeDeviceSize="12" class="slds-align--absolute-center">
             <a href="mailto:learnmore@bluewavesolar.com">
@@ -25,11 +42,8 @@
             </a>
           </lightning:layoutItem>
         </lightning:layout>
-      <!--<div class="slds-align&#45;&#45;absolute-center">-->
-        <!---->
-        <!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
-        <!---->
-      <!--</div>-->
+      </aura:if>
+
       <aura:if isTrue="{!v.lenderOfRecord == 'Avidia'}">
         <div class="slds-align--absolute-center slds-p-top_small">
           <p class="">Loan Underwriting by: Avidia Bank - 42 Main St. Hudson, MA 01749</p>
