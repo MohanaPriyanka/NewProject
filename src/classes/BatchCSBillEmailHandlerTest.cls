@@ -105,6 +105,7 @@ private class BatchCSBillEmailHandlerTest {
         List<Case> cases = [
             SELECT Id, Subject, AccountId
             FROM Case
+            WHERE Account.Name = 'BatchCSBillTest Property Account'
         ];
         Map<Id, Case> accountToCaseMap = new Map<Id, Case>();
         for (Case aCase : cases) {
@@ -143,6 +144,7 @@ private class BatchCSBillEmailHandlerTest {
         List<Case> cases = [
             SELECT Id, Subject, AccountId
             FROM Case
+            WHERE Account.Name = 'BatchCSBillTest Property Account'
         ];
         System.assertEquals(0, cases.size());
         System.assertEquals(9, accountBills.size());
