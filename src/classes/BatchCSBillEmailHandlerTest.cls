@@ -2,28 +2,36 @@
 private class BatchCSBillEmailHandlerTest {
     // Can't use @testSetup since we need to use SeeAllData=true to exercise CommunityAPI. Otherwise, we get:
     // System.UnsupportedOperationException: ConnectApi methods are not supported in data siloed tests. Please use @IsTest(SeeAllData=true).
-    private static void setupTestData(){
+    private static void setupTestData() {
+        setupTestData(true);
+    }
+
+    private static void setupTestData(Boolean failBillSend) {
         Integer i;
         List<Account_Bill__c> abList = new List<Account_Bill__c>();
 
         Account parentAccount = new Account ( Name = 'Parent Account');
         insert parentAccount;
 
-        Account propertyAccount = new Account ( Name = 'Property Account',
+        Account propertyAccount = new Account ( Name = 'BatchCSBillTest Property Account',
                                                 Parent_Account__c = parentAccount.Id);
         insert propertyAccount;
 
         Contact contactOne = new Contact (  FirstName = 'First',
                                             LastName = 'Last',
-                                            AccountId = parentAccount.Id,
-                                            Email = 'jpentaleri@bluewavesolar.com');
+                                            AccountId = parentAccount.Id);
+        if (failBillSend) {
+            contactOne.Email = 'jpentaleri@bluewavesolar.com';
+        }
         insert contactOne;
 
 
         Contact contactTwo = new Contact (  FirstName = 'First',
                                             LastName = 'Second',
-                                            AccountId = parentAccount.Id,
-                                            Email = 'pentalerij@gmail.com');
+                                            AccountId = parentAccount.Id);
+        if (failBillSend) {
+            contactTwo.Email = 'pentalerij@gmail.com';
+        }
         insert contactTwo;
 
         propertyAccount.Send_Bills_Contact__c = contactOne.Id;
@@ -32,7 +40,7 @@ private class BatchCSBillEmailHandlerTest {
 
         for (i=0;i<9;i++) {
             Account_Bill__c abOne = new Account_Bill__c (
-                                        Name = 'Bill' + i,
+                                        Name = 'BatchCSBill' + i,
                                         Bill_Number__c = i,
                                         Parent_Account__c = propertyAccount.Id,
                                         Ready_for_Email_Send__c = true,
@@ -45,11 +53,11 @@ private class BatchCSBillEmailHandlerTest {
     @IsTest(SeeAllData=true)
     static void testSendEmails () {
         setupTestData();
-        Test.StartTest();
+        Test.startTest();
 
         InvocableCSBillEmailBatchSend.sendEmails();
 
-        Test.StopTest();
+        Test.stopTest();
 
         AsyncApexJob job = [
             SELECT Id, Status, NumberOfErrors,
@@ -66,7 +74,86 @@ private class BatchCSBillEmailHandlerTest {
         System.assertEquals(true, MessagingService.emailsSent.size() >= 9);
     }
 
-    @isTest
+    @IsTest(SeeAllData=true)
+    static void testSendEmailFailure() {
+        setupTestData(false);
+        Test.startTest();
+
+        InvocableCSBillEmailBatchSend.sendEmails();
+
+        Test.stopTest();
+
+        AsyncApexJob job = [
+            SELECT Id, Status, NumberOfErrors,
+                JobItemsProcessed,
+                TotalJobItems, CreatedBy.Email
+            FROM AsyncApexJob
+            WHERE Id =: BatchCSBillEmailHandler.batchJobId
+        ];
+
+        System.assertEquals(0, job.NumberOfErrors);
+        System.assertEquals('Completed', job.Status);
+        System.assertEquals(1, job.TotalJobItems);
+        // We'd expect failure tasks to be logged for each of the 9 account bills, and for each one,
+        // Ready for Email Send should be unchecked
+        List<Account_Bill__c> accountBills = [
+            SELECT Id, Ready_for_Email_Send__c, Parent_Account__c, Parent_Account__r.Bill_Delivery_Preference__c,
+            (SELECT Id, Subject FROM Tasks WHERE Subject LIKE 'Error:%')
+            FROM Account_Bill__c
+            WHERE Name LIKE 'BatchCSBill%'
+        ];
+        List<Case> cases = [
+            SELECT Id, Subject, AccountId
+            FROM Case
+        ];
+        Map<Id, Case> accountToCaseMap = new Map<Id, Case>();
+        for (Case aCase : cases) {
+            accountToCaseMap.put(aCase.AccountId, aCase);
+        }
+        System.assertEquals(9, cases.size());
+        System.assertEquals(9, accountBills.size());
+        for (Account_Bill__c accountBill : accountBills) {
+            System.assertEquals('Email and Paper', accountBill.Parent_Account__r.Bill_Delivery_Preference__c);
+            System.assert(accountToCaseMap.get(accountBill.Parent_Account__c) != null);
+            System.assertEquals(1, accountBill.Tasks.size());
+            System.assertEquals(false, accountBill.Ready_for_Email_Send__c);
+        }
+    }
+
+    @IsTest(SeeAllData=true)
+    static void testSendEmailFailureNoCase() {
+        setupTestData(false);
+        Account propertyAccount = [SELECT Id FROM Account WHERE Name = 'BatchCSBillTest Property Account' LIMIT 1];
+        propertyAccount.Bill_Delivery_Preference__c = 'Paper only';
+        update propertyAccount;
+        Test.startTest();
+
+        InvocableCSBillEmailBatchSend.sendEmails();
+
+        Test.stopTest();
+
+        // We'd expect failure tasks to be logged for each of the 9 account bills, and for each one,
+        // Ready for Email Send should be unchecked, but no cases should be created
+        List<Account_Bill__c> accountBills = [
+            SELECT Id, Ready_for_Email_Send__c, Parent_Account__c, Parent_Account__r.Bill_Delivery_Preference__c,
+            (SELECT Id, Subject FROM Tasks WHERE Subject LIKE 'Error:%')
+            FROM Account_Bill__c
+            WHERE Name LIKE 'BatchCSBill%'
+        ];
+        List<Case> cases = [
+            SELECT Id, Subject, AccountId
+            FROM Case
+        ];
+        System.assertEquals(0, cases.size());
+        System.assertEquals(9, accountBills.size());
+        for (Account_Bill__c accountBill : accountBills) {
+            System.assertEquals('Paper only', accountBill.Parent_Account__r.Bill_Delivery_Preference__c);
+            System.assertEquals(0, accountBill.Tasks.size());
+            System.assertEquals(false, accountBill.Ready_for_Email_Send__c);
+        }
+    }
+
+    @IsTest
     static void testAccountBillsPublishedWithoutEmails() {
         List<Account_Bill__c> abList = new List<Account_Bill__c>();
 
@@ -110,11 +197,11 @@ private class BatchCSBillEmailHandlerTest {
             abIds.add(accountBill.Id);
         }
 
-        Test.StartTest();
+        Test.startTest();
 
         InvocableCSBillEmailBatchSend.sendEmails();
 
-        Test.StopTest();
+        Test.stopTest();
 
         List<Account_Bill__c> accountBills = [
             SELECT Id, Published__c, Ready_for_Email_Send__c

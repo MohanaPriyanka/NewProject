@@ -483,6 +483,36 @@ IMAGE(&quot;/resource/1553274837000/Crown_Icon&quot;, &quot;crown&quot;),
         <visibleLines>3</visibleLines>
     </fields>
     <fields>
+        <fullName>Bill_Delivery_Preference__c</fullName>
+        <externalId>false</externalId>
+        <label>Bill Delivery Preference</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Email and Paper</fullName>
+                    <default>true</default>
+                    <label>Email and Paper</label>
+                </value>
+                <value>
+                    <fullName>Email only</fullName>
+                    <default>false</default>
+                    <label>Email only</label>
+                </value>
+                <value>
+                    <fullName>Paper only</fullName>
+                    <default>false</default>
+                    <label>Paper only</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>BillingAddress</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
