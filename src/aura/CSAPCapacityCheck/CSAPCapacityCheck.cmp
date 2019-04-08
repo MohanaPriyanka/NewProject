@@ -91,27 +91,32 @@
               </aura:if>
 
 
-              <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
 
-                <aura:if isTrue="{!v.partnerApp}">
-                  <div class="slds-align--absolute-center" >
+
+              <aura:if isTrue="{!v.partnerApp}">
+                <lightning:layoutItem class="slds-align--absolute-center slds-p-horizontal--small slds-p-top--medium" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                  <div class="slds-align--absolute-center" >`
                     <b> Consumer Disclosures</b>
                   </div>
-                  <div class="slds-align--absolute-center slds-text-align--center slds-p-horizontal--large" >
-                    Sales representatives must collect applicant's consent to the following Terms and Conditions. Check out our&nbsp;
+                </lightning:layoutItem>
+                <lightning:layoutItem class="slds-align--absolute-center slds-p-horizontal--small slds-p-bottom--medium" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                  <div class="slds-text-align--center" >
+                    Sales representatives must collect applicant's consent to the following Terms and Conditions. Check out our
                     <b><lightning:formattedUrl value="https://bluewavesolar.com/privacy-policy" target="_blank" class="slds-text-color--weak" label="Privacy Policy" tooltip="Go to Privacy Policy"/></b>
-                    &nbsp;for more details.
+                    for more details.
                   </div>
-                  <aura:set attribute="else">
+                </lightning:layoutItem>
+                <aura:set attribute="else">
+                  <lightning:layoutItem class="slds-align--absolute-center slds-p-horizontal--small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
                     <div class="slds-align--absolute-center" >
                       <b> What happens next?</b>
                     </div>
-                    <div class="slds-align--absolute-center slds-text-align--center slds-p-horizontal--large" >
+                    <div class="slds-align--absolute-center slds-text-align--center slds-p-horizontal--small slds-p-bottom--medium" >
                       We’ll review your application to ensure everything fits with the community solar farm in your area. We’ll be in touch soon to finalize your subscription and answer any questions you may have before enrolling.
                     </div>
-                  </aura:set>
-                </aura:if>
-              </lightning:layoutItem>
+                  </lightning:layoutItem>
+                </aura:set>
+              </aura:if>
               <lightning:layoutItem padding="around-medium" size="12" smallDeviceSize="12" mediumDeviceSize="12">
                 <div class="slds-align--absolute-center" >
                   <b> Terms and Conditions </b>
@@ -220,6 +225,7 @@
           <lightning:layoutItem class="slds-align_absolute-center slds-p-horizontal--large slds-text-align--center" padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
             In the meantime, check out our Support Center and Blog to learn more about BlueWave Community Solar.
           </lightning:layoutItem>
+          <!--<lightning:layoutItem size="12" largeDeviceSize="8" class="slds-grid&#45;&#45;align-center slds-align&#45;&#45;absolute-center slds-m-top&#45;&#45;medium">-->
           <lightning:layoutItem  size = "12" class="slds-align--absolute-center slds-m-top--medium">
             <div style="width: 200px">
               <a href="https://bluewavememberportal.force.com/Support/s/?_ga=2.183388271.870291340.1551394202-1521039906.1540480948">
@@ -236,6 +242,15 @@
               </a>
             </div>
           </lightning:layoutItem>
+          <!--</lightning:layoutItem>-->
+
+
+
+          <!--<b><lightning:formattedUrl value="https://bluewavesolar.com/bw-resources/blog" label="&nbsp;Blog&nbsp;" tooltip="Go to Blog"/></b>-->
+          <!--and-->
+          <!--<b><lightning:formattedUrl value="https://bluewavememberportal.force.com/Support/s/?_ga=2.183388271.870291340.1551394202-1521039906.1540480948" label="&nbsp;Resource Center&nbsp;" tooltip="Go to Knowledge Base"/></b>-->
+          <!--to learn more about BlueWave community solar.-->
+
         </lightning:layout>
       </form>
     </fieldset>

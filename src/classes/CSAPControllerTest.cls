@@ -550,7 +550,7 @@ public with sharing class CSAPControllerTest {
 
         Test.startTest();
         System.runAs(otherUser) {
-            CSAPController.upsertCSAPRecords(leadToInsert, null, null, '');
+            CSAPController.upsertCSAPRecords(leadToInsert, partner.Id, null, '');
         }
 
         Lead lead = [

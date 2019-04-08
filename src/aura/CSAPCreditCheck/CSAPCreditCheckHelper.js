@@ -14,14 +14,28 @@
         });
         $A.enqueueAction(action);
     },
-
+    checkBirthDate : function(component, event, helper) {
+        component.set("v.ShowDateError", false);
+        var errorMessage = "";
+        var lead = component.get("v.lead");
+        errorMessage += helper.getFieldError(component, {
+            'fieldValue': lead.LASERCA__Birthdate__c,
+            'fieldId': "birthdateElement",
+            'errorMessage': "Enter or check Date of Birth (format: 01/01/2000)",
+            'fieldType': 'date'
+        });
+        return errorMessage;
+    },
     checkCreditResponse : function(component, helper, returnValue) {
         var lead = component.get("v.lead");
+        console.log("Result from CSAPController: " + returnValue.sssCreditQualification );
         if (returnValue.sssCreditQualification === "Ready for Credit Check") {
             // Do not do anything, credit check is not done yet
         } else if (
             returnValue.sssCreditQualification === "Qualified" ||
             returnValue.sssCreditQualification === "Unqualified") {
+
+            console.log("Do we make it in here? ");
             lead.Status = returnValue.sssCreditQualification;
             if (returnValue.sssCreditQualification === "Qualified") {
                 if (returnValue.productList.length === 0){
@@ -40,6 +54,7 @@
             helper.saveSObject(component, lead.Id, "Lead", null, null, lead);
             helper.handleCreditCheckResponse(component, helper);
         } else {
+            console.log("Or fall here?");
             component.set('v.loading', false);
             component.set("v.creditStatusErrorText", returnValue.sssCreditQualification);
             helper.handleCreditCheckResponse(component, helper, "creditResultError");
@@ -68,6 +83,7 @@
     handleCreditCheckResponse : function(component, helper, divToShow) {
         $A.util.addClass(component.find("creditStatus"), "no-display");
         if (divToShow) {
+            console.log('Apparently we are supposed to display creditResultError here?');
             $A.util.removeClass(component.find(divToShow), "no-display");
         } else if (!component.get("v.showProgramPicklist")){
             var a = component.get("c.finishStage");
