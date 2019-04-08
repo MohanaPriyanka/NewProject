@@ -38,7 +38,7 @@
           <div class="slds-icon-eq__bar"></div>
           <span class="slds-assistive-text">Text alternative when needed</span>
         </div>
-        <div class="slds-text-body--regular slds-p-top--medium slds-align_absolute-center">
+        <div class="slds-text-body--regular slds-p-top--medium slds-text-align--center slds-align_absolute-center">
           {!v.loadingText}
         </div>
       </aura:if>
