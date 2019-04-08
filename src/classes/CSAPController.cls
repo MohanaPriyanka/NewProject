@@ -69,6 +69,7 @@ public without sharing class CSAPController {
                 creditScore = Decimal.valueOf(crList[0].LASERCA__Personal_Credit_Report__r.LASERCA__Credit_Score__c);
                 result = checkCreditReport(leadId, creditScore);
             } else {
+                //NO PCR
                 result.sssCreditQualification = 'Credit Report was returned without a credit score.';
             }
         }
@@ -555,16 +556,19 @@ public without sharing class CSAPController {
             envelopeStatus = DocuSignHelper.sendCSPackage(opportunity, 1, 1);
         } catch (Exception e) {
             // Something bad and uncaught happened, have the Lightning Component show the user the exception page
+            Logger.logLater('CSAPController', 'sendEmbeddedContract', 'Unhanded exception caught for : ' + opp.Id + '\n' + e.getMessage(), 'Error');
             Logger.flushLogs();
             return urls.OnException;
         }
         // EnvelopeStatus can be null if a callout exception was caught, which can happen for a timeout.
         if (envelopeStatus == null) {
+            Logger.logLater('CSAPController', 'sendEmbeddedContract', 'Did not expect a null Envelope Status' + opp.Id, 'Error');
             Logger.flushLogs();
             return urls.OnSessionTimeout;
         }
         // If there's something wrong with the envelope status (not sure if this can happen), redirect to an error
         if (envelopeStatus.RecipientStatuses.RecipientStatus == null) {
+            Logger.logLater('CSAPController', 'sendEmbeddedContract', 'Recipient Status for envelope was missing for ' + opp.Id, 'Error');
             Logger.flushLogs();
             return urls.OnException;
         }
@@ -598,9 +602,9 @@ public without sharing class CSAPController {
             Logger.logLater('CSAPController', 'sendEmbeddedContract', 'Successfully got a embedded DocuSign link for ' +
                 opp.Id + ': ' + signerViewURL, 'Info');
 
-        } catch (CalloutException e) {
+        } catch (Exception e) {
             signerViewURL = urls.OnException;
-            Logger.logNow('CSAPController', 'sendEmbeddedContract', e.getMessage(), 'Error');
+            Logger.logNow('CSAPController', 'sendEmbeddedContract', 'Exception caught for ' + opp.Id + '\n' + e.getMessage(), 'Error');
         }
         Logger.flushLogs();
         return signerViewURL;

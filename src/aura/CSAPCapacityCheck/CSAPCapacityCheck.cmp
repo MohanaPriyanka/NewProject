@@ -95,7 +95,7 @@
 
               <aura:if isTrue="{!v.partnerApp}">
                 <lightning:layoutItem class="slds-align--absolute-center slds-p-horizontal--small slds-p-top--medium" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-                  <div class="slds-align--absolute-center" >`
+                  <div class="slds-align--absolute-center" >
                     <b> Consumer Disclosures</b>
                   </div>
                 </lightning:layoutItem>

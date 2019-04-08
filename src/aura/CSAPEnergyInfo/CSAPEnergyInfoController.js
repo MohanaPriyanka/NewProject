@@ -76,6 +76,7 @@
         component.set("v.page", "UtilityAccountInformation");
     },
 
+    //finishStage :
     submitEnergyInfo :  function(component, event, helper) {
         if(helper.validatePageFields(component)){
             var ual = component.get("v.ual");
@@ -130,6 +131,7 @@
              })
              $A.enqueueAction(action);
          }
+
 
         }
     },

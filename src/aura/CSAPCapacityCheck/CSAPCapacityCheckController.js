@@ -20,7 +20,7 @@
                     "leadId": lead.Id
                 });
                 hasAvailableCapacityAction.setCallback(this, function(actionResult) {
-                    if (actionResult.getReturnValue() != null) {
+                    if (actionResult.getReturnValue() !== null) {
                         var hasAvailableCapacity = actionResult.getReturnValue();
                         if (hasAvailableCapacity) {
                             helper.saveSObject(component, lead.Id, "Lead", "Status", "Qualified").then(
@@ -29,7 +29,7 @@
                                     component.set("v.hasCapacity", "Yes");
                                     $A.util.addClass(component.find("greatNews"), 'pulse');
                                 }));
-                        } else if (!hasAvailableCapacity && lead.Application_Source_Phase_2__c != null) {
+                        } else if (!hasAvailableCapacity && lead.Application_Source_Phase_2__c !== null) {
                             var delaySkipToEnd = component.get('c.delaySkipToEnd');
                             helper.saveSObject(component, lead.Id, "Lead", "Status", "Waitlist").then(
                                 $A.getCallback(function resolve() {

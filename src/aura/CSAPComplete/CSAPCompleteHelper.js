@@ -22,7 +22,7 @@
             });
             $A.enqueueAction(action);
         }).then(
-            $A.getCallback(function(resolve, reject) {
+            $A.getCallback(function() {
                 var sendDocuSign = component.get('c.sendEmbeddedContract');
                 sendDocuSign.setParams({
                     'lead': component.get('v.lead')
@@ -30,7 +30,6 @@
                 sendDocuSign.setCallback(this, function(docuSignResp) {
                     if (docuSignResp.getState() !== "SUCCESS") {
                         helper.logError("CSAPCompleteHelper", "sendEmbeddedContract", docuSignResp.getError(), component.get("v.lead"));
-                        reject();
                     } else {
                         if ($A.get('$Browser.formFactor') === 'DESKTOP') {
                             component.set('v.loading', false);
@@ -43,7 +42,6 @@
                         } else {
                             window.open(docuSignResp.getReturnValue());
                         }
-                        resolve();
                     }
                 });
                 $A.enqueueAction(sendDocuSign);
