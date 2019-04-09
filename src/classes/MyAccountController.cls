@@ -293,8 +293,6 @@ public without sharing class MyAccountController {
                     WHERE CS_Referral_Status__c = 'Default CS Partner'
                     LIMIT 1
                 ];
-            } else if ( partnerId == '') {
-                //TESTING BRANCH CHANGES HERE
             } else {
                 partner = [
                     SELECT Id, Email__c, Default_Sales_Rep__c, Default_Sales_Rep__r.Name, Name
