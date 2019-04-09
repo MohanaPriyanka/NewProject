@@ -1326,7 +1326,7 @@ New Charges...</inlineHelpText>
 &quot;&amp;MFTS0=Ready_for_Email_Send__c&quot; + 
 &quot;&amp;MFTSValue0=&quot; + IF(Parent_Account__r.Do_not_Send_Bills__c=true,&quot;false&quot;,&quot;true&quot;) + 
 &quot;&amp;MFTS1=Ready_for_Paper_Bill_Queue__c&quot; + 
-&quot;&amp;MFTSValue1=&quot; + IF(OR(Parent_Account__r.Opt_Out_of_Paper_Billing__c=true,Parent_Account__r.Do_not_Send_Bills__c=true),&quot;false&quot;,&quot;true&quot;) + 
+&quot;&amp;MFTSValue1=&quot; + IF(OR(ISPICKVAL(Parent_Account__r.Bill_Delivery_Preference__c,&quot;Email Only&quot;),Parent_Account__r.Do_not_Send_Bills__c=true),&quot;false&quot;,&quot;true&quot;) + 
 &quot;&amp;MFTS2=Bill_PDF_Page_Count__c&quot; + 
 &quot;&amp;MFTSValue2=PDF_PAGE_COUNT&quot; + 
 &quot;&amp;qmode=SalesforceFile&quot;</formula>
