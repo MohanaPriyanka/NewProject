@@ -189,7 +189,6 @@ public without sharing class CSAPController {
         return partnerApp;
     }
 
-
     @AuraEnabled
     public static Lead upsertCSAPRecords(Lead lead, String partnerId, String salesRepId, String referralCode){
         Partner__c customerPartner = MyAccountController.getPartner(partnerId);
