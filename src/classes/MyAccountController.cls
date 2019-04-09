@@ -286,12 +286,21 @@ public without sharing class MyAccountController {
         Partner__c partner = new Partner__c();
 
         try{
-            partner = [
-                SELECT Id, Email__c, Default_Sales_Rep__c, Default_Sales_Rep__r.Name, Name
-                FROM Partner__c
-                WHERE Id = :partnerId
-                LIMIT 1
-            ];
+            if (partnerId == null){
+                partner = [
+                    SELECT Id, Email__c, Default_Sales_Rep__c, Default_Sales_Rep__r.Name, Name
+                    FROM Partner__c
+                    WHERE CS_Referral_Status__c = 'Default CS Partner'
+                    LIMIT 1
+                ];
+            } else {
+                partner = [
+                    SELECT Id, Email__c, Default_Sales_Rep__c, Default_Sales_Rep__r.Name, Name
+                    FROM Partner__c
+                    WHERE Id = :partnerId
+                    LIMIT 1
+                ];
+            }
         } catch (QueryException e){
             Logger.logNow('MyAccountController', 'getPartner', 'Unable to find partner with Id: ' + partnerId);
             partner = [
