@@ -189,18 +189,6 @@ public without sharing class CSAPController {
         return partnerApp;
     }
 
-    @AuraEnabled
-    public static String getCSApplicationURL() {
-
-        //Should return the Default CS Partner Id - CS Self-Originations
-        String partnerId = MyAccountController.getPartner(null).Id;
-
-        String appURL = URL.getSalesforceBaseUrl().toExternalForm() + '/apply/s/csap?partnerId=' + partnerId;
-
-        return appURL;
-
-
-    }
 
     @AuraEnabled
     public static Lead upsertCSAPRecords(Lead lead, String partnerId, String salesRepId, String referralCode){
