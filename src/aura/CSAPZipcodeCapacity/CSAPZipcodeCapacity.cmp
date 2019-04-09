@@ -1,5 +1,6 @@
 <aura:component controller="CSAPController" access="global" extends="c:CSAPParent" implements="forceCommunity:availableForAllPageTypes">
-  <aura:attribute name="hasCapacity" type="boolean" default="false" />
+  <aura:attribute name="hasCapacity" type="boolean" default="null"/>
+  <aura:attribute name="checkedCapacity" type="boolean"/>
   <aura:attribute name="zipcode" type="string"/>
   <div aria-labelledby="zipForm">
       <form class="slds-form--stacked">
@@ -8,7 +9,7 @@
             <!--pressing enter inside an aura input refreshes the page!-->
             <span onkeypress="{!c.keyCheck}">
             <lightning:input aura:id="field" name="zip"
-                             label="ZIP Code:"
+                             label="Service ZIP Code:"
                              class="slds-align_absolute-center"
                              value="{!v.zipcode}"
                              required="true"
@@ -18,11 +19,11 @@
             </span>
           </lightning:layoutItem>
         </lightning:layout>
-        <lightning:layout horizontalAlign="end"  multipleRows="true">
-          <lightning:layoutItem padding="medium" size="6" >
+        <lightning:layout multipleRows="true">
+          <lightning:layoutItem padding="medium" size="6" class="slds-align--absolute-center">
             <lightning:button label="Submit"
                               variant="neutral"
-                              class="slds-float_right slds-m-top--medium"
+                              class="slds-align--absolute-center slds-m-top--medium"
                               onclick="{!c.onSubmit}"/>
           </lightning:layoutItem>
         </lightning:layout>
