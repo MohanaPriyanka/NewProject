@@ -66,7 +66,7 @@
             <name>Case_Close_Email_Alert_to_Customer</name>
             <type>Alert</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <formula>AND( ISCHANGED(IsClosed),        IsClosed = TRUE,        OR( ISPICKVAL(Origin,  &quot;Email&quot;),           ISPICKVAL(Origin,  &quot;Web&quot;)),      CreatedDate &gt; DATETIMEVALUE(DATE(2017,05,09)),      RecordType.Id !=&quot;012j00000000HA8AAM&quot;,       Disable_Followup_Email__c = true,      SuppliedEmail != &apos;mailer-daemon@salesforce.com&apos;  )</formula>
         <triggerType>onAllChanges</triggerType>
     </rules>
@@ -76,7 +76,7 @@
             <name>Case_Close_Email_Alert_to_Customer_Phone</name>
             <type>Alert</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <formula>AND( ISCHANGED(IsClosed), IsClosed = TRUE,  ISPICKVAL(Origin,  &quot;Phone&quot;), NOT(ISNULL(ContactId)),  CreatedDate &gt; DATETIMEVALUE(DATE(2017,05,09)) , RecordType.Id!=&quot;0120a0000004XZw&quot;, Disable_Followup_Email__c!=true)</formula>
         <triggerType>onAllChanges</triggerType>
     </rules>
@@ -86,7 +86,7 @@
             <name>Partner_Case_Close_Email</name>
             <type>Alert</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <formula>AND( ISCHANGED(IsClosed), 
      IsClosed = TRUE,  
      ISPICKVAL(Origin,  &quot;Email&quot;),   
@@ -102,7 +102,7 @@
             <name>Case_Open_Email_Alert</name>
             <type>Alert</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <formula>AND( ISCHANGED(ContactId), IsClosed = FALSE,  ISPICKVAL(Origin,  &quot;Phone&quot;), NOT(ISNULL(ContactId)),  CreatedDate &gt; DATETIMEVALUE(DATE(2017,05,09)))</formula>
         <triggerType>onAllChanges</triggerType>
     </rules>
