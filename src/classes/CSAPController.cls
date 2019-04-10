@@ -179,7 +179,6 @@ public without sharing class CSAPController {
     public static Boolean checkApplicationPartner(String partnerId){
         Boolean partnerApp;
         Partner__c customerPartner = MyAccountController.getPartner(partnerId);
-
         //Set boolean based on BIS (and BlueWave Test Partner?) or Partner to determine application process
         if (customerPartner.Name == 'BlueWave Inside Sales' || customerPartner.Name == 'BlueWave Test Partner'){
             partnerApp = false;
