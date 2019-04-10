@@ -398,6 +398,28 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Conga_Conductor_CS_Partner_Update_NY__c</fullName>
+        <externalId>false</externalId>
+        <formula>&quot;&amp;solmgr=1&quot; + 
+&quot;&amp;Id=&quot; + Id + 
+&quot;&amp;QueryId=[QC]{!Environment.VAR_CONGA_NY_QC_TASK},[Opps]{!Environment.VAR_CONGA_NY_OPPS}, [DQLead]{!Environment.VAR_CONGA_QUERY_NY_CS_DQ_LEADS}, [Referrals]{!Environment.VAR_CONGA_QUERY_REFERRAL}, [Expired]{!Environment.VAR_CONGA_QUERY_NY_EXPIRED_OPPS}, [Complete]{!Environment.VAR_CONGA_QUERY_NY_COMPLETED_OPPS}&quot; + 
+&quot;&amp;TemplateId={!Environment.VAR_CONGA_TEMPLATE_NY_DAILY_CS}&quot; + 
+&quot;&amp;CongaEmailTemplateId={!Environment.VAR_CONGA_EMAIL_TEMPLATE_CS_DAILY_REPORT}&quot; + 
+&quot;&amp;EmailAdditionalTo=&quot; + Email__c + 
+&quot;&amp;ofn=&quot; + Name + &quot; &quot; + &quot;NY Community Solar Update Report&quot; + &quot; &quot; + TEXT(TODAY()) + 
+&quot;&amp;qmode=SendEmail&quot; + 
+&quot;&amp;SC0=1&quot; + 
+&quot;&amp;SC1=Attachments&quot; + 
+&quot;&amp;emailcc=&quot; + Additional_CC_Email__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Conga_Conductor_CS_Partner_Update_NY</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Conga_Conductor_CS_Partner_Update__c</fullName>
         <description>for conga conductor</description>
         <externalId>false</externalId>
