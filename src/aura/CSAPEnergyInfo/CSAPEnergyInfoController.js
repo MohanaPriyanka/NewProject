@@ -81,6 +81,7 @@
         if(helper.validatePageFields(component)){
             var ual = component.get("v.ual");
             var lead = component.get("v.lead");
+            var partnerApp = component.get("v.partnerApp");
 
 
             if (ual.Lead__c == null){
@@ -89,7 +90,10 @@
 
             var utility = component.get('v.utility');
             ual.Utility__c = utility.Id;
-            ual.Annual_kWh__c = 8000;
+
+            if (!partnerApp) {
+                ual.Annual_kWh__c = 8000;
+            }
 
             if (component.get("v.sameAddress")){
                 ual.Service_Address__c = lead.LASERCA__Home_Address__c;

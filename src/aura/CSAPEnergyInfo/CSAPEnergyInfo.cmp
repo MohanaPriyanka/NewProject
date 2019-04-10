@@ -54,18 +54,28 @@
                                    disabled="true"
                                    required="true"/>
                 </lightning:layoutItem>
-                <aura:if isTrue="{!and(v.rateClasses.length > 0, not(v.partnerApp))}">
+                <aura:if isTrue="{!!v.partnerApp}">
+                  <aura:if isTrue="{!v.rateClasses.length > 0}">
+                    <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6" >
+                      <lightning:select aura:id="field" name="ualRateClass"
+                                        label="Rate Class"
+                                        value="{!v.ual.Utility_Rate_Class__c}"
+                                        required="true">
+                        <option value="">Choose Rate Class</option>
+                        <aura:iteration items="{!v.rateClasses}" var="rateClass">
+                          <option value="{!rateClass.Id}">{!rateClass.Name}</option>
+                        </aura:iteration>
+                        <option value="Rate Class Not in List">Rate Class Not in List</option>
+                      </lightning:select>
+                    </lightning:layoutItem>
+                  </aura:if>
                   <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6" >
-                    <lightning:select aura:id="field" name="ualRateClass"
-                                     label="Rate Class"
-                                     value="{!v.ual.Utility_Rate_Class__c}"
-                                     required="true">
-                      <option value="">Choose Rate Class</option>
-                      <aura:iteration items="{!v.rateClasses}" var="rateClass">
-                        <option value="{!rateClass.Id}">{!rateClass.Name}</option>
-                      </aura:iteration>
-                      <option value="Rate Class Not in List">Rate Class Not in List</option>
-                    </lightning:select>
+                    <lightning:input aura:id="field" name="ualAnnualkWhUsed"
+                                     type="number"
+                                     label="How many kWh do you use in a year?"
+                                     value="{!v.ual.Annual_kWh__c}"
+                                     placeholder="Annual kWh"
+                                     required="true"/>
                   </lightning:layoutItem>
                 </aura:if>
                 <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6" >
@@ -83,13 +93,13 @@
                                    required="true"/>
                 </lightning:layoutItem>
                 <lightning:layoutItem padding="around-small" size="12" >
-                 <ui:inputCheckbox aura:id="checkbox" class='slds-p-horizontal--medium slds-float--left' change="{!c.handleChange}"/>
+                  <ui:inputCheckbox aura:id="checkbox" class='slds-p-horizontal--medium slds-float--left' change="{!c.handleChange}"/>
                   <label for="checkbox" class="slds-p-left--small ">Service Address is same as Billing Address</label>
                 </lightning:layoutItem>
               </lightning:layout>
 
-                <aura:if isTrue="{!!v.sameAddress}">
-                  <lightning:layout multipleRows="true">
+              <aura:if isTrue="{!!v.sameAddress}">
+                <lightning:layout multipleRows="true">
                   <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6">
                     <lightning:input aura:id="field" name="ualServiceAddress"
                                      label="Service Address"
@@ -121,8 +131,8 @@
                                      disabled="true"
                                      required="true"/>
                   </lightning:layoutItem>
-                  </lightning:layout>
-                </aura:if>
+                </lightning:layout>
+              </aura:if>
               <div class="slds-clearfix slds-p-top_medium">
                 <div class="slds-float_left">
                 </div>
@@ -144,23 +154,23 @@
             </legend>
             <lightning:layout multipleRows="true" horizontalAlign="center">
               <lightning:layoutItem size="3" smallDeviceSize="6" mediumDeviceSize="3">
-              <aura:if isTrue="{!v.lead.Status == 'Qualified'}">
-                <div class="slds-visual-picker slds-visual-picker_large">
-                  <a onclick="{!c.addUAL}">
-                    <label for="visual-picker-add-utility">
+                <aura:if isTrue="{!v.lead.Status == 'Qualified'}">
+                  <div class="slds-visual-picker slds-visual-picker_large">
+                    <a onclick="{!c.addUAL}">
+                      <label for="visual-picker-add-utility">
                     <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">
                       <span class="slds-icon_container" title="description of icon when needed">
                         <lightning:icon class="blueIcon" iconName="utility:light_bulb" size="x-large"/>
                       </span>
                     </span>
-                      <span class="slds-visual-picker__body">
+                        <span class="slds-visual-picker__body">
                       <div class="slds-text-body--large--blue"><b>Add another utility to </b></div>
                       <div class="slds-text-body--large--stream"><b>{!v.lead.Company}</b></div>
                     </span>
-                    </label>
-                  </a>
-                </div>
-              </aura:if>
+                      </label>
+                    </a>
+                  </div>
+                </aura:if>
               </lightning:layoutItem>
             </lightning:layout>
           </fieldset>
