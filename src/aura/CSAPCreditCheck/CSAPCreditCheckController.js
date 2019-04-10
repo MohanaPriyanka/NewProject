@@ -67,7 +67,9 @@
     finishStage : function(component, event, helper) {
         var lead = component.get("v.lead");
         helper.saveSObject(component, lead.Id, 'Lead', 'Product__c', lead.Product__c);
+        //why do we set the programType here?
         component.set('v.programType', 'SREC');
+        //When are we setting creditStatusErrorText?
         if (lead.Status === "Qualified" && component.get("v.creditStatusErrorText") === undefined) {
             helper.finishStage(component, event, helper);
         } else {

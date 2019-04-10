@@ -17,22 +17,22 @@
                                                                 BlueWave will inform me. They will then provide the name and address
                                                                 of the consumer reporting agency that provided the information."/>
 
-  <aura:attribute name="partnerTermsConditions" type="String" default="By checking the “I Agree” box below, you are agreeing to BlueWave's
-                                                                Privacy Policy.  You are also granting BlueWave permission to perform
-                                                                a soft pull of your credit history (which will NOT impact your credit
-                                                                score), to use your credit history to process your application and for
-                                                                any other lawful purpose, to access your electric utility billing history,
-                                                                and to contact you via the phone number provided on this application.
-                                                                By checking the box, you also acknowledge your understanding that if you
-                                                                 ask BlueWave whether it checked your credit, BlueWave will tell you,
-                                                                 and if it did, provide the name and address of the consumer reporting
-                                                                 agency that provided the information.  You also acknowledge that this is
-                                                                 an application only and consummation of this transaction does not occur
-                                                                 upon the placement of your electronic signature on this contract; rather
-                                                                 consummation occurs (meaning that there is an executed agreement between
-                                                                 BlueWave and you) after BlueWave verifies your eligibility, approves the
-                                                                 document that you have electronically signed, and returns the contract to
-                                                                 you with its countersignature."/>
+  <aura:attribute name="partnerTermsConditions" type="String" default="By checking this box, you are agreeing to BlueWave's Privacy Policy.
+                                                               You are also granting BlueWave permission to perform a soft pull of
+                                                               your credit history (which will NOT impact your credit score), to use
+                                                               your credit history to process your application and for any other lawful
+                                                               purpose, to access your electric utility billing history, and to contact
+                                                               you via the phone number provided on this application. By checking the
+                                                               box, you also acknowledge your understanding that if you ask BlueWave
+                                                               whether it checked your credit, BlueWave will tell you, and if it did,
+                                                               provide the name and address of the consumer reporting agency that
+                                                               provided the information. You also acknowledge that this is an
+                                                               application only and consummation of this transaction does not occur
+                                                               upon the placement of your electronic signature on this contract; rather
+                                                               consummation occurs (meaning that there is an executed agreement between
+                                                               BlueWave and you) after BlueWave verifies your eligibility, approves
+                                                               the document that you have electronically signed, and returns the
+                                                               contract to you with its countersignature."/>
   <aura:set attribute="STAGENAME" value="NAV_Capacity_Check"/>
   <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
   <ltng:require styles="{!$Resource.animations}"/>
@@ -102,7 +102,7 @@
                 <lightning:layoutItem class="slds-align--absolute-center slds-p-horizontal--small slds-p-bottom--medium" size="12" smallDeviceSize="12" mediumDeviceSize="12">
                   <div class="slds-text-align--center" >
                     Sales representatives must collect applicant's consent to the following Terms and Conditions. Check out our
-                    <b><lightning:formattedUrl value="https://bluewavesolar.com/privacy-policy" target="_blank" class="slds-text-color--weak" label="Privacy Policy" tooltip="Go to Privacy Policy"/></b>
+                    <lightning:formattedUrl value="https://bluewavesolar.com/privacy-policy" target="_blank" label="Privacy Policy" tooltip="Go to Privacy Policy"/>
                     for more details.
                   </div>
                 </lightning:layoutItem>
@@ -225,7 +225,6 @@
           <lightning:layoutItem class="slds-align_absolute-center slds-p-horizontal--large slds-text-align--center" padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
             In the meantime, check out our Support Center and Blog to learn more about BlueWave Community Solar.
           </lightning:layoutItem>
-          <!--<lightning:layoutItem size="12" largeDeviceSize="8" class="slds-grid&#45;&#45;align-center slds-align&#45;&#45;absolute-center slds-m-top&#45;&#45;medium">-->
           <lightning:layoutItem  size = "12" class="slds-align--absolute-center slds-m-top--medium">
             <div style="width: 200px">
               <a href="https://bluewavememberportal.force.com/Support/s/?_ga=2.183388271.870291340.1551394202-1521039906.1540480948">
@@ -242,14 +241,6 @@
               </a>
             </div>
           </lightning:layoutItem>
-          <!--</lightning:layoutItem>-->
-
-
-
-          <!--<b><lightning:formattedUrl value="https://bluewavesolar.com/bw-resources/blog" label="&nbsp;Blog&nbsp;" tooltip="Go to Blog"/></b>-->
-          <!--and-->
-          <!--<b><lightning:formattedUrl value="https://bluewavememberportal.force.com/Support/s/?_ga=2.183388271.870291340.1551394202-1521039906.1540480948" label="&nbsp;Resource Center&nbsp;" tooltip="Go to Knowledge Base"/></b>-->
-          <!--to learn more about BlueWave community solar.-->
 
         </lightning:layout>
       </form>
