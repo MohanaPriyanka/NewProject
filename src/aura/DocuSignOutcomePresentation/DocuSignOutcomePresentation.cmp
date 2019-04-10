@@ -5,13 +5,18 @@
   <aura:if isTrue="{!v.docuSignEventType == 'signing_complete'}">
     <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
       <legend id="completeApplication" class="slds-text-heading--medium slds-p-vertical--medium slds-align_absolute-center">
-        <b class="slds-p-horizontal_large"> Congratulations! </b>
+        <b class="slds-p-horizontal_large"> Application Complete! </b>
       </legend>
       <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
-        Your Community Solar application is now complete!
+        Your Community Solar application is now complete and under final review!
       </div>
       <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
-        We will email you your contract once BlueWave has finished processing your application!
+        We sent a copy of your agreement to the email address provided in the application. If your application is approved
+        based on our eligibility requirements, we will email you the final signed agreement along with other
+        important information about your subscription.
+      </div>
+      <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
+        Stay tuned, and thank you for choosing BlueWave Community Solar!
       </div>
     </fieldset>
   </aura:if>
@@ -21,7 +26,7 @@
         <b class="slds-p-horizontal_large"> Sorry you declined! </b>
       </legend>
       <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
-        We'd love to hear from you about why you declined the contract
+        We'd love to hear from you about why you declined the contract.
       </div>
       <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
         Please let us know more at the number or email below!
@@ -99,7 +104,7 @@
         <b class="slds-p-horizontal_large"> Fax Pending! </b>
       </legend>
       <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
-        Your contract is pending a fax
+        Your contract is pending a fax.
       </div>
       <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
         If you have any questions, please contact us at the number or email below!

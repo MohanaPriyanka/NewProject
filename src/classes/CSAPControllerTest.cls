@@ -496,6 +496,23 @@ public with sharing class CSAPControllerTest {
 
     }
 
+    @isTest static void testcheckApplicationPartner() {
+        Lead lead = getLeadForTest();
+        insert lead;
+
+        Lead checkLead = [
+            SELECT Id, Partner_Lookup__r.Id
+            FROM Lead
+            WHERE Email = 'testymctesterson@tester.com'
+        LIMIT 1 ];
+
+        Test.startTest();
+        Boolean partnerApp = CSAPController.checkApplicationPartner(checkLead.Partner_Lookup__r.Id);
+        System.assertEquals(false, partnerApp);
+        Test.stopTest();
+
+    }
+
     @IsTest static void testSLPortalCSAPApplication() {
         Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Community Login User (Custom)'];
 
@@ -550,7 +567,7 @@ public with sharing class CSAPControllerTest {
 
         Test.startTest();
         System.runAs(otherUser) {
-            CSAPController.upsertCSAPRecords(leadToInsert, null, null, '');
+            CSAPController.upsertCSAPRecords(leadToInsert, partner.Id, null, '');
         }
 
         Lead lead = [

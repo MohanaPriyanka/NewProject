@@ -87,6 +87,7 @@
                     label="Routing Number:"
                     minlength="9"
                     maxlength="9"
+                    messageWhenTooShort="Please enter a 9-digit routing number."
                     value="{!v.chOrder.ChargentOrders__Bank_Routing_Number__c}"
                     required="true"/>
                 </lightning:layoutItem>
@@ -220,8 +221,28 @@
                 <fieldset class="slds-box slds-theme--default slds-p-top_medium slds-container--medium slds-p-top_medium">
                   <div class="slds-p-left_small slds-p-right_small">
                     <div class="slds-text-body_small slds-text-color_default">
-                      I hereby authorize BlueWave or its servicer(s) to initiate debit entries (ACH) on my bank account or automatically charge the credit card I designate in this form. I understand that any debit entry from my account that is returned unpaid may be collected in the same manner as an unpaid paper check. I understand that the monthly payment amount debited from my bank account may vary from month to month based on variable generation from my Shared Solar System.
-                      My authorization for debit entries to my designated bank account shall remain in full force and effect until BlueWave or its servicer(s) has received written notification from me at least thirty (30) days in advance of my intent to change or cancel this Authorization for pre-arranged payments. I hereby release BlueWave or its servicer(s) from any and all claims resulting from this authorization.
+                      I understand that by checking “I Agree,”I am signing this payment authorization with an electronic
+                      signature and authorizing BlueWave or its servicer(s) to initiate monthly debit entries (ACH) on
+                      my bank account or monthly charges to my credit card account designated above, in the amount shown
+                      on my monthly billing statement each month, on or after the payment due date shown on my statement.
+                      If any payment date falls on a weekend or holiday, I understand and agree that the payment may be
+                      executed on the next business day.  If necessary, I also authorize BlueWave or its servicer(s) to
+                      initiate one-time credit or debit transactions to correct any erroneous payment transaction.  I
+                      also authorize BlueWave or its servicer(s) to (a) initiate a one-time transaction to collect a fee
+                      of $0 if any payment is rejected by my bank for any reason (such as insufficient funds), (b) to
+                      collect any late fee due under my community solar agreement, or (c) to collect any early termination
+                      fee due under my community solar agreement. I understand that any debit entry from my account that
+                      is returned unpaid may be collected in the same manner as an unpaid paper check. I understand that
+                      the monthly payment amount debited from my bank account may vary from month to month based on variable
+                      generation from the solar project. This authorization will remain in effect until all amounts I owe
+                      BlueWave in connection with my community solar agreement have been paid in full or I cancel this
+                      authorization in writing by providing notice of cancellation to BCS Customer Management, LLC, at
+                      111 Huntington Avenue, Suite 650, Boston, MA 02199. I agree to notify you in writing of any changes
+                      in my account information or termination of this authorization at least three (3) business days
+                      prior to the next billing date. I certify that I am an authorized signer of the deposit account or
+                      an authorized user of the credit card account identified above, and that I will not dispute any payment
+                      initiated by BlueWave or its servicer(s), provided that the transaction corresponds to the terms of
+                      this authorization.
                     </div>
                     <div class="slds-p-top_medium">
                       <h3 class="slds-text-body_small slds-text-color_default">
