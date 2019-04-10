@@ -4,12 +4,13 @@
         component.set("v.page", "AboutYourself");
         var leadId = component.get("v.leadId");
 
-        if (leadId != null && leadId != '' && leadId != undefined) {
+
+        if (leadId !== null && leadId !== '' && leadId !== undefined) {
             component.set("v.page","Login");
             component.set("v.loading", false);
         }
 
-        if (component.get("v.page") == 'AboutYourself') {
+        if (component.get("v.page") === 'AboutYourself') {
             component.set("v.loading", false);
 
             if (component.get("v.abbrevStates") && component.get("v.abbrevStates").length === 0) {
@@ -28,11 +29,11 @@
     },
     goToCheckCapacity : function(component, event, helper) {
         var lead = component.get("v.lead");
-        if(helper.validatePageFields(component) && lead.LASERCA__Home_State__c != null && lead.LASERCA__Home_State__c != ''){
+        if(helper.validatePageFields(component) && lead.LASERCA__Home_State__c !== null && lead.LASERCA__Home_State__c !== ''){
             component.set('v.loading', true);
             component.set("v.loadingText", "Locating your address...");
 
-            //checks initial Capacity using Capacity Service
+            //checks initial Capacity (if there is a project for the ZIP) using Capacity Service
             var action = component.get("c.hasCapacity");
             var serviceZip = lead.Parcel_Zip__c;
             action.setParams({'zipcode': serviceZip});
@@ -52,7 +53,8 @@
             helper.processLead(component, event, helper);
             helper.upsertRecords(component, event, helper);
 
-            //Once hasCapacity is processed, we know if we can continue the application ( available capacity check is later) or end
+            //Once hasCapacity is processed, we know if we can continue the application (available capacity check is later)
+
 
         }
     },
@@ -78,6 +80,14 @@
             var lead = component.get('v.lead');
             var stageName = "NAV_Payment_Information";
             helper.closePageFireComplete(component, helper, stageName, lead);
+        }
+    },
+
+
+    checkForEnter : function(component, event, helper) {
+        if (event.which === 13) {
+            event.preventDefault();
+            helper.login(component, event, helper);
         }
     },
 

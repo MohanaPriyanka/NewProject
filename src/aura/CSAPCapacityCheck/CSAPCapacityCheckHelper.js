@@ -45,6 +45,22 @@
         helper.uploadFiles(component, files, parentId, helper.showUploadSuccess, description, helper);
     },
 
+    storeTermsConditions : function(component, event, helper) {
+        var lead = component.get('v.lead');
+        var termsConditions;
+        if (component.get("v.partnerApp")) {
+            termsConditions = component.get("v.partnerTermsConditions");
+        } else {
+            termsConditions = component.get("v.termsConditions");
+        }
+        console.log("are we updating the lead: " + component.get("v.initials"));
+        var today = new Date();
+        lead.Acknowledged_Customer_Initials__c = component.get("v.initials");
+        lead.Terms_Conditions_Acknowledged__c = new Date();
+        lead.Terms_Conditions__c = termsConditions;
+
+    },
+
     clearAttachments : function(component, event, helper){
         component.set("v.electricBill1", "");
         component.set('v.isLargeFile', false);

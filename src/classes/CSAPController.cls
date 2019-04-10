@@ -69,6 +69,7 @@ public without sharing class CSAPController {
                 creditScore = Decimal.valueOf(crList[0].LASERCA__Personal_Credit_Report__r.LASERCA__Credit_Score__c);
                 result = checkCreditReport(leadId, creditScore);
             } else {
+                //NO PCR
                 result.sssCreditQualification = 'Credit Report was returned without a credit score.';
             }
         }
