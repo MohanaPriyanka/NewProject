@@ -19490,6 +19490,21 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>MPM4_BASE__Milestone1_Project__c.Fifth_Option_Letter_Rec_Fully_Executed__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>MPM4_BASE__Milestone1_Project__c.Fifth_Option_Payment_Made__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>MPM4_BASE__Milestone1_Project__c.Fifth_Option_Period_Ends__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>MPM4_BASE__Milestone1_Project__c.Final_Cost_Watt__c</field>
         <readable>true</readable>
@@ -19553,6 +19568,11 @@
         <editable>true</editable>
         <field>MPM4_BASE__Milestone1_Project__c.Floodplain_Constraints_Setbacks__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>MPM4_BASE__Milestone1_Project__c.Fourth_Option_Letter_Rec_Fully_Executed__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -20796,6 +20816,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>MPM4_BASE__Milestone1_Project__c.Second_Option_Letter_Rec_Fully_Executed__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>MPM4_BASE__Milestone1_Project__c.Second_Option_Payment_Made__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -20882,6 +20907,21 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>MPM4_BASE__Milestone1_Project__c.Site_Zoning__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>MPM4_BASE__Milestone1_Project__c.Sixth_Option_Letter_Rec_Fully_Executed__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>MPM4_BASE__Milestone1_Project__c.Sixth_Option_Payment_Made__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>MPM4_BASE__Milestone1_Project__c.Sixth_Option_Period_Ends__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -21057,6 +21097,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>MPM4_BASE__Milestone1_Project__c.Test_Results__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>MPM4_BASE__Milestone1_Project__c.Third_Option_Letter_Rec_Fully_Executed__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
