@@ -7,7 +7,8 @@
   <aura:attribute name="attachments" type="Attachment[]"/>
   <aura:attribute name="electricBill1" type="Object"/>
   <aura:attribute name="isLargeFile" type="Boolean"/>
-  <aura:attribute name="termsConditions" type="String" default="I agree to BlueWave's Privacy Policy. By checking this box, I also grant
+  <aura:attribute name="initials" type="String"/>
+  <aura:attribute name="termsConditions" type="String" default="I agree to BlueWave's Privacy Policy. By entering my initials below, I also grant
                                                                 BlueWave permission to perform a soft pull of my credit history
                                                                 (which will NOT impact my credit score), to use my credit history to
                                                                 process my application and for any other lawful purpose, to access my
@@ -17,7 +18,7 @@
                                                                 BlueWave will inform me. They will then provide the name and address
                                                                 of the consumer reporting agency that provided the information."/>
 
-  <aura:attribute name="partnerTermsConditions" type="String" default="By checking this box, you are agreeing to BlueWave's Privacy Policy.
+  <aura:attribute name="partnerTermsConditions" type="String" default="By entering your initials below, you are agreeing to BlueWave's Privacy Policy.
                                                                You are also granting BlueWave permission to perform a soft pull of
                                                                your credit history (which will NOT impact your credit score), to use
                                                                your credit history to process your application and for any other lawful
@@ -117,29 +118,35 @@
                   </lightning:layoutItem>
                 </aura:set>
               </aura:if>
+              <lightning:layout multipleRows="true" horizontalAlign="center">
               <lightning:layoutItem padding="around-medium" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-                <div class="slds-align--absolute-center" >
+                <div class="slds-align--absolute-center slds-p-bottom--small" >
                   <b> Terms and Conditions </b>
                 </div>
-                <aura:if isTrue="{!v.partnerApp}">
-                  <lightning:input aura:id="field" name="leadPrivacyPolicyAcknowledged"
-                                   label= "{!v.partnerTermsConditions}"
-                                   type="checkbox"
-                                   class="slds-text-body--regular slds-p-horizontal--large slds-align--absolute-center"
-                                   checked="{!v.lead.Privacy_Policy_Acknowledged__c}"
-                                   onchange="{!c.storeTermsConditions}"
-                                   required="true"/>
-                  <aura:set attribute="else">
-                    <lightning:input aura:id="field" name="leadPrivacyPolicyAcknowledged"
-                                     label= "{!v.termsConditions}"
-                                     type="checkbox"
-                                     class="slds-text-body--regular slds-p-horizontal--large slds-align--absolute-center"
-                                     checked="{!v.lead.Privacy_Policy_Acknowledged__c}"
-                                     onchange="{!c.storeTermsConditions}"
-                                     required="true"/>
-                  </aura:set>
-                </aura:if>
               </lightning:layoutItem>
+              <lightning:layoutItem>
+                <div class="slds-p-left_small slds-p-right_small">
+                  <div class="slds-text-body_regular slds-text-align--center slds-p-horizontal--medium slds-text-color_default">
+                    <aura:if isTrue="{!v.partnerApp}">
+                      {!v.partnerTermsConditions}
+                      <aura:set attribute="else">
+                        {!v.termsConditions}
+                      </aura:set>
+                    </aura:if>
+                  </div>
+                </div>
+              </lightning:layoutItem>
+              <lightning:layoutItem size="6" largeDeviceSize="3" mediumDeviceSize="5">
+                <div class="slds-p-top_medium slds-align--absolute-center">
+                  <lightning:input
+                    required="true"
+                    class="slds-form_horizontal slds-align--absolute-center slds-text-align--center"
+                    label="Applicant's Initials"
+                    value="{!v.initials}"/>
+                </div>
+              </lightning:layoutItem>
+              </lightning:layout>
+
               <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
                 <div class="slds-align--absolute-center">
                   <aura:if isTrue="{!v.partnerApp}">

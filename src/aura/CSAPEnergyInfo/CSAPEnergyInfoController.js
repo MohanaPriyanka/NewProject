@@ -83,7 +83,7 @@
             var lead = component.get("v.lead");
 
 
-            if (ual.Lead__c === null){
+            if (ual.Lead__c == null){
                 ual.Lead__c = lead.Id;
             }
 
