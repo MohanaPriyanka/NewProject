@@ -1511,6 +1511,34 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <visibleLines>3</visibleLines>
     </fields>
     <fields>
+        <fullName>Sale_Status__c</fullName>
+        <description>Allows support to track cases that stem from pre and post sale</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Did the issue arise before or after the sale?</inlineHelpText>
+        <label>Sale Status</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Pre-sale</fullName>
+                    <default>false</default>
+                    <label>Pre-sale</label>
+                </value>
+                <value>
+                    <fullName>Post-sale</fullName>
+                    <default>false</default>
+                    <label>Post-sale</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Sent_Email_Count__c</fullName>
         <defaultValue>0</defaultValue>
         <description>Created by OpFocus</description>
@@ -2991,6 +3019,17 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <businessProcess>Customer Care Case</businessProcess>
         <label>Customer Care</label>
         <picklistValues>
+            <picklist>Sale_Status__c</picklist>
+            <values>
+                <fullName>Post-sale</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pre-sale</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Assignee_If_Different__c</picklist>
             <values>
                 <fullName>Alex Schulte</fullName>
@@ -3560,6 +3599,17 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <active>true</active>
         <businessProcess>Customer Care Case</businessProcess>
         <label>Partner Care Case</label>
+        <picklistValues>
+            <picklist>Sale_Status__c</picklist>
+            <values>
+                <fullName>Post-sale</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pre-sale</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Assignee_If_Different__c</picklist>
             <values>
