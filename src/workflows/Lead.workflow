@@ -916,7 +916,7 @@ IF(Number_of_Periods__c&gt;120, max(1250,0.07*Loan_Amount__c), max(1250,0.05*Loa
             <name>EMAIL_LOG_CS_BlueWave_Credit_Denied_Email</name>
             <type>Task</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <booleanFilter>1 AND 2 AND 3</booleanFilter>
         <criteriaItems>
             <field>Lead.Product_line__c</field>
