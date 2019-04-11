@@ -6,7 +6,7 @@
   <aura:attribute name="creditStatusTimeoutID" type="Integer"/>
   <aura:attribute name="creditStatusErrorText" type="String"/>
   <aura:attribute name="loading" type="Boolean"/>
-  <aura:attribute name="loadingText" type="Boolean"/>
+  <aura:attribute name="loadingText" type="String" default="Saving your information..."/>
   <aura:attribute name="abbrevStates" type="String[]"/>
   <aura:attribute name="showProgramPicklist" type="Boolean"/>
   <aura:attribute name="productList" type="Object[]"/>
@@ -16,112 +16,6 @@
   <aura:set attribute="STAGENAME" value="NAV_Credit_Check"/>
   <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
 
-  <aura:if isTrue="{!v.page == 'SSNPage'}">
-    <div aria-labelledby="ssnForm">
-        <fieldset class="slds-box slds-theme--default slds-container_center slds-size--2-of-3">
-        <legend id="ssnForm" class="slds-text-heading--small slds-p-vertical--medium slds-section__title--large slds-align_absolute-center">
-          <b class="slds-section__title--large slds-p-horizontal_large"> We need to check that you qualify for Community Solar </b>
-        </legend>
-        <form class="slds-form--stacked">
-          <lightning:layout multipleRows="true">
-
-          <lightning:formattedUrl value="https://bluewavesolar.com/about-us/privacy-policy/" label="Please take a moment to review our Privacy Policy" target="_blank" class="slds-p-around--small "/>
-
-          <lightning:layout multipleRows="true">
-            <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-              <lightning:input aura:id="field" name="leadPrivacyPolicyAcknowledged"
-                       label="I acknowledge BlueWave&apos;s privacy policy and accept its terms."
-                       type="checkbox"
-                       checked="{!v.lead.Privacy_Policy_Acknowledged__c}"
-                       required="true"/> 
-            </lightning:layoutItem>
-          </lightning:layout>
-
-          <lightning:layout multipleRows="true">
-            <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-              <lightning:input aura:id="field" name="leadCreditCheckAcknowledged"
-                       label="I give BlueWave permission to access my credit history."
-                       type="checkbox"
-                       checked="{!v.lead.Credit_Check_Acknowledged__c}"
-                       required="true"/> 
-            </lightning:layoutItem>
-          </lightning:layout>
-          </lightning:layout>
-        </form>
-      </fieldset>
-    </div>
-  </aura:if>
-
-  <aura:if isTrue="{!v.page == 'PersonalInfoConfirmation'}">
-    <div aria-labelledby="informationConfirmationForm">
-        <fieldset class="slds-box slds-theme--default slds-container_center">
-        <legend id="informationConfirmationForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-          <b class="slds-section__title--large slds-p-horizontal_large"> Please verify the information is correct before check the customer's credit </b>
-        </legend>
-
-        <form class="slds-form--stacked">
-          <lightning:layout multipleRows="true">
-            <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
-              <lightning:input aura:id="field" name="leadFirstName"
-                       label="First Name"
-                       value="{!v.lead.FirstName}"
-                       disabled="true"
-                       required="true"/>
-            </lightning:layoutItem>
-            <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
-              <lightning:input aura:id="field" name="leadLastName"
-                       label="Last Name"
-                       value="{!v.lead.LastName}"
-                       disabled="true"
-                       required="true"/>
-            </lightning:layoutItem>
-            <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
-              <lightning:input aura:id="field" name="leadHomeAddress"
-                       label="Street Address"
-                       value="{!v.lead.LASERCA__Home_Address__c}"
-                       disabled="true"
-                       required="true"/> 
-            </lightning:layoutItem>
-            <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
-              <lightning:input aura:id="field" name="leadHomeCity"
-                       label="City"
-                       value="{!v.lead.LASERCA__Home_City__c}"
-                       disabled="true"
-                       required="true"/> 
-            </lightning:layoutItem>
-            <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
-              <lightning:select aura:id="field" name="leadHomeState" 
-                                label="State" 
-                                value="{!v.lead.LASERCA__Home_State__c}"
-                                disabled="true"
-                                required="true">
-                  <option value="">Choose state...</option>
-                  <aura:iteration items="{!v.abbrevStates}" var="s">
-                      <option value="{!s}" text="{!s}"></option>
-                  </aura:iteration>
-              </lightning:select>
-            </lightning:layoutItem>
-            <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6" >
-              <lightning:input aura:id="field" name="leadHomeZip"
-                               label="Zip Code"
-                               value="{!v.lead.LASERCA__Home_Zip__c}"
-                               disabled="true"
-                               required="true"/> 
-            </lightning:layoutItem>
-          </lightning:layout>
-
-          <div class="slds-clearfix slds-p-top_medium">
-            <div class="slds-float_right">
-              <lightning:button label="Run Credit Check" onclick="{!c.checkCredit}"/>
-            </div>
-          </div>
-      
-      
-
-        </form>
-      </fieldset>
-    </div>
-  </aura:if>
 
   <aura:if isTrue="{!v.page == 'CreditAlreadyRun'}">
     <div class="slds-icon-eq slds-is-animated slds-align_absolute-center" title="Description of the icon when needed">
@@ -138,93 +32,102 @@
   <aura:if isTrue="{!v.page == 'CreditCheckResult'}">
     <aura:if isTrue="{!!v.creditChecked}">
 
-    <aura:if isTrue="{!v.loading}">
-      <div class="slds-icon-eq slds-is-animated slds-align_absolute-center" title="Description of the icon when needed">
-        <div class="slds-icon-eq__bar"></div>
-        <div class="slds-icon-eq__bar"></div>
-        <div class="slds-icon-eq__bar"></div>
-        <span class="slds-assistive-text">Text alternative when needed</span>
-      </div>
-      <div class="slds-text-body--regular slds-align_absolute-center">
-        {!v.loadingText}
-      </div>
-      <div class="slds-align--absolute-center slds-p-top_medium slds-text-body--regular slds-align_absolute-center">Pulling credit report... This process may take up to a minute.</div></aura:if>
-    </aura:if>
+      <aura:if isTrue="{!v.loading}">
+        <div class="slds-icon-eq slds-is-animated slds-align_absolute-center" title="Description of the icon when needed">
+          <div class="slds-icon-eq__bar"></div>
+          <div class="slds-icon-eq__bar"></div>
+          <div class="slds-icon-eq__bar"></div>
+          <span class="slds-assistive-text">Text alternative when needed</span>
+        </div>
 
+        <div class="slds-text-body--regular slds-p-top--medium slds-text-align--center slds-align_absolute-center">
+          {!v.loadingText}
+        </div>
+    </aura:if>
+    </aura:if>
 
     <div aura:id="creditStatus" class="slds-align--absolute-center slds-p-top_medium no-display slds-text-body--large--blue slds-align_absolute-center">
       <ui:outputText value="{!v.creditStatusText}"/>
     </div>
-    
-    <lightning:layout aura:id="creditResultError" class="no-display animated" multipleRows="true" horizontalAlign="center">
-      <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-        <div class="slds-align--absolute-center">
-          <b class="slds-text-body--large--blue">There was an error checking your credit: <ui:outputText value="{!v.creditStatusErrorText}"/></b>
-	    </div>
-      </lightning:layoutItem>
-      <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-        <div class="slds-align--absolute-center">
-          <b class="slds-text-body--large--blue">This may be due to your credit being frozen. Contact your credit agency or BlueWave support for more details.</b>
-        </div>
-      </lightning:layoutItem>
-    </lightning:layout>
 
-    
     <aura:if isTrue="{!v.creditChecked}">
-      <aura:if isTrue="{!v.lead.Status == 'Qualified'}">
-        <lightning:layout aura:id="passedCreditText" class="animated" multipleRows="true" horizontalAlign="center">
-          <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-            <div class="slds-align--absolute-center">
-              <p><b class="slds-text-body--xx_large--stream animated">Congratulations!</b></p>
-            </div>
-          </lightning:layoutItem>
-          <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-            <div class="slds-align--absolute-center">
-              <p><b class="slds-text-body--large--blue">You qualify for Community Solar in your area! </b></p>
-            </div>
-          </lightning:layoutItem>
-        </lightning:layout>
-        <lightning:layout aura:id="passedCreditText" class="animated" multipleRows="true" horizontalAlign="center">
-          <aura:if isTrue="{!v.showProgramPicklist}">
-            <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
-              <lightning:select  aura:id="field" name="programPicklist"
-                                 label="Which Community Solar program would you like to apply for?"
-                                 value="{!v.lead.Product__c}">
-                <option value="" text="Select"></option>
-                <aura:iteration items="{!v.productList}" var="productToChoose">
-                  <option value="{!productToChoose.Id}" text="{!productToChoose.Program__c}"></option>
-                </aura:iteration>
-              </lightning:select>
-            </lightning:layoutItem>
-          </aura:if>
-            <aura:if isTrue="{!or(not(v.showProgramPicklist), and(v.showProgramPicklist, not(empty(v.lead.Product__c))))}">
-            <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12" >
-              <div class="slds-align--absolute-center">
-                <lightning:button label="Continue" onclick="{!c.finishStage}"/>
-              </div>
-            </lightning:layoutItem>
-          </aura:if>
-        </lightning:layout>
-      </aura:if>
-      <aura:if isTrue="{!v.lead.Status == 'Unqualified'}">
-        <lightning:layout multipleRows="true" horizontalAlign="center">
-          <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-            <div class="slds-align--absolute-center slds-text-body--large--blue">
-              <b>Unfortunately, you don't qualify for Community Solar in your area.</b>
-            </div>
-          </lightning:layoutItem>
-          <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12" >
-            <div class="slds-align--absolute-center slds-text-body--large--blue">
-              <b>Please feel free to reach out to our customer support team listed below if you have any questions!</b>
-            </div>
-          </lightning:layoutItem>
-          <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12" >
-            <div class="slds-align--absolute-center">
-              <b>You may now close this application.</b>
-            </div>
-          </lightning:layoutItem>
-        </lightning:layout>
+      <aura:if isTrue="{!and(v.lead.Status == 'Qualified', v.showProgramPicklist)}">
+        <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
+          <legend id="passedCredit" class="slds-text-heading--medium slds-text-align--center slds-p-vertical--small slds-align_absolute-center">
+            <b class="slds-p-horizontal_large"> Congratulations! </b>
+          </legend>
+          <form class="slds-form--stacked">
+            <lightning:layout aura:id="passedCreditText" class="animated" multipleRows="true" horizontalAlign="center">
+              <lightning:layoutItem class="slds-align_absolute-center slds-p-horizontal--large slds-text-align--center" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                You qualify for Community Solar in your area!
+              </lightning:layoutItem>
+            </lightning:layout>
+            <lightning:layout aura:id="selectProgram" class="animated" multipleRows="true" horizontalAlign="center">
+              <aura:if isTrue="{!v.showProgramPicklist}">
+                <lightning:layoutItem padding="around-small" size="12" class="slds-text-align--center slds-m-top--medium">
+                  Which Community Solar program would you like to apply for?
+                  <lightning:select  aura:id="field" name="programPicklist"
+                                     class="slds-size--1-of-3 slds-align--absolute-center"
+                                     value="{!v.lead.Product__c}">
+                    <option value="" text="Select"></option>
+                    <aura:iteration items="{!v.productList}" var="productToChoose">
+                      <option value="{!productToChoose.Id}" text="{!productToChoose.Program__c}"></option>
+                    </aura:iteration>
+                  </lightning:select>
+                </lightning:layoutItem>
+              </aura:if>
+              <aura:if isTrue="{!or(not(v.showProgramPicklist), and(v.showProgramPicklist, not(empty(v.lead.Product__c))))}">
+                <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12" >
+                  <div class="slds-align--absolute-center">
+                    <lightning:button label="Continue" onclick="{!c.finishStage}"/>
+                  </div>
+                </lightning:layoutItem>
+              </aura:if>
+            </lightning:layout>
+
+          </form>
+        </fieldset>
       </aura:if>
     </aura:if>
+  </aura:if>
+
+
+  <aura:if isTrue="{!v.page == 'Unqualified'}">
+    <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
+      <legend id="failedCredit" class="slds-text-heading--medium slds-text-align--center slds-p-vertical--small slds-align_absolute-center">
+        <b class="slds-p-horizontal_large"> We're Sorry </b>
+      </legend>
+      <form class="slds-form--stacked">
+        <aura:if isTrue="{!!v.creditStatusErrorText}">
+          <lightning:layout aura:id="passedCreditText" class="animated" multipleRows="true" horizontalAlign="center">
+            <lightning:layoutItem class="slds-align_absolute-center slds-p-horizontal--large slds-p-vertical--medium slds-text-align--center" size="12" >
+              Unfortunately, you don't qualify for Community Solar in your area.
+
+            </lightning:layoutItem>
+            <lightning:layoutItem class="slds-align_absolute-center slds-p-horizontal--large slds-p-vertical--medium slds-text-align--center" size="12">
+              Please feel free to reach out to our customer support team listed below if you have any questions!
+            </lightning:layoutItem>
+            <lightning:layoutItem class="slds-align_absolute-center slds-p-horizontal--large slds-p-vertical--medium slds-text-align--center" size="12">
+              You may now close this application.
+            </lightning:layoutItem>
+          </lightning:layout>
+          <aura:set attribute="else">
+            <lightning:layout aura:id="creditResultError" class="nuato-display animated" multipleRows="true" horizontalAlign="center">
+              <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                <div class="slds-align--absolute-center slds-text-align--center">
+                  <b class="slds-text-body--large--blue">There was an error checking your credit: <ui:outputText value="{!v.creditStatusErrorText}"/></b>
+                </div>
+              </lightning:layoutItem>
+              <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                <div class="slds-align--absolute-center slds-text-align--center">
+                  <b class="slds-text-body--large--blue">This may be due to your credit being frozen. Contact your credit agency or BlueWave support for more details.</b>
+                </div>
+              </lightning:layoutItem>
+            </lightning:layout>
+          </aura:set>
+        </aura:if>
+      </form>
+    </fieldset>
+
   </aura:if>
 </aura:component>

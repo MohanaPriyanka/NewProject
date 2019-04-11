@@ -14,6 +14,8 @@
   <aura:attribute name="isLargeFile" type="Boolean"/>
   <aura:attribute name="utility" type="Object"/>
   <aura:attribute name="rateClasses" type="Object[]"/>
+  <aura:attribute name="partnerApp" type="Boolean"/>
+  <aura:attribute name="sameAddress" type="Boolean" default="false"/>
   <lightning:notificationsLibrary aura:id="notifLib"/>
 
   <aura:set attribute="STAGENAME" value="NAV_Energy_Information"/>
@@ -35,14 +37,14 @@
         <div aria-labelledby="utilityAccountInformationForm">
           <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
             <legend id="utilityAccountInformationForm" class="slds-text-heading--medium slds-text-align--center slds-p-vertical--small slds-align_absolute-center">
-              <b class="slds-p-horizontal_large"> Now we need some information about the Utility Account </b>
+              <b class="slds-p-horizontal_large"> Utility Account Information</b>
             </legend>
 
             <form class="slds-form--stacked">
               <lightning:layout multipleRows="true">
                 <lightning:layoutItem class="slds-align_absolute-center slds-p-horizontal--large" padding="around-small" size="12">
                   <div class="slds-text-align--center">
-                  This section contains information located on the Electric Bill. It is important that this is entered exactly as it appears on the bill so that we can tell the Utility where to send the solar credits.
+                    Please enter the utility account information and service address exactly as they appear on the utility bill.​
                   </div>
                 </lightning:layoutItem>
                 <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6">
@@ -52,7 +54,9 @@
                                    disabled="true"
                                    required="true"/>
                 </lightning:layoutItem>
-                <aura:if isTrue="{!v.rateClasses.length > 0}">
+
+                <aura:if isTrue="{!!v.partnerApp}">
+                  <aura:if isTrue="{!v.rateClasses.length > 0}">
                   <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6" >
                     <lightning:select aura:id="field" name="ualRateClass"
                                      label="Rate Class"
@@ -64,6 +68,15 @@
                       </aura:iteration>
                       <option value="Rate Class Not in List">Rate Class Not in List</option>
                     </lightning:select>
+                  </lightning:layoutItem>
+                </aura:if>
+                <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6" >
+                    <lightning:input aura:id="field" name="ualAnnualkWhUsed"
+                                     type="number"
+                                     label="How many kWh do you use in a year?"
+                                     value="{!v.ual.Annual_kWh__c}"
+                                     placeholder="Annual kWh"
+                                     required="true"/>
                   </lightning:layoutItem>
                 </aura:if>
                 <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6" >
@@ -80,70 +93,52 @@
                                    value="{!v.ual.Name_on_Account__c}"
                                    required="true"/>
                 </lightning:layoutItem>
-                <aura:if isTrue="{!v.selectedProduct.Customer_Subscription_Type__c == 'kWh'}">
-                  <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6" >
-                    <lightning:input aura:id="field" name="ualAnnualkWhUsed"
-                                     type="number"
-                                     label="How many kWh do you use in a year?"
-                                     value="{!v.ual.Annual_kWh__c}"
-                                     placeholder="Annual kWh"
+                <lightning:layoutItem padding="around-small" size="12" >
+                 <ui:inputCheckbox aura:id="checkbox" class='slds-p-horizontal--medium slds-float--left' change="{!c.handleChange}"/>
+                  <label for="checkbox" class="slds-p-left--small ">Service Address is same as Billing Address</label>
+                </lightning:layoutItem>
+              </lightning:layout>
+
+                <aura:if isTrue="{!!v.sameAddress}">
+                  <lightning:layout multipleRows="true">
+                  <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6">
+                    <lightning:input aura:id="field" name="ualServiceAddress"
+                                     label="Service Address"
+                                     value="{!v.ual.Service_Address__c}"
                                      required="true"/>
                   </lightning:layoutItem>
-                  <aura:set attribute="else">
-                    <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6" >
-                      <lightning:input aura:id="field" name="ualAnnualCostofElectricity"
-                                       type="number"
-                                       formatter="currency"
-                                       label="Roughly, how much do you spend on electricity per year?"
-                                       value="{!v.ual.Annual_Cost_of_Electricity__c}"
-                                       placeholder="Annual Cost"
-                                       required="true"/>
-                    </lightning:layoutItem>
-                  </aura:set>
+                  <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6" >
+                    <lightning:input aura:id="field" name="ualServiceCity"
+                                     label="City"
+                                     value="{!v.ual.Service_City__c}"
+                                     required="true"/>
+                  </lightning:layoutItem>
+                  <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6">
+
+                    <lightning:select aura:id="field" name="ualServiceState"
+                                      label="State"
+                                      value="{!v.ual.Service_State__c}"
+                                      required="true">
+                      <option value="">Choose state...</option>
+                      <aura:iteration items="{!v.abbrevStates}" var="s">
+                        <option value="{!s}" text="{!s}"></option>
+                      </aura:iteration>
+                    </lightning:select>
+                  </lightning:layoutItem>
+                  <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6" >
+                    <lightning:input aura:id="field" name="ualServiceZipCode"
+                                     label="Service ZIP Code"
+                                     value="{!v.ual.Service_Zip_Code__c}"
+                                     disabled="true"
+                                     required="true"/>
+                  </lightning:layoutItem>
+                  </lightning:layout>
                 </aura:if>
-
-                <lightning:layoutItem size="12" class="slds-text-align--center slds-m-top--large slds-p-bottom--medium">
-                  <b>Please provide the service address located on this Utility Account's Electric Bill.</b>
-                </lightning:layoutItem>
-
-                <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6">
-                  <lightning:input aura:id="field" name="ualServiceAddress"
-                                   label="Street Address"
-                                   value="{!v.ual.Service_Address__c}"
-                                   required="true"/>
-                </lightning:layoutItem>
-                <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6" >
-                  <lightning:input aura:id="field" name="ualServiceCity"
-                                   label="City"
-                                   value="{!v.ual.Service_City__c}"
-                                   required="true"/>
-                </lightning:layoutItem>
-                <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6">
-
-                  <lightning:select aura:id="field" name="ualServiceState"
-                                    label="State"
-                                    value="{!v.ual.Service_State__c}"
-                                    required="true">
-                    <option value="">Choose state...</option>
-                    <aura:iteration items="{!v.abbrevStates}" var="s">
-                      <option value="{!s}" text="{!s}"></option>
-                    </aura:iteration>
-                  </lightning:select>
-                </lightning:layoutItem>
-                <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6" >
-                  <lightning:input aura:id="field" name="ualServiceZipCode"
-                                   label="Zip Code"
-                                   value="{!v.ual.Service_Zip_Code__c}"
-                                   required="true"/>
-                </lightning:layoutItem>
-
-
-              </lightning:layout>
               <div class="slds-clearfix slds-p-top_medium">
                 <div class="slds-float_left">
                 </div>
                 <div class="slds-float_right">
-                  <lightning:button label="Next" onclick="{!c.finishStage}"/>
+                  <lightning:button label="Next" onclick="{!c.submitEnergyInfo}"/>
                 </div>
               </div>
             </form>

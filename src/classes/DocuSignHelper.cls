@@ -133,35 +133,6 @@ public without sharing class DocuSignHelper {
         sendLoanPackage(oppId);
     }
 
-    @Future(Callout=true)
-    public static void sendCSPackageFuture(List<Id> oppIdList) {
-        try {
-            List<Opportunity> oppList = [
-                SELECT Id, Name, Parent_Account_Name__c, Salesperson_Email__c, Sales_tag__c, Application_Type__c,
-                    Email__c, Co_Applicant_Email__c, Co_Applicant_Full_Name__c, Docusign_Template__c
-                FROM Opportunity
-                WHERE Id IN : oppIdList
-            ];
-            Integer oppNumber = 1;
-            Logger.logLater('DocuSignHelper', 'sendCSPackageFuture', 'Sending contracts for these opportunities ' + oppIdList, 'Info');
-            for (Opportunity opp : oppList) {
-                try {
-                    Logger.logLater('DocuSignHelper', 'sendCSPackageFuture',
-                        'Sending contract ' + opp.Id + '(' + oppNumber + ') of ' + oppList.size(), 'Info');
-                    sendCSPackage(opp, oppNumber, oppList.size());
-                } catch (Util.BWException bwe) {
-                    break;
-                }
-                oppNumber++;
-            }
-        } catch (Exception e) {
-            Logger.logLater('DocuSignHelper', 'sendCSPackageFuture', 'Caught unhandled exception sending contracts: ' +
-                e.getMessage(), 'Error');
-        } finally {
-            Logger.flushLogs();
-        }
-    }
-
     // Makes callouts to DocuSign to send loan docs, and sets Contract Signature partner task to Pending
     public static DocuSignAPI.EnvelopeStatus sendLoanPackage(Id oppId) {
         connect();
@@ -262,6 +233,12 @@ public without sharing class DocuSignHelper {
         return result;
     }
 
+    public static DocuSignAPI.RecipientCaptiveInfo getCaptiveInfo(Opportunity opp, String recipientRole) {
+        DocuSignAPI.RecipientCaptiveInfo captiveInfo = new DocuSignAPI.RecipientCaptiveInfo();
+        captiveInfo.ClientUserId = opp.Id + ': ' + recipientRole;
+        return captiveInfo;
+    }
+
     public static DocuSignAPI.EnvelopeStatus sendCSPackage(Opportunity opp, Integer count, Integer total) {
         connect();
         DocuSignAPI.EnvelopeInformation envelope = new DocuSignAPI.EnvelopeInformation();
@@ -275,6 +252,7 @@ public without sharing class DocuSignHelper {
             if (r.RoleName == 'Signer 1') {
                 r.UserName = opp.Parent_Account_Name__c;
                 r.Email = opp.Email__c;
+                r.CaptiveInfo = getCaptiveInfo(opp, r.Type_x);
             } else if (r.RoleName == 'Signer 2'){
                 r.SigningGroupId = csBWSignatureGroup;
             } else if (r.RoleName == 'QC Approver'){
@@ -309,10 +287,12 @@ public without sharing class DocuSignHelper {
         DocuSignAPI.EnvelopeStatus result;
         try {
             result = dsAPI.CreateEnvelopeFromTemplatesAndForms(envelope, compositeTemplates, true);
-            // if we want to i-frame in the portal we could use: RequestRecipientToken
         } catch (CalloutException e) {
             String errorMessage = e.getMessage();
             if (errorMessage.contains('Exceeded maximum time allotted for callout')) {
+                Logger.logLater('DocuSignHelper', 'sendCSPackage',
+                    'CalloutException due to timeout caught when trying to send contracts for opp: ' + opp.Id +
+                        ', but queueing to retry', 'Info');
                 System.enqueueJob(new AutoRetryContractSend(dsAPI, envelope, compositeTemplates, true, 1));
             } else {
                 Logger.logLater('DocuSignHelper', 'sendCSPackage',

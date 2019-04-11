@@ -1,20 +1,18 @@
 ({
     getStage : function(stageName) {
         var stageMap = new Map();
-        stageMap.set("NAV_Getting_Started", 0);
-        stageMap.set("NAV_Personal_Information", 1);
-        stageMap.set("NAV_Capacity_Check", 2);
-        stageMap.set("NAV_Credit_Check", 3);
-        stageMap.set("NAV_Energy_Information", 4);
-        stageMap.set("NAV_Payment_Information", 5);
-        stageMap.set("NAV_Complete", 6);
-        stageMap.set(0, "NAV_Getting_Started");
-        stageMap.set(1, "NAV_Personal_Information");
-        stageMap.set(2, "NAV_Capacity_Check");
-        stageMap.set(3, "NAV_Credit_Check");
-        stageMap.set(4, "NAV_Energy_Information");
-        stageMap.set(5, "NAV_Payment_Information");
-        stageMap.set(6, "NAV_Complete");
+        stageMap.set("NAV_Personal_Information", 0);
+        stageMap.set("NAV_Capacity_Check", 1);
+        stageMap.set("NAV_Credit_Check", 2);
+        stageMap.set("NAV_Energy_Information", 3);
+        stageMap.set("NAV_Payment_Information", 4);
+        stageMap.set("NAV_Complete", 5);
+        stageMap.set(0, "NAV_Personal_Information");
+        stageMap.set(1, "NAV_Capacity_Check");
+        stageMap.set(2, "NAV_Credit_Check");
+        stageMap.set(3, "NAV_Energy_Information");
+        stageMap.set(4, "NAV_Payment_Information");
+        stageMap.set(5, "NAV_Complete");
         if (stageMap.get(stageName) != undefined) {
             return stageMap.get(stageName);
         } else {

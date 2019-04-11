@@ -549,7 +549,7 @@ private class DocuSignAPIWebSvcTest {
 	@isTest static void coverCodeForRequestRecipientToken(){
 		Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
 		DocuSignAPI.APIServiceSoap testObject = new DocuSignAPI.APIServiceSoap();
-		System.assertEquals(null, testObject.RequestRecipientToken(null, null, null, null, null, null));
+		System.assertEquals('https://success', testObject.RequestRecipientToken(null, null, null, null, null, null));
 	}
 	@isTest static void coverCodeForRequestSenderToken(){
 		Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());

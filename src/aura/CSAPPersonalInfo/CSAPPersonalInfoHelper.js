@@ -1,4 +1,5 @@
 ({
+
     processLead : function(component, event, helper) {
         var lead = component.get("v.lead");
 
@@ -10,14 +11,14 @@
         lead.State = lead.LASERCA__Home_State__c;
         lead.PostalCode = lead.LASERCA__Home_Zip__c;
 
-        if(lead.Application_Type__c === "Residential" && lead.Company == null){
+        if (lead.Application_Type__c === "Residential" && lead.Company == null){
             lead.Company = lead.FirstName + " " + lead.LastName;
         }
 
-        if (component.get('v.partnerId') != null) {
+        if(component.get("v.partnerApp")){
             lead.Application_Source_Phase_1__c = 'CSAP 2.1 with Partner';
         } else {
-            lead.Application_Source_Phase_1__c = 'CSAP 2.1 Website';
+            lead.Application_Source_Phase_1__c = 'CSAP 2.1 with Inside Sales';
         }
         lead.Product_line__c = "Community Solar";
         component.set("v.lead", lead);
@@ -37,7 +38,16 @@
                 if (actionResult.getState() === 'SUCCESS') {
                     var lead = actionResult.getReturnValue();
                     component.set("v.lead", lead);
-                    this.populateUtilityPicklist(component,event,helper,lead);
+
+                    if (!component.get("v.hasProject")){
+                        helper.saveSObject(component, lead.Id, "Lead", "Status", "Unqualified");
+                        helper.saveSObject(component, lead.Id, "Lead", "CSAP_Stage__c", "NAV_Personal_Information");
+                        component.set("v.loading", false);
+                        component.set("v.page", "NoProjects");
+                    } else {
+                        this.populateUtilityPicklist(component,event,helper,lead);
+                    }
+
                 } else {
                     helper.raiseError('CSAPPersonalInfoHelper', 'upsertRecords',
                         'There was an issue saving your information. It is possible that the information you provided may contain a typo. Please review',
@@ -56,7 +66,7 @@
                 if (actionResult.getState() === 'SUCCESS') {
                     var lead = actionResult.getReturnValue();
                     component.set("v.lead", lead);
-                    this.populateUtilityPicklist(component,event,helper,lead);
+
                 } else {
                     helper.raiseError('CSAPPersonalInfoHelper', 'upsertRecords',
                         'There was an issue saving your information. It is possible that the information you provided may contain a typo. Please review',
@@ -112,6 +122,55 @@
         } else {
             helper.finishStage(component, event, helper);
         }
+    },
+
+    login : function(component, event, helper) {
+        var promise = helper.getLeadRecord(component, event, helper);
+        promise.then($A.getCallback(function resolve(retVal) {
+            var lead = retVal;
+            if(lead){
+                if(lead.Application_Source_Phase_1__c == 'CSAP 2.1 with Partner'){
+                    component.set("v.partnerApp", true);
+                } else {
+                    component.set("v.partnerApp", false);
+                }
+
+                if (lead.CSAP_Stage__c) {
+                    helper.raiseNavEvent("COMPLETED", {"stageName": lead.CSAP_Stage__c, "lead": lead});
+                }else{
+                    component.set("v.lead", lead);
+                    helper.finishStage(component, event, helper);
+                }
+            }else{
+                alert("Incorrect email address. Please verify your email address.");
+            }
+        }));
+    },
+    getLeadRecord : function(component, event, helper) {
+        return new Promise(function(resolve, reject) {
+            var action = component.get("c.getLead");
+            action.setParams({
+                "leadId": component.get("v.leadId"),
+                "email" : component.get("v.leadEmail")
+            });
+            action.setCallback(this, function(resp) {
+                if (resp.getState() === "SUCCESS") {
+                    var retVal = resp.getReturnValue();
+                    resolve(retVal);
+                } else if (resp.getState() === "ERROR") {
+                    var appEvent = $A.get("e.c:ApexCallbackError");
+                    appEvent.setParams({"className" : "CSAPStartHelper",
+                        "methodName" : "getLeadRecord",
+                        "errors" : resp.getError(),
+                        "developerInfo" : component.get("v.leadId")});
+                    appEvent.fire();
+                    reject(resp.getError());
+                } else {
+                    reject(Error("Unknown error"));
+                }
+            });
+            $A.enqueueAction(action);
+        });
     },
 
 })

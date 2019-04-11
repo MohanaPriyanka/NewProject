@@ -20,7 +20,7 @@
                     "leadId": lead.Id
                 });
                 hasAvailableCapacityAction.setCallback(this, function(actionResult) {
-                    if (actionResult.getReturnValue() != null) {
+                    if (actionResult.getReturnValue() !== null) {
                         var hasAvailableCapacity = actionResult.getReturnValue();
                         if (hasAvailableCapacity) {
                             helper.saveSObject(component, lead.Id, "Lead", "Status", "Qualified").then(
@@ -29,12 +29,13 @@
                                     component.set("v.hasCapacity", "Yes");
                                     $A.util.addClass(component.find("greatNews"), 'pulse');
                                 }));
-                        } else if (!hasAvailableCapacity && lead.Application_Source_Phase_2__c != null) {
+                        } else if (!hasAvailableCapacity && lead.Application_Source_Phase_2__c !== null) {
                             var delaySkipToEnd = component.get('c.delaySkipToEnd');
                             helper.saveSObject(component, lead.Id, "Lead", "Status", "Waitlist").then(
                                 $A.getCallback(function resolve() {
                                     component.set("v.loading", false);
                                     component.set("v.hasCapacity", "No");
+                                    component.set("v.page", "NoCapacity");
                                 })).then(
                             $A.enqueueAction(delaySkipToEnd)
                             );
@@ -43,6 +44,7 @@
                                 $A.getCallback(function resolve() {
                                     component.set("v.loading", false);
                                     component.set("v.hasCapacity", "No");
+                                    component.set("v.page", "NoCapacity");
                                 }));
                         }
                     } else {
@@ -54,24 +56,37 @@
         }
     },
 
-    finishStage : function(component, event, helper) {
+    checkCredit : function(component, event, helper) {
         var billNotUploaded = !component.get("v.electricBill1") && !component.get('v.isLargeFile');
+        var initials = component.get("v.initials");
         if (billNotUploaded) {
             alert("Please upload your recent electric bill");
         }
-        if (helper.validatePageFields(component) && !billNotUploaded) {
+        if (initials == null){
+            alert("Please sign your initials for the Terms and Conditions");
+        }
+
+        if (helper.validatePageFields(component) && !billNotUploaded && initials != null ) {
             var lead = component.get("v.lead");
-            lead.CSAP_Stage__c = 'NAV_Capacity_Check';
+            helper.storeTermsConditions(component, event, helper);
             helper.saveSObject(component, lead.Id, "Lead", null, null, lead);
 
-            component.set('v.page', 'ApplicationComplete');
+            if (component.get("v.partnerApp")){
+                helper.finishStage(component, event, helper);
+            } else{
+                lead.CSAP_Stage__c = 'NAV_Capacity_Check';
+                component.set('v.page', 'ApplicationComplete');
+
+            }
         }
     },
+
+
 
     skipToEnd : function(component, event, helper) {
         var lead = component.get('v.lead');
         var stageName = lead.CSAP_Stage__c;
-        helper.closePageFireComplete(component, helper, stageName, lead)
+        component.set("v.page", "NoCapacity");
     },
 
     delaySkipToEnd : function(component, event, helper) {
@@ -80,15 +95,6 @@
             $A.getCallback(function() {
                 $A.enqueueAction(skipToEnd);
             }), 5000);
-    },
-
-    storeTermsConditions : function(component, event, helper) {
-        var lead = component.get('v.lead');
-        var termsConditions = component.get('v.termsConditions');
-        var today = new Date();
-        lead.Terms_Conditions_Acknowledged__c = new Date();
-        lead.Terms_Conditions__c = termsConditions;
-
     },
 
     handleEBill1 : function(component, event, helper) {

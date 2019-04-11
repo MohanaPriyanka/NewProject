@@ -26,10 +26,15 @@ public without sharing class CSAPController {
                     Application_Type__c, LASERCA__Home_Address__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, LASERCA__SSN__c, 
                     Company, Type_of_Business__c, Business_Title__c, Number_of_Years_in_Business__c, Number_of_Years_at_Location__c,
                     Credit_Check_Acknowledged__c, Privacy_Policy_Acknowledged__c, Utility_Bill_Access_Acknowledged__c,
-                    Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c, Application_Source_Phase_2__c,
+                    Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c, Application_Source_Phase_1__c, Application_Source_Phase_2__c,
                     LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c, ZipCode__c,
                     Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Customer_Referral__c, Owner.Id,
-                    LoadZone__c, Utility_relationship__c, Continue_Application_Link__c, Partner_Email__c
+                    LoadZone__c, Utility_relationship__c, Continue_Application_Link__c, Partner_Email__c, (
+                // CSAP will use this to send a DocuSign contract for a converted lead. If we have multiple opportunities
+                // for the lead, we'll just get the first. Ordering by created date should get the one(s) that were created
+                // in the transaction that converted the lead.
+                SELECT Id, Parent_Account_Name__c FROM Opportunities__r ORDER BY CreatedDate DESC, Opportunity_Order__c ASC LIMIT 1
+            )
             FROM Lead
             WHERE Id = :leadId
             AND Email = :email
@@ -64,6 +69,7 @@ public without sharing class CSAPController {
                 creditScore = Decimal.valueOf(crList[0].LASERCA__Personal_Credit_Report__r.LASERCA__Credit_Score__c);
                 result = checkCreditReport(leadId, creditScore);
             } else {
+                //NO PCR
                 result.sssCreditQualification = 'Credit Report was returned without a credit score.';
             }
         }
@@ -168,6 +174,21 @@ public without sharing class CSAPController {
         lead.Customer_type__c = lead.Application_Type__c;
         return lead;
     }
+
+    @AuraEnabled
+    public static Boolean checkApplicationPartner(String partnerId){
+        Boolean partnerApp;
+        Partner__c customerPartner = MyAccountController.getPartner(partnerId);
+
+        //Set boolean based on BIS (and BlueWave Test Partner?) or Partner to determine application process
+        if (customerPartner.Name == 'BlueWave Inside Sales' || customerPartner.Name == 'BlueWave Test Partner'){
+            partnerApp = false;
+        } else {
+            partnerApp = true;
+        }
+        return partnerApp;
+    }
+
     @AuraEnabled
     public static Lead upsertCSAPRecords(Lead lead, String partnerId, String salesRepId, String referralCode){
         Partner__c customerPartner = MyAccountController.getPartner(partnerId);
@@ -496,5 +517,96 @@ public without sharing class CSAPController {
             Logger.logNow('CSAPController', 'sendEmailForPaymentInfo', message , 'Error');
             return false;
         }
+    }
+
+    @AuraEnabled
+    public static String sendEmbeddedContract(Lead lead) {
+        // We should query the lead since it might not be fully populated (with a list of opportunities)
+        lead = getlead(lead.Id, lead.Email);
+        return sendEmbeddedContract(lead.Opportunities__r[0]);
+    }
+
+    // See https://github.com/docusign/sfdc-recipe-embedded-signing/blob/master/src/classes/DS_Recipe_Signer_View_Controller.cls
+    // for comments on DocuSign API usage for embedded signing
+    public static String sendEmbeddedContract(Opportunity opp) {
+        Opportunity opportunity = OpportunitiesSelector.selectForContractSend(opp.Id);
+
+        DocuSignAPI.RequestRecipientTokenAuthenticationAssertion assertion =
+            new DocuSignAPI.RequestRecipientTokenAuthenticationAssertion();
+        assertion.AssertionID = '1';
+        assertion.AuthenticationInstant = Datetime.now();
+        assertion.AuthenticationMethod = 'Email';
+        assertion.SecurityDomain = 'CSAPController';
+
+        DocuSignAPI.RequestRecipientTokenClientURLs urls = new DocuSignAPI.RequestRecipientTokenClientURLs();
+        String returnURLBase = Util.getCommunitySiteURL('Apply') + '/s/contract-complete?event=';
+        urls.OnSigningComplete  = returnURLBase + 'signing_complete';
+        urls.OnViewingComplete  = returnURLBase + 'viewing_complete';
+        urls.OnCancel           = returnURLBase + 'cancel';
+        urls.OnDecline          = returnURLBase + 'decline';
+        urls.OnSessionTimeout   = returnURLBase + 'session_timeout';
+        urls.OnTTLExpired       = returnURLBase + 'ttl_expired';
+        urls.OnException        = returnURLBase + 'exception';
+        urls.OnAccessCodeFailed = returnURLBase + 'failed_access_code';
+        urls.OnIdCheckFailed    = returnURLBase + 'failed_id_check';
+        urls.OnFaxPending       = returnURLBase + 'fax_pending';
+
+        DocuSignAPI.EnvelopeStatus envelopeStatus;
+        try {
+            envelopeStatus = DocuSignHelper.sendCSPackage(opportunity, 1, 1);
+        } catch (Exception e) {
+            // Something bad and uncaught happened, have the Lightning Component show the user the exception page
+            Logger.logLater('CSAPController', 'sendEmbeddedContract', 'Unhanded exception caught for : ' + opp.Id + '\n' + e.getMessage(), 'Error');
+            Logger.flushLogs();
+            return urls.OnException;
+        }
+        // EnvelopeStatus can be null if a callout exception was caught, which can happen for a timeout.
+        if (envelopeStatus == null) {
+            Logger.logLater('CSAPController', 'sendEmbeddedContract', 'Did not expect a null Envelope Status' + opp.Id, 'Error');
+            Logger.flushLogs();
+            return urls.OnSessionTimeout;
+        }
+        // If there's something wrong with the envelope status (not sure if this can happen), redirect to an error
+        if (envelopeStatus.RecipientStatuses.RecipientStatus == null) {
+            Logger.logLater('CSAPController', 'sendEmbeddedContract', 'Recipient Status for envelope was missing for ' + opp.Id, 'Error');
+            Logger.flushLogs();
+            return urls.OnException;
+        }
+
+        // Per https://github.com/docusign/docusign-soap-sdk/wiki/Code-Walkthrough-_-Embedded-Signing:
+        // ClientUserId must be a unique value on the Envelope. You can use something simple like “1” or “2”, or you
+        // can use some localID that is significant in your application – like a customerId. It just has to be unique
+        // on the envelope because this value will be used along with the Recipient’s Name and Email to request the
+        // RecipientToken. Remember that while the you can have multiple Recipients with the same Name and Email address
+        // (because the same person can act in multiple roles on a single envelope), they must all have different ClientUserIds.
+        String userName, email, recipientType, clientUserId;
+        for (DocuSignAPI.RecipientStatus rs : envelopeStatus.RecipientStatuses.RecipientStatus) {
+            if (rs.Type_x == 'Signer' && rs.RoutingOrder == 1) {
+                userName = rs.UserName;
+                email = rs.Email;
+                recipientType = rs.Type_x;
+                clientUserId = DocuSignHelper.getCaptiveInfo(opportunity, rs.Type_x).ClientUserId;
+            }
+        }
+        if (userName == null || email == null) {
+            Logger.logLater('CSAPController', 'sendEmbeddedContract', 'Sent a contract for ' + opp.Id +
+                'but didn\'t find a recipient with RoutingOrder 1', 'Error');
+            Logger.flushLogs();
+            return urls.OnException;
+        }
+
+        String signerViewURL;
+        try {
+            signerViewURL =
+                DocuSignHelper.dsAPI.RequestRecipientToken(envelopeStatus.EnvelopeID, clientUserId, userName, email, assertion, urls);
+            Logger.logLater('CSAPController', 'sendEmbeddedContract', 'Successfully got a embedded DocuSign link for ' +
+                opp.Id + ': ' + signerViewURL, 'Info');
+
+        } catch (Exception e) {
+            signerViewURL = urls.OnException;
+            Logger.logNow('CSAPController', 'sendEmbeddedContract', 'Exception caught for ' + opp.Id + '\n' + e.getMessage(), 'Error');
+        }
+        Logger.flushLogs();
+        return signerViewURL;
     }
 }
