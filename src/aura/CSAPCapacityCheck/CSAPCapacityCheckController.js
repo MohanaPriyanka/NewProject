@@ -58,11 +58,17 @@
 
     checkCredit : function(component, event, helper) {
         var billNotUploaded = !component.get("v.electricBill1") && !component.get('v.isLargeFile');
+        var initials = component.get("v.initials");
         if (billNotUploaded) {
             alert("Please upload your recent electric bill");
         }
-        if (helper.validatePageFields(component) && !billNotUploaded) {
+        if (initials == null){
+            alert("Please sign your initials for the Terms and Conditions");
+        }
+
+        if (helper.validatePageFields(component) && !billNotUploaded && initials != null ) {
             var lead = component.get("v.lead");
+            helper.storeTermsConditions(component, event, helper);
             helper.saveSObject(component, lead.Id, "Lead", null, null, lead);
 
             if (component.get("v.partnerApp")){
@@ -89,21 +95,6 @@
             $A.getCallback(function() {
                 $A.enqueueAction(skipToEnd);
             }), 5000);
-    },
-
-    storeTermsConditions : function(component, event, helper) {
-        var lead = component.get('v.lead');
-        var termsConditions;
-        if (component.get("v.partnerApp")) {
-            termsConditions = component.get("v.partnerTermsConditions");
-        } else {
-            termsConditions = component.get("v.termsConditions");
-        }
-
-        var today = new Date();
-        lead.Terms_Conditions_Acknowledged__c = new Date();
-        lead.Terms_Conditions__c = termsConditions;
-
     },
 
     handleEBill1 : function(component, event, helper) {

@@ -44,7 +44,7 @@
                 } else {
                     helper.logError("CSAPPersonalInfoHelper", "hasCapacity",
                         "There was an issue checking your zipcode, but has been logged. Please call Customer Care at the number below for assistance.",
-                        resp.getError());s
+                        resp.getError());
                 }
             });
             $A.enqueueAction(action);
