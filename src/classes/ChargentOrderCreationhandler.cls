@@ -100,7 +100,7 @@ public without sharing class ChargentOrderCreationhandler {
                         ChargentOrders__Card_Expiration_Month__c = opp.CC_Expiration_Month__c,
                         ChargentOrders__Card_Expiration_Year__c = opp.CC_Expiration_Year__c );
                     ordersToInsert.add(orderA);
-                    Logger.logLater('ChargentOrderCreationhandler', 'createChargentOrder', 'Method used to create chargent orders for opp: ' + opp.Id);
+                    Logger.logLater('ChargentOrderCreationhandler', 'createChargentOrder', 'Method used to create chargent orders for opp: ' + opp.Id, 'Info');
                 }
                 accountids.add(opp.AccountId);
                 // we still need to blank out the payment info from the opportunity after we used it for docusign

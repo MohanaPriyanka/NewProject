@@ -110,7 +110,7 @@ global class DocuSignAPIMockImpl implements WebServiceMock, HttpCalloutMock {
 			String responseNS,
 			String responseName,
 			String responseType) {
-       
+
 		if(request instanceOf DocuSignAPI.AcknowledgeAuthoritativeCopyExport_element) {
 			response.put( 'response_x', new DocuSignAPI.AcknowledgeAuthoritativeCopyExportResponse_element());
 		}
@@ -130,11 +130,33 @@ global class DocuSignAPIMockImpl implements WebServiceMock, HttpCalloutMock {
 			response.put( 'response_x', new DocuSignAPI.CreateEnvelopeFromTemplatesResponse_element());
 		}
 		else if(request instanceOf DocuSignAPI.CreateEnvelopeFromTemplatesAndForms_element) {
+            DocuSignAPI.CreateEnvelopeFromTemplatesAndForms_element createRequest = (DocuSignAPI.CreateEnvelopeFromTemplatesAndForms_element) request;
+            // We use Composite Templates to send CS and Loan docs.
+			// If the request includes one, pull out the recipient to use in the response. Whew!
+			String userName, email;
+			if (createRequest.CompositeTemplates != null) {
+				List<DocuSignAPI.Recipient> recipients =
+					createRequest.CompositeTemplates.CompositeTemplate[0].InlineTemplates.InlineTemplate[0].Envelope.Recipients.Recipient;
+				for (DocuSignAPI.Recipient recipient : recipients) {
+					if (recipient.RoleName == 'Signer 1') {
+						userName = recipient.UserName;
+						email = recipient.Email;
+					}
+				}
+			}
 			DocuSignAPI.CreateEnvelopeFromTemplatesAndFormsResponse_element responseX =
 				new DocuSignAPI.CreateEnvelopeFromTemplatesAndFormsResponse_element();
 			responseX.CreateEnvelopeFromTemplatesAndFormsResult = new DocuSignAPI.EnvelopeStatus();
 			responseX.CreateEnvelopeFromTemplatesAndFormsResult.Status = 'Created';
 			responseX.CreateEnvelopeFromTemplatesAndFormsResult.EnvelopeID = 'DummyID';
+			responseX.CreateEnvelopeFromTemplatesAndFormsResult.RecipientStatuses = new DocuSignAPI.ArrayOfRecipientStatus();
+			responseX.CreateEnvelopeFromTemplatesAndFormsResult.RecipientStatuses.RecipientStatus = new List<DocuSignAPI.RecipientStatus>();
+			DocuSignAPI.RecipientStatus recipientStatus = new DocuSignAPI.RecipientStatus();
+            recipientStatus.Type_x = 'Signer';
+			recipientStatus.UserName = userName;
+			recipientStatus.Email = email;
+			recipientStatus.RoutingOrder = 1;
+			responseX.CreateEnvelopeFromTemplatesAndFormsResult.RecipientStatuses.RecipientStatus.add(recipientStatus);
 			response.put( 'response_x', responseX);
 		}
 		else if(request instanceOf DocuSignAPI.DeleteAccountBrands_element) {
@@ -252,7 +274,18 @@ global class DocuSignAPIMockImpl implements WebServiceMock, HttpCalloutMock {
 			response.put( 'response_x', new DocuSignAPI.RequestRecipientFaxTokenResponse_element());
 		}
 		else if(request instanceOf DocuSignAPI.RequestRecipientToken_element) {
-			response.put( 'response_x', new DocuSignAPI.RequestRecipientTokenResponse_element());
+			DocuSignAPI.RequestRecipientToken_element recipientRequest = (DocuSignAPI.RequestRecipientToken_element) request;
+			DocuSignAPI.RequestRecipientTokenResponse_element tokenResponse = new DocuSignAPI.RequestRecipientTokenResponse_element();
+			if (recipientRequest.Email != null && recipientRequest.Email.contains('exception')) {
+				tokenResponse.RequestRecipientTokenResult = 'https://exception';
+			} else if (recipientRequest.Email != null && recipientRequest.Email.contains('timeout')) {
+				CalloutException e = (CalloutException)CalloutException.class.newInstance();
+				e.setMessage('Exceeded maximum time allotted for callout');
+				throw e;
+			} else {
+				tokenResponse.RequestRecipientTokenResult = 'https://success';
+			}
+			response.put( 'response_x', tokenResponse);
 		}
 		else if(request instanceOf DocuSignAPI.RequestSenderToken_element) {
 			response.put( 'response_x', new DocuSignAPI.RequestSenderTokenResponse_element());
