@@ -7,6 +7,20 @@
         var partnerId = component.get("v.partnerId");
         if (partnerId) {
             component.set("v.partnerId", decodeURIComponent(partnerId));
+
+            //Check partnerId to determine CSAP process
+            var action = component.get("c.checkApplicationPartner");
+            action.setParams({"partnerId": component.get("v.partnerId")});
+            action.setCallback(this, function(resp) {
+                if(resp.getState() === 'SUCCESS') {
+                    var partnerApp = resp.getReturnValue();
+                    component.set("v.partnerApp", partnerApp);
+                } else {
+                    this.logError('CSAPApplication', 'checkApplicationPartner', resp.getError(), component.get('v.partnerId'));
+                }
+            });
+            $A.enqueueAction(action);
+
         }
         var salesRepId = component.get("v.salesRepId");
         if (salesRepId) {

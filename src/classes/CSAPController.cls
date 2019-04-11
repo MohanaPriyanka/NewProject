@@ -26,7 +26,7 @@ public without sharing class CSAPController {
                     Application_Type__c, LASERCA__Home_Address__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, LASERCA__SSN__c, 
                     Company, Type_of_Business__c, Business_Title__c, Number_of_Years_in_Business__c, Number_of_Years_at_Location__c,
                     Credit_Check_Acknowledged__c, Privacy_Policy_Acknowledged__c, Utility_Bill_Access_Acknowledged__c,
-                    Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c, Application_Source_Phase_2__c,
+                    Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c, Application_Source_Phase_1__c, Application_Source_Phase_2__c,
                     LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c, ZipCode__c,
                     Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Customer_Referral__c, Owner.Id,
                     LoadZone__c, Utility_relationship__c, Continue_Application_Link__c, Partner_Email__c
@@ -168,6 +168,21 @@ public without sharing class CSAPController {
         lead.Customer_type__c = lead.Application_Type__c;
         return lead;
     }
+
+    @AuraEnabled
+    public static Boolean checkApplicationPartner(String partnerId){
+        Boolean partnerApp;
+        Partner__c customerPartner = MyAccountController.getPartner(partnerId);
+
+        //Set boolean based on BIS (and BlueWave Test Partner?) or Partner to determine application process
+        if (customerPartner.Name == 'BlueWave Inside Sales' || customerPartner.Name == 'BlueWave Test Partner'){
+            partnerApp = false;
+        } else {
+            partnerApp = true;
+        }
+        return partnerApp;
+    }
+
     @AuraEnabled
     public static Lead upsertCSAPRecords(Lead lead, String partnerId, String salesRepId, String referralCode){
         Partner__c customerPartner = MyAccountController.getPartner(partnerId);

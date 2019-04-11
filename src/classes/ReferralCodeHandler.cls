@@ -58,7 +58,8 @@ public without sharing class ReferralCodeHandler {
         }
         for (lead leadRecord : leads) {
             if (leadRecord.Application_Source_Phase_1__c != 'CSAP 2.1 with Partner'
-                && leadRecord.Application_Source_Phase_1__c != 'CSAP 3.0 Flow with Partner') {
+                && leadRecord.Application_Source_Phase_1__c != 'CSAP 3.0 Flow with Partner'
+                && leadRecord.Application_Source_Phase_1__c != 'CSAP 2.1 with Inside Sales') {
                 if (leadRecord.Partner_Lookup__c == null && leadRecord.Bs_Sales_Id__c == null) {
                     holderPartner = partnerMap.get('holder');
                 }
