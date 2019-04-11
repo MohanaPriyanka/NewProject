@@ -4,7 +4,6 @@
         component.set("v.page", "AboutYourself");
         var leadId = component.get("v.leadId");
 
-
         if (leadId !== null && leadId !== '' && leadId !== undefined) {
             component.set("v.page","Login");
             component.set("v.loading", false);
@@ -41,20 +40,26 @@
                 var hasProject = resp.getReturnValue();
                 if (resp.getState() === "SUCCESS") {
                     component.set("v.hasProject", hasProject);
+                    helper.processLead(component, event, helper);
+                    helper.upsertRecords(component, event, helper);
                 } else {
                     helper.logError("CSAPPersonalInfoHelper", "hasCapacity",
                         "There was an issue checking your zipcode, but has been logged. Please call Customer Care at the number below for assistance.",
                         resp.getError());
-                }
-            });
-            $A.enqueueAction(action);
-
-
-            helper.processLead(component, event, helper);
-            helper.upsertRecords(component, event, helper);
+           		 	helper.processLead(component, event, helper);
+            		helper.upsertRecords(component, event, helper);
 
             //Once hasCapacity is processed, we know if we can continue the application (available capacity check is later)
 
+        }
+            });
+            $A.enqueueAction(action);
+
+          
+
+
+
+            //Once hasCapacity is processed, we know if we can continue the application (available capacity check is later)
 
         }
     },

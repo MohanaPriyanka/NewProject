@@ -2,7 +2,7 @@
   <aura:attribute name="leadId" type="String"/>
   <aura:attribute name="leadEmail" type="String"/>
   <aura:attribute name="applyingFor" type="String"/>
-  <aura:attribute name="hasProject" type="Boolean"/>
+  <aura:attribute name="hasProject" type="Boolean" default="null"/>
   <aura:attribute name="abbrevStates" type="String[]"/>
   <aura:attribute name="partnerId" type="String"/>
   <aura:attribute name="salesRepId" type="String"/>
