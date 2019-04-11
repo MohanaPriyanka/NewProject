@@ -139,7 +139,6 @@
                                  messageWhenBadInput="Please enter a 5 digit zip-code"/>
               </lightning:layoutItem>
             </lightning:layout>
-
             <lightning:layout multipleRows="true">
               <lightning:layoutItem size="12" largeDeviceSize="6" mediumDeviceSize="8" class="slds-align--absolute-center">
                 <div class="slds-align--absolute-center slds-text-body--regular">

@@ -4,7 +4,6 @@
         component.set("v.page", "AboutYourself");
         var leadId = component.get("v.leadId");
 
-
         if (leadId !== null && leadId !== '' && leadId !== undefined) {
             component.set("v.page","Login");
             component.set("v.loading", false);
@@ -55,7 +54,6 @@
 
             //Once hasCapacity is processed, we know if we can continue the application (available capacity check is later)
 
-
         }
     },
     saveUnsplitZone : function(component, event, helper) {
@@ -82,7 +80,6 @@
             helper.closePageFireComplete(component, helper, stageName, lead);
         }
     },
-
 
     checkForEnter : function(component, event, helper) {
         if (event.which === 13) {
