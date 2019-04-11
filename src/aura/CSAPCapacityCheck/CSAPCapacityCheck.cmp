@@ -133,7 +133,6 @@
                 <div class="slds-align--absolute-center slds-p-bottom--small" >
                   <b> Terms and Conditions </b>
                 </div>
-
               </lightning:layoutItem>
               <lightning:layoutItem>
                 <div class="slds-p-left_small slds-p-right_small">
@@ -172,7 +171,10 @@
           </form>
         </fieldset>
       </aura:if>
+  </aura:if>
+  </aura:if>
 
+  <aura:if isTrue="{!v.page == 'NoCapacity'}">
       <aura:if isTrue="{!v.hasCapacity == 'No'}">
         <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
           <legend id="noCapacity" class="slds-text-heading--medium slds-text-align--center slds-p-vertical--small slds-align_absolute-center">
@@ -226,7 +228,6 @@
         </lightning:layout>
           </form>
         </fieldset>
-      </aura:if>
     </aura:if>
   </aura:if>
 

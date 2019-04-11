@@ -35,6 +35,7 @@
                                 $A.getCallback(function resolve() {
                                     component.set("v.loading", false);
                                     component.set("v.hasCapacity", "No");
+                                    component.set("v.page", "NoCapacity");
                                 })).then(
                             $A.enqueueAction(delaySkipToEnd)
                             );
@@ -43,6 +44,7 @@
                                 $A.getCallback(function resolve() {
                                     component.set("v.loading", false);
                                     component.set("v.hasCapacity", "No");
+                                    component.set("v.page", "NoCapacity");
                                 }));
                         }
                     } else {
@@ -84,7 +86,7 @@
     skipToEnd : function(component, event, helper) {
         var lead = component.get('v.lead');
         var stageName = lead.CSAP_Stage__c;
-        helper.closePageFireComplete(component, helper, stageName, lead)
+        component.set("v.page", "NoCapacity");
     },
 
     delaySkipToEnd : function(component, event, helper) {
