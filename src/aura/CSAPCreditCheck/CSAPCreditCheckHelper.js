@@ -14,18 +14,7 @@
         });
         $A.enqueueAction(action);
     },
-    checkBirthDate : function(component, event, helper) {
-        component.set("v.ShowDateError", false);
-        var errorMessage = "";
-        var lead = component.get("v.lead");
-        errorMessage += helper.getFieldError(component, {
-            'fieldValue': lead.LASERCA__Birthdate__c,
-            'fieldId': "birthdateElement",
-            'errorMessage': "Enter or check Date of Birth (format: 01/01/2000)",
-            'fieldType': 'date'
-        });
-        return errorMessage;
-    },
+
     checkCreditResponse : function(component, helper, returnValue) {
         var lead = component.get("v.lead");
         if (returnValue.sssCreditQualification === "Ready for Credit Check") {
@@ -51,6 +40,7 @@
             helper.saveSObject(component, lead.Id, "Lead", null, null, lead);
             helper.handleCreditCheckResponse(component, helper);
         } else {
+            //SHOULD NEVER FALL HERE BECAUSE WE ARE MARKING NO PCR AS QUALIFIED
             component.set('v.loading', false);
             component.set("v.creditStatusErrorText", returnValue.sssCreditQualification);
             helper.handleCreditCheckResponse(component, helper, "creditResultError");
@@ -79,6 +69,8 @@
     handleCreditCheckResponse : function(component, helper, divToShow) {
         $A.util.addClass(component.find("creditStatus"), "no-display");
         if (divToShow) {
+            //I dont think we ever fall here
+            //Change this to "Qualified or Unqualified"?
             $A.util.removeClass(component.find(divToShow), "no-display");
         } else if (!component.get("v.showProgramPicklist")){
             var a = component.get("c.finishStage");

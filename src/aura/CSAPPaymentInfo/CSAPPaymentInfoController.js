@@ -31,7 +31,7 @@
         } else {
             helper.handleNavEvent(component, event, helper, "PaymentInfo");
         }
-        if (component.get('v.STAGENAME') === 'NAV_Payment_Information' && component.get('v.page') === 'PaymentInfo') {
+        if (component.get('v.STAGENAME') === 'NAV_Payment_Information' && component.get('v.page') === 'PaymentInfo' && event.getParam("eventType")=== "INITIATED") {
             var actionStates = component.get("c.getStates");
             actionStates.setCallback(this,function(resp){
                 if (resp.getState() === 'SUCCESS') {
