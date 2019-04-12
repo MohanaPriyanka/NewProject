@@ -148,18 +148,8 @@ private class BatchCSBillEmailHandlerTest {
             FROM Case
             WHERE Account.Name = 'BatchCSBillTest Property Account'
         ];
-        List<Error_Log__c> errorLogs = [
-            SELECT Id, Class__c, Message__c
-            FROM Error_Log__c
-            WHERE Class__c = 'BatchCSBillEmailHandler'
-            AND CreatedDate = TODAY
-        ];
         System.assertEquals(0, cases.size());
         System.assertEquals(9, accountBills.size());
-        if (errorLogs.size() > 0) {
-            // Just print out failure message - this shouldn't happen
-            System.assertEquals(null, errorLogs[0].Message__c);
-        }
         for (Account_Bill__c accountBill : accountBills) {
             System.assertEquals('Paper only', accountBill.Parent_Account__r.Bill_Delivery_Preference__c);
             System.assertEquals(0, accountBill.Tasks.size());
@@ -174,7 +164,7 @@ private class BatchCSBillEmailHandlerTest {
         Account parentAccount = new Account ( Name = 'Parent Account');
         insert parentAccount;
 
-        Account propertyAccount = new Account ( Name = 'Property Account',
+        Account propertyAccount = new Account ( Name = 'BatchCSBillTest Property Account',
             Parent_Account__c = parentAccount.Id);
         insert propertyAccount;
 

@@ -22,6 +22,7 @@ public without sharing class BatchCSBillEmailHandler implements Database.Batchab
             'FROM Account_Bill__c WHERE Ready_for_Email_Send__c = TRUE';
         // Prevent System.UnexpectedException: No more than one executeBatch can be called from within a test method.
         if (Test.isRunningTest()) {
+            query += ' AND Parent_Account__r.Name = \'BatchCSBillTest Property Account\'';
             query += ' LIMIT 10';
         }
         return Database.getQueryLocator(query);
