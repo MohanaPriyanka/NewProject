@@ -9,12 +9,12 @@ public without sharing class CaseFactory {
     public static RecordType customerCare;
     public static RecordType productSupport;
     public static OrgWideEmailAddress customerCareEmail;
-    public static Group CustomerCareQueue;
-    public static Group ProductQueue;
-    public static Group CollectionsQueue;
+    public static Group customerCareQueue;
+    public static Group productQueue;
+    public static Group collectionsQueue;
     public static Case newCase;
 
-    public caseFactory() {
+    public CaseFactory() {
         if (customerCare == null || productSupport == null) {
             List<RecordType> caseRecordTypes = [
                 SELECT Id, Name
@@ -41,7 +41,7 @@ public without sharing class CaseFactory {
             ];
         }
 
-        if (CollectionsQueue == null || CustomerCareQueue == null || ProductQueue == null){
+        if (collectionsQueue == null || customerCareQueue == null || productQueue == null){
             List<Group> assignmentGroups = [
                 SELECT Id, DeveloperName
                 FROM Group
@@ -53,9 +53,9 @@ public without sharing class CaseFactory {
             if (assignmentGroups.size() != 3) {
                 Logger.logNow('CaseFactory', 'constructor', 'Missing Groups for assignment. Available Groups: ' + assignmentGroups);
             } else {
-                CollectionsQueue = assignmentGroups[0];
-                CustomerCareQueue = assignmentGroups[1];
-                ProductQueue = assignmentGroups[2];
+                collectionsQueue = assignmentGroups[0];
+                customerCareQueue = assignmentGroups[1];
+                productQueue = assignmentGroups[2];
             }
         }
     }
@@ -65,16 +65,16 @@ public without sharing class CaseFactory {
         if (type == 'Product_Support') {
             newCase.RecordTypeId = productSupport.Id;
             newCase.RecordType = productSupport;
-            newCase.OwnerId = ProductQueue.Id;
+            newCase.OwnerId = productQueue.Id;
         } else if (type == 'Customer_Care') {
             newCase.RecordTypeId = customerCare.Id;
             newCase.RecordType = customerCare;
-            newCase.OwnerId = CustomerCareQueue.Id;
+            newCase.OwnerId = customerCareQueue.Id;
         } else if (type == 'Collections') {
             // Collections uses the customer care record type
             newCase.RecordTypeId = customerCare.Id;
             newCase.RecordType = customerCare;
-            newCase.OwnerId = CollectionsQueue.Id;
+            newCase.OwnerId = collectionsQueue.Id;
         }
         return newCase;
     }
