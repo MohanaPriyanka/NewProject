@@ -29,7 +29,6 @@ public without sharing class BatchCSBillEmailHandler implements Database.Batchab
 
     public void execute(Database.BatchableContext bc, List<Account_Bill__c> scope){
         List<Messaging.SingleEmailMessage> emailsToSend =  new List<Messaging.SingleEmailMessage> ();
-        List<Messaging.SendEmailError> errorList = new List<Messaging.SendEmailError>();
         List<Task> emailLogList = new List<Task>();
         List<Case> casesToCreate = new List<Case>();
         List<String> addressList = new List<String>();
