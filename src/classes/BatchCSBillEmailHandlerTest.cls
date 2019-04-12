@@ -98,6 +98,7 @@ private class BatchCSBillEmailHandlerTest {
         // Ready for Email Send should be unchecked
         List<Account_Bill__c> accountBills = [
             SELECT Id, Ready_for_Email_Send__c, Parent_Account__c, Parent_Account__r.Bill_Delivery_Preference__c,
+                Parent_Account__r.Send_Bills_Contact__r.Email,
             (SELECT Id, Subject FROM Tasks WHERE Subject LIKE 'Error:%')
             FROM Account_Bill__c
             WHERE Name LIKE 'BatchCSBill%'
@@ -111,14 +112,15 @@ private class BatchCSBillEmailHandlerTest {
         for (Case aCase : cases) {
             accountToCaseMap.put(aCase.AccountId, aCase);
         }
-        System.assertEquals(9, cases.size());
-        System.assertEquals(9, accountBills.size());
         for (Account_Bill__c accountBill : accountBills) {
+            System.assertEquals(null, accountBill.Parent_Account__r.Send_Bills_Contact__r.Email);
             System.assertEquals('Email and Paper', accountBill.Parent_Account__r.Bill_Delivery_Preference__c);
             System.assert(accountToCaseMap.get(accountBill.Parent_Account__c) != null);
             System.assertEquals(1, accountBill.Tasks.size());
             System.assertEquals(false, accountBill.Ready_for_Email_Send__c);
         }
+        System.assertEquals(9, accountBills.size());
+        System.assertEquals(9, cases.size());
     }
 
     @IsTest(SeeAllData=true)
@@ -146,8 +148,18 @@ private class BatchCSBillEmailHandlerTest {
             FROM Case
             WHERE Account.Name = 'BatchCSBillTest Property Account'
         ];
+        List<Error_Log__c> errorLogs = [
+            SELECT Id, Class__c, Message__c
+            FROM Error_Log__c
+            WHERE Class__c = 'BatchCSBillEmailHandler'
+            AND CreatedDate = TODAY
+        ];
         System.assertEquals(0, cases.size());
         System.assertEquals(9, accountBills.size());
+        if (errorLogs.size() > 0) {
+            // Just print out failure message - this shouldn't happen
+            System.assertEquals(null, errorLogs[0].Message__c);
+        }
         for (Account_Bill__c accountBill : accountBills) {
             System.assertEquals('Paper only', accountBill.Parent_Account__r.Bill_Delivery_Preference__c);
             System.assertEquals(0, accountBill.Tasks.size());
