@@ -730,6 +730,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Bill_Adjustment__c.Adjustment_Source__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Bill_Adjustment__c.Adjustment_Type__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -786,6 +791,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Bill_Adjustment__c.Source_ID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Bill_Adjustment__c.Team__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
