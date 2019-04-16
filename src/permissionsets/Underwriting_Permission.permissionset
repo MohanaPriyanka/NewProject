@@ -971,4 +971,12 @@
         <object>LASERCA__Personal_Credit_Report__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
+    <recordTypeVisibilities>
+        <recordType>Lead.BFG_Community_Solar</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <recordType>Lead.BFG_Community_Solar_Business</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
 </PermissionSet>
