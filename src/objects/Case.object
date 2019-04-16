@@ -403,7 +403,7 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
                 <value>
                     <fullName>Billing</fullName>
                     <default>false</default>
-                    <label>Billing Issue</label>
+                    <label>Billing-Issue</label>
                 </value>
                 <value>
                     <fullName>Subscription Change</fullName>
@@ -583,7 +583,7 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
                 <value>
                     <fullName>Billing Payment</fullName>
                     <default>false</default>
-                    <label>Billing Payment</label>
+                    <label>Billing-Payment</label>
                 </value>
                 <value>
                     <fullName>Partner Payment</fullName>
@@ -603,7 +603,6 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Community Solar</controllingFieldValue>
-                <controllingFieldValue>Solar Loan</controllingFieldValue>
                 <valueName>Subscription Change</valueName>
             </valueSettings>
             <valueSettings>
@@ -1296,6 +1295,11 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
                     <fullName>Solar Loan</fullName>
                     <default>false</default>
                     <label>Solar Loan</label>
+                </value>
+                <value>
+                    <fullName>None</fullName>
+                    <default>false</default>
+                    <label>None</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -2991,6 +2995,68 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <businessProcess>Customer Care Case</businessProcess>
         <label>Customer Care</label>
         <picklistValues>
+            <picklist>Category__c</picklist>
+            <values>
+                <fullName>Billing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Billing Payment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cancellation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Feedback%2FFeature Request</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner Payment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Portal Issue</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Question</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SREC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Subscription Adjustment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Subscription Change</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Product_Line__c</picklist>
+            <values>
+                <fullName>Community Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar Loan</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Assignee_If_Different__c</picklist>
             <values>
                 <fullName>Alex Schulte</fullName>
@@ -3037,53 +3103,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
             <values>
                 <fullName>Vendor</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Category__c</picklist>
-            <values>
-                <fullName>Application Status</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Billing</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Cancellation</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Disbursals</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Product Question</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SRECs</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Subscription Adjustment</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Technical Assistance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Transfer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Underwriting</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -3213,17 +3232,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             <values>
                 <fullName>Medium</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Product_Line__c</picklist>
-            <values>
-                <fullName>Community Solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar Loan</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -3561,6 +3569,68 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <businessProcess>Customer Care Case</businessProcess>
         <label>Partner Care Case</label>
         <picklistValues>
+            <picklist>Category__c</picklist>
+            <values>
+                <fullName>Billing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Billing Payment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cancellation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Feedback%2FFeature Request</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner Payment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Portal Issue</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Question</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SREC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Subscription Adjustment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Subscription Change</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Product_Line__c</picklist>
+            <values>
+                <fullName>Community Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar Loan</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Assignee_If_Different__c</picklist>
             <values>
                 <fullName>Alex Schulte</fullName>
@@ -3607,65 +3677,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
             <values>
                 <fullName>Vendor</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Category__c</picklist>
-            <values>
-                <fullName>Amortization Table</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Capacity</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Contract%2FApplication Issue</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Utility Bill</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Elligibility</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Invoice</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Loan Terms</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Onboarding</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Portal Issue</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Product Terms</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>QC Call</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SREC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TPF%2FCollections</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Underwriting</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -3795,17 +3806,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             <values>
                 <fullName>Medium</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Product_Line__c</picklist>
-            <values>
-                <fullName>Community Solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar Loan</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
