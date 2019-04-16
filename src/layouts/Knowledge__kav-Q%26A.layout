@@ -18,9 +18,6 @@
             <layoutItems>
                 <field>Internal_Notes__c</field>
             </layoutItems>
-            <layoutItems>
-                <field>Approval_Status__c</field>
-            </layoutItems>
         </layoutColumns>
         <style>OneColumn</style>
     </layoutSections>

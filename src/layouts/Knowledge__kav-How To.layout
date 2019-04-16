@@ -16,19 +16,16 @@
                 <field>Objective__c</field>
             </layoutItems>
             <layoutItems>
-                <field>Environment__c</field>
+                <field>Procedure__c</field>
             </layoutItems>
             <layoutItems>
-                <field>Procedure__c</field>
+                <field>Environment__c</field>
             </layoutItems>
             <layoutItems>
                 <field>Internal_Notes__c</field>
             </layoutItems>
             <layoutItems>
                 <field>Approval_Status__c</field>
-            </layoutItems>
-            <layoutItems>
-                <field>PublishStatus</field>
             </layoutItems>
         </layoutColumns>
         <style>OneColumn</style>

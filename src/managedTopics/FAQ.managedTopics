@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ManagedTopics xmlns="http://soap.sforce.com/2006/04/metadata">
+    <managedTopic>
+        <fullName>FAQ.Content:Community Solar</fullName>
+        <managedTopicType>Content</managedTopicType>
+        <name>Community Solar</name>
+        <parentName></parentName>
+        <position>2</position>
+        <topicDescription> </topicDescription>
+    </managedTopic>
+    <managedTopic>
+        <fullName>FAQ.Content:Home Solar Loan</fullName>
+        <managedTopicType>Content</managedTopicType>
+        <name>Home Solar Loan</name>
+        <parentName></parentName>
+        <position>5</position>
+        <topicDescription> </topicDescription>
+    </managedTopic>
+    <managedTopic>
+        <fullName>FAQ.Content:Project Development</fullName>
+        <managedTopicType>Content</managedTopicType>
+        <name>Project Development</name>
+        <parentName></parentName>
+        <position>6</position>
+        <topicDescription> </topicDescription>
+    </managedTopic>
+    <managedTopic>
+        <fullName>FAQ.Featured:Community Solar</fullName>
+        <managedTopicType>Featured</managedTopicType>
+        <name>Community Solar</name>
+        <parentName></parentName>
+        <position>0</position>
+        <topicDescription> </topicDescription>
+    </managedTopic>
+    <managedTopic>
+        <fullName>FAQ.Featured:Home Solar Loan</fullName>
+        <managedTopicType>Featured</managedTopicType>
+        <name>Home Solar Loan</name>
+        <parentName></parentName>
+        <position>1</position>
+        <topicDescription> </topicDescription>
+    </managedTopic>
+    <managedTopic>
+        <fullName>FAQ.Featured:Project Development</fullName>
+        <managedTopicType>Featured</managedTopicType>
+        <name>Project Development</name>
+        <parentName></parentName>
+        <position>2</position>
+        <topicDescription> </topicDescription>
+    </managedTopic>
+</ManagedTopics>
