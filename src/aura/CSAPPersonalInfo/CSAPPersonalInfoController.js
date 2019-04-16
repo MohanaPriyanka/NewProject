@@ -40,7 +40,6 @@
                 var hasProject = resp.getReturnValue();
                 if (resp.getState() === "SUCCESS") {
                     component.set("v.hasProject", hasProject);
-
                 } else {
                     helper.logError("CSAPPersonalInfoHelper", "hasCapacity",
                         "There was an issue checking your zipcode, but has been logged. Please call Customer Care at the number below for assistance.",
@@ -81,7 +80,6 @@
             helper.closePageFireComplete(component, helper, stageName, lead);
         }
     },
-
 
     checkForEnter : function(component, event, helper) {
         if (event.which === 13) {
