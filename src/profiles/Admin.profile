@@ -25541,6 +25541,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Partner__c.Conga_Conductor_CS_Partner_Update_NY__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Partner__c.Conga_Conductor_CS_Partner_Update__c</field>
         <readable>true</readable>
     </fieldPermissions>
