@@ -45,9 +45,9 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>false</enableFeeds>
     <enableHistory>true</enableHistory>
+    <enableLicensing>false</enableLicensing>
     <enableReports>false</enableReports>
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
@@ -782,6 +782,8 @@ IF( ISPICKVAL(Class__c, &quot;Class 3&quot;), (Transmission_Charge__c +  Transit
         <fullName>All</fullName>
         <columns>NAME</columns>
         <columns>LAST_UPDATE</columns>
+        <columns>Class__c</columns>
+        <columns>CREATEDBY_USER</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
@@ -792,6 +794,6 @@ IF( ISPICKVAL(Class__c, &quot;Class 3&quot;), (Transmission_Charge__c +  Transit
     </nameField>
     <pluralLabel>Utility NMC Tariffs</pluralLabel>
     <searchLayouts/>
-    <sharingModel>Read</sharingModel>
+    <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>
