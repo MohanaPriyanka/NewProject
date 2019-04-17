@@ -1297,6 +1297,11 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
                     <default>false</default>
                     <label>Solar Loan</label>
                 </value>
+                <value>
+                    <fullName>None</fullName>
+                    <default>false</default>
+                    <label>None</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
@@ -1509,6 +1514,45 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <trackTrending>false</trackTrending>
         <type>LongTextArea</type>
         <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Sale_Status__c</fullName>
+        <description>Allows support to track cases that stem from pre and post sale</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Did the issue arise before or after the sale?</inlineHelpText>
+        <label>Sale Status</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <controllingField>Product_Line__c</controllingField>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Pre-sale</fullName>
+                    <default>false</default>
+                    <label>Pre-sale</label>
+                </value>
+                <value>
+                    <fullName>Post-sale</fullName>
+                    <default>false</default>
+                    <label>Post-sale</label>
+                </value>
+            </valueSetDefinition>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
+                <valueName>Pre-sale</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <controllingFieldValue>Solar Loan</controllingFieldValue>
+                <valueName>Post-sale</valueName>
+            </valueSettings>
+        </valueSet>
     </fields>
     <fields>
         <fullName>Sent_Email_Count__c</fullName>
@@ -2991,6 +3035,32 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <businessProcess>Customer Care Case</businessProcess>
         <label>Customer Care</label>
         <picklistValues>
+            <picklist>Product_Line__c</picklist>
+            <values>
+                <fullName>Community Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar Loan</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Sale_Status__c</picklist>
+            <values>
+                <fullName>Post-sale</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pre-sale</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Assignee_If_Different__c</picklist>
             <values>
                 <fullName>Alex Schulte</fullName>
@@ -3213,17 +3283,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             <values>
                 <fullName>Medium</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Product_Line__c</picklist>
-            <values>
-                <fullName>Community Solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar Loan</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -3561,6 +3620,32 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <businessProcess>Customer Care Case</businessProcess>
         <label>Partner Care Case</label>
         <picklistValues>
+            <picklist>Product_Line__c</picklist>
+            <values>
+                <fullName>Community Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar Loan</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Sale_Status__c</picklist>
+            <values>
+                <fullName>Post-sale</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pre-sale</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Assignee_If_Different__c</picklist>
             <values>
                 <fullName>Alex Schulte</fullName>
@@ -3795,17 +3880,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             <values>
                 <fullName>Medium</fullName>
                 <default>true</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Product_Line__c</picklist>
-            <values>
-                <fullName>Community Solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar Loan</fullName>
-                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
