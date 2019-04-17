@@ -13,6 +13,7 @@
     <enableGuestFileAccess>true</enableGuestFileAccess>
     <enableInvitation>false</enableInvitation>
     <enableKnowledgeable>false</enableKnowledgeable>
+    <enableMemberVisibility>true</enableMemberVisibility>
     <enableNicknameDisplay>false</enableNicknameDisplay>
     <enablePrivateMessages>false</enablePrivateMessages>
     <enableReputation>false</enableReputation>
@@ -188,11 +189,7 @@
     </navigationLinkSet>
     <networkMemberGroups>
         <profile>admin</profile>
-        <profile>bwc executive</profile>
-        <profile>bfg standard user</profile>
-        <profile>force.com user</profile>
         <profile>api only</profile>
-        <profile>bfg marketing user</profile>
     </networkMemberGroups>
     <networkPageOverrides>
         <changePasswordPageOverrideSetting>Standard</changePasswordPageOverrideSetting>
@@ -203,7 +200,7 @@
     </networkPageOverrides>
     <picassoSite>FAQ1</picassoSite>
     <selfRegistration>false</selfRegistration>
-    <sendWelcomeEmail>true</sendWelcomeEmail>
+    <sendWelcomeEmail>false</sendWelcomeEmail>
     <site>FAQ</site>
     <status>Live</status>
     <tabs>
