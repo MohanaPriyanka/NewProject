@@ -648,6 +648,31 @@
         </rules>
     </decisions>
     <decisions>
+        <name>myPostWaitDecision_myWaitEvent_myWait_myRule_12_event_0</name>
+        <label>myPostWaitDecision_myWaitEvent_myWait_myRule_12_event_0</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myWaitEvent_myWait_myRule_12_event_0_postWaitExecutionAssignment</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myPostWaitRule_myWaitEvent_myWait_myRule_12_event_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>myVariable_current.Inactive_Date__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myWaitEvent_myWait_myRule_12_event_0_SA1</targetReference>
+            </connector>
+            <label>myPostWaitRule_myWaitEvent_myWait_myRule_12_event_0</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>myPreWaitDecision_myWait_myRule_12</name>
         <label>myPreWaitDecision_myWait_myRule_12</label>
         <locationX>0</locationX>
@@ -1055,7 +1080,7 @@
                 <stringValue>NOW()</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_13_myWaitEvent_myWait_myRule_12_event_0_SA1_9419938228</name>
+        <name>formula_13_myWaitEvent_myWait_myRule_12_event_0_SA1_6053957059</name>
         <dataType>DateTime</dataType>
         <expression>NOW()</expression>
     </formulas>
@@ -1066,7 +1091,7 @@
                 <stringValue>NOW()+[agf__ADM_Work__c].agf__Scrum_Team__c.Work_Expiration_Delay__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_14_myRule_12_A1_7827417024</name>
+        <name>formula_14_myRule_12_A1_5233607649</name>
         <dataType>Date</dataType>
         <expression>NOW()+{!myVariable_current.agf__Scrum_Team__r.Work_Expiration_Delay__c}</expression>
     </formulas>
@@ -1077,7 +1102,7 @@
                 <stringValue>IF(ISBLANK([agf__ADM_Work__c].agf__Assignee__c ), $User.Id , [agf__ADM_Work__c].agf__Assignee__c) </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_2_myRule_1_A1_7754434975</name>
+        <name>formula_2_myRule_1_A1_6330519236</name>
         <dataType>String</dataType>
         <expression>IF(ISBLANK({!myVariable_current.agf__Assignee__c} ), {!$User.Id} , {!myVariable_current.agf__Assignee__c})</expression>
     </formulas>
@@ -1094,7 +1119,7 @@ IF(
 )</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_8_myRule_4_A1_9161603946</name>
+        <name>formula_8_myRule_4_A1_0710493672</name>
         <dataType>String</dataType>
         <expression>
 
@@ -1104,7 +1129,7 @@ IF(
 {!myVariable_current.agf__Details__c} 
 )</expression>
     </formulas>
-    <interviewLabel>Work_Create_and_Update-17_InterviewLabel</interviewLabel>
+    <interviewLabel>Work_Create_and_Update-18_InterviewLabel</interviewLabel>
     <label>Work: Create and Update</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -1209,7 +1234,7 @@ IF(
             </processMetadataValues>
             <field>Inactive_Date__c</field>
             <value>
-                <elementReference>formula_14_myRule_12_A1_7827417024</elementReference>
+                <elementReference>formula_14_myRule_12_A1_5233607649</elementReference>
             </value>
         </inputAssignments>
         <object>agf__ADM_Work__c</object>
@@ -1292,7 +1317,7 @@ IF(
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_2_myRule_1_A1_7754434975</elementReference>
+                <elementReference>formula_2_myRule_1_A1_6330519236</elementReference>
             </value>
         </inputAssignments>
         <object>agf__ADM_Work__c</object>
@@ -1375,7 +1400,7 @@ IF(
             </processMetadataValues>
             <field>Work_Details__c</field>
             <value>
-                <elementReference>formula_8_myRule_4_A1_9161603946</elementReference>
+                <elementReference>formula_8_myRule_4_A1_0710493672</elementReference>
             </value>
         </inputAssignments>
         <object>copado__User_Story__c</object>
@@ -1458,7 +1483,7 @@ IF(
             </processMetadataValues>
             <field>agf__Closed_On__c</field>
             <value>
-                <elementReference>formula_13_myWaitEvent_myWait_myRule_12_event_0_SA1_9419938228</elementReference>
+                <elementReference>formula_13_myWaitEvent_myWait_myRule_12_event_0_SA1_6053957059</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -1554,7 +1579,7 @@ IF(
             <processMetadataValues>
                 <name>inputParameterType</name>
                 <value>
-                    <stringValue>now</stringValue>
+                    <stringValue>referenced</stringValue>
                 </value>
             </processMetadataValues>
             <name>myWaitEvent_myWait_myRule_12_event_0</name>
@@ -1567,13 +1592,19 @@ IF(
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>myWaitEvent_myWait_myRule_12_event_0_SA1</targetReference>
+                <targetReference>myPostWaitDecision_myWaitEvent_myWait_myRule_12_event_0</targetReference>
             </connector>
-            <eventType>AlarmEvent</eventType>
+            <eventType>DateRefAlarmEvent</eventType>
             <inputParameters>
-                <name>AlarmTime</name>
+                <name>TimeTableColumnEnumOrId</name>
                 <value>
-                    <elementReference>myVariable_waitStartTimeVariable</elementReference>
+                    <stringValue>agf__ADM_Work__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>EntityObjectId</name>
+                <value>
+                    <elementReference>myVariable_current.Id</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -1585,7 +1616,13 @@ IF(
             <inputParameters>
                 <name>TimeOffset</name>
                 <value>
-                    <numberValue>180.0</numberValue>
+                    <numberValue>0.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>TimeFieldColumnEnumOrId</name>
+                <value>
+                    <stringValue>Inactive_Date__c</stringValue>
                 </value>
             </inputParameters>
             <label>myWaitEvent_myWait_myRule_12_event_0</label>
