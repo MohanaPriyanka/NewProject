@@ -46,7 +46,7 @@ public without sharing class CSAPController {
     }
     @AuraEnabled
     public static List<Attachment> getAttachments(Id parentId) {
-        return [SELECT Id, Name, Description from Attachment Where ParentId = :parentId];
+        return [SELECT Id, Name, Description FROM Attachment WHERE ParentId = :parentId];
     }
 
     @AuraEnabled
@@ -65,13 +65,24 @@ public without sharing class CSAPController {
             LIMIT 1
         ];
         if (crList.size() > 0) {
-            if (crList[0].LASERCA__Personal_Credit_Report__r.LASERCA__Credit_Score__c != null) {
-                creditScore = Decimal.valueOf(crList[0].LASERCA__Personal_Credit_Report__r.LASERCA__Credit_Score__c);
-                result = checkCreditReport(leadId, creditScore);
+            LASERCA__Personal_Credit_Report__c pcr = [
+                SELECT LASERCA__Credit_Score__c
+                FROM LASERCA__Personal_Credit_Report__c
+                WHERE Id = :crList[0].LASERCA__Personal_Credit_Report__c
+            ];
+
+            if (pcr.LASERCA__Credit_Score__c != null) {
+                creditScore = Decimal.valueOf(pcr.LASERCA__Credit_Score__c);
             } else {
-                //NO PCR
-                result.sssCreditQualification = 'Credit Report was returned without a credit score.';
+                //No PCR returned
+                pcr.LASERCA__Credit_Score__c = '9999';
+                creditScore = 9999;
+                update pcr;
+
             }
+
+            System.debug('Check the PCR Credit Score: ' + pcr.LASERCA__Credit_Score__c);
+            result = checkCreditReport(leadId, creditScore);
         }
         return result;
     }
@@ -85,7 +96,7 @@ public without sharing class CSAPController {
         List<LASERCA__Personal_Credit_Report__c> pcrList = [
             SELECT LASERCA__Credit_Score__c
             FROM LASERCA__Personal_Credit_Report__c
-            WHERE LASERCA__Lead__r.Parent_Account__c = : secondlead.Parent_Account__c
+            WHERE LASERCA__Lead__r.Parent_Account__c = : secondLead.Parent_Account__c
             ORDER BY CreatedDate DESC
             LIMIT 1
         ];
@@ -148,24 +159,25 @@ public without sharing class CSAPController {
         insert lead;
         // The lead trigger sets the Load Zone and Utility, which we need in case it ends up being split.
         Lead insertedLead = [
-            SELECT LoadZone__c, Utility_relationship__c, ZipCode__c, Zipcode__r.LZ__c, Zipcode__r.Utility_Junction_Count__c
+            SELECT LoadZone__c, Utility_relationship__c, ZipCode__c, ZipCode__r.LZ__c, ZipCode__r.Utility_Junction_Count__c
             FROM Lead
             WHERE Id = :lead.Id];
 
         lead.ZipCode__c = insertedLead.ZipCode__c;
 
-        if (insertedLead.Zipcode__r.Utility_Junction_Count__c != 1){
+        if (insertedLead.ZipCode__r.Utility_Junction_Count__c != 1){
             lead.Utility_relationship__c = null;
         } else {
             lead.Utility_relationship__c = insertedLead.Utility_relationship__c;
         }
-        if (insertedLead.Zipcode__r.LZ__c.contains('/')){
+        if (insertedLead.ZipCode__r.LZ__c.contains('/')){
             lead.LoadZone__c = null;
         } else {
             lead.LoadZone__c = insertedLead.LoadZone__c;
         }
         return lead;
     }
+
     public static Lead processLead(Lead lead){
         if (lead.Date_of_Application__c == null) {
             lead.Date_of_Application__c = System.now().format('YYYY-MM-DD-hh:mm');
@@ -179,7 +191,6 @@ public without sharing class CSAPController {
     public static Boolean checkApplicationPartner(String partnerId){
         Boolean partnerApp;
         Partner__c customerPartner = MyAccountController.getPartner(partnerId);
-
         //Set boolean based on BIS (and BlueWave Test Partner?) or Partner to determine application process
         if (customerPartner.Name == 'BlueWave Inside Sales' || customerPartner.Name == 'BlueWave Test Partner'){
             partnerApp = false;
@@ -193,15 +204,16 @@ public without sharing class CSAPController {
     public static Lead upsertCSAPRecords(Lead lead, String partnerId, String salesRepId, String referralCode){
         Partner__c customerPartner = MyAccountController.getPartner(partnerId);
 
+        System.debug('We are trying to upsert a lead with Sales Rep: ' + salesRepId );
+
         if (lead.Parent_Account__c == null) {
             lead = setupParentAccount(lead, customerPartner);
         }
 
         // If if an installer, use the installer's salesRepId from the profile instead of a default for the partner
         if (salesRepId != null && salesRepId != ''){
+            System.debug('SHOULD MAKE IT HERE');
             lead.bs_Sales_ID__c = salesRepId;
-        } else if (UserInfo.getUserType() == 'PowerPartner') {
-            lead.bs_Sales_ID__c = profile.salesRepId;
         } else {
             lead.bs_Sales_ID__c = customerPartner.Default_Sales_Rep__c;
         }
@@ -286,7 +298,7 @@ public without sharing class CSAPController {
                   WHERE Id =:lead.Id];
         Organization o = [SELECT IsSandbox FROM Organization LIMIT 1];
         String name = l.Name.toLowerCase();
-        if (o.isSandbox || name.contains('testcase')) {
+        if (o.IsSandbox || name.contains('testcase')) {
             // Per Tracy: sandboxes always need to have an SSN for a credit pull in sandboxes / testcases
             if (name.contains('frozen')) {
                 // let's give a way to submit frozen apps
@@ -349,7 +361,7 @@ public without sharing class CSAPController {
             SELECT Id, Name, Username
             FROM User
             WHERE Name = 'API'
-            AND IsActive = True
+            AND IsActive = TRUE
             LIMIT 1
         ];
         for (Lead lead : leads) {
@@ -522,7 +534,7 @@ public without sharing class CSAPController {
     @AuraEnabled
     public static String sendEmbeddedContract(Lead lead) {
         // We should query the lead since it might not be fully populated (with a list of opportunities)
-        lead = getlead(lead.Id, lead.Email);
+        lead = getLead(lead.Id, lead.Email);
         return sendEmbeddedContract(lead.Opportunities__r[0]);
     }
 

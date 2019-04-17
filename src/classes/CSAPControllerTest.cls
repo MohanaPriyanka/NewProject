@@ -737,6 +737,8 @@ public with sharing class CSAPControllerTest {
         Lead leadToInsert = getLeadForTest();
         insert leadToInsert;
 
+        Test.startTest();
+
         LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
             LASERCA__Lead__c = leadToInsert.Id,
             LASERCA__Credit_Score__c = null,
@@ -751,11 +753,36 @@ public with sharing class CSAPControllerTest {
         );
         insert crLog;
 
-        //Check for qualified since credit score is 700
+
         CSAPController.SSSResult result = CSAPController.checkLeadCreditIfQualified(leadToInsert.Id);
-        System.assertNotEquals('Ready for Credit Check', result.sssCreditQualification);
-        String message = 'Credit Report was returned without a credit score.';
-        System.assertEquals(message, result.sssCreditQualification);
+
+        LASERCA__Personal_Credit_Report__c checkPCR = [
+            SELECT Id, LASERCA__Credit_Score__c
+            FROM LASERCA__Personal_Credit_Report__c
+            WHERE Id = :pcr.Id
+            LIMIT 1
+        ];
+
+        Lead checkLead = [
+            SELECT Id, QC_No_PCR__c
+            FROM Lead
+            WHERE Id = :leadToInsert.Id
+            LIMIT 1
+        ];
+
+        //No PCR will still be marked as qualified but with a credit score of 9999
+        System.assertEquals('Qualified', result.sssCreditQualification);
+        System.assertEquals('9999', checkPCR.LASERCA__Credit_Score__c);
+
+        //Lead should be qualified for a Project with a Product
+        System.assertNotEquals(null, result.ProductList);
+
+        //Lead should be tagged for QC
+        System.assertEquals(true, checkLead.QC_No_PCR__c);
+
+
+        Test.stopTest();
+
     }
 
     @IsTest static void testSplitZone() {
