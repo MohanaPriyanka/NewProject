@@ -764,7 +764,7 @@ public with sharing class CSAPControllerTest {
         ];
 
         Lead checkLead = [
-            SELECT Id, QC_No_PCR__c
+            SELECT Id
             FROM Lead
             WHERE Id = :leadToInsert.Id
             LIMIT 1
@@ -776,10 +776,6 @@ public with sharing class CSAPControllerTest {
 
         //Lead should be qualified for a Project with a Product
         System.assertNotEquals(null, result.ProductList);
-
-        //Lead should be tagged for QC
-        System.assertEquals(true, checkLead.QC_No_PCR__c);
-
 
         Test.stopTest();
 
