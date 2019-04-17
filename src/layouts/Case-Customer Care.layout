@@ -13,7 +13,7 @@
         <label>Case Information</label>
         <layoutColumns>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>Product_Line__c</field>
             </layoutItems>
             <layoutItems>
@@ -21,8 +21,12 @@
                 <field>Product_Line_Account__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Required</behavior>
                 <field>Category__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>Sale_Status__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -385,6 +389,9 @@
         <fields>Case_Satisfaction__c</fields>
         <fields>CREATED_DATE</fields>
         <relatedList>BlueWave_Surveys__c.Case__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <relatedList>RelatedCaseContactRoleList</relatedList>
     </relatedLists>
     <relatedLists>
         <relatedList>RelatedEntityHistoryList</relatedList>
