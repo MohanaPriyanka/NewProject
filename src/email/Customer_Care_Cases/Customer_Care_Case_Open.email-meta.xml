@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>When a case is opened, this email is sent to the customer</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Customer Care Case Open</name>
+    <style>none</style>
+    <subject>You&apos;ve Submitted a Case with BlueWave Customer Care</subject>
+    <textOnly>Hello {!Case.SuppliedName},
+
+Thank you for submitting a case with BlueWave Customer Care. Case # {!Case.CaseNumber} is being evaluated and the most appropriate customer care representative is being assigned to fix this issue. You should receive a response to your inquiry shortly.
+
+Thanks for being part of the BlueWave Community
+- All of us here at BlueWave
+
+BlueWave Customer Care
+844.786.4100 | customercare@bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>
