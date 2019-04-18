@@ -119,6 +119,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>QC_Personal_Credit_Report__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>ACH_Account_Number__c</field>
             </layoutItems>
             <layoutItems>

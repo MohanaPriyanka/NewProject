@@ -15,10 +15,6 @@
             var a = component.get("c.checkCredit");
             $A.enqueueAction(a);
         }
-
-        // if (component.get("v.abbrevStates") && component.get("v.abbrevStates").length === 0) {
-        //     helper.getUSStates(component, "v.abbrevStates", true);
-        // }
     },
 
     checkCredit : function(component, event, helper) {
@@ -68,19 +64,13 @@
         }
     },
 
-
     finishStage : function(component, event, helper) {
         var lead = component.get("v.lead");
         helper.saveSObject(component, lead.Id, 'Lead', 'Product__c', lead.Product__c);
-        //why do we set the programType here?
         component.set('v.programType', 'SREC');
-        //When are we setting creditStatusErrorText?
         if (lead.Status === "Qualified" && component.get("v.creditStatusErrorText") == undefined) {
             helper.finishStage(component, event, helper);
         } else {
-            //Here we have a credit denial or a frozen account -- add something here to generate a Task for the
-            //lead so that Inside Sales can figure out how to handle the lead
-            // We can then call finishStage to ensure the partner doesnt fall out
             component.set("v.page", "Unqualified");
         }
     },
