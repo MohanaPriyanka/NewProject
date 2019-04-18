@@ -14,6 +14,7 @@
                 if (component.get("v.hasCapacity")) {
                     helper.sendCSApplication(component, helper);
                 } else {
+                    console.log('We know there are no projects');
                     component.set("v.page", "NoProject");
                 }
             }

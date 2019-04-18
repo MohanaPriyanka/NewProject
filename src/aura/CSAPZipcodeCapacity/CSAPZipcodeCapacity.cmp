@@ -1,8 +1,15 @@
-<aura:component controller="CSAPController" access="global" extends="c:CSAPParent" implements="forceCommunity:availableForAllPageTypes">
+<aura:component controller="CSAPController" access="global" extends="c:CSAPParent" implements="lightning:availableForFlowScreens">
+
+  <!--forceCommunity:availableForAllPageTypes">-->
+
+  <!--forceCommunity:availableForAllPageTypes-->
   <aura:attribute name="hasCapacity" type="boolean" default="null"/>
-  <aura:attribute name="checkedCapacity" type="boolean"/>
-  <aura:attribute name="zipcode" type="string"/>
-  <div aria-labelledby="zipForm">
+  <aura:attribute name="zipcode" type="String"/>
+  <aura:attribute name="page" type="String" default="CheckZip"/>
+
+  <aura:if isTrue="{!v.page == 'CheckZip'}">
+
+    <div aria-labelledby="zipForm">
       <form class="slds-form--stacked">
         <lightning:layout horizontalAlign="center" multipleRows="true">
           <lightning:layoutItem  size= "8" mediumDeviceSize="4" largeDeviceSize="2">
@@ -28,5 +35,17 @@
           </lightning:layoutItem>
         </lightning:layout>
       </form>
-  </div>
+    </div>
+  </aura:if>
+
+
+  <aura:if isTrue="{!v.page == 'NoProject'}">
+    <legend id="aboutYourselfForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
+      <b class="slds-section__title--large slds-p-top--large">We're Sorry</b>
+    </legend>
+    <div class="slds-align--absolute-center slds-text-align--center slds-size--1-of-3">
+      It seems that we don't have any Community Solar currently available in your area. We're working hard to expand our Community Solar availability, so please check back at a later date.
+    </div>
+  </aura:if>
+
 </aura:component>
