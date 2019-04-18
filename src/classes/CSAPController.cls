@@ -81,7 +81,6 @@ public without sharing class CSAPController {
 
             }
 
-            System.debug('Check the PCR Credit Score: ' + pcr.LASERCA__Credit_Score__c);
             result = checkCreditReport(leadId, creditScore);
         }
         return result;
@@ -204,7 +203,6 @@ public without sharing class CSAPController {
     public static Lead upsertCSAPRecords(Lead lead, String partnerId, String salesRepId, String referralCode){
         Partner__c customerPartner = MyAccountController.getPartner(partnerId);
 
-        System.debug('We are trying to upsert a lead with Sales Rep: ' + salesRepId );
 
         if (lead.Parent_Account__c == null) {
             lead = setupParentAccount(lead, customerPartner);
@@ -212,7 +210,6 @@ public without sharing class CSAPController {
 
         // If if an installer, use the installer's salesRepId from the profile instead of a default for the partner
         if (salesRepId != null && salesRepId != ''){
-            System.debug('SHOULD MAKE IT HERE');
             lead.bs_Sales_ID__c = salesRepId;
         } else {
             lead.bs_Sales_ID__c = customerPartner.Default_Sales_Rep__c;
