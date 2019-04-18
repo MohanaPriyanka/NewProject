@@ -1,7 +1,7 @@
 /*************************************************************************************
  * Created By:  Joey Chan
  * Description: Community Solar Application Portal controller for the public communities
- * Test: CSAPControllerTest
+ * Test: CSAPControllerTest,
  *************************************************************************************/
 public without sharing class CSAPController {
     public static SLPUserHelper.PartnerProfile profile = new SLPUserHelper.PartnerProfile();
@@ -66,7 +66,7 @@ public without sharing class CSAPController {
         ];
         if (crList.size() > 0) {
             LASERCA__Personal_Credit_Report__c pcr = [
-                SELECT LASERCA__Credit_Score__c
+                SELECT LASERCA__Credit_Score__c, LASERCA__Credit_Score_TransUnion__c
                 FROM LASERCA__Personal_Credit_Report__c
                 WHERE Id = :crList[0].LASERCA__Personal_Credit_Report__c
             ];
@@ -75,6 +75,7 @@ public without sharing class CSAPController {
                 creditScore = Decimal.valueOf(pcr.LASERCA__Credit_Score__c);
             } else {
                 //No PCR returned
+                pcr.LASERCA__Credit_Score_TransUnion__c ='9999';
                 pcr.LASERCA__Credit_Score__c = '9999';
                 creditScore = 9999;
                 update pcr;
@@ -197,6 +198,18 @@ public without sharing class CSAPController {
             partnerApp = true;
         }
         return partnerApp;
+    }
+
+    @AuraEnabled
+    public static String getCSApplicationURL() {
+        //Should return the Default CS Partner Id - CS Self-Originations
+        String partnerId = MyAccountController.getPartner(null).Id;
+
+        Domain dom = [SELECT Domain, DomainType FROM Domain];
+
+        String appURL = 'https://' + dom.Domain + '/apply/s/csap?partnerId=' + partnerId;
+
+        return appURL;
     }
 
     @AuraEnabled
