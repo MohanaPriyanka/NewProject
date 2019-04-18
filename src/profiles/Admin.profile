@@ -35456,6 +35456,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>agf__ADM_Scrum_Team__c.Work_Expiration_Delay__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>agf__ADM_Scrum_Team__c.agf__Active__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -36817,6 +36822,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>agf__ADM_Work__c.Groomed__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>agf__ADM_Work__c.Inactive_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
