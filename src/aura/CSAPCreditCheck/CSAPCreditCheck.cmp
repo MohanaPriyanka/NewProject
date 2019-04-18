@@ -16,7 +16,6 @@
   <aura:set attribute="STAGENAME" value="NAV_Credit_Check"/>
   <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
 
-
   <aura:if isTrue="{!v.page == 'CreditAlreadyRun'}">
     <div class="slds-icon-eq slds-is-animated slds-align_absolute-center" title="Description of the icon when needed">
       <div class="slds-icon-eq__bar"></div>
@@ -39,11 +38,10 @@
           <div class="slds-icon-eq__bar"></div>
           <span class="slds-assistive-text">Text alternative when needed</span>
         </div>
-
         <div class="slds-text-body--regular slds-p-top--medium slds-text-align--center slds-align_absolute-center">
           {!v.loadingText}
         </div>
-    </aura:if>
+      </aura:if>
     </aura:if>
 
     <div aura:id="creditStatus" class="slds-align--absolute-center slds-p-top_medium no-display slds-text-body--large--blue slds-align_absolute-center">
@@ -91,7 +89,6 @@
     </aura:if>
   </aura:if>
 
-
   <aura:if isTrue="{!v.page == 'Unqualified'}">
     <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
       <legend id="failedCredit" class="slds-text-heading--medium slds-text-align--center slds-p-vertical--small slds-align_absolute-center">
@@ -102,7 +99,6 @@
           <lightning:layout aura:id="passedCreditText" class="animated" multipleRows="true" horizontalAlign="center">
             <lightning:layoutItem class="slds-align_absolute-center slds-p-horizontal--large slds-p-vertical--medium slds-text-align--center" size="12" >
               Unfortunately, you don't qualify for Community Solar in your area.
-
             </lightning:layoutItem>
             <lightning:layoutItem class="slds-align_absolute-center slds-p-horizontal--large slds-p-vertical--medium slds-text-align--center" size="12">
               Please feel free to reach out to our customer support team listed below if you have any questions!

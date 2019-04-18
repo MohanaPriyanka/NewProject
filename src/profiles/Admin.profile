@@ -24026,6 +24026,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Opportunity.QC_Personal_Credit_Report__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.Quality_Check_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
