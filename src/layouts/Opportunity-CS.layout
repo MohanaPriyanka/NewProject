@@ -118,8 +118,7 @@
                 <field>Current_Utility_Bill__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>QC_Personal_Credit_Report__c</field>
+                <emptySpace>true</emptySpace>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -164,6 +163,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Confirmed_Subscription_Size_Correct__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>QC_Personal_Credit_Report__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
