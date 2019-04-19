@@ -35,7 +35,7 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
                 usage.AccountId = uasb.Utility_Account_Subscription__r.SRPC__r.Zuora__Subscription__r.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c;
                 usage.Quantity = uasb.Discounted_Bill__c;
                 usage.StartDateTime = uasb.Billing_Period_Start_Date__c;
-                usage.EndDateTime = uasb.Billing_Period_Start_Date__c; // change to end date!!
+                usage.EndDateTime = uasb.Billing_Period_End_Date__c; // change to end date!!
                 usage.SubscriptionNumber = uasb.Utility_Account_Subscription__r.SRPC__r.Zuora__Subscription__r.Name;
                 usage.ChargeNumber = uasb.Utility_Account_Subscription__r.SRPC__r.Zuora__ChargeNumber__c;
                 usage.Description = uasb.Shared_Solar_System__r.Utility__r.Name
@@ -51,7 +51,7 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
                 usage.AccountId = adjust.UASB__r.Utility_Account_Subscription__r.SRPC__r.Zuora__Subscription__r.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c;
                 usage.Quantity = adjust.Adjustment_Amount__c ;
                 usage.StartDateTime = adjust.UASB__r.Billing_Period_Start_Date__c;
-                usage.EndDateTime = adjust.UASB__r.Billing_Period_Start_Date__c; // change to end date!!
+                usage.EndDateTime = adjust.UASB__r.Billing_Period_End_Date__c; // change to end date!!
                 usage.SubscriptionNumber = adjust.UASB__r.Utility_Account_Subscription__r.SRPC__r.Zuora__Subscription__r.Name;
                 usage.ChargeNumber = adjust.UASB__r.Utility_Account_Subscription__r.SRPC__r.Zuora__ChargeNumber__c;
                 usage.Description = adjust.UASB__r.Shared_Solar_System__r.Utility__r.Name
@@ -82,14 +82,17 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         request.setHeader('zuora-version', '224.0');
         request.setHeader('Accept', 'application/json');
         request.setBody(jsonString);
-        Zuora.zApi zApiInstance = new Zuora.zApi();
-        HttpResponse response = zApiInstance.sendRequest(request);
-
+        HttpResponse response;
+        if(!Test.isRunningTest()){
+            Zuora.zApi zApiInstance = new Zuora.zApi();
+            response = zApiInstance.sendRequest(request);
+        } else {
+            response = mockAPICall();
+        }
         return response;
     }
 
     public static Map<String, List<SObject>> handleAPIResponse(List<ZuoraUsage> attemptedUsageList, HttpResponse response){
-        System.debug(response.getBody());
         // Returns list of Usage Id, or Error Message:
         List<ZuoraResponse> zResponses = new List<ZuoraResponse>();
         zResponses = (List<ZuoraResponse>)JSON.deserialize(response.getBody(), List<ZuoraResponse>.class);
@@ -126,5 +129,28 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         objectToRecordList.put('UASB',uasbsToUpdate);
         objectToRecordList.put('Bill_Adjustment',adjustmentsToUpdate);
         return objectToRecordList;
+    }
+
+    private static HttpResponse mockAPICall(){
+        HttpResponse res = new HttpResponse();
+        res.setHeader('Content-Type', 'application/json');
+        res.setBody(
+            '[{"Success": true, "Id": "zuoraID_1_of_14"},' +
+                '{"Errors":[{"Code":"MISSING_REQUIRED_VALUE","Message":"The AccountId or AccountNumber is required."}],"Success":false},' +
+                '{"Success": true, "Id": "zuoraID_3_of_14"},' +
+                '{"Success": true, "Id": "zuoraID_4_of_14"},' +
+                '{"Success": true, "Id": "zuoraID_5_of_14"},' +
+                '{"Success": true, "Id": "zuoraID_6_of_14"},' +
+                '{"Success": true, "Id": "zuoraID_7_of_14"},' +
+                '{"Errors":[{"Code":"MISSING_REQUIRED_VALUE","Message":"The AccountId or AccountNumber is required."}],"Success":false},' +
+                '{"Success": true, "Id": "zuoraID_9_of_14"},' +
+                '{"Success": true, "Id": "zuoraID_10_of_14"},' +
+                '{"Success": true, "Id": "zuoraID_11_of_14"},' +
+                '{"Success": true, "Id": "zuoraID_12_of_14"},' +
+                '{"Errors":[{"Code":"MISSING_REQUIRED_VALUE","Message":"The AccountId or AccountNumber is required."}],"Success":false},' +
+                '{"Success": true, "Id": "zuoraID_14_of_14"}]'
+        );
+        res.setStatusCode(200);
+        return res;
     }
 }

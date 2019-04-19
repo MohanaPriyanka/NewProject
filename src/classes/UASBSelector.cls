@@ -1,5 +1,8 @@
+/* Tested by: ZuoraUsageServiceTest
+ */
+
 public class UASBSelector {
-    public static List<UASB__c> getUASBsByMonth() {
+    public static List<UASB__c> uasbsNotYetInZuora() {
         return [
             SELECT Id, Name, Date__c,
             Billing_Period_Start_Date__c, Billing_Period_End_Date__c,
@@ -13,7 +16,7 @@ public class UASBSelector {
             Utility_Account_Subscription__r.SRPC__r.Zuora__Subscription__r.Name,
             Utility_Account_Subscription__r.SRPC__r.Zuora__Subscription__r.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c
             FROM UASB__c
-           // WHERE Month = Month
+            WHERE Zuora_Usage_Id__c = null
         ];
     }
 }

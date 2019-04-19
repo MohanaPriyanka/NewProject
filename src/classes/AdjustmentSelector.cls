@@ -1,5 +1,8 @@
+/* Tested by ZuoraUsageServiceTest
+ */
+
 public class AdjustmentSelector {
-    public static List<Bill_Adjustment__c> getAdjustmentsByMonth() {
+    public static List<Bill_Adjustment__c> getProductionAdjustmentsNotYetInZuora() {
         return [
             SELECT Id, Name,
                 UASB__r.Utility_Account_Subscription__r.SRPC__r.Zuora__Subscription__r.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c,
@@ -13,6 +16,9 @@ public class AdjustmentSelector {
                 Discount__c,
                 Credits_Allocated__c
             FROM Bill_Adjustment__c
+            WHERE Zuora_Usage_Id__c = null
+            AND Applied_to_Bill__c = true
+            AND Adjustment_Type__c = 'Production'
         ];
     }
 }
