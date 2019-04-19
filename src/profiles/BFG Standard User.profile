@@ -17990,7 +17990,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Co_Applicant_Credit_Score_Median__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -18085,7 +18085,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Credit_Score_Median__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -56080,15 +56080,6 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
-        <object>LASERCA__Personal_Credit_Report__c</object>
-        <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
         <object>LASERCA__Public_Records__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
@@ -62061,6 +62052,7 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>true</default>
+        <personAccountDefault>true</personAccountDefault>
         <recordType>LASERCA__Personal_Credit_Report__c.Community_Solar</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
