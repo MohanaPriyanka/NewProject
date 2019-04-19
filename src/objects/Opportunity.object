@@ -534,12 +534,13 @@ IF(Contract_Status__c =&quot;Completed&quot;,&quot;Completed&quot;,&quot;Incompl
         <formula>IF(
  Product_Line__c=&quot;Community Solar&quot;,
 and(
-Contract_Fully_Populated__c =true,  
-Confirmed_Subscription_Size_Correct__c =true,  
-Service_Address_and_Name_on_Account_Chk__c =true,
+ Contract_Fully_Populated__c =true,  
+ Confirmed_Subscription_Size_Correct__c =true,  
+ Service_Address_and_Name_on_Account_Chk__c =true,
  Load_Zone_Quality_Check__c =true,
  Current_Utility_Bill__c = true,
- Green_Button_Data_Received__c = true
+ Green_Button_Data_Received__c = true,
+ QC_Personal_Credit_Report__c = true
 ),
 IF(
  Product_Line__c=&quot;Residential Loan&quot;,
@@ -6060,6 +6061,16 @@ IF(INCLUDES(Customer_Type__c, &quot;Private Affordable&quot;),&quot;Error&quot;,
         <externalId>false</externalId>
         <inlineHelpText>This is used by Partner Support and Customer Ops during the QC process for CS opportunities.</inlineHelpText>
         <label>QC Call Complete</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>QC_Personal_Credit_Report__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>QC Personal Credit Report</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
