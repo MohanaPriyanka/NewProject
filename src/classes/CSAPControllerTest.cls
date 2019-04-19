@@ -513,6 +513,20 @@ public with sharing class CSAPControllerTest {
 
     }
 
+    @IsTest static void testgetCSApplicationURL() {
+        Test.startTest();
+        String url = CSAPController.getCSApplicationURL();
+
+        String[] checkURL = url.split('=');
+        String partnerId = checkURL[1];
+
+        Partner__c checkPartner = [SELECT Id, Name FROM Partner__c WHERE Id = :partnerId LIMIT 1];
+
+        System.assertEquals('Mass Renewables', checkPartner.Name);
+
+        Test.stopTest();
+    }
+
     @IsTest static void testSLPortalCSAPApplication() {
         Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Community Login User (Custom)'];
 

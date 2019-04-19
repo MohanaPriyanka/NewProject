@@ -8,7 +8,6 @@
   <aura:attribute name="page" type="String" default="CheckZip"/>
 
   <aura:if isTrue="{!v.page == 'CheckZip'}">
-
     <div aria-labelledby="zipForm">
       <form class="slds-form--stacked">
         <lightning:layout horizontalAlign="center" multipleRows="true">
@@ -40,12 +39,20 @@
 
 
   <aura:if isTrue="{!v.page == 'NoProject'}">
-    <legend id="aboutYourselfForm" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-      <b class="slds-section__title--large slds-p-top--large">We're Sorry</b>
-    </legend>
-    <div class="slds-align--absolute-center slds-text-align--center slds-size--1-of-3">
-      It seems that we don't have any Community Solar currently available in your area. We're working hard to expand our Community Solar availability, so please check back at a later date.
-    </div>
+    <lightning:layout horizontalAlign="center" multipleRows="true">
+    <lightning:layoutItem size="8">
+      <legend id="aboutYourselfForm" class="slds-text-heading--small slds-align_absolute-center">
+        <b class="slds-section__title--large slds-p-top--large">We're Sorry</b>
+      </legend>
+
+    </lightning:layoutItem>
+      <lightning:layoutItem size="10">
+        <div class="slds-align--absolute-center slds-p-vertical--small slds-text-align--center">
+          It seems that we don't have any Community Solar currently available in your area. We're working hard to expand our Community Solar availability, so please check back at a later date.
+        </div>
+      </lightning:layoutItem>
+    </lightning:layout>
+
   </aura:if>
 
 </aura:component>
