@@ -215,8 +215,7 @@ public without sharing class CSAPController {
     @AuraEnabled
     public static Lead upsertCSAPRecords(Lead lead, String partnerId, String salesRepId, String referralCode){
         Partner__c customerPartner = MyAccountController.getPartner(partnerId);
-
-
+        
         if (lead.Parent_Account__c == null) {
             lead = setupParentAccount(lead, customerPartner);
         }
