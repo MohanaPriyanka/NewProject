@@ -1221,6 +1221,48 @@ private class PCRApprovalHandlerTest {
         // validates that the contact can be udpated without
     }
 
+    // Sometimes we get Credit Report Logs with no PCR. In these cases, the credit pull shouldn't fail with an error like:
+    // Apex script unhandled trigger exception by user/organization: 0050a00000HAYt1/00Dj0000001q7GO
+    // CreditReportLogTrigger: execution of AfterInsert
+    // caused by: System.ListException: List index out of bounds: 0
+    // Class.PCRApprovalHandler.addMortgage: line 313, column 1
+    // Trigger.CreditReportLogTrigger: line 13, column 1
+    static testMethod void testFrozenPCR() {
+        RecordType solarLoanType = [
+            SELECT Id
+            FROM RecordType
+            WHERE Name = 'BlueWave Solar Loan'
+            AND SobjectType = 'Lead'
+        ];
+        Lead newLead = new Lead(
+            FirstName = 'test',
+            LastName = 'FrozenPCRTest',
+            RecordTypeId = solarLoanType.Id,
+            Automatic_Product_Assignment__c = false,
+            Email = 'test@email.com',
+            Company = 'Cloud Jedi',
+            Status = 'Ready for Credit Check',
+            Product_line__c = 'Residential Loan',
+            Monthly_Mortgage_Tax_and_Insurance__c = 1000,
+            LASERCA__Home_State__c = 'MA',
+            Unfinished_Lead__c = true);
+        insert newLead;
+        LASERCA__Credit_Report_Log__c crl = new LASERCA__Credit_Report_Log__c(
+            LASERCA__Lead__c = newLead.Id,
+            LASERCA__Status__c = 'Completed'
+        );
+        insert crl;
+        List<Lead> leads = [
+            SELECT Id, (
+                SELECT Id FROM LASERCA__Credit_Report_Logs__r
+            )
+            FROM Lead
+            WHERE LastName = 'FrozenPCRTest'
+        ];
+        System.assertEquals(1, leads.size());
+        System.assertEquals(1, leads[0].LASERCA__Credit_Report_Logs__r.size());
+    }
+
     public class Application {
         public Integer income, loan;
         public Id prodId;

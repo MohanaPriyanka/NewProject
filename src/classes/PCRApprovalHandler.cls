@@ -298,7 +298,9 @@ public without sharing class PCRApprovalHandler {
         if (triggerOldMap == null) {
 
             for (LASERCA__Credit_Report_Log__c crl : triggerNewMap.values()) {
-                pcrIds.add(crl.LASERCA__Personal_Credit_Report__c);
+                if (crl.LASERCA__Personal_Credit_Report__c != null) {
+                    pcrIds.add(crl.LASERCA__Personal_Credit_Report__c);
+                }
             }
 
             if (pcrIds.isEmpty()) {
