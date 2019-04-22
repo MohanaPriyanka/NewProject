@@ -26,10 +26,10 @@ public without sharing class ZuoraUsageBatchSend implements Database.Batchable<s
         if (newAdjustToUpdate != null) {
             adjustToUpdate.addAll(newAdjustToUpdate);
         }
+        Logger.flushLogs();
     }
 
     public void finish(Database.BatchableContext bc){
-        Logger.flushLogs();
         if (uasbToUpdate.size() > 0){
             update uasbToUpdate;
         }

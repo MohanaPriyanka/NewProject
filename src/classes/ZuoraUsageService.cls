@@ -49,7 +49,7 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
                 Bill_Adjustment__c adjust = (Bill_Adjustment__c) sfUsage;
                 ZuoraUsage usage = new ZuoraUsage();
                 usage.AccountId = adjust.UASB__r.Utility_Account_Subscription__r.SRPC__r.Zuora__Subscription__r.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c;
-                usage.Quantity = adjust.Adjustment_Amount__c ;
+                usage.Quantity = adjust.Adjustment_Amount__c;
                 usage.StartDateTime = adjust.UASB__r.Billing_Period_Start_Date__c;
                 usage.EndDateTime = adjust.UASB__r.Billing_Period_End_Date__c; // change to end date!!
                 usage.SubscriptionNumber = adjust.UASB__r.Utility_Account_Subscription__r.SRPC__r.Zuora__Subscription__r.Name;
