@@ -110,13 +110,13 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
                 if (objectType == UASB__c.sObjectType){
                     UASB__c uasbToUpdate = new UASB__c(
                         Id = sfId,
-                        Zuora_Usage_Id__c = usageLine.Id
+                        Zuora_Id__c = usageLine.Id
                     );
                     uasbsToUpdate.add(uasbToUpdate);
                 } else if (objectType == Bill_Adjustment__c.sObjectType){
                     Bill_Adjustment__c adjustToUpdate = new Bill_Adjustment__c(
                         Id = sfId,
-                        Zuora_Usage_Id__c = usageLine.Id
+                        Zuora_Id__c = usageLine.Id
                     );
                     adjustmentsToUpdate.add(adjustToUpdate);
                 }

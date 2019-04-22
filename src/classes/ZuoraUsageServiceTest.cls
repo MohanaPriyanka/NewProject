@@ -61,7 +61,7 @@ public class ZuoraUsageServiceTest {
         List<UASB__c> uasbList = UASBSelector.uasbsNotYetInZuora();
         System.assertEquals(12, uasbList.size());
 
-        List<Bill_Adjustment__c> adjustList = AdjustmentSelector.getProductionAdjustmentsNotYetInZuora();
+        List<Bill_Adjustment__c> adjustList = AdjustmentSelector.getAdjustmentsNotYetInZuora(true);
         System.assertEquals(2, adjustList.size());
     }
 
@@ -74,16 +74,16 @@ public class ZuoraUsageServiceTest {
 
         // API Mock returns 14 rows, 3 errors, 11 successes:
         List<UASB__c> uasbList = [
-            SELECT Id, Name, Zuora_Usage_Id__c
+            SELECT Id, Name, Zuora_Id__c
             FROM UASB__c
-            WHERE Zuora_Usage_Id__c != null
+            WHERE Zuora_Id__c != null
         ];
         System.assertEquals(10, uasbList.size());
 
         List<Bill_Adjustment__c> adjustList = [
-            SELECT Id, Name, Zuora_Usage_Id__c
+            SELECT Id, Name, Zuora_Id__c
             FROM Bill_Adjustment__c
-            WHERE Zuora_Usage_Id__c != null
+            WHERE Zuora_Id__c != null
         ];
         System.assertEquals(1, adjustList.size());
 
@@ -94,7 +94,7 @@ public class ZuoraUsageServiceTest {
         System.assertEquals(1, errors.size());
 
         List<UASB__c> failedUASB = UASBSelector.uasbsNotYetInZuora();
-        List<Bill_Adjustment__c> failedAdjust = AdjustmentSelector.getProductionAdjustmentsNotYetInZuora();
+        List<Bill_Adjustment__c> failedAdjust = AdjustmentSelector.getAdjustmentsNotYetInZuora(true);
 
         System.assert(errors[0].Message__c.contains(failedUASB[0].Id));
         System.assert(errors[0].Message__c.contains(failedUASB[1].Id));

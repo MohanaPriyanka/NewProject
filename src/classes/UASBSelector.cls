@@ -16,7 +16,7 @@ public class UASBSelector {
             Utility_Account_Subscription__r.SRPC__r.Zuora__Subscription__r.Name,
             Utility_Account_Subscription__r.SRPC__r.Zuora__Subscription__r.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c
             FROM UASB__c
-            WHERE Zuora_Usage_Id__c = null
+            WHERE Zuora_Id__c = null
         ];
     }
 }

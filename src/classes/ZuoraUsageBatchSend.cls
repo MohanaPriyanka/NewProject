@@ -9,7 +9,7 @@ public without sharing class ZuoraUsageBatchSend implements Database.Batchable<s
     public List<SObject> start(Database.BatchableContext bc){
         List<SObject> sObjectList = new List<SObject>();
         sObjectList.addAll(UASBSelector.uasbsNotYetInZuora());
-        sObjectList.addAll(AdjustmentSelector.getProductionAdjustmentsNotYetInZuora());
+        sObjectList.addAll(AdjustmentSelector.getAdjustmentsNotYetInZuora(true));
         return sObjectList;
     }
 
