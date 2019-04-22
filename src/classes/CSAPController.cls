@@ -630,4 +630,15 @@ public without sharing class CSAPController {
         Logger.flushLogs();
         return signerViewURL;
     }
+
+    @AuraEnabled
+    public static Boolean zuoraEnabled() {
+        try {
+            ZuoraAPIHelper.getZuoraSetting();
+        } catch (Util.BWException bwe) {
+            
+            return false;
+        }
+        return true;
+    }
 }

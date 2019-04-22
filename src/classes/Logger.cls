@@ -11,6 +11,9 @@ public with sharing class Logger {
     public static final String DEBUG = 'Debug';
     public static final String INFO = 'Info';
     public static final String FINE = 'Fine';
+    private static System_Properties__c systemProperty;
+    private static Map<String, Integer> severityToInt =
+        new Map<String, Integer>{FINE => 1, INFO => 2, DEBUG => 3, WARN => 4, ERROR => 5};
 
     // Apparently Lightning was getting confused if there were two log methods, even if only
     // one of them were AuraEnabled. And calling a future method from Lightning didn't seem
@@ -74,7 +77,27 @@ public with sharing class Logger {
                 Message__c = message.left(32768),
                 Severity__c = severity,
                 Timestamp__c = Datetime.newInstance(timestamp.date(), timestamp.time()));
-        Database.insert(errorLog, false);
+        if (systemProperty == null) {
+            List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
+            if (systemProperties.size() > 0) {
+                systemProperty = systemProperties[0];
+            } else {
+                systemProperty = new System_Properties__c();
+            }
+        }
+        if (shouldLog(severity, systemProperty.Log_Level__c)) {
+            Database.insert(errorLog, false);
+        }
+    }
+
+    @TestVisible
+    private static Boolean shouldLog(String severity, String logLevel) {
+        if (severityToInt.containsKey(severity) &&
+            severityToInt.containsKey(logLevel)) {
+            return severityToInt.get(severity) >= severityToInt.get(logLevel);
+        } else {
+            return true;
+        }
     }
 
     private class Log {

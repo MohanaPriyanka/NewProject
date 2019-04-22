@@ -79,4 +79,34 @@
             );
         }
     },
+
+    handleCompletedZuoraPayment : function(component, event, helper) {
+        var response = event.getParam('response');
+        var paymentMethod = event.getParam('paymentMethod');
+        if (response.success) {
+            var lead = component.get('v.lead');
+            var leadToSave = {
+                sobjectType: 'Lead',
+                Id: lead.Id,
+                Zuora_Payment_Ref_Id__c: response.refId,
+                Loan_System_Information__c: JSON.stringify(paymentMethod)
+            };
+            var promise = helper.saveSObject(component, lead.Id, 'Lead', null, null, leadToSave);
+            promise.then($A.getCallback(function resolve() {
+                component.set('v.Spinner', false);
+                helper.finishStage(component, event, helper);
+            }));
+        } else {
+            helper.logError(
+                'CSAPPaymentInfoController',
+                'handleCompletedZuoraPayment',
+                'Error submitting payment information, errorCode: ' + response.errorCode + ' errorMessage: ' + response.errorMessage,
+                response);
+        }
+    },
+
+    toggleZuoraContainer: function(component, event, helper) {
+        var zuoraPaymentPage = component.find('ZuoraPaymentPage');
+        $A.util.toggleClass(zuoraPaymentPage, 'disabledDiv');
+    }
 })

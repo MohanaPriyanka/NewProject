@@ -5,6 +5,7 @@
   <aura:attribute name="salesRepId" type="String"/>
   <aura:attribute name="referralCode" type="String"/>
   <aura:attribute name="partnerApp" type="Boolean"/>
+  <aura:attribute name="paymentProvider" type="String"/>
 
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
 
@@ -14,6 +15,6 @@
   <c:CSAPCapacityCheck supressWaiting="true" partnerApp="{!v.partnerApp}"/>
   <c:CSAPCreditCheck supressWaiting="true"/>
   <c:CSAPEnergyInfo supressWaiting="true" partnerApp="{!v.partnerApp}"/>
-  <c:CSAPPaymentInfo supressWaiting="true" />
+  <c:CSAPPaymentInfo supressWaiting="true" paymentProvider="{!v.paymentProvider}"/>
   <c:CSAPComplete supressWaiting="true" partnerApp="{!v.partnerApp}"/>
 </aura:component>
