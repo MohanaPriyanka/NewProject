@@ -1,0 +1,34 @@
+public without sharing class ZuoraCreditMemoBatchSend implements Database.Batchable<sObject>, Database.Stateful, Database.AllowsCallouts{
+    public Set<Bill_Adjustment__c> adjustToUpdateSet = new Set<Bill_Adjustment__c>();
+
+    public void executeBatch(){
+        Database.executeBatch(this, 50);
+    }
+
+    public List<SObject> start(Database.BatchableContext bc){
+        List<SObject> sObjectList = new List<SObject>();
+        sObjectList.addAll(AdjustmentSelector.getAdjustmentsNotYetInZuora(false));
+        return sObjectList;
+    }
+
+    public void execute(Database.BatchableContext bc, List<sObject> scope){
+        for (sObject scopeLine : scope){
+            Bill_Adjustment__c adjust = (Bill_Adjustment__c)scopeLine;
+            ZuoraCreditDebitMemoService.ZuoraCreditMemo memo;
+            memo = ZuoraCreditDebitMemoService.convertSFAdjustToCreditMemo(adjust);
+            String jsonString = ZuoraCreditDebitMemoService.convertZuoraCreditMemoToJSON(memo);
+            HttpResponse response = ZuoraCreditDebitMemoService.creditMemoAPICall(jsonString);
+            Bill_Adjustment__c adjustmentToUpdate = ZuoraCreditDebitMemoService.handleAPIResponse(memo,response);
+            if (adjustmentToUpdate != null){
+                adjustToUpdateSet.add(adjustmentToUpdate);
+            }
+        }
+        Logger.flushLogs();
+    }
+
+    public void finish(Database.BatchableContext bc){
+        List<Bill_Adjustment__c> adjustmentsToUpdate = new List<Bill_Adjustment__c>();
+        adjustmentsToUpdate.addAll(adjustToUpdateSet);
+        update adjustmentsToUpdate;
+    }
+}
