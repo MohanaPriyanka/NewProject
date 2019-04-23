@@ -13,15 +13,25 @@ public with sharing class ZuoraPaymentPageController {
         ccJsonBody.put('method', 'POST');
         ccJsonBody.put('pageId', pageMetadata.zuoraSetting.CC_Payment_Page_Id__c);
         ccJsonBody.put('uri', pageMetadata.zuoraSetting.Hosted_Payment_Page_URI__c);
-        String ccbody = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/rsa-signatures', ccJsonBody, false);
-        ZuoraAPI.RSASignature ccRsaSignature = (ZuoraAPI.RSASignature) System.JSON.deserialize(ccbody, ZuoraAPI.RSASignature.class);
+        HttpResponse ccResponse = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/rsa-signatures', ccJsonBody, false);
+        ZuoraAPI.RSASignature ccRsaSignature;
+        if (ccResponse.getStatusCode() == 200) {
+            ccRsaSignature = (ZuoraAPI.RSASignature) System.JSON.deserialize(ccResponse.getBody(), ZuoraAPI.RSASignature.class);
+        } else {
+            throw new AuraHandledException(ccResponse.getBody());
+        }
 
         Map<String, Object> achJsonBody = new Map<String, Object>();
         achJsonBody.put('method', 'POST');
         achJsonBody.put('pageId', pageMetadata.zuoraSetting.ACH_Payment_Page_Id__c);
         achJsonBody.put('uri', pageMetadata.zuoraSetting.Hosted_Payment_Page_URI__c);
-        String achbody = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/rsa-signatures', achJsonBody);
-        ZuoraAPI.RSASignature achRsaSignature = (ZuoraAPI.RSASignature) System.JSON.deserialize(achbody, ZuoraAPI.RSASignature.class);
+        ZuoraAPI.RSASignature achRsaSignature;
+        HttpResponse achResponse = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/rsa-signatures', achJsonBody);
+        if (achResponse.getStatusCode() == 200) {
+            achRsaSignature = (ZuoraAPI.RSASignature) System.JSON.deserialize(achResponse.getBody(), ZuoraAPI.RSASignature.class);
+        } else {
+            throw new AuraHandledException(achResponse.getBody());
+        }
 
         pageMetadata.ccRsaSignature = ccRsaSignature;
         pageMetadata.achRsaSignature = achRsaSignature;
@@ -39,7 +49,11 @@ public with sharing class ZuoraPaymentPageController {
 
     @AuraEnabled
     public static ZuoraAPI.PaymentMethod getPaymentMethod(String refId) {
-        String body = ZuoraAPIHelper.callJsonEndpoint('GET', '/v1/object/payment-method/' + refId, null);
-        return (ZuoraAPI.PaymentMethod) System.JSON.deserialize(body, ZuoraAPI.PaymentMethod.class);
+        HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('GET', '/v1/object/payment-method/' + refId, null);
+        if (response.getStatusCode() == 200) {
+            return (ZuoraAPI.PaymentMethod) System.JSON.deserialize(response.getBody(), ZuoraAPI.PaymentMethod.class);
+        } else {
+            throw new AuraHandledException(response.getBody());
+        }
     }
 }

@@ -8,8 +8,12 @@ public with sharing class ZuoraAPIHelperTest {
     @IsTest
     public static void testCallEndpoint() {
         Test.setMock(HttpCalloutMock.class, new ZuoraAPIMock());
-        String body = ZuoraAPIHelper.callJsonEndpoint('GET', 'error', null);
-        ZuoraAPI.GenericError error = (ZuoraAPI.GenericError) System.JSON.deserialize(body, ZuoraAPI.GenericError.class);
-        System.assertEquals(false, error.success);
+        HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('GET', 'error', null);
+        if (response.getStatusCode() == 200) {
+            ZuoraAPI.GenericError error = (ZuoraAPI.GenericError) System.JSON.deserialize(response.getBody(), ZuoraAPI.GenericError.class);
+            System.assertEquals(false, error.success);
+        } else {
+            System.assert(false, 'Expected ZuoraAPIMock to return status code 200');
+        }
     }
 }

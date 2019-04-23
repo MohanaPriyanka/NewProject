@@ -12,7 +12,7 @@
     </values>
     <values>
         <field>Active__c</field>
-        <value xsi:type="xsd:boolean">true</value>
+        <value xsi:type="xsd:boolean">false</value>
     </values>
     <values>
         <field>CC_Payment_Page_Id__c</field>

@@ -7,11 +7,11 @@
 public with sharing class ZuoraAPIHelper {
     private static Zuora_Setting__mdt zuoraSetting;
 
-    public static String callJsonEndpoint(String method, String endpoint, Map<String, Object> jsonBody) {
+    public static HttpResponse callJsonEndpoint(String method, String endpoint, Map<String, Object> jsonBody) {
         return callJsonEndpoint(method, endpoint, jsonBody, true);
     }
 
-    public static String callJsonEndpoint(String method, String endpoint, Map<String, Object> jsonBody, Boolean flush) {
+    public static HttpResponse callJsonEndpoint(String method, String endpoint, Map<String, Object> jsonBody, Boolean flush) {
         Zuora_Setting__mdt zuoraSetting = getZuoraSetting();
         HttpRequest request = new HttpRequest();
         request.setMethod(method);
@@ -44,7 +44,7 @@ public with sharing class ZuoraAPIHelper {
         if (flush) {
             Logger.flushLogs();
         }
-        return response.getBody();
+        return response;
     }
 
     public static Zuora_Setting__mdt getZuoraSetting() {
