@@ -1392,7 +1392,8 @@ public with sharing class CSAPControllerTest {
         }
 
         if (numActive == 0) {
-            System.assertEquals(false, CSAPController.zuoraEnabled());
+            System.assertEquals(true, CSAPController.zuoraEnabled());
+            System.assertEquals('TestSetting', ZuoraAPIHelper.getZuoraSetting().DeveloperName);
         } else if (numActive == 1) {
             System.assertEquals(true, CSAPController.zuoraEnabled());
         } else {

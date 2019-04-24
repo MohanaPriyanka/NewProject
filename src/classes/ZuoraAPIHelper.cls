@@ -76,4 +76,13 @@ public with sharing class ZuoraAPIHelper {
         }
         return zuoraSetting;
     }
+
+    public static Boolean zuoraEnabled() {
+        try {
+            getZuoraSetting();
+        } catch (Util.BWException bwe) {
+            return false;
+        }
+        return true;
+    }
 }

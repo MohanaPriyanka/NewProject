@@ -633,12 +633,6 @@ public without sharing class CSAPController {
 
     @AuraEnabled
     public static Boolean zuoraEnabled() {
-        try {
-            ZuoraAPIHelper.getZuoraSetting();
-        } catch (Util.BWException bwe) {
-            
-            return false;
-        }
-        return true;
+        return ZuoraAPIHelper.zuoraEnabled();
     }
 }
