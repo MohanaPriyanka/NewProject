@@ -110,17 +110,6 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Account_Number__c</fullName>
-        <externalId>false</externalId>
-        <label>Account Number</label>
-        <length>15</length>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Account_Owner__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -131,18 +120,6 @@
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Accounting_Number_4_digits__c</fullName>
-        <externalId>false</externalId>
-        <formula>RIGHT( Account_Number__c , 4)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Accounting Number (4 digits)</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Additional_CC_Email__c</fullName>
@@ -208,100 +185,6 @@
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Bank_City__c</fullName>
-        <externalId>false</externalId>
-        <label>Bank City</label>
-        <length>20</length>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Bank_ID__c</fullName>
-        <externalId>false</externalId>
-        <label>Bank ID</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Bank_Information_Collected__c</fullName>
-        <description>this field is replacing the partner bank account information fields.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>this field is replacing the partner bank account information fields.</inlineHelpText>
-        <label>Bank Info Collection Status</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Requested</fullName>
-                    <default>false</default>
-                    <label>Requested</label>
-                </value>
-                <value>
-                    <fullName>Collected</fullName>
-                    <default>false</default>
-                    <label>Collected</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
-        <fullName>Bank_Name__c</fullName>
-        <externalId>false</externalId>
-        <label>Bank Name</label>
-        <length>100</length>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Bank_State__c</fullName>
-        <externalId>false</externalId>
-        <label>Bank State</label>
-        <length>15</length>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Bank_Street_Address__c</fullName>
-        <externalId>false</externalId>
-        <label>Bank Street Address</label>
-        <length>30</length>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Bank_Zip_Code__c</fullName>
-        <externalId>false</externalId>
-        <label>Bank Zip Code</label>
-        <length>6</length>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
