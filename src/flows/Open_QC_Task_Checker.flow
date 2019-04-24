@@ -4,8 +4,8 @@
         <description>Counter for QC Tasks in loop</description>
         <name>assgQCTaskCounter</name>
         <label>assgQCTaskCounter</label>
-        <locationX>714</locationX>
-        <locationY>461</locationY>
+        <locationX>746</locationX>
+        <locationY>409</locationY>
         <assignmentItems>
             <assignToReference>varQCTaskCounter</assignToReference>
             <operator>Add</operator>
@@ -21,8 +21,8 @@
         <description>Update Opp stage to QC In Process</description>
         <name>AssignOppStage</name>
         <label>AssignOppStage</label>
-        <locationX>58</locationX>
-        <locationY>602</locationY>
+        <locationX>66</locationX>
+        <locationY>656</locationY>
         <assignmentItems>
             <assignToReference>sovOpportunity.StageName</assignToReference>
             <operator>Assign</operator>
@@ -38,8 +38,8 @@
         <description>Decision if there are still open QC tasks.</description>
         <name>decQCTaskNumber</name>
         <label>decQCTaskNumber</label>
-        <locationX>54</locationX>
-        <locationY>468</locationY>
+        <locationX>45</locationX>
+        <locationY>502</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>outcomeOpenQCTasks</name>
@@ -69,6 +69,28 @@
             <label>outcomeNoOpenTasks</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>Found_Opportunities</name>
+        <label>Found Opportunities?</label>
+        <locationX>234</locationX>
+        <locationY>203</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Opp_Found</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sovOpportunity</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Lookup</targetReference>
+            </connector>
+            <label>Opp Found</label>
+        </rules>
+    </decisions>
     <description>Launched by a PB node when a CS QC Task closes. Checks to see if there are any open tasks -- If not, it sets the Opportunity stage to QC in Process.</description>
     <interviewLabel>Open QC Task Checker {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Open QC Task Checker</label>
@@ -76,8 +98,8 @@
         <description>Loops through open tasks to get count.</description>
         <name>loopQCTasks</name>
         <label>loopQCTasks</label>
-        <locationX>566</locationX>
-        <locationY>298</locationY>
+        <locationX>492</locationX>
+        <locationY>411</locationY>
         <assignNextValueToReference>loopvarQCTask</assignNextValueToReference>
         <collectionReference>covOpenQCTasks</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -107,9 +129,9 @@
         <label>Find CS Opportunity</label>
         <locationX>54</locationX>
         <locationY>152</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Lookup</targetReference>
+            <targetReference>Found_Opportunities</targetReference>
         </connector>
         <filters>
             <field>Id</field>
@@ -140,8 +162,8 @@
         <description>Looks up all of the QC tasks for the Opportunity passed through the Process Builders</description>
         <name>Lookup</name>
         <label>Lookup All QC Tasks</label>
-        <locationX>56</locationX>
-        <locationY>351</locationY>
+        <locationX>52</locationX>
+        <locationY>317</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>loopQCTasks</targetReference>
@@ -191,8 +213,8 @@
         <description>If there are no open tasks, update the opportunity stage to</description>
         <name>updateOpportunityStage</name>
         <label>updateOpportunityStage</label>
-        <locationX>289</locationX>
-        <locationY>604</locationY>
+        <locationX>348</locationX>
+        <locationY>692</locationY>
         <inputReference>sovOpportunity</inputReference>
     </recordUpdates>
     <startElementReference>Find_CS_Opportunity</startElementReference>
