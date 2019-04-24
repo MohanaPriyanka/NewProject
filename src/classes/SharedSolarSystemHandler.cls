@@ -7,6 +7,7 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
     public void updateSSS() {
         List<Shared_Solar_System__c> sharedSolarSystems = getSSSList();
             summarizeCapacity(sharedSolarSystems);
+            update sharedSolarSystems;
     }
 
     public List<Shared_Solar_System__c> getSSSList() {
