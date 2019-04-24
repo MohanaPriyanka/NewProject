@@ -33,12 +33,8 @@ public with sharing class ZuoraAPIHelper {
             'ZuoraAPIHelper',
             'callJsonEndpoint',
             'Request Endpoint: ' + request.getEndpoint() + '\n' +
-                'Request Body: ' + request.getBody(),
-            Logger.FINE);
-        Logger.logLater(
-            'ZuoraAPIHelper',
-            'callJsonEndpoint',
-            'Response Status: ' + response.getStatus() + '\n' +
+                'Request Body: ' + request.getBody() + '\n\n' +
+                'Response Status: ' + response.getStatus() + '\n' +
                 'Response Body: ' + response.getBody(),
             Logger.FINE);
         if (flush) {
@@ -54,6 +50,18 @@ public with sharing class ZuoraAPIHelper {
                 FROM Zuora_Setting__mdt
                 WHERE Active__c = TRUE
             ];
+            // In case all zuora settings are disabled (which would be if we the case if we're still using Chargent), we'll
+            // use a fake setting
+            if (Test.isRunningTest() && zuoraSettings.size() == 0) {
+                Zuora_Setting__mdt zuoraSetting = new Zuora_Setting__mdt(
+                    DeveloperName = 'TestSetting',
+                    CC_Payment_Page_Id__c = 'CCPaymentPageId',
+                    ACH_Payment_Page_Id__c = 'ACHPaymentPageId',
+                    Hosted_Payment_Page_URI__c = 'HostedPaymentPageURI',
+                    API_Endpoint_URL__c = 'https://rest.zuora.com/'
+                );
+                zuoraSettings.add(zuoraSetting);
+            }
             if (zuoraSettings.size() == 1) {
                 Organization o = [SELECT IsSandbox FROM Organization LIMIT 1];
                 if (!Test.isRunningTest() &&

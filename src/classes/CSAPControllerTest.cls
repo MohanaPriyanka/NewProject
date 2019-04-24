@@ -1,6 +1,7 @@
 @IsTest
 public with sharing class CSAPControllerTest {
-    @TestSetup static void setupTestData(){
+    @TestSetup static void setupTestData() {
+        Test.startTest();
         List<String> partnerSetUpIds = LoanTestRecordWarehouse.partnerSetup();
         LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
         Profile profileRecord = [SELECT Id FROM Profile WHERE Name='API Only'];
@@ -157,6 +158,7 @@ public with sharing class CSAPControllerTest {
                                                                     Product__c = smartProduct.Id,
                                                                     Maximum_Subscription_Assemblage__c = 25);
         insert sss1;
+        Test.stopTest();
     }
 
     private static Lead getLeadForTest() {
