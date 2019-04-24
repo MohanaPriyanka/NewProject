@@ -196,6 +196,7 @@ public with sharing class OpportunityTriggerTest {
     @IsTest
     public static void testActivatePortalUser() {
         Opportunity testOpportunity = new Opportunity(
+            Id = '12314',
             Product_Line__c = 'Community Solar',
             BlueWave_Signature_Status__c = ''
         );
@@ -206,11 +207,16 @@ public with sharing class OpportunityTriggerTest {
         List<Contact> contactList = [
             SELECT Id, FirstName, LastName, Email, AccountId
             FROM Contact];
+        List<Id> updateOpps = new List<Id>();
+
+        updateOpps.add(testOpportunity.Id);
 
 
+        OpportunityTriggerHandler.activatePortalUserInvocable(updateOpps);
         if (testOpportunity.BlueWave_Signature_Status__c == 'Completed') {
             UserHandler userInsertJob = new UserHandler(contactList);
             System.enqueueJob(userInsertJob);
+
         }
         }
     }
