@@ -4046,6 +4046,26 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>BlueWave_Surveys__c.Answer_1__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>BlueWave_Surveys__c.Answer_2__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>BlueWave_Surveys__c.Answer_3__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>BlueWave_Surveys__c.Answer_4__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>BlueWave_Surveys__c.Biggest_motivator_for_CS_signup__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -4097,6 +4117,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>BlueWave_Surveys__c.Cust_Top_3__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>BlueWave_Surveys__c.Customer_Experience__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -46099,6 +46124,10 @@
         <layout>BlueWave_Blog__c-BlueWave Blog Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>BlueWave_Surveys__c-CS Customer Survey</layout>
+        <recordType>BlueWave_Surveys__c.CS_Customer_Survey</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>BlueWave_Surveys__c-Employee Engagement Survey Layout</layout>
         <recordType>BlueWave_Surveys__c.Employee_Engagement_Survey</recordType>
     </layoutAssignments>
@@ -50830,6 +50859,11 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Account.Residential_Loan</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>BlueWave_Surveys__c.CS_Customer_Survey</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
