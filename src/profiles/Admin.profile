@@ -25440,11 +25440,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Partner__c.Accounting_Number_4_digits__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Partner__c.Additional_CC_Email__c</field>
         <readable>true</readable>
