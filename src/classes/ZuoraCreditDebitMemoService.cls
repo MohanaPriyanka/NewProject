@@ -64,19 +64,11 @@ public class ZuoraCreditDebitMemoService implements Database.AllowsCallouts{
     }
 
     public static HttpResponse creditMemoAPICall(String jsonString){
-        HttpRequest request = new HttpRequest();
-        request.setMethod('POST');
-        request.setEndpoint('https://rest.apisandbox.zuora.com/v1/creditmemos');
-        request.setHeader('Content-Type', 'application/json');
-        request.setHeader('zuora-version', '224.0');
-        request.setHeader('Accept', 'application/json');
-        request.setBody(jsonString);
         HttpResponse response;
         if(!Test.isRunningTest()){
-            Zuora.zApi zApiInstance = new Zuora.zApi();
-            response = zApiInstance.sendRequest(request);
+            response = ZuoraAPIHelper.callJSONEndpoint('POST','/v1/creditmemos',jsonString,false);
         } else {
-            response = mockAPICall();
+            response = ZuoraAPIMock.postCreditMemo();
         }
         return response;
     }
@@ -96,47 +88,5 @@ public class ZuoraCreditDebitMemoService implements Database.AllowsCallouts{
             Logger.logLater('ZuoraCreditDebitMemoService', 'handleAPIResponse', errorMessage);
         }
         return adjustToUpdate;
-    }
-
-    private static HttpResponse mockAPICall(){
-        HttpResponse res = new HttpResponse();
-        res.setHeader('Content-Type', 'application/json');
-        res.setBody(
-            '{ "id" : "2c92c0fa6a3458e1016a45ac238e0d74", ' +
-            '"number" : "CM00000049", ' +
-            '"accountId" : "2c92c0f869c8e5c50169dfb877685bd8", ' +
-            '"currency" : "USD", ' +
-            '"creditMemoDate" : "2019-04-22", ' +
-            '"targetDate" : null, ' +
-            '"postedById" : null, ' +
-            '"postedOn" : null, ' +
-            '"status" : "Draft", ' +
-            '"amount" : 34.00, ' +
-            '"taxAmount" : 0.00, ' +
-            '"totalTaxExemptAmount" : 0.00, ' +
-            '"unappliedAmount" : 34.00, ' +
-            '"refundAmount" : 0E-9, ' +
-            '"appliedAmount" : 0E-9, ' +
-            '"comment" : "Comment", ' +
-            '"source" : "AdhocFromPrpc", ' +
-            '"sourceId" : null, ' +
-            '"referredInvoiceId" : null, ' +
-            '"reasonCode" : "BW - Initiated Credit", ' +
-            '"createdDate" : "2019-04-22 15:31:10", ' +
-            '"createdById" : "2c92c0f968a20f350168ca0efb2309e7", ' +
-            '"updatedDate" : "2019-04-22 15:31:10", ' +
-            '"updatedById" : "2c92c0f968a20f350168ca0efb2309e7", ' +
-            '"cancelledOn" : null, "cancelledById" : null, ' +
-            '"latestPDFFileId" : null, ' +
-            '"Project__c" : "Project A Oak Road", ' +
-            '"CRM_ID__c" : "a0p0j00000CwTIHAA3", ' +
-            '"transferredToAccounting" : "No", ' +
-            '"excludeFromAutoApplyRules" : false, ' +
-            '"autoApplyUponPosting" : false, ' +
-            '"success" : true }'
-        );
-
-        res.setStatusCode(200);
-        return res;
     }
 }
