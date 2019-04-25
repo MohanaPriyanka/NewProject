@@ -23821,7 +23821,9 @@ SEMA = 13 -14</inlineHelpText>
     <validationRules>
         <fullName>Lead_Convert</fullName>
         <active>true</active>
-        <errorConditionFormula>AND(IsConverted, 
+        <errorConditionFormula>AND(
+ISCHANGED(IsConverted),
+IsConverted, 
     NOT(TEXT(PRIORVALUE(Status)) = &quot;Qualified&quot;),
     Product_line__c != &quot;Residential Loan&quot;
 )</errorConditionFormula>
