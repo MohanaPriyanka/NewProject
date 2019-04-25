@@ -641,10 +641,10 @@ IF ( Total_System_Size_kW_AC_QC__c &gt; 1000, &quot;Class 3&quot;, null)))</form
         <fullName>Customer_Acquisition__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <label>Customer Acquisition</label>
+        <label>XXXCustomer Acquisition</label>
         <referenceTo>Partner__c</referenceTo>
         <relationshipLabel>Shared Solar Systems</relationshipLabel>
-        <relationshipName>Shared_Solar_Systems</relationshipName>
+        <relationshipName>Shared_Solar_Systems_del</relationshipName>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -1018,7 +1018,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <description>This field is populated with the Minimum date from the &quot;Date Submitted to Utility&quot; field from all related schedule z records with statuses of Submitted to Utility &gt;&gt;&gt; Contact Utility to get it Enacted, Rejected, Enacted by Utility, Replaced with newly Enacted Schedule Z. If it needs to be updated, please update the Schedule Z record.</description>
         <externalId>false</externalId>
         <inlineHelpText>Minimum date from the Date Submitted to Utility field from related sched z records with statuses of Submitted to Utility &gt;&gt;&gt; Contact Utility to get Enacted, Rejected, Enacted by Utility, Replaced with newly Enacted Sched Z. To update, edit Sched Z record.</inlineHelpText>
-        <label>Min Schedule Z to Utility Date</label>
+        <label>XXXMin Schedule Z to Utility Date</label>
         <summarizedField>Schedule_Z__c.Date_Submitted_to_Utility__c</summarizedField>
         <summaryFilterItems>
             <field>Schedule_Z__c.Status__c</field>
