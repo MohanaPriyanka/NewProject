@@ -30794,7 +30794,7 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>Utility_Bill_Line_Item__c.Amount__c</field>
         <readable>true</readable>
     </fieldPermissions>
