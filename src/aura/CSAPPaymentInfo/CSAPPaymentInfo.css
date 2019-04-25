@@ -4,3 +4,8 @@
 .THIS .brandColor {
     background-color : t(colorBrand);
 }
+
+.THIS .disabledDiv {
+    pointer-events: none;
+    opacity: 0.4;
+}

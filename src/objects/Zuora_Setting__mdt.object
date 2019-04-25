@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Integration settings for Zuora API</description>
+    <fields>
+        <fullName>ACH_Payment_Page_Id__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>ACH Hosted Payment Page ID</inlineHelpText>
+        <label>ACH Payment Page Id</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>API_Endpoint_URL__c</fullName>
+        <description>https://knowledgecenter.zuora.com/CB_Billing/LA_Hosted_Payment_Pages/B_Payment_Pages_2.0/F_Generate_the_Digital_Signature_for_Payment_Pages_2.0</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>The endpoint URL for the CORS Rest API. See Zuora REST documentation for valid values</inlineHelpText>
+        <label>API Endpoint URL</label>
+        <required>false</required>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Active__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Active</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>CC_Payment_Page_Id__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>Credit Card Hosted Payment Page ID</inlineHelpText>
+        <label>CC Payment Page Id</label>
+        <length>32</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Hosted_Payment_Page_URI__c</fullName>
+        <description>https://knowledgecenter.zuora.com/CB_Billing/LA_Hosted_Payment_Pages/B_Payment_Pages_2.0/F_Generate_the_Digital_Signature_for_Payment_Pages_2.0</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>The URL that the Payment Page will be served from. Get a sandbox or production URI from HPM documentation</inlineHelpText>
+        <label>Hosted Payment Page URI</label>
+        <required>false</required>
+        <type>Url</type>
+    </fields>
+    <label>Zuora Setting</label>
+    <pluralLabel>Zuora Settings</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

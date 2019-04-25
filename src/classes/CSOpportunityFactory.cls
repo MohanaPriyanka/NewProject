@@ -50,6 +50,9 @@ public without sharing class CSOpportunityFactory {
                 if (baseChargentOrder != null) {
                     opp = addPaymentInfoToOpp(opp, baseChargentOrder);
                 }
+                if (lead.Loan_System_Information__c != null) {
+                    opp = addPaymentInfoToOpp(opp, lead.Loan_System_Information__c);
+                }
                 oppListToCreate.add(opp);
                 oppCounter++;
             }
@@ -71,6 +74,32 @@ public without sharing class CSOpportunityFactory {
             opp.CC_CardHolder_Name__c = chOrder.ChargentOrders__Billing_First_Name__c +' ' + chOrder.ChargentOrders__Billing_Last_Name__c;
             opp.CC_Expiration_Month__c = chOrder.ChargentOrders__Card_Expiration_Month__c;
             opp.CC_Expiration_Year__c = chOrder.ChargentOrders__Card_Expiration_Year__c;
+        }
+        return opp;
+    }
+
+    @TestVisible
+    private static Opportunity addPaymentInfoToOpp(Opportunity opp, String paymentMethodJSON) {
+        ZuoraAPI.PaymentMethod paymentMethod;
+        try {
+            paymentMethod = (ZuoraAPI.PaymentMethod) System.JSON.deserialize(paymentMethodJSON, ZuoraAPI.PaymentMethod.class);
+        } catch (JSONException jse) {
+            Logger.logLater('CSOpportunityFactory', 'addPaymentInfoToOpp', 'Couldn\'t parse json for opp: ' + opp.Id + '\n' +
+                paymentMethodJSON);
+            return opp;
+        }
+        if (paymentMethod.Type == 'ACH') {
+            opp.ACH_Bank_Name__c = paymentMethod.AchBankName;
+            opp.ACH_Bank_Routing_Number__c = paymentMethod.AchAbaCode;
+            opp.ACH_Account_Type__c = paymentMethod.AchAccountType;
+            opp.ACH_Account_Number__c = paymentMethod.AchAccountNumberMask;
+            opp.ACH_Name_on_Account__c = paymentMethod.AchAccountName;
+        } else if (paymentMethod.Type == 'CreditCard') {
+            opp.CC_Card_Type__c = paymentMethod.CreditCardType;
+            opp.CC_Account_Number__c = paymentMethod.CreditCardMaskNumber;
+            opp.CC_CardHolder_Name__c = paymentMethod.CreditCardHolderName;
+            opp.CC_Expiration_Month__c = String.valueOf(paymentMethod.CreditCardExpirationMonth);
+            opp.CC_Expiration_Year__c = String.valueOf(paymentMethod.CreditCardExpirationYear);
         }
         return opp;
     }

@@ -1,0 +1,8 @@
+<!--
+ - Created by peteryao on 2019-04-13.
+ -->
+
+<aura:event type="APPLICATION" description="ZuoraPaymentPageComplete">
+  <aura:attribute name="response" type="Object" description="Response object from Zuora payment page submission"/>
+  <aura:attribute name="paymentMethod" type="Object" description="PaymentMethod object retrieved from response.refId"/>
+</aura:event>

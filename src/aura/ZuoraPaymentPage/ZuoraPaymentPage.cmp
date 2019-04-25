@@ -1,0 +1,12 @@
+<aura:component description="ZuoraPaymentPage" controller="ZuoraPaymentPageController" extends="c:BlueWaveParent">
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:attribute name="paymentPageMetadata" type="Object"/>
+  <aura:attribute name="paymentType" type="String"/>
+  <aura:attribute name="consentToStorePaymentCredential" type="Boolean"/>
+  <ltng:require scripts="{!$Resource.Zuora131Min}"/>
+  <aura:handler name="change" value="{!v.paymentType}" action="{!c.renderPaymentFrame}"/>
+
+  <!-- We can't use aura:if to show/hide the zuora_payment div because the paymentType change handler expects to
+       use the div before it's rendered? -->
+  <div id="zuora_payment" style="{!or(v.paymentType == 'ACH', v.paymentType == 'Credit Card')?'display:block':'display:none'}"></div>
+</aura:component>

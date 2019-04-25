@@ -209,6 +209,24 @@ private class PostSandboxRefresherTest {
     }
 
     @IsTest
+    static void testSecondAccountHelper() {
+        PostSandboxRefresher.CSDataSetting csDataSetting = new PostSandboxRefresher.CSDataSetting(24);
+        PostSandboxRefresher.CSRecordLoader csRecordLoader = new PostSandboxRefresher.CSRecordLoader(csDataSetting);
+        csRecordLoader.execute(null);
+
+        PostSandboxRefresher.SolarSystemHelper solarSystemHelper = new PostSandboxRefresher.SolarSystemHelper(csDataSetting);
+        solarSystemHelper.execute(null);
+
+        Test.startTest();
+        PostSandboxRefresher.SecondAccountHelper SecondAccountHelper = new PostSandboxRefresher.SecondAccountHelper(csDataSetting);
+        SecondAccountHelper.execute(null);
+        Test.stopTest();
+
+        List<Opportunity> opportunities = [SELECT Id FROM Opportunity WHERE Product_Line__c != 'Community Solar'];
+        System.assert(opportunities.size() > 0, 'There should be opportunities created with Product Line of Community Solar');
+    }
+
+    @IsTest
     static void testProductionUpdateHelper() {
         PostSandboxRefresher.CSDataSetting csDataSetting = new PostSandboxRefresher.CSDataSetting(24);
         PostSandboxRefresher.CSRecordLoader csRecordLoader = new PostSandboxRefresher.CSRecordLoader(csDataSetting);
