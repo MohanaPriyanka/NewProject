@@ -1,6 +1,7 @@
 @IsTest
 public with sharing class CSAPControllerTest {
-    @TestSetup static void setupTestData(){
+    @TestSetup static void setupTestData() {
+        Test.startTest();
         List<String> partnerSetUpIds = LoanTestRecordWarehouse.partnerSetup();
         LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
         Profile profileRecord = [SELECT Id FROM Profile WHERE Name='API Only'];
@@ -157,6 +158,7 @@ public with sharing class CSAPControllerTest {
                                                                     Product__c = smartProduct.Id,
                                                                     Maximum_Subscription_Assemblage__c = 25);
         insert sss1;
+        Test.stopTest();
     }
 
     private static Lead getLeadForTest() {
@@ -1376,5 +1378,26 @@ public with sharing class CSAPControllerTest {
         insert residentialLead;
 
         System.assertEquals(false, CSAPController.hasAvailableCapacity(residentialLead.Id));
+    }
+
+    @IsTest
+    public static void testZuoraEnabled() {
+        // At the time of writing, we can't do DML on Zuora settings
+        List<Zuora_Setting__mdt> zuoraSettings = [SELECT Id, Active__c FROM Zuora_Setting__mdt];
+        Integer numActive = 0;
+        for (Zuora_Setting__mdt zuoraSetting : zuoraSettings) {
+            if (zuoraSetting.Active__c) {
+                numActive ++;
+            }
+        }
+
+        if (numActive == 0) {
+            System.assertEquals(true, CSAPController.zuoraEnabled());
+            System.assertEquals('TestSetting', ZuoraAPIHelper.getZuoraSetting().DeveloperName);
+        } else if (numActive == 1) {
+            System.assertEquals(true, CSAPController.zuoraEnabled());
+        } else {
+            System.assertEquals(false, CSAPController.zuoraEnabled());
+        }
     }
 }

@@ -630,4 +630,9 @@ public without sharing class CSAPController {
         Logger.flushLogs();
         return signerViewURL;
     }
+
+    @AuraEnabled
+    public static Boolean zuoraEnabled() {
+        return ZuoraAPIHelper.zuoraEnabled();
+    }
 }
