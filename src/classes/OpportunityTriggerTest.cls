@@ -193,30 +193,5 @@ public with sharing class OpportunityTriggerTest {
         System.assertNotEquals(null, opps[0].Contract_Status__c);
         System.assertNotEquals('New', opps[0].StageName);
     }
-    @IsTest
-    public static void testActivatePortalUser() {
-        Opportunity testOpportunity = new Opportunity(
-            Id = '12314',
-            Product_Line__c = 'Community Solar',
-            BlueWave_Signature_Status__c = ''
-        );
-            System.assertEquals('', testOpportunity.BlueWave_Signature_Status__c);
-            testOpportunity.BlueWave_Signature_Status__c = 'Completed';
-            System.assertEquals('Completed', testOpportunity.BlueWave_Signature_Status__c);
 
-        List<Contact> contactList = [
-            SELECT Id, FirstName, LastName, Email, AccountId
-            FROM Contact];
-        List<Id> updateOpps = new List<Id>();
-
-        updateOpps.add(testOpportunity.Id);
-
-
-        OpportunityTriggerHandler.activatePortalUserInvocable(updateOpps);
-        if (testOpportunity.BlueWave_Signature_Status__c == 'Completed') {
-            UserHandler userInsertJob = new UserHandler(contactList);
-            System.enqueueJob(userInsertJob);
-
-        }
-        }
     }
