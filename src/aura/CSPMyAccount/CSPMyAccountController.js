@@ -29,7 +29,15 @@
     },
 
     doInit : function(component, event, helper) {
-        var actionGetPropertyAccounts = component.get("c.getMenuLabelList");         
+        let cleanPropName = component.get("v.selectedAccount");
+        cleanPropName = cleanPropName.split('%20').join(' ');
+        component.set("v.selectedAccount", cleanPropName);
+
+        let prepopulatedAcct = component.get("v.prepopulatedAcctId");
+        if (prepopulatedAcct === null){
+            prepopulatedAcct = 'All';
+        }
+        var actionGetPropertyAccounts = component.get("c.getMenuLabelList");
         actionGetPropertyAccounts.setCallback(this,function(resp){
             if(resp.getState() === 'SUCCESS') {
                 component.set("v.menuLabels", resp.getReturnValue());
@@ -39,7 +47,7 @@
             }
         });    
         $A.enqueueAction(actionGetPropertyAccounts);
-        helper.refreshTableData(component, 'All', helper);
+        helper.refreshTableData(component, prepopulatedAcct, helper);
     },
 
     openPaymentWindow : function(component, event, helper) { 

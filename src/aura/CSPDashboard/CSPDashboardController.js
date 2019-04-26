@@ -31,10 +31,12 @@
         var name = source.get("v.class"); 
         if (label === null || label === undefined ) {
             helper.refreshAccountMetrics(component, 'All');                                         
-            component.set("v.selectedAccount", "All");                                       
+            component.set("v.selectedAccount", "All");
+            component.set("v.selectedPropertyAccountId", "All");
         } else {
             helper.refreshAccountMetrics(component, label); 
-            component.set("v.selectedAccount", name);                                       
+            component.set("v.selectedAccount", name);
+            component.set("v.selectedPropertyAccountId", label);
         }
     },
 
