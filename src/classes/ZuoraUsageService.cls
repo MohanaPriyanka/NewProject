@@ -37,12 +37,12 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
             if (sfUsage.Id.getSObjectType() == UASB__c.sObjectType) {
                 UASB__c uasb = (UASB__c) sfUsage;
                 ZuoraUsage usage = new ZuoraUsage();
-                usage.AccountId = uasb.Utility_Account_Subscription__r.SRPC__r.Zuora__Subscription__r.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c;
+                usage.AccountId = uasb.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__Subscription__r.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c;
                 usage.Quantity = uasb.Discounted_Bill__c;
                 usage.StartDateTime = uasb.Billing_Period_Start_Date__c;
                 usage.EndDateTime = uasb.Billing_Period_End_Date__c; // change to end date!!
-                usage.SubscriptionNumber = uasb.Utility_Account_Subscription__r.SRPC__r.Zuora__Subscription__r.Name;
-                usage.ChargeNumber = uasb.Utility_Account_Subscription__r.SRPC__r.Zuora__ChargeNumber__c;
+                usage.SubscriptionNumber = uasb.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__Subscription__r.Name;
+                usage.ChargeNumber = uasb.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__ChargeNumber__c;
                 usage.Description = uasb.Shared_Solar_System__r.Utility__r.Name
                     + ' #'
                     + uasb.Utility_Account_Subscription__r.Utility_Account_Log__r.Name;
@@ -53,12 +53,12 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
             } else if (sfUsage.Id.getSObjectType() == Bill_Adjustment__c.sObjectType) {
                 Bill_Adjustment__c adjust = (Bill_Adjustment__c) sfUsage;
                 ZuoraUsage usage = new ZuoraUsage();
-                usage.AccountId = adjust.UASB__r.Utility_Account_Subscription__r.SRPC__r.Zuora__Subscription__r.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c;
+                usage.AccountId = adjust.UASB__r.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__Subscription__r.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c;
                 usage.Quantity = adjust.Adjustment_Amount__c;
                 usage.StartDateTime = adjust.UASB__r.Billing_Period_Start_Date__c;
                 usage.EndDateTime = adjust.UASB__r.Billing_Period_End_Date__c; // change to end date!!
-                usage.SubscriptionNumber = adjust.UASB__r.Utility_Account_Subscription__r.SRPC__r.Zuora__Subscription__r.Name;
-                usage.ChargeNumber = adjust.UASB__r.Utility_Account_Subscription__r.SRPC__r.Zuora__ChargeNumber__c;
+                usage.SubscriptionNumber = adjust.UASB__r.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__Subscription__r.Name;
+                usage.ChargeNumber = adjust.UASB__r.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__ChargeNumber__c;
                 usage.Description = adjust.UASB__r.Shared_Solar_System__r.Utility__r.Name
                     + ' #'
                     + adjust.UASB__r.Utility_Account_Subscription__r.Utility_Account_Log__r.Name;

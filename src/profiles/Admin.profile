@@ -155,6 +155,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>AdjustmentSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>AutopayChecker</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -959,6 +963,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>UASBSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>UASSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1032,6 +1040,26 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ZippexTests</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraAPIHelper</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraAPIMock</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraUsageBatchSend</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraUsageService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraUsageServiceTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -4010,7 +4038,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Bill_Adjustment__c.Zuora_Id__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -30710,7 +30738,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>UASB__c.Zuora_Id__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -31595,7 +31623,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Utility_Account_Subscription__c.Subscription_Rate_Plan_Charge__c</field>
         <readable>true</readable>
     </fieldPermissions>

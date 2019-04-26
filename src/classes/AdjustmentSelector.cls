@@ -2,7 +2,7 @@
  */
 
 public class AdjustmentSelector {
-    public static List<Bill_Adjustment__c> getAdjustmentsNotYetInZuora(Boolean typeIsProduction) {
+    public static List<Bill_Adjustment__c> getAdjustmentsNotYetInZuora(Boolean typeIsUsage) {
         String queryString =
             'SELECT ' +
                 'Id, Name, ' +
@@ -28,10 +28,12 @@ public class AdjustmentSelector {
             'WHERE Zuora_Id__c = null ' +
             'AND Applied_to_Bill__c = true ';
 
-        if (typeIsProduction){
-            queryString += 'AND Adjustment_Type__c = \'Production\'';
+        if (typeIsUsage){
+            queryString += 'AND Adjustment_Type__c = \'Production\' ';
+            queryString += 'AND Adjustment_Amount__c > 0';
         } else {
-            queryString += 'AND Adjustment_Type__c != \'Production\'';
+            queryString += 'AND(Adjustment_Type__c != \'Production\' ';
+            queryString += 'OR Adjustment_Amount__c <= 0)';
         }
 
         return Database.query(queryString);
