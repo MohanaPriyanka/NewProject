@@ -2,7 +2,7 @@ public without sharing class ZuoraCreditMemoBatchSend implements Database.Batcha
     public Set<Bill_Adjustment__c> adjustToUpdateSet = new Set<Bill_Adjustment__c>();
 
     public void executeBatch(){
-        Database.executeBatch(this, 50);
+        Database.executeBatch(this, 100);
     }
 
     public List<SObject> start(Database.BatchableContext bc){
@@ -16,8 +16,7 @@ public without sharing class ZuoraCreditMemoBatchSend implements Database.Batcha
             Bill_Adjustment__c adjust = (Bill_Adjustment__c)scopeLine;
             ZuoraCreditDebitMemoService.ZuoraCreditMemo memo;
             memo = ZuoraCreditDebitMemoService.convertSFAdjustToCreditMemo(adjust);
-            String jsonString = ZuoraCreditDebitMemoService.convertZuoraCreditMemoToJSON(memo);
-            HttpResponse response = ZuoraCreditDebitMemoService.creditMemoAPICall(jsonString);
+            HttpResponse response = ZuoraCreditDebitMemoService.creditMemoAPICall(memo);
             Bill_Adjustment__c adjustmentToUpdate = ZuoraCreditDebitMemoService.handleAPIResponse(memo,response);
             if (adjustmentToUpdate != null){
                 adjustToUpdateSet.add(adjustmentToUpdate);

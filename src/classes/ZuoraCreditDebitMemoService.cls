@@ -33,8 +33,6 @@ public class ZuoraCreditDebitMemoService implements Database.AllowsCallouts{
     }
 
     public static ZuoraCreditMemo convertSFAdjustToCreditMemo (Bill_Adjustment__c adjust){
-        List<ZuoraCreditMemo> zuoraCreditMemos = new List<ZuoraCreditMemo>();
-
         ZuoraCreditCharge chargeLine = new ZuoraCreditCharge();
         chargeLine.Amount = adjust.Adjustment_Amount__c;
         chargeLine.ChargeId = adjust.UASB__r.Utility_Account_Subscription__r.SRPC__r.Zuora__OriginalProductRatePlanChargeId__c;
@@ -50,23 +48,13 @@ public class ZuoraCreditDebitMemoService implements Database.AllowsCallouts{
         } else if (adjust.Adjustment_Type__c == 'BW Credit'){
             creditMemo.ReasonCode = 'BW - Initiated Credit';
         }
-        zuoraCreditMemos.add(creditMemo);
-
         return creditMemo;
     }
 
-    public static String convertZuoraCreditMemoToJSON (ZuoraCreditMemo zuoraCreditMemo) {
-        String jsonString = JSON.serialize(zuoraCreditMemo);
-        jsonString = jsonString.replace('_Zcustom','__c');
-        jsonString = jsonString.removeEnd(']');
-        jsonString = jsonString.removeStart('[');
-        return jsonString;
-    }
-
-    public static HttpResponse creditMemoAPICall(String jsonString){
+    public static HttpResponse creditMemoAPICall(ZuoraCreditMemo creditMemo){
         HttpResponse response;
         if(!Test.isRunningTest()){
-            response = ZuoraAPIHelper.callJSONEndpoint('POST','/v1/creditmemos',jsonString,false);
+            response = ZuoraAPIHelper.callJSONEndpoint('POST','/v1/creditmemos',creditMemo,false);
         } else {
             response = ZuoraAPIMock.postCreditMemo();
         }
