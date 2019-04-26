@@ -79,11 +79,11 @@ public without sharing class OpportunityTriggerHandler {
     }
 
     @InvocableMethod (label='Update Opportunity' description='List of updated opps')
-    public static void activatePortalUserInvocable(List<Id> updateOppIds) {
-        activatePortalUser(null, null, updateOppIds);
+    public static List<Id> activatePortalUserInvocable(List<Id> updateOppIds) {
+        return activatePortalUser(null, null, updateOppIds);
     }
 
-    public static void activatePortalUser(Map<Id, Opportunity> oldOppMap, Map<Id, Opportunity> newOppMap, List<Id> parentAccountIdList){
+    public static List<Id> activatePortalUser(Map<Id, Opportunity> oldOppMap, Map<Id, Opportunity> newOppMap, List<Id> parentAccountIdList){
 //        List<Id> parentAccountIdList = new List<Id>();
 
         for (Opportunity newOpp : newOppMap.values()) {
@@ -104,6 +104,7 @@ public without sharing class OpportunityTriggerHandler {
             UserHandler userInsertJob = new UserHandler(contactList);
             System.enqueueJob(userInsertJob);
         }
+        return parentAccountIdList;
     }
 
     public void updateInvoicedSubscription(Map<ID, Opportunity> oldOpps, Map<ID, Opportunity> newOpps){
