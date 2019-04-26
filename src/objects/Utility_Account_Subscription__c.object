@@ -768,6 +768,19 @@ Round(( Subscribed_Annual_Cost_of_Electricity__c / 0.1933 / Opportunity__r.Share
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Subscription_Rate_Plan_Charge__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Subscription Rate Plan Charge</label>
+        <referenceTo>Zuora__SubscriptionProductCharge__c</referenceTo>
+        <relationshipLabel>Utility Account Subscriptions (Subscription Rate Plan Charge)</relationshipLabel>
+        <relationshipName>Utility_Account_Subscriptions1</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Subscription_Type__c</fullName>
         <description>This is the Customer Subscription Type field from the Product assigned to the Opportunity the UAS is for. It determines if the UAS should use the Annual kWh of Annual Cost fields for sizing, and is used by a validation rule to prevent the wrong sizing fields from being used.</description>
         <externalId>false</externalId>

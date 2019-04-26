@@ -12251,6 +12251,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Bill_Adjustment__c.Zuora_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>BlueWave_Blog__c.Audience__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -38945,6 +38950,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>UASB__c.Zuora_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>User.Autopay_Conditional_Text_2_of_2__c</field>
         <readable>true</readable>
@@ -39822,6 +39832,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Account_Subscription__c.Subscription_Comment_c__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility_Account_Subscription__c.Subscription_Rate_Plan_Charge__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
