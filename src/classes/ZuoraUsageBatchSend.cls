@@ -14,7 +14,7 @@ public without sharing class ZuoraUsageBatchSend implements Database.Batchable<s
     }
 
     public void execute(Database.BatchableContext bc, List<sObject> scope){
-        ZuoraUsageService.ZuoraUsageObject zuoraUsage = ZuoraUsageService.convertSFUsageToZuoraUsage(scope);
+        ZuoraUsageService.ZuoraUsageItems zuoraUsage = ZuoraUsageService.convertSFUsageToZuoraUsage(scope);
         HttpResponse usageUploadResponse = ZuoraUsageService.usageAPICall(zuoraUsage);
         Map<String, List<SObject>> recordsToUpdate = ZuoraUsageService.handleAPIResponse(zuoraUsage.objects, usageUploadResponse);
         List<UASB__c> newUASBToUpdate = recordsToUpdate.get('UASB');

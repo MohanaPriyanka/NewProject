@@ -1,5 +1,5 @@
 public class ZuoraUsageService implements Database.AllowsCallouts{
-    public class ZuoraUsageObject {
+    public class ZuoraUsageItems {
         public String type = 'Usage';
         public List<ZuoraUsage> objects;
     }
@@ -29,8 +29,8 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         public String Message;
     }
 
-    public static ZuoraUsageObject convertSFUsageToZuoraUsage (List<SObject> sfUsageRecord){
-        ZuoraUsageObject zuoraObject = new ZuoraUsageObject();
+    public static ZuoraUsageItems convertSFUsageToZuoraUsage (List<SObject> sfUsageRecord){
+        ZuoraUsageItems zuoraObject = new ZuoraUsageItems();
         List<ZuoraUsage> zuoraUsageLineItems = new List<ZuoraUsage>();
 
         for (SObject sfUsage : sfUsageRecord) {
@@ -72,7 +72,7 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         return zuoraObject;
     }
 
-    public static HttpResponse usageAPICall(ZuoraUsageObject usageObject){
+    public static HttpResponse usageAPICall(ZuoraUsageItems usageObject){
         HttpResponse response;
         if(!Test.isRunningTest()){
             response = ZuoraAPIHelper.callJSONEndpoint('POST','/v1/action/create',usageObject,false);
