@@ -7,19 +7,11 @@
 public with sharing class ZuoraAPIHelper {
     private static Zuora_Setting__mdt zuoraSetting;
 
-    public static HttpResponse callJsonEndpoint(String method, String endpoint, Map<String, Object> jsonBody) {
+    public static HttpResponse callJsonEndpoint(String method, String endpoint, Object jsonBody) {
         return callJsonEndpoint(method, endpoint, jsonBody, true);
     }
 
-    public static HttpResponse callJsonEndpoint(String method, String endpoint, Map<String, Object> jsonBody, Boolean flush) {
-        String jsonString;
-        if (jsonBody != null && jsonBody.size() > 0) {
-            jsonString = System.JSON.serialize(jsonBody);
-        }
-        return callJsonEndpoint(method, endpoint, jsonString, flush);
-    }
-
-    public static HttpResponse callJsonEndpoint(String method, String endpoint, String jsonString, Boolean flush) {
+    public static HttpResponse callJsonEndpoint(String method, String endpoint, Object jsonBody, Boolean flush) {
         Zuora_Setting__mdt zuoraSetting = getZuoraSetting();
         HttpRequest request = new HttpRequest();
         request.setMethod(method);
@@ -27,9 +19,12 @@ public with sharing class ZuoraAPIHelper {
         request.setHeader('Content-Type', 'application/json');
         request.setHeader('Accept', 'application/json');
         request.setHeader('zuora-version', '224.0'); // Version 224.0 includes settlement object (credit memos, etc)
-        if (jsonString != null) {
+        if (jsonBody != null) {
+            String jsonString = JSON.serialize(jsonBody);
+            jsonString = jsonString.replace('_Zcustom','__c');
             request.setBody(jsonString);
         }
+
         HttpResponse response;
         Zuora.zApi zApiInstance = new Zuora.zApi();
         if (Test.isRunningTest()) {

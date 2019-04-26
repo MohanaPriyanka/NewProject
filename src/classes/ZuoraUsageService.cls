@@ -1,4 +1,8 @@
 public class ZuoraUsageService implements Database.AllowsCallouts{
+    public class ZuoraUsageObject {
+        public String type = 'Usage';
+        public List<ZuoraUsage> objects;
+    }
 
     public class ZuoraUsage {
         public String AccountId;
@@ -25,7 +29,8 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         public String Message;
     }
 
-    public static List<ZuoraUsage> convertSFUsageToZuoraUsage (List<SObject> sfUsageRecord){
+    public static ZuoraUsageObject convertSFUsageToZuoraUsage (List<SObject> sfUsageRecord){
+        ZuoraUsageObject zuoraObject = new ZuoraUsageObject();
         List<ZuoraUsage> zuoraUsageLineItems = new List<ZuoraUsage>();
 
         for (SObject sfUsage : sfUsageRecord) {
@@ -63,31 +68,16 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
                 zuoraUsageLineItems.add(usage);
             }
         }
-        return zuoraUsageLineItems;
+        zuoraObject.objects = zuoraUsageLineItems;
+        return zuoraObject;
     }
 
-    public static String convertZuoraUsageToJSON (List<ZuoraUsage> zuoraUsageLineItems) {
-        String jsonString = JSON.serialize(zuoraUsageLineItems);
-        jsonString = '{ "objects": ' + jsonString + ', "type": "Usage" }';
-        jsonString = jsonString.replace('_Zcustom','__c');
-        return jsonString;
-    }
-
-    public static HttpResponse usageAPICall(String jsonString){
-        // Replace with general Zuora api class
-        HttpRequest request = new HttpRequest();
-        request.setMethod('POST');
-        request.setEndpoint('https://rest.apisandbox.zuora.com/v1/action/create');
-        request.setHeader('Content-Type', 'application/json');
-        request.setHeader('zuora-version', '224.0');
-        request.setHeader('Accept', 'application/json');
-        request.setBody(jsonString);
+    public static HttpResponse usageAPICall(ZuoraUsageObject usageObject){
         HttpResponse response;
         if(!Test.isRunningTest()){
-            Zuora.zApi zApiInstance = new Zuora.zApi();
-            response = zApiInstance.sendRequest(request);
+            response = ZuoraAPIHelper.callJSONEndpoint('POST','/v1/action/create',usageObject,false);
         } else {
-            response = mockAPICall();
+            response = ZuoraAPIMock.postUsage();
         }
         return response;
     }
@@ -129,28 +119,5 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         objectToRecordList.put('UASB',uasbsToUpdate);
         objectToRecordList.put('Bill_Adjustment',adjustmentsToUpdate);
         return objectToRecordList;
-    }
-
-    private static HttpResponse mockAPICall(){
-        HttpResponse res = new HttpResponse();
-        res.setHeader('Content-Type', 'application/json');
-        res.setBody(
-            '[{"Success": true, "Id": "zuoraID_1_of_14"},' +
-                '{"Errors":[{"Code":"MISSING_REQUIRED_VALUE","Message":"The AccountId or AccountNumber is required."}],"Success":false},' +
-                '{"Success": true, "Id": "zuoraID_3_of_14"},' +
-                '{"Success": true, "Id": "zuoraID_4_of_14"},' +
-                '{"Success": true, "Id": "zuoraID_5_of_14"},' +
-                '{"Success": true, "Id": "zuoraID_6_of_14"},' +
-                '{"Success": true, "Id": "zuoraID_7_of_14"},' +
-                '{"Errors":[{"Code":"MISSING_REQUIRED_VALUE","Message":"The AccountId or AccountNumber is required."}],"Success":false},' +
-                '{"Success": true, "Id": "zuoraID_9_of_14"},' +
-                '{"Success": true, "Id": "zuoraID_10_of_14"},' +
-                '{"Success": true, "Id": "zuoraID_11_of_14"},' +
-                '{"Success": true, "Id": "zuoraID_12_of_14"},' +
-                '{"Errors":[{"Code":"MISSING_REQUIRED_VALUE","Message":"The AccountId or AccountNumber is required."}],"Success":false},' +
-                '{"Success": true, "Id": "zuoraID_14_of_14"}]'
-        );
-        res.setStatusCode(200);
-        return res;
     }
 }
