@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>true</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableLicensing>false</enableLicensing>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <fields>
+        <fullName>BlueWave_Rating__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Scale 1-10, BlueWave&apos;s perception of the current client relationship</inlineHelpText>
+        <label>BlueWave Rating</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Client_Account__c</fullName>
+        <externalId>false</externalId>
+        <label>Client Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipName>Monthly_Client_Reports</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Client_DSO__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(Customers_Invoiced__c &lt;= 0, 0, (Clients_Beginning_Balance__c + Clients_Invoiced__c - Clients_Payments__c)/(Clients_Invoiced__c/30))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Calculated from Customer Invoiced, Payments and Beginning Balance fields</inlineHelpText>
+        <label>Client: DSO</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Client_Health_Score__c</fullName>
+        <externalId>false</externalId>
+        <label>Client Health Score</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Clients_Beginning_Balance__c</fullName>
+        <externalId>false</externalId>
+        <label>Clients: Beginning Balance</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Clients_Invoiced__c</fullName>
+        <externalId>false</externalId>
+        <label>Clients: Invoiced</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Clients_Payments__c</fullName>
+        <externalId>false</externalId>
+        <label>Clients: Payments</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Customer_DSO__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(Customers_Invoiced__c &lt;= 0, 0, (Customers_Beginning_Balance__c + Customers_Invoiced__c - Customers_Payments__c)/(Customers_Invoiced__c/30))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Calculated from Customer Invoiced, Payments and Beginning Balance fields</inlineHelpText>
+        <label>Customer: DSO</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Customers_Beginning_Balance__c</fullName>
+        <externalId>false</externalId>
+        <label>Customers: Beginning Balance</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Customers_Invoiced__c</fullName>
+        <externalId>false</externalId>
+        <label>Customers: Invoiced</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Customers_Payments__c</fullName>
+        <externalId>false</externalId>
+        <label>Customers: Payments</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>End_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Last day of month</inlineHelpText>
+        <label>End Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>MW_Under_Management__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of Projects that are currently billing (where we expect utilization to be close to 100%)</inlineHelpText>
+        <label>MW Under Management</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Management_Projects_Utilization__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Percent of projects that are currently subscribed (sum of current allocation schedule)</inlineHelpText>
+        <label>Management Projects: Utilization</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>NPS_Class__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(NPS__c &gt; 8, &quot;Promoter&quot;, IF(NPS__c &gt; 6, &quot;Passive&quot;, IF(NPS__c &gt; 0, &quot;Detractor&quot;, &quot;&quot;)))</formula>
+        <inlineHelpText>Calculated from NPS field</inlineHelpText>
+        <label>NPS Class</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>NPS__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Scale 1-10</inlineHelpText>
+        <label>NPS</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Notes__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Notes from BlueWave</inlineHelpText>
+        <label>Notes</label>
+        <length>32768</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Open_Cases__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Cases open with client (outstanding requests)</inlineHelpText>
+        <label>Open Cases</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Recalculate_Health_Score__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Recalculate Health Score</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Start_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>First day of month</inlineHelpText>
+        <label>Start Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <label>Client Health Report</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <displayFormat>{00000000}</displayFormat>
+        <label>Monthly Client Report Name</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Client Health Reports</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>
