@@ -67,6 +67,46 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Answer_1__c</fullName>
+        <externalId>false</externalId>
+        <label>Answer 1</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Answer_2__c</fullName>
+        <externalId>false</externalId>
+        <label>Answer 2</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Answer_3__c</fullName>
+        <externalId>false</externalId>
+        <label>Answer 3</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Answer_4__c</fullName>
+        <externalId>false</externalId>
+        <label>Answer 4</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
         <fullName>Biggest_motivator_for_CS_signup__c</fullName>
         <externalId>false</externalId>
         <label>Biggest motivator for CS signup</label>
@@ -307,6 +347,19 @@
             </valueSetDefinition>
         </valueSet>
         <visibleLines>7</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Customer_Experience__c</fullName>
+        <description>Field to capture ranking of customer experience</description>
+        <externalId>false</externalId>
+        <label>Customer Experience</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Customer_ranking__c</fullName>
@@ -1015,9 +1068,9 @@
     </fields>
     <fields>
         <fullName>Rate_feature__c</fullName>
-        <description>Rate portal feature - run credit check</description>
+        <description>Capture rate/ranks from surveys</description>
         <externalId>false</externalId>
-        <label>Rate feature - run credit</label>
+        <label>Rate feature</label>
         <precision>1</precision>
         <required>false</required>
         <scale>0</scale>
@@ -1436,6 +1489,11 @@ New York</description>
     </nameField>
     <pluralLabel>BlueWave Surveys</pluralLabel>
     <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>CS_Customer_Survey</fullName>
+        <active>true</active>
+        <label>CS Customer Survey</label>
+    </recordTypes>
     <recordTypes>
         <fullName>Employee_Engagement_Survey</fullName>
         <active>true</active>
