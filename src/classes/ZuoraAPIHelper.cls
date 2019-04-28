@@ -65,8 +65,8 @@ public with sharing class ZuoraAPIHelper {
             if (zuoraSettings.size() == 1) {
                 Organization o = [SELECT IsSandbox FROM Organization LIMIT 1];
                 if (!Test.isRunningTest() &&
-                    (o.IsSandbox && zuoraSettings[0].DeveloperName != 'Sandbox') ||
-                    (!o.IsSandbox && zuoraSettings[0].DeveloperName != 'Production')) {
+                    (o.IsSandbox && zuoraSettings[0].DeveloperName != 'Sandbox' ||
+                    !o.IsSandbox && zuoraSettings[0].DeveloperName != 'Production')) {
                     throw new Util.BWException('Wrong Zuora setting is activated');
                 }
                 zuoraSetting = zuoraSettings[0];
