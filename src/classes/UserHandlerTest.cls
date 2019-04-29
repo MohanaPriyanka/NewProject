@@ -169,35 +169,6 @@ public class UserHandlerTest {
 		System.assertEquals(firstNumberUsers + 3, newNumberUsers);
 	}
 
-	@IsTest public static void testOpportunityTrigger() {
-		List<Opportunity> oppList = [
-			SELECT Id, Name
-			FROM Opportunity
-			WHERE Product_Line__c = 'Community Solar'
-			ORDER BY Name];
-
-		oppList[0].Contract_Status__c = 'Completed';
-		oppList[1].Contract_Status__c = 'Completed';
-
-		List<User> oldUserList = [
-			SELECT Id, ContactId
-			FROM User
-			WHERE IsActive = TRUE
-		];
-		Integer previousNumberUsers = oldUserList.size();
-
-		Test.startTest();
-		update oppList;
-		Test.stopTest();
-
-		List<User> userListUpdated = [
-			SELECT Id, ContactId
-			FROM User
-			WHERE IsActive = TRUE
-		];
-
-		System.assertEquals(previousNumberUsers + 2, userListUpdated.size());
-	}
 
 	@IsTest public static void testLoanOpp() {
 		Opportunity loanOpp = [SELECT Id FROM Opportunity WHERE Name = 'Loan'];

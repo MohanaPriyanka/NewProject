@@ -12,11 +12,9 @@ public without sharing class OpportunityTriggerHandler {
         setLeadLookup(newOppList);
     }
 
-    public void OnBeforeUpdate(List<Opportunity> oldOppList, List<Opportunity> updatedOppList, Map<ID, Opportunity> oldOppMap, Map<ID, Opportunity> newOppMap){
-        List<Id> updatedList = new List<Id>();
+    public void OnBeforeUpdate(List<Opportunity> updatedOppList, Map<ID, Opportunity> oldOppMap, Map<ID, Opportunity> newOppMap){
         customIdSwapOpp(updatedOppList, oldOppMap);
         mapDocuSignRS(updatedOppList, oldOppMap);
-        activatePortalUser(oldOppMap, newOppMap, updatedList);
         updateInvoicedSubscription(oldOppMap, newOppMap);
     }
 
@@ -44,8 +42,8 @@ public without sharing class OpportunityTriggerHandler {
                     opp.BS_Sales_Id__c = salesIdMap.get(opp.Custom_Id__c).id;
                 }else if (
                     Trigger.isUpdate &&
-                        oldOppMap.get(opp.Id).Custom_Id__c != opp.Custom_Id__c &&
-                        !salesIdMap.containsKey(opp.Custom_Id__c)){
+                    oldOppMap.get(opp.Id).Custom_Id__c != opp.Custom_Id__c &&
+                    !salesIdMap.containsKey(opp.Custom_Id__c)){
                     opp.BS_Sales_Id__c = null;
                 }
             }
@@ -61,14 +59,14 @@ public without sharing class OpportunityTriggerHandler {
         if (oppIdSet.size() > 0){
             Map<String, dsfs__DocuSign_Recipient_Status__c> mapDocRS = new Map<String, dsfs__DocuSign_Recipient_Status__c>();
             for (dsfs__DocuSign_Recipient_Status__c obj : [SELECT Id, Name, dsfs__Parent_Status_Record__c, dsfs__Recipient_Status__c, dsfs__DocuSign_Recipient_Email__c
-            FROM dsfs__DocuSign_Recipient_Status__c
-            WHERE dsfs__DocuSign_Recipient_Email__c IN : oppIdSet]){
+                                                          FROM dsfs__DocuSign_Recipient_Status__c
+                                                          WHERE dsfs__DocuSign_Recipient_Email__c IN : oppIdSet]){
                 mapDocRS.put(obj.dsfs__DocuSign_Recipient_Email__c, obj);
             }
             for (Opportunity opp : oppList) {
                 if (Trigger.isInsert || Trigger.isUpdate || oldOppMap.get(opp.Id). Email__c != opp.Email__C){
                     if (mapDocRS.containsKey(opp.Email__c)){
-                        opp.DocuSign_Recipient__c = mapDocRS.get(opp.Email__c).Id;
+                       opp.DocuSign_Recipient__c = mapDocRS.get(opp.Email__c).Id;
                     }
                 }
                 else if (oldOppMap.get(opp.Id).Email__c != opp.Email__c && !mapDocRS.containsKey(opp.Email__c)) {
@@ -78,24 +76,23 @@ public without sharing class OpportunityTriggerHandler {
         }
     }
 
-    @InvocableMethod (label='Update Opportunity' description='List of updated opps')
-    public static List<Id> activatePortalUserInvocable(List<Id> updateOppIds) {
-        return activatePortalUser(null, null, updateOppIds);
-    }
+   @InvocableMethod public static void activatePortalUser(List<Id> oppIdList) {
 
-    public static List<Id> activatePortalUser(Map<Id, Opportunity> oldOppMap, Map<Id, Opportunity> newOppMap, List<Id> parentAccountIdList){
-//        List<Id> parentAccountIdList = new List<Id>();
+       List<Opportunity> updatedOpps = [
+           SELECT Id, Contract_Status__c, Product_Line__c, Parent_Account_ID__c,
+           BlueWave_Signature_Status__c
+           FROM Opportunity
+           WHERE Id IN: oppIdList];
 
-        for (Opportunity newOpp : newOppMap.values()) {
-            if (oldOppMap.get(newOpp.Id).Contract_Status__c != 'Completed' &&
-                newOpp.Contract_Status__c == 'Completed' &&
-                newOpp.Product_Line__c == 'Community Solar' &&
-                newOpp.BlueWave_Signature_Status__c == 'Completed' &&
-                newOpp.Parent_Account_ID__c != null) {
-                parentAccountIdList.add(newOpp.Parent_Account_ID__c);
-            }
-        }
-        if (parentAccountIdList.size() > 0){
+       List<Id> parentAccountIdList = new List<Id>();
+
+       for (Opportunity newOpp : updatedOpps) {
+           if (newOpp.Parent_Account_ID__c != null) {
+               parentAccountIdList.add(newOpp.Parent_Account_ID__c);
+           }
+       }
+
+       if (parentAccountIdList.size() > 0){
             List<Contact> contactList = [
                 SELECT Id, FirstName, LastName, Email, AccountId
                 FROM Contact
@@ -104,7 +101,6 @@ public without sharing class OpportunityTriggerHandler {
             UserHandler userInsertJob = new UserHandler(contactList);
             System.enqueueJob(userInsertJob);
         }
-        return parentAccountIdList;
     }
 
     public void updateInvoicedSubscription(Map<ID, Opportunity> oldOpps, Map<ID, Opportunity> newOpps){
@@ -116,15 +112,15 @@ public without sharing class OpportunityTriggerHandler {
                 && newOpp.StageName == 'Complete'
                 && newOpp.Product_Line__c == 'Community Solar'
                 && newOpp.Subscription_Size_for_Invoicing__c == null){
-                opportunityList.add(newOpp);
+                    opportunityList.add(newOpp);
             }
         }
         if (opportunityList.size() > 0){
             for (AggregateResult uasSUM : [SELECT Opportunity__r.Id oppId,
-                SUM(Customer_Subscription_KW_DC__c) subscriptionSum
-            FROM Utility_Account_Subscription__c
-            WHERE Opportunity__r.Id IN : opportunityList
-            GROUP BY Opportunity__r.Id]){
+                                                SUM(Customer_Subscription_KW_DC__c) subscriptionSum
+                                            FROM Utility_Account_Subscription__c
+                                            WHERE Opportunity__r.Id IN : opportunityList
+                                            GROUP BY Opportunity__r.Id]){
                 oppUASTotalMap.put((Id)uasSUM.get('oppId'), (Decimal)uasSUM.get('subscriptionSum'));
             }
             for (Opportunity oppToUpdate : opportunityList){
