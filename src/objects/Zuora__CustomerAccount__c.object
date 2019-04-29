@@ -1,0 +1,1095 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>Zuora Billing Account object.  An account is a customer account that collects all of the critical information about the customer, such as contact information, payment terms, and payment methods. You can use a customer account to track subscriptions, amendments, and transactions, such as invoices and payments.</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableLicensing>false</enableLicensing>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <fieldSets>
+        <fullName>Zuora__Lookup_Popup_Window</fullName>
+        <description>For Lookup Popup Window</description>
+        <displayedFields>
+            <field>Name</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Zuora__Currency__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <label>Lookup Popup Window</label>
+    </fieldSets>
+    <fieldSets>
+        <fullName>Zuora__fields_for_select_billing_account_compon</fullName>
+        <availableFields>
+            <field>Zuora__AutoPay__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </availableFields>
+        <availableFields>
+            <field>Zuora__Balance__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </availableFields>
+        <availableFields>
+            <field>Zuora__Batch__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </availableFields>
+        <availableFields>
+            <field>Zuora__Credit_Balance__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </availableFields>
+        <availableFields>
+            <field>Zuora__LastInvoiceDate__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </availableFields>
+        <availableFields>
+            <field>Zuora__SalesRepName__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </availableFields>
+        <availableFields>
+            <field>Zuora__Status__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </availableFields>
+        <availableFields>
+            <field>Zuora__Zuora_Id__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </availableFields>
+        <description>Used for select billing account component to display account information</description>
+        <displayedFields>
+            <field>Zuora__AccountNumber__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Name</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Zuora__SoldToName__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Zuora__BillCycleDay__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Zuora__BillToName__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Zuora__DefaultPaymentMethod__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Zuora__PaymentTerm__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <displayedFields>
+            <field>Zuora__Currency__c</field>
+            <isFieldManaged>false</isFieldManaged>
+            <isRequired>false</isRequired>
+        </displayedFields>
+        <label>Billing Accounts</label>
+    </fieldSets>
+    <fields>
+        <fullName>Zuora__AccountNumber__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Account Number</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__Account__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Billing Accounts</relationshipLabel>
+        <relationshipName>R00N40000001kyLcEAI</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>true</reparentableMasterDetail>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Zuora__AdditionalEmailAddresses__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Additional Email Addresses</label>
+        <length>2768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Zuora__AllowInvoiceEdit__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Indicates if associated invoices can be edited.</description>
+        <externalId>false</externalId>
+        <label>Allow Invoice Edit</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__AutoPay__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Auto Pay</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Zuora__Balance__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Bill To Account Balance</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Zuora__Batch__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Batch</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__BcdSettingOption__c</fullName>
+        <deprecated>false</deprecated>
+        <description>If you want to automatically set the BCD to the same day as
+the triggering date of the account&apos;s first recurring charge, then set
+the optional field, BcdSettingOption to AutoSet</description>
+        <externalId>false</externalId>
+        <label>Bcd Setting Option</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__BillCycleDay__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Bill Cycle Day</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__BillToAddress1__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Bill To Address Line 1</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__BillToAddress2__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Bill To Address Line 2</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__BillToCity__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Bill To Address City</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__BillToCountry__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Bill To Address Country</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__BillToFax__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Bill To Fax</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Phone</type>
+    </fields>
+    <fields>
+        <fullName>Zuora__BillToId__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Bill To Contact Id</label>
+        <length>32</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__BillToName__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Bill To Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__BillToPostalCode__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Bill To Address Zip Code</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__BillToState__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Bill To Address State</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__BillToWorkEmail__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Bill To Work E-mail</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__BillToWorkPhone__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Bill To Work Phone</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Phone</type>
+    </fields>
+    <fields>
+        <fullName>Zuora__CommunicationProfileId__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Communication Profile Id (deprecated)</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__Communication_Profile_Id__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Communication Profile Id</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__CreditBalance__c</fullName>
+        <defaultValue>0.000000000</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Credit balance of Billing Account field in Zuora</description>
+        <externalId>false</externalId>
+        <label>Credit Balance( Deprecated )</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>9</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__CreditCardExpiration__c</fullName>
+        <deprecated>false</deprecated>
+        <description>payment method Credit Card Expiration</description>
+        <externalId>false</externalId>
+        <label>Credit Card Expiration( Deprecated )</label>
+        <length>128</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__CreditCardNumber__c</fullName>
+        <deprecated>false</deprecated>
+        <description>zuora payment method credit card number.</description>
+        <externalId>false</externalId>
+        <label>Credit Card Number( Deprecated )</label>
+        <length>128</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__CreditCardType__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>IF(  ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__CreditCardType__c, &quot;AmericanExpress&quot;),  &quot;AmericanExpress&quot;,
+IF(  ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__CreditCardType__c, &quot;Discover&quot;), &quot; Discover&quot;, 
+IF(  ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__CreditCardType__c, &quot;MasterCard&quot;), &quot;MasterCard&quot;,
+IF(  ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__CreditCardType__c, &quot;Visa&quot;), &quot;Visa&quot;,  &quot;&quot;))))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Credit Card Type</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__CreditCard_Expiration__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>IF (   OR( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__Type__c , &quot;CreditCard&quot;) ,   ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__Type__c , &quot;DebitCard&quot;) ),
+
+(IF ( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__CreditCardExpirationMonth__c, &quot;1&quot;) , &quot;01&quot;,  IF ( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__CreditCardExpirationMonth__c, &quot;2&quot;) , &quot;02&quot;, IF ( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__CreditCardExpirationMonth__c, &quot;3&quot;) , &quot;03&quot;, IF ( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__CreditCardExpirationMonth__c, &quot;4&quot;) , &quot;04&quot;, IF ( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__CreditCardExpirationMonth__c, &quot;5&quot;) , &quot;05&quot;, IF ( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__CreditCardExpirationMonth__c, &quot;6&quot;) , &quot;06&quot;, IF ( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__CreditCardExpirationMonth__c, &quot;7&quot;) , &quot;07&quot;, IF ( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__CreditCardExpirationMonth__c, &quot;8&quot;) , &quot;08&quot;, IF ( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__CreditCardExpirationMonth__c, &quot;9&quot;) , &quot;09&quot;, IF ( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__CreditCardExpirationMonth__c, &quot;10&quot;) , &quot;10&quot;, IF ( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__CreditCardExpirationMonth__c, &quot;11&quot;) , &quot;11&quot;, IF ( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__CreditCardExpirationMonth__c, &quot;12&quot;) , &quot;12&quot;, &quot;&quot;))))))))))))
+
+&amp; &quot;/&quot; &amp; Zuora__Default_Payment_Method__r.Zuora__CreditCardExpirationYear__c), &quot;&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Credit Card Expiration</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__CreditCard_Number__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>Zuora__Default_Payment_Method__r.Zuora__CreditCardMaskNumber__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Credit Card Number</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__Credit_Balance__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The total credit balance for the account in Currency representation.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The total credit balance for the account in Currency representation.</inlineHelpText>
+        <label>Credit Balance</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Zuora__Currency__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Currency</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__CustomerServiceRepName__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>CSR</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__DefaultPaymentMethod__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Default Payment Method</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__Default_Payment_Method__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Default Payment Method</label>
+        <referenceTo>Zuora__PaymentMethod__c</referenceTo>
+        <relationshipLabel>Billing Accounts</relationshipLabel>
+        <relationshipName>Billing_Accounts</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Zuora__EntityID__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Entity ID</label>
+        <length>32</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__External_Id__c</fullName>
+        <caseSensitive>true</caseSensitive>
+        <deprecated>false</deprecated>
+        <externalId>true</externalId>
+        <label>External Id</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__InvoiceDeliveryPrefsEmail__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Indicates if the customer wants to receive invoices through email.</description>
+        <externalId>false</externalId>
+        <label>Invoice Delivery Prefs Email</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__InvoiceDeliveryPrefsPrint__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Indicates if the customer wants to receive printed invoices, such as through postal mail.</description>
+        <externalId>false</externalId>
+        <label>Invoice Delivery Prefs Print</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__InvoiceTemplateId__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The ID of the invoice template.</description>
+        <externalId>false</externalId>
+        <label>Invoice Template Id</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__Is_Crm_Id_Change_Processed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Is Crm Id Change Processed</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Zuora__LastInvoiceDate__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Last Invoiced</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Zuora__MRR__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>CMRR</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Zuora__Notes__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Use this field to record comments about the account.</description>
+        <externalId>false</externalId>
+        <label>Notes</label>
+        <length>75535</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Zuora__Parent__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Parent</label>
+        <referenceTo>Zuora__CustomerAccount__c</referenceTo>
+        <relationshipLabel>Child Billing Accounts</relationshipLabel>
+        <relationshipName>Children</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Zuora__PaymentGateway__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Payment Gateway</label>
+        <referenceTo>Zuora__PaymentGateway__c</referenceTo>
+        <relationshipLabel>Billing Accounts</relationshipLabel>
+        <relationshipName>Billing_Accounts</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Zuora__PaymentMethodType__c</fullName>
+        <deprecated>false</deprecated>
+        <description>zuora payment method type.</description>
+        <externalId>false</externalId>
+        <label>Credit Card Type( Deprecated)</label>
+        <length>128</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__PaymentMethod_Type__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>IF (  ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__Type__c, &quot;ACH&quot;), &quot;ACH&quot;,
+   IF ( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__Type__c, &quot;BankTransfer&quot;), &quot;Bank Transfer&quot;, 
+       IF ( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__Type__c, &quot;Cash&quot;), &quot;Cash&quot;,     
+         IF ( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__Type__c, &quot;Check&quot;), &quot;Check&quot;, 
+           IF ( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__Type__c, &quot;CreditCard&quot;), &quot;Credit Card&quot;, 
+                IF ( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__Type__c, &quot;CreditCardReferenceTransaction&quot;), &quot;Credit Card  Reference Transaction&quot;, 
+                    IF ( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__Type__c, &quot;DebitCard&quot;), &quot;Debit Card&quot;, 
+                       IF ( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__Type__c, &quot;Other&quot;), &quot;Other&quot;, 
+                                IF ( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__Type__c, &quot;PayPal&quot;), &quot;PayPal&quot;, 
+                                   IF ( ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__Type__c, &quot;WireTransfer&quot;), &quot;Wire Transfer&quot;,  &quot;&quot;
+                                     )
+                                )
+                         )
+                     )
+                )
+         )
+    )
+  )
+))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Payment Method Type</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__PaymentTerm__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Payment Term</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__Payment_Term_Formula__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>IF( ISBLANK(Zuora__Payment_Term__c) ,  Zuora__PaymentTerm__c,  HYPERLINK( Zuora__Payment_Term__r.Id , Zuora__Payment_Term__r.Name) )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Payment Term</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__Payment_Term__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Payment Term</label>
+        <referenceTo>Zuora__PaymentTerm__c</referenceTo>
+        <relationshipLabel>Billing Accounts</relationshipLabel>
+        <relationshipName>Billing_Accounts</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Zuora__PurchaseOrderNumber__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>PO Number</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__SalesRepName__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Sales Representative</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__SoldToAddress1__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Sold To Address1</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__SoldToAddress2__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Sold To Address2</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__SoldToCity__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Sold To City</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__SoldToCountry__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Sold To Country</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__SoldToFax__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Sold To Fax</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Phone</type>
+    </fields>
+    <fields>
+        <fullName>Zuora__SoldToId__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Sold To Contact Id</label>
+        <length>32</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__SoldToName__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Sold To Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__SoldToPostalCode__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Sold To Postal Code</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__SoldToState__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Sold To State</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__SoldToWorkEmail__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Sold To Work Email</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__SoldToWorkPhone__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Sold To Work Phone</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Phone</type>
+    </fields>
+    <fields>
+        <fullName>Zuora__Status__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Status</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__TaxExemptCertificateID__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The ID of your customer&apos;s tax exemption certificate.</description>
+        <externalId>false</externalId>
+        <label>Tax Exempt Certificate ID</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__TaxExemptCertificateType__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The type of the tax exemption certificate that your customer holds.</description>
+        <externalId>false</externalId>
+        <label>Tax Exempt Certificate Type</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__TaxExemptDescription__c</fullName>
+        <deprecated>false</deprecated>
+        <description>A description of the tax exemption certificate that your customer holds.</description>
+        <externalId>false</externalId>
+        <label>Tax Exempt Description</label>
+        <length>4096</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Zuora__TaxExemptEffectiveDate__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The date when the the customer&apos;s tax exemption starts.</description>
+        <externalId>false</externalId>
+        <label>Tax Exempt Effective Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Zuora__TaxExemptExpirationDate__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The date when the customer&apos;s tax exemption certificate expires.</description>
+        <externalId>false</externalId>
+        <label>Tax Exempt Expiration Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Zuora__TaxExemptIssuingJurisdiction__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Indicates the jurisdiction in which the customer&apos;s tax exemption certificate was issued.</description>
+        <externalId>false</externalId>
+        <label>Tax ExemptIssuing Jurisdiction</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__TaxExemptStatus__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The status of the account&apos;s tax exemption.</description>
+        <externalId>false</externalId>
+        <label>Tax Exempt Status</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__TotalInvoiceBalance__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The total balance of the account&apos;s invoices.</description>
+        <externalId>false</externalId>
+        <label>Total Invoice Balance</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Zuora__Zuora_Id__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The Zuora Id (external primary key) of this Billing Account.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The Zuora Id (external primary key) of this Billing Account.</inlineHelpText>
+        <label>Zuora Id</label>
+        <length>32</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Billing Account</label>
+    <listViews>
+        <fullName>Zuora__All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>Billing Account Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Billing Accounts</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+    <visibility>Public</visibility>
+    <webLinks>
+        <fullName>Zuora__Sync_Data_from_ZBilling</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Sync Data from ZBilling</masterLabel>
+        <openType>sidebar</openType>
+        <page>Zuora__OnDemandSync</page>
+        <protected>false</protected>
+    </webLinks>
+</CustomObject>
