@@ -5298,7 +5298,7 @@ IF(load_zone_check_needed__c = TRUE,
         <description>Zuora Payment Reference Id should be passed from the Originations platform during their processes. The Payment Info Id will need to be associated with a customer&apos;s Zuora account once we create it. The Payment information expires, so reference Zuora_Payment_Ref_Id_Expiration_Date__c to make sure the Id is still valid.</description>
         <externalId>false</externalId>
         <label>Zuora Payment Ref Id</label>
-        <length>30</length>
+        <length>32</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
