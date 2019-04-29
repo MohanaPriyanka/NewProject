@@ -244,7 +244,7 @@ public without sharing class CSOpportunityFactoryTest {
                 Is_Loan_Secured__c, Lead_ID__c, Loan_Program_Class__c, Maximum_Monthly_Disbursement2__c, Company,
                 Number_of_Years_at_Location__c, Number_of_Years_in_Business__c, Parcel_Zip__c, Partner_lookup__c,
                 Partner_Email__c, Personal_Credit_Report__c, Phone2__c, Product_Line__c, Referral_Email__c, bs_Sales_ID__c,
-                Security_Type__c, LoadZone__c, System_Assignment__c, Utility__c, OwnerId
+                Security_Type__c, LoadZone__c, System_Assignment__c, Utility__c, OwnerId, Loan_System_Information__c
             FROM Lead
             WHERE Id =: lead.Id
         ];
@@ -389,7 +389,7 @@ public without sharing class CSOpportunityFactoryTest {
                 Is_Loan_Secured__c, Lead_ID__c, Loan_Program_Class__c, Maximum_Monthly_Disbursement2__c, Company,
                 Number_of_Years_at_Location__c, Number_of_Years_in_Business__c, Parcel_Zip__c, Partner_lookup__c,
                 Partner_Email__c, Personal_Credit_Report__c, Phone2__c, Product_Line__c, Referral_Email__c, bs_Sales_ID__c,
-                Security_Type__c, LoadZone__c, System_Assignment__c, Utility__c, OwnerId
+                Security_Type__c, LoadZone__c, System_Assignment__c, Utility__c, OwnerId, Loan_System_Information__c
             FROM Lead
             WHERE Id =: lead.Id
         ];
@@ -416,5 +416,149 @@ public without sharing class CSOpportunityFactoryTest {
         System.assertEquals(newACHOrder.ChargentOrders__Bank_Account_Name__c, opp2.ACH_Name_on_Account__c);
         System.assertEquals('*****6789', opp2.ACH_Bank_Routing_Number__c);
         System.assertEquals('******7890', opp2.ACH_Account_Number__c);
+    }
+
+
+    @IsTest
+    public static void testCanGenerateCSOpportunitiesWithZuora() {
+        Utility_NMC_Tariff__c nmcRate =  new Utility_NMC_Tariff__c(
+            Value_of_Net_Metering_Credit__c = .1848,
+            Name = 'Nation Grid WCMA Class 2 - S/F 2016',
+            Sizing_Rate__c = true,
+            Date__c = Date.today()
+        );
+        insert nmcRate;
+
+        Product2 csProduct = new Product2( Name = 'Community Solar - SREC 16-01',
+            Family = 'Community Solar',
+            Product_Type__c = 'Community Solar',
+            Program__c = 'SREC - Community Solar',
+            State__c = 'MA',
+            ProductCode = 'CS - BlueWave - 10%',
+            IsActive = true,
+            Lender_of_Record__c = 'BlueWave',
+            NMC_Discount__c = 10,
+            Annual_kWh_Maximum__c = 100000000,
+            NM_Rate_Floor__c = 0,
+            Customer_Subscription_Type__c = 'Electricity Cost ($)',
+            Monthly_Late_Fee__c = 1);
+        insert csProduct;
+
+        Utility__c eversource = new Utility__c(Name = 'Eversource', Number_of_Decimal_Places__c = 2);
+        insert eversource;
+
+        Shared_Solar_System__c sss1 = LeadTriggerHandlerTest.getSharedSolarSystem(nmcRate, csProduct, eversource, 'Eversource P1');
+        Shared_Solar_System__c sss2 = LeadTriggerHandlerTest.getSharedSolarSystem(nmcRate, csProduct, eversource, 'Eversource P2');
+
+        List<Shared_Solar_System__c> availableSSS = new List<Shared_Solar_System__c>{sss1, sss2};
+
+        insert availableSSS;
+
+        availableSSS = [
+            SELECT Id, Maximum_Subscription_Cost__c, Maximum_Subscription_Capacity_kW_DC__c, Expected_Yield_kWh_kW__c,
+                Reserved_Capacity_kW_DC__c, Project_Capacity_Available_kW_DC__c, Product__c, Utility_NMC_Tariff__c,
+                Credit_Score_Requirement__c
+            FROM Shared_Solar_System__c
+            WHERE Id IN : availableSSS
+            ORDER BY Name
+        ];
+        sss1 = availableSSS[0];
+        sss2 = availableSSS[1];
+
+        Decimal costToAssign = 0;
+        Decimal kWhToAssign = 50000;
+        CSSubscriptionEnroller.AnnualEnergyTotal annualTotals = new CSSubscriptionEnroller.AnnualEnergyTotal(costToAssign, kWhToAssign);
+
+        Account parentAccount = new Account(Name = 'Parent');
+        insert parentAccount;
+
+        Account propertyAccount = new Account(Name = 'Property');
+        insert propertyAccount;
+
+        Lead lead = new Lead(
+            FirstName = 'Test',
+            LastName = 'Testcase',
+            Email = 'test@test.com',
+            Electricity_Provider__c = 'Eversource',
+            Utility_1__c = 'Eversource',
+            LoadZone__c = 'WCMA',
+            Company = 'Test',
+            Status = 'Qualified',
+            Product_line__c = 'Community Solar',
+            Product__c = csProduct.Id,
+            Custom_ID__c = 'partner',
+            System_Assignment__c = 'Automatic - Assignment Order',
+            Parent_Account__c = parentAccount.Id,
+            Loan_System_Information__c = '{' +
+                '"CreditCardExpirationMonth":2,' +
+                '"Active":false,' +
+                '"Id":"2c92c0f86a0c41a5016a1f41d63a2f96",' +
+                '"CreditCardExpirationYear":2022,' +
+                '"UpdatedDate":"2019-04-15T04:29:28.000+00:00",' +
+                '"CreditCardPostalCode":"12345",' +
+                '"IsCompany":false,' +
+                '"CreditCardType":"AmericanExpress",' +
+                '"LastTransactionStatus":"Approved",' +
+                '"UpdatedById":"3",' +
+                '"BankIdentificationNumber":"370000",' +
+                '"CreatedDate":"2019-04-15T04:29:28.000+00:00",' +
+                '"TotalNumberOfProcessedPayments":0,' +
+                '"PaymentMethodStatus":"Active",' +
+                '"NumConsecutiveFailures":0,' +
+                '"TotalNumberOfErrorPayments":0,' +
+                '"CreditCardMaskNumber":"***********0002",' +
+                '"CreatedById":"3",' +
+                '"LastTransactionDateTime":"2019-04-15T04:29:29.000+00:00",' +
+                '"UseDefaultRetryRule":true,' +
+                '"Type":"CreditCard",' +
+                '"CreditCardHolderName":"Test"' +
+                '}'
+        );
+        insert lead;
+
+        LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
+            LASERCA__Lead__c = lead.Id,
+            LASERCA__Credit_Score_TransUnion__c = '720'
+        );
+        insert pcr;
+        lead.Personal_Credit_Report__c = pcr.Id;
+        update lead;
+
+        lead = [
+            SELECT Id, LASER_Credit_Score__c, ConvertedAccountId, FirstName, LastName, Application__c,
+                Application_Type__c, Avidia_Checking_Account__c, Business_Title__c, Customer_Referral__c, Customer_Type__c,
+                Customer_Type_Formula__c, Date_Of_Application__c, DOER_Solar_Loan__c, Email_Re_Enter__c, LASERCA__Home_State__c,
+                Is_Loan_Secured__c, Lead_ID__c, Loan_Program_Class__c, Maximum_Monthly_Disbursement2__c, Company,
+                Number_of_Years_at_Location__c, Number_of_Years_in_Business__c, Parcel_Zip__c, Partner_lookup__c,
+                Partner_Email__c, Personal_Credit_Report__c, Phone2__c, Product_Line__c, Referral_Email__c, bs_Sales_ID__c,
+                Security_Type__c, LoadZone__c, System_Assignment__c, Utility__c, OwnerId, Loan_System_Information__c
+            FROM Lead
+            WHERE Id =: lead.Id
+        ];
+
+        List<Opportunity> generatedOpps = CSOpportunityFactory.generateCSOpportunities(lead, availableSSS, null, annualTotals, propertyAccount.Id);
+
+        Opportunity opp1 = generatedOpps[0];
+        Opportunity opp2 = generatedOpps[1];
+        System.assertEquals(2, generatedOpps.size());
+
+        System.assertEquals(sss1.Id, opp1.Shared_Solar_System__c);
+        System.assertEquals(0, opp1.Annual_Electricity_Cost__c);
+        Decimal maximumKWHSubscription = sss1.Maximum_Subscription_Capacity_kW_DC__c * sss1.Expected_Yield_kWh_kW__c;
+        System.assertEquals(maximumKWHSubscription, opp1.Annual_Consumption_kWh__c);
+        System.assertEquals('AmericanExpress', opp1.CC_Card_Type__c);
+        System.assertEquals('***********0002', opp1.CC_Account_Number__c);
+        System.assertEquals('Test', opp1.CC_CardHolder_Name__c);
+        System.assertEquals('2', opp1.CC_Expiration_Month__c);
+        System.assertEquals('2022', opp1.CC_Expiration_Year__c);
+
+        System.assertEquals(sss2.Id, opp2.Shared_Solar_System__c);
+        System.assertEquals(0, opp2.Annual_Electricity_Cost__c);
+        System.assertEquals(annualTotals.kWh - opp1.Annual_Consumption_kWh__c, opp2.Annual_Consumption_kWh__c);
+        System.assertEquals('AmericanExpress', opp2.CC_Card_Type__c);
+        System.assertEquals('***********0002', opp2.CC_Account_Number__c);
+        System.assertEquals('Test', opp2.CC_CardHolder_Name__c);
+        System.assertEquals('2', opp2.CC_Expiration_Month__c);
+        System.assertEquals('2022', opp2.CC_Expiration_Year__c);
     }
 }
