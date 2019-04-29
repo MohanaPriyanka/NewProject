@@ -1144,12 +1144,12 @@ public class LoanHandlerTestClass {
             equipmentListToUpdate.add(equipmentRecord);
         }
         update equipmentListToUpdate;
-        Test.stopTest();
         leadList = [
             SELECT Id, Update_Dummy__c, Retired__c, Self_Employed__c, Product__r.Name, DOER_Solar_Loan__c, ConvertedContactId
             FROM Lead
             WHERE DOER_Solar_Loan__c = FALSE];
         changeLeadUpdateDummy(leadList);
+        Test.stopTest();
         List<Partner_Task__c> partnerTaskList = [
             SELECT Id, Name, Status__c, Parent_Task__r.Lead__r.Name, Parent_Task__r.Id,
                 Loan__r.DOER_Solar_Loann__c, Child_MSLP_Identifier__c
