@@ -5,6 +5,7 @@
 <aura:component controller="CSAPController" access="global" extends="c:CSAPParent">
   <aura:set attribute="STAGENAME" value="NAV_Payment_Information"/>
   <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
+  <aura:attribute name="paymentProvider" type="String" default="Chargent"/>
   <aura:attribute name="chOrder" type="ChargentOrders__ChargentOrder__c"
                   default="{ 'sobjectType': 'ChargentOrders__ChargentOrder__c',
                             'ChargentOrders__Payment_Method__c' : '',
@@ -38,6 +39,8 @@
   <aura:attribute name="loading" type="Boolean"/>
   <aura:attribute name="loadingText" type="String"/>
   <lightning:notificationsLibrary aura:id="notifLib"/>
+  <aura:handler event="c:ZuoraPaymentPageComplete" action="{!c.handleCompletedZuoraPayment}"/>
+  <aura:handler name="change" value="{!v.AutopayAcknowledgement}" action="{!c.toggleZuoraContainer}"/>
 
   <aura:if isTrue="{!v.loading}">
     <div class="slds-icon-eq slds-is-animated slds-align_absolute-center slds-p-top_medium" title="Loading">
@@ -50,7 +53,80 @@
       {!v.loadingText}
     </div>
     <aura:set attribute="else">
-      <aura:if isTrue="{!v.page == 'PaymentInfo'}">
+      <aura:if isTrue="{!and(v.page == 'PaymentInfo', v.paymentProvider == 'Zuora')}">
+        <div aria-labelledby="paymentInformationForm">
+          <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
+            <legend id="paymentInformation" class="slds-text-heading--medium slds-text-align--center slds-p-vertical--medium slds-align_absolute-center">
+              <b class="slds-p-horizontal_large">Select Automatic Payment Method</b>
+            </legend>
+            <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center">
+              Autopay is the easiest way to pay your community solar bill and is required for all customers. You may pay by credit or debit card, or directly from your bank account via ACH.
+            </div>
+            <lightning:layout aura:id="passedCreditText" class="animated slds-align--absolute-center" multipleRows="true">
+              <lightning:layoutItem padding="around-small" size="6" largeDeviceSize="4" mediumDeviceSize="4">
+                <lightning:select
+                  aura:id="field"
+                  name="Select Payment Method"
+                  label="Select Payment Method:"
+                  class="slds-text-align--center"
+                  value="{!v.SelectedPaymentMethod}"
+                  required="true">
+                  <option text="" value=""/>
+                  <aura:iteration items="{!v.PaymentMethodsAccepted}" var="paymentMethod">
+                    <option text="{!paymentMethod[0]}" value="{!paymentMethod[1]}"/>
+                  </aura:iteration>
+                </lightning:select>
+              </lightning:layoutItem>
+            </lightning:layout>
+            <lightning:layout aura:id="passedCreditText" class="animated" multipleRows="true" horizontalAlign="center">
+
+              <aura:if isTrue="{!and(v.Autopay, v.SelectedPaymentMethod != '')}">
+                <fieldset class="slds-box slds-theme--default slds-p-top_medium slds-container--medium slds-p-top_medium">
+                  <div class="slds-p-left_small slds-p-right_small">
+                    <div class="slds-text-body_small slds-text-color_default">
+                      I understand that by checking “I Agree,”I am signing this payment authorization with an electronic
+                      signature and authorizing BlueWave or its servicer(s) to initiate monthly debit entries (ACH) on
+                      my bank account or monthly charges to my credit card account designated above, in the amount shown
+                      on my monthly billing statement each month, on or after the payment due date shown on my statement.
+                      If any payment date falls on a weekend or holiday, I understand and agree that the payment may be
+                      executed on the next business day.  If necessary, I also authorize BlueWave or its servicer(s) to
+                      initiate one-time credit or debit transactions to correct any erroneous payment transaction.  I
+                      also authorize BlueWave or its servicer(s) to (a) initiate a one-time transaction to collect a fee
+                      of $0 if any payment is rejected by my bank for any reason (such as insufficient funds), (b) to
+                      collect any late fee due under my community solar agreement, or (c) to collect any early termination
+                      fee due under my community solar agreement. I understand that any debit entry from my account that
+                      is returned unpaid may be collected in the same manner as an unpaid paper check. I understand that
+                      the monthly payment amount debited from my bank account may vary from month to month based on variable
+                      generation from the solar project. This authorization will remain in effect until all amounts I owe
+                      BlueWave in connection with my community solar agreement have been paid in full or I cancel this
+                      authorization in writing by providing notice of cancellation to BCS Customer Management, LLC, at
+                      111 Huntington Avenue, Suite 650, Boston, MA 02199. I agree to notify you in writing of any changes
+                      in my account information or termination of this authorization at least three (3) business days
+                      prior to the next billing date. I certify that I am an authorized signer of the deposit account or
+                      an authorized user of the credit card account identified above, and that I will not dispute any payment
+                      initiated by BlueWave or its servicer(s), provided that the transaction corresponds to the terms of
+                      this authorization.
+                    </div>
+                    <div class="slds-p-top_medium">
+                      <h3 class="slds-text-body_small slds-text-color_default">
+                        <lightning:input type="checkbox" required="true" label="I Agree" checked="{!v.AutopayAcknowledgement}"/>
+                      </h3>
+                    </div>
+                  </div>
+                </fieldset>
+              </aura:if>
+              <div class="slds-p-vertical--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--x-large">
+                You will not be charged at this time. Payments will begin automatically once we begin to transfer credits to your utility account.
+                We will provide at least 10 days written notice before initiating charges to the account provided.
+              </div>
+            </lightning:layout>
+            <div aura:id="ZuoraPaymentPage" class="disabledDiv">
+              <c:ZuoraPaymentPage paymentType="{!v.SelectedPaymentMethod}"/>
+            </div>
+          </fieldset>
+        </div>
+      </aura:if>
+      <aura:if isTrue="{!and(v.page == 'PaymentInfo', v.paymentProvider != 'Zuora')}">
           <div aria-labelledby="paymentInformationForm">
             <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
               <legend id="paymentInformation" class="slds-text-heading--medium slds-text-align--center slds-p-vertical--medium slds-align_absolute-center">

@@ -56,4 +56,29 @@ public with sharing class LoggerTest {
             }
         }
     }
+
+    @IsTest static void testLogSettings() {
+        System_Properties__c systemProperties = new System_Properties__c(
+            Name = 'Test',
+            Log_Level__c = 'Debug'
+        );
+        insert systemProperties;
+
+        List<Error_Log__c> errorLogs = [SELECT Id, Class__c, Method__c, Message__c, Severity__c FROM Error_Log__c];
+        System.assertEquals(0, errorLogs.size());
+
+        Logger.logNow('Class', 'Method', 'Error');
+        Logger.logNow('Class', 'Method', 'Error', Logger.ERROR);
+        Logger.logNow('Class', 'Method', 'Warn', Logger.WARN);
+        Logger.logNow('Class', 'Method', 'Debug', Logger.DEBUG);
+        Logger.logNow('Class', 'Method', 'Info', Logger.INFO);
+        Logger.logNow('Class', 'Method', 'Fine', Logger.FINE);
+        errorLogs = [SELECT Id, Class__c, Method__c, Message__c, Severity__c FROM Error_Log__c];
+        System.assertEquals(4, errorLogs.size());
+        for (Error_Log__c errorLog : errorLogs) {
+            System.assertEquals(errorLog.Severity__c, errorLog.Message__c);
+            System.assertNotEquals(Logger.INFO, errorLog.Severity__c);
+            System.assertNotEquals(Logger.FINE, errorLog.Severity__c);
+        }
+    }
 }

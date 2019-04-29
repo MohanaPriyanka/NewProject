@@ -30,5 +30,20 @@
         if (referralCode) {
             component.set("v.referralCode", decodeURIComponent(referralCode));
         }
+
+        var paymentProviderAction = component.get('c.zuoraEnabled');
+        paymentProviderAction.setCallback(this, function(paymentProviderResponse) {
+            if (paymentProviderResponse.getState() === 'SUCCESS') {
+                if (paymentProviderResponse.getReturnValue()) {
+                    component.set('v.paymentProvider', 'Zuora');
+                } else {
+                    component.set('v.paymentProvider', 'Chargent');
+                }
+            } else {
+                this.logError('CSAPApplication', 'doInit', paymentProviderResponse.getError(), paymentProviderResponse);
+                component.set('v.paymentProvider', 'Chargent');
+            }
+        });
+        $A.enqueueAction(paymentProviderAction);
     },
 })
