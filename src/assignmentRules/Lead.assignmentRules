@@ -6,41 +6,27 @@
         <ruleEntry>
             <assignedTo>CS_Inside_Sales</assignedTo>
             <assignedToType>Queue</assignedToType>
-            <booleanFilter>1 OR 2 OR (3 and 4)</booleanFilter>
+            <booleanFilter>1 OR 2</booleanFilter>
             <criteriaItems>
                 <field>Lead.Product_Interest__c</field>
                 <operation>equals</operation>
-                <value>Solar for my home</value>
-            </criteriaItems>
-            <criteriaItems>
-                <field>Lead.Product_Interest__c</field>
-                <operation>equals</operation>
-                <value>Solar for my business</value>
+                <value>Signing up for community solar</value>
             </criteriaItems>
             <criteriaItems>
                 <field>Lead.Product_line__c</field>
                 <operation>equals</operation>
                 <value>Community Solar</value>
             </criteriaItems>
-            <criteriaItems>
-                <field>Lead.Application_Type__c</field>
-                <operation>equals</operation>
-            </criteriaItems>
             <template>CS_Application_Email_Notifications/Lead_Assignment_Notification</template>
         </ruleEntry>
         <ruleEntry>
             <assignedTo>BPD</assignedTo>
             <assignedToType>Queue</assignedToType>
-            <booleanFilter>1 OR 2</booleanFilter>
+            <booleanFilter>1</booleanFilter>
             <criteriaItems>
                 <field>Lead.Product_Interest__c</field>
                 <operation>equals</operation>
-                <value>Solar for my land</value>
-            </criteriaItems>
-            <criteriaItems>
-                <field>Lead.Product_Interest__c</field>
-                <operation>equals</operation>
-                <value>Solar project development</value>
+                <value>Developing a solar farm</value>
             </criteriaItems>
             <template>CS_Application_Email_Notifications/Lead_Assignment_Notification</template>
         </ruleEntry>
@@ -60,17 +46,23 @@
             <criteriaItems>
                 <field>Lead.Product_Interest__c</field>
                 <operation>equals</operation>
-                <value>Community Solar services</value>
+                <value>Community solar services</value>
             </criteriaItems>
             <template>CS_Application_Email_Notifications/Lead_Assignment_Notification</template>
         </ruleEntry>
         <ruleEntry>
             <assignedTo>Loan_BD</assignedTo>
             <assignedToType>Queue</assignedToType>
+            <booleanFilter>1 OR 2</booleanFilter>
             <criteriaItems>
                 <field>Lead.Product_Interest__c</field>
                 <operation>equals</operation>
-                <value>Providing rooftop solar financing</value>
+                <value>Providing solar financing</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Lead.Product_Interest__c</field>
+                <operation>equals</operation>
+                <value>Financing my solar system</value>
             </criteriaItems>
             <template>CS_Application_Email_Notifications/Lead_Assignment_Notification</template>
         </ruleEntry>
