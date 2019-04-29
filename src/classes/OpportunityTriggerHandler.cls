@@ -12,7 +12,7 @@ public without sharing class OpportunityTriggerHandler {
         setLeadLookup(newOppList);
     }
 
-    public void OnBeforeUpdate(List<Opportunity> updatedOppList, Map<ID, Opportunity> oldOppMap, Map<ID, Opportunity> newOppMap){
+    public void OnBeforeUpdate(List<Opportunity> oldOppList, List<Opportunity> updatedOppList, Map<ID, Opportunity> oldOppMap, Map<ID, Opportunity> newOppMap){
         customIdSwapOpp(updatedOppList, oldOppMap);
         mapDocuSignRS(updatedOppList, oldOppMap);
         updateInvoicedSubscription(oldOppMap, newOppMap);

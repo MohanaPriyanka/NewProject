@@ -169,6 +169,34 @@ public class UserHandlerTest {
 		System.assertEquals(firstNumberUsers + 3, newNumberUsers);
 	}
 
+	@IsTest public static void testPortalActivation() {
+		List<User> oldUserList = [
+			SELECT Id, ContactId
+			FROM User
+			WHERE IsActive = TRUE
+		];
+
+		Integer previousNumberUsers = oldUserList.size();
+
+		List<Id> oppIds = new List<Id>();
+
+//		for (User newUser : oldUserList) {
+//			if (newUser.Id != null) {
+//				oppIds.add(newUser.Id);
+//			}
+//		}
+
+		OpportunityTriggerHandler.activatePortalUser(oppIds);
+
+		List<User> userListUpdated = [
+		SELECT Id, ContactId
+		FROM User
+		WHERE IsActive = TRUE
+		];
+
+		System.assertEquals(previousNumberUsers + 2, userListUpdated.size());
+	}
+
 
 	@IsTest public static void testLoanOpp() {
 		Opportunity loanOpp = [SELECT Id FROM Opportunity WHERE Name = 'Loan'];
