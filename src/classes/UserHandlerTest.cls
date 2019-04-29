@@ -170,6 +170,7 @@ public class UserHandlerTest {
 	}
 
 	@IsTest public static void testPortalActivation() {
+
 		List<User> oldUserList = [
 			SELECT Id, ContactId
 			FROM User
@@ -180,11 +181,11 @@ public class UserHandlerTest {
 
 		List<Id> oppIds = new List<Id>();
 
-//		for (User newUser : oldUserList) {
-//			if (newUser.Id != null) {
-//				oppIds.add(newUser.Id);
-//			}
-//		}
+		for (User newUser : oldUserList) {
+			if (newUser.Id != null) {
+				oppIds.add(newUser.Id);
+			}
+		}
 
 		OpportunityTriggerHandler.activatePortalUser(oppIds);
 
@@ -195,6 +196,45 @@ public class UserHandlerTest {
 		];
 
 		System.assertEquals(previousNumberUsers + 2, userListUpdated.size());
+	}
+
+	@IsTest public static void testPortalActivationReal() {
+
+		List<Opportunity> oldOpps = [SELECT Id, Parent_Account_ID__c FROM Opportunity WHERE Id != NULL];
+
+		Integer previousNumberUsers = oldOpps.size();
+
+		Account accountParent = new Account(
+			Name = 'Account Parent',
+			OwnerId = UserInfo.getUserId()
+		);
+
+		Account normalAccount = new Account(
+			Name = 'Account Parent',
+			OwnerId = UserInfo.getUserId()
+		);
+
+		Opportunity testOpportunity = new Opportunity(
+			Name = 'Blue Wave Signature Complete',
+			AccountId = normalAccount.Id,
+			Parent_Account__c = accountParent.Id,
+			BlueWave_Signature_Status__c = 'Completed',
+			StageName = 'Complete',
+			Product_Line__c = 'Community Solar',
+			Contract_Status__c = 'Complete',
+			CloseDate = System.today()
+		);
+		insert testOpportunity;
+
+
+		List<Opportunity> newOpportunities = [SELECT Id, Parent_Account_ID__c FROM Opportunity];
+
+		Test.startTest();
+		OpportunityTriggerHandler.activatePortalUser(new List<String>{testOpportunity.Id});
+		Test.stopTest();
+
+		List<Opportunity> opportunityListUpdated = [SELECT Id, Parent_Account_ID__c FROM Opportunity WHERE Id != NULL];
+		System.assertEquals(previousNumberUsers + 1, opportunityListUpdated.size());
 	}
 
 
