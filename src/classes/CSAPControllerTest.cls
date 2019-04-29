@@ -703,7 +703,6 @@ public with sharing class CSAPControllerTest {
 
         List<ChargentOrders__ChargentOrder__c> orderList = new List<ChargentOrders__ChargentOrder__c>();
         List<Lead> leadList = new List<Lead>();
-        Test.startTest();
         for (Integer i = 0; i < 10; i++) {
             Lead nonResidentialLead = residentialLead.clone();
             nonResidentialLead.Id = null;
@@ -731,6 +730,7 @@ public with sharing class CSAPControllerTest {
         // There shouldn't be any opportunities yet, because nothing has been converted
         System.assertEquals(0, opps.size());
 
+        Test.startTest();
         CSAPController.convertCSLead(residentialLead.Id, residentialLead.Email);
         residentialLead = [
             SELECT Id, Email, IsConverted

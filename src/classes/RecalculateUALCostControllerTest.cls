@@ -21,7 +21,9 @@ public class RecalculateUALCostControllerTest {
         Test.loadData(Account.SObjectType, 'RecalcUALTestAccount');
         Test.loadData(Utility_Account_Log__c.SObjectType, 'RecalcUALTestUtilityAccountLog');
         Test.loadData(Product2.SObjectType, 'RecalcUALTestProduct');
+        Test.startTest();
         Test.loadData(Opportunity.SObjectType, 'RecalcUALTestOpportunity');
+        Test.stopTest();
         Test.loadData(Utility_Account_Subscription__c.SObjectType, 'RecalcUALTestUtilityAccountSubscription');
         Test.loadData(Schedule_Z__c.SObjectType, 'RecalcUALTestScheduleZ');
 
