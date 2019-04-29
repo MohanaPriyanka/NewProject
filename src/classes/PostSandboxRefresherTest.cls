@@ -199,9 +199,6 @@ private class PostSandboxRefresherTest {
         Test.startTest();
         PostSandboxRefresher.FirstAccountHelper firstAccountHelper = new PostSandboxRefresher.FirstAccountHelper(csDataSetting);
         firstAccountHelper.execute(null);
-
-        PostSandboxRefresher.SecondAccountHelper SecondAccountHelper = new PostSandboxRefresher.SecondAccountHelper(csDataSetting);
-        SecondAccountHelper.execute(null);
         Test.stopTest();
 
         List<Opportunity> opportunities = [SELECT Id FROM Opportunity WHERE Product_Line__c != 'Community Solar'];
