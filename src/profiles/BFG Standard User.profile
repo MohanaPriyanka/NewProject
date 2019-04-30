@@ -39863,7 +39863,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Utility_Account_Subscription__c.Subscription_Rate_Plan_Charge__c</field>
         <readable>true</readable>
     </fieldPermissions>
