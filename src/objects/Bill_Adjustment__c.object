@@ -79,6 +79,88 @@
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Adjustment_Source__c</fullName>
+        <description>What is the source of the adjustment?</description>
+        <externalId>false</externalId>
+        <inlineHelpText>What is the source of the adjustment?</inlineHelpText>
+        <label>Adjustment Source</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Client Request</fullName>
+                    <default>false</default>
+                    <label>Client Request</label>
+                </value>
+                <value>
+                    <fullName>Credit Adjustment</fullName>
+                    <default>false</default>
+                    <label>Credit Adjustment</label>
+                </value>
+                <value>
+                    <fullName>Incentive</fullName>
+                    <default>false</default>
+                    <label>Incentive</label>
+                </value>
+                <value>
+                    <fullName>Customer Support - Courtesy</fullName>
+                    <default>false</default>
+                    <label>Customer Support - Courtesy</label>
+                </value>
+                <value>
+                    <fullName>Customer Support - Error</fullName>
+                    <default>false</default>
+                    <label>Customer Support - Error</label>
+                </value>
+                <value>
+                    <fullName>Finalled Utility Account</fullName>
+                    <default>false</default>
+                    <label>Finalled Utility Account</label>
+                </value>
+                <value>
+                    <fullName>Missed Bill</fullName>
+                    <default>false</default>
+                    <label>Missed Bill</label>
+                </value>
+                <value>
+                    <fullName>Payment Failure</fullName>
+                    <default>false</default>
+                    <label>Payment Failure</label>
+                </value>
+                <value>
+                    <fullName>Payment Logging Error</fullName>
+                    <default>false</default>
+                    <label>Payment Logging Error</label>
+                </value>
+                <value>
+                    <fullName>Platform Bug</fullName>
+                    <default>false</default>
+                    <label>Platform Bug</label>
+                </value>
+                <value>
+                    <fullName>Reconciliation Clean-Up</fullName>
+                    <default>false</default>
+                    <label>Reconciliation Clean-Up</label>
+                </value>
+                <value>
+                    <fullName>Utility Error</fullName>
+                    <default>false</default>
+                    <label>Utility Error</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <label>Other</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Adjustment_Type__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Determines how this adjustment will be pulled into client reports: use &quot;Production&quot; for any delayed, missed or incorrectly billed credits. &quot;BW Credit&quot; for any adjustment for which BW will need to pay a client, etc. Contact Accounting with ?s</inlineHelpText>
@@ -331,6 +413,58 @@
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Team__c</fullName>
+        <description>What team is responsible for this adjustment?</description>
+        <externalId>false</externalId>
+        <inlineHelpText>What team is responsible for this adjustment?</inlineHelpText>
+        <label>Team Responsible</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Accounting</fullName>
+                    <default>false</default>
+                    <label>Accounting</label>
+                </value>
+                <value>
+                    <fullName>Business Applications</fullName>
+                    <default>false</default>
+                    <label>Business Applications</label>
+                </value>
+                <value>
+                    <fullName>Client</fullName>
+                    <default>false</default>
+                    <label>Client</label>
+                </value>
+                <value>
+                    <fullName>Customer</fullName>
+                    <default>false</default>
+                    <label>Customer</label>
+                </value>
+                <value>
+                    <fullName>Operations</fullName>
+                    <default>false</default>
+                    <label>Operations</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <label>Other</label>
+                </value>
+                <value>
+                    <fullName>Utility</fullName>
+                    <default>false</default>
+                    <label>Utility</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
     </fields>
     <fields>
         <fullName>Total_Adjustments_Distributed__c</fullName>
