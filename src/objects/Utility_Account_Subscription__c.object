@@ -770,6 +770,7 @@ Round(( Subscribed_Annual_Cost_of_Electricity__c / 0.1933 / Opportunity__r.Share
     <fields>
         <fullName>Subscription_Rate_Plan_Charge__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
+        <description>Link between SF subscription and Zuora Subscription. There will be 1 Subscription Rate Plan Charge record for every customer, project and client combination (one Subscription Rate Plan Charge can have multiple UASes)</description>
         <externalId>false</externalId>
         <label>Subscription Rate Plan Charge</label>
         <referenceTo>Zuora__SubscriptionProductCharge__c</referenceTo>

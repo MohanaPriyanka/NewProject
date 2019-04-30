@@ -7,22 +7,19 @@
 public with sharing class ZuoraAPIHelper {
     private static Zuora_Setting__mdt zuoraSetting;
 
-    public static HttpResponse callJsonEndpoint(String method, String endpoint, Object jsonBody) {
+    public static HttpResponse callJsonEndpoint(String method, String endpoint, Map<String, Object> jsonBody) {
         return callJsonEndpoint(method, endpoint, jsonBody, true);
     }
 
-    public static HttpResponse callJsonEndpoint(String method, String endpoint, Object jsonBody, Boolean flush) {
+    public static HttpResponse callJsonEndpoint(String method, String endpoint, Map<String, Object> jsonBody, Boolean flush) {
         Zuora_Setting__mdt zuoraSetting = getZuoraSetting();
         HttpRequest request = new HttpRequest();
         request.setMethod(method);
         request.setEndpoint(zuoraSetting.API_Endpoint_URL__c + endpoint);
         request.setHeader('Content-Type', 'application/json');
         request.setHeader('Accept', 'application/json');
-        request.setHeader('zuora-version', '224.0'); // Version 224.0 includes settlement object (credit memos, etc)
-        if (jsonBody != null) {
-            String jsonString = JSON.serialize(jsonBody);
-            jsonString = jsonString.replace('_Zcustom','__c');
-            request.setBody(jsonString);
+        if (jsonBody != null && jsonBody.size() > 0) {
+            request.setBody(System.JSON.serialize(jsonBody));
         }
 
         HttpResponse response;
@@ -68,8 +65,8 @@ public with sharing class ZuoraAPIHelper {
             if (zuoraSettings.size() == 1) {
                 Organization o = [SELECT IsSandbox FROM Organization LIMIT 1];
                 if (!Test.isRunningTest() &&
-                    (o.IsSandbox && zuoraSettings[0].DeveloperName != 'Sandbox') ||
-                    (!o.IsSandbox && zuoraSettings[0].DeveloperName != 'Production')) {
+                    (o.IsSandbox && zuoraSettings[0].DeveloperName != 'Sandbox' ||
+                    !o.IsSandbox && zuoraSettings[0].DeveloperName != 'Production')) {
                     throw new Util.BWException('Wrong Zuora setting is activated');
                 }
                 zuoraSetting = zuoraSettings[0];

@@ -14,16 +14,20 @@ public without sharing class ZuoraUsageBatchSend implements Database.Batchable<s
     }
 
     public void execute(Database.BatchableContext bc, List<sObject> scope){
-        ZuoraUsageService.ZuoraUsageItems zuoraUsage = ZuoraUsageService.convertSFUsageToZuoraUsage(scope);
-        HttpResponse usageUploadResponse = ZuoraUsageService.usageAPICall(zuoraUsage);
-        Map<String, List<SObject>> recordsToUpdate = ZuoraUsageService.handleAPIResponse(zuoraUsage.objects, usageUploadResponse);
-        List<UASB__c> newUASBToUpdate = recordsToUpdate.get('UASB');
-        List<Bill_Adjustment__c> newAdjustToUpdate = recordsToUpdate.get('Bill_Adjustment');
-        if (newUASBToUpdate != null){
-            uasbToUpdate.addAll(newUASBToUpdate);
-        }
-        if (newAdjustToUpdate != null) {
-            adjustToUpdate.addAll(newAdjustToUpdate);
+        try {
+            ZuoraUsageService.ZuoraUsageItems zuoraUsage = ZuoraUsageService.convertSFUsageToZuoraUsage(scope);
+            HttpResponse usageUploadResponse = ZuoraUsageService.usageAPICall(zuoraUsage);
+            Map<String, List<SObject>> recordsToUpdate = ZuoraUsageService.handleAPIResponse(zuoraUsage.objects, usageUploadResponse);
+            List<UASB__c> newUASBToUpdate = recordsToUpdate.get('UASB');
+            List<Bill_Adjustment__c> newAdjustToUpdate = recordsToUpdate.get('Bill_Adjustment');
+            if (newUASBToUpdate != null) {
+                uasbToUpdate.addAll(newUASBToUpdate);
+            }
+            if (newAdjustToUpdate != null) {
+                adjustToUpdate.addAll(newAdjustToUpdate);
+            }
+        } catch(Exception excep) {
+            Logger.logLater('ZuoraUsageBatchSend', 'execute', excep.getMessage());
         }
         Logger.flushLogs();
     }
