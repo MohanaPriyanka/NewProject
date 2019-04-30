@@ -4150,6 +4150,16 @@ IF(ISPICKVAL(Personal_Credit_Report__r.Solar_Loan_Pre_Qualification_Status__c, &
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
+                    <fullName>Signing up for community solar</fullName>
+                    <default>false</default>
+                    <label>Signing up for community solar</label>
+                </value>
+                <value>
+                    <fullName>Financing my solar system</fullName>
+                    <default>false</default>
+                    <label>Financing my solar system</label>
+                </value>
+                <value>
                     <fullName>Providing solar financing</fullName>
                     <default>false</default>
                     <label>Providing solar financing</label>
@@ -4170,49 +4180,14 @@ IF(ISPICKVAL(Personal_Credit_Report__r.Solar_Loan_Pre_Qualification_Status__c, &
                     <label>Developing a solar farm</label>
                 </value>
                 <value>
-                    <fullName>Something else...</fullName>
-                    <default>false</default>
-                    <label>Something else...</label>
-                </value>
-                <value>
                     <fullName>Joining the BlueWave team</fullName>
                     <default>false</default>
                     <label>Joining the BlueWave team</label>
                 </value>
                 <value>
-                    <fullName>Financing my solar system</fullName>
+                    <fullName>Something else...</fullName>
                     <default>false</default>
-                    <label>Financing my solar system</label>
-                </value>
-                <value>
-                    <fullName>Signing up for community solar</fullName>
-                    <default>false</default>
-                    <label>Signing up for community solar</label>
-                </value>
-                <value>
-                    <fullName>Providing rooftop solar financing</fullName>
-                    <default>false</default>
-                    <label>Providing rooftop solar financing</label>
-                </value>
-                <value>
-                    <fullName>Solar project development</fullName>
-                    <default>false</default>
-                    <label>Solar project development</label>
-                </value>
-                <value>
-                    <fullName>Solar for my home</fullName>
-                    <default>false</default>
-                    <label>Solar for my home</label>
-                </value>
-                <value>
-                    <fullName>Solar for my business</fullName>
-                    <default>false</default>
-                    <label>Solar for my business</label>
-                </value>
-                <value>
-                    <fullName>Solar for my land</fullName>
-                    <default>false</default>
-                    <label>Solar for my land</label>
+                    <label>Something else...</label>
                 </value>
                 <value>
                     <fullName>Community Solar sales</fullName>
@@ -7359,10 +7334,6 @@ SEMA = 13 -14</inlineHelpText>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Providing rooftop solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Providing solar financing</fullName>
                 <default>false</default>
             </values>
@@ -7372,22 +7343,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Signing up for community solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my home</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my land</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar project development</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -8422,10 +8377,6 @@ SEMA = 13 -14</inlineHelpText>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Providing rooftop solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Providing solar financing</fullName>
                 <default>false</default>
             </values>
@@ -8435,22 +8386,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Signing up for community solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my home</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my land</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar project development</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -9474,10 +9409,6 @@ SEMA = 13 -14</inlineHelpText>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Providing rooftop solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Providing solar financing</fullName>
                 <default>false</default>
             </values>
@@ -9487,22 +9418,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Signing up for community solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my home</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my land</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar project development</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -10537,10 +10452,6 @@ SEMA = 13 -14</inlineHelpText>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Providing rooftop solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Providing solar financing</fullName>
                 <default>false</default>
             </values>
@@ -10550,22 +10461,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Signing up for community solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my home</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my land</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar project development</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -11580,10 +11475,6 @@ SEMA = 13 -14</inlineHelpText>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Providing rooftop solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Providing solar financing</fullName>
                 <default>false</default>
             </values>
@@ -11593,22 +11484,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Signing up for community solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my home</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my land</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar project development</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -12623,10 +12498,6 @@ SEMA = 13 -14</inlineHelpText>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Providing rooftop solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Providing solar financing</fullName>
                 <default>false</default>
             </values>
@@ -12636,22 +12507,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Signing up for community solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my home</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my land</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar project development</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -13659,10 +13514,6 @@ SEMA = 13 -14</inlineHelpText>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Providing rooftop solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Providing solar financing</fullName>
                 <default>false</default>
             </values>
@@ -13672,22 +13523,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Signing up for community solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my home</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my land</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar project development</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -14702,10 +14537,6 @@ SEMA = 13 -14</inlineHelpText>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Providing rooftop solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Providing solar financing</fullName>
                 <default>false</default>
             </values>
@@ -14715,22 +14546,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Signing up for community solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my home</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my land</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar project development</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -15746,10 +15561,6 @@ SEMA = 13 -14</inlineHelpText>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Providing rooftop solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Providing solar financing</fullName>
                 <default>false</default>
             </values>
@@ -15759,22 +15570,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Signing up for community solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my home</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my land</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar project development</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -16789,10 +16584,6 @@ SEMA = 13 -14</inlineHelpText>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Providing rooftop solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Providing solar financing</fullName>
                 <default>false</default>
             </values>
@@ -16802,22 +16593,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Signing up for community solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my home</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my land</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar project development</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -17832,10 +17607,6 @@ SEMA = 13 -14</inlineHelpText>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Providing rooftop solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Providing solar financing</fullName>
                 <default>false</default>
             </values>
@@ -17845,22 +17616,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Signing up for community solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my home</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my land</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar project development</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -18867,10 +18622,6 @@ SEMA = 13 -14</inlineHelpText>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Providing rooftop solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Providing solar financing</fullName>
                 <default>false</default>
             </values>
@@ -18880,22 +18631,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Signing up for community solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my home</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my land</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar project development</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -19926,10 +19661,6 @@ SEMA = 13 -14</inlineHelpText>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Providing rooftop solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Providing solar financing</fullName>
                 <default>false</default>
             </values>
@@ -19939,22 +19670,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Signing up for community solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my home</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my land</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar project development</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -19987,10 +19702,6 @@ SEMA = 13 -14</inlineHelpText>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Providing rooftop solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Providing solar financing</fullName>
                 <default>false</default>
             </values>
@@ -20000,22 +19711,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Signing up for community solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my home</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my land</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar project development</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -21038,10 +20733,6 @@ SEMA = 13 -14</inlineHelpText>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Providing rooftop solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Providing solar financing</fullName>
                 <default>false</default>
             </values>
@@ -21051,22 +20742,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Signing up for community solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my home</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my land</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar project development</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -23132,31 +22807,11 @@ SEMA = 13 -14</inlineHelpText>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Providing rooftop solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Providing solar financing</fullName>
                 <default>false</default>
             </values>
             <values>
                 <fullName>Signing up for community solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my home</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar for my land</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar project development</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
