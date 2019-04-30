@@ -171,19 +171,33 @@ public class UserHandlerTest {
 
 	@IsTest public static void testPortalActivation() {
 
-		List<Opportunity> oldOpps = [SELECT Id, Parent_Account_ID__c FROM Opportunity WHERE Id != NULL];
+		List<User> oldUserList = [
+			SELECT Id, ContactId
+			FROM User
+			WHERE IsActive = TRUE
+		];
 
-		Integer previousNumberUsers = oldOpps.size();
+		Integer previousNumberUsers = oldUserList.size();
 
 		Account accountParent = new Account(
 			Name = 'Account Parent',
 			OwnerId = UserInfo.getUserId()
 		);
+		insert accountParent;
 
 		Account normalAccount = new Account(
 			Name = 'Account Parent',
 			OwnerId = UserInfo.getUserId()
 		);
+		insert normalAccount;
+
+		Contact normalContact = new Contact(
+			FirstName = 'First',
+			LastName = 'UniqueLasttte',
+			Email = 'uniqueEmail6734@bluewavesolar.com',
+			AccountId = accountParent .Id
+		);
+		insert normalContact;
 
 		Opportunity testOpportunity = new Opportunity(
 			Name = 'Blue Wave Signature Complete',
@@ -204,8 +218,13 @@ public class UserHandlerTest {
 		OpportunityTriggerHandler.activatePortalUser(new List<String>{testOpportunity.Id});
 		Test.stopTest();
 
-		List<Opportunity> opportunityListUpdated = [SELECT Id, Parent_Account_ID__c FROM Opportunity WHERE Id != NULL];
-		System.assertEquals(previousNumberUsers + 1, opportunityListUpdated.size());
+		List<User> userListUpdated = [
+			SELECT Id, ContactId
+			FROM User
+			WHERE IsActive = TRUE
+		];
+
+		System.assertEquals(previousNumberUsers + 1, userListUpdated.size());
 	}
 
 
