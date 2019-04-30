@@ -95,7 +95,7 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Project_Company__c</field>
+                <field>Entity_Assignment__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
