@@ -557,6 +557,17 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Application_Complete_Date__c</fullName>
+        <description>Date Flow application is completed.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Date Flow application is completed.</inlineHelpText>
+        <label>Application Complete Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>Application_Source_Phase_1__c</fullName>
         <description>This shows the phase I source in which this customer&apos;s application was processed.</description>
         <externalId>false</externalId>

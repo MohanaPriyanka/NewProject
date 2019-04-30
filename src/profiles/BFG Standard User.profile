@@ -19091,6 +19091,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Lead.Application_Complete_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Lead.Application_Source_Phase_1__c</field>
         <readable>true</readable>
     </fieldPermissions>
