@@ -12278,7 +12278,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Bill_Adjustment__c.Zuora_Id__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -38978,7 +38978,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>UASB__c.Zuora_Id__c</field>
         <readable>true</readable>
     </fieldPermissions>
