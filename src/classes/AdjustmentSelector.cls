@@ -18,7 +18,7 @@ public class AdjustmentSelector {
                 'UASB__r.Shared_Solar_System__r.Utility__r.Name, ' +
                 'UASB__r.Utility_Account_Subscription__r.Utility_Account_Log__r.Name, ' +
                 'UASB__r.Shared_Solar_System__r.Name, ' +
-                'UASB__r.Shared_Solar_System__r.SSS_Unique_ID__c, ' +
+                'UASB__r.Shared_Solar_System__r.Unique_ID__c, ' +
                 'Adjustment_Amount__c, ' +
                 'Adjustment_Type__c, ' +
                 'Discount__c, ' +

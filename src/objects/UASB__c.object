@@ -932,7 +932,7 @@ MONTH(Billing_Period_End_Date__c),
         <fullName>Zuora_Id__c</fullName>
         <externalId>false</externalId>
         <label>Zuora Id</label>
-        <length>200</length>
+        <length>32</length>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
