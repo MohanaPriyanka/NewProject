@@ -193,4 +193,5 @@ public with sharing class OpportunityTriggerTest {
         System.assertNotEquals(null, opps[0].Contract_Status__c);
         System.assertNotEquals('New', opps[0].StageName);
     }
-}
+
+    }
