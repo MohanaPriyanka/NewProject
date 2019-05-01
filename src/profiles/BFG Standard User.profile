@@ -45212,7 +45212,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Work__c.Which_Sprint__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
