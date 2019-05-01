@@ -15861,6 +15861,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contract.Customer_Payment_Methods__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contract.Customer_Payment_Methords__c</field>
         <readable>true</readable>
     </fieldPermissions>
