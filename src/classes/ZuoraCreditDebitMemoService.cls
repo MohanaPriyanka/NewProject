@@ -35,12 +35,12 @@ public class ZuoraCreditDebitMemoService implements Database.AllowsCallouts{
     public static ZuoraCreditMemo convertSFAdjustToCreditMemo (Bill_Adjustment__c adjust){
         ZuoraCreditCharge chargeLine = new ZuoraCreditCharge();
         chargeLine.Amount = adjust.Adjustment_Amount__c;
-        chargeLine.ChargeId = adjust.UASB__r.Utility_Account_Subscription__r.SRPC__r.Zuora__OriginalProductRatePlanChargeId__c;
+        chargeLine.ChargeId = adjust.UASB__r.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__OriginalProductRatePlanChargeId__c;
 
         ZuoraCreditMemo creditMemo = new ZuoraCreditMemo();
-        creditMemo.AccountId = adjust.UASB__r.Utility_Account_Subscription__r.SRPC__r.Zuora__Subscription__r.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c;
+        creditMemo.AccountId = adjust.UASB__r.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__Subscription__r.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c;
         creditMemo.EffectiveDate = adjust.UASB__r.Date__c;
-        creditMemo.Project_Zcustom = adjust.UASB__r.Shared_Solar_System__r.SSS_Unique_ID__c;
+        creditMemo.Project_Zcustom = adjust.UASB__r.Shared_Solar_System__r.Unique_ID__c;
         creditMemo.Charges = new List<ZuoraCreditCharge>{chargeLine};
         creditMemo.CRM_ID_Zcustom = adjust.Id;
         if (adjust.Adjustment_Type__c == 'Client Credit'){
