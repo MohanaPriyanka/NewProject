@@ -155,6 +155,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>AdjustmentSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>AutopayChecker</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -967,6 +971,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>UASBSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>UASSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1040,6 +1048,26 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ZippexTests</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraAPIHelper</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraAPIMock</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraUsageBatchSend</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraUsageService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraUsageServiceTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -4015,6 +4043,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Bill_Adjustment__c.Utility_Account_Subscription__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Bill_Adjustment__c.Zuora_Id__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -28759,6 +28792,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Shared_Solar_System__c.Unique_ID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Upcoming_Meter_Read_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -30793,6 +30831,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>UASB__c.Zuora_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>User.Autopay_Conditional_Text_2_of_2__c</field>
         <readable>true</readable>
@@ -31675,6 +31718,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Account_Subscription__c.Subscription_Comment_c__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Subscription__c.Subscription_Rate_Plan_Charge__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

@@ -74,6 +74,66 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
         return res;
     }
 
+    public static HttpResponse postUsage() {
+        HttpResponse res = getJSON();
+        res.setBody(
+            '[{"Success": true, "Id": "zuoraID_1_of_14"},' +
+                '{"Errors":[{"Code":"MISSING_REQUIRED_VALUE","Message":"The AccountId or AccountNumber is required."}],"Success":false},' +
+                '{"Success": true, "Id": "zuoraID_3_of_14"},' +
+                '{"Success": true, "Id": "zuoraID_4_of_14"},' +
+                '{"Success": true, "Id": "zuoraID_5_of_14"},' +
+                '{"Success": true, "Id": "zuoraID_6_of_14"},' +
+                '{"Success": true, "Id": "zuoraID_7_of_14"},' +
+                '{"Errors":[{"Code":"MISSING_REQUIRED_VALUE","Message":"The AccountId or AccountNumber is required."}],"Success":false},' +
+                '{"Success": true, "Id": "zuoraID_9_of_14"},' +
+                '{"Success": true, "Id": "zuoraID_10_of_14"},' +
+                '{"Success": true, "Id": "zuoraID_11_of_14"},' +
+                '{"Success": true, "Id": "zuoraID_12_of_14"},' +
+                '{"Errors":[{"Code":"MISSING_REQUIRED_VALUE","Message":"The AccountId or AccountNumber is required."}],"Success":false},' +
+                '{"Success": true, "Id": "zuoraID_14_of_14"}]'
+        );
+        return res;
+    }
+
+    public static HttpResponse postCreditMemo() {
+        HttpResponse res = getJSON();
+        res.setBody(
+            '{ "id" : "2c92c0fa6a3458e1016a45ac238e0d74", ' +
+                '"number" : "CM00000049", ' +
+                '"accountId" : "2c92c0f869c8e5c50169dfb877685bd8", ' +
+                '"currency" : "USD", ' +
+                '"creditMemoDate" : "2019-04-22", ' +
+                '"targetDate" : null, ' +
+                '"postedById" : null, ' +
+                '"postedOn" : null, ' +
+                '"status" : "Draft", ' +
+                '"amount" : 34.00, ' +
+                '"taxAmount" : 0.00, ' +
+                '"totalTaxExemptAmount" : 0.00, ' +
+                '"unappliedAmount" : 34.00, ' +
+                '"refundAmount" : 0E-9, ' +
+                '"appliedAmount" : 0E-9, ' +
+                '"comment" : "Comment", ' +
+                '"source" : "AdhocFromPrpc", ' +
+                '"sourceId" : null, ' +
+                '"referredInvoiceId" : null, ' +
+                '"reasonCode" : "BW - Initiated Credit", ' +
+                '"createdDate" : "2019-04-22 15:31:10", ' +
+                '"createdById" : "2c92c0f968a20f350168ca0efb2309e7", ' +
+                '"updatedDate" : "2019-04-22 15:31:10", ' +
+                '"updatedById" : "2c92c0f968a20f350168ca0efb2309e7", ' +
+                '"cancelledOn" : null, "cancelledById" : null, ' +
+                '"latestPDFFileId" : null, ' +
+                '"Project__c" : "Project A Oak Road", ' +
+                '"CRM_ID__c" : "a0p0j00000CwTIHAA3", ' +
+                '"transferredToAccounting" : "No", ' +
+                '"excludeFromAutoApplyRules" : false, ' +
+                '"autoApplyUponPosting" : false, ' +
+                '"success" : true }'
+        );
+        return res;
+    }
+
     public static HttpResponse getJSON() {
         HttpResponse res = new HttpResponse();
         res.setHeader('Content-Type', 'application/json');
