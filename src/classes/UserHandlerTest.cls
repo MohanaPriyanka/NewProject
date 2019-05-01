@@ -217,7 +217,7 @@ public class UserHandlerTest {
 		insert testOpportunity;
 
 		Test.startTest();
-		OpportunityTriggerHandler.activatePortalUser(new List<String>{testOpportunity.Id});
+		OpportunityTriggerHandler.activatePortalUser(new List<Id>{testOpportunity.Id});
 		Test.stopTest();
 
 		List<User> userListUpdated = [

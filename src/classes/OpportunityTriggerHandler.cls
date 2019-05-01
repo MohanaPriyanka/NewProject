@@ -76,7 +76,7 @@ public without sharing class OpportunityTriggerHandler {
         }
     }
 
-   @InvocableMethod public static void activatePortalUser(List<String> oppIdList) {
+   @InvocableMethod public static void activatePortalUser(List<Id> oppIdList) {
 
        List<Opportunity> updatedOpps = [
            SELECT Id, Contract_Status__c, Product_Line__c, Parent_Account_ID__c,
@@ -84,7 +84,7 @@ public without sharing class OpportunityTriggerHandler {
            FROM Opportunity
            WHERE Id IN: oppIdList];
 
-       List<String> parentAccountIdList = new List<String>();
+       List<Id> parentAccountIdList = new List<Id>();
 
        for (Opportunity newOpp : updatedOpps) {
            if (newOpp.Parent_Account_ID__c != null) {
