@@ -10,7 +10,6 @@ public with sharing class ZuoraPaymentPageControllerTest {
         Test.setMock(HttpCalloutMock.class, new ZuoraAPIMock());
         ZuoraPaymentPageController.PaymentPageMetadata paymentPageMetadata = ZuoraPaymentPageController.getPageMetadata();
         System.assertEquals('30689', paymentPageMetadata.ccRsaSignature.tenantId);
-
         List<Zuora_Setting__mdt> zuoraSettings = [
             SELECT Id, API_Endpoint_URL__c
             FROM Zuora_Setting__mdt
