@@ -257,7 +257,7 @@
         <fullName>Recalculate_Health_Score__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <label>Recalculate Health Score</label>
+        <label>Calculate Health Score</label>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>

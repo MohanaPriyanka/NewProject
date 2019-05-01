@@ -62849,6 +62849,10 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>Client_Health_Report__c</tab>
+        <visibility>DefaultOff</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>Commission_Structure__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
