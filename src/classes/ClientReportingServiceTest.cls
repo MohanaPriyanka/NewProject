@@ -134,4 +134,72 @@ public with sharing class ClientReportingServiceTest {
         System.assertNotEquals(null, transactions[0].Client__c);
         System.assertEquals(entities[0].Client_Account__c, transactions[0].Client__c);
     }
+
+    @isTest
+    public static void testClientHealthScore(){
+        Account acct = [SELECT Id FROM Account LIMIT 1];
+
+        Client_Health_Report__c perfectScore = new Client_Health_Report__c(
+            Client_Account__c = acct.Id,
+            Customers_Beginning_Balance__c  = 1200,
+            Customers_Invoiced__c = 1200,
+            Customers_Payments__c = 2400,
+            Clients_Beginning_Balance__c  = 1200,
+            Clients_Invoiced__c = 1200,
+            Clients_Payments__c = 2400,
+            NPS__c = 10,
+            BlueWave_Rating__c = 10,
+            Open_Cases__c = 0,
+            Management_Projects_Utilization__c = 100
+        );
+        Client_Health_Report__c emptyData = new Client_Health_Report__c(
+            Client_Account__c = acct.Id,
+            BlueWave_Rating__c = 6,
+            Open_Cases__c = 10
+        );
+        Client_Health_Report__c badScore = new Client_Health_Report__c(
+            Client_Account__c = acct.Id,
+            Customers_Beginning_Balance__c  = 1200,
+            Customers_Invoiced__c = 1000,
+            Customers_Payments__c = 100,
+            Clients_Beginning_Balance__c  = 1200,
+            Clients_Invoiced__c = 1000,
+            Clients_Payments__c = 100,
+            NPS__c = 5,
+            BlueWave_Rating__c = 4,
+            Open_Cases__c = 18,
+            Management_Projects_Utilization__c = 90
+        );
+
+        insert new List<Client_Health_Report__c>{perfectScore, emptyData, badScore};
+
+        perfectScore.Recalculate_Health_Score__c = true;
+        emptyData.Recalculate_Health_Score__c = true;
+        badScore.Recalculate_Health_Score__c = true;
+
+        update new List<Client_Health_Report__c>{perfectScore, emptyData, badScore};
+
+        List<Client_Health_Report__c> reportList = [
+            SELECT Id, Name, Customer_DSO__c,
+                Client_DSO__c,
+                Client_Account__c,
+                Client_Health_Score__c,
+                Customers_Beginning_Balance__c,
+                Customers_Invoiced__c,
+                Customers_Payments__c,
+                Clients_Beginning_Balance__c,
+                Clients_Invoiced__c,
+                Clients_Payments__c,
+                NPS__c,
+                BlueWave_Rating__c,
+                Open_Cases__c,
+                Management_Projects_Utilization__c
+            FROM Client_Health_Report__c
+            ORDER BY BlueWave_Rating__c DESC
+        ];
+
+        System.assertEquals(10, reportList[0].Client_Health_Score__c);
+        System.assertEquals(6.38, reportList[1].Client_Health_Score__c);
+        System.assertEquals(5.34, reportList[2].Client_Health_Score__c);
+    }
 }
