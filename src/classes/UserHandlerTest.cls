@@ -169,25 +169,55 @@ public class UserHandlerTest {
 		System.assertEquals(firstNumberUsers + 3, newNumberUsers);
 	}
 
-	@IsTest public static void testOpportunityTrigger() {
-		List<Opportunity> oppList = [
-			SELECT Id, Name
-			FROM Opportunity
-			WHERE Product_Line__c = 'Community Solar'
-			ORDER BY Name];
-
-		oppList[0].Contract_Status__c = 'Completed';
-		oppList[1].Contract_Status__c = 'Completed';
+	@IsTest public static void testPortalActivation() {
 
 		List<User> oldUserList = [
 			SELECT Id, ContactId
 			FROM User
 			WHERE IsActive = TRUE
 		];
+
 		Integer previousNumberUsers = oldUserList.size();
 
+		Shared_Solar_System__c testSSS =
+			new Shared_Solar_System__c(Name = 'Shared Solar System');
+
+		Account accountParent = new Account(
+			Name = 'Account Parent23457',
+			OwnerId = UserInfo.getUserId()
+		);
+		insert accountParent;
+
+		Account normalAccount = new Account(
+			Name = 'Account Parent123456',
+			Parent_Account__c = accountParent.Id,
+			OwnerId = UserInfo.getUserId()
+		);
+		insert normalAccount;
+
+		Contact normalContact = new Contact(
+			FirstName = 'Peanut',
+			LastName = 'Butter',
+			Email = 'pbutter@bluewavesolar.com',
+			AccountId = accountParent.Id
+		);
+		insert normalContact;
+
+		Opportunity testOpportunity = new Opportunity(
+			Name = 'Peanut Butter',
+			AccountId = normalAccount.Id,
+			Parent_Account__c = accountParent.Id,
+			Shared_Solar_System__c = testSSS.Id,
+			BlueWave_Signature_Status__c = 'Complete',
+			StageName = 'Complete',
+			Product_Line__c = 'Community Solar',
+			Contract_Status__c = 'Complete',
+			CloseDate = System.today()
+		);
+		insert testOpportunity;
+
 		Test.startTest();
-		update oppList;
+		OpportunityTriggerHandler.activatePortalUser(new List<Id>{testOpportunity.Id});
 		Test.stopTest();
 
 		List<User> userListUpdated = [
@@ -196,8 +226,9 @@ public class UserHandlerTest {
 			WHERE IsActive = TRUE
 		];
 
-		System.assertEquals(previousNumberUsers + 2, userListUpdated.size());
+		System.assertEquals(previousNumberUsers + 1, userListUpdated.size());
 	}
+
 
 	@IsTest public static void testLoanOpp() {
 		Opportunity loanOpp = [SELECT Id FROM Opportunity WHERE Name = 'Loan'];
