@@ -179,40 +179,42 @@ public class UserHandlerTest {
 
 		Integer previousNumberUsers = oldUserList.size();
 
+		Shared_Solar_System__c testSSS =
+			new Shared_Solar_System__c(Name = 'Shared Solar System');
+
 		Account accountParent = new Account(
-			Name = 'Account Parent',
+			Name = 'Account Parent23457',
 			OwnerId = UserInfo.getUserId()
 		);
 		insert accountParent;
 
 		Account normalAccount = new Account(
-			Name = 'Account Parent',
+			Name = 'Account Parent123456',
+			Parent_Account__c = accountParent.Id,
 			OwnerId = UserInfo.getUserId()
 		);
 		insert normalAccount;
 
 		Contact normalContact = new Contact(
-			FirstName = 'First',
-			LastName = 'UniqueLasttte',
-			Email = 'uniqueEmail6734@bluewavesolar.com',
-			AccountId = accountParent .Id
+			FirstName = 'Peanut',
+			LastName = 'Butter',
+			Email = 'pbutter@bluewavesolar.com',
+			AccountId = accountParent.Id
 		);
 		insert normalContact;
 
 		Opportunity testOpportunity = new Opportunity(
-			Name = 'Blue Wave Signature Complete',
+			Name = 'Peanut Butter',
 			AccountId = normalAccount.Id,
 			Parent_Account__c = accountParent.Id,
-			BlueWave_Signature_Status__c = 'Completed',
+			Shared_Solar_System__c = testSSS.Id,
+			BlueWave_Signature_Status__c = 'Complete',
 			StageName = 'Complete',
 			Product_Line__c = 'Community Solar',
 			Contract_Status__c = 'Complete',
 			CloseDate = System.today()
 		);
 		insert testOpportunity;
-
-
-		List<Opportunity> newOpportunities = [SELECT Id, Parent_Account_ID__c FROM Opportunity];
 
 		Test.startTest();
 		OpportunityTriggerHandler.activatePortalUser(new List<String>{testOpportunity.Id});

@@ -76,7 +76,7 @@ public without sharing class OpportunityTriggerHandler {
         }
     }
 
-   @InvocableMethod public static void activatePortalUser(List<Id> oppIdList) {
+   @InvocableMethod public static void activatePortalUser(List<String> oppIdList) {
 
        List<Opportunity> updatedOpps = [
            SELECT Id, Contract_Status__c, Product_Line__c, Parent_Account_ID__c,
@@ -84,7 +84,7 @@ public without sharing class OpportunityTriggerHandler {
            FROM Opportunity
            WHERE Id IN: oppIdList];
 
-       List<Id> parentAccountIdList = new List<Id>();
+       List<String> parentAccountIdList = new List<String>();
 
        for (Opportunity newOpp : updatedOpps) {
            if (newOpp.Parent_Account_ID__c != null) {
@@ -97,7 +97,6 @@ public without sharing class OpportunityTriggerHandler {
                 SELECT Id, FirstName, LastName, Email, AccountId
                 FROM Contact
                 WHERE AccountId IN : parentAccountIdList];
-
             UserHandler userInsertJob = new UserHandler(contactList);
             System.enqueueJob(userInsertJob);
         }
