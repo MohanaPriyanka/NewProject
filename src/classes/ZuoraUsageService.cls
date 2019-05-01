@@ -56,7 +56,7 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
                 usage.AccountId = adjust.UASB__r.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__Subscription__r.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c;
                 usage.Quantity = adjust.Adjustment_Amount__c;
                 usage.StartDateTime = adjust.UASB__r.Billing_Period_Start_Date__c;
-                usage.EndDateTime = adjust.UASB__r.Billing_Period_End_Date__c; // change to end date!!
+                usage.EndDateTime = adjust.UASB__r.Billing_Period_End_Date__c; 
                 usage.SubscriptionNumber = adjust.UASB__r.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__Subscription__r.Name;
                 usage.ChargeNumber = adjust.UASB__r.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__ChargeNumber__c;
                 usage.Description = adjust.UASB__r.Shared_Solar_System__r.Utility__r.Name
