@@ -86,7 +86,7 @@
     <fields>
         <fullName>CompanySignedDate</fullName>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
+        <trackHistory>false</trackHistory>
     </fields>
     <fields>
         <fullName>CompanySignedId</fullName>
@@ -448,7 +448,7 @@
     <fields>
         <fullName>OwnerId</fullName>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
+        <trackHistory>false</trackHistory>
         <type>Lookup</type>
     </fields>
     <fields>
