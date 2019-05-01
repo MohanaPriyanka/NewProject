@@ -1884,6 +1884,15 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Unique_ID__c</fullName>
+        <displayFormat>SSS-{000000}</displayFormat>
+        <externalId>true</externalId>
+        <label>Unique ID</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>AutoNumber</type>
+    </fields>
+    <fields>
         <fullName>Upcoming_Meter_Read_Date__c</fullName>
         <externalId>false</externalId>
         <formula>CASE(MONTH(TODAY()),
