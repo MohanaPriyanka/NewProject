@@ -59,23 +59,34 @@
     <fields>
         <fullName>ActivatedById</fullName>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <type>Lookup</type>
     </fields>
     <fields>
         <fullName>ActivatedDate</fullName>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
     </fields>
     <fields>
         <fullName>BillingAddress</fullName>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>CS_Services__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Detailed description of BlueWave&apos;s responsibilities as a servicer</inlineHelpText>
+        <label>CS Services</label>
+        <length>131072</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>5</visibleLines>
     </fields>
     <fields>
         <fullName>CompanySignedDate</fullName>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
+        <trackHistory>false</trackHistory>
     </fields>
     <fields>
         <fullName>CompanySignedId</fullName>
@@ -105,6 +116,240 @@
         <trackHistory>true</trackHistory>
     </fields>
     <fields>
+        <fullName>Customer_Acquisition_Fee__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>$ / kW</inlineHelpText>
+        <label>Customer Acquisition Fee</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Customer_Acquisition_Invoicing_Detail__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Terms at which customer acquisition fee is paid</inlineHelpText>
+        <label>Customer Acquisition Invoicing Detail</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Customer_Acquisition_Invoicing_Timing__c</fullName>
+        <externalId>false</externalId>
+        <label>Customer Acquisition Invoicing Timing</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Monthly</fullName>
+                    <default>false</default>
+                    <label>Monthly</label>
+                </value>
+                <value>
+                    <fullName>Annual</fullName>
+                    <default>false</default>
+                    <label>Annual</label>
+                </value>
+                <value>
+                    <fullName>One-Time</fullName>
+                    <default>false</default>
+                    <label>One-Time</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Customer_Billing_Communications_Detail__c</fullName>
+        <externalId>false</externalId>
+        <label>Customer Billing Communications Detail</label>
+        <length>131072</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>5</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Customer_Billing_Communications__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Required customer communications, see detail field for more specifics</inlineHelpText>
+        <label>Customer Billing Communications</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Monthly Statement</fullName>
+                    <default>false</default>
+                    <label>Monthly Statement</label>
+                </value>
+                <value>
+                    <fullName>Payment Receipt</fullName>
+                    <default>false</default>
+                    <label>Payment Receipt</label>
+                </value>
+                <value>
+                    <fullName>Project Assignment</fullName>
+                    <default>false</default>
+                    <label>Project Assignment</label>
+                </value>
+                <value>
+                    <fullName>Termination</fullName>
+                    <default>false</default>
+                    <label>Termination</label>
+                </value>
+                <value>
+                    <fullName>Schedule Z Filing</fullName>
+                    <default>false</default>
+                    <label>Schedule Z Filing</label>
+                </value>
+                <value>
+                    <fullName>Upcoming Bill</fullName>
+                    <default>false</default>
+                    <label>Upcoming Bill</label>
+                </value>
+                <value>
+                    <fullName>Collections</fullName>
+                    <default>false</default>
+                    <label>Collections</label>
+                </value>
+                <value>
+                    <fullName>Autopay Sign-Up</fullName>
+                    <default>false</default>
+                    <label>Autopay Sign-Up</label>
+                </value>
+                <value>
+                    <fullName>Other, see detail</fullName>
+                    <default>false</default>
+                    <label>Other, see detail</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>5</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Customer_Communication_Branding__c</fullName>
+        <externalId>false</externalId>
+        <label>Customer Communication Branding</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>BlueWave</fullName>
+                    <default>false</default>
+                    <label>BlueWave</label>
+                </value>
+                <value>
+                    <fullName>Cobranding with Client</fullName>
+                    <default>false</default>
+                    <label>Cobranding with Client</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Customer_FICO_Detail__c</fullName>
+        <externalId>false</externalId>
+        <label>Customer FICO Detail</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Customer_FICO_Minimum__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Minimum Customer FICO threshold, see detail field for more specifics</inlineHelpText>
+        <label>Customer FICO Minimum</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Customer_Money_Transfer_Method__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Does the contract allow for BW to hold project collections or must they go directly to the project?</inlineHelpText>
+        <label>Customer Money Transfer Method</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Customer pays Project Co Directly</fullName>
+                    <default>false</default>
+                    <label>Customer pays Project Co Directly</label>
+                </value>
+                <value>
+                    <fullName>Customer pays BW and BW Remits Monthly</fullName>
+                    <default>false</default>
+                    <label>Customer pays BW and BW Remits Monthly</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Customer_Payment_Methods__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Customer Payment Methods Accepted</inlineHelpText>
+        <label>Customer Payment Methods</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>ACH</fullName>
+                    <default>false</default>
+                    <label>ACH</label>
+                </value>
+                <value>
+                    <fullName>Credit Card</fullName>
+                    <default>false</default>
+                    <label>Credit Card</label>
+                </value>
+                <value>
+                    <fullName>Paper Check</fullName>
+                    <default>false</default>
+                    <label>Paper Check</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Delinquency_Protocol__c</fullName>
+        <externalId>false</externalId>
+        <label>Delinquency Protocol</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
         <fullName>Description</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
@@ -115,9 +360,85 @@
         <trackHistory>true</trackHistory>
     </fields>
     <fields>
+        <fullName>Management_Fee__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>$ / MW DC</inlineHelpText>
+        <label>Management Fee</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Management_Invoicing_Detail__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Terms at which management fee is invoiced</inlineHelpText>
+        <label>Management Invoicing Detail</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Management_Invoicing_Timing__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Timing of management fee invoicing</inlineHelpText>
+        <label>Management Invoicing Timing</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Monthly</fullName>
+                    <default>false</default>
+                    <label>Monthly</label>
+                </value>
+                <value>
+                    <fullName>Annual</fullName>
+                    <default>false</default>
+                    <label>Annual</label>
+                </value>
+                <value>
+                    <fullName>One-Time</fullName>
+                    <default>false</default>
+                    <label>One-Time</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Monthly_Flat_Gateway_Fee__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>(% fee per $ collected) Gateway Fee charged to client</inlineHelpText>
+        <label>Monthly Flat Gateway Fee</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Percent</type>
+    </fields>
+    <fields>
         <fullName>Name</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Onboarding_Fee__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>$ / MW DC</inlineHelpText>
+        <label>Onboarding Fee</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
     </fields>
     <fields>
         <fullName>OwnerExpirationNotice</fullName>
@@ -127,14 +448,60 @@
     <fields>
         <fullName>OwnerId</fullName>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
+        <trackHistory>false</trackHistory>
         <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Pricebook2Id</fullName>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
+        <trackHistory>false</trackHistory>
         <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Reporting_Requirements__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Required client reports, see detail field for more specifics</inlineHelpText>
+        <label>Reporting Requirements</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Accounts Aging</fullName>
+                    <default>false</default>
+                    <label>Accounts Aging</label>
+                </value>
+                <value>
+                    <fullName>Customer Terminations</fullName>
+                    <default>false</default>
+                    <label>Customer Terminations</label>
+                </value>
+                <value>
+                    <fullName>Project Attrition</fullName>
+                    <default>false</default>
+                    <label>Project Attrition</label>
+                </value>
+                <value>
+                    <fullName>Accounts Receivable</fullName>
+                    <default>false</default>
+                    <label>Accounts Receivable</label>
+                </value>
+                <value>
+                    <fullName>Days Sales Outstanding (DSO)</fullName>
+                    <default>false</default>
+                    <label>Days Sales Outstanding (DSO)</label>
+                </value>
+                <value>
+                    <fullName>Other, see detail</fullName>
+                    <default>false</default>
+                    <label>Other, see detail</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>5</visibleLines>
     </fields>
     <fields>
         <fullName>ShippingAddress</fullName>
@@ -156,6 +523,26 @@
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
         <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Termination_Reasons__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Reasons and Circumstances in which BW or the Client could terminate this agreement</inlineHelpText>
+        <label>Termination Reasons</label>
+        <length>131072</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>5</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Waitlist_Requirements__c</fullName>
+        <externalId>false</externalId>
+        <label>Waitlist Requirements</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>TextArea</type>
     </fields>
     <listViews>
         <fullName>AllActivatedContracts</fullName>
