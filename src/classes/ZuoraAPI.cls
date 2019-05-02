@@ -75,14 +75,28 @@ public with sharing class ZuoraAPI {
         public String AchBankName;
     }
 
-    public class GenericError {
+    public class GenericResponse {
         public Boolean success;
-        public String processId;
+        public String Id;
         public List<GenericErrorReasons> reasons;
     }
 
     public class GenericErrorReasons {
         public Integer code;
         public String message;
+    }
+
+    public class CreditMemo {
+        public String accountId;
+        public List<CreditCharge> charges;
+        public Date effectiveDate;
+        public String reasonCode;
+        public String Project_Zcustom;
+        public String CRM_ID_Zcustom;
+    }
+
+    public class CreditCharge {
+        public Decimal amount;
+        public String chargeId;
     }
 }
