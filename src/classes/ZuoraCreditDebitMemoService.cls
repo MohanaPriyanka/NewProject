@@ -5,53 +5,28 @@ Can't use generic create/edit/delete actions
     "Note: Actions do not support the Invoice Settlement feature.
     This feature includes Unapplied Payments, Credit and Debit Memo, and Invoice Item Settlement." */
 
-public class ZuoraCreditDebitMemoService implements Database.AllowsCallouts{
+public class ZuoraCreditDebitMemoService{
 
-    public class ZuoraCreditMemo {
-        public String accountId;
-        public List<ZuoraCreditCharge> charges;
-        public Date effectiveDate;
-        public String reasonCode;
-        public String Project_Zcustom;
-        public String CRM_ID_Zcustom;
-    }
+    public static ZuoraAPI.CreditMemo convertSFAdjustToCreditMemo (Bill_Adjustment__c adjust){
+        if (adjust.Adjustment_Amount__c < 0){
+            ZuoraAPI.CreditCharge chargeLine = new ZuoraAPI.CreditCharge();
+            chargeLine.Amount = (-1*adjust.Adjustment_Amount__c);
+            chargeLine.ChargeId = adjust.UASB__r.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__OriginalProductRatePlanChargeId__c;
 
-    public class ZuoraCreditCharge {
-        public Decimal amount;
-        public String chargeId;
-    }
-
-    public class ZuoraResponse {
-        public String Id;
-        public Boolean Success;
-        public List<ZuoraError> reasons;
-    }
-
-    public class ZuoraError {
-        public String Code;
-        public String Message;
-    }
-
-    public static ZuoraCreditMemo convertSFAdjustToCreditMemo (Bill_Adjustment__c adjust){
-        ZuoraCreditCharge chargeLine = new ZuoraCreditCharge();
-        chargeLine.Amount = adjust.Adjustment_Amount__c;
-        chargeLine.ChargeId = adjust.UASB__r.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__OriginalProductRatePlanChargeId__c;
-
-        ZuoraCreditMemo creditMemo = new ZuoraCreditMemo();
-        creditMemo.AccountId = adjust.UASB__r.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__Subscription__r.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c;
-        creditMemo.EffectiveDate = adjust.UASB__r.Date__c;
-        creditMemo.Project_Zcustom = adjust.UASB__r.Shared_Solar_System__r.Unique_ID__c;
-        creditMemo.Charges = new List<ZuoraCreditCharge>{chargeLine};
-        creditMemo.CRM_ID_Zcustom = adjust.Id;
-        if (adjust.Adjustment_Type__c == 'Client Credit'){
-            creditMemo.ReasonCode = 'Client Credit';
-        } else if (adjust.Adjustment_Type__c == 'BW Credit'){
-            creditMemo.ReasonCode = 'BW - Initiated Credit';
+            ZuoraAPI.CreditMemo creditMemo = new ZuoraAPI.CreditMemo();
+            creditMemo.accountId = adjust.UASB__r.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__Subscription__r.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c;
+            creditMemo.effectiveDate = adjust.UASB__r.Date__c;
+            creditMemo.Project_Zcustom = adjust.UASB__r.Shared_Solar_System__r.Unique_ID__c;
+            creditMemo.charges = new List<ZuoraAPI.CreditCharge>{chargeLine};
+            creditMemo.CRM_ID_Zcustom = adjust.Id;
+            creditMemo.reasonCode = adjust.Adjustment_Type__c;
+            return creditMemo;
+        } else {
+            return null;
         }
-        return creditMemo;
     }
 
-    public static HttpResponse creditMemoAPICall(ZuoraCreditMemo creditMemo){
+    public static HttpResponse creditMemoAPICall(ZuoraAPI.CreditMemo creditMemo){
         HttpResponse response;
         if(!Test.isRunningTest()){
             response = ZuoraAPIHelper.callJSONEndpoint('POST','/v1/creditmemos',creditMemo,false);
@@ -61,9 +36,9 @@ public class ZuoraCreditDebitMemoService implements Database.AllowsCallouts{
         return response;
     }
 
-    public static Bill_Adjustment__c handleAPIResponse(ZuoraCreditMemo attemptedCreditMemo, HttpResponse response){
-        ZuoraResponse zResponse = new ZuoraResponse();
-        zResponse = (ZuoraResponse)JSON.deserialize(response.getBody(), ZuoraResponse.class);
+    public static Bill_Adjustment__c handleAPIResponse(ZuoraAPI.CreditMemo attemptedCreditMemo, HttpResponse response){
+        ZuoraAPI.GenericResponse zResponse = new ZuoraAPI.GenericResponse();
+        zResponse = (ZuoraAPI.GenericResponse)JSON.deserialize(response.getBody(), ZuoraAPI.GenericResponse.class);
         Bill_Adjustment__c adjustToUpdate;
 
         if (zResponse.Success){
