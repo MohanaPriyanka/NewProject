@@ -10,8 +10,8 @@ public class ZuoraCreditDebitMemoService{
     public static ZuoraAPI.CreditMemo convertSFAdjustToCreditMemo (Bill_Adjustment__c adjust){
         if (adjust.Adjustment_Amount__c < 0){
             ZuoraAPI.CreditCharge chargeLine = new ZuoraAPI.CreditCharge();
-            chargeLine.Amount = (-1*adjust.Adjustment_Amount__c);
-            chargeLine.ChargeId = adjust.UASB__r.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__OriginalProductRatePlanChargeId__c;
+            chargeLine.amount = (-1*adjust.Adjustment_Amount__c);
+            chargeLine.chargeId = adjust.UASB__r.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__OriginalProductRatePlanChargeId__c;
 
             ZuoraAPI.CreditMemo creditMemo = new ZuoraAPI.CreditMemo();
             creditMemo.accountId = adjust.UASB__r.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__Subscription__r.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c;
