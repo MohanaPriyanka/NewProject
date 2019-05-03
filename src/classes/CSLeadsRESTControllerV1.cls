@@ -102,7 +102,7 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
                 Company, Application_Type__c, LASERCA__Home_Address__c, LASERCA__Home_City__c,
                 LASERCA__Home_State__c, LASERCA__Home_Zip__c, Parcel_Zip__c, LoadZone__c,
                 Partner_Lookup__c, Partner_Lookup__r.Id, bs_Sales_ID__c, Customer_Referral__c, Product__c, Phone,
-                Business_Title__c, Utility_Relationship__r.Name, Product__r.Name
+                Business_Title__c, Utility_relationship__r.Name, Product__r.Name, Completed_Application__c
             FROM Lead
             WHERE Id = :leadIds
         ];
@@ -133,6 +133,7 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
         public Id partnerId;
         public Id salesRepId;
         public Id referralCode;
+        public String completedApplication;
 
         public RestLead() {}
         public RestLead(Lead lead) {
@@ -159,7 +160,8 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
             this.productName = lead.Product__r.Name;
             this.businessPhone = lead.Phone;
             this.businessTitle = lead.Business_Title__c;
-            this.utilityName = lead.Utility_Relationship__r.Name;
+            this.utilityName = lead.Utility_relationship__r.Name;
+            this.completedApplication = lead.Completed_Application__c;
         }
 
         public Boolean hasAcknowledgement() {
@@ -234,7 +236,8 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
                 Product_line__c = 'Community Solar',
                 Phone = businessPhone,
                 Business_Title__c = businessTitle,
-                Customer_type__c = applicationType
+                Customer_type__c = applicationType,
+                Completed_Application__c = completedApplication
             );
             Partner__c customerPartner = MyAccountController.getPartner(partnerId);
             if (partnerId != null) {

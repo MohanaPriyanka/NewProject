@@ -66,7 +66,8 @@ public with sharing class CSLeadsRESTControllerV1Test {
             Product__c = product.Id,
             Partner_Lookup__c = partner.Id,
             bs_Sales_ID__c = salesRep2.Id,
-            Customer_Referral__c = contactRecord.Id
+            Customer_Referral__c = contactRecord.Id,
+            Completed_Application__c = '5-01-2019'
         );
 
         insert leadToPatch;
@@ -123,6 +124,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertNotEquals(null, patchResponseEnvelope.data.referralCode);
         System.assertNotEquals(null, patchResponseEnvelope.data.productName);
         System.assertNotEquals(null, patchResponseEnvelope.data.utilityName);
+        System.assertNotEquals(null, patchResponseEnvelope.data.completedApplication);
         System.assertEquals(true, patchResponseEnvelope.errors.isEmpty());
         System.assertEquals(true, patchResponseEnvelope.messages.isEmpty());
 
