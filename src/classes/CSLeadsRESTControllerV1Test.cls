@@ -67,7 +67,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
             Partner_Lookup__c = partner.Id,
             bs_Sales_ID__c = salesRep2.Id,
             Customer_Referral__c = contactRecord.Id,
-            Completed_Application__c = '5-01-2019'
+            Application_Complete_Date__c = Date.newInstance(2019, 5, 01)
         );
 
         insert leadToPatch;
@@ -99,7 +99,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
         CSLeadsRESTControllerV1.patchRequest();
 
         RestResponse response = RestContext.response;
-        System.assertEquals(200, response.statuscode);
+        System.assertEquals(200, response.statusCode);
 
         String jsonResponse = response.responseBody.toString();
 
@@ -124,7 +124,8 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertNotEquals(null, patchResponseEnvelope.data.referralCode);
         System.assertNotEquals(null, patchResponseEnvelope.data.productName);
         System.assertNotEquals(null, patchResponseEnvelope.data.utilityName);
-        System.assertNotEquals(null, patchResponseEnvelope.data.completedApplication);
+        System.assertNotEquals(null, patchResponseEnvelope.data.applicationCompleteDate);
+        System.assertEquals(Date.newInstance(2019, 5, 01), patchResponseEnvelope.data.applicationCompleteDate);
         System.assertEquals(true, patchResponseEnvelope.errors.isEmpty());
         System.assertEquals(true, patchResponseEnvelope.messages.isEmpty());
 
