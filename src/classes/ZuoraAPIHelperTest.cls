@@ -10,7 +10,7 @@ public with sharing class ZuoraAPIHelperTest {
         Test.setMock(HttpCalloutMock.class, new ZuoraAPIMock());
         HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('GET', 'error', null);
         if (response.getStatusCode() == 200) {
-            ZuoraAPI.GenericError error = (ZuoraAPI.GenericError) System.JSON.deserialize(response.getBody(), ZuoraAPI.GenericError.class);
+            ZuoraAPI.GenericResponse error = (ZuoraAPI.GenericResponse) System.JSON.deserialize(response.getBody(), ZuoraAPI.GenericResponse.class);
             System.assertEquals(false, error.success);
         } else {
             System.assert(false, 'Expected ZuoraAPIMock to return status code 200');
@@ -27,7 +27,6 @@ public with sharing class ZuoraAPIHelperTest {
                 numActive ++;
             }
         }
-
         if (numActive == 0) {
             System.assertEquals(true, ZuoraAPIHelper.zuoraEnabled());
             System.assertEquals('TestSetting', ZuoraAPIHelper.getZuoraSetting().DeveloperName);

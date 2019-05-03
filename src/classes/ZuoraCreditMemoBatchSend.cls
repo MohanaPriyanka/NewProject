@@ -12,15 +12,19 @@ public without sharing class ZuoraCreditMemoBatchSend implements Database.Batcha
     }
 
     public void execute(Database.BatchableContext bc, List<sObject> scope){
-        for (sObject scopeLine : scope){
-            Bill_Adjustment__c adjust = (Bill_Adjustment__c)scopeLine;
-            ZuoraCreditDebitMemoService.ZuoraCreditMemo memo;
-            memo = ZuoraCreditDebitMemoService.convertSFAdjustToCreditMemo(adjust);
-            HttpResponse response = ZuoraCreditDebitMemoService.creditMemoAPICall(memo);
-            Bill_Adjustment__c adjustmentToUpdate = ZuoraCreditDebitMemoService.handleAPIResponse(memo,response);
-            if (adjustmentToUpdate != null){
-                adjustToUpdateSet.add(adjustmentToUpdate);
+        try {
+            for (sObject scopeLine : scope){
+                Bill_Adjustment__c adjust = (Bill_Adjustment__c)scopeLine;
+                ZuoraAPI.CreditMemo memo;
+                memo = ZuoraCreditDebitMemoService.convertSFAdjustToCreditMemo(adjust);
+                HttpResponse response = ZuoraCreditDebitMemoService.creditMemoAPICall(memo);
+                Bill_Adjustment__c adjustmentToUpdate = ZuoraCreditDebitMemoService.handleAPIResponse(memo,response);
+                if (adjustmentToUpdate != null){
+                    adjustToUpdateSet.add(adjustmentToUpdate);
+                }
             }
+        } catch (Exception excep){
+            Logger.logLater('ZuoraCreditMemoBatchSend', 'execute', excep.getMessage() + '\n' + excep.getStackTraceString());
         }
         Logger.flushLogs();
     }

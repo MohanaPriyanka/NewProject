@@ -16,8 +16,7 @@ public class ZuoraCreditDebitMemoServiceTest {
             Utility_Account_Subscription__c = uasbList[0].Utility_Account_Subscription__r.Id,
             UASB__c = uasbList[0].Id,
             Adjustment_Type__c = 'BW Credit',
-            Adjustment_Amount__c = 90,
-            Credits_Allocated__c = 100,
+            Adjustment_Amount__c = -90,
             Approval_Status__c = 'Approved',
             Reason_For_Adjustment__c = 'Needs adjustment');
 
@@ -26,8 +25,7 @@ public class ZuoraCreditDebitMemoServiceTest {
             Utility_Account_Subscription__c = uasbList[0].Utility_Account_Subscription__r.Id,
             UASB__c = uasbList[0].Id,
             Adjustment_Type__c = 'Client Credit',
-            Adjustment_Amount__c = 45,
-            Credits_Allocated__c = 50,
+            Adjustment_Amount__c = -45,
             Approval_Status__c = 'Approved',
             Reason_For_Adjustment__c = 'Needs adjustment');
 
@@ -36,7 +34,7 @@ public class ZuoraCreditDebitMemoServiceTest {
             Utility_Account_Subscription__c = uasbList[1].Utility_Account_Subscription__r.Id,
             UASB__c = uasbList[1].Id,
             Adjustment_Type__c = 'BW Credit',
-            Adjustment_Amount__c = 15,
+            Adjustment_Amount__c = -15,
             Approval_Status__c = 'Approved',
             Reason_For_Adjustment__c = 'Needs adjustment');
 
@@ -45,7 +43,7 @@ public class ZuoraCreditDebitMemoServiceTest {
             Utility_Account_Subscription__c = uasbList[1].Utility_Account_Subscription__r.Id,
             UASB__c = uasbList[1].Id,
             Adjustment_Type__c = 'BW Credit',
-            Adjustment_Amount__c = 99,
+            Adjustment_Amount__c = -99,
             Approval_Status__c = 'Approved',
             Zuora_Id__c = 'XXXXXXXXXXXXXXXXXX',
             Reason_For_Adjustment__c = 'Needs adjustment');
