@@ -8,22 +8,18 @@ Can't use generic create/edit/delete actions
 public class ZuoraCreditDebitMemoService{
 
     public static ZuoraAPI.CreditMemo convertSFAdjustToCreditMemo (Bill_Adjustment__c adjust){
-        if (adjust.Adjustment_Amount__c < 0){
-            ZuoraAPI.CreditCharge chargeLine = new ZuoraAPI.CreditCharge();
-            chargeLine.amount = (-1*adjust.Adjustment_Amount__c);
-            chargeLine.chargeId = adjust.UASB__r.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__OriginalProductRatePlanChargeId__c;
+        ZuoraAPI.CreditCharge chargeLine = new ZuoraAPI.CreditCharge();
+        chargeLine.amount = (-1*adjust.Adjustment_Amount__c);
+        chargeLine.chargeId = adjust.UASB__r.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__OriginalProductRatePlanChargeId__c;
 
-            ZuoraAPI.CreditMemo creditMemo = new ZuoraAPI.CreditMemo();
-            creditMemo.accountId = adjust.UASB__r.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__Subscription__r.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c;
-            creditMemo.effectiveDate = adjust.UASB__r.Date__c;
-            creditMemo.Project_Zcustom = adjust.UASB__r.Shared_Solar_System__r.Unique_ID__c;
-            creditMemo.charges = new List<ZuoraAPI.CreditCharge>{chargeLine};
-            creditMemo.CRM_ID_Zcustom = adjust.Id;
-            creditMemo.reasonCode = adjust.Adjustment_Type__c;
-            return creditMemo;
-        } else {
-            return null;
-        }
+        ZuoraAPI.CreditMemo creditMemo = new ZuoraAPI.CreditMemo();
+        creditMemo.accountId = adjust.UASB__r.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__Subscription__r.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c;
+        creditMemo.effectiveDate = adjust.UASB__r.Date__c;
+        creditMemo.Project_Zcustom = adjust.UASB__r.Shared_Solar_System__r.Unique_ID__c;
+        creditMemo.charges = new List<ZuoraAPI.CreditCharge>{chargeLine};
+        creditMemo.CRM_ID_Zcustom = adjust.Id;
+        creditMemo.reasonCode = adjust.Adjustment_Type__c;
+        return creditMemo;
     }
 
     public static HttpResponse creditMemoAPICall(ZuoraAPI.CreditMemo creditMemo){

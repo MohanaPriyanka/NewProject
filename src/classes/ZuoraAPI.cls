@@ -78,10 +78,11 @@ public with sharing class ZuoraAPI {
     public class GenericResponse {
         public Boolean success;
         public String Id;
-        public List<GenericErrorReasons> reasons;
+        public String processId;
+        public List<GenericResponseReason> reasons;
     }
 
-    public class GenericErrorReasons {
+    public class GenericResponseReason {
         public Integer code;
         public String message;
     }
