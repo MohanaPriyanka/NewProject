@@ -2036,7 +2036,7 @@
             <label>Previously Met - Prev</label>
         </rules>
     </decisions>
-    <interviewLabel>Opportunity_Create_Edit-9_InterviewLabel</interviewLabel>
+    <interviewLabel>Opportunity_Create_Edit-10_InterviewLabel</interviewLabel>
     <label>Opportunity Create/Edit</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -2574,7 +2574,7 @@
         <object>Opportunity</object>
     </recordUpdates>
     <startElementReference>myVariable_waitStartTimeAssignment</startElementReference>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>cancelWaits</name>
         <dataType>String</dataType>
@@ -2653,13 +2653,13 @@
             <inputParameters>
                 <name>TimeOffsetUnit</name>
                 <value>
-                    <stringValue>Hours</stringValue>
+                    <stringValue>Days</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>TimeOffset</name>
                 <value>
-                    <numberValue>1.0</numberValue>
+                    <numberValue>3.0</numberValue>
                 </value>
             </inputParameters>
             <label>myWaitEvent_myWait_myRule_9_event_0</label>
