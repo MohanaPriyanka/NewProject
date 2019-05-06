@@ -121,7 +121,7 @@ public without sharing class ScheduleZTriggerHandler {
         ];
 
         List<Schedule_Z__c> scheduleZListWithSystemSize = [
-            SELECT Id, Shared_Solar_System__r.Total_System_Size_kW_DC_QC__c,
+            SELECT Id, Shared_Solar_System__r.Total_System_Size_kWh_DC__c,
                 Shared_Solar_System__r.Utility__r.Number_of_Decimal_Places__c
             FROM Schedule_Z__c
             WHERE Id IN : scheduleZIds
@@ -143,7 +143,7 @@ public without sharing class ScheduleZTriggerHandler {
                         Utility_Account_Subscription__c = uas.Id,
                         Schedule_Z__c = scheduleZ.Id,
                         Number_of_Decimal_Places__c = scheduleZ.Shared_Solar_System__r.Utility__r.Number_of_Decimal_Places__c,
-                        System_Size_kW_DC__c = scheduleZ.Shared_Solar_System__r.Total_System_Size_kW_DC_QC__c
+                        System_Size_kW_DC__c = scheduleZ.Shared_Solar_System__r.Total_System_Size_kWh_DC__c
                     );
                     scheduleZSubscriptions.add(newSubscription);
                 }
