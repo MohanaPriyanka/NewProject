@@ -27,6 +27,7 @@ public with sharing class ZuoraAPIHelperTest {
                 numActive ++;
             }
         }
+
         if (numActive == 0) {
             System.assertEquals(true, ZuoraAPIHelper.zuoraEnabled());
             System.assertEquals('TestSetting', ZuoraAPIHelper.getZuoraSetting().DeveloperName);
