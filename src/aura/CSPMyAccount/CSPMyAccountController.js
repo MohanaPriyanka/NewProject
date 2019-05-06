@@ -30,11 +30,14 @@
 
     doInit : function(component, event, helper) {
         let cleanPropName = component.get("v.selectedAccount");
+        if (cleanPropName == null){
+            cleanPropName = 'All';
+        }
         cleanPropName = cleanPropName.split('%20').join(' ');
         component.set("v.selectedAccount", cleanPropName);
 
         let prepopulatedAcct = component.get("v.prepopulatedAcctId");
-        if (prepopulatedAcct === null){
+        if (prepopulatedAcct == null){
             prepopulatedAcct = 'All';
         }
         var actionGetPropertyAccounts = component.get("c.getMenuLabelList");
