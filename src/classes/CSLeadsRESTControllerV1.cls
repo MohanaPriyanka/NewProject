@@ -52,6 +52,9 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
             response.statusCode = statusCode.notFound;
         } else if (requestLead.hasAcknowledgement() || requestLead.hasZuoraPaymentInfo()) {
             Lead leadToUpdate = leads[0];
+            if (requestLead.isComplete()) {
+                leadToUpdate.Application_Complete_Date__c = requestLead.applicationCompleteDate;
+            }
             if (requestLead.hasAcknowledgement()) {
                 leadToUpdate.Privacy_Policy_Acknowledged__c = requestLead.customerAcknowledgement;
                 leadToUpdate.Terms_Conditions_Acknowledged__c = Datetime.now();
@@ -164,6 +167,10 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
             this.applicationCompleteDate = lead.Application_Complete_Date__c;
         }
 
+        public Boolean isComplete() {
+            return (applicationCompleteDate != null);
+        }
+
         public Boolean hasAcknowledgement() {
             return (customerAcknowledgement != null);
         }
@@ -189,17 +196,17 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
         public Boolean hasBasicFields() {
             return (
                 firstName != null
-                && lastName != null
-                && email != null
-                && mobilePhone != null
-                && billingStreetAddress != null
-                && billingCity != null
-                && billingState != null
-                && billingZIPCode != null
-                && serviceZIPCode != null
-                && utilityName != null
-                && productName != null
-                && hasValidApplicationType()
+                    && lastName != null
+                    && email != null
+                    && mobilePhone != null
+                    && billingStreetAddress != null
+                    && billingCity != null
+                    && billingState != null
+                    && billingZIPCode != null
+                    && serviceZIPCode != null
+                    && utilityName != null
+                    && productName != null
+                    && hasValidApplicationType()
             );
         }
 
@@ -207,8 +214,8 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
             return (
                 applicationType == 'Residential' || (
                     businessPhone != null
-                    && businessName != null
-                    && businessTitle != null
+                        && businessName != null
+                        && businessTitle != null
                 )
             );
         }
