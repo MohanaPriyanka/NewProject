@@ -50,7 +50,7 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
 
         if (leads.isEmpty()) {
             response.statusCode = statusCode.notFound;
-        } else if (requestLead.hasAcknowledgement() || requestLead.hasZuoraPaymentInfo()) {
+        } else if (requestLead.hasAcknowledgement() || requestLead.hasZuoraPaymentInfo() || requestLead.isComplete()) {
             Lead leadToUpdate = leads[0];
             if (requestLead.isComplete()) {
                 leadToUpdate.Application_Complete_Date__c = requestLead.applicationCompleteDate;
