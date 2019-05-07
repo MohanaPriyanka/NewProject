@@ -52,6 +52,7 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
             response.statusCode = statusCode.notFound;
         } else if (requestLead.hasAcknowledgement() || requestLead.hasZuoraPaymentInfo() || requestLead.isComplete()) {
             Lead leadToUpdate = leads[0];
+
             if (requestLead.isComplete()) {
                 leadToUpdate.Application_Complete_Date__c = requestLead.applicationCompleteDate;
             }
@@ -105,7 +106,7 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
                 Company, Application_Type__c, LASERCA__Home_Address__c, LASERCA__Home_City__c,
                 LASERCA__Home_State__c, LASERCA__Home_Zip__c, Parcel_Zip__c, LoadZone__c,
                 Partner_Lookup__c, Partner_Lookup__r.Id, bs_Sales_ID__c, Customer_Referral__c, Product__c, Phone,
-                Business_Title__c, Utility_Relationship__r.Name, Product__r.Name, Application_Complete_Date__c
+                Business_Title__c, Utility_relationship__r.Name, Product__r.Name, Application_Complete_Date__c, Status
             FROM Lead
             WHERE Id = :leadIds
         ];
@@ -137,6 +138,7 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
         public Id salesRepId;
         public Id referralCode;
         public Date applicationCompleteDate;
+        public String setLeadStatus;
 
         public RestLead() {}
         public RestLead(Lead lead) {
@@ -165,6 +167,7 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
             this.businessTitle = lead.Business_Title__c;
             this.utilityName = lead.Utility_Relationship__r.Name;
             this.applicationCompleteDate = lead.Application_Complete_Date__c;
+            this.setLeadStatus = lead.Status;
         }
 
         public Boolean isComplete() {
@@ -244,7 +247,8 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
                 Phone = businessPhone,
                 Business_Title__c = businessTitle,
                 Customer_type__c = applicationType,
-                Completed_Application__c = applicationCompleteDate
+                Application_Complete_Date__c = applicationCompleteDate,
+                Status = 'Sales Qualified'
             );
             Partner__c customerPartner = MyAccountController.getPartner(partnerId);
             if (partnerId != null) {
