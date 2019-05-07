@@ -149,14 +149,30 @@ public without sharing class Util {
     }
 
     public static void printCPULimit(String prefix) {
-        System.debug(LoggingLevel.ERROR, 'Limits: ' + prefix + ': ' + Limits.getCpuTime() + 'ms of '
-            + Limits.getLimitCpuTime() + 'ms used');
+        System.debug(LoggingLevel.ERROR, getCPULimit(prefix));
     }
 
     public static void printSOQLLimit(String prefix) {
-        System.debug(LoggingLevel.ERROR, 'Limits: ' + prefix + ': ' + Limits.getQueries() + ' of '
-            + Limits.getLimitQueries() + ' used');
+        System.debug(LoggingLevel.ERROR, getSOQLLimit(prefix));
     }
+
+    public static void printHeapLimit(String prefix) {
+        System.debug(LoggingLevel.ERROR, getHeapLimit(prefix));
+    }
+
+    public static String getCPULimit(String prefix) {
+        return 'Limits: ' + prefix + ': ' + Limits.getCpuTime() + 'ms of '
+            + Limits.getLimitCpuTime() + 'ms used';
+    }
+    public static String getSOQLLimit(String prefix) {
+        return 'Limits: ' + prefix + ': ' + Limits.getQueries() + ' of '
+            + Limits.getLimitQueries() + ' used';
+    }
+    public static String getHeapLimit(String prefix) {
+        return 'Limits: ' + prefix + ': ' + Limits.getHeapSize() + ' of '
+            + Limits.getLimitHeapSize() + ' used';
+    }
+
 
     public class BWException extends Exception {}
 

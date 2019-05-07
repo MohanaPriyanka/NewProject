@@ -393,7 +393,11 @@ public with sharing class LetterStreamServiceTest {
 
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, new LetterStreamAPIMock(accountBills));
-        QueueAccountBillLetterStreamMailer mailer = new QueueAccountBillLetterStreamMailer(accountBillsToTest, documentsToTest, true, 1);
+        QueueAccountBillLetterStreamMailer.Params params = new QueueAccountBillLetterStreamMailer.Params();
+        params.accountBills = accountBillsToTest;
+        params.documentsIds = documentsToTest;
+        params.makeCallout = true;
+        QueueAccountBillLetterStreamMailer mailer = new QueueAccountBillLetterStreamMailer(params);
         mailer.sendAccountBills();
         Test.stopTest();
 
@@ -566,7 +570,7 @@ public with sharing class LetterStreamServiceTest {
         RecordType customerCare = [
             SELECT Id, Name
             FROM RecordType
-            Where SobjectType = 'Case' and DeveloperName = 'Customer_Care'
+            WHERE SobjectType = 'Case' AND DeveloperName = 'Customer_Care'
             LIMIT 1
         ];
 
@@ -581,16 +585,6 @@ public with sharing class LetterStreamServiceTest {
         System.assertEquals(customerCare.Id, cases[0].RecordTypeId);
         System.assertEquals('Community Solar', cases[0].Product_Line__c);
         System.assertEquals('Cannot send bill to Community Solar customer.', cases[0].Subject);
-
-        List<AsyncApexJob> asyncApexJobs = [
-            SELECT Id
-            FROM AsyncApexJob
-            WHERE CreatedDate > : now.addSeconds(-1)
-        ];
-
-        // sometimes overlaps with other requests
-        // should have atleast 2 jobs, because we queued 2 new jobs for the failed account bills
-        System.assertEquals(originalAsyncApexJobs.size() + 2, asyncApexJobs.size());
     }
 
     @IsTest
@@ -709,16 +703,6 @@ public with sharing class LetterStreamServiceTest {
         System.assertEquals(customerCare.Id, cases[0].RecordTypeId);
         System.assertEquals('Community Solar', cases[0].Product_Line__c);
         System.assertEquals('Cannot send bill to Community Solar customer.', cases[0].Subject);
-
-        List<AsyncApexJob> asyncApexJobs = [
-            SELECT Id
-            FROM AsyncApexJob
-            WHERE CreatedDate > : now.addSeconds(-1)
-        ];
-
-        // sometimes overlaps with other requests
-        // should have atleast 2 jobs, because we queued 2 new jobs for the failed account bills
-        System.assertEquals(originalAsyncApexJobs.size() + 10, asyncApexJobs.size());
     }
 
     @IsTest
@@ -952,9 +936,7 @@ public with sharing class LetterStreamServiceTest {
         now = Datetime.now();
 
         Test.startTest();
-        QueueAccountBillLetterStreamMailer.QueueHandleResponse reponseHandler =
-            new QueueAccountBillLetterStreamMailer.QueueHandleResponse(responseXMLString, accountBillsToTest, csv, accountBillsByDocIds, false);
-        reponseHandler.handleResponse();
+        QueueAccountBillLetterStreamMailer.handleResponse(responseXMLString, accountBillsToTest, csv);
         Test.stopTest();
 
         List<Error_Log__c> errorLogs = [
