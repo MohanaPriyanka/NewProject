@@ -428,14 +428,6 @@ public with sharing class LetterStreamServiceTest {
                 System.assertNotEquals(null, accountBill.LetterStreamJob__c);
             }
         }
-
-        List<ContentDocument> attachments = [
-            SELECT Id, Title, LatestPublishedVersion.FirstPublishLocationId
-            FROM ContentDocument
-            WHERE LatestPublishedVersion.FirstPublishLocationId IN : jobIds
-        ];
-
-        System.assertEquals(jobs.size(), attachments.size());
     }
 
     @IsTest
@@ -937,6 +929,7 @@ public with sharing class LetterStreamServiceTest {
 
         Test.startTest();
         QueueAccountBillLetterStreamMailer.handleResponse(responseXMLString, accountBillsToTest, csv);
+        Logger.flushLogs();
         Test.stopTest();
 
         List<Error_Log__c> errorLogs = [
