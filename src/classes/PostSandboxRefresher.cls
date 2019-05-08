@@ -374,6 +374,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             );
             insert csBillSetting;
 
+
             insert new List<Utility_NMC_Tariff__c>{
                 everbillNMC, ngridsizeNMC, ngridbillNMC
             };
@@ -1092,6 +1093,10 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             Parent_Account__c = accountParent1.Id,
             Send_Bills_Contact__c = contact1.Id,
             RecordTypeId = '012j00000010HeQ',
+            BillingStreet = '1 Main',
+            BillingCity = 'Boston',
+            BillingPostalCode = '12312',
+            BillingState = 'Massachusetts',
             CreatedDate = csDataDate
         );
         return propAccount1;
