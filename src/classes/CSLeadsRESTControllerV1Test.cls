@@ -461,7 +461,6 @@ public with sharing class CSLeadsRESTControllerV1Test {
             '"loadZone":	"SEMA", ' +
             '"utilityName": "Utility",' +
             '"productName":	"CS Product",' +
-            '"setLeadStatus":	"Sales Qualified",' +
             '"partnerId": "' + partner.Id+ '",' +
             '"salesRepId": "' + salesRep2.Id+ '",' +
             '"referralCode": "' + contactRecord.Id+ '"' +
@@ -506,8 +505,6 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertNotEquals(null, patchResponseEnvelope.data.utilityName);
         System.assertNotEquals(null, patchResponseEnvelope.data.partnerId);
         System.assertNotEquals(null, patchResponseEnvelope.data.salesRepId);
-        System.assertNotEquals(null, patchResponseEnvelope.data.setLeadStatus);
-        System.assertEquals('Sales Qualified', patchResponseEnvelope.data.setLeadStatus);
     }
 
     @IsTest
@@ -575,7 +572,6 @@ public with sharing class CSLeadsRESTControllerV1Test {
             '"loadZone":	"SEMA", ' +
             '"utilityName": "Utility", ' +
             '"productName":	"CS Product", ' +
-            '"setLeadStatus":	"Sales Qualified", ' +
             '"partnerId": "' + partner.Id+ '", ' +
             '"salesRepId": "' + salesRep2.Id+ '", ' +
             '"referralCode": "' + contactRecord.Id+ '"' +
@@ -623,7 +619,6 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertNotEquals(null, patchResponseEnvelope.data.businessTitle);
         System.assertNotEquals(null, patchResponseEnvelope.data.salesRepId);
         System.assertNotEquals(null, patchResponseEnvelope.data.partnerId);
-        System.assertNotEquals(null, patchResponseEnvelope.data.setLeadStatus);
     }
 
     @IsTest
@@ -748,6 +743,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
         lead.applicationType = 'Loan';
         System.assert(!lead.hasValidApplicationType(), 'RequestLead should be an invalid type');
     }
+
 
     public class ResponseEnvelope {
         public CSLeadsRESTControllerV1.RestLead data;

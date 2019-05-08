@@ -138,7 +138,6 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
         public Id salesRepId;
         public Id referralCode;
         public Date applicationCompleteDate;
-        public String setLeadStatus;
 
         public RestLead() {}
         public RestLead(Lead lead) {
@@ -165,9 +164,8 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
             this.productName = lead.Product__r.Name;
             this.businessPhone = lead.Phone;
             this.businessTitle = lead.Business_Title__c;
-            this.utilityName = lead.Utility_Relationship__r.Name;
+            this.utilityName = lead.Utility_relationship__r.Name;
             this.applicationCompleteDate = lead.Application_Complete_Date__c;
-            this.setLeadStatus = lead.Status;
         }
 
         public Boolean isComplete() {
@@ -222,7 +220,7 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
                 )
             );
         }
-
+        
         public Lead asLead() {
             Lead newLead = new Lead(
                 Id = id,
@@ -286,7 +284,7 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
                     LIMIT 1
                 ];
 
-                newLead.Utility_Relationship__c = utility[0].Id;
+                newLead.Utility_relationship__c = utility[0].Id;
             }
 
             String continueApplicationUrl = Util.getCommunitySiteURL('Apply') + '/s/csap-payment?leadId=' + lead.Id;
