@@ -11,6 +11,11 @@ public without sharing class AccountBillService {
         if (Test.isRunningTest()) {
             letterStreamJob.makeCallout = false;
         }
-        letterStreamJob.queueAccountBillsToSend(accountBills);
+        if (accountBills.size() > 50) {
+            letterStreamJob.accountBillsToSend = accountBills;
+            Database.executeBatch(letterStreamJob, 100);
+        } else {
+            letterStreamJob.queueAccountBillsToSend(accountBills);
+        }
     }
 }

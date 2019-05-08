@@ -1,7 +1,7 @@
 /**
  * Created by mstackhouse on 8/1/2018.
- * Description: Queues collection of accountBills with their pdf versions (ContentDocument) for sending to LetterStream.
- * Called from AccountBillLetterStreamImpl which batches collections to avoid APEX heap size limits.
+ * Description: Sends collections of accountBills with their pdf versions (ContentDocument) for sending to LetterStream.
+ * Called from AccountBillLetterStreamImpl which queues these collections to avoid Apex heap size limits.
  *
  * Test: LetterStreamServiceTests
  */
@@ -11,18 +11,32 @@ public without sharing class QueueAccountBillLetterStreamMailer implements Queue
     public Set<Id> accountBills;
     public Set<Id> documentsIds;
     public Boolean makeCallout;
-    public Integer jobNumber;
+    public List<Account_Bill__c> allAccountBills;
+    public Set<Id> accountBillsAlreadySent;
 
-    public QueueAccountBillLetterStreamMailer(Set<Id> accountBills, Set<Id> documentsIds, Boolean makeCallout, Integer jobNumber) {
-        this.accountBills = accountBills;
-        this.documentsIds = documentsIds;
-        this.makeCallout = makeCallout;
-        this.jobNumber = jobNumber;
+    public QueueAccountBillLetterStreamMailer(Params param) {
+        this.accountBills = param.accountBills;
+        this.documentsIds = param.documentsIds;
+        this.makeCallout = param.makeCallout;
+        this.allAccountBills = param.allAccountBills;
+        this.accountBillsAlreadySent = param.accountBillsAlreadySent;
     }
 
     public void execute(QueueableContext context) {
         if (makeCallout) {
-            sendAccountBills();
+            try {
+                Logger.logLater(
+                    'QueueAccountBillLetterStreamMailer',
+                    'sendAccountBills',
+                    'Queued job ' + context.getJobId() + ' starting with ' + allAccountBills.size() + ' account bills',
+                    Logger.FINE
+                );
+                sendAccountBills();
+            } catch (Exception e) {
+                Logger.logLater('QueueAccountBillLetterStreamMailer', 'execute', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+            } finally {
+                Logger.flushLogs();
+            }
         }
     }
 
@@ -54,6 +68,8 @@ public without sharing class QueueAccountBillLetterStreamMailer implements Queue
 
         LetterStreamService lss = new LetterStreamService();
 
+        Logger.logLater('QueueAccountBillLetterStreamMailer', 'sendAccountBills', Util.getHeapLimit('Before making package'), Logger.FINE);
+
         Zippex lettersToSend = new Zippex();
 
         for (ContentDocument document : documents) {
@@ -63,29 +79,81 @@ public without sharing class QueueAccountBillLetterStreamMailer implements Queue
             lss.addLetterToCSV(letterParams);
             String fileName = Util.prepForCSV(letterParams.fileName);
             // Can't have ' in file names to letterstream
-            filename = fileName.replace('\'', '');
+            fileName = fileName.replace('\'', '');
             lettersToSend.addFile(fileName, document.LatestPublishedVersion.VersionData, null);
         }
 
         Blob csvBlob = Blob.valueOf(lss.csv);
 
-        String jobName = 'Job_' +  + '_' + DateTime.now().format('MM-dd-yyyy_HH:mm:ss:SSS') + '_' + jobNumber + '.csv';
+        // This is used for the LetterStream batch id, and needs to be unique. Using the timestamp isn't enough since
+        // we have jobs running in parallel
+        String jobName = 'Job_' +
+            Datetime.now().format('MM-dd-yyyy_HH:mm:ss:SSS') + '_' +
+            String.valueOf((Integer)(Math.random()*1000)) + '.csv';
 
         lettersToSend.addFile(jobName, csvBlob, null);
+
+        String heapLimitString = Util.getHeapLimit('Heap');
+        Logger.logLater('QueueAccountBillLetterStreamMailer', 'sendAccountBills', heapLimitString, Logger.FINE);
+        List<String> heapLimitParts = heapLimitString.split(' ');
+        Decimal used = Decimal.valueOf(heapLimitParts[2]);
+        Decimal available = Decimal.valueOf(heapLimitParts[4]);
+        Decimal percent = 100 * used/available;
+        // A 2 MB doc and 5 100k docs gets us to 61% of heap - we'll exit if there's no heap left
+        if (percent > 61) {
+            throw new Util.BWException('Too much heap used: ' + heapLimitString);
+        }
 
         // end build package
         Blob letterPackage = lettersToSend.getZipArchive();
 
+        Logger.logLater('QueueAccountBillLetterStreamMailer', 'sendAccountBills', Util.getHeapLimit('After zipping'), Logger.FINE);
 
         HttpRequest request = lss.buildRequestWithFile(letterPackage, 'filename.zip');
-        Http http = new Http();
-        HttpResponse response;
-        response = http.send(request);
+        // One minute timeout is conservative - we hit System.CalloutException: Read timed out at 10 seconds
+        request.setTimeout(60000);
+        HttpResponse response = new Http().send(request);
         Dom.Document responseXML = response.getBodyDocument();
         String responseXMLString = responseXML.toXmlString();
-        System.enqueueJob(
-            new QueueAccountBillLetterStreamMailer.QueueHandleResponse(responseXMLString, accountBillIds, lss.csv, accountBillsByDocIds, makeCallout)
-        );
+        String message = 'Request: ' + request.getEndpoint() + '\n' +
+                'Response: ' + response.getBody();
+        Logger.logLater('QueueAccountBillLetterStreamMailer', 'sendAccountBills', message, Logger.FINE);
+        handleResponse(responseXMLString, accountBillIds, lss.csv);
+
+        if (allAccountBills != null && accountBillsAlreadySent != null) {
+            queueRemainingAccountBills(accountBills);
+        }
+    }
+
+    @TestVisible
+    private static void handleResponse(String responseXMLString, Set<Id> accountBillIds, String csv) {
+        LetterStreamService lss = new LetterStreamService();
+        // newJob gets inserted within here
+        LetterStreamJob__c newJob = lss.parseLetterStreamResponse(responseXMLString);
+
+        if (newJob == null) {
+            String message = 'Job post failed for account bills: (' + String.join(new List<Id>(accountBillIds), ',') + ') + \n';
+            message += 'Response: \n' + responseXMLString + '\n';
+            message += 'CSV: \n' + csv;
+            Logger.logLater('QueueAccountBillLetterStreamMailer', 'execute', message, Logger.ERROR);
+        } else {
+            update markAccountBillsAsMailed(accountBillIds, newJob.Id);
+        }
+    }
+
+    private void queueRemainingAccountBills(List<Account_Bill__c> accountBills) {
+        Boolean enqueueJobBoolean = false;
+        for (Account_Bill__c accountBill : allAccountBills) {
+            if (!accountBillsAlreadySent.contains(accountBill.Id)) {
+                System.enqueueJob(new AccountBillLetterStreamImpl(allAccountBills, accountBillsAlreadySent));
+                enqueueJobBoolean = true;
+                break;
+            }
+        }
+        if (!enqueueJobBoolean) {
+            String message = 'No need to enqueue another job, ' + accountBillsAlreadySent.size() + ' already sent';
+            Logger.logLater('QueueAccountBillLetterStreamMailer', 'sendAccountBills', message, Logger.FINE);
+        }
     }
 
     public static List<Account_Bill__c> markAccountBillsAsMailed(Set<Id> accountBillIds, Id newJobId) {
@@ -102,42 +170,11 @@ public without sharing class QueueAccountBillLetterStreamMailer implements Queue
         return accountBills;
     }
 
-    public class QueueHandleResponse implements Queueable {
-        public String responseXMLString;
-        public Set<Id> accountBillIds;
-        public String csv;
-        public Map<Id, Account_Bill__c> accountBillsByDocIds;
+    public class Params {
+        public Set<Id> accountBills;
+        public Set<Id> documentsIds;
         public Boolean makeCallout;
-
-        public QueueHandleResponse(String responseXMLString, Set<Id> accountBillIds, String csv, Map<Id, Account_Bill__c> accountBillsByDocIds, Boolean makeCallout) {
-            this.responseXMLString = responseXMLString;
-            this.accountBillIds = accountBillIds;
-            this.csv = csv;
-            this.accountBillsByDocIds = accountBillsByDocIds;
-            this.makeCallout = makeCallout;
-        }
-
-        public void execute(QueueableContext contact) {
-            handleResponse();
-        }
-
-        public void handleResponse() {
-            LetterStreamService lss = new LetterStreamService();
-            // newJob gets inserted within here
-            LetterStreamJob__c newJob = lss.parseLetterStreamResponse(responseXMLString);
-
-            if (newJob == null) {
-                Logger.logNow('QueueAccountBillLetterStreamMailer', 'execute', 'Job post failed - response xml: ' + responseXMLString + '\n CSV: ' + csv);
-            } else {
-                update markAccountBillsAsMailed(accountBillIds, newJob.Id);
-
-                ContentVersion file = new ContentVersion();
-                file.VersionData = Blob.valueOf(responseXMLString);
-                file.Title = 'response.xml';
-                file.FirstPublishLocationId = newJob.Id;
-                file.pathOnClient = '/response.xml';
-                insert file;
-            }
-        }
+        public List<Account_Bill__c> allAccountBills;
+        public Set<Id> accountBillsAlreadySent;
     }
 }
