@@ -84,16 +84,14 @@
             var partnerApp = component.get("v.partnerApp");
 
 
-
-            if(ual.Lead__c == null){
+            if (ual.Lead__c == null){
                 ual.Lead__c = lead.Id;
             }
 
             var utility = component.get('v.utility');
-            ual.Utility__c = utility.Id;
-            ual.Annual_kWh__c = 8000;
+            ual.Utility_lookup__c = utility.Id;
 
-            if (!partnerApp) {
+            if (partnerApp) {
                 ual.Annual_kWh__c = 8000;
             }
 
