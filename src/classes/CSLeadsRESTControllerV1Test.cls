@@ -1,7 +1,7 @@
 /**
  * Created by mstackhouse on 3/6/2019.
- * Description: 
- * Test: 
+ * Description:
+ * Test:
  */
 
 @IsTest
@@ -66,7 +66,8 @@ public with sharing class CSLeadsRESTControllerV1Test {
             Product__c = product.Id,
             Partner_Lookup__c = partner.Id,
             bs_Sales_ID__c = salesRep2.Id,
-            Customer_Referral__c = contactRecord.Id
+            Customer_Referral__c = contactRecord.Id,
+            Application_Complete_Date__c = Datetime.newInstance(2019, 5, 28, 1, 6, 8)
         );
 
         insert leadToPatch;
@@ -98,7 +99,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
         CSLeadsRESTControllerV1.patchRequest();
 
         RestResponse response = RestContext.response;
-        System.assertEquals(200, response.statuscode);
+        System.assertEquals(200, response.statusCode);
 
         String jsonResponse = response.responseBody.toString();
 
@@ -123,6 +124,8 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertNotEquals(null, patchResponseEnvelope.data.referralCode);
         System.assertNotEquals(null, patchResponseEnvelope.data.productName);
         System.assertNotEquals(null, patchResponseEnvelope.data.utilityName);
+        System.assertNotEquals(null, patchResponseEnvelope.data.applicationCompleteDate);
+        System.assertEquals(Datetime.newInstance(2019, 5, 28, 1, 6, 8), patchResponseEnvelope.data.applicationCompleteDate);
         System.assertEquals(true, patchResponseEnvelope.errors.isEmpty());
         System.assertEquals(true, patchResponseEnvelope.messages.isEmpty());
 
@@ -134,7 +137,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
         ];
         System.assertEquals(true, patchedLead.Privacy_Policy_Acknowledged__c, 'privacy policy should be acknowledged');
     }
-    
+
     @IsTest // apparently you can spell it either acknowledgement or acknowledgment...
     public static void testPatchAcknowledgmentSpelledWithoutAnE() {
         Lead leadToPatch = new Lead(
@@ -154,11 +157,11 @@ public with sharing class CSLeadsRESTControllerV1Test {
 
         System.assertEquals(false, insertedLead.Privacy_Policy_Acknowledged__c, 'privacy policy should default to false');
 
-            String jsonRequest = '{' +
-                '"id":"' + leadToPatch.Id + '",' +
-                '"customerAcknowledgment":true,' +
-                '"customerAgreementText":"I Agree"' +
-                '}';
+        String jsonRequest = '{' +
+            '"id":"' + leadToPatch.Id + '",' +
+            '"customerAcknowledgment":true,' +
+            '"customerAgreementText":"I Agree"' +
+            '}';
 
         RestRequest req = new RestRequest();
         req.requestURI = '/services/apexrest/v1/CSLeads';
@@ -249,6 +252,104 @@ public with sharing class CSLeadsRESTControllerV1Test {
 
         System.assertEquals('mock-zuoraId', patchedLead.Zuora_Payment_Ref_Id__c);
         System.assertEquals(Datetime.newInstanceGMT(2019,01,05,19,0,0), patchedLead.Zuora_Payment_Ref_Id_Expiration_Date__c);
+    }
+
+    @IsTest
+    public static void testPatchUpdateHasCompletedDate() {
+        Utility__c utility = new Utility__c(
+            Name = 'Utility'
+        );
+        insert utility;
+
+        Product2 product = new Product2(
+            Name = 'CS Product'
+        );
+        insert product;
+
+        Partner__c partner = new Partner__c(
+            Name = 'Mass Renewables',
+            CS_Referral_Status__c = 'Default CS Partner',
+            Email__c = 'massRenewables@test.com');
+
+        insert partner;
+
+        BSST__c salesRep2 = new BSST__c(
+            Name = 'Jon Snow',
+            Partner__c = partner.Id,
+            Email__c = 'snowj@testemail.com');
+        insert salesRep2;
+
+        Contact contactRecord = new Contact(
+            FirstName = 'Daenerys',
+            LastName = 'Targaryen');
+        insert contactRecord;
+
+        Lead leadToPatch = new Lead(
+            FirstName = 'Sansa',
+            LastName = 'testcase',
+            Company = 'bluewave',
+            Email = 'test@email.com',
+            MobilePhone = '1231231234',
+            Application_Type__c = 'Residential',
+            LASERCA__Home_Address__c = '123 fake st',
+            LASERCA__Home_City__c = 'city',
+            LASERCA__Home_State__c = 'MA',
+            LASERCA__Home_Zip__c = '12345',
+            Parcel_Zip__c = '12345',
+            LoadZone__c = 'SEMA',
+            Utility_relationship__c = utility.Id,
+            Product__c = product.Id,
+            Partner_Lookup__c = partner.Id,
+            bs_Sales_ID__c = salesRep2.Id,
+            Customer_Referral__c = contactRecord.Id
+        );
+
+        insert leadToPatch;
+
+        Lead insertedLead = [
+            SELECT Id, Application_Complete_Date__c
+            FROM Lead
+            WHERE Id = : leadToPatch.Id
+            LIMIT 1
+        ];
+
+        System.assertEquals(null, insertedLead.Application_Complete_Date__c);
+
+        String jsonRequest = '{' +
+            '"id":"' + leadToPatch.Id + '",' +
+            '"applicationCompleteDate":"2019-05-03T18:25:43"' +
+            '}';
+
+        RestRequest req = new RestRequest();
+        req.requestURI = '/services/apexrest/v1/CSLeads';
+        req.httpMethod = 'PATCH';
+        req.addHeader('Content-Type', 'application/json');
+        req.requestBody = Blob.valueOf(jsonRequest);
+
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+
+        CSLeadsRESTControllerV1.patchRequest();
+
+        RestResponse response = RestContext.response;
+        System.assertEquals(200, response.statusCode);
+
+        String jsonResponse = response.responseBody.toString();
+
+        ResponseEnvelope patchResponseEnvelope = (ResponseEnvelope) JSON.deserialize(jsonResponse, ResponseEnvelope.class);
+
+        System.assertEquals(leadToPatch.Id, patchResponseEnvelope.data.Id);
+        System.assertNotEquals(null, patchResponseEnvelope.data.applicationCompleteDate);
+        System.assertEquals(true, patchResponseEnvelope.errors.isEmpty());
+        System.assertEquals(true, patchResponseEnvelope.messages.isEmpty());
+
+        Lead patchedLead = [
+            SELECT Id, Application_Complete_Date__c
+            FROM Lead
+            WHERE Id = : leadToPatch.Id
+            LIMIT 1
+        ];
+        System.assertNotEquals(null, patchedLead.Application_Complete_Date__c, 'date is set');
     }
 
     @IsTest
@@ -376,7 +477,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
         CSLeadsRESTControllerV1.postRequest();
 
         RestResponse response = RestContext.response;
-        System.assertEquals(201, response.statuscode);
+        System.assertEquals(201, response.statusCode);
 
         String jsonResponse = response.responseBody.toString();
         ResponseEnvelope patchResponseEnvelope = (ResponseEnvelope) JSON.deserialize(jsonResponse, ResponseEnvelope.class);
@@ -386,7 +487,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
 
         System.assertNotEquals(null, patchResponseEnvelope.data.id);
         System.assertEquals(false, patchResponseEnvelope.data.customerAcknowledgement);
-        System.assertEquals(null    , patchResponseEnvelope.data.customerAgreementText);
+        System.assertEquals(null, patchResponseEnvelope.data.customerAgreementText);
         System.assertNotEquals(null, patchResponseEnvelope.data.firstName);
         System.assertNotEquals(null, patchResponseEnvelope.data.lastName);
         System.assertNotEquals(null, patchResponseEnvelope.data.email);
