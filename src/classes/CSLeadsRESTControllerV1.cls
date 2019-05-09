@@ -137,7 +137,6 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
         public Id partnerId;
         public Id salesRepId;
         public Id referralCode;
-        public Date applicationCompleteDate;
         public Datetime applicationCompleteDate;
 
         public RestLead() {}
