@@ -272,12 +272,12 @@
             <processMetadataValues>
                 <name>rightHandSideType</name>
                 <value>
-                    <stringValue>String</stringValue>
+                    <stringValue>Formula</stringValue>
                 </value>
             </processMetadataValues>
             <name>ssn</name>
             <value>
-                <stringValue>000000001</stringValue>
+                <elementReference>formula_2_myRule_1_A1_9650728726</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -651,6 +651,35 @@
         </rules>
     </decisions>
     <description>Soft credit pull for leads, called from the Lead Create and Update Processes PB</description>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>IF(CONTAINS([Lead].FirstName,&quot;fail&quot;),
+	&quot;000000008&quot;,
+	(IF(CONTAINS([Lead].FirstName,&quot;frozen&quot;), 
+		&quot;000000010&quot;, 
+		IF(CONTAINS([Lead].LastName,&quot;testcase&quot;), 
+			&quot;000000001&quot;, 
+			&quot;000000000&quot;)
+		)
+	)
+)</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_2_myRule_1_A1_9650728726</name>
+        <dataType>String</dataType>
+        <expression>IF(CONTAINS({!SObject.FirstName},&quot;fail&quot;),
+	&quot;000000008&quot;,
+	(IF(CONTAINS({!SObject.FirstName},&quot;frozen&quot;), 
+		&quot;000000010&quot;, 
+		IF(CONTAINS({!SObject.LastName},&quot;testcase&quot;), 
+			&quot;000000001&quot;, 
+			&quot;000000000&quot;)
+		)
+	)
+)</expression>
+    </formulas>
     <interviewLabel>Lead_Soft_Pull_Credit-3_InterviewLabel</interviewLabel>
     <label>Lead - Soft Pull Credit</label>
     <processMetadataValues>
@@ -770,7 +799,7 @@
         <object>Lead</object>
     </recordUpdates>
     <startElementReference>sobjectInputCheckDecision</startElementReference>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>SObject</name>
         <dataType>SObject</dataType>
