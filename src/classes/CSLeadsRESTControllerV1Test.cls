@@ -67,7 +67,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
             Partner_Lookup__c = partner.Id,
             bs_Sales_ID__c = salesRep2.Id,
             Customer_Referral__c = contactRecord.Id,
-            Application_Complete_Date__c = Date.newInstance(2019, 5, 01)
+            Application_Complete_Date__c = Datetime.newInstance(2019, 5, 28, 1, 6, 8)
         );
 
         insert leadToPatch;
@@ -125,7 +125,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertNotEquals(null, patchResponseEnvelope.data.productName);
         System.assertNotEquals(null, patchResponseEnvelope.data.utilityName);
         System.assertNotEquals(null, patchResponseEnvelope.data.applicationCompleteDate);
-        System.assertEquals(Date.newInstance(2019, 5, 01), patchResponseEnvelope.data.applicationCompleteDate);
+        System.assertEquals(Datetime.newInstance(2019, 5, 28, 1, 6, 8), patchResponseEnvelope.data.applicationCompleteDate);
         System.assertEquals(true, patchResponseEnvelope.errors.isEmpty());
         System.assertEquals(true, patchResponseEnvelope.messages.isEmpty());
 
@@ -317,7 +317,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
 
         String jsonRequest = '{' +
             '"id":"' + leadToPatch.Id + '",' +
-            '"applicationCompleteDate":"2019-5-01"' +
+            '"applicationCompleteDate":"2019-05-03T18:25:43"' +
             '}';
 
         RestRequest req = new RestRequest();
@@ -340,7 +340,6 @@ public with sharing class CSLeadsRESTControllerV1Test {
 
         System.assertEquals(leadToPatch.Id, patchResponseEnvelope.data.Id);
         System.assertNotEquals(null, patchResponseEnvelope.data.applicationCompleteDate);
-        System.assertEquals(Date.newInstance(2019, 5, 01), patchResponseEnvelope.data.applicationCompleteDate);
         System.assertEquals(true, patchResponseEnvelope.errors.isEmpty());
         System.assertEquals(true, patchResponseEnvelope.messages.isEmpty());
 
@@ -350,7 +349,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
             WHERE Id = : leadToPatch.Id
             LIMIT 1
         ];
-        System.assertEquals(Date.newInstance(2019, 5, 01), patchedLead.Application_Complete_Date__c, 'date is set');
+        System.assertNotEquals(null, patchedLead.Application_Complete_Date__c, 'date is set');
     }
 
     @IsTest
