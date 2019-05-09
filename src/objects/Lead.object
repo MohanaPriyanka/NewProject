@@ -598,7 +598,7 @@
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <type>Date</type>
+        <type>DateTime</type>
     </fields>
     <fields>
         <fullName>Application_Source_Phase_1__c</fullName>
