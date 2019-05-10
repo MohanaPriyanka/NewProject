@@ -73,8 +73,8 @@
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Utility__c</field>
+                <behavior>Edit</behavior>
+                <field>Utility_lookup__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -168,6 +168,9 @@
         <layoutColumns/>
         <style>CustomLinks</style>
     </layoutSections>
+    <relatedLists>
+        <relatedList>RelatedFileList</relatedList>
+    </relatedLists>
     <relatedLists>
         <relatedList>RelatedNoteList</relatedList>
     </relatedLists>
