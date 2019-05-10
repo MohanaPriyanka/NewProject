@@ -376,10 +376,11 @@
         <externalId>false</externalId>
         <inlineHelpText>Terms at which management fee is invoiced</inlineHelpText>
         <label>Management Invoicing Detail</label>
-        <required>false</required>
+        <length>131072</length>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <type>TextArea</type>
+        <type>LongTextArea</type>
+        <visibleLines>5</visibleLines>
     </fields>
     <fields>
         <fullName>Management_Invoicing_Timing__c</fullName>
