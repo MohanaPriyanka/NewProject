@@ -2,6 +2,8 @@
     datatableFSC Lightning Flow Screen Component
     Enhanced by Eric Smith - 3/9/19
 
+https://github.com/alexed1/LightningFlowComponents/tree/master/flow_screen_components/datatableFSC
+
     4/8/19 - ers    New parameter to Show/Hide Checkboxes
                     New parameter for # of selectable rows (Set number of selectable rows to 1 for Radio Buttons)
                     Provide an input collection to the Output Selected parameter to pre-select rows
