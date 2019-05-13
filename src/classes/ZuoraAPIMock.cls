@@ -5,6 +5,8 @@
  *************************************************************************************/
 
 global with sharing class ZuoraAPIMock implements HttpCalloutMock {
+    public static String genericId = '2c92c0f96a6e3c3f016a6fc817180743';
+
     global HttpResponse respond(HttpRequest req) {
         // Only send a mock response for a specific endpoint and method.
         String endpoint = req.getEndpoint();
@@ -16,6 +18,14 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
             return getPaymentMethod();
         } else if (endpoint.contains('error')) {
             return getError();
+        } else if (endpoint.contains('v1/object/account')) {
+            return getGenericSuccess();
+        } else if (endpoint.contains('v1/object/contact')) {
+            return getGenericSuccess();
+        } else if (endpoint.contains('v1/action/create')) {
+            return getActionCreate(req.getBody());
+        } else if (endpoint.contains('v1/action/update')) {
+            return getActionUpdate(req.getBody());
         } else {
             return null;
         }
@@ -134,10 +144,78 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
         return res;
     }
 
+    public static HttpResponse getActionCreate(String body) {
+        HttpResponse res = getJSON();
+        if (body.contains('ThrowException')) {
+            throw new Util.BWException('Test callout exception');
+        } else if (body.contains('"type":"Account"')) {
+            AccountActionItems actionItems = (AccountActionItems) JSON.deserialize(body, AccountActionItems.class);
+            List<ZuoraAPI.SaveResult> saveResults = new List<ZuoraAPI.SaveResult>();
+            for (ZuoraAPI.ZuoraAccount account : actionItems.objects) {
+                ZuoraAPI.SaveResult saveResult = new ZuoraAPI.SaveResult();
+                saveResult.Id = genericId;
+                saveResult.Success = true;
+                saveResults.add(saveResult);
+            }
+            res.setBody(JSON.serialize(saveResults));
+        } else if (body.contains('"type":"Contact"')) {
+            ContactActionItems actionItems = (ContactActionItems) JSON.deserialize(body, ContactActionItems.class);
+            List<ZuoraAPI.SaveResult> saveResults = new List<ZuoraAPI.SaveResult>();
+            for (ZuoraAPI.ZuoraContact contact : actionItems.objects) {
+                ZuoraAPI.SaveResult saveResult = new ZuoraAPI.SaveResult();
+                saveResult.Id = genericId;
+                saveResult.Success = true;
+                saveResults.add(saveResult);
+            }
+            res.setBody(JSON.serialize(saveResults));
+        } else {
+            throw new Util.BWException('Unhandled action create: ' + body);
+        }
+        return res;
+    }
+
+    public static HttpResponse getActionUpdate(String body) {
+        HttpResponse res = getJSON();
+        if (body.contains('ThrowException')) {
+            throw new Util.BWException('Test callout exception');
+        } else if (body.contains('"type":"Account"')) {
+            AccountActionItems actionItems = (AccountActionItems) JSON.deserialize(body, AccountActionItems.class);
+            List<ZuoraAPI.SaveResult> saveResults = new List<ZuoraAPI.SaveResult>();
+            for (ZuoraAPI.ZuoraAccount account : actionItems.objects) {
+                ZuoraAPI.SaveResult saveResult = new ZuoraAPI.SaveResult();
+                saveResult.Id = genericId;
+                saveResult.Success = true;
+                saveResults.add(saveResult);
+            }
+            res.setBody(JSON.serialize(saveResults));
+        } else {
+            throw new Util.BWException('Unhandled action create: ' + body);
+        }
+        return res;
+    }
+
+    private static HttpResponse getGenericSuccess() {
+        HttpResponse res = getJSON();
+        res.setBody('{"Success":true,"Id":"' + genericId + '"}');
+        return res;
+    }
+
     public static HttpResponse getJSON() {
         HttpResponse res = new HttpResponse();
         res.setHeader('Content-Type', 'application/json');
         res.setStatusCode(200);
         return res;
+    }
+
+    // When we deserialize into ZuoraAPI.ActionItems, we get this error because of the generic objects attribute:
+    // Apex Type unsupported in JSON: Object
+    // So we'll define a concrete type to use just for this mock
+    public class AccountActionItems {
+        public String type;
+        public List<ZuoraAPI.ZuoraAccount> objects;
+    }
+    public class ContactActionItems {
+        public String type;
+        public List<ZuoraAPI.ZuoraContact> objects;
     }
 }

@@ -75,6 +75,57 @@ public with sharing class ZuoraAPI {
         public String AchBankName;
     }
 
+    public class ZuoraAccount {
+        public String AccountNumber;
+        public Boolean AllowInvoiceEdit;
+        public String Id;
+        public Boolean AutoPay;
+        public Boolean InvoiceDeliveryPrefsPrint;
+        public String UpdatedDate;
+        public Integer CreditBalance;
+        public Integer BillCycleDay;
+        public String BcdSettingOption;
+        public String PaymentTerm;
+        public String Status;
+        public Integer TotalInvoiceBalance;
+        public String UpdatedById;
+        public String Batch;
+        public String CreatedById;
+        public Boolean InvoiceDeliveryPrefsEmail;
+        public String Name;
+        public String SoldToId;
+        public String Notes;
+        public Integer Balance;
+        public String InvoiceTemplateId;
+        public String CrmId;
+        public String BillToId;
+        public String CreatedDate;
+        public String DefaultPaymentMethodId;
+        public String Currency_Zreserved;
+    }
+
+    public class ZuoraContact {
+        public String AccountId;
+        public String Address1;
+        public String City;
+        public String Country;
+        public String Description;
+        public String Fax;
+        public String FirstName;
+        public String HomePhone;
+        public String LastName;
+        public String MobilePhone;
+        public String NickName;
+        public String OtherPhone;
+        public String OtherPhoneType;
+        public String PersonalEmail;
+        public String PostalCode;
+        public String State;
+        public String TaxRegion;
+        public String WorkEmail;
+        public String CRM_ID_Zcustom;
+    }
+
     public class GenericResponse {
         public Boolean success;
         public String Id;
@@ -99,5 +150,19 @@ public with sharing class ZuoraAPI {
     public class CreditCharge {
         public Decimal amount;
         public String chargeId;
+    }
+
+    public class ActionItems {
+        public String type;
+        public List<Object> objects;
+        public ActionItems() {
+            objects = new List<Object>();
+        }
+    }
+
+    public class SaveResult {
+        public List<GenericResponseReason> Errors;
+        public String Id;
+        public Boolean Success;
     }
 }

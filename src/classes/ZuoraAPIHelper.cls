@@ -20,14 +20,15 @@ public with sharing class ZuoraAPIHelper {
         request.setHeader('Accept', 'application/json');
         request.setHeader('zuora-version', '224.0'); // Version 224.0 includes settlement object (credit memos, etc)
         if (jsonBody != null) {
-            String jsonString = JSON.serialize(jsonBody);
+            String jsonString = JSON.serialize(jsonBody, true);
             jsonString = jsonString.replace('_Zcustom','__c');
+            jsonString = jsonString.replace('_Zreserved','');
             request.setBody(jsonString);
         }
         HttpResponse response;
         Zuora.zApi zApiInstance = new Zuora.zApi();
         if (Test.isRunningTest()) {
-            response = new Http().send(request);
+            response = new ZuoraAPIMock().respond(request);
         } else {
             response = zApiInstance.sendRequest(request);
         }

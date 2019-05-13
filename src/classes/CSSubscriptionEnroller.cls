@@ -118,6 +118,9 @@ public without sharing class CSSubscriptionEnroller {
         for (Lead lead : leads) {
             createUAS(lead);
             moveChOrderToAccount(lead);
+            if (lead.Zuora_Payment_Ref_Id__c != null) {
+                System.enqueueJob(new ZuoraAccountAsyncService(lead.Id));
+            }
         }
         insertUASes();
         updateChargentOrders();
