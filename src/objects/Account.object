@@ -3984,6 +3984,18 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Zuora_Id__c</fullName>
+        <externalId>true</externalId>
+        <inlineHelpText>Set by ZuoraAccountService after it creates the account in Zuora from a converted lead</inlineHelpText>
+        <label>Zuora Id</label>
+        <length>32</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>of_Jobs_per_Month_Resi__c</fullName>
         <externalId>false</externalId>
         <label># of Jobs per Month (Resi)</label>
