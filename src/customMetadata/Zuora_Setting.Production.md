@@ -22,4 +22,8 @@
         <field>Hosted_Payment_Page_URI__c</field>
         <value xsi:type="xsd:string">https://www.zuora.com/apps/PublicHostedPageLite.do</value>
     </values>
+    <values>
+        <field>Is_Sandbox__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
 </CustomMetadata>
