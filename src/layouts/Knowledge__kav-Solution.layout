@@ -16,10 +16,10 @@
                 <field>Environment__c</field>
             </layoutItems>
             <layoutItems>
-                <field>Resolution__c</field>
+                <field>Cause__c</field>
             </layoutItems>
             <layoutItems>
-                <field>Cause__c</field>
+                <field>Resolution__c</field>
             </layoutItems>
             <layoutItems>
                 <field>Internal_Notes__c</field>
