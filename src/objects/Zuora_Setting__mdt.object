@@ -51,6 +51,14 @@
         <required>false</required>
         <type>Url</type>
     </fields>
+    <fields>
+        <fullName>Is_Sandbox__c</fullName>
+        <defaultValue>true</defaultValue>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Is Sandbox</label>
+        <type>Checkbox</type>
+    </fields>
     <label>Zuora Setting</label>
     <pluralLabel>Zuora Settings</pluralLabel>
     <visibility>Public</visibility>
