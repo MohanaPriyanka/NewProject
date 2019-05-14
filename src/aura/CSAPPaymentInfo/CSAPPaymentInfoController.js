@@ -89,6 +89,8 @@
                 sobjectType: 'Lead',
                 Id: lead.Id,
                 Zuora_Payment_Ref_Id__c: response.refId,
+                // Payment Methods expire in 240 hours
+                Zuora_Payment_Ref_Id_Expiration_Date__c: new Date(Date.now()+240*60*60*1000).toJSON(),
                 Loan_System_Information__c: JSON.stringify(paymentMethod)
             };
             var promise = helper.saveSObject(component, lead.Id, 'Lead', null, null, leadToSave);

@@ -26,5 +26,12 @@ public with sharing class AccountsSelectorTest {
         Set<Id> accountIds = (new Map<Id, Account>([SELECT Id FROM Account])).keySet();
         System.assert(AccountsSelector.selectNotClosed(accountIds) != null, 'Expected a list of accounts');
     }
-
+    @IsTest public static void testSelectWithSendBillsContact() {
+        Account autoEmailerAccount = [SELECT Id FROM Account WHERE Name = 'AutoEmailer Account A'];
+        System.assertEquals(
+            'example@example.com',
+            AccountsSelector.selectWithSendBillsContact(new Set<Id>{autoEmailerAccount.Id})[0].Send_Bills_Contact__r.Email,
+            'Expected to find an account with send bills contact'
+        );
+    }
 }

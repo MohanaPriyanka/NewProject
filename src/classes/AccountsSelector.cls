@@ -4,7 +4,7 @@
  * Test: AccountsSelectorTest
  *************************************************************************************/
 
-public with sharing class AccountsSelector {
+public without sharing class AccountsSelector {
     public static List<Account> selectCS67DaysPastDueWithAnchorOpps() {
         return [
             SELECT Id, Days_Past_Due__c, Cancellation_Request_Date__c, Cancellation_Reason__c, Cancellation_Comments__c,
@@ -49,6 +49,16 @@ public with sharing class AccountsSelector {
             FROM Account
             WHERE Id IN :accountIds
             AND Status__c != 'Closed'
+        ];
+    }
+
+    public static List<Account> selectWithSendBillsContact(Set<Id> accountIds) {
+        return [
+            SELECT Id, Name, Account_Number__c, Zuora_Id__c, Send_Bills_Contact__c, Send_Bills_Contact__r.AccountId,
+                Send_Bills_Contact__r.Id, Send_Bills_Contact__r.FirstName, Send_Bills_Contact__r.LastName,
+                Send_Bills_Contact__r.Email, Recurring_Billing__c
+            FROM Account
+            WHERE Id IN :accountIds
         ];
     }
 }

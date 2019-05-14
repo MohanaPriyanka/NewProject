@@ -1,6 +1,7 @@
 @IsTest
 public with sharing class CSAPControllerTest {
-    @TestSetup static void setupTestData() {
+    @TestSetup
+    public static void setupTestData() {
         Test.startTest();
         List<String> partnerSetUpIds = LoanTestRecordWarehouse.partnerSetup();
         LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
@@ -161,7 +162,7 @@ public with sharing class CSAPControllerTest {
         Test.stopTest();
     }
 
-    private static Lead getLeadForTest() {
+    public static Lead getLeadForTest() {
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
 
         Lead lead = new Lead(
@@ -185,7 +186,7 @@ public with sharing class CSAPControllerTest {
         return lead;
     }
 
-    private static void pullCreditForLead(Id leadId) {
+    public static void pullCreditForLead(Id leadId) {
         LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
             LASERCA__Lead__c = leadId,
             LASERCA__Credit_Score__c = '700',
