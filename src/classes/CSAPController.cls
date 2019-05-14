@@ -632,7 +632,7 @@ public without sharing class CSAPController {
     }
 
     @AuraEnabled
-    public static Boolean zuoraEnabled() {
-        return ZuoraAPIHelper.zuoraEnabled();
+    public static Boolean zuoraPaymentPageEnabled() {
+        return ZuoraAPIHelper.zuoraPaymentPageEnabled();
     }
 }

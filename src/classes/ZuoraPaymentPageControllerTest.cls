@@ -10,15 +10,14 @@ public with sharing class ZuoraPaymentPageControllerTest {
         Test.setMock(HttpCalloutMock.class, new ZuoraAPIMock());
         ZuoraPaymentPageController.PaymentPageMetadata paymentPageMetadata = ZuoraPaymentPageController.getPageMetadata();
         System.assertEquals('30689', paymentPageMetadata.ccRsaSignature.tenantId);
+
+        Organization o = [SELECT IsSandbox FROM Organization];
         List<Zuora_Setting__mdt> zuoraSettings = [
             SELECT Id, API_Endpoint_URL__c
             FROM Zuora_Setting__mdt
-            WHERE Active__c = TRUE
+            WHERE Is_Sandbox__c = :o.IsSandbox
         ];
-        // There might not be an active setting if we're still using Chargent
-        if (zuoraSettings.size() == 1) {
-            System.assertEquals(zuoraSettings[0].API_Endpoint_URL__c, paymentPageMetadata.zuoraSetting.API_Endpoint_URL__c);
-        }
+        System.assertEquals(zuoraSettings[0].API_Endpoint_URL__c, paymentPageMetadata.zuoraSetting.API_Endpoint_URL__c);
     }
 
     @IsTest
