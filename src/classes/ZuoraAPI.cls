@@ -160,9 +160,17 @@ public with sharing class ZuoraAPI {
         }
     }
 
+    // The SOAP response (wrapped around a REST API)
+    // https://knowledgecenter.zuora.com/DC_Developers/G_SOAP_API/F_SOAP_API_Complex_Types/SaveResult
     public class SaveResult {
-        public List<GenericResponseReason> Errors;
+        public List<ErrorCode> Errors;
         public String Id;
         public Boolean Success;
+    }
+
+    // https://knowledgecenter.zuora.com/DC_Developers/G_SOAP_API/L_Error_Handling/Errors
+    public class ErrorCode {
+        public String Code;
+        public String Message;
     }
 }

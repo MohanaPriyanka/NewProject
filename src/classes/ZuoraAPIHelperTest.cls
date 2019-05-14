@@ -18,23 +18,18 @@ public with sharing class ZuoraAPIHelperTest {
     }
 
     @IsTest
-    public static void testZuoraEnabled() {
-        // At the time of writing, we can't do DML on Zuora settings
-        List<Zuora_Setting__mdt> zuoraSettings = [SELECT Id, Active__c FROM Zuora_Setting__mdt];
-        Integer numActive = 0;
-        for (Zuora_Setting__mdt zuoraSetting : zuoraSettings) {
-            if (zuoraSetting.Active__c) {
-                numActive ++;
-            }
-        }
+    public static void testZuoraPaymentPageEnabled() {
+        // If there's no system property, don't use payment page
+        System.assertEquals(false, ZuoraAPIHelper.zuoraPaymentPageEnabled());
 
-        if (numActive == 0) {
-            System.assertEquals(true, ZuoraAPIHelper.zuoraEnabled());
-            System.assertEquals('TestSetting', ZuoraAPIHelper.getZuoraSetting().DeveloperName);
-        } else if (numActive == 1) {
-            System.assertEquals(true, ZuoraAPIHelper.zuoraEnabled());
-        } else {
-            System.assertEquals(false, ZuoraAPIHelper.zuoraEnabled());
-        }
+        System_Properties__c property = new System_Properties__c(Name = 'System', Use_Zuora_for_Payment_Capture__c = true);
+        insert property;
+
+        System.assertEquals(true, ZuoraAPIHelper.zuoraPaymentPageEnabled());
+
+        property.Use_Zuora_for_Payment_Capture__c = false;
+        update property;
+
+        System.assertEquals(false, ZuoraAPIHelper.zuoraPaymentPageEnabled());
     }
 }
