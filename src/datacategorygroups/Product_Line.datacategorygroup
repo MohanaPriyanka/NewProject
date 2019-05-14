@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DataCategoryGroup xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <dataCategory>
+        <dataCategory>
+            <dataCategory>
+                <label>Billing</label>
+                <name>Billing</name>
+            </dataCategory>
+            <dataCategory>
+                <label>Solar Credits</label>
+                <name>Solar_Credits</name>
+            </dataCategory>
+            <label>Community Solar</label>
+            <name>Community_Solar</name>
+        </dataCategory>
+        <dataCategory>
+            <label>Residential Loan</label>
+            <name>Residential_Loan</name>
+        </dataCategory>
+        <dataCategory>
+            <label>Project Development</label>
+            <name>Project_Development</name>
+        </dataCategory>
+        <label>All</label>
+        <name>All</name>
+    </dataCategory>
+    <label>Product Line</label>
+    <objectUsage>
+        <object>KnowledgeArticleVersion</object>
+    </objectUsage>
+</DataCategoryGroup>
