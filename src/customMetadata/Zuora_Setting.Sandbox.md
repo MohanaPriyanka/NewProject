@@ -12,7 +12,7 @@
     </values>
     <values>
         <field>Active__c</field>
-        <value xsi:type="xsd:boolean">false</value>
+        <value xsi:type="xsd:boolean">true</value>
     </values>
     <values>
         <field>CC_Payment_Page_Id__c</field>
@@ -21,5 +21,9 @@
     <values>
         <field>Hosted_Payment_Page_URI__c</field>
         <value xsi:type="xsd:string">https://apisandbox.zuora.com/apps/PublicHostedPageLite.do</value>
+    </values>
+    <values>
+        <field>Is_Sandbox__c</field>
+        <value xsi:type="xsd:boolean">true</value>
     </values>
 </CustomMetadata>
