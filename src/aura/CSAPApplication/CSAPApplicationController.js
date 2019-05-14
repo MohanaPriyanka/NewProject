@@ -31,7 +31,7 @@
             component.set("v.referralCode", decodeURIComponent(referralCode));
         }
 
-        var paymentProviderAction = component.get('c.zuoraEnabled');
+        var paymentProviderAction = component.get('c.zuoraPaymentPageEnabled');
         paymentProviderAction.setCallback(this, function(paymentProviderResponse) {
             if (paymentProviderResponse.getState() === 'SUCCESS') {
                 if (paymentProviderResponse.getReturnValue()) {

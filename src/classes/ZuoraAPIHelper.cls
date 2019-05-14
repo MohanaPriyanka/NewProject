@@ -20,14 +20,15 @@ public with sharing class ZuoraAPIHelper {
         request.setHeader('Accept', 'application/json');
         request.setHeader('zuora-version', '224.0'); // Version 224.0 includes settlement object (credit memos, etc)
         if (jsonBody != null) {
-            String jsonString = JSON.serialize(jsonBody);
+            String jsonString = JSON.serialize(jsonBody, true);
             jsonString = jsonString.replace('_Zcustom','__c');
+            jsonString = jsonString.replace('_Zreserved','');
             request.setBody(jsonString);
         }
         HttpResponse response;
         Zuora.zApi zApiInstance = new Zuora.zApi();
         if (Test.isRunningTest()) {
-            response = new Http().send(request);
+            response = new ZuoraAPIMock().respond(request);
         } else {
             response = zApiInstance.sendRequest(request);
         }
@@ -46,45 +47,28 @@ public with sharing class ZuoraAPIHelper {
     }
 
     public static Zuora_Setting__mdt getZuoraSetting() {
-        if (zuoraSetting == null) {
-            List<Zuora_Setting__mdt> zuoraSettings = [
-                SELECT Id, DeveloperName, CC_Payment_Page_Id__c, ACH_Payment_Page_Id__c, Hosted_Payment_Page_URI__c, API_Endpoint_URL__c
-                FROM Zuora_Setting__mdt
-                WHERE Active__c = TRUE
-            ];
-            // In case all zuora settings are disabled (which would be if we the case if we're still using Chargent), we'll
-            // use a fake setting
-            if (Test.isRunningTest() && zuoraSettings.size() == 0) {
-                Zuora_Setting__mdt zuoraSetting = new Zuora_Setting__mdt(
-                    DeveloperName = 'TestSetting',
-                    CC_Payment_Page_Id__c = 'CCPaymentPageId',
-                    ACH_Payment_Page_Id__c = 'ACHPaymentPageId',
-                    Hosted_Payment_Page_URI__c = 'HostedPaymentPageURI',
-                    API_Endpoint_URL__c = 'https://rest.zuora.com/'
-                );
-                zuoraSettings.add(zuoraSetting);
-            }
-            if (zuoraSettings.size() == 1) {
-                Organization o = [SELECT IsSandbox FROM Organization LIMIT 1];
-                if (!Test.isRunningTest() &&
-                    (o.IsSandbox && zuoraSettings[0].DeveloperName != 'Sandbox' ||
-                    !o.IsSandbox && zuoraSettings[0].DeveloperName != 'Production')) {
-                    throw new Util.BWException('Wrong Zuora setting is activated');
-                }
-                zuoraSetting = zuoraSettings[0];
-            } else {
-                throw new Util.BWException('No active, or multiple active, Zuora Settings found');
-            }
+        if (zuoraSetting != null) {
+            return zuoraSetting;
+        }
+        Organization o = [SELECT IsSandbox FROM Organization];
+        List<Zuora_Setting__mdt> zuoraSettings = [
+            SELECT Id, DeveloperName, CC_Payment_Page_Id__c, ACH_Payment_Page_Id__c, Hosted_Payment_Page_URI__c, API_Endpoint_URL__c
+            FROM Zuora_Setting__mdt
+            WHERE Is_Sandbox__c = :o.IsSandbox
+        ];
+        if (zuoraSettings.size() == 1) {
+            zuoraSetting = zuoraSettings[0];
+        } else {
+            throw new Util.BWException('Wrong number of Zuora Settings found: ' + zuoraSettings.size());
         }
         return zuoraSetting;
     }
 
-    public static Boolean zuoraEnabled() {
-        try {
-            getZuoraSetting();
-        } catch (Util.BWException bwe) {
-            return false;
+    public static Boolean zuoraPaymentPageEnabled() {
+        List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
+        if (systemProperties.size() > 0) {
+            return systemProperties[0].Use_Zuora_for_Payment_Capture__c;
         }
-        return true;
+        return false;
     }
 }

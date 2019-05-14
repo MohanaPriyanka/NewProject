@@ -1,6 +1,7 @@
 @IsTest
 public with sharing class CSAPControllerTest {
-    @TestSetup static void setupTestData() {
+    @TestSetup
+    public static void setupTestData() {
         Test.startTest();
         List<String> partnerSetUpIds = LoanTestRecordWarehouse.partnerSetup();
         LoanTestRecordWarehouse.getLoanLeadswithVariableFICOsandTerms();
@@ -161,7 +162,7 @@ public with sharing class CSAPControllerTest {
         Test.stopTest();
     }
 
-    private static Lead getLeadForTest() {
+    public static Lead getLeadForTest() {
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
 
         Lead lead = new Lead(
@@ -185,7 +186,7 @@ public with sharing class CSAPControllerTest {
         return lead;
     }
 
-    private static void pullCreditForLead(Id leadId) {
+    public static void pullCreditForLead(Id leadId) {
         LASERCA__Personal_Credit_Report__c pcr = new LASERCA__Personal_Credit_Report__c(
             LASERCA__Lead__c = leadId,
             LASERCA__Credit_Score__c = '700',
@@ -1381,23 +1382,13 @@ public with sharing class CSAPControllerTest {
     }
 
     @IsTest
-    public static void testZuoraEnabled() {
-        // At the time of writing, we can't do DML on Zuora settings
-        List<Zuora_Setting__mdt> zuoraSettings = [SELECT Id, Active__c FROM Zuora_Setting__mdt];
-        Integer numActive = 0;
-        for (Zuora_Setting__mdt zuoraSetting : zuoraSettings) {
-            if (zuoraSetting.Active__c) {
-                numActive ++;
-            }
-        }
+    public static void testZuoraPaymentPageEnabled() {
+        System.assertEquals(false, CSAPController.zuoraPaymentPageEnabled());
 
-        if (numActive == 0) {
-            System.assertEquals(true, CSAPController.zuoraEnabled());
-            System.assertEquals('TestSetting', ZuoraAPIHelper.getZuoraSetting().DeveloperName);
-        } else if (numActive == 1) {
-            System.assertEquals(true, CSAPController.zuoraEnabled());
-        } else {
-            System.assertEquals(false, CSAPController.zuoraEnabled());
-        }
+        System_Properties__c systemProperty = System_Properties__c.getAll().values()[0];
+        systemProperty.Use_Zuora_for_Payment_Capture__c = true;
+        update systemProperty;
+
+        System.assertEquals(true, CSAPController.zuoraPaymentPageEnabled());
     }
 }
