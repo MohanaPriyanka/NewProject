@@ -23,14 +23,6 @@
         <type>Url</type>
     </fields>
     <fields>
-        <fullName>Active__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <fieldManageability>DeveloperControlled</fieldManageability>
-        <label>Active</label>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>CC_Payment_Page_Id__c</fullName>
         <externalId>false</externalId>
         <fieldManageability>DeveloperControlled</fieldManageability>
@@ -50,6 +42,14 @@
         <label>Hosted Payment Page URI</label>
         <required>false</required>
         <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Is_Sandbox__c</fullName>
+        <defaultValue>true</defaultValue>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Is Sandbox</label>
+        <type>Checkbox</type>
     </fields>
     <label>Zuora Setting</label>
     <pluralLabel>Zuora Settings</pluralLabel>
