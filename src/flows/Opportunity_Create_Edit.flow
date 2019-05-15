@@ -76,14 +76,14 @@
                 <stringValue>CS_Opportunity_Complete_Email</stringValue>
             </value>
         </processMetadataValues>
-        <name>myRule_9_A4</name>
+        <name>myRule_9_A3</name>
         <label>CS Opportunity Complete Email</label>
         <locationX>900</locationX>
-        <locationY>500</locationY>
+        <locationY>400</locationY>
         <actionName>Opportunity.CS_Opportunity_Complete_Email</actionName>
         <actionType>emailAlert</actionType>
         <connector>
-            <targetReference>myRule_9_A5</targetReference>
+            <targetReference>myRule_9_A4</targetReference>
         </connector>
         <inputParameters>
             <name>SObjectRowId</name>
@@ -2073,7 +2073,7 @@
                 <stringValue>TODAY()</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_10_myRule_9_A5_0810508272</name>
+        <name>formula_10_myRule_9_A4_8189004927</name>
         <dataType>Date</dataType>
         <expression>TODAY()</expression>
     </formulas>
@@ -2084,11 +2084,11 @@
                 <stringValue>TODAY()</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_11_myRule_9_A2_3559467171</name>
+        <name>formula_11_myRule_9_A2_1053653030</name>
         <dataType>Date</dataType>
         <expression>TODAY()</expression>
     </formulas>
-    <interviewLabel>Opportunity_Create_Edit-12_InterviewLabel</interviewLabel>
+    <interviewLabel>Opportunity_Create_Edit-13_InterviewLabel</interviewLabel>
     <label>Opportunity Create/Edit</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -2500,7 +2500,7 @@
             </processMetadataValues>
             <field>ActivityDate</field>
             <value>
-                <elementReference>formula_11_myRule_9_A2_3559467171</elementReference>
+                <elementReference>formula_11_myRule_9_A2_1053653030</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -2704,10 +2704,10 @@
         <object>Task</object>
     </recordCreates>
     <recordCreates>
-        <name>myRule_9_A5</name>
+        <name>myRule_9_A4</name>
         <label>EMAIL LOG: CS Complete Emaii</label>
         <locationX>900</locationX>
-        <locationY>600</locationY>
+        <locationY>500</locationY>
         <connector>
             <targetReference>myWait_myRule_9</targetReference>
         </connector>
@@ -2744,7 +2744,7 @@
             </processMetadataValues>
             <field>ActivityDate</field>
             <value>
-                <elementReference>formula_10_myRule_9_A5_0810508272</elementReference>
+                <elementReference>formula_10_myRule_9_A4_8189004927</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -3112,89 +3112,6 @@
             </value>
         </inputAssignments>
         <object>Opportunity</object>
-    </recordUpdates>
-    <recordUpdates>
-        <processMetadataValues>
-            <name>evaluationType</name>
-            <value>
-                <stringValue>always</stringValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>extraTypeInfo</name>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>isChildRelationship</name>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>reference</name>
-            <value>
-                <stringValue>[Opportunity].Shared Solar System</stringValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>referenceTargetField</name>
-        </processMetadataValues>
-        <name>myRule_9_A3</name>
-        <label>Update Shared Solar System</label>
-        <locationX>900</locationX>
-        <locationY>400</locationY>
-        <connector>
-            <targetReference>myRule_9_A4</targetReference>
-        </connector>
-        <filters>
-            <processMetadataValues>
-                <name>implicit</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </processMetadataValues>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>myVariable_current.Shared_Solar_System__c</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Boolean</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Update Dummy</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue></stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Boolean</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Update_Dummy__c</field>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </inputAssignments>
-        <object>Shared_Solar_System__c</object>
     </recordUpdates>
     <startElementReference>myPreWaitDecision_myWait_myRule_9</startElementReference>
     <status>Active</status>
