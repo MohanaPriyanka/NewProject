@@ -78,6 +78,18 @@
         <template>CS_Application_Email_Notifications/CS_Welcome_Email</template>
     </alerts>
     <alerts>
+        <fullName>CS_Opportunity_Complete_Email</fullName>
+        <description>CS Opportunity Complete Email</description>
+        <protected>false</protected>
+        <recipients>
+            <field>Email__c</field>
+            <type>email</type>
+        </recipients>
+        <senderAddress>customercare@bluewavesolar.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>CSCustomerOnboardingEmails/CS_Customer_Executed_Survey</template>
+    </alerts>
+    <alerts>
         <fullName>CS_Partner_Contract_Complete</fullName>
         <description>CS Partner - Contract Complete</description>
         <protected>false</protected>
@@ -910,7 +922,7 @@ IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12),
             <name>EMAIL_LOG_CS_Opportunity_Complete_Email_to_Partner</name>
             <type>Task</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <criteriaItems>
             <field>Opportunity.Product_Line__c</field>
             <operation>equals</operation>
@@ -1165,7 +1177,7 @@ IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12),
             <name>Opportunity_Name_Remove_Hyphen</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <formula>IF 
 ( 
 CONTAINS(Name,&apos;-&apos;),true,false 
@@ -1340,7 +1352,7 @@ CONTAINS(Name,&apos;-&apos;),true,false
             <name>Opportunity_Stage_Utility_Information</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <criteriaItems>
             <field>Opportunity.Product_Line__c</field>
             <operation>equals</operation>
