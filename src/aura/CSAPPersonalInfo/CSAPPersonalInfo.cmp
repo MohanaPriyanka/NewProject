@@ -44,7 +44,7 @@
             <aura:if isTrue="{!v.partnerApp}">
               <b class="slds-p-horizontal_large"> Sign up for community solar in your area! </b>
               <aura:set attribute="else">
-                <b class="slds-p-horizontal_large">  Great news, community solar is in your area! </b>
+                <b class="slds-p-horizontal_large"> Find out if community solar is in your area! </b>
               </aura:set>
             </aura:if>
 
