@@ -147,10 +147,6 @@
             <componentName>force:relatedListSingleContainer</componentName>
         </componentInstances>
         <componentInstances>
-            <componentInstanceProperties>
-                <name>hideHeader</name>
-                <value>false</value>
-            </componentInstanceProperties>
             <componentName>force:relatedListQuickLinksContainer</componentName>
         </componentInstances>
         <mode>Replace</mode>
