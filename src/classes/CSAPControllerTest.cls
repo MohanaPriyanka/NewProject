@@ -708,6 +708,7 @@ public with sharing class CSAPControllerTest {
             Lead nonResidentialLead = residentialLead.clone();
             nonResidentialLead.Id = null;
             nonResidentialLead.Application_Type__c = 'Non-Residential';
+            nonResidentialLead.Application_Source_Phase_1__c = 'CSAP 2.1 with Partner';
             CSAPController.processLead(nonResidentialLead);
             nonResidentialLead.OwnerId = apiUser.Id;
             leadList.add(nonResidentialLead);
