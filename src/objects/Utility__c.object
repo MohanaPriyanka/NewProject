@@ -67,6 +67,17 @@
         </valueSet>
     </fields>
     <fields>
+        <fullName>EIA_ID__c</fullName>
+        <externalId>true</externalId>
+        <inlineHelpText>This is the EIA ID that Originations provides</inlineHelpText>
+        <label>EIA ID</label>
+        <length>16</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Number_of_Decimal_Places__c</fullName>
         <externalId>false</externalId>
         <label>Number of Decimal Places</label>

@@ -13,6 +13,12 @@ public with sharing class CSLeadsRESTControllerV1Test {
         );
         insert utility;
 
+        Utility__c utilityWithEIA = new Utility__c(
+            Name = 'Utility with EIA ID',
+            EIA_ID__c = '1234'
+        );
+        insert utilityWithEIA;
+
         Product2 product = new Product2(
             Name = 'CS Product'
         );
@@ -459,6 +465,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
             '"serviceZIPCode":	"12345", ' +
             '"loadZone":	"SEMA", ' +
             '"utilityName": "Utility",' +
+            '"eiaId":	"1234", ' +
             '"productName":	"CS Product",' +
             '"partnerId": "' + partner.Id+ '",' +
             '"salesRepId": "' + salesRep2.Id+ '",' +
@@ -501,9 +508,10 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertNotEquals(null, patchResponseEnvelope.data.loadZone);
         System.assertNotEquals(null, patchResponseEnvelope.data.referralCode);
         System.assertNotEquals(null, patchResponseEnvelope.data.productName);
-        System.assertNotEquals(null, patchResponseEnvelope.data.utilityName);
         System.assertNotEquals(null, patchResponseEnvelope.data.partnerId);
         System.assertNotEquals(null, patchResponseEnvelope.data.salesRepId);
+        System.assertNotEquals(null, patchResponseEnvelope.data.eiaId);
+        System.assertEquals('Utility with EIA ID', patchResponseEnvelope.data.utilityName);
     }
 
     @IsTest
@@ -533,6 +541,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
 
     @IsTest
     public static void testPostNonResiLead() {
+
         Partner__c partner = new Partner__c(
             Name = 'Bluewave Inside Sales',
             CS_Referral_Status__c = 'Default CS Partner',
@@ -554,6 +563,12 @@ public with sharing class CSLeadsRESTControllerV1Test {
             LastName = 'Swain');
         insert contactRecord;
 
+        Utility__c testEIA = new Utility__c(
+            Name = 'Test EIA',
+            EIA_ID__c = '1234'
+        );
+        insert testEIA;
+
         String jsonRequest = '{' +
             '"firstName": "string", ' +
             '"lastName": "string", ' +
@@ -573,7 +588,8 @@ public with sharing class CSLeadsRESTControllerV1Test {
             '"productName":	"CS Product", ' +
             '"partnerId": "' + partner.Id+ '", ' +
             '"salesRepId": "' + salesRep2.Id+ '", ' +
-            '"referralCode": "' + contactRecord.Id+ '"' +
+            '"referralCode": "' + contactRecord.Id+ '",' +
+            '"eiaId":	"1234" ' +
             '}';
 
         RestRequest req = new RestRequest();
@@ -588,7 +604,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
         CSLeadsRESTControllerV1.postRequest();
 
         RestResponse response = RestContext.response;
-        System.assertEquals(201, response.statuscode);
+        System.assertEquals(201, response.statusCode);
 
         String jsonResponse = response.responseBody.toString();
         ResponseEnvelope patchResponseEnvelope = (ResponseEnvelope) JSON.deserialize(jsonResponse, ResponseEnvelope.class);
@@ -612,12 +628,13 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertNotEquals(null, patchResponseEnvelope.data.loadZone);
         System.assertNotEquals(null, patchResponseEnvelope.data.referralCode);
         System.assertNotEquals(null, patchResponseEnvelope.data.productName);
-        System.assertNotEquals(null, patchResponseEnvelope.data.utilityName);
         System.assertNotEquals(null, patchResponseEnvelope.data.businessName);
         System.assertNotEquals(null, patchResponseEnvelope.data.businessPhone);
         System.assertNotEquals(null, patchResponseEnvelope.data.businessTitle);
         System.assertNotEquals(null, patchResponseEnvelope.data.salesRepId);
         System.assertNotEquals(null, patchResponseEnvelope.data.partnerId);
+        System.assertNotEquals(null, patchResponseEnvelope.data.eiaId);
+        System.assertEquals('Utility with EIA ID', patchResponseEnvelope.data.utilityName);
     }
 
     @IsTest
