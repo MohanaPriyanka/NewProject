@@ -281,7 +281,7 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
             List<Utility__c> EIAToUtility = [
                 SELECT Id, Name, EIA_ID__c
                 FROM Utility__c
-                WHERE EIA_ID__c LIKE :'%'+eiaId+'%'
+                WHERE EIA_ID__c = :eiaId
                 LIMIT 1];
 
             if (!EIAToUtility.isEmpty()) {

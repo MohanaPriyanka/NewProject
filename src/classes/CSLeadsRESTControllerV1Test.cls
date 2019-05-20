@@ -15,7 +15,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
 
         Utility__c utilityWithEIA = new Utility__c(
             Name = 'Utility with EIA ID',
-            EIA_ID__c = '12345'
+            EIA_ID__c = '1234'
         );
         insert utilityWithEIA;
 
@@ -452,12 +452,6 @@ public with sharing class CSLeadsRESTControllerV1Test {
             LastName = 'Swain');
         insert contactRecord;
 
-        Utility__c testEIA = new Utility__c(
-            Name = 'Test EIA',
-            EIA_ID__c = '12345'
-        );
-        insert testEIA;
-
         String jsonRequest = '{' +
             '"firstName": "string", ' +
             '"lastName": "string", ' +
@@ -471,7 +465,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
             '"serviceZIPCode":	"12345", ' +
             '"loadZone":	"SEMA", ' +
             '"utilityName": "Utility",' +
-            '"eiaId":	"12345", ' +
+            '"eiaId":	"1234", ' +
             '"productName":	"CS Product",' +
             '"partnerId": "' + partner.Id+ '",' +
             '"salesRepId": "' + salesRep2.Id+ '",' +
@@ -514,7 +508,6 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertNotEquals(null, patchResponseEnvelope.data.loadZone);
         System.assertNotEquals(null, patchResponseEnvelope.data.referralCode);
         System.assertNotEquals(null, patchResponseEnvelope.data.productName);
-        System.assertNotEquals(null, patchResponseEnvelope.data.utilityName);
         System.assertNotEquals(null, patchResponseEnvelope.data.partnerId);
         System.assertNotEquals(null, patchResponseEnvelope.data.salesRepId);
         System.assertNotEquals(null, patchResponseEnvelope.data.eiaId);
@@ -635,7 +628,6 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertNotEquals(null, patchResponseEnvelope.data.loadZone);
         System.assertNotEquals(null, patchResponseEnvelope.data.referralCode);
         System.assertNotEquals(null, patchResponseEnvelope.data.productName);
-        System.assertNotEquals(null, patchResponseEnvelope.data.utilityName);
         System.assertNotEquals(null, patchResponseEnvelope.data.businessName);
         System.assertNotEquals(null, patchResponseEnvelope.data.businessPhone);
         System.assertNotEquals(null, patchResponseEnvelope.data.businessTitle);
