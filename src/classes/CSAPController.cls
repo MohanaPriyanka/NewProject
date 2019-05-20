@@ -65,7 +65,7 @@ public without sharing class CSAPController {
             LIMIT 1
         ];
         if (crList.size() > 0) {
-            if (crList[0].LASERCA__Personal_Credit_Report__c == null && crList[0].LASERCA__Error_Message__c == 'Credit report not yet ready. Please try again.'){
+            if (crList[0].LASERCA__Personal_Credit_Report__c == null){
                 throw new AuraHandledException('An error occurred: No credit report was returned. Please contact BlueWave Support Team at the number below.');
             }
 
