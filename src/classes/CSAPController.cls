@@ -60,7 +60,7 @@ public without sharing class CSAPController {
             SELECT LASERCA__Personal_Credit_Report__r.LASERCA__Credit_Score__c
             FROM LASERCA__Credit_Report_Log__c
             WHERE LASERCA__Lead__c = :leadId
-            AND LASERCA__Status__c = 'Completed'
+            AND (LASERCA__Status__c = 'Completed' OR LASERCA__Status__c = 'Error')
             ORDER BY CreatedDate DESC
             LIMIT 1
         ];
@@ -215,7 +215,7 @@ public without sharing class CSAPController {
     @AuraEnabled
     public static Lead upsertCSAPRecords(Lead lead, String partnerId, String salesRepId, String referralCode){
         Partner__c customerPartner = MyAccountController.getPartner(partnerId);
-        
+
         if (lead.Parent_Account__c == null) {
             lead = setupParentAccount(lead, customerPartner);
         }
