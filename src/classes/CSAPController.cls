@@ -310,7 +310,7 @@ public without sharing class CSAPController {
                   WHERE Id =:lead.Id];
         Organization o = [SELECT IsSandbox FROM Organization LIMIT 1];
         String name = l.Name.toLowerCase();
-        if (name.contains('testcase')) {
+        if (o.IsSandbox || name.contains('testcase')) {
             // Per Tracy: sandboxes always need to have an SSN for a credit pull in sandboxes / testcases
             if (name.contains('frozen')) {
                 // let's give a way to submit frozen apps
