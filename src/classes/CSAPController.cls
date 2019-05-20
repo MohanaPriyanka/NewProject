@@ -65,7 +65,7 @@ public without sharing class CSAPController {
             LIMIT 1
         ];
         if (crList.size() > 0) {
-            if (crList[0].LASERCA__Personal_Credit_Report__c == null){
+            if (crList[0].LASERCA__Personal_Credit_Report__c == null && crList[0].LASERCA__Error_Message__c == 'Credit report not yet ready. Please try again.'){
                 throw new AuraHandledException('An error occurred: No credit report was returned. Please contact BlueWave Support Team at the number below.');
             }
 
@@ -310,7 +310,7 @@ public without sharing class CSAPController {
                   WHERE Id =:lead.Id];
         Organization o = [SELECT IsSandbox FROM Organization LIMIT 1];
         String name = l.Name.toLowerCase();
-        if (o.IsSandbox || name.contains('testcase')) {
+        if (name.contains('testcase')) {
             // Per Tracy: sandboxes always need to have an SSN for a credit pull in sandboxes / testcases
             if (name.contains('frozen')) {
                 // let's give a way to submit frozen apps
