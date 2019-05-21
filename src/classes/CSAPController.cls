@@ -64,6 +64,9 @@ public without sharing class CSAPController {
             ORDER BY CreatedDate DESC
             LIMIT 1
         ];
+
+        Lead lead = [SELECT Id, Personal_Credit_Report__c FROM Lead WHERE Id = :leadId];
+
         if (crList.size() > 0) {
             if (crList[0].LASERCA__Personal_Credit_Report__c == null){
                 throw new AuraHandledException('An error occurred: No credit report was returned. Please contact BlueWave Support Team at the number below.');
@@ -81,9 +84,10 @@ public without sharing class CSAPController {
                 //No credit score returned
                 pcr.LASERCA__Credit_Score_TransUnion__c ='9999';
                 pcr.LASERCA__Credit_Score__c = '9999';
+                lead.Personal_Credit_Report__c = pcr.Id;
                 creditScore = 9999;
                 update pcr;
-
+                update lead;
             }
             result = checkCreditReport(leadId, creditScore);
         }
@@ -180,7 +184,6 @@ public without sharing class CSAPController {
         }
         return lead;
     }
-
     public static Lead processLead(Lead lead){
         if (lead.Date_of_Application__c == null) {
             lead.Date_of_Application__c = System.now().format('YYYY-MM-DD-hh:mm');
