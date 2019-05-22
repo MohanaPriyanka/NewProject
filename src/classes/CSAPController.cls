@@ -1,7 +1,7 @@
 /*************************************************************************************
  * Created By:  Joey Chan
  * Description: Community Solar Application Portal controller for the public communities
- * Test: CSAPControllerTest,
+ * Test: CSAPControllerTest, DocuSignHelperTest, LeadTriggerHandlerTest
  *************************************************************************************/
 public without sharing class CSAPController {
     public static SLPUserHelper.PartnerProfile profile = new SLPUserHelper.PartnerProfile();
@@ -60,11 +60,18 @@ public without sharing class CSAPController {
             SELECT LASERCA__Personal_Credit_Report__r.LASERCA__Credit_Score__c
             FROM LASERCA__Credit_Report_Log__c
             WHERE LASERCA__Lead__c = :leadId
-            AND LASERCA__Status__c = 'Completed'
+            AND (LASERCA__Status__c = 'Completed' OR LASERCA__Status__c = 'Error')
             ORDER BY CreatedDate DESC
             LIMIT 1
         ];
+
+        Lead lead = [SELECT Id, Personal_Credit_Report__c FROM Lead WHERE Id = :leadId];
+
         if (crList.size() > 0) {
+            if (crList[0].LASERCA__Personal_Credit_Report__c == null){
+                throw new AuraHandledException('An error occurred: No credit report was returned. Please contact BlueWave Support Team at the number below.');
+            }
+
             LASERCA__Personal_Credit_Report__c pcr = [
                 SELECT LASERCA__Credit_Score__c, LASERCA__Credit_Score_TransUnion__c
                 FROM LASERCA__Personal_Credit_Report__c
@@ -74,14 +81,14 @@ public without sharing class CSAPController {
             if (pcr.LASERCA__Credit_Score__c != null) {
                 creditScore = Decimal.valueOf(pcr.LASERCA__Credit_Score__c);
             } else {
-                //No PCR returned
+                //No credit score returned
                 pcr.LASERCA__Credit_Score_TransUnion__c ='9999';
                 pcr.LASERCA__Credit_Score__c = '9999';
+                lead.Personal_Credit_Report__c = pcr.Id;
                 creditScore = 9999;
                 update pcr;
-
+                update lead;
             }
-
             result = checkCreditReport(leadId, creditScore);
         }
         return result;
@@ -177,7 +184,6 @@ public without sharing class CSAPController {
         }
         return lead;
     }
-
     public static Lead processLead(Lead lead){
         if (lead.Date_of_Application__c == null) {
             lead.Date_of_Application__c = System.now().format('YYYY-MM-DD-hh:mm');
@@ -215,7 +221,7 @@ public without sharing class CSAPController {
     @AuraEnabled
     public static Lead upsertCSAPRecords(Lead lead, String partnerId, String salesRepId, String referralCode){
         Partner__c customerPartner = MyAccountController.getPartner(partnerId);
-        
+
         if (lead.Parent_Account__c == null) {
             lead = setupParentAccount(lead, customerPartner);
         }
