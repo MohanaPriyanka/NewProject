@@ -26,6 +26,8 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
             return getActionCreate(req.getBody());
         } else if (endpoint.contains('v1/action/update')) {
             return getActionUpdate(req.getBody());
+        } else if (endpoint.contains('v1/orders')) {
+            return getOrderResponse(req.getBody());
         } else {
             return null;
         }
@@ -191,6 +193,25 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
         } else {
             throw new Util.BWException('Unhandled action create: ' + body);
         }
+        return res;
+    }
+
+    public static HttpResponse getOrderResponse(String body) {
+        HttpResponse res = getJSON();
+        if (body.contains('ThrowException')) {
+            throw new Util.BWException('Test callout exception');
+        }
+        ZuoraAPI.OrderActionResult result = new ZuoraAPI.OrderActionResult();
+        result.success = true;
+        result.orderNumber = 'O-00000104';
+        result.accountNumber = 'BW-00000076';
+        result.status = 'Completed';
+        result.subscriptions = new List<ZuoraAPI.SubscriptionResult>();
+        ZuoraAPI.SubscriptionResult subscriptionResult = new ZuoraAPI.SubscriptionResult();
+        subscriptionResult.subscriptionNumber = 'A-S00000090';
+        subscriptionResult.status = 'Active';
+        result.subscriptions.add(subscriptionResult);
+        res.setBody(JSON.serialize(result));
         return res;
     }
 
