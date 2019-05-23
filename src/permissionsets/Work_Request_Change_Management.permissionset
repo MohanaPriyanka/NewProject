@@ -13,21 +13,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>agf__ADM_Work__c.Backout_Plan__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>agf__ADM_Work__c.Deployment_Plan__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>agf__ADM_Work__c.Type_of_Change__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>agf__ADM_Work__c.agf__Additional_Details__c</field>
         <readable>true</readable>
     </fieldPermissions>
