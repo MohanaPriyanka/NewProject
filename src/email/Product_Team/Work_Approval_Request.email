@@ -1,0 +1,6 @@
+<table border="0" cellpadding="5" width="550" cellspacing="5" height="400" >
+<tr valign="top" height="400" >
+<td tEditID="c1r1" style=" background-color:#FFFFFF; bEditID:r3st1; color:#000000; bLabel:main; font-size:12pt; font-family:arial;" aEditID="c1r1" locked="0" >
+<![CDATA[Your approval is requested for:&nbsp;<a href="http://https://bluewavesolar.my.salesforce.com/{!agf__ADM_Work__c.Id}">{!agf__ADM_Work__c.agf__Subject__c}</a><div><b><br></b></div><div><b>Requestor:</b>&nbsp;{!agf__ADM_Work__c.OwnerFullName}</div><div><br></div><div><b>Type of Change:</b>&nbsp;{!agf__ADM_Work__c.Type_of_Change__c}</div><div><b><br></b></div><div><b>Description:</b>&nbsp;{!agf__ADM_Work__c.agf__Details__c}<br><div><br></div><div><div><b style="font-size: 12pt;">Deployment Plan:</b><span style="font-size: 12pt;">&nbsp;{!agf__ADM_Work__c.Deployment_Plan__c}</span></div><div><b><br></b></div><div><b>Backout Plan:</b>&nbsp;{!agf__ADM_Work__c.Backout_Plan__c}</div></div></div>]]></td>
+</tr>
+</table>
