@@ -3,6 +3,7 @@
     <description>Lets users send emails from Cases. Used in Lightning.</description>
     <fieldOverrides>
         <field>ToIds</field>
+        <formula>JUNCTIONIDLIST(Case.ContactId)</formula>
     </fieldOverrides>
     <optionsCreateFeedItem>true</optionsCreateFeedItem>
     <quickActionLayout>
