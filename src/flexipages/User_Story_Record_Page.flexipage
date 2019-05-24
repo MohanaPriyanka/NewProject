@@ -123,21 +123,9 @@
                 <name>relatedListComponentOverride</name>
                 <value>NONE</value>
             </componentInstanceProperties>
-            <componentInstanceProperties>
-                <name>rowsToDisplay</name>
-                <value>10</value>
-            </componentInstanceProperties>
-            <componentInstanceProperties>
-                <name>showActionBar</name>
-                <value>true</value>
-            </componentInstanceProperties>
             <componentName>force:relatedListSingleContainer</componentName>
         </componentInstances>
         <componentInstances>
-            <componentInstanceProperties>
-                <name>hideHeader</name>
-                <value>false</value>
-            </componentInstanceProperties>
             <componentName>force:relatedListQuickLinksContainer</componentName>
         </componentInstances>
         <mode>Replace</mode>

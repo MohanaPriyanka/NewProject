@@ -13,6 +13,7 @@
     <enableGuestFileAccess>false</enableGuestFileAccess>
     <enableInvitation>false</enableInvitation>
     <enableKnowledgeable>false</enableKnowledgeable>
+    <enableMemberVisibility>true</enableMemberVisibility>
     <enableNicknameDisplay>false</enableNicknameDisplay>
     <enablePrivateMessages>false</enablePrivateMessages>
     <enableReputation>false</enableReputation>
@@ -45,5 +46,5 @@
         <standardTab>Chatter</standardTab>
     </tabs>
     <urlPathPrefix>clientportal</urlPathPrefix>
-    <welcomeTemplate>CS_Application_Email_Notifications/CommunityWelcomeEmailTemplate</welcomeTemplate>
+    <welcomeTemplate>CS_Application_Email_Notifications/X19_0524_Portal_Welcome_Email_Client</welcomeTemplate>
 </Network>
