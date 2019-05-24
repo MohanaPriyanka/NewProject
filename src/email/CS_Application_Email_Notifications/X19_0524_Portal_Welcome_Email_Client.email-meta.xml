@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>19_0524 Portal Welcome Email - Client</name>
+    <style>none</style>
+    <subject>Welcome to BlueWave&apos;s {!Community_Name}</subject>
+    <textOnly>Hi {Receiving_User.FirstName},
+
+Welcome to BlueWave&apos;s {Community_Name}! To login, click the link below and enter your default username: {Receiving_User.Username}.
+
+Click Here to Get Started!
+
+
+We look forward to a bright future ahead.
+
+- BlueWave Client Services Team
+
+BlueWave Client Services
+617.681.4406 | clientservices@bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>
