@@ -71,4 +71,22 @@ public with sharing class ZuoraAPIHelper {
         }
         return false;
     }
+
+    public static String query(String queryString) {
+        ZuoraAPI.ZuoraQuery zuoraQuery = new ZuoraAPI.ZuoraQuery();
+        zuoraQuery.queryString = queryString;
+        HttpResponse response = callJsonEndpoint('POST', '/v1/action/query', zuoraQuery);
+        System.debug(LoggingLevel.ERROR, response.getBody());
+        return response.getBody();
+    }
+
+    public static String deleteObjects(List<String> objectIds, String objectType, Boolean flush) {
+        ZuoraAPI.ZuoraDelete zuoraDelete = new ZuoraAPI.ZuoraDelete();
+        zuoraDelete.ids = objectIds;
+        zuoraDelete.type = objectType;
+        HttpResponse response = callJsonEndpoint('POST', '/v1/action/delete', zuoraDelete, flush);
+        System.debug(LoggingLevel.ERROR, response.getBody());
+        return response.getBody();
+    }
+
 }

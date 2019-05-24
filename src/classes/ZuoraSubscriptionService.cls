@@ -18,11 +18,11 @@ public with sharing class ZuoraSubscriptionService {
         for (SubscriptionParam subscriptionParam : subscriptionParams) {
             callouts += subscriptionParam.estimateCallouts();
         }
-        if (callouts >= 50) {
+        if (callouts >= Limits.getLimitCallouts() && !Test.isRunningTest()) {
             throw new Util.BWException(callouts + ' callouts would be used by this method with these parameters: ' +
-                JSON.serialize(subscriptionParams) + '. Invoke with fewer subscriptions');
+                JSON.serialize(subscriptionParams) + '. Invoke with fewer subscriptions to stay under the limit of ' + Limits.getLimitCallouts());
         }
-
+        System.debug(LoggingLevel.ERROR, subscriptionParams.size());
         for (SubscriptionParam subscriptionParam : subscriptionParams) {
             try {
                 subscriptionsCreated.add(createSubscription(subscriptionParam.param, subscriptionParam.additionalClientProjects));
@@ -37,7 +37,7 @@ public with sharing class ZuoraSubscriptionService {
     // Unfortunately, we can't create a subscription with multiple rate plan charges at once:
     // ("message" : "Not Allow use more than one chargeOverride on one product rateplan charge"),
     // so we create the subscription with one SRPC, and then do an order action for each client/project combination.
-    private static String createSubscription(OrderActionParam param, List<ClientProject> additionalClientProjects) {
+    private static String createSubscription(OrderActionParam param, Set<ClientProject> additionalClientProjects) {
         ZuoraAPI.Order createNewSubscription = ZuoraSubscriptionService.getNewOrderRequest(param);
         HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/orders', createNewSubscription, false);
         ZuoraAPI.OrderActionResult newSubscriptionResult =
@@ -107,17 +107,28 @@ public with sharing class ZuoraSubscriptionService {
             this.clientName = clientName;
             this.projectName = projectName;
         }
+        // Required because we have sets of Client Projects for data load
+        public Boolean equals(Object o) {
+            if ((o == null) || !(o instanceof ClientProject)) {
+                return false;
+            }
+            ClientProject clientProject = (ClientProject) o;
+            return (clientProject.clientName == this.clientName && clientProject.projectName == this.projectName);
+        }
+        public Integer hashCode() {
+            return (clientName +  projectName).hashCode();
+        }
     }
 
     public class SubscriptionParam {
         public OrderActionParam param;
-        public List<ClientProject> additionalClientProjects;
-        public SubscriptionParam(OrderActionParam param, List<ClientProject> additionalClientProjects) {
+        public Set<ClientProject> additionalClientProjects;
+        public SubscriptionParam(OrderActionParam param, Set<ClientProject> additionalClientProjects) {
             this.param = param;
             if (additionalClientProjects != null) {
                 this.additionalClientProjects = additionalClientProjects;
             } else {
-                this.additionalClientProjects = new List<ClientProject>();
+                this.additionalClientProjects = new Set<ClientProject>();
             }
 
         }

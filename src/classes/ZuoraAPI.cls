@@ -369,4 +369,16 @@ public with sharing class ZuoraAPI {
         public String Code;
         public String Message;
     }
+
+    // https://www.zuora.com/developer/api-reference/#operation/Action_POSTquery
+    public class ZuoraQuery {
+        public String queryString;
+    }
+
+    // https://www.zuora.com/developer/api-reference/#operation/Action_POSTdelete
+    public class ZuoraDelete {
+        public List<String> ids;
+        public String type;
+    }
+
 }
