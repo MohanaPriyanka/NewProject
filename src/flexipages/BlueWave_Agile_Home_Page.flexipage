@@ -3,6 +3,17 @@
     <flexiPageRegions>
         <componentInstances>
             <componentInstanceProperties>
+                <name>entityNames</name>
+                <value>[&quot;copado__User_Story__c&quot;,&quot;agf__ADM_Work__c&quot;,&quot;agf__ADM_Sprint__c&quot;,&quot;copado__Sprint__c&quot;,&quot;Case&quot;]</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>maxRecords</name>
+                <value>6</value>
+            </componentInstanceProperties>
+            <componentName>flexipage:recentItems</componentName>
+        </componentInstances>
+        <componentInstances>
+            <componentInstanceProperties>
                 <name>dashboardName</name>
                 <value>HbWSIHiHmUAbaszriAJeyTykbePwtG</value>
             </componentInstanceProperties>
@@ -27,23 +38,44 @@
         <type>Region</type>
     </flexiPageRegions>
     <flexiPageRegions>
-        <componentInstances>
-            <componentInstanceProperties>
-                <name>entityNames</name>
-                <value>[&quot;copado__User_Story__c&quot;,&quot;agf__ADM_Work__c&quot;,&quot;agf__ADM_Sprint__c&quot;,&quot;copado__Sprint__c&quot;,&quot;Case&quot;]</value>
-            </componentInstanceProperties>
-            <componentInstanceProperties>
-                <name>maxRecords</name>
-                <value>3</value>
-            </componentInstanceProperties>
-            <componentName>flexipage:recentItems</componentName>
-        </componentInstances>
         <name>bottomRight</name>
         <type>Region</type>
     </flexiPageRegions>
     <flexiPageRegions>
         <componentInstances>
+            <componentInstanceProperties>
+                <name>displayNumber</name>
+                <value>3</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>recommendationTypes</name>
+                <value>[&quot;users&quot;,&quot;groups&quot;]</value>
+            </componentInstanceProperties>
+            <componentInstanceProperties>
+                <name>title</name>
+                <value>Einstein Recommendations</value>
+            </componentInstanceProperties>
+            <componentName>forceChatter:recommendations</componentName>
+        </componentInstances>
+        <componentInstances>
+            <componentInstanceProperties>
+                <name>context</name>
+                <value>TO</value>
+            </componentInstanceProperties>
+            <componentName>forceChatter:exposedFeed</componentName>
+        </componentInstances>
+        <componentInstances>
+            <componentInstanceProperties>
+                <name>context</name>
+                <value>NEWS</value>
+            </componentInstanceProperties>
+            <componentName>forceChatter:exposedFeed</componentName>
+        </componentInstances>
+        <componentInstances>
             <componentName>runtime_approval_process:pendingApprovalCard</componentName>
+        </componentInstances>
+        <componentInstances>
+            <componentName>home:assistant</componentName>
         </componentInstances>
         <name>sidebar</name>
         <type>Region</type>
