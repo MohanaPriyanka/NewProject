@@ -116,9 +116,9 @@
                               <tr>
                                 <td align="left" class="" valign="top">
                                   <table cellpadding="0" cellspacing="0" width="100%" style="background-color: transparent; min-width: 100%; border-top: 0px; border-right: 0px; border-bottom: 1px solid transparent; border-left: 0px; " class="slot-styling"><tr><td style="padding: 0px 10px; " class="slot-styling camarker-inner"><table cellpadding="0" cellspacing="0" width="100%" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 0px; " class="stylingblock-content-wrapper camarker-inner"><br>
-Hi {Receiving_User.FirstName},<br>
+Hi {!Receiving_User.FirstName},<br>
 <br>
-<b>Welcome to BlueWave's {Community_Name}! </b>To login, click the link below and enter your default username: {Receiving_User.Username}.<br>
+<b>Welcome to BlueWave's {!Community_Name}! </b>To login, click the link below and enter your default username: {!Receiving_User.Username}.<br>
 &nbsp;</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 13px 0px 8px; " class="stylingblock-content-wrapper camarker-inner"><table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td align="center"><table border="0" cellspacing="0" cellpadding="0"><tr><td class="innertd buttonblock" bgcolor="#387CDF" style=" border-radius: 30px; -moz-border-radius: 30px; -webkit-border-radius: 30px; color: #FFFFFF; background-color: #387CDF;"><a target="_blank" class="buttonstyles" style=" font-size: 16px; font-family: Arial, helvetica, sans-serif; color: #FFFFFF; text-align: center; text-decoration: none; display: block; line-height: 100%; background-color: #387CDF; border: 2px solid transparent; padding: 12px; border-radius: 30px; -moz-border-radius: 30px; -webkit-border-radius: 30px;" href="{!Community_Url}" title="BlueWave Portal" alias="" conversion="true" data-linkto="https://">Click Here to Get Started!</a></td></tr></table></td></tr></table></td></tr></table></td></tr></table>
                                 </td>
                               </tr>
