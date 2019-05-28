@@ -26,6 +26,10 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
             return getActionCreate(req.getBody());
         } else if (endpoint.contains('v1/action/update')) {
             return getActionUpdate(req.getBody());
+        } else if (endpoint.contains('v1/action/query')) {
+            return getActionQuery(req.getBody());
+        } else if (endpoint.contains('v1/action/delete')) {
+            return getActionDelete(req.getBody());
         } else if (endpoint.contains('v1/orders')) {
             return getOrderResponse(req.getBody());
         } else {
@@ -193,6 +197,19 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
         } else {
             throw new Util.BWException('Unhandled action create: ' + body);
         }
+        return res;
+    }
+
+    public static HttpResponse getActionQuery(String body) {
+        HttpResponse res = getJSON();
+        // SELECT Id FROM Account:
+        res.setBody('{"records":[{"Id":"2c92c0f869330b78016949ef5a7517ab"}],"size":1,"done":true}');
+        return res;
+    }
+
+    public static HttpResponse getActionDelete(String body) {
+        HttpResponse res = getJSON();
+        res.setBody('[{"id": "2c93808457d787030157e031fcd34e19","success": true}]');
         return res;
     }
 

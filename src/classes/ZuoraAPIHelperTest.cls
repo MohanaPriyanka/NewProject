@@ -32,4 +32,16 @@ public with sharing class ZuoraAPIHelperTest {
 
         System.assertEquals(false, ZuoraAPIHelper.zuoraPaymentPageEnabled());
     }
+
+    @IsTest
+    public static void testQuery() {
+        String result = ZuoraAPIHelper.query('SELECT Id FROM Account');
+        System.assert(result.contains('"done":true'));
+    }
+
+    @IsTest
+    public static void testDelete() {
+        String result = ZuoraAPIHelper.deleteObjects(new List<String>{'12345'}, 'Account', false);
+        System.assert(result.contains('"success": true'));
+    }
 }

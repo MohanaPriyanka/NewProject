@@ -95,9 +95,15 @@ public with sharing class ZuoraSubscriptionServiceTest {
     public static void testDataLoad() {
         ZuoraSubscriptionAsyncService asyncService = new ZuoraSubscriptionAsyncService();
         asyncService.initForDataLoad();
+        System.assert(asyncService.allSubscriptionsToCreate.size() > 0);
+        Integer allSubscriptionsToCreateStartingSize = asyncService.allSubscriptionsToCreate.size();
+        List<Error_Log__c> errorLogs = [SELECT Id FROM Error_Log__c WHERE Class__c = 'ZuoraAPIHelper'];
+        System.assertEquals(0, errorLogs.size());
         Test.startTest();
         Database.executeBatch(asyncService);
         Test.stopTest();
+        errorLogs = [SELECT Id FROM Error_Log__c WHERE Class__c = 'ZuoraAPIHelper'];
+        System.assertEquals(1, errorLogs.size());
     }
 
     @IsTest
