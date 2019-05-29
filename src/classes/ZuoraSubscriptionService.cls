@@ -22,13 +22,16 @@ public with sharing class ZuoraSubscriptionService {
             throw new Util.BWException(callouts + ' callouts would be used by this method with these parameters: ' +
                 JSON.serialize(subscriptionParams) + '. Invoke with fewer subscriptions to stay under the limit of ' + Limits.getLimitCallouts());
         }
-        System.debug(LoggingLevel.ERROR, subscriptionParams.size());
-        for (SubscriptionParam subscriptionParam : subscriptionParams) {
+
+        // We want to return the subscriptions created, and also
+        for (Integer i = subscriptionParams.size()-1; i >= 0; i--) {
             try {
-                subscriptionsCreated.add(createSubscription(subscriptionParam.param, subscriptionParam.additionalClientProjects));
+                subscriptionsCreated.add(createSubscription(subscriptionParams[i].param, subscriptionParams[i].additionalClientProjects));
             } catch (Exception e) {
                 Logger.logLater('ZuoraSubscriptionService', 'createSubscription', e.getMessage() + e.getStackTraceString());
+                continue;
             }
+            subscriptionParams.remove(i);
         }
         Logger.flushLogs();
         return subscriptionsCreated;
@@ -89,6 +92,10 @@ public with sharing class ZuoraSubscriptionService {
         return order;
     }
 
+    // The OrderActionParam represents the subscription that we'll create. We always need to create a Subscription Rate
+    // Plan Charge with the client/project combination - that is mandatory.
+    // There can be a list of client/project combinations included with the OrderActionParam (in the SubscriptionParam
+    // structure) that get turned into additional Subscription Rate Plan Charges.
     public class OrderActionParam {
         public String accountNumber;
         public String subscriptionNumber;
