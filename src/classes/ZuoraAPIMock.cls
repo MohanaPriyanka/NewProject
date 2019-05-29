@@ -30,6 +30,8 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
             return getActionQuery(req.getBody());
         } else if (endpoint.contains('v1/action/delete')) {
             return getActionDelete(req.getBody());
+        } else if (endpoint.contains('v1/orders/subscriptionOwner')) {
+            return getOrderByOwnerResponse(req.getBody());
         } else if (endpoint.contains('v1/orders')) {
             return getOrderResponse(req.getBody());
         } else {
@@ -228,6 +230,17 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
         subscriptionResult.subscriptionNumber = 'A-S00000090';
         subscriptionResult.status = 'Active';
         result.subscriptions.add(subscriptionResult);
+        res.setBody(JSON.serialize(result));
+        return res;
+    }
+
+    public static HttpResponse getOrderByOwnerResponse(String body) {
+        HttpResponse res = getJSON();
+        if (body.contains('ThrowException')) {
+            throw new Util.BWException('Test callout exception');
+        }
+        ZuoraAPI.OrderBySubscriptionOwner result = new ZuoraAPI.OrderBySubscriptionOwner();
+        result.success = true;
         res.setBody(JSON.serialize(result));
         return res;
     }

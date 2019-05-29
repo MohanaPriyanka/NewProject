@@ -5,13 +5,6 @@
  *************************************************************************************/
 
 public with sharing class ZuoraSubscriptionService {
-    public static Boolean allAccountsInZuora(List<Schedule_Z__c> scheduleZs) {
-        // for each account on the schedule z
-        // does it have a Zuora Id?
-        // if not, log an error
-        return true;
-    }
-
     public static List<String> createSubscriptions(List<SubscriptionParam> subscriptionParams) {
         List<String> subscriptionsCreated = new List<String>();
         Integer callouts = 0;
@@ -41,16 +34,22 @@ public with sharing class ZuoraSubscriptionService {
     // ("message" : "Not Allow use more than one chargeOverride on one product rateplan charge"),
     // so we create the subscription with one SRPC, and then do an order action for each client/project combination.
     private static String createSubscription(OrderActionParam param, Set<ClientProject> additionalClientProjects) {
-        ZuoraAPI.Order createNewSubscription = ZuoraSubscriptionService.getNewOrderRequest(param);
-        HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/orders', createNewSubscription, false);
-        ZuoraAPI.OrderActionResult newSubscriptionResult =
-            (ZuoraAPI.OrderActionResult) JSON.deserialize(response.getBody(), ZuoraAPI.OrderActionResult.class);
-        if (!newSubscriptionResult.success || newSubscriptionResult.subscriptions.size() != 1) {
-            Logger.logLater('ZuoraSubscriptionService', 'createSubscriptionInternal', JSON.serializePretty(newSubscriptionResult));
-            throw new Util.BWException('Unexpected result creating a new subscription');
-        }
+        ZuoraAPI.OrderBySubscriptionOwner obso = getOrderBySubscriptionOwner(param.accountNumber);
+        if (obso.hasSubscription()) {
+            param.subscriptionNumber = obso.getSubscriptionNumber();
+            additionalClientProjects.removeAll(obso.getClientProjectsFromOrders());
+        } else {
+            ZuoraAPI.Order createNewSubscription = ZuoraSubscriptionService.getNewOrderRequest(param);
+            HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/orders', createNewSubscription, false);
+            ZuoraAPI.OrderActionResult newSubscriptionResult =
+                (ZuoraAPI.OrderActionResult) JSON.deserialize(response.getBody(), ZuoraAPI.OrderActionResult.class);
+            if (!newSubscriptionResult.success || newSubscriptionResult.subscriptions.size() != 1) {
+                Logger.logLater('ZuoraSubscriptionService', 'createSubscriptionInternal', JSON.serializePretty(newSubscriptionResult));
+                throw new Util.BWException('Unexpected result creating a new subscription');
+            }
 
-        param.subscriptionNumber = newSubscriptionResult.subscriptions[0].subscriptionNumber;
+            param.subscriptionNumber = newSubscriptionResult.subscriptions[0].subscriptionNumber;
+        }
 
         if (additionalClientProjects == null || additionalClientProjects.size() == 0) {
             return param.subscriptionNumber;
@@ -90,6 +89,15 @@ public with sharing class ZuoraSubscriptionService {
         ZuoraAPI.AddProduct addProduct = orderAction.addAddProduct(param.productRatePlanId);
         addProduct.addChargeOverride(param.productRatePlanChargeId, param.clientName, param.projectName);
         return order;
+    }
+
+    private static ZuoraAPI.OrderBySubscriptionOwner getOrderBySubscriptionOwner(String accountNumber) {
+        HttpResponse response =
+            ZuoraAPIHelper.callJsonEndpoint('GET', '/v1/orders/subscriptionOwner/' + accountNumber, null, false);
+        String cleanJSON = ZuoraAPIHelper.cleanJSON(response.getBody());
+        ZuoraAPI.OrderBySubscriptionOwner obso =
+            (ZuoraAPI.OrderBySubscriptionOwner) JSON.deserialize(cleanJSON, ZuoraAPI.OrderBySubscriptionOwner.class);
+        return obso;
     }
 
     // The OrderActionParam represents the subscription that we'll create. We always need to create a Subscription Rate
@@ -140,7 +148,9 @@ public with sharing class ZuoraSubscriptionService {
 
         }
         public Integer estimateCallouts() {
-            return 1 + additionalClientProjects.size();
+            // One query to get existing subscriptions, another query to create the subscription, and then queries
+            // to create each of the additional client projects
+            return 2 + additionalClientProjects.size();
         }
     }
 }

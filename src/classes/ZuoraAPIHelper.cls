@@ -102,4 +102,9 @@ public with sharing class ZuoraAPIHelper {
         return response.getBody();
     }
 
+    public static String cleanJSON(String json) {
+        return json.replace('__c', '_Zcustom')
+            .replace('"currency" :', '"currency_Zreserved" :')
+            .replace('"type" :', '"type_Zreserved" :');
+    }
 }

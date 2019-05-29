@@ -44,4 +44,12 @@ public with sharing class ZuoraAPIHelperTest {
         String result = ZuoraAPIHelper.deleteObjects(new List<String>{'12345'}, 'Account', false);
         System.assert(result.contains('"success": true'));
     }
+
+    @IsTest
+    public static void testClean() {
+        String json = '{"Name" : "type", "type" : "AddProduct", "currency" : "USD", "ClientOwner__c" : "AMP"}';
+        String expectedJson = '{"Name" : "type", "type_Zreserved" : "AddProduct", "currency_Zreserved" : "USD", "ClientOwner_Zcustom" : "AMP"}';
+        String cleanedJson = ZuoraAPIHelper.cleanJSON(json);
+        System.assertEquals(expectedJson, cleanedJson);
+    }
 }

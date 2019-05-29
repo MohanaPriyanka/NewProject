@@ -187,6 +187,12 @@ public with sharing class ZuoraAPI {
             this.subscriptions.add(subscription);
             return subscription;
         }
+        public ZuoraSubscriptionService.ClientProject getClientProject() {
+            if (subscriptions == null || subscriptions.size() != 1) {
+                throw new Util.BWException('Did not expect an Order without a single subscription');
+            }
+            return subscriptions[0].getClientProject();
+        }
     }
 
     public class TriggerDate {
@@ -197,6 +203,8 @@ public with sharing class ZuoraAPI {
     public class Subscription {
         public List<OrderAction> orderActions;
         public String subscriptionNumber;
+        public Integer baseVersion;
+        public Integer newVersion;
         public Subscription() {
             orderActions = new List<OrderAction>();
         }
@@ -208,6 +216,12 @@ public with sharing class ZuoraAPI {
             OrderAction orderAction = new OrderAction(type, effectiveDate);
             orderActions.add(orderAction);
             return orderAction;
+        }
+        public ZuoraSubscriptionService.ClientProject getClientProject() {
+            if (orderActions == null || orderActions.size() != 1) {
+                throw new Util.BWException('Did not expect a Subscription without a single Order Action');
+            }
+            return orderActions[0].getClientProject();
         }
     }
 
@@ -223,6 +237,7 @@ public with sharing class ZuoraAPI {
         public AddProduct addProduct;
         public List<TriggerDate> triggerDates;
         public String type_Zreserved;
+        public Integer sequence;
 
         public OrderAction(String type, Date contractEffectiveDate) {
             this.triggerDates = new List<TriggerDate>();
@@ -247,6 +262,19 @@ public with sharing class ZuoraAPI {
             AddProduct addProduct = new AddProduct(productRatePlanId);
             this.addProduct = addProduct;
             return addProduct;
+        }
+        public ZuoraSubscriptionService.ClientProject getClientProject() {
+            ZuoraSubscriptionService.ClientProject clientProject;
+            switch on type_Zreserved {
+                when 'AddProduct' {
+                    clientProject = addProduct.getClientProject();
+                } when 'CreateSubscription' {
+                    clientProject = createSubscription.getClientProject();
+                } when else {
+                    throw new Util.BWException('Unhandled order action type when getting client projects: ' + type_Zreserved);
+                }
+            }
+            return clientProject;
         }
     }
 
@@ -273,20 +301,35 @@ public with sharing class ZuoraAPI {
             chargeOverrides.add(chargeOverride);
             return chargeOverride;
         }
+        public ZuoraSubscriptionService.ClientProject getClientProject() {
+            if (chargeOverrides == null || chargeOverrides.size() != 1) {
+                throw new Util.BWException('Did not expect a SubscribeToRatePlan without a single Charge Override');
+            }
+            return chargeOverrides[0].getClientProject();
+        }
     }
 
     public class ChargeOverride {
+        public String chargeNumber;
         public ProductRatePlanCustomFields customFields;
         public String productRatePlanChargeId;
         public ChargeOverride(String productRatePlanChargeId, String clientName, String projectName) {
             customFields = new ProductRatePlanCustomFields(clientName, projectName);
             this.productRatePlanChargeId = productRatePlanChargeId;
         }
+        public ZuoraSubscriptionService.ClientProject getClientProject() {
+            if (customFields == null || customFields.Project_Zcustom == null || customFields.ClientOwner_Zcustom == null) {
+                throw new Util.BWException('Did not expect a Charge Override without customFields or null client/project');
+            }
+            return new ZuoraSubscriptionService.ClientProject(customFields.ClientOwner_Zcustom, customFields.Project_Zcustom);
+        }
     }
 
     public class AddProduct {
         public String productRatePlanId;
         public List<ChargeOverride> chargeOverrides;
+        public String newRatePlanId;
+
         public AddProduct(String productRatePlanId) {
             this.productRatePlanId = productRatePlanId;
             chargeOverrides = new List<ChargeOverride>();
@@ -295,6 +338,12 @@ public with sharing class ZuoraAPI {
             ChargeOverride chargeOverride = new ChargeOverride(productRatePlanChargeId, clientName, projectName);
             chargeOverrides.add(chargeOverride);
             return chargeOverride;
+        }
+        public ZuoraSubscriptionService.ClientProject getClientProject() {
+            if (chargeOverrides == null || chargeOverrides.size() != 1) {
+                throw new Util.BWException('Did not expect an addProduct order action without a single charge override');
+            }
+            return chargeOverrides[0].getClientProject();
         }
     }
 
@@ -317,6 +366,12 @@ public with sharing class ZuoraAPI {
             SubscribeToRatePlan subscribeToRatePlan = new SubscribeToRatePlan(productRatePlanId);
             subscribeToRatePlans.add(subscribeToRatePlan);
             return subscribeToRatePlan;
+        }
+        public ZuoraSubscriptionService.ClientProject getClientProject() {
+            if (subscribeToRatePlans == null || subscribeToRatePlans.size() != 1) {
+                throw new Util.BWException('Did not expect a create subscription order action without a single subscriptionToRatePlan');
+            }
+            return subscribeToRatePlans[0].getClientProject();
         }
     }
 
@@ -381,4 +436,41 @@ public with sharing class ZuoraAPI {
         public String type;
     }
 
+    // https://www.zuora.com/developer/api-reference/#operation/GET_OrdersBySubscriptionOwner
+    public class OrderBySubscriptionOwner {
+        public List<Order> orders;
+        public Boolean success;
+
+        public Boolean hasSubscription() {
+            if (orders == null || orders.isEmpty()) {
+                return false;
+            }
+            for (Order order : orders) {
+                if (order.subscriptions != null && !order.subscriptions.isEmpty()) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public String getSubscriptionNumber() {
+            for (Order order : orders) {
+                if (order.subscriptions != null && !order.subscriptions.isEmpty()) {
+                    return order.subscriptions[0].subscriptionNumber;
+                }
+            }
+            throw new Util.BWException('Did not find a subscription in all of the orders');
+        }
+
+        public Set<ZuoraSubscriptionService.ClientProject> getClientProjectsFromOrders() {
+            Set<ZuoraSubscriptionService.ClientProject> clientProjects = new Set<ZuoraSubscriptionService.ClientProject>();
+            if (orders == null || orders.isEmpty()) {
+                return clientProjects;
+            }
+            for (Order order : orders) {
+                clientProjects.add(order.getClientProject());
+            }
+            return clientProjects;
+        }
+    }
 }
