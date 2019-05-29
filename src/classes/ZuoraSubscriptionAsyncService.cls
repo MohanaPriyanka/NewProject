@@ -23,6 +23,12 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
     public List<ZuoraSubscriptionService.SubscriptionParam> allSubscriptionsToCreate;
     private String productRatePlanId;
     private String productRatePlanChargeId;
+    @TestVisible
+    private static ZuoraSubscriptionAsyncService nextAsyncService;
+    @TestVisible
+    private static List<ZuoraSubscriptionService.SubscriptionParam> batchedSubscriptionsToCreate;
+    @TestVisible
+    private static List<String> subscriptionsCreated;
 
     public ZuoraSubscriptionAsyncService() {
         allSubscriptionsToCreate = new List<ZuoraSubscriptionService.SubscriptionParam>();
@@ -109,7 +115,7 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
     }
 
     @TestVisible
-    private void addOrderActionToMap(Map<String, ZuoraSubscriptionService.SubscriptionParam> accountNumberToSubscriptionMap,
+    private static void addOrderActionToMap(Map<String, ZuoraSubscriptionService.SubscriptionParam> accountNumberToSubscriptionMap,
         ZuoraSubscriptionService.OrderActionParam orderActionParam) {
         ZuoraSubscriptionService.SubscriptionParam subscriptionParam = accountNumberToSubscriptionMap.get(orderActionParam.accountNumber);
         if (subscriptionParam == null) {
@@ -163,38 +169,35 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
         if (Test.isRunningTest()) {
             calloutLimit = 5;
         }
-        System.debug(LoggingLevel.ERROR, allSubscriptionParams.size());
-        System.debug(LoggingLevel.ERROR, allSubscriptionParams);
 
-        List<ZuoraSubscriptionService.SubscriptionParam> batchedSubscriptionsToCreate =
-            new List<ZuoraSubscriptionService.SubscriptionParam>();
+        batchedSubscriptionsToCreate = new List<ZuoraSubscriptionService.SubscriptionParam>();
+        // We only want to try to create as many subscription params as we have callouts to do
         for (Integer i = allSubscriptionParams.size()-1; i >= 0; i--) {
             if (callouts + allSubscriptionParams[i].estimateCallouts() < calloutLimit) {
                 batchedSubscriptionsToCreate.add(allSubscriptionParams[i]);
                 callouts += allSubscriptionParams[i].estimateCallouts();
                 allSubscriptionParams.remove(i);
-                System.debug(LoggingLevel.ERROR, allSubscriptionParams.size());
-                System.debug(LoggingLevel.ERROR, allSubscriptionParams);
             } else {
                 break;
             }
         }
-        System.debug(LoggingLevel.ERROR, batchedSubscriptionsToCreate.size());
-        System.debug(LoggingLevel.ERROR, batchedSubscriptionsToCreate);
-        System.debug(LoggingLevel.ERROR, allSubscriptionParams);
 
         if (batchedSubscriptionsToCreate.size() > 0) {
-            ZuoraSubscriptionService.createSubscriptions(batchedSubscriptionsToCreate);
+            subscriptionsCreated = ZuoraSubscriptionService.createSubscriptions(batchedSubscriptionsToCreate);
+        }
+
+        // This should be empty if all of the subscriptions were created successfully. If there are any left because we
+        // hit an exception (like ReadTimedOut), queue them again. While there is a risk of entering an infinite loop,
+        // it's probably more likely that we hit some callout or Zuora exception in createSubscriptions that we want to
+        // automatically retry.
+        if (batchedSubscriptionsToCreate.size() > 0) {
+            allSubscriptionParams.addAll(batchedSubscriptionsToCreate);
         }
 
         if (allSubscriptionParams.size() > 0) {
-            ZuoraSubscriptionAsyncService nextAsyncService = new ZuoraSubscriptionAsyncService();
+            nextAsyncService = new ZuoraSubscriptionAsyncService();
             nextAsyncService.initForChainedContinuation(allSubscriptionParams);
-            if (Test.isRunningTest()) {
-                System.assert(nextAsyncService.allSubscriptionsToCreate.size() > 0);
-                System.assert(batchedSubscriptionsToCreate.size() > 0);
-                System.assert(nextAsyncService.allSubscriptionsToCreate.size() + batchedSubscriptionsToCreate.size() == allSubscriptionParamsSize);
-            } else {
+            if (!Test.isRunningTest()) {
                 System.enqueueJob(nextAsyncService);
             }
         }

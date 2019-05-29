@@ -6,12 +6,21 @@
 
 public with sharing class ZuoraAPIHelper {
     private static Zuora_Setting__mdt zuoraSetting;
+    @TestVisible
+    private static Long calloutMillis = 0;
 
     public static HttpResponse callJsonEndpoint(String method, String endpoint, Object jsonBody) {
         return callJsonEndpoint(method, endpoint, jsonBody, true);
     }
 
     public static HttpResponse callJsonEndpoint(String method, String endpoint, Object jsonBody, Boolean flush) {
+        // Since there is a 120 second cumulative timeout for callouts, abort if we don't have a 15 second cushion left
+        // (which is arbitrary). Starting the transaction and having Salesforce abort it may end up an with finished or
+        // aborted transaction in Zuora
+        if (calloutMillis > 105*1000) {
+            throw new Util.BWException('Not starting ' + endpoint + ' because ' + (Integer) (calloutMillis/1000) +
+                ' seconds of cumulative callout time has been consumed. Retry in a different transaction.');
+        }
         Zuora_Setting__mdt zuoraSetting = getZuoraSetting();
         HttpRequest request = new HttpRequest();
         request.setMethod(method);
@@ -30,7 +39,10 @@ public with sharing class ZuoraAPIHelper {
         if (Test.isRunningTest()) {
             response = new ZuoraAPIMock().respond(request);
         } else {
+            Long start = System.currentTimeMillis();
             response = zApiInstance.sendRequest(request);
+            Long finish = System.currentTimeMillis();
+            calloutMillis += (finish - start);
         }
         Logger.logLater(
             'ZuoraAPIHelper',
@@ -38,7 +50,8 @@ public with sharing class ZuoraAPIHelper {
             'Request Endpoint: ' + request.getEndpoint() + '\n' +
                 'Request Body: ' + request.getBody() + '\n\n' +
                 'Response Status: ' + response.getStatus() + '\n' +
-                'Response Body: ' + response.getBody(),
+                'Response Body: ' + response.getBody() + '\n' +
+                'Cumulative Time: ' + calloutMillis,
             Logger.FINE);
         if (flush) {
             Logger.flushLogs();

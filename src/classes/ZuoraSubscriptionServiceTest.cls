@@ -95,14 +95,44 @@ public with sharing class ZuoraSubscriptionServiceTest {
     public static void testDataLoad() {
         ZuoraSubscriptionAsyncService asyncService = new ZuoraSubscriptionAsyncService();
         asyncService.initForDataLoad();
-        System.assert(asyncService.allSubscriptionsToCreate.size() > 0);
+        // There should be enough subscriptions to require queueable invocation
+        System.assert(asyncService.allSubscriptionsToCreate.size() > 5);
         Integer allSubscriptionsToCreateStartingSize = asyncService.allSubscriptionsToCreate.size();
         List<Error_Log__c> errorLogs = [SELECT Id FROM Error_Log__c WHERE Class__c = 'ZuoraAPIHelper'];
         System.assertEquals(0, errorLogs.size());
         Test.startTest();
         Database.executeBatch(asyncService);
         Test.stopTest();
+
+        ZuoraSubscriptionAsyncService nextAsyncService = ZuoraSubscriptionAsyncService.nextAsyncService;
+        System.assert(nextAsyncService.allSubscriptionsToCreate.size() > 0);
+        System.assert(ZuoraSubscriptionAsyncService.batchedSubscriptionsToCreate.size() == 0);
+        System.assert(nextAsyncService.allSubscriptionsToCreate.size() + ZuoraSubscriptionAsyncService.subscriptionsCreated.size() == allSubscriptionsToCreateStartingSize);
         errorLogs = [SELECT Id FROM Error_Log__c WHERE Class__c = 'ZuoraAPIHelper'];
+        System.assertEquals(1, errorLogs.size());
+    }
+
+    @IsTest
+    public static void testTimeout() {
+        ZuoraSubscriptionAsyncService asyncService = new ZuoraSubscriptionAsyncService();
+        asyncService.initForDataLoad();
+        // There should be enough subscriptions to require queueable invocation
+        System.assert(asyncService.allSubscriptionsToCreate.size() > 5);
+        Integer allSubscriptionsToCreateStartingSize = asyncService.allSubscriptionsToCreate.size();
+        List<Error_Log__c> errorLogs = [SELECT Id FROM Error_Log__c WHERE Class__c = 'ZuoraAPIHelper'];
+        System.assertEquals(0, errorLogs.size());
+        Test.startTest();
+        // Simulate 119 seconds of 120 seconds used, so no subscriptions would be created
+        ZuoraAPIHelper.calloutMillis = 119000;
+        Database.executeBatch(asyncService);
+        Test.stopTest();
+
+        ZuoraSubscriptionAsyncService nextAsyncService = ZuoraSubscriptionAsyncService.nextAsyncService;
+        // We expect to try everything again
+        System.assertEquals(allSubscriptionsToCreateStartingSize, nextAsyncService.allSubscriptionsToCreate.size());
+        // And ZuoraAPIHelper wouldn't log anything since it would have thrown an exception, caught and logged by the
+        // ZuoraSubscriptionService
+        errorLogs = [SELECT Id FROM Error_Log__c WHERE Class__c = 'ZuoraSubscriptionService'];
         System.assertEquals(1, errorLogs.size());
     }
 
@@ -118,5 +148,67 @@ public with sharing class ZuoraSubscriptionServiceTest {
         ZuoraSubscriptionService.ClientProject clientProjectC = new ZuoraSubscriptionService.ClientProject('fo', 'obar');
         clientProjectSet.add(clientProjectC);
         System.assertEquals(2, clientProjectSet.size());
+    }
+
+    @IsTest
+    public static void testSRPCListForDataload() {
+        Map<String, ZuoraSubscriptionService.SubscriptionParam> accountNumberToSubscriptionMap =
+            new Map<String, ZuoraSubscriptionService.SubscriptionParam>();
+        ZuoraSubscriptionService.OrderActionParam orderActionParam;
+        orderActionParam = new ZuoraSubscriptionService.OrderActionParam();
+        orderActionParam.accountNumber = '1234';
+        orderActionParam.clientName = 'AMP';
+        orderActionParam.projectName = 'Westport';
+
+        ZuoraSubscriptionAsyncService.addOrderActionToMap(accountNumberToSubscriptionMap, orderActionParam);
+        System.assertEquals(1, accountNumberToSubscriptionMap.size());
+
+        orderActionParam = new ZuoraSubscriptionService.OrderActionParam();
+        orderActionParam.accountNumber = 'ABCD';
+        orderActionParam.clientName = 'AMP';
+        orderActionParam.projectName = 'Westport Blossom Rd A';
+
+        ZuoraSubscriptionAsyncService.addOrderActionToMap(accountNumberToSubscriptionMap, orderActionParam);
+        System.assertEquals(2, accountNumberToSubscriptionMap.size());
+        // There shouldn't be additional client projects - the client/project combination is on the original param
+        System.assertEquals(0, accountNumberToSubscriptionMap.get('ABCD').additionalClientProjects.size());
+
+        orderActionParam = new ZuoraSubscriptionService.OrderActionParam();
+        orderActionParam.accountNumber = 'ABCD';
+        orderActionParam.clientName = 'AMP';
+        orderActionParam.projectName = 'Westport Blossom Rd A';
+
+        ZuoraSubscriptionAsyncService.addOrderActionToMap(accountNumberToSubscriptionMap, orderActionParam);
+        // Even when we add another one, there shouldn't be any additional client projects
+        System.assertEquals(0, accountNumberToSubscriptionMap.get('ABCD').additionalClientProjects.size());
+
+        orderActionParam = new ZuoraSubscriptionService.OrderActionParam();
+        orderActionParam.accountNumber = 'ABCD';
+        orderActionParam.clientName = 'AMP';
+        orderActionParam.projectName = 'Westport Blossom Rd B';
+
+        ZuoraSubscriptionAsyncService.addOrderActionToMap(accountNumberToSubscriptionMap, orderActionParam);
+        // This should have gotten added to ABCD's additional client projects, not as another account
+        System.assertEquals(2, accountNumberToSubscriptionMap.size());
+        System.assertEquals(1, accountNumberToSubscriptionMap.get('ABCD').additionalClientProjects.size());
+
+        orderActionParam = new ZuoraSubscriptionService.OrderActionParam();
+        orderActionParam.accountNumber = 'ABCD';
+        orderActionParam.clientName = 'AMP';
+        orderActionParam.projectName = 'Westport Blossom Rd B';
+
+        ZuoraSubscriptionAsyncService.addOrderActionToMap(accountNumberToSubscriptionMap, orderActionParam);
+        // But if we add another Westport Blossom Rd B, we shouldn't add another additional client project
+        System.assertEquals(2, accountNumberToSubscriptionMap.size());
+        System.assertEquals(1, accountNumberToSubscriptionMap.get('ABCD').additionalClientProjects.size());
+
+        orderActionParam = new ZuoraSubscriptionService.OrderActionParam();
+        orderActionParam.accountNumber = 'ABCD';
+        orderActionParam.clientName = 'Goldman';
+        orderActionParam.projectName = 'Westport Blossom Rd B';
+
+        ZuoraSubscriptionAsyncService.addOrderActionToMap(accountNumberToSubscriptionMap, orderActionParam);
+        // But if add another client/project combination, we should add the additional client project
+        System.assertEquals(2, accountNumberToSubscriptionMap.get('ABCD').additionalClientProjects.size());
     }
 }
