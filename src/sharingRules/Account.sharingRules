@@ -98,7 +98,7 @@
     </sharingCriteriaRules>
     <sharingCriteriaRules>
         <fullName>Partner_Users</fullName>
-        <accessLevel>Edit</accessLevel>
+        <accessLevel>Read</accessLevel>
         <accountSettings>
             <caseAccessLevel>None</caseAccessLevel>
             <contactAccessLevel>None</contactAccessLevel>
@@ -108,10 +108,16 @@
         <sharedTo>
             <allPartnerUsers></allPartnerUsers>
         </sharedTo>
+        <booleanFilter>1 OR 2</booleanFilter>
         <criteriaItems>
             <field>Product_Line__c</field>
             <operation>equals</operation>
             <value>Residential Loan</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Product_Line__c</field>
+            <operation>equals</operation>
+            <value>Community Solar</value>
         </criteriaItems>
     </sharingCriteriaRules>
 </SharingRules>
