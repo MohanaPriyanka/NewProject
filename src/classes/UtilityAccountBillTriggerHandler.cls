@@ -90,7 +90,6 @@ public without sharing class UtilityAccountBillTriggerHandler {
                             prodUpdate.Production__c,
                             prodUpdate.Total_System_NMCs__c);
                         uasb.Unique_Id__c = uas.Opportunity__r.Shared_Solar_System__c + ' - ' + uas.Id + ' - ' + DateTime.newInstance(uab.Date__c.year(), uab.Date__c.month(), uab.Date__c.day()).format('yyyy-MM');
-                        uasb.Name = uab.Name + uas.Opportunity__r.Shared_Solar_System__r.Name;
                         uasb.CS_Billing_Log__c = uab.Id;
                         uasb.System_Bill__c = systemBill.Id;
                         if (prodUpdate.Total_System_NMCs_2_of_4__c > 0 && scheduleZSubscriptionToUABIdMap.containsKey(uas.Id)) {
@@ -101,7 +100,6 @@ public without sharing class UtilityAccountBillTriggerHandler {
                                 prodUpdate.Production_kWh_2_of_4__c,
                                 prodUpdate.Total_System_NMCs_2_of_4__c);
                             uasbTwo.Unique_Id__c = uas.Opportunity__r.Shared_Solar_System__c + ' - ' + uas.Id + ' - ' + DateTime.newInstance(uab.Date__c.year(), uab.Date__c.month(), uab.Date__c.day()).format('yyyy-MM') + 'A';
-                            uasbTwo.Name = uab.Name + uas.Opportunity__r.Shared_Solar_System__r.Name + 'A';
                             uasbTwo.CS_Billing_Log__c = uab.Id;
                             uasbTwo.System_Bill__c = systemBill.Id;
                             uasbSet.add(uasbTwo);
@@ -113,7 +111,6 @@ public without sharing class UtilityAccountBillTriggerHandler {
                                     prodUpdate.Production_kWh_3_of_4__c,
                                     prodUpdate.Total_System_NMCs_3_of_4__c);
                                 uasbThree.Unique_Id__c = uas.Opportunity__r.Shared_Solar_System__c + ' - ' + uas.Id + ' - ' + DateTime.newInstance(uab.Date__c.year(), uab.Date__c.month(), uab.Date__c.day()).format('yyyy-MM') + 'B';
-                                uasbThree.Name = uab.Name + uas.Opportunity__r.Shared_Solar_System__r.Name + 'B';
                                 uasbThree.CS_Billing_Log__c = uab.Id;
                                 uasbThree.System_Bill__c = systemBill.Id;
                                 uasbSet.add(uasbThree);
@@ -125,7 +122,6 @@ public without sharing class UtilityAccountBillTriggerHandler {
                                         prodUpdate.Production_kWh_4_of_4__c,
                                         prodUpdate.Total_System_NMCs_4_of_4__c);
                                     uasbFour.Unique_Id__c = uas.Opportunity__r.Shared_Solar_System__c + ' - ' + uas.Id + ' - ' + DateTime.newInstance(uab.Date__c.year(), uab.Date__c.month(), uab.Date__c.day()).format('yyyy-MM') + 'C';
-                                    uasbFour.Name = uab.Name + uas.Opportunity__r.Shared_Solar_System__r.Name + 'C';
                                     uasbFour.CS_Billing_Log__c = uab.Id;
                                     uasbFour.System_Bill__c = systemBill.Id;
                                     uasbSet.add(uasbFour);
