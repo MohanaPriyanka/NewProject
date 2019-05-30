@@ -45,9 +45,9 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>false</enableFeeds>
     <enableHistory>true</enableHistory>
+    <enableLicensing>false</enableLicensing>
     <enableReports>false</enableReports>
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
@@ -950,9 +950,10 @@ MONTH(Billing_Period_End_Date__c),
         <label>All</label>
     </listViews>
     <nameField>
-        <label>Utility Account Subscription Name</label>
+        <displayFormat>UASB{0000000000}</displayFormat>
+        <label>Utility Account Subscription Bill Name</label>
         <trackHistory>false</trackHistory>
-        <type>Text</type>
+        <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Utility Account Subscription Bills</pluralLabel>
     <searchLayouts/>
