@@ -31,7 +31,7 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
         } else if (endpoint.contains('v1/action/delete')) {
             return getActionDelete(req.getBody());
         } else if (endpoint.contains('v1/orders/subscriptionOwner')) {
-            return getOrderByOwnerResponse(req.getBody());
+            return getOrderByOwnerResponse(endpoint);
         } else if (endpoint.contains('v1/orders')) {
             return getOrderResponse(req.getBody());
         } else {
@@ -239,9 +239,25 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
         if (body.contains('ThrowException')) {
             throw new Util.BWException('Test callout exception');
         }
-        ZuoraAPI.OrderBySubscriptionOwner result = new ZuoraAPI.OrderBySubscriptionOwner();
-        result.success = true;
-        res.setBody(JSON.serialize(result));
+        if (body.contains('ExistingAccount')) {
+            String response = '{"orders" : [' +
+                '{"orderNumber" : "O-00002360","existingAccountNumber" : "ExistingAccount",'+
+                '"subscriptions" : [ {"subscriptionNumber" : "A-S00002141","orderActions" : ['+
+                '{"type" : "AddProduct","addProduct" :'+
+                '{"chargeOverrides" : [{"customFields" : {"Project__c" : "Dudley","ClientOwner__c" : "Goldman"}}]}} ]} ]},'+
+                '{'+
+                '"orderNumber" : "O-00002359","existingAccountNumber" : "ExistingAccount",'+
+                '"subscriptions" : [ {"subscriptionNumber" : "A-S00002141","orderActions" : ['+
+                '{"type" : "CreateSubscription","createSubscription" : {"subscribeToRatePlans" : ['+
+                '{"chargeOverrides" : [ {"customFields" : {"Project__c" : "Barrett","ClientOwner__c" : "Goldman"}} ]} ]}} ]} ]} ],'+
+                '"success" : true'+
+                '}';
+            res.setBody(response);
+        } else {
+            ZuoraAPI.OrderBySubscriptionOwner obso = new ZuoraAPI.OrderBySubscriptionOwner();
+            obso.success = true;
+            res.setBody(JSON.serialize(obso));
+        }
         return res;
     }
 

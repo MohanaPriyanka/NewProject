@@ -211,4 +211,68 @@ public with sharing class ZuoraSubscriptionServiceTest {
         // But if add another client/project combination, we should add the additional client project
         System.assertEquals(2, accountNumberToSubscriptionMap.get('ABCD').additionalClientProjects.size());
     }
+
+    @IsTest
+    public static void testExistingSubscriptionWithDifferentSRPC() {
+        ZuoraSubscriptionService.OrderActionParam orderActionParam = new ZuoraSubscriptionService.OrderActionParam();
+        orderActionParam.accountNumber = 'ExistingAccount';
+        orderActionParam.productRatePlanId = '2c92c0f86ab120de016ab427c7d8234d';
+        orderActionParam.productRatePlanChargeId = '2c92c0f86ab120de016ab427c97b2368';
+        orderActionParam.clientName = 'AMP';
+        orderActionParam.projectName = 'Dudley';
+        ZuoraSubscriptionService.ClientProject clientProject = new ZuoraSubscriptionService.ClientProject('Goldman', 'Barrett');
+        // ExistingAccount should have Goldman/Dudley and Goldman/Barrett, but not AMP/Dudley. So we should expect to see one
+        // AddProduct call to add AMP/Dudley to subscription A-S00002141
+        ZuoraSubscriptionService.createSubscription(orderActionParam, new Set<ZuoraSubscriptionService.ClientProject>{clientProject});
+
+        // Expect one error log for ZuoraAPIHelper, callJSONEndpoint, Fine
+        System.assertEquals(1, Logger.logs.values().size());
+        // Expect two messages, one for the subscriptionOwner query, and the other for the addProduct call
+        System.assertEquals(2, Logger.logs.values()[0].size());
+        System.assert(Logger.logs.values()[0][0].message.contains('/v1/orders/subscriptionOwner'));
+        System.assert(Logger.logs.values()[0][1].message.contains('AddProduct'));
+        System.assert(Logger.logs.values()[0][1].message.contains('"customFields":{"Project__c":"Dudley","ClientOwner__c":"AMP"}'));
+    }
+
+    @IsTest
+    public static void testExistingSubscriptionWithSameSRPC() {
+        ZuoraSubscriptionService.OrderActionParam orderActionParam = new ZuoraSubscriptionService.OrderActionParam();
+        orderActionParam.accountNumber = 'ExistingAccount';
+        orderActionParam.productRatePlanId = '2c92c0f86ab120de016ab427c7d8234d';
+        orderActionParam.productRatePlanChargeId = '2c92c0f86ab120de016ab427c97b2368';
+        orderActionParam.clientName = 'Goldman';
+        orderActionParam.projectName = 'Dudley';
+        ZuoraSubscriptionService.ClientProject clientProject = new ZuoraSubscriptionService.ClientProject('AMP', 'Dudley');
+        // ExistingAccount should have Goldman/Dudley and Goldman/Barrett, but not AMP/Dudley. So we should expect to see one
+        // AddProduct call to add AMP/Dudley to subscription A-S00002141
+        ZuoraSubscriptionService.createSubscription(orderActionParam, new Set<ZuoraSubscriptionService.ClientProject>{clientProject});
+
+        // Expect one error log for ZuoraAPIHelper, callJSONEndpoint, Fine
+        System.assertEquals(1, Logger.logs.values().size());
+        // Expect two messages, one for the subscriptionOwner query, and the other for the addProduct call
+        System.assertEquals(2, Logger.logs.values()[0].size());
+        System.assert(Logger.logs.values()[0][0].message.contains('/v1/orders/subscriptionOwner'));
+        System.assert(Logger.logs.values()[0][1].message.contains('AddProduct'));
+        System.assert(Logger.logs.values()[0][1].message.contains('"customFields":{"Project__c":"Dudley","ClientOwner__c":"AMP"}'));
+    }
+
+    @IsTest
+    public static void testExistingSubscription() {
+        ZuoraSubscriptionService.OrderActionParam orderActionParam = new ZuoraSubscriptionService.OrderActionParam();
+        orderActionParam.accountNumber = 'ExistingAccount';
+        orderActionParam.productRatePlanId = '2c92c0f86ab120de016ab427c7d8234d';
+        orderActionParam.productRatePlanChargeId = '2c92c0f86ab120de016ab427c97b2368';
+        orderActionParam.clientName = 'Goldman';
+        orderActionParam.projectName = 'Dudley';
+        ZuoraSubscriptionService.ClientProject clientProject = new ZuoraSubscriptionService.ClientProject('Goldman', 'Barrett');
+        // ExistingAccount should have Goldman/Dudley and Goldman/Barrett. So we should expect to see just one query, but no
+        // other calls
+        ZuoraSubscriptionService.createSubscription(orderActionParam, new Set<ZuoraSubscriptionService.ClientProject>{clientProject});
+
+        // Expect one error log for ZuoraAPIHelper, callJSONEndpoint, Fine
+        System.assertEquals(1, Logger.logs.values().size());
+        // Expect one messages, for for the subscriptionOwner query
+        System.assertEquals(1, Logger.logs.values()[0].size());
+        System.assert(Logger.logs.values()[0][0].message.contains('/v1/orders/subscriptionOwner'));
+    }
 }

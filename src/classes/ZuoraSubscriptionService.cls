@@ -33,13 +33,24 @@ public with sharing class ZuoraSubscriptionService {
     // Unfortunately, we can't create a subscription with multiple rate plan charges at once:
     // ("message" : "Not Allow use more than one chargeOverride on one product rateplan charge"),
     // so we create the subscription with one SRPC, and then do an order action for each client/project combination.
-    private static String createSubscription(OrderActionParam param, Set<ClientProject> additionalClientProjects) {
-        ZuoraAPI.OrderBySubscriptionOwner obso = getOrderBySubscriptionOwner(param.accountNumber);
+    @TestVisible
+    private static String createSubscription(OrderActionParam newSubscription, Set<ClientProject> additionalClientProjects) {
+        ZuoraAPI.OrderBySubscriptionOwner obso = getOrderBySubscriptionOwner(newSubscription.accountNumber);
         if (obso.hasSubscription()) {
-            param.subscriptionNumber = obso.getSubscriptionNumber();
-            additionalClientProjects.removeAll(obso.getClientProjectsFromOrders());
+            // Since there's already a subscription, we won't create a new one (which includes a client/project that we'll
+            // need to add if it doesn't exist
+            newSubscription.subscriptionNumber = obso.getSubscriptionNumber();
+            ClientProject newSubClientProject = new ClientProject(newSubscription.clientName, newSubscription.projectName);
+            Set<ClientProject> existingClientProjects = obso.getClientProjectsFromOrders();
+            // Since we don't want to add any client/projects that already exist, we'll remove them
+            additionalClientProjects.removeAll(existingClientProjects);
+            // But if the new subscription has a client/project that doesn't exist, we need to add it as an additional
+            // client project since we won't be creating a new subscription
+            if (!existingClientProjects.contains(newSubClientProject)) {
+                additionalClientProjects.add(newSubClientProject);
+            }
         } else {
-            ZuoraAPI.Order createNewSubscription = ZuoraSubscriptionService.getNewOrderRequest(param);
+            ZuoraAPI.Order createNewSubscription = ZuoraSubscriptionService.getNewOrderRequest(newSubscription);
             HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/orders', createNewSubscription, false);
             ZuoraAPI.OrderActionResult newSubscriptionResult =
                 (ZuoraAPI.OrderActionResult) JSON.deserialize(response.getBody(), ZuoraAPI.OrderActionResult.class);
@@ -48,17 +59,17 @@ public with sharing class ZuoraSubscriptionService {
                 throw new Util.BWException('Unexpected result creating a new subscription');
             }
 
-            param.subscriptionNumber = newSubscriptionResult.subscriptions[0].subscriptionNumber;
+            newSubscription.subscriptionNumber = newSubscriptionResult.subscriptions[0].subscriptionNumber;
         }
 
         if (additionalClientProjects == null || additionalClientProjects.size() == 0) {
-            return param.subscriptionNumber;
+            return newSubscription.subscriptionNumber;
         }
 
         for (ClientProject clientProject : additionalClientProjects) {
-            param.clientName = clientProject.clientName;
-            param.projectName = clientProject.projectName;
-            ZuoraAPI.Order addProduct = ZuoraSubscriptionService.getAddProductRequest(param);
+            newSubscription.clientName = clientProject.clientName;
+            newSubscription.projectName = clientProject.projectName;
+            ZuoraAPI.Order addProduct = ZuoraSubscriptionService.getAddProductRequest(newSubscription);
             HttpResponse addProductResponse = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/orders', addProduct, false);
             ZuoraAPI.OrderActionResult addProductResult =
                 (ZuoraAPI.OrderActionResult) JSON.deserialize(addProductResponse.getBody(), ZuoraAPI.OrderActionResult.class);
@@ -67,7 +78,7 @@ public with sharing class ZuoraSubscriptionService {
                 throw new Util.BWException('Unexpected result adding a rate plan charge to a new subscription');
             }
         }
-        return param.subscriptionNumber;
+        return newSubscription.subscriptionNumber;
     }
 
     public static ZuoraAPI.Order getNewOrderRequest(OrderActionParam param) {
