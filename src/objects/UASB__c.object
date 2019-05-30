@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata"
+      xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
     <actionOverrides>
         <actionName>Accept</actionName>
         <type>Default</type>
@@ -43,6 +44,7 @@
     <allowInChatterGroups>false</allowInChatterGroups>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
+    <description n1:nil="true" />
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableFeeds>false</enableFeeds>
@@ -950,7 +952,7 @@ MONTH(Billing_Period_End_Date__c),
         <label>All</label>
     </listViews>
     <nameField>
-        <displayFormat>UASB{0000000000}</displayFormat>
+        <displayFormat>UASB-{0000000}</displayFormat>
         <label>Utility Account Subscription Bill Name</label>
         <trackHistory>false</trackHistory>
         <type>AutoNumber</type>

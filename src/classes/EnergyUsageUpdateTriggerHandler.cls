@@ -306,7 +306,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         }
 
         System_Bill__c sb = new System_Bill__c(
-            Name = opp.Account.Account_Number__c + ' ' + opp.Shared_Solar_System__r.Name + ' ' + euu.MonthDate__c + ' ' + euu.YearDate__c,
+            Name = opp.Account.Account_Number__c + ' ' + (opp.Shared_Solar_System__r.Name).abbreviate(40) + ' ' + euu.MonthDate__c + ' ' + euu.YearDate__c,
             Shared_Solar_System_ID2__c = opp.Shared_Solar_System__r.Id,
             Account_Bill__c = ab.Id,
             Recurring_Billing__c = opp.Account.Recurring_Billing__c,
