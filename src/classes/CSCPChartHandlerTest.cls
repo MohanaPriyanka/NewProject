@@ -287,7 +287,7 @@ public class CSCPChartHandlerTest {
 
 		insert new List<Utility_Account_Bill__c>{uab, uab2};
 
-		UASB__c uasb = new UASB__c(Name = uas.Name + sss1.Name,
+		UASB__c uasb = new UASB__c(
 			Customer_Subscription_KW_DC__c = uas.Customer_Subscription_KW_DC_STATIC__c,
 			CS_Billing_Log__c = uab.Id,
 			Date__c = billingDate1,
@@ -304,7 +304,7 @@ public class CSCPChartHandlerTest {
  			Credits_Allocated__c = 450,
             Subscription_Production_kWh_Static__c = 3750,
 			Unique_ID__c = opp1.Shared_Solar_System__c + ' - ' + uas.Id + ' - ' + DateTime.newInstance(billingDate1.year(), billingDate1.month(), billingDate1.day()).format('yyyy-MM'));
-		UASB__c uasb2 = new UASB__c(Name = uas2.Name + sss2.Name,
+		UASB__c uasb2 = new UASB__c(
 			Customer_Subscription_KW_DC__c = uas2.Customer_Subscription_KW_DC_STATIC__c,
 			CS_Billing_Log__c = uab2.Id,
 			Date__c = billingDate1,
