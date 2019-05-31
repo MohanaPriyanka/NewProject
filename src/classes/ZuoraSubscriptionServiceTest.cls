@@ -94,7 +94,7 @@ public with sharing class ZuoraSubscriptionServiceTest {
     @IsTest
     public static void testDataLoad() {
         ZuoraSubscriptionAsyncService asyncService = new ZuoraSubscriptionAsyncService();
-        asyncService.init();
+        asyncService.initForDataLoad();
         // There should be enough subscriptions to require queueable invocation
         System.assert(asyncService.allSubscriptionsToCreate.size() > 5);
         Integer allSubscriptionsToCreateStartingSize = asyncService.allSubscriptionsToCreate.size();
@@ -107,6 +107,9 @@ public with sharing class ZuoraSubscriptionServiceTest {
         ZuoraSubscriptionAsyncService nextAsyncService = ZuoraSubscriptionAsyncService.nextAsyncService;
         System.assert(nextAsyncService.allSubscriptionsToCreate.size() > 0);
         System.assert(ZuoraSubscriptionAsyncService.batchedSubscriptionsToCreate.size() == 0);
+        System.debug(LoggingLevel.ERROR, nextAsyncService.allSubscriptionsToCreate.size());
+        System.debug(LoggingLevel.ERROR, ZuoraSubscriptionAsyncService.subscriptionsCreated.size());
+        System.debug(LoggingLevel.ERROR, allSubscriptionsToCreateStartingSize);
         System.assert(nextAsyncService.allSubscriptionsToCreate.size() + ZuoraSubscriptionAsyncService.subscriptionsCreated.size() == allSubscriptionsToCreateStartingSize);
         errorLogs = [SELECT Id FROM Error_Log__c WHERE Class__c = 'ZuoraAPIHelper'];
         System.assertEquals(1, errorLogs.size());
@@ -115,7 +118,7 @@ public with sharing class ZuoraSubscriptionServiceTest {
     @IsTest
     public static void testTimeout() {
         ZuoraSubscriptionAsyncService asyncService = new ZuoraSubscriptionAsyncService();
-        asyncService.init();
+        asyncService.initForDataLoad();
         // There should be enough subscriptions to require queueable invocation
         System.assert(asyncService.allSubscriptionsToCreate.size() > 5);
         Integer allSubscriptionsToCreateStartingSize = asyncService.allSubscriptionsToCreate.size();

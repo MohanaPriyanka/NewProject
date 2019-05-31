@@ -65,7 +65,7 @@ public without sharing class ScheduleZTriggerHandler {
 
         if (Util.getSystemPropertyCheckbox('Use_Zuora_For_Subscription_Billing__c') && enactedScheduleZS.size() > 0) {
             ZuoraSubscriptionAsyncService asyncService = new ZuoraSubscriptionAsyncService();
-            asyncService.init(enactedScheduleZS);
+            asyncService.initForScheduleZEnactment(enactedScheduleZS);
             Database.executeBatch(asyncService, 100);
         }
     }

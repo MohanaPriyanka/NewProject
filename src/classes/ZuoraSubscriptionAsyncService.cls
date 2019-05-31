@@ -36,17 +36,17 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
         allSubscriptionsToCreate = new List<ZuoraSubscriptionService.SubscriptionParam>();
     }
 
-    public void init() {
+    public void initForDataLoad() {
         try {
-            initForDataLoad();
+            initForDataLoadPrivate();
         } catch (Exception e) {
             Logger.logNow('ZuoraSubscriptionAsyncService', 'initForDataLoad', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
         }
     }
 
-    public void init(List<Schedule_Z__c> scheduleZs) {
+    public void initForScheduleZEnactment(List<Schedule_Z__c> scheduleZs) {
         try {
-            initForScheduleZEnactment(scheduleZs);
+            initForScheduleZEnactmentPrivate(scheduleZs);
         } catch (Exception e) {
             Set<String> ids = new Set<String>();
             for (Schedule_Z__c sz : scheduleZs) {
@@ -57,19 +57,21 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
         }
     }
 
-    private void initForScheduleZEnactment(List<Schedule_Z__c> scheduleZs) {
+    private void initForScheduleZEnactmentPrivate(List<Schedule_Z__c> scheduleZs) {
         getRatePlanIds();
         Set<Id> accountIds = new Set<Id>();
         List<AggregateResult> scheduleZSubscriptionsByAccount = [
             SELECT Utility_Account_Subscription__r.Opportunity__r.Account.Id Id,
-                Schedule_Z__r.Shared_Solar_System__r.Name projectName,
-                Schedule_Z__r.Shared_Solar_System__r.Client_Account__r.Name clientName,
+                Schedule_Z__r.Shared_Solar_System__r.Id systemId,
+                Schedule_Z__r.Shared_Solar_System__r.Client_Account__r.Id clientId,
+                MIN(Schedule_Z__r.Shared_Solar_System__r.Client_Account__r.Account_Number__c) clientName,
+                MIN(Schedule_Z__r.Shared_Solar_System__r.Unique_ID__c)  projectName,
                 MIN(Schedule_Z__r.Date_Enacted_by_Utility__c) billDate
             FROM Schedule_Z_Subscription__c
             WHERE Schedule_Z__c IN :scheduleZs
             GROUP BY Utility_Account_Subscription__r.Opportunity__r.Account.Id,
-                Schedule_Z__r.Shared_Solar_System__r.Name,
-                Schedule_Z__r.Shared_Solar_System__r.Client_Account__r.Name
+                Schedule_Z__r.Shared_Solar_System__r.Id,
+                Schedule_Z__r.Shared_Solar_System__r.Client_Account__r.Id
         ];
         for (AggregateResult aggregateResult : scheduleZSubscriptionsByAccount) {
             accountIds.add(aggregateResult.Id);
@@ -86,26 +88,31 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
         allSubscriptionsToCreate = accountNumberToSubscriptionMap.values();
     }
 
-    private void initForDataLoad() {
+    private void initForDataLoadPrivate() {
         getRatePlanIds();
         // We're not adding this to selector classes since they are for one-time data migration
         // Consumes ~31k query rows as of May 2019
         List<AggregateResult> systemsBillsByAccount = [
-            SELECT Property_Account__r.Id Id, Shared_Solar_System__r.Name projectName, Client__r.Name clientName, MIN(Date__c) billDate
+            SELECT Property_Account__r.Id Id, Shared_Solar_System__r.Id systemId, Client__r.Id clientId,
+                MIN(Shared_Solar_System__r.Client_Account__r.Account_Number__c) clientName,
+                MIN(Shared_Solar_System__r.Unique_ID__c) projectName,
+                MIN(Billing_Period_Start_Date__c) billDate
             FROM System_Bill__c
-            GROUP BY Property_Account__r.Id, Shared_Solar_System__r.Name, Client__r.Name
+            GROUP BY Property_Account__r.Id, Shared_Solar_System__r.Id, Client__r.Id
         ];
         // Consumes ~3k query rows as of May 2019
         List<AggregateResult> scheduleZSubscriptionsByAccount = [
             SELECT Utility_Account_Subscription__r.Opportunity__r.Account.Id Id,
-                Schedule_Z__r.Shared_Solar_System__r.Name projectName,
-                Schedule_Z__r.Shared_Solar_System__r.Client_Account__r.Name clientName,
+                Schedule_Z__r.Shared_Solar_System__r.Id systemId,
+                Schedule_Z__r.Shared_Solar_System__r.Client_Account__r.Id clientId,
+                MIN(Schedule_Z__r.Shared_Solar_System__r.Client_Account__r.Account_Number__c) clientName,
+                MIN(Schedule_Z__r.Shared_Solar_System__r.Unique_ID__c)  projectName,
                 MIN(Schedule_Z__r.Date_Enacted_by_Utility__c) billDate
             FROM Schedule_Z_Subscription__c
             WHERE Schedule_Z__r.Status__c IN ('Billing', 'Enacted by Utility')
             GROUP BY Utility_Account_Subscription__r.Opportunity__r.Account.Id,
-                Schedule_Z__r.Shared_Solar_System__r.Name,
-                Schedule_Z__r.Shared_Solar_System__r.Client_Account__r.Name
+                Schedule_Z__r.Shared_Solar_System__r.Id,
+                Schedule_Z__r.Shared_Solar_System__r.Client_Account__r.Id
         ];
         Set<Id> accountIds = new Set<Id>();
         for (AggregateResult aggregateResult : systemsBillsByAccount) {

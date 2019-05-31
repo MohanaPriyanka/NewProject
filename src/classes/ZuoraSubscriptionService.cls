@@ -102,7 +102,7 @@ public with sharing class ZuoraSubscriptionService {
         return order;
     }
 
-    private static ZuoraAPI.OrderBySubscriptionOwner getOrderBySubscriptionOwner(String accountNumber) {
+    public static ZuoraAPI.OrderBySubscriptionOwner getOrderBySubscriptionOwner(String accountNumber) {
         HttpResponse response =
             ZuoraAPIHelper.callJsonEndpoint('GET', '/v1/orders/subscriptionOwner/' + accountNumber, null, false);
         String cleanJSON = ZuoraAPIHelper.cleanJSON(response.getBody());
