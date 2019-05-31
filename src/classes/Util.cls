@@ -190,7 +190,7 @@ public without sharing class Util {
     }
 
     public static Boolean isDisabled(String triggerType) {
-        Boolean property = (Boolean) getSystemProperty(triggerType);
+        Boolean property = (Boolean) getSystemPropertyCheckbox(triggerType);
         return (property==null?false:property);
     }
     public static void enableTrigger(String triggerType) {
@@ -267,11 +267,11 @@ public without sharing class Util {
         }
     }
 
-    public static Object getSystemProperty(String propertyName) {
+    public static Boolean getSystemPropertyCheckbox(String propertyName) {
         List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
         if (systemProperties.size() > 0) {
-            return systemProperties[0].get(propertyName);
+            return (Boolean) systemProperties[0].get(propertyName);
         }
-        return null;
+        return false;
     }
 }

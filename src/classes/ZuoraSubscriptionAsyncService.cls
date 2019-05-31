@@ -89,13 +89,13 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
     private void initForDataLoad() {
         getRatePlanIds();
         // We're not adding this to selector classes since they are for one-time data migration
-        // Consumes ~31k query rows as of May 2018
+        // Consumes ~31k query rows as of May 2019
         List<AggregateResult> systemsBillsByAccount = [
             SELECT Property_Account__r.Id Id, Shared_Solar_System__r.Name projectName, Client__r.Name clientName, MIN(Date__c) billDate
             FROM System_Bill__c
             GROUP BY Property_Account__r.Id, Shared_Solar_System__r.Name, Client__r.Name
         ];
-        // Consumes ~3k query rows as of May 2018
+        // Consumes ~3k query rows as of May 2019
         List<AggregateResult> scheduleZSubscriptionsByAccount = [
             SELECT Utility_Account_Subscription__r.Opportunity__r.Account.Id Id,
                 Schedule_Z__r.Shared_Solar_System__r.Name projectName,
