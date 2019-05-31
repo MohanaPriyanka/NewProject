@@ -94,7 +94,7 @@ public with sharing class ZuoraSubscriptionServiceTest {
     @IsTest
     public static void testDataLoad() {
         ZuoraSubscriptionAsyncService asyncService = new ZuoraSubscriptionAsyncService();
-        asyncService.initForDataLoad();
+        asyncService.init();
         // There should be enough subscriptions to require queueable invocation
         System.assert(asyncService.allSubscriptionsToCreate.size() > 5);
         Integer allSubscriptionsToCreateStartingSize = asyncService.allSubscriptionsToCreate.size();
@@ -115,7 +115,7 @@ public with sharing class ZuoraSubscriptionServiceTest {
     @IsTest
     public static void testTimeout() {
         ZuoraSubscriptionAsyncService asyncService = new ZuoraSubscriptionAsyncService();
-        asyncService.initForDataLoad();
+        asyncService.init();
         // There should be enough subscriptions to require queueable invocation
         System.assert(asyncService.allSubscriptionsToCreate.size() > 5);
         Integer allSubscriptionsToCreateStartingSize = asyncService.allSubscriptionsToCreate.size();

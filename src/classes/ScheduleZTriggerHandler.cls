@@ -12,16 +12,18 @@ public without sharing class ScheduleZTriggerHandler {
     // that aren't on the new Schedule Z.
     public static void handleNewlyEnactedScheduleZ(Map<Id, Schedule_Z__c> oldMap, List<Schedule_Z__c> newScheduleZS) {
         List<Schedule_Z__c> szToUpdate = new List<Schedule_Z__c>();
+        List<Schedule_Z__c> enactedScheduleZS = new List<Schedule_Z__c>();
 
         // Create a list of the Sched Z's that changed Status__c
         List<Id> systemIdsWithEnactedSZs = new List<Id>();
         for (Schedule_Z__c schedZ : newScheduleZS) {
-            if (schedZ.Status__c == 'Enacted by Utility' &&
+            if (schedZ.Status__c == 'Enacted by Utility' && schedZ.Date_Enacted_by_Utility__c != null &&
                 (oldMap == null ||
                     (oldMap != null &&
                         oldMap.containsKey(schedZ.Id) &&
-                        schedZ.Status__c != oldMap.get(schedZ.Id).Status__c))) {
+                        (oldMap.get(schedZ.Id).Status__c != 'Enacted by Utility' || oldMap.get(schedZ.Id).Date_Enacted_by_Utility__c == null)))) {
                 systemIdsWithEnactedSZs.add(schedZ.Shared_Solar_System__c);
+                enactedScheduleZS.add(schedZ);
             }
         }
 
@@ -59,6 +61,12 @@ public without sharing class ScheduleZTriggerHandler {
         }
         if (uasesToRetire.size() > 0) {
             update uasesToRetire;
+        }
+
+        if ((Boolean) Util.getSystemProperty('Use_Zuora_For_Subscription_Billing__c') && enactedScheduleZS.size() > 0) {
+            ZuoraSubscriptionAsyncService asyncService = new ZuoraSubscriptionAsyncService();
+            asyncService.init(enactedScheduleZS);
+            Database.executeBatch(asyncService, 100);
         }
     }
 

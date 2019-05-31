@@ -21,6 +21,8 @@
 
 public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Database.AllowsCallouts, Database.Batchable<ZuoraSubscriptionService.SubscriptionParam> {
     public List<ZuoraSubscriptionService.SubscriptionParam> allSubscriptionsToCreate;
+    // We assume there's only one Product Rate Plan (Community Solar Subscription), and one Product Rate Plan Charge (Utility Credit) for new subscriptions
+    // If we use other Product Rate Plan Charges, some of the logic to figure out the client/project combinations will change
     private String productRatePlanId;
     private String productRatePlanChargeId;
     @TestVisible
@@ -34,20 +36,66 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
         allSubscriptionsToCreate = new List<ZuoraSubscriptionService.SubscriptionParam>();
     }
 
-    public void initForScheduleZEnactment(List<Schedule_Z__c> scheduleZs) {
+    public void init() {
+        try {
+            initForDataLoad();
+        } catch (Exception e) {
+            Logger.logNow('ZuoraSubscriptionAsyncService', 'initForDataLoad', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+        }
     }
 
-    public void initForDataLoad() {
-        getRatePlanIds();
+    public void init(List<Schedule_Z__c> scheduleZs) {
+        try {
+            initForScheduleZEnactment(scheduleZs);
+        } catch (Exception e) {
+            Set<String> ids = new Set<String>();
+            for (Schedule_Z__c sz : scheduleZs) {
+                ids.add(sz.Id);
+            }
+            Logger.logNow('ZuoraSubscriptionAsyncService', 'initForScheduleZEnactment', 'ScheduleZ Enactment for ' + ids +
+                ' failed to process zuora subscriptions because of:\n' + e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+        }
+    }
 
-        // We're not adding this to a selector class since it's for one-time data migration
-        // Consumes ~31k query rows
+    private void initForScheduleZEnactment(List<Schedule_Z__c> scheduleZs) {
+        getRatePlanIds();
+        Set<Id> accountIds = new Set<Id>();
+        List<AggregateResult> scheduleZSubscriptionsByAccount = [
+            SELECT Utility_Account_Subscription__r.Opportunity__r.Account.Id Id,
+                Schedule_Z__r.Shared_Solar_System__r.Name projectName,
+                Schedule_Z__r.Shared_Solar_System__r.Client_Account__r.Name clientName,
+                MIN(Schedule_Z__r.Date_Enacted_by_Utility__c) billDate
+            FROM Schedule_Z_Subscription__c
+            WHERE Schedule_Z__c IN :scheduleZs
+            GROUP BY Utility_Account_Subscription__r.Opportunity__r.Account.Id,
+                Schedule_Z__r.Shared_Solar_System__r.Name,
+                Schedule_Z__r.Shared_Solar_System__r.Client_Account__r.Name
+        ];
+        for (AggregateResult aggregateResult : scheduleZSubscriptionsByAccount) {
+            accountIds.add(aggregateResult.Id);
+        }
+        Map<Id, Account> accountMap = new Map<Id, Account>([
+            SELECT Id, Account_Number__c, Zuora_Id__c
+            FROM Account
+            WHERE Id IN :accountIds
+        ]);
+
+        Map<String, ZuoraSubscriptionService.SubscriptionParam> accountNumberToSubscriptionMap =
+            new Map<String, ZuoraSubscriptionService.SubscriptionParam>();
+        updateSubscriptionMap(scheduleZSubscriptionsByAccount, accountMap, accountNumberToSubscriptionMap);
+        allSubscriptionsToCreate = accountNumberToSubscriptionMap.values();
+    }
+
+    private void initForDataLoad() {
+        getRatePlanIds();
+        // We're not adding this to selector classes since they are for one-time data migration
+        // Consumes ~31k query rows as of May 2018
         List<AggregateResult> systemsBillsByAccount = [
             SELECT Property_Account__r.Id Id, Shared_Solar_System__r.Name projectName, Client__r.Name clientName, MIN(Date__c) billDate
             FROM System_Bill__c
             GROUP BY Property_Account__r.Id, Shared_Solar_System__r.Name, Client__r.Name
         ];
-        // Consumes ~3k query rows
+        // Consumes ~3k query rows as of May 2018
         List<AggregateResult> scheduleZSubscriptionsByAccount = [
             SELECT Utility_Account_Subscription__r.Opportunity__r.Account.Id Id,
                 Schedule_Z__r.Shared_Solar_System__r.Name projectName,
@@ -135,11 +183,6 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
             // safe to just add it
             subscriptionParam.additionalClientProjects.add(clientProject);
         }
-    }
-
-    public void initForScheduleZLoad() {
-        // Query all accounts on an Enacted or Billing Schedule Z
-        // Loop through and create the subscription params
     }
 
     public void initForChainedContinuation(List<ZuoraSubscriptionService.SubscriptionParam> remainingSubscriptionParams) {

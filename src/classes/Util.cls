@@ -190,14 +190,8 @@ public without sharing class Util {
     }
 
     public static Boolean isDisabled(String triggerType) {
-        List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
-        if (systemProperties.size() > 0 &&
-            systemProperties[0].get(triggerType) != null &&
-            (Boolean) systemProperties[0].get(triggerType)) {
-            return true;
-        } else {
-            return false;
-        }
+        Boolean property = (Boolean) getSystemProperty(triggerType);
+        return (property==null?false:property);
     }
     public static void enableTrigger(String triggerType) {
         toggleTrigger(triggerType, false);
@@ -271,5 +265,13 @@ public without sharing class Util {
             insert reparentedAttachments;
             delete attachmentsToReparent;
         }
+    }
+
+    public static Object getSystemProperty(String propertyName) {
+        List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
+        if (systemProperties.size() > 0) {
+            return systemProperties[0].get(propertyName);
+        }
+        return null;
     }
 }
