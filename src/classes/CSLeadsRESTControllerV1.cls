@@ -50,8 +50,13 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
 
         if (leads.isEmpty()) {
             response.statusCode = statusCode.notFound;
-        } else if (requestLead.hasAcknowledgement() || requestLead.hasZuoraPaymentInfo()) {
+        } else if (requestLead.hasAcknowledgement() || requestLead.hasZuoraPaymentInfo() || requestLead.isComplete()) {
             Lead leadToUpdate = leads[0];
+
+            if (requestLead.isComplete()) {
+                leadToUpdate.Application_Complete_Date__c = requestLead.applicationCompleteDate;
+            }
+
             if (requestLead.hasAcknowledgement()) {
                 leadToUpdate.Privacy_Policy_Acknowledged__c = requestLead.customerAcknowledgement;
                 leadToUpdate.Terms_Conditions_Acknowledged__c = Datetime.now();
@@ -102,7 +107,7 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
                 Company, Application_Type__c, LASERCA__Home_Address__c, LASERCA__Home_City__c,
                 LASERCA__Home_State__c, LASERCA__Home_Zip__c, Parcel_Zip__c, LoadZone__c,
                 Partner_Lookup__c, Partner_Lookup__r.Id, bs_Sales_ID__c, Customer_Referral__c, Product__c, Phone,
-                Business_Title__c, Utility_Relationship__r.Name, Product__r.Name
+                Business_Title__c, Utility_relationship__r.Name, Product__r.Name, Application_Complete_Date__c, Status, Utility_relationship__r.EIA_ID__c
             FROM Lead
             WHERE Id = :leadIds
         ];
@@ -113,7 +118,7 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
         public Boolean customerAcknowledgement;
         public String customerAgreementText;
         public String zuoraPaymentRefId;
-        public DateTime zuoraPaymentRefIdExpirationDate;
+        public Datetime zuoraPaymentRefIdExpirationDate;
         public String firstName;
         public String lastName;
         public String email;
@@ -133,6 +138,8 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
         public Id partnerId;
         public Id salesRepId;
         public Id referralCode;
+        public Datetime applicationCompleteDate;
+        public String eiaId;
 
         public RestLead() {}
         public RestLead(Lead lead) {
@@ -159,7 +166,13 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
             this.productName = lead.Product__r.Name;
             this.businessPhone = lead.Phone;
             this.businessTitle = lead.Business_Title__c;
-            this.utilityName = lead.Utility_Relationship__r.Name;
+            this.utilityName = lead.Utility_relationship__r.Name;
+            this.applicationCompleteDate = lead.Application_Complete_Date__c;
+            this.eiaId = lead.Utility_relationship__r.EIA_ID__c;
+        }
+
+        public Boolean isComplete() {
+            return (applicationCompleteDate != null);
         }
 
         public Boolean hasAcknowledgement() {
@@ -187,17 +200,16 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
         public Boolean hasBasicFields() {
             return (
                 firstName != null
-                && lastName != null
-                && email != null
-                && mobilePhone != null
-                && billingStreetAddress != null
-                && billingCity != null
-                && billingState != null
-                && billingZIPCode != null
-                && serviceZIPCode != null
-                && utilityName != null
-                && productName != null
-                && hasValidApplicationType()
+                    && lastName != null
+                    && email != null
+                    && mobilePhone != null
+                    && billingStreetAddress != null
+                    && billingCity != null
+                    && billingState != null
+                    && billingZIPCode != null
+                    && serviceZIPCode != null
+                    && productName != null
+                    && hasValidApplicationType()
             );
         }
 
@@ -205,8 +217,8 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
             return (
                 applicationType == 'Residential' || (
                     businessPhone != null
-                    && businessName != null
-                    && businessTitle != null
+                        && businessName != null
+                        && businessTitle != null
                 )
             );
         }
@@ -234,7 +246,9 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
                 Product_line__c = 'Community Solar',
                 Phone = businessPhone,
                 Business_Title__c = businessTitle,
-                Customer_type__c = applicationType
+                Customer_type__c = applicationType,
+                Application_Complete_Date__c = applicationCompleteDate,
+                Status = 'Sales Qualified'
             );
             Partner__c customerPartner = MyAccountController.getPartner(partnerId);
             if (partnerId != null) {
@@ -264,16 +278,26 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
                 newLead.Product__c = product[0].Id;
             }
 
-            if (utilityName != null) {
-                List<Utility__c> utility = [
-                    SELECT Id
-                    FROM Utility__c
-                    WHERE Name LIKE :'%'+utilityName+'%'
-                    LIMIT 1
-                ];
+            List<Utility__c> EIAToUtility = [
+                SELECT Id, Name, EIA_ID__c
+                FROM Utility__c
+                WHERE EIA_ID__c = :eiaId
+                LIMIT 1];
 
-                newLead.Utility_Relationship__c = utility[0].Id;
+            if (!EIAToUtility.isEmpty()) {
+                newLead.Utility_relationship__c = EIAToUtility[0].Id;
             }
+
+//            if (utilityName != null) {
+//                List<Utility__c> utility = [
+//                    SELECT Id
+//                    FROM Utility__c
+//                    WHERE Name LIKE :'%'+utilityName+'%'
+//                    LIMIT 1
+//                ];
+
+               // newLead.Utility_relationship__c = utility[0].Id;
+//            }
 
             String continueApplicationUrl = Util.getCommunitySiteURL('Apply') + '/s/csap-payment?leadId=' + lead.Id;
             newLead.Continue_Application_Link__c = continueApplicationUrl;
