@@ -32,6 +32,21 @@ public without sharing class Util {
         }
     }
 
+    public static void updateSObjs(List<SObject> sobjs, Integer count, String message, String stack) {
+        if (count >= MAX_TRIES) {
+            throw new BWException(message + '\n' + stack);
+        }
+        try {
+            update sobjs;
+        } catch (System.DmlException de) {
+            if (de.getMessage().contains('UNABLE_TO_LOCK_ROW')) {
+                updateSObjs(sobjs, count++, de.getMessage(), de.getStackTraceString());
+            } else {
+                throw new BWException(de.getMessage());
+            }
+        }
+    }
+
     private enum DatabaseOperation {DBINSERT, DBUPDATE}
     public static Boolean updateAndLog(List<SObject> sobjs, String classname, String method) {
         return databaseOperationAndLog(DatabaseOperation.DBUPDATE, sobjs, classname, method);
