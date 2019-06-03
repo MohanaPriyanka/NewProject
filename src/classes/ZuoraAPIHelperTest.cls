@@ -35,7 +35,7 @@ public with sharing class ZuoraAPIHelperTest {
 
     @IsTest
     public static void testQuery() {
-        String result = ZuoraAPIHelper.query('SELECT Id FROM Account');
+        String result = ZuoraAPIHelper.query('SELECT Id FROM Account', false);
         System.assert(result.contains('"done":true'));
     }
 
