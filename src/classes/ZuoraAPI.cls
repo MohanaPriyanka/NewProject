@@ -197,7 +197,7 @@ public with sharing class ZuoraAPI {
 
     public class TriggerDate {
         public String name;
-        public String triggerDate;
+        public Date triggerDate;
     }
 
     public class Subscription {
@@ -223,6 +223,14 @@ public with sharing class ZuoraAPI {
             }
             return orderActions[0].getClientProject();
         }
+        public OrderAction getCreateSubscription() {
+            for (OrderAction orderAction : orderActions) {
+                if (orderAction.type_Zreserved == 'CreateSubscription') {
+                    return orderAction;
+                }
+            }
+            return null;
+        }
     }
 
     public class ProcessingOptions {
@@ -243,7 +251,7 @@ public with sharing class ZuoraAPI {
             this.triggerDates = new List<TriggerDate>();
             this.type_Zreserved = type;
             ZuoraAPI.TriggerDate triggerDate = new ZuoraAPI.TriggerDate();
-            triggerDate.triggerDate = String.valueOf(contractEffectiveDate);
+            triggerDate.triggerDate = contractEffectiveDate;
             triggerDate.name = 'ContractEffective';
             this.triggerDates.add(triggerDate);
         }
@@ -275,6 +283,14 @@ public with sharing class ZuoraAPI {
                 }
             }
             return clientProject;
+        }
+        public Date getContractEffective() {
+            for (TriggerDate triggerDate : triggerDates) {
+                if (triggerDate.name == 'ContractEffective') {
+                    return triggerDate.triggerDate;
+                }
+            }
+            return null;
         }
     }
 
@@ -460,6 +476,18 @@ public with sharing class ZuoraAPI {
                 }
             }
             throw new Util.BWException('Did not find a subscription in all of the orders');
+        }
+
+        public Date getContractEffective() {
+            for (Order order : orders) {
+                if (order.subscriptions != null &&
+                    !order.subscriptions.isEmpty() &&
+                    order.subscriptions[0].getCreateSubscription() != null &&
+                    order.subscriptions[0].getCreateSubscription().getContractEffective() != null) {
+                    return order.subscriptions[0].getCreateSubscription().getContractEffective();
+                }
+            }
+            throw new Util.BWException('Did not find a contract effective date in all of the orders');
         }
 
         public Set<ZuoraSubscriptionService.ClientProject> getClientProjectsFromOrders() {

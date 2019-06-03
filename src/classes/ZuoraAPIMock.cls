@@ -248,7 +248,9 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
                 '{'+
                 '"orderNumber" : "O-00002359","existingAccountNumber" : "ExistingAccount",'+
                 '"subscriptions" : [ {"subscriptionNumber" : "A-S00002141","orderActions" : ['+
-                '{"type" : "CreateSubscription","createSubscription" : {"subscribeToRatePlans" : ['+
+                '{"type" : "CreateSubscription","triggerDates" : [ {"triggerDate" : "2017-01-01","name" : "ContractEffective"}, ' +
+                '{"triggerDate" : "2017-01-01","name" : "ServiceActivation"}, {"triggerDate" : "2017-01-01","name" : "CustomerAcceptance"} ], ' +
+                '"createSubscription" : {"subscribeToRatePlans" : ['+
                 '{"chargeOverrides" : [ {"customFields" : {"Project__c" : "Barrett","ClientOwner__c" : "Goldman"}} ]} ]}} ]} ]} ],'+
                 '"success" : true'+
                 '}';

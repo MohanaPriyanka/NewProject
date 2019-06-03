@@ -40,6 +40,12 @@ public with sharing class ZuoraSubscriptionService {
             // Since there's already a subscription, we won't create a new one (which includes a client/project that we'll
             // need to add if it doesn't exist
             newSubscription.subscriptionNumber = obso.getSubscriptionNumber();
+            // We don't want to do any order actions with a contract effective earlier than the existing contract effective
+            // date (for instance, we loaded with a system bill date, and then a new SZ is enacted with an earlier date).
+            Date existingContractEffectiveDate = obso.getContractEffective();
+            if (newSubscription.orderDate < existingContractEffectiveDate) {
+                newSubscription.orderDate = existingContractEffectiveDate;
+            }
             ClientProject newSubClientProject = new ClientProject(newSubscription.clientName, newSubscription.projectName);
             Set<ClientProject> existingClientProjects = obso.getClientProjectsFromOrders();
             // Since we don't want to add any client/projects that already exist, we'll remove them

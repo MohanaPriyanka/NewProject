@@ -96,7 +96,7 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
             SELECT Property_Account__r.Id Id, Shared_Solar_System__r.Id systemId, Client__r.Id clientId,
                 MIN(Shared_Solar_System__r.Client_Account__r.Account_Number__c) clientName,
                 MIN(Shared_Solar_System__r.Unique_ID__c) projectName,
-                MIN(Billing_Period_Start_Date__c) billDate
+                MIN(Date__c) billDate
             FROM System_Bill__c
             GROUP BY Property_Account__r.Id, Shared_Solar_System__r.Id, Client__r.Id
         ];
@@ -143,8 +143,9 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
             }
             ZuoraSubscriptionService.OrderActionParam orderActionParam = new ZuoraSubscriptionService.OrderActionParam();
             orderActionParam.accountNumber = propertyAccount.Account_Number__c;
-            orderActionParam.orderDate = (Date) aggregateResult.get('billDate');
-            orderActionParam.contractEffectiveDate = (Date) aggregateResult.get('billDate');
+            Date systemBillDate = (Date) aggregateResult.get('billDate');
+            orderActionParam.orderDate = systemBillDate.addMonths(-1);
+            orderActionParam.contractEffectiveDate = systemBillDate.addMonths(-1);
             orderActionParam.productRatePlanId = productRatePlanId;
             orderActionParam.productRatePlanChargeId = productRatePlanChargeId;
             orderActionParam.clientName = (String) aggregateResult.get('clientName');

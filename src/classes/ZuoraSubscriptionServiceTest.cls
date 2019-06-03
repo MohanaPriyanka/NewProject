@@ -245,6 +245,8 @@ public with sharing class ZuoraSubscriptionServiceTest {
         orderActionParam.productRatePlanChargeId = '2c92c0f86ab120de016ab427c97b2368';
         orderActionParam.clientName = 'Goldman';
         orderActionParam.projectName = 'Dudley';
+        // This should get overridden, since the existing Contract Effective Date is 2017-01-01
+        orderActionParam.orderDate = Date.newInstance(2000,1,1);
         ZuoraSubscriptionService.ClientProject clientProject = new ZuoraSubscriptionService.ClientProject('AMP', 'Dudley');
         // ExistingAccount should have Goldman/Dudley and Goldman/Barrett, but not AMP/Dudley. So we should expect to see one
         // AddProduct call to add AMP/Dudley to subscription A-S00002141
@@ -256,6 +258,7 @@ public with sharing class ZuoraSubscriptionServiceTest {
         System.assertEquals(2, Logger.logs.values()[0].size());
         System.assert(Logger.logs.values()[0][0].message.contains('/v1/orders/subscriptionOwner'));
         System.assert(Logger.logs.values()[0][1].message.contains('AddProduct'));
+        System.assert(Logger.logs.values()[0][1].message.contains('"orderDate":"2017-01-01"'));
         System.assert(Logger.logs.values()[0][1].message.contains('"customFields":{"Project__c":"Dudley","ClientOwner__c":"AMP"}'));
     }
 

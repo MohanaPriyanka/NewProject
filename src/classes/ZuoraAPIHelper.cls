@@ -85,10 +85,10 @@ public with sharing class ZuoraAPIHelper {
         return false;
     }
 
-    public static String query(String queryString) {
+    public static String query(String queryString, Boolean flush) {
         ZuoraAPI.ZuoraQuery zuoraQuery = new ZuoraAPI.ZuoraQuery();
         zuoraQuery.queryString = queryString;
-        HttpResponse response = callJsonEndpoint('POST', '/v1/action/query', zuoraQuery);
+        HttpResponse response = callJsonEndpoint('POST', '/v1/action/query', zuoraQuery, flush);
         System.debug(LoggingLevel.ERROR, response.getBody());
         return response.getBody();
     }
