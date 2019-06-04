@@ -86,7 +86,6 @@ public without sharing class PreviewProductionUpdateResults{
 
             Date dateOfLastCredit = uasb.System_Bill__r.Account_Bill__r.Parent_Account__r.Last_Bill_Send_Date_New_Charges__c;
             mockBill.PreGen_CreditOnBillPeriod__c = String.valueOf(dateOfLastCredit);
-            mockBill.Name = 'Account Balance: $' + String.valueOf(uasb.System_Bill__r.Account_Bill__r.Parent_Account__r.Account_Balance__c);
             cancelledUASBs.put(mockBill.Utility_Account_Subscription__c, mockBill);
         }
 
@@ -120,7 +119,6 @@ public without sharing class PreviewProductionUpdateResults{
             if (!szs.Utility_Account_Subscription_Bills__r.isEmpty()) {
                 Date dateOfLastCredit = szs.Utility_Account_Subscription_Bills__r[0].System_Bill__r.Account_Bill__r.Parent_Account__r.Last_Bill_Send_Date_New_Charges__c;
                 mockBill.PreGen_CreditOnBillPeriod__c = String.valueOf(dateOfLastCredit);
-                mockBill.Name = 'Account Balance: $' + String.valueOf(szs.Utility_Account_Subscription_Bills__r[0].System_Bill__r.Account_Bill__r.Parent_Account__r.Account_Balance__c);
             }
             cancelledUASBs.put(mockBill.Utility_Account_Subscription__c, mockBill);
         }
@@ -255,7 +253,6 @@ public without sharing class PreviewProductionUpdateResults{
 
             for (UASB__c oldBill : uasbList) {
                 UASB__c modifiedBill = new UASB__c (
-                    Name = 'Old Bill',
                     PreGen_IsPreGen__c = True,
                     PreGen_Discounted_Bill__c = oldBill.Discounted_Bill__c,
                     PreGen_NMCs_Allocated__c = oldBill.Net_Metering_Credits_Allocated__c,
@@ -305,7 +302,6 @@ public without sharing class PreviewProductionUpdateResults{
             discountedBill = (szs.Percent_Share__c.setScale(4)/100 * totalNMCs)*(1-(szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.NMC_Discount__c/100));
         }
         UASB__c newBill = new UASB__c (
-            Name = 'PreGenerated Bill',
             PreGen_IsPreGen__c = production.Generate_Bills__c,
             PreGen_Discounted_Bill__c = discountedBill.setScale(2),
             PreGen_Subscription_Production__c = billFields.Subscription_Production_kWh_Static__c,

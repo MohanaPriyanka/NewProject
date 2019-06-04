@@ -132,7 +132,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         //select the Opportunities that are related to the shared solar systems that have production updates being logged.
         List<Opportunity> oppList = [
             SELECT Id, Name, Account.Name, Shared_Solar_System__r.Name, Shared_Solar_System__r.Billing_Anchors__c,
-                Shared_Solar_System__c, AccountId, Account.Id, Account.Recurring_Billing__c, Product__r.Monthly_Late_Fee__c,
+                Shared_Solar_System__c, AccountId, Account.Id,  Account.Account_Number__c, Account.Recurring_Billing__c, Product__r.Monthly_Late_Fee__c,
                 Product__r.Days_in_Bill_Period__c, Account.Max_Account_Bill_Number__c, StageName
             FROM Opportunity
             WHERE Shared_Solar_System__c IN : sssIdToEUUMap.keySet()
@@ -240,7 +240,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             abCounter = (opp.Account.Max_Account_Bill_Number__c).intValue() + 1;
         }
         Account_Bill__c ab = new Account_Bill__c(
-            Name = opp.Account.Name + ' ' + euu.MonthDate__c + ' ' + euu.YearDate__c,
+            Name = opp.Account.Account_Number__c + ' ' + euu.MonthDate__c + ' ' + euu.YearDate__c,
             Date__c =  euu.Date__c,
             Parent_Account__c = opp.Account.Id,
             Bill_Number__c = abCounter,
@@ -277,6 +277,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
                 Opportunity__r.Shared_Solar_System__c,
                 Opportunity__r.Shared_Solar_System__r.Id,
                 Opportunity__r.AccountId,
+                Opportunity__r.Account.Account_Number__c,
                 Opportunity__r.StageName,
                 Opportunity__r.Shared_Solar_System__r.Count_of_Transfers__c,
                 Opportunity__r.Product_Escalation_Schedule__c,
@@ -305,7 +306,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         }
 
         System_Bill__c sb = new System_Bill__c(
-            Name = opp.Name + ' ' + opp.Shared_Solar_System__r.Name + ' ' + euu.MonthDate__c + ' ' + euu.YearDate__c,
+            Name = opp.Account.Account_Number__c + ' ' + (opp.Shared_Solar_System__r.Name).abbreviate(40) + ' ' + euu.MonthDate__c + ' ' + euu.YearDate__c,
             Shared_Solar_System_ID2__c = opp.Shared_Solar_System__r.Id,
             Account_Bill__c = ab.Id,
             Recurring_Billing__c = opp.Account.Recurring_Billing__c,
@@ -324,7 +325,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
     private Utility_Account_Bill__c generateUtilityAccountBill(Utility_Account_Subscription__c uas, Energy_Usage_Update__c euu, Account_Bill__c ab) {
 
         Utility_Account_Bill__c uab = new Utility_Account_Bill__c(
-            Name = uas.Opportunity__r.Name + ' ' + euu.MonthDate__c + ' ' + euu.YearDate__c + ' ' + uas.Name,
+            Name = uas.Opportunity__r.Account.Account_Number__c + ' ' + euu.MonthDate__c + ' ' + euu.YearDate__c + ' ' + uas.Name,
             Production_Update__c = euu.Id,
             Shared_Solar_System__c = euu.Shared_Solar_System__c,
             Date__c =  euu.Date__c,
