@@ -96,6 +96,7 @@ private class RecurringPaymentsHandlerTestClass {
                      Reason_for_Recurring_Stop__c,
                      Account_Bill__r.Bill_Number__c,
                      Account_Bill__r.Name,
+                     Account_Bill__r.Parent_Account__r.Name,
                      ChargentOrders__Charge_Amount__c,
                      Account_Bill__r.Parent_Account__r.Recurring_Billing__c,
                      ChargentOrders__Billing_Last_Name__c
@@ -121,15 +122,15 @@ private class RecurringPaymentsHandlerTestClass {
                 System.assertEquals('Stopped', cho.ChargentOrders__Payment_Status__c);
                 System.assertNotEquals(null, cho.Reason_for_Recurring_Stop__c);
             } else if (cho.ChargentOrders__Charge_Date__c == '30') {
-                System.assertEquals('Account A March 2016', cho.Account_Bill__r.Name);
+                System.assertEquals('Account A', cho.Account_Bill__r.Parent_Account__r.Name);
                 System.assertEquals('Recurring', cho.ChargentOrders__Payment_Status__c);
                 System.assertEquals(2, cho.Account_Bill__r.Bill_Number__c);
             } else if (cho.ChargentOrders__Charge_Date__c == '27') {
-                System.assertEquals('Account A March 2016', cho.Account_Bill__r.Name);
+                System.assertEquals('Account A', cho.Account_Bill__r.Parent_Account__r.Name);
                 System.assertEquals('Recurring', cho.ChargentOrders__Payment_Status__c);
                 System.assertEquals(2, cho.Account_Bill__r.Bill_Number__c);
             } else if (cho.ChargentOrders__Charge_Date__c == '25') {
-                System.assertEquals('Account B March 2016', cho.Account_Bill__r.Name);
+                System.assertEquals('Account B', cho.Account_Bill__r.Parent_Account__r.Name);
                 System.assertEquals('Recurring', cho.ChargentOrders__Payment_Status__c);
                 System.assertEquals(2, cho.Account_Bill__r.Bill_Number__c);
             }
@@ -208,6 +209,7 @@ private class RecurringPaymentsHandlerTestClass {
                      Reason_for_Recurring_Stop__c,
                      Account_Bill__r.Bill_Number__c,
                      Account_Bill__r.Name,
+                     Account_Bill__r.Parent_Account__r.Name,
                      ChargentOrders__Charge_Amount__c,
                      Account_Bill__r.Parent_Account__r.Recurring_Billing__c
               FROM ChargentOrders__ChargentOrder__c
@@ -229,16 +231,16 @@ private class RecurringPaymentsHandlerTestClass {
                 System.assertEquals('Stopped', cho.ChargentOrders__Payment_Status__c);
                 System.assertNotEquals(null, cho.Reason_for_Recurring_Stop__c);
             } else if (cho.ChargentOrders__Charge_Date__c == '30') {
-                System.assertEquals('Account A March 2016', cho.Account_Bill__r.Name);
+                System.assertEquals('Account A', cho.Account_Bill__r.Parent_Account__r.Name);
                 System.assertEquals('Recurring', cho.ChargentOrders__Payment_Status__c);
                 System.assertEquals(2, cho.Account_Bill__r.Bill_Number__c);
                 System.assertEquals('Cloned Order', cho.Comments__c);
             } else if (cho.ChargentOrders__Charge_Date__c == '27') {
-                System.assertEquals('Account A March 2016', cho.Account_Bill__r.Name);
+                System.assertEquals('Account A', cho.Account_Bill__r.Parent_Account__r.Name);
                 System.assertEquals('Recurring', cho.ChargentOrders__Payment_Status__c);
                 System.assertEquals(2, cho.Account_Bill__r.Bill_Number__c);
             } else if (cho.ChargentOrders__Charge_Date__c == '25') {
-                System.assertEquals('Account B March 2016', cho.Account_Bill__r.Name);
+                System.assertEquals('Account B', cho.Account_Bill__r.Parent_Account__r.Name);
                 System.assertEquals('Recurring', cho.ChargentOrders__Payment_Status__c);
                 System.assertEquals(2, cho.Account_Bill__r.Bill_Number__c);
             }
@@ -1962,6 +1964,7 @@ private class RecurringPaymentsHandlerTestClass {
                 Account_Bill__r.Name,
                 ChargentOrders__Charge_Amount__c,
                 Account_Bill__r.Parent_Account__r.Recurring_Billing__c,
+                Account_Bill__r.Parent_Account__r.Name,
                 ChargentOrders__Billing_Last_Name__c
             FROM ChargentOrders__ChargentOrder__c
             WHERE (NOT ChargentOrders__Billing_Last_Name__c LIKE '%CaseCreation%')
@@ -1979,15 +1982,15 @@ private class RecurringPaymentsHandlerTestClass {
                 System.assertEquals('Stopped', cho.ChargentOrders__Payment_Status__c);
                 System.assertNotEquals(null, cho.Reason_for_Recurring_Stop__c);
             } else if (cho.ChargentOrders__Charge_Date__c == '30') {
-                System.assertEquals('Account A March 2016', cho.Account_Bill__r.Name);
+                System.assertEquals('Account A', cho.Account_Bill__r.Parent_Account__r.Name);
                 System.assertEquals('Recurring', cho.ChargentOrders__Payment_Status__c);
                 System.assertEquals(2, cho.Account_Bill__r.Bill_Number__c);
             } else if (cho.ChargentOrders__Charge_Date__c == '27') {
-                System.assertEquals('Account A March 2016', cho.Account_Bill__r.Name);
+                System.assertEquals('Account A', cho.Account_Bill__r.Parent_Account__r.Name);
                 System.assertEquals('Recurring', cho.ChargentOrders__Payment_Status__c);
                 System.assertEquals(2, cho.Account_Bill__r.Bill_Number__c);
             } else if (cho.ChargentOrders__Charge_Date__c == '25') {
-                System.assertEquals('Account B March 2016', cho.Account_Bill__r.Name);
+                System.assertEquals('Account B', cho.Account_Bill__r.Parent_Account__r.Name);
                 System.assertEquals('Recurring', cho.ChargentOrders__Payment_Status__c);
                 System.assertEquals(2, cho.Account_Bill__r.Bill_Number__c);
             }
