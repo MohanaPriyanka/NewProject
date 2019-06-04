@@ -26,6 +26,14 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
             return getActionCreate(req.getBody());
         } else if (endpoint.contains('v1/action/update')) {
             return getActionUpdate(req.getBody());
+        } else if (endpoint.contains('v1/action/query')) {
+            return getActionQuery(req.getBody());
+        } else if (endpoint.contains('v1/action/delete')) {
+            return getActionDelete(req.getBody());
+        } else if (endpoint.contains('v1/orders/subscriptionOwner')) {
+            return getOrderByOwnerResponse(endpoint);
+        } else if (endpoint.contains('v1/orders')) {
+            return getOrderResponse(req.getBody());
         } else {
             return null;
         }
@@ -190,6 +198,67 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
             res.setBody(JSON.serialize(saveResults));
         } else {
             throw new Util.BWException('Unhandled action create: ' + body);
+        }
+        return res;
+    }
+
+    public static HttpResponse getActionQuery(String body) {
+        HttpResponse res = getJSON();
+        // SELECT Id FROM Account:
+        res.setBody('{"records":[{"Id":"2c92c0f869330b78016949ef5a7517ab"}],"size":1,"done":true}');
+        return res;
+    }
+
+    public static HttpResponse getActionDelete(String body) {
+        HttpResponse res = getJSON();
+        res.setBody('[{"id": "2c93808457d787030157e031fcd34e19","success": true}]');
+        return res;
+    }
+
+    public static HttpResponse getOrderResponse(String body) {
+        HttpResponse res = getJSON();
+        if (body.contains('ThrowException')) {
+            throw new Util.BWException('Test callout exception');
+        }
+        ZuoraAPI.OrderActionResult result = new ZuoraAPI.OrderActionResult();
+        result.success = true;
+        result.orderNumber = 'O-00000104';
+        result.accountNumber = 'BW-00000076';
+        result.status = 'Completed';
+        result.subscriptions = new List<ZuoraAPI.SubscriptionResult>();
+        ZuoraAPI.SubscriptionResult subscriptionResult = new ZuoraAPI.SubscriptionResult();
+        subscriptionResult.subscriptionNumber = 'A-S00000090';
+        subscriptionResult.status = 'Active';
+        result.subscriptions.add(subscriptionResult);
+        res.setBody(JSON.serialize(result));
+        return res;
+    }
+
+    public static HttpResponse getOrderByOwnerResponse(String body) {
+        HttpResponse res = getJSON();
+        if (body.contains('ThrowException')) {
+            throw new Util.BWException('Test callout exception');
+        }
+        if (body.contains('ExistingAccount')) {
+            String response = '{"orders" : [' +
+                '{"orderNumber" : "O-00002360","existingAccountNumber" : "ExistingAccount",'+
+                '"subscriptions" : [ {"subscriptionNumber" : "A-S00002141","orderActions" : ['+
+                '{"type" : "AddProduct","addProduct" :'+
+                '{"chargeOverrides" : [{"customFields" : {"Project__c" : "Dudley","ClientOwner__c" : "Goldman"}}]}} ]} ]},'+
+                '{'+
+                '"orderNumber" : "O-00002359","existingAccountNumber" : "ExistingAccount",'+
+                '"subscriptions" : [ {"subscriptionNumber" : "A-S00002141","orderActions" : ['+
+                '{"type" : "CreateSubscription","triggerDates" : [ {"triggerDate" : "2017-01-01","name" : "ContractEffective"}, ' +
+                '{"triggerDate" : "2017-01-01","name" : "ServiceActivation"}, {"triggerDate" : "2017-01-01","name" : "CustomerAcceptance"} ], ' +
+                '"createSubscription" : {"subscribeToRatePlans" : ['+
+                '{"chargeOverrides" : [ {"customFields" : {"Project__c" : "Barrett","ClientOwner__c" : "Goldman"}} ]} ]}} ]} ]} ],'+
+                '"success" : true'+
+                '}';
+            res.setBody(response);
+        } else {
+            ZuoraAPI.OrderBySubscriptionOwner obso = new ZuoraAPI.OrderBySubscriptionOwner();
+            obso.success = true;
+            res.setBody(JSON.serialize(obso));
         }
         return res;
     }

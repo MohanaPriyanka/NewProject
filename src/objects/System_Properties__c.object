@@ -340,6 +340,15 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Use_Zuora_For_Subscription_Billing__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Creates new subscriptions and subscription rate plan charges in Zuora when Schedule Zs are enacted</inlineHelpText>
+        <label>Use Zuora For Subscription Billing</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Use_Zuora_for_Payment_Capture__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
