@@ -430,7 +430,7 @@ public class ScheduleZTriggerHandlerTest {
 
         List<Error_Log__c> logs = [SELECT Message__c FROM Error_Log__c];
         System.assertEquals(1, logs.size());
-        System.assert(logs[0].Message__c.contains('https://rest.apisandbox.zuora.com/v1/orders'));
+        System.assert(logs[0].Message__c.contains('zuora.com/v1/orders'));
         System.assert(logs[0].Message__c.contains('CreateSubscription'));
     }
 }
