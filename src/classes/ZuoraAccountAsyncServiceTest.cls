@@ -22,10 +22,15 @@ public with sharing class ZuoraAccountAsyncServiceTest {
     @IsTest
     public static void testBatchAccountCreation() {
         List<Account> accountsToCreate = [
-            SELECT Id
+            SELECT Id, Name
             FROM Account
-            WHERE Zuora_Id__c = NULL
         ];
+        for (Account account : accountsToCreate) {
+            account.Zuora_Id__c = null;
+        }
+        // Clear out Zuora Id from all accounts, since we import with it set
+        update accountsToCreate;
+
         // TestCSAccounts includes 27 accounts, not all of which has a Send Bills Contact
         System.assertEquals(27, accountsToCreate.size());
         Map<Id, Account> accountMap = new Map<Id, Account>(accountsToCreate);
