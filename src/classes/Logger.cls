@@ -5,6 +5,7 @@
  * Tested By: LoggerTest
  *************************************************************************************/
 public with sharing class Logger {
+    @TestVisible
     private static Map<String, List<Log>> logs;
     public static final String ERROR = 'Error';
     public static final String WARN = 'Warn';
@@ -100,11 +101,12 @@ public with sharing class Logger {
         }
     }
 
+    @TestVisible
     private class Log {
-        private String className;
-        private String method;
-        private String message;
-        private String severity;
+        public String className;
+        public String method;
+        public String message;
+        public String severity;
         private Log(String className, String method, String message, String severity) {
             this.className = className;
             this.method = method;

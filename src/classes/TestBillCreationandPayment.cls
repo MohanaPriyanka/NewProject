@@ -678,7 +678,7 @@ public class TestBillCreationandPayment {
 
         //Query to have Month_Number for bill generation
         Energy_Usage_Update__c prodUpdate = [
-            SELECT Id, Generate_Bills__c, Month_Number__c
+            SELECT Id, Generate_Bills__c, Month_Number__c, Date__c
             FROM Energy_Usage_Update__c
             WHERE Name = 'sssA RadianGen - April 2016'
         ];
@@ -699,6 +699,7 @@ public class TestBillCreationandPayment {
             FROM System_Bill__c
             WHERE Opportunity__c = : opp1.Id
             AND Month__c = :prodUpdate.Month_Number__c
+            AND CALENDAR_YEAR(Date__c) = :prodUpdate.Date__c.year()
         ];
 
         List<Account_Bill__c> accountBills1 = [
@@ -706,6 +707,7 @@ public class TestBillCreationandPayment {
             FROM Account_Bill__c
             WHERE Parent_Account__c = : opp1.AccountId
             AND Month__c = :prodUpdate.Month_Number__c
+            AND CALENDAR_YEAR(Date__c) = :prodUpdate.Date__c.year()
         ];
 
         List<System_Bill__c> systemBills4 = [
@@ -713,6 +715,7 @@ public class TestBillCreationandPayment {
             FROM System_Bill__c
             WHERE Opportunity__c = : opp4.Id
             AND Month__c = :prodUpdate.Month_Number__c
+            AND CALENDAR_YEAR(Date__c) = :prodUpdate.Date__c.year()
         ];
 
         List<Account_Bill__c> accountBills4 = [
@@ -720,6 +723,7 @@ public class TestBillCreationandPayment {
             FROM Account_Bill__c
             WHERE Parent_Account__c = : opp4.AccountId
             AND Month__c = :prodUpdate.Month_Number__c
+            AND CALENDAR_YEAR(Date__c) = :prodUpdate.Date__c.year()
         ];
 
         //Check that bills are generated for Complete Opp
