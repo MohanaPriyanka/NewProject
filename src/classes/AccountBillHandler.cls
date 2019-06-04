@@ -170,7 +170,25 @@ public without sharing class AccountBillHandler{
                 // If Properties under the same Parent have conflicting branding, set Parent to BlueWave branding:
                 accountMap = checkBrandConflicts(accountMap, parentAccount, brandKeyProperty);
             }
-            update accountMap.values();
+            checkForChangedValues(accountMap);
+        }
+    }
+
+    public static void checkForChangedValues(Map<Id, Account> accountMap){
+        List<Account> accountsWithChangedValues = new List<Account>();
+        List<Account> accountsBeforeUpdate = [
+            SELECT Id, Client_Brand_Key__c
+            FROM Account
+            WHERE Id IN : accountMap.keySet()
+        ];
+        for (Account oldValue : accountsBeforeUpdate){
+            if(oldValue.Client_Brand_Key__c != accountMap.get(oldValue.Id).Client_Brand_Key__c){
+                accountsWithChangedValues.add(accountMap.get(oldValue.Id));
+            }
+        }
+
+        if (accountsWithChangedValues.size() > 0){
+            update accountsWithChangedValues;
         }
     }
 
