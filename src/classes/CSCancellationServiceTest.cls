@@ -1065,7 +1065,7 @@ public with sharing class CSCancellationServiceTest {
         ];
 
         // There should be one enacted SZ, one UAS and one schedule Z subscription, and it shouldn't be removed from project
-        System.assertNotEquals(null, scheduleZ.Date_Enacted_by_Utility__c);
+        System.assertEquals(Date.newInstance(2018,1,1), scheduleZ.Date_Enacted_by_Utility__c);
         System.assertEquals(1, scheduleZ.Schedule_Z_Subscriptions__r.size());
         System.assertEquals(null, scheduleZ.Schedule_Z_Subscriptions__r[0].Utility_Account_Subscription__r.Date_Removed_from_Project__c);
 
@@ -1085,12 +1085,13 @@ public with sharing class CSCancellationServiceTest {
         System.assertEquals(null, uas.Date_Removed_from_Project__c);
 
         // Create a new schedule z, which shouldn't create new new schedule z subscription, since the UAS is inactive
-        Schedule_Z__c newScheduleZ = scheduleZ.clone();
-        Date dateScheduleZReplaced = Date.today() - 20;
+        Schedule_Z__c newScheduleZ = new Schedule_Z__c(
+            Status__c = 'QC In Process',
+            Shared_Solar_System__c = scheduleZ.Shared_Solar_System__c
+        );
         insert newScheduleZ;
-        newScheduleZ.Status__c = 'Enacted by Utility';
-        newScheduleZ.Date_Enacted_by_Utility__c = dateScheduleZReplaced;
 
+        newScheduleZ.Status__c = 'Enacted by Utility';
         update newScheduleZ;
 
         newScheduleZ = [
@@ -1109,7 +1110,7 @@ public with sharing class CSCancellationServiceTest {
         ];
 
         // Now it should be marked as removed
-        System.assertEquals(dateScheduleZReplaced, uas.Date_Removed_from_Project__c);
+        System.assertEquals(Date.today(), uas.Date_Removed_from_Project__c);
     }
 
     // Because we sometimes create Schedule Z's as Enacted, as opposed to updating the status to Enacted

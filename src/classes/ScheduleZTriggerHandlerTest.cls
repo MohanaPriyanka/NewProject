@@ -135,24 +135,6 @@ public class ScheduleZTriggerHandlerTest {
             Parent_Account__c = accountParent.Id);
         insert accountA;
 
-        Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Community Solar Community User'];
-
-        User userRecord = new User(
-            FirstName = 'Jordan',
-            LastName ='Testcase',
-            Alias = 'xxx234',
-            Email = 'jpentaleri@bluewavesolar.com',
-            EmailEncodingKey ='UTF-8',
-            LanguageLocaleKey ='en_US',
-            LocaleSidKey ='en_US',
-            ProfileId = profileRecord.Id,
-            Country ='United States',
-            IsActive = true,
-            ContactId = contactA.Id,
-            TimeZoneSidKey='America/Los_Angeles',
-            Username='testBillCreationandPay@bluewavesolar.com');
-        Util.insertSObjs(new List<User>{userRecord});
-
         Utility_Account_Log__c ualog =
             new Utility_Account_Log__c(Name = '0000234',
                 Account__c = accountA.Id,
@@ -241,6 +223,30 @@ public class ScheduleZTriggerHandlerTest {
                 Subscribed_Annual_Cost_of_Electricity__c = 8000);
 
         insert new List<Utility_Account_Subscription__c>{uasone, uastwo, uasthree, uasfour};
+
+        zqu__ZProduct__c zProduct = new zqu__ZProduct__c(
+            Name = 'Community Solar'
+        );
+        insert zProduct;
+
+        zqu__ProductRatePlan__c productRatePlan = new zqu__ProductRatePlan__c(
+            Name = 'Community Solar Subscriptions',
+            zqu__ZuoraId__c = '2c92c0f86ab120de016ab427c7d8234d',
+            zqu__ZProduct__c = zProduct.Id
+        );
+        insert productRatePlan;
+        zqu__ProductRatePlanCharge__c productRatePlanCharge = new zqu__ProductRatePlanCharge__c(
+            Name = 'Utility Credit',
+            zqu__ZuoraId__c = '2c92c0f86ab120de016ab427c97b2368',
+            zqu__ProductRatePlan__c = productRatePlan.Id
+        );
+        insert productRatePlanCharge;
+
+        System_Properties__c properties = new System_Properties__c(
+            Name = 'System',
+            Use_Zuora_For_Subscription_Billing__c = true
+        );
+        insert properties;
     }
 
     @IsTest static void testHandleDates() {
@@ -277,7 +283,6 @@ public class ScheduleZTriggerHandlerTest {
 
         Date dateEnacted = System.today();
         sss1ScheduleZ2.Status__c = 'Enacted by Utility';
-        sss1ScheduleZ2.Date_Enacted_by_Utility__c = dateEnacted;
         update sss1ScheduleZ2;
 
         Schedule_Z__c firstSchedZ = [
@@ -362,4 +367,70 @@ public class ScheduleZTriggerHandlerTest {
         Test.stopTest();
     }
 
+    @IsTest static void testAccountsMissingZuoraIds() {
+        Shared_Solar_System__c sss1 = [
+            SELECT Id
+            FROM Shared_Solar_System__c
+            WHERE Name = 'Oxford Barrett St. P1'
+            LIMIT 1
+        ];
+
+        Test.startTest();
+        Schedule_Z__c sss1ScheduleZ = new Schedule_Z__c(
+            Name = '18-0515 Oxford Barrett St. P1',
+            Shared_Solar_System__c = sss1.Id,
+            Status__c = 'Enacted by Utility'
+        );
+        insert sss1ScheduleZ;
+        // This should insert schedule z subscriptions, but zuora accounts haven't been set up so we should get an error log
+        List<Schedule_Z_Subscription__c> scheduleZSubscriptions = [
+            SELECT Id
+            FROM Schedule_Z_Subscription__c
+            WHERE Schedule_Z__c = :sss1ScheduleZ.Id
+        ];
+
+        Test.stopTest();
+
+        List<Error_Log__c> logs = [SELECT Message__c FROM Error_Log__c];
+        System.assertEquals(1, logs.size());
+        System.assert(logs[0].Message__c.contains('Found an account that should have a Zuora Id but didn\'t'));
+    }
+
+    @IsTest static void testZuoraSubscription() {
+        Shared_Solar_System__c sss1 = [
+            SELECT Id
+            FROM Shared_Solar_System__c
+            WHERE Name = 'Oxford Barrett St. P1'
+            LIMIT 1
+        ];
+        List<Account> accounts = [
+            SELECT Id
+            FROM Account
+        ];
+        for (Account account : accounts) {
+            account.Zuora_Id__c = '12345';
+        }
+        update accounts;
+
+        Test.startTest();
+        Schedule_Z__c sss1ScheduleZ = new Schedule_Z__c(
+            Name = '18-0515 Oxford Barrett St. P1',
+            Shared_Solar_System__c = sss1.Id,
+            Status__c = 'Enacted by Utility'
+        );
+        insert sss1ScheduleZ;
+        // This should insert schedule z subscriptions, which should get Zuora accounts
+        List<Schedule_Z_Subscription__c> scheduleZSubscriptions = [
+            SELECT Id
+            FROM Schedule_Z_Subscription__c
+            WHERE Schedule_Z__c = :sss1ScheduleZ.Id
+        ];
+
+        Test.stopTest();
+
+        List<Error_Log__c> logs = [SELECT Message__c FROM Error_Log__c];
+        System.assertEquals(1, logs.size());
+        System.assert(logs[0].Message__c.contains('zuora.com/v1/orders'));
+        System.assert(logs[0].Message__c.contains('CreateSubscription'));
+    }
 }
