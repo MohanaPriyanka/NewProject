@@ -137,7 +137,7 @@ public without sharing class QueueAccountBillLetterStreamMailer implements Queue
             message += 'CSV: \n' + csv;
             Logger.logLater('QueueAccountBillLetterStreamMailer', 'execute', message, Logger.ERROR);
         } else {
-            update markAccountBillsAsMailed(accountBillIds, newJob.Id);
+            Util.updateSObjs(markAccountBillsAsMailed(accountBillIds, newJob.Id));
         }
     }
 
