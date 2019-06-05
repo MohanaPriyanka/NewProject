@@ -60,46 +60,4 @@
             <value>Residential Loan</value>
         </criteriaItems>
     </sharingCriteriaRules>
-    <sharingCriteriaRules>
-        <fullName>Norton_Solar_Development</fullName>
-        <accessLevel>Read</accessLevel>
-        <accountSettings>
-            <caseAccessLevel>Read</caseAccessLevel>
-            <contactAccessLevel>Read</contactAccessLevel>
-            <opportunityAccessLevel>Read</opportunityAccessLevel>
-        </accountSettings>
-        <label>Norton Solar Development</label>
-        <sharedTo>
-            <portalRole>BlueWaveCSClientCustomerUser</portalRole>
-        </sharedTo>
-        <criteriaItems>
-            <field>Name</field>
-            <operation>notEqual</operation>
-            <value>_</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
-        <fullName>Partner_Users</fullName>
-        <accessLevel>Read</accessLevel>
-        <accountSettings>
-            <caseAccessLevel>None</caseAccessLevel>
-            <contactAccessLevel>None</contactAccessLevel>
-            <opportunityAccessLevel>None</opportunityAccessLevel>
-        </accountSettings>
-        <label>Partner Users</label>
-        <sharedTo>
-            <allPartnerUsers></allPartnerUsers>
-        </sharedTo>
-        <booleanFilter>1 OR 2</booleanFilter>
-        <criteriaItems>
-            <field>Product_Line__c</field>
-            <operation>equals</operation>
-            <value>Residential Loan</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Product_Line__c</field>
-            <operation>equals</operation>
-            <value>Community Solar</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
 </SharingRules>
