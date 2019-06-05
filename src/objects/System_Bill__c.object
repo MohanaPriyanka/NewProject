@@ -1190,7 +1190,7 @@ IF (YTD_kWh_Production__c/Opportunity__r.Product__r.Annual_kWh_Maximum__c &gt; 0
         <fullName>Unique_ID__c</fullName>
         <externalId>true</externalId>
         <label>Unique ID</label>
-        <length>80</length>
+        <length>255</length>
         <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>

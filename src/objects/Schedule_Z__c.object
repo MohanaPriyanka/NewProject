@@ -265,7 +265,7 @@ IF(
         <fullName>Schedule_Z_Id__c</fullName>
         <externalId>false</externalId>
         <label>Schedule Z Id</label>
-        <length>50</length>
+        <length>255</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
