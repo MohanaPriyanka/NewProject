@@ -62,7 +62,7 @@ public with sharing class UtilTest {
         insert acct;
 
         acct.Name = 'Updated Account';
-        Util.updateSObjs(new List<Account>{acct},4,'message',null);
+        Util.updateSObjs(new List<Account>{acct});
 
         Account updatedAccount = [
             SELECT Id, Name
