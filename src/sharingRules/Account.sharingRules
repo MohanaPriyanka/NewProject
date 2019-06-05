@@ -61,24 +61,6 @@
         </criteriaItems>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
-        <fullName>External_CS_AMP</fullName>
-        <accessLevel>Read</accessLevel>
-        <accountSettings>
-            <caseAccessLevel>None</caseAccessLevel>
-            <contactAccessLevel>Read</contactAccessLevel>
-            <opportunityAccessLevel>None</opportunityAccessLevel>
-        </accountSettings>
-        <label>External CS AMP</label>
-        <sharedTo>
-            <group>AMP</group>
-        </sharedTo>
-        <criteriaItems>
-            <field>Account_Access_Code__c</field>
-            <operation>contains</operation>
-            <value>AMP</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
         <fullName>Norton_Solar_Development</fullName>
         <accessLevel>Read</accessLevel>
         <accountSettings>
