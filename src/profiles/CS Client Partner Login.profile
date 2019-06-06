@@ -81554,10 +81554,6 @@
         <visibility>DefaultOff</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>Bill_Generation_Console</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>BlueWave_Blog__c</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
