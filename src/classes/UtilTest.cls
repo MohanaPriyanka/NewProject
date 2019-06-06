@@ -56,6 +56,23 @@ public with sharing class UtilTest {
         System.assertEquals(1, errorLogs.size());
     }
 
+    @isTest
+    public static void testDatabaseUpdate(){
+        Account acct = new Account(Name = 'Account');
+        insert acct;
+
+        acct.Name = 'Updated Account';
+        Util.updateSObjs(new List<Account>{acct});
+
+        Account updatedAccount = [
+            SELECT Id, Name
+            FROM Account
+            WHERE Id = : acct.Id
+        ];
+
+        System.assertEquals('Updated Account',updatedAccount.Name);
+    }
+
     @IsTest
     public static void testNullToZero() {
         Decimal nullToZero;
