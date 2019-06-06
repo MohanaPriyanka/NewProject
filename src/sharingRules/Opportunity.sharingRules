@@ -71,19 +71,6 @@
         </criteriaItems>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
-        <fullName>Partner_Opportunity_Access</fullName>
-        <accessLevel>Edit</accessLevel>
-        <label>Partner Opportunity Access</label>
-        <sharedTo>
-            <allPartnerUsers></allPartnerUsers>
-        </sharedTo>
-        <criteriaItems>
-            <field>Product_Line__c</field>
-            <operation>equals</operation>
-            <value>Residential Loan</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
         <fullName>Radian_Gen</fullName>
         <accessLevel>Read</accessLevel>
         <description>Shares Complete and Cancelled CS Opps with Radian Gen</description>
