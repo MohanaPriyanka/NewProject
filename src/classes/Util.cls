@@ -11,10 +11,10 @@ public without sharing class Util {
     @TestVisible
     private static Integer MAX_TRIES = 10;
     public static void insertSObj(SObject sobj) {
-        insertSobjs(new List<SObject>{sobj}, 0, null, null);
+        insertSObjs(new List<SObject>{sobj}, 0, null, null);
     }
     public static void insertSObjs(List<SObject> sobjs) {
-        insertSobjs(sobjs, 0, null, null);
+        insertSObjs(sobjs, 0, null, null);
     }
 
     private static void insertSObjs(List<SObject> sobjs, Integer count, String message, String stack) {
@@ -26,6 +26,24 @@ public without sharing class Util {
         } catch (System.DmlException de) {
             if (de.getMessage().contains('UNABLE_TO_LOCK_ROW')) {
                 insertSObjs(sobjs, count++, de.getMessage(), de.getStackTraceString());
+            } else {
+                throw new BWException(de.getMessage());
+            }
+        }
+    }
+
+    public static void updateSObjs(List<SObject> sobjs) {
+        updateSObjs(sobjs, 0, null, null);
+    }
+    private static void updateSObjs(List<SObject> sobjs, Integer count, String message, String stack) {
+        if (count >= MAX_TRIES) {
+            throw new BWException(message + '\n' + stack);
+        }
+        try {
+            update sobjs;
+        } catch (System.DmlException de) {
+            if (de.getMessage().contains('UNABLE_TO_LOCK_ROW') || de.getStackTraceString().contains('UNABLE_TO_LOCK_ROW')) {
+                updateSObjs(sobjs, count++, de.getMessage(), de.getStackTraceString());
             } else {
                 throw new BWException(de.getMessage());
             }

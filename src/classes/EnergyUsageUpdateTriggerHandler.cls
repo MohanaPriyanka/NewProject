@@ -112,7 +112,11 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
 
     // Execute this code block in batches to avoid CPU Limit:
     public void execute(Database.BatchableContext bc, List<Schedule_Z_Subscription__c> scheduleZSubscriptions) {
-        createBills(scheduleZSubscriptions);
+        try {
+            createBills(scheduleZSubscriptions);
+        } catch (Exception e) {
+            Logger.logNow('EnergyUsageUpdateTriggerHandler', 'createBills', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+        }
     }
 
     public void createBills(List<Schedule_Z_Subscription__c> scheduleZSubscriptions ){

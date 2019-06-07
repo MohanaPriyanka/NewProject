@@ -114,7 +114,7 @@ public class TestBillCreationandPayment {
         insert new List<Entity__c>{entity1, entity2};
 
         Shared_Solar_System__c sss1 =
-            new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
+            new Shared_Solar_System__c(Name = 'Oxford Barrett Street. Part1 With Long Name To Test Unique Id Lengths',
                 Service_Territory__c = 'SEMA',
                 Service_Territories__c = 'SEMA',
                 Open__c = true,
@@ -200,7 +200,7 @@ public class TestBillCreationandPayment {
         insert normalCSProduct;
 
         Opportunity opportunityone =
-            new Opportunity(Name = 'AOpp One',
+            new Opportunity(Name = 'AOpp One With Long Name To Test Utility Account Subscription Bill and System Bill Lengths',
                 AccountId = accountA.Id,
                 Shared_Solar_System__c = sss1.Id,
                 StageName = 'Complete',
@@ -564,7 +564,7 @@ public class TestBillCreationandPayment {
         Shared_Solar_System__c sssRadianGen = [
             SELECT Id, Name
             FROM Shared_Solar_System__c
-            WHERE Name =  'Oxford Barrett St. P1'
+            WHERE Name =  'Oxford Barrett Street. Part1 With Long Name To Test Unique Id Lengths'
         ];
 
 
@@ -585,7 +585,7 @@ public class TestBillCreationandPayment {
         Opportunity opp1 = [
             SELECT Id, Name, AccountId, Shared_Solar_System__c, Product__c
             FROM Opportunity
-            WHERE Name = 'AOpp One'
+            WHERE Name = 'AOpp One With Long Name To Test Utility Account Subscription Bill and System Bill Lengths'
         ];
         Account accountParent = [SELECT Id FROM Account WHERE Name = 'Account Parent' LIMIT 1];
 
@@ -1873,7 +1873,7 @@ public class TestBillCreationandPayment {
         Opportunity opportunity = [
             SELECT Id, Name, StageName, Shared_Solar_System__c, AccountId
             FROM Opportunity
-            WHERE Name = 'AOpp One'
+            WHERE Name = 'AOpp One With Long Name To Test Utility Account Subscription Bill and System Bill Lengths'
             LIMIT 1
         ];
 
