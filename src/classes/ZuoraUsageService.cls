@@ -60,12 +60,12 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
     public static ZuoraUsage convertUASBToUsage(UASB__c uasb){
         ZuoraUsage usage = new ZuoraUsage();
         String zuoraAccountId = uasb.Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c;
-        String chargeKey;
-        chargeKey =
-            uasb.Client_Account_Number__c
-            + '/'
-            + uasb.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c ;
-        usage = setSubscriptionAndCharge(usage,zuoraAccountId,chargeKey);
+        usage = setSubscriptionAndCharge(
+            usage,
+            zuoraAccountId,
+            uasb.Client_Account_Number__c,
+            uasb.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c
+        );
         usage.Quantity = uasb.Discounted_Bill__c;
         usage.StartDateTime = uasb.Billing_Period_Start_Date__c;
         usage.EndDateTime = uasb.Billing_Period_End_Date__c;
@@ -81,11 +81,12 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
     public static ZuoraUsage convertAdjustToUsage(Bill_Adjustment__c adjust){
         ZuoraUsage usage = new ZuoraUsage();
         String zuoraAccountId = adjust.UASB__r.Opportunity__r.Account.Zuora_Id__c;
-        String chargeKey =
-            adjust.Client__r.Account_Number__c
-            + '/'
-            + adjust.UASB__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c ;
-        usage = setSubscriptionAndCharge(usage,zuoraAccountId,chargeKey);
+        usage = setSubscriptionAndCharge(
+            usage,
+            zuoraAccountId,
+            adjust.Client__r.Account_Number__c,
+            adjust.UASB__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c
+        );
         usage.Quantity = adjust.Adjustment_Amount__c;
         usage.StartDateTime = adjust.UASB__r.Billing_Period_Start_Date__c;
         usage.EndDateTime = adjust.UASB__r.Billing_Period_End_Date__c;
@@ -98,8 +99,11 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         return usage;
     }
 
-    public static ZuoraUsage setSubscriptionAndCharge(ZuoraUsage usage, String zuoraAccountId, String chargeKey){
+    public static ZuoraUsage setSubscriptionAndCharge(  ZuoraUsage usage, String zuoraAccountId,
+                                                        String clientAccountNumber, String sssNumber){
+        String chargeKey;
         try {
+            chargeKey = clientAccountNumber + '/' + sssNumber;
             Map<String, ChargeAndSubscription> keyToChargeMap = getChargeMapFromAccount(zuoraAccountId);
             usage.AccountId = zuoraAccountId;
             usage.SubscriptionNumber = keyToChargeMap.get(chargeKey).SubscriptionId;
@@ -115,6 +119,8 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         return usage;
     }
 
+    // Returns map of client and project pairs with zuora charges
+    // Key = ClientAccountNumber/SSSNumber (ex. "BW-0024295/SSS-000096" => "C-000123")
     public static Map<String, ChargeAndSubscription> getChargeMapFromAccount(String zuoraAccountId){
         String chargeKey;
         Map<String, ChargeAndSubscription> keyToChargeMap = new Map<String, ChargeAndSubscription>();
