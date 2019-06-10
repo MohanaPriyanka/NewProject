@@ -63,7 +63,7 @@
             }
             helper.handleCreditCheckResponse(component, helper);
         } else {
-            component.set("v.creditStatusErrorText", returnValue);
+            component.set("v.creditStatusErrorText", 'Error on Credit Report Log');
             helper.handleCreditCheckResponse(component, helper, 'creditResultError');
         }
     },

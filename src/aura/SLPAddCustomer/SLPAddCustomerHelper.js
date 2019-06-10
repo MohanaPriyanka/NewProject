@@ -38,7 +38,7 @@
                     } else if (resp.getReturnValue() == "Unqualified") {
                         helper.handleCreditCheckResponse(component, 'creditResultUnqualified');
                     } else {
-                        component.set("v.creditStatusErrorText", resp.getReturnValue());
+                        component.set("v.creditStatusErrorText", 'Error on Credit Report Log');
                         helper.handleCreditCheckResponse(component, 'creditResultError');
                     }
                 } else {
