@@ -38,16 +38,18 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         ZuoraUsageItems zuoraObject = new ZuoraUsageItems();
         List<ZuoraUsage> zuoraUsageLineItems = new List<ZuoraUsage>();
 
+        Map<String,Map<String, ChargeAndSubscription>> acctToChargeMap = getSubscriptionsFromZuora(sfUsageRecord);
+
         for (SObject sfUsage : sfUsageRecord) {
             if (sfUsage.Id.getSObjectType() == UASB__c.sObjectType) {
                 UASB__c uasb = (UASB__c) sfUsage;
-                ZuoraUsage usage = convertUASBToUsage(uasb);
+                ZuoraUsage usage = convertUASBToUsage(uasb, acctToChargeMap);
                 if (usage.ChargeNumber != null && usage.SubscriptionNumber != null){
                     zuoraUsageLineItems.add(usage);
                 }
             } else if (sfUsage.Id.getSObjectType() == Bill_Adjustment__c.sObjectType) {
                 Bill_Adjustment__c adjust = (Bill_Adjustment__c) sfUsage;
-                ZuoraUsage usage = convertAdjustToUsage(adjust);
+                ZuoraUsage usage = convertAdjustToUsage(adjust, acctToChargeMap);
                 if (usage.ChargeNumber != null && usage.SubscriptionNumber != null){
                     zuoraUsageLineItems.add(usage);
                 }
@@ -57,14 +59,14 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         return zuoraObject;
     }
 
-    public static ZuoraUsage convertUASBToUsage(UASB__c uasb){
+    public static ZuoraUsage convertUASBToUsage(UASB__c uasb, Map<String,Map<String, ChargeAndSubscription>> acctToChargeMap){
         ZuoraUsage usage = new ZuoraUsage();
-        String zuoraAccountId = uasb.Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c;
-        usage = setSubscriptionAndCharge(
+        usage = findAndSetRatePlanCharge(
             usage,
-            zuoraAccountId,
+            uasb.Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c,
             uasb.Client_Account_Number__c,
-            uasb.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c
+            uasb.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c,
+            acctToChargeMap
         );
         usage.Quantity = uasb.Discounted_Bill__c;
         usage.StartDateTime = uasb.Billing_Period_Start_Date__c;
@@ -78,14 +80,14 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         return usage;
     }
 
-    public static ZuoraUsage convertAdjustToUsage(Bill_Adjustment__c adjust){
+    public static ZuoraUsage convertAdjustToUsage(Bill_Adjustment__c adjust, Map<String,Map<String, ChargeAndSubscription>> acctToChargeMap){
         ZuoraUsage usage = new ZuoraUsage();
-        String zuoraAccountId = adjust.UASB__r.Opportunity__r.Account.Zuora_Id__c;
-        usage = setSubscriptionAndCharge(
+        usage = findAndSetRatePlanCharge(
             usage,
-            zuoraAccountId,
+            adjust.UASB__r.Opportunity__r.Account.Zuora_Id__c,
             adjust.Client__r.Account_Number__c,
-            adjust.UASB__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c
+            adjust.UASB__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c,
+            acctToChargeMap
         );
         usage.Quantity = adjust.Adjustment_Amount__c;
         usage.StartDateTime = adjust.UASB__r.Billing_Period_Start_Date__c;
@@ -99,12 +101,13 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         return usage;
     }
 
-    public static ZuoraUsage setSubscriptionAndCharge(  ZuoraUsage usage, String zuoraAccountId,
-                                                        String clientAccountNumber, String sssNumber){
+    public static ZuoraUsage findAndSetRatePlanCharge(  ZuoraUsage usage, String zuoraAccountId,
+                                                        String clientAccountNumber, String sssNumber,
+                                                        Map<String,Map<String, ChargeAndSubscription>> acctToChargeMap){
         String chargeKey;
         try {
             chargeKey = clientAccountNumber + '/' + sssNumber;
-            Map<String, ChargeAndSubscription> keyToChargeMap = getChargeMapFromAccount(zuoraAccountId);
+            Map<String, ChargeAndSubscription> keyToChargeMap = acctToChargeMap.get(zuoraAccountId);
             usage.AccountId = zuoraAccountId;
             usage.SubscriptionNumber = keyToChargeMap.get(chargeKey).SubscriptionId;
             usage.ChargeNumber = keyToChargeMap.get(chargeKey).ChargeId;
@@ -119,6 +122,26 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         return usage;
     }
 
+    public static Map<String,Map<String, ChargeAndSubscription>> getSubscriptionsFromZuora(List<SObject> sfUsageRecord){
+        Set<String> zuoraAccountIds = new Set<String>();
+        Map<String,Map<String, ChargeAndSubscription>> acctToChargeMap = new Map<String,Map<String, ChargeAndSubscription>>();
+
+        for (SObject sfUsage : sfUsageRecord) {
+            if (sfUsage.Id.getSObjectType() == UASB__c.sObjectType) {
+                UASB__c uasBill = (UASB__c) sfUsage;
+                zuoraAccountIds.add(uasBill.Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c);
+            } else if (sfUsage.Id.getSObjectType() == Bill_Adjustment__c.sObjectType) {
+                Bill_Adjustment__c bilAdjust = (Bill_Adjustment__c) sfUsage;
+                zuoraAccountIds.add(bilAdjust.UASB__r.Opportunity__r.Account.Zuora_Id__c);
+            }
+        }
+
+        for (String zuoraAcctId : zuoraAccountIds){
+            acctToChargeMap.put(zuoraAcctId, getChargeMapFromAccount(zuoraAcctId));
+        }
+        return acctToChargeMap;
+    }
+
     // Returns map of client and project pairs with zuora charges
     // Key = ClientAccountNumber/SSSNumber (ex. "BW-0024295/SSS-000096" => "C-000123")
     public static Map<String, ChargeAndSubscription> getChargeMapFromAccount(String zuoraAccountId){
@@ -128,7 +151,7 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         Set<ZuoraSubscriptionService.ClientProject> chargeList = subscription.getClientProjectsFromOrders();
         String subscriptionNumber = subscription.getSubscriptionNumber();
 
-        for (ZuoraSubscriptionService.ClientProject charge : chargeList){
+        for (ZuoraSubscriptionService.ClientProject charge : chargeList) {
             chargeKey = charge.clientName + '/' + charge.projectName;
             ChargeAndSubscription chargeSubscrip = new ChargeAndSubscription();
             chargeSubscrip.ChargeId = charge.chargeNumber;
