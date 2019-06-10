@@ -125,19 +125,21 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
     public static Map<String,Map<String, ChargeAndSubscription>> getSubscriptionsFromZuora(List<SObject> sfUsageRecord){
         Set<String> zuoraAccountIds = new Set<String>();
         Map<String,Map<String, ChargeAndSubscription>> acctToChargeMap = new Map<String,Map<String, ChargeAndSubscription>>();
+        String zuoraAccountId;
 
         for (SObject sfUsage : sfUsageRecord) {
             if (sfUsage.Id.getSObjectType() == UASB__c.sObjectType) {
                 UASB__c uasBill = (UASB__c) sfUsage;
-                zuoraAccountIds.add(uasBill.Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c);
+                zuoraAccountId = uasBill.Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c;
             } else if (sfUsage.Id.getSObjectType() == Bill_Adjustment__c.sObjectType) {
                 Bill_Adjustment__c bilAdjust = (Bill_Adjustment__c) sfUsage;
-                zuoraAccountIds.add(bilAdjust.UASB__r.Opportunity__r.Account.Zuora_Id__c);
+                zuoraAccountId = bilAdjust.UASB__r.Opportunity__r.Account.Zuora_Id__c;
             }
-        }
-
-        for (String zuoraAcctId : zuoraAccountIds){
-            acctToChargeMap.put(zuoraAcctId, getChargeMapFromAccount(zuoraAcctId));
+            if (zuoraAccountId == null){
+                throw new Util.BWException('Expected Zuora Account Id when uploading usage, but was blank: ' + sfUsage.Id);
+            } else if (!acctToChargeMap.containsKey(zuoraAccountId)) {
+                acctToChargeMap.put(zuoraAccountId, getChargeMapFromAccount(zuoraAccountId));
+            }
         }
         return acctToChargeMap;
     }
