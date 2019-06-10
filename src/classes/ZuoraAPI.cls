@@ -337,7 +337,7 @@ public with sharing class ZuoraAPI {
             if (customFields == null || customFields.Project_Zcustom == null || customFields.ClientOwner_Zcustom == null) {
                 throw new Util.BWException('Did not expect a Charge Override without customFields or null client/project');
             }
-            return new ZuoraSubscriptionService.ClientProject(customFields.ClientOwner_Zcustom, customFields.Project_Zcustom);
+            return new ZuoraSubscriptionService.ClientProject(customFields.ClientOwner_Zcustom, customFields.Project_Zcustom, chargeNumber);
         }
     }
 

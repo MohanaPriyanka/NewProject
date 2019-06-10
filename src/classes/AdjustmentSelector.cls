@@ -19,6 +19,9 @@ public class AdjustmentSelector {
                 'UASB__r.Utility_Account_Subscription__r.Utility_Account_Log__r.Name, ' +
                 'UASB__r.Shared_Solar_System__r.Name, ' +
                 'UASB__r.Shared_Solar_System__r.Unique_ID__c, ' +
+                'Client__r.Account_Number__c, ' +
+                'UASB__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c, ' +
+                'UASB__r.Opportunity__r.Account.Zuora_Id__c, ' +
                 'Adjustment_Amount__c, ' +
                 'Adjustment_Type__c, ' +
                 'Discount__c, ' +
