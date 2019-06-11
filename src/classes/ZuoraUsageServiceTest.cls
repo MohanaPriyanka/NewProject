@@ -3,7 +3,23 @@ public class ZuoraUsageServiceTest {
     @testSetup public static void testDataSetup() {
         MultipleMonthProductionUpdateTest.multipleMonthTest();
         setBillsToUnPublished();
+    }
 
+    public static void setBillsToUnPublished() {
+        List <Account_Bill__c> listAccountBills = [
+            SELECT Id, Published__c
+            FROM Account_Bill__c
+            WHERE Published__c = TRUE
+        ];
+        for (Account_Bill__c acctBill : listAccountBills) {
+            acctBill.Published__c = FALSE;
+            acctBill.Reason_For_Unpublish__c = 'Test reason for unpublishing this bill';
+        }
+        update listAccountBills;
+    }
+
+    // To avoid SOQL Limits, do this method inside Test.StartTest()
+    public static void finishTestSetup(){
         Shared_Solar_System__c sss = [
             SELECT Id, Name, Unique_ID__c, BWC_Project_Entity_Manual__r.Client_Account__r.Account_Number__c
             FROM Shared_Solar_System__c
@@ -75,31 +91,22 @@ public class ZuoraUsageServiceTest {
         insert new List<Bill_Adjustment__c>{adjustOne, adjustTwo, adjustThree};
     }
 
-    public static void setBillsToUnPublished() {
-        List <Account_Bill__c> listAccountBills = [
-            SELECT Id, Published__c
-            FROM Account_Bill__c
-            WHERE Published__c = TRUE
-        ];
-        for (Account_Bill__c acctBill : listAccountBills) {
-            acctBill.Published__c = FALSE;
-            acctBill.Reason_For_Unpublish__c = 'Test reason for unpublishing this bill';
-        }
-        update listAccountBills;
-    }
-
     @IsTest
     private static void testQueries() {
+        Test.startTest();
+        finishTestSetup();
         List<UASB__c> uasbList = UASBSelector.uasbsNotYetInZuora();
         System.assertEquals(12, uasbList.size());
 
         List<Bill_Adjustment__c> adjustList = AdjustmentSelector.getAdjustmentsNotYetInZuora(true);
         System.assertEquals(2, adjustList.size());
+        Test.stopTest();
     }
 
     @IsTest
     private static void testAPICallWithMock() {
         Test.startTest();
+        finishTestSetup();
         ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend();
         zSend.executeBatch();
         Test.stopTest();
