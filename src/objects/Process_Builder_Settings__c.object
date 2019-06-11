@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>Custom settings that can be referenced in Process Builder</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>Disable_clearing_Credit_Report_Log_error__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>When checked, the &quot;Credit Report Log: Create&quot; will not clear out the error message in credit report logs</inlineHelpText>
+        <label>Disable clearing Credit Report Log error</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <label>Process Builder Settings</label>
+    <visibility>Public</visibility>
+</CustomObject>
