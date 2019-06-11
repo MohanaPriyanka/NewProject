@@ -973,7 +973,7 @@ MONTH(Billing_Period_End_Date__c),
     <sharingModel>ControlledByParent</sharingModel>
     <validationRules>
         <fullName>UASB_Cannot_Be_Edited_After_Published</fullName>
-        <active>false</active>
+        <active>true</active>
         <errorConditionFormula>System_Bill__r.Account_Bill__r.Published__c</errorConditionFormula>
         <errorMessage>UASB Cannot Be Edited after Bill is Published</errorMessage>
     </validationRules>
