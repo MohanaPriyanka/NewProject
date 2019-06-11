@@ -54673,10 +54673,6 @@
         <recordType>Case.Client_Services</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Case-Customer Care</layout>
-        <recordType>Case.Partner_Care_Case</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Case-Finance Case Layout</layout>
         <recordType>Case.Finance_Case</recordType>
     </layoutAssignments>
@@ -54687,6 +54683,10 @@
     <layoutAssignments>
         <layout>Case-Service Console - Customer Support</layout>
         <recordType>Case.Customer_Care</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Case-Service Console - Customer Support</layout>
+        <recordType>Case.Partner_Care_Case</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>CaseClose-Close Case Layout</layout>
