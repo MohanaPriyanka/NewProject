@@ -37122,6 +37122,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>agf__ADM_Work__c.Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>agf__ADM_Work__c.Approval_Details__c</field>
         <readable>true</readable>
     </fieldPermissions>
