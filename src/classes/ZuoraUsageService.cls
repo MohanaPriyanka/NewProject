@@ -29,11 +29,6 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         public String Message;
     }
 
-    public class ChargeAndSubscription{
-        public String ChargeId;
-        public String SubscriptionId;
-    }
-
     public static ZuoraUsageItems convertSFUsageToZuoraUsage (List<SObject> sfUsageRecord){
         ZuoraUsageItems zuoraObject = new ZuoraUsageItems();
         List<ZuoraUsage> zuoraUsageLineItems = new List<ZuoraUsage>();
