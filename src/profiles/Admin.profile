@@ -1096,6 +1096,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ZuoraSubscriptionAsyncService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraSubscriptionService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ZuoraUsageBatchSend</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -30693,6 +30701,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>UASB__c.Client_Account_Number__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>UASB__c.Credits_Allocated__c</field>
         <readable>true</readable>
@@ -32211,6 +32224,36 @@
         <editable>true</editable>
         <field>Zuora_Contact__c.Zuora_Id__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Zuora_Setting__mdt.ACH_Payment_Page_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Zuora_Setting__mdt.API_Endpoint_URL__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Zuora_Setting__mdt.CC_Payment_Page_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Zuora_Setting__mdt.Hosted_Payment_Page_URI__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Zuora_Setting__mdt.Is_Sandbox__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Zuora_Setting__mdt.Update_Usage_Records_With_ZuoraId__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -46461,10 +46504,6 @@
         <recordType>Case.Client_Services</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Case-Customer Care</layout>
-        <recordType>Case.Partner_Care_Case</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Case-Finance Case Layout</layout>
         <recordType>Case.Finance_Case</recordType>
     </layoutAssignments>
@@ -46475,6 +46514,10 @@
     <layoutAssignments>
         <layout>Case-Service Console - Customer Support</layout>
         <recordType>Case.Customer_Care</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Case-Service Console - Customer Support</layout>
+        <recordType>Case.Partner_Care_Case</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>CaseClose-Close Case Layout</layout>
@@ -53223,6 +53266,10 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ViewMyTeamsDashboards</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>ViewPlatformEvents</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>

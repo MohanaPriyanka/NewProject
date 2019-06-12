@@ -63,15 +63,15 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
         List<AggregateResult> scheduleZSubscriptionsByAccount = [
             SELECT Utility_Account_Subscription__r.Opportunity__r.Account.Id Id,
                 Schedule_Z__r.Shared_Solar_System__r.Id systemId,
-                Schedule_Z__r.Shared_Solar_System__r.Client_Account__r.Id clientId,
-                MIN(Schedule_Z__r.Shared_Solar_System__r.Client_Account__r.Account_Number__c) clientName,
+                Schedule_Z__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__r.Id clientId,
+                MIN(Schedule_Z__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__r.Account_Number__c) clientName,
                 MIN(Schedule_Z__r.Shared_Solar_System__r.Unique_ID__c)  projectName,
                 MIN(Schedule_Z__r.Date_Enacted_by_Utility__c) billDate
             FROM Schedule_Z_Subscription__c
             WHERE Schedule_Z__c IN :scheduleZs
             GROUP BY Utility_Account_Subscription__r.Opportunity__r.Account.Id,
                 Schedule_Z__r.Shared_Solar_System__r.Id,
-                Schedule_Z__r.Shared_Solar_System__r.Client_Account__r.Id
+                Schedule_Z__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__r.Id
         ];
         for (AggregateResult aggregateResult : scheduleZSubscriptionsByAccount) {
             accountIds.add(aggregateResult.Id);
@@ -94,7 +94,7 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
         // Consumes ~31k query rows as of May 2019
         List<AggregateResult> systemsBillsByAccount = [
             SELECT Property_Account__r.Id Id, Shared_Solar_System__r.Id systemId, Client__r.Id clientId,
-                MIN(Shared_Solar_System__r.Client_Account__r.Account_Number__c) clientName,
+                MIN(Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__r.Account_Number__c) clientName,
                 MIN(Shared_Solar_System__r.Unique_ID__c) projectName,
                 MIN(Date__c) billDate
             FROM System_Bill__c
@@ -104,15 +104,15 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
         List<AggregateResult> scheduleZSubscriptionsByAccount = [
             SELECT Utility_Account_Subscription__r.Opportunity__r.Account.Id Id,
                 Schedule_Z__r.Shared_Solar_System__r.Id systemId,
-                Schedule_Z__r.Shared_Solar_System__r.Client_Account__r.Id clientId,
-                MIN(Schedule_Z__r.Shared_Solar_System__r.Client_Account__r.Account_Number__c) clientName,
+                Schedule_Z__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__r.Id clientId,
+                MIN(Schedule_Z__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__r.Account_Number__c) clientName,
                 MIN(Schedule_Z__r.Shared_Solar_System__r.Unique_ID__c)  projectName,
                 MIN(Schedule_Z__r.Date_Enacted_by_Utility__c) billDate
             FROM Schedule_Z_Subscription__c
             WHERE Schedule_Z__r.Status__c IN ('Billing', 'Enacted by Utility')
             GROUP BY Utility_Account_Subscription__r.Opportunity__r.Account.Id,
                 Schedule_Z__r.Shared_Solar_System__r.Id,
-                Schedule_Z__r.Shared_Solar_System__r.Client_Account__r.Id
+                Schedule_Z__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__r.Id
         ];
         Set<Id> accountIds = new Set<Id>();
         for (AggregateResult aggregateResult : systemsBillsByAccount) {
