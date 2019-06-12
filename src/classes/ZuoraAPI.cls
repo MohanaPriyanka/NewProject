@@ -478,6 +478,15 @@ public with sharing class ZuoraAPI {
             throw new Util.BWException('Did not find a subscription in all of the orders');
         }
 
+        public String getChargeNumber(String clientName, String project) {
+            for (ZuoraSubscriptionService.ClientProject cp : getClientProjectsFromOrders()) {
+                if (cp.clientName == clientName && cp.projectName == project) {
+                    return cp.chargeNumber;
+                }
+            }
+            throw new Util.BWException('No client/project found for client: ' + clientName + ' and project '+ project);
+        }
+
         public Date getContractEffective() {
             for (Order order : orders) {
                 if (order.subscriptions != null &&
