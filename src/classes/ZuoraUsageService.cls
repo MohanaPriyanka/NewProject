@@ -36,40 +36,62 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         for (SObject sfUsage : sfUsageRecord) {
             if (sfUsage.Id.getSObjectType() == UASB__c.sObjectType) {
                 UASB__c uasb = (UASB__c) sfUsage;
-                ZuoraUsage usage = new ZuoraUsage();
-                usage.AccountId = uasb.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__Subscription__r.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c;
-                usage.Quantity = uasb.Discounted_Bill__c;
-                usage.StartDateTime = uasb.Billing_Period_Start_Date__c;
-                usage.EndDateTime = uasb.Billing_Period_End_Date__c;
-                usage.SubscriptionNumber = uasb.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__Subscription__r.Name;
-                usage.ChargeNumber = uasb.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__ChargeNumber__c;
-                usage.Description = uasb.Shared_Solar_System__r.Utility__r.Name
-                    + ' #'
-                    + uasb.Utility_Account_Subscription__r.Utility_Account_Log__r.Name;
-                usage.SolarSavings_Zcustom = uasb.Savings__c;
-                usage.UtilityCredit_Zcustom = Util.roundValue(uasb.Net_Metering_Credits_Allocated__c, 2, 'HALF_UP');
-                usage.CRM_ID_Zcustom = uasb.Id;
-                zuoraUsageLineItems.add(usage);
+                ZuoraUsage usage = convertUASBToUsage(uasb);
+                if (usage.ChargeNumber != null && usage.SubscriptionNumber != null){
+                    zuoraUsageLineItems.add(usage);
+                }
             } else if (sfUsage.Id.getSObjectType() == Bill_Adjustment__c.sObjectType) {
                 Bill_Adjustment__c adjust = (Bill_Adjustment__c) sfUsage;
-                ZuoraUsage usage = new ZuoraUsage();
-                usage.AccountId = adjust.UASB__r.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__Subscription__r.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c;
-                usage.Quantity = adjust.Adjustment_Amount__c;
-                usage.StartDateTime = adjust.UASB__r.Billing_Period_Start_Date__c;
-                usage.EndDateTime = adjust.UASB__r.Billing_Period_End_Date__c; 
-                usage.SubscriptionNumber = adjust.UASB__r.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__Subscription__r.Name;
-                usage.ChargeNumber = adjust.UASB__r.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__ChargeNumber__c;
-                usage.Description = adjust.UASB__r.Shared_Solar_System__r.Utility__r.Name
-                    + ' #'
-                    + adjust.UASB__r.Utility_Account_Subscription__r.Utility_Account_Log__r.Name;
-                usage.SolarSavings_Zcustom = adjust.Discount__c;
-                usage.UtilityCredit_Zcustom = Util.roundValue(adjust.Credits_Allocated__c, 2, 'HALF_UP');
-                usage.CRM_ID_Zcustom = adjust.Id;
-                zuoraUsageLineItems.add(usage);
+                ZuoraUsage usage = convertAdjustToUsage(adjust);
+                if (usage.ChargeNumber != null && usage.SubscriptionNumber != null){
+                    zuoraUsageLineItems.add(usage);
+                }
             }
         }
         zuoraObject.objects = zuoraUsageLineItems;
         return zuoraObject;
+    }
+
+    public static ZuoraUsage convertUASBToUsage(UASB__c uasb){
+        ZuoraUsage usage = new ZuoraUsage();
+        String zuoraAcctId = uasb.Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c;
+        ZuoraAPI.OrderBySubscriptionOwner subscription = ZuoraSubscriptionService.getOrderBySubscriptionOwner(zuoraAcctId);
+        usage.SubscriptionNumber = subscription.getSubscriptionNumber();
+        usage.ChargeNumber = subscription.getChargeNumber(
+            uasb.Client_Account_Number__c,
+            uasb.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c
+        );
+        usage.Quantity = uasb.Discounted_Bill__c;
+        usage.StartDateTime = uasb.Billing_Period_Start_Date__c;
+        usage.EndDateTime = uasb.Billing_Period_End_Date__c;
+        usage.Description = uasb.Shared_Solar_System__r.Utility__r.Name
+            + ' #'
+            + uasb.Utility_Account_Subscription__r.Utility_Account_Log__r.Name;
+        usage.SolarSavings_Zcustom = uasb.Savings__c;
+        usage.UtilityCredit_Zcustom = Util.roundValue(uasb.Net_Metering_Credits_Allocated__c, 2, 'HALF_UP');
+        usage.CRM_ID_Zcustom = uasb.Id;
+        return usage;
+    }
+
+    public static ZuoraUsage convertAdjustToUsage(Bill_Adjustment__c adjust){
+        ZuoraUsage usage = new ZuoraUsage();
+        String zuoraAcctId = adjust.UASB__r.Opportunity__r.Account.Zuora_Id__c;
+        ZuoraAPI.OrderBySubscriptionOwner subscription = ZuoraSubscriptionService.getOrderBySubscriptionOwner(zuoraAcctId);
+        usage.SubscriptionNumber = subscription.getSubscriptionNumber();
+        usage.ChargeNumber = subscription.getChargeNumber(
+            adjust.Client__r.Account_Number__c,
+            adjust.UASB__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c
+        );
+        usage.Quantity = adjust.Adjustment_Amount__c;
+        usage.StartDateTime = adjust.UASB__r.Billing_Period_Start_Date__c;
+        usage.EndDateTime = adjust.UASB__r.Billing_Period_End_Date__c;
+        usage.Description = adjust.UASB__r.Shared_Solar_System__r.Utility__r.Name
+            + ' #'
+            + adjust.UASB__r.Utility_Account_Subscription__r.Utility_Account_Log__r.Name;
+        usage.SolarSavings_Zcustom = adjust.Discount__c;
+        usage.UtilityCredit_Zcustom = Util.roundValue(adjust.Credits_Allocated__c, 2, 'HALF_UP');
+        usage.CRM_ID_Zcustom = adjust.Id;
+        return usage;
     }
 
     public static HttpResponse usageAPICall(ZuoraUsageItems usageObject){
