@@ -11,14 +11,13 @@ public class AdjustmentSelector {
                 'Zuora__Subscription__r.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, ' +
                 'UASB__r.Billing_Period_Start_Date__c, ' +
                 'UASB__r.Billing_Period_End_Date__c, ' +
-                'UASB__r.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__Subscription__r.Name, ' +
-                'UASB__r.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__ChargeNumber__c, ' +
-                'UASB__r.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__OriginalProductRatePlanChargeId__c, ' +
-                'UASB__r.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.Zuora__Zuora_Id__c, ' +
                 'UASB__r.Shared_Solar_System__r.Utility__r.Name, ' +
                 'UASB__r.Utility_Account_Subscription__r.Utility_Account_Log__r.Name, ' +
                 'UASB__r.Shared_Solar_System__r.Name, ' +
                 'UASB__r.Shared_Solar_System__r.Unique_ID__c, ' +
+                'Client__r.Account_Number__c, ' +
+                'UASB__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c, ' +
+                'UASB__r.Opportunity__r.Account.Zuora_Id__c, ' +
                 'Adjustment_Amount__c, ' +
                 'Adjustment_Type__c, ' +
                 'Discount__c, ' +
@@ -32,7 +31,7 @@ public class AdjustmentSelector {
             queryString += 'AND Adjustment_Type__c = \'Production\' ';
             queryString += 'AND Adjustment_Amount__c > 0';
         } else {
-            queryString += 'AND (Adjustment_Type__c != \'Production\' ';
+            queryString += 'AND(Adjustment_Type__c != \'Production\' ';
             queryString += 'OR Adjustment_Amount__c < 0)';
         }
 
