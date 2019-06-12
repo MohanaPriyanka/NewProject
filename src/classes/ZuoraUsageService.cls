@@ -59,9 +59,10 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
 
     public static ZuoraUsage convertUASBToUsage(UASB__c uasb){
         ZuoraUsage usage = new ZuoraUsage();
-        usage = findAndSetRatePlanCharge(
-            usage,
-            uasb.Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c,
+        String zuoraAcctId = uasb.Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c;
+        ZuoraAPI.OrderBySubscriptionOwner subscription = ZuoraSubscriptionService.getOrderBySubscriptionOwner(zuoraAcctId);
+        usage.SubscriptionNumber = subscription.getSubscriptionNumber();
+        usage.ChargeNumber = subscription.getChargeNumber(
             uasb.Client_Account_Number__c,
             uasb.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c
         );
@@ -79,9 +80,10 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
 
     public static ZuoraUsage convertAdjustToUsage(Bill_Adjustment__c adjust){
         ZuoraUsage usage = new ZuoraUsage();
-        usage = findAndSetRatePlanCharge(
-            usage,
-            adjust.UASB__r.Opportunity__r.Account.Zuora_Id__c,
+        String zuoraAcctId = adjust.UASB__r.Opportunity__r.Account.Zuora_Id__c;
+        ZuoraAPI.OrderBySubscriptionOwner subscription = ZuoraSubscriptionService.getOrderBySubscriptionOwner(zuoraAcctId);
+        usage.SubscriptionNumber = subscription.getSubscriptionNumber();
+        usage.ChargeNumber = subscription.getChargeNumber(
             adjust.Client__r.Account_Number__c,
             adjust.UASB__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c
         );
@@ -95,45 +97,6 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         usage.UtilityCredit_Zcustom = Util.roundValue(adjust.Credits_Allocated__c, 2, 'HALF_UP');
         usage.CRM_ID_Zcustom = adjust.Id;
         return usage;
-    }
-
-    public static ZuoraUsage findAndSetRatePlanCharge(  ZuoraUsage usage, String zuoraAccountId,
-                                                        String clientAccountNumber, String sssNumber){
-        String chargeKey;
-        try {
-            chargeKey = clientAccountNumber + '/' + sssNumber;
-            Map<String, ChargeAndSubscription> keyToChargeMap = getChargeMapFromAccount(zuoraAccountId);
-            usage.AccountId = zuoraAccountId;
-            usage.SubscriptionNumber = keyToChargeMap.get(chargeKey).SubscriptionId;
-            usage.ChargeNumber = keyToChargeMap.get(chargeKey).ChargeId;
-        } catch (Exception excep){
-            Logger.logLater(
-                'ZuoraUsageService',
-                'convertSFUsageToZuoraUsage',
-                'Could not find subscription in Zuora for this client/SSS pair: ' + chargeKey + ' and account:' + zuoraAccountId,
-                'Error'
-            );
-        }
-        return usage;
-    }
-
-    // Returns map of client and project pairs with zuora charges
-    // Key = ClientAccountNumber/SSSNumber (ex. "BW-0024295/SSS-000096" => "C-000123")
-    public static Map<String, ChargeAndSubscription> getChargeMapFromAccount(String zuoraAccountId){
-        String chargeKey;
-        Map<String, ChargeAndSubscription> keyToChargeMap = new Map<String, ChargeAndSubscription>();
-        ZuoraAPI.OrderBySubscriptionOwner subscription = ZuoraSubscriptionService.getOrderBySubscriptionOwner(zuoraAccountId);
-        Set<ZuoraSubscriptionService.ClientProject> chargeList = subscription.getClientProjectsFromOrders();
-        String subscriptionNumber = subscription.getSubscriptionNumber();
-
-        for (ZuoraSubscriptionService.ClientProject charge : chargeList) {
-            chargeKey = charge.clientName + '/' + charge.projectName;
-            ChargeAndSubscription chargeSubscrip = new ChargeAndSubscription();
-            chargeSubscrip.ChargeId = charge.chargeNumber;
-            chargeSubscrip.SubscriptionId = subscriptionNumber;
-            keyToChargeMap.put(chargeKey, chargeSubscrip);
-        }
-        return keyToChargeMap;
     }
 
     public static HttpResponse usageAPICall(ZuoraUsageItems usageObject){
