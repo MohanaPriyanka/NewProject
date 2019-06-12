@@ -45260,16 +45260,16 @@
         <recordType>Case.Product_Support</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Case-Customer Care</layout>
+        <layout>Case-Finance Case Layout</layout>
+        <recordType>Case.Finance_Case</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Case-Service Console - Customer Support</layout>
         <recordType>Case.Customer_Care</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Case-Customer Care</layout>
+        <layout>Case-Service Console - Customer Support</layout>
         <recordType>Case.Partner_Care_Case</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Case-Finance Case Layout</layout>
-        <recordType>Case.Finance_Case</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>CaseClose-Close Case Layout</layout>
