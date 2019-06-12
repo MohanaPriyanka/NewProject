@@ -11,10 +11,6 @@
         <value xsi:type="xsd:string">https://rest.apisandbox.zuora.com</value>
     </values>
     <values>
-        <field>Active__c</field>
-        <value xsi:type="xsd:boolean">true</value>
-    </values>
-    <values>
         <field>CC_Payment_Page_Id__c</field>
         <value xsi:type="xsd:string">2c92c0f86a073552016a081d73301577</value>
     </values>
@@ -24,6 +20,10 @@
     </values>
     <values>
         <field>Is_Sandbox__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Update_Usage_Records_With_ZuoraId__c</field>
         <value xsi:type="xsd:boolean">true</value>
     </values>
 </CustomMetadata>
