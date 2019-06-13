@@ -51,9 +51,14 @@ public class MultipleMonthProductionUpdateTest {
                 ChargentBase__Active__c = TRUE);
         insert chGateway;
 
+        Account clientAccount = new Account(name = 'Test Client');
+
+        insert new List<Account>{clientAccount};
+
         Entity__c entity1 = new Entity__c (
             Name = 'Oxford Barrett St. P1',
-            Gateway__c = chGateway.Id
+            Gateway__c = chGateway.Id,
+            Client_Account__c = clientAccount.Id
         );
         insert entity1;
         

@@ -239,27 +239,35 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
         if (body.contains('ThrowException')) {
             throw new Util.BWException('Test callout exception');
         }
-        if (body.contains('ExistingAccount')) {
+        if (body.contains('ExistingAccount') || body.contains('CID')) {
             String response = '{"orders" : [' +
                 '{"orderNumber" : "O-00002360","existingAccountNumber" : "ExistingAccount",'+
                 '"subscriptions" : [ {"subscriptionNumber" : "A-S00002141","orderActions" : ['+
                 '{"type" : "AddProduct","addProduct" :'+
-                '{"chargeOverrides" : [{"customFields" : {"Project__c" : "Dudley","ClientOwner__c" : "Goldman"}}]}} ]} ]},'+
+                '{"chargeOverrides" : [{"chargeNumber" : "C-00003075", "customFields" : {"Project__c" : "Dudley","ClientOwner__c" : "Goldman"}}]}} ]} ]},'+
                 '{'+
                 '"orderNumber" : "O-00002359","existingAccountNumber" : "ExistingAccount",'+
                 '"subscriptions" : [ {"subscriptionNumber" : "A-S00002141","orderActions" : ['+
                 '{"type" : "CreateSubscription","triggerDates" : [ {"triggerDate" : "2017-01-01","name" : "ContractEffective"}, ' +
                 '{"triggerDate" : "2017-01-01","name" : "ServiceActivation"}, {"triggerDate" : "2017-01-01","name" : "CustomerAcceptance"} ], ' +
                 '"createSubscription" : {"subscribeToRatePlans" : ['+
-                '{"chargeOverrides" : [ {"customFields" : {"Project__c" : "Barrett","ClientOwner__c" : "Goldman"}} ]} ]}} ]} ]} ],'+
+                '{"chargeOverrides" : [{"chargeNumber" : "C-00003076", "customFields" : {"Project__c" : "Barrett","ClientOwner__c" : "Goldman"}} ]} ]}} ]} ]} ],'+
                 '"success" : true'+
                 '}';
+            if (body.contains('CID')) {
+                // Since client Id and SSS Id will change in each SF environment, set them dynamically:
+                String clientId = body.substring(body.indexOf('CID') + 3, body.indexOf('SID'));
+                String sssId = body.substring(body.indexOf('SID') + 3, body.indexOf('END'));
+                response = response.replace('Goldman', clientId);
+                response = response.replace('Barrett', sssId);
+            }
             res.setBody(response);
         } else {
             ZuoraAPI.OrderBySubscriptionOwner obso = new ZuoraAPI.OrderBySubscriptionOwner();
             obso.success = true;
             res.setBody(JSON.serialize(obso));
         }
+
         return res;
     }
 

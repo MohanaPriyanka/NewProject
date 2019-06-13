@@ -135,9 +135,15 @@ public with sharing class ZuoraSubscriptionService {
     public class ClientProject {
         public String clientName;
         public String projectName;
+        public String chargeNumber;
         public ClientProject(String clientName, String projectName) {
             this.clientName = clientName;
             this.projectName = projectName;
+        }
+        public ClientProject(String clientName, String projectName, String chargeNumber) {
+            this.clientName = clientName;
+            this.projectName = projectName;
+            this.chargeNumber = chargeNumber;
         }
         // Required because we have sets of Client Projects for data load
         public Boolean equals(Object o) {

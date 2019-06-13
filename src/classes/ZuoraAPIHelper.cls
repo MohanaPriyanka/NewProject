@@ -65,7 +65,8 @@ public with sharing class ZuoraAPIHelper {
         }
         Organization o = [SELECT IsSandbox FROM Organization];
             List<Zuora_Setting__mdt> zuoraSettings = [
-                SELECT Id, DeveloperName, CC_Payment_Page_Id__c, ACH_Payment_Page_Id__c, Hosted_Payment_Page_URI__c, API_Endpoint_URL__c
+                SELECT Id, DeveloperName, CC_Payment_Page_Id__c, ACH_Payment_Page_Id__c,
+                    Hosted_Payment_Page_URI__c, API_Endpoint_URL__c, Update_Usage_Records_With_ZuoraId__c
                 FROM Zuora_Setting__mdt
             WHERE Is_Sandbox__c = :o.IsSandbox
             ];
