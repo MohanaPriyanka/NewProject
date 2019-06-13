@@ -107,7 +107,8 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
                 Company, Application_Type__c, LASERCA__Home_Address__c, LASERCA__Home_City__c,
                 LASERCA__Home_State__c, LASERCA__Home_Zip__c, Parcel_Zip__c, LoadZone__c,
                 Partner_Lookup__c, Partner_Lookup__r.Id, bs_Sales_ID__c, Customer_Referral__c, Product__c, Phone,
-                Business_Title__c, Utility_relationship__r.Name, Product__r.Name, Application_Complete_Date__c, Status, Utility_relationship__r.EIA_ID__c
+                Business_Title__c, Utility_relationship__r.Name, Product__r.Name, Application_Complete_Date__c, Status,
+                Utility_relationship__r.EIA_ID__c, Continue_Application_Link__c
             FROM Lead
             WHERE Id = :leadIds
         ];
@@ -140,6 +141,7 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
         public Id referralCode;
         public Datetime applicationCompleteDate;
         public String eiaId;
+        public String continueApplicationLink;
 
         public RestLead() {}
         public RestLead(Lead lead) {
@@ -169,6 +171,7 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
             this.utilityName = lead.Utility_relationship__r.Name;
             this.applicationCompleteDate = lead.Application_Complete_Date__c;
             this.eiaId = lead.Utility_relationship__r.EIA_ID__c;
+            this.continueApplicationLink = lead.Continue_Application_Link__c;
         }
 
         public Boolean isComplete() {
@@ -248,7 +251,8 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
                 Business_Title__c = businessTitle,
                 Customer_type__c = applicationType,
                 Application_Complete_Date__c = applicationCompleteDate,
-                Status = 'Sales Qualified'
+                Status = 'Sales Qualified',
+                Continue_Application_Link__c = continueApplicationLink
             );
             Partner__c customerPartner = MyAccountController.getPartner(partnerId);
             if (partnerId != null) {
@@ -287,17 +291,6 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
             if (!EIAToUtility.isEmpty()) {
                 newLead.Utility_relationship__c = EIAToUtility[0].Id;
             }
-
-//            if (utilityName != null) {
-//                List<Utility__c> utility = [
-//                    SELECT Id
-//                    FROM Utility__c
-//                    WHERE Name LIKE :'%'+utilityName+'%'
-//                    LIMIT 1
-//                ];
-
-               // newLead.Utility_relationship__c = utility[0].Id;
-//            }
 
             String continueApplicationUrl = Util.getCommunitySiteURL('Apply') + '/s/csap-payment?leadId=' + lead.Id;
             newLead.Continue_Application_Link__c = continueApplicationUrl;
