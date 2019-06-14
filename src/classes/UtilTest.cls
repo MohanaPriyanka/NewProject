@@ -267,4 +267,23 @@ public with sharing class UtilTest {
         System.assertEquals(0, leadAttachments.size());
         System.assertEquals(2, ualAttachments.size());
     }
+
+    @IsTest
+    public static void testGetSystemPropertyString() {
+        System.assertEquals('', Util.getSystemPropertyString('Zuora_Contact_Substitution_Email__c'));
+        System_Properties__c property = new System_Properties__c(
+            Name = 'System',
+            Zuora_Contact_Substitution_Email__c = 'sfdc-compliance@bluewavesolar.com'
+        );
+        insert property;
+        System.assertEquals('sfdc-compliance@bluewavesolar.com', Util.getSystemPropertyString('Zuora_Contact_Substitution_Email__c'));
+    }
+
+    @IsTest
+    public static void testGetSystemPropertyCheckbox() {
+        System.assertEquals(false, Util.getSystemPropertyCheckbox('Disable_LoanTrigger__c'));
+        System_Properties__c property = new System_Properties__c(Name = 'System', Disable_LoanTrigger__c = true);
+        insert property;
+        System.assertEquals(true, Util.getSystemPropertyCheckbox('Disable_LoanTrigger__c'));
+    }
 }
