@@ -56,6 +56,7 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         ZuoraUsage usage = new ZuoraUsage();
         String zuoraAcctId = uasb.Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c;
         ZuoraAPI.OrderBySubscriptionOwner subscription = ZuoraSubscriptionService.getOrderBySubscriptionOwner(zuoraAcctId);
+        usage.AccountId = zuoraAcctId;
         usage.SubscriptionNumber = subscription.getSubscriptionNumber();
         usage.ChargeNumber = subscription.getChargeNumber(
             uasb.Client_Account_Number__c,
@@ -77,6 +78,7 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         ZuoraUsage usage = new ZuoraUsage();
         String zuoraAcctId = adjust.UASB__r.Opportunity__r.Account.Zuora_Id__c;
         ZuoraAPI.OrderBySubscriptionOwner subscription = ZuoraSubscriptionService.getOrderBySubscriptionOwner(zuoraAcctId);
+        usage.AccountId = zuoraAcctId;
         usage.SubscriptionNumber = subscription.getSubscriptionNumber();
         usage.ChargeNumber = subscription.getChargeNumber(
             adjust.Client__r.Account_Number__c,
@@ -92,16 +94,6 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         usage.UtilityCredit_Zcustom = Util.roundValue(adjust.Credits_Allocated__c, 2, 'HALF_UP');
         usage.CRM_ID_Zcustom = adjust.Id;
         return usage;
-    }
-
-    public static HttpResponse usageAPICall(ZuoraUsageItems usageObject){
-        HttpResponse response;
-        if(!Test.isRunningTest()){
-            response = ZuoraAPIHelper.callJSONEndpoint('POST','/v1/action/create',usageObject,false);
-        } else {
-            response = ZuoraAPIMock.postUsage();
-        }
-        return response;
     }
 
     public static Map<String, List<SObject>> handleAPIResponse(List<ZuoraUsage> attemptedUsageList, HttpResponse response){

@@ -13,10 +13,11 @@ public without sharing class ZuoraUsageBatchSend implements Database.Batchable<s
         return sObjectList;
     }
 
-    public void execute(Database.BatchableContext bc, List<sObject> scope){
+    public void execute(Database.BatchableContext bc, List<SObject> scope) {
         try {
             ZuoraUsageService.ZuoraUsageItems zuoraUsage = ZuoraUsageService.convertSFUsageToZuoraUsage(scope);
-            HttpResponse usageUploadResponse = ZuoraUsageService.usageAPICall(zuoraUsage);
+            Logger.clearLogs();
+            HttpResponse usageUploadResponse = ZuoraAPIHelper.callJsonEndpoint('POST','/v1/action/create',zuoraUsage,false);
             Map<String, List<SObject>> recordsToUpdate = ZuoraUsageService.handleAPIResponse(zuoraUsage.objects, usageUploadResponse);
             List<UASB__c> newUASBToUpdate = recordsToUpdate.get('UASB');
             List<Bill_Adjustment__c> newAdjustToUpdate = recordsToUpdate.get('Bill_Adjustment');
@@ -27,7 +28,7 @@ public without sharing class ZuoraUsageBatchSend implements Database.Batchable<s
                 adjustToUpdate.addAll(newAdjustToUpdate);
             }
         } catch(Exception excep) {
-            Logger.logLater('ZuoraUsageBatchSend', 'execute', excep.getMessage());
+            Logger.logLater('ZuoraUsageBatchSend', 'execute', excep.getMessage() + '\n' + excep.getStackTraceString());
         }
         Logger.flushLogs();
     }
