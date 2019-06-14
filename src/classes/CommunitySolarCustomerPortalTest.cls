@@ -265,7 +265,6 @@ public without sharing class CommunitySolarCustomerPortalTest {
         Opportunity checkOpp = MyAccountController.getMostRecentOpportunityInfo();
         String checkPartnerId = checkOpp.Partner_tag_lookup__c;
         String checkSalesRepId = checkOpp.BS_Sales_ID__c;
-        System.debug('Opportunity that we are running the check on: ' + checkOpp.Name);
 
         //Test getPartner()
         Partner__c checkPartner = PartnerSelector.selectPartnerByPartnerId(checkPartnerId);
