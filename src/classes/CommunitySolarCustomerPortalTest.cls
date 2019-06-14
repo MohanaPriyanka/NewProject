@@ -13,12 +13,12 @@ public without sharing class CommunitySolarCustomerPortalTest {
         ];
 
         Profile communityProfile = [SELECT Id
-                                    FROM Profile
-                                    WHERE Name = 'Community Solar Community User'];
+        FROM Profile
+        WHERE Name = 'Community Solar Community User'];
 
         List<Account_Bill__c> accountBillList = [SELECT Id, Name,
-                                                Bill_Number__c, Property_Account_ID__c
-                                                FROM Account_Bill__c];
+            Bill_Number__c, Property_Account_ID__c
+        FROM Account_Bill__c];
 
         Shared_Solar_System__c sss = [
             SELECT Id
@@ -85,14 +85,27 @@ public without sharing class CommunitySolarCustomerPortalTest {
         );
         insert salesRep2;
 
+        partner.Default_Sales_Rep__c = salesRep2.Id;
+        update partner;
+
 
         Partner__c csPartner = new Partner__c (
-            Name = 'CS Partner',
+            Name = 'BlueWave Test Partner',
             Products__c = 'Community Solar',
-            CS_Referral_Status__c = 'Default CS Partner',
             Default_Sales_Rep__c = salesRep2.Id
         );
         insert csPartner;
+
+        TestFactory.setDefaultCSPartner(csPartner.Id);
+
+        BSST__c csSalesRep = new BSST__c (
+            Name = 'CS Sales Rep',
+            Partner__c = csPartner.Id
+        );
+        insert csSalesRep;
+
+        csPartner.Default_Sales_Rep__c = csSalesRep.Id;
+        update csPartner;
 
         Partner__c oldPartner = new Partner__c(
             Name = 'Old Partner',
@@ -131,7 +144,7 @@ public without sharing class CommunitySolarCustomerPortalTest {
             Shared_Solar_System__c = sss.Id,
             StageName = 'Complete',
             Product__c = normalCSProduct.Id,
-            Partner_tag_lookup__c = csPartner.Id,
+            Partner_tag_lookup__c = partner.Id,
             BS_Sales_ID__c = salesRep.Id,
             CloseDate = System.today()
         );
@@ -150,48 +163,46 @@ public without sharing class CommunitySolarCustomerPortalTest {
         ];
 
         ChargentOrders__ChargentOrder__c orderA =
-                    new ChargentOrders__ChargentOrder__c(Entity__c = entity1.Id,
-                        ChargentOrders__Payment_Frequency__c = 'Monthly',
-                        ChargentOrders__Payment_Status__c = 'Recurring',
-                        ChargentOrders__Payment_Stop__c = 'Unending',
-                        ChargentOrders__Charge_Date__c = '01',
-                        ChargentOrders__Payment_Start_Date__c = Date.today().addDays(1),
-                                                         ChargentOrders__Billing_First_Name__c = 'Cole',
-                                                         ChargentOrders__Billing_Last_Name__c = 'Swain',
-                                                         ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
-                                                         ChargentOrders__Billing_Zip_Postal__c = '02467',
-                                                         ChargentOrders__Subtotal__c = 50,
-                                                         ChargentOrders__Payment_Method__c = 'Credit Card',
-                                                         Account_Bill__c = accountBillList[0].Id,
-                                                         ChargentOrders__Card_Type__c = 'Visa',
-                                                         ChargentOrders__Card_Number__c = '411111111111',
-                                                         ChargentOrders__Card_Expiration_Month__c = '02',
-                                                         ChargentOrders__Card_Expiration_Year__c = '2018',
-                                                         ChargentOrders__Card_Last_4__c = '1111');
+            new ChargentOrders__ChargentOrder__c(Entity__c = entity1.Id,
+                ChargentOrders__Payment_Frequency__c = 'Monthly',
+                ChargentOrders__Payment_Status__c = 'Recurring',
+                ChargentOrders__Payment_Stop__c = 'Unending',
+                ChargentOrders__Charge_Date__c = '01',
+                ChargentOrders__Payment_Start_Date__c = Date.today().addDays(1),
+                ChargentOrders__Billing_First_Name__c = 'Cole',
+                ChargentOrders__Billing_Last_Name__c = 'Swain',
+                ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
+                ChargentOrders__Billing_Zip_Postal__c = '02467',
+                ChargentOrders__Subtotal__c = 50,
+                ChargentOrders__Payment_Method__c = 'Credit Card',
+                Account_Bill__c = accountBillList[0].Id,
+                ChargentOrders__Card_Type__c = 'Visa',
+                ChargentOrders__Card_Number__c = '411111111111',
+                ChargentOrders__Card_Expiration_Month__c = '02',
+                ChargentOrders__Card_Expiration_Year__c = '2018',
+                ChargentOrders__Card_Last_4__c = '1111');
         insert orderA;
 
         ChargentOrders__Transaction__c transA =
-                    new ChargentOrders__Transaction__c(ChargentOrders__Order__c = orderA.id,
-                                                       ChargentOrders__Amount__c = 50,
-                                                       ChargentOrders__Response_Status__c ='Approved',
-                                                       ChargentOrders__Gateway_ID__c = entity1.Gateway__c,
-                                                       ChargentOrders__Gateway__c = entity1.Gateway__c,
-                                                       Distributed_Among_System_Bills__c = FALSE,
-                                                       ChargentOrders__Response_Message__c = 'OK',
-                                                       ChargentOrders__Type__c = 'Charge',
-                                                       ChargentOrders__Payment_Method__c = 'Credit Card',
-                                                       Activity_Type__c = 'Payment');
+            new ChargentOrders__Transaction__c(ChargentOrders__Order__c = orderA.id,
+                ChargentOrders__Amount__c = 50,
+                ChargentOrders__Response_Status__c ='Approved',
+                ChargentOrders__Gateway_ID__c = entity1.Gateway__c,
+                ChargentOrders__Gateway__c = entity1.Gateway__c,
+                Distributed_Among_System_Bills__c = FALSE,
+                ChargentOrders__Response_Message__c = 'OK',
+                ChargentOrders__Type__c = 'Charge',
+                ChargentOrders__Payment_Method__c = 'Credit Card',
+                Activity_Type__c = 'Payment');
         insert transA;
 
         Map<String, Account> customerAccountMap = new Map<String, Account>();
         for (Account customerAccount : [SELECT Id, Name, Parent_Account_ID__c, Total_Outstanding_Balance__c
-                                        FROM Account]){
+        FROM Account]){
             customerAccountMap.put(customerAccount.Name, customerAccount);
         }
 
-
-
-          System.runAs(communityUser){
+        System.runAs(communityUser){
 
             //test the getContactInfo() method
             Contact ContactfromUser = MyAccountController.getContactInfo();
@@ -247,19 +258,27 @@ public without sharing class CommunitySolarCustomerPortalTest {
             System.assertEquals(opportunityNEW.BS_Sales_ID__c, checkSalesRepId);
             System.assertEquals(con.Id, checkContactId);
 
-            //Test getPartner()
-            Partner__c checkPartner = MyAccountController.getPartner(checkPartnerId);
-            System.assertEquals('CS Partner', checkPartner.Name);
-            System.assertEquals(salesRep2.Id, checkPartner.Default_Sales_Rep__c );
-
-            //Default getPartner()
-            Partner__c defaultPartner = MyAccountController.getPartner(null);
-            System.assertEquals('CS Partner', defaultPartner.Name);
-            System.assertEquals(salesRep2.Id, defaultPartner.Default_Sales_Rep__c);
-
             //test the sendEmail() method
             MyAccountController.sendEmail('test@test.test');
-          }
+        }
+
+        Opportunity checkOpp = MyAccountController.getMostRecentOpportunityInfo();
+        String checkPartnerId = checkOpp.Partner_tag_lookup__c;
+        String checkSalesRepId = checkOpp.BS_Sales_ID__c;
+        System.debug('Opportunity that we are running the check on: ' + checkOpp.Name);
+
+        //Test getPartner()
+        Partner__c checkPartner = PartnerSelector.selectPartnerByPartnerId(checkPartnerId);
+        System.assertEquals('Partner', checkPartner.Name);
+        System.assertNotEquals(checkPartner.Default_Sales_Rep__c, checkSalesRepId);
+        System.assertEquals(salesRep.Id, checkOpp.BS_Sales_ID__c );
+
+        //Default getPartner()
+        Partner__c defaultPartner = PartnerSelector.selectDefaultCSPartner();
+        System.assertEquals('BlueWave Test Partner', defaultPartner.Name);
+        System.assertEquals(csSalesRep.Id, defaultPartner.Default_Sales_Rep__c);
+
+
         Test.stopTest();
     }
 
@@ -304,8 +323,8 @@ public without sharing class CommunitySolarCustomerPortalTest {
         System.runAs ( thisUser ) {
 
             Profile communityProfile = [SELECT Id
-                                        FROM Profile
-                                        WHERE Name = 'Community Solar Community User'];
+            FROM Profile
+            WHERE Name = 'Community Solar Community User'];
             User communityUser = new User(
                 ProfileId = communityProfile.Id,
                 FirstName = 'Test',
@@ -322,8 +341,8 @@ public without sharing class CommunitySolarCustomerPortalTest {
             );
 
             Profile partnerLoginProfile = [SELECT Id
-                                        FROM Profile
-                                        WHERE Name = 'Partner Community Login User (Custom)'];
+            FROM Profile
+            WHERE Name = 'Partner Community Login User (Custom)'];
             User partnerLoginUser = new User(
                 ProfileId = partnerLoginProfile.Id,
                 FirstName = 'Test',
@@ -340,8 +359,8 @@ public without sharing class CommunitySolarCustomerPortalTest {
             );
 
             Profile partnerProfile = [SELECT Id
-                                        FROM Profile
-                                        WHERE Name = 'Partner Community User (Custom)'];
+            FROM Profile
+            WHERE Name = 'Partner Community User (Custom)'];
             User partnerUser = new User(
                 ProfileId = partnerProfile.Id,
                 FirstName = 'Test',
@@ -360,15 +379,15 @@ public without sharing class CommunitySolarCustomerPortalTest {
             Util.insertSobjs(new list<User>{communityUser, partnerLoginUser, partnerUser});
 
             PackageLicense pl = [   SELECT Id
-                                    FROM PackageLicense
-                                    WHERE NamespacePrefix = 'ChargentOrders'];
+            FROM PackageLicense
+            WHERE NamespacePrefix = 'ChargentOrders'];
 
             List<UserPackageLicense> packageAssign = [  SELECT Id, UserId, PackageLicenseId
-                                                        FROM UserPackageLicense
-                                                        WHERE (UserId = : communityUser.Id
-                                                        OR UserId = : partnerLoginUser.Id
-                                                        OR UserId = : partnerUser.Id)
-                                                        AND PackageLicenseId = : pl.Id];
+            FROM UserPackageLicense
+            WHERE (UserId = : communityUser.Id
+            OR UserId = : partnerLoginUser.Id
+            OR UserId = : partnerUser.Id)
+            AND PackageLicenseId = : pl.Id];
 
             System.assertEquals(3,packageAssign.size());
         }

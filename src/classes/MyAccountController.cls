@@ -285,30 +285,10 @@ public without sharing class MyAccountController {
     public static Partner__c getPartner(String partnerId){
         Partner__c partner = new Partner__c();
 
-        try{
-            if (partnerId == null) {
-                partner = [
-                    SELECT Id, Email__c, Default_Sales_Rep__c, Default_Sales_Rep__r.Name, Name
-                    FROM Partner__c
-                    WHERE CS_Referral_Status__c = 'Default CS Partner'
-                    LIMIT 1
-                ];
-            } else {
-                partner = [
-                    SELECT Id, Email__c, Default_Sales_Rep__c, Default_Sales_Rep__r.Name, Name
-                    FROM Partner__c
-                    WHERE Id = :partnerId
-                    LIMIT 1
-                ];
-            }
-        } catch (QueryException e){
-            Logger.logNow('MyAccountController', 'getPartner', 'Unable to find partner with Id: ' + partnerId);
-            partner = [
-                SELECT Id, Email__c, Default_Sales_Rep__c, Default_Sales_Rep__r.Name, Name
-                FROM Partner__c
-                WHERE CS_Referral_Status__c = 'Default CS Partner'
-                LIMIT 1
-            ];
+        try {
+            partner = PartnerSelector.selectPartnerByPartnerId(partnerId);
+        } catch (Exception e ) {
+            partner = PartnerSelector.selectDefaultCSPartner();
         }
 
         return partner;
@@ -399,7 +379,7 @@ public without sharing class MyAccountController {
         ];
 
         List<Opportunity> oppList = [
-            SELECT Id, Partner_tag_lookup__c, CloseDate, AccountId, BS_Sales_ID__c
+            SELECT Id, Partner_tag_lookup__c, Name, CloseDate, AccountId, BS_Sales_ID__c
             FROM Opportunity
             WHERE AccountID = :propertyAccount.Id AND StageName = 'Complete'
             ORDER BY CloseDate DESC LIMIT 1

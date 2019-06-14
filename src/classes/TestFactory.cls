@@ -171,6 +171,18 @@ public class TestFactory {
 		}
 	}
 
+	public static void setDefaultCSPartner(String partnerId){
+		List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
+		if (systemProperties.size() > 0){
+			systemProperties[0].Default_CS_Partner__c = partnerId;
+			update systemProperties[0];
+		} else {
+			System_Properties__c property = new System_Properties__c(Name = 'System');
+			property.Default_CS_Partner__c = partnerId;
+			insert property;
+		}
+	}
+
 	public static void insertLetterStreamSettings() {
 		insert new LetterStream_Settings__c(
 			Name = 'Test',
