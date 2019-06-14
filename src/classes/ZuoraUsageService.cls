@@ -15,7 +15,7 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         public Decimal SolarSavings_Zcustom;
         public Decimal UtilityCredit_Zcustom;
         public String CRM_ID_Zcustom;
-        public String UOM = 'Dollars';
+        public String UOM = 'Dollars2';
     }
 
     public class ZuoraResponse {
