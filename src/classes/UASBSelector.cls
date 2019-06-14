@@ -4,8 +4,7 @@
 public class UASBSelector {
     public static List<UASB__c> uasbsNotYetInZuora() {
         return [
-            SELECT Id, Name, Date__c,
-            Billing_Period_Start_Date__c, Billing_Period_End_Date__c,
+            SELECT Id, Name, Date__c, System_Bill__c,
             Net_Metering_Credits_Allocated__c, Savings__c,
             Discounted_Bill__c, Shared_Solar_System__r.Name,
             Shared_Solar_System__r.System_Utility__c,

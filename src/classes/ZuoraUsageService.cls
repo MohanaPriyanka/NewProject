@@ -63,8 +63,9 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
             uasb.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c
         );
         usage.Quantity = uasb.Discounted_Bill__c;
-        usage.StartDateTime = uasb.Billing_Period_Start_Date__c;
-        usage.EndDateTime = uasb.Billing_Period_End_Date__c;
+        // UASB Date__c is the date of the production update, favored over using the Billing Period Start and End Date
+        usage.StartDateTime = uasb.Date__c - 1;
+        usage.EndDateTime = uasb.Date__c;
         usage.Description = uasb.Shared_Solar_System__r.Utility__r.Name
             + ' #'
             + uasb.Utility_Account_Subscription__r.Utility_Account_Log__r.Name;
@@ -85,8 +86,8 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
             adjust.UASB__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c
         );
         usage.Quantity = adjust.Adjustment_Amount__c;
-        usage.StartDateTime = adjust.UASB__r.Billing_Period_Start_Date__c;
-        usage.EndDateTime = adjust.UASB__r.Billing_Period_End_Date__c;
+        usage.StartDateTime = adjust.UASB__r.Date__c - 1;
+        usage.EndDateTime = adjust.UASB__r.Date__c;
         usage.Description = adjust.UASB__r.Shared_Solar_System__r.Utility__r.Name
             + ' #'
             + adjust.UASB__r.Utility_Account_Subscription__r.Utility_Account_Log__r.Name;
