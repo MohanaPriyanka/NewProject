@@ -956,6 +956,16 @@
         <field>LASERCA__Personal_Credit_Report__c.Time_Pulled__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.LASERCA__Birthdate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Soft_Pull_Credit_Report__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Personal Credit Report - full visibility</label>
     <objectPermissions>
