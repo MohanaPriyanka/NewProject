@@ -5,18 +5,8 @@
 
 
 public without sharing class utilityAccountLogConversionHandler {
-    private Boolean m_isExecuting = false;
-    private Integer BatchSize = 0;
-    
-    public utilityAccountLogConversionHandler(Boolean isExecuting, Integer size){
-        m_isExecuting = isExecuting;
-        BatchSize = size;
-    }
-    public void OnBeforeUpdate(List<Lead> convertedLeads){
-        utilityAccountLogConversion(convertedLeads);
-    }
 
-    private void utilityAccountLogConversion(List<Lead> leadsList){
+    public static void utilityAccountLogConversion(List<Lead> leadsList){
         Map<Id, Id> feedback2OppId = new Map<Id, Id>();
         Map<Id, Id> accountMap = new Map<Id, Id>();
 
@@ -31,6 +21,7 @@ public without sharing class utilityAccountLogConversionHandler {
                  List<Utility_Account_Log__c> ual = [SELECT Lead__c, Opportunity__c, Account__c
                                                      FROM Utility_Account_Log__c
                                                      WHERE Lead__c IN :feedback2OppId.keySet()];
+
                 for (Utility_Account_Log__c u : ual){
                     u.Account__c = feedback2OppId.get(u.Lead__c);
                 }            
