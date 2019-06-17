@@ -1,5 +1,6 @@
 /**
  * Created by SarahRenfro on 6/13/2019.
+ *
  */
 
 @IsTest
@@ -51,7 +52,7 @@ private class PartnerSelectorTest {
         } catch(Exception e) {
             testSelectPartner = PartnerSelector.selectDefaultCSPartner();
         }
-        
+
         System.assertEquals('Default CS Partner', testSelectPartner.Name);
         System.assertEquals('default@email.com', testSelectPartner.Email__c);
 

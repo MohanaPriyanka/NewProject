@@ -13,7 +13,6 @@ public without sharing class PartnerSelector {
         ];
     }
 
-    //Only ever going to return one partner so does it HAVE to be a list?
     public static Partner__c selectDefaultCSPartner() {
         Partner__c defaultCSPartner = new Partner__c();
         List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
