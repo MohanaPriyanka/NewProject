@@ -60,11 +60,12 @@ public without sharing class LeadTriggerHandler {
                 communitySolarLeads.add(lead);
             }
         }
-        updateLZUL(communitySolarLeads, null);
+        UtilityLoadZoneService.updateLZUL(communitySolarLeads, null);
     }
     public void onBeforeUpdate(List<Lead> oldLeads, List<Lead> updatedLeads, Map<ID, Lead> oldLeadMap, Map<ID, Lead> newLeadMap){
         List<Lead> communitySolarLeads = new List<Lead>();
         Map<Id, Lead> communitySolarOldLeadMap = new Map<Id, Lead>();
+
         for (Lead lead : updatedLeads) {
             if (lead.Product_Line__c == 'Community Solar') {
                 communitySolarLeads.add(lead);
@@ -75,7 +76,8 @@ public without sharing class LeadTriggerHandler {
                 communitySolarOldLeadMap.put(lead.Id, lead);
             }
         }
-        updateLZUL(communitySolarLeads, communitySolarOldLeadMap);
+
+        UtilityLoadZoneService.updateLZUL(communitySolarLeads, communitySolarOldLeadMap);
     }
     public void onAfterUpdate(List<Lead> oldLeads, List<Lead> updatedLeads, Map<Id, Lead> oldLeadMap){
         List<Lead> convertedCSLeads = new List<Lead>();
@@ -137,50 +139,7 @@ public without sharing class LeadTriggerHandler {
             DocuSignHelper.handleLoanChangeOrder(System.JSON.serialize(oppsWithAuthorizedChange));
         }
     }
-    
-    private void updateLZUL(List<Lead> leadList, Map<ID, Lead> oldLeadMap){
-        Set<String> zipCodeSet = new Set<String>();
-        for (Lead l : leadList){
-            if (l.Parcel_Zip__c != null && (l.LoadZone__c == null || l.Utility_relationship__c == null)) {
-                zipCodeSet.add(l.Parcel_Zip__c);
-            }
-        }
-        if (zipCodeSet.size() > 0 ){
-            Map<String, Load_u__c> validLZU = new Map<String, Load_u__c>();
-            for (Load_u__c obj : [
-                SELECT Id, Name, LZ__c, Utility__c,
-                (SELECT Id, Name, Utility__r.Id, Utility__r.Name FROM ZipCode_Utility_Junctions__r)
-                FROM Load_u__c
-                WHERE Name IN : zipCodeSet] ){
-                validLZU.put(obj.Name, obj); 
-            }
-            for (Lead l : leadList){
-                if ((oldLeadMap == null || oldLeadMap.get(l.Id).Parcel_Zip__c != l.Parcel_Zip__c) && validLZU.containsKey(l.Parcel_Zip__c)){
-                    Load_u__c zone = validLZU.get(l.Parcel_Zip__c);
-                    l.ZipCode__c = zone.Id;
-                    l.LoadZone__c = zone.LZ__c;
-                    if (zone.ZipCode_Utility_Junctions__r.size() == 1){
-                        l.Utility_relationship__c = zone.ZipCode_Utility_Junctions__r[0].Utility__r.Id;
-                        l.Confirm_Utility__c =  zone.ZipCode_Utility_Junctions__r[0].Utility__r.Name + '>'
-                                                + zone.ZipCode_Utility_Junctions__r[0].Utility__r.Id;
-                    } else {
-                        String utilityNames;
-                        String utilityIds;
-                        for (ZipCode_Utility_Junction__c junction : zone.ZipCode_Utility_Junctions__r){
-                            if (utilityNames == null){
-                                utilityNames = junction.Utility__r.Name;
-                                utilityIds = junction.Utility__r.Id;
-                            } else {
-                                utilityNames += '/' + junction.Utility__r.Name;
-                                utilityIds += '/' + junction.Utility__r.Id;
-                            }
-                    }
-                        l.Confirm_Utility__c= utilityNames + '>' + utilityIds;
-                }
-                }
-            }
-        }
-    }
+
 
     private void customerSubscriptionProcess(List<Lead> leads) {
         CSSubscriptionEnroller repo = new CSSubscriptionEnroller(leads);
@@ -227,11 +186,11 @@ public without sharing class LeadTriggerHandler {
     }
 
     private void convertCasestoAccount(Lead convertedLead){
-        List<Case> casesList = [SELECT Id, Lead_Lookup__r.ConvertedAccountId, Lead_Lookup__r.ConvertedContactId, 
-                                    Lead_Lookup__r.isConverted, Lead_Lookup__r.Product_Line__c, AccountId, ContactId
-                                FROM Case 
-                                WHERE Lead_Lookup__r.Id = : convertedLead.id
-                                AND (AccountId = NULL OR ContactId = NULL)];
+        List<Case> casesList = [SELECT Id, Lead_Lookup__r.ConvertedAccountId, Lead_Lookup__r.ConvertedContactId,
+            Lead_Lookup__r.isConverted, Lead_Lookup__r.Product_Line__c, AccountId, ContactId
+        FROM Case
+        WHERE Lead_Lookup__r.Id = : convertedLead.id
+        AND (AccountId = NULL OR ContactId = NULL)];
 
         for (Case caseToUpdate : casesList) {
             if ( caseToUpdate.AccountId == NULL){
@@ -255,4 +214,5 @@ public without sharing class LeadTriggerHandler {
         }
         return (returnNull?null:opp);
     }
+
 }

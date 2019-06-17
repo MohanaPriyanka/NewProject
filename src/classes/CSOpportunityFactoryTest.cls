@@ -240,7 +240,7 @@ public without sharing class CSOpportunityFactoryTest {
         lead = [
             SELECT Id, LASER_Credit_Score__c, ConvertedAccountId, FirstName, LastName, Application__c,
                 Application_Type__c, Avidia_Checking_Account__c, Business_Title__c, Customer_Referral__c, Customer_Type__c,
-                Customer_Type_Formula__c, Date_Of_Application__c, DOER_Solar_Loan__c, Email_Re_Enter__c, LASERCA__Home_State__c,
+                Customer_Type_Formula__c, LeadSource, Date_Of_Application__c, DOER_Solar_Loan__c, Email_Re_Enter__c, LASERCA__Home_State__c,
                 Is_Loan_Secured__c, Lead_ID__c, Loan_Program_Class__c, Maximum_Monthly_Disbursement2__c, Company,
                 Number_of_Years_at_Location__c, Number_of_Years_in_Business__c, Parcel_Zip__c, Partner_lookup__c,
                 Partner_Email__c, Personal_Credit_Report__c, Phone2__c, Product_Line__c, Referral_Email__c, bs_Sales_ID__c,
@@ -262,6 +262,7 @@ public without sharing class CSOpportunityFactoryTest {
         System.assertEquals(newACHOrder.ChargentOrders__Bank_Account_Name__c, opp1.ACH_Name_on_Account__c);
         System.assertEquals('*****6789', opp1.ACH_Bank_Routing_Number__c);
         System.assertEquals('******7890', opp1.ACH_Account_Number__c);
+        System.assertEquals('Contract Pending', opp1.StageName);
 
         System.assertEquals(sss2.Id, opp2.Shared_Solar_System__c);
         System.assertEquals(annualTotals.cost - opp1.Annual_Electricity_Cost__c, opp2.Annual_Electricity_Cost__c);
@@ -270,6 +271,8 @@ public without sharing class CSOpportunityFactoryTest {
         System.assertEquals(newACHOrder.ChargentOrders__Bank_Account_Name__c, opp2.ACH_Name_on_Account__c);
         System.assertEquals('*****6789', opp2.ACH_Bank_Routing_Number__c);
         System.assertEquals('******7890', opp2.ACH_Account_Number__c);
+        System.assertEquals('Contract Pending', opp2.StageName);
+
     }
 
     @IsTest
@@ -363,6 +366,7 @@ public without sharing class CSOpportunityFactoryTest {
             Email = 'test@test.com',
             Electricity_Provider__c = 'Eversource',
             Utility_1__c = 'Eversource',
+            LeadSource = 'Switch',
             LoadZone__c = 'WCMA',
             Company = 'Test',
             Status = 'Qualified',
@@ -385,7 +389,7 @@ public without sharing class CSOpportunityFactoryTest {
         lead = [
             SELECT Id, LASER_Credit_Score__c, ConvertedAccountId, FirstName, LastName, Application__c,
                 Application_Type__c, Avidia_Checking_Account__c, Business_Title__c, Customer_Referral__c, Customer_Type__c,
-                Customer_Type_Formula__c, Date_Of_Application__c, DOER_Solar_Loan__c, Email_Re_Enter__c, LASERCA__Home_State__c,
+                Customer_Type_Formula__c, LeadSource, Date_Of_Application__c, DOER_Solar_Loan__c, Email_Re_Enter__c, LASERCA__Home_State__c,
                 Is_Loan_Secured__c, Lead_ID__c, Loan_Program_Class__c, Maximum_Monthly_Disbursement2__c, Company,
                 Number_of_Years_at_Location__c, Number_of_Years_in_Business__c, Parcel_Zip__c, Partner_lookup__c,
                 Partner_Email__c, Personal_Credit_Report__c, Phone2__c, Product_Line__c, Referral_Email__c, bs_Sales_ID__c,
@@ -408,6 +412,7 @@ public without sharing class CSOpportunityFactoryTest {
         System.assertEquals(newACHOrder.ChargentOrders__Bank_Account_Name__c, opp1.ACH_Name_on_Account__c);
         System.assertEquals('*****6789', opp1.ACH_Bank_Routing_Number__c);
         System.assertEquals('******7890', opp1.ACH_Account_Number__c);
+        System.assertEquals('QC in Progress', opp1.StageName);
 
         System.assertEquals(sss2.Id, opp2.Shared_Solar_System__c);
         System.assertEquals(0, opp2.Annual_Electricity_Cost__c);
@@ -416,6 +421,7 @@ public without sharing class CSOpportunityFactoryTest {
         System.assertEquals(newACHOrder.ChargentOrders__Bank_Account_Name__c, opp2.ACH_Name_on_Account__c);
         System.assertEquals('*****6789', opp2.ACH_Bank_Routing_Number__c);
         System.assertEquals('******7890', opp2.ACH_Account_Number__c);
+        System.assertEquals('QC in Progress', opp2.StageName);
     }
 
 
@@ -527,7 +533,7 @@ public without sharing class CSOpportunityFactoryTest {
         lead = [
             SELECT Id, LASER_Credit_Score__c, ConvertedAccountId, FirstName, LastName, Application__c,
                 Application_Type__c, Avidia_Checking_Account__c, Business_Title__c, Customer_Referral__c, Customer_Type__c,
-                Customer_Type_Formula__c, Date_Of_Application__c, DOER_Solar_Loan__c, Email_Re_Enter__c, LASERCA__Home_State__c,
+                Customer_Type_Formula__c, LeadSource, Date_Of_Application__c, DOER_Solar_Loan__c, Email_Re_Enter__c, LASERCA__Home_State__c,
                 Is_Loan_Secured__c, Lead_ID__c, Loan_Program_Class__c, Maximum_Monthly_Disbursement2__c, Company,
                 Number_of_Years_at_Location__c, Number_of_Years_in_Business__c, Parcel_Zip__c, Partner_lookup__c,
                 Partner_Email__c, Personal_Credit_Report__c, Phone2__c, Product_Line__c, Referral_Email__c, bs_Sales_ID__c,

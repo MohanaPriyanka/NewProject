@@ -46,4 +46,14 @@
         <default>false</default>
         <label>Door Knocking</label>
     </standardValue>
+    <standardValue>
+        <fullName>Switch</fullName>
+        <default>false</default>
+        <label>Switch</label>
+    </standardValue>
+    <standardValue>
+        <fullName>CSAP</fullName>
+        <default>false</default>
+        <label>CSAP</label>
+    </standardValue>
 </StandardValueSet>

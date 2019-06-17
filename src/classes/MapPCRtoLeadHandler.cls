@@ -10,10 +10,11 @@ public without sharing class MapPCRtoLeadHandler {
         Set<Id> pcrIds = new Set<Id>();
         if (triggerOldMap == null) {
             for (LASERCA__Credit_Report_Log__c crl : triggerNewMap.values()) {
-                if (crl.LASERCA__Status__c == 'Completed') {
+                if (crl.LASERCA__Status__c == 'Completed' || (crl.LASERCA__Status__c == 'Error' && crl.LASERCA__Personal_Credit_Report__c != null)) {
                     pcrIds.add(crl.LASERCA__Personal_Credit_Report__c);
                 }
             }
+
         } else {
             for (Id oldId : triggerOldMap.keySet()) {
                 if (triggerNewMap.get(oldId).LASERCA__Status__c == 'Completed' &&

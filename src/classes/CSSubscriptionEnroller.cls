@@ -10,6 +10,7 @@
 
 public without sharing class CSSubscriptionEnroller {
     private List<Utility_Account_Log__c> ualList;
+    private List<Account> propAccountList;
     private Map<Id, List<Utility_Account_Log__c>> ualsByLeadId;
     private Map<Id, Utility_Account_Log__c> ualsToUpdateMap;
     private Map<Id, Product2> productsMap;
@@ -39,6 +40,11 @@ public without sharing class CSSubscriptionEnroller {
             WHERE Lead__c IN :leadIds
             ORDER BY Annual_Cost_of_Electricity__c DESC
         ];
+
+        propAccountList = [
+            SELECT Id, Lead__c
+            FROM Account
+            WHERE Lead__c IN :leadIds AND RecordType.Name = 'Property'];
 
         sssList = [
             SELECT Id, Name, Sales_Partners__c, Maximum_Subscription_Cost__c, Maximum_Subscription_Capacity_kW_DC__c,
@@ -101,6 +107,7 @@ public without sharing class CSSubscriptionEnroller {
     }
 
     public void enroll() {
+
         for (Lead lead : leads) {
             calculateProposedkWh(lead);
         }
@@ -134,12 +141,14 @@ public without sharing class CSSubscriptionEnroller {
             return ualListForLead;
         }
 
+
         for (Utility_Account_Log__c ual : ualList) {
             if (ual.Lead__c == lead.Id) {
                 ualListForLead.add(ual);
             }
         }
         ualsByLeadId.put(lead.Id, ualListForLead);
+
         return ualListForLead;
     }
 
@@ -165,6 +174,24 @@ public without sharing class CSSubscriptionEnroller {
         return sortedSharedSolarSystems;
     }
 
+    public Id getPropertyAccount(Lead lead) {
+        Id propAccountId;
+        //If Switch lead, the property account will be in the list already. If CSAP Lead, will need to grab the Converted Account
+        if (propAccountList.size() > 0 ) {
+            for (Account propAcct : propAccountList){
+                if (propAcct.Lead__c == lead.Id){
+                    propAccountId = propAcct.Id;
+                    break;
+                }
+            }
+        } else if (lead.IsConverted && lead.ConvertedAccountId != null) {
+            propAccountId = lead.ConvertedAccountId;
+        }
+
+        return propAccountId;
+
+    }
+
     public AnnualEnergyTotal getAnnualTotals(Lead lead) {
         Decimal totalAnnualCostOfElectricity = 0;
         Decimal totalAnnualkWhElectricity = 0;
@@ -181,8 +208,9 @@ public without sharing class CSSubscriptionEnroller {
         AnnualEnergyTotal annualTotals = getAnnualTotals(lead);
         List<Shared_Solar_System__c> availableSSS = getSortedSharedSolarSystems(lead);
         ChargentOrders__ChargentOrder__c baseChargentOrder = chOrdersByLeadId.get(lead.Id);
-
-        List<Opportunity> oppListToCreate = CSOpportunityFactory.generateCSOpportunities(lead, availableSSS, baseChargentOrder, annualTotals, lead.ConvertedAccountId);
+        Id propAccountId = getPropertyAccount(lead);
+        //Need to pass the property Account here (not converted Account)
+        List<Opportunity> oppListToCreate = CSOpportunityFactory.generateCSOpportunities(lead, availableSSS, baseChargentOrder, annualTotals, propAccountId);
 
         leadOppsMap.put(lead.Id, oppListToCreate);
     }
@@ -211,10 +239,15 @@ public without sharing class CSSubscriptionEnroller {
         insert uasList;
     }
 
+    //Link the chargent order to the property account, not the converted account
     public void moveChOrderToAccount(Lead lead) {
         ChargentOrders__ChargentOrder__c baseChargentOrder = chOrdersByLeadId.get(lead.Id);
-        if (baseChargentOrder == null) return;
-        baseChargentOrder.ChargentOrders__Account__c = lead.ConvertedAccountId;
+        if (baseChargentOrder == null) {
+            return;
+        }
+        Id propAccountId = getPropertyAccount(lead);
+
+        baseChargentOrder.ChargentOrders__Account__c = propAccountId;
         chargentOrdersToUpdate.add(baseChargentOrder);
     }
 
