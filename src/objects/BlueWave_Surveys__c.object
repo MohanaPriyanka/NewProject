@@ -344,6 +344,21 @@
                     <default>false</default>
                     <label>Other</label>
                 </value>
+                <value>
+                    <fullName>Purchasing products that help you save money and optimize your energy use</fullName>
+                    <default>false</default>
+                    <label>Purchasing products that help you save money and optimize your energy use</label>
+                </value>
+                <value>
+                    <fullName>Reviewing your energy usage or savings online</fullName>
+                    <default>false</default>
+                    <label>Reviewing your energy usage or savings online</label>
+                </value>
+                <value>
+                    <fullName>Purchasing energy from alternative energy sources apart from community solar</fullName>
+                    <default>false</default>
+                    <label>Purchasing energy from alternative energy sources apart from community solar</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
         <visibleLines>7</visibleLines>
@@ -1493,6 +1508,49 @@ New York</description>
         <fullName>CS_Customer_Survey</fullName>
         <active>true</active>
         <label>CS Customer Survey</label>
+        <picklistValues>
+            <picklist>Cust_Top_3__c</picklist>
+            <values>
+                <fullName>Affordable monthly payments</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Energy security</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Improved environmental impact</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Knowing BlueWave%27s name as a financing provider</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Purchasing energy from alternative energy sources apart from community solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Purchasing products that help you save money and optimize your energy use</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reviewing your energy usage or savings online</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>The interest rate of the loan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Total cost of ownership</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
     </recordTypes>
     <recordTypes>
         <fullName>Employee_Engagement_Survey</fullName>
