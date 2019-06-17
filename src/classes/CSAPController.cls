@@ -84,8 +84,10 @@ public without sharing class CSAPController {
                 //No PCR returned
                 pcr.LASERCA__Credit_Score_TransUnion__c ='9999';
                 pcr.LASERCA__Credit_Score__c = '9999';
+                lead.Personal_Credit_Report__c = pcr.Id;
                 creditScore = 9999;
                 update pcr;
+                update lead;
             }
 
             result = checkCreditReport(leadId, creditScore);
