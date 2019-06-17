@@ -53,6 +53,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>Opportunity_Lookup__c</field>
+            <value>
+                <elementReference>varOppID</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>OwnerId</field>
             <value>
                 <elementReference>varAssigneeID</elementReference>
@@ -85,7 +91,7 @@
         <inputAssignments>
             <field>WhatId</field>
             <value>
-                <elementReference>varOppID</elementReference>
+                <elementReference>sovOpportunity.AccountId</elementReference>
             </value>
         </inputAssignments>
         <object>Task</object>
@@ -93,7 +99,7 @@
     <recordLookups>
         <name>Lookup_Opportunity</name>
         <label>Lookup Opportunity</label>
-        <locationX>204</locationX>
+        <locationX>203</locationX>
         <locationY>50</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -110,6 +116,7 @@
         <outputReference>sovOpportunity</outputReference>
         <queriedFields>Id</queriedFields>
         <queriedFields>StageName</queriedFields>
+        <queriedFields>AccountId</queriedFields>
     </recordLookups>
     <recordUpdates>
         <name>Update_Opp_Status</name>
