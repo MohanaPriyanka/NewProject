@@ -81,14 +81,13 @@ public without sharing class CSAPController {
             if (pcr.LASERCA__Credit_Score__c != null) {
                 creditScore = Decimal.valueOf(pcr.LASERCA__Credit_Score__c);
             } else {
-                //No credit score returned
+                //No PCR returned
                 pcr.LASERCA__Credit_Score_TransUnion__c ='9999';
                 pcr.LASERCA__Credit_Score__c = '9999';
-                lead.Personal_Credit_Report__c = pcr.Id;
                 creditScore = 9999;
                 update pcr;
-                update lead;
             }
+
             result = checkCreditReport(leadId, creditScore);
         }
         return result;
@@ -196,7 +195,14 @@ public without sharing class CSAPController {
     @AuraEnabled
     public static Boolean checkApplicationPartner(String partnerId){
         Boolean partnerApp;
-        Partner__c customerPartner = MyAccountController.getPartner(partnerId);
+        Partner__c customerPartner = new Partner__c();
+
+        try {
+            customerPartner = PartnerSelector.selectPartnerByPartnerId(partnerId);
+        } catch (Exception e) {
+            customerPartner = PartnerSelector.selectDefaultCSPartner();
+        }
+
         //Set boolean based on BIS (and BlueWave Test Partner?) or Partner to determine application process
         if (customerPartner.Name == 'BlueWave Inside Sales' || customerPartner.Name == 'BlueWave Test Partner'){
             partnerApp = false;
@@ -208,8 +214,7 @@ public without sharing class CSAPController {
 
     @AuraEnabled
     public static String getCSApplicationURL() {
-        //Should return the Default CS Partner Id - CS Self-Originations
-        String partnerId = MyAccountController.getPartner(null).Id;
+        String partnerId = PartnerSelector.selectDefaultCSPartner().Id;
 
         Domain dom = [SELECT Domain, DomainType FROM Domain];
 
@@ -220,8 +225,18 @@ public without sharing class CSAPController {
 
     @AuraEnabled
     public static Lead upsertCSAPRecords(Lead lead, String partnerId, String salesRepId, String referralCode){
-        Partner__c customerPartner = MyAccountController.getPartner(partnerId);
+        Partner__c customerPartner = new Partner__c();
 
+        try {
+            customerPartner = PartnerSelector.selectPartnerByPartnerId(partnerId);
+        } catch (Exception e) {
+            customerPartner = PartnerSelector.selectDefaultCSPartner();
+            if (partnerId != null) {
+                Logger.logNow('CSAPController', 'upsertCSAPRecords', 'Partner not found with Id ' + partnerId + ' for Lead: ' + lead.Id);
+            }
+        }
+
+        
         if (lead.Parent_Account__c == null) {
             lead = setupParentAccount(lead, customerPartner);
         }
@@ -369,7 +384,6 @@ public without sharing class CSAPController {
             WHERE Parent_Account__c = :primaryLead.Parent_Account__c
             AND Status = 'Qualified'
         ];
-
         // make sure that the lead owner is a user, if not set it to API
         Boolean updatedLeadOwner = false;
         User apiUser = [

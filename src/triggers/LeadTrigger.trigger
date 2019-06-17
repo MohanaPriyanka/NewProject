@@ -6,23 +6,21 @@ trigger LeadTrigger on Lead (before insert, after insert, before update, after u
     if (Util.isDisabled('Disable_LeadTrigger__c')) {
         return;
     }
-    LeadTriggerHandler leadTriggerHandler = new LeadTriggerHandler();
-    UtilityAccountLogConversionHandler utilityAccountLogConversionHandler = new UtilityAccountLogConversionHandler(Trigger.isExecuting, Trigger.size);
-    ReferralCodeHandler referralCodeHandler  = new ReferralCodeHandler();
+    //Make call to LeadHandler to determine if Switch or CSAP/Web/Loan Lead
+    LeadDispatcher leadHandler = new LeadDispatcher();
     LoanHandler loanHandler = new LoanHandler (Trigger.isExecuting, Trigger.size);
 
     if(Trigger.isUpdate && Trigger.isAfter){
-        leadTriggerHandler.onAfterUpdate(Trigger.old, Trigger.new, Trigger.oldMap);
+        leadHandler.onAfterUpdate(Trigger.new, Trigger.oldMap);
         loanHandler.OnAfterLeadUpdate(Trigger.new, Trigger.old, Trigger.newMap, Trigger.oldMap);
     }
     else if(Trigger.isUpdate && Trigger.isBefore){
-        leadTriggerHandler.onBeforeUpdate(Trigger.old, Trigger.new, Trigger.oldMap, Trigger.newMap);
-        utilityAccountLogConversionHandler.OnBeforeUpdate(Trigger.new);
-        referralCodeHandler.OnBeforeUpdate(Trigger.oldMap, Trigger.newMap);
+        leadHandler.onBeforeUpdate(Trigger.new, Trigger.oldMap);
         loanHandler.OnBeforeLeadUpdate(Trigger.newMap, Trigger.oldMap);
+
     }  
+
     else if(Trigger.isInsert && Trigger.isBefore){
-        leadTriggerHandler.onBeforeInsert(Trigger.new);
-        referralCodeHandler.OnBeforeInsert(Trigger.new);
+        leadHandler.onBeforeInsert(Trigger.new);
     }
 }
