@@ -101,6 +101,7 @@ public without sharing class ZuoraAccountService {
         return accountIdToZuoraIdMap;
     }
 
+    @TestVisible
     private static Map<String, String> createContact(List<Account> propertyAccounts, Map<Id, String> accountIdToZuoraIdMap) {
         ZuoraAPI.ActionItems actionItems = new ZuoraAPI.ActionItems();
         actionItems.type = 'Contact';
@@ -111,7 +112,13 @@ public without sharing class ZuoraAccountService {
             zuoraContact.AccountId = accountIdToZuoraIdMap.get(account.Id);
             zuoraContact.FirstName = account.Send_Bills_Contact__r.FirstName;
             zuoraContact.LastName = account.Send_Bills_Contact__r.LastName;
-            zuoraContact.PersonalEmail = account.Send_Bills_Contact__r.Email;
+            if (Util.getSystemPropertyCheckbox('Use_Actual_Email_For_Zuora_Upload__c')) {
+                zuoraContact.PersonalEmail = account.Send_Bills_Contact__r.Email;
+            } else if (String.isEmpty(Util.getSystemPropertyString('Zuora_Contact_Substitution_Email__c'))) {
+                zuoraContact.PersonalEmail = account.Send_Bills_Contact__r.Email + '.disabled';
+            } else {
+                zuoraContact.PersonalEmail = Util.getSystemPropertyString('Zuora_Contact_Substitution_Email__c');
+            }
         }
         HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/action/create', actionItems, false);
         // There might be multiple property accounts with the same contact - we'll create a duplicate contact
