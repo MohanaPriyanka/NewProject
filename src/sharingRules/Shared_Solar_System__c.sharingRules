@@ -27,19 +27,6 @@
         </criteriaItems>
     </sharingCriteriaRules>
     <sharingCriteriaRules>
-        <fullName>SSS_Communities</fullName>
-        <accessLevel>Read</accessLevel>
-        <label>SSS Communities</label>
-        <sharedTo>
-            <allCustomerPortalUsers></allCustomerPortalUsers>
-        </sharedTo>
-        <criteriaItems>
-            <field>Name</field>
-            <operation>notEqual</operation>
-            <value>zz</value>
-        </criteriaItems>
-    </sharingCriteriaRules>
-    <sharingCriteriaRules>
         <fullName>SSS_Limited</fullName>
         <accessLevel>Read</accessLevel>
         <label>SSS Limited</label>
