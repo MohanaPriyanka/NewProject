@@ -49,6 +49,19 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Default_CS_Partner__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>ID for the Default CS Partner 
+Sandbox: BlueWave Test Partner
+Production: BlueWave Inside Sales</inlineHelpText>
+        <label>Default CS Partner</label>
+        <length>18</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Disable_AccountBillTrigger__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
