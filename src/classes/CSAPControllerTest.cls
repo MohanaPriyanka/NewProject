@@ -41,9 +41,10 @@ public with sharing class CSAPControllerTest {
 
         Partner__c partner2 = new Partner__c(
             Name = 'Mass Renewables',
-            CS_Referral_Status__c = 'Default CS Partner',
             Email__c = 'massRenewables@test.com');
         insert partner2;
+
+        TestFactory.setDefaultCSPartner(partner2.Id);
 
         BSST__c salesRep2 = new BSST__c(
             Name = 'Dianne Martz',
@@ -489,9 +490,12 @@ public with sharing class CSAPControllerTest {
 
         Test.stopTest();
 
-        Partner__c defaultPartner = [ SELECT Id, Email__c, Default_Sales_Rep__c FROM Partner__c WHERE CS_Referral_Status__c = 'Default CS Partner' LIMIT 1];
+        //system properties should have the partner that we set up in test data
+        System_Properties__c sysProp = System_Properties__c.getAll().values()[0];
+        Partner__c defaultPartner = [ SELECT Id, Email__c, Default_Sales_Rep__c FROM Partner__c WHERE Id = :sysProp.Default_CS_Partner__c];
         BSST__c defaultSalesRep = [ SELECT Id FROM BSST__c WHERE Id = :defaultPartner.Default_Sales_Rep__c];
 
+        //Check to see if the lead was assigned to the default partner in System Properties
         System.assertEquals(defaultPartner.Id, defaultLead.Partner_Lookup__c);
         System.assertEquals(defaultSalesRep.Id, defaultLead.Bs_Sales_ID__c);
         System.assertEquals(customerContact.Id, defaultLead.Customer_Referral__c);
@@ -543,6 +547,9 @@ public with sharing class CSAPControllerTest {
             Partner__c = partner.Id,
             Email__c = 'test@test.com');
         insert salesRep;
+
+        partner.Default_Sales_Rep__c = salesRep.Id;
+        update partner;
 
         Account account = new Account(
             Name = 'Solar Installer',

@@ -278,6 +278,9 @@ private class PostSandboxRefresherTest {
         System.assertEquals(1, partners.size());
         System.assertEquals('BlueWave Test Partner', partners[0].Name);
 
+        List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
+        System.assertNotEquals(null, systemProperties[0].Default_CS_Partner__c);
+
         List<Contact> partnerContacts = [
             SELECT Id, Name
             FROM Contact
