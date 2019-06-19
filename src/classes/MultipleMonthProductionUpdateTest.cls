@@ -1,6 +1,7 @@
 @isTest
 public class MultipleMonthProductionUpdateTest {
     @testSetup public static void multipleMonthTest(){
+        Test.startTest();
         Utility__c eversource = new Utility__c(
             Name = 'Eversource',
             Number_of_Decimal_Places__c = 2
@@ -234,6 +235,7 @@ public class MultipleMonthProductionUpdateTest {
         TestBillCreationandPayment.runProductionUpdate(new List<Id>{prodUpdateFourMonths.Id});
         TestBillCreationandPayment.setBillsToPublished();
         TestBillCreationandPayment.runProductionUpdate(new List<Id>{prodUpdateTwoMonths.Id});
+        Test.stopTest();
     }
 
     @isTest public static void testBillCreation() {

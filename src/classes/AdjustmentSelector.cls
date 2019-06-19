@@ -9,8 +9,6 @@ public class AdjustmentSelector {
                 'UASB__r.Date__c, ' +
                 'UASB__r.Utility_Account_Subscription__r.Subscription_Rate_Plan_Charge__r.' +
                 'Zuora__Subscription__r.Zuora__CustomerAccount__r.Zuora__Zuora_Id__c, ' +
-                'UASB__r.Billing_Period_Start_Date__c, ' +
-                'UASB__r.Billing_Period_End_Date__c, ' +
                 'UASB__r.Shared_Solar_System__r.Utility__r.Name, ' +
                 'UASB__r.Utility_Account_Subscription__r.Utility_Account_Log__r.Name, ' +
                 'UASB__r.Shared_Solar_System__r.Name, ' +

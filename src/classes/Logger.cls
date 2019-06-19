@@ -7,6 +7,8 @@
 public with sharing class Logger {
     @TestVisible
     private static Map<String, List<Log>> logs;
+    private static Integer logMessageLength = 0;
+    private static Integer timesLogsCleared = 0;
     public static final String ERROR = 'Error';
     public static final String WARN = 'Warn';
     public static final String DEBUG = 'Debug';
@@ -37,6 +39,11 @@ public with sharing class Logger {
     }
 
     public static void logLater(String className, String methodName, String message, String severity) {
+        // Don't add additional log messages if the length is going to go over the field definition limit of 130k
+        if (logMessageLength > 0 && logMessageLength + message.length() > 130000) {
+            message = message.substringBefore('\n') + '...\n';
+        }
+        logMessageLength += message.length();
         Log l = new Log(className, methodName, message, severity);
         if (logs == null) {
             logs = new Map<String, List<Log>>();
@@ -62,6 +69,15 @@ public with sharing class Logger {
             }
             logs = null;
         }
+    }
+
+    public static void clearLogs() {
+        timesLogsCleared++;
+        for (String key : logs.keySet()) {
+            logs.put(key+timesLogsCleared, logs.get(key));
+            logs.remove(key);
+        }
+        logMessageLength = 0;
     }
 
     public static void log(String className, String methodName, String message, Datetime timestamp) {
