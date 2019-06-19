@@ -90,7 +90,7 @@ public with sharing class LeadDispatcher {
 
         if (result.updatedSwitchLeads.size()> 0 ){
             leadService.completeLeadConversion(result.updatedSwitchLeads, result.oldSwitchMap);
-            convertCasestoAccount(result.updatedSwitchLeads);
+            leadService.convertCasesToContact(result.updatedSwitchLeads);
         }
     }
 
@@ -110,21 +110,6 @@ public with sharing class LeadDispatcher {
 
     }
 
-    public void convertCasestoAccount(List<Lead> convertedLeads) {
-        List<Case> casesList = [
-            SELECT Id, Lead_Lookup__r.ConvertedAccountId, Lead_Lookup__r.ConvertedContactId, Lead_Lookup__r.IsConverted,
-                Lead_Lookup__r.Product_line__c, AccountId, ContactId
-            FROM Case
-            WHERE Lead_Lookup__r.Id IN :convertedLeads
-            AND (AccountId = NULL OR ContactId = NULL)
-        ];
 
-        for (Case caseToUpdate : casesList) {
-            if (caseToUpdate.ContactId == null)  {
-                caseToUpdate.ContactId = caseToUpdate.Lead_Lookup__r.ConvertedContactId;
-            }
-        }
-
-    }
 
 }

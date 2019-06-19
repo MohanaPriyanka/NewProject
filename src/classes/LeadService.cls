@@ -191,8 +191,32 @@ public without sharing class LeadService {
             update updateAccounts;
         }
 
+    }
+
+    public void convertCasesToContact(List<Lead> convertedLeads) {
+        List<Case> updateCases = new List<Case>();
+        List<Case> casesList = [
+            SELECT Id, Subject, Lead_Lookup__r.ConvertedAccountId, Lead_Lookup__r.ConvertedContactId, Lead_Lookup__r.IsConverted,
+                Lead_Lookup__r.Product_line__c, AccountId, ContactId
+            FROM Case
+            WHERE Lead_Lookup__r.Id IN :convertedLeads
+            AND Lead_Lookup__r.IsConverted = TRUE
+            AND (AccountId = NULL OR ContactId = NULL)
+        ];
+
+        for (Case caseToUpdate : casesList) {
+            if (caseToUpdate.ContactId == null)  {
+                caseToUpdate.ContactId = caseToUpdate.Lead_Lookup__r.ConvertedContactId;
+                updateCases.add(caseToUpdate);
+            }
+        }
+
+        if (updateCases.size() > 0 ) {
+            update updateCases;
+        }
 
     }
+
 
 
 
