@@ -70,7 +70,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             Sales_Partners__c = 'All',
             Maximum_Subscription_Assemblage__c = 25);
 
-        Shared_Solar_System__c sss2 = new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
+        Shared_Solar_System__c sss2 = new Shared_Solar_System__c(Name = 'SSS 2',
             Service_Territory__c = 'NEMA',
             Service_Territories__c = 'NEMA',
             Open__c = true,
@@ -310,12 +310,22 @@ public with sharing class SharedSolarSystemHandlerTest {
         Opportunity opportunitythree =
             new Opportunity(Name = 'Alyssa Testcase3 0000238',
                 AccountId = propAcct3.Id,
-                Shared_Solar_System__c = sss3.Id,
+                Shared_Solar_System__c = sss2.Id,
                 StageName = 'Complete',
                 Product__c = normalCSProduct.Id,
                 Product_Line__c = 'Community Solar',
                 CloseDate = System.today());
-        insert new List<Opportunity>{opportunityone, opportunitytwo, opportunitythree};
+
+        Opportunity opportunityFour =
+            new Opportunity(Name = 'Alyssa Anchor 0000238',
+                AccountId = propAcct3.Id,
+                Shared_Solar_System__c = sss2.Id,
+                StageName = 'Complete',
+                Customer_Group__c = 'Anchor',
+                Product__c = normalCSProduct.Id,
+                Product_Line__c = 'Community Solar',
+                CloseDate = System.today());
+        insert new List<Opportunity>{opportunityone, opportunitytwo, opportunitythree, opportunityFour};
 
         Utility_Account_Subscription__c uasOne =
             new Utility_Account_Subscription__c(Name = '0000234',
@@ -341,12 +351,16 @@ public with sharing class SharedSolarSystemHandlerTest {
                 Annual_kwh_subscription_future__c = 300,
                 Calculated_Annual_Cost_of_Electricity__c = 300,
                 Subscribed_Annual_Cost_of_Electricity__c = 300);
+        Utility_Account_Subscription__c uasFour =
+            new Utility_Account_Subscription__c(Name = '0000239',
+                Utility_Account_Log__c = ualog3.Id,
+                Opportunity__c = opportunityFour.Id,
+                Next_Schedule_Z_Status__c = 'Active Subscription',
+                Annual_kwh_subscription_future__c = 30000,
+                Calculated_Annual_Cost_of_Electricity__c = 30000,
+                Subscribed_Annual_Cost_of_Electricity__c = 30000);
 
-        insert new List<Utility_Account_Subscription__c>{uasOne, uasTwo, uasThree};
-        uasOne.Customer_Subscription_KW_DC_STATIC__c = 25;
-        uasTwo.Customer_Subscription_KW_DC_STATIC__c = 10;
-        uasThree.Customer_Subscription_KW_DC_STATIC__c = 10;
-        update new List<Utility_Account_Subscription__c>{uasOne, uasTwo, uasThree};
+        insert new List<Utility_Account_Subscription__c>{uasOne, uasTwo, uasThree, uasFour};
 
         Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
             Name = '18-0515 Oxford Barrett St. P1',
@@ -394,7 +408,6 @@ public with sharing class SharedSolarSystemHandlerTest {
 
         System.assertNotEquals(0, uas[0].Customer_Subscription_KW_DC__c);
         update testSSS;
-        System.debug(uas[0].Customer_subscription_kw_dc__c);
 
         System.assertEquals(uas[0].Customer_Subscription_KW_DC__c, testSSS[0].Capacity_Committed_kW_DC__c);
         System.assertNotEquals(0, testSSS[0].Capacity_Committed_kW_DC__c);
@@ -402,30 +415,52 @@ public with sharing class SharedSolarSystemHandlerTest {
     }
 
     @IsTest
-    public static void testSharedSolarSystemDoesntUpdate() {
+    public static void testMultipleUASes() {
+        Shared_Solar_System__c originalSSS = [
+            SELECT Id, Capacity_Committed_kW_DC__c, Anchor_capacity_reserved__c
+            FROM Shared_Solar_System__c
+            WHERE Name = 'SSS 2'
+            LIMIT 1
+        ];
+
+        // 2 UASes:  6.1538 , 0.2308 = 6.3846
+        // 1 Anchor: 23.0769
+        System.assertEquals(6.3846,originalSSS.Capacity_Committed_kW_DC__c);
+        System.assertEquals(23.0769,originalSSS.Anchor_capacity_reserved__c);
+
+        Utility_Account_Subscription__c selectedUAS = [
+            SELECT Utility_Account_Log__c,
+                Opportunity__c,
+                Next_Schedule_Z_Status__c,
+                Annual_kwh_subscription_future__c,
+                Calculated_Annual_Cost_of_Electricity__c,
+                Subscribed_Annual_Cost_of_Electricity__c,
+                Customer_Subscription_KW_DC__c,
+                Opportunity__r.Shared_Solar_System__c
+            FROM Utility_Account_Subscription__c
+            WHERE Name = '0000236'
+            LIMIT 1
+        ];
+
+        // Increase one subscription:
+        selectedUAS.Annual_kwh_subscription_future__c = 12000;
+        update selectedUAS;
+
         Test.startTest();
-        Shared_Solar_System__c testSSS = new Shared_Solar_System__c(
-            Service_Territory__c = 'SEMA',
-            Service_Territories__c = 'SEMA',
-            Open__c = true,
-            Reserved_Capacity_kW_DC__c = '0',
-            Capacity_Committed_kW_DC__c = 10,
-            Total_System_Size_kWh_DC__c = 0,
-            Total_System_Size_kW_AC__c = 0,
-            Credit_Score_Requirement__c = 300,
-            Assignment_Order__c = '1',
-            Expected_Yield_kWh_kW__c = 2000,
-            Assemblage_Count__c = 1,
-            Sales_Partners__c = 'All',
-            Maximum_Subscription_Assemblage__c = 25
-        );
-        insert testSSS;
-        System.assertEquals(10, testSSS.Capacity_Committed_kW_DC__c);
-
-        testSSS.Capacity_Committed_kW_DC__c += 10;
-
-        System.assertEquals(20, testSSS.Capacity_Committed_kW_DC__c);
-        System.assertNotEquals(10, testSSS.Capacity_Committed_kW_DC__c);
+        SharedSolarSystemHandler handler = new SharedSolarSystemHandler();
+        handler.updateSSS();
         Test.stopTest();
+
+        Shared_Solar_System__c sssUpdated = [
+            SELECT Id, Capacity_Committed_kW_DC__c, Anchor_capacity_reserved__c
+            FROM Shared_Solar_System__c
+            WHERE Name = 'SSS 2'
+            LIMIT 1
+        ];
+
+        // 2 UASes:  6.1538 , 0.2308 = 6.3846
+        // 1 Anchor: 23.0769
+        System.assertEquals(9.4616,sssUpdated.Capacity_Committed_kW_DC__c);
+        System.assertEquals(23.0769,sssUpdated.Anchor_capacity_reserved__c);
     }
 }
