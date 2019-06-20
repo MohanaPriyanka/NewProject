@@ -24,26 +24,45 @@ private class ReferralCodeHandlerTest {
                                           MailingPostalCode = '02052', Email = 'cole.swain@yahoo.com');
         insert newContact;
 
-        Partner__c newPartner = new Partner__c(Name = 'Partner');
+        Partner__c newPartner = new Partner__c(
+            Name = 'Partner');
         insert newPartner;
 
-        Bsst__c newBSST = new BSST__c (Name ='PartnerOne', Partner__c = newPartner.id,
-                                       Email__c = 'jpentaleri@bluewave-capital.com', Custom_Id__c = 'Partner1');
+        Bsst__c newBSST = new BSST__c (
+            Name ='PartnerOne',
+            Partner__c = newPartner.id,
+            Email__c = 'jpentaleri@bluewave-capital.com',
+            Custom_Id__c = 'Partner1');
         insert newBSST;
 
-        Partner__c newPartnerPlaceholder = new Partner__c(Name = 'Holder');
+        Partner__c newPartnerPlaceholder = new Partner__c(
+            Name = 'Holder',
+            Email__c  ='holderpartner@test.com');
         insert newPartnerPlaceholder;
 
-        Bsst__c newBSST2 = new BSST__c ( Name ='Holder', Partner__c = newPartnerPlaceholder.Id,
-                                         Email__c = 'holder@bluewave-capital.com', Custom_Id__c = 'holder');
+        TestFactory.setDefaultCSPartner(newPartnerPlaceholder.Id);
+
+        Bsst__c newBSST2 = new BSST__c (
+            Name ='Holder',
+            Partner__c = newPartnerPlaceholder.Id,
+            Email__c = 'holder@bluewave-capital.com',
+            Custom_Id__c = 'holder');
         insert newBSST2;
 
-        Bsst__c newBSST3 = new BSST__c (Name ='Cole', Partner__c = newPartner.id,
-                                        Email__c = 'cole@bluewave-capital.com', Custom_Id__c = 'cole');
+        newPartnerPlaceholder.Default_Sales_Rep__c = newBSST2.Id;
+        update newPartnerPlaceholder;
+
+        Bsst__c newBSST3 = new BSST__c (
+            Name ='Cole',
+            Partner__c = newPartner.id,
+            Email__c = 'cole@bluewave-capital.com',
+            Custom_Id__c = 'cole');
         insert newBSST3;
 
-        Load_U__c newLZU = new Load_U__c ( Name = '02052', LZ__c = 'NEMA',
-                                           Town__c= 'Medfield');
+        Load_U__c newLZU = new Load_U__c (
+            Name = '02052',
+            LZ__c = 'NEMA',
+            Town__c= 'Medfield');
         insert newLZU;
 
         ZipCode_Utility_Junction__c junction = new ZipCode_Utility_Junction__c(
@@ -52,56 +71,31 @@ private class ReferralCodeHandlerTest {
         );
         insert junction;
 
-        Lead newCommunitySolarLead = new Lead(FirstName = 'Cole1', LastName = 'Swain', Company = 'BlueWave',
-                                              Product_Line__c = 'Community Solar', Status = 'contacted',
-                                              Custom_Id__c = 'Partner1', Parcel_zip__c = '02052') ;
-        newLeadList.add(newCommunitySolarLead);
-
-        Lead newLoanLead = new Lead(FirstName = 'Cole2', LastName = 'Swain', Company = 'BlueWave',
-                                    Product_Line__c = 'Community Solar', Status = 'contacted',
-                                    Custom_Id__c = ((String) newBSST3.Id).left(15), Parcel_zip__c = '02052') ;
-        newLeadList.add(newLoanLead);
-
-        Lead newLoanLead2 = new Lead(FirstName = 'Matthew', LastName = 'Swain', Company = 'BlueWave',
-                                     Product_Line__c = 'Community Solar', Status = 'contacted',
-                                     Custom_Id__c = null, Parcel_zip__c = '02052') ;
-        newLeadList.add(newLoanLead2);
+        //Community solar lead should be assigned using partnerId from application or Default to CS partner
+        Lead csLead = new Lead(
+            FirstName = 'Cole1',
+            LastName = 'Swain',
+            Company = 'BlueWave',
+            LeadSource = 'Web',
+            Product_Line__c = 'Community Solar',
+            Status = 'New',
+            Parcel_zip__c = '02052') ;
+        newLeadList.add(csLead);
 
         Test.startTest();
 
         insert newLeadList;
 
-        List <Lead> updatedLeadList = [SELECT Id, Referral_Email__c, Partner_Email__c, FirstName, LastName
+        List <Lead> updatedLeadList = [SELECT Id, Referral_Email__c, Partner_Email__c, Partner_Lookup__c, FirstName, LastName
                                        FROM Lead];
         for (Lead leadRecord : updatedLeadList) {
             if (leadRecord.FirstName == 'Cole1') {
-                System.assertEquals('jpentaleri@bluewave-capital.com', leadRecord.Partner_email__c);
-            } else if (leadRecord.FirstName == 'Cole2') {
-                System.assertEquals('cole@bluewave-capital.com', leadRecord.Partner_email__c);
-            } else if (leadRecord.FirstName == 'Matthew') {
-                System.assertEquals('holder@bluewave-capital.com', leadRecord.Partner_email__c);
+                //CS lead should get default (holder) partner
+                System.assertNotEquals(null, leadRecord.Partner_Lookup__c);
+                System.assertEquals('holderpartner@test.com', leadRecord.Partner_Email__c);
             }
         }
 
-        newCommunitySolarLead.Custom_Id__c = 'cole';
-        updatedLeads.add(newCommunitySolarLead);
-
-        newLoanLead2.Custom_Id__c = 'Partner1';
-        updatedLeads.add(newLoanLead2);
-
-        update updatedLeads;
-
-        updatedLeadList = [SELECT Id, Referral_Email__c, Partner_Email__c, FirstName, LastName
-                           FROM Lead];
-        for (Lead leadRecord : updatedLeadList) {
-            if (leadRecord.FirstName == 'Cole1') {
-                System.assertEquals('cole@bluewave-capital.com', leadRecord.Partner_email__c);
-            } else if (leadRecord.FirstName == 'Cole2') {
-                System.assertEquals('cole@bluewave-capital.com', leadRecord.Partner_email__c);
-            } else if (leadRecord.FirstName == 'Matthew') {
-                System.assertEquals('jpentaleri@bluewave-capital.com', leadRecord.Partner_email__c);
-            }
-        }
         Test.stopTest();
     }
 }

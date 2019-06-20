@@ -39,16 +39,20 @@ public with sharing class CSLeadsRESTControllerV1Test {
 
         Partner__c partner = new Partner__c(
             Name = 'Mass Renewables',
-            CS_Referral_Status__c = 'Default CS Partner',
             Email__c = 'massRenewables@test.com');
 
         insert partner;
+
+        TestFactory.setDefaultCSPartner(partner.Id);
 
         BSST__c salesRep2 = new BSST__c(
             Name = 'Dianne Martz',
             Partner__c = partner.Id,
             Email__c = 'martz@testemail.com');
         insert salesRep2;
+
+        partner.Default_Sales_Rep__c = salesRep2.Id;
+        update partner;
 
         Contact contactRecord = new Contact(
             FirstName = 'User',
@@ -66,6 +70,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
             LASERCA__Home_City__c = 'city',
             LASERCA__Home_State__c = 'MA',
             LASERCA__Home_Zip__c = '12345',
+            LeadSource = 'Switch',
             Parcel_Zip__c = '12345',
             LoadZone__c = 'SEMA',
             Utility_relationship__c = utility.Id,
@@ -73,7 +78,8 @@ public with sharing class CSLeadsRESTControllerV1Test {
             Partner_Lookup__c = partner.Id,
             bs_Sales_ID__c = salesRep2.Id,
             Customer_Referral__c = contactRecord.Id,
-            Application_Complete_Date__c = Datetime.newInstance(2019, 5, 28, 1, 6, 8)
+            Application_Complete_Date__c = Datetime.newInstance(2019, 5, 28, 1, 6, 8),
+            Continue_Application_Link__c = 'bluewavesolar.com'
         );
 
         insert leadToPatch;
@@ -131,6 +137,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertNotEquals(null, patchResponseEnvelope.data.productName);
         System.assertNotEquals(null, patchResponseEnvelope.data.utilityName);
         System.assertNotEquals(null, patchResponseEnvelope.data.applicationCompleteDate);
+        System.assertNotEquals(null, patchResponseEnvelope.data.continueApplicationLink);
         System.assertEquals(Datetime.newInstance(2019, 5, 28, 1, 6, 8), patchResponseEnvelope.data.applicationCompleteDate);
         System.assertEquals(true, patchResponseEnvelope.errors.isEmpty());
         System.assertEquals(true, patchResponseEnvelope.messages.isEmpty());
@@ -189,7 +196,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertEquals(leadToPatch.Id, patchResponseEnvelope.data.id);
         System.assertEquals(true, patchResponseEnvelope.errors.isEmpty());
         System.assertEquals(false, patchResponseEnvelope.messages.isEmpty());
-        String message = 'Autocorreted the request to update the spelling of ' +
+        String message = 'Autocorrected the request to update the spelling of ' +
             'acknowledgment to acknowledgement, with an e.';
         System.assertEquals(message, patchResponseEnvelope.messages[0]);
 
@@ -274,16 +281,19 @@ public with sharing class CSLeadsRESTControllerV1Test {
 
         Partner__c partner = new Partner__c(
             Name = 'Mass Renewables',
-            CS_Referral_Status__c = 'Default CS Partner',
             Email__c = 'massRenewables@test.com');
-
         insert partner;
+
+        TestFactory.setDefaultCSPartner(partner.Id);
 
         BSST__c salesRep2 = new BSST__c(
             Name = 'Jon Snow',
             Partner__c = partner.Id,
             Email__c = 'snowj@testemail.com');
         insert salesRep2;
+
+        partner.Default_Sales_Rep__c = salesRep2.Id;
+        update partner;
 
         Contact contactRecord = new Contact(
             FirstName = 'Daenerys',
@@ -432,18 +442,35 @@ public with sharing class CSLeadsRESTControllerV1Test {
 
     @IsTest
     public static void testPostResiLead() {
-        Partner__c partner = new Partner__c(
-            Name = 'Bluewave Inside Sales',
-            CS_Referral_Status__c = 'Default CS Partner',
-            Email__c = 'bluewave@bluewavesolar.com');
+        Partner__c defaultPartner = new Partner__c(
+            Name = 'BlueWave Inside Sales',
+            Email__c = 'bluewave@bluewavesolar.com'
+        );
+        insert defaultPartner;
 
+        BSST__c salesRep1 = new BSST__c(
+            Name = 'Inside Sales Rep',
+            Partner__c = defaultPartner.Id,
+            Email__c = 'testRep@email.com'
+        );
+        insert salesRep1;
+
+        defaultPartner.Default_Sales_Rep__c = salesRep1.Id;
+        update defaultPartner;
+
+        Partner__c partner = new Partner__c(
+            Name = 'Mass Renewables',
+            Email__c = 'test@bluewavesolar.com');
         insert partner;
+
+        TestFactory.setDefaultCSPartner(defaultPartner.Id);
 
         BSST__c salesRep2 = new BSST__c(
             Name = 'Dianne Martz',
             Partner__c = partner.Id,
             Email__c = 'martz@testemail.com');
         insert salesRep2;
+
         partner.Default_Sales_Rep__c = salesRep2.Id;
         update partner;
 
@@ -457,6 +484,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
             '"lastName": "string", ' +
             '"email": "test@example.com", ' +
             '"mobilePhone":	"1231231234", ' +
+            '"continueApplicationLink": "bluewavesolar.com", ' +
             '"applicationType": "Residential", ' +
             '"billingStreetAddress": "string", ' +
             '"billingCity": "string", ' +
@@ -470,126 +498,6 @@ public with sharing class CSLeadsRESTControllerV1Test {
             '"partnerId": "' + partner.Id+ '",' +
             '"salesRepId": "' + salesRep2.Id+ '",' +
             '"referralCode": "' + contactRecord.Id+ '"' +
-            '}';
-
-        RestRequest req = new RestRequest();
-        req.requestURI = '/services/apexrest/v1/CSLeads';
-        req.httpMethod = 'POST';
-        req.addHeader('Content-Type', 'application/json');
-        req.requestBody = Blob.valueOf(jsonRequest);
-
-        RestContext.request = req;
-        RestContext.response = new RestResponse();
-
-        CSLeadsRESTControllerV1.postRequest();
-
-        RestResponse response = RestContext.response;
-        System.assertEquals(201, response.statusCode);
-
-        String jsonResponse = response.responseBody.toString();
-        ResponseEnvelope patchResponseEnvelope = (ResponseEnvelope) JSON.deserialize(jsonResponse, ResponseEnvelope.class);
-
-        System.assertEquals(true, patchResponseEnvelope.errors.isEmpty());
-        System.assertEquals(true, patchResponseEnvelope.messages.isEmpty());
-
-        System.assertNotEquals(null, patchResponseEnvelope.data.id);
-        System.assertEquals(false, patchResponseEnvelope.data.customerAcknowledgement);
-        System.assertEquals(null    , patchResponseEnvelope.data.customerAgreementText);
-        System.assertNotEquals(null, patchResponseEnvelope.data.firstName);
-        System.assertNotEquals(null, patchResponseEnvelope.data.lastName);
-        System.assertNotEquals(null, patchResponseEnvelope.data.email);
-        System.assertNotEquals(null, patchResponseEnvelope.data.mobilePhone);
-        System.assertNotEquals(null, patchResponseEnvelope.data.applicationType);
-        System.assertNotEquals(null, patchResponseEnvelope.data.billingStreetAddress);
-        System.assertNotEquals(null, patchResponseEnvelope.data.billingCity);
-        System.assertNotEquals(null, patchResponseEnvelope.data.billingState);
-        System.assertNotEquals(null, patchResponseEnvelope.data.billingZIPCode);
-        System.assertNotEquals(null, patchResponseEnvelope.data.serviceZIPCode);
-        System.assertNotEquals(null, patchResponseEnvelope.data.loadZone);
-        System.assertNotEquals(null, patchResponseEnvelope.data.referralCode);
-        System.assertNotEquals(null, patchResponseEnvelope.data.productName);
-        System.assertNotEquals(null, patchResponseEnvelope.data.partnerId);
-        System.assertNotEquals(null, patchResponseEnvelope.data.salesRepId);
-        System.assertNotEquals(null, patchResponseEnvelope.data.eiaId);
-        System.assertEquals('Utility with EIA ID', patchResponseEnvelope.data.utilityName);
-    }
-
-    @IsTest
-    public static void testPatchServerError() {
-        String jsonRequest = 'bogusJSONString';
-
-        RestRequest req = new RestRequest();
-        req.requestURI = '/services/apexrest/v1/CSLeads';
-        req.httpMethod = 'PATCH';
-        req.addHeader('Content-Type', 'application/json');
-        req.requestBody = Blob.valueOf(jsonRequest);
-
-        RestContext.request = req;
-        RestContext.response = new RestResponse();
-
-        CSLeadsRESTControllerV1.patchRequest();
-
-        RestResponse response = RestContext.response;
-        System.assertEquals(500, response.statuscode);
-        String jsonResponse = response.responseBody.toString();
-        ResponseEnvelope patchResponseEnvelope = (ResponseEnvelope) JSON.deserialize(jsonResponse, ResponseEnvelope.class);
-
-        System.assertEquals(null, patchResponseEnvelope.data);
-        System.assertEquals(false, patchResponseEnvelope.errors.isEmpty());
-        System.assertEquals(true, patchResponseEnvelope.messages.isEmpty());
-    }
-
-    @IsTest
-    public static void testPostNonResiLead() {
-
-        Partner__c partner = new Partner__c(
-            Name = 'Bluewave Inside Sales',
-            CS_Referral_Status__c = 'Default CS Partner',
-            Email__c = 'bluewave@bluewavesolar.com');
-
-        insert partner;
-
-        BSST__c salesRep2 = new BSST__c(
-            Name = 'Dianne Martz',
-            Partner__c = partner.Id,
-            Email__c = 'martz@testemail.com');
-        insert salesRep2;
-
-        partner.Default_Sales_Rep__c = salesRep2.Id;
-        update partner;
-
-        Contact contactRecord = new Contact(
-            FirstName = 'User',
-            LastName = 'Swain');
-        insert contactRecord;
-
-        Utility__c testEIA = new Utility__c(
-            Name = 'Test EIA',
-            EIA_ID__c = '1234'
-        );
-        insert testEIA;
-
-        String jsonRequest = '{' +
-            '"firstName": "string", ' +
-            '"lastName": "string", ' +
-            '"email": "test@example.com", ' +
-            '"mobilePhone":	"1231231234", ' +
-            '"applicationType": "Non-Residential", ' +
-            '"billingStreetAddress": "string", ' +
-            '"billingCity": "string", ' +
-            '"billingState":	"MA", ' +
-            '"billingZIPCode":	"12345", ' +
-            '"serviceZIPCode":	"12345", ' +
-            '"businessName":	"Test CO", ' +
-            '"businessTitle":	"Owner", ' +
-            '"businessPhone":	"3213124321", ' +
-            '"loadZone":	"SEMA", ' +
-            '"utilityName": "Utility", ' +
-            '"productName":	"CS Product", ' +
-            '"partnerId": "' + partner.Id+ '", ' +
-            '"salesRepId": "' + salesRep2.Id+ '", ' +
-            '"referralCode": "' + contactRecord.Id+ '",' +
-            '"eiaId":	"1234" ' +
             '}';
 
         RestRequest req = new RestRequest();
@@ -628,12 +536,140 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertNotEquals(null, patchResponseEnvelope.data.loadZone);
         System.assertNotEquals(null, patchResponseEnvelope.data.referralCode);
         System.assertNotEquals(null, patchResponseEnvelope.data.productName);
+        System.assertNotEquals(null, patchResponseEnvelope.data.partnerId);
+        System.assertNotEquals(null, patchResponseEnvelope.data.salesRepId);
+        System.assertNotEquals(null, patchResponseEnvelope.data.eiaId);
+        System.assertNotEquals(null, patchResponseEnvelope.data.continueApplicationLink);
+
+        System.assertEquals('bluewavesolar.com', patchResponseEnvelope.data.continueApplicationLink);
+        System.assertEquals('Utility with EIA ID', patchResponseEnvelope.data.utilityName);
+    }
+
+    @IsTest
+    public static void testPatchServerError() {
+        String jsonRequest = 'bogusJSONString';
+
+        RestRequest req = new RestRequest();
+        req.requestURI = '/services/apexrest/v1/CSLeads';
+        req.httpMethod = 'PATCH';
+        req.addHeader('Content-Type', 'application/json');
+        req.requestBody = Blob.valueOf(jsonRequest);
+
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+
+        CSLeadsRESTControllerV1.patchRequest();
+
+        RestResponse response = RestContext.response;
+        System.assertEquals(500, response.statuscode);
+        String jsonResponse = response.responseBody.toString();
+        ResponseEnvelope patchResponseEnvelope = (ResponseEnvelope) JSON.deserialize(jsonResponse, ResponseEnvelope.class);
+
+        System.assertEquals(null, patchResponseEnvelope.data);
+        System.assertEquals(false, patchResponseEnvelope.errors.isEmpty());
+        System.assertEquals(true, patchResponseEnvelope.messages.isEmpty());
+    }
+
+    @IsTest
+    public static void testPostNonResiLead() {
+
+        Partner__c partner = new Partner__c(
+            Name = 'Bluewave Inside Sales',
+            Email__c = 'bluewave@bluewavesolar.com');
+
+        insert partner;
+
+        TestFactory.setDefaultCSPartner(partner.Id);
+
+        BSST__c salesRep2 = new BSST__c(
+            Name = 'Dianne Martz',
+            Partner__c = partner.Id,
+            Email__c = 'martz@testemail.com');
+        insert salesRep2;
+
+        partner.Default_Sales_Rep__c = salesRep2.Id;
+        update partner;
+
+        Contact contactRecord = new Contact(
+            FirstName = 'User',
+            LastName = 'Swain');
+        insert contactRecord;
+
+        Utility__c testEIA = new Utility__c(
+            Name = 'Test EIA',
+            EIA_ID__c = '1234'
+        );
+        insert testEIA;
+
+        String jsonRequest = '{' +
+            '"firstName": "string", ' +
+            '"lastName": "string", ' +
+            '"email": "test@example.com", ' +
+            '"mobilePhone":	"1231231234", ' +
+            '"continueApplicationLink": "bluewavesolar.com", ' +
+            '"applicationType": "Non-Residential", ' +
+            '"billingStreetAddress": "string", ' +
+            '"billingCity": "string", ' +
+            '"billingState":	"MA", ' +
+            '"billingZIPCode":	"12345", ' +
+            '"serviceZIPCode":	"12345", ' +
+            '"businessName":	"Test CO", ' +
+            '"businessTitle":	"Owner", ' +
+            '"businessPhone":	"3213124321", ' +
+            '"loadZone":	"SEMA", ' +
+            '"utilityName": "Utility", ' +
+            '"productName":	"CS Product", ' +
+            '"partnerId": "' + partner.Id+ '", ' +
+            '"salesRepId": "' + salesRep2.Id+ '", ' +
+            '"referralCode": "' + contactRecord.Id+ '",' +
+            '"eiaId":	"1234" ' +
+            '}';
+
+        RestRequest req = new RestRequest();
+        req.requestURI = '/services/apexrest/v1/CSLeads';
+        req.httpMethod = 'POST';
+        req.addHeader('Content-Type', 'application/json');
+        req.requestBody = Blob.valueOf(jsonRequest);
+
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+
+        CSLeadsRESTControllerV1.postRequest();
+
+        RestResponse response = RestContext.response;
+        System.assertEquals(201, response.statuscode);
+
+        String jsonResponse = response.responseBody.toString();
+        ResponseEnvelope patchResponseEnvelope = (ResponseEnvelope) JSON.deserialize(jsonResponse, ResponseEnvelope.class);
+
+        System.assertEquals(true, patchResponseEnvelope.errors.isEmpty());
+        System.assertEquals(true, patchResponseEnvelope.messages.isEmpty());
+
+        System.assertNotEquals(null, patchResponseEnvelope.data.id);
+        System.assertEquals(false, patchResponseEnvelope.data.customerAcknowledgement);
+        System.assertEquals(null, patchResponseEnvelope.data.customerAgreementText);
+        System.assertNotEquals(null, patchResponseEnvelope.data.firstName);
+        System.assertNotEquals(null, patchResponseEnvelope.data.lastName);
+        System.assertNotEquals(null, patchResponseEnvelope.data.email);
+        System.assertNotEquals(null, patchResponseEnvelope.data.mobilePhone);
+        System.assertNotEquals(null, patchResponseEnvelope.data.applicationType);
+        System.assertNotEquals(null, patchResponseEnvelope.data.billingStreetAddress);
+        System.assertNotEquals(null, patchResponseEnvelope.data.billingCity);
+        System.assertNotEquals(null, patchResponseEnvelope.data.billingState);
+        System.assertNotEquals(null, patchResponseEnvelope.data.billingZIPCode);
+        System.assertNotEquals(null, patchResponseEnvelope.data.serviceZIPCode);
+        System.assertNotEquals(null, patchResponseEnvelope.data.loadZone);
+        System.assertNotEquals(null, patchResponseEnvelope.data.referralCode);
+        System.assertNotEquals(null, patchResponseEnvelope.data.productName);
         System.assertNotEquals(null, patchResponseEnvelope.data.businessName);
         System.assertNotEquals(null, patchResponseEnvelope.data.businessPhone);
         System.assertNotEquals(null, patchResponseEnvelope.data.businessTitle);
-        System.assertNotEquals(null, patchResponseEnvelope.data.salesRepId);
         System.assertNotEquals(null, patchResponseEnvelope.data.partnerId);
+        System.assertNotEquals(null, patchResponseEnvelope.data.salesRepId);
         System.assertNotEquals(null, patchResponseEnvelope.data.eiaId);
+        System.assertNotEquals(null, patchResponseEnvelope.data.continueApplicationLink);
+
+        System.assertEquals('bluewavesolar.com', patchResponseEnvelope.data.continueApplicationLink);
         System.assertEquals('Utility with EIA ID', patchResponseEnvelope.data.utilityName);
     }
 
@@ -702,21 +738,18 @@ public with sharing class CSLeadsRESTControllerV1Test {
     public static void testRequestLeadClass() {
         CSLeadsRESTControllerV1.RestLead lead = new CSLeadsRESTControllerV1.RestLead();
 
-        System.assert(!lead.hasAcknowledgement(), 'RequestLead is empty, validations should be false');
-        System.assert(!lead.hasZuoraPaymentInfo(), 'RequestLead is empty, validations should be false');
+        System.assert(!lead.isPatch(), 'RequestLead is empty, validations should be false');
         System.assert(!lead.hasRequiredPostFields(), 'RequestLead is empty, validations should be false');
         System.assert(!lead.hasBasicFields(), 'RequestLead is empty, validations should be false');
         System.assert(!lead.hasBusinessFieldsIfRequired(), 'RequestLead is empty, validations should be false');
         System.assert(!lead.hasValidApplicationType(), 'RequestLead is empty, validations should be false');
 
         lead.customerAcknowledgement = true;
-        System.assert(lead.hasAcknowledgement(), 'RequestLead hasAcknowledgements');
-        lead.customerAcknowledgement = false;
-        System.assert(lead.hasAcknowledgement(), 'RequestLead hasAcknowledgements');
+        System.assert(lead.isPatch(), 'RequestLead hasAcknowledgements');
 
         lead.zuoraPaymentRefId = 'zuoraId';
         lead.zuoraPaymentRefIdExpirationDate = Datetime.now();
-        System.assert(lead.hasZuoraPaymentInfo(), 'RequestLead zuora payment info');
+        System.assert(lead.isPatch(), 'RequestLead zuora payment info');
 
         lead.firstName = 'max';
         lead.lastName = 'testcase';

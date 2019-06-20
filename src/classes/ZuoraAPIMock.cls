@@ -3,7 +3,7 @@
  * Description: 
  * Test: 
  *************************************************************************************/
-
+@IsTest
 global with sharing class ZuoraAPIMock implements HttpCalloutMock {
     public static String genericId = '2c92c0f96a6e3c3f016a6fc817180743';
 
@@ -176,6 +176,8 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
                 saveResults.add(saveResult);
             }
             res.setBody(JSON.serialize(saveResults));
+        } else if (body.contains('"type":"Usage"')) {
+            return postUsage();
         } else {
             throw new Util.BWException('Unhandled action create: ' + body);
         }

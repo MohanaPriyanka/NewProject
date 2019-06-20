@@ -9612,10 +9612,158 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
     <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
     <recordTypeTrackHistory>false</recordTypeTrackHistory>
     <recordTypes>
+        <fullName>BFG_Community_Solar_Anchor</fullName>
+        <active>true</active>
+        <businessProcess>Community Solar Anchor</businessProcess>
+        <label>BFG - Community Solar (Anchor)</label>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>BWC GIS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CSAP</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Door Knocking</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Engineer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>External Referral</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Scout</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Switch</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Word of mouth</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>BW_Community_Solar_BCS</fullName>
+        <active>true</active>
+        <businessProcess>BW Community Solar</businessProcess>
+        <label>BW Community Solar (BCS)</label>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>CSAP</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Door Knocking</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>External Referral</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Switch</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Word of mouth</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
         <fullName>C_and_I</fullName>
         <active>true</active>
         <businessProcess>C and I</businessProcess>
         <label>C and I</label>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Community_Solar</fullName>
+        <active>true</active>
+        <businessProcess>Community Solar</businessProcess>
+        <description>Record Type for all CS Customers</description>
+        <label>Community Solar</label>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>BWC GIS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CSAP</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Door Knocking</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Engineer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>External Referral</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Scout</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Switch</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Word of mouth</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
     </recordTypes>
     <searchLayouts>
         <customTabListAdditionalFields>OPPORTUNITY.NAME</customTabListAdditionalFields>

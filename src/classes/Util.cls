@@ -292,4 +292,12 @@ public without sharing class Util {
         }
         return false;
     }
+
+    public static String getSystemPropertyString(String propertyName) {
+        List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
+        if (systemProperties.size() > 0) {
+            return (String) systemProperties[0].get(propertyName);
+        }
+        return '';
+    }
 }
