@@ -8305,10 +8305,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>et4ae5__AccessTokenJwtRequest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>et4ae5__AccessTokenRequest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -8481,18 +8477,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>et4ae5__Feature</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>et4ae5__FeatureBase</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>et4ae5__FeatureManager</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>et4ae5__FetchJourneyBuilderRequest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -8541,15 +8525,7 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>et4ae5__IBooleanParameter</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>et4ae5__ICalloutResult</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>et4ae5__IIntegerParameter</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -8578,14 +8554,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>et4ae5__InactiveRSSSendAPIUserEmail</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>et4ae5__InactiveTseRSSSendAPIUserEmail</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>et4ae5__InactiveUserSendApiUserEmail</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -8633,14 +8601,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>et4ae5__JWTSettingCS</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>et4ae5__JWTSettingLMA</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>et4ae5__Journey</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -8666,10 +8626,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>et4ae5__JourneyBuilderIntegrationManager</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>et4ae5__JwtUtility</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -8858,10 +8814,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>et4ae5__OAuth2TokenManagerFactory</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>et4ae5__OAuth2TokenManagerJWT</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -9061,10 +9013,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>et4ae5__TSEFlagCS</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>et4ae5__TestEmailSendRecordsHelper</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -9141,10 +9089,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>et4ae5__Test_FeatureManager</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>et4ae5__Test_FutureContext</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -9190,10 +9134,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>et4ae5__Test_JourneyBuilderIntegrationManager</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>et4ae5__Test_JwtUtility</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -9282,10 +9222,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>et4ae5__Test_OAuth2TokenManagerFactory</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>et4ae5__Test_OAuth2TokenManagerJWT</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -38913,11 +38849,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Partner__c.CS_Referral_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Partner__c.City__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -45700,11 +45631,6 @@
         <editable>false</editable>
         <field>Zuora__CrmId_Change_Result__c.Zuora__Object_Type__c</field>
         <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Zuora__CustomerAccount__c.Lifetime_Savings__c</field>
-        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
