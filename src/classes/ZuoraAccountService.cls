@@ -75,6 +75,8 @@ public without sharing class ZuoraAccountService {
             if (convertedLead.Zuora_Payment_Ref_Id_Expiration_Date__c != null &&
                 convertedLead.Zuora_Payment_Ref_Id_Expiration_Date__c.getTime() > Datetime.now().getTime()) {
                 zuoraAccount.DefaultPaymentMethodId = convertedLead.Zuora_Payment_Ref_Id__c;
+                // As of June 2019, if a lead provides a payment method, it is for autopay, so we'll set autopay to true
+                zuoraAccount.AutoPay = true;
             } else {
                 Logger.logLater(
                     'ZuoraAccountService',
@@ -150,7 +152,6 @@ public without sharing class ZuoraAccountService {
             zuoraAccount.Id = zuoraAccountId;
             zuoraAccount.BillToId = zuoraAccountIdToZuoraContactIdMap.get(zuoraAccountId);
             zuoraAccount.SoldToId = zuoraAccountIdToZuoraContactIdMap.get(zuoraAccountId);
-            zuoraAccount.AutoPay = account.Recurring_Billing__c;
             zuoraAccount.Status = 'Active';
             Zuora_Contact__c zuoraContact = new Zuora_Contact__c(
                 Contact__c = account.Send_Bills_Contact__c,
