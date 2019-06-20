@@ -50,8 +50,8 @@
     <assignments>
         <name>asgStoreContentDocuments</name>
         <label>asgStoreContentDocuments</label>
-        <locationX>606</locationX>
-        <locationY>240</locationY>
+        <locationX>672</locationX>
+        <locationY>254</locationY>
         <assignmentItems>
             <assignToReference>rcContentDocuments</assignToReference>
             <operator>Add</operator>
@@ -63,13 +63,62 @@
             <targetReference>loopContentDocuments</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>Assign_Prop_Account_ID</name>
+        <label>Assign Prop Account ID</label>
+        <locationX>68</locationX>
+        <locationY>638</locationY>
+        <assignmentItems>
+            <assignToReference>varSelectedPropertyAccount.Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>loopPropAcctId.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Property_Account_Id1</targetReference>
+        </connector>
+    </assignments>
+    <formulas>
+        <name>forProductSubscriptionType</name>
+        <dataType>String</dataType>
+        <expression>TEXT({!varLead.Product__r.Customer_Subscription_Type__c})</expression>
+    </formulas>
+    <formulas>
+        <name>forUALUsageAmount_elect</name>
+        <dataType>Number</dataType>
+        <expression>IF({!forProductSubscriptionType}=&quot;Electricity Cost ($)&quot;,{!inpUsage},NULL)</expression>
+        <scale>2</scale>
+    </formulas>
+    <formulas>
+        <description>Based on the subscription type, this will pass the appropriate amount into the correct usage field (kWh or $) when creating the UAL</description>
+        <name>forUALUsageAmount_kWh</name>
+        <dataType>Number</dataType>
+        <expression>IF({!forProductSubscriptionType}=&quot;kWh&quot;,{!inpUsage},NULL)</expression>
+        <scale>1</scale>
+    </formulas>
     <interviewLabel>Create Utility Account Logs {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Create Utility Account Logs</label>
     <loops>
+        <name>Get_Property_Account_Id1</name>
+        <label>Get Property Account Id</label>
+        <locationX>73</locationX>
+        <locationY>440</locationY>
+        <assignNextValueToReference>loopPropAcctId</assignNextValueToReference>
+        <collectionReference>rcSelectedPropertyAccount</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Assign_Prop_Account_ID</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>rcCreateUAL</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
         <name>loopContentDocuments</name>
         <label>loopContentDocuments</label>
-        <locationX>607</locationX>
-        <locationY>60</locationY>
+        <locationX>671</locationX>
+        <locationY>55</locationY>
         <assignNextValueToReference>varContentDocLink</assignNextValueToReference>
         <collectionReference>rcContentDocumentLinks</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -118,8 +167,8 @@
     <recordCreates>
         <name>rcCreateUAL</name>
         <label>rcCreateUAL</label>
-        <locationX>201</locationX>
-        <locationY>459</locationY>
+        <locationX>282</locationX>
+        <locationY>445</locationY>
         <assignRecordIdToReference>varUtilityAccountLogId</assignRecordIdToReference>
         <connector>
             <targetReference>loopSelectedContentDocs</targetReference>
@@ -133,13 +182,13 @@
         <inputAssignments>
             <field>Annual_Cost_of_Electricity__c</field>
             <value>
-                <elementReference>inpAnnual_Cost_of_Electricity</elementReference>
+                <elementReference>forUALUsageAmount_elect</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
             <field>Annual_kWh__c</field>
             <value>
-                <elementReference>inpAnnual_kWh</elementReference>
+                <elementReference>forUALUsageAmount_kWh</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -212,6 +261,7 @@
         <outputReference>varLead</outputReference>
         <queriedFields>Id</queriedFields>
         <queriedFields>Utility_relationship__c</queriedFields>
+        <queriedFields>Product__c</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>Query_Property_Accounts</name>
@@ -243,8 +293,8 @@
     <recordLookups>
         <name>rlGetContentDoc</name>
         <label>rlGetContentDoc</label>
-        <locationX>812</locationX>
-        <locationY>66</locationY>
+        <locationX>1091</locationX>
+        <locationY>112</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>asgStoreContentDocuments</targetReference>
@@ -293,7 +343,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>rcCreateUAL</targetReference>
+            <targetReference>Get_Property_Account_Id1</targetReference>
         </connector>
         <fields>
             <name>dispPropAcctSelect</name>
@@ -384,7 +434,7 @@
         </fields>
         <fields>
             <name>dispFile</name>
-            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Select one or more bills associated to this Utility Account Log:&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Select one or more bills associated to this Utility Account Log: &lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -481,26 +531,26 @@
             </outputParameters>
         </fields>
         <fields>
-            <name>inpAnnual_Cost_of_Electricity</name>
+            <name>inpUsage</name>
             <dataType>Number</dataType>
-            <fieldText>Annual Cost of Electricity</fieldText>
+            <fieldText>Please enter the customer&apos;s usage. Their subsciption is based on their annual {!forProductSubscriptionType}.</fieldText>
             <fieldType>InputField</fieldType>
-            <isRequired>false</isRequired>
-            <scale>0</scale>
-        </fields>
-        <fields>
-            <name>inpAnnual_kWh</name>
-            <dataType>Number</dataType>
-            <fieldText>Annual kWh</fieldText>
-            <fieldType>InputField</fieldType>
-            <isRequired>false</isRequired>
+            <isRequired>true</isRequired>
             <scale>0</scale>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
     <startElementReference>Get_Lead_Record</startElementReference>
-    <status>Active</status>
+    <status>Draft</status>
+    <variables>
+        <name>loopPropAcctId</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Account</objectType>
+    </variables>
     <variables>
         <name>rcContentDocumentLinks</name>
         <dataType>SObject</dataType>
