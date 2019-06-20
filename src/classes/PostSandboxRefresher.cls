@@ -289,6 +289,12 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         insert salesRepExec;
         String states = 'AK;AL;AR;AZ;CA;CO;CT;DE;FL;GA;HI;IA;ID;IL;IN;KS;KY;LA;MA;MD;ME;MI;MN;MO;MS;MT;NC;ND;NE;NH;NJ;NM;NV;NY;OH;OK;OR;PA;RI;SC;SD;TN;TX;UT;VA;VT;WA;WI;WV;WY';
 
+        partner.Default_Sales_Rep__c = salesRepExec.Id;
+        System_Properties__c sysProp = System_Properties__c.getAll().values()[0];
+        sysProp.Default_CS_Partner__c = partner.Id;
+        update partner;
+        update sysProp;
+
         Account partnerAccount = new Account(Name='BlueWave Test Partner',
             Partner__c = partner.Id,
             RecordTypeId = '0120a000000uhu2',
