@@ -271,6 +271,7 @@ public with sharing class SharedSolarSystemHandlerTest {
             Annual_kWh_Maximum__c = 100000000,
             NM_Rate_Floor__c = 0,
             Days_in_Bill_Period__c = 20,
+            Customer_Subscription_Type__c = 'kWH',
             Monthly_Late_Fee__c = 1);
 
         Product2 publicCSProduct = new Product2(  Name = 'BlueWave Public Offtake CS',
@@ -292,6 +293,7 @@ public with sharing class SharedSolarSystemHandlerTest {
                 AccountId = propAcct1.Id,
                 Shared_Solar_System__c = sss1.Id,
                 StageName = 'Complete',
+                NMC_Tariff__c = everbillNMC.Id,
                 Product__c = normalCSProduct.Id,
                 Product_Line__c = 'Community Solar',
                 CloseDate = System.today());
@@ -341,7 +343,7 @@ public with sharing class SharedSolarSystemHandlerTest {
                 Subscribed_Annual_Cost_of_Electricity__c = 300);
 
         insert new List<Utility_Account_Subscription__c>{uasOne, uasTwo, uasThree};
-        uasOne.Customer_Subscription_KW_DC_STATIC__c = 0;
+        uasOne.Customer_Subscription_KW_DC_STATIC__c = 25;
         uasTwo.Customer_Subscription_KW_DC_STATIC__c = 10;
         uasThree.Customer_Subscription_KW_DC_STATIC__c = 10;
         update new List<Utility_Account_Subscription__c>{uasOne, uasTwo, uasThree};
@@ -372,60 +374,58 @@ public with sharing class SharedSolarSystemHandlerTest {
     }
 
     @IsTest
-    public static void testSharedSolarSystemUpdateWithUAS() {
+    public static void testSharedSolarSystemUpdate() {
         Test.startTest();
-        List<Shared_Solar_System__c> testSSS = [SELECT Name, Capacity_Committed_kW_DC__c, Total_Capacity_Committed_Reserved__c
-        FROM Shared_Solar_System__c WHERE Name = 'Oxford Barrett St. P1'];
-        System.assertNotEquals(5, testSSS[0].Capacity_Committed_kW_DC__c);
-        System.assertEquals(0, testSSS[0].Capacity_Committed_kW_DC__c);
+
         List<Utility_Account_Subscription__c> uas = [SELECT Utility_Account_Log__c,
             Opportunity__c,
             Next_Schedule_Z_Status__c,
             Calculated_Annual_Cost_of_Electricity__c,
             Subscribed_Annual_Cost_of_Electricity__c,
-            Customer_Subscription_KW_DC_STATIC__c
-            FROM Utility_Account_Subscription__c
-            WHERE Customer_Subscription_KW_DC_Static__c = 0];
+            Customer_Subscription_KW_DC__c,
+            Opportunity__r.Shared_Solar_System__c
+        FROM Utility_Account_Subscription__c
+        WHERE Name = '0000234'
+        LIMIT  1];
 
-        uas[0].Customer_Subscription_KW_DC_Static__c = 5;
-        update uas;
-        System.assertEquals(5, uas[0].Customer_Subscription_KW_DC_STATIC__c);
+        List<Shared_Solar_System__c> testSSS = [SELECT Name, Capacity_Committed_kW_DC__c
+        FROM Shared_Solar_System__c
+        WHERE Id =: uas[0].Opportunity__r.Shared_Solar_System__c];
 
+        System.assertNotEquals(0, uas[0].Customer_Subscription_KW_DC__c);
         update testSSS;
-        List<Shared_Solar_System__c> updatedSSS = [SELECT Name, Capacity_Committed_kW_DC__c, Total_Capacity_Committed_Reserved__c
-        FROM Shared_Solar_System__c WHERE Name = 'Oxford Barrett St. P1'];
-        System.assertEquals(5, updatedSSS[0].Capacity_Committed_kW_DC__c);
+        System.debug(uas[0].Customer_subscription_kw_dc__c);
+
+        System.assertEquals(uas[0].Customer_Subscription_KW_DC__c, testSSS[0].Capacity_Committed_kW_DC__c);
+        System.assertNotEquals(0, testSSS[0].Capacity_Committed_kW_DC__c);
         Test.stopTest();
     }
 
     @IsTest
     public static void testSharedSolarSystemDoesntUpdate() {
-        List<Shared_Solar_System__c> testSSS = [SELECT Name, Capacity_Committed_kW_DC__c, Total_Capacity_Committed_Reserved__c
-        FROM Shared_Solar_System__c WHERE Name = 'Oxford Barrett St. P1'];
-        System.assertEquals(0, testSSS[0].Capacity_Committed_kW_DC__c);
-
-        List<Utility_Account_Subscription__c> uas = [SELECT Utility_Account_Log__c,
-            Opportunity__c,
-            Next_Schedule_Z_Status__c,
-            Calculated_Annual_Cost_of_Electricity__c,
-            Subscribed_Annual_Cost_of_Electricity__c,
-            Customer_Subscription_KW_DC_STATIC__c
-        FROM Utility_Account_Subscription__c
-        WHERE Customer_Subscription_KW_DC_Static__c = 0];
-
-        uas[0].Customer_Subscription_KW_DC_Static__c = 20;
-        update uas;
-        System.assertEquals(20, uas[0].Customer_Subscription_KW_DC_STATIC__c);
-
         Test.startTest();
-        SharedSolarSystemHandler sh1 = new SharedSolarSystemHandler();
-        String sch = '0 0 1 * * ?';
-        System.schedule('Test Shared Solar System Update', sch, sh1);
+        Shared_Solar_System__c testSSS = new Shared_Solar_System__c(
+            Service_Territory__c = 'SEMA',
+            Service_Territories__c = 'SEMA',
+            Open__c = true,
+            Reserved_Capacity_kW_DC__c = '0',
+            Capacity_Committed_kW_DC__c = 10,
+            Total_System_Size_kWh_DC__c = 0,
+            Total_System_Size_kW_AC__c = 0,
+            Credit_Score_Requirement__c = 300,
+            Assignment_Order__c = '1',
+            Expected_Yield_kWh_kW__c = 2000,
+            Assemblage_Count__c = 1,
+            Sales_Partners__c = 'All',
+            Maximum_Subscription_Assemblage__c = 25
+        );
+        insert testSSS;
+        System.assertEquals(10, testSSS.Capacity_Committed_kW_DC__c);
+
+        testSSS.Capacity_Committed_kW_DC__c += 10;
+
+        System.assertEquals(20, testSSS.Capacity_Committed_kW_DC__c);
+        System.assertNotEquals(10, testSSS.Capacity_Committed_kW_DC__c);
         Test.stopTest();
-
-        List<Shared_Solar_System__c> updatedSSS = [SELECT Name, Capacity_Committed_kW_DC__c, Total_Capacity_Committed_Reserved__c
-        FROM Shared_Solar_System__c WHERE Name = 'Oxford Barrett St. P1'];
-        System.assertEquals(20, updatedSSS[0].Capacity_Committed_kW_DC__c);
-
     }
 }
