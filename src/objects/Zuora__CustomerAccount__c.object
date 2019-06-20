@@ -1090,7 +1090,7 @@ IF(  ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__CreditCardType__c, &quot;
         <filterScope>Everything</filterScope>
         <label>My Community Solar Accounts</label>
         <sharedTo>
-            <group>All_Customer_Portal_Users_Private</group>
+            <allCustomerPortalUsers></allCustomerPortalUsers>
         </sharedTo>
     </listViews>
     <listViews>
