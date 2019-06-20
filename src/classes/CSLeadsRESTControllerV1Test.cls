@@ -1,7 +1,7 @@
 /**
  * Created by mstackhouse on 3/6/2019.
- * Description:
- * Test:
+ * Description: 
+ * Test: 
  */
 
 @IsTest
@@ -143,7 +143,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
         ];
         System.assertEquals(true, patchedLead.Privacy_Policy_Acknowledged__c, 'privacy policy should be acknowledged');
     }
-
+    
     @IsTest // apparently you can spell it either acknowledgement or acknowledgment...
     public static void testPatchAcknowledgmentSpelledWithoutAnE() {
         Lead leadToPatch = new Lead(
@@ -163,11 +163,11 @@ public with sharing class CSLeadsRESTControllerV1Test {
 
         System.assertEquals(false, insertedLead.Privacy_Policy_Acknowledged__c, 'privacy policy should default to false');
 
-        String jsonRequest = '{' +
-            '"id":"' + leadToPatch.Id + '",' +
-            '"customerAcknowledgment":true,' +
-            '"customerAgreementText":"I Agree"' +
-            '}';
+            String jsonRequest = '{' +
+                '"id":"' + leadToPatch.Id + '",' +
+                '"customerAcknowledgment":true,' +
+                '"customerAgreementText":"I Agree"' +
+                '}';
 
         RestRequest req = new RestRequest();
         req.requestURI = '/services/apexrest/v1/CSLeads';
