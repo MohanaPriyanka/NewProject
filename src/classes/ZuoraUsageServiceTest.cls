@@ -105,6 +105,8 @@ public class ZuoraUsageServiceTest {
 
     @IsTest
     private static void testAPICallWithMock() {
+        // disableTrigger just sets a system property checkbox to true
+        Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
         Test.startTest();
         finishTestSetup();
         ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend();
@@ -112,28 +114,20 @@ public class ZuoraUsageServiceTest {
         Test.stopTest();
 
         // API Mock returns 14 rows, 3 errors, 11 successes:
+        System.assertEquals(true, Util.getSystemPropertyCheckbox('Update_Usage_Records_With_ZuoraId__c'));
         List<UASB__c> uasbList = [
             SELECT Id, Name, Zuora_Id__c
             FROM UASB__c
-            WHERE Zuora_Id__c != null
+            WHERE Zuora_Id__c != NULL
         ];
         System.assertEquals(10, uasbList.size());
 
         List<Bill_Adjustment__c> adjustList = [
             SELECT Id, Name, Zuora_Id__c
             FROM Bill_Adjustment__c
-            WHERE Zuora_Id__c != null
+            WHERE Zuora_Id__c != NULL
         ];
         System.assertEquals(1, adjustList.size());
-
-        List<Error_Log__c> calloutMessages = [
-            SELECT Id, Message__c
-            FROM Error_Log__c
-            WHERE Class__c = 'ZuoraAPIHelper'
-        ];
-        // Two messages, one for the getOrderBySubscriptionOwner, and the other for usage upload
-        System.assertEquals(2, calloutMessages.size());
-        System.assert(calloutMessages[1].Message__c.contains('"AccountId":"CID'));
 
         List<Error_Log__c> errors = [
             SELECT Id, Message__c
@@ -148,5 +142,33 @@ public class ZuoraUsageServiceTest {
         System.assert(errors[0].Message__c.contains(failedUASB[0].Id));
         System.assert(errors[0].Message__c.contains(failedUASB[1].Id));
         System.assert(errors[0].Message__c.contains(failedAdjust[0].Id));
+    }
+
+    @IsTest
+    private static void testCallWithoutUpdatingUASBs() {
+        Test.startTest();
+        finishTestSetup();
+        ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend();
+        zSend.executeBatch();
+        Test.stopTest();
+
+        // This should be unchecked by default
+        System.assertEquals(false, Util.getSystemPropertyCheckbox('Update_Usage_Records_With_ZuoraId__c'));
+
+        // API Mock returns 14 rows, 3 errors, 11 successes, but since we're not updating usage records, uasbs and
+        // bill adjustments shouldn't be updated
+        List<UASB__c> uasbList = [
+            SELECT Id, Name, Zuora_Id__c
+            FROM UASB__c
+            WHERE Zuora_Id__c != NULL
+        ];
+        System.assertEquals(0, uasbList.size());
+
+        List<Bill_Adjustment__c> adjustList = [
+            SELECT Id, Name, Zuora_Id__c
+            FROM Bill_Adjustment__c
+            WHERE Zuora_Id__c != NULL
+        ];
+        System.assertEquals(0, adjustList.size());
     }
 }
