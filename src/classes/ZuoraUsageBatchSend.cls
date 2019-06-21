@@ -34,11 +34,13 @@ public without sharing class ZuoraUsageBatchSend implements Database.Batchable<s
     }
 
     public void finish(Database.BatchableContext bc){
-        if (uasbToUpdate.size() > 0){
-            update uasbToUpdate;
-        }
-        if (adjustToUpdate.size() > 0){
-            update adjustToUpdate;
+        if (Util.getSystemPropertyCheckbox('Update_Usage_Records_With_ZuoraId__c')) {
+            if (uasbToUpdate.size() > 0){
+                update uasbToUpdate;
+            }
+            if (adjustToUpdate.size() > 0){
+                update adjustToUpdate;
+            }
         }
     }
 }
