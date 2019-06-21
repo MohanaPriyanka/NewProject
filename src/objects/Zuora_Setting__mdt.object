@@ -51,15 +51,6 @@
         <label>Is Sandbox</label>
         <type>Checkbox</type>
     </fields>
-    <fields>
-        <fullName>Update_Usage_Records_With_ZuoraId__c</fullName>
-        <defaultValue>false</defaultValue>
-        <description>If checked, UASB and Bill Adjustment fields &quot;Zuora Id&quot; will be updated when usage is uploaded to Zuora</description>
-        <externalId>false</externalId>
-        <fieldManageability>SubscriberControlled</fieldManageability>
-        <label>Update_Usage_Records_With_ZuoraId</label>
-        <type>Checkbox</type>
-    </fields>
     <label>Zuora Setting</label>
     <pluralLabel>Zuora Settings</pluralLabel>
     <visibility>Public</visibility>
