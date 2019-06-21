@@ -3,7 +3,7 @@
  * Description: 
  * Test: 
  *************************************************************************************/
-
+@IsTest
 global with sharing class ZuoraAPIMock implements HttpCalloutMock {
     public static String genericId = '2c92c0f96a6e3c3f016a6fc817180743';
 
@@ -191,6 +191,8 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
                 saveResults.add(saveResult);
             }
             res.setBody(JSON.serialize(saveResults));
+        } else if (body.contains('"type":"Usage"')) {
+            return postUsage();
         } else {
             throw new Util.BWException('Unhandled action create: ' + body);
         }
@@ -326,7 +328,7 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
             '"amount" : 100.000000000, ' +
             '"taxAmount" : 0E-9, ' +
             '"totalTaxExemptAmount" : 0E-9, ' +
-            '"unappliedAmount" : 0E-9, ' +
+            '"unappliedAmount" : 120000.00, ' +
             '"refundAmount" : 0E-9, ' +
             '"appliedAmount" : 100.000000000,' +
             '"comment" : "", ' +
@@ -340,8 +342,8 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
             '"updatedById" : "2c92c0f868e558450168f41d281b26c0", ' +
             '"cancelledOn" : null, "cancelledById" : null, ' +
             '"latestPDFFileId" : "2c92c08c6b26b1c0016b41aa41697c15", ' +
-            '"Project__c" : null, ' +
-            '"ClientOwner__c" : null, ' +
+            '"Project__c" : "SSS-000098", ' +
+            '"ClientOwner__c" : "BW-00000385", ' +
             '"transferredToAccounting" : "No", ' +
             '"excludeFromAutoApplyRules" : false, ' +
             '"autoApplyUponPosting" : true }, ' +
@@ -355,7 +357,7 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
             '"postedOn" : "2019-06-03 14:23:29", ' +
             '"status" : "Posted", "amount" : 100.000000000, ' +
             '"taxAmount" : 0E-9, "totalTaxExemptAmount" : 0E-9, ' +
-            '"unappliedAmount" : 0E-9, "refundAmount" : 0E-9, ' +
+            '"unappliedAmount" : 120000.00, "refundAmount" : 0E-9, ' +
             '"appliedAmount" : 100.000000000, "comment" : "", ' +
             '"source" : "AdhocFromInvoice", "sourceId" : null,' +
             ' "referredInvoiceId" : "2c92c0956b1bcd0e016b1e93a1c153be", ' +
@@ -367,8 +369,8 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
             '"cancelledOn" : null, ' +
             '"cancelledById" : null, ' +
             '"latestPDFFileId" : "2c92c08d6b1bd06b016b1e9525483791",' +
-            ' "Project__c" : null, ' +
-            '"ClientOwner__c" : null, ' +
+            ' "Project__c" : "SSS-000098", ' +
+            '"ClientOwner__c" : "BW-00000385", ' +
             '"transferredToAccounting" : "No", ' +
             '"excludeFromAutoApplyRules" : false, ' +
             '"autoApplyUponPosting" : true } ] }');
@@ -382,7 +384,7 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
             '"amountWithoutTax" : 12.000000000, ' +
             '"appliedAmount" : 0E-9, ' +
             '"refundAmount" : 0E-9, ' +
-            '"unappliedAmount" : 12.000000000, ' +
+            '"unappliedAmount" : 120000.00, ' +
             '"comment" : "", ' +
             '"sku" : "SKU-00000002", ' +
             '"skuName" : "Utility Credit", ' +
