@@ -38,7 +38,7 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
 
         List <Utility_Account_Subscription__c> relatedUAS = [ SELECT Id, Opportunity_Stage__c, Customer_Group__c,
                                                                 Opportunity__c, Next_Schedule_Z_Status__c, SSS_Id__c,
-                                                                Customer_Subscription_KW_DC__c, Customer_Subscription_KW_DC_STATIC__c
+                                                                Customer_Subscription_KW_DC__c
                                                                 FROM Utility_Account_Subscription__c
                                                                 WHERE SSS_Id__c IN :sssIdList
         ];
@@ -75,7 +75,7 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
             if (reservedCapacityList.size() > 0){
                 for (Utility_Account_Subscription__c res: reservedCapacityList){
                     if (res.SSS_Id__c == sssSummary.Id
-                        && res.Customer_Subscription_KW_DC__c != null){
+                        && res.Customer_Subscription_KW_DC__c  != null){
                             summarizedReservedCapacity = res.Customer_Subscription_KW_DC__c + summarizedReservedCapacity;
                             System.debug(summarizedReservedCapacity);
                     }
@@ -84,18 +84,18 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
             if (committedCapacityList.size() > 0){
                 for (Utility_Account_Subscription__c comm: committedCapacityList){
                     if (comm.SSS_Id__c == sssSummary.Id
-                        && comm.Customer_Subscription_KW_DC_STATIC__c != null){
+                        && comm.Customer_Subscription_KW_DC__c != null){
                             System.debug('Committed Capacity List Size - ' + committedCapacityList.size());
-                            System.debug('Committed Capacity - ' + comm.Customer_Subscription_KW_DC_STATIC__c );
-                            summarizedCommittedCapacity = comm.Customer_Subscription_KW_DC_STATIC__c + summarizedCommittedCapacity;
+                            System.debug('Committed Capacity - ' + comm.Customer_Subscription_KW_DC__c );
+                            summarizedCommittedCapacity = comm.Customer_Subscription_KW_DC__c + summarizedCommittedCapacity;
                     }
                 }
             }
            if (anchorCapacityList.size() > 0) {
                 for (Utility_Account_Subscription__c anchor : anchorCapacityList){
                     if (anchor.SSS_Id__c == sssSummary.Id
-                        && anchor.Customer_Subscription_KW_DC_STATIC__c != null){
-                        summarizedAnchorCapacity = anchor.Customer_Subscription_KW_DC_STATIC__c + summarizedAnchorCapacity;
+                        && anchor.Customer_Subscription_KW_DC__c != null){
+                        summarizedAnchorCapacity = anchor.Customer_Subscription_KW_DC__c + summarizedAnchorCapacity;
                     }
                 }
             }
