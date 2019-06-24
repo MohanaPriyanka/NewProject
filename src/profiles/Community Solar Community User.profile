@@ -44248,11 +44248,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Zuora_Setting__mdt.Update_Usage_Records_With_ZuoraId__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Zuora__CreditMemoItem__c.Zuora__AmountWithoutTax__c</field>
         <readable>false</readable>
     </fieldPermissions>
