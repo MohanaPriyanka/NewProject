@@ -83456,10 +83456,6 @@
     </userPermissions>
     <userPermissions>
         <enabled>false</enabled>
-        <name>SalesAnalyticsUser</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
         <name>CreateAuditFields</name>
     </userPermissions>
     <userPermissions>
