@@ -60,12 +60,12 @@ public without sharing class CSAPController {
 
         //Get the latest Credit Report Log completed for the Lead and get the PCR's Credit Score
         List<LASERCA__Credit_Report_Log__c> crList = [
-                SELECT LASERCA__Personal_Credit_Report__r.LASERCA__Credit_Score__c
-                FROM LASERCA__Credit_Report_Log__c
-                WHERE LASERCA__Lead__c = :leadId
-                AND (LASERCA__Status__c = 'Completed' OR LASERCA__Status__c = 'Error')
-                ORDER BY CreatedDate DESC
-                LIMIT 1
+            SELECT LASERCA__Personal_Credit_Report__r.LASERCA__Credit_Score__c
+            FROM LASERCA__Credit_Report_Log__c
+            WHERE LASERCA__Lead__c = :leadId
+            AND (LASERCA__Status__c = 'Completed' OR LASERCA__Status__c = 'Error')
+            ORDER BY CreatedDate DESC
+            LIMIT 1
         ];
 
         Lead lead = [SELECT Id, Personal_Credit_Report__c FROM Lead WHERE Id = :leadId];
@@ -76,22 +76,21 @@ public without sharing class CSAPController {
             }
 
             LASERCA__Personal_Credit_Report__c pcr = [
-                    SELECT LASERCA__Credit_Score__c, LASERCA__Credit_Score_TransUnion__c
-                    FROM LASERCA__Personal_Credit_Report__c
-                    WHERE Id = :crList[0].LASERCA__Personal_Credit_Report__c
+                SELECT LASERCA__Credit_Score__c, LASERCA__Credit_Score_TransUnion__c
+                FROM LASERCA__Personal_Credit_Report__c
+                WHERE Id = :crList[0].LASERCA__Personal_Credit_Report__c
             ];
 
             if (pcr.LASERCA__Credit_Score__c != null) {
                 creditScore = Decimal.valueOf(pcr.LASERCA__Credit_Score__c);
             } else {
-                //No credit score returned
-                pcr.LASERCA__Credit_Score_TransUnion__c = '9999';
+                //No PCR returned
+                pcr.LASERCA__Credit_Score_TransUnion__c ='9999';
                 pcr.LASERCA__Credit_Score__c = '9999';
-                lead.Personal_Credit_Report__c = pcr.Id;
                 creditScore = 9999;
                 update pcr;
-                update lead;
             }
+
             result = checkCreditReport(leadId, creditScore);
         }
         return result;
@@ -104,11 +103,11 @@ public without sharing class CSAPController {
         result.sssCreditQualification = 'Ready for Credit Check';
 
         List<LASERCA__Personal_Credit_Report__c> pcrList = [
-                SELECT LASERCA__Credit_Score__c
-                FROM LASERCA__Personal_Credit_Report__c
-                WHERE LASERCA__Lead__r.Parent_Account__c = :secondLead.Parent_Account__c
-                ORDER BY CreatedDate DESC
-                LIMIT 1
+            SELECT LASERCA__Credit_Score__c
+            FROM LASERCA__Personal_Credit_Report__c
+            WHERE LASERCA__Lead__r.Parent_Account__c = : secondLead.Parent_Account__c
+            ORDER BY CreatedDate DESC
+            LIMIT 1
         ];
 
         if (pcrList.size() > 0) {
@@ -128,36 +127,36 @@ public without sharing class CSAPController {
         SSSResult sssResult = new SSSResult();
         sssResult.sssCreditQualification = 'Ready for Credit Check';
 
-        Lead lead = [SELECT Id, Status, Partner_Name__c, Application_Source_Phase_2__c, LoadZone__c, Utility_relationship__c FROM Lead WHERE Id = :leadId];
-        String sssQuery = 'SELECT Id, Credit_Score_Requirement__c, Product__r.Id, Product__r.Name , Product__c, Product__r.Program__c ';
-        sssQuery += 'FROM Shared_Solar_System__c ';
-        sssQuery += 'WHERE Open__c = true ';
-        sssQuery += 'AND Capacity_Available_to_be_Reserved__c > 0 ';
-        sssQuery += 'AND Utility__c IN (\'' + lead.Utility_relationship__c + '\') ';
-        sssQuery += 'AND Service_Territories__c INCLUDES(\'' + lead.LoadZone__c + '\') ';
+            Lead lead = [SELECT Id, Status, Partner_Name__c, Application_Source_Phase_2__c, LoadZone__c, Utility_relationship__c FROM Lead WHERE Id = :leadId];
+            String sssQuery = 'SELECT Id, Credit_Score_Requirement__c, Product__r.Id, Product__r.Name , Product__c, Product__r.Program__c ';
+            sssQuery +=       'FROM Shared_Solar_System__c ';
+            sssQuery +=       'WHERE Open__c = true ';
+            sssQuery +=       'AND Capacity_Available_to_be_Reserved__c > 0 ';
+            sssQuery +=       'AND Utility__c IN (\'' + lead.Utility_relationship__c + '\') ';
+            sssQuery +=       'AND Service_Territories__c INCLUDES(\'' + lead.LoadZone__c + '\') ';
 
-        if (lead.Partner_Name__c != null) {
-            sssQuery += 'AND Sales_Partners__c INCLUDES( \'' + 'All' + '\', \'' + lead.Partner_Name__c + '\' ) ';
-        } else {
-            sssQuery += 'AND Public__c = true ';
-        }
-        sssQuery += 'ORDER BY Credit_Score_Requirement__c ASC ';
-        List<Shared_Solar_System__c> sssList = Database.query(sssQuery);
-
-        Map<String, Product2> productProgramMap = new Map<String, Product2>();
-        String passedCredit = 'Unqualified';
-
-        for (Shared_Solar_System__c sss : sssList) {
-            if (creditScore >= sss.Credit_Score_Requirement__c) {
-                Product2 sssProduct = new Product2();
-                sssProduct.Id = sss.Product__c;
-                sssProduct.Program__c = sss.Product__r.Program__c;
-                productProgramMap.put(sss.Product__r.Program__c, sssProduct);
-                passedCredit = 'Qualified';
+            if (lead.Partner_Name__c != null){
+                sssQuery +=       'AND Sales_Partners__c INCLUDES( \'' + 'All' + '\', \'' + lead.Partner_Name__c + '\' ) ';
+            } else {
+                sssQuery +=       'AND Public__c = true ';
             }
-        }
-        sssResult.sssCreditQualification = passedCredit;
-        sssResult.productList = productProgramMap.values();
+            sssQuery += 'ORDER BY Credit_Score_Requirement__c ASC ';
+            List<Shared_Solar_System__c> sssList = Database.query(sssQuery);
+
+            Map<String, Product2> productProgramMap = new Map<String, Product2>();
+            String passedCredit = 'Unqualified';
+
+            for (Shared_Solar_System__c sss : sssList) {
+                if (creditScore >= sss.Credit_Score_Requirement__c) {
+                    Product2 sssProduct = new Product2();
+                    sssProduct.Id = sss.Product__c;
+                    sssProduct.Program__c = sss.Product__r.Program__c;
+                    productProgramMap.put(sss.Product__r.Program__c, sssProduct);
+                    passedCredit = 'Qualified';
+                }
+            }
+            sssResult.sssCreditQualification = passedCredit;
+            sssResult.productList = productProgramMap.values();
 
         return sssResult;
     }
@@ -200,7 +199,14 @@ public without sharing class CSAPController {
     @AuraEnabled
     public static Boolean checkApplicationPartner(String partnerId) {
         Boolean partnerApp;
-        Partner__c customerPartner = MyAccountController.getPartner(partnerId);
+        Partner__c customerPartner = new Partner__c();
+
+        try {
+            customerPartner = PartnerSelector.selectPartnerByPartnerId(partnerId);
+        } catch (Exception e) {
+            customerPartner = PartnerSelector.selectDefaultCSPartner();
+        }
+
         //Set boolean based on BIS (and BlueWave Test Partner?) or Partner to determine application process
         if (customerPartner.Name == 'CS Self-Originations' || customerPartner.Name == 'BlueWave Test Partner') {
             partnerApp = false;
@@ -212,8 +218,7 @@ public without sharing class CSAPController {
 
     @AuraEnabled
     public static String getCSApplicationURL() {
-        //Should return the Default CS Partner Id - CS Self-Originations
-        String partnerId = MyAccountController.getPartner(null).Id;
+        String partnerId = PartnerSelector.selectDefaultCSPartner().Id;
 
         Domain dom = [SELECT Domain, DomainType FROM Domain];
 
@@ -223,8 +228,18 @@ public without sharing class CSAPController {
     }
 
     @AuraEnabled
-    public static Lead upsertCSAPRecords(Lead lead, String partnerId, String salesRepId, String referralCode) {
-        Partner__c customerPartner = MyAccountController.getPartner(partnerId);
+    public static Lead upsertCSAPRecords(Lead lead, String partnerId, String salesRepId, String referralCode){
+        Partner__c customerPartner = new Partner__c();
+
+        try {
+            customerPartner = PartnerSelector.selectPartnerByPartnerId(partnerId);
+        } catch (Exception e) {
+            customerPartner = PartnerSelector.selectDefaultCSPartner();
+            if (partnerId != null) {
+                Logger.logNow('CSAPController', 'upsertCSAPRecords', 'Partner not found with Id ' + partnerId + ' for Lead: ' + lead.Id);
+            }
+        }
+
 
         if (lead.Parent_Account__c == null) {
             lead = setupParentAccount(lead, customerPartner);
@@ -250,14 +265,6 @@ public without sharing class CSAPController {
 
 
         upsert lead;
-
-        //Added to manually share the Lead Record to the Apply Guest User
-//        LeadShare leadShare = new LeadShare();
-//        leadShare.LeadId = lead.Id;
-//        leadShare.UserOrGroupId = UserInfo.getUserId();
-//        leadShare.LeadAccessLevel = 'Read';
-//        insert leadShare;
-
         Lead insertedLead = [
                 SELECT LoadZone__c, Utility_relationship__c, Confirm_Utility__c
                 FROM Lead
@@ -286,15 +293,15 @@ public without sharing class CSAPController {
             return false;
         }
         String sssQuery = 'SELECT Id, Product__r.Name  ';
-        sssQuery += 'FROM Shared_Solar_System__c ';
-        sssQuery += 'WHERE Open__c = true ';
-        sssQuery += 'AND Capacity_Available_to_be_Reserved__c > 0 ';
-        sssQuery += 'AND Utility__c = \'' + lead.Utility_relationship__c + '\' ';
-        sssQuery += 'AND Service_Territories__c INCLUDES(\'' + lead.LoadZone__c + '\') ';
-        if (lead.Partner_Name__c != null) {
-            sssQuery += 'AND Sales_Partners__c INCLUDES( \'' + 'All' + '\', \'' + lead.Partner_Name__c + '\' ) ';
+        sssQuery +=       'FROM Shared_Solar_System__c ';
+        sssQuery +=       'WHERE Open__c = true ';
+        sssQuery +=       'AND Capacity_Available_to_be_Reserved__c > 0 ';
+        sssQuery +=       'AND Utility__c = \'' + lead.Utility_relationship__c + '\' ';
+        sssQuery +=       'AND Service_Territories__c INCLUDES(\'' + lead.LoadZone__c + '\') ';
+        if (lead.Partner_Name__c != null){
+            sssQuery +=       'AND Sales_Partners__c INCLUDES( \'' + 'All' + '\', \'' + lead.Partner_Name__c + '\' ) ';
         } else {
-            sssQuery += 'AND Public__c = true ';
+            sssQuery +=       'AND Public__c = true ';
         }
         if (lead.System_Assignment__c == 'Automatic - COD Date/Available Capacity' || lead.System_Assignment__c == null) {
             sssQuery += 'ORDER BY Estimated_COD_Date_QC__c ASC, Project_Capacity_Available_kW_DC__c ASC';
@@ -561,9 +568,7 @@ public without sharing class CSAPController {
         update lead;
 
 
-        EmailService.createCSCustomerRequestPaymentInfoEmails(new List<Lead>{
-                lead
-        });
+        EmailService.createCSCustomerRequestPaymentInfoEmails(new List<Lead>{lead});
         Messaging.SendEmailResult[] result = EmailService.sendMessages();
 
         if (!result.isEmpty() && result[0].isSuccess()) {
@@ -588,7 +593,7 @@ public without sharing class CSAPController {
         Opportunity opportunity = OpportunitiesSelector.selectForContractSend(opp.Id);
 
         DocuSignAPI.RequestRecipientTokenAuthenticationAssertion assertion =
-                new DocuSignAPI.RequestRecipientTokenAuthenticationAssertion();
+            new DocuSignAPI.RequestRecipientTokenAuthenticationAssertion();
         assertion.AssertionID = '1';
         assertion.AuthenticationInstant = Datetime.now();
         assertion.AuthenticationMethod = 'Email';

@@ -36,25 +36,14 @@
             }
             for(var i = 0; i < ualList.length; i++) {
                 var ualItem = ualList[i];
-                if(ualItem.Annual_kWh__c == null && defaultAnnualkWh != null){
+                if (ualItem.Annual_kWh__c == null && defaultAnnualkWh != null) {
                     ualItem.Annual_kWh__c = defaultAnnualkWh;
-                    console.log("Processing Annual_kWh__c to " + defaultAnnualkWh);
-                    console.log(JSON.stringify(ualItem));
                 }
-                if(ualItem.Annual_Cost_of_Electricity__c == null && defaultAnnualCostofElectricity != null){
+                if (ualItem.Annual_Cost_of_Electricity__c == null && defaultAnnualCostofElectricity != null) {
                     ualItem.Annual_Cost_of_Electricity__c = defaultAnnualCostofElectricity;
-                    console.log("Processing Annual_Cost_of_Electricity__c to " + defaultAnnualCostofElectricity);
-                    console.log(JSON.stringify(ualItem));
                 }
+                component.set("v.ualList", ualList);
             }
-            component.set("v.ualList", ualList);
-
-
-//            console.log('DEBUGGIN in helper');
-//            for(var i = 0; i < ualList.length; i++) {
-//                var ualItem = ualList[i];
-//                console.log(JSON.stringify(ualItem));
-//            }
         }
     }
 })

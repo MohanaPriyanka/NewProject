@@ -14,20 +14,11 @@
             var ual = component.get("v.ual");
             var productId = lead.Product__c;
 
-//            ual.Same_Address__c = false;
-
-//            var ualList = component.get("v.ualList");
-//            ualList.push(ual);
-//            component.set("v.ual", ual);
-//            component.set("v.ualList", ualList);
-
             action.setParams({"productId" : productId});
             action.setCallback(this, function(resp) {
                 if (resp.getState() === "SUCCESS") {
                     component.set("v.selectedProduct", resp.getReturnValue());
                     helper.addUAL(component, event, helper);
-//                    helper.setDefaultUsageAmounts(component, event, helper);
-//                    helper.setDefaultUsageAmounts(component, event, helper);
                     component.set("v.loading", false);
                     component.set("v.loadingText", "");
                 } else {
@@ -101,11 +92,6 @@
                 }
                 var utility = component.get('v.utility');
                 ualItem.Utility__c = utility.Id;
-//                Disable hardcoded code
-//                ualItem.Annual_kWh__c = 8000;
-//                if (partnerApp) {
-//                    ualItem.Annual_kWh__c = 8000;
-//                }
                 if (ualItem.Same_Address__c){
                     ualItem.Service_Address__c = lead.LASERCA__Home_Address__c;
                     ualItem.Service_City__c = lead.LASERCA__Home_City__c;
@@ -113,7 +99,6 @@
                     ualItem.Service_Zip_Code__c = lead.Parcel_Zip__c;
                 }
             }
-            //Upsert the list
 
             var saveUALList = component.get("c.saveUtilityAccountLogList");
             saveUALList.setParams({'ualList' : ualList});
@@ -143,9 +128,8 @@
                         $A.enqueueAction(action);
                     }
 
-                }
-                else if (resp.getState() !== 'SUCCESS') {
-                    helper.logError("CSAPEnergyInfoController", "goToAddMore", resp.getError(), lead);
+                } else if (resp.getState() !== 'SUCCESS') {
+                    helper.logError("CSAPEnergyInfoController", "saveUtilityAccountLogList", resp.getError(), lead);
                 }
             });
 
@@ -156,29 +140,6 @@
                 component.set("v.loadingText", "Saving utility account information...");
                 $A.enqueueAction(saveUALList);
             }
-
-
-//            if (partnerApp){
-//                component.set("v.page", "UtilityAccountUpload");
-////                helper.finishStage(component, event, helper);
-//
-//            } else {
-//                var action = component.get('c.sendEmailForPaymentInfo');
-//                action.setParams({
-//                    "lead": lead
-//                });
-//                action.setCallback(this, function(resp) {
-//                    if (resp.getState() === "SUCCESS") {
-//                        component.set("v.loading", false);
-//                        component.set('v.page', 'CompletedUtilityInfo');
-//                    } else {
-//                        helper.logError("CSAPEnergyInfoController", "finishStage",
-//                            "There was an issue saving this information. We have recorded this error and will review it.",
-//                            resp.getError());
-//                    }
-//                })
-//                $A.enqueueAction(action);
-//            }
         }
     },
     finishStage :  function(component, event, helper) {
