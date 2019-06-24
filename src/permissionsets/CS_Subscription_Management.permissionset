@@ -241,6 +241,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility_Account_Log__c.Date_Utility_Account_Cancelled__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Log__c.Estimated_LIfetime_Savings__c</field>
         <readable>true</readable>
