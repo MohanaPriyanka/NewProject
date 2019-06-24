@@ -77345,10 +77345,6 @@
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>Zuora__CustomerAccount__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>Zuora__Schema_Setup</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
