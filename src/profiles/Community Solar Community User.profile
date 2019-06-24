@@ -601,10 +601,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>BlogComponentController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>BlogComponentControllerTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
