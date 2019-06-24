@@ -401,6 +401,17 @@ IF(
         </valueSet>
     </fields>
     <fields>
+        <fullName>Submitted_Utilization__c</fullName>
+        <description>Roll up summary of the % field on schedule z subscriptions.</description>
+        <externalId>false</externalId>
+        <label>Submitted Utilization</label>
+        <summarizedField>Schedule_Z_Subscription__c.Percent_Share__c</summarizedField>
+        <summaryForeignKey>Schedule_Z_Subscription__c.Schedule_Z__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
         <fullName>Utility__c</fullName>
         <externalId>false</externalId>
         <formula>Shared_Solar_System__r.System_Utility__c</formula>
