@@ -44,8 +44,14 @@
         </lightning:layout>
       </aura:if>
 
+      <lightning:layout multipleRows="true">
+        <lightning:layoutItem size="12" mediumDeviceSize="7" largeDeviceSize="7" class="slds-align--absolute-center slds-text-align--center slds-text-body_small">
+          <p>References to 'BlueWave' refer to the entire BlueWave family of companies unless otherwise stated, including BlueWave Finance Group, LLC; BlueWave Community Solar, LLC; BCS Customer Acquisition, LLC; BCS Customer Management, LLC; and all subsidiary, parent and affiliate companies.</p>
+        </lightning:layoutItem>
+      </lightning:layout>
+
       <aura:if isTrue="{!v.lenderOfRecord == 'Avidia'}">
-        <div class="slds-align--absolute-center slds-p-top_small">
+        <div class="slds-align--absolute-center slds-p-top_small ">
           <p class="">Loan Underwriting by: Avidia Bank - 42 Main St. Hudson, MA 01749</p>
         </div>
         <div class="slds-align--absolute-center">

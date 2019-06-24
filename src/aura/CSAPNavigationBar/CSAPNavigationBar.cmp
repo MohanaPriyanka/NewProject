@@ -40,7 +40,7 @@
                            'slds-is-incomplete'))}"
                     role="presentation">
                   <a class="slds-path__link">
-                    <span title="Upload Your Bill" class="slds-path__title">Upload Bill</span>
+                    <span title="Check Eligibility" class="slds-path__title">{!v.partnerApp ? 'Check Eligibility' : 'Upload Bill'}</span>
                   </a>
                 </li>
               </aura:if>
