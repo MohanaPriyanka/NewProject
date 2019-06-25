@@ -5,14 +5,30 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
     }
 
     public void updateSSS() {
-        List<Shared_Solar_System__c> sharedSolarSystems = getSSSList();
-            summarizeCapacity(sharedSolarSystems);
-            update sharedSolarSystems;
+        Map<Id, Shared_Solar_System__c> oldSSSMap = new Map<Id, Shared_Solar_System__c>();
+        List<Shared_Solar_System__c> newSSSList = getSSSList();
+        List<Shared_Solar_System__c> sssToUpdateList = new List<Shared_Solar_System__c>();
+
+        for (Shared_Solar_System__c oldSSS : getSSSList()){
+            oldSSSMap.put(oldSSS.Id, oldSSS);
+        }
+        summarizeCapacity(newSSSList);
+
+        for (Shared_Solar_System__c newSSS : newSSSList){
+            if (newSSS.Reserved_capacity_kW_DC__c != oldSSSMap.get(newSSS.Id).Reserved_capacity_kW_DC__c ||
+                newSSS.Capacity_committed_kW_DC__c != oldSSSMap.get(newSSS.Id).Capacity_committed_kW_DC__c ||
+                newSSS.Anchor_capacity_reserved__c != oldSSSMap.get(newSSS.Id).Anchor_capacity_reserved__c){
+                    sssToUpdateList.add(newSSS);
+            }
+        }
+        update sssToUpdateList;
     }
 
     public List<Shared_Solar_System__c> getSSSList() {
         return [
-            SELECT Id, Anchor_Capacity_Reserved__c, Capacity_Committed_kW_DC__c, Reserved_Capacity_kW_DC__c, Total_CS_Capacity__c, Total_Capacity_Committed_Reserved__c, Maximum_Subscription_Capacity_kW_DC__c
+            SELECT Id, Anchor_Capacity_Reserved__c, Capacity_Committed_kW_DC__c,
+                Reserved_Capacity_kW_DC__c, Total_CS_Capacity__c,
+                Total_Capacity_Committed_Reserved__c, Maximum_Subscription_Capacity_kW_DC__c
             FROM Shared_Solar_System__c
         ];
     }
@@ -26,15 +42,11 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
         Decimal summarizedCommittedCapacity = 0;
         Decimal summarizedAnchorCapacity = 0;
 
-
-
         for (Shared_Solar_System__c sss: sssList){
                 String sssId = sss.Id;
                 String subID = sssId.substring(0,15);
                 sssIdList.add(subID);
         }
-
-        Map<Id, List<Utility_Account_Subscription__c>> idsToSSS = new Map<Id, List<Utility_Account_Subscription__c>>();
 
         List <Utility_Account_Subscription__c> relatedUAS = [ SELECT Id, Opportunity_Stage__c, Customer_Group__c,
                                                                 Opportunity__c, Next_Schedule_Z_Status__c, SSS_Id__c,
@@ -43,41 +55,39 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
                                                                 WHERE SSS_Id__c IN :sssIdList
         ];
 
-        for (Utility_Account_Subscription__c uas: relatedUAS){
-            if (uas.Customer_Group__c != 'Anchor'
-                && uas.Next_Schedule_Z_Status__c != 'Cancelled'
+        for (Utility_Account_Subscription__c uas: relatedUAS) {
+            if ((uas.Customer_Group__c != 'Anchor' &&
+                uas.Customer_Group__c != 'Public Offtake')
+                && uas.Next_Schedule_Z_Status__c == 'Active Subscription'
                 && (uas.Opportunity_Stage__c == 'Pending BlueWave Signature'
                 || uas.Opportunity_Stage__c == 'QC in Process'
-                || uas.Opportunity_Stage__c == 'Pending Quality Control Signature')){
-                    reservedCapacityList.add(uas);
+                || uas.Opportunity_Stage__c == 'Pending Quality Control Signature')) {
+                reservedCapacityList.add(uas);
             }
 
-            if (uas.Opportunity_Stage__c == 'Complete'
-                && uas.Customer_Group__c != 'Anchor'
-                && uas.Next_Schedule_Z_Status__c != 'Cancelled'){
-                    committedCapacityList.add(uas);
+            if ((uas.Customer_Group__c != 'Anchor' &&
+                uas.Customer_Group__c != 'Public Offtake')
+                && uas.Opportunity_Stage__c == 'Complete'
+                && uas.Next_Schedule_Z_Status__c == 'Active Subscription') {
+                committedCapacityList.add(uas);
             }
 
-            if ( (uas.Customer_Group__c == 'Anchor' ||
+            if ((uas.Customer_Group__c == 'Anchor' ||
                 uas.Customer_Group__c == 'Public Offtake')
-                && uas.Opportunity_Stage__c != 'new'
-                && uas.Opportunity_Stage__c != 'Dead'){
-                    anchorCapacityList.add(uas);
+                && uas.Next_Schedule_Z_Status__c == 'Active Subscription') {
+                anchorCapacityList.add(uas);
             }
         }
 
         for (Shared_Solar_System__c sssSummary : sssList) {
-
             summarizedReservedCapacity = 0;
             summarizedCommittedCapacity = 0;
             summarizedAnchorCapacity = 0;
-
             if (reservedCapacityList.size() > 0){
                 for (Utility_Account_Subscription__c res: reservedCapacityList){
                     if (res.SSS_Id__c == sssSummary.Id
                         && res.Customer_Subscription_KW_DC__c  != null){
                             summarizedReservedCapacity = res.Customer_Subscription_KW_DC__c + summarizedReservedCapacity;
-                            System.debug(summarizedReservedCapacity);
                     }
                 }
             }
@@ -85,8 +95,6 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
                 for (Utility_Account_Subscription__c comm: committedCapacityList){
                     if (comm.SSS_Id__c == sssSummary.Id
                         && comm.Customer_Subscription_KW_DC__c != null){
-                            System.debug('Committed Capacity List Size - ' + committedCapacityList.size());
-                            System.debug('Committed Capacity - ' + comm.Customer_Subscription_KW_DC__c );
                             summarizedCommittedCapacity = comm.Customer_Subscription_KW_DC__c + summarizedCommittedCapacity;
                     }
                 }
