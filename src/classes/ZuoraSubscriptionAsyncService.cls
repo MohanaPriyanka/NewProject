@@ -16,7 +16,7 @@
  *    ZuoraSubscriptionAsyncService asyncService = new ZuoraSubscriptionAsyncService();
  *    asyncService.initForDataLoad();
  *    Database.executeBatch(asyncService, 100);
- * Tested By: ZuoraSubscriptionServiceTest
+ * Tested By: ZuoraSubscriptionServiceTest, ScheduleZTriggerHandlerTest
  *************************************************************************************/
 
 public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Database.AllowsCallouts, Database.Batchable<ZuoraSubscriptionService.SubscriptionParam> {
@@ -38,7 +38,7 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
 
     public void initForDataLoad() {
         try {
-            initForDataLoadPrivate();
+            initForDataLoadInternal();
         } catch (Exception e) {
             Logger.logNow('ZuoraSubscriptionAsyncService', 'initForDataLoad', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
         }
@@ -46,7 +46,7 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
 
     public void initForScheduleZEnactment(List<Schedule_Z__c> scheduleZs) {
         try {
-            initForScheduleZEnactmentPrivate(scheduleZs);
+            initForScheduleZEnactmentInternal(scheduleZs);
         } catch (Exception e) {
             Set<String> ids = new Set<String>();
             for (Schedule_Z__c sz : scheduleZs) {
@@ -57,7 +57,7 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
         }
     }
 
-    private void initForScheduleZEnactmentPrivate(List<Schedule_Z__c> scheduleZs) {
+    public void initForScheduleZEnactmentInternal(List<Schedule_Z__c> scheduleZs) {
         getRatePlanIds();
         Set<Id> accountIds = new Set<Id>();
         List<AggregateResult> scheduleZSubscriptionsByAccount = [
@@ -88,13 +88,13 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
         allSubscriptionsToCreate = accountNumberToSubscriptionMap.values();
     }
 
-    private void initForDataLoadPrivate() {
+    public void initForDataLoadInternal() {
         getRatePlanIds();
         // We're not adding this to selector classes since they are for one-time data migration
         // Consumes ~31k query rows as of May 2019
         List<AggregateResult> systemsBillsByAccount = [
             SELECT Property_Account__r.Id Id, Shared_Solar_System__r.Id systemId, Client__r.Id clientId,
-                MIN(Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__r.Account_Number__c) clientName,
+                MIN(Client__r.Account_Number__c) clientName,
                 MIN(Shared_Solar_System__r.Unique_ID__c) projectName,
                 MIN(Date__c) billDate
             FROM System_Bill__c
@@ -134,7 +134,7 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
         allSubscriptionsToCreate = accountNumberToSubscriptionMap.values();
     }
 
-    private void updateSubscriptionMap(List<AggregateResult> aggregateResults, Map<Id, Account> accountMap,
+    public void updateSubscriptionMap(List<AggregateResult> aggregateResults, Map<Id, Account> accountMap,
         Map<String, ZuoraSubscriptionService.SubscriptionParam> accountNumberToSubscriptionMap) {
         for (AggregateResult aggregateResult : aggregateResults) {
             Account propertyAccount = accountMap.get(aggregateResult.Id);
@@ -154,7 +154,7 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
         }
     }
 
-    private void getRatePlanIds() {
+    public void getRatePlanIds() {
         List<zqu__ProductRatePlan__c> ratePlans =
             ZuoraProductRatePlanSelector.getProductRatePlan('Community Solar Subscriptions');
         if (ratePlans.size() != 1) {
@@ -170,8 +170,7 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
         productRatePlanChargeId = ratePlanCharges[0].zqu__ZuoraId__c;
     }
 
-    @TestVisible
-    private static void addOrderActionToMap(Map<String, ZuoraSubscriptionService.SubscriptionParam> accountNumberToSubscriptionMap,
+    public static void addOrderActionToMap(Map<String, ZuoraSubscriptionService.SubscriptionParam> accountNumberToSubscriptionMap,
         ZuoraSubscriptionService.OrderActionParam orderActionParam) {
         ZuoraSubscriptionService.SubscriptionParam subscriptionParam = accountNumberToSubscriptionMap.get(orderActionParam.accountNumber);
         if (subscriptionParam == null) {
