@@ -38,15 +38,15 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
             return getOrderByOwnerResponse(endpoint);
         } else if (endpoint.contains('v1/orders')) {
             return getOrderResponse(req.getBody());
-        } else if (endpoint.contains('/v1/creditmemos/') && endpoint.contains('/items')) {
+        } else if (endpoint.contains('/v1/creditMemos/') && endpoint.contains('/items')) {
             return getCreditMemoItems();
         } else if (endpoint.contains('/v1/invoices/') && endpoint.contains('/items')) {
             return getInvoiceItem(endpoint);
-        } else if (endpoint.contains('/v1/debitmemos/') && endpoint.contains('/items')) {
+        } else if (endpoint.contains('/v1/debitMemos/') && endpoint.contains('/items')) {
             return getDebitMemoItems();
-        } else if (endpoint.contains('/v1/creditmemos/')) {
+        } else if (endpoint.contains('/v1/creditMemos/')) {
             return getCreditMemos();
-        } else if (endpoint.contains('/v1/debitmemos/')) {
+        } else if (endpoint.contains('/v1/debitMemos/')) {
             return getDebitMemos();
         } else {
             return null;

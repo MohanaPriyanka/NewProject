@@ -5,34 +5,42 @@ public class ZuoraCreditMemoAllocationTest {
         // Oldest to newest, Ids are unique:
         ZuoraOutstandingItemsService.OutstandingItem itemOne = new ZuoraOutstandingItemsService.OutstandingItem();
         itemOne.amountOutstanding = 5;
+        itemOne.amountToApply = 0;
         itemOne.effectiveDate = Datetime.newInstance(2019,02,01,12,10,00);
         itemOne.project = 'SSS-0000012';
         itemOne.client = 'BW-0000123';
         itemOne.id = 'itemOne';
+        itemOne.parentId = 'invoiceOne';
         itemOne.isInvoiceItem = true;
 
         ZuoraOutstandingItemsService.OutstandingItem itemTwo = new ZuoraOutstandingItemsService.OutstandingItem();
         itemTwo.amountOutstanding = 50;
+        itemOne.amountToApply = 0;
         itemTwo.effectiveDate = Datetime.newInstance(2019,02,01,12,10,01);
         itemTwo.project = 'SSS-0000018';
         itemTwo.client = 'BW-0000122';
         itemTwo.id = 'itemTwo';
+        itemOne.parentId = 'debitOne';
         itemTwo.isInvoiceItem = false;
 
         ZuoraOutstandingItemsService.OutstandingItem itemThree = new ZuoraOutstandingItemsService.OutstandingItem();
         itemThree.amountOutstanding = 2;
+        itemOne.amountToApply = 0;
         itemThree.effectiveDate = Datetime.newInstance(2019,02,01,13,10,00);
         itemThree.project = 'SSS-0000016';
         itemThree.client = 'BW-0000122';
         itemThree.id = 'itemThree';
+        itemOne.parentId = 'invoiceTwo';
         itemThree.isInvoiceItem = true;
 
         ZuoraOutstandingItemsService.OutstandingItem itemFour = new ZuoraOutstandingItemsService.OutstandingItem();
         itemFour.amountOutstanding = 10;
+        itemOne.amountToApply = 0;
         itemFour.effectiveDate = Datetime.newInstance(2019,02,01,14,10,00);
         itemFour.project = 'SSS-0000012';
         itemFour.client = 'BW-0000123';
         itemFour.id = 'itemFour';
+        itemOne.parentId = 'debitOne';
         itemFour.isInvoiceItem = false;
 
         List<ZuoraOutstandingItemsService.OutstandingItem> unsortedItemList = new List<ZuoraOutstandingItemsService.OutstandingItem>{
@@ -306,11 +314,67 @@ public class ZuoraCreditMemoAllocationTest {
     }
 
     @IsTest
+    private static void testCreditAllocationInvoiceDebitGrouping() {
+        List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems = testDataSetup();
+        System.assertEquals(4,outstandingItems.size());
+
+        outstandingItems[0].amountToApply = 2;
+        outstandingItems[1].amountToApply = 4;
+        outstandingItems[2].amountToApply = 1.7;
+        outstandingItems[3].amountToApply = 1.3;
+
+        // Four items, 2 invoices with 1 item each, 1 debit memo with 2 items:
+        System.assertEquals(true, outstandingItems[1].isInvoiceItem);
+        System.assertEquals(true, outstandingItems[2].isInvoiceItem);
+        System.assertEquals(false, outstandingItems[0].isInvoiceItem);
+        System.assertEquals(false, outstandingItems[3].isInvoiceItem);
+
+        List<ZuoraAPI.ZuoraCreditMemo> creditMemos = ZuoraCreditMemoAllocationService.getAllCreditMemos();
+        ZuoraAPI.CreditMemoWithItem creditMemoWithItem = ZuoraCreditMemoAllocationService.getItemFromCreditMemo(creditMemos[0]);
+
+        Test.startTest();
+        ZuoraCreditMemoAllocationService.CreditMemoApplication application;
+        application = ZuoraCreditMemoAllocationService.groupByInvoiceAndDebitMemo(creditMemoWithItem, outstandingItems);
+        Test.stopTest();
+
+        // Four outstanding items, 2 invoices with 1 item each, 1 debit memo with 2 items:
+        System.assertEquals(2,application.invoices.size());
+        System.assertEquals(1,application.debitMemos.size());
+
+        System.assertEquals(1,application.invoices[0].items.size());
+        System.assertEquals(1,application.invoices[1].items.size());
+        System.assertEquals(2,application.debitMemos[0].items.size());
+
+        // Check that invoice/debit memo equal the sum of its parts
+        System.assertEquals(
+            application.invoices[0].amount,
+            application.invoices[0].items[0].amount
+        );
+        System.assertEquals(
+            application.invoices[1].amount,
+            application.invoices[1].items[0].amount
+        );
+        System.assertEquals(
+            application.debitMemos[0].amount,
+            application.debitMemos[0].items[0].amount + application.debitMemos[0].items[1].amount
+        );
+        System.assertEquals(
+            5.7,
+            application.invoices[0].amount + application.invoices[1].amount
+        );
+        System.assertEquals(
+            3.3,
+            application.debitMemos[0].amount
+        );
+    }
+
+    @IsTest
     private static void testBatch() {
-        test.startTest();
+        Test.startTest();
         ZuoraMemoBatchApply batchJob = new ZuoraMemoBatchApply();
-        batchJob.executeBatch();
-        test.stopTest();
+        batchJob.init();
+        batchJob.runBatch(20);
+        Test.stopTest();
 
         List<Error_Log__c> errorLogs = [
             SELECT Id, Class__c, Message__c
@@ -318,6 +382,6 @@ public class ZuoraCreditMemoAllocationTest {
             WHERE Class__c = 'ZuoraMemoBatchApply'
         ];
 
-        System.assertEquals('ZuoraMemoBatchApply has finished',errorLogs[0].Message__c);
+        System.assertEquals('ZuoraMemoBatchApply has finished', errorLogs[0].Message__c);
     }
 }

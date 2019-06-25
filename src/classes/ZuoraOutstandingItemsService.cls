@@ -98,7 +98,6 @@ public class ZuoraOutstandingItemsService{
             'AND balance > 0';
         String response = ZuoraAPIHelper.query(queryString,false);
         QueryResultInvoice queriedInvoices = (QueryResultInvoice)JSON.deserialize(response, QueryResultInvoice.class);
-        system.debug(queriedInvoices);
         return queriedInvoices.records;
     }
 
@@ -141,7 +140,7 @@ public class ZuoraOutstandingItemsService{
     }
 
     public static List<ZuoraAPI.DebitMemo> getOutstandingDebitMemos(String zAcctId) {
-        HttpResponse response = ZuoraAPIHelper.callJSONEndpoint('GET','/v1/debitmemos/',null,false);
+        HttpResponse response = ZuoraAPIHelper.callJSONEndpoint('GET','/v1/debitMemos/',null,false);
         String responseBody = response.getBody();
         responseBody = responseBody.replace('__c','_Zcustom');
         QueryResultDebitMemo result =
@@ -157,7 +156,7 @@ public class ZuoraOutstandingItemsService{
     }
 
     public static ZuoraAPI.DebitMemoWithItems getDebitMemoItems(ZuoraAPI.DebitMemo debitMemo) {
-        HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('GET','/v1/debitmemos/' + debitMemo.Id +'/items',null,false);
+        HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('GET','/v1/debitMemos/' + debitMemo.Id +'/items',null,false);
         String responseBody = response.getBody().replace('__c','_Zcustom');
         QueryResultDebitMemoItem itemsQuery =
             (QueryResultDebitMemoItem)JSON.deserialize(responseBody, QueryResultDebitMemoItem.class);

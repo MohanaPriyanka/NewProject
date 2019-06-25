@@ -1,3 +1,8 @@
+/*************************************************************************************
+ * Created By:  Jordan Pentaleri
+ * Test: ZuoraCreditMemoAllocationTest
+ *************************************************************************************/
+
 public class ZuoraCreditMemoAllocationService{
     public class CreditMemoApplication {
         public List<CreditMemoApplicationInvoice> invoices;
@@ -29,14 +34,14 @@ public class ZuoraCreditMemoAllocationService{
     }
 
     public class QueryResultCreditMemo {
-        public List<ZuoraApi.ZuoraCreditMemo> creditmemos;
+        public List<ZuoraAPI.ZuoraCreditMemo> creditmemos;
     }
 
     public class QueryResultCreditMemoItems {
-        public List<ZuoraApi.ZuoraCreditMemoItem> items;
+        public List<ZuoraAPI.ZuoraCreditMemoItem> items;
     }
 
-    public static CreditMemoApplication applyCreditMemoToAccount(ZuoraAPI.CreditMemoWithItem creditMemo){
+    public static CreditMemoApplication getCreditMemoApplication(ZuoraAPI.CreditMemoWithItem creditMemo){
         List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems;
         List<ZuoraOutstandingItemsService.OutstandingItem> itemsWithApplication;
 
@@ -118,7 +123,7 @@ public class ZuoraCreditMemoAllocationService{
     }
 
     public static List<ZuoraAPI.ZuoraCreditMemo> getAllCreditMemos() {
-        HttpResponse response = ZuoraAPIHelper.callJSONEndpoint('GET','/v1/creditmemos/',null,false);
+        HttpResponse response = ZuoraAPIHelper.callJSONEndpoint('GET','/v1/creditMemos/',null,false);
         String responseBody = response.getBody();
         responseBody = responseBody.replace('__c','_Zcustom');
         QueryResultCreditMemo zResponse;
@@ -128,7 +133,7 @@ public class ZuoraCreditMemoAllocationService{
 
     // Assumes credit memos only have 1 item. As of 6/2019, every adjustment in SF only = 1 credit memo item in Zuora
     public static ZuoraAPI.CreditMemoWithItem getItemFromCreditMemo(ZuoraAPI.ZuoraCreditMemo creditMemo) {
-        String urlString = '/v1/creditmemos/' + creditMemo.Id + '/items';
+        String urlString = '/v1/creditMemos/' + creditMemo.Id + '/items';
         HttpResponse response = ZuoraAPIHelper.callJSONEndpoint('GET',urlString,null,false);
         QueryResultCreditMemoItems zResponse;
         zResponse = (QueryResultCreditMemoItems)JSON.deserialize(response.getBody(), QueryResultCreditMemoItems.class);
