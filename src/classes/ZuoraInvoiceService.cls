@@ -65,7 +65,7 @@ public with sharing class ZuoraInvoiceService {
             Zuora__ZInvoice__c zuoraInvoiceToUpdate = new Zuora__ZInvoice__c(
                 Id = contentDocumentLink.LinkedEntityId,
                 Downloaded_Date__c = System.today(),
-                Content_Document_Id__c = contentDocumentLink.Id
+                Content_Document_Id__c = contentDocumentLink.ContentDocumentId
             );
             zuoraInvoicesToUpdate.add(zuoraInvoiceToUpdate);
         }
