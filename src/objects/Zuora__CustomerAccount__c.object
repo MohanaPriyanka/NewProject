@@ -157,6 +157,20 @@
         <label>Billing Accounts</label>
     </fieldSets>
     <fields>
+        <fullName>Lifetime_Savings__c</fullName>
+        <description>This field is used in the cs customer portal. The label is visible there so it should be something that is appropriate for customers to see.</description>
+        <externalId>false</externalId>
+        <formula>Zuora__Account__r.Total_Lifetime_Savings__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Lifetime Savings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>Zuora__AccountNumber__c</fullName>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
@@ -1067,6 +1081,30 @@ IF(  ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__CreditCardType__c, &quot;
         <unique>false</unique>
     </fields>
     <label>Billing Account</label>
+    <listViews>
+        <fullName>EXTERNAL_My_Community_Solar_Accounts</fullName>
+        <columns>NAME</columns>
+        <columns>Lifetime_Savings__c</columns>
+        <columns>Zuora__TotalInvoiceBalance__c</columns>
+        <columns>Zuora__AutoPay__c</columns>
+        <filterScope>Mine</filterScope>
+        <label>My Community Solar Accounts</label>
+        <sharedTo>
+            <allCustomerPortalUsers></allCustomerPortalUsers>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>My_Community_Solar_Accounts</fullName>
+        <columns>NAME</columns>
+        <columns>Lifetime_Savings__c</columns>
+        <columns>Zuora__TotalInvoiceBalance__c</columns>
+        <columns>Zuora__AutoPay__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>My Community Solar Accounts</label>
+        <sharedTo>
+            <allCustomerPortalUsers></allCustomerPortalUsers>
+        </sharedTo>
+    </listViews>
     <listViews>
         <fullName>Zuora__All</fullName>
         <filterScope>Everything</filterScope>
