@@ -12,11 +12,42 @@
         <locationX>50</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>myDecision2</targetReference>
+            <targetReference>myDecision3</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
             <name>myRule_1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_1</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_1_A1</targetReference>
+            </connector>
+            <label>Track Opp Stages</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision3</name>
+        <label>myDecision3</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myDecision5</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_4</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <processMetadataValues>
@@ -50,7 +81,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>myRule_1_A1</targetReference>
+                <targetReference>myRule_4_A1</targetReference>
             </connector>
             <label>No PCR?</label>
         </rules>
@@ -59,16 +90,16 @@
         <processMetadataValues>
             <name>index</name>
             <value>
-                <numberValue>1.0</numberValue>
+                <numberValue>2.0</numberValue>
             </value>
         </processMetadataValues>
-        <name>myDecision2</name>
-        <label>myDecision2</label>
+        <name>myDecision5</name>
+        <label>myDecision5</label>
         <locationX>50</locationX>
         <locationY>0</locationY>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
-            <name>myRule_3</name>
+            <name>myRule_6</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <processMetadataValues>
@@ -102,7 +133,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>myRule_3_A1</targetReference>
+                <targetReference>myRule_6_A1</targetReference>
             </connector>
             <label>CS Opportunity</label>
         </rules>
@@ -111,14 +142,30 @@
         <processMetadataValues>
             <name>originalFormula</name>
             <value>
+                <stringValue>TEXT([Opportunity].StageName )</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_2_myRule_1_A1_3322608320</name>
+        <dataType>String</dataType>
+        <expression>TEXT({!myVariable_current.StageName} )</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
                 <stringValue>SUBSTITUTE([Opportunity].Name, &apos;-&apos;, &apos;&apos;)</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_4_myRule_3_A1_5364705088</name>
+        <name>formula_7_myRule_6_A1_6326627348</name>
         <dataType>String</dataType>
         <expression>SUBSTITUTE({!myVariable_current.Name}, &apos;-&apos;, &apos;&apos;)</expression>
     </formulas>
-    <interviewLabel>Opportunity_Create-2_InterviewLabel</interviewLabel>
+    <formulas>
+        <name>formula_myRule_1</name>
+        <dataType>Boolean</dataType>
+        <expression>true</expression>
+    </formulas>
+    <interviewLabel>Opportunity_Create-3_InterviewLabel</interviewLabel>
     <label>Opportunity: Create</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -147,11 +194,87 @@
     <processType>Workflow</processType>
     <recordCreates>
         <name>myRule_1_A1</name>
-        <label>Create QC Task</label>
+        <label>Create OCH</label>
         <locationX>100</locationX>
         <locationY>200</locationY>
         <connector>
-            <targetReference>myDecision2</targetReference>
+            <targetReference>myDecision3</targetReference>
+        </connector>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>New Stage</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Formula</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>New_Stage__c</field>
+            <value>
+                <elementReference>formula_2_myRule_1_A1_3322608320</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Opportunity</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Reference</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Opportunity__c</field>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Opportunity_Change_History__c</object>
+    </recordCreates>
+    <recordCreates>
+        <name>myRule_4_A1</name>
+        <label>Create QC Task</label>
+        <locationX>400</locationX>
+        <locationY>200</locationY>
+        <connector>
+            <targetReference>myDecision5</targetReference>
         </connector>
         <inputAssignments>
             <processMetadataValues>
@@ -486,9 +609,9 @@
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_3_A1</name>
+        <name>myRule_6_A1</name>
         <label>Opportunity Name - Remove Hyphen</label>
-        <locationX>300</locationX>
+        <locationX>600</locationX>
         <locationY>200</locationY>
         <filters>
             <processMetadataValues>
@@ -585,7 +708,7 @@
             </processMetadataValues>
             <field>Name</field>
             <value>
-                <elementReference>formula_4_myRule_3_A1_5364705088</elementReference>
+                <elementReference>formula_7_myRule_6_A1_6326627348</elementReference>
             </value>
         </inputAssignments>
         <object>Opportunity</object>
