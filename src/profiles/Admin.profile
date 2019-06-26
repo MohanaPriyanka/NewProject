@@ -2362,6 +2362,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.Non_Test_Zuora_Record__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.NumberOfEmployees</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6658,6 +6663,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Client_Health_Report__c.Client_DSO__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Health_Report__c.Client_Health_Score_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -25101,6 +25111,26 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity_Change_History__c.Closed_On__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity_Change_History__c.New_Stage__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity_Change_History__c.Previous_Stage__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity_Change_History__c.Stage_Duration__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Order.ActivatedById</field>
         <readable>true</readable>
@@ -32233,6 +32263,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Zuora_Contact__c.Contact__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Zuora_Contact__c.Non_Test_Zuora_Record__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -46561,6 +46596,9 @@
         <layout>ChargentOrders__Transaction__c-ChargentOrders__Transaction Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Client_Health_Report__c-Monthly Client Report Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>CollaborationGroup-BW Community Solar Member Portal</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -47029,6 +47067,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>OpportunityLineItem-Opportunity Product Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Opportunity_Change_History__c-Opportunity Change History Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Order-Order Layout</layout>
@@ -48595,6 +48636,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>Opportunity</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>Opportunity_Change_History__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>

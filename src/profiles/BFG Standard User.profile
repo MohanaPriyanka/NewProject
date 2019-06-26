@@ -14843,6 +14843,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Health_Report__c.Client_Health_Score_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Client_Health_Report__c.Client_Health_Score__c</field>
         <readable>true</readable>
@@ -33310,6 +33315,26 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>OpportunityLineItem.TotalPrice</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity_Change_History__c.Closed_On__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity_Change_History__c.New_Stage__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity_Change_History__c.Previous_Stage__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity_Change_History__c.Stage_Duration__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -54745,6 +54770,9 @@
         <layout>ChargentOrders__Transaction__c-ChargentOrders__Transaction Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Client_Health_Report__c-Monthly Client Report Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>CollaborationGroup-Group Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -55213,6 +55241,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>OpportunityLineItem-Opportunity Product Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Opportunity_Change_History__c-Opportunity Change History Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Order-Order Layout</layout>
@@ -64128,11 +64159,11 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
-        <name>ChangeDashboardColors</name>
+        <name>ChatterEditOwnPost</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
-        <name>ChatterEditOwnPost</name>
+        <name>ChatterEnabledForUser</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -64260,6 +64291,10 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
+        <name>ManageDashbdsInPubFolders</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
         <name>ManageDynamicDashboards</name>
     </userPermissions>
     <userPermissions>
@@ -64269,6 +64304,10 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ManageLeads</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>ManageReportsInPubFolders</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>

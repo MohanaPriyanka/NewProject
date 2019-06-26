@@ -49762,6 +49762,10 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
+        <name>ChatterEnabledForUser</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
         <name>ChatterFileLink</name>
     </userPermissions>
     <userPermissions>
