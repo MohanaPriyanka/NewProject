@@ -38,7 +38,6 @@ public without sharing class CSOpportunityFactory {
                     Product__c = sss.Product__c,
                     System_Assigned__c = true,
                     NMC_Tariff__c = sss.Utility_NMC_Tariff__c,
-                    StageName = 'Contract Pending',
                     CloseDate = Date.today(),
                     UAS_Created__c = true,
                     Annual_Electricity_Cost__c = annualElectricityCostAssigned,
@@ -46,6 +45,7 @@ public without sharing class CSOpportunityFactory {
                     Annual_Consumption_kWh__c = annualElectricitykWhAssigned,
                     Opportunity_Order__c = oppCounter
                 );
+                opp = setOpportunityStage(lead, opp);
                 opp = setDefaultOppFields(lead, opp);
                 if (baseChargentOrder != null) {
                     opp = addPaymentInfoToOpp(opp, baseChargentOrder);
@@ -100,6 +100,15 @@ public without sharing class CSOpportunityFactory {
             opp.CC_CardHolder_Name__c = paymentMethod.CreditCardHolderName;
             opp.CC_Expiration_Month__c = String.valueOf(paymentMethod.CreditCardExpirationMonth);
             opp.CC_Expiration_Year__c = String.valueOf(paymentMethod.CreditCardExpirationYear);
+        }
+        return opp;
+    }
+    @TestVisible
+    private static Opportunity setOpportunityStage(Lead lead, Opportunity opp) {
+        if (lead.LeadSource == 'Switch') {
+            opp.StageName = 'QC in Progress';
+        } else {
+            opp.StageName = 'Contract Pending';
         }
         return opp;
     }
