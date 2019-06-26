@@ -7,12 +7,15 @@
                 <stringValue>Internal_Product_Team_Work_Request_is_Complete</stringValue>
             </value>
         </processMetadataValues>
-        <name>myRule_10_A1</name>
-        <label>Send work complete email</label>
-        <locationX>1000</locationX>
+        <name>myWaitEvent_myWait_myRule_11_event_0_SA1</name>
+        <label>Send Work Complete Email</label>
+        <locationX>1100</locationX>
         <locationY>200</locationY>
         <actionName>agf__ADM_Work__c.Internal_Product_Team_Work_Request_is_Complete</actionName>
         <actionType>emailAlert</actionType>
+        <connector>
+            <targetReference>myWaitEvent_myWait_myRule_11_event_0_postWaitExecutionAssignment</targetReference>
+        </connector>
         <inputParameters>
             <name>SObjectRowId</name>
             <value>
@@ -21,31 +24,15 @@
         </inputParameters>
     </actionCalls>
     <assignments>
-        <name>myVariable_waitStartTimeAssignment</name>
-        <label>myVariable_waitStartTimeAssignment</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignmentItems>
-            <assignToReference>myVariable_waitStartTimeVariable</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>$Flow.CurrentDateTime</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>isChangedDecision5_myRule_4_agf_Details_and_Steps_to_Reproduce_c</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>myWaitAssignment_myWait_myRule_12</name>
-        <label>myWaitAssignment_myWait_myRule_12</label>
+        <name>myWaitAssignment_myWait_myRule_11</name>
+        <label>myWaitAssignment_myWait_myRule_11</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <assignmentItems>
             <assignToReference>cancelWaits</assignToReference>
             <operator>Add</operator>
             <value>
-                <stringValue>myWait_myRule_12</stringValue>
+                <stringValue>myWait_myRule_11</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -53,32 +40,96 @@
         </connector>
     </assignments>
     <assignments>
-        <name>myWaitEvent_myWait_myRule_12_event_0_postWaitExecutionAssignment</name>
-        <label>myWaitEvent_myWait_myRule_12_event_0_postWaitExecutionAssignment</label>
+        <name>myWaitAssignment_myWait_myRule_13</name>
+        <label>myWaitAssignment_myWait_myRule_13</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <assignmentItems>
-            <assignToReference>myWaitEvent_myWait_myRule_12_event_0_postActionExecutionVariable</assignToReference>
+            <assignToReference>cancelWaits</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>myWait_myRule_13</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>myPreWaitDecision_myWait_myRule_11</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>myWaitEvent_myWait_myRule_11_event_0_postWaitExecutionAssignment</name>
+        <label>myWaitEvent_myWait_myRule_11_event_0_postWaitExecutionAssignment</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>myWaitEvent_myWait_myRule_11_event_0_postActionExecutionVariable</assignToReference>
             <operator>Assign</operator>
             <value>
                 <booleanValue>true</booleanValue>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>myWait_myRule_12</targetReference>
+            <targetReference>myWait_myRule_11</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>myWaitEvent_myWait_myRule_13_event_0_postWaitExecutionAssignment</name>
+        <label>myWaitEvent_myWait_myRule_13_event_0_postWaitExecutionAssignment</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>myWaitEvent_myWait_myRule_13_event_0_postActionExecutionVariable</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>myWait_myRule_13</targetReference>
         </connector>
     </assignments>
     <decisions>
-        <name>isChangedDecision5_myRule_4_agf_Details_and_Steps_to_Reproduce_c</name>
-        <label>isChangedDecision5_myRule_4_agf_Details_and_Steps_to_Reproduce_c</label>
+        <name>isChangedDecision2_myRule_1_agf_Assignee_c</name>
+        <label>isChangedDecision2_myRule_1_agf_Assignee_c</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>isChangedDecision6_myRule_4_agf_Details_c</targetReference>
+            <targetReference>isChangedDecision6_myRule_5_agf_Details_and_Steps_to_Reproduce_c</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
-            <name>isChangedRule_5_myRule_4_agf_Details_and_Steps_to_Reproduce_c</name>
+            <name>isChangedRule_2_myRule_1_agf_Assignee_c</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>myVariable_old</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>myVariable_old.agf__Assignee__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>myVariable_current.agf__Assignee__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>isChangedDecision6_myRule_5_agf_Details_and_Steps_to_Reproduce_c</targetReference>
+            </connector>
+            <label>isChangedRule_2_myRule_1_agf_Assignee_c</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>isChangedDecision6_myRule_5_agf_Details_and_Steps_to_Reproduce_c</name>
+        <label>isChangedDecision6_myRule_5_agf_Details_and_Steps_to_Reproduce_c</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>isChangedDecision7_myRule_5_agf_Details_c</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>isChangedRule_6_myRule_5_agf_Details_and_Steps_to_Reproduce_c</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>myVariable_old</leftValueReference>
@@ -95,22 +146,22 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>isChangedDecision6_myRule_4_agf_Details_c</targetReference>
+                <targetReference>isChangedDecision7_myRule_5_agf_Details_c</targetReference>
             </connector>
-            <label>isChangedRule_5_myRule_4_agf_Details_and_Steps_to_Reproduce_c</label>
+            <label>isChangedRule_6_myRule_5_agf_Details_and_Steps_to_Reproduce_c</label>
         </rules>
     </decisions>
     <decisions>
-        <name>isChangedDecision6_myRule_4_agf_Details_c</name>
-        <label>isChangedDecision6_myRule_4_agf_Details_c</label>
+        <name>isChangedDecision7_myRule_5_agf_Details_c</name>
+        <label>isChangedDecision7_myRule_5_agf_Details_c</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>isChangedDecision7_myRule_4_agf_Additional_Details_c</targetReference>
+            <targetReference>isChangedDecision8_myRule_5_agf_Additional_Details_c</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
-            <name>isChangedRule_6_myRule_4_agf_Details_c</name>
+            <name>isChangedRule_7_myRule_5_agf_Details_c</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>myVariable_old</leftValueReference>
@@ -127,22 +178,22 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>isChangedDecision7_myRule_4_agf_Additional_Details_c</targetReference>
+                <targetReference>isChangedDecision8_myRule_5_agf_Additional_Details_c</targetReference>
             </connector>
-            <label>isChangedRule_6_myRule_4_agf_Details_c</label>
+            <label>isChangedRule_7_myRule_5_agf_Details_c</label>
         </rules>
     </decisions>
     <decisions>
-        <name>isChangedDecision7_myRule_4_agf_Additional_Details_c</name>
-        <label>isChangedDecision7_myRule_4_agf_Additional_Details_c</label>
+        <name>isChangedDecision8_myRule_5_agf_Additional_Details_c</name>
+        <label>isChangedDecision8_myRule_5_agf_Additional_Details_c</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>myPreWaitDecision_myWait_myRule_12</targetReference>
+            <targetReference>myPreWaitDecision_myWait_myRule_13</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
-            <name>isChangedRule_7_myRule_4_agf_Additional_Details_c</name>
+            <name>isChangedRule_8_myRule_5_agf_Additional_Details_c</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>myVariable_old</leftValueReference>
@@ -159,9 +210,9 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>myPreWaitDecision_myWait_myRule_12</targetReference>
+                <targetReference>myPreWaitDecision_myWait_myRule_13</targetReference>
             </connector>
-            <label>isChangedRule_7_myRule_4_agf_Additional_Details_c</label>
+            <label>isChangedRule_8_myRule_5_agf_Additional_Details_c</label>
         </rules>
     </decisions>
     <decisions>
@@ -176,7 +227,7 @@
         <locationX>50</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>myDecision3</targetReference>
+            <targetReference>myDecision4</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
@@ -219,6 +270,43 @@
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Boolean</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideReferenceTo</name>
+                    <value>
+                        <stringValue>User</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>ID</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Boolean</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>isChangedRule_2_myRule_1_agf_Assignee_c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>myRule_1_A1</targetReference>
             </connector>
@@ -229,219 +317,19 @@
         <processMetadataValues>
             <name>index</name>
             <value>
-                <numberValue>3.0</numberValue>
-            </value>
-        </processMetadataValues>
-        <name>myDecision11</name>
-        <label>myDecision11</label>
-        <locationX>50</locationX>
-        <locationY>0</locationY>
-        <defaultConnectorLabel>default</defaultConnectorLabel>
-        <rules>
-            <name>myRule_12</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.agf__Priority__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>P4</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Number</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>Number</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.agf__Scrum_Team__r.Work_Expiration_Delay__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>myRule_12_pmetdec</targetReference>
-            </connector>
-            <label>P4 Priority</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <processMetadataValues>
-            <name>index</name>
-            <value>
-                <numberValue>1.0</numberValue>
-            </value>
-        </processMetadataValues>
-        <name>myDecision3</name>
-        <label>myDecision3</label>
-        <locationX>50</locationX>
-        <locationY>0</locationY>
-        <defaultConnector>
-            <targetReference>myDecision9</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>default</defaultConnectorLabel>
-        <rules>
-            <name>myRule_4</name>
-            <conditionLogic>or</conditionLogic>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>isChangedRule_5_myRule_4_agf_Details_and_Steps_to_Reproduce_c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>isChangedRule_6_myRule_4_agf_Details_c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>isChangedRule_7_myRule_4_agf_Additional_Details_c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>myRule_4_A1</targetReference>
-            </connector>
-            <label>Description or Detail fields change</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <processMetadataValues>
-            <name>index</name>
-            <value>
                 <numberValue>2.0</numberValue>
             </value>
         </processMetadataValues>
-        <name>myDecision9</name>
-        <label>myDecision9</label>
+        <name>myDecision10</name>
+        <label>myDecision10</label>
         <locationX>50</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>myDecision11</targetReference>
+            <targetReference>myDecision12</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
-            <name>myRule_10</name>
+            <name>myRule_11</name>
             <conditionLogic>1 AND 2 AND 3 AND 4 AND (5 OR 6)</conditionLogic>
             <conditions>
                 <processMetadataValues>
@@ -642,47 +530,25 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>myRule_10_pmetdec</targetReference>
+                <targetReference>myRule_11_pmetdec</targetReference>
             </connector>
             <label>Work Completed</label>
         </rules>
     </decisions>
     <decisions>
-        <name>myPostWaitDecision_myWaitEvent_myWait_myRule_12_event_0</name>
-        <label>myPostWaitDecision_myWaitEvent_myWait_myRule_12_event_0</label>
-        <locationX>0</locationX>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>3.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision12</name>
+        <label>myDecision12</label>
+        <locationX>50</locationX>
         <locationY>0</locationY>
-        <defaultConnector>
-            <targetReference>myWaitEvent_myWait_myRule_12_event_0_postWaitExecutionAssignment</targetReference>
-        </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
-            <name>myPostWaitRule_myWaitEvent_myWait_myRule_12_event_0</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>myVariable_current.Inactive_Date__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>myWaitEvent_myWait_myRule_12_event_0_SA1</targetReference>
-            </connector>
-            <label>myPostWaitRule_myWaitEvent_myWait_myRule_12_event_0</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>myPreWaitDecision_myWait_myRule_12</name>
-        <label>myPreWaitDecision_myWait_myRule_12</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <defaultConnector>
-            <targetReference>myWaitAssignment_myWait_myRule_12</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>default</defaultConnectorLabel>
-        <rules>
-            <name>myPreWaitRule_myWait_myRule_12</name>
+            <name>myRule_13</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <processMetadataValues>
@@ -747,22 +613,485 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>myDecision</targetReference>
+                <targetReference>myRule_13_pmetdec</targetReference>
             </connector>
-            <label>myPreWaitRule_myWait_myRule_12</label>
+            <label>P4 Priority</label>
         </rules>
     </decisions>
     <decisions>
-        <name>myRule_10_pmetdec</name>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision4</name>
+        <label>myDecision4</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myDecision10</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_5</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Boolean</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Boolean</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>isChangedRule_6_myRule_5_agf_Details_and_Steps_to_Reproduce_c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Boolean</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Boolean</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>isChangedRule_7_myRule_5_agf_Details_c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Boolean</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Boolean</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>isChangedRule_8_myRule_5_agf_Additional_Details_c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_5_A1</targetReference>
+            </connector>
+            <label>Description or Detail fields change</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>myPostWaitDecision_myWaitEvent_myWait_myRule_11_event_0</name>
+        <label>myPostWaitDecision_myWaitEvent_myWait_myRule_11_event_0</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myWaitEvent_myWait_myRule_11_event_0_postWaitExecutionAssignment</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myPostWaitRule_myWaitEvent_myWait_myRule_11_event_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>myVariable_current.agf__Closed_On__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myWaitEvent_myWait_myRule_11_event_0_SA1</targetReference>
+            </connector>
+            <label>myPostWaitRule_myWaitEvent_myWait_myRule_11_event_0</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>myPostWaitDecision_myWaitEvent_myWait_myRule_13_event_0</name>
+        <label>myPostWaitDecision_myWaitEvent_myWait_myRule_13_event_0</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myWaitEvent_myWait_myRule_13_event_0_postWaitExecutionAssignment</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myPostWaitRule_myWaitEvent_myWait_myRule_13_event_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>myVariable_current.Inactive_Date__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myWaitEvent_myWait_myRule_13_event_0_SA1</targetReference>
+            </connector>
+            <label>myPostWaitRule_myWaitEvent_myWait_myRule_13_event_0</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>myPreWaitDecision_myWait_myRule_11</name>
+        <label>myPreWaitDecision_myWait_myRule_11</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myWaitAssignment_myWait_myRule_11</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myPreWaitRule_myWait_myRule_11</name>
+            <conditionLogic>1 AND 2 AND 3 AND 4 AND (5 OR 6)</conditionLogic>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Boolean</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>DateTime</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>DateTime</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Boolean</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.agf__Closed_On__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Boolean</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideReferenceTo</name>
+                    <value>
+                        <stringValue>agf__ADM_Scrum_Team__c</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>ID</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Boolean</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.agf__Scrum_Team__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>MultiPicklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>MultiPicklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>MultiPicklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.agf__Scrum_Team__r.Email_Send_Triggers__c</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>Work Close</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.agf__Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Closed</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Boolean</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideReferenceTo</name>
+                    <value>
+                        <stringValue>agf__ADM_Column__c</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>ID</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Boolean</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.agf__Column__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.agf__Column__r.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Closed</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myDecision</targetReference>
+            </connector>
+            <label>myPreWaitRule_myWait_myRule_11</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>myPreWaitDecision_myWait_myRule_13</name>
+        <label>myPreWaitDecision_myWait_myRule_13</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myWaitAssignment_myWait_myRule_13</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myPreWaitRule_myWait_myRule_13</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.agf__Priority__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>P4</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Boolean</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>Number</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>Number</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Boolean</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.agf__Scrum_Team__r.Work_Expiration_Delay__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myPreWaitDecision_myWait_myRule_11</targetReference>
+            </connector>
+            <label>myPreWaitRule_myWait_myRule_13</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>myRule_11_pmetdec</name>
         <label>Previously Met Decision</label>
-        <locationX>1000</locationX>
+        <locationX>1100</locationX>
         <locationY>100</locationY>
         <defaultConnector>
-            <targetReference>myRule_10_A1</targetReference>
+            <targetReference>myWait_myRule_11</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Not Previously Met</defaultConnectorLabel>
         <rules>
-            <name>myRule_10_pmetnullrule</name>
+            <name>myRule_11_pmetnullrule</name>
             <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>myVariable_old</leftValueReference>
@@ -772,12 +1101,12 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>myRule_10_A1</targetReference>
+                <targetReference>myWait_myRule_11</targetReference>
             </connector>
             <label>Previously Met - Null</label>
         </rules>
         <rules>
-            <name>myRule_10_pmetrule</name>
+            <name>myRule_11_pmetrule</name>
             <conditionLogic>1 AND 2 AND 3 AND 4 AND (5 OR 6)</conditionLogic>
             <conditions>
                 <processMetadataValues>
@@ -981,16 +1310,16 @@
         </rules>
     </decisions>
     <decisions>
-        <name>myRule_12_pmetdec</name>
+        <name>myRule_13_pmetdec</name>
         <label>Previously Met Decision</label>
-        <locationX>1200</locationX>
+        <locationX>1300</locationX>
         <locationY>100</locationY>
         <defaultConnector>
-            <targetReference>myRule_12_A1</targetReference>
+            <targetReference>myRule_13_A1</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Not Previously Met</defaultConnectorLabel>
         <rules>
-            <name>myRule_12_pmetnullrule</name>
+            <name>myRule_13_pmetnullrule</name>
             <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>myVariable_old</leftValueReference>
@@ -1000,12 +1329,12 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>myRule_12_A1</targetReference>
+                <targetReference>myRule_13_A1</targetReference>
             </connector>
             <label>Previously Met - Null</label>
         </rules>
         <rules>
-            <name>myRule_12_pmetrule</name>
+            <name>myRule_13_pmetrule</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <processMetadataValues>
@@ -1080,7 +1409,7 @@
                 <stringValue>NOW()</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_13_myWaitEvent_myWait_myRule_12_event_0_SA1_6053957059</name>
+        <name>formula_14_myWaitEvent_myWait_myRule_13_event_0_SA1_8662380810</name>
         <dataType>DateTime</dataType>
         <expression>NOW()</expression>
     </formulas>
@@ -1091,7 +1420,7 @@
                 <stringValue>NOW()+[agf__ADM_Work__c].agf__Scrum_Team__c.Work_Expiration_Delay__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_14_myRule_12_A1_5233607649</name>
+        <name>formula_15_myRule_13_A1_2031289490</name>
         <dataType>Date</dataType>
         <expression>NOW()+{!myVariable_current.agf__Scrum_Team__r.Work_Expiration_Delay__c}</expression>
     </formulas>
@@ -1102,7 +1431,7 @@
                 <stringValue>IF(ISBLANK([agf__ADM_Work__c].agf__Assignee__c ), $User.Id , [agf__ADM_Work__c].agf__Assignee__c) </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_2_myRule_1_A1_6330519236</name>
+        <name>formula_3_myRule_1_A1_1492602347</name>
         <dataType>String</dataType>
         <expression>IF(ISBLANK({!myVariable_current.agf__Assignee__c} ), {!$User.Id} , {!myVariable_current.agf__Assignee__c})</expression>
     </formulas>
@@ -1119,7 +1448,7 @@ IF(
 )</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_8_myRule_4_A1_0710493672</name>
+        <name>formula_9_myRule_5_A1_7169725774</name>
         <dataType>String</dataType>
         <expression>
 
@@ -1129,7 +1458,7 @@ IF(
 {!myVariable_current.agf__Details__c} 
 )</expression>
     </formulas>
-    <interviewLabel>Work_Create_and_Update-18_InterviewLabel</interviewLabel>
+    <interviewLabel>Work_Create_and_Update-21_InterviewLabel</interviewLabel>
     <label>Work: Create and Update</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -1181,12 +1510,12 @@ IF(
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_12_A1</name>
+        <name>myRule_13_A1</name>
         <label>Set Expiration Date</label>
-        <locationX>1200</locationX>
+        <locationX>1300</locationX>
         <locationY>200</locationY>
         <connector>
-            <targetReference>myWait_myRule_12</targetReference>
+            <targetReference>myWait_myRule_13</targetReference>
         </connector>
         <filters>
             <processMetadataValues>
@@ -1234,7 +1563,7 @@ IF(
             </processMetadataValues>
             <field>Inactive_Date__c</field>
             <value>
-                <elementReference>formula_14_myRule_12_A1_5233607649</elementReference>
+                <elementReference>formula_15_myRule_13_A1_2031289490</elementReference>
             </value>
         </inputAssignments>
         <object>agf__ADM_Work__c</object>
@@ -1269,7 +1598,7 @@ IF(
         <locationX>100</locationX>
         <locationY>200</locationY>
         <connector>
-            <targetReference>myDecision3</targetReference>
+            <targetReference>myDecision4</targetReference>
         </connector>
         <filters>
             <processMetadataValues>
@@ -1317,7 +1646,7 @@ IF(
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <elementReference>formula_2_myRule_1_A1_6330519236</elementReference>
+                <elementReference>formula_3_myRule_1_A1_1492602347</elementReference>
             </value>
         </inputAssignments>
         <object>agf__ADM_Work__c</object>
@@ -1347,12 +1676,12 @@ IF(
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_4_A1</name>
+        <name>myRule_5_A1</name>
         <label>Update Related User Stories</label>
-        <locationX>400</locationX>
+        <locationX>500</locationX>
         <locationY>200</locationY>
         <connector>
-            <targetReference>myDecision9</targetReference>
+            <targetReference>myDecision10</targetReference>
         </connector>
         <filters>
             <processMetadataValues>
@@ -1400,7 +1729,7 @@ IF(
             </processMetadataValues>
             <field>Work_Details__c</field>
             <value>
-                <elementReference>formula_8_myRule_4_A1_0710493672</elementReference>
+                <elementReference>formula_9_myRule_5_A1_7169725774</elementReference>
             </value>
         </inputAssignments>
         <object>copado__User_Story__c</object>
@@ -1430,12 +1759,12 @@ IF(
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myWaitEvent_myWait_myRule_12_event_0_SA1</name>
+        <name>myWaitEvent_myWait_myRule_13_event_0_SA1</name>
         <label>Set to Inactive</label>
-        <locationX>1200</locationX>
+        <locationX>1300</locationX>
         <locationY>200</locationY>
         <connector>
-            <targetReference>myWaitEvent_myWait_myRule_12_event_0_postWaitExecutionAssignment</targetReference>
+            <targetReference>myWaitEvent_myWait_myRule_13_event_0_postWaitExecutionAssignment</targetReference>
         </connector>
         <filters>
             <processMetadataValues>
@@ -1483,7 +1812,7 @@ IF(
             </processMetadataValues>
             <field>agf__Closed_On__c</field>
             <value>
-                <elementReference>formula_13_myWaitEvent_myWait_myRule_12_event_0_SA1_6053957059</elementReference>
+                <elementReference>formula_14_myWaitEvent_myWait_myRule_13_event_0_SA1_8662380810</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -1524,7 +1853,7 @@ IF(
         </inputAssignments>
         <object>agf__ADM_Work__c</object>
     </recordUpdates>
-    <startElementReference>myVariable_waitStartTimeAssignment</startElementReference>
+    <startElementReference>isChangedDecision2_myRule_1_agf_Assignee_c</startElementReference>
     <status>Active</status>
     <variables>
         <name>cancelWaits</name>
@@ -1550,17 +1879,17 @@ IF(
         <objectType>agf__ADM_Work__c</objectType>
     </variables>
     <variables>
-        <name>myVariable_waitStartTimeVariable</name>
-        <dataType>DateTime</dataType>
+        <name>myWaitEvent_myWait_myRule_11_event_0_postActionExecutionVariable</name>
+        <dataType>Boolean</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <value>
-            <elementReference>$Flow.CurrentDateTime</elementReference>
+            <booleanValue>false</booleanValue>
         </value>
     </variables>
     <variables>
-        <name>myWaitEvent_myWait_myRule_12_event_0_postActionExecutionVariable</name>
+        <name>myWaitEvent_myWait_myRule_13_event_0_postActionExecutionVariable</name>
         <dataType>Boolean</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
@@ -1570,8 +1899,8 @@ IF(
         </value>
     </variables>
     <waits>
-        <name>myWait_myRule_12</name>
-        <label>myWait_myRule_12</label>
+        <name>myWait_myRule_11</name>
+        <label>myWait_myRule_11</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
         <defaultConnectorLabel>defaultLabel</defaultConnectorLabel>
@@ -1582,17 +1911,76 @@ IF(
                     <stringValue>referenced</stringValue>
                 </value>
             </processMetadataValues>
-            <name>myWaitEvent_myWait_myRule_12_event_0</name>
+            <name>myWaitEvent_myWait_myRule_11_event_0</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>myWaitEvent_myWait_myRule_12_event_0_postActionExecutionVariable</leftValueReference>
+                <leftValueReference>myWaitEvent_myWait_myRule_11_event_0_postActionExecutionVariable</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>myPostWaitDecision_myWaitEvent_myWait_myRule_12_event_0</targetReference>
+                <targetReference>myPostWaitDecision_myWaitEvent_myWait_myRule_11_event_0</targetReference>
+            </connector>
+            <eventType>DateRefAlarmEvent</eventType>
+            <inputParameters>
+                <name>TimeTableColumnEnumOrId</name>
+                <value>
+                    <stringValue>agf__ADM_Work__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>EntityObjectId</name>
+                <value>
+                    <elementReference>myVariable_current.Id</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>TimeOffsetUnit</name>
+                <value>
+                    <stringValue>Days</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>TimeOffset</name>
+                <value>
+                    <numberValue>0.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>TimeFieldColumnEnumOrId</name>
+                <value>
+                    <stringValue>agf__Closed_On__c</stringValue>
+                </value>
+            </inputParameters>
+            <label>myWaitEvent_myWait_myRule_11_event_0</label>
+        </waitEvents>
+    </waits>
+    <waits>
+        <name>myWait_myRule_13</name>
+        <label>myWait_myRule_13</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>defaultLabel</defaultConnectorLabel>
+        <waitEvents>
+            <processMetadataValues>
+                <name>inputParameterType</name>
+                <value>
+                    <stringValue>referenced</stringValue>
+                </value>
+            </processMetadataValues>
+            <name>myWaitEvent_myWait_myRule_13_event_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>myWaitEvent_myWait_myRule_13_event_0_postActionExecutionVariable</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myPostWaitDecision_myWaitEvent_myWait_myRule_13_event_0</targetReference>
             </connector>
             <eventType>DateRefAlarmEvent</eventType>
             <inputParameters>
@@ -1625,7 +2013,7 @@ IF(
                     <stringValue>Inactive_Date__c</stringValue>
                 </value>
             </inputParameters>
-            <label>myWaitEvent_myWait_myRule_12_event_0</label>
+            <label>myWaitEvent_myWait_myRule_13_event_0</label>
         </waitEvents>
     </waits>
 </Flow>
