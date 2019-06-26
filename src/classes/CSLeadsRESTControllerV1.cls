@@ -35,7 +35,7 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
             RestContext.response.statusCode = 500;
             String errorMessage = 'Error: ' + e.getMessage();
             errorMessage += '. Request: ' + RestContext.request;
-            Logger.logNow('CSLeadsRESTControllerV1', 'patchRequest', errorMessage, 'Error');
+            Logger.logNow('CSLeadsRESTControllerV1', 'postRequest', errorMessage, 'Error');
         }
     }
 
@@ -43,26 +43,27 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
         String jsonRequest = request.requestBody.toString();
         if (jsonRequest.toLowerCase().contains('acknowledgment')) {
             jsonRequest = jsonRequest.replaceAll('(a{1}+|A{1}+)(cknowledgment)', 'acknowledgement');
-            envelope.addMessage('Autocorreted the request to update the spelling of acknowledgment to acknowledgement, with an e.');
+            envelope.addMessage('Autocorrected the request to update the spelling of acknowledgment to acknowledgement, with an e.');
         }
         RestLead requestLead = (RestLead) JSON.deserialize(jsonRequest, RestLead.class);
         List<Lead> leads = getLeadsById(new Set<Id>{requestLead.Id});
 
         if (leads.isEmpty()) {
             response.statusCode = statusCode.notFound;
-        } else if (requestLead.hasAcknowledgement() || requestLead.hasZuoraPaymentInfo() || requestLead.isComplete()) {
+        } else if (requestLead.isPatch()){
             Lead leadToUpdate = leads[0];
 
-            if (requestLead.isComplete()) {
+            if (requestLead.applicationCompleteDate != null && leadToUpdate.Application_Complete_Date__c == null) {
                 leadToUpdate.Application_Complete_Date__c = requestLead.applicationCompleteDate;
+                //pull credit
+                leadToUpdate.Soft_Pull_Credit_Report__c = true;
             }
-
-            if (requestLead.hasAcknowledgement()) {
+            if (requestLead.customerAcknowledgement == true && leadToUpdate.Privacy_Policy_Acknowledged__c == false) {
                 leadToUpdate.Privacy_Policy_Acknowledged__c = requestLead.customerAcknowledgement;
                 leadToUpdate.Terms_Conditions_Acknowledged__c = Datetime.now();
                 leadToUpdate.Terms_Conditions__c = requestLead.customerAgreementText;
             }
-            if (requestLead.hasZuoraPaymentInfo()) {
+            if (requestLead.zuoraPaymentRefId != null && leadToUpdate.Zuora_Payment_Ref_Id__c == null) {
                 leadToUpdate.Zuora_Payment_Ref_Id__c = requestLead.zuoraPaymentRefId;
                 leadToUpdate.Zuora_Payment_Ref_Id_Expiration_Date__c = requestLead.zuoraPaymentRefIdExpirationDate;
             }
@@ -86,6 +87,11 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
 
         if (requestLead.hasRequiredPostFields()) {
             Lead newLead = requestLead.asLead();
+
+            //Set DMLOptions to run Lead Assignment Rules on insert
+            Database.DMLOptions dmo = new Database.DMLOptions();
+            dmo.assignmentRuleHeader.useDefaultRule = true;
+            newLead.setOptions(dmo);
 
             insert newLead;
             List<Lead> leads = getLeadsById(new Set<Id>{newLead.Id});
@@ -174,17 +180,14 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
             this.continueApplicationLink = lead.Continue_Application_Link__c;
         }
 
-        public Boolean isComplete() {
-            return (applicationCompleteDate != null);
-        }
-
-        public Boolean hasAcknowledgement() {
-            return (customerAcknowledgement != null);
-        }
-
-        public Boolean hasZuoraPaymentInfo() {
-            return (zuoraPaymentRefId != null
-                && zuoraPaymentRefIdExpirationDate != null);
+        public Boolean isPatch() {
+            Boolean isPatch = false;
+            if (applicationCompleteDate != null ||
+                customerAcknowledgement != null ||
+                (zuoraPaymentRefId != null && zuoraPaymentRefIdExpirationDate != null)){
+                isPatch = true;
+            }
+            return isPatch;
         }
 
         public Boolean hasRequiredPostFields() {
@@ -244,6 +247,7 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
                 State = BlueWaveParent.convertAbbreviationToState(billingState),
                 PostalCode = billingZIPCode,
                 Parcel_Zip__c = serviceZIPCode,
+                LeadSource = 'Switch',
                 LoadZone__c = loadZone,
                 Customer_Referral__c = referralCode,
                 Product_line__c = 'Community Solar',
@@ -254,13 +258,27 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
                 Status = 'Sales Qualified',
                 Continue_Application_Link__c = continueApplicationLink
             );
-            Partner__c customerPartner = MyAccountController.getPartner(partnerId);
+
+
             if (partnerId != null) {
-                newLead.Application_Source_Phase_1__c = 'CSAP 3.0 Flow with Partner';
+                newLead.Application_Source_Phase_1__c = 'Switch with Partner';
             } else {
-                newLead.Application_Source_Phase_1__c = 'CSAP 3.0 Flow without Partner';
+                newLead.Application_Source_Phase_1__c = 'Switch without Partner';
             }
+
+            Partner__c customerPartner = new Partner__c();
+            try {
+                customerPartner = PartnerSelector.selectPartnerByPartnerId(partnerId);
+            } catch (Exception e) {
+                customerPartner = PartnerSelector.selectDefaultCSPartner();
+                if (partnerId != null) {
+                   Logger.logNow('CSLeadsRESTControllerV1', 'asLead', 'Partner not found with Id ' + partnerId + ' for Lead: ' + newLead.Id);
+                }
+            }
+
             newLead.Partner_Lookup__c = customerPartner.Id;
+            newLead.Partner_Email__c = customerPartner.Email__c;
+
             if (salesRepId != null){
                 newLead.bs_Sales_ID__c = salesRepId;
             } else if (customerPartner.Default_Sales_Rep__c != null) {
@@ -282,18 +300,18 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
                 newLead.Product__c = product[0].Id;
             }
 
-            List<Utility__c> EIAToUtility = [
+            List<Utility__c> utilityList = [
                 SELECT Id, Name, EIA_ID__c
                 FROM Utility__c
                 WHERE EIA_ID__c = :eiaId
                 LIMIT 1];
 
-            if (!EIAToUtility.isEmpty()) {
-                newLead.Utility_relationship__c = EIAToUtility[0].Id;
+            if (!utilityList.isEmpty()) {
+                newLead.Utility_relationship__c = utilityList[0].Id;
+            } else {
+                Logger.logNow('CSLeadsRESTControllerV1', 'asLead', 'No Utilities found with EIA Id: ' + eiaId );
             }
 
-            String continueApplicationUrl = Util.getCommunitySiteURL('Apply') + '/s/csap-payment?leadId=' + lead.Id;
-            newLead.Continue_Application_Link__c = continueApplicationUrl;
             return newLead;
         }
     }
