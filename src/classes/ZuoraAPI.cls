@@ -510,4 +510,49 @@ public with sharing class ZuoraAPI {
             return clientProjects;
         }
     }
+
+    public class InvoiceWithItems {
+        public Invoice invoice;
+        public List<InvoiceItem> items;
+    }
+
+    public class Invoice {
+        public String id;
+        public String accountId;
+        public Decimal amount;
+        public Date invoiceDate;
+        public Decimal balance;
+        public String Body;
+        public String InvoiceNumber;
+    }
+
+    public class InvoiceItem {
+        public String id;
+        public Decimal amount;
+        public Decimal balance;
+        public Decimal paymentAmount;
+        public Decimal creditAmount;
+        public String chargeDate;
+        public String chargeId;
+    }
+
+    public class DebitMemoWithItems {
+        public DebitMemo debitMemo;
+        public List<DebitMemoItem> items;
+    }
+
+    public class DebitMemo {
+        public String id;
+        public String accountId;
+        public Date debitMemoDate;
+        public Decimal amount;
+        public Decimal balance;
+        public String Project_Zcustom;
+        public String ClientOwner_Zcustom;
+    }
+
+    public class DebitMemoItem {
+        public String id;
+        public Decimal balance;
+    }
 }

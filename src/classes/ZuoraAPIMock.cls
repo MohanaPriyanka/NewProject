@@ -34,6 +34,8 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
             return getOrderByOwnerResponse(endpoint);
         } else if (endpoint.contains('v1/orders')) {
             return getOrderResponse(req.getBody());
+        } else if (endpoint.contains('v1/object/invoice')) {
+            return getInvoiceResponse(req.getBody());
         } else {
             return null;
         }
@@ -270,6 +272,19 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
             res.setBody(JSON.serialize(obso));
         }
 
+        return res;
+    }
+
+    public static HttpResponse getInvoiceResponse(String body) {
+        HttpResponse res = getJSON();
+        ZuoraAPI.Invoice result = new ZuoraAPI.Invoice();
+        result.id = '12345';
+        result.accountId = 'BW-00000076';
+        result.amount = 123.45;
+        result.balance = 23.45;
+        result.Body = 'SGVsbG8gV29ybGQ=';
+        result.InvoiceNumber = 'INV-12345';
+        res.setBody(JSON.serialize(result));
         return res;
     }
 
