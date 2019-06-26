@@ -544,6 +544,7 @@
         <fields>NAME</fields>
         <fields>New_Stage__c</fields>
         <fields>Previous_Stage__c</fields>
+        <fields>Stage_Duration__c</fields>
         <fields>Closed_On__c</fields>
         <relatedList>Opportunity_Change_History__c.Opportunity__c</relatedList>
     </relatedLists>
