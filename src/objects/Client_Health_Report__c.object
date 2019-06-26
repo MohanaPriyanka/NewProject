@@ -80,7 +80,7 @@
     <fields>
         <fullName>Client_DSO__c</fullName>
         <externalId>false</externalId>
-        <formula>IF(Customers_Invoiced__c &lt;= 0, 0, (Clients_Beginning_Balance__c + Clients_Invoiced__c - Clients_Payments__c)/(Clients_Invoiced__c/30))</formula>
+        <formula>IF(Clients_Invoiced__c &lt;= 0, 0, (Clients_Beginning_Balance__c + Clients_Invoiced__c - Clients_Payments__c)/(Clients_Invoiced__c/30))</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>Calculated from Customer Invoiced, Payments and Beginning Balance fields</inlineHelpText>
         <label>Client: DSO</label>
@@ -89,6 +89,34 @@
         <scale>2</scale>
         <trackTrending>false</trackTrending>
         <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Client_Health_Score_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>Client_Account__r.Name &amp; &apos; - &apos; &amp;
+CASE(
+  MONTH(End_Date__c),
+  1, &quot;January&quot;,
+  2, &quot;February&quot;,
+  3, &quot;March&quot;,
+  4, &quot;April&quot;,
+  5, &quot;May&quot;,
+  6, &quot;June&quot;,
+  7, &quot;July&quot;,
+  8, &quot;August&quot;,
+  9, &quot;September&quot;,
+  10, &quot;October&quot;,
+  11, &quot;November&quot;,
+  12, &quot;December&quot;,
+  &quot;&quot;
+) &amp; &apos; &apos; &amp;
+TEXT(Year(End_Date__c))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Client Health Score Name</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
@@ -224,9 +252,9 @@
         <externalId>false</externalId>
         <inlineHelpText>Scale 1-10</inlineHelpText>
         <label>NPS</label>
-        <precision>2</precision>
+        <precision>4</precision>
         <required>false</required>
-        <scale>0</scale>
+        <scale>2</scale>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
