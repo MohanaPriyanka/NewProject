@@ -72,6 +72,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Product_Escalation_Schedule__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Customer_Group__c</field>
             </layoutItems>
             <layoutItems>
@@ -535,6 +539,13 @@
     </relatedLists>
     <relatedLists>
         <relatedList>RelatedNoteList</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>New_Stage__c</fields>
+        <fields>Previous_Stage__c</fields>
+        <fields>Closed_On__c</fields>
+        <relatedList>Opportunity_Change_History__c.Opportunity__c</relatedList>
     </relatedLists>
     <relatedLists>
         <relatedList>RelatedEntityHistoryList</relatedList>
