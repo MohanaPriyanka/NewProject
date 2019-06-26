@@ -131,7 +131,7 @@ public class ZuoraCreditMemoAllocationService{
             null,
             false);
         String responseBody = response.getBody();
-        responseBody = responseBody.replace('__c','_Zcustom');
+        responseBody = ZuoraAPIHelper.cleanJSON(responseBody);
         ZuoraCreditMemoAllocationService.QueryResultCreditMemo zResponse;
         zResponse = (ZuoraCreditMemoAllocationService.QueryResultCreditMemo)JSON.deserialize(
             responseBody,

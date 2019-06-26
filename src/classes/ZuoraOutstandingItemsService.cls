@@ -142,7 +142,7 @@ public class ZuoraOutstandingItemsService{
     public static List<ZuoraAPI.DebitMemo> getOutstandingDebitMemos(String zAcctId) {
         HttpResponse response = ZuoraAPIHelper.callJSONEndpoint('GET','/v1/debitmemos/',null,false);
         String responseBody = response.getBody();
-        responseBody = responseBody.replace('__c','_Zcustom');
+        responseBody = ZuoraAPIHelper.cleanJSON(responseBody);
         QueryResultDebitMemo result =
             (QueryResultDebitMemo)JSON.deserialize(responseBody, QueryResultDebitMemo.class);
         List<ZuoraAPI.DebitMemo> debitMemosWithBalance = new List<ZuoraAPI.DebitMemo>();
@@ -157,7 +157,7 @@ public class ZuoraOutstandingItemsService{
 
     public static ZuoraAPI.DebitMemoWithItems getDebitMemoItems(ZuoraAPI.DebitMemo debitMemo) {
         HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('GET','/v1/debitmemos/' + debitMemo.id +'/items',null,false);
-        String responseBody = response.getBody().replace('__c','_Zcustom');
+        String responseBody = ZuoraAPIHelper.cleanJSON(response.getBody());
         QueryResultDebitMemoItem itemsQuery =
             (QueryResultDebitMemoItem)JSON.deserialize(responseBody, QueryResultDebitMemoItem.class);
         ZuoraAPI.DebitMemoWithItems debitMemoRecord = new ZuoraAPI.DebitMemoWithItems();

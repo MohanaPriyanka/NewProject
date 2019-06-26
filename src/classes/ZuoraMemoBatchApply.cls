@@ -69,7 +69,7 @@ public without sharing class ZuoraMemoBatchApply implements Database.Batchable<Z
             batchJob.setOutstandingCreditMemoItemsToApply(creditMemosByPage);
             batchJob.runBatch(5);
         } else {
-            Logger.logNow('ZuoraMemoBatchApply', 'finish', 'ZuoraMemoBatchApply has finished');
+            Logger.logNow('ZuoraMemoBatchApply', 'finish', 'ZuoraMemoBatchApply has finished','Info');
         }
     }
 }
