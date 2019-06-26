@@ -144,7 +144,7 @@ public class ZuoraCreditMemoAllocationService{
         if (numberOfMemos > 40){
             numberOfMemos = 40;
         }
-        String urlString = '/v1/creditmemos?status=Posted&sort=-number&pageSize=' + numberOfMemos;
+        String urlString = '/v1/creditmemos?status=Posted&sort=-creditMemoDate&pageSize=' + numberOfMemos;
         QueryResultCreditMemo zResponse = getCreditMemosByPage(urlString);
         return zResponse;
     }

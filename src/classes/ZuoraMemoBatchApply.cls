@@ -66,7 +66,7 @@ public without sharing class ZuoraMemoBatchApply implements Database.Batchable<Z
             ZuoraCreditMemoAllocationService.QueryResultCreditMemo query;
             query = ZuoraCreditMemoAllocationService.getCreditMemosByPage(this.nextPage);
             ZuoraMemoBatchApply batchJob = new ZuoraMemoBatchApply();
-            handleQuery(query);
+            batchJob.handleQuery(query);
             batchJob.runBatch(5);
         } else {
             Logger.logNow('ZuoraMemoBatchApply', 'finish', 'ZuoraMemoBatchApply has finished');
