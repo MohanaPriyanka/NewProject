@@ -1,6 +1,5 @@
 /**
  * Created by AlyssaCooper on 3/20/2019.
- * note to self: look at customercommunicationhandlertest and utilityaccountlogtriggerhandlertest
  */
 @IsTest
 public with sharing class SharedSolarSystemHandlerTest {
