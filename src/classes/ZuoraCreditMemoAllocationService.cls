@@ -35,6 +35,8 @@ public class ZuoraCreditMemoAllocationService{
 
     public class QueryResultCreditMemo {
         public List<ZuoraAPI.ZuoraCreditMemo> creditmemos;
+        public String nextPage;
+        public String success;
     }
 
     public class QueryResultCreditMemoItems {
@@ -122,18 +124,34 @@ public class ZuoraCreditMemoAllocationService{
         return application;
     }
 
-    public static List<ZuoraAPI.ZuoraCreditMemo> getAllCreditMemos() {
-        HttpResponse response = ZuoraAPIHelper.callJSONEndpoint('GET','/v1/creditMemos/',null,false);
+    public static QueryResultCreditMemo getCreditMemosByPage(String urlString){
+        HttpResponse response = ZuoraAPIHelper.callJSONEndpoint(
+            'GET',
+            urlString,
+            null,
+            false);
         String responseBody = response.getBody();
         responseBody = responseBody.replace('__c','_Zcustom');
-        QueryResultCreditMemo zResponse;
-        zResponse = (QueryResultCreditMemo)JSON.deserialize(responseBody, QueryResultCreditMemo.class);
-        return zResponse.creditmemos;
+        ZuoraCreditMemoAllocationService.QueryResultCreditMemo zResponse;
+        zResponse = (ZuoraCreditMemoAllocationService.QueryResultCreditMemo)JSON.deserialize(
+            responseBody,
+            ZuoraCreditMemoAllocationService.QueryResultCreditMemo.class
+        );
+        return zResponse;
+    }
+
+    public static QueryResultCreditMemo getFirstPageCreditMemos(Integer numberOfMemos) {
+        if (numberOfMemos > 40){
+            numberOfMemos = 40;
+        }
+        String urlString = '/v1/creditmemos?status=Posted&sort=-number&pageSize=' + numberOfMemos;
+        QueryResultCreditMemo zResponse = getCreditMemosByPage(urlString);
+        return zResponse;
     }
 
     // Assumes credit memos only have 1 item. As of 6/2019, every adjustment in SF only = 1 credit memo item in Zuora
     public static ZuoraAPI.CreditMemoWithItem getItemFromCreditMemo(ZuoraAPI.ZuoraCreditMemo creditMemo) {
-        String urlString = '/v1/creditMemos/' + creditMemo.Id + '/items';
+        String urlString = '/v1/creditmemos/' + creditMemo.Id + '/items';
         HttpResponse response = ZuoraAPIHelper.callJSONEndpoint('GET',urlString,null,false);
         QueryResultCreditMemoItems zResponse;
         zResponse = (QueryResultCreditMemoItems)JSON.deserialize(response.getBody(), QueryResultCreditMemoItems.class);
@@ -142,40 +160,5 @@ public class ZuoraCreditMemoAllocationService{
         creditMemoRecord.creditMemo = creditMemo;
         creditMemoRecord.item = zResponse.items[0];
         return creditMemoRecord;
-    }
-
-    public static List<ZuoraAPI.CreditMemoWithItem> sortByDate(List<ZuoraAPI.CreditMemoWithItem> allZuoraCreditMemos){
-        List<CreditMemoWrapper> creditWrappers = new List<CreditMemoWrapper>();
-        List<ZuoraAPI.CreditMemoWithItem> sortedItems = new List<ZuoraAPI.CreditMemoWithItem>();
-
-        for (ZuoraAPI.CreditMemoWithItem creditWithItem : allZuoraCreditMemos){
-            creditWrappers.add(new CreditMemoWrapper(creditWithItem));
-        }
-        creditWrappers.sort();
-        for (Integer wrapperIndex = 0; wrapperIndex < creditWrappers.size(); wrapperIndex++) {
-            sortedItems.add(creditWrappers[wrapperIndex].memo);
-        }
-        return sortedItems;
-    }
-
-    public class CreditMemoWrapper implements Comparable {
-        public ZuoraAPI.CreditMemoWithItem memo;
-
-        public CreditMemoWrapper(ZuoraAPI.CreditMemoWithItem memo) {
-            this.memo = memo;
-        }
-
-        public Integer compareTo(Object compareTo) {
-            CreditMemoWrapper compareToItem = (CreditMemoWrapper) compareTo;
-            Integer returnValue = 0;
-            if (memo.creditMemo.creditMemoDate > compareToItem.memo.creditMemo.creditMemoDate) {
-                // Set return value to a positive value.
-                returnValue = 1;
-            } else if (memo.creditMemo.creditMemoDate < compareToItem.memo.creditMemo.creditMemoDate) {
-                // Set return value to a negative value.
-                returnValue = -1;
-            }
-            return returnValue;
-        }
     }
 }

@@ -169,36 +169,13 @@ public class ZuoraCreditMemoAllocationTest {
 
     @IsTest
     private static void testCreditMemoQuery() {
-        List<ZuoraAPI.ZuoraCreditMemo> creditMemos = ZuoraCreditMemoAllocationService.getAllCreditMemos();
+        List<ZuoraAPI.ZuoraCreditMemo> creditMemos;
+        creditMemos = (ZuoraCreditMemoAllocationService.getFirstPageCreditMemos(10)).creditmemos;
         System.assertEquals(2,creditMemos.size());
 
         ZuoraAPI.CreditMemoWithItem creditMemoWithItem = ZuoraCreditMemoAllocationService.getItemFromCreditMemo(creditMemos[0]);
         System.assertEquals(creditMemos[0].Id, creditMemoWithItem.CreditMemo.Id);
         System.assertNotEquals(5, creditMemoWithItem.item.amount);
-    }
-
-    @IsTest
-    private static void testCreditMemoSorting() {
-        List<ZuoraAPI.CreditMemoWithItem> unsortedItems = new List<ZuoraAPI.CreditMemoWithItem>();
-        List<ZuoraAPI.CreditMemoWithItem> sortedItems = new List<ZuoraAPI.CreditMemoWithItem>();
-        Date newestDate = Date.newInstance(2019,06,10);
-        Date oldestDate = Date.newInstance(2019,06,03);
-
-        List<ZuoraAPI.ZuoraCreditMemo> creditMemos = ZuoraCreditMemoAllocationService.getAllCreditMemos();
-        System.assertEquals(2,creditMemos.size());
-        unsortedItems.add(ZuoraCreditMemoAllocationService.getItemFromCreditMemo(creditMemos[0]));
-        unsortedItems.add(ZuoraCreditMemoAllocationService.getItemFromCreditMemo(creditMemos[1]));
-
-        System.assertEquals(2, unsortedItems.size());
-        System.assertEquals(newestDate, unsortedItems[0].creditMemo.creditMemoDate);
-        System.assertEquals(oldestDate, unsortedItems[1].creditMemo.creditMemoDate);
-
-        Test.startTest();
-        sortedItems = ZuoraCreditMemoAllocationService.sortByDate(unsortedItems);
-        Test.stopTest();
-
-        System.assertEquals(oldestDate, sortedItems[0].creditMemo.creditMemoDate);
-        System.assertEquals(newestDate, sortedItems[1].creditMemo.creditMemoDate);
     }
 
     @isTest
@@ -329,7 +306,8 @@ public class ZuoraCreditMemoAllocationTest {
         System.assertEquals(false, outstandingItems[0].isInvoiceItem);
         System.assertEquals(false, outstandingItems[3].isInvoiceItem);
 
-        List<ZuoraAPI.ZuoraCreditMemo> creditMemos = ZuoraCreditMemoAllocationService.getAllCreditMemos();
+        List<ZuoraAPI.ZuoraCreditMemo> creditMemos;
+        creditMemos = (ZuoraCreditMemoAllocationService.getFirstPageCreditMemos(10)).creditmemos;
         ZuoraAPI.CreditMemoWithItem creditMemoWithItem = ZuoraCreditMemoAllocationService.getItemFromCreditMemo(creditMemos[0]);
 
         Test.startTest();
@@ -372,8 +350,8 @@ public class ZuoraCreditMemoAllocationTest {
     private static void testBatch() {
         Test.startTest();
         ZuoraMemoBatchApply batchJob = new ZuoraMemoBatchApply();
-        batchJob.init();
-        batchJob.runBatch(20);
+        batchJob.startApplication();
+        batchJob.runBatch(5);
         Test.stopTest();
 
         List<Error_Log__c> errorLogs = [

@@ -38,15 +38,15 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
             return getOrderByOwnerResponse(endpoint);
         } else if (endpoint.contains('v1/orders')) {
             return getOrderResponse(req.getBody());
-        } else if (endpoint.contains('/v1/creditMemos/') && endpoint.contains('/items')) {
+        } else if (endpoint.contains('/v1/creditmemos/') && endpoint.contains('/items')) {
             return getCreditMemoItems();
         } else if (endpoint.contains('/v1/invoices/') && endpoint.contains('/items')) {
             return getInvoiceItem(endpoint);
-        } else if (endpoint.contains('/v1/debitMemos/') && endpoint.contains('/items')) {
+        } else if (endpoint.contains('/v1/debitmemos/') && endpoint.contains('/items')) {
             return getDebitMemoItems();
-        } else if (endpoint.contains('/v1/creditMemos/')) {
+        } else if (endpoint.contains('/v1/creditmemos?status=Posted') || endpoint.contains('/v1/creditmemos/')) {
             return getCreditMemos();
-        } else if (endpoint.contains('/v1/debitMemos/')) {
+        } else if (endpoint.contains('/v1/debitmemos/')) {
             return getDebitMemos();
         } else {
             return null;
@@ -316,7 +316,34 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
     private static HttpResponse getCreditMemos() {
         HttpResponse res = getJSON();
         res.setBody('{ "creditmemos" : [ { ' +
-            '"id" : "2c92c0f86b26b2ae016b41aa16732d6c", ' +
+            '"id" : "2c92c0f86b1bc435016b1e94e99a44a7", ' +
+            '"number" : "CM00000899", ' +
+            '"accountId" : "2c92c0f96b1bd14b016b1e8ff191385b", ' +
+            '"currency" : "USD", ' +
+            '"creditMemoDate" : "2019-06-03", ' +
+            '"targetDate" : null, ' +
+            '"postedById" : "2c92c0f868e558450168f41d281b26c0", ' +
+            '"postedOn" : "2019-06-03 14:23:29", ' +
+            '"status" : "Posted", "amount" : 100.000000000, ' +
+            '"taxAmount" : 0E-9, "totalTaxExemptAmount" : 0E-9, ' +
+            '"unappliedAmount" : 120000.00, "refundAmount" : 0E-9, ' +
+            '"appliedAmount" : 100.000000000, "comment" : "", ' +
+            '"source" : "AdhocFromInvoice", "sourceId" : null,' +
+            ' "referredInvoiceId" : "2c92c0956b1bcd0e016b1e93a1c153be", ' +
+            '"reasonCode" : "Correcting invoice error", ' +
+            '"createdDate" : "2019-06-03 14:23:24", ' +
+            '"createdById" : "2c92c0f868e558450168f41d281b26c0", ' +
+            '"updatedDate" : "2019-06-03 14:23:29", ' +
+            '"updatedById" : "2c92c0f868e558450168f41d281b26c0", ' +
+            '"cancelledOn" : null, ' +
+            '"cancelledById" : null, ' +
+            '"latestPDFFileId" : "2c92c08d6b1bd06b016b1e9525483791",' +
+            ' "Project__c" : "SSS-000098", ' +
+            '"ClientOwner__c" : "BW-00000385", ' +
+            '"transferredToAccounting" : "No", ' +
+            '"excludeFromAutoApplyRules" : false, ' +
+            '"autoApplyUponPosting" : true }, ' +
+            '{"id" : "2c92c0f86b26b2ae016b41aa16732d6c", ' +
             '"number" : "CM00000900", ' +
             '"accountId" : "2c92c0f86b26b2ae016b41a331477ec0", ' +
             '"currency" : "USD", ' +
@@ -346,34 +373,7 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
             '"ClientOwner__c" : "BW-00000385", ' +
             '"transferredToAccounting" : "No", ' +
             '"excludeFromAutoApplyRules" : false, ' +
-            '"autoApplyUponPosting" : true }, ' +
-            '{ "id" : "2c92c0f86b1bc435016b1e94e99a44a7", ' +
-            '"number" : "CM00000899", ' +
-            '"accountId" : "2c92c0f96b1bd14b016b1e8ff191385b", ' +
-            '"currency" : "USD", ' +
-            '"creditMemoDate" : "2019-06-03", ' +
-            '"targetDate" : null, ' +
-            '"postedById" : "2c92c0f868e558450168f41d281b26c0", ' +
-            '"postedOn" : "2019-06-03 14:23:29", ' +
-            '"status" : "Posted", "amount" : 100.000000000, ' +
-            '"taxAmount" : 0E-9, "totalTaxExemptAmount" : 0E-9, ' +
-            '"unappliedAmount" : 120000.00, "refundAmount" : 0E-9, ' +
-            '"appliedAmount" : 100.000000000, "comment" : "", ' +
-            '"source" : "AdhocFromInvoice", "sourceId" : null,' +
-            ' "referredInvoiceId" : "2c92c0956b1bcd0e016b1e93a1c153be", ' +
-            '"reasonCode" : "Correcting invoice error", ' +
-            '"createdDate" : "2019-06-03 14:23:24", ' +
-            '"createdById" : "2c92c0f868e558450168f41d281b26c0", ' +
-            '"updatedDate" : "2019-06-03 14:23:29", ' +
-            '"updatedById" : "2c92c0f868e558450168f41d281b26c0", ' +
-            '"cancelledOn" : null, ' +
-            '"cancelledById" : null, ' +
-            '"latestPDFFileId" : "2c92c08d6b1bd06b016b1e9525483791",' +
-            ' "Project__c" : "SSS-000098", ' +
-            '"ClientOwner__c" : "BW-00000385", ' +
-            '"transferredToAccounting" : "No", ' +
-            '"excludeFromAutoApplyRules" : false, ' +
-            '"autoApplyUponPosting" : true } ] }');
+            '"autoApplyUponPosting" : true }] } ');
         return res;
     }
 
