@@ -2,9 +2,13 @@
 <ContentAsset xmlns="http://soap.sforce.com/2006/04/metadata">
     <isVisibleByExternalUsers>false</isVisibleByExternalUsers>
     <language>en_US</language>
-    <masterLabel>stock_AllBlue_potential_sky_and_cl1</masterLabel>
-    <originNetwork>Client Portal</originNetwork>
+    <masterLabel>BlueLogo</masterLabel>
+    <originNetwork>FAQ</originNetwork>
     <relationships>
+        <network>
+            <access>VIEWER</access>
+            <name>FAQ</name>
+        </network>
         <network>
             <access>VIEWER</access>
             <name>Client Portal</name>
@@ -21,7 +25,7 @@
     <versions>
         <version>
             <number>1</number>
-            <pathOnClient>(stock) AllBlue potential - sky and clouds.jpg</pathOnClient>
+            <pathOnClient>BlueLogo.png</pathOnClient>
         </version>
     </versions>
 </ContentAsset>
