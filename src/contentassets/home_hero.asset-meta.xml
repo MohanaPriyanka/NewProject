@@ -2,7 +2,7 @@
 <ContentAsset xmlns="http://soap.sforce.com/2006/04/metadata">
     <isVisibleByExternalUsers>false</isVisibleByExternalUsers>
     <language>en_US</language>
-    <masterLabel>stock_AllBlue_potential_sky_and_cl1</masterLabel>
+    <masterLabel>home_hero</masterLabel>
     <originNetwork>Client Portal</originNetwork>
     <relationships>
         <network>
@@ -21,7 +21,7 @@
     <versions>
         <version>
             <number>1</number>
-            <pathOnClient>(stock) AllBlue potential - sky and clouds.jpg</pathOnClient>
+            <pathOnClient>home_hero.jpg</pathOnClient>
         </version>
     </versions>
 </ContentAsset>

@@ -6,18 +6,18 @@
     <communityRoles/>
     <disableReputationRecordConversations>false</disableReputationRecordConversations>
     <emailSenderAddress>aschulte@bluewavesolar.com</emailSenderAddress>
-    <emailSenderName>Alex Schulte</emailSenderName>
+    <emailSenderName>BlueWave Client Services</emailSenderName>
     <enableCustomVFErrorPageOverrides>false</enableCustomVFErrorPageOverrides>
     <enableDirectMessages>false</enableDirectMessages>
     <enableGuestChatter>false</enableGuestChatter>
-    <enableGuestFileAccess>false</enableGuestFileAccess>
+    <enableGuestFileAccess>true</enableGuestFileAccess>
     <enableInvitation>false</enableInvitation>
     <enableKnowledgeable>false</enableKnowledgeable>
     <enableMemberVisibility>false</enableMemberVisibility>
     <enableNicknameDisplay>false</enableNicknameDisplay>
     <enablePrivateMessages>false</enablePrivateMessages>
     <enableReputation>false</enableReputation>
-    <enableShowAllNetworkSettings>false</enableShowAllNetworkSettings>
+    <enableShowAllNetworkSettings>true</enableShowAllNetworkSettings>
     <enableSiteAsContainer>true</enableSiteAsContainer>
     <enableTalkingAboutStats>false</enableTalkingAboutStats>
     <enableTopicAssignmentRules>true</enableTopicAssignmentRules>
@@ -59,7 +59,6 @@
     </navigationLinkSet>
     <networkMemberGroups>
         <profile>admin</profile>
-        <profile>cs client portal user</profile>
         <profile>cs client partner login</profile>
     </networkMemberGroups>
     <networkPageOverrides>
@@ -69,6 +68,7 @@
         <loginPageOverrideSetting>Designer</loginPageOverrideSetting>
         <selfRegProfilePageOverrideSetting>Designer</selfRegProfilePageOverrideSetting>
     </networkPageOverrides>
+    <newSenderAddress>lalexander@bluewavesolar.com</newSenderAddress>
     <picassoSite>Client_Portal_C</picassoSite>
     <selfRegistration>false</selfRegistration>
     <sendWelcomeEmail>true</sendWelcomeEmail>
