@@ -4,29 +4,62 @@
     <allowMembersToFlag>false</allowMembersToFlag>
     <changePasswordTemplate>CS_Application_Email_Notifications/CommunityChangePasswordEmailTemplate</changePasswordTemplate>
     <communityRoles/>
-    <disableReputationRecordConversations>true</disableReputationRecordConversations>
+    <disableReputationRecordConversations>false</disableReputationRecordConversations>
     <emailSenderAddress>aschulte@bluewavesolar.com</emailSenderAddress>
-    <emailSenderName>Alex Schulte</emailSenderName>
+    <emailSenderName>BlueWave Client Services</emailSenderName>
     <enableCustomVFErrorPageOverrides>false</enableCustomVFErrorPageOverrides>
-    <enableDirectMessages>true</enableDirectMessages>
+    <enableDirectMessages>false</enableDirectMessages>
     <enableGuestChatter>false</enableGuestChatter>
-    <enableGuestFileAccess>false</enableGuestFileAccess>
+    <enableGuestFileAccess>true</enableGuestFileAccess>
     <enableInvitation>false</enableInvitation>
     <enableKnowledgeable>false</enableKnowledgeable>
+    <enableMemberVisibility>false</enableMemberVisibility>
     <enableNicknameDisplay>false</enableNicknameDisplay>
     <enablePrivateMessages>false</enablePrivateMessages>
     <enableReputation>false</enableReputation>
-    <enableShowAllNetworkSettings>false</enableShowAllNetworkSettings>
+    <enableShowAllNetworkSettings>true</enableShowAllNetworkSettings>
     <enableSiteAsContainer>true</enableSiteAsContainer>
-    <enableTalkingAboutStats>true</enableTalkingAboutStats>
+    <enableTalkingAboutStats>false</enableTalkingAboutStats>
     <enableTopicAssignmentRules>true</enableTopicAssignmentRules>
     <enableTopicSuggestions>false</enableTopicSuggestions>
-    <enableUpDownVote>true</enableUpDownVote>
+    <enableUpDownVote>false</enableUpDownVote>
     <forgotPasswordTemplate>Emails_to_Delete/CommunityForgotPasswordEmailTemplate</forgotPasswordTemplate>
     <gatherCustomerSentimentData>false</gatherCustomerSentimentData>
+    <navigationLinkSet>
+        <navigationMenuItem>
+            <label>Reporting</label>
+            <position>1</position>
+            <publiclyAvailable>false</publiclyAvailable>
+            <subMenu>
+                <navigationMenuItem>
+                    <label>Dashboard</label>
+                    <position>0</position>
+                    <publiclyAvailable>false</publiclyAvailable>
+                    <target>/Dashboard</target>
+                    <type>InternalLink</type>
+                </navigationMenuItem>
+                <navigationMenuItem>
+                    <label>Reports</label>
+                    <position>1</position>
+                    <publiclyAvailable>false</publiclyAvailable>
+                    <target>/report/Report/Recent</target>
+                    <type>InternalLink</type>
+                </navigationMenuItem>
+            </subMenu>
+            <type>MenuLabel</type>
+        </navigationMenuItem>
+        <navigationMenuItem>
+            <label>Logout</label>
+            <position>2</position>
+            <publiclyAvailable>false</publiclyAvailable>
+            <target>https://bluewavememberportal.force.com/secur/logout.jsp</target>
+            <targetPreference>OpenExternalLinkInSameTab</targetPreference>
+            <type>ExternalLink</type>
+        </navigationMenuItem>
+    </navigationLinkSet>
     <networkMemberGroups>
         <profile>admin</profile>
-        <profile>cs client portal user</profile>
+        <profile>cs client partner login</profile>
     </networkMemberGroups>
     <networkPageOverrides>
         <changePasswordPageOverrideSetting>Standard</changePasswordPageOverrideSetting>
@@ -35,6 +68,7 @@
         <loginPageOverrideSetting>Designer</loginPageOverrideSetting>
         <selfRegProfilePageOverrideSetting>Designer</selfRegProfilePageOverrideSetting>
     </networkPageOverrides>
+    <newSenderAddress>clientservices@bluewavesolar.com</newSenderAddress>
     <picassoSite>Client_Portal_C</picassoSite>
     <selfRegistration>false</selfRegistration>
     <sendWelcomeEmail>true</sendWelcomeEmail>
@@ -45,5 +79,5 @@
         <standardTab>Chatter</standardTab>
     </tabs>
     <urlPathPrefix>clientportal</urlPathPrefix>
-    <welcomeTemplate>CS_Application_Email_Notifications/CommunityWelcomeEmailTemplate</welcomeTemplate>
+    <welcomeTemplate>CS_Application_Email_Notifications/X19_0524_Portal_Welcome_Email_Client</welcomeTemplate>
 </Network>
