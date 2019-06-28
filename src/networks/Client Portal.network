@@ -5,7 +5,7 @@
     <changePasswordTemplate>CS_Application_Email_Notifications/CommunityChangePasswordEmailTemplate</changePasswordTemplate>
     <communityRoles/>
     <disableReputationRecordConversations>false</disableReputationRecordConversations>
-    <emailSenderAddress>aschulte@bluewavesolar.com</emailSenderAddress>
+    <emailSenderAddress>clientservices@bluewavesolar.com</emailSenderAddress>
     <emailSenderName>BlueWave Client Services</emailSenderName>
     <enableCustomVFErrorPageOverrides>false</enableCustomVFErrorPageOverrides>
     <enableDirectMessages>false</enableDirectMessages>
@@ -68,7 +68,6 @@
         <loginPageOverrideSetting>Designer</loginPageOverrideSetting>
         <selfRegProfilePageOverrideSetting>Designer</selfRegProfilePageOverrideSetting>
     </networkPageOverrides>
-    <newSenderAddress>clientservices@bluewavesolar.com</newSenderAddress>
     <picassoSite>Client_Portal_C</picassoSite>
     <selfRegistration>false</selfRegistration>
     <sendWelcomeEmail>true</sendWelcomeEmail>
