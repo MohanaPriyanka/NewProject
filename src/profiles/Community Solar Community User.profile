@@ -8305,6 +8305,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>et4ae5__AccessTokenJwtRequest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>et4ae5__AccessTokenRequest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -8477,6 +8481,18 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>et4ae5__Feature</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>et4ae5__FeatureBase</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>et4ae5__FeatureManager</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>et4ae5__FetchJourneyBuilderRequest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -8525,7 +8541,15 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>et4ae5__IBooleanParameter</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>et4ae5__ICalloutResult</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>et4ae5__IIntegerParameter</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -8554,6 +8578,14 @@
     </classAccesses>
     <classAccesses>
         <apexClass>et4ae5__InactiveRSSSendAPIUserEmail</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>et4ae5__InactiveTseRSSSendAPIUserEmail</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>et4ae5__InactiveUserSendApiUserEmail</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -8601,6 +8633,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>et4ae5__JWTSettingCS</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>et4ae5__JWTSettingLMA</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>et4ae5__Journey</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -8626,6 +8666,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>et4ae5__JourneyBuilderIntegrationManager</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>et4ae5__JwtUtility</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -8814,6 +8858,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>et4ae5__OAuth2TokenManagerFactory</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>et4ae5__OAuth2TokenManagerJWT</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -9013,6 +9061,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>et4ae5__TSEFlagCS</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>et4ae5__TestEmailSendRecordsHelper</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -9089,6 +9141,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>et4ae5__Test_FeatureManager</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>et4ae5__Test_FutureContext</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -9134,6 +9190,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>et4ae5__Test_JourneyBuilderIntegrationManager</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>et4ae5__Test_JwtUtility</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -9222,6 +9282,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>et4ae5__Test_OAuth2TokenManagerFactory</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>et4ae5__Test_OAuth2TokenManagerJWT</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -38839,6 +38903,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Partner__c.CS_Referral_Status__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Partner__c.City__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -63249,11 +63318,11 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>BlueWave_Surveys__c-Net Promoter Score</layout>
-        <recordType>BlueWave_Surveys__c.Net_Promoter_Score</recordType>
+        <recordType>BlueWave_Surveys__c.CS_Customer_Survey</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>BlueWave_Surveys__c-Net Promoter Score</layout>
-        <recordType>BlueWave_Surveys__c.CS_Customer_Survey</recordType>
+        <recordType>BlueWave_Surveys__c.Net_Promoter_Score</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>BlueWave_Surveys__c-Net Promoter Score - Partner</layout>
@@ -63308,6 +63377,10 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Case-Customer Portal Case</layout>
+        <recordType>Case.Client_Services</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Case-Customer Portal Case</layout>
         <recordType>Case.Customer_Care</recordType>
     </layoutAssignments>
     <layoutAssignments>
@@ -63321,10 +63394,6 @@
     <layoutAssignments>
         <layout>Case-Customer Portal Case</layout>
         <recordType>Case.Product_Support</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Case-Customer Portal Case</layout>
-        <recordType>Case.Client_Services</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>CaseClose-Close Case Layout</layout>
@@ -63740,15 +63809,15 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>MPM4_BASE__Milestone1_Project__c-Projects</layout>
+        <recordType>MPM4_BASE__Milestone1_Project__c.C_I</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>MPM4_BASE__Milestone1_Project__c-Projects</layout>
         <recordType>MPM4_BASE__Milestone1_Project__c.Competitor</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>MPM4_BASE__Milestone1_Project__c-Projects</layout>
         <recordType>MPM4_BASE__Milestone1_Project__c.PM</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>MPM4_BASE__Milestone1_Project__c-Projects</layout>
-        <recordType>MPM4_BASE__Milestone1_Project__c.C_I</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Macro-Macro Layout</layout>
@@ -63819,6 +63888,10 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-BFG</layout>
+        <recordType>Opportunity.C_and_I</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Opportunity-BFG</layout>
         <recordType>Opportunity.Community_Solar</recordType>
     </layoutAssignments>
     <layoutAssignments>
@@ -63828,10 +63901,6 @@
     <layoutAssignments>
         <layout>Opportunity-BFG</layout>
         <recordType>Opportunity.Marketing</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Opportunity-BFG</layout>
-        <recordType>Opportunity.C_and_I</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-Business Development</layout>
@@ -76922,7 +76991,6 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>true</default>
-        <personAccountDefault>true</personAccountDefault>
         <recordType>Case.Customer_Care</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
@@ -77223,7 +77291,6 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>true</default>
-        <personAccountDefault>true</personAccountDefault>
         <recordType>Knowledge__kav.How_To</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
@@ -77354,7 +77421,6 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>true</default>
-        <personAccountDefault>true</personAccountDefault>
         <recordType>MPM4_BASE__Milestone1_Milestone__c.Project_Task_List</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
@@ -79265,11 +79331,39 @@
     <userLicense>Customer Community Plus Login</userLicense>
     <userPermissions>
         <enabled>true</enabled>
+        <name>ActivitiesAccess</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
         <name>AllowUniversalSearch</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
         <name>ApexRestServices</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>AssignTopics</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>ChatterEnabledForUser</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>ChatterOwnGroups</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>CreateTopics</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>EditTask</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>EditTopics</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -79286,5 +79380,9 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ShowCompanyNameAsUserBadge</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>UseWebLink</name>
     </userPermissions>
 </Profile>
