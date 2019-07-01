@@ -40178,11 +40178,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Schedule_Z_Subscription__c.Finaled__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Schedule_Z_Subscription__c.Number_of_Decimal_Places__c</field>
         <readable>false</readable>
     </fieldPermissions>
