@@ -67,6 +67,15 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Non_Test_Zuora_Record__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>During Zuora onboarding and testing, we will be deleting test Zuora data in production. We do not want to delete contacts from real Switch leads, so this checkbox differentiates them</inlineHelpText>
+        <label>Non-Test Zuora Record</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Zuora_Id__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Set when the ZuoraAccountService creates this contact in Zuora</inlineHelpText>
