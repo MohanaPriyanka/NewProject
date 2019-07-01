@@ -142,13 +142,40 @@ public with sharing class ZuoraAPI {
         public String message;
     }
 
+    // Used to create, but not to query for credit memos:
     public class CreditMemo {
         public String accountId;
         public List<CreditCharge> charges;
         public Date effectiveDate;
         public String reasonCode;
         public String Project_Zcustom;
+        public String ClientOwner_Zcustom;
         public String CRM_ID_Zcustom;
+    }
+
+    // Used to query, but not to create credit memos:
+    public class ZuoraCreditMemo {
+        public String id;
+        public String accountId;
+        public Date creditMemoDate;
+        public Decimal amount;
+        public Decimal unappliedAmount;
+        public String Project_Zcustom;
+        public String ClientOwner_Zcustom;
+        public String CRM_ID_Zcustom;
+    }
+
+    public class ZuoraCreditMemoItem {
+        public String id;
+        public String accountId;
+        public Decimal amount;
+        public Decimal unappliedAmount;
+    }
+
+    // ASSUMES CREDIT MEMOS ONLY HAVE 1 ITEM:
+    public class CreditMemoWithItem{
+        public ZuoraCreditMemo creditMemo;
+        public ZuoraCreditMemoItem item;
     }
 
     public class CreditCharge {
@@ -337,7 +364,8 @@ public with sharing class ZuoraAPI {
             if (customFields == null || customFields.Project_Zcustom == null || customFields.ClientOwner_Zcustom == null) {
                 throw new Util.BWException('Did not expect a Charge Override without customFields or null client/project');
             }
-            return new ZuoraSubscriptionService.ClientProject(customFields.ClientOwner_Zcustom, customFields.Project_Zcustom, chargeNumber);
+
+            return new ZuoraSubscriptionService.ClientProject(customFields.ClientOwner_Zcustom, customFields.Project_Zcustom, chargeNumber, productRatePlanChargeId);
         }
     }
 
@@ -476,6 +504,15 @@ public with sharing class ZuoraAPI {
                 }
             }
             throw new Util.BWException('Did not find a subscription in all of the orders');
+        }
+
+        public String getProductRatePlanChargeId(String clientName, String project) {
+            for (ZuoraSubscriptionService.ClientProject cp : getClientProjectsFromOrders()) {
+                if (cp.clientName == clientName && cp.projectName == project) {
+                    return cp.productRatePlanChargeId;
+                }
+            }
+            throw new Util.BWException('No client/project found for client: ' + clientName + ' and project '+ project);
         }
 
         public String getChargeNumber(String clientName, String project) {
