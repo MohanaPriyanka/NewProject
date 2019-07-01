@@ -15,13 +15,7 @@ public without sharing class ZuoraCreditMemoBatchSend implements Database.Batcha
         try {
             for (sObject scopeLine : scope){
                 Bill_Adjustment__c adjust = (Bill_Adjustment__c)scopeLine;
-                ZuoraAPI.CreditMemo memo;
-                memo = ZuoraCreditDebitMemoService.convertSFAdjustToCreditMemo(adjust);
-                HttpResponse response = ZuoraCreditDebitMemoService.creditMemoAPICall(memo);
-                Bill_Adjustment__c adjustmentToUpdate = ZuoraCreditDebitMemoService.handleAPIResponse(memo,response);
-                if (adjustmentToUpdate != null){
-                    adjustToUpdateSet.add(adjustmentToUpdate);
-                }
+                adjustToUpdateSet.add(ZuoraCreditDebitMemoService.createCreditOrDebitMemo(adjust));
             }
         } catch (Exception excep){
             Logger.logLater('ZuoraCreditMemoBatchSend', 'execute', excep.getMessage() + '\n' + excep.getStackTraceString());

@@ -19,11 +19,11 @@ public class ZuoraOutstandingItemsService{
     }
 
     public class QueryResultDebitMemo {
-        public List<ZuoraAPI.DebitMemo> debitmemos;
+        public List<ZuoraAPI.ZuoraDebitMemo> debitmemos;
     }
 
     public class QueryResultDebitMemoItem {
-        public List<ZuoraAPI.DebitMemoItem> items;
+        public List<ZuoraAPI.ZuoraDebitMemoItem> items;
     }
 
     public class OutstandingItem {
@@ -79,8 +79,8 @@ public class ZuoraOutstandingItemsService{
             allOutstandingItems.addAll(convertInvoiceItems(invoiceItems));
         }
 
-        List<ZuoraAPI.DebitMemo> debitMemos = getOutstandingDebitMemos(zuoraAcctId);
-        for (ZuoraAPI.DebitMemo debitMemo : debitMemos){
+        List<ZuoraAPI.ZuoraDebitMemo> debitMemos = getOutstandingDebitMemos(zuoraAcctId);
+        for (ZuoraAPI.ZuoraDebitMemo debitMemo : debitMemos){
             ZuoraAPI.DebitMemoWithItems debitMemoItems = getDebitMemoItems(debitMemo);
             allOutstandingItems.addAll(convertDebitMemoItems(debitMemoItems));
         }
@@ -139,15 +139,15 @@ public class ZuoraOutstandingItemsService{
         return itemsWithBalance;
     }
 
-    public static List<ZuoraAPI.DebitMemo> getOutstandingDebitMemos(String zAcctId) {
+    public static List<ZuoraAPI.ZuoraDebitMemo> getOutstandingDebitMemos(String zAcctId) {
         HttpResponse response = ZuoraAPIHelper.callJSONEndpoint('GET','/v1/debitmemos/',null,false);
         String responseBody = response.getBody();
         responseBody = ZuoraAPIHelper.cleanJSON(responseBody);
         QueryResultDebitMemo result =
             (QueryResultDebitMemo)JSON.deserialize(responseBody, QueryResultDebitMemo.class);
-        List<ZuoraAPI.DebitMemo> debitMemosWithBalance = new List<ZuoraAPI.DebitMemo>();
+        List<ZuoraAPI.ZuoraDebitMemo> debitMemosWithBalance = new List<ZuoraAPI.ZuoraDebitMemo>();
 
-        for (ZuoraAPI.DebitMemo debitMemo : result.debitmemos){
+        for (ZuoraAPI.ZuoraDebitMemo debitMemo : result.debitmemos){
             if (debitMemo.balance > 0 && debitMemo.accountId == zAcctId){
                 debitMemosWithBalance.add(debitMemo);
             }
@@ -155,7 +155,7 @@ public class ZuoraOutstandingItemsService{
         return debitMemosWithBalance;
     }
 
-    public static ZuoraAPI.DebitMemoWithItems getDebitMemoItems(ZuoraAPI.DebitMemo debitMemo) {
+    public static ZuoraAPI.DebitMemoWithItems getDebitMemoItems(ZuoraAPI.ZuoraDebitMemo debitMemo) {
         HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('GET','/v1/debitmemos/' + debitMemo.id +'/items',null,false);
         String responseBody = ZuoraAPIHelper.cleanJSON(response.getBody());
         QueryResultDebitMemoItem itemsQuery =
@@ -168,7 +168,7 @@ public class ZuoraOutstandingItemsService{
 
     public static List<OutstandingItem> convertDebitMemoItems(ZuoraAPI.DebitMemoWithItems debitMemoWithBalance){
         List<OutstandingItem> itemsWithBalance = new List<OutstandingItem>();
-        for (ZuoraAPI.DebitMemoItem debitItem : debitMemoWithBalance.items){
+        for (ZuoraAPI.ZuoraDebitMemoItem debitItem : debitMemoWithBalance.items){
             if (debitItem.balance > 0){
                 OutstandingItem newItem = new OutstandingItem();
                 newItem.amountOutstanding = debitItem.balance;
