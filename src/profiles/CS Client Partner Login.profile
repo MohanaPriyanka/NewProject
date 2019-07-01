@@ -62062,9 +62062,6 @@
         <layout>CaseInteraction-Case Feed Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Case_Status_Change__c-Case Status Change Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Change_Order__c-Project Change Order Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
