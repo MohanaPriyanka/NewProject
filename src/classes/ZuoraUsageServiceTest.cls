@@ -129,15 +129,6 @@ public class ZuoraUsageServiceTest {
         ];
         System.assertEquals(1, adjustList.size());
 
-        List<Error_Log__c> calloutMessages = [
-            SELECT Id, Message__c
-            FROM Error_Log__c
-            WHERE Class__c = 'ZuoraAPIHelper'
-        ];
-        // Two messages, one for the getOrderBySubscriptionOwner, and the other for usage upload
-        System.assertEquals(2, calloutMessages.size());
-        System.assert(calloutMessages[1].Message__c.contains('"AccountId":"CID'));
-
         List<Error_Log__c> errors = [
             SELECT Id, Message__c
             FROM Error_Log__c
