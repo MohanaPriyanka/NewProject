@@ -24,7 +24,8 @@ public with sharing class SystemBillsSelector {
         'Property_Account__r.Total_Net_Metering_Credits_Allocated__c, Property_Account__r.Total_Savings__c, '+
         'Property_Account_ID__c, Recurring_Billing__c, Shared_Solar_System__c, Shared_Solar_System_ID__c, '+
         'Shared_Solar_System_ID2__c, SystemModstamp, Total_Due__c, Total_Payments_This_Month__c, Unique_ID__c, '+
-        'Waive_Late_Fees__c, Monthly_Late_Fee_Interest__c';
+        'Waive_Late_Fees__c, Monthly_Late_Fee_Interest__c, ' +
+        '(SELECT Id, Opportunity__c FROM Utility_Account_Subscription_Bills__r)';
 
     public static List<System_Bill__c> selectAllSystemBills() {
         return selectAllSystemBills(null, null);

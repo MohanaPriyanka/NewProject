@@ -1,6 +1,10 @@
 @isTest
 public class TestBillCreationandPayment {
-    @testSetup public static void csTestRecordWarehouse(){
+    @TestSetup public static void csTestRecordWarehouse() {
+        csTestRecordWarehouse(false);
+    }
+
+    public static void csTestRecordWarehouse(Boolean multipleOppsForSingleSystem) {
         Test.startTest();
         Utility__c eversource = new Utility__c(
             Name = 'Eversource',
@@ -225,7 +229,21 @@ public class TestBillCreationandPayment {
                 Customer_Group__c = 'Non-Residential',
                 Product__c = normalCSProduct.Id,
                 CloseDate = System.today());
+        Opportunity opportunityFour;
+
+        if (multipleOppsForSingleSystem) {
+            opportunityFour =
+                new Opportunity(Name = 'AOpp One With Long Name To Test Utility Account Subscription Bill and System Bill Lengths',
+                    AccountId = accountA.Id,
+                    Shared_Solar_System__c = sss1.Id,
+                    StageName = 'Complete',
+                    Customer_Group__c = 'Non-Residential',
+                    Product__c = normalCSProduct.Id,
+                    CloseDate = System.today());
+            insert new List<Opportunity>{opportunityone, opportunitytwo, opportunitythree, opportunityFour};
+        } else {
         insert new List<Opportunity>{opportunityone, opportunitytwo, opportunitythree};
+        }
 
         Utility_Account_Subscription__c uasone =
             new Utility_Account_Subscription__c(Name = '0000234',
@@ -263,7 +281,20 @@ public class TestBillCreationandPayment {
                 Calculated_Annual_Cost_of_Electricity__c = 6000,
                 Subscribed_Annual_Cost_of_Electricity__c = 6000);
 
+        Utility_Account_Subscription__c uasFive;
+        if (multipleOppsForSingleSystem) {
+            uasFive =
+                new Utility_Account_Subscription__c(Name = '000-0234',
+                    Utility_Account_Log__c = ualog.Id,
+                    Opportunity__c = opportunityFour.Id,
+                    Next_Schedule_Z_Status__c = 'Active Subscription',
+                    Annual_kwh_subscription_future__c = 6000,
+                    calculated_annual_cost_of_electricity__c = 6000,
+                    Subscribed_Annual_Cost_of_Electricity__c = 6000);
+            insert new List<Utility_Account_Subscription__c>{uasone, uastwo, uasthree, uasfour, uasFive};
+        } else {
         insert new List<Utility_Account_Subscription__c>{uasone, uastwo, uasthree, uasfour};
+        }
 
         //Changed something (not sure if it was billing number fix) and it now applies this Bill adjustment to every system bill
         Bill_Adjustment__c adjustOne = new Bill_Adjustment__c(  Name = 'UASoneAdjustment',
@@ -287,7 +318,12 @@ public class TestBillCreationandPayment {
         uastwo.Customer_Subscription_KW_DC_STATIC__c = 20;
         uasthree.Customer_Subscription_KW_DC_STATIC__c = 15;
         uasfour.Customer_Subscription_KW_DC_STATIC__c = 10;
+        if (multipleOppsForSingleSystem) {
+            uasFive.Customer_Subscription_KW_DC_STATIC__c = 25;
+            update new List<Utility_Account_Subscription__c>{uasone, uastwo, uasthree, uasfour, uasFive};
+        } else {
         update new List<Utility_Account_Subscription__c>{uasone, uastwo, uasthree, uasfour};
+        }
 
         // We want to make these dates current, so that generated bills are current
         Date myDateApr = Date.newInstance(Date.today().year(), Date.today().month(), 15);
