@@ -16883,11 +16883,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Case.Business_Hours_to_Respond__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Case.CABH_Indicator__c</field>
         <readable>false</readable>
     </fieldPermissions>
