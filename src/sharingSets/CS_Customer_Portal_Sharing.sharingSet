@@ -12,12 +12,6 @@
         <objectField>Id</objectField>
         <userField>Contact</userField>
     </accessMappings>
-    <accessMappings>
-        <accessLevel>Read</accessLevel>
-        <object>Zuora__ZInvoice__c</object>
-        <objectField>Zuora__Account__c.Parent_Account__c</objectField>
-        <userField>Contact.Account</userField>
-    </accessMappings>
     <name>CS Customer Portal Sharing</name>
     <profiles>community solar community user</profiles>
     <profiles>customer community plus login user</profiles>
