@@ -23933,11 +23933,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Lead.Bill_Upload_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Lead.Building_Owner__c</field>
         <readable>false</readable>
     </fieldPermissions>
