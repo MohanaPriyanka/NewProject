@@ -24213,11 +24213,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Lead.Contract_Signature_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Lead.Credit_Approval_Based_on_Criteria__c</field>
         <readable>false</readable>
     </fieldPermissions>
