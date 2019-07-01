@@ -17183,11 +17183,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Case.Time_in_New__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Case.Time_to_Close__c</field>
         <readable>false</readable>
     </fieldPermissions>
