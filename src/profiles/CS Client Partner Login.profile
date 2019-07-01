@@ -61999,9 +61999,6 @@
         <layout>Campaign-Campaign Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>CampaignInfluence-Campaign Influence Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>CampaignInfluenceModel-Campaign Influence Model Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
