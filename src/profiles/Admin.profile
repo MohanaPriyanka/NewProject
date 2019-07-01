@@ -6661,6 +6661,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Health_Report__c.Client_Health_Score_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Client_Health_Report__c.Client_Health_Score__c</field>
         <readable>true</readable>
@@ -46549,6 +46554,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>ChargentOrders__Transaction__c-ChargentOrders__Transaction Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Client_Health_Report__c-Monthly Client Report Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>CollaborationGroup-BW Community Solar Member Portal</layout>
