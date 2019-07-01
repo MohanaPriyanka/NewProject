@@ -76734,11 +76734,6 @@
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-        <default>true</default>
-        <recordType>cloudx_cms__SS_Carousel_Slide__c.cloudx_cms__image</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
         <default>false</default>
         <recordType>cloudx_cms__SS_Carousel_Slide__c.cloudx_cms__video</recordType>
         <visible>true</visible>
