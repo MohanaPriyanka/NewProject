@@ -30,8 +30,10 @@ public without sharing class ZuoraCreditMemoBatchSend implements Database.Batcha
     }
 
     public void finish(Database.BatchableContext bc){
-        List<Bill_Adjustment__c> adjustmentsToUpdate = new List<Bill_Adjustment__c>();
-        adjustmentsToUpdate.addAll(adjustToUpdateSet);
-        update adjustmentsToUpdate;
+        if (Util.getSystemPropertyCheckbox('Update_Usage_Records_With_ZuoraId__c')) {
+            List<Bill_Adjustment__c> adjustmentsToUpdate = new List<Bill_Adjustment__c>();
+            adjustmentsToUpdate.addAll(adjustToUpdateSet);
+            update adjustmentsToUpdate;
+        }
     }
 }
