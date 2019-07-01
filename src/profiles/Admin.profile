@@ -2362,6 +2362,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.Non_Test_Zuora_Record__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.NumberOfEmployees</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -6661,6 +6666,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Health_Report__c.Client_Health_Score_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Client_Health_Report__c.Client_Health_Score__c</field>
         <readable>true</readable>
@@ -7752,7 +7762,22 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contract.BlueWave_Entity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contract.CS_Services__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract.Committed_Utilization_Remediation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract.Committed_Utilization__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7842,6 +7867,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contract.Management_Fee_Detail__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contract.Management_Fee__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -7873,6 +7903,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Contract.OwnerExpirationNotice</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract.Reporting_Requirements_Detail__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -32237,6 +32272,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Zuora_Contact__c.Non_Test_Zuora_Record__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Zuora_Contact__c.Zuora_Id__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -32263,6 +32303,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Zuora_Setting__mdt.Is_Sandbox__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Zuora_Setting__mdt.Update_Usage_Records_With_ZuoraId__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Zuora__CustomerAccount__c.Lifetime_Savings__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -46549,6 +46599,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>ChargentOrders__Transaction__c-ChargentOrders__Transaction Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Client_Health_Report__c-Monthly Client Report Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>CollaborationGroup-BW Community Solar Member Portal</layout>

@@ -73,6 +73,19 @@
         <trackHistory>false</trackHistory>
     </fields>
     <fields>
+        <fullName>BlueWave_Entity__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>BlueWave Entity</label>
+        <referenceTo>Entity__c</referenceTo>
+        <relationshipLabel>Contracts</relationshipLabel>
+        <relationshipName>Contracts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>CS_Services__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Detailed description of BlueWave&apos;s responsibilities as a servicer</inlineHelpText>
@@ -80,8 +93,29 @@
         <length>131072</length>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <type>LongTextArea</type>
-        <visibleLines>5</visibleLines>
+        <type>Html</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Committed_Utilization_Remediation__c</fullName>
+        <externalId>false</externalId>
+        <label>Committed Utilization Remediation</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Html</type>
+        <visibleLines>25</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Committed_Utilization__c</fullName>
+        <externalId>false</externalId>
+        <label>Committed Utilization</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Percent</type>
     </fields>
     <fields>
         <fullName>CompanySignedDate</fullName>
@@ -132,10 +166,11 @@
         <externalId>false</externalId>
         <inlineHelpText>Terms at which customer acquisition fee is paid</inlineHelpText>
         <label>Customer Acquisition Invoicing Detail</label>
-        <required>false</required>
+        <length>10000</length>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <type>TextArea</type>
+        <type>Html</type>
+        <visibleLines>10</visibleLines>
     </fields>
     <fields>
         <fullName>Customer_Acquisition_Invoicing_Timing__c</fullName>
@@ -154,6 +189,11 @@
                     <label>Monthly</label>
                 </value>
                 <value>
+                    <fullName>Quarterly</fullName>
+                    <default>false</default>
+                    <label>Quarterly</label>
+                </value>
+                <value>
                     <fullName>Annual</fullName>
                     <default>false</default>
                     <label>Annual</label>
@@ -170,11 +210,11 @@
         <fullName>Customer_Billing_Communications_Detail__c</fullName>
         <externalId>false</externalId>
         <label>Customer Billing Communications Detail</label>
-        <length>131072</length>
+        <length>10000</length>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <type>LongTextArea</type>
-        <visibleLines>5</visibleLines>
+        <type>Html</type>
+        <visibleLines>10</visibleLines>
     </fields>
     <fields>
         <fullName>Customer_Billing_Communications__c</fullName>
@@ -275,9 +315,9 @@
         <externalId>false</externalId>
         <inlineHelpText>Minimum Customer FICO threshold, see detail field for more specifics</inlineHelpText>
         <label>Customer FICO Minimum</label>
-        <precision>18</precision>
+        <precision>3</precision>
         <required>false</required>
-        <scale>2</scale>
+        <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Number</type>
@@ -344,10 +384,11 @@
         <fullName>Delinquency_Protocol__c</fullName>
         <externalId>false</externalId>
         <label>Delinquency Protocol</label>
-        <required>false</required>
+        <length>10000</length>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <type>TextArea</type>
+        <type>Html</type>
+        <visibleLines>10</visibleLines>
     </fields>
     <fields>
         <fullName>Description</fullName>
@@ -358,6 +399,16 @@
         <fullName>EndDate</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Management_Fee_Detail__c</fullName>
+        <externalId>false</externalId>
+        <label>Management Fee Detail</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Html</type>
+        <visibleLines>25</visibleLines>
     </fields>
     <fields>
         <fullName>Management_Fee__c</fullName>
@@ -376,11 +427,11 @@
         <externalId>false</externalId>
         <inlineHelpText>Terms at which management fee is invoiced</inlineHelpText>
         <label>Management Invoicing Detail</label>
-        <length>131072</length>
+        <length>30000</length>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <type>LongTextArea</type>
-        <visibleLines>5</visibleLines>
+        <type>Html</type>
+        <visibleLines>10</visibleLines>
     </fields>
     <fields>
         <fullName>Management_Invoicing_Timing__c</fullName>
@@ -398,6 +449,11 @@
                     <fullName>Monthly</fullName>
                     <default>false</default>
                     <label>Monthly</label>
+                </value>
+                <value>
+                    <fullName>Quarterly</fullName>
+                    <default>false</default>
+                    <label>Quarterly</label>
                 </value>
                 <value>
                     <fullName>Annual</fullName>
@@ -457,6 +513,16 @@
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Reporting_Requirements_Detail__c</fullName>
+        <externalId>false</externalId>
+        <label>Reporting Requirements Detail</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Html</type>
+        <visibleLines>25</visibleLines>
     </fields>
     <fields>
         <fullName>Reporting_Requirements__c</fullName>
@@ -530,20 +596,21 @@
         <externalId>false</externalId>
         <inlineHelpText>Reasons and Circumstances in which BW or the Client could terminate this agreement</inlineHelpText>
         <label>Termination Reasons</label>
-        <length>131072</length>
+        <length>60000</length>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <type>LongTextArea</type>
-        <visibleLines>5</visibleLines>
+        <type>Html</type>
+        <visibleLines>10</visibleLines>
     </fields>
     <fields>
         <fullName>Waitlist_Requirements__c</fullName>
         <externalId>false</externalId>
         <label>Waitlist Requirements</label>
-        <required>false</required>
+        <length>30000</length>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <type>TextArea</type>
+        <type>Html</type>
+        <visibleLines>10</visibleLines>
     </fields>
     <listViews>
         <fullName>AllActivatedContracts</fullName>
