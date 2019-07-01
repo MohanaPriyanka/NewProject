@@ -76813,10 +76813,6 @@
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>Case_Status_Change__c</tab>
-        <visibility>DefaultOn</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>Change_Order__c</tab>
         <visibility>DefaultOff</visibility>
     </tabVisibilities>
