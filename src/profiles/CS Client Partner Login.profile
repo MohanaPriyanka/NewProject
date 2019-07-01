@@ -54993,121 +54993,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>cloudx_cms__SS_Carousel_Slide__c.cloudx_cms__Autoplay__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>cloudx_cms__SS_Carousel_Slide__c.cloudx_cms__Button_Label__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>cloudx_cms__SS_Carousel_Slide__c.cloudx_cms__Button_URL__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>cloudx_cms__SS_Carousel_Slide__c.cloudx_cms__Button_Variant__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>cloudx_cms__SS_Carousel_Slide__c.cloudx_cms__Description_Size__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>cloudx_cms__SS_Carousel_Slide__c.cloudx_cms__Description_Text_Color__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>cloudx_cms__SS_Carousel_Slide__c.cloudx_cms__Description__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>cloudx_cms__SS_Carousel_Slide__c.cloudx_cms__Height__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>cloudx_cms__SS_Carousel_Slide__c.cloudx_cms__Image_URL__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>cloudx_cms__SS_Carousel_Slide__c.cloudx_cms__Loop_Video__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>cloudx_cms__SS_Carousel_Slide__c.cloudx_cms__Raw_MP4_Video_URL__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>cloudx_cms__SS_Carousel_Slide__c.cloudx_cms__Raw_OGG_Video_URL__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>cloudx_cms__SS_Carousel_Slide__c.cloudx_cms__Raw_WEBM_Video_URL__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>cloudx_cms__SS_Carousel_Slide__c.cloudx_cms__Show_Video_Controls__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>cloudx_cms__SS_Carousel_Slide__c.cloudx_cms__Slide_Order__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>cloudx_cms__SS_Carousel_Slide__c.cloudx_cms__Text_Alignment__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>cloudx_cms__SS_Carousel_Slide__c.cloudx_cms__Text_Height__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>cloudx_cms__SS_Carousel_Slide__c.cloudx_cms__Text_Overlay_Background__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>cloudx_cms__SS_Carousel_Slide__c.cloudx_cms__Text_Position__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>cloudx_cms__SS_Carousel_Slide__c.cloudx_cms__Title_Text_Color__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>cloudx_cms__SS_Carousel_Slide__c.cloudx_cms__Title_Text_Size__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>cloudx_cms__SS_Carousel_Slide__c.cloudx_cms__Title__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>cloudx_cms__SS_Carousel_Slide__c.cloudx_cms__Video_Embed_URL__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>cloudx_cms__SS_Carousel__c.cloudx_cms__Name__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -69592,15 +69477,6 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>cloudx_cms__SS_Carousel_Slide__ChangeEvent</object>
-        <viewAllRecords>false</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>false</allowCreate>
-        <allowDelete>false</allowDelete>
-        <allowEdit>false</allowEdit>
-        <allowRead>false</allowRead>
-        <modifyAllRecords>false</modifyAllRecords>
-        <object>cloudx_cms__SS_Carousel_Slide__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
