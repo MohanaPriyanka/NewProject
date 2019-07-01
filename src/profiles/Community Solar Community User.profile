@@ -20797,6 +20797,11 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Energy_Usage_Update__c.Shared_Solar_System__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Energy_Usage_Update__c.Size_off_NMCs__c</field>
         <readable>true</readable>
@@ -63318,11 +63323,11 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>BlueWave_Surveys__c-Net Promoter Score</layout>
-        <recordType>BlueWave_Surveys__c.CS_Customer_Survey</recordType>
+        <recordType>BlueWave_Surveys__c.Net_Promoter_Score</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>BlueWave_Surveys__c-Net Promoter Score</layout>
-        <recordType>BlueWave_Surveys__c.Net_Promoter_Score</recordType>
+        <recordType>BlueWave_Surveys__c.CS_Customer_Survey</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>BlueWave_Surveys__c-Net Promoter Score - Partner</layout>
@@ -63377,10 +63382,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Case-Customer Portal Case</layout>
-        <recordType>Case.Client_Services</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Case-Customer Portal Case</layout>
         <recordType>Case.Customer_Care</recordType>
     </layoutAssignments>
     <layoutAssignments>
@@ -63394,6 +63395,10 @@
     <layoutAssignments>
         <layout>Case-Customer Portal Case</layout>
         <recordType>Case.Product_Support</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Case-Customer Portal Case</layout>
+        <recordType>Case.Client_Services</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>CaseClose-Close Case Layout</layout>
@@ -63809,15 +63814,15 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>MPM4_BASE__Milestone1_Project__c-Projects</layout>
-        <recordType>MPM4_BASE__Milestone1_Project__c.C_I</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>MPM4_BASE__Milestone1_Project__c-Projects</layout>
         <recordType>MPM4_BASE__Milestone1_Project__c.Competitor</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>MPM4_BASE__Milestone1_Project__c-Projects</layout>
         <recordType>MPM4_BASE__Milestone1_Project__c.PM</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>MPM4_BASE__Milestone1_Project__c-Projects</layout>
+        <recordType>MPM4_BASE__Milestone1_Project__c.C_I</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Macro-Macro Layout</layout>
@@ -63888,10 +63893,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-BFG</layout>
-        <recordType>Opportunity.C_and_I</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Opportunity-BFG</layout>
         <recordType>Opportunity.Community_Solar</recordType>
     </layoutAssignments>
     <layoutAssignments>
@@ -63901,6 +63902,10 @@
     <layoutAssignments>
         <layout>Opportunity-BFG</layout>
         <recordType>Opportunity.Marketing</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Opportunity-BFG</layout>
+        <recordType>Opportunity.C_and_I</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-Business Development</layout>
@@ -76991,6 +76996,7 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>true</default>
+        <personAccountDefault>true</personAccountDefault>
         <recordType>Case.Customer_Care</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
@@ -77291,6 +77297,7 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>true</default>
+        <personAccountDefault>true</personAccountDefault>
         <recordType>Knowledge__kav.How_To</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
@@ -77400,6 +77407,11 @@
         <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>LiveText__Conversation_Header__c.LiveText__Ended_Text_Sessions</recordType>
+        <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
         <default>true</default>
         <recordType>Load_U__c.Load_Zone_Utility</recordType>
         <visible>true</visible>
@@ -77421,6 +77433,7 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>true</default>
+        <personAccountDefault>true</personAccountDefault>
         <recordType>MPM4_BASE__Milestone1_Milestone__c.Project_Task_List</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
@@ -78589,6 +78602,10 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>Zuora__CustomerAccount__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>Zuora__Schema_Setup</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
@@ -79351,6 +79368,8 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
+        <name>ShowCompanyNameAsUserBadge</name>
+    </userPermissions>
         <name>ChatterOwnGroups</name>
     </userPermissions>
     <userPermissions>
