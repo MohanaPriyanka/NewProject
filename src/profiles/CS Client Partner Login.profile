@@ -5933,10 +5933,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>cloudx_cms__SS_CarouselControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>cloudx_cms__SS_CarouselSlideDTO</apexClass>
         <enabled>false</enabled>
     </classAccesses>
