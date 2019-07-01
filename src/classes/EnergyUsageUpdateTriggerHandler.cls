@@ -183,7 +183,7 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         for (Opportunity opp : oppList) {
             Energy_Usage_Update__c euu = sssIdToEUUMap.get(opp.Shared_Solar_System__c);
             String parentKey = opp.Account.Id + ' ' + getDate(euu);
-            String sysBillUniqueId = opp.Name + ' ' + opp.Shared_Solar_System__r.Name + ' ' + getDate(euu);
+            String sysBillUniqueId = opp.Id + ' ' + opp.Shared_Solar_System__r.Name + ' ' + getDate(euu);
             if (abKeyToAccountBillMap.containsKey(parentKey) && !previousBillsSet.containsKey(sysBillUniqueId)) {
                 Integer maxSysBill = maxSysBillByOppId.get(opp.Id);
                 Account_Bill__c ab = abKeyToAccountBillMap.get(parentKey);
