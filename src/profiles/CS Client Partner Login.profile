@@ -40318,11 +40318,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Schedule_Z__c.test_rollup__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>ScorecardMetric.test__c</field>
         <readable>false</readable>
     </fieldPermissions>
