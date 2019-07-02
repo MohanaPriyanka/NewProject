@@ -1395,7 +1395,7 @@ This field can be changed to a formula consistent with the other factors if LASE
         <fullName>Comments__c</fullName>
         <externalId>false</externalId>
         <label>Comments</label>
-        <length>600</length>
+        <length>130000</length>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>LongTextArea</type>
