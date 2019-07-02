@@ -19,7 +19,7 @@
     "optionLabel" : "Corporate",
     "imageUrl" : "https://www.lightningdesignsystem.com/assets/images/logo.svg",
     "iconName" : "custom:custom15",
-    "description" : "Legal · Marketing · CS Product Management · Client Product Management · Office Management · Skunkworks"
+    "description" : "Legal · Marketing · CS Product Management · Client Product Management · Office Management"
   } ],
   "objectName" : "agf__ADM_Scrum_Team__c",
   "fieldName" : "Category__c"
