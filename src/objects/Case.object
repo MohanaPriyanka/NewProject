@@ -3943,7 +3943,7 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <fullName>Product_Support</fullName>
         <active>true</active>
         <businessProcess>Product Support</businessProcess>
-        <label>Product Support</label>
+        <label>Technology Support</label>
         <picklistValues>
             <picklist>Resolution__c</picklist>
             <values>
