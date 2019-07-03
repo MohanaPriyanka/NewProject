@@ -10,6 +10,9 @@
         </users>
     </queueMembers>
     <queueSobject>
+        <sobjectType>Case</sobjectType>
+    </queueSobject>
+    <queueSobject>
         <sobjectType>agf__ADM_Work__c</sobjectType>
     </queueSobject>
 </Queue>
