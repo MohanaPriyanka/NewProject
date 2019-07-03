@@ -195,6 +195,11 @@
             <actionType>QuickAction</actionType>
             <sortOrder>3</sortOrder>
         </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Case.Create_Work_Request</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>4</sortOrder>
+        </platformActionListItems>
     </platformActionList>
     <quickActionList>
         <quickActionListItems>
@@ -208,6 +213,9 @@
         </quickActionListItems>
         <quickActionListItems>
             <quickActionName>Case.Create_Product_Work</quickActionName>
+        </quickActionListItems>
+        <quickActionListItems>
+            <quickActionName>Case.Create_Work_Request</quickActionName>
         </quickActionListItems>
     </quickActionList>
     <relatedContent>
