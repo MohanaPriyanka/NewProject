@@ -253,12 +253,12 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
         return res;
     }
 
-    public static HttpResponse getOrderByOwnerResponse(String body) {
+    public static HttpResponse getOrderByOwnerResponse(String endpoint) {
         HttpResponse res = getJSON();
-        if (body.contains('ThrowException')) {
+        if (endpoint.contains('ThrowException')) {
             throw new Util.BWException('Test callout exception');
         }
-        if (body.contains('ExistingAccount') || body.contains('CID')) {
+        if (endpoint.contains('ExistingAccount') || endpoint.contains('CID')) {
             String response = '{"orders" : [' +
                 '{"orderNumber" : "O-00002360","existingAccountNumber" : "ExistingAccount",'+
                 '"subscriptions" : [ {"subscriptionNumber" : "A-S00002141","orderActions" : ['+
@@ -271,12 +271,16 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
                 '{"triggerDate" : "2017-01-01","name" : "ServiceActivation"}, {"triggerDate" : "2017-01-01","name" : "CustomerAcceptance"} ], ' +
                 '"createSubscription" : {"subscribeToRatePlans" : ['+
                 '{"chargeOverrides" : [{"chargeNumber" : "C-00003076", "customFields" : {"Project__c" : "Barrett","ClientOwner__c" : "Goldman"}} ]} ]}} ]} ]} ],'+
-                '"success" : true'+
-                '}';
-            if (body.contains('CID')) {
+                '"success" : true';
+            if (endpoint.contains('ExistingAccountPage') && !endpoint.contains('page=2')) {
+                response += ', "nextPage" : "https://rest.apisandbox.zuora.com/v1/orders/subscriptionOwner/ExistingAccount?page=2&pageSize=20"}';
+            } else {
+                response += '}';
+            }
+            if (endpoint.contains('CID')) {
                 // Since client Id and SSS Id will change in each SF environment, set them dynamically:
-                String clientId = body.substring(body.indexOf('CID') + 3, body.indexOf('SID'));
-                String sssId = body.substring(body.indexOf('SID') + 3, body.indexOf('END'));
+                String clientId = endpoint.substring(endpoint.indexOf('CID') + 3, endpoint.indexOf('SID'));
+                String sssId = endpoint.substring(endpoint.indexOf('SID') + 3, endpoint.indexOf('END'));
                 response = response.replace('Goldman', clientId);
                 response = response.replace('Barrett', sssId);
             }

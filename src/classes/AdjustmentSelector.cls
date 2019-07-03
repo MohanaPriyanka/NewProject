@@ -16,6 +16,7 @@ public class AdjustmentSelector {
                 'Client__r.Account_Number__c, ' +
                 'UASB__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c, ' +
                 'UASB__r.Opportunity__r.Account.Zuora_Id__c, ' +
+                'UASB__r.System_Bill__r.Account_Bill__c, ' +
                 'Adjustment_Amount__c, ' +
                 'Adjustment_Type__c, ' +
                 'Discount__c, ' +
@@ -32,6 +33,8 @@ public class AdjustmentSelector {
             queryString += 'AND(Adjustment_Type__c != \'Production\' ';
             queryString += 'OR Adjustment_Amount__c < 0)';
         }
+
+        queryString += ' ORDER BY UASB__r.Opportunity__r.AccountId';
 
         return Database.query(queryString);
     }
