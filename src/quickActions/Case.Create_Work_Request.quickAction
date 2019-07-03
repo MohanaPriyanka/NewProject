@@ -9,16 +9,23 @@
         <field>agf__Details_and_Steps_to_Reproduce__c</field>
         <formula>Case.Case_Detail__c</formula>
     </fieldOverrides>
+    <fieldOverrides>
+        <field>agf__Product_Tag__c</field>
+        <formula>Case.Product_tag__c</formula>
+    </fieldOverrides>
+    <fieldOverrides>
+        <field>agf__Subject__c</field>
+        <formula>Case.Subject</formula>
+    </fieldOverrides>
+    <fieldOverrides>
+        <field>Requested_By__c</field>
+        <formula>Case.ContactEmail</formula>
+    </fieldOverrides>
     <label>Create Work</label>
     <optionsCreateFeedItem>true</optionsCreateFeedItem>
     <quickActionLayout>
         <layoutSectionStyle>TwoColumnsLeftToRight</layoutSectionStyle>
         <quickActionLayoutColumns>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
-                <field>agf__Product_Tag__c</field>
-                <uiBehavior>Edit</uiBehavior>
-            </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
                 <field>agf__Subject__c</field>
@@ -28,6 +35,16 @@
                 <emptySpace>false</emptySpace>
                 <field>agf__Details__c</field>
                 <uiBehavior>Edit</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>agf__Product_Tag__c</field>
+                <uiBehavior>Required</uiBehavior>
+            </quickActionLayoutItems>
+            <quickActionLayoutItems>
+                <emptySpace>false</emptySpace>
+                <field>agf__Scrum_Team__c</field>
+                <uiBehavior>Required</uiBehavior>
             </quickActionLayoutItems>
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
@@ -47,11 +64,6 @@
             <quickActionLayoutItems>
                 <emptySpace>false</emptySpace>
                 <field>agf__Due_Date__c</field>
-                <uiBehavior>Edit</uiBehavior>
-            </quickActionLayoutItems>
-            <quickActionLayoutItems>
-                <emptySpace>false</emptySpace>
-                <field>Case__c</field>
                 <uiBehavior>Edit</uiBehavior>
             </quickActionLayoutItems>
         </quickActionLayoutColumns>
