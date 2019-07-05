@@ -77,6 +77,7 @@ insert newOpportunity;
                                                                 Name = '102342340',
                                                                 Opportunity__c = newOpportunity.id,
                                                                 Customer_Subscription_KW_DC_STATIC__c = 24,
+            Subscribed_Annual_Cost_of_Electricity__c = 5765.76,
                                                                 Annual_Cost_of_Electricity__c = 1300);
         insert uas;
 
@@ -88,7 +89,8 @@ project_assignment__c = 'Manual',
 type = 'New Business', 
 stageName = 'Complete',
 Product_line__c = 'Community Solar',
-Customer_group__c = 'Anchor',  
+Customer_group__c = 'Anchor',
+    NMC_Tariff__c = everbillNMC.Id,
 Personal_Credit_Report2__c = pcr1.Id,
 waitlist__c = FALSE, 
 closeDate = myDate, 
@@ -105,6 +107,7 @@ insert newOpportunity3;
                                                                 Name = '102342340',
                                                                 Opportunity__c = newOpportunity3.id,
                                                                 Customer_Subscription_KW_DC_STATIC__c = 22,
+            Subscribed_Annual_Cost_of_Electricity__c = 5285.28,
                                                                 Annual_Cost_of_Electricity__c = 500000);
         insert uas2;
 
