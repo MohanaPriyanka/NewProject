@@ -159,7 +159,7 @@ public class ZuoraCreditMemoAllocationTest {
     private static void testDebitMemoQuery() {
         String zuoraId = '2c92c0f86ae3a4ad016ae5e247886605';
 
-        List<ZuoraAPI.DebitMemo> debitMemos = ZuoraOutstandingItemsService.getOutstandingDebitMemos(zuoraId);
+        List<ZuoraAPI.ZuoraDebitMemo> debitMemos = ZuoraOutstandingItemsService.getOutstandingDebitMemos(zuoraId);
         System.assertEquals(1,debitMemos.size());
 
         ZuoraAPI.DebitMemoWithItems debitMemoWithItem = ZuoraOutstandingItemsService.getDebitMemoItems(debitMemos[0]);
