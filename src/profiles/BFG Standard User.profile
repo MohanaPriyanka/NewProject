@@ -42959,6 +42959,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>agf__ADM_Product_Tag__c.Team_Email_to_Case_Address__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>agf__ADM_Product_Tag__c.Team_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -43990,6 +43995,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>agf__ADM_Scrum_Team__c.Email_Send_Triggers__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Scrum_Team__c.Email_to_Case_Email_Address__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -54722,16 +54732,16 @@
         <recordType>Case.Finance_Case</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Case-Product Support</layout>
-        <recordType>Case.Product_Support</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Case-Service Console - Customer Support</layout>
         <recordType>Case.Customer_Care</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Case-Service Console - Customer Support</layout>
         <recordType>Case.Partner_Care_Case</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Case-Technology Support</layout>
+        <recordType>Case.Product_Support</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>CaseClose-Close Case Layout</layout>
@@ -64164,11 +64174,11 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
-        <name>ChatterEditOwnPost</name>
+        <name>ChangeDashboardColors</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
-        <name>ChatterEnabledForUser</name>
+        <name>ChatterEditOwnPost</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -64292,10 +64302,6 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
-        <name>ManageDashbdsInPubFolders</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
         <name>ManageDynamicDashboards</name>
     </userPermissions>
     <userPermissions>
@@ -64305,10 +64311,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ManageLeads</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>ManageReportsInPubFolders</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>

@@ -23,6 +23,42 @@
             </value>
         </inputParameters>
     </actionCalls>
+    <actionCalls>
+        <description>Opens up a support case</description>
+        <name>Open_support_case</name>
+        <label>Open support case</label>
+        <locationX>2539</locationX>
+        <locationY>914</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <connector>
+            <targetReference>Your_case_has_been_opened</targetReference>
+        </connector>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>scrDetails_and_Steps_to_Reproduce_Prod</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <elementReference>varEmail_to_Case_Address</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderAddress</name>
+            <value>
+                <elementReference>forUserEmail</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <elementReference>scrSubjectCase_Prod</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
     <assignments>
         <name>asgAssign_CS_Prod_Mgmt_variables</name>
         <label>Assign CS Prod Mgmt variables</label>
@@ -431,7 +467,7 @@
     </assignments>
     <choices>
         <name>Bug</name>
-        <choiceText>Bug, Data Request or Question</choiceText>
+        <choiceText>Support Request, Data Update or Question</choiceText>
         <dataType>String</dataType>
         <value>
             <stringValue>Bug</stringValue>
@@ -629,10 +665,17 @@
                     <stringValue>Technology - Originations</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>varTeamName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>IT</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>scrProduct_Team_Request</targetReference>
             </connector>
-            <label>Biz Apps Team</label>
+            <label>Tech Team</label>
         </rules>
         <rules>
             <name>decLegal_Work_Request</name>
@@ -663,21 +706,6 @@
                 <targetReference>scrMarketing_Work_Request</targetReference>
             </connector>
             <label>Marketing Work Request</label>
-        </rules>
-        <rules>
-            <name>decIT_Work_Request</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>varTeamName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>IT</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>scrIT_Work_Request</targetReference>
-            </connector>
-            <label>IT Work Request</label>
         </rules>
         <rules>
             <name>decOps_Work_Request</name>
@@ -834,6 +862,10 @@
             <field>Id</field>
         </outputAssignments>
         <outputAssignments>
+            <assignToReference>varEmail_to_Case_Address</assignToReference>
+            <field>Team_Email_to_Case_Address__c</field>
+        </outputAssignments>
+        <outputAssignments>
             <assignToReference>varTeamQueueID</assignToReference>
             <field>Team_Queue_Id__c</field>
         </outputAssignments>
@@ -909,12 +941,20 @@
         </filters>
         <object>agf__ADM_Scrum_Team__c</object>
         <outputAssignments>
+            <assignToReference>varEmail_to_Case_Address</assignToReference>
+            <field>Email_to_Case_Email_Address__c</field>
+        </outputAssignments>
+        <outputAssignments>
             <assignToReference>varTeamId</assignToReference>
             <field>Id</field>
         </outputAssignments>
         <outputAssignments>
             <assignToReference>varTeamName</assignToReference>
             <field>Name</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>varTeamQueueID</assignToReference>
+            <field>agf__Team_Queue_ID__c</field>
         </outputAssignments>
         <sortField>Name</sortField>
         <sortOrder>Asc</sortOrder>
@@ -1067,14 +1107,18 @@
         <object>agf__ADM_Work__c</object>
     </recordCreates>
     <recordCreates>
+        <description>Fault actions is used for users who don&apos;t have access to the case object.</description>
         <name>rcCreateCase</name>
         <label>CreateCase</label>
-        <locationX>2220</locationX>
-        <locationY>1165</locationY>
+        <locationX>2223</locationX>
+        <locationY>1031</locationY>
         <assignRecordIdToReference>varWorkId</assignRecordIdToReference>
         <connector>
             <targetReference>asgAttachFiles</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Open_support_case</targetReference>
+        </faultConnector>
         <inputAssignments>
             <field>ContactId</field>
             <value>
@@ -1357,7 +1401,7 @@
             <fieldText>Priority</fieldText>
             <fieldType>DropdownBox</fieldType>
             <helpText>&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;&lt;B&gt;Critical&lt;/B&gt;&lt;/FONT&gt;&lt;/DIV&gt;&lt;TEXTFORMAT LEADING=&quot;2&quot;&gt;&lt;LI&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;&lt;/FONT&gt;&lt;/LI&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING=&quot;2&quot;&gt;&lt;LI&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;Critical production issue affecting all users.&lt;/FONT&gt;&lt;/LI&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING=&quot;2&quot;&gt;&lt;LI&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;Includes system unavailability and data integrity issues with no workaround available.&lt;/FONT&gt;&lt;/LI&gt;&lt;/TEXTFORMAT&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;&lt;B&gt;Urgent&lt;/B&gt;&lt;/FONT&gt;&lt;/DIV&gt;&lt;TEXTFORMAT LEADING=&quot;2&quot;&gt;&lt;LI&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;&lt;/FONT&gt;&lt;/LI&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING=&quot;2&quot;&gt;&lt;LI&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;Major functionality is impacted or significant performance degradation is experienced.&lt;/FONT&gt;&lt;/LI&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING=&quot;2&quot;&gt;&lt;LI&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;Issue is persistent and affects many users and/or major functionality.&lt;/FONT&gt;&lt;/LI&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING=&quot;2&quot;&gt;&lt;LI&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;No reasonable workaround available.&lt;/FONT&gt;&lt;/LI&gt;&lt;/TEXTFORMAT&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;&lt;B&gt;High&lt;/B&gt;&lt;/FONT&gt;&lt;/DIV&gt;&lt;TEXTFORMAT LEADING=&quot;2&quot;&gt;&lt;LI&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;&lt;/FONT&gt;&lt;/LI&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING=&quot;2&quot;&gt;&lt;LI&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;System performance issue or bug affecting some, but not all users.&lt;/FONT&gt;&lt;/LI&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING=&quot;2&quot;&gt;&lt;LI&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;Short-term workaround is available, but cannot be scaled.&lt;/FONT&gt;&lt;/LI&gt;&lt;/TEXTFORMAT&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;&lt;/FONT&gt;&lt;/DIV&gt;&lt;DIV ALIGN=&quot;LEFT&quot;&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;&lt;B&gt;Medium&lt;/B&gt;&lt;/FONT&gt;&lt;/DIV&gt;&lt;TEXTFORMAT LEADING=&quot;2&quot;&gt;&lt;LI&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;&lt;/FONT&gt;&lt;/LI&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING=&quot;2&quot;&gt;&lt;LI&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;Inquiry or question&lt;/FONT&gt;&lt;/LI&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING=&quot;2&quot;&gt;&lt;LI&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;Reasonable workaround available&lt;/FONT&gt;&lt;/LI&gt;&lt;/TEXTFORMAT&gt;&lt;TEXTFORMAT LEADING=&quot;2&quot;&gt;&lt;LI&gt;&lt;FONT FACE=&quot;Arial&quot; STYLE=&quot;font-size:12px&quot; COLOR=&quot;#000000&quot; LETTERSPACING=&quot;0&quot; KERNING=&quot;0&quot;&gt;Resolution required as soon as reasonably practicable.&lt;/FONT&gt;&lt;/LI&gt;&lt;/TEXTFORMAT&gt;</helpText>
-            <isRequired>false</isRequired>
+            <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
@@ -1397,7 +1441,7 @@
             <dataType>String</dataType>
             <fieldText>Request Type</fieldText>
             <fieldType>DropdownBox</fieldType>
-            <isRequired>false</isRequired>
+            <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>inpWork_Request_Title_CE</name>
@@ -1462,7 +1506,7 @@
             <dataType>String</dataType>
             <fieldText>Category</fieldText>
             <fieldType>DropdownBox</fieldType>
-            <isRequired>false</isRequired>
+            <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>inpAs_a_CSPrd</name>
@@ -1741,7 +1785,7 @@
             <dataType>String</dataType>
             <fieldText>Type</fieldText>
             <fieldType>DropdownBox</fieldType>
-            <isRequired>false</isRequired>
+            <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>Files_IT</name>
@@ -1793,7 +1837,7 @@ P4 = Lowest Priority → P0 = Highest Priority</fieldText>
             <dataType>String</dataType>
             <fieldText>Select your team</fieldText>
             <fieldType>DropdownBox</fieldType>
-            <isRequired>false</isRequired>
+            <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>inpTitle_Legal</name>
@@ -1950,7 +1994,7 @@ P4 = Lowest Priority → P0 = Highest Priority</fieldText>
             <dataType>String</dataType>
             <fieldText>Business Line</fieldText>
             <fieldType>DropdownBox</fieldType>
-            <isRequired>false</isRequired>
+            <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>inpWork_Request_Title_Mktg</name>
@@ -2049,7 +2093,7 @@ You&apos;ll be able to attach files in the next screen.</fieldText>
             <dataType>String</dataType>
             <fieldText>Request Type</fieldText>
             <fieldType>DropdownBox</fieldType>
-            <isRequired>false</isRequired>
+            <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>inpWork_Request_Title_Office</name>
@@ -2128,7 +2172,7 @@ You&apos;ll be able to attach files in the next screen.</fieldText>
             <dataType>String</dataType>
             <fieldText>Product Line</fieldText>
             <fieldType>DropdownBox</fieldType>
-            <isRequired>false</isRequired>
+            <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>dispOpsPriorities</name>
@@ -2146,7 +2190,7 @@ You&apos;ll be able to attach files in the next screen.</fieldText>
 P1 = Stop everything and do this now                                                  P2 = Make this a priority on top of whatever you were going to do next
 P3 = This needs to get done but don&apos;t interrupt regular work queue
 P4 = This would be nice to have</helpText>
-            <isRequired>false</isRequired>
+            <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>inpWork_Request_Title_Ops</name>
@@ -2188,8 +2232,8 @@ P4 = This would be nice to have</helpText>
     </screens>
     <screens>
         <name>scrProduct_Team_Request</name>
-        <label>Product Team Request</label>
-        <locationX>1724</locationX>
+        <label>Tech Team Request</label>
+        <locationX>1723</locationX>
         <locationY>398</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -2230,9 +2274,9 @@ P4 = This would be nice to have</helpText>
             <choiceReferences>drcProductTag</choiceReferences>
             <choiceReferences>drcBizAppsAcqAdmin</choiceReferences>
             <dataType>String</dataType>
-            <fieldText>What Product is this request for?</fieldText>
+            <fieldText>What&apos;s the best category for your request?</fieldText>
             <fieldType>DropdownBox</fieldType>
-            <isRequired>false</isRequired>
+            <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
@@ -2272,7 +2316,7 @@ P4 = This would be nice to have</helpText>
             <dataType>String</dataType>
             <fieldText>What team is this work request for?</fieldText>
             <fieldType>DropdownBox</fieldType>
-            <isRequired>false</isRequired>
+            <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
@@ -2514,6 +2558,22 @@ P4 = This would be nice to have</helpText>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
+    <screens>
+        <name>Your_case_has_been_opened</name>
+        <label>Your case has been opened</label>
+        <locationX>2607</locationX>
+        <locationY>1043</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>dispCaseOpened</name>
+            <fieldText>&lt;p&gt;Your&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt; {!varTeamName} &lt;/span&gt;support case has been opened and you will receive a confirmation email shortly. If you have any files or screen shots that would be helpful in resolving the case, please respond to that email and attach the files.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
     <stages>
         <name>stgAttach_Files</name>
         <isActive>true</isActive>
@@ -2579,6 +2639,14 @@ Description: {!inpDescription_Legal}</text>
         <objectType>ContentDocumentLink</objectType>
     </variables>
     <variables>
+        <description>If populated, user has access to case object</description>
+        <name>varCaseAccess</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <description>Category selected by the user</description>
         <name>varCategory</name>
         <dataType>String</dataType>
@@ -2630,6 +2698,13 @@ Description: {!inpDescription_Legal}</text>
     </variables>
     <variables>
         <name>varDueDateDescription</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varEmail_to_Case_Address</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
