@@ -98,7 +98,7 @@ public with sharing class ZuoraAPI {
         public String Name;
         public String SoldToId;
         public String Notes;
-        public Integer Balance;
+        public Decimal Balance;
         public String InvoiceTemplateId;
         public String CrmId;
         public String BillToId;
@@ -144,10 +144,10 @@ public with sharing class ZuoraAPI {
 
     // Used to create, but not to query for credit memos:
     public class CreditMemo {
-        public String accountId;
-        public List<CreditCharge> charges;
-        public Date effectiveDate;
-        public String reasonCode;
+        public String AccountId;
+        public List<CreditCharge> Charges;
+        public Date EffectiveDate;
+        public String ReasonCode;
         public String Project_Zcustom;
         public String ClientOwner_Zcustom;
         public String CRM_ID_Zcustom;
@@ -155,32 +155,32 @@ public with sharing class ZuoraAPI {
 
     // Used to query, but not to create credit memos:
     public class ZuoraCreditMemo {
-        public String id;
-        public String accountId;
-        public Date creditMemoDate;
-        public Decimal amount;
-        public Decimal unappliedAmount;
+        public String Id;
+        public String AccountId;
+        public Date CreditMemoDate;
+        public Decimal Amount;
+        public Decimal UnappliedAmount;
         public String Project_Zcustom;
         public String ClientOwner_Zcustom;
         public String CRM_ID_Zcustom;
     }
 
     public class ZuoraCreditMemoItem {
-        public String id;
-        public String accountId;
-        public Decimal amount;
-        public Decimal unappliedAmount;
+        public String Id;
+        public String AccountId;
+        public Decimal Amount;
+        public Decimal UnappliedAmount;
     }
 
     // ASSUMES CREDIT MEMOS ONLY HAVE 1 ITEM:
     public class CreditMemoWithItem{
-        public ZuoraCreditMemo creditMemo;
-        public ZuoraCreditMemoItem item;
+        public ZuoraCreditMemo CreditMemo;
+        public ZuoraCreditMemoItem Item;
     }
 
     public class CreditCharge {
-        public Decimal amount;
-        public String chargeId;
+        public Decimal Amount;
+        public String ChargeId;
     }
 
     // https://www.zuora.com/developer/api-reference/#operation/Action_POSTcreate
@@ -575,38 +575,38 @@ public with sharing class ZuoraAPI {
 
     // Used to create, but not to query for credit memos:
     public class DebitMemo{
-        public String accountId;
-        public List<DebitMemoCharge> charges;
-        public Date effectiveDate;
-        public String reasonCode;
+        public String AccountId;
+        public List<DebitMemoCharge> Charges;
+        public Date EffectiveDate;
+        public String ReasonCode;
         public String CRM_ID_Zcustom;
         public String Project_Zcustom;
         public String ClientOwner_Zcustom;
     }
 
     public class DebitMemoCharge{
-        public Decimal amount;
-        public String chargeId;
+        public Decimal Amount;
+        public String ChargeId;
     }
 
     // Used to query, but not to create credit memos:
     public class ZuoraDebitMemo {
-        public String id;
-        public String accountId;
-        public Date debitMemoDate;
-        public Decimal amount;
-        public Decimal balance;
+        public String Id;
+        public String AccountId;
+        public Date DebitMemoDate;
+        public Decimal Amount;
+        public Decimal Balance;
         public String Project_Zcustom;
         public String ClientOwner_Zcustom;
     }
 
     public class ZuoraDebitMemoItem {
-        public String id;
-        public Decimal balance;
+        public String Id;
+        public Decimal Balance;
     }
 
     public class DebitMemoWithItems {
-        public ZuoraDebitMemo debitMemo;
-        public List<ZuoraDebitMemoItem> items;
+        public ZuoraDebitMemo DebitMemo;
+        public List<ZuoraDebitMemoItem> Items;
     }
 }
