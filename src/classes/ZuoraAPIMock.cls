@@ -10,6 +10,7 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
     global HttpResponse respond(HttpRequest req) {
         // Only send a mock response for a specific endpoint and method.
         String endpoint = req.getEndpoint();
+        String method = req.getMethod();
 
         // Create a fake response
         if (endpoint.contains('rsa-signatures')) {
@@ -40,6 +41,10 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
             return getOrderResponse(req.getBody());
         } else if (endpoint.contains('v1/object/invoice')) {
             return getInvoiceResponse(req.getBody());
+        } else if (endpoint.contains('/v1/creditmemos') && method.contains('POST')) {
+            return postCreditMemo();
+        } else if (endpoint.contains('/v1/debitmemos') && method.contains('POST')) {
+            return createDebitMemo();
         } else if (endpoint.contains('/v1/creditmemos/') && endpoint.contains('/items')) {
             return getCreditMemoItems();
         } else if (endpoint.contains('/v1/invoices/') && endpoint.contains('/items')) {
@@ -48,7 +53,7 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
             return getDebitMemoItems();
         } else if (endpoint.contains('/v1/creditmemos?status=Posted') || endpoint.contains('/v1/creditmemos/')) {
             return getCreditMemos();
-        } else if (endpoint.contains('/v1/debitmemos/')) {
+        } else if (endpoint.contains('/v1/debitmemos/') && method.contains('GET')) {
             return getDebitMemos();
         } else {
             return null;
@@ -555,6 +560,23 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
                 '"success" : true }');
         }
 
+        return res;
+    }
+
+    private static HttpResponse createDebitMemo(){
+        HttpResponse res = getJSON();
+        res.setBody(
+            '{ "id" : "2c92c0fa6a3458e1016a45ac238e0d66", ' +
+                '"number" : "CM00000049", ' +
+                '"accountId" : "2c92c0f869c8e5c50169dfb877685bd8", ' +
+                '"debitMemoDate" : "2019-04-22", ' +
+                '"amount" : 34.00, ' +
+                '"reasonCode" : "BW - Initiated Credit", ' +
+                '"Project__c" : "Project A Oak Road", ' +
+                '"ClientOwner__c" : "SSS-0000123", ' +
+                '"CRM_ID__c" : "a0p0j00000CwTIHAA3", ' +
+                '"success" : true }'
+        );
         return res;
     }
 

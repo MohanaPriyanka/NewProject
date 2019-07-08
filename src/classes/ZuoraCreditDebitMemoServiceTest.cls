@@ -40,7 +40,7 @@ public class ZuoraCreditDebitMemoServiceTest {
             Reason_For_Adjustment__c = 'Needs adjustment');
 
         Bill_Adjustment__c adjustThree = new Bill_Adjustment__c(
-            Name = 'UASoneAdjustment2',
+            Name = 'UASoneAdjustment3',
             Utility_Account_Subscription__c = uasbList[1].Utility_Account_Subscription__r.Id,
             UASB__c = uasbList[1].Id,
             Adjustment_Type__c = 'BW Credit',
@@ -50,7 +50,7 @@ public class ZuoraCreditDebitMemoServiceTest {
             Reason_For_Adjustment__c = 'Needs adjustment');
 
         Bill_Adjustment__c adjustFour = new Bill_Adjustment__c(
-            Name = 'UASoneAdjustment2',
+            Name = 'UASoneAdjustment4',
             Utility_Account_Subscription__c = uasbList[1].Utility_Account_Subscription__r.Id,
             UASB__c = uasbList[1].Id,
             Adjustment_Type__c = 'BW Credit',
@@ -60,7 +60,28 @@ public class ZuoraCreditDebitMemoServiceTest {
             Zuora_Id__c = 'XXXXXXXXXXXXXXXXXX',
             Reason_For_Adjustment__c = 'Needs adjustment');
 
-        insert new List<Bill_Adjustment__c>{adjustOne, adjustTwo, adjustThree, adjustFour};
+        Bill_Adjustment__c adjustFive = new Bill_Adjustment__c(
+            Name = 'UASoneAdjustment5',
+            Utility_Account_Subscription__c = uasbList[1].Utility_Account_Subscription__r.Id,
+            UASB__c = uasbList[1].Id,
+            Adjustment_Type__c = 'BW Credit',
+            Client__c = clientAccount.Id,
+            Adjustment_Amount__c = 12,
+            Approval_Status__c = 'Approved',
+            Reason_For_Adjustment__c = 'Needs adjustment');
+
+        Bill_Adjustment__c adjustSix = new Bill_Adjustment__c(
+            Name = 'UASoneAdjustment6',
+            Utility_Account_Subscription__c = uasbList[1].Utility_Account_Subscription__r.Id,
+            UASB__c = uasbList[1].Id,
+            Adjustment_Type__c = 'BW Credit',
+            Client__c = clientAccount.Id,
+            Adjustment_Amount__c = 18,
+            Approval_Status__c = 'Approved',
+            Reason_For_Adjustment__c = 'Needs adjustment');
+
+
+        insert new List<Bill_Adjustment__c>{adjustOne, adjustTwo, adjustThree, adjustFour, adjustFive, adjustSix};
 
         List<Account> accounts = [
             SELECT Id, Name, Zuora_Id__c
@@ -95,30 +116,63 @@ public class ZuoraCreditDebitMemoServiceTest {
     }
 
     @IsTest
-    private static void testAPICallWithMock() {
+    private static void testBatch() {
         // disableTrigger just sets a system property checkbox to true
         Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
 
+        // 6 adjustments exist, but one should be excluded, because already has a zuora ID:
         List<Bill_Adjustment__c> beforeCallList = AdjustmentSelector.getAdjustmentsNotYetInZuora(false);
-        System.assertEquals(3, beforeCallList.size());
+        System.assertEquals(5, beforeCallList.size());
 
         Test.startTest();
         ZuoraCreditMemoBatchSend zSend = new ZuoraCreditMemoBatchSend();
         zSend.executeBatch();
         Test.stopTest();
 
-        List<Bill_Adjustment__c> adjustList = [
+        // Credit Memos:
+        List<Bill_Adjustment__c> creditList = [
             SELECT Id, Name, Zuora_Id__c
             FROM Bill_Adjustment__c
             WHERE Zuora_Id__c = '2c92c0fa6a3458e1016a45ac238e0d74'
         ];
-        System.assertEquals(3, adjustList.size());
+        System.assertEquals(3, creditList.size());
+
+        // Debit Memos:
+        List<Bill_Adjustment__c> debitList = [
+            SELECT Id, Name, Zuora_Id__c
+            FROM Bill_Adjustment__c
+            WHERE Zuora_Id__c = '2c92c0fa6a3458e1016a45ac238e0d66'
+        ];
+        System.assertEquals(2, debitList.size());
+    }
+
+    @IsTest
+    private static void testAPICallWithMock() {
+        // disableTrigger just sets a system property checkbox to true
+        Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
+
+        // 6 adjustments exist, but one should be excluded, because already has a zuora ID:
+        List<Bill_Adjustment__c> beforeCallList = AdjustmentSelector.getAdjustmentsNotYetInZuora(false);
+        System.assertEquals(5, beforeCallList.size());
+
+        List<Bill_Adjustment__c> adjustmentsToUpdate = new List<Bill_Adjustment__c>();
+
+        Test.startTest();
+        for (Bill_Adjustment__c adjust : beforeCallList){
+            adjustmentsToUpdate.add(ZuoraCreditDebitMemoService.createCreditOrDebitMemo(adjust));
+        }
+        Test.stopTest();
+
+        System.assertEquals(5,adjustmentsToUpdate.size());
+        for (Bill_Adjustment__c adjustment : adjustmentsToUpdate){
+            System.assertNotEquals(null, adjustment.Zuora_Id__c);
+        }
     }
 
     @IsTest
     private static void testCallWithoutUpdatingAdjustment() {
         List<Bill_Adjustment__c> beforeCallList = AdjustmentSelector.getAdjustmentsNotYetInZuora(false);
-        System.assertEquals(3, beforeCallList.size());
+        System.assertEquals(5, beforeCallList.size());
 
         Test.startTest();
         ZuoraCreditMemoBatchSend zSend = new ZuoraCreditMemoBatchSend();
