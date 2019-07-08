@@ -1,8 +1,8 @@
-public without sharing class ZuoraCreditMemoBatchSend implements Database.Batchable<sObject>, Database.Stateful, Database.AllowsCallouts{
+public without sharing class ZuoraCreditMemoBatchSend implements Database.Batchable<SObject>, Database.Stateful, Database.AllowsCallouts{
     public Set<Bill_Adjustment__c> adjustToUpdateSet = new Set<Bill_Adjustment__c>();
 
     public void executeBatch(){
-        Database.executeBatch(this, 100);
+        Database.executeBatch(this, 50);
     }
 
     public List<SObject> start(Database.BatchableContext bc){
@@ -11,17 +11,11 @@ public without sharing class ZuoraCreditMemoBatchSend implements Database.Batcha
         return sObjectList;
     }
 
-    public void execute(Database.BatchableContext bc, List<sObject> scope){
+    public void execute(Database.BatchableContext bc, List<SObject> scope){
         try {
-            for (sObject scopeLine : scope){
+            for (SObject scopeLine : scope){
                 Bill_Adjustment__c adjust = (Bill_Adjustment__c)scopeLine;
-                ZuoraAPI.CreditMemo memo;
-                memo = ZuoraCreditDebitMemoService.convertSFAdjustToCreditMemo(adjust);
-                HttpResponse response = ZuoraCreditDebitMemoService.creditMemoAPICall(memo);
-                Bill_Adjustment__c adjustmentToUpdate = ZuoraCreditDebitMemoService.handleAPIResponse(memo,response);
-                if (adjustmentToUpdate != null){
-                    adjustToUpdateSet.add(adjustmentToUpdate);
-                }
+                adjustToUpdateSet.add(ZuoraCreditDebitMemoService.createCreditOrDebitMemo(adjust));
             }
         } catch (Exception excep){
             Logger.logLater('ZuoraCreditMemoBatchSend', 'execute', excep.getMessage() + '\n' + excep.getStackTraceString());
