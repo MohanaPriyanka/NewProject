@@ -22,7 +22,7 @@
       <h3 class="slds-text-body_large slds-p-bottom_large slds-align_absolute-center white">
         (please confirm your email so we can get you your SREC payments at the speed of light)
       </h3>
-      <aura:if isTrue="{!v.showError}"> 
+      <aura:if isTrue="{!v.showError}">
         <ui:outputText class="slds-output slds-text-heading_medium red slds-align_absolute-center" value="{!v.errorMessage}"/>
       </aura:if>
       <aura:if isTrue="{!v.showEmail}"> 
@@ -43,7 +43,7 @@
                 Thank you. You should recieve a confirmation email momentarily.
               </h3>
             <aura:set attribute="else">
-              <h3 class="slds-text-body_medium slds-align_left white">
+              <h3 class="slds-text-body_medium slds-align_left slds-align_absolute-center white">
                 By providing my bank account information, I confirm that I am opting out of receiving paper checks
               </h3>
               <h3 class="slds-text-body_medium slds-p-bottom_large slds-align_absolute-center white">
