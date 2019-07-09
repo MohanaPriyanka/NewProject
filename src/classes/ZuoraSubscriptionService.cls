@@ -5,6 +5,9 @@
  *************************************************************************************/
 
 public with sharing class ZuoraSubscriptionService {
+    @TestVisible
+    private static Map<String, ZuoraAPI.OrderBySubscriptionOwner> ordersBySubscriptionOwnerCache = new Map<String, ZuoraAPI.OrderBySubscriptionOwner>();
+
     public static List<String> createSubscriptions(List<SubscriptionParam> subscriptionParams) {
         List<String> subscriptionsCreated = new List<String>();
         Integer callouts = 0;
@@ -109,12 +112,32 @@ public with sharing class ZuoraSubscriptionService {
     }
 
     public static ZuoraAPI.OrderBySubscriptionOwner getOrderBySubscriptionOwner(String accountNumber) {
+        if (ordersBySubscriptionOwnerCache.containsKey(accountNumber)) {
+            return ordersBySubscriptionOwnerCache.get(accountNumber);
+        }
+        ZuoraAPI.OrderBySubscriptionOwner obso =
+            getOrderBySubscriptionOwnerPage('/v1/orders/subscriptionOwner/' + accountNumber + '?pageSize=40', null);
+        ordersBySubscriptionOwnerCache.put(accountNumber, obso);
+        return obso;
+    }
+
+    @TestVisible
+    private static ZuoraAPI.OrderBySubscriptionOwner getOrderBySubscriptionOwnerPage(String url, List<ZuoraAPI.Order> ordersAlreadyRetrieved) {
         HttpResponse response =
-            ZuoraAPIHelper.callJsonEndpoint('GET', '/v1/orders/subscriptionOwner/' + accountNumber, null, false);
+            ZuoraAPIHelper.callJsonEndpoint('GET', url, null, false);
         String cleanJSON = ZuoraAPIHelper.cleanJSON(response.getBody());
         ZuoraAPI.OrderBySubscriptionOwner obso =
             (ZuoraAPI.OrderBySubscriptionOwner) JSON.deserialize(cleanJSON, ZuoraAPI.OrderBySubscriptionOwner.class);
-        return obso;
+        if (ordersAlreadyRetrieved != null) {
+            obso.orders.addAll(ordersAlreadyRetrieved);
+        }
+        ordersAlreadyRetrieved = obso.orders;
+
+        if (obso.nextPage != null) {
+            return getOrderBySubscriptionOwnerPage(obso.nextPage, ordersAlreadyRetrieved);
+        } else {
+            return obso;
+        }
     }
 
     // The OrderActionParam represents the subscription that we'll create. We always need to create a Subscription Rate

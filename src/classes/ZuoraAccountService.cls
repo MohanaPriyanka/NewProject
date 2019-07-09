@@ -61,7 +61,9 @@ public without sharing class ZuoraAccountService {
             zuoraAccount.AccountNumber = propertyAccount.Account_Number__c;
             zuoraAccount.AutoPay = false;
             zuoraAccount.Batch = 'Batch1';
-            zuoraAccount.BillCycleDay = 15;
+            // Since we're setting the Usage End Date to be the first of the month, a Bill Cycle Day of 10 will include
+            // it, and will also allow us to have invoice dates as early as the 13th (which we need to import history)
+            zuoraAccount.BillCycleDay = 10;
             zuoraAccount.CrmId = propertyAccount.Id;
             zuoraAccount.Currency_Zreserved = 'USD';
             zuoraAccount.Name = propertyAccount.Name;
