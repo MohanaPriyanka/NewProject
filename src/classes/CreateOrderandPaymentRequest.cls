@@ -59,7 +59,6 @@ public without sharing class CreateOrderandPaymentRequest {
                 update loanRecord;
             } catch (Exception e) {
                 Logger.logNow('CreateOrderandPaymentRequest', 'submitDDInfoWithoutCharge', 'Did not Update Loan: ' + chargentOrder.Id + String.valueOf(e));
-                return true; // payment info was stored, we just need to do something internally
             }
 
             try {
@@ -85,7 +84,6 @@ public without sharing class CreateOrderandPaymentRequest {
                 );
             } catch (Exception e){
                 Logger.logNow('CreateOrderandPaymentRequest', 'submitDDInfoWithoutCharge', 'Did not send email receipt: ' + chargentOrder.Id + String.valueOf(e));
-                return true; // payment info was stored, we just need to do something internally
             }
             return true;
         }
