@@ -281,4 +281,71 @@ public with sharing class ZuoraSubscriptionServiceTest {
         System.assertEquals(1, Logger.logs.values()[0].size());
         System.assert(Logger.logs.values()[0][0].message.contains('/v1/orders/subscriptionOwner'));
     }
+
+    @IsTest
+    public static void testOrdersBySubscriptionOwnerCache() {
+        List<Error_Log__c> errorLogs = [
+            SELECT Id
+            FROM Error_Log__c
+            WHERE Class__c = 'ZuoraAPIHelper'
+        ];
+        System.assertEquals(0, errorLogs.size());
+
+        ZuoraSubscriptionService.getOrderBySubscriptionOwner('12345');
+        Logger.flushLogs();
+        errorLogs = [
+            SELECT Id
+            FROM Error_Log__c
+            WHERE Class__c = 'ZuoraAPIHelper'
+        ];
+        // There should be one error log since we did the callout
+        System.assertEquals(1, errorLogs.size());
+        System.assertEquals(1, ZuoraSubscriptionService.ordersBySubscriptionOwnerCache.size());
+
+        ZuoraSubscriptionService.getOrderBySubscriptionOwner('12345');
+        Logger.flushLogs();
+        errorLogs = [
+            SELECT Id
+            FROM Error_Log__c
+            WHERE Class__c = 'ZuoraAPIHelper'
+        ];
+        // Since we cache the result, there should still only be one error log
+        System.assertEquals(1, errorLogs.size());
+        System.assertEquals(1, ZuoraSubscriptionService.ordersBySubscriptionOwnerCache.size());
+
+        ZuoraSubscriptionService.getOrderBySubscriptionOwner('67890');
+        Logger.flushLogs();
+        errorLogs = [
+            SELECT Id
+            FROM Error_Log__c
+            WHERE Class__c = 'ZuoraAPIHelper'
+        ];
+        // But if we query a different account number, we should have logged another error log
+        System.assertEquals(2, errorLogs.size());
+        System.assertEquals(2, ZuoraSubscriptionService.ordersBySubscriptionOwnerCache.size());
+    }
+
+    @IsTest
+    public static void testGetOrderBySubscriptionOwnerPages() {
+        ZuoraAPI.Order order = new ZuoraAPI.Order('12345', System.today());
+        List<ZuoraAPI.Order> existingOrders = new List<ZuoraAPI.Order>{order};
+        ZuoraAPI.OrderBySubscriptionOwner obso =
+            ZuoraSubscriptionService.getOrderBySubscriptionOwnerPage('/v1/orders/subscriptionOwner/ExistingAccountPage?page=2', existingOrders);
+        System.assertEquals(3, obso.orders.size());
+        Boolean foundExistingAccount = false;
+        Boolean found12345 = false;
+        for (ZuoraAPI.Order orderFromQuery : obso.orders) {
+            if (orderFromQuery.existingAccountNumber == 'ExistingAccount') {
+                foundExistingAccount = true;
+            } else if (orderFromQuery.existingAccountNumber == '12345') {
+                found12345 = true;
+            }
+        }
+        System.assert(foundExistingAccount);
+        System.assert(found12345);
+
+        obso =
+            ZuoraSubscriptionService.getOrderBySubscriptionOwnerPage('/v1/orders/subscriptionOwner/ExistingAccountPage', null);
+        System.assertEquals(4, obso.orders.size());
+    }
 }
