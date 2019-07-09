@@ -18,7 +18,7 @@ public class UASBSelector {
                 Client_Account_Number__c
             FROM UASB__c
             WHERE Zuora_Id__c = NULL
-            ORDER BY Utility_Account_Subscription__r.Opportunity__r.AccountId
+            ORDER BY Utility_Account_Subscription__r.Opportunity__r.AccountId, Date__c
         ];
     }
 }
