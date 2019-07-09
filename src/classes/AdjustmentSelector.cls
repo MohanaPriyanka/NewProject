@@ -10,6 +10,7 @@ public class AdjustmentSelector {
                 'Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Utility__r.Name, ' +
                 'Utility_Account_Subscription__r.Utility_Account_Log__r.Name, ' +
                 'Client__r.Account_Number__c, ' +
+                'UASB__r.System_Bill__r.Account_Bill__c, ' +
                 'Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c, ' +
                 'Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c, ' +
                 'Adjustment_Amount__c, ' +
@@ -28,6 +29,8 @@ public class AdjustmentSelector {
             queryString += 'AND(Adjustment_Type__c != \'Production\' ';
             queryString += 'OR Adjustment_Amount__c < 0)';
         }
+
+        queryString += ' ORDER BY UASB__r.Opportunity__r.AccountId';
 
         return Database.query(queryString);
     }
