@@ -214,6 +214,11 @@
                     <label>Returned Check Payment</label>
                 </value>
                 <value>
+                    <fullName>No Longer Billing</fullName>
+                    <default>false</default>
+                    <label>No Longer Billing</label>
+                </value>
+                <value>
                     <fullName>Plympton TBD</fullName>
                     <default>false</default>
                     <isActive>false</isActive>
