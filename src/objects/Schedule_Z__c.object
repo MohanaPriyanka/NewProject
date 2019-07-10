@@ -186,7 +186,7 @@ IF(
         <fullName>Date_Schedule_Z_Retired_by_Utility__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Populated by status change of next Allocation Schedule enacted</inlineHelpText>
-        <label>Date Schedule Z Retired by Utility</label>
+        <label>Date Allocation Sch Retired by Utility</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
@@ -264,7 +264,7 @@ IF(
     <fields>
         <fullName>Schedule_Z_Id__c</fullName>
         <externalId>false</externalId>
-        <label>Schedule Z Id</label>
+        <label>Allocation Schedule Id</label>
         <length>255</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
@@ -454,7 +454,7 @@ IF(
         <height>600</height>
         <isResizable>true</isResizable>
         <linkType>url</linkType>
-        <masterLabel>Conga: Create Schedule Z PDF</masterLabel>
+        <masterLabel>Conga: Create Allocation Schedule PDF</masterLabel>
         <openType>newWindow</openType>
         <position>none</position>
         <protected>false</protected>
@@ -479,7 +479,7 @@ IF(
         <height>600</height>
         <isResizable>true</isResizable>
         <linkType>url</linkType>
-        <masterLabel>View Schedule Z In Report</masterLabel>
+        <masterLabel>View Allocation Schedule In Report</masterLabel>
         <openType>newWindow</openType>
         <position>none</position>
         <protected>false</protected>

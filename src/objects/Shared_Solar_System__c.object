@@ -3114,7 +3114,7 @@ ISCHANGED(Utility_NMC_Tariff__c)
     <webLinks>
         <fullName>Customer_Info_Report</fullName>
         <availability>online</availability>
-        <description>Schedule Z with FICO and Property Type</description>
+        <description>Allocation Schedule with FICO and Property Type</description>
         <displayType>button</displayType>
         <encodingKey>UTF-8</encodingKey>
         <height>600</height>
