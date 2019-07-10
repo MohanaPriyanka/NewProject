@@ -212,7 +212,7 @@ IF(Opportunity__r.Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c &gt; 0,
     <fields>
         <fullName>Count_of_Deactive_Schedule_Zs__c</fullName>
         <externalId>false</externalId>
-        <label>Count of Deactive Schedule Zs</label>
+        <label>Count of Deactived Allocation Schedules</label>
         <summaryFilterItems>
             <field>Schedule_Z_Subscription__c.Deactivated__c</field>
             <operation>equals</operation>
@@ -227,7 +227,7 @@ IF(Opportunity__r.Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c &gt; 0,
     <fields>
         <fullName>Count_of_Submitted_Schedule_Zs__c</fullName>
         <externalId>false</externalId>
-        <label>Count of Submitted Schedule Zs</label>
+        <label>Count of Submitted Allocation Schedules</label>
         <summaryFilterItems>
             <field>Schedule_Z_Subscription__c.Submitted__c</field>
             <operation>equals</operation>
@@ -244,8 +244,8 @@ IF(Opportunity__r.Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c &gt; 0,
         <externalId>false</externalId>
         <formula>IF(Total_Count_of_Schedule_Zs__c = 0, &quot;Not Yet Enacted&quot;, IF((Count_of_Deactive_Schedule_Zs__c = Total_Count_of_Schedule_Zs__c), &quot;Cancelled&quot; , &quot;Enacted&quot;))</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Calculated by the number of Schedule Z Subscriptions that are enacted or not enacted</inlineHelpText>
-        <label>Current Schedule Z Status</label>
+        <inlineHelpText>Calculated by the number of Allocation Schedule Subscriptions that are enacted or not enacted</inlineHelpText>
+        <label>Current Allocation Schedule Status</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -292,7 +292,7 @@ IF(Opportunity__r.Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c &gt; 0,
     </fields>
     <fields>
         <fullName>Customer_Subscription_KW_DC__c</fullName>
-        <description>Made the system name logic so that schedule z customers will not change to unrounded values</description>
+        <description>Made the system name logic so that Allocation Schedule customers will not change to unrounded values</description>
         <externalId>false</externalId>
         <formula>IF(AND(TEXT(Opportunity__r.Product__r.Customer_Subscription_Type__c)=&apos;kWh&apos;,Annual_kwh_subscription_future__c&gt;0),Annual_kwh_subscription_future__c/Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c, 
 IF( UAS_Number__c &gt; 1 , 
@@ -324,7 +324,7 @@ Round(( Subscribed_Annual_Cost_of_Electricity__c / Opportunity__r.NMC_Value__c/ 
     <fields>
         <fullName>Date_Removed_from_Project__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Populated with Date Schedule Z Retired by Utility when &quot;Date Schedule Z Retired by Utility&quot; on all related SZS is populated AND Date Utility Account Cancelled is NOT populated</inlineHelpText>
+        <inlineHelpText>Populated with Date Allocation Schedule Retired by Utility when &quot;Date Allocation Schedule Retired by Utility&quot; on all related Allocation Schedule Subscriptions is populated AND Date Utility Account Cancelled is NOT populated</inlineHelpText>
         <label>Date Removed from Project</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
@@ -522,8 +522,8 @@ Round(( Subscribed_Annual_Cost_of_Electricity__c / 0.1933 / Opportunity__r.Share
         <fullName>Next_Schedule_Z_Status__c</fullName>
         <defaultValue>&quot;Active Subscription&quot;</defaultValue>
         <externalId>false</externalId>
-        <inlineHelpText>Controls whether this subscription should be added to future schedule Zs. Select &apos;Active Subscription&apos; to include it, or &apos;Inactive Subscription&apos; to exclude it.</inlineHelpText>
-        <label>Next Schedule Z Status</label>
+        <inlineHelpText>Controls whether this subscription should be added to futureAllocation Schedules. Select &apos;Active Subscription&apos; to include it, or &apos;Inactive Subscription&apos; to exclude it.</inlineHelpText>
+        <label>Next Allocation Schedule Status</label>
         <required>false</required>
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
@@ -811,7 +811,7 @@ Round(( Subscribed_Annual_Cost_of_Electricity__c / 0.1933 / Opportunity__r.Share
     <fields>
         <fullName>Total_Count_of_Schedule_Zs__c</fullName>
         <externalId>false</externalId>
-        <label>Total Count of Schedule Zs</label>
+        <label>Total Count of Allocation Schedules</label>
         <summaryForeignKey>Schedule_Z_Subscription__c.Utility_Account_Subscription__c</summaryForeignKey>
         <summaryOperation>count</summaryOperation>
         <trackHistory>false</trackHistory>
