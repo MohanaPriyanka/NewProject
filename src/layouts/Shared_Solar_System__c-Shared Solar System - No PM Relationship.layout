@@ -372,7 +372,7 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>Schedule Z</label>
+        <label>Allocation Schedule</label>
         <layoutColumns>
             <layoutItems>
                 <behavior>Readonly</behavior>
