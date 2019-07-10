@@ -57,7 +57,7 @@
         <fullName>Billing__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <inlineHelpText>Checked when used on first production update, unchecked when production update uses newer schedule Z</inlineHelpText>
+        <inlineHelpText>Checked when used on first production update, unchecked when production update uses newer Allocation Schedule</inlineHelpText>
         <label>Billing</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -66,7 +66,7 @@
     <fields>
         <fullName>Customer_Subscription_kW_DC__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>The size of the UAS at the time of schedule Z filing</inlineHelpText>
+        <inlineHelpText>The size of the UAS at the time of Allocation Schedule filing</inlineHelpText>
         <label>Customer Subscription kW DC</label>
         <precision>9</precision>
         <required>false</required>
@@ -80,7 +80,7 @@
         <fullName>Deactivated__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <inlineHelpText>Checked when a newer schedule z replaces this one during billing</inlineHelpText>
+        <inlineHelpText>Checked when a newer Allocation Schedule replaces this one during billing</inlineHelpText>
         <label>Deactivated</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -90,7 +90,7 @@
         <fullName>Enacted__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <inlineHelpText>Checked when the schedule z is enacted by the utility and unchecked when no longer being used for billing</inlineHelpText>
+        <inlineHelpText>Checked when the Allocation Schedule is enacted by the utility and unchecked when no longer being used for billing</inlineHelpText>
         <label>Enacted</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -100,7 +100,7 @@
         <fullName>Number_of_Decimal_Places__c</fullName>
         <defaultValue>4</defaultValue>
         <externalId>false</externalId>
-        <inlineHelpText>The number of decimal places listed on the Schedule Z at the time of Schedule Z filing</inlineHelpText>
+        <inlineHelpText>The number of decimal places listed on the Allocation Schedule at the time of Allocation Schedule filing</inlineHelpText>
         <label>Number of Decimal Places</label>
         <precision>1</precision>
         <required>false</required>
@@ -137,7 +137,7 @@
         <externalId>false</externalId>
         <formula>TEXT(Schedule_Z__r.Status__c)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Schedule Z Status</label>
+        <label>Allocation Schedule Status</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -147,9 +147,9 @@
     <fields>
         <fullName>Schedule_Z__c</fullName>
         <externalId>false</externalId>
-        <label>Schedule Z</label>
+        <label>Allocation Schedule</label>
         <referenceTo>Schedule_Z__c</referenceTo>
-        <relationshipLabel>Schedule Z Subscriptions</relationshipLabel>
+        <relationshipLabel>Allocation Schedule Subscriptions</relationshipLabel>
         <relationshipName>Schedule_Z_Subscriptions</relationshipName>
         <relationshipOrder>0</relationshipOrder>
         <reparentableMasterDetail>false</reparentableMasterDetail>
@@ -172,7 +172,7 @@
         <fullName>Submitted__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <inlineHelpText>Unchecked until schedule Z is submitted to the utility</inlineHelpText>
+        <inlineHelpText>Unchecked until Allocation Schedule is submitted to the utility</inlineHelpText>
         <label>Submitted</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -182,7 +182,7 @@
         <fullName>System_Size_kW_DC__c</fullName>
         <defaultValue>0</defaultValue>
         <externalId>false</externalId>
-        <inlineHelpText>The size of the solar system at the time of schedule Z filing</inlineHelpText>
+        <inlineHelpText>The size of the solar system at the time of Allocation Schedule filing</inlineHelpText>
         <label>System Size (kW DC)</label>
         <precision>8</precision>
         <required>false</required>

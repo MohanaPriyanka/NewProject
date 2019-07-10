@@ -673,7 +673,7 @@ if( month( Date__c ) == 12, &quot;December&quot;, null))))))))))))</formula>
     <fields>
         <fullName>Schedule_Z_Allocations__c</fullName>
         <externalId>false</externalId>
-        <label>Schedule Z Allocations</label>
+        <label>Allocations</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -686,7 +686,7 @@ if( month( Date__c ) == 12, &quot;December&quot;, null))))))))))))</formula>
         <fullName>Schedule_Z__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <label>Schedule Z</label>
+        <label>Allocation Schedule</label>
         <referenceTo>Schedule_Z__c</referenceTo>
         <relationshipLabel>Production Updates</relationshipLabel>
         <relationshipName>Production_Updates</relationshipName>

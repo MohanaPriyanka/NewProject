@@ -56,7 +56,7 @@
     <fields>
         <fullName>Applied_to_Production_Starting__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Manual entry provided by utility. It is the start of the production period to which the schedule z is applied</inlineHelpText>
+        <inlineHelpText>Manual entry provided by utility. It is the start of the production period to which the Allocation Schedule is applied</inlineHelpText>
         <label>Applied to Production Starting</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
@@ -107,7 +107,7 @@ IF(
     <fields>
         <fullName>Contract_Assignment_Date__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Date that contracts were legally assigned to the project entity after a Schedule Z submission.</inlineHelpText>
+        <inlineHelpText>Date that contracts were legally assigned to the project entity after a Allocation Schedule submission.</inlineHelpText>
         <label>Contract Assignment Date</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
@@ -176,7 +176,7 @@ IF(
         <fullName>Date_Replaced_with_Newly_Enacted_Sch_Z__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Stamped by status change</inlineHelpText>
-        <label>Date Replaced with Newly Enacted Sch Z</label>
+        <label>Date Replaced with Newly Enacted AL Sch</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
@@ -185,8 +185,8 @@ IF(
     <fields>
         <fullName>Date_Schedule_Z_Retired_by_Utility__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Populated by status change of next schedule z enacted</inlineHelpText>
-        <label>Date Schedule Z Retired by Utility</label>
+        <inlineHelpText>Populated by status change of next Allocation Schedule enacted</inlineHelpText>
+        <label>Date Allocation Sch Retired by Utility</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
@@ -232,7 +232,7 @@ IF(
         <fullName>Next_Schedule_Z_Date__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Defaults to 6 months after the date created, can be edited</inlineHelpText>
-        <label>Next Schedule Z Date</label>
+        <label>Next Allocation Schedule Date</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>
@@ -264,7 +264,7 @@ IF(
     <fields>
         <fullName>Schedule_Z_Id__c</fullName>
         <externalId>false</externalId>
-        <label>Schedule Z Id</label>
+        <label>Allocation Schedule Id</label>
         <length>255</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
@@ -402,7 +402,7 @@ IF(
     </fields>
     <fields>
         <fullName>Submitted_Utilization__c</fullName>
-        <description>Roll up summary of the % field on schedule z subscriptions.</description>
+        <description>Roll up summary of the % field on Allocation Schedule Subscriptions.</description>
         <externalId>false</externalId>
         <label>Submitted Utilization</label>
         <summarizedField>Schedule_Z_Subscription__c.Percent_Share__c</summarizedField>
@@ -454,7 +454,7 @@ IF(
         <height>600</height>
         <isResizable>true</isResizable>
         <linkType>url</linkType>
-        <masterLabel>Conga: Create Schedule Z PDF</masterLabel>
+        <masterLabel>Conga: Create Allocation Schedule PDF</masterLabel>
         <openType>newWindow</openType>
         <position>none</position>
         <protected>false</protected>
@@ -479,7 +479,7 @@ IF(
         <height>600</height>
         <isResizable>true</isResizable>
         <linkType>url</linkType>
-        <masterLabel>View Schedule Z In Report</masterLabel>
+        <masterLabel>View Allocation Schedule In Report</masterLabel>
         <openType>newWindow</openType>
         <position>none</position>
         <protected>false</protected>

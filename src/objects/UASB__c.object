@@ -542,7 +542,7 @@ MONTH(Billing_Period_End_Date__c),
         <fullName>PreGen_Schedule_Z_Status__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Used for Pre-generation of Bills Table Only</inlineHelpText>
-        <label>PreGen Schedule Z Status</label>
+        <label>PreGen Allocation Schedule Status</label>
         <length>50</length>
         <required>false</required>
         <trackHistory>false</trackHistory>
@@ -640,9 +640,9 @@ MONTH(Billing_Period_End_Date__c),
     <fields>
         <fullName>Schedule_Z_Subscription__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
-        <description>The schedule z subscription this bill was created with.</description>
+        <description>The Allocation Schedule Subscription this bill was created with.</description>
         <externalId>false</externalId>
-        <label>Schedule Z Subscription</label>
+        <label>Allocation Schedule Subscription</label>
         <referenceTo>Schedule_Z_Subscription__c</referenceTo>
         <relationshipLabel>Utility Account Subscription Bills</relationshipLabel>
         <relationshipName>Utility_Account_Subscription_Bills</relationshipName>
