@@ -212,7 +212,7 @@ IF(Opportunity__r.Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c &gt; 0,
     <fields>
         <fullName>Count_of_Deactive_Schedule_Zs__c</fullName>
         <externalId>false</externalId>
-        <label>Count of Deactived Allocation Schedules</label>
+        <label>Count of Deactivated Allocation Schs</label>
         <summaryFilterItems>
             <field>Schedule_Z_Subscription__c.Deactivated__c</field>
             <operation>equals</operation>
