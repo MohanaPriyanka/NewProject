@@ -4,6 +4,7 @@
     <customButtons>Send_NMC_Contract_Business_Copy_to_Partner</customButtons>
     <customButtons>Send_NMC_Contract_Residential_Copy_to_Partner</customButtons>
     <customButtons>Disable_Enable_Emails</customButtons>
+    <customButtons>dsfs__Send_with_DocuSign</customButtons>
     <excludeButtons>ChangeOwnerOne</excludeButtons>
     <excludeButtons>ChangeRecordType</excludeButtons>
     <excludeButtons>Share</excludeButtons>
