@@ -16,18 +16,23 @@ public without sharing class CreateOrderandPaymentRequest {
         if (loanRecord == null) {
             return false;
         } else {
-            Entity__c srecEntity = [ SELECT Id, Name, Gateway__r.Id
-                                     FROM Entity__c
-                                     WHERE Name = 'BlueWave Finance Group, LLC'
-                                     LIMIT 1];
+            /*
+                JP July 2019:
+                Important that the email address is null when SREC credits are submitted to the gateway.
+                If not, a confusing email receipt will be sent from the gateway automatically that makes it appear that
+                we charged customers instead of crediting them.
+                Linked2Pay has a setting to toggle that email, but we've seen that it still gets sent even when
+                that setting is off (bug on their side). Additionally, if all transactions are set to the same
+                email (compliance@bw for ex) transactions will mistakenly be assigned to the same Linked2Pay contact
+                and the bank account name will get overwritten with the contact name of the Linked2Pay contact with
+                compliance@bw as its email.
+            */
 
             ChargentOrders__ChargentOrder__c chargentOrder = new ChargentOrders__ChargentOrder__c(
                                                                 Comments__c = 'Created For Payment Request',
                                                                 ChargentOrders__Subtotal__c = 0.01,
-                                                                ChargentOrders__Billing_Email__c = 'compliance@bluewavesolar.com',
+                                                                ChargentOrders__Billing_Email__c = null,
                                                                 ChargentOrders__Charge_Amount__c = 0.01,
-                                                                ChargentOrders__Gateway__c = srecEntity.Gateway__r.Id,
-                                                                Entity__c = srecEntity.Id,
                                                                 ChargentOrders__Bank_Account_Number__c = chOrder.ChargentOrders__Bank_Account_Number__c,
                                                                 ChargentOrders__Bank_Routing_Number__c = chOrder.ChargentOrders__Bank_Routing_Number__c,
                                                                 ChargentOrders__Bank_Account_Name__c = chOrder.ChargentOrders__Bank_Account_Name__c,
@@ -37,17 +42,48 @@ public without sharing class CreateOrderandPaymentRequest {
                                                                 Opportunity__c = oppId);
 
             try {
+                Entity__c srecEntity = [    SELECT Id, Name, Gateway__r.Id
+                                            FROM Entity__c
+                                            WHERE Name = 'BlueWave Finance Group, LLC'
+                                            LIMIT 1];
+                chargentOrder.ChargentOrders__Gateway__c = srecEntity.Gateway__r.Id;
+                chargentOrder.Entity__c = srecEntity.Id;
                 insert chargentOrder;
             } catch (Exception excep) {
                 Logger.logNow('CreateOrderandPaymentRequest', 'submitDDInfoWithoutCharge', 'Could not insert Ch Order: ' + String.valueOf(excep));
-                throw new AuraHandledException(excep.getMessage());
+                return false; // payment info was not stored, show error to user
             }
-            loanRecord.SREC_Direct_Deposit_Order__c = chargentOrder.Id;
+
             try {
+                loanRecord.SREC_Direct_Deposit_Order__c = chargentOrder.Id;
                 update loanRecord;
             } catch (Exception e) {
                 Logger.logNow('CreateOrderandPaymentRequest', 'submitDDInfoWithoutCharge', 'Did not Update Loan: ' + chargentOrder.Id + String.valueOf(e));
-                throw new AuraHandledException(e.getMessage());
+            }
+
+            try {
+                String htmlValue = MessagingService.getHtml('SREC_Payment_Info_Confirmation').HtmlValue;
+                htmlValue = htmlValue.replace(
+                    '{!ChargentOrders__ChargentOrder__c.ChargentOrders__Bank_Account_Name__c}',
+                    chargentOrder.ChargentOrders__Bank_Account_Name__c
+                );
+                htmlValue = htmlValue.replace(
+                    '{!ChargentOrders__ChargentOrder__c.ChargentOrders__Bank_Name__c}',
+                    chargentOrder.ChargentOrders__Bank_Name__c
+                );
+                htmlValue = htmlValue.replace(
+                    '{!ChargentOrders__ChargentOrder__c.ChargentOrders__Bank_Account_Number__c}',
+                    '***' + chargentOrder.ChargentOrders__Bank_Account_Number__c.right(4)
+                );
+                MessagingService.createAndSendEmail(
+                    htmlValue,
+                    'customercare@bluewavesolar.com',
+                    'Receiving SREC Payments Via Automatic Deposit',
+                    new List<String>{emailInput},
+                    null
+                );
+            } catch (Exception e){
+                Logger.logNow('CreateOrderandPaymentRequest', 'submitDDInfoWithoutCharge', 'Did not send email receipt: ' + chargentOrder.Id + String.valueOf(e));
             }
             return true;
         }
