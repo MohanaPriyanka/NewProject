@@ -53,7 +53,7 @@
                 if(response.getState() === "SUCCESS" && response.getReturnValue() === true) { 
                     component.set("v.ShowSuccess", true);
                 } else {
-                    helper.logError('CreateOrderandPaymentRequest','submitDDInfoWithoutCharge', response.getReturnValue(), '');
+                    this.logErrorMessage(component, helper, 'There has been an error saving your information.', null);
                 }
             });                                 
             $A.enqueueAction(actionInsert);

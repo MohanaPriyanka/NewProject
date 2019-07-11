@@ -61,7 +61,8 @@ public with sharing class CreateOrderandPaymentRequestTest {
         System.assertEquals(1, updatedLoanList.size());
         System.assertEquals(chOrderList[0].Id, updatedLoanList[0].SREC_Direct_Deposit_Order__c);
         System.assertEquals('BlueWave Finance Group, LLC',chOrderList[0].Entity__r.Name);
-        System.assertEquals('compliance@bluewavesolar.com',chOrderList[0].ChargentOrders__Billing_Email__c);
+        System.assertEquals(null,chOrderList[0].ChargentOrders__Billing_Email__c);
+        System.assertEquals(1, MessagingService.emailsSent.size());
     }
 
     @isTest static void testUpdateOrderToStopped() {
