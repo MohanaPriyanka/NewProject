@@ -45,9 +45,9 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>true</enableFeeds>
     <enableHistory>false</enableHistory>
+    <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
@@ -277,7 +277,6 @@ IF(
         <externalId>false</externalId>
         <label>Shared Solar System</label>
         <referenceTo>Shared_Solar_System__c</referenceTo>
-        <relationshipLabel>Schedule Zs</relationshipLabel>
         <relationshipName>Schedule_Zs</relationshipName>
         <relationshipOrder>0</relationshipOrder>
         <reparentableMasterDetail>false</reparentableMasterDetail>
@@ -422,18 +421,25 @@ IF(
         <type>Text</type>
         <unique>false</unique>
     </fields>
-    <label>Schedule Z</label>
+    <label>Allocation Schedule</label>
     <listViews>
         <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Status__c</columns>
+        <columns>Date_Submitted_to_Utility__c</columns>
+        <columns>Date_Enacted_by_Utility__c</columns>
+        <columns>QC_Start_Date__c</columns>
+        <columns>Date_QC_Complete__c</columns>
+        <columns>CREATED_DATE</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
     <nameField>
-        <label>Schedule Z Name</label>
+        <label>Allocation Schedule Name</label>
         <trackFeedHistory>false</trackFeedHistory>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Schedule Zs</pluralLabel>
+    <pluralLabel>Allocation Schedules</pluralLabel>
     <searchLayouts/>
     <sharingModel>ControlledByParent</sharingModel>
     <validationRules>
