@@ -5,59 +5,59 @@
 
 public class ZuoraCreditMemoAllocationService{
     public class CreditMemoApplication {
-        public List<CreditMemoApplicationInvoice> invoices;
-        public List<CreditMemoApplicationDebitMemo> debitMemos;
+        public List<CreditMemoApplicationInvoice> Invoices;
+        public List<CreditMemoApplicationDebitMemo> DebitMemos;
     }
 
     public class CreditMemoApplicationInvoice {
-        public String invoiceId;
-        public List<CreditMemoApplicationInvoiceItem> items;
-        public Decimal amount;
+        public String InvoiceId;
+        public List<CreditMemoApplicationInvoiceItem> Items;
+        public Decimal Amount;
     }
 
     public class CreditMemoApplicationInvoiceItem {
-        public String invoiceItemId;
-        public String creditMemoItemId;
-        public Decimal amount;
+        public String InvoiceItemId;
+        public String CreditMemoItemId;
+        public Decimal Amount;
     }
 
     public class CreditMemoApplicationDebitMemo {
-        public String debitMemoId;
-        public List<CreditMemoApplicationDebitMemoItem> items;
-        public Decimal amount;
+        public String DebitMemoId;
+        public List<CreditMemoApplicationDebitMemoItem> Items;
+        public Decimal Amount;
     }
 
     public class CreditMemoApplicationDebitMemoItem {
-        public String debitMemoItemId;
-        public String creditMemoItemId;
-        public Decimal amount;
+        public String DebitMemoItemId;
+        public String CreditMemoItemId;
+        public Decimal Amount;
     }
 
     public class QueryResultCreditMemo {
-        public List<ZuoraAPI.ZuoraCreditMemo> creditmemos;
-        public String nextPage;
-        public String success;
+        public List<ZuoraAPI.ZuoraCreditMemo> CreditMemos;
+        public String NextPage;
+        public String Success;
     }
 
     public class QueryResultCreditMemoItems {
-        public List<ZuoraAPI.ZuoraCreditMemoItem> items;
+        public List<ZuoraAPI.ZuoraCreditMemoItem> Items;
     }
 
     public static CreditMemoApplication getCreditMemoApplication(ZuoraAPI.CreditMemoWithItem creditMemo){
         List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems;
         List<ZuoraOutstandingItemsService.OutstandingItem> itemsWithApplication;
 
-        outstandingItems = ZuoraOutstandingItemsService.getOutstandingItemsByDate(creditMemo.creditMemo.accountId);
+        outstandingItems = ZuoraOutstandingItemsService.getOutstandingItemsByDate(creditMemo.CreditMemo.accountId);
         itemsWithApplication = ZuoraOutstandingItemsService.applyToOutstandingItems(
             outstandingItems,
-            creditMemo.creditMemo.unappliedAmount,
-            creditMemo.creditMemo.Project_Zcustom,
-            creditMemo.creditMemo.ClientOwner_Zcustom
+            creditMemo.CreditMemo.unappliedAmount,
+            creditMemo.CreditMemo.Project_Zcustom,
+            creditMemo.CreditMemo.ClientOwner_Zcustom
         );
         return groupByInvoiceAndDebitMemo(creditMemo, itemsWithApplication);
     }
 
-    public static CreditMemoApplication groupByInvoiceAndDebitMemo( ZuoraAPI.CreditMemoWithItem creditmemo,
+    public static CreditMemoApplication groupByInvoiceAndDebitMemo( ZuoraAPI.CreditMemoWithItem creditMemo,
                                                                     List<ZuoraOutstandingItemsService.OutstandingItem> outstandingBillItems){
 
         Map<String,List<CreditMemoApplicationInvoiceItem>> invoiceToItemMap = new Map<String,List<CreditMemoApplicationInvoiceItem>>();
@@ -67,65 +67,65 @@ public class ZuoraCreditMemoAllocationService{
 
         for (ZuoraOutstandingItemsService.OutstandingItem billItem : outstandingBillItems){
             // If it is a match, create an application:
-            if (billItem.isInvoiceItem){
+            if (billItem.IsInvoiceItem){
                 CreditMemoApplicationInvoiceItem invoiceItem = new CreditMemoApplicationInvoiceItem();
-                invoiceItem.amount = billItem.amountToApply;
-                invoiceItem.creditMemoItemId = creditMemo.item.Id;
-                invoiceItem.invoiceItemId = billItem.Id;
-                if (invoiceToItemMap.containsKey(billItem.parentId)){
-                    List<CreditMemoApplicationInvoiceItem> itemList = invoiceToItemMap.get(billItem.parentId);
+                invoiceItem.Amount = billItem.AmountToApply;
+                invoiceItem.CreditMemoItemId = creditMemo.Item.id;
+                invoiceItem.InvoiceItemId = billItem.Id;
+                if (invoiceToItemMap.containsKey(billItem.ParentId)){
+                    List<CreditMemoApplicationInvoiceItem> itemList = invoiceToItemMap.get(billItem.ParentId);
                     itemList.add(invoiceItem);
-                    invoiceToItemMap.put(billItem.parentId,itemList);
-                    Decimal invoiceSubTotal = invoiceToAmountMap.get(billItem.parentId);
-                    invoiceSubTotal += billItem.amountToApply;
-                    invoiceToAmountMap.put(billItem.parentId,invoiceSubTotal);
+                    invoiceToItemMap.put(billItem.ParentId,itemList);
+                    Decimal invoiceSubTotal = invoiceToAmountMap.get(billItem.ParentId);
+                    invoiceSubTotal += billItem.AmountToApply;
+                    invoiceToAmountMap.put(billItem.ParentId,invoiceSubTotal);
                 } else {
-                    invoiceToItemMap.put(billItem.parentId,new List<CreditMemoApplicationInvoiceItem>{invoiceItem});
-                    invoiceToAmountMap.put(billItem.parentId, billItem.amountToApply);
+                    invoiceToItemMap.put(billItem.ParentId,new List<CreditMemoApplicationInvoiceItem>{invoiceItem});
+                    invoiceToAmountMap.put(billItem.ParentId, billItem.AmountToApply);
                 }
             } else {
                 CreditMemoApplicationDebitMemoItem debitMemoItem = new CreditMemoApplicationDebitMemoItem();
-                debitMemoItem.amount = billItem.amountToApply;
-                debitMemoItem.creditMemoItemId = creditMemo.item.Id;
-                debitMemoItem.debitMemoItemId = billItem.Id;
-                if (debitMemoToItemMap.containsKey(billItem.parentId)){
-                    List<CreditMemoApplicationDebitMemoItem> itemList = debitMemoToItemMap.get(billItem.parentId);
+                debitMemoItem.Amount = billItem.AmountToApply;
+                debitMemoItem.CreditMemoItemId = creditMemo.Item.id;
+                debitMemoItem.DebitMemoItemId = billItem.Id;
+                if (debitMemoToItemMap.containsKey(billItem.ParentId)){
+                    List<CreditMemoApplicationDebitMemoItem> itemList = debitMemoToItemMap.get(billItem.ParentId);
                     itemList.add(debitMemoItem);
-                    debitMemoToItemMap.put(billItem.parentId,itemList);
-                    Decimal debitSubTotal = debitMemoToAmountMap.get(billItem.parentId);
-                    debitSubTotal += billItem.amountToApply;
-                    debitMemoToAmountMap.put(billItem.parentId,debitSubTotal);
+                    debitMemoToItemMap.put(billItem.ParentId,itemList);
+                    Decimal debitSubTotal = debitMemoToAmountMap.get(billItem.ParentId);
+                    debitSubTotal += billItem.AmountToApply;
+                    debitMemoToAmountMap.put(billItem.ParentId,debitSubTotal);
                 } else {
-                    debitMemoToItemMap.put(billItem.parentId,new List<CreditMemoApplicationDebitMemoItem>{debitMemoItem});
-                    debitMemoToAmountMap.put(billItem.parentId, billItem.amountToApply);
+                    debitMemoToItemMap.put(billItem.ParentId,new List<CreditMemoApplicationDebitMemoItem>{debitMemoItem});
+                    debitMemoToAmountMap.put(billItem.ParentId, billItem.AmountToApply);
                 }
             }
         }
 
         CreditMemoApplication application = new CreditMemoApplication();
-        application.invoices = new List<CreditMemoApplicationInvoice>();
-        application.debitMemos = new List<CreditMemoApplicationDebitMemo>();
+        application.Invoices = new List<CreditMemoApplicationInvoice>();
+        application.DebitMemos = new List<CreditMemoApplicationDebitMemo>();
 
         for (String invoiceId : invoiceToItemMap.keySet()){
             CreditMemoApplicationInvoice invoiceToApply = new CreditMemoApplicationInvoice();
-            invoiceToApply.invoiceId = invoiceId;
-            invoiceToApply.amount = invoiceToAmountMap.get(invoiceId);
-            invoiceToApply.items = invoiceToItemMap.get(invoiceId);
-            application.invoices.add(invoiceToApply);
+            invoiceToApply.InvoiceId = invoiceId;
+            invoiceToApply.Amount = invoiceToAmountMap.get(invoiceId);
+            invoiceToApply.Items = invoiceToItemMap.get(invoiceId);
+            application.Invoices.add(invoiceToApply);
         }
 
         for (String debitMemoId : debitMemoToItemMap.keySet()){
             CreditMemoApplicationDebitMemo debitToApply = new CreditMemoApplicationDebitMemo();
-            debitToApply.debitMemoId = debitMemoId;
-            debitToApply.amount = debitMemoToAmountMap.get(debitMemoId);
-            debitToApply.items = debitMemoToItemMap.get(debitMemoId);
-            application.debitMemos.add(debitToApply);
+            debitToApply.DebitMemoId = debitMemoId;
+            debitToApply.Amount = debitMemoToAmountMap.get(debitMemoId);
+            debitToApply.Items = debitMemoToItemMap.get(debitMemoId);
+            application.DebitMemos.add(debitToApply);
         }
         return application;
     }
 
     public static QueryResultCreditMemo getCreditMemosByPage(String urlString){
-        HttpResponse response = ZuoraAPIHelper.callJSONEndpoint(
+        HttpResponse response = ZuoraAPIHelper.callJsonEndpoint(
             'GET',
             urlString,
             null,
@@ -152,13 +152,13 @@ public class ZuoraCreditMemoAllocationService{
     // Assumes credit memos only have 1 item. As of 6/2019, every adjustment in SF only = 1 credit memo item in Zuora
     public static ZuoraAPI.CreditMemoWithItem getItemFromCreditMemo(ZuoraAPI.ZuoraCreditMemo creditMemo) {
         String urlString = '/v1/creditmemos/' + creditMemo.Id + '/items';
-        HttpResponse response = ZuoraAPIHelper.callJSONEndpoint('GET',urlString,null,false);
+        HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('GET',urlString,null,false);
         QueryResultCreditMemoItems zResponse;
         zResponse = (QueryResultCreditMemoItems)JSON.deserialize(response.getBody(), QueryResultCreditMemoItems.class);
 
         ZuoraAPI.CreditMemoWithItem creditMemoRecord = new ZuoraAPI.CreditMemoWithItem();
-        creditMemoRecord.creditMemo = creditMemo;
-        creditMemoRecord.item = zResponse.items[0];
+        creditMemoRecord.CreditMemo = creditMemo;
+        creditMemoRecord.Item = zResponse.Items[0];
         return creditMemoRecord;
     }
 }
