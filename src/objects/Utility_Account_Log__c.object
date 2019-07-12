@@ -323,7 +323,7 @@
     <fields>
         <fullName>Number_of_Removed_UASes__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Count of UASes that have a Schedule Z Subscription and a Date Removed From Project, used by the cancellation process to update the Property Account when all projects have been removed.</inlineHelpText>
+        <inlineHelpText>Count of UASes that have a Allocation Schedule Subscription and a Date Removed From Project, used by the cancellation process to update the Property Account when all projects have been removed.</inlineHelpText>
         <label>Number of Removed UASes</label>
         <summaryFilterItems>
             <field>Utility_Account_Subscription__c.Total_Count_of_Schedule_Zs__c</field>
@@ -344,7 +344,7 @@
     <fields>
         <fullName>Number_of_Subscribed_UASes__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Count of UASes that have a Schedule Z Subscription, used by the cancellation process to update the Property Account when removed from all projects</inlineHelpText>
+        <inlineHelpText>Count of UASes that have a Allocation Schedule Subscription, used by the cancellation process to update the Property Account when removed from all projects</inlineHelpText>
         <label>Number of Subscribed UASes</label>
         <summaryFilterItems>
             <field>Utility_Account_Subscription__c.Total_Count_of_Schedule_Zs__c</field>
