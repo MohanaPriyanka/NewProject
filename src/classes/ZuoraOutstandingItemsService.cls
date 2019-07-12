@@ -43,12 +43,7 @@ public class ZuoraOutstandingItemsService{
         public String Project_Zcustom;
         public String ClientOwner_Zcustom;
     }
-
-    @AuraEnabled
-    public static ZuoraAccountSelector.AccountWithPaymentMethod getAccountBalance (String zuoraAcctId){
-        return ZuoraAccountSelector.getAccountWithDefaultPaymentMethod(zuoraAcctId);
-    }
-
+    
     // Can be used for payments or credit memos. Sets the amountToApply field on outstanding items:
     public static List<OutstandingItem> applyToOutstandingItems (   List<OutstandingItem> outstandingItems,
                                                                     Decimal amountToApply,
