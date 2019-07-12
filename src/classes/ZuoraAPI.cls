@@ -82,6 +82,7 @@ public with sharing class ZuoraAPI {
         public String AccountNumber;
         public Boolean AllowInvoiceEdit;
         public String Id;
+        @AuraEnabled
         public Boolean AutoPay;
         public Boolean InvoiceDeliveryPrefsPrint;
         public String UpdatedDate;
@@ -98,6 +99,7 @@ public with sharing class ZuoraAPI {
         public String Name;
         public String SoldToId;
         public String Notes;
+        @AuraEnabled
         public Decimal Balance;
         public String InvoiceTemplateId;
         public String CrmId;
@@ -144,10 +146,10 @@ public with sharing class ZuoraAPI {
 
     // Used to create, but not to query for credit memos:
     public class CreditMemo {
-        public String AccountId;
-        public List<CreditCharge> Charges;
-        public Date EffectiveDate;
-        public String ReasonCode;
+        public String accountId;
+        public List<CreditCharge> charges;
+        public Date effectiveDate;
+        public String reasonCode;
         public String Project_Zcustom;
         public String ClientOwner_Zcustom;
         public String CRM_ID_Zcustom;
@@ -155,21 +157,21 @@ public with sharing class ZuoraAPI {
 
     // Used to query, but not to create credit memos:
     public class ZuoraCreditMemo {
-        public String Id;
-        public String AccountId;
-        public Date CreditMemoDate;
-        public Decimal Amount;
-        public Decimal UnappliedAmount;
+        public String id;
+        public String accountId;
+        public Date creditMemoDate;
+        public Decimal amount;
+        public Decimal unappliedAmount;
         public String Project_Zcustom;
         public String ClientOwner_Zcustom;
         public String CRM_ID_Zcustom;
     }
 
     public class ZuoraCreditMemoItem {
-        public String Id;
-        public String AccountId;
-        public Decimal Amount;
-        public Decimal UnappliedAmount;
+        public String id;
+        public String accountId;
+        public Decimal amount;
+        public Decimal unappliedAmount;
     }
 
     // ASSUMES CREDIT MEMOS ONLY HAVE 1 ITEM:
@@ -179,8 +181,8 @@ public with sharing class ZuoraAPI {
     }
 
     public class CreditCharge {
-        public Decimal Amount;
-        public String ChargeId;
+        public Decimal amount;
+        public String chargeId;
     }
 
     // https://www.zuora.com/developer/api-reference/#operation/Action_POSTcreate
@@ -576,38 +578,38 @@ public with sharing class ZuoraAPI {
 
     // Used to create, but not to query for credit memos:
     public class DebitMemo{
-        public String AccountId;
-        public List<DebitMemoCharge> Charges;
-        public Date EffectiveDate;
-        public String ReasonCode;
+        public String accountId;
+        public List<DebitMemoCharge> charges;
+        public Date effectiveDate;
+        public String reasonCode;
         public String CRM_ID_Zcustom;
         public String Project_Zcustom;
         public String ClientOwner_Zcustom;
     }
 
     public class DebitMemoCharge{
-        public Decimal Amount;
-        public String ChargeId;
+        public Decimal amount;
+        public String chargeId;
     }
 
     // Used to query, but not to create credit memos:
     public class ZuoraDebitMemo {
-        public String Id;
-        public String AccountId;
-        public Date DebitMemoDate;
-        public Decimal Amount;
-        public Decimal Balance;
+        public String id;
+        public String accountId;
+        public Date debitMemoDate;
+        public Decimal amount;
+        public Decimal balance;
         public String Project_Zcustom;
         public String ClientOwner_Zcustom;
     }
 
     public class ZuoraDebitMemoItem {
-        public String Id;
-        public Decimal Balance;
+        public String id;
+        public Decimal balance;
     }
 
     public class DebitMemoWithItems {
-        public ZuoraDebitMemo DebitMemo;
-        public List<ZuoraDebitMemoItem> Items;
+        public ZuoraDebitMemo debitMemo;
+        public List<ZuoraDebitMemoItem> items;
     }
 }

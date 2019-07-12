@@ -43,7 +43,7 @@ public class ZuoraOutstandingItemsService{
         public String Project_Zcustom;
         public String ClientOwner_Zcustom;
     }
-
+    
     // Can be used for payments or credit memos. Sets the amountToApply field on outstanding items:
     public static List<OutstandingItem> applyToOutstandingItems (   List<OutstandingItem> outstandingItems,
                                                                     Decimal amountToApply,
@@ -148,7 +148,7 @@ public class ZuoraOutstandingItemsService{
         List<ZuoraAPI.ZuoraDebitMemo> debitMemosWithBalance = new List<ZuoraAPI.ZuoraDebitMemo>();
 
         for (ZuoraAPI.ZuoraDebitMemo debitMemo : result.Debitmemos){
-            if (debitMemo.Balance > 0 && debitMemo.AccountId == zAcctId){
+            if (debitMemo.balance > 0 && debitMemo.accountId == zAcctId){
                 debitMemosWithBalance.add(debitMemo);
             }
         }
@@ -156,27 +156,27 @@ public class ZuoraOutstandingItemsService{
     }
 
     public static ZuoraAPI.DebitMemoWithItems getDebitMemoItems(ZuoraAPI.ZuoraDebitMemo debitMemo) {
-        HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('GET','/v1/debitmemos/' + debitMemo.Id +'/items',null,false);
+        HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('GET','/v1/debitmemos/' + debitMemo.id +'/items',null,false);
         String responseBody = ZuoraAPIHelper.cleanJSON(response.getBody());
         QueryResultDebitMemoItem itemsQuery =
             (QueryResultDebitMemoItem)JSON.deserialize(responseBody, QueryResultDebitMemoItem.class);
         ZuoraAPI.DebitMemoWithItems debitMemoRecord = new ZuoraAPI.DebitMemoWithItems();
-        debitMemoRecord.DebitMemo = debitMemo;
-        debitMemoRecord.Items = itemsQuery.Items;
+        debitMemoRecord.debitMemo = debitMemo;
+        debitMemoRecord.items = itemsQuery.Items;
         return debitMemoRecord;
     }
 
     public static List<OutstandingItem> convertDebitMemoItems(ZuoraAPI.DebitMemoWithItems debitMemoWithBalance){
         List<OutstandingItem> itemsWithBalance = new List<OutstandingItem>();
-        for (ZuoraAPI.ZuoraDebitMemoItem debitItem : debitMemoWithBalance.Items){
-            if (debitItem.Balance > 0){
+        for (ZuoraAPI.ZuoraDebitMemoItem debitItem : debitMemoWithBalance.items){
+            if (debitItem.balance > 0){
                 OutstandingItem newItem = new OutstandingItem();
-                newItem.AmountOutstanding = debitItem.Balance;
-                newItem.EffectiveDate = debitMemoWithBalance.DebitMemo.DebitMemoDate;
-                newItem.Project = debitMemoWithBalance.DebitMemo.Project_Zcustom;
-                newItem.Client = debitMemoWithBalance.DebitMemo.ClientOwner_Zcustom;
-                newItem.Id = debitItem.Id;
-                newItem.ParentId = debitMemoWithBalance.DebitMemo.Id;
+                newItem.AmountOutstanding = debitItem.balance;
+                newItem.EffectiveDate = debitMemoWithBalance.debitMemo.debitMemoDate;
+                newItem.Project = debitMemoWithBalance.debitMemo.Project_Zcustom;
+                newItem.Client = debitMemoWithBalance.debitMemo.ClientOwner_Zcustom;
+                newItem.Id = debitItem.id;
+                newItem.ParentId = debitMemoWithBalance.debitMemo.id;
                 newItem.IsInvoiceItem = false;
                 itemsWithBalance.add(newItem);
             }
