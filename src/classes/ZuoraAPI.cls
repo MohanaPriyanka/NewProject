@@ -486,6 +486,7 @@ public with sharing class ZuoraAPI {
     public class OrderBySubscriptionOwner {
         public List<Order> orders;
         public Boolean success;
+        public String nextPage;
 
         public Boolean hasSubscription() {
             if (orders == null || orders.isEmpty()) {
