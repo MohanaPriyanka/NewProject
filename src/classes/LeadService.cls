@@ -6,6 +6,12 @@
 
 public without sharing class LeadService {
     public static Boolean firstRun = true;
+
+    private AccountService accountService = new AccountService();
+    private UALService ualService = new UALService();
+
+    private LeadSelector leadSelector = new LeadSelector();
+
     private Map<String, String> leadToOppConvertMap = new Map<String, String> {
         'Annual_Income_Currency__c'=>'Annual_Independent_Income__c',
         'Application__c'=>'Application_Date__c',
@@ -53,25 +59,14 @@ public without sharing class LeadService {
         'OwnerId'=>'OwnerId'
     };
 
+    // TODO: do we need this anymore?
     public void setupPropertyAccount(List<Lead> updatedLeads, Map<Id, Lead> oldLeadMap) {
         List<Account> propertyAccounts = new List<Account>();
-        Id recordType = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Property').getRecordTypeId();
 
         for (Lead lead : updatedLeads) {
             if (lead.Status == 'Qualified' && oldLeadMap.get(lead.Id).Status != 'Qualified') {
                 //Create Property Account for Qualified Leads - will store UALs
-                Account propAcct = new Account(
-                    Name = lead.Company,
-                    Product_Line__c = lead.Product_line__c,
-                    RecordTypeId = recordType,
-                    Electricity_Provider__c = lead.Utility_relationship__r.Id,
-                    Lead__c = lead.Id,
-                    BillingStreet = lead.LASERCA__Home_Address__c,
-                    BillingCity = lead.LASERCA__Home_City__c,
-                    BillingState = BlueWaveParent.convertAbbreviationToState(lead.LASERCA__Home_State__c.toUpperCase()),
-                    BillingPostalCode = lead.LASERCA__Home_Zip__c
-                );
-
+                Account propAcct = buildPropertyAccountFromLegacyLead(lead);
                 propertyAccounts.add(propAcct);
             }
         }
@@ -82,6 +77,7 @@ public without sharing class LeadService {
             Logger.logNow('LeadService', 'setupQualifiedLead', 'Failed to create Property Account for Leads: ' +  e.getMessage() + System.JSON.serializePretty(updatedLeads));
         }
     }
+
 
     public void completeLeadConversion(List<Lead> updatedLeads, Map<Id, Lead> oldLeadMap){
         List<Lead> convertedCSLeads = new List<Lead>();
@@ -217,7 +213,76 @@ public without sharing class LeadService {
 
     }
 
+    /**
+     * Copies Property Account info from a Lead
+     *
+     * @deprecated  Not to be used after Switch moves to v2 API (new Property Account / UAL structure)
+     */
+    public Account buildPropertyAccountFromLegacyLead(Lead lead) {
+        Id recordType = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Property').getRecordTypeId();
+        Account propAcct = new Account(
+            Name = lead.Company,
+            Product_Line__c = lead.Product_line__c,
+            RecordTypeId = recordType,
+            Electricity_Provider__c = lead.Utility_relationship__r.Id,
+            Lead__c = lead.Id,
+            BillingStreet = lead.LASERCA__Home_Address__c,
+            BillingCity = lead.LASERCA__Home_City__c,
+            BillingState = BlueWaveParent.convertAbbreviationToState(lead.LASERCA__Home_State__c.toUpperCase()),
+            BillingPostalCode = lead.LASERCA__Home_Zip__c
+        );
+        return propAcct;
+    }
 
+    /**
+     * Copies UAL info from a Lead
+     *
+     * @deprecated  Not to be used after Switch moves to v2 API (new Property Account / UAL structure)
+     */
+    public Utility_Account_Log__c buildUtilityAccountLogFromLegacyLead(Lead lead, Account propertyAccount) {
 
+        Utility_Account_Log__c ual = new Utility_Account_Log__c(
+            Name = '',
+            Account__c = propertyAccount.Id,
+            Name_on_Account__c = propertyAccount.Name,
+            Service_Address__c = lead.LASERCA__Home_Address__c,
+            Service_City__c = lead.LASERCA__Home_City__c,
+            Service_State__c = lead.LASERCA__Home_State__c,
+            Service_Zip_Code__c = lead.LASERCA__Home_Zip__c,
+            Utility_lookup__c = lead.Utility_relationship__c,
+            Lead__c = lead.Id
+        );
+
+        return ual;
+    }
+
+    /**
+     * Inserts a legacy lead into the new data model
+     *
+     * @deprecated  Not to be used after Switch moves to v2 API (new Property Account / UAL structure)
+     */
+    public Lead createLegacyLead(Lead lead) {
+        lead = this.insertLead(lead);
+        Account propertyAccount = accountService.insertAccount(this.buildPropertyAccountFromLegacyLead(lead));
+        ualService.insertUAL(this.buildUtilityAccountLogFromLegacyLead(lead, propertyAccount));
+        return lead;
+    }
+
+    public Lead insertLead(Lead lead) {
+        //Set DMLOptions to run Lead Assignment Rules on insert
+        Database.DMLOptions dmo = new Database.DMLOptions();
+        dmo.assignmentRuleHeader.useDefaultRule = true;
+        lead.setOptions(dmo);
+
+        insert lead;
+        lead = leadSelector.selectOne(lead.Id);
+        return lead;
+    }
+
+    public Lead updateLead(Lead lead) {
+        update lead;
+        lead = leadSelector.selectOne(lead.Id);
+        return lead;
+    }
 
 }
