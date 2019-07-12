@@ -99,6 +99,7 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
                 MIN(Date__c) billDate
             FROM System_Bill__c
             GROUP BY Property_Account__r.Id, Shared_Solar_System__r.Id, Client__r.Id
+            ORDER BY MIN(Date__c), Property_Account__r.Id, Shared_Solar_System__r.Id
         ];
         // Consumes ~3k query rows as of May 2019
         List<AggregateResult> scheduleZSubscriptionsByAccount = [
