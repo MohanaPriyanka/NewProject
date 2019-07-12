@@ -354,6 +354,7 @@
         <maskChar>asterisk</maskChar>
         <maskType>lastFour</maskType>
         <required>false</required>
+        <securityClassification>MissionCritical</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>EncryptedText</type>
@@ -364,6 +365,7 @@
         <label>ACH Account Type</label>
         <length>20</length>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -376,6 +378,7 @@
         <label>ACH Bank Name</label>
         <length>100</length>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -390,6 +393,7 @@
         <maskChar>asterisk</maskChar>
         <maskType>lastFour</maskType>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>EncryptedText</type>
@@ -583,6 +587,7 @@ and( Commencement_Date_QC__c=true,
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
@@ -813,6 +818,7 @@ IF(ISBLANK(Personal_Credit_Report_Co_Applicant__c),
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
@@ -1226,6 +1232,7 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
         <maskChar>asterisk</maskChar>
         <maskType>all</maskType>
         <required>false</required>
+        <securityClassification>MissionCritical</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>EncryptedText</type>
@@ -1238,6 +1245,7 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
         <maskChar>asterisk</maskChar>
         <maskType>all</maskType>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>EncryptedText</type>
@@ -1248,6 +1256,7 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
         <label>CC CardHolder Name</label>
         <length>65</length>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -1259,6 +1268,7 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
         <externalId>false</externalId>
         <label>CC Card Type</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -1297,6 +1307,7 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
         <maskChar>asterisk</maskChar>
         <maskType>all</maskType>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>EncryptedText</type>
@@ -1309,6 +1320,7 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
         <maskChar>asterisk</maskChar>
         <maskType>all</maskType>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>EncryptedText</type>
@@ -1321,6 +1333,7 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
         <maskChar>asterisk</maskChar>
         <maskType>all</maskType>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>EncryptedText</type>
@@ -1646,6 +1659,7 @@ IF( Month(CloseDate) = 12, &apos;December&apos;, null))))))))))))</formula>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Percent</type>
@@ -1774,6 +1788,7 @@ IF( Month(CloseDate) = 12, &apos;December&apos;, null))))))))))))</formula>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Percent</type>
@@ -2215,6 +2230,7 @@ IF( ISPICKVAL(Personal_Credit_Report2__r.Solar_Loan_Approval_Status__c, &quot;De
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Credit Approval Status</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -2227,6 +2243,7 @@ IF( ISPICKVAL(Personal_Credit_Report2__r.Solar_Loan_Approval_Status__c, &quot;De
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Credit Score</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -2563,6 +2580,7 @@ IF( ISPICKVAL(Personal_Credit_Report2__r.Solar_Loan_Approval_Status__c, &quot;De
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Date of Birth</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
@@ -2682,6 +2700,7 @@ IF( ISPICKVAL(Personal_Credit_Report2__r.Solar_Loan_Approval_Status__c, &quot;De
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Debt to Income Approval Status</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -3325,6 +3344,7 @@ text(year(addmonths(Commencement_Date__c, (Product__r.First_Adjustment__c-1))))<
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
@@ -3338,6 +3358,7 @@ text(year(addmonths(Commencement_Date__c, (Product__r.First_Adjustment__c-1))))<
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
@@ -4826,6 +4847,7 @@ MAX(Personal_Credit_Report2__r.Credit_Score_Integer_2__c, Personal_Credit_Report
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
@@ -4968,6 +4990,7 @@ MAX(Personal_Credit_Report2__r.Credit_Score_Integer_2__c, Personal_Credit_Report
         <precision>8</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -4979,6 +5002,7 @@ MAX(Personal_Credit_Report2__r.Credit_Score_Integer_2__c, Personal_Credit_Report
         <label>Monthly Income Details (2)</label>
         <length>30</length>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -4991,6 +5015,7 @@ MAX(Personal_Credit_Report2__r.Credit_Score_Integer_2__c, Personal_Credit_Report
         <label>Monthly Income Details</label>
         <length>30</length>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -5004,6 +5029,7 @@ MAX(Personal_Credit_Report2__r.Credit_Score_Integer_2__c, Personal_Credit_Report
         <precision>8</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -5019,6 +5045,7 @@ MAX(Personal_Credit_Report2__r.Credit_Score_Integer_2__c, Personal_Credit_Report
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
@@ -5215,6 +5242,7 @@ MAX(Personal_Credit_Report2__r.Credit_Score_Integer_2__c, Personal_Credit_Report
         <externalId>false</externalId>
         <label>Notes on Credit Decision</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -6212,6 +6240,7 @@ IF((Partner_tag_lookup__r.RL_Commission_Structure__c*System_Size__c)&gt;=Partner
         <externalId>false</externalId>
         <label>Reason for Decline</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -6267,6 +6296,7 @@ IF((Partner_tag_lookup__r.RL_Commission_Structure__c*System_Size__c)&gt;=Partner
         <externalId>false</externalId>
         <label>Reason for Decline</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -8494,6 +8524,7 @@ NULL
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>FICO Approval Status</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
