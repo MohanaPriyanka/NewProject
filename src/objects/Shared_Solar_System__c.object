@@ -596,7 +596,7 @@ IF ( Total_System_Size_kW_AC_QC__c &gt; 1000, &quot;Class 3&quot;, null)))</form
     <fields>
         <fullName>Count_of_Schedule_Zs__c</fullName>
         <externalId>false</externalId>
-        <label>Count of Schedule Zs</label>
+        <label>Count of Allocation Schedules</label>
         <summaryForeignKey>Schedule_Z__c.Shared_Solar_System__c</summaryForeignKey>
         <summaryOperation>count</summaryOperation>
         <trackHistory>false</trackHistory>
@@ -754,7 +754,7 @@ IF ( Total_System_Size_kW_AC_QC__c &gt; 1000, &quot;Class 3&quot;, null)))</form
     </fields>
     <fields>
         <fullName>Estimated_Credit_Flow_Date__c</fullName>
-        <description>Adds 14 days to the Last Schedule Z Enacted Date if populated. Otherwise, adds 14 days to Actual PTO Date or 3 months to the Estimated PTO Date.</description>
+        <description>Adds 14 days to the Last Allocation Schedule Enacted Date if populated. Otherwise, adds 14 days to Actual PTO Date or 3 months to the Estimated PTO Date.</description>
         <externalId>false</externalId>
         <formula>BLANKVALUE(Est_Utility_NMC_to_Customer_Override__c,
 IF(
@@ -762,7 +762,7 @@ ISBLANK(Actual_PTO_Date__c),
 Estimated_PTO_Date__c + 90,
 BLANKVALUE(Last_Sch_Z_Enacted_Date__c+14,
 Actual_PTO_Date__c +14)))</formula>
-        <inlineHelpText>Adds 14 days to the Last Schedule Z Enacted Date if populated. Otherwise, adds 14 days to Actual PTO Date or 3 months to the Estimated PTO Date.</inlineHelpText>
+        <inlineHelpText>Adds 14 days to the Last Allocation Schedule Enacted Date if populated. Otherwise, adds 14 days to Actual PTO Date or 3 months to the Estimated PTO Date.</inlineHelpText>
         <label>Est Utility NMC to Customer Date</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
@@ -888,10 +888,10 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
     </fields>
     <fields>
         <fullName>Last_Sch_Z_Enacted_Date__c</fullName>
-        <description>This field is populated with the maximum Date Enacted by Utility field on all related Schedule Z records. If it needs to be updated, please update the Schedule Z record.</description>
+        <description>This field is populated with the maximum Date Enacted by Utility field on all related Allocation Schedule records. If it needs to be updated, please update the Allocation Schedule record.</description>
         <externalId>false</externalId>
-        <inlineHelpText>This field is populated with the maximum Date Enacted by Utility field on all related Schedule Z records. If it needs to be updated, please update the Schedule Z record.</inlineHelpText>
-        <label>Last Sch Z Enacted Date</label>
+        <inlineHelpText>This field is populated with the maximum Date Enacted by Utility field on all related Allocation Schedule records. If it needs to be updated, please update the Allocation Schedule record.</inlineHelpText>
+        <label>Last Allocation Schedule Enacted Date</label>
         <summarizedField>Schedule_Z__c.Date_Enacted_by_Utility__c</summarizedField>
         <summaryForeignKey>Schedule_Z__c.Shared_Solar_System__c</summaryForeignKey>
         <summaryOperation>max</summaryOperation>
@@ -901,10 +901,10 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
     </fields>
     <fields>
         <fullName>Last_Schedule_Z__c</fullName>
-        <description>This field is populated by the maximum date from the Date Submitted to Utility field from all related schedule Z records where the Date Submitted to Utility field is not null.</description>
+        <description>This field is populated by the maximum date from the Date Submitted to Utility field from all related Allocation Schedule records where the Date Submitted to Utility field is not null.</description>
         <externalId>false</externalId>
-        <inlineHelpText>This field is populated by the maximum date from the Date Submitted to Utility field from all related schedule Z records where the Date Submitted to Utility field is not null. If it needs to be updated, update the Schedule Z record.</inlineHelpText>
-        <label>Last Schedule Z Submitted:</label>
+        <inlineHelpText>This field is populated by the maximum date from the Date Submitted to Utility field from all related Allocation Schedule records where the Date Submitted to Utility field is not null. If it needs to be updated, update the Allocation Schedule record.</inlineHelpText>
+        <label>Last Allocation Schedule Submitted:</label>
         <summarizedField>Schedule_Z__c.Date_Submitted_to_Utility__c</summarizedField>
         <summaryFilterItems>
             <field>Schedule_Z__c.Date_Submitted_to_Utility__c</field>
@@ -1646,7 +1646,7 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
         <externalId>false</externalId>
         <formula>IF( ISBLANK( Min_Schedule_Z_to_Utility_Date__c ), FALSE, TRUE)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>ScheduleZ Filed</label>
+        <label>Allocation Schedule Filed</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
@@ -3114,7 +3114,7 @@ ISCHANGED(Utility_NMC_Tariff__c)
     <webLinks>
         <fullName>Customer_Info_Report</fullName>
         <availability>online</availability>
-        <description>Schedule Z with FICO and Property Type</description>
+        <description>Allocation Schedule with FICO and Property Type</description>
         <displayType>button</displayType>
         <encodingKey>UTF-8</encodingKey>
         <height>600</height>
@@ -3130,7 +3130,7 @@ ISCHANGED(Utility_NMC_Tariff__c)
         <displayType>button</displayType>
         <encodingKey>UTF-8</encodingKey>
         <linkType>url</linkType>
-        <masterLabel>Preview Next Schedule Z</masterLabel>
+        <masterLabel>Preview Next Allocation Schedule</masterLabel>
         <openType>replace</openType>
         <protected>false</protected>
         <url>/00Oj0000004i4Un?pv2={!Shared_Solar_System__c.Name}</url>

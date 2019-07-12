@@ -426,7 +426,7 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>Schedule Z</label>
+        <label>Allocation Schedule</label>
         <layoutColumns>
             <layoutItems>
                 <behavior>Readonly</behavior>
@@ -491,6 +491,10 @@
         <layoutColumns/>
         <style>CustomLinks</style>
     </layoutSections>
+    <miniLayout>
+        <fields>Name</fields>
+        <fields>BWC_Project_Entity_Manual__c</fields>
+    </miniLayout>
     <quickActionList>
         <quickActionListItems>
             <quickActionName>Shared_Solar_System__c.Billing_Case</quickActionName>
