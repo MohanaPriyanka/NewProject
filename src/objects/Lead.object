@@ -487,39 +487,46 @@
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Adverse Credit Notice (1)</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
         <fullName>Adverse_Credit_Notice_2__c</fullName>
+        <businessStatus>Active</businessStatus>
         <externalId>false</externalId>
         <formula>TEXT(Personal_Credit_Report__r.Adverse_Credit_Notice_2__c)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Adverse Credit Notice (2)</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
         <fullName>Adverse_Credit_Notice_3__c</fullName>
+        <businessStatus>Active</businessStatus>
         <externalId>false</externalId>
         <formula>TEXT(Personal_Credit_Report__r.Adverse_Credit_Notice_3__c)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Adverse Credit Notice (3)</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
         <fullName>Adverse_Credit_Notice_Code_1__c</fullName>
+        <businessStatus>Active</businessStatus>
         <externalId>false</externalId>
         <formula>Personal_Credit_Report__r.LASERCA__Code__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Adverse Credit Notice - Code 1</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -573,6 +580,7 @@
         <precision>14</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Currency</type>
@@ -723,6 +731,7 @@ Personal_Credit_Report__r.LASERCA__Lead__r.Monthly_Payment__c) / ((Annual_Income
         <precision>18</precision>
         <required>false</required>
         <scale>4</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Number</type>
         <unique>false</unique>
@@ -749,12 +758,14 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
         <precision>18</precision>
         <required>false</required>
         <scale>4</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Number</type>
         <unique>false</unique>
     </fields>
     <fields>
         <fullName>Average_FICO__c</fullName>
+        <businessStatus>Active</businessStatus>
         <externalId>false</externalId>
         <formula>(Personal_Credit_Report__r.Credit_Score_Integer__c + Personal_Credit_Report_Co_Applicant__r.Credit_Score_Integer__c)/2</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
@@ -762,6 +773,7 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Number</type>
         <unique>false</unique>
@@ -1206,6 +1218,7 @@ Specify the global country code setting or record level country code to automati
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Co App Adverse Credit Notice (1)</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -1216,6 +1229,7 @@ Specify the global country code setting or record level country code to automati
         <formula>TEXT( Personal_Credit_Report_Co_Applicant__r.Adverse_Credit_Notice_2__c )</formula>
         <label>Co App Adverse Credit Notice 2</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -1226,6 +1240,7 @@ Specify the global country code setting or record level country code to automati
         <formula>TEXT(Personal_Credit_Report_Co_Applicant__r.Adverse_Credit_Notice_3__c )</formula>
         <label>Co App Adverse Credit Notice 3</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -1237,6 +1252,7 @@ Specify the global country code setting or record level country code to automati
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Co App Credit Report Detail 1</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -1248,6 +1264,7 @@ Specify the global country code setting or record level country code to automati
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Co App Credit Report Detail 2</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -1259,6 +1276,7 @@ Specify the global country code setting or record level country code to automati
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Co App Credit Report Detail 3</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -1270,6 +1288,7 @@ Specify the global country code setting or record level country code to automati
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Co App Credit Report Detail 4</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -1283,6 +1302,7 @@ This field can be changed to a formula consistent with the other factors if LASE
         <label>Co App Credit Report Detail 5</label>
         <length>255</length>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
@@ -1295,6 +1315,7 @@ This field can be changed to a formula consistent with the other factors if LASE
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Co App Date of Credit Report</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Date</type>
     </fields>
@@ -1304,6 +1325,7 @@ This field can be changed to a formula consistent with the other factors if LASE
         <formula>Personal_Credit_Report_Co_Applicant__r.LASERCA__Credit_Score_TransUnion__c</formula>
         <label>Co App FICO</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -1327,6 +1349,7 @@ This field can be changed to a formula consistent with the other factors if LASE
         <precision>7</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Currency</type>
@@ -1347,6 +1370,7 @@ This field can be changed to a formula consistent with the other factors if LASE
         <externalId>false</externalId>
         <label>Co-Applicant Date of Birth</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Date</type>
@@ -1379,6 +1403,7 @@ This field can be changed to a formula consistent with the other factors if LASE
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Number</type>
@@ -1618,6 +1643,7 @@ IF(Personal_Credit_Report__r.Solar_Loan_Approval__c == &quot;Pending Review&quot
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Credit Approval Based on Criteria</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -1631,6 +1657,7 @@ IF(Personal_Credit_Report__r.Approval_Status__c==&quot;Declined&quot;, &quot;Dec
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Credit Approval Status</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -1666,6 +1693,7 @@ IF(Personal_Credit_Report__r.Approval_Status__c == null, null,
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Credit Approval Status (Helper)</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -1683,6 +1711,7 @@ IF(ISPICKVAL(Personal_Credit_Report__r.Solar_Loan_Approval_Status__c, &quot;Decl
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Credit Approval Status (RL)</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -1694,6 +1723,7 @@ IF(ISPICKVAL(Personal_Credit_Report__r.Solar_Loan_Approval_Status__c, &quot;Decl
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Credit Approval?</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -1720,50 +1750,59 @@ IF(ISPICKVAL(Personal_Credit_Report__r.Solar_Loan_Approval_Status__c, &quot;Decl
     </fields>
     <fields>
         <fullName>Credit_Report_Detail_1__c</fullName>
+        <businessStatus>Active</businessStatus>
         <externalId>false</externalId>
         <formula>Personal_Credit_Report__r.LASERCA__Code__c &amp; &quot; - &quot; &amp; Personal_Credit_Report__r.LASERCA__Detail_1__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Credit Report Detail 1</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
         <fullName>Credit_Report_Detail_2__c</fullName>
+        <businessStatus>Active</businessStatus>
         <externalId>false</externalId>
         <formula>Personal_Credit_Report__r.LASERCA__Code_2__c &amp; &quot; - &quot; &amp; Personal_Credit_Report__r.LASERCA__Detail_2__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Credit Report Detail 2</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
         <fullName>Credit_Report_Detail_3__c</fullName>
+        <businessStatus>Active</businessStatus>
         <externalId>false</externalId>
         <formula>Personal_Credit_Report__r.LASERCA__Code_3__c &amp; &quot; - &quot; &amp; Personal_Credit_Report__r.LASERCA__Detail_3__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Credit Report Detail 3</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
         <fullName>Credit_Report_Detail_4__c</fullName>
+        <businessStatus>Active</businessStatus>
         <externalId>false</externalId>
         <formula>Personal_Credit_Report__r.LASERCA__Code_4__c &amp; &quot; - &quot; &amp; Personal_Credit_Report__r.LASERCA__Detail_4__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Credit Report Detail 4</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
         <fullName>Credit_Report_Detail_5__c</fullName>
+        <businessStatus>Active</businessStatus>
         <description>Set by LoanUnderwriting.updateManualCreditDecline when the adverse notice is sent to the lead or co-applicant through the Lead buttons or Loan Underwriting VF page.
 
 This field can be changed to a formula consistent with the other factors if LASERCA adds the fifth code.</description>
@@ -1771,6 +1810,7 @@ This field can be changed to a formula consistent with the other factors if LASE
         <label>Credit Report Detail 5</label>
         <length>255</length>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
@@ -1880,9 +1920,11 @@ This field can be changed to a formula consistent with the other factors if LASE
     </fields>
     <fields>
         <fullName>Date_of_Birth__c</fullName>
+        <businessStatus>Active</businessStatus>
         <externalId>false</externalId>
         <label>Date of Birth</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Date</type>
@@ -2125,6 +2167,7 @@ This field can be changed to a formula consistent with the other factors if LASE
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Currency</type>
@@ -2228,16 +2271,19 @@ This field can be changed to a formula consistent with the other factors if LASE
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>FICO Approval Status</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
         <fullName>FICO_PCR__c</fullName>
+        <businessStatus>Active</businessStatus>
         <externalId>false</externalId>
         <formula>Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c</formula>
         <label>FICO PCR</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -2273,6 +2319,7 @@ This field can be changed to a formula consistent with the other factors if LASE
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Number</type>
@@ -2824,6 +2871,7 @@ This field can be changed to a formula consistent with the other factors if LASE
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>LASER Credit Score</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -3310,6 +3358,7 @@ IF(DOER_Solar_Loan__c=TRUE, 0.0399, 0.0599), VALUE(TEXT(Interest_Rate_Picklist__
         <precision>9</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Number</type>
@@ -3322,6 +3371,7 @@ IF(DOER_Solar_Loan__c=TRUE, 0.0399, 0.0599), VALUE(TEXT(Interest_Rate_Picklist__
         <precision>9</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Number</type>
@@ -3477,6 +3527,7 @@ IF(DOER_Solar_Loan__c=TRUE, 0.0399, 0.0599), VALUE(TEXT(Interest_Rate_Picklist__
         <precision>8</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Currency</type>
@@ -3487,6 +3538,7 @@ IF(DOER_Solar_Loan__c=TRUE, 0.0399, 0.0599), VALUE(TEXT(Interest_Rate_Picklist__
         <label>Monthly Income Details (2)</label>
         <length>30</length>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
@@ -3498,6 +3550,7 @@ IF(DOER_Solar_Loan__c=TRUE, 0.0399, 0.0599), VALUE(TEXT(Interest_Rate_Picklist__
         <label>Monthly Income Details</label>
         <length>30</length>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
@@ -3510,6 +3563,7 @@ IF(DOER_Solar_Loan__c=TRUE, 0.0399, 0.0599), VALUE(TEXT(Interest_Rate_Picklist__
         <precision>8</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Currency</type>
@@ -3523,6 +3577,7 @@ IF(DOER_Solar_Loan__c=TRUE, 0.0399, 0.0599), VALUE(TEXT(Interest_Rate_Picklist__
         <precision>7</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Currency</type>
@@ -3545,6 +3600,7 @@ Monthly_Payment__c)</formula>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Currency</type>
     </fields>
@@ -3558,6 +3614,7 @@ Monthly_Payment__c)</formula>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Currency</type>
     </fields>
@@ -3838,6 +3895,7 @@ Monthly_Payment__c)</formula>
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Percent</type>
     </fields>
@@ -3849,6 +3907,7 @@ Monthly_Payment__c)</formula>
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Percent</type>
     </fields>
@@ -4488,6 +4547,7 @@ IF(AND(Risk_Level_Business_Type__c = &quot;Not Risky&quot;, VALUE(Number_of_Year
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <label>Reliant on Alimony/Child Support/Other</label>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
@@ -4543,6 +4603,7 @@ IF(AND(Risk_Level_Business_Type__c = &quot;Not Risky&quot;, VALUE(Number_of_Year
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Currency</type>
@@ -4667,6 +4728,7 @@ IF(AND(Risk_Level_Business_Type__c = &quot;Not Risky&quot;, VALUE(Number_of_Year
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Currency</type>
@@ -5123,10 +5185,12 @@ if( or(text(Status) = &quot;Cancelled&quot;, text(Status) = &quot;Not Interested
     </fields>
     <fields>
         <fullName>Utility_Account_Password__c</fullName>
+        <businessStatus>Active</businessStatus>
         <externalId>false</externalId>
         <label>Utility Account Password</label>
         <length>20</length>
         <required>false</required>
+        <securityClassification>MissionCritical</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
@@ -5210,6 +5274,7 @@ IF(INCLUDES(  Utility_1__c , &quot;SCE&amp;G&quot;), &quot;SCE&amp;G&quot;,
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Currency</type>

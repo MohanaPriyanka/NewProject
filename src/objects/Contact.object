@@ -486,11 +486,13 @@ Specify the global country code setting or record level country code to automati
     </fields>
     <fields>
         <fullName>Credit_Score_2__c</fullName>
+        <businessStatus>Active</businessStatus>
         <externalId>false</externalId>
         <formula>Credit_Score__r.LASERCA__Credit_Score__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>FICO Score</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -602,10 +604,12 @@ Specify the global country code setting or record level country code to automati
     </fields>
     <fields>
         <fullName>Express_Consent__c</fullName>
+        <businessStatus>Active</businessStatus>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <inlineHelpText>Set by applicants with the CAP during a loan application</inlineHelpText>
         <label>Express Consent</label>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
@@ -659,6 +663,7 @@ Specify the global country code setting or record level country code to automati
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Currency</type>
@@ -1015,6 +1020,7 @@ Specify the global country code setting or record level country code to automati
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Currency</type>
@@ -1026,6 +1032,7 @@ Specify the global country code setting or record level country code to automati
         <label>Monthly Income Details 2</label>
         <length>255</length>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
@@ -1038,6 +1045,7 @@ Specify the global country code setting or record level country code to automati
         <label>Monthly Income Details</label>
         <length>255</length>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
@@ -1051,6 +1059,7 @@ Specify the global country code setting or record level country code to automati
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Currency</type>
@@ -1110,6 +1119,7 @@ Specify the global country code setting or record level country code to automati
         <externalId>false</externalId>
         <inlineHelpText>Used for a loan applicant to provide other monthly income (alimony, dividend, rental, etc)</inlineHelpText>
         <label>Other Income</label>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
@@ -1260,6 +1270,7 @@ SUBSTITUTE(Phone, &quot;(&quot;, &quot;&quot;), &quot;)&quot;, &quot;&quot;), &q
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Currency</type>
@@ -1296,6 +1307,7 @@ SUBSTITUTE(Phone, &quot;(&quot;, &quot;&quot;), &quot;)&quot;, &quot;&quot;), &q
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Currency</type>
