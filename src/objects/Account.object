@@ -451,6 +451,7 @@ IMAGE(&quot;/resource/1553274837000/Crown_Icon&quot;, &quot;crown&quot;),
         <externalId>false</externalId>
         <label>Bankruptcy Cleared?</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Picklist</type>
@@ -477,6 +478,7 @@ IMAGE(&quot;/resource/1553274837000/Crown_Icon&quot;, &quot;crown&quot;),
         <inlineHelpText>Has the company, or any owners of the company, ever declared bankruptcy?</inlineHelpText>
         <label>Bankruptcy Explanation</label>
         <length>32768</length>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>LongTextArea</type>
@@ -1329,6 +1331,7 @@ IF(Total_Outstanding_Balance__c  &gt; 1, (TODAY()-Max_Overdue_Due_Date__c), 0))<
         <inlineHelpText>Has the company, or any owners of the company, ever declared bankruptcy?</inlineHelpText>
         <label>Declared Bankruptcy?</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Picklist</type>
@@ -1464,6 +1467,7 @@ IF(
         <externalId>false</externalId>
         <label>FICO Cleared?</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Picklist</type>
@@ -1493,6 +1497,7 @@ IF(
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Number</type>
