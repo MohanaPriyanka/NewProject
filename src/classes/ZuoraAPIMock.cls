@@ -193,8 +193,12 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
             List<ZuoraAPI.SaveResult> saveResults = new List<ZuoraAPI.SaveResult>();
             for (ZuoraAPI.ZuoraContact contact : actionItems.objects) {
                 ZuoraAPI.SaveResult saveResult = new ZuoraAPI.SaveResult();
-                saveResult.Id = genericId;
-                saveResult.Success = true;
+                if (contact.FirstName == null) {
+                    saveResult.Success = false;
+                } else {
+                    saveResult.Id = genericId;
+                    saveResult.Success = true;
+                }
                 saveResults.add(saveResult);
             }
             res.setBody(JSON.serialize(saveResults));
