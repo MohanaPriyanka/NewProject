@@ -106,22 +106,27 @@ public without sharing class ZuoraAccountService {
     }
 
     @TestVisible
-    private static Map<String, String> createContact(List<Account> propertyAccounts, Map<Id, String> accountIdToZuoraIdMap) {
+    private static Map<String, String>  createContact(List<Account> propertyAccounts, Map<Id, String> accountIdToZuoraIdMap) {
         ZuoraAPI.ActionItems actionItems = new ZuoraAPI.ActionItems();
         actionItems.type = 'Contact';
         for (Account account : propertyAccounts) {
             ZuoraAPI.ZuoraContact zuoraContact = new ZuoraAPI.ZuoraContact();
             actionItems.objects.add(zuoraContact);
-            zuoraContact.CRM_ID_Zcustom = account.Send_Bills_Contact__c;
             zuoraContact.AccountId = accountIdToZuoraIdMap.get(account.Id);
-            zuoraContact.FirstName = account.Send_Bills_Contact__r.FirstName;
-            zuoraContact.LastName = account.Send_Bills_Contact__r.LastName;
-            if (Util.getSystemPropertyCheckbox('Use_Actual_Email_For_Zuora_Upload__c')) {
-                zuoraContact.PersonalEmail = account.Send_Bills_Contact__r.Email;
-            } else if (String.isEmpty(Util.getSystemPropertyString('Zuora_Contact_Substitution_Email__c'))) {
-                zuoraContact.PersonalEmail = account.Send_Bills_Contact__r.Email + '.disabled';
+            if (account.Send_Bills_Contact__c == null) {
+                zuoraContact.FirstName = 'Default';
+                zuoraContact.LastName = 'Billing Contact';
             } else {
-                zuoraContact.PersonalEmail = Util.getSystemPropertyString('Zuora_Contact_Substitution_Email__c');
+                zuoraContact.CRM_ID_Zcustom = account.Send_Bills_Contact__c;
+                zuoraContact.FirstName = account.Send_Bills_Contact__r.FirstName;
+                zuoraContact.LastName = account.Send_Bills_Contact__r.LastName;
+                if (Util.getSystemPropertyCheckbox('Use_Actual_Email_For_Zuora_Upload__c')) {
+                    zuoraContact.PersonalEmail = account.Send_Bills_Contact__r.Email;
+                } else if (String.isEmpty(Util.getSystemPropertyString('Zuora_Contact_Substitution_Email__c'))) {
+                    zuoraContact.PersonalEmail = account.Send_Bills_Contact__r.Email + '.disabled';
+                } else {
+                    zuoraContact.PersonalEmail = Util.getSystemPropertyString('Zuora_Contact_Substitution_Email__c');
+                }
             }
         }
         HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/action/create', actionItems, false);
