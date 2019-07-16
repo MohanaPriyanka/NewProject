@@ -338,4 +338,40 @@ public with sharing class RESTRouterV2Test {
         System.assertEquals(404, RestContext.response.statusCode, 'PATCHing to an invalid path should give a 404 - not found');
     }
 
+    @IsTest
+    public static void testPatchServerError() {
+        String jsonRequest = 'bogusJSONString';
+
+        RestRequest req = new RestRequest();
+        req.requestURI = '/services/apexrest/v2/leads';
+        req.httpMethod = 'PATCH';
+        req.addHeader('Content-Type', 'application/json');
+        req.requestBody = Blob.valueOf(jsonRequest);
+
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+
+        RESTRouterV2.patchRequest();
+
+        System.assertEquals(500, RestContext.response.statusCode, 'PATCHing with invalid JSON should yield a 500');
+    }
+
+    @IsTest
+    public static void testPostServerError() {
+        String jsonRequest = 'bogusJSONString';
+
+        RestRequest req = new RestRequest();
+        req.requestURI = '/services/apexrest/v2/leads';
+        req.httpMethod = 'POST';
+        req.addHeader('Content-Type', 'application/json');
+        req.requestBody = Blob.valueOf(jsonRequest);
+
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+
+        RESTRouterV2.postRequest();
+
+        System.assertEquals(500, RestContext.response.statusCode, 'PATCHing with invalid JSON should yield a 500');
+    }
+
 }

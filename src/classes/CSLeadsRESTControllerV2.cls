@@ -31,7 +31,7 @@ global without sharing class CSLeadsRESTControllerV2 extends RESTController {
 
             Lead lead = leadService.updateLead(leadToUpdate);
 
-            // TODO: need to respond with full data structure to UI (e.g. include property accts and UALs)
+            // TODO: should eventually respond with full data structure to UI (e.g. include property accts and UALs).  Maybe when unit-of-work is implemented?
             RestLead responseLead = new RestLead(lead);
             envelope.setData(responseLead);
             response.statusCode = statusCode.ok;
@@ -56,7 +56,7 @@ global without sharing class CSLeadsRESTControllerV2 extends RESTController {
 
             Account account = accountService.updateAccount(accountToUpdate);
 
-            // TODO: need to respond with full data structure to UI (e.g. include  UALs)
+            // TODO: should eventually respond with full data structure to UI (e.g. include  UALs).  Maybe when unit-of-work is implemented?
             RestLead.RestPropertyAccount responseAccount = new RestLead.RestPropertyAccount(account);
             envelope.setData(responseAccount);
             response.statusCode = statusCode.ok;

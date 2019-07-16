@@ -103,8 +103,6 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
         String jsonRequest = request.requestBody.toString();
         RestLeadV1 requestLead = (RestLeadV1) JSON.deserialize(jsonRequest, RestLeadV1.class);
 
-        // TODO: add unit tests.
-
         if (requestLead.hasRequiredPostFields()) {
 
             Lead newLead = requestLead.asLead();

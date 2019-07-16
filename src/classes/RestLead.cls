@@ -1,10 +1,10 @@
 /**
  * Created by jlugo on 2019-07-03.
+ * Tested by RestLeadTest
  */
 
 public without sharing class RestLead {
     public Id id;
-    public Boolean customerAcknowledgement;  // TODO: not used by switch currently
     public String customerAgreementText; // TODO: not used by switch at all.  Remove? Run by jeff/legal/freeman.  Sarah to discuss w/jeff
     public String firstName;
     public String lastName;
@@ -32,7 +32,6 @@ public without sharing class RestLead {
 
     public RestLead(Lead lead) {
         this.id = lead.Id;
-        this.customerAcknowledgement = lead.Privacy_Policy_Acknowledged__c;
         this.customerAgreementText = lead.Terms_Conditions__c;
         this.firstName = lead.FirstName;
         this.lastName = lead.LastName;
