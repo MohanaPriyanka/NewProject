@@ -24,7 +24,13 @@ public with sharing class ZuoraSubscriptionService {
             try {
                 subscriptionsCreated.add(createSubscription(subscriptionParams[i].param, subscriptionParams[i].additionalClientProjects));
             } catch (Exception e) {
-                Logger.logLater('ZuoraSubscriptionService', 'createSubscription', e.getMessage() + e.getStackTraceString());
+                Logger.logLater(
+                    'ZuoraSubscriptionService',
+                    'createSubscription',
+                    'Caught exception creating subscription for ' + JSON.serialize(subscriptionParams[i]) +
+                        e.getMessage() + e.getStackTraceString(),
+                    Logger.ERROR
+                );
                 continue;
             }
             subscriptionParams.remove(i);
