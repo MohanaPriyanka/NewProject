@@ -5,12 +5,11 @@
 
 public without sharing class RestLead {
     public Id id;
-    public String customerAgreementText; // TODO: not used by switch at all.  Remove? Run by jeff/legal/freeman.  Sarah to discuss w/jeff
     public String firstName;
     public String lastName;
     public String email;
     public String mobilePhone;
-    public String businessPhone; // TODO: this currently maps to lead.Phone.  Why there and not (also) lead.Business_Phone__c?  Sarah to dig in
+    public String businessPhone;
     public String businessName;
     public String businessTitle;
     public String applicationType;
@@ -20,11 +19,11 @@ public without sharing class RestLead {
     public String zipCode;
     public String loadZone;
     public String productName;
-    public Id partnerId; //
-    public Id salesRepId; //
-    public Datetime applicationCompleteDate; //
-    public String eiaId; //
-    public String continueApplicationLink; //
+    public Id partnerId;
+    public Id salesRepId;
+    public Datetime applicationCompleteDate;
+    public String eiaId;
+    public String continueApplicationLink;
     public List<RestPropertyAccount> propertyAccounts;
 
     public RestLead() {
@@ -32,7 +31,6 @@ public without sharing class RestLead {
 
     public RestLead(Lead lead) {
         this.id = lead.Id;
-        this.customerAgreementText = lead.Terms_Conditions__c;
         this.firstName = lead.FirstName;
         this.lastName = lead.LastName;
         this.email = lead.Email;
@@ -122,7 +120,7 @@ public without sharing class RestLead {
             City = city,
             State = BlueWaveParent.convertAbbreviationToState(state),
             PostalCode = zipCode,
-            Parcel_Zip__c = zipCode, // TODO: do we need to set parcel zip on lead?
+            Parcel_Zip__c = zipCode, // TODO: remove once qualification goes off of UAL's zip, instead of the Lead's parcel zip
             LeadSource = 'Switch',
             LoadZone__c = loadZone,
             Product_line__c = 'Community Solar',
