@@ -21,11 +21,11 @@ global virtual class RESTController {
     protected ResponseEnvelope envelope = new ResponseEnvelope();
 
     // implementation methods
-    protected virtual void postRecords() {}
-    protected virtual void patchRecords() {}
-    protected virtual void getRecords() {}
-    protected virtual void putRecords() {}
-    protected virtual void deleteRecords() {}
+    public virtual void postRecords() {}
+    public virtual void patchRecords() {}
+    public virtual void getRecords() {}
+    public virtual void putRecords() {}
+    public virtual void deleteRecords() {}
 
     public class ResponseEnvelope {
         public List<String> messages = new List<String>();
@@ -65,6 +65,7 @@ global virtual class RESTController {
     public class StatusCode {
         // HTTP Status codes from https://www.restapitutorial.com/httpstatuscodes.html
         // 2xx = Successful Responses
+        public Integer internalServerError = 500;
         public Integer ok = 200;
         public Integer created = 201;
         public Integer noContent = 204;
@@ -77,6 +78,5 @@ global virtual class RESTController {
         public Integer forbidden = 403;
         public Integer notFound = 404;
         // 5xx = Server Error (problem with server), should automatically get returned if there is an error
-        public Integer internalServerError = 500;
     }
 }

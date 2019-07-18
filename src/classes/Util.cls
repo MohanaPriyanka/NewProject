@@ -87,11 +87,11 @@ public without sharing class Util {
         return (String.isBlank(value)?'0':value);
     }
 
-    public static List<Product2> getActiveProducts(List<String> states, Id partnerId, String productType) { 
+    public static List<Product2> getActiveProducts(List<String> states, Id partnerId, String productType) {
         return getActiveProductsInternal(states, partnerId, productType, false);
     }
 
-    public static List<Product2> getActiveProductsIncludingHidden(List<String> states, Id partnerId, String productType) { 
+    public static List<Product2> getActiveProductsIncludingHidden(List<String> states, Id partnerId, String productType) {
         return getActiveProductsInternal(states, partnerId, productType, true);
     }
 
@@ -99,7 +99,7 @@ public without sharing class Util {
     // or to generate a quick sales sheet (SLPQuickSalesSheet).
     private static List<Product2> getActiveProductsInternal(List<String> states, Id partnerId, String productType, Boolean showHidden) {
         List<Product2> productList = [SELECT Id, Name, Program__c, External_Name__c, Require_Junctions_to_Enable__c, Hide_in_Requested_Product__c,
-                                      (SELECT Id FROM Partner_Product_Junctions__r 
+                                      (SELECT Id FROM Partner_Product_Junctions__r
                                        WHERE Partner__c = :partnerId
                                        AND Active__c = true)
                                       FROM Product2
@@ -299,5 +299,21 @@ public without sharing class Util {
             return (String) systemProperties[0].get(propertyName);
         }
         return '';
+    }
+
+    public static void validateStrings(Map<String, String> fields) {
+        for (String field : fields.keySet()) {
+            if (String.isBlank(fields.get(field))) {
+                throw new BWException('Required field not provided: ' + field);
+            }
+        }
+    }
+
+    @TestVisible
+    /**
+     * Method to generate a fake Id based on the SObject Type
+     */
+    private static String getFakeId(Schema.SObjectType type) {
+        return type.getDescribe().getKeyPrefix() + '0'.repeat(12);
     }
 }

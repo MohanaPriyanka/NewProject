@@ -1,6 +1,6 @@
 /**
  * Created by mstackhouse on 9/21/2018.
- * Description: 
+ * Description:
  */
 
 @IsTest
@@ -285,5 +285,33 @@ public with sharing class UtilTest {
         System_Properties__c property = new System_Properties__c(Name = 'System', Disable_LoanTrigger__c = true);
         insert property;
         System.assertEquals(true, Util.getSystemPropertyCheckbox('Disable_LoanTrigger__c'));
+    }
+
+    @IsTest
+    public static void testValidateStringsWithNullValue() {
+        Map<String, String> requiredFields = new Map<String, String>{'nullField'=>null, 'validString'=>'hello world' };
+        try {
+            Util.validateStrings(requiredFields);
+            System.assert(false, 'This assert should not be called, because an exception should be thrown');
+        } catch (Exception e) {
+            System.assertEquals(e.getMessage(), 'Required field not provided: nullField', 'Should detect null fields');
+        }
+    }
+
+    @IsTest
+    public static void testValidateStringsWithValidValues() {
+        Map<String, String> requiredFields = new Map<String, String>{'validString'=>'hello world', 'anotherValidField'=>'foobar' };
+        try {
+            Util.validateStrings(requiredFields);
+            System.assert(true, 'This assert should be called, because an exception should not be thrown');
+        } catch (Exception e) {
+            System.assert(false, 'This assert should not be called, because an exception should not be thrown');
+        }
+    }
+
+    @IsTest
+    public static void testGetFakeId() {
+        String id = Util.getFakeId(Schema.Account.SObjectType);
+        System.assertEquals('001000000000000', id, 'Fake ID should be 15 characters long, and have the proper 3-digit prefix for the entity');
     }
 }
