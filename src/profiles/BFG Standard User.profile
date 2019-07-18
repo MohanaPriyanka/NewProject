@@ -20978,6 +20978,26 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.UnbouncePageID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.UnbouncePageVariant__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.UnbounceSubmissionDate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.UnbounceSubmissionTime__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Lead.Unfinished_Lead__c</field>
         <readable>true</readable>
@@ -64182,6 +64202,10 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
+        <name>ChatterEnabledForUser</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
         <name>ChatterFileLink</name>
     </userPermissions>
     <userPermissions>
@@ -64302,6 +64326,10 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
+        <name>ManageDashbdsInPubFolders</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
         <name>ManageDynamicDashboards</name>
     </userPermissions>
     <userPermissions>
@@ -64311,6 +64339,10 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ManageLeads</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>ManageReportsInPubFolders</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>

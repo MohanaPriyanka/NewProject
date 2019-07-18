@@ -5054,6 +5054,48 @@ if( or(text(Status) = &quot;Cancelled&quot;, text(Status) = &quot;Not Interested
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>UnbouncePageID__c</fullName>
+        <externalId>false</externalId>
+        <label>Unbounce Page ID</label>
+        <length>250</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>UnbouncePageVariant__c</fullName>
+        <externalId>false</externalId>
+        <label>Unbounce Page Variant</label>
+        <length>250</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>UnbounceSubmissionDate__c</fullName>
+        <externalId>false</externalId>
+        <label>Unbounce Submission Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>UnbounceSubmissionTime__c</fullName>
+        <externalId>false</externalId>
+        <label>Unbounce Submission Time</label>
+        <length>250</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Unfinished_Lead__c</fullName>
         <defaultValue>false</defaultValue>
         <description>This designates whether or not the full application has been completed by the applicant. If an application is still in process, this checkbox will stay unfinished (true).</description>
