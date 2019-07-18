@@ -36,17 +36,17 @@ global class TestRESTController extends RESTController {
         controller.deleteRecords();
     }
 
-    protected override void postRecords() {
+    public override void postRecords() {
         envelope.setData('post records');
 
         envelope.setJSONResponse(response);
     }
-    protected override void patchRecords() {
+    public override void patchRecords() {
         envelope.setData('patch records');
 
         envelope.setJSONResponse(response);
     }
-    protected override void getRecords() {
+    public override void getRecords() {
         String requestType = request.params.get('Type');
         if (requestType == 'error') {
             envelope.addError('error');
@@ -57,12 +57,12 @@ global class TestRESTController extends RESTController {
 
         envelope.setJSONResponse(response);
     }
-    protected override void putRecords() {
+    public override void putRecords() {
         envelope.setData('put records');
 
         envelope.setJSONResponse(response);
     }
-    protected override void deleteRecords() {
+    public override void deleteRecords() {
         envelope.setData('delete records');
 
         envelope.setJSONResponse(response);
