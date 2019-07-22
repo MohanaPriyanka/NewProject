@@ -652,6 +652,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Utility_Account_Subscription__c.Transferred_From__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility_Account_Subscription__c.Transferred_To__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Utility_Account_Subscription__c.Transferring_Subsc_to_Another_UAS__c</field>
         <readable>true</readable>
     </fieldPermissions>

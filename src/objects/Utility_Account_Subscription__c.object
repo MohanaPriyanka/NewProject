@@ -826,7 +826,7 @@ Round(( Subscribed_Annual_Cost_of_Electricity__c / 0.1933 / Opportunity__r.Share
         <inlineHelpText>This should be populated when a new UAS is created from a Subscription Transfer.  There should usually be one UAS created by a single Subscription Transfer unless a UAS is being split into multiple new UASs.</inlineHelpText>
         <label>Transferred From</label>
         <referenceTo>Subscription_Transfer__c</referenceTo>
-        <relationshipLabel>Utility Account Subscriptions (Transferred From)</relationshipLabel>
+        <relationshipLabel>Transferred to UASs</relationshipLabel>
         <relationshipName>Utility_Account_Subscriptions1</relationshipName>
         <required>false</required>
         <trackHistory>false</trackHistory>
