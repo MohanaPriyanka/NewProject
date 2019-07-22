@@ -819,6 +819,36 @@ Round(( Subscribed_Annual_Cost_of_Electricity__c / 0.1933 / Opportunity__r.Share
         <type>Summary</type>
     </fields>
     <fields>
+        <fullName>Transferred_From__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>This is the lookup to the Subscription Transfer that is used to relate the newly created UAS to the Subscription Transfer that created it.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This should be populated when a new UAS is created from a Subscription Transfer.  There should usually be one UAS created by a single Subscription Transfer unless a UAS is being split into multiple new UASs.</inlineHelpText>
+        <label>Transferred From</label>
+        <referenceTo>Subscription_Transfer__c</referenceTo>
+        <relationshipLabel>Utility Account Subscriptions (Transferred From)</relationshipLabel>
+        <relationshipName>Utility_Account_Subscriptions1</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Transferred_To__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>This is the lookup to the transfer object which relates to both this UAS and the UAS that is replacing it.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This should be populated when a UAS is transferred to a new one via Subscription Transfer.  You should typically make a new transfer for each UAS that is being transferred unless they are being combined.</inlineHelpText>
+        <label>Transferred To</label>
+        <referenceTo>Subscription_Transfer__c</referenceTo>
+        <relationshipLabel>Transferred From UASs</relationshipLabel>
+        <relationshipName>Utility_Account_Subscriptions</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Transferring_Subsc_to_Another_UAS__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
