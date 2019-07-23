@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Before granting, you need to let them know that they aren&apos;t supposed to create folders outside of their department&apos;s main folder. Not all departments have folders yet, so you may need to make one. There isn&apos;t a way to actually enforce this.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Lightning Email Template Report Folder Creation</label>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>CreateLtngTempFolder</name>
+    </userPermissions>
+</PermissionSet>
