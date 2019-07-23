@@ -140,7 +140,7 @@ public without sharing class ZuoraAccountService {
         // under each corresponding zuora account
         Map<String, String> zuoraAccountIdToZuoraContactIdMap = new Map<String, String>();
         if (response.getStatusCode() != 200) {
-            throw new Util.BWException('Received status ' + response.getStatusCode() + ':a ' + response.getBody());
+            throw new Util.BWException('Received status ' + response.getStatusCode() + ': ' + response.getBody());
         }
         List<ZuoraAPI.SaveResult> saveResults =
             (List<ZuoraAPI.SaveResult>) System.JSON.deserialize(response.getBody(), List<ZuoraAPI.SaveResult>.class);
