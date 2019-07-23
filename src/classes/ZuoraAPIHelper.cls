@@ -8,6 +8,13 @@ public with sharing class ZuoraAPIHelper {
     private static Zuora_Setting__mdt zuoraSetting;
     @TestVisible
     private static Long calloutMillis = 0;
+    // Because we use the Zuora.zApi package, we can't use Limits.getCallouts to know how many callouts that namespace
+    // consumes. So we need to manage it ourselves.
+    @TestVisible
+    private static Integer numberCalloutsForZuoraNamespace = 0;
+    // If Salesforce ever increases the limit again:
+    @TestVisible
+    private static Integer maxCalloutsForZuoraNamespace = 100;
 
     public static HttpResponse callJsonEndpoint(String method, String endpoint, Object jsonBody) {
         return callJsonEndpoint(method, endpoint, jsonBody, true);
@@ -20,6 +27,11 @@ public with sharing class ZuoraAPIHelper {
         if (calloutMillis > 105*1000) {
             throw new Util.BWException('Not starting ' + endpoint + ' because ' + (Integer) (calloutMillis/1000) +
                 ' seconds of cumulative callout time has been consumed. Retry in a different transaction.');
+        }
+        // Since apex can't catch a limit exception, we have to check and throw a custom one before it's hit
+        if (numberCalloutsForZuoraNamespace + 1 > maxCalloutsForZuoraNamespace) {
+            throw new Util.BWException('Not starting ' + endpoint + ' because ' + numberCalloutsForZuoraNamespace +
+                ' callouts of ' + maxCalloutsForZuoraNamespace + ' have been consumed');
         }
         Zuora_Setting__mdt zuoraSetting = getZuoraSetting();
         HttpRequest request = new HttpRequest();
@@ -44,6 +56,7 @@ public with sharing class ZuoraAPIHelper {
             Long finish = System.currentTimeMillis();
             calloutMillis += (finish - start);
         }
+        numberCalloutsForZuoraNamespace++;
         Logger.logLater(
             'ZuoraAPIHelper',
             'callJsonEndpoint',
@@ -90,7 +103,6 @@ public with sharing class ZuoraAPIHelper {
         ZuoraAPI.ZuoraQuery zuoraQuery = new ZuoraAPI.ZuoraQuery();
         zuoraQuery.queryString = queryString;
         HttpResponse response = callJsonEndpoint('POST', '/v1/action/query', zuoraQuery, flush);
-        System.debug(LoggingLevel.ERROR, response.getBody());
         return response.getBody();
     }
 
