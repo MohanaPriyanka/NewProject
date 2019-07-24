@@ -578,7 +578,7 @@ public with sharing class ZuoraAPI {
         public String chargeId;
     }
 
-    // Used to create, but not to query for credit memos:
+    // Used to create, but not to query for debit memos:
     public class DebitMemo{
         public String accountId;
         public List<DebitMemoCharge> charges;
@@ -594,7 +594,7 @@ public with sharing class ZuoraAPI {
         public String chargeId;
     }
 
-    // Used to query, but not to create credit memos:
+    // Used to query, but not to create debit memos:
     public class ZuoraDebitMemo {
         public String id;
         public String accountId;

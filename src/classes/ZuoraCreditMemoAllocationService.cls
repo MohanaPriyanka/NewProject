@@ -3,7 +3,7 @@
  * Test: ZuoraCreditMemoAllocationTest
  *************************************************************************************/
 
-public class ZuoraCreditMemoAllocationService{
+public class ZuoraCreditMemoAllocationService implements ZuoraOutstandingItemsService.Processor {
     public class CreditMemoApplication {
         public List<CreditMemoApplicationInvoice> Invoices;
         public List<CreditMemoApplicationDebitMemo> DebitMemos;
@@ -43,21 +43,38 @@ public class ZuoraCreditMemoAllocationService{
         public List<ZuoraAPI.ZuoraCreditMemoItem> Items;
     }
 
-    public static CreditMemoApplication getCreditMemoApplication(ZuoraAPI.CreditMemoWithItem creditMemo){
-        List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems;
-        List<ZuoraOutstandingItemsService.OutstandingItem> itemsWithApplication;
+    public static void applyCreditMemo(ZuoraAPI.CreditMemoWithItem creditMemo) {
+        ZuoraOutstandingItemsService.ProcessingParameter processingParameter =
+            new ZuoraOutstandingItemsService.ProcessingParameter('ZuoraCreditMemoAllocationService', creditMemo);
 
-        outstandingItems = ZuoraOutstandingItemsService.getOutstandingItemsByDate(creditMemo.CreditMemo.accountId);
-        itemsWithApplication = ZuoraOutstandingItemsService.applyToOutstandingItems(
-            outstandingItems,
-            creditMemo.CreditMemo.unappliedAmount,
-            creditMemo.CreditMemo.Project_Zcustom,
-            creditMemo.CreditMemo.ClientOwner_Zcustom
-        );
-        return groupByInvoiceAndDebitMemo(creditMemo, itemsWithApplication);
+        ZuoraOutstandingItemsService.processOutstandingItemsByDate(creditMemo.CreditMemo.accountId, processingParameter);
     }
 
-    public static CreditMemoApplication groupByInvoiceAndDebitMemo( ZuoraAPI.CreditMemoWithItem creditMemo,
+    // Called when ZuoraOutstandingItemsAsyncService gets all of the outstanding items
+    public void processOutstandingItems(List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems,
+        ZuoraOutstandingItemsService.ProcessingParameter processingParameter) {
+        List<ZuoraOutstandingItemsService.OutstandingItem> itemsWithApplication =
+            ZuoraOutstandingItemsService.applyToOutstandingItems(
+                outstandingItems,
+                processingParameter.creditMemo.CreditMemo.unappliedAmount,
+                processingParameter.creditMemo.CreditMemo.Project_Zcustom,
+                processingParameter.creditMemo.CreditMemo.ClientOwner_Zcustom
+            );
+        CreditMemoApplication creditMemoApplication = groupByInvoiceAndDebitMemo(processingParameter.creditMemo, itemsWithApplication);
+        String urlString = '/v1/creditmemos/' + processingParameter.creditMemo.CreditMemo.id +'/apply';
+        Logger.logLater('ZuoraCreditMemoAllocationService', 'processOutstandingItems',
+            'Request Endpoint: ' + urlString + '\n' +
+            'Request Body: ' + JSON.serialize(creditMemoApplication),
+            Logger.INFO);
+        HttpResponse response = ZuoraAPIHelper.callJsonEndpoint( 'PUT', urlString, creditMemoApplication, false);
+        Logger.logLater('ZuoraCreditMemoAllocationService', 'processOutstandingItems',
+            'Response Body: ' + response.getBody(),
+            Logger.INFO);
+        Logger.flushLogs();
+    }
+
+    @TestVisible
+    private static CreditMemoApplication groupByInvoiceAndDebitMemo( ZuoraAPI.CreditMemoWithItem creditMemo,
                                                                     List<ZuoraOutstandingItemsService.OutstandingItem> outstandingBillItems){
 
         Map<String,List<CreditMemoApplicationInvoiceItem>> invoiceToItemMap = new Map<String,List<CreditMemoApplicationInvoiceItem>>();
@@ -69,9 +86,9 @@ public class ZuoraCreditMemoAllocationService{
             // If it is a match, create an application:
             if (billItem.IsInvoiceItem){
                 CreditMemoApplicationInvoiceItem invoiceItem = new CreditMemoApplicationInvoiceItem();
-                invoiceItem.Amount = billItem.AmountToApply;
-                invoiceItem.CreditMemoItemId = creditMemo.Item.id;
-                invoiceItem.InvoiceItemId = billItem.Id;
+                invoiceItem.amount = billItem.AmountToApply;
+                invoiceItem.creditMemoItemId = creditMemo.Item.id;
+                invoiceItem.invoiceItemId = billItem.Id;
                 if (invoiceToItemMap.containsKey(billItem.ParentId)){
                     List<CreditMemoApplicationInvoiceItem> itemList = invoiceToItemMap.get(billItem.ParentId);
                     itemList.add(invoiceItem);
@@ -85,9 +102,9 @@ public class ZuoraCreditMemoAllocationService{
                 }
             } else {
                 CreditMemoApplicationDebitMemoItem debitMemoItem = new CreditMemoApplicationDebitMemoItem();
-                debitMemoItem.Amount = billItem.AmountToApply;
-                debitMemoItem.CreditMemoItemId = creditMemo.Item.id;
-                debitMemoItem.DebitMemoItemId = billItem.Id;
+                debitMemoItem.amount = billItem.AmountToApply;
+                debitMemoItem.creditMemoItemId = creditMemo.Item.id;
+                debitMemoItem.debitMemoItemId = billItem.Id;
                 if (debitMemoToItemMap.containsKey(billItem.ParentId)){
                     List<CreditMemoApplicationDebitMemoItem> itemList = debitMemoToItemMap.get(billItem.ParentId);
                     itemList.add(debitMemoItem);

@@ -50,10 +50,10 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
         } else if (endpoint.contains('/v1/invoices/') && endpoint.contains('/items')) {
             return getInvoiceItem(endpoint);
         } else if (endpoint.contains('/v1/debitmemos/') && endpoint.contains('/items')) {
-            return getDebitMemoItems();
+            return getDebitMemoItems(endpoint);
         } else if (endpoint.contains('/v1/creditmemos?status=Posted') || endpoint.contains('/v1/creditmemos/')) {
             return getCreditMemos();
-        } else if (endpoint.contains('/v1/debitmemos/') && method.contains('GET')) {
+        } else if (endpoint.contains('/v1/debitmemos') && method.contains('GET')) {
             return getDebitMemos();
         } else {
             return null;
@@ -566,6 +566,8 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
                 '{ "data" : [ ] }, ' +
                 '"availableToCreditAmount" : 710.000000000 } ], ' +
                 '"success" : true }');
+        } else if (endpoint.contains('ThrowException')) {
+            throw new Util.BWException('Test callout exception');
         }
 
         return res;
@@ -648,35 +650,39 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
         return res;
     }
 
-    private static HttpResponse getDebitMemoItems() {
+    private static HttpResponse getDebitMemoItems(String endpoint) {
         HttpResponse res = getJSON();
-        res.setBody('{ "items" : [ ' +
-            '{ "id" : "2c92c0f96b695c76016b6c860fcf77f5", ' +
-            '"amount" : 20.000000000, ' +
-            '"amountWithoutTax" : 20.000000000, ' +
-            '"beAppliedAmount" : 0E-9, ' +
-            '"balance" : 20.000000000, ' +
-            '"sku" : "SKU-00000002", ' +
-            '"skuName" : "Utility Credit", ' +
-            '"serviceStartDate" : "2017-06-01", ' +
-            '"serviceEndDate" : "2017-06-30", ' +
-            '"sourceItemType" : "InvoiceDetail", ' +
-            '"sourceItemId" : "2c92c0856ae3a471016ae5ebd90e5445", ' +
-            '"createdDate" : "2019-06-18 17:37:33", ' +
-            '"createdById" : "2c92c0f968a20f350168ca0efb2309e7", ' +
-            '"updatedDate" : "2019-06-18 17:37:33", ' +
-            '"updatedById" : "2c92c0f968a20f350168ca0efb2309e7", ' +
-            '"comment" : "", ' +
-            '"subscriptionId" : "2c92c0f96ae3b195016ae5e366470bff",' +
-            ' "financeInformation" : { ' +
-            '"deferredRevenueAccountingCode" : "Usage Revenue", ' +
-            '"deferredRevenueAccountingCodeType" : "SalesRevenue", ' +
-            '"recognizedRevenueAccountingCode" : "Usage Revenue", ' +
-            '"recognizedRevenueAccountingCodeType" : "SalesRevenue", ' +
-            '"revenueScheduleNumber" : null, ' +
-            '"revenueRecognitionRuleName" : "Recognize upon invoicing" ' +
-            '} }' +
-            '] }');
+        if (endpoint.contains('ThrowException')) {
+            throw new Util.BWException('Callout exception');
+        } else {
+            res.setBody('{ "items" : [ ' +
+                '{ "id" : "2c92c0f96b695c76016b6c860fcf77f5", ' +
+                '"amount" : 20.000000000, ' +
+                '"amountWithoutTax" : 20.000000000, ' +
+                '"beAppliedAmount" : 0E-9, ' +
+                '"balance" : 20.000000000, ' +
+                '"sku" : "SKU-00000002", ' +
+                '"skuName" : "Utility Credit", ' +
+                '"serviceStartDate" : "2017-06-01", ' +
+                '"serviceEndDate" : "2017-06-30", ' +
+                '"sourceItemType" : "InvoiceDetail", ' +
+                '"sourceItemId" : "2c92c0856ae3a471016ae5ebd90e5445", ' +
+                '"createdDate" : "2019-06-18 17:37:33", ' +
+                '"createdById" : "2c92c0f968a20f350168ca0efb2309e7", ' +
+                '"updatedDate" : "2019-06-18 17:37:33", ' +
+                '"updatedById" : "2c92c0f968a20f350168ca0efb2309e7", ' +
+                '"comment" : "", ' +
+                '"subscriptionId" : "2c92c0f96ae3b195016ae5e366470bff",' +
+                ' "financeInformation" : { ' +
+                '"deferredRevenueAccountingCode" : "Usage Revenue", ' +
+                '"deferredRevenueAccountingCodeType" : "SalesRevenue", ' +
+                '"recognizedRevenueAccountingCode" : "Usage Revenue", ' +
+                '"recognizedRevenueAccountingCodeType" : "SalesRevenue", ' +
+                '"revenueScheduleNumber" : null, ' +
+                '"revenueRecognitionRuleName" : "Recognize upon invoicing" ' +
+                '} }' +
+                '] }');
+        }
         return res;
     }
 }
