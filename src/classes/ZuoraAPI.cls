@@ -107,13 +107,17 @@ public with sharing class ZuoraAPI {
         public String CreatedDate;
         public String DefaultPaymentMethodId;
         public String Currency_Zreserved;
+        public String AdditionalEmailAddresses;
     }
 
     // https://www.zuora.com/developer/api-reference/#operation/Object_POSTContact
     public class ZuoraContact {
         public String AccountId;
-        public String Address1;
+        public String Address1; // Attention
+        public String Address2; // Street
         public String City;
+        public String State;
+        public String PostalCode;
         public String Country;
         public String Description;
         public String Fax;
@@ -125,8 +129,6 @@ public with sharing class ZuoraAPI {
         public String OtherPhone;
         public String OtherPhoneType;
         public String PersonalEmail;
-        public String PostalCode;
-        public String State;
         public String TaxRegion;
         public String WorkEmail;
         public String CRM_ID_Zcustom;
