@@ -48,17 +48,27 @@
     storeTermsConditions : function(component, event, helper) {
         var lead = component.get('v.lead');
         var termsConditions;
+        var termsType;
         if (component.get("v.partnerApp")) {
             termsConditions = component.get("v.partnerTermsConditions");
+            termsType = 'BW Applicant Terms with Partner';
         } else {
             termsConditions = component.get("v.termsConditions");
+            termsType = 'BW Applicant Terms without Partner';
         }
-        console.log("are we updating the lead: " + component.get("v.initials"));
-        var today = new Date();
-        lead.Acknowledged_Customer_Initials__c = component.get("v.initials");
-        lead.Terms_Conditions_Acknowledged__c = new Date();
-        lead.Terms_Conditions__c = termsConditions;
 
+        var action = component.get("c.saveTerms");
+        action.setParams({
+            "terms" : termsConditions,
+            "lead" : lead,
+            "termsType" : termsType
+        });
+        action.setCallback(this, function(resp){
+            if (resp.getState() !== "SUCCESS") {
+                this.logError("CSAPCapacityCheckHelper", "storeTermsConditions", resp.getError(), 'No task created to store Terms Consent for Lead: ' + lead.Id);
+            }
+        });
+        $A.enqueueAction(action);
     },
 
     clearAttachments : function(component, event, helper){

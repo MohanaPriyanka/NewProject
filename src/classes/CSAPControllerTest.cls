@@ -534,6 +534,26 @@ public with sharing class CSAPControllerTest {
         Test.stopTest();
     }
 
+    @IsTest
+    public static void testSaveTerms() {
+        Lead residentialLead = getLeadForTest();
+
+        List<Task> allTasks = [SELECT Id FROM Task WHERE WhoId = :residentialLead.Id];
+        Integer numTasks = allTasks.size();
+
+        String terms = 'Testing Exact Language for Customer Payment Terms Consent';
+        String termsType = 'Payment Terms';
+
+        Test.startTest();
+
+        CSAPController.saveTerms(terms, residentialLead, termsType);
+
+        List<Task> checkTasks = [SELECT Id, Subject FROM Task WHERE WhoId = :residentialLead.Id];
+        System.assertEquals(numTasks + 1, checkTasks.size());
+
+        Test.stopTest();
+    }
+
     @IsTest static void testSLPortalCSAPApplication() {
         Profile profileRecord = [SELECT Id FROM Profile WHERE Name='Partner Community Login User (Custom)'];
 
