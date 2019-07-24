@@ -120,7 +120,7 @@ public class UserHandlerTest {
 
 		Test.startTest();
 		UserHandler userInsertJob = new UserHandler(contactList);
-		System.enqueueJob(userInsertJob);
+		userInsertJob.execute(null);
 		Test.stopTest();
 
 		List<User> userListUpdated = [SELECT Id, ContactId FROM User WHERE IsActive = TRUE];
@@ -142,7 +142,7 @@ public class UserHandlerTest {
 
 		Test.startTest();
 		UserHandler userInsertJob = new UserHandler(newContactList);
-		System.enqueueJob(userInsertJob);
+		userInsertJob.execute(null);
 		Test.stopTest();
 
 		List<User> userListUpdated = [SELECT Id, ContactId FROM User WHERE IsActive = TRUE];
@@ -157,10 +157,10 @@ public class UserHandlerTest {
 
 		Test.startTest();
 		UserHandler userInsertJob = new UserHandler(contactList);
-		System.enqueueJob(userInsertJob);
+		userInsertJob.execute(null);
 
 		UserHandler secondInsertJob = new UserHandler(contactList);
-		System.enqueueJob(secondInsertJob);
+		secondInsertJob.execute(null);
 		Test.stopTest();
 
 		List<User> newUserList = [SELECT Id, ContactId FROM User WHERE IsActive = TRUE];
