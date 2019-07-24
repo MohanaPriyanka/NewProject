@@ -35,12 +35,9 @@ public without sharing class ZuoraMemoBatchApply implements Database.Batchable<Z
         this.creditMemosToApply = outstandingCreditMemosWithItem;
     }
 
-    public void runBatch(Integer batchSize){
-        Database.executeBatch(this, batchSize);
-    }
-
-    public void init(List<ZuoraAPI.ZuoraCreditMemo> creditMemos){
-
+    public void runBatch(){
+        // Needs to be a batch of 1 because each batch execution starts a chained queueable
+        Database.executeBatch(this, 1);
     }
 
     public List<ZuoraAPI.CreditMemoWithItem> start(Database.BatchableContext bc){
@@ -50,10 +47,7 @@ public without sharing class ZuoraMemoBatchApply implements Database.Batchable<Z
     public void execute(Database.BatchableContext bc, List<ZuoraAPI.CreditMemoWithItem> scope) {
         try {
             for (ZuoraAPI.CreditMemoWithItem creditMemo : scope) {
-                ZuoraCreditMemoAllocationService.CreditMemoApplication application;
-                application = ZuoraCreditMemoAllocationService.getCreditMemoApplication(creditMemo);
-                String urlString = '/v1/creditmemos/' + creditMemo.creditMemo.id +'/apply';
-                ZuoraAPIHelper.callJSONEndpoint( 'PUT', urlString, application, false);
+                ZuoraCreditMemoAllocationService.applyCreditMemo(creditMemo);
             }
         } catch(Exception excep) {
             Logger.logLater('ZuoraMemoBatchApply', 'execute', excep.getMessage() + '\n' + excep.getStackTraceString());
@@ -67,7 +61,7 @@ public without sharing class ZuoraMemoBatchApply implements Database.Batchable<Z
             creditMemosByPage = ZuoraCreditMemoAllocationService.getCreditMemosByPage(this.nextPage);
             ZuoraMemoBatchApply batchJob = new ZuoraMemoBatchApply();
             batchJob.setOutstandingCreditMemoItemsToApply(creditMemosByPage);
-            batchJob.runBatch(5);
+            batchJob.runBatch();
         } else {
             Logger.logNow('ZuoraMemoBatchApply', 'finish', 'ZuoraMemoBatchApply has finished','Info');
         }
