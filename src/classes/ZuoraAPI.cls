@@ -579,7 +579,7 @@ public with sharing class ZuoraAPI {
     }
 
     // Used to create, but not to query for debit memos:
-    public class DebitMemo{
+    public class DebitMemo {
         public String accountId;
         public List<DebitMemoCharge> charges;
         public Date effectiveDate;
@@ -589,7 +589,7 @@ public with sharing class ZuoraAPI {
         public String ClientOwner_Zcustom;
     }
 
-    public class DebitMemoCharge{
+    public class DebitMemoCharge {
         public Decimal amount;
         public String chargeId;
     }
