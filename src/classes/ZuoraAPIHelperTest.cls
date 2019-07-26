@@ -52,4 +52,19 @@ public with sharing class ZuoraAPIHelperTest {
         String cleanedJson = ZuoraAPIHelper.cleanJSON(json);
         System.assertEquals(expectedJson, cleanedJson);
     }
+
+    @IsTest
+    public static void testCalloutLimit() {
+        ZuoraAPIHelper.query('SELECT Id FROM Account', false);
+        System.assertEquals(1, ZuoraAPIHelper.numberCalloutsForZuoraNamespace, 'Should have incremented our callout counter');
+
+        ZuoraAPIHelper.numberCalloutsForZuoraNamespace = ZuoraAPIHelper.maxCalloutsForZuoraNamespace;
+        Boolean exceptionCaught = false;
+        try {
+            ZuoraAPIHelper.query('SELECT Id FROM Account', false);
+        } catch (Util.BWException bwe) {
+            exceptionCaught = true;
+        }
+        System.assert(exceptionCaught, 'ZuoraAPIHelper should have thrown an exception before hitting the uncatchable System.LimitException');
+    }
 }
