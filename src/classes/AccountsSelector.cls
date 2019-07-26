@@ -56,7 +56,9 @@ public without sharing class AccountsSelector {
         return [
             SELECT Id, Name, Account_Number__c, Zuora_Id__c, Send_Bills_Contact__c, Send_Bills_Contact__r.AccountId,
                 Send_Bills_Contact__r.Id, Send_Bills_Contact__r.FirstName, Send_Bills_Contact__r.LastName,
-                Send_Bills_Contact__r.Email, Recurring_Billing__c
+                Send_Bills_Contact__r.Email, Recurring_Billing__c,
+                Address_Attn__c, BillingStreet, BillingCity, BillingState, BillingPostalCode,
+                Additional_Contact__r.Email
             FROM Account
             WHERE Id IN :accountIds
         ];

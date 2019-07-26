@@ -69,6 +69,7 @@ public without sharing class ZuoraAccountService {
             zuoraAccount.Name = propertyAccount.Name;
             zuoraAccount.PaymentTerm = 'Net 30';
             zuoraAccount.Status = 'Draft';
+            zuoraAccount.AdditionalEmailAddresses = propertyAccount.Additional_Contact__r.Email;
             // Assign the payment method if hasn't expired
             if (accountIdToConvertedLeadMap == null) {
                 continue;
@@ -120,6 +121,11 @@ public without sharing class ZuoraAccountService {
                 zuoraContact.CRM_ID_Zcustom = account.Send_Bills_Contact__c;
                 zuoraContact.FirstName = account.Send_Bills_Contact__r.FirstName;
                 zuoraContact.LastName = account.Send_Bills_Contact__r.LastName;
+                zuoraContact.Address1 = account.Address_Attn__c;
+                zuoraContact.Address2 = account.BillingStreet;
+                zuoraContact.City = account.BillingCity;
+                zuoraContact.State = account.BillingState;
+                zuoraContact.PostalCode = account.BillingPostalCode;
                 if (Util.getSystemPropertyCheckbox('Use_Actual_Email_For_Zuora_Upload__c')) {
                     zuoraContact.PersonalEmail = account.Send_Bills_Contact__r.Email;
                 } else if (String.isEmpty(Util.getSystemPropertyString('Zuora_Contact_Substitution_Email__c'))) {
