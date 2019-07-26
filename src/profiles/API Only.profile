@@ -51677,6 +51677,10 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>Case_Round_Robin_Queue__c</tab>
+        <visibility>DefaultOff</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>Change_Order__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
