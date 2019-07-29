@@ -561,6 +561,29 @@ public without sharing class CSAPController {
     }
 
     @AuraEnabled
+    public static void saveTerms(String terms, Lead lead, String termsType) {
+        // Create a Task on the lead that stores the Payment Terms & BW Application Credit Check terms
+        User apiUser = [
+            SELECT Id, Name, Username
+            FROM User
+            WHERE Name = 'API'
+            AND IsActive = TRUE
+            LIMIT 1
+        ];
+
+        Task task = new Task(
+            Subject = 'Customer Consent to ' + termsType,
+            WhoId = lead.Id,
+            OwnerId = apiUser.Id,
+            Priority = 'Normal',
+            Status = 'Completed',
+            Start_Date__c = System.today(),
+            Description = terms
+        );
+        insert task;
+    }
+
+    @AuraEnabled
     public static Boolean sendEmailForPaymentInfo(Lead lead) {
         lead = getLead(lead.Id, lead.Email);
 
