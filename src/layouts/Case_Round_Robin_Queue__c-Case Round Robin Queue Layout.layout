@@ -16,7 +16,7 @@
                 <field>Is_Active__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Readonly</behavior>
                 <field>Next_Position__c</field>
             </layoutItems>
             <layoutItems>
