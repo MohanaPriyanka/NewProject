@@ -71,6 +71,7 @@
     submitPaymentInfo : function(component, event, helper) {
         var chOrFields = component.get("v.chOrder");
         if(helper.validatePageFields(component)) {
+            helper.storePaymentTerms(component, event, helper);
             var insertOrderPromise = helper.insertOrders(component, chOrFields, helper, event);
             insertOrderPromise.then(
                 $A.getCallback(function(result) {

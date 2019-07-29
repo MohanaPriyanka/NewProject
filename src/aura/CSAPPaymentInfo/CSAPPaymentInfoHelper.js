@@ -35,6 +35,31 @@
         });
     },
 
+    storePaymentTerms : function(component, event, helper) {
+        var lead = component.get('v.lead');
+        var paymentTerms;
+        if (component.get("v.paymentProvider") === 'Zuora') {
+            paymentTerms = component.get('v.zuoraPaymentTerms');
+        } else {
+            paymentTerms = component.get('v.paymentTerms');
+        }
+        var termsType = 'Payment Terms';
+
+
+        var action = component.get("c.saveTerms");
+        action.setParams({
+            "terms" : paymentTerms,
+            "lead" : lead,
+            "termsType" : termsType
+        });
+        action.setCallback(this, function(resp){
+            if (resp.getState() !== "SUCCESS") {
+                this.logError("CSAPPaymentInfo", "storePaymentTerms", resp.getError(), 'No task created to store Payment Consent for Lead: ' + lead.Id);
+            }
+        });
+        $A.enqueueAction(action);
+    },
+
     showError : function(component, header, message) {
         component.find('notifLib').showNotice({
             "variant": "error",
