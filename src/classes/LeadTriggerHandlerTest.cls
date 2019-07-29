@@ -307,6 +307,54 @@ public class LeadTriggerHandlerTest {
         }
     }
 
+    @isTest
+    static void testTasktoContactConversion() {
+        Account accountA = new Account (Name = 'Parent AccountA') ;
+
+        insert accountA;
+
+        Contact contactA = new Contact (FirstName = 'ParentA',
+            LastName = 'Last',
+            AccountId = accountA.Id,
+            Email = 'jpentaleri@bluewavesolar.com');
+        insert contactA;
+
+        Lead leadOne = new Lead (   FirstName = 'leadOne',
+            LastName = 'Test',
+            Company = 'CompanyCo',
+            Email = 'EmailOne@bluewavesolar.com',
+            Parent_Account__c = accountA.Id,
+            Product_Line__c = 'Community Solar',
+            Contacted__c = true,
+            Status = 'Qualified');
+        insert leadOne;
+
+        Task task = new Task(
+            Subject = 'Customer Consent Task',
+            WhoId = leadOne.Id,
+            Priority = 'Normal',
+            Status = 'Completed',
+            Start_Date__c = System.today()
+        );
+        insert task;
+
+        Test.startTest();
+        LeadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE isConverted=true LIMIT 1];
+
+        Database.LeadConvert lc = new Database.LeadConvert();
+        lc.setLeadId(leadOne.Id);
+        lc.setConvertedStatus(convertStatus.MasterLabel);
+        Database.LeadConvertResult lcr = Database.convertLead(lc, false);
+        System.assert(lcr.isSuccess());
+
+        Task checkTask = [SELECT Id, WhoId FROM Task WHERE Id = :task.Id];
+        System.assertEquals(contactA.Id, checkTask.WhoId);
+
+        Test.stopTest();
+
+
+    }
+
     @IsTest static void testLeadUpdateAfterConversion() {
         LoanTestRecordWarehouse.partnerSetup();
         List<Lead> leads = new List<Lead>();
