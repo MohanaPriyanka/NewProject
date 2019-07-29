@@ -57,6 +57,7 @@ public without sharing class ZuoraHistoricalLateFeeService implements Database.B
                 Opportunity__r.Shared_Solar_System__r.Unique_ID__c
             FROM System_Bill__c
             WHERE Late_Fees__c > 0
+            ORDER BY Account_Bill__r.Parent_Account__r.Zuora_Id__c
         ];
         return sbWithLateFee;
     }
