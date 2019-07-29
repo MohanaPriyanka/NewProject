@@ -59,7 +59,7 @@ public class ZuoraHistoricalLateFeeServiceTest {
         System.assertEquals(1, sbWithLateFee.size());
         ZuoraAPI.DebitMemo debitMemo = ZuoraHistoricalLateFeeService.convertSFLateFeesToDebitMemos(sbWithLateFee[0]);
         System.assertEquals(debitMemo.Charges[0].Amount,sbWithLateFee[0].Late_Fees__c);
-        System.assertEquals(debitMemo.Charges[0].Amount,0.3);
+        System.assertEquals(debitMemo.Charges[0].Amount,18.73);
         Test.stopTest();
     }
 

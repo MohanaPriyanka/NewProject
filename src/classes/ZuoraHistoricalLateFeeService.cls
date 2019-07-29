@@ -1,3 +1,12 @@
+/*************************************************************************************
+ * Created By: jpentaleri on 2019-07-29
+ * Description: Used to load late fees into Zuora as Debit Memos
+ * Should be deleted/removed after the historical migration (late fees aren't charged anymore
+ * and system bills will be retired)
+ *
+ * Tested By: ZuoraHistoricalLateFeesServiceTest
+ *************************************************************************************/
+
 public without sharing class ZuoraHistoricalLateFeeService implements Database.Batchable<System_Bill__c>, Database.AllowsCallouts{
     public static ZuoraAPI.DebitMemo convertSFLateFeesToDebitMemos(System_Bill__c systemBill){
         ZuoraAPI.DebitMemoCharge debitCharge = new ZuoraAPI.DebitMemoCharge();
