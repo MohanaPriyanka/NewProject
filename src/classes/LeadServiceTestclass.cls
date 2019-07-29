@@ -179,33 +179,21 @@ public class LeadServiceTestclass {
             System_Assignment__c = 'Automatic - Assignment Order'));
         insert switchLead;
 
-        Lead csapLead = (Lead)TestFactory.createSObject(new Lead(
-            LastName = 'Testcase',
-            FirstName = 'CSAP',
-            Email = 'test@email.com',
-            Electricity_Provider__c = 'National Grid',
-            Utility_relationship__c = nationalGrid.Id,
-            LoadZone__c = 'WCMA',
-            LeadSource = 'CSAP',
-            Company = 'Cloud Jedi',
-            Status = 'Qualified',
-            Partner_Lookup__c = partner2.Id,
-            Product_Line__c = 'Community Solar',
-            Parcel_Zip__c = '98765',
-            Product__c = csProduct2.Id,
-            System_Assignment__c = 'Automatic - Assignment Order'));
-        insert csapLead;
-
-
     }
 
     @IsTest
-    static void testSetupPropertyAccount() {
-        Lead switchLead = [SELECT Id, Status FROM Lead WHERE FirstName = 'Switch' LIMIT 1];
+    static void testBuildPropertyAccount() {
+        Lead switchLead = [
+            SELECT Id, Status, Company, Product_line__c, Utility_relationship__r.Id, LASERCA__Home_Address__c,
+                LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c
+            FROM Lead
+            WHERE FirstName = 'Switch'
+            LIMIT 1
+        ];
+        LeadService leadService = new LeadService();
 
-        switchLead.Application_Complete_Date__c = System.today();
-        switchLead.Status = 'Qualified';
-        update switchLead;
+        Account propertyAccount = leadService.buildPropertyAccountFromLegacyLead(switchLead);
+        insert propertyAccount;
 
         List<Account> propAccounts = [SELECT Id, Name, Lead__c, RecordType.Name FROM Account WHERE Lead__c = :switchLead.Id];
 
@@ -215,22 +203,55 @@ public class LeadServiceTestclass {
 
     }
 
-    @isTest
+    @IsTest
+    static void testBuildUtilityAccountLog() {
+        Lead switchLead = [
+            SELECT Id, Status, Company, Product_line__c, Utility_relationship__r.Id, LASERCA__Home_Address__c,
+                LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c
+            FROM Lead
+            WHERE FirstName = 'Switch'
+            LIMIT 1
+        ];
+        LeadService leadService = new LeadService();
+
+        Account propertyAccount = leadService.buildPropertyAccountFromLegacyLead(switchLead);
+        insert propertyAccount;
+
+        Utility_Account_Log__c ual = leadService.buildUtilityAccountLogFromLegacyLead(switchLead, propertyAccount);
+        insert ual;
+
+        List<Utility_Account_Log__c> ualList = [
+            SELECT Id, Name, Name_on_Account__c, Utility_lookup__r.Name
+            FROM Utility_Account_Log__c
+            WHERE Lead__c = :switchLead.Id
+        ];
+
+        System.assertNotEquals(null, ualList);
+        System.assertEquals(propertyAccount.Name, ualList[0].Name_on_Account__c);
+        System.assertEquals(switchLead.Utility_relationship__c, ualList[0].Utility_lookup__c);
+    }
+
+    @IsTest
     static void testCompleteLeadConversion() {
-        Lead switchLead = [SELECT Id, Status FROM Lead WHERE FirstName = 'Switch' LIMIT 1];
+        Lead switchLead = [
+            SELECT Id, Status, Company, Product_line__c, Utility_relationship__r.Id, LASERCA__Home_Address__c,
+                LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c
+            FROM Lead
+            WHERE FirstName = 'Switch'
+            LIMIT 1
+        ];
+        LeadService leadService = new LeadService();
+
+        Account propertyAccount = leadService.buildPropertyAccountFromLegacyLead(switchLead);
+        insert propertyAccount;
+
+        Utility_Account_Log__c ual = leadService.buildUtilityAccountLogFromLegacyLead(switchLead, propertyAccount);
+        ual.Annual_kWh__c = 9000;
+        insert ual;
 
         switchLead.Status = 'Qualified';
         update switchLead;
 
-        Account propAccount = [SELECT Id, Name, Lead__c FROM Account WHERE Lead__c = :switchLead.Id LIMIT 1];
-
-        Utility_Account_Log__c ual = new Utility_Account_Log__c(
-            Lead__c = switchLead.Id,
-            Account__c = propAccount.Id,
-            Annual_kWh__c = 8000,
-            Name = 'Switch UAL'
-        );
-        insert ual;
 
         pullCreditForLead(switchLead.Id);
 
@@ -260,7 +281,7 @@ public class LeadServiceTestclass {
             LIMIT 1
         ];
 
-        Account propertyAccount = [
+        Account propAcct = [
             SELECT Id, Send_Bills_Contact__c, RecordType.Name, Parent_Account__c
             FROM Account
             WHERE Lead__c = :convertedLead.Id AND RecordType.Name = 'Property'
@@ -294,8 +315,8 @@ public class LeadServiceTestclass {
         System.assertEquals('API', convertedAccount.Owner.Name);
 
         //Test property's parent account
-        System.assertEquals(convertedAccount.Id, propertyAccount.Parent_Account__c);
-        System.assertEquals(contact.Id, propertyAccount.Send_Bills_Contact__c);
+        System.assertEquals(convertedAccount.Id, propAcct.Parent_Account__c);
+        System.assertEquals(contact.Id, propAcct.Send_Bills_Contact__c);
         System.assertEquals('Community Solar', contact.Product_Line__c);
 
         System.assertEquals(1, oppList.size());

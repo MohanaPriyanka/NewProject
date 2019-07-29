@@ -72,9 +72,7 @@ public with sharing class LeadDispatcher {
         }
 
         if (result.updatedSwitchLeads.size()> 0 ){
-            LeadService leadService = new LeadService();
             UtilityLoadZoneService.updateLZUL(result.updatedSwitchLeads, result.oldSwitchMap);
-            leadService.setupPropertyAccount(result.updatedSwitchLeads, result.oldSwitchMap);
 
         }
 
