@@ -45,9 +45,9 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>false</enableFeeds>
     <enableHistory>true</enableHistory>
+    <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
@@ -149,7 +149,6 @@
         <externalId>false</externalId>
         <label>Allocation Schedule</label>
         <referenceTo>Schedule_Z__c</referenceTo>
-        <relationshipLabel>Allocation Schedule Subscriptions</relationshipLabel>
         <relationshipName>Schedule_Z_Subscriptions</relationshipName>
         <relationshipOrder>0</relationshipOrder>
         <reparentableMasterDetail>false</reparentableMasterDetail>
@@ -197,7 +196,6 @@
         <externalId>false</externalId>
         <label>Utility Account Subscription</label>
         <referenceTo>Utility_Account_Subscription__c</referenceTo>
-        <relationshipLabel>Schedule Z Subscriptions</relationshipLabel>
         <relationshipName>Schedule_Z_Subscriptions</relationshipName>
         <relationshipOrder>1</relationshipOrder>
         <reparentableMasterDetail>false</reparentableMasterDetail>
@@ -206,16 +204,17 @@
         <type>MasterDetail</type>
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
-    <label>Schedule Z Subscription</label>
+    <label>Allocation Schedule Subscription</label>
     <nameField>
-        <displayFormat>SZS-{0000}</displayFormat>
-        <label>Schedule Z Subscription Name</label>
+        <displayFormat>ALSS-{0000}</displayFormat>
+        <label>Allocation Schedule Subscription Name</label>
         <trackHistory>false</trackHistory>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>Schedule Z Subscriptions</pluralLabel>
+    <pluralLabel>Allocation Schedule Subscriptions</pluralLabel>
     <searchLayouts/>
     <sharingModel>ControlledByParent</sharingModel>
+    <startsWith>Vowel</startsWith>
     <validationRules>
         <fullName>Cannot_Stop_Credit_Transfer</fullName>
         <active>true</active>
