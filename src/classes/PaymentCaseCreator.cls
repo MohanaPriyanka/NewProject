@@ -235,7 +235,11 @@ public without sharing class PaymentCaseCreator implements Schedulable {
                 'closeAndOpenNecessaryCases',
                 '# of cases opened: ' + numOpened + '; # of cases closed: ' + numClosed +
                     openLogString +
-                    closedLogString, 'Info');
+                    closedLogString, Logger.INFO);
+            Logger.logNow('PaymentCaseCreator',
+                'closeAndOpenNecessaryCases',
+                'allCasesToOpen:' + allCasesToOpen + '\n' +
+                    'allCasesToClose:' + allCasesToClose, Logger.FINE);
         }
 
 
@@ -281,7 +285,7 @@ public without sharing class PaymentCaseCreator implements Schedulable {
         newCase.Subject = 'Automatic Payment Error [' + caseTypeSubjectMap.get(type) + ']';
         newCase.Priority = 'Medium';
         newCase.Product_Line__c = 'Community Solar';
-        newCase.Category__c = 'Billing-Issue';
+        newCase.Category__c = 'Billing-Payment';
         newCase.Chargent_Order__c = chOrder.Id;
         newCase.Description = this.caseTypeDescriptionMap.get(type);
         newCase.Origin = 'Other';
