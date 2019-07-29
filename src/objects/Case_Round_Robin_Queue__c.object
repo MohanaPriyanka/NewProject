@@ -80,6 +80,7 @@
     </fields>
     <fields>
         <fullName>Next_Position__c</fullName>
+        <defaultValue>1</defaultValue>
         <externalId>false</externalId>
         <label>Next Position</label>
         <precision>5</precision>
