@@ -170,6 +170,9 @@ public without sharing class LeadTriggerHandler {
         for (Lead lead : convertedLeads) {
             contactsToDelete.add(new Contact(Id = lead.ConvertedContactId));
 
+            //Need to transfer all activities on duplicate Contact (originally from Lead) to the Billing Contact
+            moveTaskstoContact(lead, parentAccountToContactMap.get(propertyToParentAccountMap.get(lead.ConvertedAccountId)));
+
             // We need to set the billing contact on the converted lead's account
             Id billingContact = parentAccountToContactMap.get(propertyToParentAccountMap.get(lead.ConvertedAccountId));
             if (billingContact != null) {
@@ -201,6 +204,17 @@ public without sharing class LeadTriggerHandler {
             }
         }
         update casesList;
+    }
+
+    private void moveTaskstoContact(Lead lead, String contactId) {
+        List<Task> taskList = [SELECT Id FROM Task WHERE WhoId = :lead.ConvertedContactId];
+
+        for (Task taskToUpdate : taskList) {
+            if (lead.IsConverted) {
+                taskToUpdate.WhoId = contactId;
+            }
+        }
+        update taskList;
     }
 
     private Opportunity getUpdatedOpp(Lead newLead, Lead oldLead) {
