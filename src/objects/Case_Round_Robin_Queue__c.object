@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableLicensing>false</enableLicensing>
+    <enableReports>false</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>Private</externalSharingModel>
+    <fields>
+        <fullName>Assignment_Updates_Need_Review__c</fullName>
+        <externalId>false</externalId>
+        <formula>If( Total_Actual_Queue_Members__c = Total_Queue_Members__c ,FALSE,TRUE)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Assignment Updates Need Review</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Is_Active__c</fullName>
+        <defaultValue>true</defaultValue>
+        <externalId>false</externalId>
+        <label>Is Active</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Member_Assignments_Last_Executed__c</fullName>
+        <externalId>false</externalId>
+        <label>Member Assignments Last Executed</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Next_Position__c</fullName>
+        <defaultValue>1</defaultValue>
+        <externalId>false</externalId>
+        <label>Next Position</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Standard_Queue_Id__c</fullName>
+        <externalId>false</externalId>
+        <label>Standard Queue Id</label>
+        <length>18</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Total_Actual_Queue_Members__c</fullName>
+        <externalId>false</externalId>
+        <label>Total Actual Queue Members</label>
+        <summaryForeignKey>Case_Round_Robin_Queue_Member__c.Case_Round_Robin_Queue__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Total_Queue_Members__c</fullName>
+        <externalId>false</externalId>
+        <label>Total Queue Members</label>
+        <summarizedField>Case_RR_Queue_Member_Assignment__c.Weight__c</summarizedField>
+        <summaryFilterItems>
+            <field>Case_RR_Queue_Member_Assignment__c.Weight__c</field>
+            <operation>greaterOrEqual</operation>
+            <value>1</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Case_RR_Queue_Member_Assignment__c.Case_Round_Robin_Queue__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Total_Unique_Queue_Members__c</fullName>
+        <externalId>false</externalId>
+        <label>Total Unique Queue Members</label>
+        <summaryForeignKey>Case_RR_Queue_Member_Assignment__c.Case_Round_Robin_Queue__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <label>Case Round Robin Queue</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>Case Round Robin Queue Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Case Round Robin Queues</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+    <visibility>Public</visibility>
+    <webLinks>
+        <fullName>Calculate_Round_Robin_Weight</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Calculate Round Robin Weight</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/10.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/10.0/apex.js&quot;)}
+
+
+var status = sforce.apex.execute(&quot;RoundRobinDistribution&quot;,&quot;loadDistributionButton&quot;, {objType:&quot;Case&quot;,leadRRqId:&quot;{!Case_Round_Robin_Queue__c.Id}&quot;});
+window.location = &quot;/{!Case_Round_Robin_Queue__c.Id}&quot;;</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Calculate_Round_Robin_Weight_All</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Calculate Round Robin Weight All</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/10.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/10.0/apex.js&quot;)}
+
+
+var status = sforce.apex.execute(&quot;RoundRobinDistribution&quot;,&quot;loadDistributionAllButton&quot;,{objType:&quot;Case&quot;});
+window.location = &quot;/{!Case_Round_Robin_Queue__c.Id}&quot;;</url>
+    </webLinks>
+</CustomObject>

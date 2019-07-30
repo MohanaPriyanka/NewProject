@@ -146,6 +146,14 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Pause_Round_Robin__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Pause Round Robin</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Power_of_One__c</fullName>
         <externalId>false</externalId>
         <formula>1</formula>

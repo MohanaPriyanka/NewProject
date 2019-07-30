@@ -286,6 +286,7 @@ public without sharing class PaymentCaseCreator implements Schedulable {
         newCase.Priority = 'Medium';
         newCase.Product_Line__c = 'Community Solar';
         newCase.Category__c = 'Billing-Payment';
+        newCase.Sale_Status__c = 'Post-sale';
         newCase.Chargent_Order__c = chOrder.Id;
         newCase.Description = this.caseTypeDescriptionMap.get(type);
         newCase.Origin = 'Other';
