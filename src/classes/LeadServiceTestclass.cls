@@ -331,6 +331,70 @@ public class LeadServiceTestclass {
 
     }
 
+    @IsTest
+    static void testFailedEnrollment(){
+        Lead switchLead = [
+            SELECT Id, Status, Company, Product_line__c, Utility_relationship__r.Id, LASERCA__Home_Address__c,
+                LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c
+            FROM Lead
+            WHERE FirstName = 'Switch'
+            LIMIT 1
+        ];
+        LeadService leadService = new LeadService();
+
+        Account propertyAccount = leadService.buildPropertyAccountFromLegacyLead(switchLead);
+        insert propertyAccount;
+
+        Utility_Account_Log__c ual = leadService.buildUtilityAccountLogFromLegacyLead(switchLead, propertyAccount);
+        insert ual;
+
+        switchLead.Status = 'Qualified';
+        update switchLead;
+
+
+        pullCreditForLead(switchLead.Id);
+
+
+        try {
+            Database.LeadConvert lc = new Database.LeadConvert();
+            lc.setLeadId(switchLead.Id);
+            lc.setConvertedStatus('Qualified');
+            lc.setDoNotCreateOpportunity(true);
+
+            Database.LeadConvertResult lcr = Database.convertLead(lc, false);
+        } catch(Exception e) {
+            Boolean expectedException = e.getMessage().contains('No Annual Usage populated on UALs. Please enter usage before converting')? true : false;
+            System.assertEquals(expectedException, true);
+        }
+
+        Lead failedLead = [
+            SELECT Id, ConvertedAccountId, ConvertedContactId, isConverted, Personal_Credit_Report__c
+            FROM Lead
+            WHERE Id = :switchLead.Id
+            LIMIT 1
+        ];
+
+        System.assertEquals(false, failedLead.isConverted);
+        System.assertEquals(null, failedLead.ConvertedAccountId);
+
+        List<Opportunity> oppList = [
+            SELECT Id, Shared_Solar_System__r.Name, StageName, Personal_Credit_Report2__c
+            FROM Opportunity
+            WHERE Lead__c = :failedLead.Id
+        ];
+
+        List<Utility_Account_Subscription__c> uasList = [
+            SELECT Id, Utility_Account_Log__c
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__c IN :oppList
+            LIMIT 1
+        ];
+
+        System.assertEquals(0, oppList.size());
+        System.assertEquals(0, uasList.size());
+
+    }
+
 
 
     public static void pullCreditForLead(Id leadId) {

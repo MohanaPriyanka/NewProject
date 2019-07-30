@@ -196,6 +196,9 @@ public without sharing class CSSubscriptionEnroller {
         Decimal totalAnnualCostOfElectricity = 0;
         Decimal totalAnnualkWhElectricity = 0;
         for (Utility_Account_Log__c ual : getUALList(lead)) {
+            if (ual.Annual_Cost_of_Electricity__c == null && ual.Annual_kWh__c == null) {
+                throw new Util.BWException('No Annual Usage populated on UALs. Please enter usage before converting');
+            }
             totalAnnualCostOfElectricity += Util.nullToZero(ual.Annual_Cost_of_Electricity__c);
             totalAnnualCostOfElectricity -= Util.nullToZero(ual.Subscribed_Annual_Cost_of_Electricity__c);
             totalAnnualkWhElectricity += Util.nullToZero(ual.Proposed_kWh__c);
@@ -220,7 +223,11 @@ public without sharing class CSSubscriptionEnroller {
         for (List<Opportunity> opps : leadOppsMap.values()) {
             oppsToInsert.addAll(opps);
         }
-        insert oppsToInsert;
+        try {
+            insert oppsToInsert;
+        } catch(Exception e) {
+            Logger.logNow('CSSubscriptionEnroller', 'insertOpps', 'Failed to insert opportunities: ' + e.getMessage(), 'Error');
+        }
 
         for (Opportunity opp : oppsToInsert) {
             oppIdList.add(opp.Id);
