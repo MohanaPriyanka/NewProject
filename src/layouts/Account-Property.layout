@@ -451,12 +451,22 @@
         <fields>Late_Fees__c</fields>
         <fields>Days_Past_Due__c</fields>
         <fields>Total_Due_This_Month__c</fields>
-        <fields>CREATED_DATE</fields>
         <fields>Overpayment_Amount_Rollup__c</fields>
         <fields>Published__c</fields>
+        <fields>Date__c</fields>
         <relatedList>Account_Bill__c.Parent_Account__c</relatedList>
-        <sortField>CREATED_DATE</sortField>
+        <sortField>Date__c</sortField>
         <sortOrder>Desc</sortOrder>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>ChargentOrders__Order__c</fields>
+        <fields>ChargentOrders__Gateway_Date__c</fields>
+        <fields>ChargentOrders__Amount__c</fields>
+        <fields>ChargentOrders__Type__c</fields>
+        <fields>ChargentOrders__Response_Message__c</fields>
+        <fields>ChargentOrders__Credit_Card_Type__c</fields>
+        <relatedList>ChargentOrders__Transaction__c.ChargentOrders__Account__c</relatedList>
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>

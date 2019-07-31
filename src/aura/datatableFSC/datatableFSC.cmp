@@ -60,6 +60,9 @@ https://github.com/alexed1/LightningFlowComponents/tree/master/flow_screen_compo
         <aura:attribute name="mydata_custom1" type="ContentDocument[]"/>
         <aura:attribute name="selectedRows_custom1" type="ContentDocument[]"/>
     
+    	<aura:attribute name="mydata_custom2" type="Utility_Account_Subscription__c[]"/>
+        <aura:attribute name="selectedRows_custom2" type="Utility_Account_Subscription__c[]"/>
+    
     <aura:attribute name="mycolumns" type="List"/>
     
     <aura:attribute name="column01_icon" type="String"/>

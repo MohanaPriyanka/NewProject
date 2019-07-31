@@ -1,0 +1,4 @@
+<design:component>
+	<design:attribute name="accountID" label="Account Id" />
+    <design:attribute name="isParentAcct" label="Parent Account"/>
+</design:component>

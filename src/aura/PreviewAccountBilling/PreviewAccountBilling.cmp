@@ -1,4 +1,4 @@
-<aura:component controller="PreviewProductionUpdateResults" access="global">	
+<aura:component controller="PreviewProductionUpdateResults" implements="lightning:availableForFlowScreens"  access="global">
  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
  <aura:attribute name="accountID" type="String"/>
  <aura:attribute name="acctName" type="String"/>
