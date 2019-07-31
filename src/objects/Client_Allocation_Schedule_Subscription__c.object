@@ -96,6 +96,7 @@
         <externalId>false</externalId>
         <formula>Allocation_Schedule_Subscription__r.Customer_Subscription_kW_DC__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>The kW DC value of the customer&apos;s subscription</inlineHelpText>
         <label>Customer Subscription kW DC</label>
         <precision>18</precision>
         <required>false</required>
@@ -110,6 +111,7 @@
         <externalId>false</externalId>
         <formula>Allocation_Schedule_Subscription__r.Percent_Share__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Percentage value of the customer&apos;s subscription</inlineHelpText>
         <label>Percent Share</label>
         <precision>18</precision>
         <required>false</required>
@@ -133,6 +135,7 @@
         <externalId>false</externalId>
         <formula>Allocation_Schedule_Subscription__r.Stop_Credit_Transfer__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>If checked, BlueWave is no longer billing due to closed Utility account</inlineHelpText>
         <label>Stop Credit Transfer</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>

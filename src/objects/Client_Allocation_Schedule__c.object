@@ -96,6 +96,7 @@
         <externalId>false</externalId>
         <formula>Allocation_Schedule__r.Applied_to_Production_Starting__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>First production period under Allocation Schedule</inlineHelpText>
         <label>Applied to Production Starting</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
@@ -119,6 +120,7 @@
         <externalId>false</externalId>
         <formula>Allocation_Schedule__r.Date_Schedule_Z_Retired_by_Utility__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Date Utility stopped using this Allocation Schedule for credit transfers</inlineHelpText>
         <label>Date Allocation Sch Retired by Utility</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
@@ -152,6 +154,7 @@
         <externalId>false</externalId>
         <formula>Allocation_Schedule__r.Date_Enacted_by_Utility__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Date Utility enacted the Allocation Schedule</inlineHelpText>
         <label>Date Enacted by Utility</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
@@ -163,6 +166,7 @@
         <externalId>false</externalId>
         <formula>Allocation_Schedule__r.Date_Executed_by_Asset_Owner__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Date BlueWave received signed Allocation Schedule from Client</inlineHelpText>
         <label>Date Executed by Asset Owner</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
@@ -174,6 +178,7 @@
         <externalId>false</externalId>
         <formula>Allocation_Schedule__r.Date_Rejected_by_Utility__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Date Utility notified BlueWave the Allocation Schedule was rejected</inlineHelpText>
         <label>Date Rejected by Utility</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
@@ -185,6 +190,7 @@
         <externalId>false</externalId>
         <formula>Allocation_Schedule__r.Date_Submitted_to_Utility__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Date BlueWave submitted Allocation Schedule to Utility</inlineHelpText>
         <label>Date Submitted to Utility</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
@@ -208,6 +214,7 @@
         <externalId>false</externalId>
         <formula>TEXT(Allocation_Schedule__r.Status__c)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Status of Allocation Schedule with Utility</inlineHelpText>
         <label>Status</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
