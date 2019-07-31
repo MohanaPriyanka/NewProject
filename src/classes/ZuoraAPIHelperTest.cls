@@ -39,7 +39,6 @@ public with sharing class ZuoraAPIHelperTest {
         String result = ZuoraAPIHelper.query(query, false);
         System.assert(result.contains('"done":true'));
         System.assertEquals(1, ZuoraAPIHelper.endpointsCalled.size(), 'Should have saved a single endpoint');
-        System.debug(LoggingLevel.ERROR, ZuoraAPIHelper.endpointsCalled);
         System.assertEquals('/v1/action/query', ZuoraAPIHelper.endpointsCalled[0].endpoint);
         System.assert(ZuoraAPIHelper.endpointsCalled[0].jsonBody.contains(query));
     }

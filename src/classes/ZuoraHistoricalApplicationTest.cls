@@ -111,7 +111,7 @@ public with sharing class ZuoraHistoricalApplicationTest {
     public static void testMockProvider() {
         MockChargentTransactionSelector transactionSelector = new MockChargentTransactionSelector(0);
         List<MockProvider.MethodCall> methodCalls = transactionSelector.getMethodCallsByName('selectForZuoraHistory');
-        System.debug(LoggingLevel.ERROR, methodCalls);
+        System.assertNotEquals(null, methodCalls);
     }
 
     @IsTest
