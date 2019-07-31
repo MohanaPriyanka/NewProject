@@ -17,6 +17,9 @@
 <!-- Describe the steps taken when testing this PR manually -->
 - [ ] Screenshots or screen recordings of test results 
 <!-- Include test documentation to make it easier to review the PR -->
+- [ ] If APEX, run Static Code Analysis 
+<!-- Include before and after SCA scores -->
+
 
 ### Other Information
 <!--
