@@ -87,7 +87,7 @@
     </navigationLinkSet>
     <networkMemberGroups>
         <permissionSet>AccessToModifyCSPortal</permissionSet>
-        <profile>admin</profile>
+        <profile>Admin</profile>
         <profile>customer community plus login user</profile>
         <profile>community solar community user</profile>
     </networkMemberGroups>
