@@ -3092,7 +3092,8 @@ ISCHANGED(Utility_NMC_Tariff__c)
         <fullName>PM_Team_Locks</fullName>
         <active>true</active>
         <description>Allows only Shauna and Sandra to edit certain fields</description>
-        <errorConditionFormula>AND(
+        <errorConditionFormula>$Permission.ByPass_PM_Team_Locks &amp;&amp;
+AND(
   NOT(
     OR($User.Id=&quot;005j000000BdUCs&quot;,
     $User.Id=&quot;005j000000FrWpy&quot;,$User.Id=&quot;0050a00000JcYrV&quot;
