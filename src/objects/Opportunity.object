@@ -1044,6 +1044,7 @@ IF(ISBLANK(Personal_Credit_Report_Co_Applicant__c),
     </fields>
     <fields>
         <fullName>Average_Debt_to_Income_After__c</fullName>
+        <businessStatus>Active</businessStatus>
         <externalId>false</externalId>
         <formula>IF(Personal_Credit_Report_Co_Applicant__c == null, null, 
 ((Personal_Credit_Report2__r.LASERCA__Sum_of_monthly_Personal_Debt__c + 
@@ -1053,6 +1054,7 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c 
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
@@ -1060,6 +1062,7 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c 
     </fields>
     <fields>
         <fullName>Average_Debt_to_Income_Before__c</fullName>
+        <businessStatus>Active</businessStatus>
         <externalId>false</externalId>
         <formula>IF(Personal_Credit_Report_Co_Applicant__c == null, null, 
 ((Personal_Credit_Report2__r.LASERCA__Sum_of_monthly_Personal_Debt__c +
@@ -1069,6 +1072,7 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
@@ -8406,6 +8410,7 @@ TEXT( Load_Zone_Utility_4__c  ) = &apos;Manual Lookup Required&apos;,
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
