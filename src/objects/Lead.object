@@ -7416,23 +7416,7 @@ SEMA = 13 -14</inlineHelpText>
         <picklistValues>
             <picklist>LeadSource</picklist>
             <values>
-                <fullName>BWC GIS</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>CSAP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Door Knocking</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>External Referral</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -7444,19 +7428,15 @@ SEMA = 13 -14</inlineHelpText>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Scout</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Switch</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Website</fullName>
+                <fullName>Third-Party</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Word of mouth</fullName>
+                <fullName>Website</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -8467,23 +8447,7 @@ SEMA = 13 -14</inlineHelpText>
         <picklistValues>
             <picklist>LeadSource</picklist>
             <values>
-                <fullName>BWC GIS</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>CSAP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Door Knocking</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>External Referral</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -8495,19 +8459,15 @@ SEMA = 13 -14</inlineHelpText>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Scout</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Switch</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Website</fullName>
+                <fullName>Third-Party</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Word of mouth</fullName>
+                <fullName>Website</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -9507,23 +9467,7 @@ SEMA = 13 -14</inlineHelpText>
         <picklistValues>
             <picklist>LeadSource</picklist>
             <values>
-                <fullName>BWC GIS</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>CSAP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Door Knocking</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>External Referral</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -9535,19 +9479,15 @@ SEMA = 13 -14</inlineHelpText>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Scout</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Switch</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Website</fullName>
+                <fullName>Third-Party</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Word of mouth</fullName>
+                <fullName>Website</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -20839,23 +20779,7 @@ SEMA = 13 -14</inlineHelpText>
         <picklistValues>
             <picklist>LeadSource</picklist>
             <values>
-                <fullName>BWC GIS</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>CSAP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Door Knocking</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>External Referral</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -20867,19 +20791,15 @@ SEMA = 13 -14</inlineHelpText>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Scout</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Switch</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Website</fullName>
+                <fullName>Third-Party</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Word of mouth</fullName>
+                <fullName>Website</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
