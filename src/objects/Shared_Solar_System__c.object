@@ -3112,13 +3112,9 @@ ISCHANGED(Utility_NMC_Tariff__c)
     <validationRules>
         <fullName>PM_Team_Locks</fullName>
         <active>true</active>
-        <description>Allows only Shauna and Sandra to edit certain fields</description>
-        <errorConditionFormula>AND(
+        <description>Only users with this permission setting are allowed to edit certain fields</description>
+        <errorConditionFormula>$Permission.ByPass_PM_Team_Locks &amp;&amp;
   NOT(
-    OR($User.Id=&quot;005j000000BdUCs&quot;,
-    $User.Id=&quot;005j000000FrWpy&quot;,$User.Id=&quot;0050a00000JcYrV&quot;
-    )
-    ),
     OR(
     ISCHANGED(Address__c),
     ISCHANGED(City__c),
@@ -3129,7 +3125,7 @@ ISCHANGED(Utility_NMC_Tariff__c)
     ISCHANGED(App_ID_WO_Manual__c)
     )
     )</errorConditionFormula>
-        <errorMessage>Due to their importance, certain fields on the Shared Solar System page are restricted so that only certain people on Project Management can edit them. Please contact the Project Management Interconnection lead, or your System Administrator to edit.</errorMessage>
+        <errorMessage>Due to their importance, certain fields on the Shared Solar System page are restricted so that only certain people can edit them. Please contact your System Administrator to edit.</errorMessage>
     </validationRules>
     <visibility>Public</visibility>
     <webLinks>
