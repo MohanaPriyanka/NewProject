@@ -15822,9 +15822,9 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Contact.Income__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -19549,7 +19549,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Age__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -23119,27 +23119,27 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.APR__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Acquisition_Status__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Auto_Deduction_Payments__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Avidia_Account_Holder__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Avidia_Outstanding_Loan_Balance__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -23149,32 +23149,32 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.BlueWave_Avidia_Rate__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Capital_Available__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Commencement_Date_Text__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Commencement_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Commencement_Datee__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Contracted__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -23184,7 +23184,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Current_Owner__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -23194,47 +23194,47 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.DOER_Loan_Base_Rate__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.DOER_Solar_Loann__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.DTI_for_Portfolio_ReportingD__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Date_Contract_Signature_Disbursed__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Date_Interconnection_Disbursed__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Date_of_Loan_Purchase__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Days_Past_Due__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Difference_Loan_Value_Balance__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Disbursal_1_Contract_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -23254,42 +23254,42 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.End_Date_of_Set_Rate_Period__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Estimated_Completion_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Excess_Cash_back_to_BW__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Excess_Cash_stays_w_Avidia2__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Excess_Cash_stays_w_Avidia__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Excess_cash_back_to_BW2__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.FICO_Co_Applicant__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.FICO__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -23299,7 +23299,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Financing_Fee__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -23309,22 +23309,22 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.First_Payment_Due_Date_Override__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.First_Payment_Due_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.First_Payment_Due__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Fixture_Filing_Submitted_to_LD__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -23334,27 +23334,27 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.IBLS_Amount__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.IRBD_Interest_Only_Date_Received__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.IRBD_Interest_Only__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.IRBD_Principal_Interest_Date_Received__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.IRBD_Principal_interest__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -23364,7 +23364,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.IRBD_Rate__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -23379,37 +23379,37 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Interest_Only_End_Date_Text__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Interest_Only_Payment__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Interest_Only_Period_DOER__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Interest_Only_Period__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Interest_Paid__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Interest_Paid_rounded__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Interest_Rate__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -23419,22 +23419,22 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Last_Due_Date_Paid__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Late_Category__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Lead_ID__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Lead__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -23444,102 +23444,102 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Loan_Base_Rate__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Loan_Data__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Loan_Fee_1_Amount__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Loan_Fee_1_Description__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Loan_Fee_1__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Loan_Internal_Lender_Rate__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Loan_Number__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Loan_Origination_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Loan_Portfolio__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Loan_Purchase_Price__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Loan_Status__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Loan_Term__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Loan_Tranche1__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Maturity_Date_Month_Day__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Maturity_Date_Year__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Maturity_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Max_FICO__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.MonthLT__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Month_of_Loan_Purchase__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Monthly_Payment__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -23554,67 +23554,67 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Number_of_Days_Past_Due__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Opportunity_ID__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Opportunity_Stage__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Opportunity__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Partner__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Power_of_One__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Principal_Balance_Plus_Unadvanced_Funds__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Principal_Balance__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Principal_Balance_rounded__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Principal_Paid__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Principal_Paid_rounded__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Principal__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Principal_and_Interest_Period_DOER__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -23624,37 +23624,37 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Product__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Profit_Center__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Requested_Loan_Amount__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.SREC_Aggregator__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.SREC_Direct_Deposit_Order__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.SREC_Product__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Sales_Agent__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -23664,12 +23664,12 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Sixth_Adjustable_Monthly_Payment_Amount__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.State__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -23679,22 +23679,22 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.System_Costt__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.System_Nameplate_Capacity_kW__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Technology_Platform_Fee__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Term__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -23704,22 +23704,22 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Times_Delinquent_121_Days__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Times_Delinquent_31_60_Days__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Times_Delinquent_61_90_Days__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Times_Delinquent_91_120_Days__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -23729,22 +23729,22 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Total_Delinquent_Amount_due__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Total_Funds_Disbursed__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Total_Funds_Not_Yet_Disbursed__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Total_IRBD_Paid__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -23754,47 +23754,47 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Tranche_Assignment__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Unadvanced_Funds__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Unique_ID__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.Update_Dummy__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.X25_BPS_Eligible__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.X60_Delinquency_Explanation__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.X60_day_delinquency_category__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.XXXTechnology_Platform_Fee__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.YearLT__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -23804,7 +23804,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Loan__c.xxLeadID__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -25104,182 +25104,182 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Applicant_Elligible_for_IBLS__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Application_Date_Lead__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Application_Date_Opportunity__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Application_Date_Report__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Credit_Report_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Cumulative_Loan_to_Value_Lead__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Cumulative_Loan_to_Value_Opportunity__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Cumulative_Loan_to_Value_Report__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.DOER_Lead__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.DOER_Loan_REference__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.DOER_Loan__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.DOER_Opportunity__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Date_Contract_Signature_Disbursed__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Date_Interconnection_Disbursed__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Income_based_Loan_Support_Opportunity__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Income_based_Loan_Support_lead__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Lead_Partner__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>MCEC_Report_Data__c.Lead__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Loan_Amount_Lead__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Loan_Amount_Opportunity__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Loan_Amount_Report__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Loan_Identifier_Lead__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Loan_Identifier_Opportunity__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Loan_Identifier_for_Report__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Loan_Number__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Loan_Partner__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Loan_Program_Class_Lead__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Loan_Program_Class_Opportunity__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Loan_Program_Class_Report__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Loan_Status_from_Loan__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>MCEC_Report_Data__c.Loan__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.MCEC_Project_ID_Lead__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.MCEC_Project_ID_Opportunity__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.MCEC_Project_ID_Report__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.MCEC_Status_Lead__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.MCEC_Status_Opportunity__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -25287,109 +25287,109 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>MCEC_Report_Data__c.Manual_Status_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Number_of_Borrowers_Lead__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Number_of_Borrowers_Opportunity__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Number_of_Borrowers_on_Application_Repor__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Opportunity_Partner__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>MCEC_Report_Data__c.Opportunity__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Partner__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Program_Loan_is_120__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Reason_for_Decline_1__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Reason_for_Decline_2__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Repayment_Period_MCEC__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Security_Type_Lead__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Security_Type_Opportunity__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Security_Type_Report__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Status_Date_Lead__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Status_Date_Opportunity__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Status_Date_Report__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>MCEC_Report_Data__c.Status_Override__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Status_for_MCEC_Report__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Unadvanced_Funds__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>MCEC_Report_Data__c.Unpaid_Principal_Balance__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -31054,7 +31054,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Annual_Income__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -31154,12 +31154,12 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Average_Debt_to_Income_After__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Average_Debt_to_Income_Before__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -31222,29 +31222,29 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Opportunity.CC_Account_Number__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Opportunity.CC_CVV__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Opportunity.CC_CardHolder_Name__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Opportunity.CC_Card_Type__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Opportunity.CC_Expiration_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -31369,7 +31369,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Co_Applicant_DTI_After__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -31419,7 +31419,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Combined_DTI_After__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -31589,7 +31589,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Credit_Score__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -31674,7 +31674,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Date_of_Birth__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -31714,7 +31714,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Debt_to_Income_Approval__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -31934,12 +31934,12 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.FICO_Co_Applicant__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.FICO__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -32379,7 +32379,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Max_FICO__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -32427,34 +32427,34 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Opportunity.Monthly_Income_2__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Opportunity.Monthly_Income_Details_2__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Opportunity.Monthly_Income_Details__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Opportunity.Monthly_Income__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Monthly_Mortgage_Tax_and_Insurance__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Monthly_Payment__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -32512,9 +32512,9 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Opportunity.Notes_on_Credit_Decision__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -32882,14 +32882,14 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Opportunity.Reason_for_Decline2__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Opportunity.Reason_for_Decline__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -33444,7 +33444,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Weighted_FICO_Average__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -57117,15 +57117,6 @@
         <modifyAllRecords>false</modifyAllRecords>
         <object>MC4SF__MC_Subscriber__c</object>
         <viewAllRecords>false</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
-        <object>MCEC_Report_Data__c</object>
-        <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
