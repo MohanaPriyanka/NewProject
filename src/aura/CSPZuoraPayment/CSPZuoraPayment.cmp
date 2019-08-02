@@ -1,0 +1,318 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes,force:hasRecordId" controller="ZuoraPaymentPageController">
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:handler event="c:ZuoraPaymentPageComplete" action="{!c.onPaymentMethodChange}"/>
+
+  <aura:attribute name="showCardPaymentAmount" type="Boolean" default="false"/>
+  <aura:attribute name="showCardPaymentMethod" type="Boolean" default="false"/>
+  <aura:attribute name="showCardAutopay" type="Boolean" default="false"/>
+  <aura:attribute name="showEnabledButton" type="Boolean" default="false"/>
+  <aura:attribute name="showSpinner" type="Boolean" default="true"/>
+  <aura:attribute name="showAutopaySection" type="Boolean" default="true"/>
+  <aura:attribute name="showPostSubmitPage" type="Boolean" default="false"/>
+
+  <aura:attribute name="zuoraAccountAndPayMethod" type="Object"/>
+  <aura:attribute name="makePaymentOrManageAutopay" type="Boolean" default="true"/>
+  <aura:attribute name="autopayAsText" type="String"/>
+  <aura:attribute name="newAutopaySelection" type="Boolean"/>
+  <aura:attribute name="forceAutopaySelection" type="Boolean"/>
+  <aura:attribute name="AutopayAgree" type="Boolean" default="false"/>
+  <aura:attribute name="AgreeButtonOptions" type="List" default="[{'label': 'I Agree', 'value': true}]"/>
+  <aura:attribute name="customChargeAmount" type="Decimal" default="0"/>
+  <aura:attribute name="customPaymentAmountMessage" type="String" default=""/>
+  <aura:attribute name="paymentAmount" type="Decimal"/>
+  <aura:attribute name="balanceSelection" type="String" default="fullBalance"/>
+  <aura:attribute name="RadioOptions" type="List" default="[
+        {'label': 'Full Balance $$', 'value': 'fullBalance'},
+        {'label': 'Other', 'value': 'customAmount'}]"/>
+  <aura:attribute name="newPaymentMethodType" type="String"/>
+  <aura:attribute name="currentPaymentMethod" type="String"/>
+  <aura:attribute name="newPaymentMethodId" type="String"/>
+  <aura:attribute name="missingFieldsMessage" type="String" default="Please complete all required fields to continue"/>
+  <aura:attribute name="responseMessage" type="String"/>
+
+
+  <article class="slds-box slds-theme_shade">
+    <div class="slds-p-left_x-large slds-p-right_x-large">
+      <aura:if isTrue="{!v.showSpinner}">
+        <lightning:spinner alternativeText="Loading..." size="medium"/>
+        <aura:set attribute="else">
+          <aura:if isTrue="{!v.showPostSubmitPage}">
+            <div class="slds-text-heading_small slds-align_absolute-center slds-p-around--large">
+              <b>{!v.responseMessage}</b>
+            </div>
+            <div class="slds-align_absolute-center">
+              <lightning:button aura:id="done"
+                              name="done"
+                              onclick="{!c.returnToMyAccount}"
+                              label="Done, Return to My Account"
+                              class="slds-text-body_small slds-button--brand
+                                     slds-p-top_x-small slds-p-bottom_x-small slds-p-left_xx-large slds-p-right_xx-large"/>
+            </div>
+            <aura:set attribute="else">
+              <aura:if isTrue="{!v.showAutopaySection}">
+                <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
+                  <div class="slds-col slds-size_12-of-12 slds-theme_offline slds-p-around_small">
+                    <aura:if isTrue="{!v.showCardAutopay}">
+                      <lightning:buttonIcon
+                        iconName="utility:chevrondown"
+                        size="medium"
+                        variant="bare-inverse"
+                        class="slds-p-right_small"
+                        onclick="{!c.toggleCardAutopay}"/>
+                      <aura:set attribute="else">
+                        <lightning:buttonIcon
+                          iconName="utility:chevronright"
+                          size="medium"
+                          variant="bare-inverse"
+                          class="slds-p-right_small"
+                          onclick="{!c.toggleCardAutopay}"/>
+                      </aura:set>
+                    </aura:if>
+                    <span class="slds-p-around_small">
+                      <lightning:buttonIcon
+                        iconName="utility:company"
+                        size="large"
+                        variant="bare-inverse"
+                        onclick="{!c.toggleCardAutopay}"/>
+                      <span class="slds-p-left_large slds-text-heading_small">
+                        <strong>Auto-Pay: </strong>
+                        <aura:if isTrue="{!v.forceAutopaySelection}">
+                          <i>Manage</i>
+                          <aura:set attribute="else">
+                            <i>{!v.newAutopaySelection ? 'ON' : 'OFF'}</i>
+                          </aura:set>
+                        </aura:if>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <aura:if isTrue="{!v.showCardAutopay}">
+                  <div class="slds-p-bottom_large">
+                    <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
+                      <div class="slds-col slds-size_1-of-12"/>
+                        <div class="slds-col slds-size_6-of-12">
+                          <div aura:id="mustAgree" class="slds-form-element slds-size_1-of-1 slds-large-size_2-of-2 slds-p-top_medium slds-p-bottom_medium">
+                            <label><b>{!v.zuoraAccountAndPayMethod.account.AutoPay ? 'Do you want to be enrolled in auto-pay?' : 'Do you want to enroll in auto-pay?'}</b></label>
+                            <ui:inputSelect aura:id="autopayOption"
+                                            class="slds-input"
+                                            value="{!v.autopayAsText}"
+                                            change="{!c.onAutopayChange}">
+                              <aura:if isTrue="{!v.forceAutopaySelection}">
+                                <ui:inputSelectOption label="Select" text="Select"/>
+                              </aura:if>
+                              <ui:inputSelectOption label="Yes" text="Yes"/>
+                              <ui:inputSelectOption label="No" text="No"/>
+                            </ui:inputSelect>
+                          </div>
+                          <aura:if isTrue="{!v.autopayAsText == 'Yes'}">
+                            <div class="slds-p-top_medium slds-p-bottom_medium">
+                              <fieldset class="slds-box slds-theme--default slds-p-top_medium slds-container--medium slds-p-top_medium">
+                                <div class="slds-p-left_small slds-p-right_small">
+                                  <div class="slds-text-body_small slds-text-color_default">
+                                        I hereby authorize BlueWave or its servicer(s) to initiate debit entries (ACH) on my bank account
+                                        or automatically charge the credit card I designate in this form. I understand that any debit entry
+                                        from my account that is returned unpaid may be collected in the same manner as an unpaid paper check.
+                                        I understand that the monthly payment amount debited from my bank account may vary from month to
+                                        month based on variable generation from my Shared Solar System.
+                                        My authorization for debit entries to my designated bank account shall remain in full force
+                                        and effect until BlueWave or its servicer(s) has received written notification from me at
+                                        least thirty (30) days in advance of my intent to change or cancel this Authorization for
+                                        pre-arranged payments. I hereby release BlueWave or its servicer(s) from any and all claims
+                                        resulting from this authorization.
+                                  </div>
+                                  <div class="slds-p-top_medium">
+                                    <h3 class="slds-text-body_small slds-text-color_default">
+                                      <aura:if isTrue="{!v.AutopayAgree}">
+                                        <i><b>Agreed</b></i>
+                                        <aura:set attribute="else">
+                                          <lightning:button aura:id="autopayAgree"
+                                                            name="autopayAgree"
+                                                            label="I Agree"
+                                                            onclick="{!c.agreeToAutopay}"
+                                                            class="slds-text-body_small slds-button--brand
+                                                            slds-p-left_small slds-p-right_small"/>
+                                        </aura:set>
+                                      </aura:if>
+                                    </h3>
+                                  </div>
+                                </div>
+                              </fieldset>
+                            </div>
+                          </aura:if>
+                        </div>
+                      <div class="slds-col slds-size_5-of-12 slds-theme_offline"/>
+                    </div>
+                    <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
+                      <div class="slds-col slds-size_10-of-12"/>
+                      <div class="slds-col slds-size_1-of-12">
+                        <lightning:button aura:id="nextPageAutopay"
+                                          name="nextPageAutopay"
+                                          label="Next"
+                                          onclick="{!c.closeAutopayOpenAmount}"
+                                          class="slds-text-body_small slds-button--brand
+                                                   slds-p-top_x-small slds-p-bottom_x-small slds-p-left_xx-large slds-p-right_xx-large"/>
+                      </div>
+                      <div class="slds-col slds-size_1-of-12"/>
+                    </div>
+                  </div>
+                </aura:if>
+              </aura:if>
+
+              <aura:if isTrue="{!v.makePaymentOrManageAutopay}">
+                <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
+                  <div class="slds-col slds-size_12-of-12 slds-theme_offline slds-p-around_small">
+                    <aura:if isTrue="{!v.showCardPaymentAmount}">
+                      <lightning:buttonIcon
+                        iconName="utility:chevrondown"
+                        size="medium"
+                        variant="bare-inverse"
+                        class="slds-p-right_small"
+                        onclick="{!c.toggleCardPaymentAmount}"/>
+                      <aura:set attribute="else">
+                        <lightning:buttonIcon
+                          iconName="utility:chevronright"
+                          size="medium"
+                          variant="bare-inverse"
+                          class="slds-p-right_small"
+                          onclick="{!c.toggleCardPaymentAmount}"/>
+                      </aura:set>
+                    </aura:if>
+                    <span class="slds-p-around_small">
+                      <lightning:buttonIcon
+                        iconName="utility:company"
+                        size="large"
+                        variant="bare-inverse"
+                        onclick="{!c.toggleCardPaymentAmount}"/>
+                      <span class="slds-p-left_large slds-text-heading_small">
+                        <strong>Payment Amount: </strong>
+                        <i><ui:outputCurrency value="{!v.paymentAmount}"/></i>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <aura:if isTrue="{!v.showCardPaymentAmount}">
+                  <div class="slds-p-bottom_large">
+                    <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
+                      <div class="slds-col slds-size_1-of-12"/>
+                      <div class="slds-col slds-size_4-of-12">
+                        <div class="slds-p-top_medium slds-p-bottom_medium">
+                          <lightning:radioGroup aura:id ="radioButtonPaymentAmount"
+                                                options="{!v.RadioOptions}"
+                                                onchange="{!c.onPaymentAmountChange}"
+                                                value="{!v.balanceSelection}"
+                                                type="radio"/>
+                          <lightning:input type="number"
+                                           formatter="currency"
+                                           step="0.01"
+                                           value="{!v.customChargeAmount}"
+                                           onchange="{!c.onPaymentAmountChange}"/>
+                          <ui:outputText value="{!v.customPaymentAmountMessage}"/>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
+                      <div class="slds-col slds-size_10-of-12"/>
+                      <div class="slds-col slds-size_1-of-12">
+                        <lightning:button aura:id="nextPagePayAmount"
+                                          name="nextPagePayAmount"
+                                          label="Next"
+                                          onclick="{!c.closeAmountOpenMethod}"
+                                          class="slds-text-body_small slds-button--brand
+                                                 slds-p-top_x-small slds-p-bottom_x-small slds-p-left_xx-large slds-p-right_xx-large"/>
+                      </div>
+                      <div class="slds-col slds-size_1-of-12"/>
+                    </div>
+                  </div>
+                </aura:if>
+              </aura:if>
+              <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
+                <div class="slds-col slds-size_12-of-12 slds-theme_offline slds-p-around_small">
+                  <aura:if isTrue="{!v.showCardPaymentMethod}">
+                    <lightning:buttonIcon
+                      iconName="utility:chevrondown"
+                      size="medium"
+                      variant="bare-inverse"
+                      class="slds-p-right_small"
+                      onclick="{!c.toggleCardPaymentMethod}"/>
+                    <aura:set attribute="else">
+                      <lightning:buttonIcon
+                        iconName="utility:chevronright"
+                        size="medium"
+                        variant="bare-inverse"
+                        class="slds-p-right_small"
+                        onclick="{!c.toggleCardPaymentMethod}"/>
+                    </aura:set>
+                  </aura:if>
+                  <span class="slds-p-around_small">
+                    <lightning:buttonIcon
+                      iconName="utility:company"
+                      size="large"
+                      variant="bare-inverse"
+                      onclick="{!c.toggleCardPaymentMethod}"/>
+                    <span class="slds-p-left_large slds-text-heading_small">
+                      <strong>Payment Method: </strong>
+                      <i><ui:outputText value="{!v.currentPaymentMethod}"/></i>
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <aura:if isTrue="{!v.showCardPaymentMethod}">
+                <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
+                  <div class="slds-col slds-size_1-of-12 slds-theme_offline"/>
+                  <div class="slds-col slds-size_11-of-12">
+                    <div class="slds-form-element slds-size_1-of-1 slds-large-size_2-of-2 slds-p-top_medium slds-p-bottom_medium">
+                      <ui:inputSelect class="slds-input"
+                                      value="{!v.newPaymentMethodType}">
+                        <ui:inputSelectOption
+                          label="{!v.zuoraAccountAndPayMethod.account.AutoPay ? 'Use existing payment method' : 'Select Payment Method'}"
+                          text="New"/>
+                        <ui:inputSelectOption label="Add a new Bank Account" text="ACH"/>
+                        <ui:inputSelectOption label="Add a new Credit Card" text="Credit Card"/>
+                      </ui:inputSelect>
+                    </div>
+                    <div class="slds-p-top_medium slds-p-bottom_medium">
+                      <c:ZuoraPaymentPage paymentType="{!v.newPaymentMethodType}"/>
+                    </div>
+                  </div>
+                </div>
+              </aura:if>
+              <div class="slds-p-top_large"></div>
+              <aura:if isTrue="{!v.showEnabledButton}">
+                <lightning:button aura:id="makeAPayment"
+                                  name="makeAPayment"
+                                  onclick="{!c.sendToZuora}"
+                                  label="{!v.makePaymentOrManageAutopay ? 'Make A Payment' : 'Update Account'}"
+                                  class="slds-text-body_small slds-button--brand
+                                         slds-p-top_x-small slds-p-bottom_x-small slds-p-left_xx-large slds-p-right_xx-large"/>
+                <aura:set attribute="else">
+                  <lightning:button aura:id="makeAPayment"
+                                    name="makeAPayment"
+                                    label="{!v.makePaymentOrManageAutopay ? 'Make A Payment' : 'Update Account'}"
+                                    class="slds-text-body_small slds-theme_offline
+                                         slds-p-top_x-small slds-p-bottom_x-small slds-p-left_xx-large slds-p-right_xx-large"/>
+                </aura:set>
+              </aura:if>
+              <lightning:button aura:id="goBack"
+                                name="acknowledgePayment"
+                                label="Cancel"
+                                onclick="{!c.returnToMyAccount}"
+                                class="slds-text-body_small
+                                      slds-p-top_x-small slds-p-bottom_x-small slds-p-left_small slds-p-right_small"/>
+              <aura:if isTrue="{!!v.showEnabledButton}">
+                <i><ui:outputText class="slds-p-left_xx-large" value="{!v.missingFieldsMessage}"/></i>
+              </aura:if>
+              <aura:if isTrue="{!v.makePaymentOrManageAutopay}">
+                <div class="slds-text-body_small slds-text-color_error slds-p-top_medium">
+                  Do not reload page after submission or re-submit payment unless instructed to do so. If you are unsure whether the payment was accepted, please contact BlueWave customer care.
+                </div>
+                <div class="slds-text-body_small slds-text-color_default slds-p-top_medium">
+                  By clicking the button, you agree to allow BlueWave to split the total payment value into multiple transactions. If your account is subscribed to more than one solar project each subscription will be billed separately but never more than the total payment shown above. If you would like a detailed list of transactions, please see the paper bill that was emailed to you or reach out to BlueWave at customercare@bluewavesolar.com.
+                </div>
+              </aura:if>
+            </aura:set>
+          </aura:if>
+        </aura:set>
+      </aura:if>
+    </div>
+  </article>
+</aura:component>
