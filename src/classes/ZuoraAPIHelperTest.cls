@@ -35,8 +35,12 @@ public with sharing class ZuoraAPIHelperTest {
 
     @IsTest
     public static void testQuery() {
-        String result = ZuoraAPIHelper.query('SELECT Id FROM Account', false);
+        String query = 'SELECT Id FROM Account';
+        String result = ZuoraAPIHelper.query(query, false);
         System.assert(result.contains('"done":true'));
+        System.assertEquals(1, ZuoraAPIHelper.endpointsCalled.size(), 'Should have saved a single endpoint');
+        System.assertEquals('/v1/action/query', ZuoraAPIHelper.endpointsCalled[0].endpoint);
+        System.assert(ZuoraAPIHelper.endpointsCalled[0].jsonBody.contains(query));
     }
 
     @IsTest

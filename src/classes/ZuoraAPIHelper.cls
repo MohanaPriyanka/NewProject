@@ -15,6 +15,8 @@ public with sharing class ZuoraAPIHelper {
     // If Salesforce ever increases the limit again:
     @TestVisible
     private static Integer maxCalloutsForZuoraNamespace = 100;
+    @TestVisible
+    private static List<EndpointCall> endpointsCalled = new List<EndpointCall>();
 
     public static HttpResponse callJsonEndpoint(String method, String endpoint, Object jsonBody) {
         return callJsonEndpoint(method, endpoint, jsonBody, true);
@@ -35,6 +37,7 @@ public with sharing class ZuoraAPIHelper {
         }
         Zuora_Setting__mdt zuoraSetting = getZuoraSetting();
         HttpRequest request = new HttpRequest();
+        request.setTimeout(60000); // Set a 60 second timeout (default is 10) to avoid recovering from read timed out
         request.setMethod(method);
         request.setEndpoint(zuoraSetting.API_Endpoint_URL__c + endpoint);
         request.setHeader('Content-Type', 'application/json');
@@ -50,6 +53,7 @@ public with sharing class ZuoraAPIHelper {
         Zuora.zApi zApiInstance = new Zuora.zApi();
         if (Test.isRunningTest()) {
             response = new ZuoraAPIMock().respond(request);
+            endpointsCalled.add(new EndpointCall(endpoint, request.getBody(), response.getBody()));
         } else {
             Long start = System.currentTimeMillis();
             response = zApiInstance.sendRequest(request);
@@ -119,5 +123,17 @@ public with sharing class ZuoraAPIHelper {
         return json.replace('__c', '_Zcustom')
             .replace('"currency" :', '"currency_Zreserved" :')
             .replace('"type" :', '"type_Zreserved" :');
+    }
+
+    @TestVisible
+    private class EndpointCall {
+        public String endpoint;
+        public String jsonBody;
+        public String response;
+        public EndpointCall(String endpoint, String jsonBody, String response) {
+            this.endpoint = endpoint;
+            this.jsonBody = jsonBody;
+            this.response = response;
+        }
     }
 }
