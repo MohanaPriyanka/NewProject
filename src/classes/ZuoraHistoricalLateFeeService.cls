@@ -7,7 +7,7 @@
  * Tested By: ZuoraHistoricalLateFeesServiceTest
  *************************************************************************************/
 
-public without sharing class ZuoraHistoricalLateFeeService implements Database.Batchable<System_Bill__c>, Database.AllowsCallouts{
+public without sharing class ZuoraHistoricalLateFeeService implements Database.Batchable<System_Bill__c>, Database.Stateful, Database.AllowsCallouts{
     public static ZuoraAPI.DebitMemo convertSFLateFeesToDebitMemos(System_Bill__c systemBill){
         ZuoraAPI.DebitMemoCharge debitCharge = new ZuoraAPI.DebitMemoCharge();
         debitCharge.Amount = systemBill.Late_Fees__c.setScale(2);
