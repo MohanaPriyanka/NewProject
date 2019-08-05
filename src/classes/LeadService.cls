@@ -9,7 +9,9 @@ public without sharing class LeadService {
 
     private AccountService accountService = new AccountService();
     private UALService ualService = new UALService();
+
     private LeadSelector leadSelector = new LeadSelector();
+
 
     public void completeLeadConversion(List<Lead> updatedLeads, Map<Id, Lead> oldLeadMap){
         List<Lead> convertedCSLeads = new List<Lead>();
@@ -135,6 +137,7 @@ public without sharing class LeadService {
         );
         return propAcct;
     }
+
 
     /**
      * Copies UAL info from a Lead

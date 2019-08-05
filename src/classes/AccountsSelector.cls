@@ -63,4 +63,31 @@ public without sharing class AccountsSelector {
             WHERE Id IN :accountIds
         ];
     }
+
+    public Account selectOne(Id accountId) {
+        List<Account> accounts = this.selectAll(new Set<Id>{accountId});
+        if (accounts.isEmpty()) {
+            return null;
+        }
+        return accounts[0];
+    }
+
+    public List<Account> selectAll(Set<Id> accountIds) {
+        return [
+            SELECT Id, Name, BillingStreet, BillingCity, BillingStateCode, BillingPostalCode,
+                Zuora_Payment_Ref_Id__c, Zuora_Payment_Ref_Id_Expiration_Date__c, Lead__c
+            FROM Account
+            WHERE Id = :accountIds
+        ];
+    }
+
+    public List<Account> selectPropertyAccountsByLeadIds(Set<Id> leadIds) {
+        return [
+            SELECT Id, Name, BillingStreet, BillingCity, BillingStateCode, BillingPostalCode,
+                Zuora_Payment_Ref_Id__c, Zuora_Payment_Ref_Id_Expiration_Date__c, Lead__c
+            FROM Account
+            WHERE Lead__c = :leadIds
+            AND RecordType.Name = 'Property'
+        ];
+    }
 }

@@ -2931,6 +2931,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.Zuora_Payment_Ref_Id_Expiration_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Zuora_Payment_Ref_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Account.of_Jobs_per_Month_Resi__c</field>
         <readable>true</readable>
     </fieldPermissions>

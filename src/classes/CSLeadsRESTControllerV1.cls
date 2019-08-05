@@ -9,12 +9,20 @@
 global without sharing class CSLeadsRESTControllerV1 extends RESTController{
     private static CSLeadsRESTControllerV1 controller = new CSLeadsRESTControllerV1();
 
+    private LeadService leadService = new LeadService();
+    private AccountService accountService = new AccountService();
+    private UALService ualService = new UALService();
+
+    private LeadSelector leadSelector = new LeadSelector();
+    private AccountsSelector accountsSelector = new AccountsSelector();
+    private UALSelector ualSelector = new UALSelector();
+
     @HttpPatch
     global static void patchRequest() {
         try {
             controller.patchRecords();
         } catch(Exception e) {
-            CSLeadsRESTControllerV1.ResponseEnvelope envelope =  new CSLeadsRESTControllerV1.ResponseEnvelope();
+            RESTController.ResponseEnvelope envelope =  new RESTController.ResponseEnvelope();
             envelope.addError(e.getMessage());
             envelope.setJSONResponse(RestContext.response);
             RestContext.response.statusCode = 500;
@@ -29,7 +37,7 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
         try {
             controller.postRecords();
         } catch(Exception e) {
-            CSLeadsRESTControllerV1.ResponseEnvelope envelope = new CSLeadsRESTControllerV1.ResponseEnvelope();
+            RESTController.ResponseEnvelope envelope = new RESTController.ResponseEnvelope();
             envelope.addError(e.getMessage());
             envelope.setJSONResponse(RestContext.response);
             RestContext.response.statusCode = 500;
@@ -39,19 +47,26 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
         }
     }
 
-    protected override void patchRecords() {
+    public override void patchRecords() {
         String jsonRequest = request.requestBody.toString();
-        if (jsonRequest.toLowerCase().contains('acknowledgment')) {
-            jsonRequest = jsonRequest.replaceAll('(a{1}+|A{1}+)(cknowledgment)', 'acknowledgement');
-            envelope.addMessage('Autocorrected the request to update the spelling of acknowledgment to acknowledgement, with an e.');
-        }
-        RestLead requestLead = (RestLead) JSON.deserialize(jsonRequest, RestLead.class);
-        List<Lead> leads = getLeadsById(new Set<Id>{requestLead.Id});
+        RestLeadV1 requestLead = (RestLeadV1) JSON.deserialize(jsonRequest, RestLeadV1.class);
+        List<Lead> leads = leadSelector.selectAll(new Set<Id>{requestLead.Id});
+        List<Account> propertyAccounts = accountsSelector.selectPropertyAccountsByLeadIds(new Set<Id>{requestLead.Id});
 
         if (leads.isEmpty()) {
             response.statusCode = statusCode.notFound;
         } else if (requestLead.isPatch()){
             Lead leadToUpdate = leads[0];
+            Account propertyAccountToUpdate;
+
+            // TODO: remove this at some point (added July 2019, so maybe by December 2019, since resuming apps from July will be unlikely then)
+            if (propertyAccounts.isEmpty()) {
+                // this lead was created in the old model, so we need to create the account and UAL
+                propertyAccountToUpdate = accountService.insertAccount(leadService.buildPropertyAccountFromLegacyLead(leadToUpdate));
+                ualService.insertUAL(leadService.buildUtilityAccountLogFromLegacyLead(leadToUpdate, propertyAccountToUpdate));
+            } else {
+                propertyAccountToUpdate = propertyAccounts[0];
+            }
 
             if (requestLead.applicationCompleteDate != null && leadToUpdate.Application_Complete_Date__c == null) {
                 leadToUpdate.Application_Complete_Date__c = requestLead.applicationCompleteDate;
@@ -63,14 +78,17 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
                 leadToUpdate.Terms_Conditions_Acknowledged__c = Datetime.now();
                 leadToUpdate.Terms_Conditions__c = requestLead.customerAgreementText;
             }
-            if (requestLead.zuoraPaymentRefId != null && leadToUpdate.Zuora_Payment_Ref_Id__c == null) {
+            if (requestLead.zuoraPaymentRefId != null && propertyAccountToUpdate.Zuora_Payment_Ref_Id__c == null) {
                 leadToUpdate.Zuora_Payment_Ref_Id__c = requestLead.zuoraPaymentRefId;
                 leadToUpdate.Zuora_Payment_Ref_Id_Expiration_Date__c = requestLead.zuoraPaymentRefIdExpirationDate;
+                propertyAccountToUpdate.Zuora_Payment_Ref_Id__c = requestLead.zuoraPaymentRefId;
+                propertyAccountToUpdate.Zuora_Payment_Ref_Id_Expiration_Date__c = requestLead.zuoraPaymentRefIdExpirationDate;
             }
 
-            update leadToUpdate;
+            Lead lead = leadService.updateLead(leadToUpdate);
+            accountService.updateAccount(propertyAccountToUpdate);
 
-            RestLead responseLead = new RestLead(leadToUpdate);
+            RestLeadV1 responseLead = new RestLeadV1(lead);
             envelope.setData(responseLead);
             response.statusCode = statusCode.ok;
         } else {
@@ -81,21 +99,16 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
         envelope.setJSONResponse(response);
     }
 
-    protected override void postRecords() {
+    public override void postRecords() {
         String jsonRequest = request.requestBody.toString();
-        RestLead requestLead = (RestLead) JSON.deserialize(jsonRequest, RestLead.class);
+        RestLeadV1 requestLead = (RestLeadV1) JSON.deserialize(jsonRequest, RestLeadV1.class);
 
         if (requestLead.hasRequiredPostFields()) {
+
             Lead newLead = requestLead.asLead();
 
-            //Set DMLOptions to run Lead Assignment Rules on insert
-            Database.DMLOptions dmo = new Database.DMLOptions();
-            dmo.assignmentRuleHeader.useDefaultRule = true;
-            newLead.setOptions(dmo);
-
-            insert newLead;
-            List<Lead> leads = getLeadsById(new Set<Id>{newLead.Id});
-            RestLead responseLead = new RestLead(leads[0]);
+            Lead createdLead = leadService.createLegacyLead(newLead);
+            RestLeadV1 responseLead = new RestLeadV1(createdLead);
             envelope.setData(responseLead);
             response.statusCode = statusCode.created;
         } else {
@@ -106,21 +119,7 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
         envelope.setJSONResponse(response);
     }
 
-    public List<Lead> getLeadsById(Set<Id> leadIds) {
-        return [
-            SELECT Id, Privacy_Policy_Acknowledged__c, Terms_Conditions__c, Zuora_Payment_Ref_Id__c,
-                Zuora_Payment_Ref_Id_Expiration_Date__c, FirstName, LastName, Email, MobilePhone,
-                Company, Application_Type__c, LASERCA__Home_Address__c, LASERCA__Home_City__c,
-                LASERCA__Home_State__c, LASERCA__Home_Zip__c, Parcel_Zip__c, LoadZone__c,
-                Partner_Lookup__c, Partner_Lookup__r.Id, bs_Sales_ID__c, Customer_Referral__c, Product__c, Phone,
-                Business_Title__c, Utility_relationship__r.Name, Product__r.Name, Application_Complete_Date__c, Status,
-                Utility_relationship__r.EIA_ID__c, Continue_Application_Link__c
-            FROM Lead
-            WHERE Id = :leadIds
-        ];
-    }
-
-    public class RestLead {
+    public class RestLeadV1 {
         public Id id;
         public Boolean customerAcknowledgement;
         public String customerAgreementText;
@@ -149,8 +148,8 @@ global without sharing class CSLeadsRESTControllerV1 extends RESTController{
         public String eiaId;
         public String continueApplicationLink;
 
-        public RestLead() {}
-        public RestLead(Lead lead) {
+        public RestLeadV1() {}
+        public RestLeadV1(Lead lead) {
             this.id = lead.Id;
             this.customerAcknowledgement = lead.Privacy_Policy_Acknowledged__c;
             this.customerAgreementText = lead.Terms_Conditions__c;

@@ -151,70 +151,13 @@ public with sharing class CSLeadsRESTControllerV1Test {
         System.assertEquals(true, patchedLead.Privacy_Policy_Acknowledged__c, 'privacy policy should be acknowledged');
     }
 
-    @IsTest // apparently you can spell it either acknowledgement or acknowledgment...
-    public static void testPatchAcknowledgmentSpelledWithoutAnE() {
-        Lead leadToPatch = new Lead(
-            FirstName = 'marvin',
-            LastName = 'testcase',
-            Company = 'bluewave'
-        );
-
-        insert leadToPatch;
-
-        Lead insertedLead = [
-            SELECT Id, Privacy_Policy_Acknowledged__c
-            FROM Lead
-            WHERE Id = : leadToPatch.Id
-            LIMIT 1
-        ];
-
-        System.assertEquals(false, insertedLead.Privacy_Policy_Acknowledged__c, 'privacy policy should default to false');
-
-        String jsonRequest = '{' +
-            '"id":"' + leadToPatch.Id + '",' +
-            '"customerAcknowledgment":true,' +
-            '"customerAgreementText":"I Agree"' +
-            '}';
-
-        RestRequest req = new RestRequest();
-        req.requestURI = '/services/apexrest/v1/CSLeads';
-        req.httpMethod = 'PATCH';
-        req.addHeader('Content-Type', 'application/json');
-        req.requestBody = Blob.valueOf(jsonRequest);
-
-        RestContext.request = req;
-        RestContext.response = new RestResponse();
-
-        CSLeadsRESTControllerV1.patchRequest();
-
-        RestResponse response = RestContext.response;
-        System.assertEquals(200, response.statuscode);
-
-        String jsonResponse = response.responseBody.toString();
-        ResponseEnvelope patchResponseEnvelope = (ResponseEnvelope) JSON.deserialize(jsonResponse, ResponseEnvelope.class);
-
-        System.assertEquals(leadToPatch.Id, patchResponseEnvelope.data.id);
-        System.assertEquals(true, patchResponseEnvelope.errors.isEmpty());
-        System.assertEquals(false, patchResponseEnvelope.messages.isEmpty());
-        String message = 'Autocorrected the request to update the spelling of ' +
-            'acknowledgment to acknowledgement, with an e.';
-        System.assertEquals(message, patchResponseEnvelope.messages[0]);
-
-        Lead patchedLead = [
-            SELECT Id, Privacy_Policy_Acknowledged__c
-            FROM Lead
-            WHERE Id = : leadToPatch.Id
-            LIMIT 1
-        ];
-        System.assertEquals(true, patchedLead.Privacy_Policy_Acknowledged__c, 'privacy policy should be acknowledged');
-    }
-
     @IsTest
     public static void testPatchUpdatesZuoraPaymentInfo() {
         Lead leadToPatch = new Lead(
             FirstName = 'marvin',
             LastName = 'testcase',
-            Company = 'bluewave'
+            Company = 'bluewave',
+            LASERCA__Home_State__c = 'NY'
         );
 
         insert leadToPatch;
@@ -736,7 +679,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
 
     @IsTest
     public static void testRequestLeadClass() {
-        CSLeadsRESTControllerV1.RestLead lead = new CSLeadsRESTControllerV1.RestLead();
+        CSLeadsRESTControllerV1.RestLeadV1 lead = new CSLeadsRESTControllerV1.RestLeadV1();
 
         System.assert(!lead.isPatch(), 'RequestLead is empty, validations should be false');
         System.assert(!lead.hasRequiredPostFields(), 'RequestLead is empty, validations should be false');
@@ -795,7 +738,7 @@ public with sharing class CSLeadsRESTControllerV1Test {
 
 
     public class ResponseEnvelope {
-        public CSLeadsRESTControllerV1.RestLead data;
+        public CSLeadsRESTControllerV1.RestLeadV1 data;
         public List<String> messages;
         public List<String> errors;
     }
