@@ -63,33 +63,36 @@
                     </aura:if>
                     <aura:if isTrue="{!v.showZuoraPaymentCmp}">
                       <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
-                        <div class="slds-col slds-size_1-of-12"/>
-                        <div class="slds-col slds-size_11-of-12">
+                        <div class="slds-col slds-size_12-of-12">
                           <c:CSPZuoraPayment makePaymentOrManageAutopay="{!v.makePaymentOrManageAutopay}"/>
                         </div>
                       </div>
                       <aura:set attribute="else">
-                        <lightning:button aura:id="signupForAutopay"
-                                          name="signupForAutopay"
-                                          label="Manage Auto-Pay"
-                                          onclick="{!c.openAutopayWindow}"
-                                          class="slds-text-body_small slds-button--brand slds-p-top_x-small
-                                                    slds-p-bottom_x-small slds-p-left_xx-large slds-p-right_xx-large"/>
-                        <aura:if isTrue="{!greaterthan(v.myBill,0.001)}">
-                          <lightning:button aura:id="makeAPayment"
-                                            name="makeAPayment"
-                                            label="Make A Payment"
-                                            onclick="{!c.openPaymentWindow}"
+                        <div>
+                          <lightning:button aura:id="signupForAutopay"
+                                            name="signupForAutopay"
+                                            label="Manage Auto-Pay"
+                                            onclick="{!c.openAutopayWindow}"
                                             class="slds-text-body_small slds-button--brand slds-p-top_x-small
-                                                slds-p-bottom_x-small slds-p-left_xx-large slds-p-right_xx-large"/>
-                          <aura:set attribute="else">
-                            <lightning:button aura:id="disabledMakeAPayment"
-                                              name="disabledMakeAPayment"
+                                                      slds-p-bottom_x-small slds-p-left_xx-large slds-p-right_xx-large"/>
+                        </div>
+                        <div class="slds-p-top--medium">
+                          <aura:if isTrue="{!greaterthan(v.myBill,0.001)}">
+                            <lightning:button aura:id="makeAPayment"
+                                              name="makeAPayment"
                                               label="Make A Payment"
-                                              class="slds-text-body_small slds-theme_offline slds-p-top_x-small
-                                                slds-p-bottom_x-small slds-p-left_xx-large slds-p-right_xx-large"/>
-                          </aura:set>
-                        </aura:if>
+                                              onclick="{!c.openPaymentWindow}"
+                                              class="slds-text-body_small slds-button--brand slds-p-top_x-small
+                                                  slds-p-bottom_x-small slds-p-left_xx-large slds-p-right_xx-large"/>
+                            <aura:set attribute="else">
+                              <lightning:button aura:id="disabledMakeAPayment"
+                                                name="disabledMakeAPayment"
+                                                label="Make A Payment"
+                                                class="slds-text-body_small slds-theme_offline slds-p-top_x-small
+                                                  slds-p-bottom_x-small slds-p-left_xx-large slds-p-right_xx-large"/>
+                            </aura:set>
+                          </aura:if>
+                        </div>
                       </aura:set>
                     </aura:if>
                   </lightning:layoutItem>

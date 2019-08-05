@@ -116,7 +116,7 @@
             component.set("v.missingFieldsMessage", 'You must agree to the terms if you would like to be enrolled in autopay');
         } else if (check_MakeAPaymentPage === true && check_PaymentAmount < 0.01){
             // We do not expect a customer to see this error. The make a payment button should be hidden if balance = $0
-            component.set("v.missingFieldsMessage", 'You can not make a payment if you do not have any balance outstanding. If you would like to modify your autopay method without making a payment, please do so from the My Account page.');
+            component.set("v.missingFieldsMessage", 'You can not make a payment for $0. If you would like to modify your autopay method, please do so from the My Account page.');
         } else if (typeof check_PaymentMethodId === 'undefined' && check_MakeAPaymentPage === true){
             component.set("v.missingFieldsMessage", 'You must supply a payment method to make a payment.');
         } else if (typeof check_PaymentMethodId === 'undefined' && check_MakeAPaymentPage === false && check_AutopayIsOn === true){
