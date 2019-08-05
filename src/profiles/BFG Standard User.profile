@@ -57123,7 +57123,7 @@
         <allowDelete>false</allowDelete>
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>MCEC_Report_Data__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
