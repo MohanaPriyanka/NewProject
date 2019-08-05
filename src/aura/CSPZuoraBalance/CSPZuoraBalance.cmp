@@ -47,7 +47,7 @@
                     <aura:if isTrue="{!v.autopay}">
                       <div class="slds-p-bottom--large">
                         <h3 class="slds-text-heading_small slds-text-color_default slds-p-bottom_large">
-                          <p>Your Account is currently set to Auto-Pay.</p>
+                          <p>Your Account is currently set to Autopay.</p>
                           <br/>
                           <p>Your next transaction will execute from account ending in {!v.autopayMethod}</p>
                         </h3>
@@ -55,8 +55,8 @@
                       <aura:set attribute="else">
                         <div class="slds-p-bottom--large">
                           <h3 class="slds-text-heading_small slds-text-color_default">
-                            <p>Your Account is not currently set to Auto-Pay.</p>
-                            <p>Please update your payment method</p>
+                            <p>Your Account is not currently set to autopay.</p>
+                            <p>Please update your payment method.</p>
                           </h3>
                         </div>
                       </aura:set>
@@ -71,7 +71,7 @@
                         <div>
                           <lightning:button aura:id="signupForAutopay"
                                             name="signupForAutopay"
-                                            label="Manage Auto-Pay"
+                                            label="Manage Autopay"
                                             onclick="{!c.openAutopayWindow}"
                                             class="slds-text-body_small slds-button--brand slds-p-top_x-small
                                                       slds-p-bottom_x-small slds-p-left_xx-large slds-p-right_xx-large"/>
@@ -117,14 +117,14 @@
                   <lightning:layoutItem class="slds-p-bottom_large" size="12">
                     <aura:if isTrue="{!v.autopay}">
                         <h3 class="slds-text-heading_small slds-text-color_default slds-p-bottom_large">
-                          <p>Your Account is currently set to Auto-Pay.</p>
+                          <p>Your Account is currently set to autopay.</p>
                           <br/>
                           <p>Your next transaction will execute from account ending in {!v.autopayMethod}</p>
                         </h3>
                       <aura:set attribute="else">
                           <h3 class="slds-text-heading_small slds-text-color_default">
-                            <p>Your Account is not currently set to Auto-Pay.</p>
-                            <p>Please update your payment method</p>
+                            <p>Your Account is not currently set to Autopay.</p>
+                            <p>Please update your payment method.</p>
                           </h3>
                       </aura:set>
                     </aura:if>

@@ -74,7 +74,7 @@
                         variant="bare-inverse"
                         onclick="{!c.toggleCardAutopay}"/>
                       <span class="slds-p-left_large slds-text-body_small">
-                        <strong>Auto-Pay: </strong>
+                        <strong>Autopay: </strong>
                         <aura:if isTrue="{!v.forceAutopaySelection}">
                           <i>Manage</i>
                           <aura:set attribute="else">
@@ -90,7 +90,7 @@
                     <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
                       <div class="slds-col slds-size_12-of-12">
                         <div aura:id="mustAgree" class="slds-form-element slds-size_1-of-1 slds-large-size_2-of-2 slds-p-top_medium slds-p-bottom_medium">
-                          <label><b>{!v.zuoraAccountAndPayMethod.account.AutoPay ? 'Do you want to be enrolled in auto-pay?' : 'Do you want to enroll in auto-pay?'}</b></label>
+                          <label><b>{!v.zuoraAccountAndPayMethod.account.AutoPay ? 'Do you want to be enrolled in autopay?' : 'Do you want to enroll in autopay?'}</b></label>
                           <ui:inputSelect aura:id="autopayOption"
                                           class="slds-input"
                                           value="{!v.autopayAsText}"
@@ -358,7 +358,7 @@
                         variant="bare-inverse"
                         onclick="{!c.toggleCardAutopay}"/>
                       <span class="slds-p-left_large slds-text-heading_small">
-                        <strong>Auto-Pay: </strong>
+                        <strong>Autopay: </strong>
                         <aura:if isTrue="{!v.forceAutopaySelection}">
                           <i>Manage</i>
                           <aura:set attribute="else">
@@ -375,7 +375,7 @@
                           <div class="slds-col slds-size_1-of-12"/>
                           <div class="slds-col slds-size_7-of-12">
                             <div aura:id="mustAgree" class="slds-form-element slds-size_1-of-1 slds-large-size_2-of-2 slds-p-top_medium slds-p-bottom_medium">
-                              <label><b>{!v.zuoraAccountAndPayMethod.account.AutoPay ? 'Do you want to be enrolled in auto-pay?' : 'Do you want to enroll in auto-pay?'}</b></label>
+                              <label><b>{!v.zuoraAccountAndPayMethod.account.AutoPay ? 'Do you want to be enrolled in autopay?' : 'Do you want to enroll in autopay?'}</b></label>
                               <ui:inputSelect aura:id="autopayOption"
                                               class="slds-input"
                                               value="{!v.autopayAsText}"
