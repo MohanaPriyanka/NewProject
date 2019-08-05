@@ -74,6 +74,6 @@ public without sharing class ZuoraHistoricalLateFeeService implements Database.B
     }
 
     public void finish(Database.BatchableContext bc){
-        Logger.logNow('ZuoraHistoricalLateFeeService', 'finish', 'doneProcessing');
+        Logger.logNow('ZuoraHistoricalLateFeeService', 'finish', 'doneProcessing', 'INFO');
     }
 }
