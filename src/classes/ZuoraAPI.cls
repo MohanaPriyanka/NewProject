@@ -75,15 +75,12 @@ public with sharing class ZuoraAPI {
         public String AchAccountType;
         @AuraEnabled
         public String AchBankName;
-        @AuraEnabled
-        public String AccountId;
     }
 
     // https://www.zuora.com/developer/api-reference/#operation/POST_Account
     public class ZuoraAccount {
         public String AccountNumber;
         public Boolean AllowInvoiceEdit;
-        @AuraEnabled
         public String Id;
         @AuraEnabled
         public Boolean AutoPay;
@@ -110,13 +107,17 @@ public with sharing class ZuoraAPI {
         public String CreatedDate;
         public String DefaultPaymentMethodId;
         public String Currency_Zreserved;
+        public String AdditionalEmailAddresses;
     }
 
     // https://www.zuora.com/developer/api-reference/#operation/Object_POSTContact
     public class ZuoraContact {
         public String AccountId;
-        public String Address1;
+        public String Address1; // Attention
+        public String Address2; // Street
         public String City;
+        public String State;
+        public String PostalCode;
         public String Country;
         public String Description;
         public String Fax;
@@ -128,8 +129,6 @@ public with sharing class ZuoraAPI {
         public String OtherPhone;
         public String OtherPhoneType;
         public String PersonalEmail;
-        public String PostalCode;
-        public String State;
         public String TaxRegion;
         public String WorkEmail;
         public String CRM_ID_Zcustom;
@@ -463,19 +462,14 @@ public with sharing class ZuoraAPI {
     // The SOAP response (wrapped around a REST API)
     // https://knowledgecenter.zuora.com/DC_Developers/G_SOAP_API/F_SOAP_API_Complex_Types/SaveResult
     public class SaveResult {
-        @AuraEnabled
         public List<ErrorCode> Errors;
-        @AuraEnabled
         public String Id;
-        @AuraEnabled
         public Boolean Success;
     }
 
     // https://knowledgecenter.zuora.com/DC_Developers/G_SOAP_API/L_Error_Handling/Errors
     public class ErrorCode {
-        @AuraEnabled
         public String Code;
-        @AuraEnabled
         public String Message;
     }
 
@@ -584,8 +578,8 @@ public with sharing class ZuoraAPI {
         public String chargeId;
     }
 
-    // Used to create, but not to query for credit memos:
-    public class DebitMemo{
+    // Used to create, but not to query for debit memos:
+    public class DebitMemo {
         public String accountId;
         public List<DebitMemoCharge> charges;
         public Date effectiveDate;
@@ -595,12 +589,12 @@ public with sharing class ZuoraAPI {
         public String ClientOwner_Zcustom;
     }
 
-    public class DebitMemoCharge{
+    public class DebitMemoCharge {
         public Decimal amount;
         public String chargeId;
     }
 
-    // Used to query, but not to create credit memos:
+    // Used to query, but not to create debit memos:
     public class ZuoraDebitMemo {
         public String id;
         public String accountId;
@@ -619,14 +613,5 @@ public with sharing class ZuoraAPI {
     public class DebitMemoWithItems {
         public ZuoraDebitMemo debitMemo;
         public List<ZuoraDebitMemoItem> items;
-    }
-
-    public class Payment {
-        public String accountId;
-        public String paymentMethodId;
-        public String type;
-        public String gatewayId;
-        public String currency_Zreserved;
-        public Decimal amount;
     }
 }
