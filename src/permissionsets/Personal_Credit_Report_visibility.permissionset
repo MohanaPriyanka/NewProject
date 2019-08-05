@@ -8,6 +8,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.Co_Applicant__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.Debt_to_Income_Approval__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Credit_Score__c</field>
         <readable>true</readable>
     </fieldPermissions>
