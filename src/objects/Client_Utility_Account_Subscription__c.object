@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Sister object to utility account subscription, used in client reporting</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableLicensing>false</enableLicensing>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>Private</externalSharingModel>
+    <fields>
+        <fullName>Annual_Cost_of_Electricity_Future__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Subscribed_Annual_Cost_of_Electricity__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Annual Cost of Electricity (Future)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Annual_kWh_Subscription_Future__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Annual_kwh_subscription_future__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Annual kWh Subscription (Future)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Date_Removed_From_Project__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Date_Removed_from_Project__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Date that the last allocation schedule involving this customer was retired by the utility</inlineHelpText>
+        <label>Date Removed From Project</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Entity_Assignment__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Entity_Assignment__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Legal entity customer is subscribed to</inlineHelpText>
+        <label>Entity Assignment</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Finaled__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Finaled__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Is the customer&apos;s utility account closed?</inlineHelpText>
+        <label>Finaled</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Future_Customer_Subscription_KW_DC__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Customer_Subscription_KW_DC__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Customer&apos;s kW subscription for next allocation schedule</inlineHelpText>
+        <label>Future Customer Subscription (KW DC)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Future_Share_of_System__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Future_Share_of_System__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Customer&apos;s subscription % for next allocation schedule</inlineHelpText>
+        <label>Future Share of System</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>5</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Maximum_Subscription_Capacity_kW_DC__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Max_Subscription_Capacity__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Maximum subscription allowed per program rules</inlineHelpText>
+        <label>Maximum Subscription Capacity (kW DC)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Next_Allocation_Schedule_Status__c</fullName>
+        <description>If Inactive, customer will be removed from the next allocation schedule</description>
+        <externalId>false</externalId>
+        <formula>TEXT(Utility_Account_Subscription__r.Next_Schedule_Z_Status__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Next Allocation Schedule Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Opportunity__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Opportunity__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Customer Name</inlineHelpText>
+        <label>Opportunity</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Project_Co_Assignment_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Project_Co_Assignment_Date__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Date customer was assigned to legal entity</inlineHelpText>
+        <label>Project Co Assignment Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Shared_Solar_System__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Shared_Solar_System_Name__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>The CS Project a customer is subscribed to</inlineHelpText>
+        <label>Shared Solar System</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Transferring_Subsc_to_Another_UAS__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Transferring_Subsc_to_Another_UAS__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>If checked, this subscription going to be transferred with next allocation schedule</inlineHelpText>
+        <label>Transferring Subsc. to Another UAS</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Utility_Account_Number__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Name</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Customer&apos;s utility account number</inlineHelpText>
+        <label>Utility Account Number</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Utility_Account_Subscription__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Related to Utility Account Subscription object, populated via code</inlineHelpText>
+        <label>Utility Account Subscription</label>
+        <referenceTo>Utility_Account_Subscription__c</referenceTo>
+        <relationshipLabel>Client Utility Account Subscriptions</relationshipLabel>
+        <relationshipName>Client_Utility_Account_Subscriptions</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <label>Client Utility Account Subscription</label>
+    <nameField>
+        <label>Client Utility Account Subscription Name</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Client Utility Account Subscriptions</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>
