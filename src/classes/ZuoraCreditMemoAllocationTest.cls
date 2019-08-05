@@ -15,32 +15,32 @@ public class ZuoraCreditMemoAllocationTest {
 
         ZuoraOutstandingItemsService.OutstandingItem itemTwo = new ZuoraOutstandingItemsService.OutstandingItem();
         itemTwo.AmountOutstanding = 50;
-        itemOne.AmountToApply = 0;
+        itemTwo.AmountToApply = 0;
         itemTwo.EffectiveDate = Datetime.newInstance(2019,02,01,12,10,01);
         itemTwo.Project = 'SSS-0000018';
         itemTwo.Client = 'BW-0000122';
         itemTwo.Id = 'itemTwo';
-        itemOne.ParentId = 'debitOne';
+        itemTwo.ParentId = 'debitOne';
         itemTwo.IsInvoiceItem = false;
 
         ZuoraOutstandingItemsService.OutstandingItem itemThree = new ZuoraOutstandingItemsService.OutstandingItem();
         itemThree.AmountOutstanding = 2;
-        itemOne.AmountToApply = 0;
+        itemThree.AmountToApply = 0;
         itemThree.EffectiveDate = Datetime.newInstance(2019,02,01,13,10,00);
         itemThree.Project = 'SSS-0000016';
         itemThree.Client = 'BW-0000122';
         itemThree.Id = 'itemThree';
-        itemOne.ParentId = 'invoiceTwo';
+        itemThree.ParentId = 'invoiceTwo';
         itemThree.IsInvoiceItem = true;
 
         ZuoraOutstandingItemsService.OutstandingItem itemFour = new ZuoraOutstandingItemsService.OutstandingItem();
         itemFour.AmountOutstanding = 10;
-        itemOne.AmountToApply = 0;
+        itemFour.AmountToApply = 0;
         itemFour.EffectiveDate = Datetime.newInstance(2019,02,01,14,10,00);
         itemFour.Project = 'SSS-0000012';
         itemFour.Client = 'BW-0000123';
         itemFour.Id = 'itemFour';
-        itemOne.ParentId = 'debitOne';
+        itemFour.ParentId = 'debitOne';
         itemFour.IsInvoiceItem = false;
 
         List<ZuoraOutstandingItemsService.OutstandingItem> unsortedItemList = new List<ZuoraOutstandingItemsService.OutstandingItem>{

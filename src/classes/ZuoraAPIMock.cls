@@ -4,10 +4,11 @@
  * Test: 
  *************************************************************************************/
 @IsTest
-global with sharing class ZuoraAPIMock implements HttpCalloutMock {
+public with sharing class ZuoraAPIMock implements HttpCalloutMock {
     public static String genericId = '2c92c0f96a6e3c3f016a6fc817180743';
 
-    global HttpResponse respond(HttpRequest req) {
+    @SuppressWarnings('PMD')
+    public HttpResponse respond(HttpRequest req) {
         // Only send a mock response for a specific endpoint and method.
         String endpoint = req.getEndpoint();
         String method = req.getMethod();
@@ -52,9 +53,11 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
         } else if (endpoint.contains('/v1/debitmemos/') && endpoint.contains('/items')) {
             return getDebitMemoItems(endpoint);
         } else if (endpoint.contains('/v1/creditmemos?status=Posted') || endpoint.contains('/v1/creditmemos/')) {
-            return getCreditMemos();
+            return getCreditMemos(endpoint);
         } else if (endpoint.contains('/v1/debitmemos') && method.contains('GET')) {
             return getDebitMemos();
+        } else if (endpoint.contains('/v1/payments')) {
+            return createPayment(endpoint);
         } else {
             return null;
         }
@@ -341,67 +344,131 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
         public List<ZuoraAPI.ZuoraContact> objects;
     }
 
-    private static HttpResponse getCreditMemos() {
+    private static HttpResponse getCreditMemos(String endpoint) {
         HttpResponse res = getJSON();
-        res.setBody('{ "creditmemos" : [ { ' +
-            '"id" : "2c92c0f86b1bc435016b1e94e99a44a7", ' +
-            '"number" : "CM00000899", ' +
-            '"accountId" : "2c92c0f96b1bd14b016b1e8ff191385b", ' +
-            '"currency" : "USD", ' +
-            '"creditMemoDate" : "2019-06-03", ' +
-            '"targetDate" : null, ' +
-            '"postedById" : "2c92c0f868e558450168f41d281b26c0", ' +
-            '"postedOn" : "2019-06-03 14:23:29", ' +
-            '"status" : "Posted", "amount" : 100.000000000, ' +
-            '"taxAmount" : 0E-9, "totalTaxExemptAmount" : 0E-9, ' +
-            '"unappliedAmount" : 120000.00, "refundAmount" : 0E-9, ' +
-            '"appliedAmount" : 100.000000000, "comment" : "", ' +
-            '"source" : "AdhocFromInvoice", "sourceId" : null,' +
-            ' "referredInvoiceId" : "2c92c0956b1bcd0e016b1e93a1c153be", ' +
-            '"reasonCode" : "Correcting invoice error", ' +
-            '"createdDate" : "2019-06-03 14:23:24", ' +
-            '"createdById" : "2c92c0f868e558450168f41d281b26c0", ' +
-            '"updatedDate" : "2019-06-03 14:23:29", ' +
-            '"updatedById" : "2c92c0f868e558450168f41d281b26c0", ' +
-            '"cancelledOn" : null, ' +
-            '"cancelledById" : null, ' +
-            '"latestPDFFileId" : "2c92c08d6b1bd06b016b1e9525483791",' +
-            ' "Project__c" : "SSS-000098", ' +
-            '"ClientOwner__c" : "BW-00000385", ' +
-            '"transferredToAccounting" : "No", ' +
-            '"excludeFromAutoApplyRules" : false, ' +
-            '"autoApplyUponPosting" : true }, ' +
-            '{"id" : "2c92c0f86b26b2ae016b41aa16732d6c", ' +
-            '"number" : "CM00000900", ' +
-            '"accountId" : "2c92c0f86b26b2ae016b41a331477ec0", ' +
-            '"currency" : "USD", ' +
-            '"creditMemoDate" : "2019-06-10", ' +
-            '"targetDate" : null, ' +
-            '"postedById" : "2c92c0f868e558450168f41d281b26c0", ' +
-            '"postedOn" : "2019-06-10 09:53:24", ' +
-            '"status" : "Posted", ' +
-            '"amount" : 100.000000000, ' +
-            '"taxAmount" : 0E-9, ' +
-            '"totalTaxExemptAmount" : 0E-9, ' +
-            '"unappliedAmount" : 120000.00, ' +
-            '"refundAmount" : 0E-9, ' +
-            '"appliedAmount" : 100.000000000,' +
-            '"comment" : "", ' +
-            '"source" : "AdhocFromInvoice", ' +
-            '"sourceId" : null, ' +
-            '"referredInvoiceId" : "2c92c0996b3f9eab016b41a71fb86581", ' +
-            '"reasonCode" : "Correcting invoice error", ' +
-            '"createdDate" : "2019-06-10 09:53:14", ' +
-            '"createdById" : "2c92c0f868e558450168f41d281b26c0", ' +
-            '"updatedDate" : "2019-06-10 09:53:24", ' +
-            '"updatedById" : "2c92c0f868e558450168f41d281b26c0", ' +
-            '"cancelledOn" : null, "cancelledById" : null, ' +
-            '"latestPDFFileId" : "2c92c08c6b26b1c0016b41aa41697c15", ' +
-            '"Project__c" : "SSS-000098", ' +
-            '"ClientOwner__c" : "BW-00000385", ' +
-            '"transferredToAccounting" : "No", ' +
-            '"excludeFromAutoApplyRules" : false, ' +
-            '"autoApplyUponPosting" : true }] } ');
+        if (endpoint.contains('NOCREDITMEMOS')) {
+            res.setBody('{"creditmemos" : [ ],"success" : true}');
+        } else if (endpoint.contains('LOTSACREDITMEMOS')) {
+            res.setBody('{ "creditmemos" : [ { ' +
+                '"id" : "2c92c0f86b1bc435016b1e94e99a44a7", ' +
+                '"number" : "CM00000899", ' +
+                '"accountId" : "2c92c0f96b1bd14b016b1e8ff191385b", ' +
+                '"currency" : "USD", ' +
+                '"creditMemoDate" : "2019-06-03", ' +
+                '"targetDate" : null, ' +
+                '"postedById" : "2c92c0f868e558450168f41d281b26c0", ' +
+                '"postedOn" : "2019-06-03 14:23:29", ' +
+                '"status" : "Posted", "amount" : 100.000000000, ' +
+                '"taxAmount" : 0E-9, "totalTaxExemptAmount" : 0E-9, ' +
+                '"unappliedAmount" : 120000.00, "refundAmount" : 0E-9, ' +
+                '"appliedAmount" : 100.000000000, "comment" : "", ' +
+                '"source" : "AdhocFromInvoice", "sourceId" : null,' +
+                ' "referredInvoiceId" : "2c92c0956b1bcd0e016b1e93a1c153be", ' +
+                '"reasonCode" : "Correcting invoice error", ' +
+                '"createdDate" : "2019-06-03 14:23:24", ' +
+                '"createdById" : "2c92c0f868e558450168f41d281b26c0", ' +
+                '"updatedDate" : "2019-06-03 14:23:29", ' +
+                '"updatedById" : "2c92c0f868e558450168f41d281b26c0", ' +
+                '"cancelledOn" : null, ' +
+                '"cancelledById" : null, ' +
+                '"latestPDFFileId" : "2c92c08d6b1bd06b016b1e9525483791",' +
+                ' "Project__c" : "SSS-000098", ' +
+                '"ClientOwner__c" : "BW-00000385", ' +
+                '"transferredToAccounting" : "No", ' +
+                '"excludeFromAutoApplyRules" : false, ' +
+                '"autoApplyUponPosting" : true }, ' +
+                '{"id" : "2c92c0f86b26b2ae016b41aa16732d6c", ' +
+                '"number" : "CM00000900", ' +
+                '"accountId" : "2c92c0f86b26b2ae016b41a331477ec0", ' +
+                '"currency" : "USD", ' +
+                '"creditMemoDate" : "2019-06-10", ' +
+                '"targetDate" : null, ' +
+                '"postedById" : "2c92c0f868e558450168f41d281b26c0", ' +
+                '"postedOn" : "2019-06-10 09:53:24", ' +
+                '"status" : "Posted", ' +
+                '"amount" : 100.000000000, ' +
+                '"taxAmount" : 0E-9, ' +
+                '"totalTaxExemptAmount" : 0E-9, ' +
+                '"unappliedAmount" : 120000.00, ' +
+                '"refundAmount" : 0E-9, ' +
+                '"appliedAmount" : 100.000000000,' +
+                '"comment" : "", ' +
+                '"source" : "AdhocFromInvoice", ' +
+                '"sourceId" : null, ' +
+                '"referredInvoiceId" : "2c92c0996b3f9eab016b41a71fb86581", ' +
+                '"reasonCode" : "Correcting invoice error", ' +
+                '"createdDate" : "2019-06-10 09:53:14", ' +
+                '"createdById" : "2c92c0f868e558450168f41d281b26c0", ' +
+                '"updatedDate" : "2019-06-10 09:53:24", ' +
+                '"updatedById" : "2c92c0f868e558450168f41d281b26c0", ' +
+                '"cancelledOn" : null, "cancelledById" : null, ' +
+                '"latestPDFFileId" : "2c92c08c6b26b1c0016b41aa41697c15", ' +
+                '"Project__c" : "SSS-000098", ' +
+                '"ClientOwner__c" : "BW-00000385", ' +
+                '"transferredToAccounting" : "No", ' +
+                '"excludeFromAutoApplyRules" : false, ' +
+                '"autoApplyUponPosting" : true }], "Success" : true, "NextPage" : "foo" } ');
+        } else {
+            res.setBody('{ "creditmemos" : [ { ' +
+                '"id" : "2c92c0f86b1bc435016b1e94e99a44a7", ' +
+                '"number" : "CM00000899", ' +
+                '"accountId" : "2c92c0f96b1bd14b016b1e8ff191385b", ' +
+                '"currency" : "USD", ' +
+                '"creditMemoDate" : "2019-06-03", ' +
+                '"targetDate" : null, ' +
+                '"postedById" : "2c92c0f868e558450168f41d281b26c0", ' +
+                '"postedOn" : "2019-06-03 14:23:29", ' +
+                '"status" : "Posted", "amount" : 100.000000000, ' +
+                '"taxAmount" : 0E-9, "totalTaxExemptAmount" : 0E-9, ' +
+                '"unappliedAmount" : 120000.00, "refundAmount" : 0E-9, ' +
+                '"appliedAmount" : 100.000000000, "comment" : "", ' +
+                '"source" : "AdhocFromInvoice", "sourceId" : null,' +
+                ' "referredInvoiceId" : "2c92c0956b1bcd0e016b1e93a1c153be", ' +
+                '"reasonCode" : "Correcting invoice error", ' +
+                '"createdDate" : "2019-06-03 14:23:24", ' +
+                '"createdById" : "2c92c0f868e558450168f41d281b26c0", ' +
+                '"updatedDate" : "2019-06-03 14:23:29", ' +
+                '"updatedById" : "2c92c0f868e558450168f41d281b26c0", ' +
+                '"cancelledOn" : null, ' +
+                '"cancelledById" : null, ' +
+                '"latestPDFFileId" : "2c92c08d6b1bd06b016b1e9525483791",' +
+                ' "Project__c" : "SSS-000098", ' +
+                '"ClientOwner__c" : "BW-00000385", ' +
+                '"transferredToAccounting" : "No", ' +
+                '"excludeFromAutoApplyRules" : false, ' +
+                '"autoApplyUponPosting" : true }, ' +
+                '{"id" : "2c92c0f86b26b2ae016b41aa16732d6c", ' +
+                '"number" : "CM00000900", ' +
+                '"accountId" : "2c92c0f86b26b2ae016b41a331477ec0", ' +
+                '"currency" : "USD", ' +
+                '"creditMemoDate" : "2019-06-10", ' +
+                '"targetDate" : null, ' +
+                '"postedById" : "2c92c0f868e558450168f41d281b26c0", ' +
+                '"postedOn" : "2019-06-10 09:53:24", ' +
+                '"status" : "Posted", ' +
+                '"amount" : 100.000000000, ' +
+                '"taxAmount" : 0E-9, ' +
+                '"totalTaxExemptAmount" : 0E-9, ' +
+                '"unappliedAmount" : 120000.00, ' +
+                '"refundAmount" : 0E-9, ' +
+                '"appliedAmount" : 100.000000000,' +
+                '"comment" : "", ' +
+                '"source" : "AdhocFromInvoice", ' +
+                '"sourceId" : null, ' +
+                '"referredInvoiceId" : "2c92c0996b3f9eab016b41a71fb86581", ' +
+                '"reasonCode" : "Correcting invoice error", ' +
+                '"createdDate" : "2019-06-10 09:53:14", ' +
+                '"createdById" : "2c92c0f868e558450168f41d281b26c0", ' +
+                '"updatedDate" : "2019-06-10 09:53:24", ' +
+                '"updatedById" : "2c92c0f868e558450168f41d281b26c0", ' +
+                '"cancelledOn" : null, "cancelledById" : null, ' +
+                '"latestPDFFileId" : "2c92c08c6b26b1c0016b41aa41697c15", ' +
+                '"Project__c" : "SSS-000098", ' +
+                '"ClientOwner__c" : "BW-00000385", ' +
+                '"transferredToAccounting" : "No", ' +
+                '"excludeFromAutoApplyRules" : false, ' +
+                '"autoApplyUponPosting" : true }] } ');
+        }
         return res;
     }
 
@@ -434,7 +501,7 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
             '"recognizedRevenueAccountingCodeType" : "SalesRevenue", ' +
             '"revenueScheduleNumber" : null, ' +
             '"revenueRecognitionRuleName" : "Recognize upon invoicing" }, ' +
-            '"creditTaxItems" : [ ] } ], "success" : true }');
+            '"creditTaxItems" : [ ] } ], "success" : true}');
         return res;
     }
 
@@ -655,34 +722,84 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
         if (endpoint.contains('ThrowException')) {
             throw new Util.BWException('Callout exception');
         } else {
-            res.setBody('{ "items" : [ ' +
-                '{ "id" : "2c92c0f96b695c76016b6c860fcf77f5", ' +
-                '"amount" : 20.000000000, ' +
-                '"amountWithoutTax" : 20.000000000, ' +
-                '"beAppliedAmount" : 0E-9, ' +
-                '"balance" : 20.000000000, ' +
-                '"sku" : "SKU-00000002", ' +
-                '"skuName" : "Utility Credit", ' +
-                '"serviceStartDate" : "2017-06-01", ' +
-                '"serviceEndDate" : "2017-06-30", ' +
-                '"sourceItemType" : "InvoiceDetail", ' +
-                '"sourceItemId" : "2c92c0856ae3a471016ae5ebd90e5445", ' +
-                '"createdDate" : "2019-06-18 17:37:33", ' +
-                '"createdById" : "2c92c0f968a20f350168ca0efb2309e7", ' +
-                '"updatedDate" : "2019-06-18 17:37:33", ' +
-                '"updatedById" : "2c92c0f968a20f350168ca0efb2309e7", ' +
-                '"comment" : "", ' +
-                '"subscriptionId" : "2c92c0f96ae3b195016ae5e366470bff",' +
-                ' "financeInformation" : { ' +
-                '"deferredRevenueAccountingCode" : "Usage Revenue", ' +
-                '"deferredRevenueAccountingCodeType" : "SalesRevenue", ' +
-                '"recognizedRevenueAccountingCode" : "Usage Revenue", ' +
-                '"recognizedRevenueAccountingCodeType" : "SalesRevenue", ' +
-                '"revenueScheduleNumber" : null, ' +
-                '"revenueRecognitionRuleName" : "Recognize upon invoicing" ' +
-                '} }' +
-                '] }');
+        res.setBody('{ "items" : [ ' +
+            '{ "id" : "2c92c0f96b695c76016b6c860fcf77f5", ' +
+            '"amount" : 20.000000000, ' +
+            '"amountWithoutTax" : 20.000000000, ' +
+            '"beAppliedAmount" : 0E-9, ' +
+            '"balance" : 20.000000000, ' +
+            '"sku" : "SKU-00000002", ' +
+            '"skuName" : "Utility Credit", ' +
+            '"serviceStartDate" : "2017-06-01", ' +
+            '"serviceEndDate" : "2017-06-30", ' +
+            '"sourceItemType" : "InvoiceDetail", ' +
+            '"sourceItemId" : "2c92c0856ae3a471016ae5ebd90e5445", ' +
+            '"createdDate" : "2019-06-18 17:37:33", ' +
+            '"createdById" : "2c92c0f968a20f350168ca0efb2309e7", ' +
+            '"updatedDate" : "2019-06-18 17:37:33", ' +
+            '"updatedById" : "2c92c0f968a20f350168ca0efb2309e7", ' +
+            '"comment" : "", ' +
+            '"subscriptionId" : "2c92c0f96ae3b195016ae5e366470bff",' +
+            ' "financeInformation" : { ' +
+            '"deferredRevenueAccountingCode" : "Usage Revenue", ' +
+            '"deferredRevenueAccountingCodeType" : "SalesRevenue", ' +
+            '"recognizedRevenueAccountingCode" : "Usage Revenue", ' +
+            '"recognizedRevenueAccountingCodeType" : "SalesRevenue", ' +
+            '"revenueScheduleNumber" : null, ' +
+            '"revenueRecognitionRuleName" : "Recognize upon invoicing" ' +
+            '} }' +
+            '] }');
         }
+        return res;
+    }
+
+    private static HttpResponse createPayment(String endpoint) {
+        HttpResponse res = getJSON();
+        res.setBody('{' +
+            '"id" : "2c92c0fa6c2d46c2016c4593e3f47daf",' +
+            '"number" : "P-00000255",' +
+            '"status" : "Processed",' +
+            '"type" : "External",' +
+            '"accountId" : "2c92c0f96c2d540e016c443c4263679d",' +
+            '"amount" : 5.020000000,' +
+            '"appliedAmount" : 0E-9,' +
+            '"unappliedAmount" : 5.020000000,' +
+            '"refundAmount" : 0E-9,' +
+            '"creditBalanceAmount" : 0E-9,' +
+            '"currency" : "USD",' +
+            '"effectiveDate" : "2019-07-02",' +
+            '"comment" : null,' +
+            '"paymentMethodId" : "2c92c0f868a2023a0168a79e7f4f3f70",' +
+            '"paymentMethodSnapshotId" : null,' +
+            '"authTransactionId" : null,' +
+            '"bankIdentificationNumber" : null,' +
+            '"gatewayId" : null,' +
+            '"gatewayOrderId" : null,' +
+            '"gatewayResponse" : null,' +
+            '"gatewayResponseCode" : null,' +
+            '"gatewayState" : "NotSubmitted",' +
+            '"markedForSubmissionOn" : null,' +
+            '"referenceId" : null,' +
+            '"secondPaymentReferenceId" : null,' +
+            '"softDescriptor" : null,' +
+            '"softDescriptorPhone" : null,' +
+            '"submittedOn" : null,' +
+            '"settledOn" : null,' +
+            '"cancelledOn" : null,' +
+            '"createdDate" : "2019-07-30 21:10:15",' +
+            '"createdById" : "2c92c0f96a01b91f016a050fad50160a",' +
+            '"updatedDate" : "2019-07-30 21:10:15",' +
+            '"updatedById" : "2c92c0f96a01b91f016a050fad50160a",' +
+            '"TransactionId__c" : null,' +
+            '"ClientOwner__c" : null,' +
+            '"financeInformation" : {' +
+            '"bankAccountAccountingCode" : "11504 - Check",' +
+            '"bankAccountAccountingCodeType" : "Cash",' +
+            '"unappliedPaymentAccountingCode" : "20006 - Trust Payable",' +
+            '"unappliedPaymentAccountingCodeType" : "OtherLiabilities",' +
+            '"transferredToAccounting" : "No"' +
+            '},' +
+            '"success" : true}');
         return res;
     }
 }
