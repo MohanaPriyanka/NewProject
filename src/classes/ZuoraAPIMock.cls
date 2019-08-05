@@ -59,6 +59,8 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
             return getDebitMemos();
         } else if (endpoint.contains('/v1/payments')) {
             return createPayment();
+        } else if (endpoint.contains('/v1/paymentgateways')) {
+            return getGateways();
         } else {
             return null;
         }
@@ -748,6 +750,28 @@ global with sharing class ZuoraAPIMock implements HttpCalloutMock {
             '"revenueRecognitionRuleName" : "Recognize upon invoicing" ' +
             '} }' +
             '] }');
+        return res;
+    }
+
+    private static HttpResponse getGateways() {
+        HttpResponse res = getJSON();
+        res.setBody('{ "paymentgateways" : [ { ' +
+            '"id" : "2c92c0f9699ec9fe0169a68ab88b6ae3", ' +
+            '"name" : "Default Gateway Name", ' +
+            '"type" : "Authorize", ' +
+            '"isDefault" : true, ' +
+            '"isActive" : true }, { ' +
+            '"id" : "2c92c0f8699ebeac0169a6891cd862d1",' +
+            ' "name" : "Bluewave Testing Auth.Net", ' +
+            '"type" : "Authorize", ' +
+            '"isDefault" : false, ' +
+            '"isActive" : true }, { ' +
+            '"id" : "2c92c0f9697a318001698330cdee1e81", ' +
+            '"name" : "Not Default Gateway", ' +
+            '"type" : "Sample", ' +
+            '"isDefault" : false, ' +
+            '"isActive" : true } ], ' +
+            '"success" : true }');
         return res;
     }
 }

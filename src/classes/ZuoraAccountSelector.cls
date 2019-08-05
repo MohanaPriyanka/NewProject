@@ -7,6 +7,10 @@ public without sharing class ZuoraAccountSelector {
         public List<ZuoraAPI.ZuoraAccount> records;
     }
 
+    public class QueryResultGateways{
+        public List<ZuoraAPI.PaymentGateway> paymentgateways;
+    }
+
     public class AccountWithPaymentMethod{
         @AuraEnabled
         public ZuoraAPI.ZuoraAccount account;
@@ -26,11 +30,27 @@ public without sharing class ZuoraAccountSelector {
     }
 
     @AuraEnabled
+    public static ZuoraAPI.PaymentGateway getGatewayIdFromGatewayName (String gatewayName){
+        HttpResponse response = ZuoraAPIHelper.callJsonEndpoint( 'GET', '/v1/paymentgateways', null, false );
+        QueryResultGateways gatewayList = (QueryResultGateways)JSON.deserialize(response.getBody(), QueryResultGateways.class);
+        ZuoraAPI.PaymentGateway selectedGateway;
+        for (ZuoraAPI.PaymentGateway gateway : gatewayList.paymentgateways){
+            if (gatewayName == null && gateway.isDefault){
+                selectedGateway = gateway;
+            } else if (gateway.isActive && gateway.name == gatewayName){
+                selectedGateway = gateway;
+            }
+        }
+        return selectedGateway;
+    }
+
+    @AuraEnabled
     public static AccountWithPaymentMethod getAccountWithDefaultPaymentMethod (String sfAccountId){
         String zuoraAcctId = getZuoraAccountFromSFAccount(sfAccountId);
         ZuoraAPI.ZuoraAccount acct = getAccountFromZuora(zuoraAcctId);
         AccountWithPaymentMethod acctWithMethod = new AccountWithPaymentMethod();
         acctWithMethod.account = acct;
+        acctWithMethod.account.PaymentGateway = getGatewayIdFromGatewayName(acct.PaymentGateway).Id;
         if (acct.DefaultPaymentMethodId != null){
             acctWithMethod.PaymentMethod = ZuoraPaymentPageController.getPaymentMethod(acct.DefaultPaymentMethodId);
         }
@@ -49,6 +69,7 @@ public without sharing class ZuoraAccountSelector {
             'PaymentTerm, ' +
             'Status, ' +
             'TotalInvoiceBalance, ' +
+            'PaymentGateway, ' +
             'Batch, ' +
             'Name, ' +
             'CrmId, ' +

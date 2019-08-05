@@ -93,6 +93,8 @@ public with sharing class ZuoraAPI {
         public Integer BillCycleDay;
         public String BcdSettingOption;
         public String PaymentTerm;
+        @AuraEnabled
+        public String PaymentGateway;
         public String Status;
         public Integer TotalInvoiceBalance;
         public String UpdatedById;
@@ -628,5 +630,12 @@ public with sharing class ZuoraAPI {
         public String gatewayId;
         public String currency_Zreserved;
         public Decimal amount;
+    }
+
+    public class PaymentGateway {
+        public String id;
+        public String name;
+        public Boolean isActive;
+        public Boolean isDefault;
     }
 }

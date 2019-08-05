@@ -75,12 +75,12 @@ public with sharing class ZuoraPaymentPageController {
     }
 
     @AuraEnabled
-    public static PaymentResponse makePayment(String zuoraAcctId, String paymentMethodId, Decimal paymentAmount) {
+    public static PaymentResponse makePayment(String zuoraAcctId, String gatewayId, String paymentMethodId, Decimal paymentAmount) {
         ZuoraAPI.Payment newPayment = new ZuoraAPI.Payment();
         newPayment.accountId = zuoraAcctId;
         newPayment.paymentMethodId = paymentMethodId;
         newPayment.type = 'Electronic';
-        newPayment.gatewayId = '2c92c0f9699ec9fe0169a68ab88b6ae3';
+        newPayment.gatewayId = gatewayId;
         newPayment.currency_Zreserved = 'USD';
         newPayment.amount = paymentAmount;
 

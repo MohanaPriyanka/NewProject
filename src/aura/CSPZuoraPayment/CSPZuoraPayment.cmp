@@ -70,7 +70,7 @@
                     </aura:if>
                     <span class="slds-p-around_small">
                       <lightning:buttonIcon
-                        iconName="utility:company"
+                        iconName="utility:date_time"
                         size="large"
                         variant="bare-inverse"
                         onclick="{!c.toggleCardAutopay}"/>
@@ -179,7 +179,7 @@
                     </aura:if>
                     <span class="slds-p-around_small">
                       <lightning:buttonIcon
-                        iconName="utility:company"
+                        iconName="utility:money"
                         size="large"
                         variant="bare-inverse"
                         onclick="{!c.toggleCardPaymentAmount}"/>
@@ -245,7 +245,7 @@
                   </aura:if>
                   <span class="slds-p-around_small">
                     <lightning:buttonIcon
-                      iconName="utility:company"
+                      iconName="utility:identity"
                       size="large"
                       variant="bare-inverse"
                       onclick="{!c.toggleCardPaymentMethod}"/>

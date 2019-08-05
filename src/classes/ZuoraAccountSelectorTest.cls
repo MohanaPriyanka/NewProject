@@ -32,4 +32,14 @@ public with sharing class ZuoraAccountSelectorTest {
         System.assertEquals(false, account.AutoPay);
         System.assertEquals(230.00, account.Balance);
     }
+
+    @IsTest
+    static void testGetGateway() {
+        ZuoraAPI.PaymentGateway shouldBeDefault = ZuoraAccountSelector.getGatewayIdFromGatewayName(null);
+        ZuoraAPI.PaymentGateway shouldNotBeDefault = ZuoraAccountSelector.getGatewayIdFromGatewayName('Not Default Gateway');
+
+        System.assertEquals('Default Gateway Name', shouldBeDefault.name);
+        System.assertEquals('Not Default Gateway', shouldNotBeDefault.name);
+        System.assertNotEquals(shouldBeDefault.id, shouldNotBeDefault.id);
+    }
 }

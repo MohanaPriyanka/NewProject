@@ -57,6 +57,7 @@ public with sharing class ZuoraPaymentPageControllerTest {
         ZuoraPaymentPageController.PaymentResponse payResponse;
         payResponse = ZuoraPaymentPageController.makePayment(
             acctWithPay.account.Id,
+            acctWithPay.account.PaymentGateway,
             acctWithPay.paymentMethod.Id,
             23.00
         );

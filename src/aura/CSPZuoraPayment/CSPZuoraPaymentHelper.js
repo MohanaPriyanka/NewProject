@@ -3,7 +3,8 @@
         let actionGetBalance = component.get("c.getAccountAndPayMethodFromZuora");
 
         actionGetBalance.setParams({
-            "sfAccountId" : component.get("v.recordId")
+           // "sfAccountId" : component.get("v.recordId")
+            "sfAccountId" : "a714B0000002YPy"
         });
 
         actionGetBalance.setCallback(this,function(resp) {
@@ -173,10 +174,11 @@
     makeZPayment : function(component, event, helper) {
         let actionMakePayment = component.get("c.makePayment");
         let oldAutopayValue = component.get("v.zuoraAccountAndPayMethod.account.AutoPay");
-        let newAutopayValue = component.get("v.newPaymentMethodId");
+        let newAutopayValue = component.get("v.newAutopaySelection");
 
         actionMakePayment.setParams({
             "zuoraAcctId" : component.get("v.zuoraAccountAndPayMethod.account.Id"),
+            "gatewayId" : component.get("v.zuoraAccountAndPayMethod.account.PaymentGateway"),
             "paymentMethodId" : component.get("v.newPaymentMethodId"),
             "paymentAmount" : component.get("v.paymentAmount")
         });
