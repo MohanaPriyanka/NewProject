@@ -1,7 +1,7 @@
 /*************************************************************************************
- * Created By: peteryao on 1/20/19  
- * Description: 
- * Test: 
+ * Created By: peteryao on 1/20/19
+ * Description:
+ * Test:
  *************************************************************************************/
 @IsTest
 public with sharing class AccountsSelectorTest {
@@ -33,5 +33,36 @@ public with sharing class AccountsSelectorTest {
             AccountsSelector.selectWithSendBillsContact(new Set<Id>{autoEmailerAccount.Id})[0].Send_Bills_Contact__r.Email,
             'Expected to find an account with send bills contact'
         );
+    }
+
+    @IsTest public static void testSelectOne() {
+        List<Account> accountIds = (new List<Account>([SELECT Id FROM Account]));
+        AccountsSelector accountsSelector = new AccountsSelector();
+        System.assert(accountsSelector.selectOne(accountIds.get(0).Id) != null, 'Expected a single account');
+    }
+    @IsTest public static void testSelectAll() {
+        Set<Id> accountIds = (new Map<Id, Account>([SELECT Id FROM Account])).keySet();
+        AccountsSelector accountsSelector = new AccountsSelector();
+        System.assert(accountsSelector.selectAll(accountIds) != null, 'Expected a list of accounts');
+    }
+
+    @IsTest public static void testSelectPropertyAccountsByLeadIds() {
+        Lead newLead = new Lead(
+            FirstName = 'test',
+            LastName = 'test',
+            Company = 'Test Company'
+        );
+        insert newLead;
+
+        Id propertyRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Property').getRecordTypeId();
+        Account propertyAccount = new Account(
+            RecordTypeId = propertyRecordTypeId,
+            Lead__c = newLead.Id,
+            Name = 'Test Account'
+        );
+        insert propertyAccount;
+
+        AccountsSelector accountsSelector = new AccountsSelector();
+        System.assertEquals(accountsSelector.selectPropertyAccountsByLeadIds(new Set<Id>{newLead.Id}).size(), 1, 'Expected only one property account to be returned');
     }
 }
