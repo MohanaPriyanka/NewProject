@@ -72,9 +72,7 @@ public with sharing class LeadDispatcher {
         }
 
         if (result.updatedSwitchLeads.size()> 0 ){
-            LeadService leadService = new LeadService();
             UtilityLoadZoneService.updateLZUL(result.updatedSwitchLeads, result.oldSwitchMap);
-            leadService.setupPropertyAccount(result.updatedSwitchLeads, result.oldSwitchMap);
 
         }
 
@@ -94,21 +92,21 @@ public with sharing class LeadDispatcher {
         }
     }
 
-    public void assignPartner(List<Lead> leadList){
-        //Handle all leads that do not have a Partner yet - ie from Website or Campaigns
-        //will take the place of ReferralCodeHandler after we retire the old LeadTriggerHandler Class
-
-        Partner__c defaultCSPartner = PartnerSelector.selectDefaultCSPartner();
-
-        for (Lead lead : leadList) {
-            if (lead.Product_line__c == 'Community Solar' && lead.Partner_Lookup__c == null) {
-                lead.Partner_Lookup__c = defaultCSPartner.Id;
-                lead.bs_Sales_ID__c = defaultCSPartner.Default_Sales_Rep__r.Id;
-                lead.Partner_Email__c = defaultCSPartner.Email__c;
-            }
-        }
-
-    }
+//    public void assignPartner(List<Lead> leadList){
+//        //Handle all leads that do not have a Partner yet - ie from Website or Campaigns
+//        //will take the place of ReferralCodeHandler after we retire the old LeadTriggerHandler Class
+//
+//        Partner__c defaultCSPartner = PartnerSelector.selectDefaultCSPartner();
+//
+//        for (Lead lead : leadList) {
+//            if (lead.Product_line__c == 'Community Solar' && lead.Partner_Lookup__c == null) {
+//                lead.Partner_Lookup__c = defaultCSPartner.Id;
+//                lead.bs_Sales_ID__c = defaultCSPartner.Default_Sales_Rep__r.Id;
+//                lead.Partner_Email__c = defaultCSPartner.Email__c;
+//            }
+//        }
+//
+//    }
 
 
 

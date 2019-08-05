@@ -143,14 +143,10 @@ private class CSQualificationTestclass {
             WHERE Id = :lead.Id
         ];
 
-        List<Account> propAccounts = [SELECT Id, Name FROM Account WHERE Lead__r.Id = :checkLead.Id];
-
 
         System.assertEquals('Qualified', checkLead.Status);
         System.assertNotEquals(null, checkLead.Personal_Credit_Report__c);
         System.assertEquals('700', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c );
-        System.assert(propAccounts.size() == 1, 'No Property Account created');
-        System.assertEquals('Post Testcase', propAccounts[0].Name);
     }
 
     @IsTest
@@ -192,13 +188,10 @@ private class CSQualificationTestclass {
             WHERE Id = :lead.Id
         ];
 
-        List<Account> propAccounts = [SELECT Id, Name FROM Account WHERE Lead__r.Id = :checkLead.Id];
 
         System.assertEquals('Qualified', checkLead.Status);
         System.assertNotEquals(null, checkLead.Personal_Credit_Report__c);
         System.assertEquals('9999', checkLead.Personal_Credit_Report__r.LASERCA__Credit_Score_TransUnion__c );
-        System.assert(propAccounts.size() == 1, 'No Property Account created');
-        System.assertEquals('Post Testcase', propAccounts[0].Name);
 
     }
 
