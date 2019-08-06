@@ -11,7 +11,7 @@ public class CSCLPTestclass {
 											AccountId = clientAccount.Id);
 		insert clientContact;
 
-		User clientUser = new User (ProfileId = [SELECT Id from Profile WHERE Name = 'CS Client Portal User'].Id,
+		User clientUser = new User (ProfileId = [SELECT Id from Profile WHERE Name = 'CS Client Partner Login'].Id,
 									FirstName = 'Test',
 									LastName = 'BFG_User',
 									Username = 'clientUser@test.com',

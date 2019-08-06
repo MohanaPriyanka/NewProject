@@ -21,7 +21,7 @@ private class ReportSenderTest {
         insert clientContact;
 
         User clientUser = new User (
-            ProfileId = [SELECT Id FROM Profile WHERE Name = 'CS Client Portal User'].Id,
+            ProfileId = [SELECT Id FROM Profile WHERE Name = 'CS Client Partner Login'].Id,
             FirstName = 'Test',
             LastName = 'BFG_User',
             Username = 'communityuser@test.com',
