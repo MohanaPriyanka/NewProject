@@ -201,19 +201,6 @@
         <type>Date</type>
     </fields>
     <fields>
-        <fullName>Shared_Solar_System__c</fullName>
-        <externalId>false</externalId>
-        <formula>Utility_Account_Subscription__r.Shared_Solar_System_Name__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>The CS Project a customer is subscribed to</inlineHelpText>
-        <label>Shared Solar System</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Transferring_Subsc_to_Another_UAS__c</fullName>
         <externalId>false</externalId>
         <formula>Utility_Account_Subscription__r.Transferring_Subsc_to_Another_UAS__c</formula>
