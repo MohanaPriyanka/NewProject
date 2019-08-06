@@ -4,9 +4,11 @@
     <customButtons>Opt_in_for_Text_Messages</customButtons>
     <customButtons>Opt_out_for_Text_Messages</customButtons>
     <customButtons>LASER_Credit_Access_Custom</customButtons>
+    <excludeButtons>DataDotComClean</excludeButtons>
     <excludeButtons>DisableCustomerPortal</excludeButtons>
     <excludeButtons>DisablePrmSuperUser</excludeButtons>
     <excludeButtons>EnablePrmSuperUser</excludeButtons>
+    <excludeButtons>RequestUseSfdc</excludeButtons>
     <excludeButtons>Share</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
     <layoutSections>
@@ -173,6 +175,9 @@
         <style>CustomLinks</style>
     </layoutSections>
     <quickActionList>
+        <quickActionListItems>
+            <quickActionName>Contact.Customer_Care_Case</quickActionName>
+        </quickActionListItems>
         <quickActionListItems>
             <quickActionName>FeedItem.TextPost</quickActionName>
         </quickActionListItems>

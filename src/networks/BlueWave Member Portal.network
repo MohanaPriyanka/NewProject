@@ -13,6 +13,7 @@
     <enableGuestFileAccess>false</enableGuestFileAccess>
     <enableInvitation>false</enableInvitation>
     <enableKnowledgeable>false</enableKnowledgeable>
+    <enableMemberVisibility>true</enableMemberVisibility>
     <enableNicknameDisplay>false</enableNicknameDisplay>
     <enablePrivateMessages>false</enablePrivateMessages>
     <enableReputation>false</enableReputation>
@@ -23,7 +24,7 @@
     <enableTopicSuggestions>false</enableTopicSuggestions>
     <enableUpDownVote>false</enableUpDownVote>
     <forgotPasswordTemplate>Emails_to_Delete/CommunityForgotPasswordEmailTemplate</forgotPasswordTemplate>
-    <gatherCustomerSentimentData>false</gatherCustomerSentimentData>
+    <gatherCustomerSentimentData>true</gatherCustomerSentimentData>
     <navigationLinkSet>
         <navigationMenuItem>
             <label>My Account</label>
@@ -86,7 +87,7 @@
     </navigationLinkSet>
     <networkMemberGroups>
         <permissionSet>AccessToModifyCSPortal</permissionSet>
-        <profile>admin</profile>
+        <profile>Admin</profile>
         <profile>customer community plus login user</profile>
         <profile>community solar community user</profile>
     </networkMemberGroups>

@@ -83,11 +83,11 @@
             cmp.set('v.obj', 'custom1');
             cmp.set('v.preSelection', cmp.get('v.selectedRows_custom1'));
         }
-//        if(cmp.get('v.mydata_custom2') && cmp.get('v.mydata_custom2').length > 0){
-//            cmp.set('v.mydata', cmp.get('v.mydata_custom2'));
-//            cmp.set('v.obj', 'custom2');
-//            cmp.set('v.preSelection', cmp.get('v.selectedRows_custom2'));
-//        }
+        if(cmp.get('v.mydata_custom2') && cmp.get('v.mydata_custom2').length > 0){
+            cmp.set('v.mydata', cmp.get('v.mydata_custom2'));
+            cmp.set('v.obj', 'custom2');
+            cmp.set('v.preSelection', cmp.get('v.selectedRows_custom2'));
+        }
         console.log(cmp.get('v.mydata'));
      	
         // Pre-selected Rows
@@ -126,9 +126,9 @@
         else if(obj == 'custom1'){
             cmp.set("v.selectedRows_custom1", selectedRows);
         }        
-//        else if(obj == 'custom2'){
-//            cmp.set("v.selectedRows_custom2", selectedRows);   
-//        }        
+        else if(obj == 'custom2'){
+            cmp.set("v.selectedRows_custom2", selectedRows);   
+        }        
 
     },
 
