@@ -9,6 +9,7 @@
   <aura:attribute name="showSpinner" type="Boolean" default="true"/>
   <aura:attribute name="showAutopaySection" type="Boolean" default="true"/>
   <aura:attribute name="showPostSubmitPage" type="Boolean" default="false"/>
+  <aura:attribute name="zuoraIsLoading" type="Boolean" default="false"/>
 
   <aura:attribute name="zuoraAccountAndPayMethod" type="Object"/>
   <aura:attribute name="makePaymentOrManageAutopay" type="Boolean" default="true"/>
@@ -25,6 +26,7 @@
         {'label': 'Full Balance $$', 'value': 'fullBalance'},
         {'label': 'Other', 'value': 'customAmount'}]"/>
   <aura:attribute name="newPaymentMethodType" type="String"/>
+  <aura:attribute name="userSelectedPaymentMethod" type="String"/>
   <aura:attribute name="currentPaymentMethod" type="String"/>
   <aura:attribute name="newPaymentMethodId" type="String"/>
   <aura:attribute name="missingFieldsMessage" type="String" default="Please complete all required fields to continue"/>
@@ -251,14 +253,18 @@
                   <div class="slds-col slds-size_12-of-12">
                     <div class="slds-form-element slds-size_1-of-1 slds-large-size_2-of-2 slds-p-top_medium slds-p-bottom_medium">
                       <ui:inputSelect class="slds-input"
-                                      value="{!v.newPaymentMethodType}">
+                                      value="{!v.userSelectedPaymentMethod}"
+                                      change="{!c.onPaymentMethodTypeChange}">
                         <ui:inputSelectOption
-                          label="{!v.zuoraAccountAndPayMethod.account.AutoPay ? 'Use existing payment method' : 'Select Payment Method'}"
-                          text="New"/>
+                          label="{!v.zuoraAccountAndPayMethod.account.AutoPay ? 'Use existing payment method' : 'Add a new Payment Method'}"
+                          text=""/>
                         <ui:inputSelectOption label="Add a new Bank Account" text="ACH"/>
                         <ui:inputSelectOption label="Add a new Credit Card" text="Credit Card"/>
                       </ui:inputSelect>
                     </div>
+                    <aura:if isTrue="{!v.zuoraIsLoading}">
+                      Loading...
+                    </aura:if>
                     <div class="slds-p-top_medium slds-p-bottom_medium">
                       <c:ZuoraPaymentPage paymentType="{!v.newPaymentMethodType}"/>
                     </div>
@@ -544,14 +550,18 @@
                       <div class="slds-col slds-size_7-of-12">
                         <div class="slds-form-element slds-size_1-of-1 slds-large-size_2-of-2 slds-p-top_medium slds-p-bottom_medium">
                           <ui:inputSelect class="slds-input"
-                                          value="{!v.newPaymentMethodType}">
+                                          value="{!v.userSelectedPaymentMethod}"
+                                          change="{!c.onPaymentMethodTypeChange}">
                             <ui:inputSelectOption
-                              label="{!v.zuoraAccountAndPayMethod.account.AutoPay ? 'Use existing payment method' : 'Select Payment Method'}"
-                              text="New"/>
+                              label="{!v.zuoraAccountAndPayMethod.account.AutoPay ? 'Use existing payment method' : 'Add a new Payment Method'}"
+                              text=""/>
                             <ui:inputSelectOption label="Add a new Bank Account" text="ACH"/>
                             <ui:inputSelectOption label="Add a new Credit Card" text="Credit Card"/>
                           </ui:inputSelect>
                         </div>
+                        <aura:if isTrue="{!v.zuoraIsLoading}">
+                          Loading...
+                        </aura:if>
                         <div class="slds-p-top_medium slds-p-bottom_medium">
                           <c:ZuoraPaymentPage paymentType="{!v.newPaymentMethodType}"/>
                         </div>

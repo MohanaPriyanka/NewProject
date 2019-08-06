@@ -2,7 +2,7 @@
         var actionGetBalance = component.get("c.getAccountWithDefaultPaymentMethod");
 
         actionGetBalance.setParams({
-            "sfAccountId" : component.get("v.recordId")
+            "sfAccountId" : "a714B0000002YPy"
         });
 
         actionGetBalance.setCallback(this,function(resp){

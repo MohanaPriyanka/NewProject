@@ -25,8 +25,12 @@
             helper.checkAllRequiredFields(component, event, helper);
         } else {
             var errorMessage = 'A system error occurred while submitting your payment method. We have been notified and will contact you with further instructions.';
-            this.finishAndShowMessage(component, event, helper, errorMessage);
+            helper.finishAndShowMessage(component, event, helper, errorMessage);
         }
+    },
+
+    onPaymentMethodTypeChange : function(component, event, helper) {
+        helper.refreshIFrame(component, event, helper);
     },
 
     agreeToAutopay : function(component, event, helper) {
@@ -55,13 +59,13 @@
         if (component.get("v.makePaymentOrManageAutopay")){
             component.set("v.showCardPaymentAmount", true);
         } else {
-            component.set("v.showCardPaymentMethod", true);
+            helper.openPaymentMethodCard(component, event, helper);
         }
     },
 
     closeAmountOpenMethod : function(component, event, helper) {
         component.set("v.showCardPaymentAmount", false);
-        component.set("v.showCardPaymentMethod", true);
+        helper.openPaymentMethodCard(component, event, helper);
     },
 
     returnToMyAccount : function(component, event, helper) {

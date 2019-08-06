@@ -3,7 +3,7 @@
         let actionGetBalance = component.get("c.getAccountAndPayMethodFromZuora");
 
         actionGetBalance.setParams({
-            "sfAccountId" : component.get("v.recordId")
+            "sfAccountId" : "a714B0000002YPy"
         });
 
         actionGetBalance.setCallback(this,function(resp) {
@@ -61,7 +61,7 @@
             // if not on autopay, start on autopay card
             component.set("v.showCardAutopay", true);
         } else {
-            component.set("v.showCardPaymentMethod", true);
+            this.openPaymentMethodCard(component, event, helper);
         }
     },
 
@@ -244,4 +244,32 @@
         component.set("v.showEnabledButton", false);
     },
 
+    openPaymentMethodCard : function(component, event, helper) {
+        component.set("v.showCardPaymentMethod",true);
+        let unSelected = component.get("v.currentPaymentMethod");
+        if (unSelected === 'Enter new'){
+            component.set("v.userSelectedPaymentMethod",'ACH');
+            this.generateIFrame(component, event, helper);
+        }
+    },
+
+    // Closing and Opening the payment method card has the same effect as re-creating the ZuoraPaymentPage component.
+    // Do this to prevent the bug where a customer switches between ACH and CC and the I frame doesn't reload:
+    refreshIFrame : function(component, event, helper) {
+        component.set("v.showCardPaymentMethod",false);
+        component.set("v.showCardPaymentMethod",true);
+        this.generateIFrame(component, event, helper);
+    },
+
+    generateIFrame : function(component, event, helper) {
+        component.set("v.zuoraIsLoading",true);
+
+        // Gives time for the Zuora Payment Page I-Frame to load. Ideally the timeout would not be a hard coded:
+        window.setTimeout(function() {
+            component.set("v.newPaymentMethodType", component.get("v.userSelectedPaymentMethod"));
+        }, 2000);
+        window.setTimeout(function() {
+            component.set("v.zuoraIsLoading",false);
+        }, 2500);
+    },
 })
