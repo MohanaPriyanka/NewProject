@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>Utility_Account_Subscription__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Related to Utility Account Subscription object, populated via code</inlineHelpText>
+        <label>Utility Account Subscription</label>
+        <referenceTo>Utility_Account_Subscription__c</referenceTo>
+        <relationshipLabel>Client Utility Account Subscriptions</relationshipLabel>
+        <relationshipName>Client_Utility_Account_Subscriptions</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+</CustomObject>
