@@ -21,10 +21,10 @@
 -->
         <design:attribute name="mydata_custom1" label="Collection - Content Documents"/>
         <design:attribute name="selectedRows_custom1" label="Output Selected Content Documents"/>
-<!--
-        <design:attribute name="mydata_custom2" label="Collection - Plat Details"/>
-        <design:attribute name="selectedRows_custom2" label="Output Selected Plat Details"/>
- -->
+
+        <design:attribute name="mydata_custom2" label="Collection - UAS"/>
+        <design:attribute name="selectedRows_custom2" label="Output Selected UAS"/>
+
 
     <design:attribute name="column01_icon" label="Column01_iconName"/>
     <design:attribute name="column01_label" label="Column01_label"/>
