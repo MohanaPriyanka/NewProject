@@ -86,15 +86,6 @@
             <template>CS_Application_Email_Notifications/Lead_Assignment_Notification</template>
         </ruleEntry>
         <ruleEntry>
-            <assignedTo>nate@questenergysolutions.com</assignedTo>
-            <assignedToType>User</assignedToType>
-            <criteriaItems>
-                <field>Lead.Partner_Name__c</field>
-                <operation>equals</operation>
-                <value>Quest Energy Solutions</value>
-            </criteriaItems>
-        </ruleEntry>
-        <ruleEntry>
             <assignedTo>C_I</assignedTo>
             <assignedToType>Queue</assignedToType>
             <criteriaItems>
