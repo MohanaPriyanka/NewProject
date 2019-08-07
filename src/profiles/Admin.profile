@@ -62,6 +62,11 @@
         <visible>true</visible>
     </applicationVisibilities>
     <applicationVisibilities>
+        <application>Support_Ops_Console</application>
+        <default>false</default>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <applicationVisibilities>
         <application>Vivint_Solar</application>
         <default>false</default>
         <visible>true</visible>
@@ -32010,6 +32015,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Subscription__c.Parent_Account_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Account_Subscription__c.Partner__c</field>
         <readable>true</readable>
@@ -32107,6 +32117,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Account_Subscription__c.Update_Dummy__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Subscription__c.Utility_Account_Log_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

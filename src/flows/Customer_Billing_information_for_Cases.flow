@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <interviewLabel>Customer Billing information for Cases {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Customer Billing information for Cases</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <screens>
+        <name>Billing_Information</name>
+        <label>Billing Information</label>
+        <locationX>235</locationX>
+        <locationY>126</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>PreviewAccountBilling</name>
+            <extensionName>c:PreviewAccountBilling</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>accountID</name>
+                <value>
+                    <stringValue>0013D00000ncSWH</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>isParentAcct</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <startElementReference>Billing_Information</startElementReference>
+    <status>Draft</status>
+</Flow>

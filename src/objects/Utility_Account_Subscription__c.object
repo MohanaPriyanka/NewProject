@@ -569,6 +569,18 @@ Round(( Subscribed_Annual_Cost_of_Electricity__c / 0.1933 / Opportunity__r.Share
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Parent_Account_Id__c</fullName>
+        <description>Used by the UAS Lookup flow on Cases</description>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Log__r.Account__r.Parent_Account_ID__c</formula>
+        <label>Parent Account Id</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Partner__c</fullName>
         <externalId>false</externalId>
         <label>Partner</label>
@@ -901,6 +913,18 @@ Round(( Subscribed_Annual_Cost_of_Electricity__c / 0.1933 / Opportunity__r.Share
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Utility_Account_Log_Name__c</fullName>
+        <description>Used in the UAS display flow on cases</description>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Log__r.Name</formula>
+        <label>Utility Account Log Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Utility_Account_Log__c</fullName>

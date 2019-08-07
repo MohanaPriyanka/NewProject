@@ -2,33 +2,9 @@
 <StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <sorted>false</sorted>
     <standardValue>
-        <fullName>Escalated</fullName>
-        <default>false</default>
-        <label>Escalated</label>
-        <closed>false</closed>
-    </standardValue>
-    <standardValue>
-        <fullName>Closed</fullName>
-        <default>false</default>
-        <label>Closed</label>
-        <closed>true</closed>
-    </standardValue>
-    <standardValue>
         <fullName>New</fullName>
         <default>true</default>
         <label>New</label>
-        <closed>false</closed>
-    </standardValue>
-    <standardValue>
-        <fullName>Resolved</fullName>
-        <default>false</default>
-        <label>Resolved</label>
-        <closed>false</closed>
-    </standardValue>
-    <standardValue>
-        <fullName>Awaiting Customer</fullName>
-        <default>false</default>
-        <label>Awaiting Customer</label>
         <closed>false</closed>
     </standardValue>
     <standardValue>
@@ -38,15 +14,9 @@
         <closed>false</closed>
     </standardValue>
     <standardValue>
-        <fullName>Awaiting External Team</fullName>
+        <fullName>Awaiting Customer</fullName>
         <default>false</default>
-        <label>Awaiting External Team</label>
-        <closed>false</closed>
-    </standardValue>
-    <standardValue>
-        <fullName>In Progress</fullName>
-        <default>false</default>
-        <label>In Progress</label>
+        <label>Awaiting Customer</label>
         <closed>false</closed>
     </standardValue>
     <standardValue>
@@ -56,9 +26,39 @@
         <closed>false</closed>
     </standardValue>
     <standardValue>
+        <fullName>In Progress</fullName>
+        <default>false</default>
+        <label>In Progress</label>
+        <closed>false</closed>
+    </standardValue>
+    <standardValue>
+        <fullName>Escalated</fullName>
+        <default>false</default>
+        <label>Escalated</label>
+        <closed>false</closed>
+    </standardValue>
+    <standardValue>
+        <fullName>Awaiting External Team</fullName>
+        <default>false</default>
+        <label>Awaiting External Team</label>
+        <closed>false</closed>
+    </standardValue>
+    <standardValue>
         <fullName>On Hold</fullName>
         <default>false</default>
         <label>On Hold</label>
         <closed>false</closed>
+    </standardValue>
+    <standardValue>
+        <fullName>Resolved</fullName>
+        <default>false</default>
+        <label>Resolved</label>
+        <closed>false</closed>
+    </standardValue>
+    <standardValue>
+        <fullName>Closed</fullName>
+        <default>false</default>
+        <label>Closed</label>
+        <closed>true</closed>
     </standardValue>
 </StandardValueSet>

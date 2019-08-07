@@ -65,6 +65,16 @@
         <type>Default</type>
     </actionOverrides>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>Property_Account</fullName>
+        <fields>Name</fields>
+        <fields>Type</fields>
+        <fields>Phone</fields>
+        <fields>BillingAddress</fields>
+        <fields>Product_Line_Formula__c</fields>
+        <fields>Parent_Account__c</fields>
+        <label>Property Account</label>
+    </compactLayouts>
     <enableEnhancedLookup>true</enableEnhancedLookup>
     <enableFeeds>true</enableFeeds>
     <enableHistory>true</enableHistory>
