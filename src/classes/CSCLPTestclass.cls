@@ -12,13 +12,13 @@ public class CSCLPTestclass {
 		insert clientContact;
 
 		User clientUser = new User (ProfileId = [SELECT Id from Profile WHERE Name = 'CS Client Partner Login'].Id,
-									FirstName = 'Test',
-									LastName = 'BFG_User',
-									Username = 'clientUser@test.com',
+									FirstName = 'TEst67823323',
+									LastName = 'Blue',
+									Username = 'TEst67823323@bluewavesolar.com',
 									Email = 'clientUser@test.com',
-									Alias = 'bfg_usr',
+									Alias = 'TEst678',
 									ContactId = clientContact.Id,
-									CommunityNickname = 'bfg_usr',
+									CommunityNickname = 'TEst678',
 									TimeZoneSidKey = 'America/New_York',
 									LocaleSidKey = 'en_US',
 									EmailEncodingKey = 'ISO-8859-1',
