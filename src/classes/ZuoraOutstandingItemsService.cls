@@ -4,7 +4,7 @@
  *              sorts by date and returns list of items with balance
  * Test: ZuoraCreditMemoAllocationTest
  *************************************************************************************/
-
+@SuppressWarnings('PMD.VariableNamingConventions')
 public class ZuoraOutstandingItemsService{
     public class QueryResultInvoice {
         public List<ZuoraAPI.Invoice> Records;
@@ -61,26 +61,64 @@ public class ZuoraOutstandingItemsService{
     public static List<OutstandingItem> applyToOutstandingItems (   List<OutstandingItem> outstandingItems,
                                                                     Decimal amountToApply,
                                                                     String project,
-                                                                    String client){
+                                                                    String client) {
+        return applyToOutstandingItems(outstandingItems, amountToApply, project, client, null, null, null);
+    }
+
+    // Use this if we just have entity and not project (for instance, when importing historical payments)
+    public static List<OutstandingItem> applyToOutstandingItems (List<OutstandingItem> outstandingItems, Decimal amountToApply,
+        String entity, String client, Map<String, Id> projectToEntityMap, Date effectiveDate) {
+        return applyToOutstandingItems(outstandingItems, amountToApply, null, client, entity, projectToEntityMap, effectiveDate);
+    }
+
+    private static List<OutstandingItem> applyToOutstandingItems (List<OutstandingItem> outstandingItems, Decimal amountToApply,
+        String project, String client, String entity, Map<String, Id> projectToEntityMap, Date effectiveDate) {
         List<ZuoraOutstandingItemsService.OutstandingItem> itemsToApply = new List<ZuoraOutstandingItemsService.OutstandingItem>();
 
         for (ZuoraOutstandingItemsService.OutstandingItem billItem : outstandingItems) {
+            if (billItem.AmountOutstanding <= 0) {
+                // Not really outstanding, check the next billItem
+                continue;
+            }
+            if (amountToApply <= 0) {
+                // There's nothing left to apply
+                break;
+            }
             // Only apply to invoices and debit memos with same client and project:
-            if (billItem.Project == project
-                && billItem.Client == client
-                && billItem.AmountOutstanding <= amountToApply) {
-                billItem.AmountToApply = billItem.AmountOutstanding;
-                amountToApply -= billItem.AmountOutstanding;
-                itemsToApply.add(billItem);
-            } else if (billItem.Project == project
-                && billItem.Client == client
-                && amountToApply > 0) {
-                billItem.AmountToApply = amountToApply;
-                amountToApply -= amountToApply;
-                itemsToApply.add(billItem);
+            if (appliesTo(billItem, project, client, entity, projectToEntityMap, effectiveDate)) {
+                // Clone the outstanding item so we can update the original one in the outstandingItems list
+                // so that a subsequent call to apply another amount will take into account the updated amount outstanding
+                ZuoraOutstandingItemsService.OutstandingItem outstandingItemToApply = billItem.clone();
+                if (billItem.AmountOutstanding <= amountToApply) {
+                    outstandingItemToApply.AmountToApply = billItem.AmountOutstanding;
+                    amountToApply -= billItem.AmountOutstanding;
+                    billItem.AmountOutstanding = 0;
+                } else {
+                    outstandingItemToApply.AmountToApply = amountToApply;
+                    billItem.AmountOutstanding -= amountToApply;
+                    amountToApply = 0;
+                }
+                itemsToApply.add(outstandingItemToApply);
             }
         }
         return itemsToApply;
+    }
+
+    @TestVisible
+    private static Boolean appliesTo(OutstandingItem outstandingItem, String project, String client, String entity,
+        Map<String, Id> projectUniqueIdToEntityMap, Date effectiveDate) {
+        // We can use effective date to only find outstanding items that were effective before a certain date (for instance
+        // when applying historical payments)
+        if (effectiveDate != null && effectiveDate < outstandingItem.EffectiveDate) {
+            return false;
+        }
+        if (project != null && client != null) {
+            return (outstandingItem.Project == project && outstandingItem.Client == client);
+        }
+        if (entity != null && client != null && projectUniqueIdToEntityMap != null) {
+            return (projectUniqueIdToEntityMap.get(outstandingItem.Project) == entity && outstandingItem.Client == client);
+        }
+        throw new Util.BWException('Check an Outstanding Item against a Project and Client, or Entity and ProjectEntityMap');
     }
 
     public static ZuoraOutstandingItemsAsyncService processOutstandingItemsByDate(String zuoraAcctId, ProcessingParameter processingParameter) {
@@ -95,8 +133,7 @@ public class ZuoraOutstandingItemsService{
         return asyncService;
     }
 
-    @TestVisible
-    private static List<ZuoraAPI.Invoice> getOutstandingInvoices(String zuoraAcctId) {
+    public static List<ZuoraAPI.Invoice> getOutstandingInvoices(String zuoraAcctId) {
         String queryString = 'SELECT ' +
             'id, accountId, amount, invoiceDate, balance ' +
             'FROM Invoice ' +
@@ -198,7 +235,8 @@ public class ZuoraOutstandingItemsService{
     public class ProcessingParameter {
         public String processorClassName;
         public ZuoraAPI.CreditMemoWithItem creditMemo;
-        // public ZuoraAPI.Payment payment;
+        // e.g. ZuoraHistoricalBatchApply.Payable
+        public List<Object> payables;
         public List<OutstandingItem> allOutstandingItems;
 
         public ProcessingParameter() {
@@ -208,6 +246,12 @@ public class ZuoraOutstandingItemsService{
         public ProcessingParameter(String processorClassName, ZuoraAPI.CreditMemoWithItem creditMemo) {
             this.processorClassName = processorClassName;
             this.creditMemo = creditMemo;
+            this.allOutstandingItems = new List<OutstandingItem>();
+        }
+
+        public ProcessingParameter(String processorClassName, List<Object> payables) {
+            this.processorClassName = processorClassName;
+            this.payables = payables;
             this.allOutstandingItems = new List<OutstandingItem>();
         }
     }

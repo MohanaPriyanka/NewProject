@@ -3,6 +3,7 @@
  * Test: ZuoraCreditMemoAllocationTest
  *************************************************************************************/
 
+@SuppressWarnings('PMD.VariableNamingConventions')
 public class ZuoraCreditMemoAllocationService implements ZuoraOutstandingItemsService.Processor {
     public class CreditMemoApplication {
         public List<CreditMemoApplicationInvoice> invoices;
@@ -73,8 +74,7 @@ public class ZuoraCreditMemoAllocationService implements ZuoraOutstandingItemsSe
         Logger.flushLogs();
     }
 
-    @TestVisible
-    private static CreditMemoApplication groupByInvoiceAndDebitMemo( ZuoraAPI.CreditMemoWithItem creditMemo,
+    public static CreditMemoApplication groupByInvoiceAndDebitMemo( ZuoraAPI.CreditMemoWithItem creditMemo,
                                                                     List<ZuoraOutstandingItemsService.OutstandingItem> outstandingBillItems){
 
         Map<String,List<CreditMemoApplicationInvoiceItem>> invoiceToItemMap = new Map<String,List<CreditMemoApplicationInvoiceItem>>();
@@ -157,11 +157,22 @@ public class ZuoraCreditMemoAllocationService implements ZuoraOutstandingItemsSe
         return zResponse;
     }
 
+    public static QueryResultCreditMemo getFirstPageCreditMemos(String zuoraAccountId) {
+        return getFirstPageCreditMemos(40, zuoraAccountId);
+    }
+
     public static QueryResultCreditMemo getFirstPageCreditMemos(Integer numberOfMemos) {
+        return getFirstPageCreditMemos(numberOfMemos, null);
+    }
+
+    private static QueryResultCreditMemo getFirstPageCreditMemos(Integer numberOfMemos, String zuoraAccountId) {
         if (numberOfMemos > 40){
             numberOfMemos = 40;
         }
         String urlString = '/v1/creditmemos?status=Posted&sort=-creditMemoDate&pageSize=' + numberOfMemos;
+        if (zuoraAccountId != null) {
+            urlString += '&accountId=' + zuoraAccountId;
+        }
         QueryResultCreditMemo zResponse = getCreditMemosByPage(urlString);
         return zResponse;
     }
