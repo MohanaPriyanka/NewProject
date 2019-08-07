@@ -2,6 +2,7 @@
  * Created by jlugo on 2019-07-11.
  */
 
+@SuppressWarnings('PMD')
 global virtual class MockProvider implements StubProvider{
     private List<MethodCall> methodCalls = new List<MethodCall>();
 
