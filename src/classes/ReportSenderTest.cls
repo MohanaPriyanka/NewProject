@@ -21,14 +21,14 @@ private class ReportSenderTest {
         insert clientContact;
 
         User clientUser = new User (
-            ProfileId = [SELECT Id FROM Profile WHERE Name = 'CS Client Portal User'].Id,
-            FirstName = 'Test',
-            LastName = 'BFG_User',
-            Username = 'communityuser@test.com',
-            Email = 'communityuser@test.com',
-            Alias = 'bfg_usr',
+            ProfileId = [SELECT Id FROM Profile WHERE Name = 'CS Client Partner Login'].Id,
+            FirstName = 'TEst99823323',
+            LastName = 'Blue',
+            Username = 'TEst99823323@bluewavesolar.com',
+            Email = 'clientUser@test.com',
+            Alias = 'TEst998',
             ContactId = clientContact.Id,
-            CommunityNickname = 'bfg_usr',
+            CommunityNickname = 'TEst998',
             TimeZoneSidKey = 'America/New_York',
             LocaleSidKey = 'en_US',
             EmailEncodingKey = 'ISO-8859-1',
