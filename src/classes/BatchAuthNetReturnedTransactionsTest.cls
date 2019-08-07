@@ -6,7 +6,7 @@ private class BatchAuthNetReturnedTransactionsTest {
 
         List<AuthNetAPI.MerchantAuthentication> merchantNameAndKeys = new List<AuthNetAPI.MerchantAuthentication>();
         AuthNetAPI.MerchantAuthentication m = new AuthNetAPI.MerchantAuthentication();
-        m.name = '6BTjZjj34N';
+        m.Zname = '6BTjZjj34N';
         m.transactionKey = '972e285SyApQ3V7y';
         merchantNameAndKeys.add(m);
 

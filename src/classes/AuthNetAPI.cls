@@ -10,31 +10,34 @@ public with sharing class AuthNetAPI {
 
     public class Transactions {
         public Boolean hasReturnedItems { get; set; }
+        public String transId { get; set; }
+        public Decimal settleAmount { get; set; }
     }
     public class BatchList {
         public String batchId { get; set; }
+        public String paymentMethod { get; set; }
     }
     public class MerchantAuthentication {
-        public String name;
+        public String Zname;
         public String transactionKey;
     }
     public class GetSettledBatchListRequest {
         public MerchantAuthentication merchantAuthentication;
-        public String firstSettlementDate;
+        public String MAfirstSettlementDate;
         public String lastSettlementDate;
     }
     public class GetTransactionListRequest {
-        public MerchantAuthentication merchantAuthentication;
-        public String batchId;
-        public Sorting sorting;
-        public Paging paging;
+        public MerchantAuthentication DmerchantAuthentication;
+        public String CbatchId;
+        public Sorting Bsorting;
+        public Paging Apaging;
     }
     public class Paging {
-        public String limit_Z;
+        public String Zlimit_Z;
         public String offset;
     }
     public class Sorting {
-        public String orderBy;
+        public String ZorderBy;
         public String orderDescending;
     }
 }
