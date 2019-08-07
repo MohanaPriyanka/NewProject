@@ -5,16 +5,17 @@ public with sharing class AuthNetService {
         AuthNetAPI req = new AuthNetAPI();
         req.getSettledBatchListRequest = new AuthNetAPI.GetSettledBatchListRequest();
         req.getSettledBatchListRequest.merchantAuthentication = new AuthNetAPI.MerchantAuthentication();
-        req.getSettledBatchListRequest.merchantAuthentication.name = merchantName;
+        req.getSettledBatchListRequest.merchantAuthentication.Zname = merchantName;
         req.getSettledBatchListRequest.merchantAuthentication.transactionKey = transKey;
-        req.getSettledBatchListRequest.firstSettlementDate = firstSettleDate.format('yyyy-MM-dd\'T\'HH:mm:ssZ');
+        req.getSettledBatchListRequest.MAfirstSettlementDate = firstSettleDate.format('yyyy-MM-dd\'T\'HH:mm:ssZ');
         req.getSettledBatchListRequest.lastSettlementDate = lastSettleDate.format('yyyy-MM-dd\'T\'HH:mm:ssZ');
-        HttpResponse res = AuthNetHelper.callJsonEndpoint('POST', JSON.serialize(req), false);
+        HttpResponse res = AuthNetHelper.callJsonEndpoint('POST', JSON.serialize(req, true), false);
 
         //BOM or "Byte Order Mark". It is usually received as the first few bytes of a file,
         //telling you how to interpret the encoding of the rest of the data. You can simply remove the character to continue.
         String resBody = res.getBody().trim().replace('\uFEFF', '');
         AuthNetAPI authNetSettledBatch = (AuthNetAPI) JSON.deserialize(resBody, AuthNetAPI.class);
+
         return getBatchIdList(authNetSettledBatch);
     }
 
@@ -22,7 +23,9 @@ public with sharing class AuthNetService {
         List<String> batchIdList = new List<String>();
         if (authNetSettledBatch.batchList != null) {
             for (AuthNetAPI.BatchList batchList : authNetSettledBatch.batchList) {
-                batchIdList.add(batchList.batchId);
+                if (batchList.paymentMethod == 'eCheck'){
+                    batchIdList.add(batchList.batchId);
+                }
             }
         }
         return batchIdList;
@@ -31,18 +34,18 @@ public with sharing class AuthNetService {
     public static List<AuthNetAPI.Transactions> getTransactionListRequest(String merchantName, String transKey, String batchId, String pagingOffset, String pagingLimit) {
         AuthNetAPI req = new AuthNetAPI();
         req.getTransactionListRequest = new AuthNetAPI.GetTransactionListRequest();
-        req.getTransactionListRequest.batchId = batchId;
-        req.getTransactionListRequest.merchantAuthentication = new AuthNetAPI.MerchantAuthentication();
-        req.getTransactionListRequest.merchantAuthentication.name = merchantName;
-        req.getTransactionListRequest.merchantAuthentication.transactionKey = transKey;
-        req.getTransactionListRequest.sorting = new AuthNetAPI.Sorting();
-        req.getTransactionListRequest.sorting.orderBy = 'submitTimeUTC';
-        req.getTransactionListRequest.sorting.orderDescending = 'true';
-        req.getTransactionListRequest.paging = new AuthNetAPI.Paging();
-        req.getTransactionListRequest.paging.limit_Z = pagingLimit;
-        req.getTransactionListRequest.paging.offset = pagingOffset;
+        req.getTransactionListRequest.CbatchId = batchId;
+        req.getTransactionListRequest.DmerchantAuthentication = new AuthNetAPI.MerchantAuthentication();
+        req.getTransactionListRequest.DmerchantAuthentication.Zname = merchantName;
+        req.getTransactionListRequest.DmerchantAuthentication.transactionKey = transKey;
+        req.getTransactionListRequest.Bsorting = new AuthNetAPI.Sorting();
+        req.getTransactionListRequest.Bsorting.ZorderBy = 'submitTimeUTC';
+        req.getTransactionListRequest.Bsorting.orderDescending = 'true';
+        req.getTransactionListRequest.Apaging = new AuthNetAPI.Paging();
+        req.getTransactionListRequest.Apaging.Zlimit_Z = pagingLimit;
+        req.getTransactionListRequest.Apaging.offset = pagingOffset;
 
-        HttpResponse res = AuthNetHelper.callJsonEndpoint('POST', JSON.serialize(req), false);
+        HttpResponse res = AuthNetHelper.callJsonEndpoint('POST', JSON.serialize(req, true), false);
 
         String resBody = res.getBody().trim().replace('\uFEFF', '');
         AuthNetAPI authNetTransaction = (AuthNetAPI) JSON.deserialize(resBody, AuthNetAPI.class);
@@ -52,7 +55,7 @@ public with sharing class AuthNetService {
     public static List<AuthNetAPI.Transactions> getReturnedTransactions(List<AuthNetAPI.Transactions> allTransactions) {
         List<AuthNetAPI.Transactions> returnedTransactionList = new List<AuthNetAPI.Transactions>();
         for (AuthNetAPI.Transactions trans : allTransactions) {
-            if (trans.hasReturnedItems) {
+            if (trans.hasReturnedItems != null && trans.hasReturnedItems) {
                 returnedTransactionList.add(trans);
             }
         }
