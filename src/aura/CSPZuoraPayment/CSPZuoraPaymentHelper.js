@@ -200,7 +200,6 @@
                         responseMessage = 'Your payment has been approved.';
                     }
                 } else {
-                    console.log(paymentResponse.gatewayResponse);
                     responseMessage = 'Payment Failed: ' + paymentResponse.gatewayResponse;
                 }
             } else {
