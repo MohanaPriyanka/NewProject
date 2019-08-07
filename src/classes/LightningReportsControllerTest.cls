@@ -63,18 +63,21 @@ public class LightningReportsControllerTest {
             AccountId = clientAccount.Id);
         insert clientContact;
 
-        User clientUser = new User (ProfileId = [SELECT Id FROM Profile WHERE Name = 'CS Client Partner Login'].Id,
-            FirstName = 'Test',
-            LastName = 'BFG_User',
-            Username = 'communityuser@test.com',
-            Email = 'communityuser@test.com',
-            Alias = 'bfg_usr',
+
+        User clientUser = new User (
+            ProfileId = [SELECT Id FROM Profile WHERE Name = 'CS Client Partner Login'].Id,
+            FirstName = 'TEst11823323',
+            LastName = 'Blue',
+            Username = 'TEst11823323@bluewavesolar.com',
+            Email = 'clientUser@test.com',
+            Alias = 'TEst118',
             ContactId = clientContact.Id,
-            CommunityNickname = 'bfg_usr',
+            CommunityNickname = 'TEst118',
             TimeZoneSidKey = 'America/New_York',
             LocaleSidKey = 'en_US',
             EmailEncodingKey = 'ISO-8859-1',
-            LanguageLocaleKey = 'en_US');
+            LanguageLocaleKey = 'en_US'
+        );
         Util.insertSObj(clientUser);
 
         String reportId = [SELECT Id, DeveloperName
