@@ -198,6 +198,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Adverse_Trade_Lines__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Applicant_MLA__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__AutoBalance__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -268,6 +278,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Co_Applicant_Equifax_SSN__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Co_Applicant_Equifax_Score_Factor__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -278,12 +293,27 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Co_Applicant_Experian_SSN__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Co_Applicant_Experian_Score_Factor__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Co_Applicant_MLA__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Co_Applicant_TransUnion_Alert_Message__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Co_Applicant_TransUnion_SSN__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -329,6 +359,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Credit_Report_Accessed__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Credit_Report_First_Issued_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Credit_Report_Price__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -433,6 +473,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Dispute_Count__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__EducationBalance__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -463,6 +508,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Equifax_SSN__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Equifax_Score_Factor__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -473,12 +523,22 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Experian_SSN__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Experian_Score_Factor__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__File_Number__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Foreclosures__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -543,12 +603,37 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Installment_30_Days__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Installment_60_Days__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Installment_90_Days__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Installment_Balance__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Internal_Account_Identifier__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Lead__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Lender_Case_Identifier__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -583,6 +668,26 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Monthly_Balance_High_Balance__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Monthly_Balance_Owed__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Monthly_Balance_Past_Due__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Monthly_Balance_Trades__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__MortgageBalance__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -608,6 +713,21 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Mortgage_30_Days__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Mortgage_60_Days__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Mortgage_90_Days__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -624,6 +744,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Now_Delinquent_or_Derogatory__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Number_of_Profit_and_Loss_Trade_Lines__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -668,12 +793,32 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Open_30_Days__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Open_60_Days__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Open_90_Days__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Openaccountswithabalance__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Prior_Bankruptcy__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Provider__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -699,6 +844,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Real_Estate_Payment__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Reposessions__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Repossessions__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -733,7 +888,27 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Revolving_30_Days__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Revolving_60_Days__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Revolving_90_Days__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Revolving_Balance__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Revolving_Credit_Limit__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -783,7 +958,17 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Total_Credit_Limit__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__Total_High_Credit__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__Total_Open_Payments__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -794,6 +979,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.LASERCA__TransUnion_Alert_Message__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.LASERCA__TransUnion_SSN__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -939,6 +1129,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.Solar_Loan_Pre_Qualification_Status_OLD__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.Solar_Loan_Pre_Qualification_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
