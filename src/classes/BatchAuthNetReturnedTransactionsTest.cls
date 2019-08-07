@@ -49,6 +49,9 @@ private class BatchAuthNetReturnedTransactionsTest {
         List<AuthNetAPI.Transactions> allTransactionList = AuthNetService.getTransactionListRequest('merchantName', 'transKey', 'batchId', '1', '1000');
         System.assertEquals(4, allTransactionList.size());
 
+        System.assertNotEquals(0, allTransactionList[0].settleAmount);
+        System.assertNotEquals(null, allTransactionList[0].transId);
+
         List<AuthNetAPI.Transactions> returnedTransctionList = AuthNetService.getReturnedTransactions(allTransactionList);
         System.assertEquals(1, returnedTransctionList.size());
     }
