@@ -28,16 +28,15 @@ global class BatchAuthNetReturnedTransactions implements
         for (AuthNetAPI.MerchantAuthentication merchAuth : merchantAuthList) {
             //Get Merchant batch IDs for the past 120 days
             try {
-                batchIdsTemp.addAll(AuthNetService.getSettledBatchListRequest(merchAuth.name, merchAuth.transactionKey, today - 30, today));
-                batchIdsTemp.addAll(AuthNetService.getSettledBatchListRequest(merchAuth.name, merchAuth.transactionKey, today - 60, today - 30));
-                batchIdsTemp.addAll(AuthNetService.getSettledBatchListRequest(merchAuth.name, merchAuth.transactionKey, today - 90, today - 60));
-                batchIdsTemp.addAll(AuthNetService.getSettledBatchListRequest(merchAuth.name, merchAuth.transactionKey, today - 120, today - 90));
+                batchIdsTemp.addAll(AuthNetService.getSettledBatchListRequest(merchAuth.Zname, merchAuth.transactionKey, today - 30, today));
+                batchIdsTemp.addAll(AuthNetService.getSettledBatchListRequest(merchAuth.Zname, merchAuth.transactionKey, today - 60, today - 30));
+                batchIdsTemp.addAll(AuthNetService.getSettledBatchListRequest(merchAuth.Zname, merchAuth.transactionKey, today - 90, today - 60));
+                batchIdsTemp.addAll(AuthNetService.getSettledBatchListRequest(merchAuth.Zname, merchAuth.transactionKey, today - 120, today - 90));
             } catch (Exception e) {
                 Logger.logNow('BatchAuthNetReturnedTransactions', 'start',
                         'Authorize.net getSettledBatchListRequest Error ' + e.getMessage() + '\n' + e.getStackTraceString(),
                         Logger.ERROR);
             }
-
             if (!batchIdsTemp.isEmpty()) {
                 for (String batchId : batchIdsTemp) {
                     batchId_MerchNameTransactionKey.put(batchId, merchAuth);
@@ -82,18 +81,21 @@ global class BatchAuthNetReturnedTransactions implements
             List<AuthNetAPI.Transactions> allTransactionList = new List<AuthNetAPI.Transactions>();
             //This one should return all transactions and then filter here.
             allTransactionList = AuthNetService.getTransactionListRequest(
-                    merchAuth.name,
+                    merchAuth.Zname,
                     merchAuth.transactionKey,
                     batchId,
                     String.valueOf(offset),
                     String.valueOf(pagingLimit)
             );
+            List<AuthNetAPI.Transactions> returnedTransactionForBatchList;
 
-            List<AuthNetAPI.Transactions> returnedTransactionForBatchList = AuthNetService.getReturnedTransactions(allTransactionList);
-            if (returnedTransactionForBatchList.size() > 0) {
+            if (allTransactionList != null){
+                returnedTransactionForBatchList = AuthNetService.getReturnedTransactions(allTransactionList);
+            }
+            if (returnedTransactionForBatchList != null) {
                 this.allReturnedTransactionList.addAll(returnedTransactionForBatchList);
             }
-            if (allTransactionList.isEmpty()) {
+            if (allTransactionList != null) {
                 getMoreTransactions = false;
             }
             offset++;

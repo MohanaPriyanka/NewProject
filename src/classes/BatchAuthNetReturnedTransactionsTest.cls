@@ -6,7 +6,7 @@ private class BatchAuthNetReturnedTransactionsTest {
 
         List<AuthNetAPI.MerchantAuthentication> merchantNameAndKeys = new List<AuthNetAPI.MerchantAuthentication>();
         AuthNetAPI.MerchantAuthentication m = new AuthNetAPI.MerchantAuthentication();
-        m.name = '6BTjZjj34N';
+        m.Zname = '6BTjZjj34N';
         m.transactionKey = '972e285SyApQ3V7y';
         merchantNameAndKeys.add(m);
 
@@ -48,6 +48,9 @@ private class BatchAuthNetReturnedTransactionsTest {
         Test.setMock(System.HttpCalloutMock.class, new AuthNetGetTransactionMock());
         List<AuthNetAPI.Transactions> allTransactionList = AuthNetService.getTransactionListRequest('merchantName', 'transKey', 'batchId', '1', '1000');
         System.assertEquals(4, allTransactionList.size());
+
+        System.assertNotEquals(0, allTransactionList[0].settleAmount);
+        System.assertNotEquals(null, allTransactionList[0].transId);
 
         List<AuthNetAPI.Transactions> returnedTransctionList = AuthNetService.getReturnedTransactions(allTransactionList);
         System.assertEquals(1, returnedTransctionList.size());
