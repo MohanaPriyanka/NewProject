@@ -62,6 +62,11 @@
         <visible>true</visible>
     </applicationVisibilities>
     <applicationVisibilities>
+        <application>Support_Ops_Console</application>
+        <default>false</default>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <applicationVisibilities>
         <application>Vivint_Solar</application>
         <default>false</default>
         <visible>true</visible>
@@ -6855,6 +6860,21 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Allocation_Schedule_Subscription__c.Customer_Subscription_kW_DC__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Allocation_Schedule_Subscription__c.Percent_Share__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Allocation_Schedule_Subscription__c.Stop_Credit_Transfer__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Client_Health_Report__c.BlueWave_Rating__c</field>
         <readable>true</readable>
@@ -7022,6 +7042,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Client_Utility_Account_Subscription__c.Utility_Account_Number__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Client_Utility_Account_Subscription__c.Utility_Account_Subscription__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
