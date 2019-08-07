@@ -8,6 +8,10 @@
         <field>Subject</field>
         <formula>&quot;Call&quot;</formula>
     </fieldOverrides>
+    <fieldOverrides>
+        <field>WhoId</field>
+        <formula>Case.ContactId</formula>
+    </fieldOverrides>
     <label>Log a Call</label>
     <optionsCreateFeedItem>true</optionsCreateFeedItem>
     <quickActionLayout>
@@ -38,5 +42,6 @@
     </quickActionLayout>
     <targetObject>Task</targetObject>
     <targetParentField>What</targetParentField>
+    <targetRecordType>Task.Standard_Tasks</targetRecordType>
     <type>Create</type>
 </QuickAction>
