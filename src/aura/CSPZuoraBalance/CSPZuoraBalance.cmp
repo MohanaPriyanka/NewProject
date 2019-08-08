@@ -1,0 +1,179 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes,force:hasRecordId" controller="ZuoraAccountSelector">
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:attribute name="myBill" type="Decimal"/>
+  <aura:attribute name="autopayMethod" type="String"/>
+  <aura:attribute name="autopay" type="Boolean"/>
+  <aura:attribute name="errorMessage" type="String"/>
+  <aura:attribute name="showError" type="Boolean" default="false"/>
+  <aura:attribute name="zuoraAccountAndPayMethod" type="Object"/>
+  <aura:attribute name="makePaymentOrManageAutopay" type="Boolean"/>
+  <aura:attribute name="showZuoraPaymentCmp" type="Boolean"/>
+  <aura:attribute name="showSpinner" type="Boolean" default="true"/>
+
+  <aura:if isTrue="{!v.showSpinner}">
+    <lightning:spinner alternativeText="Loading..." size="medium"/>
+    <aura:set attribute="else">
+      <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
+        <div class="slds-col slds-size_1-of-12"/>
+        <div class="slds-col slds-size_11-of-12">
+          <h3 class="slds-text-heading_large slds-p-bottom_x-large slds-p-top_large slds-text-color_default">
+            <b>My Account</b>
+          </h3>
+        </div>
+      </div>
+      <aura:if isTrue="{!v.showError}">
+        <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
+          <div class="slds-col slds-size_1-of-12"/>
+          <div class="slds-col slds-size_10-of-12">
+            <h3 class="slds-text-heading_small slds-text-color_default">
+              {!v.errorMessage}
+            </h3>
+          </div>
+        </div>
+        <div class="slds-col slds-size_1-of-12"/>
+        <aura:set attribute="else">
+          <aura:if isTrue="{!$Browser.isPhone}">
+            <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
+              <div class="slds-col slds-size_1-of-12"/>
+              <div class="slds-col slds-size_10-of-12">
+                <lightning:layout multipleRows="true">
+                  <lightning:layoutItem class="slds-p-bottom_small" size="12">
+                    <h3 class="slds-text-title_caps"><b>Current Balance Due:</b></h3>
+                    <h3 class="slds-text-heading_large slds-p-top_small slds-p-bottom_large slds-text-color_default">
+                      <b><ui:outputCurrency value="{!v.myBill > 0.001 ? v.myBill : 0}"/></b>
+                    </h3>
+                  </lightning:layoutItem>
+                  <lightning:layoutItem class="slds-p-bottom_large" size="12">
+                    <aura:if isTrue="{!v.autopay}">
+                      <div class="slds-p-bottom--large">
+                        <h3 class="slds-text-heading_small slds-text-color_default slds-p-bottom_large">
+                          <p>Your Account is currently set to Autopay.</p>
+                          <br/>
+                          <p>Your next transaction will execute from account ending in {!v.autopayMethod}</p>
+                        </h3>
+                      </div>
+                      <aura:set attribute="else">
+                        <div class="slds-p-bottom--large">
+                          <h3 class="slds-text-heading_small slds-text-color_default">
+                            <p>Your Account is not currently set to autopay.</p>
+                            <p>Please update your payment method.</p>
+                          </h3>
+                        </div>
+                      </aura:set>
+                    </aura:if>
+                    <aura:if isTrue="{!v.showZuoraPaymentCmp}">
+                      <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
+                        <div class="slds-col slds-size_12-of-12">
+                          <c:CSPZuoraPayment makePaymentOrManageAutopay="{!v.makePaymentOrManageAutopay}"/>
+                        </div>
+                      </div>
+                      <aura:set attribute="else">
+                        <div>
+                          <lightning:button aura:id="signupForAutopay"
+                                            name="signupForAutopay"
+                                            label="Manage Autopay"
+                                            onclick="{!c.openAutopayWindow}"
+                                            class="slds-text-body_small slds-button--brand slds-p-top_x-small
+                                                      slds-p-bottom_x-small slds-p-left_xx-large slds-p-right_xx-large"/>
+                        </div>
+                        <div class="slds-p-top--medium">
+                          <aura:if isTrue="{!greaterthan(v.myBill,0.001)}">
+                            <lightning:button aura:id="makeAPayment"
+                                              name="makeAPayment"
+                                              label="Make A Payment"
+                                              onclick="{!c.openPaymentWindow}"
+                                              class="slds-text-body_small slds-button--brand slds-p-top_x-small
+                                                  slds-p-bottom_x-small slds-p-left_xx-large slds-p-right_xx-large"/>
+                            <aura:set attribute="else">
+                              <lightning:button aura:id="disabledMakeAPayment"
+                                                name="disabledMakeAPayment"
+                                                label="Make A Payment"
+                                                class="slds-text-body_small slds-theme_offline slds-p-top_x-small
+                                                  slds-p-bottom_x-small slds-p-left_xx-large slds-p-right_xx-large"/>
+                            </aura:set>
+                          </aura:if>
+                        </div>
+                      </aura:set>
+                    </aura:if>
+                  </lightning:layoutItem>
+                </lightning:layout>
+              </div>
+              <div class="slds-col slds-size_1-of-12"/>
+            </div>
+          </aura:if>
+
+          <aura:if isTrue="{!!$Browser.isPhone}">
+
+            <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
+              <div class="slds-col slds-size_1-of-12"/>
+              <div class="slds-col slds-size_5-of-12">
+                <lightning:layout multipleRows="true">
+                  <lightning:layoutItem class="slds-p-bottom_small" size="12">
+                    <h3 class="slds-text-title_caps"><b>Current Balance Due:</b></h3>
+                    <h3 class="slds-text-heading_large slds-p-top_small slds-p-bottom_large slds-text-color_default">
+                      <b><ui:outputCurrency value="{!v.myBill > 0.001 ? v.myBill : 0}"/></b>
+                    </h3>
+                  </lightning:layoutItem>
+                  <lightning:layoutItem class="slds-p-bottom_large" size="12">
+                    <aura:if isTrue="{!v.autopay}">
+                        <h3 class="slds-text-heading_small slds-text-color_default slds-p-bottom_large">
+                          <p>Your Account is currently set to autopay.</p>
+                          <br/>
+                          <p>Your next transaction will execute from account ending in {!v.autopayMethod}</p>
+                        </h3>
+                      <aura:set attribute="else">
+                          <h3 class="slds-text-heading_small slds-text-color_default">
+                            <p>Your Account is not currently set to Autopay.</p>
+                            <p>Please update your payment method.</p>
+                          </h3>
+                      </aura:set>
+                    </aura:if>
+                  </lightning:layoutItem>
+                </lightning:layout>
+              </div>
+            </div>
+
+            <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
+              <div class="slds-col slds-size_1-of-12"/>
+              <div class="slds-col slds-size_11-of-12">
+                <lightning:layout multipleRows="true">
+                  <lightning:layoutItem class="slds-p-bottom_small" size="12">
+                    <aura:if isTrue="{!v.showZuoraPaymentCmp}">
+                      <c:CSPZuoraPayment makePaymentOrManageAutopay="{!v.makePaymentOrManageAutopay}"/>
+                      <aura:set attribute="else">
+                        <lightning:button aura:id="signupForAutopay"
+                                          name="signupForAutopay"
+                                          label="Manage Autopay"
+                                          onclick="{!c.openAutopayWindow}"
+                                          class="slds-text-body_small slds-button--brand slds-p-top_x-small
+                                                    slds-p-bottom_x-small slds-p-left_xx-large slds-p-right_xx-large"/>
+                        <aura:if isTrue="{!greaterthan(v.myBill,0.001)}">
+                          <lightning:button aura:id="makeAPayment"
+                                            name="makeAPayment"
+                                            label="Make A Payment"
+                                            onclick="{!c.openPaymentWindow}"
+                                            class="slds-text-body_small slds-button--brand slds-p-top_x-small
+                                                slds-p-bottom_x-small slds-p-left_xx-large slds-p-right_xx-large"/>
+                          <aura:set attribute="else">
+                            <lightning:button aura:id="disabledMakeAPayment"
+                                              name="disabledMakeAPayment"
+                                              label="Make A Payment"
+                                              class="slds-text-body_small slds-theme_offline slds-p-top_x-small
+                                                slds-p-bottom_x-small slds-p-left_xx-large slds-p-right_xx-large"/>
+                          </aura:set>
+                        </aura:if>
+                      </aura:set>
+                    </aura:if>
+                  </lightning:layoutItem>
+                </lightning:layout>
+              </div>
+            </div>
+
+          </aura:if>
+
+
+        </aura:set>
+      </aura:if>
+    </aura:set>
+  </aura:if>
+</aura:component>

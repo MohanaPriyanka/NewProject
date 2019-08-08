@@ -75,12 +75,15 @@ public with sharing class ZuoraAPI {
         public String AchAccountType;
         @AuraEnabled
         public String AchBankName;
+        @AuraEnabled
+        public String AccountId;
     }
 
     // https://www.zuora.com/developer/api-reference/#operation/POST_Account
     public class ZuoraAccount {
         public String AccountNumber;
         public Boolean AllowInvoiceEdit;
+        @AuraEnabled
         public String Id;
         @AuraEnabled
         public Boolean AutoPay;
@@ -90,6 +93,8 @@ public with sharing class ZuoraAPI {
         public Integer BillCycleDay;
         public String BcdSettingOption;
         public String PaymentTerm;
+        @AuraEnabled
+        public String PaymentGateway;
         public String Status;
         public Integer TotalInvoiceBalance;
         public String UpdatedById;
@@ -462,14 +467,19 @@ public with sharing class ZuoraAPI {
     // The SOAP response (wrapped around a REST API)
     // https://knowledgecenter.zuora.com/DC_Developers/G_SOAP_API/F_SOAP_API_Complex_Types/SaveResult
     public class SaveResult {
+        @AuraEnabled
         public List<ErrorCode> Errors;
+        @AuraEnabled
         public String Id;
+        @AuraEnabled
         public Boolean Success;
     }
 
     // https://knowledgecenter.zuora.com/DC_Developers/G_SOAP_API/L_Error_Handling/Errors
     public class ErrorCode {
+        @AuraEnabled
         public String Code;
+        @AuraEnabled
         public String Message;
     }
 
@@ -631,6 +641,7 @@ public with sharing class ZuoraAPI {
         public String comment;
         public String referenceId;
         public String type;
+        public String gatewayId;
         public String currency_Zreserved;
         public String paymentMethodId;
         public Date effectiveDate;
@@ -661,5 +672,12 @@ public with sharing class ZuoraAPI {
     public class ZuoraDebitMemoItemApplication {
         public Decimal amount;
         public String debitMemoItemId;
+    }
+
+    public class PaymentGateway {
+        public String id;
+        public String name;
+        public Boolean isActive;
+        public Boolean isDefault;
     }
 }
