@@ -26,7 +26,7 @@ public with sharing class ZuoraInvoiceService {
         List<ContentDocumentLink> contentDocumentLinks =
             insertContentDocumentLinks(zuoraInvoices, zuoraInvoiceIdToConventVersion, zuoraInvoiceIdToSFDCId);
 
-        updateZuoraInvoicesAsDownloaded(contentDocumentLinks);
+        updateZuoraInvoicesAsDownloaded(contentDocumentLinks, zuoraInvoiceIdToConventVersion);
         Logger.flushLogs();
 
         if (!sfdcZuoraInvoices.isEmpty()) {
@@ -59,13 +59,14 @@ public with sharing class ZuoraInvoiceService {
     }
 
     @TestVisible
-    private void updateZuoraInvoicesAsDownloaded(List<ContentDocumentLink> contentDocumentLinks) {
+    private void updateZuoraInvoicesAsDownloaded(List<ContentDocumentLink> contentDocumentLinks, Map<String, ContentVersion> invoiceToVersion) {
         List<Zuora__ZInvoice__c> zuoraInvoicesToUpdate = new List<Zuora__ZInvoice__c>();
         for (ContentDocumentLink contentDocumentLink : contentDocumentLinks) {
             Zuora__ZInvoice__c zuoraInvoiceToUpdate = new Zuora__ZInvoice__c(
                 Id = contentDocumentLink.LinkedEntityId,
                 Downloaded_Date__c = System.today(),
-                Content_Document_Id__c = contentDocumentLink.ContentDocumentId
+                Content_Document_Id__c = contentDocumentLink.ContentDocumentId,
+                Bill_Document_Content_Version_ID__c = invoiceToVersion.get(contentDocumentLink.LinkedEntityId).Id
             );
             zuoraInvoicesToUpdate.add(zuoraInvoiceToUpdate);
         }
