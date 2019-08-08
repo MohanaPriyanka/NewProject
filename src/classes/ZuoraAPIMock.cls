@@ -32,6 +32,8 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
             return getInvoices();
         } else if (endpoint.contains('/v1/action/query') && req.getBody().contains(' FROM RatePlanCharge')) {
             return getRatePlanCharge(req.getBody());
+        } else if (endpoint.contains('/v1/action/query') && req.getBody().contains(' FROM Account')) {
+            return getAccount();
         } else if (endpoint.contains('v1/action/query')) {
             return getActionQuery(req.getBody());
         } else if (endpoint.contains('v1/action/delete')) {
@@ -56,8 +58,12 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
             return getCreditMemos(endpoint);
         } else if (endpoint.contains('/v1/debitmemos') && method.contains('GET')) {
             return getDebitMemos();
-        } else if (endpoint.contains('/v1/payments')) {
+        } else if (endpoint.contains('/v1/payments') && req.getBody().contains('Electronic')) {
+            return createElectronicPayment();
+        }  else if (endpoint.contains('/v1/payments')) {
             return createPayment(endpoint);
+        } else if (endpoint.contains('/v1/paymentgateways')) {
+            return getGateways();
         } else {
             return null;
         }
@@ -113,6 +119,28 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
             '"Type":"CreditCard",' +
             '"CreditCardHolderName":"Test"' +
             '}');
+        return res;
+    }
+
+    public static HttpResponse getAccount(){
+        HttpResponse res = getJSON();
+        res.setBody('{"records":' +
+            '[{"AccountNumber":"BWC-000024383",' +
+            '"Id":"2c92c0f86b78f56c016b7b00480c2e24",' +
+            '"AutoPay":false,' +
+            '"CreatedDate":"2019-06-21T13:05:44.000-04:00",' +
+            '"Name":"ABJustin  Jenkins",' +
+            '"Status":"Active","BillCycleDay":15,' +
+            '"Balance":230.00,' +
+            '"InvoiceTemplateId":"2c92c0f868a2023a0168a79eb021418d",' +
+            '"CrmId":"0013D00000nFbD2QAK",' +
+            '"BillToId":"2c92c0f86b78f56c016b7b00487a2e25",' +
+            '"PaymentTerm":"Net 30",' +
+            '"DefaultPaymentMethodId":"2c92c0f86a0c41a5016a1f41d63a2f96",' +
+            '"Batch":"Batch1"}],' +
+            '"size":1,' +
+            '"done":true}'
+        );
         return res;
     }
 
@@ -227,6 +255,9 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
                 saveResults.add(saveResult);
             }
             res.setBody(JSON.serialize(saveResults));
+        } else if (body.contains('"type":"PaymentMethod"')){
+            String responseBody = '[{"Success":true,"Id":"2c92c0f86a0c41a5016a1f41d63a2f96"}]';
+            res.setBody(responseBody);
         } else {
             throw new Util.BWException('Unhandled action create: ' + body);
         }
@@ -753,6 +784,52 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
         return res;
     }
 
+    private static HttpResponse createElectronicPayment(){
+        HttpResponse res = getJSON();
+        res.setBody(
+            '{ "id" : "2c92c0fa6c2d46c2016c5271d6004086", ' +
+                '"number" : "P-00000269", ' +
+                '"status" : "Processed", ' +
+                '"type" : "Electronic", ' +
+                '"accountId" : "2c92c0f86b78f56c016b7b00480c2e24", ' +
+                '"amount" : 23.000000000, ' +
+                '"appliedAmount" : 0E-9, ' +
+                '"unappliedAmount" : 23.000000000, ' +
+                '"refundAmount" : 0E-9, ' +
+                '"creditBalanceAmount" : 0E-9, ' +
+                '"currency" : "USD", ' +
+                '"effectiveDate" : "2019-08-02", ' +
+                '"comment" : null, ' +
+                '"paymentMethodId" : "2c92c0f86a0c41a5016a1f41d63a2f96", ' +
+                '"paymentMethodSnapshotId" : "2c92c0fa6c2d46c2016c5271d6004085", ' +
+                '"authTransactionId" : null, ' +
+                '"bankIdentificationNumber" : null, ' +
+                '"gatewayId" : "2c92c0f9699ec9fe0169a68ab88b6ae3", ' +
+                '"gatewayOrderId" : null, ' +
+                '"gatewayResponse" : "This transaction has been approved.", ' +
+                '"gatewayResponseCode" : "1", ' +
+                '"gatewayState" : "Submitted", ' +
+                '"markedForSubmissionOn" : null, ' +
+                '"referenceId" : "60125341308", ' +
+                '"secondPaymentReferenceId" : null, ' +
+                '"softDescriptor" : null, ' +
+                '"softDescriptorPhone" : null, ' +
+                '"submittedOn" : "2019-08-02 09:08:08", ' +
+                '"settledOn" : null, "cancelledOn" : null, ' +
+                '"createdDate" : "2019-08-02 09:08:07", ' +
+                '"createdById" : "2c92c0f968a20f350168ca0efb2309e7", ' +
+                '"updatedDate" : "2019-08-02 09:08:08", ' +
+                '"updatedById" : "2c92c0f968a20f350168ca0efb2309e7", ' +
+                '"TransactionId__c" : null, "ClientOwner__c" : null, ' +
+                '"financeInformation" : { "bankAccountAccountingCode" : "11504 - ACH", ' +
+                '"bankAccountAccountingCodeType" : "Cash", ' +
+                '"unappliedPaymentAccountingCode" : "20006 - Trust Payable", ' +
+                '"unappliedPaymentAccountingCodeType" : "OtherLiabilities", ' +
+                '"transferredToAccounting" : "No" }, ' +
+                '"success" : true }');
+        return res;
+    }
+
     private static HttpResponse createPayment(String endpoint) {
         HttpResponse res = getJSON();
         res.setBody('{' +
@@ -800,6 +877,28 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
             '"transferredToAccounting" : "No"' +
             '},' +
             '"success" : true}');
+        return res;
+    }
+
+    private static HttpResponse getGateways() {
+        HttpResponse res = getJSON();
+        res.setBody('{ "paymentgateways" : [ { ' +
+            '"id" : "2c92c0f9699ec9fe0169a68ab88b6ae3", ' +
+            '"name" : "Default Gateway Name", ' +
+            '"type" : "Authorize", ' +
+            '"isDefault" : true, ' +
+            '"isActive" : true }, { ' +
+            '"id" : "2c92c0f8699ebeac0169a6891cd862d1",' +
+            ' "name" : "Bluewave Testing Auth.Net", ' +
+            '"type" : "Authorize", ' +
+            '"isDefault" : false, ' +
+            '"isActive" : true }, { ' +
+            '"id" : "2c92c0f9697a318001698330cdee1e81", ' +
+            '"name" : "Not Default Gateway", ' +
+            '"type" : "Sample", ' +
+            '"isDefault" : false, ' +
+            '"isActive" : true } ], ' +
+            '"success" : true }');
         return res;
     }
 }
