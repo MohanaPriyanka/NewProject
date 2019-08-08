@@ -7,9 +7,17 @@
 
 public with sharing class ZuoraInvoiceService {
     public List<Zuora__ZInvoice__c> sfdcZuoraInvoices;
+    public Map<Id, Zuora__ZInvoice__c> invoiceMap;
 
     public ZuoraInvoiceService(List<Zuora__ZInvoice__c> sfdcZuoraInvoices) {
         this.sfdcZuoraInvoices = sfdcZuoraInvoices;
+        Map<Id, Zuora__ZInvoice__c> invoiceMap = new Map<Id, Zuora__ZInvoice__c>();
+        if (sfdcZuoraInvoices != null){
+            for (Zuora__ZInvoice__c invoice : sfdcZuoraInvoices){
+                invoiceMap.put(invoice.Id, invoice);
+            }
+        }
+        this.invoiceMap = invoiceMap;
     }
 
     public void downloadPDFs() {
@@ -19,16 +27,14 @@ public with sharing class ZuoraInvoiceService {
         Map<String, Id> zuoraInvoiceIdToSFDCId = new Map<String, Id>();
         List<ZuoraAPI.Invoice> zuoraInvoices =
             queryZuoraForInvoicePDF(sfdcZuoraInvoices, zuoraInvoiceIdToSFDCId);
-
         Map<String, ContentVersion> zuoraInvoiceIdToConventVersion =
             insertContentVersions(zuoraInvoices);
 
         List<ContentDocumentLink> contentDocumentLinks =
             insertContentDocumentLinks(zuoraInvoices, zuoraInvoiceIdToConventVersion, zuoraInvoiceIdToSFDCId);
 
-        updateZuoraInvoicesAsDownloaded(contentDocumentLinks, zuoraInvoiceIdToConventVersion);
+        updateZuoraInvoicesAsDownloaded(contentDocumentLinks, zuoraInvoiceIdToConventVersion, invoiceMap);
         Logger.flushLogs();
-
         if (!sfdcZuoraInvoices.isEmpty()) {
             Logger.logNow('ZuoraInvoiceService', 'downloadPDFs', 'Queuing ' + sfdcZuoraInvoices.size() + ' invoices to download', Logger.DEBUG);
             if (!Test.isRunningTest()) {
@@ -59,14 +65,14 @@ public with sharing class ZuoraInvoiceService {
     }
 
     @TestVisible
-    private void updateZuoraInvoicesAsDownloaded(List<ContentDocumentLink> contentDocumentLinks, Map<String, ContentVersion> invoiceToVersion) {
+    private void updateZuoraInvoicesAsDownloaded(List<ContentDocumentLink> contentDocumentLinks, Map<String, ContentVersion> invoiceToVersion,  Map<Id, Zuora__ZInvoice__c> zInvoices) {
         List<Zuora__ZInvoice__c> zuoraInvoicesToUpdate = new List<Zuora__ZInvoice__c>();
         for (ContentDocumentLink contentDocumentLink : contentDocumentLinks) {
             Zuora__ZInvoice__c zuoraInvoiceToUpdate = new Zuora__ZInvoice__c(
                 Id = contentDocumentLink.LinkedEntityId,
                 Downloaded_Date__c = System.today(),
                 Content_Document_Id__c = contentDocumentLink.ContentDocumentId,
-                Bill_Document_Content_Version_ID__c = invoiceToVersion.get(contentDocumentLink.LinkedEntityId).Id
+                Bill_Document_Content_Version_ID__c = invoiceToVersion.get(zInvoices.get(contentDocumentLink.LinkedEntityId).Zuora__ZuoraId__c).Id
             );
             zuoraInvoicesToUpdate.add(zuoraInvoiceToUpdate);
         }

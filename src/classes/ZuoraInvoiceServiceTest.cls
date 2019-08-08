@@ -62,8 +62,10 @@ public with sharing class ZuoraInvoiceServiceTest {
 
         List<ContentDocumentLink> contentDocumentLinks = new List<ContentDocumentLink>();
         Map<String, ContentVersion> invToContentVersion = new Map<String, ContentVersion>();
+        Map<Id, Zuora__ZInvoice__c> invoiceMap = new Map<Id, Zuora__ZInvoice__c>();
 
         for (Zuora__ZInvoice__c zInvoice : sfdcInvoices) {
+            invoiceMap.put(zInvoice.Id, zInvoice);
             ContentDocumentLink cdl = new ContentDocumentLink(
                 LinkedEntityId = zInvoice.Id,
                 // Just a dummy Id t
@@ -74,11 +76,11 @@ public with sharing class ZuoraInvoiceServiceTest {
             ContentVersion version = new ContentVersion(
                 Id = '0680a000003HjQqAAK'
             );
-            invToContentVersion.put(zInvoice.Id, version);
+            invToContentVersion.put(zInvoice.Zuora__ZuoraId__c, version);
         }
 
         ZuoraInvoiceService invoiceService = new ZuoraInvoiceService(null);
-        invoiceService.updateZuoraInvoicesAsDownloaded(contentDocumentLinks, invToContentVersion);
+        invoiceService.updateZuoraInvoicesAsDownloaded(contentDocumentLinks, invToContentVersion, invoiceMap);
 
         sfdcInvoices = ZuoraInvoiceSelector.getInvoicesToDownload();
         System.assertEquals(0, sfdcInvoices.size());
@@ -86,7 +88,7 @@ public with sharing class ZuoraInvoiceServiceTest {
         List<Zuora__ZInvoice__c> invoiceList = [
             SELECT Id, Content_Document_Id__c, Bill_Document_Content_Version_ID__c
             FROM Zuora__ZInvoice__c
-            WHERE Id IN : invToContentVersion.keySet()
+            WHERE Id IN : invoiceMap.keySet()
         ];
 
         System.assertNotEquals(0,invoiceList.size());
