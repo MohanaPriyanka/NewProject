@@ -18,10 +18,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Public__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>Assignment_Order__c</field>
             </layoutItems>
             <layoutItems>
@@ -251,10 +247,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Partner_Assignment__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>Sales_Partners__c</field>
             </layoutItems>
             <layoutItems>
@@ -277,10 +269,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Assemblage_Count__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Maximum_Subscription_Assemblage__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
@@ -365,6 +353,10 @@
                 <behavior>Edit</behavior>
                 <field>Actual_First_Bill_Date__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Count_of_Transfers__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
@@ -382,19 +374,11 @@
                 <behavior>Readonly</behavior>
                 <field>Last_Schedule_Z__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Next_Schedule_Z_Date__c</field>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Count_of_Schedule_Zs__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Min_Schedule_Z_to_Utility_Date__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
