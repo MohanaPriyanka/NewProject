@@ -3,7 +3,7 @@
  * Description: 
  * Test: 
  *************************************************************************************/
-
+@SuppressWarnings('PMD.ExcessivePublicCount, PMD.VariableNamingConventions, PMD.TooManyFields')
 public with sharing class ZuoraAPI {
     // https://www.zuora.com/developer/api-reference/#tag/RSA-Signatures
     public class RSASignature {
@@ -112,13 +112,17 @@ public with sharing class ZuoraAPI {
         public String CreatedDate;
         public String DefaultPaymentMethodId;
         public String Currency_Zreserved;
+        public String AdditionalEmailAddresses;
     }
 
     // https://www.zuora.com/developer/api-reference/#operation/Object_POSTContact
     public class ZuoraContact {
         public String AccountId;
-        public String Address1;
+        public String Address1; // Attention
+        public String Address2; // Street
         public String City;
+        public String State;
+        public String PostalCode;
         public String Country;
         public String Description;
         public String Fax;
@@ -130,8 +134,6 @@ public with sharing class ZuoraAPI {
         public String OtherPhone;
         public String OtherPhoneType;
         public String PersonalEmail;
-        public String PostalCode;
-        public String State;
         public String TaxRegion;
         public String WorkEmail;
         public String CRM_ID_Zcustom;
@@ -485,6 +487,14 @@ public with sharing class ZuoraAPI {
     public class ZuoraQuery {
         public String queryString;
     }
+    public class ZuoraQueryResult {
+        public List<ZuoraQueryResultRecord> records;
+        public Integer size;
+        public Boolean done;
+    }
+    public class ZuoraQueryResultRecord {
+        public String Id;
+    }
 
     // https://www.zuora.com/developer/api-reference/#operation/Action_POSTdelete
     public class ZuoraDelete {
@@ -586,7 +596,7 @@ public with sharing class ZuoraAPI {
         public String chargeId;
     }
 
-    // Used to create, but not to query for credit memos:
+    // Used to create, but not to query for debit memos:
     public class DebitMemo{
         public String accountId;
         public List<DebitMemoCharge> charges;
@@ -602,7 +612,7 @@ public with sharing class ZuoraAPI {
         public String chargeId;
     }
 
-    // Used to query, but not to create credit memos:
+    // Used to query, but not to create debit memos:
     public class ZuoraDebitMemo {
         public String id;
         public String accountId;
@@ -623,13 +633,45 @@ public with sharing class ZuoraAPI {
         public List<ZuoraDebitMemoItem> items;
     }
 
+    // For historical payment load: https://www.zuora.com/developer/api-reference/#operation/POST_CreatePayment
     public class Payment {
+        public String id;
         public String accountId;
-        public String paymentMethodId;
+        public Decimal amount;
+        public String comment;
+        public String referenceId;
         public String type;
         public String gatewayId;
         public String currency_Zreserved;
+        public String paymentMethodId;
+        public Date effectiveDate;
+    }
+    public class ZuoraPaymentApplication {
+        public Date effectiveDate;
+        public List<ZuoraInvoiceApplication> invoices;
+        public List<ZuoraDebitMemoApplication> debitMemos;
+        public Boolean hasItemsToApply() {
+            return ((invoices != null && invoices.size() > 0) ||
+                (debitMemos != null && debitMemos.size() > 0));
+        }
+    }
+    public class ZuoraInvoiceApplication {
         public Decimal amount;
+        public String invoiceId;
+        public List<ZuoraInvoiceItemApplication> items;
+    }
+    public class ZuoraInvoiceItemApplication {
+        public Decimal amount;
+        public String invoiceItemId;
+    }
+    public class ZuoraDebitMemoApplication {
+        public Decimal amount;
+        public String debitMemoId;
+        public List<ZuoraDebitMemoItemApplication> items;
+    }
+    public class ZuoraDebitMemoItemApplication {
+        public Decimal amount;
+        public String debitMemoItemId;
     }
 
     public class PaymentGateway {
