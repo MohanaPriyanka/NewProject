@@ -7,54 +7,15 @@
                 <stringValue>User Story Static Code Analysis</stringValue>
             </value>
         </processMetadataValues>
-        <name>myRule_1_A1</name>
-        <label>Run Static Code Analysis</label>
+        <name>myWaitEvent_myWait_myRule_1_event_0_SA1</name>
+        <label>Run SCA</label>
         <locationX>100</locationX>
         <locationY>200</locationY>
         <actionName>copado__RunUserStoryStaticCodeAnalysis</actionName>
         <actionType>apex</actionType>
-        <inputParameters>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>ID</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Org Id</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>maxOccurs</name>
-                <value>
-                    <numberValue>0.0</numberValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>objectType</name>
-                <value>
-                    <stringValue></stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Formula</stringValue>
-                </value>
-            </processMetadataValues>
-            <name>orgId</name>
-            <value>
-                <elementReference>formula_2_myRule_1_A1_8562896036</elementReference>
-            </value>
-        </inputParameters>
+        <connector>
+            <targetReference>myWaitEvent_myWait_myRule_1_event_0_postWaitExecutionAssignment</targetReference>
+        </connector>
         <inputParameters>
             <processMetadataValues>
                 <name>dataType</name>
@@ -97,7 +58,81 @@
                 <elementReference>myVariable_current.copado__User_Story__c</elementReference>
             </value>
         </inputParameters>
+        <inputParameters>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Org Id</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>maxOccurs</name>
+                <value>
+                    <numberValue>0.0</numberValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>objectType</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Formula</stringValue>
+                </value>
+            </processMetadataValues>
+            <name>orgId</name>
+            <value>
+                <elementReference>formula_2_myWaitEvent_myWait_myRule_1_event_0_SA1_0713357790</elementReference>
+            </value>
+        </inputParameters>
     </actionCalls>
+    <assignments>
+        <name>myWaitAssignment_myWait_myRule_1</name>
+        <label>myWaitAssignment_myWait_myRule_1</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>cancelWaits</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>myWait_myRule_1</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>myDecision</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>myWaitEvent_myWait_myRule_1_event_0_postWaitExecutionAssignment</name>
+        <label>myWaitEvent_myWait_myRule_1_event_0_postWaitExecutionAssignment</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>myWaitEvent_myWait_myRule_1_event_0_postActionExecutionVariable</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>myWait_myRule_1</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <processMetadataValues>
             <name>index</name>
@@ -114,40 +149,41 @@
             <name>myRule_1</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Boolean</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.copado__User_Story__r.copado__Has_Apex_Code__c</leftValueReference>
+                <leftValueReference>formula_myRule_1</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>myRule_1_A1</targetReference>
+                <targetReference>myWait_myRule_1</targetReference>
             </connector>
-            <label>User Story has Apex?</label>
+            <label>Always</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>myPreWaitDecision_myWait_myRule_1</name>
+        <label>myPreWaitDecision_myWait_myRule_1</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myWaitAssignment_myWait_myRule_1</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myPreWaitRule_myWait_myRule_1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_1</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myDecision</targetReference>
+            </connector>
+            <label>myPreWaitRule_myWait_myRule_1</label>
         </rules>
     </decisions>
     <formulas>
@@ -157,11 +193,16 @@
                 <stringValue>[copado__User_Story_Commit__c].copado__User_Story__c.copado__Environment__c.copado__Org_ID__c </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_2_myRule_1_A1_8562896036</name>
+        <name>formula_2_myWaitEvent_myWait_myRule_1_event_0_SA1_0713357790</name>
         <dataType>String</dataType>
         <expression>{!myVariable_current.copado__User_Story__r.copado__Environment__r.copado__Org_ID__c}</expression>
     </formulas>
-    <interviewLabel>User_Story_Commit_Update-1_InterviewLabel</interviewLabel>
+    <formulas>
+        <name>formula_myRule_1</name>
+        <dataType>Boolean</dataType>
+        <expression>true</expression>
+    </formulas>
+    <interviewLabel>User_Story_Commit_Update-4_InterviewLabel</interviewLabel>
     <label>User Story Commit - Update</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -188,8 +229,15 @@
         </value>
     </processMetadataValues>
     <processType>Workflow</processType>
-    <startElementReference>myDecision</startElementReference>
+    <startElementReference>myPreWaitDecision_myWait_myRule_1</startElementReference>
     <status>Active</status>
+    <variables>
+        <name>cancelWaits</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
     <variables>
         <name>myVariable_current</name>
         <dataType>SObject</dataType>
@@ -206,4 +254,61 @@
         <isOutput>false</isOutput>
         <objectType>copado__User_Story_Commit__c</objectType>
     </variables>
+    <variables>
+        <name>myWaitEvent_myWait_myRule_1_event_0_postActionExecutionVariable</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <waits>
+        <name>myWait_myRule_1</name>
+        <label>myWait_myRule_1</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>defaultLabel</defaultConnectorLabel>
+        <waitEvents>
+            <processMetadataValues>
+                <name>inputParameterType</name>
+                <value>
+                    <stringValue>now</stringValue>
+                </value>
+            </processMetadataValues>
+            <name>myWaitEvent_myWait_myRule_1_event_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>myWaitEvent_myWait_myRule_1_event_0_postActionExecutionVariable</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myWaitEvent_myWait_myRule_1_event_0_SA1</targetReference>
+            </connector>
+            <eventType>AlarmEvent</eventType>
+            <inputParameters>
+                <name>AlarmTime</name>
+                <value>
+                    <elementReference>$Flow.InterviewStartTime</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>TimeOffsetUnit</name>
+                <value>
+                    <stringValue>Hours</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>TimeOffset</name>
+                <value>
+                    <numberValue>0.0</numberValue>
+                </value>
+            </inputParameters>
+            <label>myWaitEvent_myWait_myRule_1_event_0</label>
+        </waitEvents>
+    </waits>
 </Flow>
