@@ -217,6 +217,11 @@ ISBLANK(December_Meter_Read_Date__c )=false)=true,&quot;INACTIVE&quot;,&quot;ACT
         <unique>false</unique>
     </fields>
     <label>Meter Reading Schedule</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
     <nameField>
         <label>Meter Reading Schedule Name</label>
         <trackHistory>false</trackHistory>

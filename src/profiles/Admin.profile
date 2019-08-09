@@ -52818,6 +52818,10 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>Meter_Reading_Schedule__c</tab>
+        <visibility>DefaultOff</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>Monthly_SREC_Invoice_Generation</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
