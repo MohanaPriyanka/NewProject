@@ -19596,11 +19596,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Client_Allocation_Schedule_Subscription__c.Regenerate_Bill__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Client_Allocation_Schedule_Subscription__c.Stop_Credit_Transfer__c</field>
         <readable>true</readable>
     </fieldPermissions>
