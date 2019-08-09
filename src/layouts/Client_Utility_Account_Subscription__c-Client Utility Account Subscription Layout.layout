@@ -19,15 +19,15 @@
                 <behavior>Readonly</behavior>
                 <field>Utility_Account_Number__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>Shared_Solar_System__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>OwnerId</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Shared_Solar_System__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
