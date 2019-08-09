@@ -9,6 +9,10 @@
 
 trigger ScheduleZSubscriptionTrigger on Schedule_Z_Subscription__c (after insert, after update, before delete) {
 
+    if (Util.isDisabled('Disable_Client_Objects_Trigger__c')) {
+        return;
+    }
+
     if (Trigger.isInsert) {
         ClientReportingService.insertClientALSS(Trigger.new);
     }

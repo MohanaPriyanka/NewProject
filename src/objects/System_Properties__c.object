@@ -95,6 +95,14 @@ Production: BlueWave Inside Sales</inlineHelpText>
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Disable_Client_Objects_Trigger__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Disable Client Objects Trigger</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Disable_ContactTrigger__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
