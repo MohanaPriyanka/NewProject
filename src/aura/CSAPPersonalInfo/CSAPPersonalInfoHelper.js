@@ -20,6 +20,7 @@
         } else {
             lead.Application_Source_Phase_1__c = 'CSAP 2.1 with Inside Sales';
         }
+        lead.LeadSource = 'CSAP';
         lead.Product_line__c = "Community Solar";
         component.set("v.lead", lead);
     },
