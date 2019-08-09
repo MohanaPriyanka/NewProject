@@ -67809,9 +67809,6 @@
         <layout>Asset_Management__c-Asset Management Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>AuthorizationForm-Authorization Form Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Autopay_Schedule__c-Autopay Schedule Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
