@@ -201,6 +201,19 @@
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>Shared_Solar_System__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Shared Solar System</label>
+        <referenceTo>Shared_Solar_System__c</referenceTo>
+        <relationshipLabel>Client Utility Account Subscriptions</relationshipLabel>
+        <relationshipName>Client_Utility_Account_Subscriptions</relationshipName>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Transferring_Subsc_to_Another_UAS__c</fullName>
         <externalId>false</externalId>
         <formula>Utility_Account_Subscription__r.Transferring_Subsc_to_Another_UAS__c</formula>
