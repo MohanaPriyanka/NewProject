@@ -19581,11 +19581,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Client_Allocation_Schedule_Subscription__c.Allocation_Schedule_Subscription_Name__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Client_Allocation_Schedule_Subscription__c.Allocation_Schedule__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -19847,11 +19842,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Client_Utility_Account_Subscription__c.Utility_Account_Number__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Client_Utility_Account_Subscription__c.Utility_Account_Subscription__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
