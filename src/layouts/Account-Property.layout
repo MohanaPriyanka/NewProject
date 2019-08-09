@@ -4,8 +4,7 @@
     <customButtons>Account_info_Page</customButtons>
     <customButtons>Customer_Billing_Summary</customButtons>
     <customButtons>Submit_Bill_Adjustment</customButtons>
-    <excludeButtons>DataDotComAccountInsights</excludeButtons>
-    <excludeButtons>DataDotComClean</excludeButtons>
+    <excludeButtons>DataDotComCompanyHierarchy</excludeButtons>
     <excludeButtons>DisableCustomerPortalAccount</excludeButtons>
     <excludeButtons>DisablePartnerPortalAccount</excludeButtons>
     <excludeButtons>IncludeOffline</excludeButtons>
@@ -20,6 +19,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Parent_Account__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Lead__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
@@ -457,16 +460,6 @@
         <relatedList>Account_Bill__c.Parent_Account__c</relatedList>
         <sortField>Date__c</sortField>
         <sortOrder>Desc</sortOrder>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <fields>ChargentOrders__Order__c</fields>
-        <fields>ChargentOrders__Gateway_Date__c</fields>
-        <fields>ChargentOrders__Amount__c</fields>
-        <fields>ChargentOrders__Type__c</fields>
-        <fields>ChargentOrders__Response_Message__c</fields>
-        <fields>ChargentOrders__Credit_Card_Type__c</fields>
-        <relatedList>ChargentOrders__Transaction__c.ChargentOrders__Account__c</relatedList>
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>

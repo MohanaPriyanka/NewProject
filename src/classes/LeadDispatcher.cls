@@ -14,11 +14,11 @@ public with sharing class LeadDispatcher {
         LeadTriggerHandler leadTriggerHandler = new LeadTriggerHandler();
         ReferralCodeHandler referralCodeHandler  = new ReferralCodeHandler();
 
+        public List<Lead> updatedCSAPLeads = new List<Lead>();
+        public Map<Id, Lead> oldCSAPMap = new Map<Id, Lead>();
+
         public List<Lead> updatedLeads = new List<Lead>();
         public Map<Id, Lead> oldLeadMap = new Map<Id, Lead>();
-
-        public List<Lead> updatedSwitchLeads = new List<Lead>();
-        public Map<Id, Lead> oldSwitchMap = new Map<Id, Lead>();
     }
 
 
@@ -28,17 +28,17 @@ public with sharing class LeadDispatcher {
 
 
         for (Lead lead : updatedLeads) {
-            if (lead.LeadSource == 'Switch') {
-                result.updatedSwitchLeads.add(lead);
-
-                if (oldLeadMap != null) {
-                    result.oldSwitchMap.put(lead.Id, oldLeadMap.get(lead.Id));
-                }
-            } else {
+            if (lead.LeadSource == 'Switch' || lead.LeadSource == 'Third-Party') {
                 result.updatedLeads.add(lead);
 
                 if (oldLeadMap != null) {
                     result.oldLeadMap.put(lead.Id, oldLeadMap.get(lead.Id));
+                }
+            } else {
+                result.updatedCSAPLeads.add(lead);
+
+                if (oldLeadMap != null) {
+                    result.oldCSAPMap.put(lead.Id, oldLeadMap.get(lead.Id));
                 }
             }
 
@@ -49,13 +49,13 @@ public with sharing class LeadDispatcher {
     public void onBeforeInsert(List<Lead> leadList) {
         LeadHandlerResult result = separateLeads(leadList, null);
 
-        if (result.updatedLeads.size() > 0) {
-            result.leadTriggerHandler.onBeforeInsert(result.updatedLeads);
-            result.referralCodeHandler.OnBeforeInsert(result.updatedLeads);
+        if (result.updatedCSAPLeads.size() > 0) {
+            result.leadTriggerHandler.onBeforeInsert(result.updatedCSAPLeads);
+            result.referralCodeHandler.OnBeforeInsert(result.updatedCSAPLeads);
         }
 
-        if (result.updatedSwitchLeads.size()> 0 ){
-            UtilityLoadZoneService.updateLZUL(result.updatedSwitchLeads, null);
+        if (result.updatedLeads.size()> 0 ){
+            UtilityLoadZoneService.updateLZUL(result.updatedLeads, null);
 
             // When we remove the "If Switch" statement with retirement of CSAP,we will need to retire ReferralCodeHandler
             // and change to assignPartner(leadList); This will require an update to all TestClasses that still use the CustomId
@@ -66,13 +66,13 @@ public with sharing class LeadDispatcher {
     public void onBeforeUpdate(List<Lead> updatedLeads, Map<Id, Lead> oldLeadMap) {
         LeadHandlerResult result = separateLeads(updatedLeads, oldLeadMap);
 
-        if (result.updatedLeads.size() > 0 ) {
-            result.leadTriggerHandler.onBeforeUpdate(null, result.updatedLeads, result.oldLeadMap, null);
-            UtilityAccountLogConversionHandler.utilityAccountLogConversion(result.updatedLeads);
+        if (result.updatedCSAPLeads.size() > 0 ) {
+            result.leadTriggerHandler.onBeforeUpdate(null, result.updatedCSAPLeads, result.oldCSAPMap, null);
+            UtilityAccountLogConversionHandler.utilityAccountLogConversion(result.updatedCSAPLeads);
         }
 
-        if (result.updatedSwitchLeads.size()> 0 ){
-            UtilityLoadZoneService.updateLZUL(result.updatedSwitchLeads, result.oldSwitchMap);
+        if (result.updatedLeads.size()> 0 ){
+            UtilityLoadZoneService.updateLZUL(result.updatedLeads, result.oldLeadMap);
 
         }
 
@@ -82,13 +82,13 @@ public with sharing class LeadDispatcher {
         LeadHandlerResult result = separateLeads(updatedLeads, oldLeadMap);
 
         LeadService leadService = new LeadService();
-        if (result.updatedLeads.size() > 0 ) {
-            result.leadTriggerHandler.onAfterUpdate(null, result.updatedLeads, result.oldLeadMap);
+        if (result.updatedCSAPLeads.size() > 0 ) {
+            result.leadTriggerHandler.onAfterUpdate(null, result.updatedCSAPLeads, result.oldCSAPMap);
         }
 
-        if (result.updatedSwitchLeads.size()> 0 ){
-            leadService.completeLeadConversion(result.updatedSwitchLeads, result.oldSwitchMap);
-            leadService.convertCasesToContact(result.updatedSwitchLeads);
+        if (result.updatedLeads.size()> 0 ){
+            leadService.completeLeadConversion(result.updatedLeads, result.oldLeadMap);
+            leadService.convertCasesToContact(result.updatedLeads);
         }
     }
 

@@ -180,7 +180,6 @@ public class LeadServiceTestclass {
         insert switchLead;
 
 
-
     }
     @IsTest
     static void testDispatchCSAPLead() {
@@ -197,6 +196,14 @@ public class LeadServiceTestclass {
 
         insert csapLead;
 
+
+
+        Partner__c partner = [SELECT Id FROM Partner__c WHERE Email__c = 'otherTest@email.com' LIMIT 1];
+
+
+        csapLead.Partner_Lookup__c = partner.Id;
+        update csapLead;
+
         Lead lead = [
             SELECT Id, Partner_Lookup__c, Utility_relationship__r.Name, LoadZone__c
             FROM Lead
@@ -204,22 +211,9 @@ public class LeadServiceTestclass {
             LIMIT 1
         ];
 
-        Partner__c partner = [SELECT Id FROM Partner__c WHERE Email__c = 'otherTest@email.com' LIMIT 1];
-
-
-        lead.Partner_Lookup__c = partner.Id;
-        //lead.Utility_relationship__c = utility.Id;
-        update lead;
-
+        //LeadDispatcher should send lead to LeadTriggerHandler where LoadZone and Utliity are set using UtilityLoadZoneService
         System.assertEquals('Hudson Valley' , lead.LoadZone__c);
         System.assertEquals('NYS Electric and Gas', lead.Utility_relationship__r.Name);
-
-
-        //update partner
-        //assign product
-        //assing utility relationship
-
-
 
     }
 
