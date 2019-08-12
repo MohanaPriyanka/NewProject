@@ -10,10 +10,10 @@
     <label>Loan Document Visibility</label>
     <objectPermissions>
         <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
+        <allowDelete>false</allowDelete>
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>Loan_Document__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
