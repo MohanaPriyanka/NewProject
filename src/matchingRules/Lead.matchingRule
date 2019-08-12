@@ -26,4 +26,25 @@
         </matchingRuleItems>
         <ruleStatus>Active</ruleStatus>
     </matchingRules>
+    <matchingRules>
+        <fullName>Lead_Duplicate_Rule_DTC</fullName>
+        <description>A stricter lead matching rule than is used for CSAP leads.</description>
+        <label>Lead Duplicate Rule DTC</label>
+        <matchingRuleItems>
+            <blankValueBehavior>MatchBlanks</blankValueBehavior>
+            <fieldName>FirstName</fieldName>
+            <matchingMethod>Exact</matchingMethod>
+        </matchingRuleItems>
+        <matchingRuleItems>
+            <blankValueBehavior>MatchBlanks</blankValueBehavior>
+            <fieldName>LastName</fieldName>
+            <matchingMethod>Exact</matchingMethod>
+        </matchingRuleItems>
+        <matchingRuleItems>
+            <blankValueBehavior>MatchBlanks</blankValueBehavior>
+            <fieldName>Email</fieldName>
+            <matchingMethod>Exact</matchingMethod>
+        </matchingRuleItems>
+        <ruleStatus>Active</ruleStatus>
+    </matchingRules>
 </MatchingRules>
