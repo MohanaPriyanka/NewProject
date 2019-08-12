@@ -1381,6 +1381,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
+                    <fullName>360 Managed Services</fullName>
+                    <default>false</default>
+                    <label>360 Managed Services</label>
+                </value>
+                <value>
                     <fullName>Accept Solar Inc.</fullName>
                     <default>false</default>
                     <label>Accept Solar Inc.</label>
@@ -1546,6 +1551,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <label>Reliable Solar Solutions</label>
                 </value>
                 <value>
+                    <fullName>Renewable Access</fullName>
+                    <default>false</default>
+                    <label>Renewable Access</label>
+                </value>
+                <value>
                     <fullName>Renewable Connections, LLC</fullName>
                     <default>false</default>
                     <label>Renewable Connections, LLC</label>
@@ -1634,11 +1644,6 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <fullName>Yeloha</fullName>
                     <default>false</default>
                     <label>Yeloha</label>
-                </value>
-                <value>
-                    <fullName>360 Managed Services</fullName>
-                    <default>false</default>
-                    <label>360 Managed Services</label>
                 </value>
                 <value>
                     <fullName>Oxford100</fullName>
@@ -2406,6 +2411,10 @@ null)</formula>
                 <default>false</default>
             </values>
             <values>
+                <fullName>Renewable Access</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Renewable Connections%2C LLC</fullName>
                 <default>false</default>
             </values>
@@ -2826,6 +2835,10 @@ null)</formula>
             </values>
             <values>
                 <fullName>Reliable Solar Solutions</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Renewable Access</fullName>
                 <default>false</default>
             </values>
             <values>
