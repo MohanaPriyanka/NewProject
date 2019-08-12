@@ -9650,6 +9650,31 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
     <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
     <recordTypeTrackHistory>false</recordTypeTrackHistory>
     <recordTypes>
+        <fullName>BFG</fullName>
+        <active>true</active>
+        <businessProcess>BlueWave Capital</businessProcess>
+        <label>BFG</label>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Third-Party</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
         <fullName>BFG_Community_Solar_Anchor</fullName>
         <active>true</active>
         <businessProcess>Community Solar Anchor</businessProcess>
@@ -9657,23 +9682,7 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <picklistValues>
             <picklist>LeadSource</picklist>
             <values>
-                <fullName>BWC GIS</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>CSAP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Door Knocking</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>External Referral</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -9685,19 +9694,15 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
                 <default>false</default>
             </values>
             <values>
-                <fullName>Scout</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Switch</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Website</fullName>
+                <fullName>Third-Party</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Word of mouth</fullName>
+                <fullName>Website</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -9714,14 +9719,6 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
                 <default>false</default>
             </values>
             <values>
-                <fullName>Door Knocking</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>External Referral</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Other</fullName>
                 <default>false</default>
             </values>
@@ -9734,11 +9731,11 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
                 <default>false</default>
             </values>
             <values>
-                <fullName>Website</fullName>
+                <fullName>Third-Party</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Word of mouth</fullName>
+                <fullName>Website</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -9758,23 +9755,7 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
         <picklistValues>
             <picklist>LeadSource</picklist>
             <values>
-                <fullName>BWC GIS</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>CSAP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Door Knocking</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>External Referral</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -9786,19 +9767,15 @@ TEXT(YEAR(Commencement_Date__c)+FLOOR((MONTH(Commencement_Date__c)+Product__r.Te
                 <default>false</default>
             </values>
             <values>
-                <fullName>Scout</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Switch</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Website</fullName>
+                <fullName>Third-Party</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Word of mouth</fullName>
+                <fullName>Website</fullName>
                 <default>false</default>
             </values>
         </picklistValues>

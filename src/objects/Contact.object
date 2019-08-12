@@ -3042,6 +3042,25 @@ Hard Pull: Bluewave2</description>
         <active>true</active>
         <label>Customer Contact</label>
         <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Third-Party</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>LASERCA__Credit_Bureau__c</picklist>
             <values>
                 <fullName>Equifax</fullName>
@@ -3053,45 +3072,6 @@ Hard Pull: Bluewave2</description>
             </values>
             <values>
                 <fullName>TransUnion</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>LeadSource</picklist>
-            <values>
-                <fullName>BWC GIS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Door Knocking</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>External Referral</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Scout</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Word of mouth</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
