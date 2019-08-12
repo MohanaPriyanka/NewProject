@@ -15,7 +15,7 @@ public with sharing class ZuoraHistoricalBatchApply implements Database.Batchabl
 
     public void init() {
         accountsToLoad = [
-            SELECT Id, Zuora_Id__c
+            SELECT Id, Zuora_Id__c, CreatedDate
             FROM Account
             WHERE RecordType.Name = 'Property'
         ];
@@ -30,6 +30,10 @@ public with sharing class ZuoraHistoricalBatchApply implements Database.Batchabl
         if (scope.size() > 1) {
             throw new Util.BWException('Run ZuoraHistoricalBatchApply with a batch size of 1 since it relies' +
                 ' on chained queueables');
+        }
+        if (String.isBlank(scope[0].Zuora_Id__c)) {
+            throw new Util.BWException('Skipping property ' + scope[0].Id + ' created ' + scope[0].CreatedDate +
+                ' because it has no Zuora Id');
         }
         try {
             queuePayableApplicationForAccount(scope[0]);
