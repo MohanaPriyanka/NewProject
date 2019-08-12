@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Users with the &quot;Allow Edit of SSS Address&quot; permission will be able to edit address details for SSS.</description>
+    <label>Allow Edit of SSS Address</label>
+</CustomPermission>
