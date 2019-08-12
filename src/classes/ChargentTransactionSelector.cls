@@ -15,6 +15,8 @@ public with sharing class ChargentTransactionSelector {
             AND ChargentOrders__Response_Status__c != 'Error'
             AND ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Zuora_Id__c =: zuoraAccountId
             AND ChargentOrders__Response_Status__c != 'Returned'
+            AND ChargentOrders__Amount__c != 0
+            AND ChargentOrders__Amount__c != NULL
             ORDER BY Date_of_Transaction__c
         ];
     }

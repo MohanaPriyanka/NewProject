@@ -40,8 +40,8 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
                 processingParameter.payables.remove(0);
             } catch (Exception e) {
                 Logger.logLater('ZuoraHistoricalApplicationService', 'processOutstandingItems',
-                    'Error processing payable: ' + payable + '\n' + e.getMessage() + '\n' + e.getStackTraceString(),
-                    Logger.ERROR);
+                    'Warning processing payable, will requeue: \n' + e.getMessage() + '\n' + e.getStackTraceString() + '\n' + payable,
+                    Logger.WARN);
                 requeue();
                 break;
             }
@@ -99,11 +99,21 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
     }
 
     private void createAndApplyPayment(ChargentOrders__Transaction__c trx) {
-        if (trx.ChargentOrders__Type__c == 'Transfer') {
-            // TODO: Transfer transactions need to be credit/debit memos - need to add new adjustment type. How about refunds?
-        } else {
-            ZuoraAPI.Payment payment = createPayment(trx);
-            applyPayment(trx, payment);
+        switch on trx.ChargentOrders__Type__c {
+            when 'Transfer' {
+                // TODO: Transfer transactions need to be credit/debit memos - need to add new adjustment type.
+            }
+            when 'Credit' {
+                // TODO: Handle negative payment by creating a credit memo
+            }
+            when 'Refund' {
+                // TODO: Handle negative payment by creating a credit memo
+            }
+            when else {
+                // How do we handle this negative Charge? https://bluewavesolar.my.salesforce.com/a210a00000a4aUWAAY
+                ZuoraAPI.Payment payment = createPayment(trx);
+                applyPayment(trx, payment);
+            }
         }
     }
 
