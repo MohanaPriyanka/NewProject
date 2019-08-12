@@ -33,7 +33,7 @@
         <matchingRuleItems>
             <blankValueBehavior>MatchBlanks</blankValueBehavior>
             <fieldName>FirstName</fieldName>
-            <matchingMethod>Exact</matchingMethod>
+            <matchingMethod>FirstName</matchingMethod>
         </matchingRuleItems>
         <matchingRuleItems>
             <blankValueBehavior>MatchBlanks</blankValueBehavior>
