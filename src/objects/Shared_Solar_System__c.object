@@ -3138,7 +3138,7 @@ ISCHANGED(Utility_NMC_Tariff__c)
         <fullName>PM_Team_Locks</fullName>
         <active>true</active>
         <description>Prevents users who do not have the &quot;Allow Edit of SSS Address&quot; permission from changing the SSS address.</description>
-        <errorConditionFormula>$Permission.Allow_Edit_of_SSS_Address &amp;&amp;
+        <errorConditionFormula>NOT($Permission.Allow_Edit_of_SSS_Address) &amp;&amp;
 NOT(
     OR(
     ISCHANGED(Address__c),
