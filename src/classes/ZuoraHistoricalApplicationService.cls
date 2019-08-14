@@ -1,12 +1,13 @@
 /*************************************************************************************
  * Created By: peteryao on 2019-07-26  
- * Description: 
- * Test: 
+ * Description: Applied payments for historical migration
+ * Test: ZuoraHistoricalApplicationTest
  *************************************************************************************/
 
 public with sharing class ZuoraHistoricalApplicationService implements ZuoraOutstandingItemsService.Processor, Queueable, Database.AllowsCallouts {
     private List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems;
     private ZuoraOutstandingItemsService.ProcessingParameter processingParameter;
+    @TestVisible
     private Map<String, Id> projectUniqueIdToEntityMap;
     private String defaultPaymentMethodId;
 
@@ -38,6 +39,11 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
                     createAndApplyPayment(payable.payment);
                 }
                 processingParameter.payables.remove(0);
+            } catch (Util.FatalBWException bwe) {
+                Logger.logLater('ZuoraHistoricalApplicationService', 'processOutstandingItems',
+                    'Error processing payable, stopping further processing: \n' + bwe.getMessage() + '\n' + bwe.getStackTraceString() + '\n' + payable,
+                    Logger.ERROR);
+                break;
             } catch (Exception e) {
                 Logger.logLater('ZuoraHistoricalApplicationService', 'processOutstandingItems',
                     'Warning processing payable, will requeue: \n' + e.getMessage() + '\n' + e.getStackTraceString() + '\n' + payable,
@@ -99,15 +105,24 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
     }
 
     private void createAndApplyPayment(ChargentOrders__Transaction__c trx) {
+        // Transfers could use five callouts, so don't start this unless there are at least five callouts and 10 seconds
+        // that remain. Otherwise, we could end up creating a record and not posting or not applying it.
+        if (ZuoraAPIHelper.getCalloutsRemaining() < 5 && ZuoraAPIHelper.getCalloutSecondsRemaining() < 10) {
+            throw new Util.BWException('Not applying payment ' + trx.Id + ' because of callouts (' + ZuoraAPIHelper.getCalloutsRemaining() +
+                ') or time (' + ZuoraAPIHelper.getCalloutSecondsRemaining() + ') remaining. Will retry.');
+        }
         switch on trx.ChargentOrders__Type__c {
             when 'Transfer' {
-                // TODO: Transfer transactions need to be credit/debit memos - need to add new adjustment type.
+                // Chargent Transactions are by Entity, but Credit/Debit Memos are project specific, so we need to translate
+                handleTransfer(trx);
             }
             when 'Credit' {
-                // TODO: Handle negative payment by creating a credit memo
+                ZuoraSubscriptionService.ClientProject clientProjectAssignment = getClientProjectFromTransaction(trx, true);
+                createAndApplyCreditMemo(trx, clientProjectAssignment, 'Credit');
             }
             when 'Refund' {
-                // TODO: Handle negative payment by creating a credit memo
+                ZuoraSubscriptionService.ClientProject clientProjectAssignment = getClientProjectFromTransaction(trx, true);
+                createAndApplyCreditMemo(trx, clientProjectAssignment, 'Refund');
             }
             when else {
                 // How do we handle this negative Charge? https://bluewavesolar.my.salesforce.com/a210a00000a4aUWAAY
@@ -115,6 +130,157 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
                 applyPayment(trx, payment);
             }
         }
+    }
+
+    @TestVisible
+    private void handleTransfer(ChargentOrders__Transaction__c trx) {
+        if (trx.ChargentOrders__Amount__c < 0) {
+            ZuoraSubscriptionService.ClientProject clientProjectAssignment = getClientProjectFromTransaction(trx, true);
+            createAndApplyCreditMemo(trx, clientProjectAssignment, 'Transfer');
+        } else {
+            ZuoraSubscriptionService.ClientProject clientProjectAssignment = getClientProjectFromTransaction(trx, false);
+            ZuoraAPI.ZuoraDebitMemo zuoraDebitMemo = createAndPostDebitMemo(trx, clientProjectAssignment);
+            // Now that we've posted a new debit memo from this transfer, we need to add an outstanding item to the list
+            // so that a future payment will be applied to it (since we're not querying outstanding items between each payment that
+            // is applied)
+            addDebitMemoToOutstandingItems(zuoraDebitMemo);
+        }
+    }
+
+    private void addDebitMemoToOutstandingItems(ZuoraAPI.ZuoraDebitMemo zuoraDebitMemo) {
+        ZuoraAPI.DebitMemoWithItems debitMemoWithItems = ZuoraOutstandingItemsService.getDebitMemoItems(zuoraDebitMemo);
+        ZuoraOutstandingItemsService.OutstandingItem outstandingItem = new ZuoraOutstandingItemsService.OutstandingItem();
+        outstandingItem.AmountOutstanding = zuoraDebitMemo.amount;
+        outstandingItem.EffectiveDate = zuoraDebitMemo.debitMemoDate;
+        outstandingItem.Project = zuoraDebitMemo.Project_Zcustom;
+        outstandingItem.Client = zuoraDebitMemo.ClientOwner_Zcustom;
+        outstandingItem.Id = debitMemoWithItems.items[0].id;
+        outstandingItem.ParentId = zuoraDebitMemo.id;
+        outstandingItem.IsInvoiceItem = false;
+        outstandingItems.add(outstandingItem);
+        outstandingItems.sort();
+    }
+
+    private void createAndApplyCreditMemo(ChargentOrders__Transaction__c trx, ZuoraSubscriptionService.ClientProject clientProjectAssignment, String reasonCode) {
+        ZuoraAPI.ZuoraCreditMemo zuoraCreditMemo = createAndPostCreditMemo(trx, clientProjectAssignment, reasonCode);
+        ZuoraAPI.CreditMemoWithItem creditMemoWithItem =
+            ZuoraCreditMemoAllocationService.getItemFromCreditMemo(zuoraCreditMemo);
+        Payable payable = new Payable(creditMemoWithItem);
+        applyCreditMemo(payable);
+    }
+
+    private ZuoraSubscriptionService.ClientProject getClientProjectFromTransaction(ChargentOrders__Transaction__c trx, Boolean withOpenBalance) {
+        // We need the client, project, and charge Id to create a memo, and for credit memos, we want to create one with an existing outstanding item
+        ZuoraSubscriptionService.ClientProject clientProjectAssignment;
+
+        ZuoraAPI.OrderBySubscriptionOwner orderBySubscriptionOwner =
+            ZuoraSubscriptionService.getOrderBySubscriptionOwner(trx.ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Zuora_Id__c);
+        Set<ZuoraSubscriptionService.ClientProject> clientProjects =
+            orderBySubscriptionOwner.getClientProjectsFromOrders();
+
+        if (withOpenBalance) {
+            for (ZuoraOutstandingItemsService.OutstandingItem outstandingItem : outstandingItems) {
+                if (outstandingItem.AmountOutstanding > 0 &&
+                    outstandingItem.Client == trx.Client__r.Account_Number__c &&
+                    projectUniqueIdToEntityMap.get(outstandingItem.Project) == trx.ChargentOrders__Order__r.Entity__c) {
+                    clientProjectAssignment = getClientProjectFromOutstandingItem(outstandingItem, clientProjects);
+                    break;
+                }
+            }
+        } else {
+            for (ZuoraSubscriptionService.ClientProject clientProject : clientProjects) {
+                if (projectUniqueIdToEntityMap.get(clientProject.projectName) == trx.ChargentOrders__Order__r.Entity__c) {
+                    clientProjectAssignment = clientProject;
+                    break;
+                }
+            }
+        }
+
+        if (clientProjectAssignment == null) {
+            throw new Util.FatalBWException('Could not assign this transfer transaction to a project with an open balance: ' + trx.Id);
+        }
+        return clientProjectAssignment;
+    }
+
+    private ZuoraSubscriptionService.ClientProject getClientProjectFromOutstandingItem(ZuoraOutstandingItemsService.OutstandingItem outstandingItem, Set<ZuoraSubscriptionService.ClientProject> clientProjects) {
+        for (ZuoraSubscriptionService.ClientProject clientProject : clientProjects) {
+            if (clientProject.projectName == outstandingItem.Project &&
+                clientProject.clientName == outstandingItem.Client) {
+                return clientProject;
+            }
+        }
+        throw new Util.FatalBWException('Could not find a client project for this outstanding item: ' + outstandingItem);
+    }
+
+
+    private ZuoraAPI.ZuoraCreditMemo createAndPostCreditMemo(ChargentOrders__Transaction__c trx, ZuoraSubscriptionService.ClientProject clientProjectAssignment, String reasonCode) {
+        ZuoraAPI.CreditMemo creditMemo = new ZuoraAPI.CreditMemo();
+        creditMemo.accountId = trx.ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Zuora_Id__c;
+        ZuoraAPI.CreditCharge creditCharge = new ZuoraAPI.CreditCharge();
+        if (trx.ChargentOrders__Amount__c > 0) {
+            throw new Util.FatalBWException('Expected a negative amount when creating credit memo for transaction ' + trx.Id);
+        }
+        creditCharge.amount = -trx.ChargentOrders__Amount__c;
+        creditCharge.chargeId = clientProjectAssignment.productRatePlanChargeId;
+        creditMemo.charges = new List<ZuoraAPI.CreditCharge>();
+        creditMemo.charges.add(creditCharge);
+        creditMemo.reasonCode = reasonCode;
+        creditMemo.Project_Zcustom = clientProjectAssignment.projectName;
+        creditMemo.ClientOwner_Zcustom = clientProjectAssignment.clientName;
+        creditMemo.CRM_ID_Zcustom = trx.Id;
+        creditMemo.effectiveDate = Date.newInstance(trx.CreatedDate.date().year(), trx.CreatedDate.date().month(), trx.CreatedDate.date().day());
+
+        HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('POST','/v1/creditmemos',creditMemo,false);
+        ZuoraAPI.GenericResponse zResponse =
+            (ZuoraAPI.GenericResponse) JSON.deserialize(response.getBody(), ZuoraAPI.GenericResponse.class);
+        if (!zResponse.success){
+            throw new Util.BWException('Could not create credit memo: ' + creditMemo + '\n' + 'Got response: ' + zResponse);
+        }
+        ZuoraCreditDebitMemoService.postCreditMemo(zResponse.Id);
+
+        ZuoraAPI.ZuoraCreditMemo zuoraCreditMemo = new ZuoraAPI.ZuoraCreditMemo();
+        zuoraCreditMemo.id = zResponse.Id;
+        zuoraCreditMemo.accountId = creditMemo.accountId;
+        zuoraCreditMemo.creditMemoDate = creditMemo.effectiveDate;
+        zuoraCreditMemo.amount = creditCharge.amount;
+        zuoraCreditMemo.unappliedAmount = creditCharge.amount;
+        zuoraCreditMemo.Project_Zcustom = creditMemo.Project_Zcustom;
+        zuoraCreditMemo.ClientOwner_Zcustom = creditMemo.ClientOwner_Zcustom;
+
+        return zuoraCreditMemo;
+    }
+
+    private ZuoraAPI.ZuoraDebitMemo createAndPostDebitMemo(ChargentOrders__Transaction__c trx, ZuoraSubscriptionService.ClientProject clientProjectAssignment) {
+        ZuoraAPI.DebitMemo debitMemo = new ZuoraAPI.DebitMemo();
+        debitMemo.accountId = trx.ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Zuora_Id__c;
+        ZuoraAPI.DebitMemoCharge debitMemoCharge = new ZuoraAPI.DebitMemoCharge();
+        debitMemoCharge.amount = trx.ChargentOrders__Amount__c;
+        debitMemoCharge.chargeId = clientProjectAssignment.productRatePlanChargeId;
+        debitMemo.charges = new List<ZuoraAPI.DebitMemoCharge>();
+        debitMemo.charges.add(debitMemoCharge);
+        debitMemo.reasonCode = 'Transfer';
+        debitMemo.Project_Zcustom = clientProjectAssignment.projectName;
+        debitMemo.ClientOwner_Zcustom = clientProjectAssignment.clientName;
+        debitMemo.CRM_ID_Zcustom = trx.Id;
+        debitMemo.effectiveDate = Date.newInstance(trx.CreatedDate.date().year(), trx.CreatedDate.date().month(), trx.CreatedDate.date().day());
+
+        HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('POST','/v1/debitmemos', debitMemo,false);
+        ZuoraAPI.GenericResponse zResponse =
+            (ZuoraAPI.GenericResponse) JSON.deserialize(response.getBody(), ZuoraAPI.GenericResponse.class);
+        if (!zResponse.success){
+            throw new Util.BWException('Could not create debit memo: ' + debitMemo + '\n' + 'Got response: ' + zResponse);
+        }
+        ZuoraCreditDebitMemoService.postDebitMemo(zResponse.Id);
+
+        ZuoraAPI.ZuoraDebitMemo zuoraDebitMemo = new ZuoraAPI.ZuoraDebitMemo();
+        zuoraDebitMemo.id = zResponse.Id;
+        zuoraDebitMemo.accountId = debitMemo.accountId;
+        zuoraDebitMemo.debitMemoDate = debitMemo.effectiveDate;
+        zuoraDebitMemo.amount = debitMemoCharge.amount;
+        zuoraDebitMemo.Project_Zcustom = debitMemo.Project_Zcustom;
+        zuoraDebitMemo.ClientOwner_Zcustom = debitMemo.ClientOwner_Zcustom;
+
+        return zuoraDebitMemo;
     }
 
     private ZuoraAPI.Payment createPayment(ChargentOrders__Transaction__c trx) {
@@ -168,6 +334,12 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
                 addInvoiceItemToMap(outstandingItem, invoiceToInvoiceItemMap);
             } else {
                 addDebitMemoItemToMap(outstandingItem, debitMemoToDebitMemoItemMap);
+            }
+
+            // Since we need the payment application to be effective after the invoice item/debit memo item is effective to avoid
+            // "The specified effective date should be later than or equal to the invoice date."
+            if (outstandingItem.EffectiveDate > effectiveDate) {
+                effectiveDate = outstandingItem.EffectiveDate + 1;
             }
         }
         paymentApplication.effectiveDate = Date.newInstance(effectiveDate.year(), effectiveDate.month(), effectiveDate.day());

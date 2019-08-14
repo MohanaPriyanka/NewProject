@@ -110,6 +110,7 @@ public class ZuoraUsageServiceTest {
         Test.startTest();
         finishTestSetup();
         ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend();
+        zSend.init();
         zSend.executeBatch();
         Test.stopTest();
 
@@ -149,6 +150,7 @@ public class ZuoraUsageServiceTest {
         Test.startTest();
         finishTestSetup();
         ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend();
+        zSend.init();
         zSend.executeBatch();
         Test.stopTest();
 

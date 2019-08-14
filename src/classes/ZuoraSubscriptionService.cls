@@ -27,9 +27,9 @@ public with sharing class ZuoraSubscriptionService {
                 Logger.logLater(
                     'ZuoraSubscriptionService',
                     'createSubscription',
-                    'Caught exception creating subscription for ' + JSON.serialize(subscriptionParams[i]) +
+                    'Caught exception, will retry creating subscription for ' + JSON.serialize(subscriptionParams[i]) +
                         e.getMessage() + e.getStackTraceString(),
-                    Logger.ERROR
+                    Logger.WARN
                 );
                 continue;
             }
