@@ -76,7 +76,7 @@ public with sharing class ZuoraHistoricalBatchApply implements Database.Batchabl
         List<ZuoraAPI.ZuoraDebitMemo> debitMemos = ZuoraOutstandingItemsService.getOutstandingDebitMemos(account.Zuora_Id__c);
 
         ZuoraOutstandingItemsService.ProcessingParameter processingParameter =
-            new ZuoraOutstandingItemsService.ProcessingParameter('ZuoraHistoricalApplicationService', (List<Object>) payablesByDate);
+            new ZuoraOutstandingItemsService.ProcessingParameter('ZuoraHistoricalApplicationService', (List<ZuoraHistoricalApplicationService.Payable>) payablesByDate);
         ZuoraOutstandingItemsAsyncService asyncService = new ZuoraOutstandingItemsAsyncService(invoices, debitMemos, processingParameter);
         System.enqueueJob(asyncService);
         ZuoraHistoricalBatchApply.asyncServiceEnqueued = asyncService;

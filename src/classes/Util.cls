@@ -193,6 +193,7 @@ public without sharing class Util {
 
 
     public class BWException extends Exception {}
+    public class FatalBWException extends Exception {}
 
     public static String removeSpecialCharacters(String value) {
         return value.replaceAll('(?i)[^a-z0-9 ._]', '');
