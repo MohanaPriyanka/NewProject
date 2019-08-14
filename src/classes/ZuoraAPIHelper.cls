@@ -8,6 +8,7 @@ public with sharing class ZuoraAPIHelper {
     private static Zuora_Setting__mdt zuoraSetting;
     @TestVisible
     private static Long calloutMillis = 0;
+    private static Integer maxCalloutMillis = 105*1000;
     // Because we use the Zuora.zApi package, we can't use Limits.getCallouts to know how many callouts that namespace
     // consumes. So we need to manage it ourselves.
     @TestVisible
@@ -22,11 +23,19 @@ public with sharing class ZuoraAPIHelper {
         return callJsonEndpoint(method, endpoint, jsonBody, true);
     }
 
+    public static Integer getCalloutsRemaining() {
+        return maxCalloutsForZuoraNamespace - numberCalloutsForZuoraNamespace;
+    }
+
+    public static Long getCalloutSecondsRemaining() {
+        return (maxCalloutMillis - calloutMillis)/1000;
+    }
+
     public static HttpResponse callJsonEndpoint(String method, String endpoint, Object jsonBody, Boolean flush) {
         // Since there is a 120 second cumulative timeout for callouts, abort if we don't have a 15 second cushion left
         // (which is arbitrary). Starting the transaction and having Salesforce abort it may end up an with finished or
         // aborted transaction in Zuora
-        if (calloutMillis > 105*1000) {
+        if (calloutMillis > maxCalloutMillis) {
             throw new Util.BWException('Not starting ' + endpoint + ' because ' + (Integer) (calloutMillis/1000) +
                 ' seconds of cumulative callout time has been consumed. Retry in a different transaction.');
         }
