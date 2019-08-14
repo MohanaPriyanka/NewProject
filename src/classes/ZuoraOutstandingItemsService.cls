@@ -235,8 +235,7 @@ public class ZuoraOutstandingItemsService{
     public class ProcessingParameter {
         public String processorClassName;
         public ZuoraAPI.CreditMemoWithItem creditMemo;
-        // e.g. ZuoraHistoricalBatchApply.Payable
-        public List<Object> payables;
+        public List<ZuoraHistoricalApplicationService.Payable> payables;
         public List<OutstandingItem> allOutstandingItems;
 
         public ProcessingParameter() {
@@ -249,7 +248,7 @@ public class ZuoraOutstandingItemsService{
             this.allOutstandingItems = new List<OutstandingItem>();
         }
 
-        public ProcessingParameter(String processorClassName, List<Object> payables) {
+        public ProcessingParameter(String processorClassName, List<ZuoraHistoricalApplicationService.Payable> payables) {
             this.processorClassName = processorClassName;
             this.payables = payables;
             this.allOutstandingItems = new List<OutstandingItem>();
