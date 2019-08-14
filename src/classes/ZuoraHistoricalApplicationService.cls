@@ -118,7 +118,7 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
             }
             when 'Credit' {
                 ZuoraSubscriptionService.ClientProject clientProjectAssignment = getClientProjectFromTransaction(trx, true);
-                createAndApplyCreditMemo(trx, clientProjectAssignment, 'Credit');
+                createAndApplyCreditMemo(trx, clientProjectAssignment, 'Refund');
             }
             when 'Refund' {
                 ZuoraSubscriptionService.ClientProject clientProjectAssignment = getClientProjectFromTransaction(trx, true);
