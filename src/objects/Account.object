@@ -702,6 +702,29 @@ IMAGE(&quot;/resource/1553274837000/Crown_Icon&quot;, &quot;crown&quot;),
         </valueSet>
     </fields>
     <fields>
+        <fullName>Cancellation_Reason_External__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+CONTAINS(TEXT(Cancellation_Reason__c),&quot;Lack of Payment&quot;)
+,&quot;Deliquency&quot;,
+
+CASE(TEXT(Cancellation_Reason__c), 
+&quot;Customer Moved&quot;, &quot;Customer Moved / Out of Business&quot;,
+&quot;Business Sold/Out of Business&quot;, &quot;Customer Moved / Out of Business&quot;,
+&quot;Does Not Understand Product&quot;, &quot;Customer Not Satisfied with Product&quot;,
+&quot;Product Does Not Meet Needs&quot;,  &quot;Customer Not Satisfied with Product&quot;,
+&quot;Unhappy with BW Service&quot;,  &quot;Customer Not Satisfied with Product&quot;,
+&quot;Other&quot;) 
+
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Cancellation Reason</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Cancellation_Reason__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Reason the customer cancelled their CS Subscription</inlineHelpText>
