@@ -32,8 +32,12 @@ public with sharing class ZuoraHistoricalBatchApply implements Database.Batchabl
                 ' on chained queueables');
         }
         if (String.isBlank(scope[0].Zuora_Id__c)) {
-            throw new Util.BWException('Skipping property ' + scope[0].Id + ' created ' + scope[0].CreatedDate +
-                ' because it has no Zuora Id');
+            Logger.logNow('ZuoraHistoricalBatchApply', 'execute',
+                'Skipping property ' + scope[0].Id + ' created ' + scope[0].CreatedDate +
+                ' because it has no Zuora Id',
+                Logger.WARN
+            );
+            return;
         }
         try {
             queuePayableApplicationForAccount(scope[0]);
