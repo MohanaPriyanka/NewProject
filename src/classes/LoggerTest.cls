@@ -120,4 +120,34 @@ public with sharing class LoggerTest {
             }
         }
     }
+
+    @IsTest
+    public static void testLogLaterWithLongMessages() {
+        Logger.logLater('Class1', 'Method1', get120kString('Foo'), Logger.ERROR);
+        // We should only get Bar 0, and truncate after that
+        Logger.logLater('Class1', 'Method1', get120kString('Bar'), Logger.ERROR);
+        // We should see all of this in a different log message
+        Logger.logLater('Class2', 'Method2', get120kString('Bar'), Logger.ERROR);
+        Logger.flushLogs();
+        List<Error_Log__c> errorLogs = [
+            SELECT Id, Class__c, Message__c
+            FROM Error_Log__c
+            ORDER BY Class__c
+        ];
+        System.assertEquals(2, errorLogs.size());
+        System.assertEquals('Class1', errorLogs[0].Class__c);
+        System.assert(errorLogs[0].Message__c.contains('Bar 0'));
+        System.assert(!errorLogs[0].Message__c.contains('Bar 1'));
+        System.assertEquals('Class2', errorLogs[1].Class__c);
+        System.assert(errorLogs[1].Message__c.contains('Bar 1'));
+        System.assertEquals(get120kString('Bar').length(), (errorLogs[1].Message__c+'\n').length());
+    }
+
+    public static String get120kString(String prefix) {
+        String result = '';
+        for (Integer i = 0; i < 1000; i++) {
+            result += prefix + ' ' + i + '. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.\n';
+        }
+        return result;
+    }
 }
