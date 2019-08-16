@@ -8,6 +8,8 @@
  *************************************************************************************/
 
 public without sharing class ZuoraHistoricalLateFeeService implements Database.Batchable<System_Bill__c>, Database.Stateful, Database.AllowsCallouts{
+    public List<System_Bill__c> fullScope;
+
     public static ZuoraAPI.DebitMemo convertSFLateFeesToDebitMemos(System_Bill__c systemBill){
         ZuoraAPI.DebitMemoCharge debitCharge = new ZuoraAPI.DebitMemoCharge();
         debitCharge.Amount = systemBill.Late_Fees__c.setScale(2);
@@ -50,8 +52,8 @@ public without sharing class ZuoraHistoricalLateFeeService implements Database.B
         Database.executeBatch(this, 20);
     }
 
-    public List<System_Bill__c> start(Database.BatchableContext bc){
-        List<System_Bill__c> sbWithLateFee = [
+    public void init() {
+        fullScope = [
             SELECT Id, Late_Fees__c, Account_Bill__r.Parent_Account__r.Zuora_Id__c,
                 Account_Bill__r.Date__c, Client__r.Account_Number__c,
                 Opportunity__r.Shared_Solar_System__r.Unique_ID__c
@@ -59,7 +61,10 @@ public without sharing class ZuoraHistoricalLateFeeService implements Database.B
             WHERE Late_Fees__c > 0
             ORDER BY Account_Bill__r.Parent_Account__r.Zuora_Id__c
         ];
-        return sbWithLateFee;
+    }
+
+    public List<System_Bill__c> start(Database.BatchableContext bc){
+        return fullScope;
     }
 
     public void execute(Database.BatchableContext bc, List<System_Bill__c> scope){
