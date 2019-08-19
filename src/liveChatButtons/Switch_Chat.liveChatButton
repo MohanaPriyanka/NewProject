@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LiveChatButton xmlns="http://soap.sforce.com/2006/04/metadata">
-    <autoGreeting>Hi, how can I help you?</autoGreeting>
-    <chasitorIdleTimeout>300</chasitorIdleTimeout>
-    <chasitorIdleTimeoutWarning>180</chasitorIdleTimeoutWarning>
-    <customAgentName>{!User_FirstName}</customAgentName>
+    <chasitorIdleTimeout>1000</chasitorIdleTimeout>
+    <chasitorIdleTimeoutWarning>60</chasitorIdleTimeoutWarning>
     <deployments/>
     <enableQueue>false</enableQueue>
     <isActive>true</isActive>
-    <label>Customer Portal</label>
+    <label>Switch Chat</label>
     <optionsCustomRoutingIsEnabled>false</optionsCustomRoutingIsEnabled>
     <optionsHasChasitorIdleTimeout>true</optionsHasChasitorIdleTimeout>
     <optionsHasInviteAfterAccept>false</optionsHasInviteAfterAccept>
@@ -16,10 +14,8 @@
     <optionsIsAutoAccept>false</optionsIsAutoAccept>
     <optionsIsInviteAutoRemove>false</optionsIsInviteAutoRemove>
     <routingType>Choice</routingType>
-    <site>liveagent</site>
     <skills>
         <skill>CS_Customer_Service</skill>
     </skills>
     <type>Standard</type>
-    <windowLanguage>en_US</windowLanguage>
 </LiveChatButton>

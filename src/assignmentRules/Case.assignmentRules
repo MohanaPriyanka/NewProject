@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AssignmentRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <assignmentRule>
+        <fullName>Switch</fullName>
+        <active>true</active>
+        <ruleEntry>
+            <assignedTo>CS_Inside_Sales</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Partner Care Case</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Web</value>
+            </criteriaItems>
+            <template>BFG_Internal_Alerts/Task_Reminder_Email</template>
+        </ruleEntry>
+    </assignmentRule>
+</AssignmentRules>
