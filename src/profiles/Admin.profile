@@ -12391,6 +12391,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Lead.Manual_Campaign_ID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Lead.Manual_Credit_Approval__c</field>
         <readable>true</readable>
     </fieldPermissions>
