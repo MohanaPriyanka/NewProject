@@ -3,15 +3,19 @@ Tested by: ZuoraCreditDebitMemoServiceTest
  */
 public without sharing class ZuoraCreditMemoBatchSend implements Database.Batchable<SObject>, Database.Stateful, Database.AllowsCallouts{
     public Set<Bill_Adjustment__c> adjustToUpdateSet = new Set<Bill_Adjustment__c>();
+    public List<SObject> fullScope;
 
     public void executeBatch(){
         Database.executeBatch(this, 33);
     }
 
+    public void init() {
+        fullScope = new List<SObject>();
+        fullScope.addAll(AdjustmentSelector.getAdjustmentsNotYetInZuora(false));
+    }
+
     public List<SObject> start(Database.BatchableContext bc){
-        List<SObject> sObjectList = new List<SObject>();
-        sObjectList.addAll(AdjustmentSelector.getAdjustmentsNotYetInZuora(false));
-        return sObjectList;
+        return fullScope;
     }
 
     public void execute(Database.BatchableContext bc, List<SObject> scope){

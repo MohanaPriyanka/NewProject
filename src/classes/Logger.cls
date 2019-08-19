@@ -7,7 +7,6 @@
 public with sharing class Logger {
     @TestVisible
     private static Map<String, List<Log>> logs;
-    private static Integer logMessageLength = 0;
     private static Integer timesLogsCleared = 0;
     public static final String ERROR = 'Error';
     public static final String WARN = 'Warn';
@@ -39,11 +38,6 @@ public with sharing class Logger {
     }
 
     public static void logLater(String className, String methodName, String message, String severity) {
-        // Don't add additional log messages if the length is going to go over the field definition limit of 130k
-        if (logMessageLength > 0 && logMessageLength + message.length() > 130000) {
-            message = message.substringBefore('\n') + '...\n';
-        }
-        logMessageLength += message.length();
         Log l = new Log(className, methodName, message, severity);
         if (logs == null) {
             logs = new Map<String, List<Log>>();
@@ -60,7 +54,12 @@ public with sharing class Logger {
             for (String logKey : logs.keySet()) {
                 String message = '', className, methodName, severity;
                 for (Log l : logs.get(logKey))  {
-                    message += l.message + '\n';
+                    // Don't add additional log messages if the length is going to go over the field definition limit of 130k
+                    if (message.length() > 0 && message.length() + l.message.length() > 130000) {
+                        message += l.message.substringBefore('\n') + '...\n';
+                    } else {
+                        message += l.message + '\n';
+                    }
                     className = l.className;
                     methodName = l.method;
                     severity = l.severity;
@@ -77,7 +76,6 @@ public with sharing class Logger {
             logs.put(key+timesLogsCleared, logs.get(key));
             logs.remove(key);
         }
-        logMessageLength = 0;
     }
 
     public static void log(String className, String methodName, String message, Datetime timestamp) {
@@ -91,7 +89,7 @@ public with sharing class Logger {
                 User__c = UserInfo.getUserID(),
                 Class__c = className,
                 Method__c = methodName,
-                Message__c = message.left(32768),
+                Message__c = message.left(130000),
                 Severity__c = severity,
                 Timestamp__c = Datetime.newInstance(timestamp.date(), timestamp.time()));
         if (systemProperty == null) {

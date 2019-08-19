@@ -18,9 +18,11 @@ public class AdjustmentSelector {
                 'Discount__c, ' +
                 'Credits_Allocated__c, ' +
                 'Zuora_Id__c ' +
-            'FROM Bill_Adjustment__c ' +
-            'WHERE Zuora_Id__c = null ' +
-            'AND Applied_to_Bill__c = true ';
+                'FROM Bill_Adjustment__c ' +
+                'WHERE Zuora_Id__c = null ' +
+                'AND Applied_to_Bill__c = true ' +
+                // Ignore Returns, because we'll always create a debit memo for returned payments in Zuora
+                'AND Adjustment_Type__c != \'Returned Payment\' ';
 
         if (typeIsUsage){
             queryString += 'AND Adjustment_Type__c = \'Production\' ';
