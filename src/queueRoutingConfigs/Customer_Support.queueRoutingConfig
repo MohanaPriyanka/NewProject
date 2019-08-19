@@ -6,4 +6,5 @@
     <pushTimeout>30</pushTimeout>
     <routingModel>MOST_AVAILABLE</routingModel>
     <routingPriority>20</routingPriority>
+    <userOverflowAssignee>lalexander@bluewavesolar.com.jeff</userOverflowAssignee>
 </QueueRoutingConfig>

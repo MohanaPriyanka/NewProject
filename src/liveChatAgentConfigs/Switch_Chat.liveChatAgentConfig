@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LiveChatAgentConfig xmlns="http://soap.sforce.com/2006/04/metadata">
-    <assignments>
-        <profiles>
-            <profile>admin</profile>
-            <profile>BFG Standard User</profile>
-        </profiles>
-    </assignments>
     <autoGreeting>Hello I&apos;m {!User_FirstName}! Thank you for reaching out. How can I help?</autoGreeting>
     <capacity>3</capacity>
     <criticalWaitTime>4</criticalWaitTime>

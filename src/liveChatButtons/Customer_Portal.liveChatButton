@@ -15,7 +15,7 @@
     <optionsHasRerouteDeclinedRequest>false</optionsHasRerouteDeclinedRequest>
     <optionsIsAutoAccept>false</optionsIsAutoAccept>
     <optionsIsInviteAutoRemove>false</optionsIsInviteAutoRemove>
-    <routingType>Choice</routingType>
+    <routingType>MostAvailable</routingType>
     <site>liveagent</site>
     <skills>
         <skill>CS_Customer_Service</skill>

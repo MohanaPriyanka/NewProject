@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LiveChatAgentConfig xmlns="http://soap.sforce.com/2006/04/metadata">
+    <assignments>
+        <profiles>
+            <profile>admin</profile>
+            <profile>BFG Standard User</profile>
+        </profiles>
+    </assignments>
     <autoGreeting>{!LiveAgent_VisitorName}, Thanks for reaching out to BlueWave Support! My name is {!User_FirstName}, how can I help you?</autoGreeting>
     <criticalWaitTime>120</criticalWaitTime>
     <customAgentName>{!User_FirstName}</customAgentName>

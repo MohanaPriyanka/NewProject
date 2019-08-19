@@ -278,23 +278,24 @@
         <columns>StartTime</columns>
         <columns>EndTime</columns>
         <columns>Lead</columns>
+        <columns>Owner</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
-    </listViews>
-    <listViews>
-        <fullName>CS_Inside_Sales_LiveChatTranscript</fullName>
-        <filterScope>Queue</filterScope>
-        <label>CS Inside Sales</label>
-        <queue>CS_Inside_Sales</queue>
-        <sharedTo>
-            <allInternalUsers></allInternalUsers>
-        </sharedTo>
     </listViews>
     <listViews>
         <fullName>Customer_Care_LiveChatTranscript</fullName>
         <filterScope>Queue</filterScope>
         <label>Bluewave Customer Care</label>
         <queue>Customer_Care</queue>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Customer_Portal_Chat_LiveChatTranscript</fullName>
+        <filterScope>Queue</filterScope>
+        <label>Customer Portal Chat</label>
+        <queue>Customer_Portal_Chat</queue>
         <sharedTo>
             <allInternalUsers></allInternalUsers>
         </sharedTo>

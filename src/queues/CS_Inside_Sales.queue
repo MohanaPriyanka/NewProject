@@ -10,14 +10,10 @@
             <user>mfish@bluewavesolar.com</user>
         </users>
     </queueMembers>
-    <queueRoutingConfig>Switch_Chat</queueRoutingConfig>
     <queueSobject>
         <sobjectType>Case</sobjectType>
     </queueSobject>
     <queueSobject>
         <sobjectType>Lead</sobjectType>
-    </queueSobject>
-    <queueSobject>
-        <sobjectType>LiveChatTranscript</sobjectType>
     </queueSobject>
 </Queue>

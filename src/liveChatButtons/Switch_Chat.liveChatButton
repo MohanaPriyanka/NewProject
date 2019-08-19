@@ -13,7 +13,7 @@
     <optionsHasRerouteDeclinedRequest>false</optionsHasRerouteDeclinedRequest>
     <optionsIsAutoAccept>false</optionsIsAutoAccept>
     <optionsIsInviteAutoRemove>false</optionsIsInviteAutoRemove>
-    <routingType>Choice</routingType>
+    <routingType>MostAvailable</routingType>
     <skills>
         <skill>CS_Customer_Service</skill>
     </skills>
