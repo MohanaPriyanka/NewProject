@@ -645,6 +645,8 @@ public with sharing class ZuoraAPI {
         public String currency_Zreserved;
         public String paymentMethodId;
         public Date effectiveDate;
+        public String TransactionId_Zcustom;
+        public String ResponseStatus_Zcustom;
     }
     public class ZuoraPaymentApplication {
         public Date effectiveDate;

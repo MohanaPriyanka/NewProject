@@ -105,11 +105,11 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
     }
 
     private void createAndApplyPayment(ChargentOrders__Transaction__c trx) {
-        // Transfers could use five callouts, so don't start this unless there are at least five callouts and 10 seconds
+        // Returns use six callouts, so don't start this unless there are at least six callouts and 20 seconds
         // that remain. Otherwise, we could end up creating a record and not posting or not applying it.
-        if (ZuoraAPIHelper.getCalloutsRemaining() < 5 && ZuoraAPIHelper.getCalloutSecondsRemaining() < 10) {
+        if (ZuoraAPIHelper.getCalloutsRemaining() < 6 || ZuoraAPIHelper.getCalloutSecondsRemaining() < 20) {
             throw new Util.BWException('Not applying payment ' + trx.Id + ' because of callouts (' + ZuoraAPIHelper.getCalloutsRemaining() +
-                ') or time (' + ZuoraAPIHelper.getCalloutSecondsRemaining() + ') remaining. Will retry.');
+                ') OR time (' + ZuoraAPIHelper.getCalloutSecondsRemaining() + ') remaining. Will retry.');
         }
         switch on trx.ChargentOrders__Type__c {
             when 'Transfer' {
@@ -121,15 +121,36 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
                 createAndApplyCreditMemo(trx, clientProjectAssignment, 'Refund');
             }
             when 'Refund' {
-                ZuoraSubscriptionService.ClientProject clientProjectAssignment = getClientProjectFromTransaction(trx, true);
-                createAndApplyCreditMemo(trx, clientProjectAssignment, 'Refund');
+                handleReturn(trx);
             }
             when else {
-                // How do we handle this negative Charge? https://bluewavesolar.my.salesforce.com/a210a00000a4aUWAAY
-                ZuoraAPI.Payment payment = createPayment(trx);
-                applyPayment(trx, payment);
+                if (trx.ChargentOrders__Response_Status__c == 'Returned') {
+                    handleReturn(trx);
+                } else {
+                    ZuoraAPI.Payment payment = createPayment(trx);
+                    applyPayment(trx, payment);
+                }
             }
         }
+    }
+
+    @TestVisible
+    private void handleReturn(ChargentOrders__Transaction__c trx) {
+        // Process the return from the positive transaction, and ignore the negative
+        if (trx.ChargentOrders__Amount__c < 0) {
+            return;
+        }
+
+        ZuoraAPI.Payment payment = createPayment(trx);
+
+        ZuoraSubscriptionService.ClientProject clientProjectAssignment = getClientProjectFromTransaction(trx, false);
+        ZuoraAPI.ZuoraDebitMemo zuoraDebitMemo = createAndPostDebitMemo(trx, clientProjectAssignment, 'Returned Payment');
+        ZuoraOutstandingItemsService.OutstandingItem outstandingItem = debitMemoToOutstandingItems(zuoraDebitMemo);
+        outstandingItem.AmountToApply = payment.amount;
+
+        ZuoraAPI.ZuoraPaymentApplication paymentApplication =
+            outstandingItemToPaymentApplication(new List<ZuoraOutstandingItemsService.OutstandingItem>{outstandingItem}, trx.CreatedDate);
+        ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/payments/' + payment.id + '/apply', paymentApplication, false);
     }
 
     @TestVisible
@@ -139,7 +160,7 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
             createAndApplyCreditMemo(trx, clientProjectAssignment, 'Transfer');
         } else {
             ZuoraSubscriptionService.ClientProject clientProjectAssignment = getClientProjectFromTransaction(trx, false);
-            ZuoraAPI.ZuoraDebitMemo zuoraDebitMemo = createAndPostDebitMemo(trx, clientProjectAssignment);
+            ZuoraAPI.ZuoraDebitMemo zuoraDebitMemo = createAndPostDebitMemo(trx, clientProjectAssignment, 'Transfer');
             // Now that we've posted a new debit memo from this transfer, we need to add an outstanding item to the list
             // so that a future payment will be applied to it (since we're not querying outstanding items between each payment that
             // is applied)
@@ -148,6 +169,12 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
     }
 
     private void addDebitMemoToOutstandingItems(ZuoraAPI.ZuoraDebitMemo zuoraDebitMemo) {
+        ZuoraOutstandingItemsService.OutstandingItem outstandingItem = debitMemoToOutstandingItems(zuoraDebitMemo);
+        outstandingItems.add(outstandingItem);
+        outstandingItems.sort();
+    }
+
+    private ZuoraOutstandingItemsService.OutstandingItem debitMemoToOutstandingItems(ZuoraAPI.ZuoraDebitMemo zuoraDebitMemo) {
         ZuoraAPI.DebitMemoWithItems debitMemoWithItems = ZuoraOutstandingItemsService.getDebitMemoItems(zuoraDebitMemo);
         ZuoraOutstandingItemsService.OutstandingItem outstandingItem = new ZuoraOutstandingItemsService.OutstandingItem();
         outstandingItem.AmountOutstanding = zuoraDebitMemo.amount;
@@ -157,8 +184,7 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
         outstandingItem.Id = debitMemoWithItems.items[0].id;
         outstandingItem.ParentId = zuoraDebitMemo.id;
         outstandingItem.IsInvoiceItem = false;
-        outstandingItems.add(outstandingItem);
-        outstandingItems.sort();
+        return outstandingItem;
     }
 
     private void createAndApplyCreditMemo(ChargentOrders__Transaction__c trx, ZuoraSubscriptionService.ClientProject clientProjectAssignment, String reasonCode) {
@@ -250,7 +276,7 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
         return zuoraCreditMemo;
     }
 
-    private ZuoraAPI.ZuoraDebitMemo createAndPostDebitMemo(ChargentOrders__Transaction__c trx, ZuoraSubscriptionService.ClientProject clientProjectAssignment) {
+    private ZuoraAPI.ZuoraDebitMemo createAndPostDebitMemo(ChargentOrders__Transaction__c trx, ZuoraSubscriptionService.ClientProject clientProjectAssignment, String reasonCode) {
         ZuoraAPI.DebitMemo debitMemo = new ZuoraAPI.DebitMemo();
         debitMemo.accountId = trx.ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Zuora_Id__c;
         ZuoraAPI.DebitMemoCharge debitMemoCharge = new ZuoraAPI.DebitMemoCharge();
@@ -258,7 +284,7 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
         debitMemoCharge.chargeId = clientProjectAssignment.productRatePlanChargeId;
         debitMemo.charges = new List<ZuoraAPI.DebitMemoCharge>();
         debitMemo.charges.add(debitMemoCharge);
-        debitMemo.reasonCode = 'Transfer';
+        debitMemo.reasonCode = reasonCode;
         debitMemo.Project_Zcustom = clientProjectAssignment.projectName;
         debitMemo.ClientOwner_Zcustom = clientProjectAssignment.clientName;
         debitMemo.CRM_ID_Zcustom = trx.Id;
@@ -291,6 +317,8 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
         payment.currency_Zreserved = 'USD';
         payment.paymentMethodId = defaultPaymentMethodId;
         payment.effectiveDate = Date.newInstance(trx.CreatedDate.date().year(), trx.CreatedDate.date().month(), trx.CreatedDate.date().day());
+        payment.TransactionId_Zcustom = trx.Id;
+        payment.ResponseStatus_Zcustom = trx.ChargentOrders__Response_Status__c;
 
         HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/payments', payment, false);
         payment = (ZuoraAPI.Payment) JSON.deserialize(ZuoraAPIHelper.cleanJSON(response.getBody()), ZuoraAPI.Payment.class);
