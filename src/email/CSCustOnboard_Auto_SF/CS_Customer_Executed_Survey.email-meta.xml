@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Contract counterexecuted with survey</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>CS_Customer_Executed_Survey</name>
+    <style>none</style>
+    <subject>Welcome to BlueWave!</subject>
+    <textOnly>Hey BlueWaver,  Our energy future starts with you.Thanks for choosing BlueWave as your community solar provider and supporting local solar energy. Your BlueWave Community Solar agreement is now fully executed!
+
+BlueWave would like to learn more about your community solar subscription experience. Your feedback is very important to help us improve the shopping experience for other community solar customers.
+
+This survey will only take about 3 minutes to complete.
+
+We&apos;re on a mission to revolutionize energy with simple, powerful solar solutions -- and that revolution starts with you! Thank you for being here.
+
+Take the Survey: https://www.getfeedback.com/r/bxNeJzCb
+
+Please see below for more information about how BlueWave Community Solar works and helps you save on your monthly utility bill.
+
+How do BlueWave Community Solar savings work?
+Your savings will come in the form of bill credits.
+
+So, what&apos;s a bill credit? The community solar farm you&apos;re subscribed to will produce energy which will feed into the electric grid for distribution to you utility. Your subscription entitles you to benefit from some of that energy production through deductions on your monthly electrical utility bill. Bill credits, or &apos;credits&apos;, represent the portion of energy your community solar subscription has produced.
+
+What happens after credits appear on your utility bill?
+BlueWave will then send you a monthly bill for the credits that were deducted from your monthly utility bill, at a 10% discount.
+
+For example: if your farm generates $100 worth of credits, you will see a $100 deduction on your utility bill, and then receive a BlueWave bill for $90. That 10% savings, or in this case, $10, is the benefit you get from your subscription!
+
+What will timing look like once credits start rolling?
+Once your community solar farm begins generating electricity, your credits will start appearing on your electricity bill each month.
+
+Have Questions?
+Our Customer Care Team is here to help. Call 844.786.4100 or email customercare@bluewavesolar.com to speak with a member of our Customer Care team.
+
+Thanks for joining the Wave, we&apos;re happy you&apos;re here.
+
+- All of us here at BlueWave
+
+BlueWave Customer Care
+844.786.4100 | customercare@bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>
