@@ -178,6 +178,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
             '"state": "NY",' +
             '"zipCode": "10901",' +
             '"productName": "CS Product",' +
+            '"campaignId": "0005500000",' +
             '"propertyAccounts": [' +
             '   {' +
             '       "billingStreet": "Test billing street",' +
@@ -231,6 +232,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
             '"eiaId": "1234",' +
             '"continueApplicationLink": "http://switch.bluewavesolar.invalid",' +
             '"productName": "CS Product",' +
+            '"campaignId": "0005500000",' +
             '"propertyAccounts": [{' +
             '   "billingStreet": "Test billing street",' +
             '   "billingCity": "Test billing city",' +
@@ -272,6 +274,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
             '"eiaId": "1234",' +
             '"continueApplicationLink": "http://switch.bluewavesolar.invalid",' +
             '"productName": "CS Product",' +
+            '"campaignId": "0005500000",' +
             '"propertyAccounts": [{' +
             '   "billingStreet": "Test billing street",' +
             '   "billingCity": "Test billing city",' +
