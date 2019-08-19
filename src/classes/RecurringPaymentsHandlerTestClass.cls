@@ -139,7 +139,6 @@ private class RecurringPaymentsHandlerTestClass {
 
     @IsTest static void cloneOrderCorrectly() {
         Test.startTest();
-        Util.disableTrigger('Disable_Client_Objects_Trigger__c');
         List<Energy_Usage_Update__c> productionUpdateList = [SELECT Name, Id, Shared_Solar_System__c, Schedule_Z__c,
             YearDate__c, Credits_on_Bill_Period__c,
             MonthDate__c, Total_System_NMCs__c, Production__c,
@@ -246,7 +245,6 @@ private class RecurringPaymentsHandlerTestClass {
                 System.assertEquals(2, cho.Account_Bill__r.Bill_Number__c);
             }
         }
-        Util.enableTrigger('Disable_Client_Objects_Trigger__c');
     }
 
     @IsTest static void updateParentAccountOnStop() {
