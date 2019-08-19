@@ -81,15 +81,33 @@
     </fields>
     <fields>
         <fullName>Allocation_Schedule__c</fullName>
+        <description>A master-detail relationship up to allocation schedule</description>
         <externalId>false</externalId>
-        <formula>Allocation_Schedule_Subscription__r.Schedule_Z__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Allocation Schedule</label>
-        <required>false</required>
+        <referenceTo>Schedule_Z__c</referenceTo>
+        <relationshipLabel>Client Allocation Schedule Subscriptions</relationshipLabel>
+        <relationshipName>Client_Allocation_Schedule_Subscriptions</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>true</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Client_Utility_Account_Subscription__c</fullName>
+        <description>A master-detail relationship up to Client Utility Account Subscription</description>
+        <externalId>false</externalId>
+        <label>Client Utility Account Subscription</label>
+        <referenceTo>Client_Utility_Account_Subscription__c</referenceTo>
+        <relationshipLabel>Client Allocation Schedule Subscriptions</relationshipLabel>
+        <relationshipName>Client_Allocation_Schedule_Subscriptions</relationshipName>
+        <relationshipOrder>1</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>true</writeRequiresMasterRead>
     </fields>
     <fields>
         <fullName>Customer_Subscription_kW_DC__c</fullName>
