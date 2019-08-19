@@ -70,4 +70,12 @@ public with sharing class ScheduleZSubscriptionSelector {
     public static List<Schedule_Z_Subscription__c> getListForBilling(Set<Id> scheduleZs) {
         return Database.query(getQueryString(whereClauseForBilling, null));
     }
+
+    public static List<Schedule_Z_Subscription__c> getScheduleZSubscriptionsList(Set<Id> scheduleZSubscriptionIds) {
+        return [
+            SELECT Id, Name, Schedule_Z__c, Schedule_Z__r.Id, Utility_Account_Subscription__c
+            FROM Schedule_Z_Subscription__c
+            WHERE Id IN :scheduleZSubscriptionIds
+        ];
+    }
 }
