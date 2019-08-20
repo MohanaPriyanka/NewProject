@@ -7,14 +7,15 @@ public without sharing class ZuoraUsageBatchSend implements Database.Batchable<s
         Database.executeBatch(this, 50);
     }
 
-    public void init() {
-        fullScope = new List<SObject>();
-        fullScope.addAll(UASBSelector.uasbsNotYetInZuora());
-        fullScope.addAll(AdjustmentSelector.getAdjustmentsNotYetInZuora(true));
-    }
-
     public List<SObject> start(Database.BatchableContext bc){
-        return fullScope;
+        if (fullScope != null) {
+            return fullScope;
+        } else {
+            List<SObject> sObjectList = new List<SObject>();
+            sObjectList.addAll(UASBSelector.uasbsNotYetInZuora());
+            sObjectList.addAll(AdjustmentSelector.getAdjustmentsNotYetInZuora(true));
+            return sObjectList;
+        }
     }
 
     public void execute(Database.BatchableContext bc, List<SObject> scope) {

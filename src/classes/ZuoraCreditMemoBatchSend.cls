@@ -9,13 +9,12 @@ public without sharing class ZuoraCreditMemoBatchSend implements Database.Batcha
         Database.executeBatch(this, 33);
     }
 
-    public void init() {
-        fullScope = new List<SObject>();
-        fullScope.addAll(AdjustmentSelector.getAdjustmentsNotYetInZuora(false));
-    }
-
     public List<SObject> start(Database.BatchableContext bc){
-        return fullScope;
+        if (fullScope != null) {
+            return fullScope;
+        } else {
+            return AdjustmentSelector.getAdjustmentsNotYetInZuora(false);
+        }
     }
 
     public void execute(Database.BatchableContext bc, List<SObject> scope){

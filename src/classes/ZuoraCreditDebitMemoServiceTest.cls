@@ -126,7 +126,6 @@ public class ZuoraCreditDebitMemoServiceTest {
 
         Test.startTest();
         ZuoraCreditMemoBatchSend zSend = new ZuoraCreditMemoBatchSend();
-        zSend.init();
         zSend.executeBatch();
         Test.stopTest();
 
@@ -177,7 +176,6 @@ public class ZuoraCreditDebitMemoServiceTest {
 
         Test.startTest();
         ZuoraCreditMemoBatchSend zSend = new ZuoraCreditMemoBatchSend();
-        zSend.init();
         zSend.executeBatch();
         Test.stopTest();
 
