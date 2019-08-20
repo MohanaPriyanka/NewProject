@@ -8,7 +8,7 @@
         <booleanFilter xsi:nil="true"/>
         <duplicateRuleFilterItems>
             <field>LeadSource</field>
-            <operation>equals</operation>
+            <operation>notEqual</operation>
             <value>CSAP</value>
             <sortOrder>1</sortOrder>
             <table>Lead</table>
@@ -16,13 +16,13 @@
     </duplicateRuleFilter>
     <duplicateRuleMatchRules>
         <matchRuleSObjectType>Lead</matchRuleSObjectType>
-        <matchingRule>Lead_Duplicate_Rule</matchingRule>
+        <matchingRule>Lead_Duplicate_Rule_DTC</matchingRule>
         <objectMapping xsi:nil="true"/>
     </duplicateRuleMatchRules>
     <isActive>true</isActive>
-    <masterLabel>Lead Duplicate Rule</masterLabel>
+    <masterLabel>Lead Duplicate Rule DTC</masterLabel>
     <operationsOnInsert>Report</operationsOnInsert>
     <operationsOnUpdate>Report</operationsOnUpdate>
     <securityOption>BypassSharingRules</securityOption>
-    <sortOrder>1</sortOrder>
+    <sortOrder>2</sortOrder>
 </DuplicateRule>
