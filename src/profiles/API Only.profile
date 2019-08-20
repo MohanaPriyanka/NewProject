@@ -14677,6 +14677,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Loan__c.Loan_Cleanup__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Loan__c.Loan_Data__c</field>
         <readable>true</readable>
     </fieldPermissions>
