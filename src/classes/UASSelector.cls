@@ -36,4 +36,16 @@ public class UASSelector {
             WHERE Utility_Account_Log__c IN :ualIds
         ];
     }
+
+    public static List<Utility_Account_Subscription__c> selectByIds(Set<Id> uasIds) {
+        return [
+            SELECT Id,
+                Name,
+                Opportunity__c,
+                Opportunity__r.Id,
+                Opportunity__r.Shared_Solar_System__r.Id
+            FROM Utility_Account_Subscription__c
+            WHERE Id IN :uasIds
+        ];
+    }
 }

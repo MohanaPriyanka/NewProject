@@ -677,6 +677,7 @@ public with sharing class CSCancellationServiceTest {
     }
 
     @IsTest static void testOppCancellationOnBillingCompletionWithTransferringSubscriptions() {
+        Util.disableTrigger('Disable_Client_Objects_Trigger__c');
         List<Utility_Account_Subscription__c> uases = [
             SELECT Id, Name, Utility_Account_Log__c, Opportunity__c, Next_Schedule_Z_Status__c,
                 Annual_kwh_subscription_future__c, calculated_annual_cost_of_electricity__c, Subscribed_Annual_Cost_of_Electricity__c
@@ -691,8 +692,8 @@ public with sharing class CSCancellationServiceTest {
         // Creates bills for accounts that are dated 1/1/2018, implying all of these accounts are done billing.
         List<Shared_Solar_System__c> sss = [SELECT Id FROM Shared_Solar_System__c ORDER BY Name];
         CustomerCommunicationHandlerTest.createBills(Date.newInstance(2018, 1, 1), sss[0].Id);
-        CustomerCommunicationHandlerTest.createBills(Date.newInstance(2018, 1, 1), sss[1].Id);
         Test.startTest();
+        CustomerCommunicationHandlerTest.createBills(Date.newInstance(2018, 1, 1), sss[1].Id);
         CustomerCommunicationHandlerTest.createBills(Date.newInstance(2018, 1, 1), sss[2].Id);
 
         // Update UASes to match test scenarios in
@@ -773,6 +774,7 @@ public with sharing class CSCancellationServiceTest {
         System.assertEquals('Jordan Jordan 0000238', oppList[2].Name);
         System.assertEquals('Cancelled', oppList[2].StageName);
 
+        Util.enableTrigger('Disable_Client_Objects_Trigger__c');
     }
 
     @IsTest static void testSetupDataForAccountDateRemovedIsCorrect() {

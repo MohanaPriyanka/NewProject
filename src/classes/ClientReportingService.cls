@@ -128,4 +128,119 @@ public without sharing class ClientReportingService {
 
         return healthScore;
     }
+
+
+    public static void insertClientUAS(List<Utility_Account_Subscription__c> uasList) {
+        List<Client_Utility_Account_Subscription__c> clientUASList = new List<Client_Utility_Account_Subscription__c> ();
+
+        Set<Id> parentIds = new Set<Id>();
+        for (Utility_Account_Subscription__c uas : uasList) {
+            parentIds.add(uas.Id);
+        }
+
+        //Have to query for parent records again because Triggers do not maintain relationships
+        List<Utility_Account_Subscription__c> parentUASList = UASSelector.selectByIds(parentIds);
+
+        for (Utility_Account_Subscription__c parent : parentUASList) {
+            Client_Utility_Account_Subscription__c child = new Client_Utility_Account_Subscription__c(
+                Name = 'C' + parent.Name,
+                Utility_Account_Subscription__c = parent.Id,
+                Shared_Solar_System__c = parent.Opportunity__r.Shared_Solar_System__r.Id
+            );
+            clientUASList.add(child);
+        }
+        insert clientUASList;
+
+    }
+
+
+    public static void insertClientALSS(List<Schedule_Z_Subscription__c> szsList) {
+        List<Client_Allocation_Schedule_Subscription__c> clientALSSList = new List<Client_Allocation_Schedule_Subscription__c>();
+        Set<Id> parentIds = new Set<Id>();
+
+        for (Schedule_Z_Subscription__c szs : szsList) {
+            parentIds.add(szs.Id);
+        }
+        //Have to query for parent records again because Triggers do not maintain relationships
+        List<Schedule_Z_Subscription__c> parentList = ScheduleZSubscriptionSelector.getScheduleZSubscriptionsList(parentIds);
+
+
+        //Need to get the Child Client UAS object of the ALSS's UAS
+        //Map --> key = ALSS ID, value = Client UAS
+        Map<Id, Client_Utility_Account_Subscription__c> alssToClientUASMap = new Map<Id, Client_Utility_Account_Subscription__c>();
+        alssToClientUASMap = getClientUtilityAccountSubscriptionsByIds(parentList);
+
+
+        for (Schedule_Z_Subscription__c parent : parentList) {
+            Client_Allocation_Schedule_Subscription__c child = new Client_Allocation_Schedule_Subscription__c(
+                Name = 'C' + parent.Name,
+                Allocation_Schedule_Subscription__c = parent.Id,
+                Allocation_Schedule__c = parent.Schedule_Z__r.Id,
+                Client_Utility_Account_Subscription__c = alssToClientUASMap.get(parent.Id).Id
+            );
+            clientALSSList.add(child);
+        }
+        insert clientALSSList;
+
+    }
+
+    public static void deleteClientUAS(List<Utility_Account_Subscription__c> uasList) {
+        Set<Id> uasIds = new Set<Id>();
+
+        for (Utility_Account_Subscription__c uas : uasList) {
+            uasIds.add(uas.Id);
+        }
+
+        List<Client_Utility_Account_Subscription__c> clientUASList = [
+            SELECT Id
+            FROM Client_Utility_Account_Subscription__c
+            WHERE Utility_Account_Subscription__c IN :uasIds
+        ];
+
+        delete clientUASList;
+    }
+
+    public static void deleteClientALSS(List<Schedule_Z_Subscription__c> szsList) {
+        Set<Id> szsIds = new Set<Id>();
+
+        for (Schedule_Z_Subscription__c szs : szsList) {
+            szsIds.add(szs.Id);
+        }
+
+        List<Client_Allocation_Schedule_Subscription__c> clientALSSList = [
+            SELECT Id
+            FROM Client_Allocation_Schedule_Subscription__c
+            WHERE Allocation_Schedule_Subscription__c IN :szsIds
+        ];
+
+        delete clientALSSList;
+    }
+
+
+    private static  Map<Id, Client_Utility_Account_Subscription__c> getClientUtilityAccountSubscriptionsByIds(List<Schedule_Z_Subscription__c> parentSZSs) {
+        Set<Id> uasIds = new Set<Id>();
+        Map<Id, Id> uasToALSSMap = new Map<Id, Id>();
+        Map<Id, Client_Utility_Account_Subscription__c> alssToClientUASMap = new Map<Id, Client_Utility_Account_Subscription__c>();
+
+
+        //Map --> key: UAS Id, value: ALSS Id
+        for (Schedule_Z_Subscription__c alss : parentSZSs) {
+            uasIds.add(alss.Utility_Account_Subscription__c);
+            uasToALSSMap.put(alss.Utility_Account_Subscription__c, alss.Id);
+        }
+
+        List<Client_Utility_Account_Subscription__c> clientUASList = [
+            SELECT Id, Utility_Account_Subscription__c
+            FROM Client_Utility_Account_Subscription__c
+            WHERE Utility_Account_Subscription__c IN :uasIds
+        ];
+
+        for (Client_Utility_Account_Subscription__c clientUAS : clientUASList) {
+                // Map --> key = ALSS Id, value = client UAS
+                alssToClientUASMap.put(uasToALSSMap.get(clientUAS.Utility_Account_Subscription__c), clientUAS);
+        }
+
+        return alssToClientUASMap;
+
+    }
 }
