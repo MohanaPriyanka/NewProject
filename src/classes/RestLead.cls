@@ -25,6 +25,7 @@ public without sharing class RestLead {
     public String eiaId;
     public String continueApplicationLink;
     public List<RestPropertyAccount> propertyAccounts;
+    public String campaignId;
 
     public RestLead() {
     }
@@ -50,7 +51,10 @@ public without sharing class RestLead {
         this.applicationCompleteDate = lead.Application_Complete_Date__c;
         this.eiaId = lead.Utility_relationship__r.EIA_ID__c;
         this.continueApplicationLink = lead.Continue_Application_Link__c;
+        this.campaignId = lead.Manual_Campaign_ID__c;
+
     }
+
 
 
     public void validateCreateFields() {
@@ -129,8 +133,10 @@ public without sharing class RestLead {
             Customer_type__c = applicationType,
             Application_Complete_Date__c = applicationCompleteDate,
             Status = 'Sales Qualified',
+            Manual_Campaign_ID__c = campaignId,
             Continue_Application_Link__c = continueApplicationLink
         );
+
 
 
         if (partnerId != null) {
