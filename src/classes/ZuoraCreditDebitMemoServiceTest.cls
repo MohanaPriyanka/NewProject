@@ -121,8 +121,15 @@ public class ZuoraCreditDebitMemoServiceTest {
         Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
 
         // 6 adjustments exist, but one should be excluded, because already has a zuora ID:
-        List<Bill_Adjustment__c> beforeCallList = AdjustmentSelector.getAdjustmentsNotYetInZuora(false);
-        System.assertEquals(5, beforeCallList.size());
+        Database.QueryLocator queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(false);
+        Database.QueryLocatorIterator iterator = queryLocator.iterator();
+        List<Bill_Adjustment__c> beforeCallList = new List<Bill_Adjustment__c>();
+        Integer i = 0;
+        while (iterator.hasNext()) {
+            beforeCallList.add((Bill_Adjustment__c) iterator.next());
+            i++;
+        }
+        System.assertEquals(5, i);
 
         Test.startTest();
         ZuoraCreditMemoBatchSend zSend = new ZuoraCreditMemoBatchSend();
@@ -152,8 +159,15 @@ public class ZuoraCreditDebitMemoServiceTest {
         Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
 
         // 6 adjustments exist, but one should be excluded, because already has a zuora ID:
-        List<Bill_Adjustment__c> beforeCallList = AdjustmentSelector.getAdjustmentsNotYetInZuora(false);
-        System.assertEquals(5, beforeCallList.size());
+        Database.QueryLocator queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(false);
+        Database.QueryLocatorIterator iterator = queryLocator.iterator();
+        List<Bill_Adjustment__c> beforeCallList = new List<Bill_Adjustment__c>();
+        Integer i = 0;
+        while (iterator.hasNext()) {
+            beforeCallList.add((Bill_Adjustment__c) iterator.next());
+            i++;
+        }
+        System.assertEquals(5, i);
 
         List<Bill_Adjustment__c> adjustmentsToUpdate = new List<Bill_Adjustment__c>();
 
@@ -171,8 +185,15 @@ public class ZuoraCreditDebitMemoServiceTest {
 
     @IsTest
     private static void testCallWithoutUpdatingAdjustment() {
-        List<Bill_Adjustment__c> beforeCallList = AdjustmentSelector.getAdjustmentsNotYetInZuora(false);
-        System.assertEquals(5, beforeCallList.size());
+        Database.QueryLocator queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(false);
+        Database.QueryLocatorIterator iterator = queryLocator.iterator();
+        List<Bill_Adjustment__c> beforeCallList = new List<Bill_Adjustment__c>();
+        Integer i = 0;
+        while (iterator.hasNext()) {
+            beforeCallList.add((Bill_Adjustment__c) iterator.next());
+            i++;
+        }
+        System.assertEquals(5, i);
 
         Test.startTest();
         ZuoraCreditMemoBatchSend zSend = new ZuoraCreditMemoBatchSend();

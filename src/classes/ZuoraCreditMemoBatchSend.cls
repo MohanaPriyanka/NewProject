@@ -3,13 +3,13 @@ Tested by: ZuoraCreditDebitMemoServiceTest
  */
 public without sharing class ZuoraCreditMemoBatchSend implements Database.Batchable<SObject>, Database.Stateful, Database.AllowsCallouts{
     public Set<Bill_Adjustment__c> adjustToUpdateSet = new Set<Bill_Adjustment__c>();
-    public List<SObject> fullScope;
+    public Database.QueryLocator fullScope;
 
     public void executeBatch(){
         Database.executeBatch(this, 33);
     }
 
-    public List<SObject> start(Database.BatchableContext bc){
+    public Database.QueryLocator start(Database.BatchableContext bc){
         if (fullScope != null) {
             return fullScope;
         } else {
