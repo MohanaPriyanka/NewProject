@@ -30,7 +30,7 @@ public without sharing class LeadSelector {
                 LASERCA__Home_State__c, LASERCA__Home_Zip__c, Parcel_Zip__c, LoadZone__c,
                 Partner_Lookup__c, Partner_Lookup__r.Id, bs_Sales_ID__c, Customer_Referral__c, Product__c, Phone,
                 Business_Title__c, Utility_relationship__r.Name, Product__r.Name, Application_Complete_Date__c, Status,
-                Utility_relationship__r.EIA_ID__c, Continue_Application_Link__c, Product_line__c,
+                Utility_relationship__r.EIA_ID__c, Continue_Application_Link__c, Product_line__c, Manual_Campaign_ID__c,
                 Utility_relationship__r.Id
             FROM Lead
             WHERE Id = :leadIds
