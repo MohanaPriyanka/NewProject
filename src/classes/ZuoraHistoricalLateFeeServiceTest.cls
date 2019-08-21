@@ -71,7 +71,6 @@ public class ZuoraHistoricalLateFeeServiceTest {
     private static void testBatch(){
         Test.startTest();
         ZuoraHistoricalLateFeeService service = new ZuoraHistoricalLateFeeService();
-        service.init();
         service.executeBatch();
         Test.stopTest();
     }
