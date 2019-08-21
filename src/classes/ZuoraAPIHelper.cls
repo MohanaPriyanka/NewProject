@@ -92,7 +92,8 @@ public with sharing class ZuoraAPIHelper {
         Organization o = [SELECT IsSandbox FROM Organization];
             List<Zuora_Setting__mdt> zuoraSettings = [
                 SELECT Id, DeveloperName, CC_Payment_Page_Id__c, ACH_Payment_Page_Id__c,
-                    Hosted_Payment_Page_URI__c, API_Endpoint_URL__c
+                    Hosted_Payment_Page_URI__c, API_Endpoint_URL__c, Zuora_Is_Live__c,
+                    OAuth_Client__c
                 FROM Zuora_Setting__mdt
             WHERE Is_Sandbox__c = :o.IsSandbox
             ];
@@ -102,6 +103,16 @@ public with sharing class ZuoraAPIHelper {
             throw new Util.BWException('Wrong number of Zuora Settings found: ' + zuoraSettings.size());
         }
         return zuoraSetting;
+    }
+
+    public static API_Credential__c getOAuthCredential(String credentialName){
+         API_Credential__c credential = [
+            SELECT Id, Client_ID__c, Client_Secret__c, Grant_Type__c
+            FROM API_Credential__c
+            WHERE Name = : credentialName
+            LIMIT 1
+        ];
+        return credential;
     }
 
     public static Boolean zuoraPaymentPageEnabled() {
@@ -132,6 +143,88 @@ public with sharing class ZuoraAPIHelper {
         return json.replace('__c', '_Zcustom')
             .replace('"currency" :', '"currency_Zreserved" :')
             .replace('"type" :', '"type_Zreserved" :');
+    }
+
+    public static String generateOAuthToken() {
+        if ((String) Cache.Org.get('ZuoraOAuthToken') == null) {
+            API_Credential__c credential = getOAuthCredential('Zuora_O_Auth');
+            String oAuthCredential =
+                'client_id=' + credential.Client_ID__c +
+                '&grant_type=' + credential.Grant_Type__c +
+                '&client_secret=' + credential.Client_Secret__c;
+
+            HttpResponse response = ZuoraAPIHelper.callURLEncodedEndpoint('POST','/oauth/token',oAuthCredential,false);
+            ZuoraAPI.OAuthResponse zAuthorization = new ZuoraAPI.OAuthResponse();
+            zAuthorization = (ZuoraAPI.OAuthResponse)JSON.deserialize(response.getBody(), ZuoraAPI.OAuthResponse.class);
+            Cache.Org.put('ZuoraOAuthToken', zAuthorization.access_token, zAuthorization.expires_in);
+            return zAuthorization.access_token;
+        } else {
+            return (String) Cache.Org.get('ZuoraOAuthToken');
+        }
+    }
+
+    public static HttpResponse callURLEncodedEndpoint(String method, String endpoint, String urlBody, Boolean flush) {
+        Zuora_Setting__mdt zuoraSetting = getZuoraSetting();
+        HttpRequest request = new HttpRequest();
+        request.setMethod(method);
+        request.setEndpoint(zuoraSetting.API_Endpoint_URL__c + endpoint);
+        request.setHeader('Content-Type', 'application/x-www-form-urlencoded');
+        if (urlBody != null) {
+            request.setBody(urlBody);
+        }
+        HttpResponse response;
+        Zuora.zApi zApiInstance = new Zuora.zApi();
+        if (Test.isRunningTest()) {
+            response = new ZuoraAPIMock().respond(request);
+            endpointsCalled.add(new EndpointCall(endpoint, request.getBody(), response.getBody()));
+        } else {
+            Long start = System.currentTimeMillis();
+            response = zApiInstance.sendRequest(request);
+            Long finish = System.currentTimeMillis();
+            calloutMillis += (finish - start);
+        }
+        numberCalloutsForZuoraNamespace++;
+        Logger.logLater(
+            'ZuoraAPIHelper',
+            'callURLEncodedEndpoint',
+            'Request Endpoint: ' + request.getEndpoint() + '\n' +
+                'Request Body: ' + request.getBody() + '\n\n' +
+                'Response Status: ' + response.getStatus() + '\n' +
+                'Response Body: ' + response.getBody() + '\n' +
+                'Cumulative Time: ' + calloutMillis,
+            Logger.FINE);
+        if (flush) {
+            Logger.flushLogs();
+        }
+        return response;
+    }
+
+    public static HttpResponse callJSONEndpointWithOAuth(String method, String endpoint, Object jsonBody) {
+        String zAuthToken = ZuoraAPIHelper.generateOAuthToken();
+        Zuora_Setting__mdt zuoraSetting = getZuoraSetting();
+        HttpRequest request = new HttpRequest();
+        request.setMethod(method);
+        request.setEndpoint(zuoraSetting.API_Endpoint_URL__c + endpoint);
+        request.setHeader('Authorization', 'Bearer ' + zAuthToken);
+        request.setHeader('Content-Type', 'application/json');
+
+        if (jsonBody != null) {
+            String jsonString = JSON.serialize(jsonBody, true);
+            jsonString = jsonString.replace('_Zcustom','__c');
+            jsonString = jsonString.replace('_Zreserved','');
+            request.setBody(jsonString);
+        }
+        HttpResponse response;
+        if (Test.isRunningTest()) {
+            response = new ZuoraAPIMock().respond(request);
+            endpointsCalled.add(new EndpointCall(endpoint, request.getBody(), response.getBody()));
+        } else {
+            Long start = System.currentTimeMillis();
+            response =  new Http().send(request);
+            Long finish = System.currentTimeMillis();
+            calloutMillis += (finish - start);
+        }
+        return response;
     }
 
     @TestVisible
