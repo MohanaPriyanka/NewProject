@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Queue xmlns="http://soap.sforce.com/2006/04/metadata">
-    <doesSendEmailToMembers>false</doesSendEmailToMembers>
+    <doesSendEmailToMembers>true</doesSendEmailToMembers>
+    <email>learnmore@bluewavesolar.com</email>
     <name>CS Inside Sales</name>
+    <queueMembers>
+        <users>
+            <user>jberger@bluewavesolar.com</user>
+            <user>lalexander@bluewavesolar.com</user>
+            <user>mfish@bluewavesolar.com</user>
+        </users>
+    </queueMembers>
+    <queueSobject>
+        <sobjectType>Case</sobjectType>
+    </queueSobject>
     <queueSobject>
         <sobjectType>Lead</sobjectType>
     </queueSobject>
