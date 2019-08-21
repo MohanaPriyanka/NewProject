@@ -1,20 +1,30 @@
 public without sharing class ZuoraUsageBatchSend implements Database.Batchable<sObject>, Database.Stateful, Database.AllowsCallouts{
     public List<UASB__c> uasbToUpdate = new List<UASB__c>();
     public List<Bill_Adjustment__c> adjustToUpdate = new List<Bill_Adjustment__c>();
-    public List<SObject> fullScope;
+    public Database.QueryLocator fullScope;
+    public enum UsageType {UASBS, ADJUSTMENTS}
+    public UsageType type;
 
     public void executeBatch(){
         Database.executeBatch(this, 50);
     }
 
-    public void init() {
-        fullScope = new List<SObject>();
-        fullScope.addAll(UASBSelector.uasbsNotYetInZuora());
-        fullScope.addAll(AdjustmentSelector.getAdjustmentsNotYetInZuora(true));
+    public ZuoraUsageBatchSend(UsageType usageType) {
+        this.type = usageType;
     }
 
-    public List<SObject> start(Database.BatchableContext bc){
-        return fullScope;
+    public Database.QueryLocator start(Database.BatchableContext bc){
+        if (fullScope != null) {
+            return fullScope;
+        } else {
+            if (type == UsageType.UASBS) {
+                return UASBSelector.uasbsNotYetInZuora();
+            } else if (type == UsageType.ADJUSTMENTS) {
+                return AdjustmentSelector.getAdjustmentsNotYetInZuora(true);
+            } else {
+                throw new Util.BWException('Set type to UASBS or ADJUSTMENTS');
+            }
+        }
     }
 
     public void execute(Database.BatchableContext bc, List<SObject> scope) {

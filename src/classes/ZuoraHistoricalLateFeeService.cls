@@ -52,19 +52,19 @@ public without sharing class ZuoraHistoricalLateFeeService implements Database.B
         Database.executeBatch(this, 20);
     }
 
-    public void init() {
-        fullScope = [
-            SELECT Id, Late_Fees__c, Account_Bill__r.Parent_Account__r.Zuora_Id__c,
-                Account_Bill__r.Date__c, Client__r.Account_Number__c,
-                Opportunity__r.Shared_Solar_System__r.Unique_ID__c
-            FROM System_Bill__c
-            WHERE Late_Fees__c > 0
-            ORDER BY Account_Bill__r.Parent_Account__r.Zuora_Id__c
-        ];
-    }
-
     public List<System_Bill__c> start(Database.BatchableContext bc){
-        return fullScope;
+        if (fullScope != null) {
+            return fullScope;
+        } else {
+            return [
+                SELECT Id, Late_Fees__c, Account_Bill__r.Parent_Account__r.Zuora_Id__c,
+                    Account_Bill__r.Date__c, Client__r.Account_Number__c,
+                    Opportunity__r.Shared_Solar_System__r.Unique_ID__c
+                FROM System_Bill__c
+                WHERE Late_Fees__c > 0
+                ORDER BY Account_Bill__r.Parent_Account__r.Zuora_Id__c
+            ];
+        }
     }
 
     public void execute(Database.BatchableContext bc, List<System_Bill__c> scope){

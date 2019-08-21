@@ -95,22 +95,33 @@ public class ZuoraUsageServiceTest {
     private static void testQueries() {
         Test.startTest();
         finishTestSetup();
-        List<UASB__c> uasbList = UASBSelector.uasbsNotYetInZuora();
-        System.assertEquals(12, uasbList.size());
+        Database.QueryLocator queryLocator = UASBSelector.uasbsNotYetInZuora();
+        Database.QueryLocatorIterator iterator = queryLocator.iterator();
+        Integer i = 0;
+        while (iterator.hasNext()) {
+            iterator.next();
+            i++;
+        }
+        System.assertEquals(12, i);
 
-        List<Bill_Adjustment__c> adjustList = AdjustmentSelector.getAdjustmentsNotYetInZuora(true);
-        System.assertEquals(2, adjustList.size());
+        queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(true);
+        iterator = queryLocator.iterator();
+        i = 0;
+        while (iterator.hasNext()) {
+            iterator.next();
+            i++;
+        }
+        System.assertEquals(2, i);
         Test.stopTest();
     }
 
     @IsTest
-    private static void testAPICallWithMock() {
+    private static void testAPIUASBCallsWithMock() {
         // disableTrigger just sets a system property checkbox to true
         Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
         Test.startTest();
         finishTestSetup();
-        ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend();
-        zSend.init();
+        ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend(ZuoraUsageBatchSend.UsageType.UASBS);
         zSend.executeBatch();
         Test.stopTest();
 
@@ -123,6 +134,35 @@ public class ZuoraUsageServiceTest {
         ];
         System.assertEquals(10, uasbList.size());
 
+        List<Error_Log__c> errors = [
+            SELECT Id, Message__c
+            FROM Error_Log__c
+            WHERE Class__c = 'ZuoraUsageService'
+        ];
+        System.assertEquals(1, errors.size());
+
+        Database.QueryLocator queryLocator = UASBSelector.uasbsNotYetInZuora();
+        Database.QueryLocatorIterator iterator = queryLocator.iterator();
+        List<UASB__c> failedUASB = new List<UASB__c>();
+        while (iterator.hasNext()) {
+            failedUASB.add((UASB__c) iterator.next());
+        }
+        System.assert(errors[0].Message__c.contains(failedUASB[0].Id));
+        System.assert(errors[0].Message__c.contains(failedUASB[1].Id));
+    }
+
+    @IsTest
+    private static void testAPIAdjustmentCallsWithMock() {
+        // disableTrigger just sets a system property checkbox to true
+        Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
+        Test.startTest();
+        finishTestSetup();
+        ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend(ZuoraUsageBatchSend.UsageType.ADJUSTMENTS);
+        zSend.executeBatch();
+        Test.stopTest();
+
+        // API Mock returns 14 rows, 3 errors, 11 successes:
+        System.assertEquals(true, Util.getSystemPropertyCheckbox('Update_Usage_Records_With_ZuoraId__c'));
         List<Bill_Adjustment__c> adjustList = [
             SELECT Id, Name, Zuora_Id__c
             FROM Bill_Adjustment__c
@@ -137,11 +177,12 @@ public class ZuoraUsageServiceTest {
         ];
         System.assertEquals(1, errors.size());
 
-        List<UASB__c> failedUASB = UASBSelector.uasbsNotYetInZuora();
-        List<Bill_Adjustment__c> failedAdjust = AdjustmentSelector.getAdjustmentsNotYetInZuora(true);
-
-        System.assert(errors[0].Message__c.contains(failedUASB[0].Id));
-        System.assert(errors[0].Message__c.contains(failedUASB[1].Id));
+        Database.QueryLocator queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(true);
+        Database.QueryLocatorIterator iterator = queryLocator.iterator();
+        List<Bill_Adjustment__c> failedAdjust = new List<Bill_Adjustment__c>();
+        while (iterator.hasNext()) {
+            failedAdjust.add((Bill_Adjustment__c) iterator.next());
+        }
         System.assert(errors[0].Message__c.contains(failedAdjust[0].Id));
     }
 
@@ -149,8 +190,7 @@ public class ZuoraUsageServiceTest {
     private static void testCallWithoutUpdatingUASBs() {
         Test.startTest();
         finishTestSetup();
-        ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend();
-        zSend.init();
+        ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend(ZuoraUsageBatchSend.UsageType.UASBS);
         zSend.executeBatch();
         Test.stopTest();
 

@@ -2,7 +2,7 @@
  */
 
 public class AdjustmentSelector {
-    public static List<Bill_Adjustment__c> getAdjustmentsNotYetInZuora(Boolean typeIsUsage) {
+    public static Database.QueryLocator getAdjustmentsNotYetInZuora(Boolean typeIsUsage) {
         String queryString =
             'SELECT ' +
                 'Id, Name, ' +
@@ -34,6 +34,6 @@ public class AdjustmentSelector {
 
         queryString += ' ORDER BY UASB__r.Opportunity__r.AccountId';
 
-        return Database.query(queryString);
+        return Database.getQueryLocator(queryString);
     }
 }
