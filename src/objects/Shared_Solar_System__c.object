@@ -3105,9 +3105,7 @@ null)</formula>
         <fullName>Client_Account_Validation</fullName>
         <active>true</active>
         <description>Checks to make sure that the Client Account on the SSS is the same as the Client Account on the Entity.</description>
-        <errorConditionFormula>AND(
-ISBLANK(BWC_Project_Entity_Manual__c)=false,
-
+        <errorConditionFormula>(
 Client_Account__c != BWC_Project_Entity_Manual__r.Client_Account__c
 
 )</errorConditionFormula>
