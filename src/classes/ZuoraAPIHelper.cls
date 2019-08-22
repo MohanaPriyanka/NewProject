@@ -58,18 +58,22 @@ public with sharing class ZuoraAPIHelper {
             jsonString = jsonString.replace('_Zreserved','');
             request.setBody(jsonString);
         }
-        return sendHttpRequest(request, endpoint, flush);
+        return sendHttpRequest(request, endpoint, flush, true);
     }
 
-    public static HttpResponse sendHttpRequest(HttpRequest request, String endpoint, Boolean flush){
+    public static HttpResponse sendHttpRequest(HttpRequest request, String endpoint, Boolean flush, Boolean useZAPI){
         HttpResponse response;
-        Zuora.zApi zApiInstance = new Zuora.zApi();
         if (Test.isRunningTest()) {
             response = new ZuoraAPIMock().respond(request);
             endpointsCalled.add(new EndpointCall(endpoint, request.getBody(), response.getBody()));
         } else {
             Long start = System.currentTimeMillis();
-            response = zApiInstance.sendRequest(request);
+            if (useZAPI){
+                Zuora.zApi zApiInstance = new Zuora.zApi();
+                response = zApiInstance.sendRequest(request);
+            } else {
+                response =  new Http().send(request);
+            }
             Long finish = System.currentTimeMillis();
             calloutMillis += (finish - start);
         }
@@ -175,7 +179,7 @@ public with sharing class ZuoraAPIHelper {
         if (urlBody != null) {
             request.setBody(urlBody);
         }
-        return sendHttpRequest(request, endpoint, flush);
+        return sendHttpRequest(request, endpoint, flush, true);
     }
 
     public static HttpResponse callJSONEndpointWithOAuth(String method, String endpoint, Object jsonBody, Boolean flush) {
@@ -193,7 +197,7 @@ public with sharing class ZuoraAPIHelper {
             jsonString = jsonString.replace('_Zreserved','');
             request.setBody(jsonString);
         }
-        return sendHttpRequest(request, endpoint, flush);
+        return sendHttpRequest(request, endpoint, flush, false);
     }
 
     @TestVisible

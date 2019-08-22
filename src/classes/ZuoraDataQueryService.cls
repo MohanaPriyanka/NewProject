@@ -139,7 +139,7 @@ public class ZuoraDataQueryService {
                 when 'GL_DebitMemo' {
                     ZuoraGLService.generalGLRecordInsert(response, 'DebitMemo');
                     String queryString = ZuoraGLSelector.getPaymentPartsDM(method.startDate, method.endDate);
-                    method.methodName = 'GL_PaymentPart';
+                    method.methodName = 'GL_PaymentPartDM';
                     ZuoraDataQueryService.callFromApex(queryString,method);
                 }
                 when 'GL_PaymentPartDM' {
