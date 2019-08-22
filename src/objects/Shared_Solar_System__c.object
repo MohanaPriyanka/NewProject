@@ -3122,6 +3122,16 @@ null)</formula>
     <sharingModel>Private</sharingModel>
     <startsWith n1:nil="true" />
     <validationRules>
+        <fullName>Client_Account_Validation</fullName>
+        <active>true</active>
+        <description>Checks to make sure that the Client Account on the SSS is the same as the Client Account on the Entity.</description>
+        <errorConditionFormula>(
+Client_Account__c != BWC_Project_Entity_Manual__r.Client_Account__c
+
+)</errorConditionFormula>
+        <errorMessage>The Client Account on the Shared Solar System and the Client Account on the Entity are not the same. If the Client Account on the Entity is not filled in, make sure that it is.</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>NMC_Tariff_Not_Retired</fullName>
         <active>true</active>
         <description>A Shared Solar System shouldn&apos;t have a retired tariff.</description>
