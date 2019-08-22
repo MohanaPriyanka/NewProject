@@ -58,6 +58,10 @@ public with sharing class ZuoraAPIHelper {
             jsonString = jsonString.replace('_Zreserved','');
             request.setBody(jsonString);
         }
+        return sendHttpRequest(request, endpoint, flush);
+    }
+
+    public static HttpResponse sendHttpRequest(HttpRequest request, String endpoint, Boolean flush){
         HttpResponse response;
         Zuora.zApi zApiInstance = new Zuora.zApi();
         if (Test.isRunningTest()) {
@@ -172,34 +176,10 @@ public with sharing class ZuoraAPIHelper {
         if (urlBody != null) {
             request.setBody(urlBody);
         }
-        HttpResponse response;
-        Zuora.zApi zApiInstance = new Zuora.zApi();
-        if (Test.isRunningTest()) {
-            response = new ZuoraAPIMock().respond(request);
-            endpointsCalled.add(new EndpointCall(endpoint, request.getBody(), response.getBody()));
-        } else {
-            Long start = System.currentTimeMillis();
-            response = zApiInstance.sendRequest(request);
-            Long finish = System.currentTimeMillis();
-            calloutMillis += (finish - start);
-        }
-        numberCalloutsForZuoraNamespace++;
-        Logger.logLater(
-            'ZuoraAPIHelper',
-            'callURLEncodedEndpoint',
-            'Request Endpoint: ' + request.getEndpoint() + '\n' +
-                'Request Body: ' + request.getBody() + '\n\n' +
-                'Response Status: ' + response.getStatus() + '\n' +
-                'Response Body: ' + response.getBody() + '\n' +
-                'Cumulative Time: ' + calloutMillis,
-            Logger.FINE);
-        if (flush) {
-            Logger.flushLogs();
-        }
-        return response;
+        return sendHttpRequest(request, endpoint, flush);
     }
 
-    public static HttpResponse callJSONEndpointWithOAuth(String method, String endpoint, Object jsonBody) {
+    public static HttpResponse callJSONEndpointWithOAuth(String method, String endpoint, Object jsonBody, Boolean flush) {
         String zAuthToken = ZuoraAPIHelper.generateOAuthToken();
         Zuora_Setting__mdt zuoraSetting = getZuoraSetting();
         HttpRequest request = new HttpRequest();
@@ -214,17 +194,7 @@ public with sharing class ZuoraAPIHelper {
             jsonString = jsonString.replace('_Zreserved','');
             request.setBody(jsonString);
         }
-        HttpResponse response;
-        if (Test.isRunningTest()) {
-            response = new ZuoraAPIMock().respond(request);
-            endpointsCalled.add(new EndpointCall(endpoint, request.getBody(), response.getBody()));
-        } else {
-            Long start = System.currentTimeMillis();
-            response =  new Http().send(request);
-            Long finish = System.currentTimeMillis();
-            calloutMillis += (finish - start);
-        }
-        return response;
+        return sendHttpRequest(request, endpoint, flush);
     }
 
     @TestVisible
