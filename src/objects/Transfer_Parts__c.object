@@ -230,7 +230,7 @@
         <referenceTo>Transfer__c</referenceTo>
         <relationshipLabel>Transfer Parts</relationshipLabel>
         <relationshipName>Transfer_Parts</relationshipName>
-        <required>true</required>
+        <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>

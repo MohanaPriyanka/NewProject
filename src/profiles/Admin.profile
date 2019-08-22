@@ -31006,6 +31006,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Transfer_Parts__c.Transfer__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Transfer_Parts__c.Type__c</field>
         <readable>true</readable>
     </fieldPermissions>

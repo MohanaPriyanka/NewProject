@@ -34,7 +34,7 @@
                 <field>Fee_Paid_To__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
+                <behavior>Readonly</behavior>
                 <field>Transfer__c</field>
             </layoutItems>
         </layoutColumns>
