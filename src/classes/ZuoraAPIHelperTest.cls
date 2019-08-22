@@ -44,7 +44,7 @@ public with sharing class ZuoraAPIHelperTest {
     public static void testOAuthCallEndpoint() {
         Test.setMock(HttpCalloutMock.class, new ZuoraAPIMock());
 
-        HttpResponse response = ZuoraAPIHelper.callJSONEndpointWithOAuth('GET', 'error', null);
+        HttpResponse response = ZuoraAPIHelper.callJSONEndpointWithOAuth('GET', 'error', null, false);
         if (response.getStatusCode() == 200) {
             ZuoraAPI.GenericResponse error = (ZuoraAPI.GenericResponse) System.JSON.deserialize(response.getBody(), ZuoraAPI.GenericResponse.class);
             System.assertEquals(false, error.success);

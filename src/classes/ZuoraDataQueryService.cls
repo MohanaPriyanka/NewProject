@@ -90,7 +90,7 @@ public class ZuoraDataQueryService {
             dataQuery.outputFormat = 'JSON';
             dataQuery.query = queryString;
 
-            HttpResponse response = ZuoraAPIHelper.callJSONEndpointWithOAuth('POST', '/query/jobs', dataQuery);
+            HttpResponse response = ZuoraAPIHelper.callJSONEndpointWithOAuth('POST', '/query/jobs', dataQuery, false);
             dataResult = (DataQueryResult) JSON.deserialize(response.getBody(), DataQueryResult.class);
         } catch (Exception excep) {
             Logger.logNow('ZuoraDataQueryService', 'submitDataQuery', 'for query: ' + queryString + excep.getMessage() + '\n' + excep.getStackTraceString());
@@ -99,7 +99,7 @@ public class ZuoraDataQueryService {
     }
 
     public static DataQueryResult checkDataQueryStatus(DataQueryResult dataResult) {
-        HttpResponse response = ZuoraAPIHelper.callJSONEndpointWithOAuth('GET','/query/jobs/' + dataResult.data.id,null);
+        HttpResponse response = ZuoraAPIHelper.callJSONEndpointWithOAuth('GET','/query/jobs/' + dataResult.data.id,null, false);
         String responseBody = response.getBody();
         dataResult = (DataQueryResult)JSON.deserialize(responseBody, DataQueryResult.class);
         return dataResult;
