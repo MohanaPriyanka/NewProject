@@ -157,6 +157,17 @@
         <template>RS_Application_Email_Notifications/FICO_Disclosure</template>
     </alerts>
     <alerts>
+        <fullName>Lead_Assignment_Notification</fullName>
+        <description>Lead Assignment Notification</description>
+        <protected>false</protected>
+        <recipients>
+            <type>owner</type>
+        </recipients>
+        <senderAddress>noreply@bluewavesolar.com</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>CS_Application_Email_Notifications/Lead_Assignment_Notification</template>
+    </alerts>
+    <alerts>
         <fullName>Lead_DOER_Co_Applicant_Credit_Denial_Email</fullName>
         <ccEmails>solarloans@bluewavesolar.com, Solarloans@avidiabank.com</ccEmails>
         <description>Lead - DOER - Co Applicant Credit Denial Email</description>

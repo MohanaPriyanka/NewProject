@@ -17,7 +17,6 @@
                 <operation>equals</operation>
                 <value>Community Solar</value>
             </criteriaItems>
-            <template>CS_Application_Email_Notifications/Lead_Assignment_Notification</template>
         </ruleEntry>
         <ruleEntry>
             <assignedTo>BPD</assignedTo>
