@@ -8,9 +8,8 @@ public with sharing class ZuoraAPIHelperTest {
     @TestSetup
     public static void testSetup(){
         API_Credential__c credential = new API_Credential__c();
-        credential.Client_ID__c = 'XXXXXX';
-        credential.Client_Secret__c = 'XXXXXXX';
-        credential.Grant_Type__c = 'XXXXXXX';
+        credential.Credential_ID__c = 'XXXXXX';
+        credential.Credential_Secret__c = 'XXXXXXX';
         credential.Name = 'Zuora_O_Auth';
         insert credential;
     }

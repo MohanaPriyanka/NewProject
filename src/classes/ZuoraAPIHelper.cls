@@ -114,7 +114,7 @@ public with sharing class ZuoraAPIHelper {
 
     public static API_Credential__c getOAuthCredential(String credentialName){
          API_Credential__c credential = [
-            SELECT Id, Client_ID__c, Client_Secret__c, Grant_Type__c
+            SELECT Id, Credential_Id__c, Credential_Secret__c
             FROM API_Credential__c
             WHERE Name = : credentialName
             LIMIT 1
@@ -153,12 +153,13 @@ public with sharing class ZuoraAPIHelper {
     }
 
     public static String generateOAuthToken() {
-        if ((String) Cache.Org.get('ZuoraOAuthToken') == null) {
+        String token = (String) Cache.org.get('ZuoraOAuthToken');
+        if (token == null) {
             API_Credential__c credential = getOAuthCredential('Zuora_O_Auth');
             String oAuthCredential =
-                'client_id=' + credential.Client_ID__c +
-                '&grant_type=' + credential.Grant_Type__c +
-                '&client_secret=' + credential.Client_Secret__c;
+                'client_id=' + credential.Credential_Id__c +
+                '&grant_type=client_credentials' +
+                '&client_secret=' + credential.Credential_Secret__c;
 
             HttpResponse response = ZuoraAPIHelper.callURLEncodedEndpoint('POST','/oauth/token',oAuthCredential,false);
             ZuoraAPI.OAuthResponse zAuthorization = new ZuoraAPI.OAuthResponse();
@@ -166,7 +167,7 @@ public with sharing class ZuoraAPIHelper {
             Cache.Org.put('ZuoraOAuthToken', zAuthorization.access_token, zAuthorization.expires_in);
             return zAuthorization.access_token;
         } else {
-            return (String) Cache.Org.get('ZuoraOAuthToken');
+            return token;
         }
     }
 
