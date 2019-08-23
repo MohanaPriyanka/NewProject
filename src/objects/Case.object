@@ -5,7 +5,27 @@
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
         <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -13,7 +33,27 @@
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
+        <actionName>ChangeStatus</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ChangeStatus</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
         <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -21,7 +61,27 @@
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
+        <actionName>CloneAsChild</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CloneAsChild</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
         <actionName>CloseCase</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CloseCase</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CloseCase</actionName>
+        <formFactor>Small</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -29,7 +89,27 @@
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
         <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -37,7 +117,27 @@
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
         <actionName>MassClose</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>MassClose</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>MassClose</actionName>
+        <formFactor>Small</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -45,7 +145,27 @@
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
+        <actionName>NewCase</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>NewCase</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
         <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -53,7 +173,27 @@
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
         <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
         <type>Default</type>
     </actionOverrides>
     <businessProcesses>
@@ -143,7 +283,6 @@
         <fullName>AccountId</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
     <fields>
@@ -174,7 +313,6 @@ Time_to_Close__c
         <required>false</required>
         <scale>2</scale>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
     </fields>
@@ -186,14 +324,12 @@ Time_to_Close__c
         <inlineHelpText>Checks to see if logged in user&apos;s email address matches case contact email address, if case contact is blank, checks Web Email address</inlineHelpText>
         <label>Am I the case contact?</label>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>AssetId</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
     <fields>
@@ -203,7 +339,6 @@ Time_to_Close__c
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
             <valueSetDefinition>
@@ -250,7 +385,6 @@ Time_to_Close__c
         <fullName>BusinessHoursId</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
     <fields>
@@ -265,7 +399,6 @@ IF(ISBLANK(First_Response_Date_Time__c)&amp;&amp;CreatedDate&lt;NOW()-1,BR()&amp
         <label>Case Alert Details</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
     </fields>
@@ -276,7 +409,6 @@ IF(ISBLANK(First_Response_Date_Time__c)&amp;&amp;CreatedDate&lt;NOW()-1,BR()&amp
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Case Alert Status</label>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
     <fields>
@@ -289,7 +421,6 @@ IF(ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, &qu
         <label>Case Alerts</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
     </fields>
@@ -307,7 +438,6 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
         <label>Case Alerts</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
     </fields>
@@ -318,7 +448,6 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
         <length>32768</length>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>LongTextArea</type>
         <visibleLines>4</visibleLines>
     </fields>
@@ -329,7 +458,6 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
@@ -367,7 +495,6 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
         <length>32768</length>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>LongTextArea</type>
         <visibleLines>3</visibleLines>
     </fields>
@@ -379,7 +506,6 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
             <controllingField>Product_Line__c</controllingField>
@@ -676,6 +802,10 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>Transfer</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
                 <controllingFieldValue>Solar Loan</controllingFieldValue>
                 <valueName>Cancellation</valueName>
             </valueSettings>
@@ -783,16 +913,13 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
     <fields>
         <fullName>ClosedDate</fullName>
-        <trackTrending>false</trackTrending>
     </fields>
     <fields>
         <fullName>Comments</fullName>
-        <trackTrending>false</trackTrending>
     </fields>
     <fields>
         <fullName>Complaint_Description__c</fullName>
@@ -803,32 +930,26 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
         <length>32768</length>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>LongTextArea</type>
         <visibleLines>3</visibleLines>
     </fields>
     <fields>
         <fullName>ContactEmail</fullName>
-        <trackTrending>false</trackTrending>
     </fields>
     <fields>
         <fullName>ContactFax</fullName>
-        <trackTrending>false</trackTrending>
     </fields>
     <fields>
         <fullName>ContactId</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
     <fields>
         <fullName>ContactMobile</fullName>
-        <trackTrending>false</trackTrending>
     </fields>
     <fields>
         <fullName>ContactPhone</fullName>
-        <trackTrending>false</trackTrending>
     </fields>
     <fields>
         <fullName>Created_From_Task__c</fullName>
@@ -838,7 +959,6 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
     </fields>
@@ -851,7 +971,6 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Date</type>
     </fields>
     <fields>
@@ -867,14 +986,12 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Description</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
     </fields>
     <fields>
         <fullName>Details__c</fullName>
@@ -885,7 +1002,6 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
     </fields>
@@ -898,7 +1014,6 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
         <label>Disable Followup Email</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
     <fields>
@@ -908,7 +1023,6 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Email</type>
         <unique>false</unique>
     </fields>
@@ -927,7 +1041,6 @@ IF(Account.RecordTypeId=&quot;012j00000010Ha3&quot;,&quot;%26&amp;isParentAcct%3
         <label>Expand</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
     </fields>
@@ -938,7 +1051,6 @@ IF(Account.RecordTypeId=&quot;012j00000010Ha3&quot;,&quot;%26&amp;isParentAcct%3
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
@@ -980,7 +1092,6 @@ IF(Account.RecordTypeId=&quot;012j00000010Ha3&quot;,&quot;%26&amp;isParentAcct%3
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
     </fields>
@@ -1002,7 +1113,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <required>false</required>
         <scale>2</scale>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
     </fields>
@@ -1013,7 +1123,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>DateTime</type>
     </fields>
     <fields>
@@ -1026,7 +1135,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
     </fields>
@@ -1038,7 +1146,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
     </fields>
@@ -1046,13 +1153,11 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <fullName>IsClosedOnCreate</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
     </fields>
     <fields>
         <fullName>IsEscalated</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
     </fields>
     <fields>
         <fullName>Last_Name__c</fullName>
@@ -1062,7 +1167,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
     </fields>
@@ -1077,7 +1181,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
     <fields>
@@ -1088,7 +1191,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <label>Case Subject</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
     </fields>
@@ -1103,7 +1205,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
     </fields>
@@ -1111,21 +1212,18 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <fullName>Origin</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Picklist</type>
     </fields>
     <fields>
         <fullName>OwnerId</fullName>
         <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
     <fields>
         <fullName>ParentId</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
     <fields>
@@ -1138,7 +1236,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <required>false</required>
         <scale>0</scale>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
     </fields>
@@ -1152,7 +1249,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <required>false</required>
         <scale>0</scale>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
     </fields>
@@ -1165,7 +1261,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
@@ -1258,7 +1353,7 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <fullName>Priority</fullName>
         <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
+        <trackTrending>true</trackTrending>
         <type>Picklist</type>
     </fields>
     <fields>
@@ -1269,7 +1364,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <label>Product Line (Account)</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
     </fields>
@@ -1280,7 +1374,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
@@ -1316,7 +1409,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
     <fields>
@@ -1330,7 +1422,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
     <fields>
@@ -1344,7 +1435,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
     </fields>
@@ -1352,7 +1442,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <fullName>Reason</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Picklist</type>
     </fields>
     <fields>
@@ -1362,7 +1451,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Recurring Billing?</label>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
     <fields>
@@ -1377,7 +1465,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
     <fields>
@@ -1391,7 +1478,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
     <fields>
@@ -1405,7 +1491,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
     </fields>
@@ -1417,7 +1502,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
@@ -1510,7 +1594,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <length>32768</length>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>LongTextArea</type>
         <visibleLines>3</visibleLines>
     </fields>
@@ -1545,7 +1628,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
             <controllingField>Product_Line__c</controllingField>
@@ -1586,7 +1668,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <scale>0</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
     </fields>
@@ -1601,7 +1682,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
     <fields>
@@ -1618,7 +1698,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <fullName>SourceId</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
     <fields>
@@ -1632,23 +1711,18 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <fullName>Subject</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
     </fields>
     <fields>
         <fullName>SuppliedCompany</fullName>
-        <trackTrending>false</trackTrending>
     </fields>
     <fields>
         <fullName>SuppliedEmail</fullName>
-        <trackTrending>false</trackTrending>
     </fields>
     <fields>
         <fullName>SuppliedName</fullName>
-        <trackTrending>false</trackTrending>
     </fields>
     <fields>
         <fullName>SuppliedPhone</fullName>
-        <trackTrending>false</trackTrending>
     </fields>
     <fields>
         <fullName>Time_to_Close__c</fullName>
@@ -1670,7 +1744,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <required>false</required>
         <scale>2</scale>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
     </fields>
@@ -1678,7 +1751,7 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <fullName>Type</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
+        <trackTrending>true</trackTrending>
         <type>Picklist</type>
     </fields>
     <fields>
@@ -1691,7 +1764,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <required>false</required>
         <scale>0</scale>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
     </fields>
@@ -1702,7 +1774,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <label>Utility Follow Up Required?</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
     <fields>
@@ -1718,7 +1789,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
     <listViews>
@@ -1761,30 +1831,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <label>All Open Cases</label>
     </listViews>
     <listViews>
-        <fullName>BWOC_Queue_Open_Cases</fullName>
-        <columns>CASES.CASE_NUMBER</columns>
-        <columns>NAME</columns>
-        <columns>CASES.SUBJECT</columns>
-        <columns>CASES.STATUS</columns>
-        <columns>CASES.PRIORITY</columns>
-        <columns>CASES.CREATED_DATE</columns>
-        <columns>CASES.LAST_UPDATE</columns>
-        <columns>CORE.USERS.ALIAS</columns>
-        <filterScope>Queue</filterScope>
-        <filters>
-            <field>CASES.STATUS</field>
-            <operation>equals</operation>
-            <value>New</value>
-        </filters>
-        <filters>
-            <field>CASES.SUBJECT</field>
-            <operation>notContain</operation>
-            <value>Onboarding</value>
-        </filters>
-        <label>BWOC Queue - New Cases</label>
-        <queue>Customer_Care</queue>
-    </listViews>
-    <listViews>
         <fullName>BWOC_Queue_Open_Cases1</fullName>
         <columns>CASES.CASE_NUMBER</columns>
         <columns>NAME</columns>
@@ -1794,7 +1840,9 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <columns>CASES.CREATED_DATE</columns>
         <columns>Case_Update__c</columns>
         <columns>CASES.LAST_UPDATE</columns>
-        <filterScope>Queue</filterScope>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>CASES.RECORDTYPE</columns>
+        <filterScope>Everything</filterScope>
         <filters>
             <field>CASES.STATUS</field>
             <operation>notEqual</operation>
@@ -1803,13 +1851,22 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <filters>
             <field>CASES.SUBJECT</field>
             <operation>notContain</operation>
-            <value>Onboarding</value>
+            <value>test,sandbox</value>
         </filters>
-        <label>BWOC Queue - Open Cases</label>
-        <queue>Customer_Care</queue>
+        <filters>
+            <field>CASES.RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Case.Partner_Care_Case,Case.Customer_Care</value>
+        </filters>
+        <filters>
+            <field>CORE.USERS.ALIAS</field>
+            <operation>contains</operation>
+            <value>emani,sarg,jberg,wedst,mkiba,zhe</value>
+        </filters>
+        <label>Support Ops - Open Cases</label>
     </listViews>
     <listViews>
-        <fullName>BWOC_Queue_Vendor_Casetype</fullName>
+        <fullName>BizApps_Admin_Acquisition_Case</fullName>
         <columns>CASES.CASE_NUMBER</columns>
         <columns>NAME</columns>
         <columns>CASES.SUBJECT</columns>
@@ -1817,18 +1874,35 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <columns>CASES.PRIORITY</columns>
         <columns>CASES.CREATED_DATE</columns>
         <columns>CORE.USERS.ALIAS</columns>
-        <filterScope>Everything</filterScope>
+        <filterScope>Queue</filterScope>
         <filters>
             <field>CASES.STATUS</field>
             <operation>notEqual</operation>
-            <value>Closed,Resolved</value>
+            <value>Closed</value>
         </filters>
-        <filters>
-            <field>Case_Type__c</field>
-            <operation>equals</operation>
-            <value>Vendor</value>
-        </filters>
-        <label>BWOC Queue - Vendor Casetype</label>
+        <label>BizApps - Admin &amp; Acquisition</label>
+        <queue>BizApps_Admin_Acquisition</queue>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Biz_Apps_Servicing_Case</fullName>
+        <filterScope>Queue</filterScope>
+        <label>Biz Apps - Servicing</label>
+        <queue>Biz_Apps_Servicing</queue>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>CS_Inside_Sales_Case</fullName>
+        <filterScope>Queue</filterScope>
+        <label>CS Inside Sales</label>
+        <queue>CS_Inside_Sales</queue>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
     </listViews>
     <listViews>
         <fullName>Charlotte_s_Cases</fullName>
@@ -1840,11 +1914,12 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <columns>CASES.PRIORITY</columns>
         <columns>CASES.CREATED_DATE</columns>
         <columns>CASES.LAST_UPDATE</columns>
+        <columns>CORE.USERS.ALIAS</columns>
         <filterScope>Everything</filterScope>
         <filters>
             <field>CASES.RECORDTYPE</field>
             <operation>equals</operation>
-            <value>Case.Customer_Care</value>
+            <value>,Case.Customer_Care,Case.Partner_Care_Case</value>
         </filters>
         <filters>
             <field>CASES.STATUS</field>
@@ -1856,156 +1931,48 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             <operation>equals</operation>
             <value>charlotte</value>
         </filters>
-        <label>Customer Support - Charlotte</label>
+        <label>Support Ops - Charlotte</label>
     </listViews>
     <listViews>
-        <fullName>Closed_Customer_Care_Cases</fullName>
-        <columns>CORE.USERS.ALIAS</columns>
-        <columns>Expand__c</columns>
-        <columns>NAME</columns>
-        <columns>CASES.SUBJECT</columns>
+        <fullName>Client_Services_Case</fullName>
         <columns>CASES.CASE_NUMBER</columns>
-        <columns>CASES.STATUS</columns>
-        <columns>CASES.CREATED_DATE</columns>
-        <filterScope>Everything</filterScope>
-        <filters>
-            <field>CASES.RECORDTYPE</field>
-            <operation>equals</operation>
-            <value>Case.Customer_Care</value>
-        </filters>
-        <filters>
-            <field>CASES.STATUS</field>
-            <operation>equals</operation>
-            <value>Closed,Resolved</value>
-        </filters>
-        <filters>
-            <field>CASES.SUBJECT</field>
-            <operation>notContain</operation>
-            <value>barrett billing blitz,Sturbridge A and B,onboarding,Communication Outreach</value>
-        </filters>
-        <label>Closed Customer Care Cases</label>
-    </listViews>
-    <listViews>
-        <fullName>Closed_Partner_Support_Cases</fullName>
-        <columns>CASES.CASE_NUMBER</columns>
-        <columns>NAME</columns>
-        <columns>CASES.SUBJECT</columns>
-        <columns>Related_Opportunity__c</columns>
-        <columns>Product_Line__c</columns>
-        <columns>CORE.USERS.ALIAS</columns>
-        <columns>CASES.STATUS</columns>
-        <columns>CASES.PRIORITY</columns>
-        <columns>CASES.CREATED_DATE</columns>
-        <filterScope>Everything</filterScope>
-        <filters>
-            <field>CASES.RECORDTYPE</field>
-            <operation>equals</operation>
-            <value>Case.Partner_Care_Case,Case.Customer_Care</value>
-        </filters>
-        <filters>
-            <field>CASES.STATUS</field>
-            <operation>contains</operation>
-            <value>closed</value>
-        </filters>
-        <filters>
-            <field>CORE.USERS.ALIAS</field>
-            <operation>contains</operation>
-            <value>Partner,law,fala,dew,jberg,jlu</value>
-        </filters>
-        <filters>
-            <field>CASES.SUBJECT</field>
-            <operation>notContain</operation>
-            <value>sandbox</value>
-        </filters>
-        <label>Closed Partner Support Cases</label>
-    </listViews>
-    <listViews>
-        <fullName>Community_Solar_Case_Case</fullName>
-        <columns>CASES.CASE_NUMBER</columns>
-        <columns>Expand__c</columns>
         <columns>NAME</columns>
         <columns>CASES.SUBJECT</columns>
         <columns>CASES.STATUS</columns>
         <columns>CASES.PRIORITY</columns>
-        <columns>CASES.CREATED_DATE</columns>
+        <columns>CASES.CREATED_DATE_DATE_ONLY</columns>
         <columns>CORE.USERS.ALIAS</columns>
-        <filterScope>Queue</filterScope>
-        <label>Community Solar Case</label>
-        <queue>Community_Solar_Case</queue>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CASES.RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Case.Client_Services</value>
+        </filters>
+        <label>Client Services</label>
         <sharedTo>
             <allInternalUsers></allInternalUsers>
         </sharedTo>
     </listViews>
     <listViews>
-        <fullName>Customer_Care_Case1</fullName>
-        <columns>CASES.CASE_NUMBER</columns>
-        <columns>Expand__c</columns>
-        <columns>NAME</columns>
-        <columns>CASES.SUBJECT</columns>
-        <columns>CASES.STATUS</columns>
-        <columns>CASES.PRIORITY</columns>
-        <columns>CASES.CREATED_DATE</columns>
-        <columns>CORE.USERS.ALIAS</columns>
+        <fullName>Collections_Case</fullName>
         <filterScope>Queue</filterScope>
-        <label>Bluewave Customer Care</label>
-        <queue>Customer_Care</queue>
+        <label>Collections</label>
+        <queue>Collections</queue>
         <sharedTo>
             <allInternalUsers></allInternalUsers>
         </sharedTo>
     </listViews>
     <listViews>
-        <fullName>Customer_Support_All_Cases</fullName>
-        <columns>OWNER_NAME</columns>
+        <fullName>Customer_Support_Mohamed</fullName>
         <columns>CASES.CASE_NUMBER</columns>
         <columns>NAME</columns>
         <columns>CASES.SUBJECT</columns>
-        <columns>CASES.STATUS</columns>
-        <columns>CASES.PRIORITY</columns>
-        <columns>CASES.CREATED_DATE</columns>
-        <filterScope>Everything</filterScope>
-        <filters>
-            <field>CASES.RECORDTYPE</field>
-            <operation>equals</operation>
-            <value>Case.Customer_Care</value>
-        </filters>
-        <filters>
-            <field>CASES.STATUS</field>
-            <operation>notEqual</operation>
-            <value>Closed,Resolved</value>
-        </filters>
-        <label>Customer Support - All Cases</label>
-    </listViews>
-    <listViews>
-        <fullName>Customer_Support_My_Cases</fullName>
-        <columns>CASES.CASE_NUMBER</columns>
-        <columns>NAME</columns>
-        <columns>CASES.SUBJECT</columns>
-        <columns>CASES.STATUS</columns>
         <columns>Case_Update__c</columns>
-        <columns>CASES.CREATED_DATE</columns>
-        <columns>CASES.LAST_UPDATE</columns>
-        <filterScope>Mine</filterScope>
-        <filters>
-            <field>CASES.STATUS</field>
-            <operation>notEqual</operation>
-            <value>Closed,Resolved</value>
-        </filters>
-        <filters>
-            <field>CASES.RECORDTYPE</field>
-            <operation>equals</operation>
-            <value>Case.Customer_Care</value>
-        </filters>
-        <label>Customer Support - My Cases</label>
-    </listViews>
-    <listViews>
-        <fullName>Customer_Support_Sheri</fullName>
-        <columns>CASES.CASE_NUMBER</columns>
-        <columns>NAME</columns>
-        <columns>CASES.SUBJECT</columns>
         <columns>CASES.STATUS</columns>
         <columns>CASES.PRIORITY</columns>
         <columns>CASES.CREATED_DATE</columns>
         <columns>CASES.LAST_UPDATE</columns>
+        <columns>CORE.USERS.ALIAS</columns>
         <filterScope>Everything</filterScope>
         <filters>
             <field>CASES.RECORDTYPE</field>
@@ -2020,25 +1987,32 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <filters>
             <field>CORE.USERS.FIRST_NAME</field>
             <operation>equals</operation>
-            <value>Sheri</value>
+            <value>Mohamed</value>
         </filters>
-        <label>Customer Support -  Sheri</label>
+        <label>Support Ops - Mohamed</label>
     </listViews>
     <listViews>
-        <fullName>Customer_Support_Team_Case</fullName>
+        <fullName>Customer_Support_My_Cases</fullName>
         <columns>CASES.CASE_NUMBER</columns>
         <columns>NAME</columns>
         <columns>CASES.SUBJECT</columns>
         <columns>CASES.STATUS</columns>
-        <columns>CASES.PRIORITY</columns>
+        <columns>Case_Update__c</columns>
         <columns>CASES.CREATED_DATE</columns>
-        <columns>CORE.USERS.ALIAS</columns>
-        <filterScope>Queue</filterScope>
-        <label>Customer Support - Team</label>
-        <queue>Customer_Support_Team</queue>
-        <sharedTo>
-            <allInternalUsers></allInternalUsers>
-        </sharedTo>
+        <columns>CASES.LAST_UPDATE</columns>
+        <columns>CASES.ORIGIN</columns>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>CASES.STATUS</field>
+            <operation>notEqual</operation>
+            <value>Closed,Resolved</value>
+        </filters>
+        <filters>
+            <field>CASES.RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Case.Partner_Care_Case,Case.Case,Case.Customer_Care</value>
+        </filters>
+        <label>Support Ops - My Cases</label>
     </listViews>
     <listViews>
         <fullName>Customer_Support_Walter</fullName>
@@ -2050,11 +2024,12 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <columns>CASES.CREATED_DATE</columns>
         <columns>CASES.LAST_UPDATE</columns>
         <columns>CASES.PRIORITY</columns>
+        <columns>CORE.USERS.ALIAS</columns>
         <filterScope>Everything</filterScope>
         <filters>
             <field>CASES.RECORDTYPE</field>
             <operation>equals</operation>
-            <value>Case.Customer_Care</value>
+            <value>Case.Customer_Care,Case.Partner_Care_Case</value>
         </filters>
         <filters>
             <field>CASES.STATUS</field>
@@ -2066,7 +2041,16 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             <operation>equals</operation>
             <value>Walter</value>
         </filters>
-        <label>Customer Support - Walter</label>
+        <label>Support Ops - Walter</label>
+    </listViews>
+    <listViews>
+        <fullName>IT_Case</fullName>
+        <filterScope>Queue</filterScope>
+        <label>IT</label>
+        <queue>IT</queue>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
     </listViews>
     <listViews>
         <fullName>My_Closed_CasesCSportal</fullName>
@@ -2089,8 +2073,8 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         </filters>
         <filters>
             <field>CASES.CREATED_DATE_DATE_ONLY</field>
-            <operation>greaterThan</operation>
-            <value>2/6/2019 12:00 AM</value>
+            <operation>greaterOrEqual</operation>
+            <value>1/30/2019 12:00 AM</value>
         </filters>
         <label>My Closed Cases</label>
         <sharedTo>
@@ -2102,9 +2086,11 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <columns>CASES.CASE_NUMBER</columns>
         <columns>NAME</columns>
         <columns>CASES.SUBJECT</columns>
+        <columns>Case_Update__c</columns>
         <columns>CASES.STATUS</columns>
         <columns>CASES.PRIORITY</columns>
         <columns>CASES.CREATED_DATE_DATE_ONLY</columns>
+        <columns>CASES.LAST_UPDATE</columns>
         <filterScope>Mine</filterScope>
         <filters>
             <field>CASES.STATUS</field>
@@ -2135,13 +2121,14 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <columns>CASES.PRIORITY</columns>
         <columns>CASES.CREATED_DATE</columns>
         <columns>CORE.USERS.ALIAS</columns>
+        <columns>Time_to_Close__c</columns>
         <filterScope>Mine</filterScope>
         <filters>
             <field>CASES.STATUS</field>
             <operation>notEqual</operation>
             <value>Closed</value>
         </filters>
-        <label>My Open Cases</label>
+        <label>My Open Cases (Internal View)</label>
     </listViews>
     <listViews>
         <fullName>National_Grid_Net_Metering_Cases</fullName>
@@ -2149,7 +2136,9 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <columns>CASES.SUBJECT</columns>
         <columns>CASES.CREATED_DATE</columns>
         <columns>CORE.USERS.ALIAS</columns>
+        <columns>CASES.STATUS</columns>
         <columns>Deadline__c</columns>
+        <columns>Case_Detail__c</columns>
         <filterScope>Everything</filterScope>
         <filters>
             <field>CASES.REASON</field>
@@ -2164,12 +2153,12 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <filters>
             <field>CASES.STATUS</field>
             <operation>equals</operation>
-            <value>On Hold,Escalated,New</value>
+            <value>On Hold,Escalated,New,In Progress</value>
         </filters>
         <filters>
-            <field>Utility_Follow_Up_Required__c</field>
+            <field>CASES.RECORDTYPE</field>
             <operation>equals</operation>
-            <value>1</value>
+            <value>Case.Case</value>
         </filters>
         <label>Utility Net Metering Cases</label>
         <sharedTo>
@@ -2177,47 +2166,36 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         </sharedTo>
     </listViews>
     <listViews>
-        <fullName>Open_Kamal_Customer_Care_Cases</fullName>
+        <fullName>Open_Partner_Care_Cases1</fullName>
         <columns>CASES.CASE_NUMBER</columns>
-        <columns>Expand__c</columns>
         <columns>NAME</columns>
         <columns>CASES.SUBJECT</columns>
-        <columns>CASES.STATUS</columns>
-        <columns>CASES.PRIORITY</columns>
-        <columns>CASES.CREATED_DATE</columns>
         <columns>CORE.USERS.ALIAS</columns>
+        <columns>Category__c</columns>
+        <columns>CASES.CREATED_DATE</columns>
+        <columns>Resolution__c</columns>
+        <columns>CASES.CLOSED_DATE</columns>
         <filterScope>Everything</filterScope>
         <filters>
-            <field>CORE.USERS.FIRST_NAME</field>
-            <operation>contains</operation>
-            <value>Mubashshira,Rahul</value>
+            <field>CASES.RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Case.Partner_Care_Case,Case.Customer_Care</value>
         </filters>
         <filters>
             <field>CASES.STATUS</field>
-            <operation>notEqual</operation>
+            <operation>equals</operation>
             <value>Closed</value>
         </filters>
-        <filters>
-            <field>CASES.SUBJECT</field>
-            <operation>notEqual</operation>
-            <value>barrett billing blitz,Sturbridge A and B,onboarding,Communication Outreach</value>
-        </filters>
-        <label>Open Kamal Customer Care Cases</label>
-        <sharedTo>
-            <group>BFG</group>
-        </sharedTo>
+        <label>Support Ops - Closed Support Cases</label>
     </listViews>
     <listViews>
-        <fullName>Open_Partner_Care_Cases1</fullName>
+        <fullName>Partner_Support_Mohamed</fullName>
         <columns>CASES.CASE_NUMBER</columns>
-        <columns>Expand__c</columns>
         <columns>NAME</columns>
-        <columns>Product_Line__c</columns>
         <columns>CASES.SUBJECT</columns>
-        <columns>Category__c</columns>
-        <columns>CASES.CREATED_DATE</columns>
         <columns>CASES.STATUS</columns>
         <columns>CASES.PRIORITY</columns>
+        <columns>CASES.CREATED_DATE</columns>
         <columns>CORE.USERS.ALIAS</columns>
         <columns>CASES.LAST_UPDATE</columns>
         <filterScope>Everything</filterScope>
@@ -2228,44 +2206,15 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         </filters>
         <filters>
             <field>CASES.STATUS</field>
-            <operation>equals</operation>
-            <value>Closed</value>
-        </filters>
-        <label>Closed Partner Care Cases</label>
-    </listViews>
-    <listViews>
-        <fullName>Open_Partner_Support_Cases</fullName>
-        <columns>CASES.CASE_NUMBER</columns>
-        <columns>NAME</columns>
-        <columns>CASES.SUBJECT</columns>
-        <columns>Related_Opportunity__c</columns>
-        <columns>Product_Line__c</columns>
-        <columns>CORE.USERS.ALIAS</columns>
-        <columns>CASES.STATUS</columns>
-        <columns>CASES.PRIORITY</columns>
-        <columns>CASES.CREATED_DATE</columns>
-        <filterScope>Everything</filterScope>
-        <filters>
-            <field>CASES.RECORDTYPE</field>
-            <operation>equals</operation>
-            <value>Case.Partner_Care_Case,Case.Customer_Care</value>
-        </filters>
-        <filters>
-            <field>CASES.STATUS</field>
-            <operation>contains</operation>
-            <value>Escalated,Awaiting,Progress,New</value>
+            <operation>notContain</operation>
+            <value>Closed,Resolved</value>
         </filters>
         <filters>
             <field>CORE.USERS.ALIAS</field>
-            <operation>contains</operation>
-            <value>Partner,law,mzhe,dew,jberg,jlu</value>
+            <operation>equals</operation>
+            <value>mkiba</value>
         </filters>
-        <filters>
-            <field>CASES.SUBJECT</field>
-            <operation>notContain</operation>
-            <value>sandbox</value>
-        </filters>
-        <label>Open Partner Support Cases</label>
+        <label>Partner Support - Mohamed</label>
     </listViews>
     <listViews>
         <fullName>Product_Support_Case</fullName>
@@ -2282,8 +2231,155 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             <operation>equals</operation>
             <value>0</value>
         </filters>
-        <label>Product Support</label>
+        <label>Biz Apps Support</label>
         <queue>Product_Support</queue>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Product_Support_Cases</fullName>
+        <booleanFilter>1 AND 2</booleanFilter>
+        <columns>CASES.CASE_NUMBER</columns>
+        <columns>NAME</columns>
+        <columns>CASES.SUBJECT</columns>
+        <columns>CASES.STATUS</columns>
+        <columns>CASES.PRIORITY</columns>
+        <columns>CASES.CREATED_DATE</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>Product_tag__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CASES.RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Case.Product_Support</value>
+        </filters>
+        <filters>
+            <field>CASES.STATUS</field>
+            <operation>notEqual</operation>
+            <value>Closed</value>
+        </filters>
+        <label>Open Product Support Cases</label>
+    </listViews>
+    <listViews>
+        <fullName>Support_Ops_Elaine</fullName>
+        <columns>CASES.CASE_NUMBER</columns>
+        <columns>CASES.SUBJECT</columns>
+        <columns>NAME</columns>
+        <columns>Case_Update__c</columns>
+        <columns>CASES.STATUS</columns>
+        <columns>CASES.CREATED_DATE</columns>
+        <columns>CASES.LAST_UPDATE</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CASES.STATUS</field>
+            <operation>notEqual</operation>
+            <value>Closed,Resolved</value>
+        </filters>
+        <filters>
+            <field>CASES.RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Case.Partner_Care_Case,Case.Customer_Care</value>
+        </filters>
+        <filters>
+            <field>CORE.USERS.FIRST_NAME</field>
+            <operation>equals</operation>
+            <value>elaine</value>
+        </filters>
+        <label>Support Ops - Elaine</label>
+    </listViews>
+    <listViews>
+        <fullName>Support_Ops_New_Cases</fullName>
+        <columns>CASES.CASE_NUMBER</columns>
+        <columns>NAME</columns>
+        <columns>CASES.SUBJECT</columns>
+        <columns>CASES.STATUS</columns>
+        <columns>CASES.PRIORITY</columns>
+        <columns>CASES.CREATED_DATE</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>CASES.ORIGIN</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CASES.RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Case.Partner_Care_Case,Case.Customer_Care</value>
+        </filters>
+        <filters>
+            <field>CASES.STATUS</field>
+            <operation>equals</operation>
+            <value>New,In Progress</value>
+        </filters>
+        <filters>
+            <field>CASES.SUBJECT</field>
+            <operation>notContain</operation>
+            <value>sandbox</value>
+        </filters>
+        <filters>
+            <field>CASES.ORIGIN</field>
+            <operation>equals</operation>
+            <value>Web</value>
+        </filters>
+        <filters>
+            <field>CASES.CREATED_DATE_DATE_ONLY</field>
+            <operation>greaterThan</operation>
+            <value>1/1/2019 12:00 AM</value>
+        </filters>
+        <label>Support Ops - All Customer Portal Cases</label>
+    </listViews>
+    <listViews>
+        <fullName>Support_Ops_New_PHONE_EMAIL_Cases</fullName>
+        <columns>CASES.CASE_NUMBER</columns>
+        <columns>NAME</columns>
+        <columns>CASES.SUBJECT</columns>
+        <columns>CASES.STATUS</columns>
+        <columns>CASES.PRIORITY</columns>
+        <columns>CASES.CREATED_DATE</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>CASES.ORIGIN</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CASES.RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Case.Partner_Care_Case,Case.Customer_Care</value>
+        </filters>
+        <filters>
+            <field>CASES.STATUS</field>
+            <operation>equals</operation>
+            <value>New</value>
+        </filters>
+        <filters>
+            <field>CASES.SUBJECT</field>
+            <operation>notContain</operation>
+            <value>sandbox</value>
+        </filters>
+        <filters>
+            <field>CASES.CREATED_DATE</field>
+            <operation>greaterThan</operation>
+            <value>1/1/2019 12:00 AM</value>
+        </filters>
+        <filters>
+            <field>CASES.ORIGIN</field>
+            <operation>notEqual</operation>
+            <value>Web</value>
+        </filters>
+        <filters>
+            <field>CORE.USERS.ALIAS</field>
+            <operation>notEqual</operation>
+            <value>emani,mkiba,tlenn,zhe,aschu,lawt,cmadd,wedst,agarv,sarg,jberg,collections,rnoye</value>
+        </filters>
+        <filters>
+            <field>OWNER_NAME</field>
+            <operation>notContain</operation>
+            <value>Mubashshira,vanessa</value>
+        </filters>
+        <label>Support Ops - New PHONE/EMAIL Cases</label>
+    </listViews>
+    <listViews>
+        <fullName>Utility_Credit_Review_Case</fullName>
+        <filterScope>Queue</filterScope>
+        <label>Utility Credit Review</label>
+        <queue>Utility_Credit_Review</queue>
         <sharedTo>
             <allInternalUsers></allInternalUsers>
         </sharedTo>
@@ -2530,6 +2626,17 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
             <values>
                 <fullName>User Error</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Sale_Status__c</picklist>
+            <values>
+                <fullName>Post-sale</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pre-sale</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -2857,6 +2964,17 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
         </picklistValues>
         <picklistValues>
+            <picklist>Sale_Status__c</picklist>
+            <values>
+                <fullName>Post-sale</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pre-sale</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Type</picklist>
             <values>
                 <fullName>Feature Request</fullName>
@@ -2877,6 +2995,56 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <active>true</active>
         <businessProcess>Customer Care Case</businessProcess>
         <label>Client Services</label>
+        <picklistValues>
+            <picklist>Assignee_If_Different__c</picklist>
+            <values>
+                <fullName>Alex Schulte</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Aly Garvin</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BWOC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Kamal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Olivia Love</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reg Schonborn</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Trevor Lennox</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Case_Type__c</picklist>
+            <values>
+                <fullName>3rd Party</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BlueWave</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Vendor</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Category__c</picklist>
             <values>
@@ -3049,6 +3217,142 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
         </picklistValues>
         <picklistValues>
+            <picklist>Finance_Category__c</picklist>
+            <values>
+                <fullName>1603 Compliance %2F Loan Support</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Corporate Finance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Debt Capital Markets %2F Structured Transactions</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Equity Capital Markets %2F Strategic Partnerships</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Platform Finance</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Origin</picklist>
+            <values>
+                <fullName>Chatter Answers</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Email</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Phone</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Web</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Primary_Complaint_Category__c</picklist>
+            <values>
+                <fullName>Advertising%2Fmarketing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Application</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Service</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Discrimination</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Fraud</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Identity Theft</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Improper Sales Practices</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Installer%2FPartner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Miscellaneous</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Origination%2FCredit Decision</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Payments</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Privacy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Service Provider</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Servicemember%2FSCRA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Servicing%2FCollection</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unauthorized Enrollment</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Priority</picklist>
+            <values>
+                <fullName>Critical</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>High</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Low</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Medium</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Urgent</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Product_Line__c</picklist>
             <values>
                 <fullName>Community Solar</fullName>
@@ -3059,24 +3363,101 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
                 <default>false</default>
             </values>
         </picklistValues>
-    </recordTypes>
-    <recordTypes>
-        <fullName>Customer_Care</fullName>
-        <active>true</active>
-        <businessProcess>Customer Care Case</businessProcess>
-        <label>Customer Care</label>
         <picklistValues>
-            <picklist>Product_Line__c</picklist>
+            <picklist>Reason</picklist>
             <values>
-                <fullName>Community Solar</fullName>
+                <fullName>Billing</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>None</fullName>
+                <fullName>Complex functionality</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Solar Loan</fullName>
+                <fullName>Executive Team - Complete</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Existing problem</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Instructions not clear</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>New problem</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Onboarding</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>User didn%27t attend training</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Resolution__c</picklist>
+            <values>
+                <fullName>Bug</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Data Update</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Duplicate</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Enhanced Code</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Enhanced Config</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Fix Code</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Fix Config</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Modify Access</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No Longer an Issue</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not a support case</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Question</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Resolved by external team</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Resolved with KB article</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>User Error</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -3092,52 +3473,26 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Category__c</picklist>
+            <picklist>Type</picklist>
             <values>
-                <fullName>Billing</fullName>
+                <fullName>Feature Request</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Billing Payment</fullName>
+                <fullName>Problem</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Cancellation</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Feedback%2FFeature Request</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner Payment</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Portal Issue</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Product Question</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SREC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Subscription Adjustment</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Subscription Change</fullName>
+                <fullName>Question</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Customer_Care</fullName>
+        <active>true</active>
+        <businessProcess>Customer Care Case</businessProcess>
+        <label>Customer Care</label>
         <picklistValues>
             <picklist>Assignee_If_Different__c</picklist>
             <values>
@@ -3185,6 +3540,53 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
             <values>
                 <fullName>Vendor</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Category__c</picklist>
+            <values>
+                <fullName>Billing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Billing Payment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cancellation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Feedback%2FFeature Request</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner Payment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Portal Issue</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Question</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SREC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Subscription Adjustment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Subscription Change</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -3317,6 +3719,21 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
         </picklistValues>
         <picklistValues>
+            <picklist>Product_Line__c</picklist>
+            <values>
+                <fullName>Community Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar Loan</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Reason</picklist>
             <values>
                 <fullName>Complex functionality</fullName>
@@ -3368,6 +3785,17 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             <values>
                 <fullName>Resolved with KB article</fullName>
                 <default>true</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Sale_Status__c</picklist>
+            <values>
+                <fullName>Post-sale</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pre-sale</fullName>
+                <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
@@ -3630,6 +4058,17 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
         </picklistValues>
         <picklistValues>
+            <picklist>Sale_Status__c</picklist>
+            <values>
+                <fullName>Post-sale</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pre-sale</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Type</picklist>
             <values>
                 <fullName>Feature Request</fullName>
@@ -3650,79 +4089,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <active>true</active>
         <businessProcess>Customer Care Case</businessProcess>
         <label>Partner Care Case</label>
-        <picklistValues>
-            <picklist>Product_Line__c</picklist>
-            <values>
-                <fullName>Community Solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>None</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar Loan</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Sale_Status__c</picklist>
-            <values>
-                <fullName>Post-sale</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Pre-sale</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Category__c</picklist>
-            <values>
-                <fullName>Billing</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Billing Payment</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Cancellation</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Feedback%2FFeature Request</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner Payment</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Portal Issue</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Product Question</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SREC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Subscription Adjustment</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Subscription Change</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
         <picklistValues>
             <picklist>Assignee_If_Different__c</picklist>
             <values>
@@ -3770,6 +4136,53 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
             <values>
                 <fullName>Vendor</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Category__c</picklist>
+            <values>
+                <fullName>Billing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Billing Payment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cancellation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Feedback%2FFeature Request</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner Payment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Portal Issue</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Product Question</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SREC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Subscription Adjustment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Subscription Change</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -3902,6 +4315,21 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
         </picklistValues>
         <picklistValues>
+            <picklist>Product_Line__c</picklist>
+            <values>
+                <fullName>Community Solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar Loan</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Reason</picklist>
             <values>
                 <fullName>Complex functionality</fullName>
@@ -3956,6 +4384,17 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
         </picklistValues>
         <picklistValues>
+            <picklist>Sale_Status__c</picklist>
+            <values>
+                <fullName>Post-sale</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pre-sale</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Type</picklist>
             <values>
                 <fullName>Feature Request</fullName>
@@ -3976,37 +4415,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <active>true</active>
         <businessProcess>Product Support</businessProcess>
         <label>Technology Support</label>
-        <picklistValues>
-            <picklist>Resolution__c</picklist>
-            <values>
-                <fullName>Bug</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Data Update</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Duplicate</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Modify Access</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>No Longer an Issue</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Question</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>User Error</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
         <picklistValues>
             <picklist>Assignee_If_Different__c</picklist>
             <values>
@@ -4359,6 +4767,48 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
         </picklistValues>
         <picklistValues>
+            <picklist>Resolution__c</picklist>
+            <values>
+                <fullName>Bug</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Data Update</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Duplicate</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Modify Access</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No Longer an Issue</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Question</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>User Error</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Sale_Status__c</picklist>
+            <values>
+                <fullName>Post-sale</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pre-sale</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Type</picklist>
             <values>
                 <fullName>Feature Request</fullName>
@@ -4380,6 +4830,9 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <customTabListAdditionalFields>CASES.CREATED_DATE</customTabListAdditionalFields>
         <customTabListAdditionalFields>CASES.PRIORITY</customTabListAdditionalFields>
         <customTabListAdditionalFields>OWNER_NAME</customTabListAdditionalFields>
+        <excludedStandardButtons>OpenListInQuip</excludedStandardButtons>
+        <excludedStandardButtons>Accept</excludedStandardButtons>
+        <excludedStandardButtons>MassAccept</excludedStandardButtons>
         <lookupDialogsAdditionalFields>CASES.CASE_NUMBER</lookupDialogsAdditionalFields>
         <lookupDialogsAdditionalFields>CASES.SUBJECT</lookupDialogsAdditionalFields>
         <lookupDialogsAdditionalFields>NAME</lookupDialogsAdditionalFields>
@@ -4390,6 +4843,7 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <lookupPhoneDialogsAdditionalFields>NAME</lookupPhoneDialogsAdditionalFields>
         <lookupPhoneDialogsAdditionalFields>ACCOUNT.NAME</lookupPhoneDialogsAdditionalFields>
         <lookupPhoneDialogsAdditionalFields>CASES.STATUS</lookupPhoneDialogsAdditionalFields>
+        <massQuickActions>Edit_Case</massQuickActions>
         <searchResultsAdditionalFields>CASES.CASE_NUMBER</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>CASES.SUBJECT</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>CASES.STATUS</searchResultsAdditionalFields>

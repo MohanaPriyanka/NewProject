@@ -3,6 +3,15 @@
     <actionOverrides>
         <actionName>View</actionName>
         <comment>Action override created by Lightning App Builder during activation.</comment>
+        <content>Task_Record_Page1</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+        <pageOrSobjectType>Task</pageOrSobjectType>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <comment>Action override created by Lightning App Builder during activation.</comment>
         <content>Lead_Record_Page</content>
         <formFactor>Large</formFactor>
         <skipRecordTypeSelect>false</skipRecordTypeSelect>
@@ -29,6 +38,8 @@
     <tabs>standard-Campaign</tabs>
     <tabs>standard-Task</tabs>
     <tabs>et4ae5__IndividualEmailResult__c</tabs>
+    <tabs>standard-LiveChatTranscript</tabs>
+    <tabs>standard-LiveAgentSession</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>LightningSalesConsole_UtilityBar</utilityBar>
     <workspaceConfig>
@@ -51,6 +62,12 @@
         <mappings>
             <fieldName>Parent_Account__c</fieldName>
             <tab>standard-Lead</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-LiveAgentSession</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-LiveChatTranscript</tab>
         </mappings>
         <mappings>
             <fieldName>AccountId</fieldName>

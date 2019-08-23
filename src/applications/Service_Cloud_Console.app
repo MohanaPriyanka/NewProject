@@ -4,6 +4,7 @@
         <componentList>
             <alignment>right</alignment>
             <components>Console.BuiltInComponent.knowledgeOne</components>
+            <components>Console.BuiltInComponent.servicePresence</components>
         </componentList>
         <detailPageRefreshMethod>flag</detailPageRefreshMethod>
         <footerColor>#01579b</footerColor>
@@ -210,6 +211,7 @@
     <tabs>standard-LiveAgentSupervisor</tabs>
     <tabs>standard-LiveChatTranscript</tabs>
     <tabs>standard-LiveAgentSession</tabs>
+    <tabs>standard-OmniSupervisor</tabs>
     <workspaceConfig>
         <mappings>
             <fieldName>Parent_Account__c</fieldName>
@@ -267,6 +269,9 @@
         </mappings>
         <mappings>
             <tab>standard-LiveChatTranscript</tab>
+        </mappings>
+        <mappings>
+            <tab>standard-OmniSupervisor</tab>
         </mappings>
         <mappings>
             <tab>standard-Opportunity</tab>
