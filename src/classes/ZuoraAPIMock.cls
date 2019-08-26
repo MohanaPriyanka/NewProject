@@ -16,6 +16,8 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
         // Create a fake response
         if (endpoint.contains('rsa-signatures')) {
             return getRSASignatures();
+        }  else if (endpoint.contains('/oauth/token')) {
+            return getOAuthToken();
         } else if (endpoint.contains('payment-method')) {
             return getPaymentMethod();
         } else if (endpoint.contains('error')) {
@@ -28,6 +30,10 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
             return getActionCreate(req.getBody());
         } else if (endpoint.contains('v1/action/update')) {
             return getActionUpdate(req.getBody());
+        } else if (endpoint.contains('query/jobs')) {
+            return getDataQuery(endpoint);
+        } else if (endpoint.contains('owl-auw2-sbx01-query-result')){
+            return getDataQueryData(endpoint);
         } else if (endpoint.contains('/v1/action/query') && req.getBody().contains(' FROM Invoice')) {
             return getInvoices();
         } else if (endpoint.contains('/v1/action/query') && req.getBody().contains(' FROM RatePlanCharge')) {
@@ -90,6 +96,20 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
             '"tenantId" : "30689",' +
             '"key" : "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnUbOqAz8j7zKK3dYwdUw/8RJjx6NA5kkQSwCjutHaKpkLsi2bxRRiZfjKiaivXbDWmqSI+n6wxW7b+4tq8IT6h6ot7QknSsTxXBNTfQ74L4S/AOKb3O2QDZgw9BMN7jPd+HbFvJRYPney87Vze5n43u4ZHzoYKrbIuaOk6LHGfQmo5YeBLA69S1Uha8DS+5eiS7UQv5I1ZwRUw/C71ZP4xE0Sn+fjKwgoABrVnU2y/bBwJc3SWGQdoLbJyi6NEQSzExisIuafcA9LL4lPaaA9L76zhBz+3xyQGc6MxNHQT7th+Q+negZBsM2VVTPPrvCsdX+gxL19yBjleuA6mtQbQIDAQAB",' +
             '"success" : true}');
+        return res;
+    }
+
+    private static HttpResponse getOAuthToken() {
+        HttpResponse res = getJSON();
+        res.setBody('{"access_token":"aff6cd3b49934212980e6e0836fe0964",' +
+            '"token_type":"bearer",' +
+            '"expires_in":3598,' +
+            '"scope":"entity.2c92c0f8-68a2-023a-0168-a79e7dfa3f31 ' +
+            'platform.write service.usage.delete service.usage.update' +
+            ' service.usage.write tenant.30689 ' +
+            'user.2c92c0f8694d2ce701694fe8a4d25ba5",' +
+            '"jti":"aff6cd3b49934212980e6e0836fe0964"}'
+        );
         return res;
     }
 
@@ -902,6 +922,188 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
             '"isDefault" : false, ' +
             '"isActive" : true } ], ' +
             '"success" : true }');
+        return res;
+    }
+
+    private static HttpResponse getDataQuery(String endpoint){
+        HttpResponse res = getJSON();
+        if (endpoint.contains('queryStillInProcess')){
+            // Check on query, but its still in process:
+            res.setBody(
+                '{"data":{"id":"7742a20c-18ea-4fde-b185-4aed364ce22c",' +
+                    '"query":"SHOW Columns FROM Account",' +
+                    '"queryStatus":"in_progress",' +
+                    '"remainingRetries":3,"retries":3,' +
+                    '"updatedOn":"2019-08-19T17:48:41.837Z"}}'
+            );
+        } else if (endpoint.contains('queryFailed')){
+            // Check on query, but its still in process:
+            res.setBody(
+                '{"data":{' +
+                    '"queryStatus" : "failed", ' +
+                    '"id" : "7742a20c-18ea-4fde-b185-4aed364ce22c",' +
+                    '"errorCode" : "LINK_00000001", ' +
+                    '"errorMessage" : "Query failed (#20190816_130023_10875_snsq9): line 1:"' +
+                    '}}'
+            );
+        } else if (endpoint.contains('queryCompleted')){
+            // Check on query, and its complete:
+            res.setBody(
+                '{"data":{"id":"7742a20c-18ea-4fde-b185-4aed364ce22c",' +
+                    '"query":"SHOW Columns FROM Account",' +
+                    '"queryStatus":"completed",' +
+                    '"dataFile":"https://owl-auw2-sbx01-query-result.s3.us-west-2.amazonaws.com/' +
+                    '7f4b1caf-6cb8-4f3c-bdda-dd8133043f73_1023727654544428.json?X-Amz-Security-Toke' +
+                    'n=FQoGZXIvYXdzEAgaDAmOEyd0LkZoFr3y6iKVBI3MwM768d1NPeFNnl8vqSLSzReta6AgJj' +
+                    '%2FmouYCx8%2F1KhQLGLAzTON00uro0Z%2BYzLlMeWR97%2Bgvs7%2BLI34JtCkctX' +
+                    '%2BAlpp0uDc1%2F1sfdY7HOTzlJkn2jkIjrENvpqy5XKysaMJ8Bc3S0WGaoioIMzC' +
+                    '%2F%2BI8%2B1M3YKKs2cumQ8aXoSa0h5A1BsVeguSl8JlJhJZZSew3Z9wVJl8y9f' +
+                    'OskrACvYTfpywhLUaUgL3bBTL1I%2FVGC%2FPlKqBCEy6KCiVJL3zjaovITHmNjwnRxz' +
+                    'xMtbFsJspWR6t7HFIN0j%2BkG17h9CYu5yathF%2BKVm%2F1t5gY0kfcuPoMQGyL%2Ffg' +
+                    'ZQTH2LUa3K%2BSBRE4lv1o1EBb2xLUfOsrOflnFtq%2BjqGOHMqEyIolTTPRrsOv3u3Ok' +
+                    'N0Wen%2BYsAfSHx4DziLLZqSXX06MjOIblNirYrOkOJkP7lx3GG%2FortPVbM2MiWFGAQJ6RX0W' +
+                    'vlrn0bOz5hpOYvHOAtDMOEhouHmH6aFTpjcPCZcGGuSLeEE75%2FMyxf5jaKiXyRIcwgOir' +
+                    '%2FUiHiFcZL7%2FyiX7JRLufdwQEic9LkgCAYb4rHCPqHh21Bji4dvrp3%2B82Y%2BYiS9fH' +
+                    'la7lYM%2Fl2iYcNp5sP7ssEvYRhfY9u8UHj5fossmNtEFOz1oGKZUnKzs5kuJJgfb%2BlYDn' +
+                    '71Y6tdXQYptcMmdEDmwu%2F7XA%2BllPk4miQmtjHqf7CKP3x6uoF&X-Amz-Algorithm=A' +
+                    'WS4-HMAC-SHA256&X-Amz-Date=20190819T175244Z&X-Amz-SignedHeaders=host&X-Amz' +
+                    '-Expires=604800&X-Amz-Credential=ASIAQXFLO6OTKH3EOP4C%2F20190819%2Fus-west' +
+                    '-2%2Fs3%2Faws4_request&X-Amz-Signature=e029cc85d8660a2a89623124eeb6e052909d' +
+                    '9951650cffcc7335aa3c247c5447",' +
+                    '"outputRows":52,' +
+                    '"processingTime":1182,' +
+                    '"remainingRetries":3,' +
+                    '"retries":3,' +
+                    '"updatedOn":"2019-08-19T17:52:44.504Z"}}'
+            );
+        } else if (endpoint.contains('7742a20c-18ea-4fde-b185-4aed364ce22c')){
+            // Check on query, and its complete:
+            res.setBody(
+                '{"data":{"id":"7742a20c-18ea-4fde-b185-4aed364ce22c",' +
+                    '"query":"SHOW Columns FROM Account",' +
+                    '"queryStatus":"completed",' +
+                    '"dataFile":"https://owl-auw2-sbx01-query-result.s3.us-west-2.amazonaws.com/' +
+                    'LINK_CONTAINS_RETURN_GL_OBJECT' +
+                    '_1023727654544428.json?X-Amz-Security-Toke' +
+                    'n=FQoGZXIvYXdzEAgaDAmOEyd0LkZoFr3y6iKVBI3MwM768d1NPeFNnl8vqSLSzReta6AgJj' +
+                    '%2FmouYCx8%2F1KhQLGLAzTON00uro0Z%2BYzLlMeWR97%2Bgvs7%2BLI34JtCkctX' +
+                    '%2BAlpp0uDc1%2F1sfdY7HOTzlJkn2jkIjrENvpqy5XKysaMJ8Bc3S0WGaoioIMzC' +
+                    '%2F%2BI8%2B1M3YKKs2cumQ8aXoSa0h5A1BsVeguSl8JlJhJZZSew3Z9wVJl8y9f' +
+                    'OskrACvYTfpywhLUaUgL3bBTL1I%2FVGC%2FPlKqBCEy6KCiVJL3zjaovITHmNjwnRxz' +
+                    'xMtbFsJspWR6t7HFIN0j%2BkG17h9CYu5yathF%2BKVm%2F1t5gY0kfcuPoMQGyL%2Ffg' +
+                    'ZQTH2LUa3K%2BSBRE4lv1o1EBb2xLUfOsrOflnFtq%2BjqGOHMqEyIolTTPRrsOv3u3Ok' +
+                    'N0Wen%2BYsAfSHx4DziLLZqSXX06MjOIblNirYrOkOJkP7lx3GG%2FortPVbM2MiWFGAQJ6RX0W' +
+                    'vlrn0bOz5hpOYvHOAtDMOEhouHmH6aFTpjcPCZcGGuSLeEE75%2FMyxf5jaKiXyRIcwgOir' +
+                    '%2FUiHiFcZL7%2FyiX7JRLufdwQEic9LkgCAYb4rHCPqHh21Bji4dvrp3%2B82Y%2BYiS9fH' +
+                    'la7lYM%2Fl2iYcNp5sP7ssEvYRhfY9u8UHj5fossmNtEFOz1oGKZUnKzs5kuJJgfb%2BlYDn' +
+                    '71Y6tdXQYptcMmdEDmwu%2F7XA%2BllPk4miQmtjHqf7CKP3x6uoF&X-Amz-Algorithm=A' +
+                    'WS4-HMAC-SHA256&X-Amz-Date=20190819T175244Z&X-Amz-SignedHeaders=host&X-Amz' +
+                    '-Expires=604800&X-Amz-Credential=ASIAQXFLO6OTKH3EOP4C%2F20190819%2Fus-west' +
+                    '-2%2Fs3%2Faws4_request&X-Amz-Signature=e029cc85d8660a2a89623124eeb6e052909d' +
+                    '9951650cffcc7335aa3c247c5447",' +
+                    '"outputRows":52,' +
+                    '"processingTime":1182,' +
+                    '"remainingRetries":3,' +
+                    '"retries":3,' +
+                    '"updatedOn":"2019-08-19T17:52:44.504Z"}}'
+            );
+        } else {
+            // Submit new query, get back id:
+            res.setBody(
+                '{"data":{"id":"7742a20c-18ea-4fde-b185-4aed364ce22c",' +
+                    '"query":"SHOW Columns FROM Account",' +
+                    '"queryStatus":"accepted",' +
+                    '"remainingRetries":3,' +
+                    '"retries":3,' +
+                    '"updatedOn":"2019-08-19T17:33:45.675Z"}}'
+            );
+        }
+        return res;
+    }
+
+    private static HttpResponse getDataQueryData(String endpoint){
+        HttpResponse res = getJSON();
+        if (endpoint.contains('LINK_CONTAINS_RETURN_GL_OBJECT')){
+            res.setBody(
+                '' +
+                    '{"Project":"SSS-000070","Client":"BW-0011514","GLDate":"2019-03-01",' +
+                    '"CustomerAccount":"BW-0013285","Amount":19.690000,' +
+                    '"AccountId":"2c92c0f96c8596ce016c8718b27c3c3c",' +
+                    '"ExternalId":"2c92c0fa6c8aee2e016c926763d231d0"} ' +
+                    '{"Project":"SSS-000019","Client":"BW-0009470","GLDate":"2019-05-01",' +
+                    '"CustomerAccount":"bw-04639","Amount":328.330000,' +
+                    '"AccountId":"2c92c0f96c8596ce016c87202b9d2a80",' +
+                    '"ExternalId":"2c92c0fa6c8aee37016c928a815955c0"} ' +
+                    '{"Project":"SSS-000087","Client":"BW-0011514","GLDate":"2019-07-01",' +
+                    '"CustomerAccount":"bw-00803","Amount":19.100000,' +
+                    '"AccountId":"2c92c0f86c858923016c872551192523",' +
+                    '"ExternalId":"2c92c0fb6c8afb33016c928738435224"} ' +
+                    '{"Project":"SSS-000070","Client":"BW-0011514","GLDate":"2019-01-01",' +
+                    '"CustomerAccount":"BW-0013262","Amount":34.000000,' +
+                    '"AccountId":"2c92c0f86c858922016c871893cd7504",' +
+                    '"ExternalId":"2c92c0fb6c8afb4e016c926615190872"} ' +
+                    '{"Project":"SSS-000071","Client":"BW-0011514","GLDate":"2019-03-01",' +
+                    '"CustomerAccount":"BW-0012690","Amount":33.890000,' +
+                    '"AccountId":"2c92c0f96c8596ce016c8717ebc26323",' +
+                    '"ExternalId":"2c92c0fb6c8afb4e016c926d8fd03f5a"} ' +
+                    '{"Project":"SSS-000068","Client":"BW-0011514","GLDate":"2019-06-01",' +
+                    '"CustomerAccount":"BW-0013802","Amount":22.470000,' +
+                    '"AccountId":"2c92c0f96c8596ce016c87194923685d",' +
+                    '"ExternalId":"2c92c0fb6c8afb4e016c925afaec2e13"} ' +
+                    '{"Project":"SSS-000071","Client":"BW-0011514","GLDate":"2019-07-08",' +
+                    '"CustomerAccount":"BW-0012618","Amount":112.980000,' +
+                    '"AccountId":"2c92c0f86c858923016c8717c67d1209",' +
+                    '"ExternalId":"2c92c0fb6c8afb4e016c9262b7c86b11"} ' +
+                    '{"Project":"SSS-000087","Client":"BW-0011514","GLDate":"2019-06-01",' +
+                    '"CustomerAccount":"BW-0013995","Amount":74.290000,' +
+                    '"AccountId":"2c92c0f86c85891e016c871a28a541ad",' +
+                    '"ExternalId":"2c92c0fb6c8afb49016c926205805ebf"} ' +
+                    '{"Project":"SSS-000019","Client":"BW-0009470","GLDate":"2019-01-07",' +
+                    '"CustomerAccount":"bw-04803","Amount":301.920000,' +
+                    '"AccountId":"2c92c0f96c8596ce016c87208eb10692",' +
+                    '"ExternalId":"2c92c0fa6c8aee24016c928961437a75"} ' +
+                    '{"Project":"SSS-000016","Client":"BW-0009470","GLDate":"2019-03-29",' +
+                    '"CustomerAccount":"BW-0007283","Amount":173.960000,' +
+                    '"AccountId":"2c92c0f86c858922016c87172a376e9d",' +
+                    '"ExternalId":"2c92c0fa6c8aee24016c929406a2570f"} ' +
+                    '{"Project":"SSS-000069","Client":"BW-0011514","GLDate":"2019-06-01",' +
+                    '"CustomerAccount":"BW-0012937","Amount":86.920000,' +
+                    '"AccountId":"2c92c0f86c858923016c871832b214cb",' +
+                    '"ExternalId":"2c92c0fa6c8aee2e016c925f61d86a9b"} ' +
+                    '{"Project":"SSS-000070","Client":"BW-0011514","GLDate":"2019-04-01",' +
+                    '"CustomerAccount":"BW-0013318","Amount":26.440000,' +
+                    '"AccountId":"2c92c0f96c8596ce016c8718b5383c60",' +
+                    '"ExternalId":"2c92c0fa6c8aee37016c926a024f5f0e"} ' +
+                    '{"Project":"SSS-000070","Client":"BW-0011514","GLDate":"2018-12-01",' +
+                    '"CustomerAccount":"BW-0013262","Amount":117.780000,' +
+                    '"AccountId":"2c92c0f86c858922016c871893cd7504",' +
+                    '"ExternalId":"2c92c0fb6c8afb49016c92661341028a"} ' +
+                    '{"Project":"SSS-000070","Client":"BW-0011514","GLDate":"2019-04-01",' +
+                    '"CustomerAccount":"BW-0013274","Amount":14.400000,' +
+                    '"AccountId":"2c92c0f86c858922016c8718952b7510",' +
+                    '"ExternalId":"2c92c0fa6c8aee2e016c92668a082a3f"}'
+            );
+        } else {
+            res.setBody(
+                '{"Column":"accountnumber","Type":"varchar","Extra":"","Comment":"AccountNumber"}' +
+                    '{"Column":"additionalemailaddresses","Type":"varchar","Extra":"","Comment":"AdditionalEmailAddresses"}' +
+                    '{"Column":"allowinvoiceedit","Type":"boolean","Extra":"","Comment":"AllowInvoiceEdit"}' +
+                    '{"Column":"autopay","Type":"boolean","Extra":"","Comment":"AutoPay"}' +
+                    '{"Column":"balance","Type":"decimal(18,6)","Extra":"","Comment":"Balance"}' +
+                    '{"Column":"batch","Type":"varchar","Extra":"","Comment":"Batch"}' +
+                    '{"Column":"bcdsettingoption","Type":"varchar","Extra":"","Comment":"BcdSettingOption"}' +
+                    '{"Column":"billcycleday","Type":"bigint","Extra":"","Comment":"BillCycleDay"}' +
+                    '{"Column":"taxexemptissuingjurisdiction","Type":"varchar","Extra":"","Comment":"TaxExemptIssuingJurisdiction"}' +
+                    '{"Column":"taxexemptstatus","Type":"varchar","Extra":"","Comment":"TaxExemptStatus"}' +
+                    '{"Column":"totaldebitmemobalance","Type":"decimal(18,6)","Extra":"","Comment":"TotalDebitMemoBalance"}' +
+                    '{"Column":"totalinvoicebalance","Type":"decimal(18,6)","Extra":"","Comment":"TotalInvoiceBalance"}' +
+                    '{"Column":"unappliedbalance","Type":"decimal(18,6)","Extra":"","Comment":"UnappliedBalance"}' +
+                    '{"Column":"unappliedcreditmemoamount","Type":"decimal(18,6)","Extra":"","Comment":"UnappliedCreditMemoAmount"}' +
+                    '{"Column":"updatedbyid","Type":"varchar","Extra":"","Comment":"UpdatedById"}' +
+                    '{"Column":"updateddate","Type":"timestamp with time zone","Extra":"","Comment":"UpdatedDate"}' +
+                    '{"Column":"vatid","Type":"varchar","Extra":"","Comment":"VATId"}'
+            );
+        }
         return res;
     }
 }

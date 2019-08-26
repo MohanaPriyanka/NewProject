@@ -5,10 +5,45 @@
  *************************************************************************************/
 @IsTest
 public with sharing class ZuoraAPIHelperTest {
+    @TestSetup
+    public static void testSetup(){
+        API_Credential__c credential = new API_Credential__c();
+        credential.Credential_ID__c = 'XXXXXX';
+        credential.Credential_Secret__c = 'XXXXXXX';
+        credential.Name = 'Zuora_O_Auth';
+        insert credential;
+    }
+
     @IsTest
     public static void testCallEndpoint() {
         Test.setMock(HttpCalloutMock.class, new ZuoraAPIMock());
         HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('GET', 'error', null);
+        if (response.getStatusCode() == 200) {
+            ZuoraAPI.GenericResponse error = (ZuoraAPI.GenericResponse) System.JSON.deserialize(response.getBody(), ZuoraAPI.GenericResponse.class);
+            System.assertEquals(false, error.success);
+        } else {
+            System.assert(false, 'Expected ZuoraAPIMock to return status code 200');
+        }
+    }
+
+    @IsTest
+    public static void testOAuthTokens() {
+        Test.setMock(HttpCalloutMock.class, new ZuoraAPIMock());
+
+        // Actually Generates it:
+        String token = ZuoraAPIHelper.generateOAuthToken();
+        System.assertEquals('aff6cd3b49934212980e6e0836fe0964', token);
+
+        // Should be saved to the cache:
+        String cachedToken = (String) Cache.Org.get('ZuoraOAuthToken');
+        System.assertEquals('aff6cd3b49934212980e6e0836fe0964', cachedToken);
+    }
+
+    @IsTest
+    public static void testOAuthCallEndpoint() {
+        Test.setMock(HttpCalloutMock.class, new ZuoraAPIMock());
+
+        HttpResponse response = ZuoraAPIHelper.callJSONEndpointWithOAuth('GET', 'error', null, false);
         if (response.getStatusCode() == 200) {
             ZuoraAPI.GenericResponse error = (ZuoraAPI.GenericResponse) System.JSON.deserialize(response.getBody(), ZuoraAPI.GenericResponse.class);
             System.assertEquals(false, error.success);
