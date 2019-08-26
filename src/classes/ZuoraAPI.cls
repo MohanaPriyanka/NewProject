@@ -19,6 +19,12 @@ public with sharing class ZuoraAPI {
         public Boolean success;
     }
 
+    public class OAuthResponse {
+        public String access_token;
+        public String token_type;
+        public Integer expires_in;
+    }
+
     // https://www.zuora.com/developer/api-reference/#operation/Object_GETPaymentMethod
     public class PaymentMethod {
         @AuraEnabled

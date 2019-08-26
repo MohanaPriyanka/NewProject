@@ -51,6 +51,14 @@
         <label>Is Sandbox</label>
         <type>Checkbox</type>
     </fields>
+    <fields>
+        <fullName>Zuora_Is_Live__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Zuora Is Live</label>
+        <type>Checkbox</type>
+    </fields>
     <label>Zuora Setting</label>
     <pluralLabel>Zuora Settings</pluralLabel>
     <visibility>Public</visibility>
