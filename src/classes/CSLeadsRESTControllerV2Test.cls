@@ -64,6 +64,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         System.assertEquals(200, RestContext.response.statusCode, 'Properly formed PATCH should succeed');
         System.assertEquals('123 Patched Street', mockLeadService.getLastUpdatedLead().Street, 'Street should be updated when streetAddress is PATCHed.');
         System.assertEquals('123 Patched Street', mockLeadService.getLastUpdatedLead().LASERCA__Home_Address__c, 'LASERCA Home Address should be updated when streetAddress is PATCHed.');
+        System.assertEquals(false, mockLeadService.getLastUpdatedLead().Soft_Pull_Credit_Report__c, 'Soft credit pull should only be updated if the field being updated is app compl date');
     }
 
     @IsTest

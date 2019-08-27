@@ -28,7 +28,7 @@ global without sharing class CSLeadsRESTControllerV2 extends RESTController {
                 envelope.addError('Request did not include correct fields to update');
                 response.statusCode = statusCode.badRequest;
             } else {
-                if (leadToUpdate.Application_Complete_Date__c == null) {
+                if (requestLead.applicationCompleteDate != null && leadToUpdate.Application_Complete_Date__c == null) {
                     //pull credit, only once; on first time the app complete date is set
                     leadToUpdate.Soft_Pull_Credit_Report__c = true;
                 }
