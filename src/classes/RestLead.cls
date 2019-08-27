@@ -131,6 +131,13 @@ public without sharing class RestLead {
         if (fieldNames.contains('applicationCompleteDate')) baseLead.Application_Complete_Date__c = this.applicationCompleteDate;
         if (fieldNames.contains('campaignId')) baseLead.Manual_Campaign_ID__c = this.campaignId;
         if (fieldNames.contains('continueApplicationLink')) baseLead.Continue_Application_Link__c = this.continueApplicationLink;
+
+        updateDerivedFields(new RestLead(baseLead), baseLead);
+
+        if (this.eiaId != null) {
+            updateUtility(this.eiaId, baseLead);
+        }
+
         return baseLead;
     }
 
@@ -164,9 +171,17 @@ public without sharing class RestLead {
             Continue_Application_Link__c = this.continueApplicationLink
         );
 
+        updateDerivedFields(this, newLead);
+        if (this.eiaId != null) {
+            updateUtility(this.eiaId, newLead);
+        }
 
+        return newLead;
+    }
 
-        if (partnerId != null) {
+    private void updateDerivedFields(RestLead restLead, Lead newLead) {
+
+        if (restLead.partnerId != null) {
             newLead.Application_Source_Phase_1__c = 'Switch with Partner';
         } else {
             newLead.Application_Source_Phase_1__c = 'Switch without Partner';
@@ -174,31 +189,31 @@ public without sharing class RestLead {
 
         Partner__c customerPartner = new Partner__c();
         try {
-            customerPartner = PartnerSelector.selectPartnerByPartnerId(partnerId);
+            customerPartner = PartnerSelector.selectPartnerByPartnerId(restLead.partnerId);
         } catch (Exception e) {
             customerPartner = PartnerSelector.selectDefaultCSPartner();
-            if (partnerId != null) {
-                Logger.logNow('CSLeadsRESTControllerV2', 'asLead', 'Partner not found with Id ' + partnerId + ' for Lead: ' + newLead.Id);
+            if (restLead.partnerId != null) {
+                Logger.logNow('CSLeadsRESTControllerV2', 'asLead', 'Partner not found with Id ' + restLead.partnerId + ' for Lead: ' + newLead.Id);
             }
         }
 
         newLead.Partner_Lookup__c = customerPartner.Id;
         newLead.Partner_Email__c = customerPartner.Email__c;
 
-        if (salesRepId != null) {
-            newLead.bs_Sales_ID__c = salesRepId;
+        if (restLead.salesRepId != null) {
+            newLead.bs_Sales_ID__c = restLead.salesRepId;
         } else if (customerPartner.Default_Sales_Rep__c != null) {
             newLead.bs_Sales_ID__c = customerPartner.Default_Sales_Rep__c;
         }
 
-        if (applicationType == 'Residential') {
-            newLead.Company = firstName + ' ' + lastName;
+        if (restLead.applicationType == 'Residential') {
+            newLead.Company = restLead.firstName + ' ' + restLead.lastName;
         }
 
         List<Product2> product = [
             SELECT Id
             FROM Product2
-            WHERE Name LIKE :'%' + productName + '%'
+            WHERE Name LIKE :'%' + restLead.productName + '%'
             LIMIT 1
         ];
 
@@ -206,6 +221,9 @@ public without sharing class RestLead {
             newLead.Product__c = product[0].Id;
         }
 
+    }
+
+    private void updateUtility(String eiaId, Lead newLead) {
         List<Utility__c> utilityList = [
             SELECT Id, Name, EIA_ID__c
             FROM Utility__c
@@ -218,8 +236,6 @@ public without sharing class RestLead {
         } else {
             Logger.logNow('CSLeadsRESTControllerV2', 'asLead', 'No Utilities found with EIA Id: ' + eiaId);
         }
-
-        return newLead;
     }
 
     public class RestPropertyAccount {
