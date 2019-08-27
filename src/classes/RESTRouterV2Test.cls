@@ -5,7 +5,7 @@
 @IsTest
 public with sharing class RESTRouterV2Test {
 
-    private static String validJsonRequest = '{' +
+    private static String validLead =
         '"firstName": "System",' +
         '"lastName": "Testcase",' +
         '"email": "test@invalid.bluewavesolar.com",' +
@@ -17,21 +17,30 @@ public with sharing class RESTRouterV2Test {
         '"zipCode": "10901",' +
         '"eiaId": "1234",' +
         '"continueApplicationLink": "http://switch.bluewavesolar.invalid",' +
-        '"productName": "CS Product",' +
-        '"propertyAccounts": [{' +
+        '"productName": "CS Product"';
+
+    private static String validPropertyAccount =
         '   "billingStreet": "Test billing street",' +
         '   "billingCity": "Test billing city",' +
         '   "billingState": "NY",' +
-        '   "billingPostalCode": "14472",' +
-        '   "utilityAccountLogs": [{' +
+        '   "billingPostalCode": "14472"';
+
+    private static String validUtilityAccountLog =
         '       "nameOnAccount": "Test Accounts Payable",' +
         '       "serviceStreet": "Test service street",' +
         '       "serviceCity": "Test service city",' +
         '       "serviceState": "NY",' +
         '       "servicePostalCode": "14472",' +
-        '       "utilityAccountNumber": "555555"' +
-        '   }]' +
-        '}]}';
+        '       "utilityAccountNumber": "555555"';
+
+    private static String validJsonRequest = '{' +
+        validLead + ',' +
+        '"propertyAccounts": [{' +
+        validPropertyAccount + ',' +
+        '"utilityAccountLogs": [{' +
+        validUtilityAccountLog +
+        '}]}]}';
+
 
     @TestSetup
     public static void testSetup() {
@@ -56,8 +65,10 @@ public with sharing class RESTRouterV2Test {
      *** SYSTEM TESTS ***
      ********************/
 
+    /** Leads **/
+
     @IsTest
-    public static void testPostRequestSuccess() {
+    public static void testPostLeadSuccess() {
         RestRequest req = new RestRequest();
         req.requestURI = '/services/apexrest/v2/leads';
         req.httpMethod = 'POST';
@@ -114,43 +125,7 @@ public with sharing class RESTRouterV2Test {
     }
 
     @IsTest
-    public static void testPostRequestNoFields() {
-        String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Lead.SObjectType) + '"}';
-
-        RestRequest req = new RestRequest();
-        req.requestURI = '/services/apexrest/v2/leads';
-        req.httpMethod = 'POST';
-        req.addHeader('Content-Type', 'application/json');
-        req.requestBody = Blob.valueOf(jsonRequest);
-
-        RestContext.request = req;
-        RestContext.response = new RestResponse();
-
-        RESTRouterV2.postRequest();
-
-        System.assertEquals(400, RestContext.response.statusCode, 'POST should throw an error when required fields are not provided');
-    }
-
-    @IsTest
-    public static void testPostRequestInvalidPath() {
-        String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Lead.SObjectType) + '"}';
-
-        RestRequest req = new RestRequest();
-        req.requestURI = '/services/apexrest/v2/some-invalid-path';
-        req.httpMethod = 'POST';
-        req.addHeader('Content-Type', 'application/json');
-        req.requestBody = Blob.valueOf(jsonRequest);
-
-        RestContext.request = req;
-        RestContext.response = new RestResponse();
-
-        RESTRouterV2.postRequest();
-
-        System.assertEquals(404, RestContext.response.statusCode, 'POSTing to an invalid path should give a 404 - not found');
-    }
-
-    @IsTest
-    public static void testPatchRequestLeadSuccess() {
+    public static void testPatchLeadSuccess() {
 
         // <setup>
         RestRequest req = new RestRequest();
@@ -194,27 +169,74 @@ public with sharing class RESTRouterV2Test {
 
     }
 
-    @IsTest
-    public static void testPatchLeadNoFields() {
-        String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Lead.SObjectType) + '"}';
+    /** Property Accounts **/
 
+    @IsTest
+    public static void testPostPropertyAccountSuccess() {
+        // <setup>
         RestRequest req = new RestRequest();
         req.requestURI = '/services/apexrest/v2/leads';
-        req.httpMethod = 'PATCH';
+        req.httpMethod = 'POST';
         req.addHeader('Content-Type', 'application/json');
-        req.requestBody = Blob.valueOf(jsonRequest);
+        req.requestBody = Blob.valueOf('{' + validLead + '}');
 
         RestContext.request = req;
         RestContext.response = new RestResponse();
 
-        RESTRouterV2.patchRequest();
+        RESTRouterV2.postRequest();
 
-        System.assertEquals(404, RestContext.response.statusCode, 'PATCH should throw an error when the ID doesn\'t exist');
+        RestResponse response = RestContext.response;
+        String jsonResponse = response.responseBody.toString();
+        Map<String, Object> responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
+
+        Map<String, Object> postResponseLead = (Map<String, Object>) responseEnvelope.get('data');
+
+        // </setup>
+
+
+        req = new RestRequest();
+        req.requestURI = '/services/apexrest/v2/property-accounts';
+        req.httpMethod = 'POST';
+        req.addHeader('Content-Type', 'application/json');
+
+        String propertyAccountJson = '{' +
+            validPropertyAccount + ',' +
+            '"leadId": "' + postResponseLead.get('id') + '",' +
+            '"utilityAccountLogs": [{' +
+            validUtilityAccountLog +
+            '}]}';
+
+        System.debug(propertyAccountJson);
+
+        req.requestBody = Blob.valueOf(propertyAccountJson);
+
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+
+        RESTRouterV2.postRequest();
+
+        response = RestContext.response;
+
+        Map<String, Object> requestPropertyAccount = (Map<String,Object>) JSON.deserializeUntyped(propertyAccountJson);
+
+        jsonResponse = response.responseBody.toString();
+        responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
+        Map<String, Object> responsePropertyAccount = (Map<String,Object>) responseEnvelope.get('data');
+
+
+        System.assertEquals(201, response.statusCode, 'POST should create properly');
+
+        // verify lead request/response fields
+        System.assertNotEquals(responsePropertyAccount.get('id'), null, 'id should be set on POST response');
+        for (String key : requestPropertyAccount.keySet()) {
+            if (requestPropertyAccount.get(key) instanceof String) {
+                System.assertEquals(requestPropertyAccount.get(key), responsePropertyAccount.get(key), 'The requested ' + key + ' is expected to match the actual response');
+            }
+        }
     }
 
-
     @IsTest
-    public static void testPatchRequestPropertyAccountSuccess() {
+    public static void testPatchPropertyAccountSuccess() {
 
         // <setup>
         RestRequest req = new RestRequest();
@@ -267,8 +289,82 @@ public with sharing class RESTRouterV2Test {
 
     }
 
+    /** Utility Account Logs **/
+
     @IsTest
-    public static void testPatchRequestUtilityAccountLogSuccess() {
+    public static void testPostUtilityAccountLogSuccess() {
+        // <setup>
+        RestRequest req = new RestRequest();
+        req.requestURI = '/services/apexrest/v2/leads';
+        req.httpMethod = 'POST';
+        req.addHeader('Content-Type', 'application/json');
+
+        req.requestBody = Blob.valueOf('{' +
+            validLead + ',' +
+            '"propertyAccounts": [{' +
+            validPropertyAccount +
+            '}]}'
+        );
+
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+
+        RESTRouterV2.postRequest();
+
+        RestResponse response = RestContext.response;
+        String jsonResponse = response.responseBody.toString();
+
+        Map<String, Object> responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
+        Map<String, Object> responseLead = (Map<String,Object>) responseEnvelope.get('data');
+
+        System.debug(jsonResponse);
+        List<Object> responsePropertyAccounts = (List<Object>) responseLead.get('propertyAccounts');
+        Map<String, Object> responsePropertyAccount = (Map<String,Object>) responsePropertyAccounts[0];
+
+        // </setup>
+
+
+        req = new RestRequest();
+        req.requestURI = '/services/apexrest/v2/utility-account-logs';
+        req.httpMethod = 'POST';
+        req.addHeader('Content-Type', 'application/json');
+
+        String utilityAccountLogJson = '{' +
+            '"propertyAccountId": "' + responsePropertyAccount.get('id') + '",' +
+            validUtilityAccountLog +
+            '}';
+
+
+        req.requestBody = Blob.valueOf(utilityAccountLogJson);
+
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+
+        RESTRouterV2.postRequest();
+
+        response = RestContext.response;
+
+        Map<String, Object> requestUtilityAccountLog = (Map<String, Object>) JSON.deserializeUntyped(utilityAccountLogJson);
+
+        jsonResponse = response.responseBody.toString();
+
+        responseEnvelope = (Map<String, Object>) JSON.deserializeUntyped(jsonResponse);
+        Map<String, Object> responseUtilityAccountLog = (Map<String, Object>) responseEnvelope.get('data');
+
+
+        System.assertEquals(201, response.statusCode, 'POST should create properly');
+
+        // verify lead request/response fields
+        System.assertNotEquals(responseUtilityAccountLog.get('id'), null, 'id should be set on POST response');
+        for (String key : requestUtilityAccountLog.keySet()) {
+            if (requestUtilityAccountLog.get(key) instanceof String) {
+                System.assertEquals(requestUtilityAccountLog.get(key), responseUtilityAccountLog.get(key), 'The requested ' + key + ' is expected to match the actual response');
+            }
+        }
+    }
+
+    @IsTest
+    public static void testPatchUtilityAccountLogSuccess() {
 
         // <setup>
         RestRequest req = new RestRequest();
@@ -319,9 +415,10 @@ public with sharing class RESTRouterV2Test {
 
     }
 
+    /** General Verb **/
 
     @IsTest
-    public static void testPatchRequestInvalidPath() {
+    public static void testPatchInvalidPath() {
         String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Lead.SObjectType) + '"}';
 
         RestRequest req = new RestRequest();
@@ -354,6 +451,24 @@ public with sharing class RESTRouterV2Test {
         RESTRouterV2.patchRequest();
 
         System.assertEquals(500, RestContext.response.statusCode, 'PATCHing with invalid JSON should yield a 500');
+    }
+
+    @IsTest
+    public static void testPostInvalidPath() {
+        String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Lead.SObjectType) + '"}';
+
+        RestRequest req = new RestRequest();
+        req.requestURI = '/services/apexrest/v2/some-invalid-path';
+        req.httpMethod = 'POST';
+        req.addHeader('Content-Type', 'application/json');
+        req.requestBody = Blob.valueOf(jsonRequest);
+
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+
+        RESTRouterV2.postRequest();
+
+        System.assertEquals(404, RestContext.response.statusCode, 'POSTing to an invalid path should give a 404 - not found');
     }
 
     @IsTest

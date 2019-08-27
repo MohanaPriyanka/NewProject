@@ -56,6 +56,17 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
 
     @IsTest
+    public static void testPatchLeadStreetAddress() {
+        useMocks();
+        String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Lead.SObjectType) + '", "streetAddress": "123 Patched Street" }';
+        controller.patchLead(jsonRequest);
+
+        System.assertEquals(200, RestContext.response.statusCode, 'Properly formed PATCH should succeed');
+        System.assertEquals('123 Patched Street', mockLeadService.getLastUpdatedLead().Street, 'Street should be updated when streetAddress is PATCHed.');
+        System.assertEquals('123 Patched Street', mockLeadService.getLastUpdatedLead().LASERCA__Home_Address__c, 'LASERCA Home Address should be updated when streetAddress is PATCHed.');
+    }
+
+    @IsTest
     public static void testPatchLeadCreditPullOnce() {
         useMocks();
         // ID of ...999 is an ID with an existing app date of Jan 1 2017 in the mock svc
@@ -110,7 +121,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     @IsTest
     public static void testPatchPropertyAccountInvalidId() {
         useMocks();
-        String jsonRequest = '{ "id": "00Q000000000111"}'; // ID of ...111 is set as an non-existent ID in the mock svc
+        String jsonRequest = '{ "id": "001000000000111"}'; // ID of ...111 is set as an non-existent ID in the mock svc
         controller.patchPropertyAccount(jsonRequest);
 
         System.assertEquals(404, RestContext.response.statusCode, 'PATCH should throw an error if the ID provided is not valid');
@@ -142,7 +153,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     @IsTest
     public static void testPatchUtilityAccountLogInvalidId() {
         useMocks();
-        String jsonRequest = '{ "id": "00Q000000000111"}'; // ID of ...111 is set as an non-existent ID in the mock svc
+        String jsonRequest = '{ "id": "a1b000000000111"}'; // ID of ...111 is set as an non-existent ID in the mock svc
         controller.patchUtilityAccountLog(jsonRequest);
 
         System.assertEquals(404, RestContext.response.statusCode, 'PATCH should throw an error if the ID provided is not valid');
@@ -160,6 +171,23 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.postLead(jsonRequest);
 
         System.assertEquals(400, RestContext.response.statusCode, 'POST should throw an error when required fields are not provided');
+    }
+
+    @IsTest
+    public static void testPostLeadWithMinimalFields() {
+        useMocks();
+
+        String jsonRequest = '{' +
+            '"firstName": "Unit",' +
+            '"lastName": "Testcase",' +
+            '"email": "test@invalid.bluewavesolar.com",' +
+            '"applicationType": "Residential",' +
+            '"productName": "CS Product"' +
+            '}';
+
+        controller.postLead(jsonRequest);
+
+        System.assertEquals(201, RestContext.response.statusCode, 'A Lead POST with minimal fields should succeed');
     }
 
     @IsTest
@@ -252,6 +280,128 @@ public with sharing class CSLeadsRESTControllerV2Test {
 
         System.assertEquals(201, RestContext.response.statusCode, 'Properly formed POST should succeed');
 
+    }
+
+
+    /*****************************
+     *** postPropertyAccount() ***
+     *****************************/
+
+    @IsTest
+    public static void testPostPropertyAccountNoFields() {
+        useMocks();
+        String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Account.SObjectType) + '" }';
+        controller.postPropertyAccount(jsonRequest);
+
+        System.assertEquals(400, RestContext.response.statusCode, 'POST should throw an error when required fields are not provided');
+    }
+
+    @IsTest
+    public static void testPostPropertyAccountWhenOneAlreadyExists() {
+        useMocks();
+        // We only support one property account today.  If you try to pass another in after one exists, you should get an error
+
+        String jsonRequest = '{' +
+            '"leadId": "00Q000000000999",' +
+            '"billingStreet": "Test billing street",' +
+            '"billingCity": "Test billing city",' +
+            '"billingState": "NY",' +
+            '"billingPostalCode": "14472"' +
+            '}';
+
+        controller.postPropertyAccount(jsonRequest);
+
+        Map<String, Object> responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(RestContext.response.responseBody.toString());
+        List<Object> errors = (List<Object>) responseEnvelope.get('errors');
+        String error = String.valueOf(errors.get(0));
+
+        System.assertEquals(400, RestContext.response.statusCode, 'We currently only support 1 propertyAccount');
+        System.assert(error.contains('only <=1 propertyAccount per lead is supported'));
+
+    }
+
+    @IsTest
+    public static void testPostPropertyAccountWithInvalidLead() {
+        useMocks();
+
+        String jsonRequest = '{' +
+            '"leadId": "00Q000000000111",' + // ID of ...111 is set as an non-existent ID in the mock svc
+            '"billingStreet": "Test billing street",' +
+            '"billingCity": "Test billing city",' +
+            '"billingState": "NY",' +
+            '"billingPostalCode": "14472"' +
+            '}';
+
+        controller.postPropertyAccount(jsonRequest);
+
+        System.assertEquals(404, RestContext.response.statusCode, 'POST should throw an error if the ID provided is not valid');
+    }
+
+    @IsTest
+    public static void testPostPropertyAccountWithMinimalFields() {
+        useMocks();
+
+        String jsonRequest = '{' +
+            '"leadId": "' + Util.getFakeId(Schema.Lead.SObjectType) + '",' +
+            '"billingStreet": "Test billing street",' +
+            '"billingCity": "Test billing city",' +
+            '"billingState": "NY",' +
+            '"billingPostalCode": "14472"' +
+            '}';
+
+        controller.postPropertyAccount(jsonRequest);
+
+        System.assertEquals(201, RestContext.response.statusCode, 'A PropertyAccount POST with minimal fields should succeed');
+    }
+
+
+    /*******************************
+     *** postUtilityAccountLog() ***
+     *******************************/
+
+    @IsTest
+    public static void testPostUtilityAccountLogNoFields() {
+        useMocks();
+        String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Utility_Account_Log__c.SObjectType) + '" }';
+        controller.postUtilityAccountLog(jsonRequest);
+
+        System.assertEquals(400, RestContext.response.statusCode, 'POST should throw an error when required fields are not provided');
+    }
+
+    @IsTest
+    public static void testPostUtilityAccountLogWithInvalidAccount() {
+        useMocks();
+
+        String jsonRequest = '{' +
+            '"propertyAccountId": "001000000000111",' + // ID of ...111 is set as an non-existent ID in the mock svc
+            '"nameOnAccount": "Bob",' +
+            '"serviceStreet": "Test service street",' +
+            '"serviceCity": "Test service city",' +
+            '"serviceState": "NY",' +
+            '"servicePostalCode": "14472"' +
+            '}';
+
+        controller.postUtilityAccountLog(jsonRequest);
+
+        System.assertEquals(404, RestContext.response.statusCode, 'POST should throw an error if the ID provided is not valid');
+    }
+
+    @IsTest
+    public static void testPostUtilityAccountLogWithMinimalFields() {
+        useMocks();
+
+        String jsonRequest = '{' +
+            '"propertyAccountId": "001000000000888",' +
+            '"nameOnAccount": "Bob",' +
+            '"serviceStreet": "Test service street",' +
+            '"serviceCity": "Test service city",' +
+            '"serviceState": "NY",' +
+            '"servicePostalCode": "14472"' +
+            '}';
+
+        controller.postUtilityAccountLog(jsonRequest);
+
+        System.assertEquals(201, RestContext.response.statusCode, 'A UAL POST with minimal fields should succeed');
     }
 
 
@@ -381,6 +531,8 @@ public with sharing class CSLeadsRESTControllerV2Test {
                 return null;
             } else if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000999') {
                 newLead.Application_Complete_Date__c = Datetime.newInstance(2017, 1, 1);
+            } else if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000888') {
+                newLead.Id = '00Q000000000888';
             }
             return newLead;
         }
@@ -406,10 +558,27 @@ public with sharing class CSLeadsRESTControllerV2Test {
         public MockAccountsSelector(){}
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
             List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
-            if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000111') {
-                return null;
+            switch on stubbedMethodName {
+                when 'selectOne' {
+                    Account newAccount = new Account();
+                    if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '001000000000111') {
+                        return null;
+                    } else if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '001000000000888') {
+                        newAccount.Id = '001000000000888';
+                        newAccount.Lead__c = Util.getFakeId(Schema.Lead.SObjectType);
+                    }
+                    return newAccount;
+
+                }
+                when 'selectPropertyAccountsByLeadIds' {
+                    for (Id leadId : (Set<Id>) listOfArgs.get(0)) {
+                        if (String.valueOf(leadId).substring(0,15) == '00Q000000000999') {
+                            return new List<Account>{new Account()};
+                        }
+                    }
+                }
             }
-            return new Account();
+            return null;
         }
     }
 
@@ -420,6 +589,9 @@ public with sharing class CSLeadsRESTControllerV2Test {
             switch on stubbedMethodName {
                 when 'updateUAL' {
                     return new Utility_Account_Log__c();
+                }
+                when 'insertUAL' {
+                    return new Utility_Account_Log__c(Id = Util.getFakeId(Schema.Utility_Account_Log__c.SObjectType));
                 }
                 when 'insertUALs' {
                     return new List<Utility_Account_Log__c>{new Utility_Account_Log__c(Id = Util.getFakeId(Schema.Utility_Account_Log__c.SObjectType))};
@@ -433,7 +605,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         public MockUALSelector(){}
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
             List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
-            if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000111') {
+            if (String.valueOf(listOfArgs.get(0)).substring(0,15) == 'a1b000000000111') {
                 return null;
             }
             return new Utility_Account_Log__c();

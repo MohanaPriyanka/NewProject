@@ -48,6 +48,12 @@ global without sharing class RESTRouterV2 {
                 when '/leads' {
                     controller.postLead(jsonRequest);
                 }
+                when '/property-accounts' {
+                    controller.postPropertyAccount(jsonRequest);
+                }
+                when '/utility-account-logs' {
+                    controller.postUtilityAccountLog(jsonRequest);
+                }
                 when else {
                     envelope.addError('Path not found');
                     RestContext.response.statusCode = 404;

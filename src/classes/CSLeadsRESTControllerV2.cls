@@ -22,22 +22,25 @@ global without sharing class CSLeadsRESTControllerV2 extends RESTController {
         Lead leadToUpdate = leadSelector.selectOne(requestLead.id);
         if (leadToUpdate == null) {
             response.statusCode = statusCode.notFound;
-        } else if (requestLead.applicationCompleteDate != null ) {
-            if (leadToUpdate.Application_Complete_Date__c == null) {
-                //pull credit, only once; on first time the app complete date is set
-                leadToUpdate.Soft_Pull_Credit_Report__c = true;
-            }
-            leadToUpdate.Application_Complete_Date__c = requestLead.applicationCompleteDate;
-
-            Lead lead = leadService.updateLead(leadToUpdate);
-
-            // TODO: should eventually respond with full data structure to UI (e.g. include property accts and UALs).  Maybe when unit-of-work is implemented?
-            RestLead responseLead = new RestLead(lead);
-            envelope.setData(responseLead);
-            response.statusCode = statusCode.ok;
         } else {
-            envelope.addError('Request did not include correct fields to update');
-            response.statusCode = statusCode.badRequest;
+            Map<String, Object> requestMap = (Map<String, Object>) JSON.deserializeUntyped(jsonRequest);
+            if (requestMap.size() <= 1) { // if == 1, then only has "id", which is not enough fields for a PATCH
+                envelope.addError('Request did not include correct fields to update');
+                response.statusCode = statusCode.badRequest;
+            } else {
+                if (leadToUpdate.Application_Complete_Date__c == null) {
+                    //pull credit, only once; on first time the app complete date is set
+                    leadToUpdate.Soft_Pull_Credit_Report__c = true;
+                }
+                requestLead.mergeFields(requestMap.keySet(), leadToUpdate);
+
+                Lead lead = leadService.updateLead(leadToUpdate);
+
+                // TODO: should eventually respond with full data structure to UI (e.g. include property accts and UALs).  Maybe when unit-of-work is implemented?
+                RestLead responseLead = new RestLead(lead);
+                envelope.setData(responseLead);
+                response.statusCode = statusCode.ok;
+            }
         }
         envelope.setJSONResponse(response);
     }
@@ -101,11 +104,10 @@ global without sharing class CSLeadsRESTControllerV2 extends RESTController {
             requestLead.validateCreateFields();
             // We can only handle one (and only one) property account, right now.
             // Remove this once the unit-of-work approach is implemented in in the blocks towards the end of this method
-            if (requestLead.propertyAccounts != null && requestLead.propertyAccounts.size() == 1) {
-                validRequest = true;
-            } else {
+            validRequest = true;
+            if (requestLead.propertyAccounts != null && requestLead.propertyAccounts.size() > 1) {
                 validRequest = false;
-                envelope.addError('Currently, only one propertyAccount per lead is supported in the API.');
+                envelope.addError('Currently, only <=1 propertyAccount per lead is supported in the API.');
                 response.statusCode = statusCode.badRequest;
             }
         } catch (Util.BWException e) {
@@ -120,27 +122,31 @@ global without sharing class CSLeadsRESTControllerV2 extends RESTController {
 
             RestLead responseLead = new RestLead(newLead);
 
-            responseLead.propertyAccounts = new List<RestLead.RestPropertyAccount>();
+            if (requestLead.propertyAccounts != null && !requestLead.propertyAccounts.isEmpty()) {
+                responseLead.propertyAccounts = new List<RestLead.RestPropertyAccount>();
 
-            // TODO: the following logic only handles (1) propertyAccount [e.g. 1:(1):many], until we incorporate
-            // unit-of-work (uow) approach.
-            // The commented code after this block is the "loop" logic that salesforce/pyao advises against using, but is a
-            // reference implementation (that we could verify against) for when we use the uow approach
-            // to support more than one propertyAccount.
-            Account newAccount = requestLead.propertyAccounts.get(0).asAccount(newLead);
-            newAccount = accountService.insertAccount(newAccount);
-            RestLead.RestPropertyAccount responsePropertyAccount = new RestLead.RestPropertyAccount(newAccount);
-            responseLead.propertyAccounts.add(responsePropertyAccount);
+                // TODO: the following logic only handles (1) propertyAccount [e.g. 1:(1):many], until we incorporate
+                // unit-of-work (uow) approach.
+                // The commented code after this block is the "loop" logic that salesforce/pyao advises against using, but is a
+                // reference implementation (that we could verify against) for when we use the uow approach
+                // to support more than one propertyAccount.
+                Account newAccount = requestLead.propertyAccounts.get(0).asAccount(newLead);
+                newAccount = accountService.insertAccount(newAccount);
+                RestLead.RestPropertyAccount responsePropertyAccount = new RestLead.RestPropertyAccount(newAccount);
+                responseLead.propertyAccounts.add(responsePropertyAccount);
 
-            List<Utility_Account_Log__c> ualsToInsert = new List<Utility_Account_Log__c>();
-            for (RestLead.RestUtilityAccountLog requestUtilityAccountLog : requestLead.propertyAccounts.get(0).utilityAccountLogs) {
-                ualsToInsert.add(requestUtilityAccountLog.asUAL(newAccount));
-            }
+                if (requestLead.propertyAccounts.get(0).utilityAccountLogs != null && !requestLead.propertyAccounts.get(0).utilityAccountLogs.isEmpty()) {
+                    List<Utility_Account_Log__c> ualsToInsert = new List<Utility_Account_Log__c>();
+                    for (RestLead.RestUtilityAccountLog requestUtilityAccountLog : requestLead.propertyAccounts.get(0).utilityAccountLogs) {
+                        ualsToInsert.add(requestUtilityAccountLog.asUAL(newAccount));
+                    }
 
-            List<Utility_Account_Log__c> newUALs = ualService.insertUALs(ualsToInsert);
-            responsePropertyAccount.utilityAccountLogs = new List<RestLead.RestUtilityAccountLog>();
-            for (Utility_Account_Log__c newUAL : newUALs) {
-                responsePropertyAccount.utilityAccountLogs.add(new RestLead.RestUtilityAccountLog(newUAL));
+                    List<Utility_Account_Log__c> newUALs = ualService.insertUALs(ualsToInsert);
+                    responsePropertyAccount.utilityAccountLogs = new List<RestLead.RestUtilityAccountLog>();
+                    for (Utility_Account_Log__c newUAL : newUALs) {
+                        responsePropertyAccount.utilityAccountLogs.add(new RestLead.RestUtilityAccountLog(newUAL));
+                    }
+                }
             }
 
             // DON'T USE THIS COMMENTED OUT CODE IN PRODUCTION!
@@ -169,5 +175,95 @@ global without sharing class CSLeadsRESTControllerV2 extends RESTController {
 
     }
 
+    public void postPropertyAccount(String jsonRequest) {
+        RestLead.RestPropertyAccount requestPropertyAccount = (RestLead.RestPropertyAccount) JSON.deserialize(jsonRequest, RestLead.RestPropertyAccount.class);
+        RestResponse response = RestContext.response;
+
+        Boolean validRequest = false;
+        try {
+            requestPropertyAccount.validateCreateFields();
+            validRequest = true;
+        } catch (Util.BWException e) {
+            envelope.addError(e.getMessage());
+            response.statusCode = statusCode.badRequest;
+            envelope.setJSONResponse(response);
+            return;
+        }
+
+        Lead associatedLead = leadSelector.selectOne(requestPropertyAccount.leadId);
+        if (associatedLead == null) {
+            response.statusCode = statusCode.notFound;
+            envelope.addError('Lead not found');
+            envelope.setJSONResponse(response);
+            return;
+        }
+
+        List<Account> existingPropertyAccounts = accountsSelector.selectPropertyAccountsByLeadIds(new Set<Id>{requestPropertyAccount.leadId});
+        if (existingPropertyAccounts != null && !existingPropertyAccounts.isEmpty()) {
+            response.statusCode = statusCode.badRequest;
+            envelope.addError('Cannot POST additional Property Accounts to this Lead, since currently only <=1 propertyAccount per lead is supported, and one already exists for this Lead.');
+            envelope.setJSONResponse(response);
+            return;
+        }
+
+        Account newPropertyAccount = requestPropertyAccount.asAccount(associatedLead);
+
+        newPropertyAccount = accountService.insertAccount(newPropertyAccount);
+
+        RestLead.RestPropertyAccount responsePropertyAccount = new RestLead.RestPropertyAccount(newPropertyAccount);
+
+        if (requestPropertyAccount.utilityAccountLogs != null && !requestPropertyAccount.utilityAccountLogs.isEmpty()) {
+            List<Utility_Account_Log__c> ualsToInsert = new List<Utility_Account_Log__c>();
+            for (RestLead.RestUtilityAccountLog requestUtilityAccountLog : requestPropertyAccount.utilityAccountLogs) {
+                ualsToInsert.add(requestUtilityAccountLog.asUAL(newPropertyAccount));
+            }
+
+            List<Utility_Account_Log__c> newUALs = ualService.insertUALs(ualsToInsert);
+            responsePropertyAccount.utilityAccountLogs = new List<RestLead.RestUtilityAccountLog>();
+            for (Utility_Account_Log__c newUAL : newUALs) {
+                responsePropertyAccount.utilityAccountLogs.add(new RestLead.RestUtilityAccountLog(newUAL));
+            }
+        }
+
+        envelope.setData(responsePropertyAccount);
+        response.statusCode = statusCode.created;
+        envelope.setJSONResponse(response);
+
+    }
+
+    public void postUtilityAccountLog(String jsonRequest) {
+        RestLead.RestUtilityAccountLog restUtilityAccountLog = (RestLead.RestUtilityAccountLog) JSON.deserialize(jsonRequest, RestLead.RestUtilityAccountLog.class);
+        RestResponse response = RestContext.response;
+
+        Boolean validRequest = false;
+        try {
+            restUtilityAccountLog.validateCreateFields();
+            validRequest = true;
+        } catch (Util.BWException e) {
+            envelope.addError(e.getMessage());
+            response.statusCode = statusCode.badRequest;
+            envelope.setJSONResponse(response);
+            return;
+        }
+
+        Account associatedAccount = accountsSelector.selectOne(restUtilityAccountLog.propertyAccountId);
+        if (associatedAccount == null) {
+            response.statusCode = statusCode.notFound;
+            envelope.addError('PropertyAccount not found');
+            envelope.setJSONResponse(response);
+            return;
+        }
+
+        Utility_Account_Log__c newUtilityAccountLog = restUtilityAccountLog.asUAL(associatedAccount);
+
+        newUtilityAccountLog = ualService.insertUAL(newUtilityAccountLog);
+
+        RestLead.RestUtilityAccountLog responseUtilityAccountLog = new RestLead.RestUtilityAccountLog(newUtilityAccountLog);
+
+        envelope.setData(responseUtilityAccountLog);
+        response.statusCode = statusCode.created;
+        envelope.setJSONResponse(response);
+
+    }
 
 }

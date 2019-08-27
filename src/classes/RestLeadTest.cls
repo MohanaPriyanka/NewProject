@@ -93,17 +93,6 @@ public with sharing class RestLeadTest {
     }
 
     @IsTest
-    public static void testValidateCreateFieldsNoPropertyAccounts() {
-        try {
-            invalidResidentialLead.propertyAccounts = null;
-            invalidResidentialLead.validateCreateFields();
-            System.assert(false, 'Validation should not pass');
-        } catch (Exception e) {
-            System.assert(e.getMessage().containsIgnoreCase('propertyAccounts'), 'Should inform consumer that the propertyAccounts array is required');
-        }
-    }
-
-    @IsTest
     public static void testValidateCreateFieldsMissingBillingStreet() {
         try {
             invalidResidentialLead.propertyAccounts[0].billingStreet = null;
@@ -111,29 +100,6 @@ public with sharing class RestLeadTest {
             System.assert(false, 'Validation should not pass');
         } catch (Exception e) {
             System.assert(e.getMessage().containsIgnoreCase('billingStreet'), 'Should inform consumer that billingStreet is invalid');
-        }
-    }
-
-    @IsTest
-    public static void testValidateCreateFieldsNoUALs() {
-        try {
-            invalidResidentialLead.propertyAccounts[0].utilityAccountLogs = null;
-            invalidResidentialLead.validateCreateFields();
-            System.assert(false, 'Validation should not pass');
-        } catch (Exception e) {
-            System.assert(e.getMessage().containsIgnoreCase('utilityAccountLogs'), 'Should inform consumer that the utilityAccountLogs array is required');
-        }
-    }
-
-
-    @IsTest
-    public static void testValidateCreateFieldsMissingServicePostalCode() {
-        try {
-            invalidResidentialLead.propertyAccounts[0].utilityAccountLogs[0].servicePostalCode = null;
-            invalidResidentialLead.validateCreateFields();
-            System.assert(false, 'Validation should not pass');
-        } catch (Exception e) {
-            System.assert(e.getMessage().containsIgnoreCase('servicePostalCode'), 'Should inform consumer that servicePostalCode is invalid');
         }
     }
 
