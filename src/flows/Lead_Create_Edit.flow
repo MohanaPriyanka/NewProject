@@ -409,6 +409,37 @@
                     <stringValue>00G0a000003CtSCEA0</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.LastName</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>TeStCaSe</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>myRule_16_pmetdec</targetReference>
             </connector>
@@ -770,6 +801,37 @@
                     <stringValue>00G0a000003CtSCEA0</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_old.LastName</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>TeStCaSe</stringValue>
+                </rightValue>
+            </conditions>
             <label>Previously Met - Prev</label>
         </rules>
     </decisions>
@@ -780,11 +842,11 @@
                 <stringValue>[Lead].FirstName &amp; &quot; &quot; &amp;  [Lead].LastName </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_14_myRule_12_A1_5222220846</name>
+        <name>formula_14_myRule_12_A1_3137850365</name>
         <dataType>String</dataType>
         <expression>{!myVariable_current.FirstName} &amp; &quot; &quot; &amp;  {!myVariable_current.LastName}</expression>
     </formulas>
-    <interviewLabel>Lead_Create_Edit-2_InterviewLabel</interviewLabel>
+    <interviewLabel>Lead_Create_Edit-4_InterviewLabel</interviewLabel>
     <label>Lead Create/Edit</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -888,7 +950,7 @@
             </processMetadataValues>
             <field>Name</field>
             <value>
-                <elementReference>formula_14_myRule_12_A1_5222220846</elementReference>
+                <elementReference>formula_14_myRule_12_A1_3137850365</elementReference>
             </value>
         </inputAssignments>
         <object>MCEC_Report_Data__c</object>
