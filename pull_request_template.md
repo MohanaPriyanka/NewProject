@@ -17,7 +17,7 @@
 <!-- Describe the steps taken when testing this PR manually -->
 - [ ] Screenshots or screen recordings of test results 
 <!-- Include test documentation to make it easier to review the PR -->
-- [ ] If APEX, run Static Code Analysis 
+- [ ] If APEX, run Static Code Analysis and add comments below
 <!-- Include before and after SCA scores -->
 
 
@@ -27,6 +27,13 @@ Provide additional information relevant to reviewers ex.:
 - Justification for no tests
 - Alternate approaches considered
 - Changes that Break existing features
+-->
+
+### Static Code Analysis Comments
+<!--
+Provide additional information relevant to Static Code Analysis:
+- Justification for supressing warnings
+- Known issues?
 -->
 
 <!--

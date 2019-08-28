@@ -4,10 +4,10 @@
  * Test: 
  *************************************************************************************/
 @IsTest
+@SuppressWarnings('PMD')
 public with sharing class ZuoraAPIMock implements HttpCalloutMock {
     public static String genericId = '2c92c0f96a6e3c3f016a6fc817180743';
 
-    @SuppressWarnings('PMD')
     public HttpResponse respond(HttpRequest req) {
         // Only send a mock response for a specific endpoint and method.
         String endpoint = req.getEndpoint();
@@ -49,7 +49,7 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
         } else if (endpoint.contains('v1/orders')) {
             return getOrderResponse(req.getBody());
         } else if (endpoint.contains('v1/object/invoice')) {
-            return getInvoiceResponse(req.getBody());
+            return getInvoiceResponse(endpoint);
         } else if (endpoint.contains('/v1/creditmemos') && method.contains('POST')) {
             return postCreditMemo();
         } else if (endpoint.contains('/v1/debitmemos') && method.contains('POST')) {
@@ -63,13 +63,19 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
         } else if (endpoint.contains('/v1/creditmemos?status=Posted') || endpoint.contains('/v1/creditmemos/')) {
             return getCreditMemos(endpoint);
         } else if (endpoint.contains('/v1/debitmemos') && method.contains('GET')) {
-            return getDebitMemos();
-        } else if (endpoint.contains('/v1/payments') && req.getBody().contains('Electronic')) {
+            return getDebitMemos(endpoint);
+        } else if (endpoint.contains('/v1/payments') && req.getBody().contains('Electronic') && method == 'POST') {
             return createElectronicPayment();
-        }  else if (endpoint.contains('/v1/payments')) {
+        }  else if (endpoint.contains('/v1/payments') && method == 'POST') {
             return createPayment(endpoint);
+        }  else if (endpoint.contains('/v1/payments') && method == 'GET') {
+            return getPayment(endpoint);
+        }  else if (endpoint.contains('/v1/payments') && method == 'PUT') {
+            return getPayment(endpoint);
         } else if (endpoint.contains('/v1/paymentgateways')) {
             return getGateways();
+        } else if (endpoint.contains('/v1/object/rate-plan-charge/')) {
+            return getRatePlanCharge(endpoint);
         } else {
             return null;
         }
@@ -349,7 +355,7 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
             }
             res.setBody(response);
         } else if (endpoint.contains('2c92c0f96c8afb5d016c8c5b4d4c7b6e')) {
-            String response = '{"success":true,"orders":[{"subscriptions":[{"subscriptionNumber":"A-S00014355","orderActions":[{"type" :"AddProduct","triggerDates":[{"triggerDate":"2019-01-07","name":"ContractEffective"},{"triggerDate":"2019-01-07","name":"ServiceActivation"},{"triggerDate":"2019-01-07","name":"CustomerAcceptance"}],"sequence":0,"createSubscription":null,"addProduct":{"productRatePlanId":"2c92c0f869c8e5c50169caec86e07095","newRatePlanId":"2c92c0fb6c8afb49016c8c5ba8d521ff","chargeOverrides":[{"productRatePlanChargeId":"2c92c0f969c8f15e0169caed586a1909","customFields":{"Project__c":"SSS-000023","ClientOwner__c":"BW-0024201"},"chargeNumber":"C-00022737"}]}}],"newVersion":3,"baseVersion":2}],"processingOptions":null,"orderNumber":"O-00193847","orderDate":"2019-01-07","existingAccountNumber":"BW-0023842"},{"subscriptions":[{"subscriptionNumber":"A-S00014355","orderActions":[{"type" :"AddProduct","triggerDates":[{"triggerDate":"2019-01-07","name":"ContractEffective"},{"triggerDate":"2019-01-07","name":"ServiceActivation"},{"triggerDate":"2019-01-07","name":"CustomerAcceptance"}],"sequence":0,"createSubscription":null,"addProduct":{"productRatePlanId":"2c92c0f869c8e5c50169caec86e07095","newRatePlanId":"2c92c0fa6c8aee2e016c8c5ba717392d","chargeOverrides":[{"productRatePlanChargeId":"2c92c0f969c8f15e0169caed586a1909","customFields":{"Project__c":"SSS-000024","ClientOwner__c":"BW-0023170"},"chargeNumber":"C-00022736"}]}}],"newVersion":2,"baseVersion":1}],"processingOptions":null,"orderNumber":"O-00193846","orderDate":"2019-01-07","existingAccountNumber":"BW-0023842"},{"subscriptions":[{"subscriptionNumber":"A-S00014355","orderActions":[{"type" :"CreateSubscription","triggerDates":[{"triggerDate":"2019-01-07","name":"ContractEffective"},{"triggerDate":"2019-01-07","name":"ServiceActivation"},{"triggerDate":"2019-01-07","name":"CustomerAcceptance"}],"sequence":0,"createSubscription":{"terms":{"renewalTerms":[{"periodType":null,"period":null}],"renewalSetting":null,"initialTerm":{"termType":"EVERGREEN","startDate":null,"periodType":null,"period":null},"autoRenew":null},"subscriptionNumber":null,"subscribeToRatePlans":[{"productRatePlanId":"2c92c0f869c8e5c50169caec86e07095","chargeOverrides":[{"productRatePlanChargeId":"2c92c0f969c8f15e0169caed586a1909","customFields":{"Project__c":"SSS-000023","ClientOwner__c":"BW-0023170"},"chargeNumber":"C-00022735"}]}]},"addProduct":null}],"newVersion":1,"baseVersion":null}],"processingOptions":null,"orderNumber":"O-00193845","orderDate":"2019-01-07","existingAccountNumber":"BW-0023842"}],"nextPage":null}';
+            String response = '{"success":true,"orders":[{"subscriptions":[{"subscriptionNumber":"A-S00014355","orderActions":[{"type" : "AddProduct","triggerDates":[{"triggerDate":"2019-01-07","name":"ContractEffective"},{"triggerDate":"2019-01-07","name":"ServiceActivation"},{"triggerDate":"2019-01-07","name":"CustomerAcceptance"}],"sequence":0,"createSubscription":null,"addProduct":{"productRatePlanId":"2c92c0f869c8e5c50169caec86e07095","newRatePlanId":"2c92c0fb6c8afb49016c8c5ba8d521ff","chargeOverrides":[{"productRatePlanChargeId":"2c92c0f969c8f15e0169caed586a1909","customFields":{"Project__c":"SSS-000023","ClientOwner__c":"BW-0023170"},"chargeNumber":"C-00022737"}]}}],"newVersion":3,"baseVersion":2}],"processingOptions":null,"orderNumber":"O-00193847","orderDate":"2019-01-07","existingAccountNumber":"BW-0023842"},{"subscriptions":[{"subscriptionNumber":"A-S00014355","orderActions":[{"type" : "AddProduct","triggerDates":[{"triggerDate":"2019-01-07","name":"ContractEffective"},{"triggerDate":"2019-01-07","name":"ServiceActivation"},{"triggerDate":"2019-01-07","name":"CustomerAcceptance"}],"sequence":0,"createSubscription":null,"addProduct":{"productRatePlanId":"2c92c0f869c8e5c50169caec86e07095","newRatePlanId":"2c92c0fb6c8afb49016c8c5ba8d521ff","chargeOverrides":[{"productRatePlanChargeId":"2c92c0f969c8f15e0169caed586a1909","customFields":{"Project__c":"SSS-000023","ClientOwner__c":"BW-0024201"},"chargeNumber":"C-00022737"}]}}],"newVersion":3,"baseVersion":2}],"processingOptions":null,"orderNumber":"O-00193847","orderDate":"2019-01-07","existingAccountNumber":"BW-0023842"},{"subscriptions":[{"subscriptionNumber":"A-S00014355","orderActions":[{"type" : "AddProduct","triggerDates":[{"triggerDate":"2019-01-07","name":"ContractEffective"},{"triggerDate":"2019-01-07","name":"ServiceActivation"},{"triggerDate":"2019-01-07","name":"CustomerAcceptance"}],"sequence":0,"createSubscription":null,"addProduct":{"productRatePlanId":"2c92c0f869c8e5c50169caec86e07095","newRatePlanId":"2c92c0fb6c8afb49016c8c5ba8d521ff","chargeOverrides":[{"productRatePlanChargeId":"2c92c0f969c8f15e0169caed586a1909","customFields":{"Project__c":"SSS-000024","ClientOwner__c":"BW-0023170"},"chargeNumber":"C-00022737"}]}}],"newVersion":3,"baseVersion":2}],"processingOptions":null,"orderNumber":"O-00193847","orderDate":"2019-01-07","existingAccountNumber":"BW-0023842"},{"subscriptions":[{"subscriptionNumber":"A-S00014355","orderActions":[{"type" : "AddProduct","triggerDates":[{"triggerDate":"2019-01-07","name":"ContractEffective"},{"triggerDate":"2019-01-07","name":"ServiceActivation"},{"triggerDate":"2019-01-07","name":"CustomerAcceptance"}],"sequence":0,"createSubscription":null,"addProduct":{"productRatePlanId":"2c92c0f869c8e5c50169caec86e07095","newRatePlanId":"2c92c0fa6c8aee2e016c8c5ba717392d","chargeOverrides":[{"productRatePlanChargeId":"2c92c0f969c8f15e0169caed586a1909","customFields":{"Project__c":"SSS-000098","ClientOwner__c":"BW-00000385"},"chargeNumber":"C-00022736"}]}}],"newVersion":2,"baseVersion":1}],"processingOptions":null,"orderNumber":"O-00193846","orderDate":"2019-01-07","existingAccountNumber":"BW-0023842"},{"subscriptions":[{"subscriptionNumber":"A-S00014355","orderActions":[{"type" : "CreateSubscription","triggerDates":[{"triggerDate":"2019-01-07","name":"ContractEffective"},{"triggerDate":"2019-01-07","name":"ServiceActivation"},{"triggerDate":"2019-01-07","name":"CustomerAcceptance"}],"sequence":0,"createSubscription":{"terms":{"renewalTerms":[{"periodType":null,"period":null}],"renewalSetting":null,"initialTerm":{"termType":"EVERGREEN","startDate":null,"periodType":null,"period":null},"autoRenew":null},"subscriptionNumber":null,"subscribeToRatePlans":[{"productRatePlanId":"2c92c0f869c8e5c50169caec86e07095","chargeOverrides":[{"productRatePlanChargeId":"2c92c0f969c8f15e0169caed586a1909","customFields":{"Project__c":"SSS-000099","ClientOwner__c":"BW-00000385"},"chargeNumber":"C-00022735"}]}]},"addProduct":null}],"newVersion":1,"baseVersion":null}],"processingOptions":null,"orderNumber":"O-00193845","orderDate":"2019-01-07","existingAccountNumber":"BW-0023842"}],"nextPage":null}';
             res.setBody(response);
         } else {
             ZuoraAPI.OrderBySubscriptionOwner obso = new ZuoraAPI.OrderBySubscriptionOwner();
@@ -360,16 +366,56 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
         return res;
     }
 
-    public static HttpResponse getInvoiceResponse(String body) {
+    public static HttpResponse getInvoiceResponse(String endpoint) {
         HttpResponse res = getJSON();
-        ZuoraAPI.Invoice result = new ZuoraAPI.Invoice();
-        result.id = '12345';
-        result.accountId = 'BW-00000076';
-        result.amount = 123.45;
-        result.balance = 23.45;
-        result.Body = 'SGVsbG8gV29ybGQ=';
-        result.InvoiceNumber = 'INV-12345';
-        res.setBody(JSON.serialize(result));
+        if (endpoint.contains('invoice-item') && endpoint.contains('2c92c0856cbe2e20016cc133cbd76420')) {
+            res.setBody('{' +
+                '"ServiceEndDate":"2019-05-09",' +
+                '"Id":"2c92c0856cbe2e20016cc133cbd76420",' +
+                '"ChargeDate":"2019-08-23T21:18:43.000-04:00",' +
+                '"AccountingCode":"Usage Revenue",' +
+                '"UnitPrice":1,' +
+                '"SubscriptionId":"2c92c0fb6cb90e40016cc12be2293d4e",' +
+                '"ProcessingType":0,' +
+                '"UOM":"Dollars",' +
+                '"Quantity":363.88,' +
+                '"InvoiceId":"2c92c0866cbe2e04016cc13441ff3f23",' +
+                '"ChargeAmount":134.70,' +
+                '"ServiceStartDate":"2019-04-10",' +
+                '"ChargeName":"Utility Credit",' +
+                '"SKU":"SKU-00000002",' +
+                '"RatePlanChargeId":"2c92c0f96ae3b195016ae5e3665e0c08"' +
+                '}'
+            );
+        } else if (endpoint.contains('invoice-item') && endpoint.contains('2c92c0856cbe2e20016cc133cbd86421')) {
+            res.setBody('{' +
+                '"ServiceEndDate":"2019-05-09",' +
+                '"Id":"2c92c0856cbe2e20016cc133cbd86421",' +
+                '"ChargeDate":"2019-08-23T21:18:43.000-04:00",' +
+                '"AccountingCode":"Usage Revenue",' +
+                '"UnitPrice":1,' +
+                '"SubscriptionId":"2c92c0fb6cb90e40016cc12be2293d4e",' +
+                '"ProcessingType":0,' +
+                '"UOM":"Dollars",' +
+                '"Quantity":363.88,' +
+                '"InvoiceId":"2c92c0866cbe2e04016cc13441ff3f23",' +
+                '"ChargeAmount":120.21,' +
+                '"ServiceStartDate":"2019-04-10",' +
+                '"ChargeName":"Utility Credit",' +
+                '"SKU":"SKU-00000002",' +
+                '"RatePlanChargeId":"2c92c0f96ae3b195016ae5e3668e0c15"' +
+                '}'
+            );
+        } else {
+            ZuoraAPI.Invoice result = new ZuoraAPI.Invoice();
+            result.id = '12345';
+            result.accountId = 'BW-00000076';
+            result.amount = 123.45;
+            result.balance = 23.45;
+            result.Body = 'SGVsbG8gV29ybGQ=';
+            result.InvoiceNumber = 'INV-12345';
+            res.setBody(JSON.serialize(result));
+        }
         return res;
     }
 
@@ -562,23 +608,27 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
     private static HttpResponse getRatePlanCharge(String reqBody){
         HttpResponse res = getJSON();
         if (reqBody.contains('2c92c0f96ae3b195016ae5e3665e0c08')) {
-            res.setBody('{"records":[' +
-                '{"ClientOwner__c":"BW-00000385",' +
+            String ratePlan = '{"ClientOwner__c":"BW-00000385",' +
                 '"Id":"2c92c0f96ae3b195016ae5e3665e0c08",' +
                 '"ChargeNumber":"C-00003171",' +
                 '"Name":"Utility Credit",' +
-                '"Project__c":"SSS-000099"}' +
-                '],' +
-                '"size":1,"done":true} ');
+                '"Project__c":"SSS-000099"}';
+            if (reqBody.contains('query')) {
+                res.setBody('{"records":[' + ratePlan + '], "size":1,"done":true}');
+            } else {
+                res.setBody(ratePlan);
+            }
         } else if (reqBody.contains('2c92c0f96ae3b195016ae5e3668e0c15')){
-            res.setBody('{"records":[' +
-                '{"ClientOwner__c":"BW-00000385",' +
-                '"Id":"2c92c0f96ae3b195016ae5e3665e0c08",' +
+            String ratePlan = '{"ClientOwner__c":"BW-00000385",' +
+                '"Id":"2c92c0f96ae3b195016ae5e3668e0c15",' +
                 '"ChargeNumber":"C-00003171",' +
                 '"Name":"Utility Credit",' +
-                '"Project__c":"SSS-000098"}' +
-                '],' +
-                '"size":1,"done":true}');
+                '"Project__c":"SSS-000098"}';
+            if (reqBody.contains('query')) {
+                res.setBody('{"records":[' + ratePlan + '], "size":1,"done":true}');
+            } else {
+                res.setBody(ratePlan);
+            }
         }
         return res;
     }
@@ -711,63 +761,86 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
         return res;
     }
 
-    private static HttpResponse getDebitMemos() {
+    private static HttpResponse getDebitMemos(String endpoint) {
         HttpResponse res = getJSON();
-        res.setBody('{ "debitmemos" : [ ' +
-            '{ "id" : "2c92c0f96b695c76016b6c860fc277f4", ' +
-            '"number" : "DM00000019", ' +
-            '"accountId" : "2c92c0f86ae3a4ad016ae5e247886605", ' +
-            '"debitMemoDate" : "2019-06-18", ' +
-            '"currency" : "USD", ' +
-            '"targetDate" : null, ' +
-            '"dueDate" : "2019-07-18", ' +
-            '"postedOn" : null, ' +
-            '"postedById" : null, ' +
-            '"status" : "Draft", ' +
-            '"amount" : 30.000000000, ' +
-            '"taxAmount" : 0E-9, ' +
-            '"totalTaxExemptAmount" : 0E-9, ' +
-            '"balance" : 30.000000000, ' +
-            '"beAppliedAmount" : 0E-9, ' +
-            '"autoPay" : true, "comment" : "", ' +
-            '"referredInvoiceId" : "2c92c0856ae3a471016ae5ebd8fa5444", ' +
-            '"transferredToAccounting" : "No", ' +
-            '"reasonCode" : "Correcting invoice error",' +
-            ' "createdDate" : "2019-06-18 17:37:33", ' +
-            '"createdById" : "2c92c0f968a20f350168ca0efb2309e7", ' +
-            '"updatedDate" : "2019-06-18 17:37:33", ' +
-            '"updatedById" : "2c92c0f968a20f350168ca0efb2309e7", ' +
-            '"cancelledOn" : null, "cancelledById" : null, ' +
-            '"latestPDFFileId" : "2c92c08d6b695b82016b6c8611af519b", ' +
-            '"Project__c" : "SSS-000098", "ClientOwner__c" : "BW-00000385", ' +
-            '"RetryStatus__c" : null }, ' +
-            '{ "id" : "2c92c0f86b1bc424016b1e95860909ce", ' +
-            '"number" : "DM00000018", ' +
-            '"accountId" : "2c92c0f96b1bd14b016b1e8ff191385b", ' +
-            '"debitMemoDate" : "2019-06-03", ' +
-            '"currency" : "USD", ' +
-            '"targetDate" : null, ' +
-            '"dueDate" : "2019-07-03", ' +
-            '"postedOn" : "2019-06-03 14:24:12", ' +
-            '"postedById" : "2c92c0f868e558450168f41d281b26c0", ' +
-            '"status" : "Posted", ' +
-            '"amount" : 50.000000000, ' +
-            '"taxAmount" : 0E-9, ' +
-            '"totalTaxExemptAmount" : 0E-9, ' +
-            '"balance" : 50.000000000, ' +
-            '"beAppliedAmount" : 0E-9, ' +
-            '"autoPay" : true, "comment" : "", ' +
-            '"referredInvoiceId" : "2c92c0956b1bcd0e016b1e93a1c153be", ' +
-            '"transferredToAccounting" : "No", ' +
-            '"reasonCode" : "Correcting invoice error",' +
-            ' "createdDate" : "2019-06-03 14:24:04", ' +
-            '"createdById" : "2c92c0f868e558450168f41d281b26c0", ' +
-            '"updatedDate" : "2019-06-03 14:24:12", ' +
-            '"updatedById" : "2c92c0f868e558450168f41d281b26c0", ' +
-            '"cancelledOn" : null, "cancelledById" : null, ' +
-            '"latestPDFFileId" : "2c92c08a6b1bc362016b1e95ad1837d1", ' +
-            '"Project__c" : "SSS-000098", "ClientOwner__c" : "BW-00000385", ' +
-            '"RetryStatus__c" : null }] }');
+        if (endpoint.contains('2c92c0fa6cbe34cb016cc13290452db4')) {
+            res.setBody('{' +
+                '"id":"2c92c0fa6cbe34cb016cc13290452db4",' +
+                '"number":"DM00014524",' +
+                '"accountId":"2c92c0f86cbe3367016cc12b3f614b8f",' +
+                '"debitMemoDate":"2019-06-07",' +
+                '"currency":"USD",' +
+                '"dueDate":"2019-07-07",' +
+                '"postedOn":"2019-08-23 21:16:52",' +
+                '"postedById":"2c92c0f96a01b91f016a050fad50160a",' +
+                '"status":"Posted",' +
+                '"amount":13.670000000,' +
+                '"beAppliedAmount":13.670000000,' +
+                '"autoPay":true,' +
+                '"transferredToAccounting":"No",' +
+                '"reasonCode":"Late Fee",' +
+                '"Project__c":"SSS-000024",' +
+                '"ClientOwner__c":"BW-0023170",' +
+                '"CRM_ID__c":"a2GS0000001gmUAMAY",' +
+                '"success":true' +
+                '}');
+        } else {
+            res.setBody('{ "debitmemos" : [ ' +
+                '{ "id" : "2c92c0f96b695c76016b6c860fc277f4", ' +
+                '"number" : "DM00000019", ' +
+                '"accountId" : "2c92c0f86ae3a4ad016ae5e247886605", ' +
+                '"debitMemoDate" : "2019-06-18", ' +
+                '"currency" : "USD", ' +
+                '"targetDate" : null, ' +
+                '"dueDate" : "2019-07-18", ' +
+                '"postedOn" : null, ' +
+                '"postedById" : null, ' +
+                '"status" : "Draft", ' +
+                '"amount" : 30.000000000, ' +
+                '"taxAmount" : 0E-9, ' +
+                '"totalTaxExemptAmount" : 0E-9, ' +
+                '"balance" : 30.000000000, ' +
+                '"beAppliedAmount" : 0E-9, ' +
+                '"autoPay" : true, "comment" : "", ' +
+                '"referredInvoiceId" : "2c92c0856ae3a471016ae5ebd8fa5444", ' +
+                '"transferredToAccounting" : "No", ' +
+                '"reasonCode" : "Correcting invoice error",' +
+                ' "createdDate" : "2019-06-18 17:37:33", ' +
+                '"createdById" : "2c92c0f968a20f350168ca0efb2309e7", ' +
+                '"updatedDate" : "2019-06-18 17:37:33", ' +
+                '"updatedById" : "2c92c0f968a20f350168ca0efb2309e7", ' +
+                '"cancelledOn" : null, "cancelledById" : null, ' +
+                '"latestPDFFileId" : "2c92c08d6b695b82016b6c8611af519b", ' +
+                '"Project__c" : "SSS-000098", "ClientOwner__c" : "BW-00000385", ' +
+                '"RetryStatus__c" : null }, ' +
+                '{ "id" : "2c92c0f86b1bc424016b1e95860909ce", ' +
+                '"number" : "DM00000018", ' +
+                '"accountId" : "2c92c0f96b1bd14b016b1e8ff191385b", ' +
+                '"debitMemoDate" : "2019-06-03", ' +
+                '"currency" : "USD", ' +
+                '"targetDate" : null, ' +
+                '"dueDate" : "2019-07-03", ' +
+                '"postedOn" : "2019-06-03 14:24:12", ' +
+                '"postedById" : "2c92c0f868e558450168f41d281b26c0", ' +
+                '"status" : "Posted", ' +
+                '"amount" : 50.000000000, ' +
+                '"taxAmount" : 0E-9, ' +
+                '"totalTaxExemptAmount" : 0E-9, ' +
+                '"balance" : 50.000000000, ' +
+                '"beAppliedAmount" : 0E-9, ' +
+                '"autoPay" : true, "comment" : "", ' +
+                '"referredInvoiceId" : "2c92c0956b1bcd0e016b1e93a1c153be", ' +
+                '"transferredToAccounting" : "No", ' +
+                '"reasonCode" : "Correcting invoice error",' +
+                ' "createdDate" : "2019-06-03 14:24:04", ' +
+                '"createdById" : "2c92c0f868e558450168f41d281b26c0", ' +
+                '"updatedDate" : "2019-06-03 14:24:12", ' +
+                '"updatedById" : "2c92c0f868e558450168f41d281b26c0", ' +
+                '"cancelledOn" : null, "cancelledById" : null, ' +
+                '"latestPDFFileId" : "2c92c08a6b1bc362016b1e95ad1837d1", ' +
+                '"Project__c" : "SSS-000098", "ClientOwner__c" : "BW-00000385", ' +
+                '"RetryStatus__c" : null }] }');
+        }
         return res;
     }
 
@@ -850,78 +923,6 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
                 '"unappliedPaymentAccountingCodeType" : "OtherLiabilities", ' +
                 '"transferredToAccounting" : "No" }, ' +
                 '"success" : true }');
-        return res;
-    }
-
-    private static HttpResponse createPayment(String endpoint) {
-        HttpResponse res = getJSON();
-        res.setBody('{' +
-            '"id" : "2c92c0fa6c2d46c2016c4593e3f47daf",' +
-            '"number" : "P-00000255",' +
-            '"status" : "Processed",' +
-            '"type" : "External",' +
-            '"accountId" : "2c92c0f96c2d540e016c443c4263679d",' +
-            '"amount" : 5.020000000,' +
-            '"appliedAmount" : 0E-9,' +
-            '"unappliedAmount" : 5.020000000,' +
-            '"refundAmount" : 0E-9,' +
-            '"creditBalanceAmount" : 0E-9,' +
-            '"currency" : "USD",' +
-            '"effectiveDate" : "2019-07-02",' +
-            '"comment" : null,' +
-            '"paymentMethodId" : "2c92c0f868a2023a0168a79e7f4f3f70",' +
-            '"paymentMethodSnapshotId" : null,' +
-            '"authTransactionId" : null,' +
-            '"bankIdentificationNumber" : null,' +
-            '"gatewayId" : null,' +
-            '"gatewayOrderId" : null,' +
-            '"gatewayResponse" : null,' +
-            '"gatewayResponseCode" : null,' +
-            '"gatewayState" : "NotSubmitted",' +
-            '"markedForSubmissionOn" : null,' +
-            '"referenceId" : null,' +
-            '"secondPaymentReferenceId" : null,' +
-            '"softDescriptor" : null,' +
-            '"softDescriptorPhone" : null,' +
-            '"submittedOn" : null,' +
-            '"settledOn" : null,' +
-            '"cancelledOn" : null,' +
-            '"createdDate" : "2019-07-30 21:10:15",' +
-            '"createdById" : "2c92c0f96a01b91f016a050fad50160a",' +
-            '"updatedDate" : "2019-07-30 21:10:15",' +
-            '"updatedById" : "2c92c0f96a01b91f016a050fad50160a",' +
-            '"TransactionId__c" : null,' +
-            '"ClientOwner__c" : null,' +
-            '"financeInformation" : {' +
-            '"bankAccountAccountingCode" : "11504 - Check",' +
-            '"bankAccountAccountingCodeType" : "Cash",' +
-            '"unappliedPaymentAccountingCode" : "20006 - Trust Payable",' +
-            '"unappliedPaymentAccountingCodeType" : "OtherLiabilities",' +
-            '"transferredToAccounting" : "No"' +
-            '},' +
-            '"success" : true}');
-        return res;
-    }
-
-    private static HttpResponse getGateways() {
-        HttpResponse res = getJSON();
-        res.setBody('{ "paymentgateways" : [ { ' +
-            '"id" : "2c92c0f9699ec9fe0169a68ab88b6ae3", ' +
-            '"name" : "Default Gateway Name", ' +
-            '"type" : "Authorize", ' +
-            '"isDefault" : true, ' +
-            '"isActive" : true }, { ' +
-            '"id" : "2c92c0f8699ebeac0169a6891cd862d1",' +
-            ' "name" : "Bluewave Testing Auth.Net", ' +
-            '"type" : "Authorize", ' +
-            '"isDefault" : false, ' +
-            '"isActive" : true }, { ' +
-            '"id" : "2c92c0f9697a318001698330cdee1e81", ' +
-            '"name" : "Not Default Gateway", ' +
-            '"type" : "Sample", ' +
-            '"isDefault" : false, ' +
-            '"isActive" : true } ], ' +
-            '"success" : true }');
         return res;
     }
 
@@ -1103,6 +1104,123 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
                     '{"Column":"updateddate","Type":"timestamp with time zone","Extra":"","Comment":"UpdatedDate"}' +
                     '{"Column":"vatid","Type":"varchar","Extra":"","Comment":"VATId"}'
             );
+        }
+        return res;
+    }
+
+    private static HttpResponse createPayment(String endpoint) {
+        HttpResponse res = getJSON();
+        res.setBody('{' +
+            '"id" : "2c92c0fa6c2d46c2016c4593e3f47daf",' +
+            '"number" : "P-00000255",' +
+            '"status" : "Processed",' +
+            '"type" : "External",' +
+            '"accountId" : "2c92c0f96c2d540e016c443c4263679d",' +
+            '"amount" : 5.020000000,' +
+            '"appliedAmount" : 0E-9,' +
+            '"unappliedAmount" : 5.020000000,' +
+            '"refundAmount" : 0E-9,' +
+            '"creditBalanceAmount" : 0E-9,' +
+            '"currency" : "USD",' +
+            '"effectiveDate" : "2019-07-02",' +
+            '"comment" : null,' +
+            '"paymentMethodId" : "2c92c0f868a2023a0168a79e7f4f3f70",' +
+            '"paymentMethodSnapshotId" : null,' +
+            '"authTransactionId" : null,' +
+            '"bankIdentificationNumber" : null,' +
+            '"gatewayId" : null,' +
+            '"gatewayOrderId" : null,' +
+            '"gatewayResponse" : null,' +
+            '"gatewayResponseCode" : null,' +
+            '"gatewayState" : "NotSubmitted",' +
+            '"markedForSubmissionOn" : null,' +
+            '"referenceId" : null,' +
+            '"secondPaymentReferenceId" : null,' +
+            '"softDescriptor" : null,' +
+            '"softDescriptorPhone" : null,' +
+            '"submittedOn" : null,' +
+            '"settledOn" : null,' +
+            '"cancelledOn" : null,' +
+            '"createdDate" : "2019-07-30 21:10:15",' +
+            '"createdById" : "2c92c0f96a01b91f016a050fad50160a",' +
+            '"updatedDate" : "2019-07-30 21:10:15",' +
+            '"updatedById" : "2c92c0f96a01b91f016a050fad50160a",' +
+            '"TransactionId__c" : null,' +
+            '"ClientOwner__c" : null,' +
+            '"financeInformation" : {' +
+            '"bankAccountAccountingCode" : "11504 - Check",' +
+            '"bankAccountAccountingCodeType" : "Cash",' +
+            '"unappliedPaymentAccountingCode" : "20006 - Trust Payable",' +
+            '"unappliedPaymentAccountingCodeType" : "OtherLiabilities",' +
+            '"transferredToAccounting" : "No"' +
+            '},' +
+            '"success" : true}');
+        return res;
+    }
+
+    private static HttpResponse getGateways() {
+        HttpResponse res = getJSON();
+        res.setBody('{ "paymentgateways" : [ { ' +
+            '"id" : "2c92c0f9699ec9fe0169a68ab88b6ae3", ' +
+            '"name" : "Default Gateway Name", ' +
+            '"type" : "Authorize", ' +
+            '"isDefault" : true, ' +
+            '"isActive" : true }, { ' +
+            '"id" : "2c92c0f8699ebeac0169a6891cd862d1",' +
+            ' "name" : "Bluewave Testing Auth.Net", ' +
+            '"type" : "Authorize", ' +
+            '"isDefault" : false, ' +
+            '"isActive" : true }, { ' +
+            '"id" : "2c92c0f9697a318001698330cdee1e81", ' +
+            '"name" : "Not Default Gateway", ' +
+            '"type" : "Sample", ' +
+            '"isDefault" : false, ' +
+            '"isActive" : true } ], ' +
+            '"success" : true }');
+        return res;
+    }
+
+    private static HttpResponse getPayment(String endpoint) {
+        HttpResponse res = getJSON();
+        if (endpoint.contains('itemparts')) {
+            if (endpoint.contains('2c92c0fb6cb90e40016cc137e1c255a8')) {
+                res.setBody('{"itemParts":[' +
+                    '{"id":"2c92c0fb6cb90e40016cc137e1c1559c","invoiceItemId":null,"debitMemoItemId":"2c92c0fa6cbe34cb016cc132905e2db5","amount":13.670000000}' +
+                    '],' +
+                    '"success":true}');
+            } else {
+                res.setBody('{"itemParts":[' +
+                    '{"id":"2c92c0fb6cb90e40016cc137e1c05598","invoiceItemId":"2c92c0856cbe2e20016cc133cbd76420","debitMemoItemId":null,"amount":134.700000000},' +
+                    '{"id":"2c92c0fb6cb90e40016cc137e1c0559a","invoiceItemId":"2c92c0856cbe2e20016cc133cbd86421","debitMemoItemId":null,"amount":120.210000000}' +
+                    '],' +
+                    '"success":true}'
+                );
+            }
+        } else if (endpoint.contains('parts')) {
+            res.setBody('{"parts":[' +
+                '{"id":"2c92c0fb6cb90e40016cc137e1c255a8","debitMemoId":"2c92c0fa6cbe34cb016cc13290452db4","invoiceId":null,"amount":13.670000000},' +
+                '{"id":"2c92c0fb6cb90e40016cc137e1c255a3","debitMemoId":null,"invoiceId":"2c92c0856cbe2e20016cc133cbb1641b","amount":254.910000000}],' +
+                '"success":true}');
+        } else if (endpoint.contains('ALREADYRETURNED')) {
+            res.setBody('{' +
+                '"type":"External",' +
+                '"paymentMethodId":"2c92c0f868a2023a0168a79e7f4f3f70",' +
+                '"id":"2c92c0fb6cb90e36016cc137e05d46dc",' +
+                '"effectiveDate":"2019-06-20",' +
+                '"amount":1668.290000000,' +
+                '"ResponseStatus__c" : "Returned",' +
+                '"accountId":"2c92c0f96c8afb5d016c8c5b4d4c7b6e"' +
+                '}');
+        } else {
+            res.setBody('{' +
+                '"type":"External",' +
+                '"paymentMethodId":"2c92c0f868a2023a0168a79e7f4f3f70",' +
+                '"id":"2c92c0fb6cb90e36016cc137e05d46dc",' +
+                '"effectiveDate":"2019-06-20",' +
+                '"amount":1668.290000000,' +
+                '"accountId":"2c92c0f96c8afb5d016c8c5b4d4c7b6e",' +
+                '"success":true' +
+                '}');
         }
         return res;
     }

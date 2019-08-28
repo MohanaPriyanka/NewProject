@@ -3,7 +3,10 @@
 Can't use generic create/edit/delete actions
     https://www.zuora.com/developer/api-reference/#tag/Actions
     "Note: Actions do not support the Invoice Settlement feature.
-    This feature includes Unapplied Payments, Credit and Debit Memo, and Invoice Item Settlement." */
+    This feature includes Unapplied Payments, Credit and Debit Memo, and Invoice Item Settlement."
+
+    Tested by: ZuoraCreditDebitMemoServiceTest
+*/
 
 public class ZuoraCreditDebitMemoService{
     public static Bill_Adjustment__c createCreditOrDebitMemo(Bill_Adjustment__c adjustment){
@@ -27,6 +30,13 @@ public class ZuoraCreditDebitMemoService{
             );
         }
         return adjustment;
+    }
+
+    public static void createAndPostDebitMemos(List<ZuoraAPI.DebitMemo> debitMemos) {
+        for (ZuoraAPI.DebitMemo debitMemo : debitMemos) {
+            HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/debitmemos', debitMemo, false);
+            ZuoraCreditDebitMemoService.handleAPIResponse(null, response, false);
+        }
     }
 
     public static ZuoraAPI.DebitMemo convertSFAdjustToDebitMemo (Bill_Adjustment__c adjust){
