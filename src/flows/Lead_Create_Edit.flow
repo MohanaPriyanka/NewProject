@@ -2,21 +2,105 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
         <processMetadataValues>
-            <name>emailAlertSelection</name>
+            <name>ActionCallType</name>
             <value>
-                <stringValue>Lead_Assignment_Notification</stringValue>
+                <stringValue>flow</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>flowSelection</name>
+            <value>
+                <stringValue>Unbounce Campaign Tracking</stringValue>
             </value>
         </processMetadataValues>
         <name>myRule_16_A1</name>
-        <label>IS Lead Owner Notification</label>
+        <label>Launch Campaign Member Flow</label>
         <locationX>1600</locationX>
         <locationY>200</locationY>
-        <actionName>Lead.Lead_Assignment_Notification</actionName>
-        <actionType>emailAlert</actionType>
+        <actionName>Unbounce_Campaign_Tracking</actionName>
+        <actionType>flow</actionType>
         <inputParameters>
-            <name>SObjectRowId</name>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>SObject</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>SOV_Lead</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>maxOccurs</name>
+                <value>
+                    <numberValue>1.0</numberValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>objectType</name>
+                <value>
+                    <stringValue>Lead</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>SObject</stringValue>
+                </value>
+            </processMetadataValues>
+            <name>SOV_Lead</name>
             <value>
-                <elementReference>myVariable_current.Id</elementReference>
+                <elementReference>myVariable_current</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>VAR_Campaign</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>maxOccurs</name>
+                <value>
+                    <numberValue>1.0</numberValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>objectType</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Reference</stringValue>
+                </value>
+            </processMetadataValues>
+            <name>VAR_Campaign</name>
+            <value>
+                <elementReference>myVariable_current.Manual_Campaign_ID__c</elementReference>
             </value>
         </inputParameters>
     </actionCalls>
@@ -382,38 +466,7 @@
                 <processMetadataValues>
                     <name>inputDataType</name>
                     <value>
-                        <stringValue>ID</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>ID</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>ID</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.Owner:Queue.Id</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>00G0a000003CtSCEA0</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
+                        <stringValue>Boolean</stringValue>
                     </value>
                 </processMetadataValues>
                 <processMetadataValues>
@@ -431,19 +484,19 @@
                 <processMetadataValues>
                     <name>rightHandSideType</name>
                     <value>
-                        <stringValue>String</stringValue>
+                        <stringValue>Boolean</stringValue>
                     </value>
                 </processMetadataValues>
-                <leftValueReference>myVariable_current.LastName</leftValueReference>
-                <operator>NotEqualTo</operator>
+                <leftValueReference>myVariable_current.Manual_Campaign_ID__c</leftValueReference>
+                <operator>IsNull</operator>
                 <rightValue>
-                    <stringValue>TeStCaSe</stringValue>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
                 <targetReference>myRule_16_pmetdec</targetReference>
             </connector>
-            <label>IS Owner Notification Email</label>
+            <label>Campaign ID</label>
         </rules>
     </decisions>
     <decisions>
@@ -774,38 +827,7 @@
                 <processMetadataValues>
                     <name>inputDataType</name>
                     <value>
-                        <stringValue>ID</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>ID</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>ID</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_old.Owner:Queue.Id</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>00G0a000003CtSCEA0</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
+                        <stringValue>Boolean</stringValue>
                     </value>
                 </processMetadataValues>
                 <processMetadataValues>
@@ -823,13 +845,13 @@
                 <processMetadataValues>
                     <name>rightHandSideType</name>
                     <value>
-                        <stringValue>String</stringValue>
+                        <stringValue>Boolean</stringValue>
                     </value>
                 </processMetadataValues>
-                <leftValueReference>myVariable_old.LastName</leftValueReference>
-                <operator>NotEqualTo</operator>
+                <leftValueReference>myVariable_old.Manual_Campaign_ID__c</leftValueReference>
+                <operator>IsNull</operator>
                 <rightValue>
-                    <stringValue>TeStCaSe</stringValue>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <label>Previously Met - Prev</label>
@@ -842,11 +864,11 @@
                 <stringValue>[Lead].FirstName &amp; &quot; &quot; &amp;  [Lead].LastName </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_14_myRule_12_A1_3137850365</name>
+        <name>formula_14_myRule_12_A1_7603331275</name>
         <dataType>String</dataType>
         <expression>{!myVariable_current.FirstName} &amp; &quot; &quot; &amp;  {!myVariable_current.LastName}</expression>
     </formulas>
-    <interviewLabel>Lead_Create_Edit-4_InterviewLabel</interviewLabel>
+    <interviewLabel>Lead_Create_Edit-7_InterviewLabel</interviewLabel>
     <label>Lead Create/Edit</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -950,7 +972,7 @@
             </processMetadataValues>
             <field>Name</field>
             <value>
-                <elementReference>formula_14_myRule_12_A1_3137850365</elementReference>
+                <elementReference>formula_14_myRule_12_A1_7603331275</elementReference>
             </value>
         </inputAssignments>
         <object>MCEC_Report_Data__c</object>
