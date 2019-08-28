@@ -600,20 +600,31 @@ public with sharing class ZuoraAPI {
         public Decimal creditAmount;
         public String chargeDate;
         public String chargeId;
+        public String RatePlanChargeId;
+    }
+
+    public class RatePlanCharge {
+        public String Project_Zcustom;
+        public String ClientOwner_Zcustom;
+        public String id;
     }
 
     // Used to create, but not to query for debit memos:
-    public class DebitMemo{
+    public class DebitMemo {
         public String accountId;
+        @AuraEnabled
         public List<DebitMemoCharge> charges;
+        @AuraEnabled
         public Date effectiveDate;
         public String reasonCode;
         public String CRM_ID_Zcustom;
         public String Project_Zcustom;
         public String ClientOwner_Zcustom;
+        public String comment;
     }
 
-    public class DebitMemoCharge{
+    public class DebitMemoCharge {
+        @AuraEnabled
         public Decimal amount;
         public String chargeId;
     }
@@ -639,7 +650,8 @@ public with sharing class ZuoraAPI {
         public List<ZuoraDebitMemoItem> items;
     }
 
-    // For historical payment load: https://www.zuora.com/developer/api-reference/#operation/POST_CreatePayment
+    // For historical payment load and return processing:
+    // https://www.zuora.com/developer/api-reference/#operation/POST_CreatePayment
     public class Payment {
         public String id;
         public String accountId;
@@ -654,6 +666,33 @@ public with sharing class ZuoraAPI {
         public String TransactionId_Zcustom;
         public String ResponseStatus_Zcustom;
     }
+
+    public class PaymentParts {
+        public String nextPage;
+        public List<PaymentPart> parts;
+        public Boolean success;
+    }
+
+    public class PaymentPart {
+        public Decimal amount;
+        public String debitMemoId;
+        public String id;
+        public String invoiceId;
+    }
+
+    public class PaymentPartItems {
+        public List<PaymentPartItem> itemParts;
+        public String nextPage;
+        public Boolean success;
+    }
+
+    public class PaymentPartItem {
+        public Decimal amount;
+        public String debitMemoItemId;
+        public String id;
+        public String invoiceItemId;
+    }
+
     public class ZuoraPaymentApplication {
         public Date effectiveDate;
         public List<ZuoraInvoiceApplication> invoices;
