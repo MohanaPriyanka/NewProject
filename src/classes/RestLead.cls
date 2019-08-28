@@ -66,10 +66,7 @@ public without sharing class RestLead {
     private void validateBasicFields() {
         Map<String, String> requiredFields = new Map<String, String>{
             'firstName' => firstName, 'lastName' => lastName,
-            'email' => email, 'mobilePhone' => mobilePhone,
-            'streetAddress' => streetAddress, 'city' => city,
-            'state' => state, 'zipCode' => zipCode,
-            'productName' => productName
+            'email' => email, 'productName' => productName
         };
 
         Util.validateStrings(requiredFields);
@@ -98,48 +95,93 @@ public without sharing class RestLead {
     }
 
     private void validatePropertyAccounts() {
-        if (propertyAccounts == null || propertyAccounts.isEmpty()) {
-            throw new Util.BWException('The propertyAccounts array is required');
-        } else {
+        if (propertyAccounts != null && !propertyAccounts.isEmpty()) {
             for (RestPropertyAccount propertyAccount : propertyAccounts) {
                 propertyAccount.validateCreateFields();
             }
         }
     }
 
+    /**
+     * This is used to merge in fields during PATCHes.  Any field that we expect to PATCH should be added to this method.
+     *
+     * @param fieldNames Set of field names to PATCH
+     * @param baseLead Original Lead from the DB that this Lead's values with be patched on top of.
+     *
+     * @return
+     */
+    public Lead mergeFields(Set<String> fieldNames, Lead baseLead) {
+        if (fieldNames.contains('firstName')) baseLead.FirstName = this.firstName;
+        if (fieldNames.contains('lastName')) baseLead.LastName = this.lastName;
+        if (fieldNames.contains('email')) baseLead.Email = this.email;
+        if (fieldNames.contains('mobilePhone')) baseLead.MobilePhone = this.mobilePhone;
+        if (fieldNames.contains('businessName')) baseLead.Company = this.businessName;
+        if (fieldNames.contains('streetAddress')) baseLead.LASERCA__Home_Address__c = this.streetAddress;
+        if (fieldNames.contains('streetAddress')) baseLead.Street = this.streetAddress;
+        if (fieldNames.contains('city')) baseLead.LASERCA__Home_City__c = this.city;
+        if (fieldNames.contains('city')) baseLead.City = this.city;
+        if (fieldNames.contains('state')) baseLead.LASERCA__Home_State__c = this.state;
+        if (fieldNames.contains('state')) baseLead.State = BlueWaveParent.convertAbbreviationToState(this.state);
+        if (fieldNames.contains('zipCode')) baseLead.LASERCA__Home_Zip__c = this.zipCode;
+        if (fieldNames.contains('zipCode')) baseLead.PostalCode = this.zipCode;
+        if (fieldNames.contains('zipCode')) baseLead.Parcel_Zip__c = this.zipCode; // TODO: remove once qualification goes off of UAL's zip, instead of the Lead's parcel zip
+        if (fieldNames.contains('loadZone')) baseLead.LoadZone__c = this.loadZone;
+        if (fieldNames.contains('businessPhone')) baseLead.Phone = this.businessPhone;
+        if (fieldNames.contains('businessTitle')) baseLead.Business_Title__c = this.businessTitle;
+        if (fieldNames.contains('applicationCompleteDate')) baseLead.Application_Complete_Date__c = this.applicationCompleteDate;
+        if (fieldNames.contains('campaignId')) baseLead.Manual_Campaign_ID__c = this.campaignId;
+        if (fieldNames.contains('continueApplicationLink')) baseLead.Continue_Application_Link__c = this.continueApplicationLink;
+
+        updateDerivedFields(new RestLead(baseLead), baseLead);
+
+        if (this.eiaId != null) {
+            updateUtility(this.eiaId, baseLead);
+        }
+
+        return baseLead;
+    }
+
     public Lead asLead() {
         Lead newLead = new Lead(
-            Id = id,
-            FirstName = firstName,
-            LastName = lastName,
-            Email = email,
-            MobilePhone = mobilePhone,
-            Company = businessName,
-            Application_Type__c = applicationType,
-            LASERCA__Home_Address__c = streetAddress,
-            LASERCA__Home_City__c = city,
-            LASERCA__Home_State__c = state,
-            LASERCA__Home_Zip__c = zipCode,
-            Street = streetAddress,
-            City = city,
-            State = BlueWaveParent.convertAbbreviationToState(state),
-            PostalCode = zipCode,
-            Parcel_Zip__c = zipCode, // TODO: remove once qualification goes off of UAL's zip, instead of the Lead's parcel zip
+            Id = this.id,
+            FirstName = this.firstName,
+            LastName = this.lastName,
+            Email = this.email,
+            MobilePhone = this.mobilePhone,
+            Company = this.businessName,
+            Application_Type__c = this.applicationType,
+            LASERCA__Home_Address__c = this.streetAddress,
+            LASERCA__Home_City__c = this.city,
+            LASERCA__Home_State__c = this.state,
+            LASERCA__Home_Zip__c = this.zipCode,
+            Street = this.streetAddress,
+            City = this.city,
+            State = BlueWaveParent.convertAbbreviationToState(this.state),
+            PostalCode = this.zipCode,
+            Parcel_Zip__c = this.zipCode, // TODO: remove once qualification goes off of UAL's zip, instead of the Lead's parcel zip
             LeadSource = 'Switch',
-            LoadZone__c = loadZone,
+            LoadZone__c = this.loadZone,
             Product_line__c = 'Community Solar',
-            Phone = businessPhone,
-            Business_Title__c = businessTitle,
-            Customer_type__c = applicationType,
-            Application_Complete_Date__c = applicationCompleteDate,
+            Phone = this.businessPhone,
+            Business_Title__c = this.businessTitle,
+            Customer_type__c = this.applicationType,
+            Application_Complete_Date__c = this.applicationCompleteDate,
             Status = 'Sales Qualified',
-            Manual_Campaign_ID__c = campaignId,
-            Continue_Application_Link__c = continueApplicationLink
+            Manual_Campaign_ID__c = this.campaignId,
+            Continue_Application_Link__c = this.continueApplicationLink
         );
 
+        updateDerivedFields(this, newLead);
+        if (this.eiaId != null) {
+            updateUtility(this.eiaId, newLead);
+        }
 
+        return newLead;
+    }
 
-        if (partnerId != null) {
+    private void updateDerivedFields(RestLead restLead, Lead newLead) {
+
+        if (restLead.partnerId != null) {
             newLead.Application_Source_Phase_1__c = 'Switch with Partner';
         } else {
             newLead.Application_Source_Phase_1__c = 'Switch without Partner';
@@ -147,31 +189,31 @@ public without sharing class RestLead {
 
         Partner__c customerPartner = new Partner__c();
         try {
-            customerPartner = PartnerSelector.selectPartnerByPartnerId(partnerId);
+            customerPartner = PartnerSelector.selectPartnerByPartnerId(restLead.partnerId);
         } catch (Exception e) {
             customerPartner = PartnerSelector.selectDefaultCSPartner();
-            if (partnerId != null) {
-                Logger.logNow('CSLeadsRESTControllerV2', 'asLead', 'Partner not found with Id ' + partnerId + ' for Lead: ' + newLead.Id);
+            if (restLead.partnerId != null) {
+                Logger.logNow('CSLeadsRESTControllerV2', 'asLead', 'Partner not found with Id ' + restLead.partnerId + ' for Lead: ' + newLead.Id);
             }
         }
 
         newLead.Partner_Lookup__c = customerPartner.Id;
         newLead.Partner_Email__c = customerPartner.Email__c;
 
-        if (salesRepId != null) {
-            newLead.bs_Sales_ID__c = salesRepId;
+        if (restLead.salesRepId != null) {
+            newLead.bs_Sales_ID__c = restLead.salesRepId;
         } else if (customerPartner.Default_Sales_Rep__c != null) {
             newLead.bs_Sales_ID__c = customerPartner.Default_Sales_Rep__c;
         }
 
-        if (applicationType == 'Residential') {
-            newLead.Company = firstName + ' ' + lastName;
+        if (restLead.applicationType == 'Residential') {
+            newLead.Company = restLead.firstName + ' ' + restLead.lastName;
         }
 
         List<Product2> product = [
             SELECT Id
             FROM Product2
-            WHERE Name LIKE :'%' + productName + '%'
+            WHERE Name LIKE :'%' + restLead.productName + '%'
             LIMIT 1
         ];
 
@@ -179,6 +221,9 @@ public without sharing class RestLead {
             newLead.Product__c = product[0].Id;
         }
 
+    }
+
+    private void updateUtility(String eiaId, Lead newLead) {
         List<Utility__c> utilityList = [
             SELECT Id, Name, EIA_ID__c
             FROM Utility__c
@@ -191,12 +236,11 @@ public without sharing class RestLead {
         } else {
             Logger.logNow('CSLeadsRESTControllerV2', 'asLead', 'No Utilities found with EIA Id: ' + eiaId);
         }
-
-        return newLead;
     }
 
     public class RestPropertyAccount {
         public Id id;
+        public Id leadId;
         public String name;
         public String billingStreet;
         public String billingCity;
@@ -211,6 +255,7 @@ public without sharing class RestLead {
 
         public RestPropertyAccount(Account account) {
             this.id = account.Id;
+            this.leadId = account.Lead__c;
             this.name = account.Name;
             this.billingStreet = account.BillingStreet;
             this.billingCity = account.BillingCity;
@@ -252,9 +297,7 @@ public without sharing class RestLead {
         }
 
         private void validateUtilityAccountLogs() {
-            if (utilityAccountLogs == null || utilityAccountLogs.isEmpty()) {
-                throw new Util.BWException('At least one item in utilityAccountLogs is required for each property account');
-            } else {
+            if (utilityAccountLogs != null && !utilityAccountLogs.isEmpty()) {
                 for (RestUtilityAccountLog utilityAccountLog : utilityAccountLogs) {
                     utilityAccountLog.validateCreateFields();
                 }
@@ -265,6 +308,7 @@ public without sharing class RestLead {
 
     public class RestUtilityAccountLog {
         public Id id;
+        public Id propertyAccountId;
         public String utilityAccountNumber;
         public String nameOnAccount;
         public String serviceStreet;
@@ -287,6 +331,7 @@ public without sharing class RestLead {
 
         public RestUtilityAccountLog(Utility_Account_Log__c ual) {
             this.id = ual.Id;
+            this.propertyAccountId = ual.Account__c;
             this.utilityAccountNumber = ual.Name;
             this.nameOnAccount = ual.Name_on_Account__c;
             this.serviceStreet = ual.Service_Address__c;
