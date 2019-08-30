@@ -2,378 +2,307 @@
 
 @IsTest
 global class DocuSignAPIMockImpl implements WebServiceMock, HttpCalloutMock {
-	global HTTPResponse respond(HTTPRequest req) {
-		// Only send a mock response for a specific endpoint and method.
-		String endpoint = req.getEndpoint();
+    global HttpResponse respond(HttpRequest req) {
+        // Only send a mock response for a specific endpoint and method.
+        String endpoint = req.getEndpoint();
 
-		// Create a fake response
-		if (endpoint.contains('error')) {
-			return handleError();
-		} else if (endpoint.contains('signing_groups')) {
-			return handleGetSigningGroup();
-		} else if (endpoint.contains('')) {
-			return handleLogin();
-		} else {
-			return null;
-		}
-	}
+        // Create a fake response
+        if (endpoint.contains('error')) {
+            return handleError();
+        } else if (endpoint.contains('signing_groups')) {
+            return handleGetSigningGroup();
+        } else if (endpoint.contains('')) {
+            return handleLogin();
+        } else {
+            return null;
+        }
+    }
 
-	// Do this until MultiStaticResourceCalloutMocks support static resources in archives
-	public static HTTPResponse handleError()
-	{
-		HTTPResponse res = getJSON();
-		res.setBody('{"error": ' +
-			'"<error code=\"503\" type=\"cancel\">' +
-			'   <service-unavailable xmlns=\"urn:ietf:params:xml:ns:xmpp-stanzas\"/>' +
-			' </error>"}');
-		res.setStatusCode(503);
-		return(res);
-	}
+    // Do this until MultiStaticResourceCalloutMocks support static resources in archives
+    public static HttpResponse handleError() {
+        HttpResponse res = getJSON();
+        res.setBody('{"error": ' +
+                '"<error code=\"503\" type=\"cancel\">' +
+                '   <service-unavailable xmlns=\"urn:ietf:params:xml:ns:xmpp-stanzas\"/>' +
+                ' </error>"}');
+        res.setStatusCode(503);
+        return(res);
+    }
 
-	public static HTTPResponse handleLogin()
-	{
-		HTTPResponse res = getJSON();
-		res.setBody('{' +
-			'"loginAccounts": [' +
-			'{' +
-			'"name": "sample string 1",' +
-			'"accountId": "sample string 2",' +
-			'"accountIdGuid": "sample string 3",' +
-			'"baseUrl": "sample string 4",' +
-			'"isDefault": "sample string 5",' +
-			'"userName": "sample string 6",' +
-			'"userId": "sample string 7",' +
-			'"email": "sample string 8",' +
-			'"siteDescription": "sample string 9",' +
-			'"loginAccountSettings": [' +
-			'{}' +
-			'],' +
-			'"loginUserSettings": [' +
-			'{}' +
-			']' +
-			'}' +
-			'],' +
-			'"apiPassword": "sample string 1"' +
-			'}');
-		return(res);
-	}
+    public static HttpResponse handleLogin() {
+        HttpResponse res = getJSON();
+        res.setBody('{' +
+                '"loginAccounts": [' +
+                '{' +
+                '"name": "sample string 1",' +
+                '"accountId": "sample string 2",' +
+                '"accountIdGuid": "sample string 3",' +
+                '"baseUrl": "sample string 4",' +
+                '"isDefault": "sample string 5",' +
+                '"userName": "sample string 6",' +
+                '"userId": "sample string 7",' +
+                '"email": "sample string 8",' +
+                '"siteDescription": "sample string 9",' +
+                '"loginAccountSettings": [' +
+                '{}' +
+                '],' +
+                '"loginUserSettings": [' +
+                '{}' +
+                ']' +
+                '}' +
+                '],' +
+                '"apiPassword": "sample string 1"' +
+                '}');
+        return(res);
+    }
 
-	public static HTTPResponse handleGetSigningGroup()
-	{
-		HTTPResponse res = getJSON();
-		res.setBody('{' +
-			'"groups": [' +
-			'{' +
-			'"signingGroupId": "sample string 1",' +
-			'"groupName": "sample string 2",' +
-			'"groupType": "sample string 3",' +
-			'"groupEmail": "sample string 4",' +
-			'"created": "sample string 5",' +
-			'"createdBy": "sample string 6",' +
-			'"modified": "sample string 7",' +
-			'"modifiedBy": "sample string 8",' +
-			'"users": [' +
-			'{' +
-			'"userName": "sample string 1",' +
-			'"email": "sample string 2",' +
-			'"errorDetails": {' +
-			'"errorCode": "sample string 1",' +
-			'"message": "sample string 2"' +
-			'}' +
-			'}' +
-			'],' +
-			'"errorDetails": {' +
-			'"errorCode": "SUCCESS",' +
-			'"message": ""' +
-			'}' +
-			'}' +
-			']' +
-			'}');
-		return(res);
-	}
+    public static HttpResponse handleGetSigningGroup() {
+        HttpResponse res = getJSON();
+        res.setBody('{' +
+                '"groups": [' +
+                '{' +
+                '"signingGroupId": "sample string 1",' +
+                '"groupName": "sample string 2",' +
+                '"groupType": "sample string 3",' +
+                '"groupEmail": "sample string 4",' +
+                '"created": "sample string 5",' +
+                '"createdBy": "sample string 6",' +
+                '"modified": "sample string 7",' +
+                '"modifiedBy": "sample string 8",' +
+                '"users": [' +
+                '{' +
+                '"userName": "sample string 1",' +
+                '"email": "sample string 2",' +
+                '"errorDetails": {' +
+                '"errorCode": "sample string 1",' +
+                '"message": "sample string 2"' +
+                '}' +
+                '}' +
+                '],' +
+                '"errorDetails": {' +
+                '"errorCode": "SUCCESS",' +
+                '"message": ""' +
+                '}' +
+                '}' +
+                ']' +
+                '}');
+        return(res);
+    }
 
-	public static HTTPResponse getJSON()
-	{
-		HttpResponse res = new HttpResponse();
-		res.setHeader('Content-Type', 'application/json');
-		res.setStatusCode(200);
-		return res;
-	}
+    public static HttpResponse getJSON() {
+        HttpResponse res = new HttpResponse();
+        res.setHeader('Content-Type', 'application/json');
+        res.setStatusCode(200);
+        return res;
+    }
 
-	public void doInvoke(
-			Object stub,
-			Object request,
-			Map<String, Object> response,
-			String endpoint,
-			String soapAction,
-			String requestName,
-			String responseNS,
-			String responseName,
-			String responseType) {
+    public void doInvoke(
+            Object stub,
+            Object request,
+            Map<String, Object> response,
+            String endpoint,
+            String soapAction,
+            String requestName,
+            String responseNS,
+            String responseName,
+            String responseType) {
 
-		if(request instanceOf DocuSignAPI.AcknowledgeAuthoritativeCopyExport_element) {
-			response.put( 'response_x', new DocuSignAPI.AcknowledgeAuthoritativeCopyExportResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.CorrectAndResendEnvelope_element) {
-			response.put( 'response_x', new DocuSignAPI.CorrectAndResendEnvelopeResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.CreateAccountBrands_element) {
-			response.put( 'response_x', new DocuSignAPI.CreateAccountBrandsResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.CreateAndSendEnvelope_element) {
-			response.put( 'response_x', new DocuSignAPI.CreateAndSendEnvelopeResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.CreateEnvelope_element) {
-			response.put( 'response_x', new DocuSignAPI.CreateEnvelopeResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.CreateEnvelopeFromTemplates_element) {
-			response.put( 'response_x', new DocuSignAPI.CreateEnvelopeFromTemplatesResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.CreateEnvelopeFromTemplatesAndForms_element) {
+        if (request instanceof DocuSignAPI.AcknowledgeAuthoritativeCopyExport_element) {
+            response.put('response_x', new DocuSignAPI.AcknowledgeAuthoritativeCopyExportResponse_element());
+        } else if (request instanceof DocuSignAPI.CorrectAndResendEnvelope_element) {
+            response.put('response_x', new DocuSignAPI.CorrectAndResendEnvelopeResponse_element());
+        } else if (request instanceof DocuSignAPI.CreateAccountBrands_element) {
+            response.put('response_x', new DocuSignAPI.CreateAccountBrandsResponse_element());
+        } else if (request instanceof DocuSignAPI.CreateAndSendEnvelope_element) {
+            response.put('response_x', new DocuSignAPI.CreateAndSendEnvelopeResponse_element());
+        } else if (request instanceof DocuSignAPI.CreateEnvelope_element) {
+            response.put('response_x', new DocuSignAPI.CreateEnvelopeResponse_element());
+        } else if (request instanceof DocuSignAPI.CreateEnvelopeFromTemplates_element) {
+            response.put('response_x', new DocuSignAPI.CreateEnvelopeFromTemplatesResponse_element());
+        } else if (request instanceof DocuSignAPI.CreateEnvelopeFromTemplatesAndForms_element) {
             DocuSignAPI.CreateEnvelopeFromTemplatesAndForms_element createRequest = (DocuSignAPI.CreateEnvelopeFromTemplatesAndForms_element) request;
             // We use Composite Templates to send CS and Loan docs.
-			// If the request includes one, pull out the recipient to use in the response. Whew!
-			String userName, email;
-			if (createRequest.CompositeTemplates != null) {
-				List<DocuSignAPI.Recipient> recipients =
-					createRequest.CompositeTemplates.CompositeTemplate[0].InlineTemplates.InlineTemplate[0].Envelope.Recipients.Recipient;
-				for (DocuSignAPI.Recipient recipient : recipients) {
-					if (recipient.RoleName == 'Signer 1') {
-						userName = recipient.UserName;
-						email = recipient.Email;
-					}
-				}
-			}
-			DocuSignAPI.CreateEnvelopeFromTemplatesAndFormsResponse_element responseX =
-				new DocuSignAPI.CreateEnvelopeFromTemplatesAndFormsResponse_element();
-			responseX.CreateEnvelopeFromTemplatesAndFormsResult = new DocuSignAPI.EnvelopeStatus();
-			responseX.CreateEnvelopeFromTemplatesAndFormsResult.Status = 'Created';
-			responseX.CreateEnvelopeFromTemplatesAndFormsResult.EnvelopeID = 'DummyID';
-			responseX.CreateEnvelopeFromTemplatesAndFormsResult.RecipientStatuses = new DocuSignAPI.ArrayOfRecipientStatus();
-			responseX.CreateEnvelopeFromTemplatesAndFormsResult.RecipientStatuses.RecipientStatus = new List<DocuSignAPI.RecipientStatus>();
-			DocuSignAPI.RecipientStatus recipientStatus = new DocuSignAPI.RecipientStatus();
+            // If the request includes one, pull out the recipient to use in the response. Whew!
+            String userName, email;
+            if (createRequest.CompositeTemplates != null) {
+                List<DocuSignAPI.Recipient> recipients =
+                        createRequest.CompositeTemplates.CompositeTemplate[0].InlineTemplates.InlineTemplate[0].Envelope.Recipients.Recipient;
+                for (DocuSignAPI.Recipient recipient : recipients) {
+                    if (recipient.RoleName == 'Signer 1') {
+                        userName = recipient.UserName;
+                        email = recipient.Email;
+                    }
+                }
+            }
+            DocuSignAPI.CreateEnvelopeFromTemplatesAndFormsResponse_element responseX =
+                    new DocuSignAPI.CreateEnvelopeFromTemplatesAndFormsResponse_element();
+            responseX.CreateEnvelopeFromTemplatesAndFormsResult = new DocuSignAPI.EnvelopeStatus();
+            responseX.CreateEnvelopeFromTemplatesAndFormsResult.Status = 'Created';
+            responseX.CreateEnvelopeFromTemplatesAndFormsResult.EnvelopeID = 'DummyID';
+            responseX.CreateEnvelopeFromTemplatesAndFormsResult.RecipientStatuses = new DocuSignAPI.ArrayOfRecipientStatus();
+            responseX.CreateEnvelopeFromTemplatesAndFormsResult.RecipientStatuses.RecipientStatus = new List<DocuSignAPI.RecipientStatus>();
+            DocuSignAPI.RecipientStatus recipientStatus = new DocuSignAPI.RecipientStatus();
             recipientStatus.Type_x = 'Signer';
-			recipientStatus.UserName = userName;
-			recipientStatus.Email = email;
-			recipientStatus.RoutingOrder = 1;
-			responseX.CreateEnvelopeFromTemplatesAndFormsResult.RecipientStatuses.RecipientStatus.add(recipientStatus);
-			response.put( 'response_x', responseX);
-		}
-		else if(request instanceOf DocuSignAPI.DeleteAccountBrands_element) {
-			response.put( 'response_x', new DocuSignAPI.DeleteAccountBrandsResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.DeleteCaptiveRecipientsSignatures_element) {
-			response.put( 'response_x', new DocuSignAPI.DeleteCaptiveRecipientsSignaturesResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.DeleteEnvelopes_element) {
-			response.put( 'response_x', new DocuSignAPI.DeleteEnvelopesResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.EnvelopeAuditEvents_element) {
-			response.put( 'response_x', new DocuSignAPI.EnvelopeAuditEventsResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.ExportAuthoritativeCopy_element) {
-			response.put( 'response_x', new DocuSignAPI.ExportAuthoritativeCopyResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.GetAccountBrands_element) {
-			response.put( 'response_x', new DocuSignAPI.GetAccountBrandsResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.GetAccountMembershipFeaturesList_element) {
-			response.put( 'response_x', new DocuSignAPI.GetAccountMembershipFeaturesListResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.GetAccountSettingsList_element) {
-			response.put( 'response_x', new DocuSignAPI.GetAccountSettingsListResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.GetAddressBookItems_element) {
-			response.put( 'response_x', new DocuSignAPI.GetAddressBookItemsResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.GetAuthenticationToken_element) {
-			response.put( 'response_x', new DocuSignAPI.GetAuthenticationTokenResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.GetConnectFailures_element) {
-			response.put( 'response_x', new DocuSignAPI.GetConnectFailuresResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.GetFolderItems_element) {
-			response.put( 'response_x', new DocuSignAPI.GetFolderItemsResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.GetFolderList_element) {
-			response.put( 'response_x', new DocuSignAPI.GetFolderListResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.GetRecipientEsignList_element) {
-			response.put( 'response_x', new DocuSignAPI.GetRecipientEsignListResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.GetRecipientList_element) {
-			response.put( 'response_x', new DocuSignAPI.GetRecipientListResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.GetSharedAccess_element) {
-			response.put( 'response_x', new DocuSignAPI.GetSharedAccessResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.GetStatusInDocuSignConnectFormat_element) {
-			response.put( 'response_x', new DocuSignAPI.GetStatusInDocuSignConnectFormatResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.MoveEnvelopes_element) {
-			response.put( 'response_x', new DocuSignAPI.MoveEnvelopesResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.Ping_element) {
-			response.put( 'response_x', new DocuSignAPI.PingResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.PublishConnectFailures_element) {
-			response.put( 'response_x', new DocuSignAPI.PublishConnectFailuresResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.PurgeDocuments_element) {
-			response.put( 'response_x', new DocuSignAPI.PurgeDocumentsResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.PurgeDocumentsAndMetaData_element) {
-			response.put( 'response_x', new DocuSignAPI.PurgeDocumentsAndMetaDataResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.RemoveAddressBookItems_element) {
-			response.put( 'response_x', new DocuSignAPI.RemoveAddressBookItemsResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.RequestCertificate_element) {
-			response.put( 'response_x', new DocuSignAPI.RequestCertificateResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.RequestCorrectToken_element) {
-			response.put( 'response_x', new DocuSignAPI.RequestCorrectTokenResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.RequestDocumentPDFs_element) {
-			response.put( 'response_x', new DocuSignAPI.RequestDocumentPDFsResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.RequestDocumentPDFsEx_element) {
-			response.put( 'response_x', new DocuSignAPI.RequestDocumentPDFsExResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.RequestDocumentPDFsRecipientsView_element) {
-			response.put( 'response_x', new DocuSignAPI.RequestDocumentPDFsRecipientsViewResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.RequestEnvelope_element) {
-			response.put( 'response_x', new DocuSignAPI.RequestEnvelopeResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.RequestEnvelopeWithDocumentFields_element) {
-			response.put( 'response_x', new DocuSignAPI.RequestEnvelopeWithDocumentFieldsResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.RequestPDF_element) {
-			response.put( 'response_x', new DocuSignAPI.RequestPDFResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.RequestPDFNoWaterMark_element) {
-			response.put( 'response_x', new DocuSignAPI.RequestPDFNoWaterMarkResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.RequestPDFRecipientsView_element) {
-			response.put( 'response_x', new DocuSignAPI.RequestPDFRecipientsViewResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.RequestPDFsWithOptions_element) {
-			response.put( 'response_x', new DocuSignAPI.RequestPDFsWithOptionsResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.RequestPDFWithCert_element) {
-			response.put( 'response_x', new DocuSignAPI.RequestPDFWithCertResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.RequestPDFWithOptions_element) {
-			response.put( 'response_x', new DocuSignAPI.RequestPDFWithOptionsResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.RequestRecipientFaxPDF_element) {
-			response.put( 'response_x', new DocuSignAPI.RequestRecipientFaxPDFResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.RequestRecipientFaxToken_element) {
-			response.put( 'response_x', new DocuSignAPI.RequestRecipientFaxTokenResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.RequestRecipientToken_element) {
-			DocuSignAPI.RequestRecipientToken_element recipientRequest = (DocuSignAPI.RequestRecipientToken_element) request;
-			DocuSignAPI.RequestRecipientTokenResponse_element tokenResponse = new DocuSignAPI.RequestRecipientTokenResponse_element();
-			if (recipientRequest.Email != null && recipientRequest.Email.contains('exception')) {
-				tokenResponse.RequestRecipientTokenResult = 'https://exception';
-			} else if (recipientRequest.Email != null && recipientRequest.Email.contains('timeout')) {
-				CalloutException e = (CalloutException)CalloutException.class.newInstance();
-				e.setMessage('Exceeded maximum time allotted for callout');
-				throw e;
-			} else {
-				tokenResponse.RequestRecipientTokenResult = 'https://success';
-			}
-			response.put( 'response_x', tokenResponse);
-		}
-		else if(request instanceOf DocuSignAPI.RequestSenderToken_element) {
-			response.put( 'response_x', new DocuSignAPI.RequestSenderTokenResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.RequestStatus_element) {
-			response.put( 'response_x', new DocuSignAPI.RequestStatusResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.RequestStatusChanges_element) {
-			response.put( 'response_x', new DocuSignAPI.RequestStatusChangesResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.RequestStatusCodes_element) {
-			response.put( 'response_x', new DocuSignAPI.RequestStatusCodesResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.RequestStatuses_element) {
-			response.put( 'response_x', new DocuSignAPI.RequestStatusesResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.RequestStatusesEx_element) {
-			response.put( 'response_x', new DocuSignAPI.RequestStatusesExResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.RequestStatusesWithDocumentFields_element) {
-			response.put( 'response_x', new DocuSignAPI.RequestStatusesWithDocumentFieldsResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.RequestStatusEx_element) {
-			response.put( 'response_x', new DocuSignAPI.RequestStatusExResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.RequestStatusWithDocumentFields_element) {
-			response.put( 'response_x', new DocuSignAPI.RequestStatusWithDocumentFieldsResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.RequestTemplate_element) {
-			response.put( 'response_x', new DocuSignAPI.RequestTemplateResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.RequestTemplateList_element) {
-			response.put( 'response_x', new DocuSignAPI.RequestTemplateListResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.RequestTemplateListWithDocumentFields_element) {
-			response.put( 'response_x', new DocuSignAPI.RequestTemplateListWithDocumentFieldsResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.RequestTemplates_element) {
-			response.put( 'response_x', new DocuSignAPI.RequestTemplatesResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.RequestTemplateWithDocumentFields_element) {
-			DocuSignAPI.RequestTemplateWithDocumentFieldsResponse_element templateResponse =
-				new DocuSignAPI.RequestTemplateWithDocumentFieldsResponse_element();
-			templateResponse.RequestTemplateWithDocumentFieldsResult =
-				new DocuSignAPI.EnvelopeTemplate();
-			templateResponse.RequestTemplateWithDocumentFieldsResult.Envelope =
-				new DocuSignAPI.Envelope();
-			templateResponse.RequestTemplateWithDocumentFieldsResult.Envelope.Recipients =
-				new DocuSignAPI.ArrayOfRecipient();
-			templateResponse.RequestTemplateWithDocumentFieldsResult.Envelope.Recipients.Recipient =
-				new List<DocuSignAPI.Recipient>();
-			DocuSignAPI.Recipient recipient = new DocuSignAPI.Recipient();
-			recipient.RoleName = 'Signer 1';
-			templateResponse.RequestTemplateWithDocumentFieldsResult.Envelope.Recipients.Recipient.add(recipient);
-			response.put( 'response_x', templateResponse);
-		}
-		else if(request instanceOf DocuSignAPI.SaveTemplate_element) {
-			response.put( 'response_x', new DocuSignAPI.SaveTemplateResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.SendEnvelope_element) {
-			response.put( 'response_x', new DocuSignAPI.SendEnvelopeResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.SetSharedAccess_element) {
-			response.put( 'response_x', new DocuSignAPI.SetSharedAccessResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.SynchEnvelope_element) {
-			response.put( 'response_x', new DocuSignAPI.SynchEnvelopeResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.TransferEnvelope_element) {
-			response.put( 'response_x', new DocuSignAPI.TransferEnvelopeResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.UpdateAddressBookItems_element) {
-			response.put( 'response_x', new DocuSignAPI.UpdateAddressBookItemsResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.UploadTemplate_element) {
-			response.put( 'response_x', new DocuSignAPI.UploadTemplateResponse_element());
-		}
-		else if(request instanceOf DocuSignAPI.VoidEnvelope_element) {
-            if (((DocuSignAPI.VoidEnvelope_element) request).reason == 'CalloutException') {
+            recipientStatus.UserName = userName;
+            recipientStatus.Email = email;
+            recipientStatus.RoutingOrder = 1;
+            responseX.CreateEnvelopeFromTemplatesAndFormsResult.RecipientStatuses.RecipientStatus.add(recipientStatus);
+            response.put('response_x', responseX);
+        } else if (request instanceof DocuSignAPI.DeleteAccountBrands_element) {
+            response.put('response_x', new DocuSignAPI.DeleteAccountBrandsResponse_element());
+        } else if (request instanceof DocuSignAPI.DeleteCaptiveRecipientsSignatures_element) {
+            response.put('response_x', new DocuSignAPI.DeleteCaptiveRecipientsSignaturesResponse_element());
+        } else if (request instanceof DocuSignAPI.DeleteEnvelopes_element) {
+            response.put('response_x', new DocuSignAPI.DeleteEnvelopesResponse_element());
+        } else if (request instanceof DocuSignAPI.EnvelopeAuditEvents_element) {
+            response.put('response_x', new DocuSignAPI.EnvelopeAuditEventsResponse_element());
+        } else if (request instanceof DocuSignAPI.ExportAuthoritativeCopy_element) {
+            response.put('response_x', new DocuSignAPI.ExportAuthoritativeCopyResponse_element());
+        } else if (request instanceof DocuSignAPI.GetAccountBrands_element) {
+            response.put('response_x', new DocuSignAPI.GetAccountBrandsResponse_element());
+        } else if (request instanceof DocuSignAPI.GetAccountMembershipFeaturesList_element) {
+            response.put('response_x', new DocuSignAPI.GetAccountMembershipFeaturesListResponse_element());
+        } else if (request instanceof DocuSignAPI.GetAccountSettingsList_element) {
+            response.put('response_x', new DocuSignAPI.GetAccountSettingsListResponse_element());
+        } else if (request instanceof DocuSignAPI.GetAddressBookItems_element) {
+            response.put('response_x', new DocuSignAPI.GetAddressBookItemsResponse_element());
+        } else if (request instanceof DocuSignAPI.GetAuthenticationToken_element) {
+            response.put('response_x', new DocuSignAPI.GetAuthenticationTokenResponse_element());
+        } else if (request instanceof DocuSignAPI.GetConnectFailures_element) {
+            response.put('response_x', new DocuSignAPI.GetConnectFailuresResponse_element());
+        } else if (request instanceof DocuSignAPI.GetFolderItems_element) {
+            response.put('response_x', new DocuSignAPI.GetFolderItemsResponse_element());
+        } else if (request instanceof DocuSignAPI.GetFolderList_element) {
+            response.put('response_x', new DocuSignAPI.GetFolderListResponse_element());
+        } else if (request instanceof DocuSignAPI.GetRecipientEsignList_element) {
+            response.put('response_x', new DocuSignAPI.GetRecipientEsignListResponse_element());
+        } else if (request instanceof DocuSignAPI.GetRecipientList_element) {
+            response.put('response_x', new DocuSignAPI.GetRecipientListResponse_element());
+        } else if (request instanceof DocuSignAPI.GetSharedAccess_element) {
+            response.put('response_x', new DocuSignAPI.GetSharedAccessResponse_element());
+        } else if (request instanceof DocuSignAPI.GetStatusInDocuSignConnectFormat_element) {
+            response.put('response_x', new DocuSignAPI.GetStatusInDocuSignConnectFormatResponse_element());
+        } else if (request instanceof DocuSignAPI.MoveEnvelopes_element) {
+            response.put('response_x', new DocuSignAPI.MoveEnvelopesResponse_element());
+        } else if (request instanceof DocuSignAPI.Ping_element) {
+            response.put('response_x', new DocuSignAPI.PingResponse_element());
+        } else if (request instanceof DocuSignAPI.PublishConnectFailures_element) {
+            response.put('response_x', new DocuSignAPI.PublishConnectFailuresResponse_element());
+        } else if (request instanceof DocuSignAPI.PurgeDocuments_element) {
+            response.put('response_x', new DocuSignAPI.PurgeDocumentsResponse_element());
+        } else if (request instanceof DocuSignAPI.PurgeDocumentsAndMetaData_element) {
+            response.put('response_x', new DocuSignAPI.PurgeDocumentsAndMetaDataResponse_element());
+        } else if (request instanceof DocuSignAPI.RemoveAddressBookItems_element) {
+            response.put('response_x', new DocuSignAPI.RemoveAddressBookItemsResponse_element());
+        } else if (request instanceof DocuSignAPI.RequestCertificate_element) {
+            response.put('response_x', new DocuSignAPI.RequestCertificateResponse_element());
+        } else if (request instanceof DocuSignAPI.RequestCorrectToken_element) {
+            response.put('response_x', new DocuSignAPI.RequestCorrectTokenResponse_element());
+        } else if (request instanceof DocuSignAPI.RequestDocumentPDFs_element) {
+            response.put('response_x', new DocuSignAPI.RequestDocumentPDFsResponse_element());
+        } else if (request instanceof DocuSignAPI.RequestDocumentPDFsEx_element) {
+            response.put('response_x', new DocuSignAPI.RequestDocumentPDFsExResponse_element());
+        } else if (request instanceof DocuSignAPI.RequestDocumentPDFsRecipientsView_element) {
+            response.put('response_x', new DocuSignAPI.RequestDocumentPDFsRecipientsViewResponse_element());
+        } else if (request instanceof DocuSignAPI.RequestEnvelope_element) {
+            response.put('response_x', new DocuSignAPI.RequestEnvelopeResponse_element());
+        } else if (request instanceof DocuSignAPI.RequestEnvelopeWithDocumentFields_element) {
+            response.put('response_x', new DocuSignAPI.RequestEnvelopeWithDocumentFieldsResponse_element());
+        } else if (request instanceof DocuSignAPI.RequestPDF_element) {
+            response.put('response_x', new DocuSignAPI.RequestPDFResponse_element());
+        } else if (request instanceof DocuSignAPI.RequestPDFNoWaterMark_element) {
+            response.put('response_x', new DocuSignAPI.RequestPDFNoWaterMarkResponse_element());
+        } else if (request instanceof DocuSignAPI.RequestPDFRecipientsView_element) {
+            response.put('response_x', new DocuSignAPI.RequestPDFRecipientsViewResponse_element());
+        } else if (request instanceof DocuSignAPI.RequestPDFsWithOptions_element) {
+            response.put('response_x', new DocuSignAPI.RequestPDFsWithOptionsResponse_element());
+        } else if (request instanceof DocuSignAPI.RequestPDFWithCert_element) {
+            response.put('response_x', new DocuSignAPI.RequestPDFWithCertResponse_element());
+        } else if (request instanceof DocuSignAPI.RequestPDFWithOptions_element) {
+            response.put('response_x', new DocuSignAPI.RequestPDFWithOptionsResponse_element());
+        } else if (request instanceof DocuSignAPI.RequestRecipientFaxPDF_element) {
+            response.put('response_x', new DocuSignAPI.RequestRecipientFaxPDFResponse_element());
+        } else if (request instanceof DocuSignAPI.RequestRecipientFaxToken_element) {
+            response.put('response_x', new DocuSignAPI.RequestRecipientFaxTokenResponse_element());
+        } else if (request instanceof DocuSignAPI.RequestRecipientToken_element) {
+            DocuSignAPI.RequestRecipientToken_element recipientRequest = (DocuSignAPI.RequestRecipientToken_element) request;
+            DocuSignAPI.RequestRecipientTokenResponse_element tokenResponse = new DocuSignAPI.RequestRecipientTokenResponse_element();
+            if (recipientRequest.Email != null && recipientRequest.Email.contains('exception')) {
+                tokenResponse.RequestRecipientTokenResult = 'https://exception';
+            } else if (recipientRequest.Email != null && recipientRequest.Email.contains('timeout')) {
+                CalloutException e = (CalloutException) CalloutException.class.newInstance();
+                e.setMessage('Exceeded maximum time allotted for callout');
+                throw e;
+            } else {
+                tokenResponse.RequestRecipientTokenResult = recipientRequest.ClientURLs.OnSigningComplete;
+            }
+            response.put('response_x', tokenResponse);
+        } else if (request instanceof DocuSignAPI.RequestSenderToken_element) {
+            response.put('response_x', new DocuSignAPI.RequestSenderTokenResponse_element());
+        } else if (request instanceof DocuSignAPI.RequestStatus_element) {
+            response.put('response_x', new DocuSignAPI.RequestStatusResponse_element());
+        } else if (request instanceof DocuSignAPI.RequestStatusChanges_element) {
+            response.put('response_x', new DocuSignAPI.RequestStatusChangesResponse_element());
+        } else if (request instanceof DocuSignAPI.RequestStatusCodes_element) {
+            response.put('response_x', new DocuSignAPI.RequestStatusCodesResponse_element());
+        } else if (request instanceof DocuSignAPI.RequestStatuses_element) {
+            response.put('response_x', new DocuSignAPI.RequestStatusesResponse_element());
+        } else if (request instanceof DocuSignAPI.RequestStatusesEx_element) {
+            response.put('response_x', new DocuSignAPI.RequestStatusesExResponse_element());
+        } else if (request instanceof DocuSignAPI.RequestStatusesWithDocumentFields_element) {
+            response.put('response_x', new DocuSignAPI.RequestStatusesWithDocumentFieldsResponse_element());
+        } else if (request instanceof DocuSignAPI.RequestStatusEx_element) {
+            response.put('response_x', new DocuSignAPI.RequestStatusExResponse_element());
+        } else if (request instanceof DocuSignAPI.RequestStatusWithDocumentFields_element) {
+            response.put('response_x', new DocuSignAPI.RequestStatusWithDocumentFieldsResponse_element());
+        } else if (request instanceof DocuSignAPI.RequestTemplate_element) {
+            response.put('response_x', new DocuSignAPI.RequestTemplateResponse_element());
+        } else if (request instanceof DocuSignAPI.RequestTemplateList_element) {
+            response.put('response_x', new DocuSignAPI.RequestTemplateListResponse_element());
+        } else if (request instanceof DocuSignAPI.RequestTemplateListWithDocumentFields_element) {
+            response.put('response_x', new DocuSignAPI.RequestTemplateListWithDocumentFieldsResponse_element());
+        } else if (request instanceof DocuSignAPI.RequestTemplates_element) {
+            response.put('response_x', new DocuSignAPI.RequestTemplatesResponse_element());
+        } else if (request instanceof DocuSignAPI.RequestTemplateWithDocumentFields_element) {
+            DocuSignAPI.RequestTemplateWithDocumentFieldsResponse_element templateResponse =
+                    new DocuSignAPI.RequestTemplateWithDocumentFieldsResponse_element();
+            templateResponse.RequestTemplateWithDocumentFieldsResult =
+                    new DocuSignAPI.EnvelopeTemplate();
+            templateResponse.RequestTemplateWithDocumentFieldsResult.Envelope =
+                    new DocuSignAPI.Envelope();
+            templateResponse.RequestTemplateWithDocumentFieldsResult.Envelope.Recipients =
+                    new DocuSignAPI.ArrayOfRecipient();
+            templateResponse.RequestTemplateWithDocumentFieldsResult.Envelope.Recipients.Recipient =
+                    new List<DocuSignAPI.Recipient>();
+            DocuSignAPI.Recipient recipient = new DocuSignAPI.Recipient();
+            recipient.RoleName = 'Signer 1';
+            templateResponse.RequestTemplateWithDocumentFieldsResult.Envelope.Recipients.Recipient.add(recipient);
+            response.put('response_x', templateResponse);
+        } else if (request instanceof DocuSignAPI.SaveTemplate_element) {
+            response.put('response_x', new DocuSignAPI.SaveTemplateResponse_element());
+        } else if (request instanceof DocuSignAPI.SendEnvelope_element) {
+            response.put('response_x', new DocuSignAPI.SendEnvelopeResponse_element());
+        } else if (request instanceof DocuSignAPI.SetSharedAccess_element) {
+            response.put('response_x', new DocuSignAPI.SetSharedAccessResponse_element());
+        } else if (request instanceof DocuSignAPI.SynchEnvelope_element) {
+            response.put('response_x', new DocuSignAPI.SynchEnvelopeResponse_element());
+        } else if (request instanceof DocuSignAPI.TransferEnvelope_element) {
+            response.put('response_x', new DocuSignAPI.TransferEnvelopeResponse_element());
+        } else if (request instanceof DocuSignAPI.UpdateAddressBookItems_element) {
+            response.put('response_x', new DocuSignAPI.UpdateAddressBookItemsResponse_element());
+        } else if (request instanceof DocuSignAPI.UploadTemplate_element) {
+            response.put('response_x', new DocuSignAPI.UploadTemplateResponse_element());
+        } else if (request instanceof DocuSignAPI.VoidEnvelope_element) {
+            if (((DocuSignAPI.VoidEnvelope_element) request).Reason == 'CalloutException') {
                 throw new CalloutException('Callout Exception');
-			} else {
+            } else {
                 DocuSignAPI.VoidEnvelopeResponse_element responseX =
-                    new DocuSignAPI.VoidEnvelopeResponse_element();
+                        new DocuSignAPI.VoidEnvelopeResponse_element();
                 responseX.VoidEnvelopeResult = new DocuSignAPI.VoidEnvelopeStatus();
                 responseX.VoidEnvelopeResult.VoidSuccess = true;
-                response.put( 'response_x', responseX);
+                response.put('response_x', responseX);
 
             }
-		}
-	}
+        }
+    }
 }

@@ -25,7 +25,8 @@
             $A.getCallback(function() {
                 var sendDocuSign = component.get('c.sendEmbeddedContract');
                 sendDocuSign.setParams({
-                    'lead': component.get('v.lead')
+                    'lead': component.get('v.lead'),
+                    'oppCounter': 0
                 });
                 sendDocuSign.setCallback(this, function(docuSignResp) {
                     if (docuSignResp.getState() !== "SUCCESS") {
