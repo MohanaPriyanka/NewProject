@@ -111,6 +111,7 @@ public with sharing class BillNumberingTest {
                 Assemblage_Count__c = 1,
                 Sales_Partners__c = 'All',
                 Billing_Method__c = 'NMC',
+                Client_Account__c = clientAccount2.Id,
                 BWC_Project_Entity_Manual__c = entity2.Id,
                 Maximum_Subscription_Assemblage__c = 25,
                 Utility__c = eversource.Id

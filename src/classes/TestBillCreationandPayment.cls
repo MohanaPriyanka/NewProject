@@ -140,7 +140,7 @@ public class TestBillCreationandPayment {
                 Client_Brand_Key__c = null,
                 Utility__c = eversource.Id
             );
-
+        
         Shared_Solar_System__c sss2 =
             new Shared_Solar_System__c(Name = 'Oxford Barrett St. P2',
                 Service_Territory__c = 'SEMA',
@@ -155,7 +155,7 @@ public class TestBillCreationandPayment {
                 Utility_NMC_Tariff__c = eversizeNMC.Id,
                 Expected_Yield_kWh_kW__c = 1300,
                 Assemblage_Count__c = 1,
-                Client_Account__c = clientAccount.Id,
+                Client_Account__c = clientAccount2.Id,
                 Sales_Partners__c = 'All',
                 Billing_Method__c = 'NMC',
                 Billing_Anchors__c = 'Bluewave',
@@ -951,7 +951,7 @@ public class TestBillCreationandPayment {
             Country ='United States',
             IsActive = true,
             TimeZoneSidKey='America/Los_Angeles',
-            Username='user@bluewavesolar.com');
+            Username='user123@bluewavesolar.com');
 
         System.runAs(userRecord) {
             Boolean hitError = false;
@@ -999,7 +999,7 @@ public class TestBillCreationandPayment {
 
     @isTest public static void overpaymentMultipleSBSameEntity(){
         Entity__c entity = [
-            SELECT Id, Gateway__c
+            SELECT Id, Gateway__c, Client_Account__r.Id
             FROM Entity__c
             WHERE Name = 'Oxford Barrett St. P1'
         ];
@@ -1011,7 +1011,9 @@ public class TestBillCreationandPayment {
 
         // Want to test when a customer has 2 SBs for the same entity in a bill period
         sssList[0].BWC_Project_Entity_Manual__c = entity.Id;
+        sssList[0].Client_Account__c = entity.Client_Account__r.Id;
         sssList[1].BWC_Project_Entity_Manual__c = entity.Id;
+        sssList[1].Client_Account__c = entity.Client_Account__r.Id;
         update sssList;
 
         Util.disableTrigger('Disable_AccountBillTrigger__c'); // TO Avoid SOQL Limits in data setup
