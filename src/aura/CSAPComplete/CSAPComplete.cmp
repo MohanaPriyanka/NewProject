@@ -21,6 +21,9 @@
   <!--DocuSign Signature page-->
   <aura:if isTrue="{!v.page == 'ContractSignature'}">
       <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
+          Your subscription will be provided by {!v.lead.Opportunities__r.length} solar farms. Each solar farm requires its own agreement. Please review and sign each agreement as it loads below.
+      </div>
+      <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
         <iframe src="{!v.signingURL}" height="600px" width="100%" style="border:none;" id="docusignIframe"></iframe>
       </div>
   </aura:if>
