@@ -6,6 +6,7 @@
 private class PaymentCaseTest {
 
     @TestSetup public static void setupData() {
+        Test.startTest();
         Util.disableAllTriggers();
         Test.loadData(Utility__c.SObjectType, 'TestCSUtility');
         Test.loadData(Utility_NMC_Tariff__c.SObjectType, 'TestCSUtilityNMCTariff');
@@ -22,6 +23,7 @@ private class PaymentCaseTest {
         Test.loadData(Schedule_Z_Subscription__c.SObjectType, 'TestCSScheduleZSubscription');
         Test.loadData(Energy_Usage_Update__c.SObjectType, 'TestCSProdUpdate');
         Test.loadData(Account_Bill__c.SObjectType, 'TestCSAccountBill');
+        Test.stopTest();
         Test.loadData(ChargentOrders__ChargentOrder__c.SObjectType, 'TestCSChargentOrder');
         Test.loadData(ChargentOrders__Transaction__c.SObjectType, 'TestCSTransaction');
         Test.loadData(Case.SObjectType, 'TestCSCase');

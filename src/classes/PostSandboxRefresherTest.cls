@@ -12,7 +12,7 @@ private class PostSandboxRefresherTest {
             Address_Line_Two__c = 'Boston, MA 02114'
         );
         TestFactory.setCSBillSettings();
-        
+        Test.startTest();
         Test.loadData(Utility__c.SObjectType, 'TestCSUtility');
         Test.loadData(Utility_NMC_Tariff__c.SObjectType, 'TestCSUtilityNMCTariff');
         Test.loadData(Load_U__c.SObjectType, 'TestCSLoadU');
@@ -23,7 +23,9 @@ private class PostSandboxRefresherTest {
         Test.loadData(Shared_Solar_System__c.SObjectType, 'TestCSSharedSolarSystem');
         Test.loadData(Opportunity.SObjectType, 'TestCSOpportunity');
         Test.loadData(Account_Bill__c.SObjectType, 'TestCSAccountBill');
+        Test.stopTest();
         Test.loadData(ChargentOrders__ChargentOrder__c.SObjectType, 'TestCSChargentOrder');
+
 
         if (System_Properties__c.getall().isEmpty()) {
             insert new System_Properties__c(

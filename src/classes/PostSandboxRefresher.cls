@@ -466,10 +466,16 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             );
             insert clientContact;
 
-            Entity__c entity1 = new Entity__c(Name = 'Project A Oak Road', CreatedDate = csDataDate);
+            Entity__c entity1 = new Entity__c(
+                Name = 'Project A Oak Road',
+                CreatedDate = csDataDate,
+                Client_Account__c = clientAccount.Id);
             insert entity1;
 
-            Entity__c entity2 = new Entity__c(Name = 'Project B Main St', CreatedDate = csDataDate);
+            Entity__c entity2 = new Entity__c(
+                Name = 'Project B Main St',
+                Client_Account__c = clientAccount.Id,
+                CreatedDate = csDataDate);
             insert entity2;
 
             Utility__c eversource = new Utility__c(Name = 'Eversource', Number_of_Decimal_Places__c = 2, CreatedDate = csDataDate);
