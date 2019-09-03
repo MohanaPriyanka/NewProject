@@ -1,5 +1,5 @@
 public without sharing class InvoiceTemplateAssigner implements Database.Batchable<SObject>, Database.Stateful, Database.AllowsCallouts{
-    public List<Invoice_Template__c> invoiceTemplateList;
+    public List<zqu__InvoiceTemplate__c> invoiceTemplateList;
     public CS_Bill_Setting__c csBillSetting;
 
     public class ZuoraInvoiceTemplate {
@@ -25,12 +25,12 @@ public without sharing class InvoiceTemplateAssigner implements Database.Batchab
         }
     }
 
-    public List<Invoice_Template__c> getTemplateList(){
-        List<Invoice_Template__c> invoiceTemplates = [
+    public List<zqu__InvoiceTemplate__c> getTemplateList(){
+        List<zqu__InvoiceTemplate__c> invoiceTemplates = [
             SELECT Id, Name, Brand_Key__c,
                 Autopay__c, Anchor__c,
-                External_Id__c
-            FROM Invoice_Template__c
+                zqu__ZuoraId__c
+            FROM zqu__InvoiceTemplate__c
             WHERE Active__c = true];
         return invoiceTemplates;
     }
@@ -50,7 +50,7 @@ public without sharing class InvoiceTemplateAssigner implements Database.Batchab
         Logger.flushLogs();
     }
 
-    public List<ZuoraAPI.ZuoraAccount> assignTemplates(List<Account> accountsToAssign, List<Invoice_Template__c> invoiceTemplates){
+    public List<ZuoraAPI.ZuoraAccount> assignTemplates(List<Account> accountsToAssign, List<zqu__InvoiceTemplate__c> invoiceTemplates){
         TemplateKey templateKey = new TemplateKey();
 
         Map<String,ZuoraAPI.ZuoraAccount> accountsToUpdate = new Map<String,ZuoraAPI.ZuoraAccount>();
@@ -68,9 +68,9 @@ public without sharing class InvoiceTemplateAssigner implements Database.Batchab
                 templateKey.isAnchor = false;
                 zAccount.Notes = csBillSetting.Default_Bill_Message_for_Non_Autopay__c;
             }
-            for (Invoice_Template__c template : invoiceTemplates){
+            for (zqu__InvoiceTemplate__c template : invoiceTemplates){
                 if (checkTemplateMatch(template, templateKey)){
-                    zAccount.InvoiceTemplateId = template.External_Id__c;
+                    zAccount.InvoiceTemplateId = template.zqu__ZuoraId__c;
                 }
                 accountsToUpdate.put(account.Zuora_Id__c, zAccount);
             }
@@ -81,7 +81,7 @@ public without sharing class InvoiceTemplateAssigner implements Database.Batchab
         return accountsToUpdate.values();
     }
 
-    public Boolean checkTemplateMatch(Invoice_Template__c invoiceTemplate, TemplateKey templateKey) {
+    public Boolean checkTemplateMatch(zqu__InvoiceTemplate__c invoiceTemplate, TemplateKey templateKey) {
         Boolean isMatch = false;
         if (invoiceTemplate.Autopay__c == templateKey.isAutopay
             && invoiceTemplate.Anchor__c == templateKey.isAnchor
@@ -114,31 +114,6 @@ public without sharing class InvoiceTemplateAssigner implements Database.Batchab
             );
         }
     }
-
-    /* public List<TemplateKey> getZuoraTemplates(){
-         HttpResponse response = ZuoraAPIHelper.callJSONEndpointWithOAuth('GET','/settings/invoice-templates?returnIds=true',null,true);
-         List<ZuoraInvoiceTemplate> templates = (List<ZuoraInvoiceTemplate>) System.JSON.deserialize(response.getBody(), List<ZuoraInvoiceTemplate>.class);
-         List<TemplateKey> InvoiceTemplates = new List<TemplateKey>();
-
-         for (ZuoraInvoiceTemplate template : templates){
-             //Template Naming Convention: Autopay_TRUE_Anchor_TRUE_Key_BlueWaveLogo v. Autopay_FALSE_Anchor_FALSE_Key_AmpRed
-             String templateNameFromZuora = template.name;
-             TemplateKey key = new TemplateKey();
-             key.id = template.id;
-             key.isAnchor = false;
-             key.isAutopay = false;
-             if (templateNameFromZuora.contains('Autopay_TRUE')){
-                 key.isAutopay = true;
-             }
-             if (templateNameFromZuora.contains('Anchor_TRUE')){
-                 key.isAutopay = true;
-             }
-             Integer startLocation = templateNameFromZuora.indexOf('Key_');
-             key.clientBrandKey = templateNameFromZuora.substring(startLocation,templateNameFromZuora.length());
-             InvoiceTemplates.add(TemplateKey);
-         }
-         return InvoiceTemplates;
-     } */
 
     public void finish(Database.BatchableContext bc){
         // Need to have finish method in batch job

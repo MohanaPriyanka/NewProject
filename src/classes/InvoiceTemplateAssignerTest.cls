@@ -4,56 +4,56 @@ public class InvoiceTemplateAssignerTest {
     public static final String AUTOPAY_MESSAGE = 'Autopay Message';
 
     @testSetup static void setupTestData() {
-        Invoice_Template__c anchorTemplate = new Invoice_Template__c(
+        zqu__InvoiceTemplate__c anchorTemplate = new zqu__InvoiceTemplate__c(
             Active__c = true,
             Autopay__c = false,
             Anchor__c = true,
             Brand_Key__c = 'BluewaveLogo',
-            External_Id__c = 'anchorTemplate'
+            zqu__ZuoraId__c = 'anchorTemplate'
         );
 
-        Invoice_Template__c inactiveTemplate = new Invoice_Template__c(
+        zqu__InvoiceTemplate__c inactiveTemplate = new zqu__InvoiceTemplate__c(
             Active__c = false,
             Autopay__c = false,
             Anchor__c = true,
             Brand_Key__c = 'BluewaveLogo',
-            External_Id__c = 'inactiveTemplate'
+            zqu__ZuoraId__c = 'inactiveTemplate'
         );
 
-        Invoice_Template__c bwNonAnchor = new Invoice_Template__c(
+        zqu__InvoiceTemplate__c bwNonAnchor = new zqu__InvoiceTemplate__c(
             Active__c = true,
             Autopay__c = false,
             Anchor__c = false,
             Brand_Key__c = 'BluewaveLogo',
-            External_Id__c = 'bwNonAnchor'
+            zqu__ZuoraId__c = 'bwNonAnchor'
         );
 
-        Invoice_Template__c ampNonAnchor = new Invoice_Template__c(
+        zqu__InvoiceTemplate__c ampNonAnchor = new zqu__InvoiceTemplate__c(
             Active__c = true,
             Autopay__c = false,
             Anchor__c = false,
             Brand_Key__c = 'AmpRed',
-            External_Id__c = 'ampNonAnchor'
+            zqu__ZuoraId__c = 'ampNonAnchor'
         );
 
-        Invoice_Template__c bwAutopay = new Invoice_Template__c(
+        zqu__InvoiceTemplate__c bwAutopay = new zqu__InvoiceTemplate__c(
             Active__c = true,
             Autopay__c = true,
             Anchor__c = false,
             Brand_Key__c = 'BluewaveLogo',
-            External_Id__c = 'bwAutopay'
+            zqu__ZuoraId__c = 'bwAutopay'
         );
 
-        Invoice_Template__c ampAutopay = new Invoice_Template__c(
+        zqu__InvoiceTemplate__c ampAutopay = new zqu__InvoiceTemplate__c(
             Active__c = true,
             Autopay__c = true,
             Anchor__c = true,
             Brand_Key__c = 'AmpRed',
-            External_Id__c = 'ampAutopay'
+            zqu__ZuoraId__c = 'ampAutopay'
         );
 
         // Missing: AMP Short Autopay to test error handling
-        insert new List<Invoice_Template__c>{
+        insert new List<zqu__InvoiceTemplate__c>{
             anchorTemplate, inactiveTemplate, bwNonAnchor,
             ampNonAnchor, bwAutopay, ampAutopay
         };
@@ -131,7 +131,7 @@ public class InvoiceTemplateAssignerTest {
             WHERE Zuora_Id__c != null ];
 
         InvoiceTemplateAssigner assigner = new InvoiceTemplateAssigner();
-        List<Invoice_Template__c> templates = assigner.getTemplateList();
+        List<zqu__InvoiceTemplate__c> templates = assigner.getTemplateList();
         List<ZuoraAPI.ZuoraAccount> zuoraAccount = assigner.assignTemplates(acctList,templates);
 
         // 6 templates exist, only 5 are active:
