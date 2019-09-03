@@ -3,7 +3,7 @@
     <assignments>
         <name>Assign_Campaign_Member</name>
         <label>Assign Campaign Member</label>
-        <locationX>476</locationX>
+        <locationX>498</locationX>
         <locationY>50</locationY>
         <assignmentItems>
             <assignToReference>SOV_CampaignMember.CampaignId</assignToReference>
@@ -48,15 +48,15 @@
     <recordCreates>
         <name>Create_Campaign_Member_Record</name>
         <label>Create Campaign Member Record</label>
-        <locationX>696</locationX>
-        <locationY>51</locationY>
+        <locationX>720</locationX>
+        <locationY>50</locationY>
         <inputReference>SOV_CampaignMember</inputReference>
     </recordCreates>
     <recordCreates>
         <name>Create_Error_Log_0</name>
         <label>Create Error Log</label>
-        <locationX>196</locationX>
-        <locationY>262</locationY>
+        <locationX>280</locationX>
+        <locationY>278</locationY>
         <inputAssignments>
             <field>Message__c</field>
             <value>
@@ -86,8 +86,8 @@
     <recordLookups>
         <name>Lookup_Campaign</name>
         <label>Lookup Campaign</label>
-        <locationX>192</locationX>
-        <locationY>37</locationY>
+        <locationX>278</locationX>
+        <locationY>50</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Assign_Campaign_Member</targetReference>
