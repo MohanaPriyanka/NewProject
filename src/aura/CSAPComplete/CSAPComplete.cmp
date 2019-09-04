@@ -13,16 +13,19 @@
       <div class="slds-icon-eq__bar"></div>
       <span class="slds-assistive-text">Loading</span>
     </div>
-    <div class="slds-text-body--regular slds-align_absolute-center">
+    <div class="slds-align_absolute-center slds-text-align--center">
       {!v.loadingText}
+      <br></br>
+      <br></br>
+      Your subscription could be provided by several solar farms. Each solar farm requires its own agreement.
+      <br></br>
+      Please review and sign each agreement as it loads below.
+
     </div>
   </aura:if>
 
   <!--DocuSign Signature page-->
   <aura:if isTrue="{!v.page == 'ContractSignature'}">
-      <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
-          Your subscription will be provided by {!v.lead.Opportunities__r.length} solar farms. Each solar farm requires its own agreement. Please review and sign each agreement as it loads below.
-      </div>
       <div class="slds-p-bottom--medium slds-text-align--center slds-align--absolute-center slds-m-horizontal--xx-large">
         <iframe src="{!v.signingURL}" height="600px" width="100%" style="border:none;" id="docusignIframe"></iframe>
       </div>

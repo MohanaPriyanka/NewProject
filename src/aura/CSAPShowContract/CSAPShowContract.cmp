@@ -12,6 +12,7 @@
         </div>
         <div class="slds-text-body--regular slds-align_absolute-center">
             {!v.loadingText}
+
         </div>
     </aura:if>
 </aura:component>
