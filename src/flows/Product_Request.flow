@@ -735,7 +735,7 @@
                 <leftValueReference>varTeamName</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Subscription and Utility Mgmt.</stringValue>
+                    <stringValue>Data and Finance Operations</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -837,7 +837,7 @@
             <label>Yes, it&apos;s a tech team</label>
         </rules>
     </decisions>
-    <description>Flow used to create cases or work items for the product team</description>
+    <description>Flow used to create cases or work items for various BW teams</description>
     <dynamicChoiceSets>
         <name>drcBizAppsAcqAdmin</name>
         <dataType>String</dataType>
