@@ -106,7 +106,7 @@ public without sharing class CSOpportunityFactory {
     @TestVisible
     private static Opportunity setOpportunityStage(Lead lead, Opportunity opp) {
         if (lead.LeadSource == 'Switch' || lead.LeadSource == 'Third-Party') {
-            opp.StageName = 'QC in Progress';
+            opp.StageName = 'QC in Process';
         } else {
             opp.StageName = 'Contract Pending';
         }
