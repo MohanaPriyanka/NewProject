@@ -88,6 +88,11 @@ public without sharing class ZuoraAccountSelector {
     }
 
     public static List<Zuora__CustomerAccount__c> getBillingAccountsById (Set<Id> accountIds){
+        if (!Schema.sObjectType.Zuora__CustomerAccount__c.isQueryable() ||
+            !Schema.sObjectType.Zuora__CustomerAccount__c.fields.Zuora__AutoPay__c.isAccessible() ||
+            !Schema.sObjectType.Zuora__CustomerAccount__c.fields.Zuora__Account__c.isAccessible()) {
+            throw new Util.FatalBWException('Insufficient permissions');
+        }
         return [
             SELECT Id, Name,
                 Zuora__AutoPay__c,
