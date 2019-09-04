@@ -1,0 +1,44 @@
+<!--
+ - Created by PeterYao on 8/27/2019.
+ -->
+
+<aura:component description="ZuoraPaymentReturner" implements="force:lightningQuickAction,force:hasRecordId" controller="ZuoraController">
+  <aura:attribute name="confirm" type="Boolean" default="true"/>
+  <aura:attribute name="loading" type="Boolean" default="false"/>
+  <aura:attribute name="result" type="Object"/>
+  <aura:attribute name="successMessage" type="String"/>
+
+  <div class="slds-m-bottom--medium">
+    If the Payment has not already been marked as returned, this will create debit memos for each of the payment part items in Zuora.
+  </div>
+  <aura:if isTrue="{!v.confirm}">
+    <div class="slds-m-bottom--medium">
+      Do you want to continue?
+    </div>
+    <div>
+      <lightning:button label="Yes" onclick="{!c.returnPayment}"/>
+    </div>
+  </aura:if>
+
+  <aura:if isTrue="{!v.loading}">
+    <div>
+      <lightning:spinner aura:id="mySpinner"/>
+    </div>
+  </aura:if>
+
+  <aura:if isTrue="{!v.result != null}">
+    <aura:if isTrue="{!v.result.success}">
+      <div>
+        {!v.successMessage}
+      </div>
+      <aura:set attribute="else">
+        <div class="slds-m-bottom--medium">
+          Return failed:
+        </div>
+        <div>
+          {!v.result.message}
+        </div>
+      </aura:set>
+    </aura:if>
+  </aura:if>
+</aura:component>

@@ -155,7 +155,7 @@ public class TestBillCreationandPayment {
                 Utility_NMC_Tariff__c = eversizeNMC.Id,
                 Expected_Yield_kWh_kW__c = 1300,
                 Assemblage_Count__c = 1,
-                Client_Account__c = clientAccount.Id,
+                Client_Account__c = clientAccount2.Id,
                 Sales_Partners__c = 'All',
                 Billing_Method__c = 'NMC',
                 Billing_Anchors__c = 'Bluewave',
@@ -939,6 +939,11 @@ public class TestBillCreationandPayment {
         systemBillList[1].Total_Payments_This_Month__c = 200;
 
         Profile profileRecord = [SELECT Id FROM Profile WHERE Name='API Only'];
+        String orgId = UserInfo.getOrganizationId();
+        String dateString =
+            String.valueOf(Datetime.now()).replace(' ','').replace(':','').replace('-','');
+        Integer randomInt = Integer.valueOf(Math.rint(Math.random()));
+        String uniqueName = orgId + dateString + randomInt;
         User userRecord = new User(
             FirstName = 'User With',
             LastName ='System Bill Edit',
@@ -951,7 +956,7 @@ public class TestBillCreationandPayment {
             Country ='United States',
             IsActive = true,
             TimeZoneSidKey='America/Los_Angeles',
-            Username='user@bluewavesolar.com');
+            Username=uniqueName+'@'+ uniqueName +'.com');
 
         System.runAs(userRecord) {
             Boolean hitError = false;
@@ -999,7 +1004,7 @@ public class TestBillCreationandPayment {
 
     @isTest public static void overpaymentMultipleSBSameEntity(){
         Entity__c entity = [
-            SELECT Id, Gateway__c
+            SELECT Id, Gateway__c, Client_Account__c
             FROM Entity__c
             WHERE Name = 'Oxford Barrett St. P1'
         ];
@@ -1012,6 +1017,7 @@ public class TestBillCreationandPayment {
         // Want to test when a customer has 2 SBs for the same entity in a bill period
         sssList[0].BWC_Project_Entity_Manual__c = entity.Id;
         sssList[1].BWC_Project_Entity_Manual__c = entity.Id;
+        sssList[1].Client_Account__c = entity.Client_Account__c;
         update sssList;
 
         Util.disableTrigger('Disable_AccountBillTrigger__c'); // TO Avoid SOQL Limits in data setup
