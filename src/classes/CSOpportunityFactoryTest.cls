@@ -412,7 +412,7 @@ public without sharing class CSOpportunityFactoryTest {
         System.assertEquals(newACHOrder.ChargentOrders__Bank_Account_Name__c, opp1.ACH_Name_on_Account__c);
         System.assertEquals('*****6789', opp1.ACH_Bank_Routing_Number__c);
         System.assertEquals('******7890', opp1.ACH_Account_Number__c);
-        System.assertEquals('QC in Progress', opp1.StageName);
+        System.assertEquals('QC in Process', opp1.StageName);
 
         System.assertEquals(sss2.Id, opp2.Shared_Solar_System__c);
         System.assertEquals(0, opp2.Annual_Electricity_Cost__c);
@@ -421,7 +421,7 @@ public without sharing class CSOpportunityFactoryTest {
         System.assertEquals(newACHOrder.ChargentOrders__Bank_Account_Name__c, opp2.ACH_Name_on_Account__c);
         System.assertEquals('*****6789', opp2.ACH_Bank_Routing_Number__c);
         System.assertEquals('******7890', opp2.ACH_Account_Number__c);
-        System.assertEquals('QC in Progress', opp2.StageName);
+        System.assertEquals('QC in Process', opp2.StageName);
     }
 
 
