@@ -233,8 +233,10 @@ global class DocuSignAPIMockImpl implements WebServiceMock, HttpCalloutMock {
                 CalloutException e = (CalloutException) CalloutException.class.newInstance();
                 e.setMessage('Exceeded maximum time allotted for callout');
                 throw e;
-            } else {
+            } else if (recipientRequest.ClientURLs != null && recipientRequest.ClientURLs.OnSigningComplete != null){
                 tokenResponse.RequestRecipientTokenResult = recipientRequest.ClientURLs.OnSigningComplete;
+            } else{
+                tokenResponse.RequestRecipientTokenResult = 'https://success';
             }
             response.put('response_x', tokenResponse);
         } else if (request instanceof DocuSignAPI.RequestSenderToken_element) {
