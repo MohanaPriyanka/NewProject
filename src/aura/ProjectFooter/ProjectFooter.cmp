@@ -1,0 +1,16 @@
+<!--
+ - Created by SarahRenfro on 7/25/2019.
+ -->
+
+<aura:component description="ProjectFooter" implements="forceCommunity:availableForAllPageTypes" controller="MyAccountController">
+
+  <lightning:layout class="slds-align--absolute-center" multipleRows="true">
+    <lightning:layoutItem size="12" mediumDeviceSize="9" largeDeviceSize="6" class=" footer slds-align-content-center">
+<div class="slds-p-around--x-small">
+  This marketing material is provided by BCS Customer Acquisition, LLC, and BCS Customer Management, LLC, both entities in the BlueWave family of companies. The solar farm depicted is not owned by a BlueWave company and is not necessarily the farm you would be joining. It is depicted for representaive purposes only.
+  *Environmental benefits of this project are based on the average annual output of the project and calculated using the EPA Greenhouse Gas Equivalencies Calculator (2018) epa.gov/energy. Neither BlueWave nor you will recieve renewable energy or environmental attributes from BlueWave’s community solar subscription.
+  **The output equivalent number is based on the estimated average annual kWh output value for the project and average annual U.S. home energy consumption as determined by the U.S. Energy Information Administration (Annual Energy Outlook 2018, https://www.eia.gov/outlooks/aeo/).
+</div>
+    </lightning:layoutItem>
+  </lightning:layout>
+</aura:component>
