@@ -3127,6 +3127,9 @@ null)</formula>
         <description>Checks to make sure that the Client Account on the SSS is the same as the Client Account on the Entity.</description>
         <errorConditionFormula>(
 Client_Account__c != BWC_Project_Entity_Manual__r.Client_Account__c
+&amp;&amp;
+ ISBLANK(BWC_Project_Entity_Manual__r.Client_Account__c
+)=false
 
 )</errorConditionFormula>
         <errorMessage>The Client Account on the Shared Solar System and the Client Account on the Entity are not the same. If the Client Account on the Entity is not filled in, make sure that it is.</errorMessage>
