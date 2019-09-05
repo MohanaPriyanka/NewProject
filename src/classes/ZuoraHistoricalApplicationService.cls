@@ -27,7 +27,15 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
         this.processingParameter = processingParameter;
         getProjectMap();
         if (defaultPaymentMethodId == null) {
-            getDefaultPaymentMethodId();
+            try {
+                getDefaultPaymentMethodId();
+            } catch (Util.BWException bwe) {
+                Logger.logNow('ZuoraHistoricalApplicationService', 'processOutstandingItems',
+                    'Warning getting default payment method, will requeue: \n' + bwe.getMessage() + '\n' + bwe.getStackTraceString(),
+                    Logger.WARN);
+                requeue();
+                return;
+            }
         }
         while (!processingParameter.payables.isEmpty()) {
             Payable payable = (Payable) processingParameter.payables[0];
@@ -79,7 +87,7 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
         if (queryResult.records.size() >= 1) {
             defaultPaymentMethodId = queryResult.records[0].Id;
         } else {
-            throw new Util.BWException('Did not find a default payment method id to use');
+            throw new Util.FatalBWException('Did not find a default payment method id to use');
         }
     }
 
@@ -432,16 +440,20 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
             payables.add(new Payable(creditMemo));
         }
         for (ChargentOrders__Transaction__c payment : payments) {
-            payables.add(new Payable(payment));
+            payables.add(new
+                Payable(payment));
         }
         payables.sort();
         return payables;
     }
 
-    // Used just to sort credit memos and payments
+    // Used just to sort credit memos and payments. Transfer payments should get
     public class Payable implements Comparable {
+        @TestVisible
         private Datetime payableDate;
+        @TestVisible
         private ZuoraAPI.CreditMemoWithItem creditMemo;
+        @TestVisible
         private ChargentOrders__Transaction__c payment;
 
         public Payable(ZuoraAPI.CreditMemoWithItem creditMemo) {
@@ -454,17 +466,39 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
             this.payment = payment;
         }
 
+        public Boolean isTransfer() {
+            return (payment != null && payment.ChargentOrders__Type__c == 'Transfer');
+        }
+
         public Integer compareTo(Object compareTo) {
             Payable compareToItem = (Payable) compareTo;
+            // If both items are transfers, or if none are transfers, just compare dates.
+            if ((this.isTransfer() && compareToItem.isTransfer()) ||
+                (!this.isTransfer() && !compareToItem.isTransfer())) {
+                return simpleComparison(compareToItem);
+            } else {
+                return transferComparison(compareToItem);
+            }
+        }
+
+        private Integer simpleComparison(Payable compareToItem) {
             Integer returnValue = 0;
             if (payableDate > compareToItem.payableDate) {
-                // Set return value to a positive value.
                 returnValue = 1;
             } else if (payableDate < compareToItem.payableDate) {
-                // Set return value to a negative value.
                 returnValue = -1;
             }
             return returnValue;
+        }
+
+        // This is used if one of the comparisons, but not both, is a transfer. The Transfer
+        // always goes first (-1).
+        private Integer transferComparison(Payable compareToItem) {
+            if (this.isTransfer()) {
+                return -1;
+            } else {
+                return 1;
+            }
         }
     }
 }
