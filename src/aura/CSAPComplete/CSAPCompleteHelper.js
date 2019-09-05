@@ -16,7 +16,7 @@
                     reject();
                 } else {
                     component.set('v.lead', resp.getReturnValue());
-                    component.set('v.loadingText', 'Generating your contract...');
+                    component.set('v.loadingText', 'Generating your contract(s)...');
                     resolve();
                 }
             });
