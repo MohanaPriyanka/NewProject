@@ -1,204 +1,284 @@
 <aura:component controller="CSAPController" access="global" extends="c:CSAPParent">
-  <aura:attribute name="ual" type="Utility_Account_Log__c" default="{'sobjectType':'Utility_Account_Log__c',
+    <aura:attribute name="ual" type="Utility_Account_Log__c" default="{'sobjectType':'Utility_Account_Log__c',
                                                                       'Name': ''}"/>
-  <aura:attribute name="ualList" type="Utility_Account_Log__c[]"/>
-  <aura:attribute name="provideLoginInformation" type="String"/>
-  <aura:attribute name="abbrevStates" type="String[]"/>
-  <aura:attribute name="attachments" type="Attachment[]"/>
-  <aura:attribute name="electricBill1" type="Object"/>
-  <aura:attribute name="electricBill2" type="Object"/>
-  <aura:attribute name="selectedProduct" type="Object"/>
-  <aura:attribute name="annualElectricHistory" type="Object"/>
-  <aura:attribute name="loading" type="Boolean"/>
-  <aura:attribute name="loadingText" type="String"/>
-  <aura:attribute name="isLargeFile" type="Boolean"/>
-  <aura:attribute name="utility" type="Object"/>
-  <aura:attribute name="rateClasses" type="Object[]"/>
-  <aura:attribute name="partnerApp" type="Boolean"/>
-  <aura:attribute name="sameAddress" type="Boolean" default="false"/>
-  <lightning:notificationsLibrary aura:id="notifLib"/>
+    <aura:attribute name="ualList" type="Utility_Account_Log__c[]"/>
+    <aura:attribute name="provideLoginInformation" type="String"/>
+    <aura:attribute name="abbrevStates" type="String[]"/>
+    <aura:attribute name="attachments" type="Attachment[]"/>
+    <aura:attribute name="electricBill1" type="Object"/>
+    <aura:attribute name="electricBill2" type="Object"/>
+    <aura:attribute name="selectedProduct" type="Object"/>
+    <aura:attribute name="annualElectricHistory" type="Object"/>
+    <aura:attribute name="loading" type="Boolean"/>
+    <aura:attribute name="loadingText" type="String"/>
+    <aura:attribute name="isLargeFile" type="Boolean"/>
+    <aura:attribute name="utility" type="Object"/>
+    <aura:attribute name="rateClasses" type="Object[]"/>
+    <aura:attribute name="partnerApp" type="Boolean"/>
+    <lightning:notificationsLibrary aura:id="notifLib"/>
 
-  <aura:set attribute="STAGENAME" value="NAV_Energy_Information"/>
-  <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
-  <aura:registerEvent name="CSAPNavigationEvent" type="c:CSAPNavigationEvent"/>
+    <aura:set attribute="STAGENAME" value="NAV_Energy_Information"/>
+    <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
+    <aura:registerEvent name="CSAPNavigationEvent" type="c:CSAPNavigationEvent"/>
 
-  <aura:if isTrue="{!v.loading}">
-    <div class="slds-icon-eq slds-is-animated slds-align_absolute-center slds-p-top_medium" title="Loading">
-      <div class="slds-icon-eq__bar"></div>
-      <div class="slds-icon-eq__bar"></div>
-      <div class="slds-icon-eq__bar"></div>
-      <span class="slds-assistive-text">Loading</span>
-    </div>
-    <div class="slds-text-body--regular slds-align_absolute-center">
-      {!v.loadingText}
-    </div>
-    <aura:set attribute="else">
-      <aura:if isTrue="{!v.page == 'UtilityAccountInformation'}">
-        <div aria-labelledby="utilityAccountInformationForm">
-          <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
-            <legend id="utilityAccountInformationForm" class="slds-text-heading--medium slds-text-align--center slds-p-vertical--small slds-align_absolute-center">
-              <b class="slds-p-horizontal_large"> Utility Account Information</b>
-            </legend>
+    <aura:if isTrue="{!v.loading}">
+        <div class="slds-icon-eq slds-is-animated slds-align_absolute-center slds-p-top_medium" title="Loading">
+            <div class="slds-icon-eq__bar"></div>
+            <div class="slds-icon-eq__bar"></div>
+            <div class="slds-icon-eq__bar"></div>
+            <span class="slds-assistive-text">Loading</span>
+        </div>
+        <div class="slds-text-body--regular slds-align_absolute-center">
+            {!v.loadingText}
+        </div>
+        <aura:set attribute="else">
+            <aura:if isTrue="{!v.page == 'UtilityAccountInformation'}">
+                <div aria-labelledby="utilityAccountInformationForm">
+                    <aura:iteration items="{!v.ualList}" var="ualItem">
+                        <fieldset
+                                class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
+                            <legend id="utilityAccountInformationForm"
+                                    class="slds-text-heading--medium slds-text-align--center slds-p-vertical--small slds-align_absolute-center">
+                                <b class="slds-p-horizontal_large">
+                                    <aura:if isTrue="{!_index == 0}">Utility Account Information</aura:if>
+                                    <aura:if isTrue="{!_index != 0}">Additional Utility Account</aura:if>
+                                </b>
+                            </legend>
+                            <form class="slds-form--stacked">
+                                <aura:if isTrue="{!_index == 0}">
+                                    <lightning:layout multipleRows="true">
+                                        <lightning:layoutItem class="slds-align_absolute-center slds-p-horizontal--large"
+                                                              padding="around-small"
+                                                              size="12">
+                                            <div class="slds-text-align--center">
+                                                Please enter the utility account information and service address exactly
+                                                as they appear on the utility bill.​
+                                            </div>
+                                        </lightning:layoutItem>
+                                    </lightning:layout>
+                                </aura:if>
 
-            <form class="slds-form--stacked">
-              <lightning:layout multipleRows="true">
-                <lightning:layoutItem class="slds-align_absolute-center slds-p-horizontal--large" padding="around-small" size="12">
-                  <div class="slds-text-align--center">
-                    Please enter the utility account information and service address exactly as they appear on the utility bill.​
-                  </div>
-                </lightning:layoutItem>
-                <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6">
-                  <lightning:input aura:id="field" name="leadElectricityProvider"
-                                   label="Electricity Provider"
-                                   value="{!v.utility.Name}"
-                                   disabled="true"
-                                   required="true"/>
-                </lightning:layoutItem>
-                <aura:if isTrue="{!!v.partnerApp}">
-                  <aura:if isTrue="{!v.rateClasses.length > 0}">
-                    <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6" >
-                      <lightning:select aura:id="field" name="ualRateClass"
-                                        label="Rate Class"
-                                        value="{!v.ual.Utility_Rate_Class__c}"
-                                        required="true">
-                        <option value="">Choose Rate Class</option>
-                        <aura:iteration items="{!v.rateClasses}" var="rateClass">
-                          <option value="{!rateClass.Id}">{!rateClass.Name}</option>
-                        </aura:iteration>
-                        <option value="Rate Class Not in List">Rate Class Not in List</option>
-                      </lightning:select>
-                    </lightning:layoutItem>
-                  </aura:if>
-                  <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6" >
-                    <lightning:input aura:id="field" name="ualAnnualkWhUsed"
-                                     type="number"
-                                     label="How many kWh do you use in a year?"
-                                     value="{!v.ual.Annual_kWh__c}"
-                                     placeholder="Annual kWh"
-                                     required="true"/>
-                  </lightning:layoutItem>
-                </aura:if>
-                <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6" >
-                  <lightning:input aura:id="field" name="ualUtilityAccountNumber"
-                                   type="text"
-                                   label="Utility Account Number"
-                                   value="{!v.ual.Name}"
-                                   required="true"/>
-                </lightning:layoutItem>
-                <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6">
-                  <lightning:input aura:id="field" name="ualNameOnAccount"
-                                   type="text"
-                                   label="Name exactly as it appears on your utility account"
-                                   value="{!v.ual.Name_on_Account__c}"
-                                   required="true"/>
-                </lightning:layoutItem>
-                <lightning:layoutItem padding="around-small" size="12" >
-                  <ui:inputCheckbox aura:id="checkbox" class='slds-p-horizontal--medium slds-float--left' change="{!c.handleChange}"/>
-                  <label for="checkbox" class="slds-p-left--small ">Service Address is same as Billing Address</label>
-                </lightning:layoutItem>
-              </lightning:layout>
+                                <lightning:layout multipleRows="true">
+                                    <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6"
+                                                          mediumDeviceSize="6">
+                                        <lightning:input aura:id="field" name="leadElectricityProvider"
+                                                         label="Electricity Provider"
+                                                         value="{!v.utility.Name}"
+                                                         disabled="true"
+                                                         required="true"/>
+                                    </lightning:layoutItem>
 
-              <aura:if isTrue="{!!v.sameAddress}">
-                <lightning:layout multipleRows="true">
-                  <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6">
-                    <lightning:input aura:id="field" name="ualServiceAddress"
-                                     label="Service Address"
-                                     value="{!v.ual.Service_Address__c}"
-                                     required="true"/>
-                  </lightning:layoutItem>
-                  <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6" >
-                    <lightning:input aura:id="field" name="ualServiceCity"
-                                     label="City"
-                                     value="{!v.ual.Service_City__c}"
-                                     required="true"/>
-                  </lightning:layoutItem>
-                  <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6">
+                                    <aura:if isTrue="{!!v.partnerApp}">
+                                        <aura:if isTrue="{!v.rateClasses.length > 0}">
+                                            <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6"
+                                                                  mediumDeviceSize="6">
+                                                <lightning:select aura:id="field" name="ualRateClass"
+                                                                  label="Rate Class"
+                                                                  value="{!ualItem.Utility_Rate_Class__c}"
+                                                                  required="true">
+                                                    <option value="">Choose Rate Class</option>
+                                                    <aura:iteration items="{!v.rateClasses}" var="rateClass">
+                                                        <option value="{!rateClass.Id}">{!rateClass.Name}</option>
+                                                    </aura:iteration>
+                                                    <option value="Rate Class Not in List">Rate Class Not in List
+                                                    </option>
+                                                </lightning:select>
+                                            </lightning:layoutItem>
+                                        </aura:if>
+                                    </aura:if>
 
-                    <lightning:select aura:id="field" name="ualServiceState"
-                                      label="State"
-                                      value="{!v.ual.Service_State__c}"
-                                      required="true">
-                      <option value="">Choose state...</option>
-                      <aura:iteration items="{!v.abbrevStates}" var="s">
-                        <option value="{!s}" text="{!s}"></option>
-                      </aura:iteration>
-                    </lightning:select>
-                  </lightning:layoutItem>
-                  <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6" mediumDeviceSize="6" >
-                    <lightning:input aura:id="field" name="ualServiceZipCode"
-                                     label="Service ZIP Code"
-                                     value="{!v.ual.Service_Zip_Code__c}"
-                                     disabled="true"
-                                     required="true"/>
-                  </lightning:layoutItem>
-                </lightning:layout>
-              </aura:if>
-              <div class="slds-clearfix slds-p-top_medium">
-                <div class="slds-float_left">
+                                    <aura:if isTrue="{#and(v.selectedProduct.Customer_Subscription_Type__c == 'kWh', empty(ualItem.Annual_kWh__c))}">
+                                        <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                                            <lightning:input aura:id="field" name="ualAnnualkWhUsed"
+                                                             type="number"
+                                                             label="How many kWh do you use in a year?"
+                                                             value="{!ualItem.Annual_kWh__c}"
+                                                             placeholder="Annual kWh"
+                                                             required="true"/>
+                                        </lightning:layoutItem>
+                                    </aura:if>
+                                    <aura:if isTrue="{#and(v.selectedProduct.Customer_Subscription_Type__c == 'Electricity Cost ($)', empty(ualItem.Annual_Cost_of_Electricity__c))}">
+                                        <lightning:layoutItem padding="around-small" size="6" smallDeviceSize="12" mediumDeviceSize="6">
+                                            <lightning:input aura:id="field" name="ualAnnualCostofElectricity"
+                                                             type="number"
+                                                             formatter="currency"
+                                                             label="Roughly, how much do you spend on electricity per year?"
+                                                             value="{!ualItem.Annual_Cost_of_Electricity__c}"
+                                                             placeholder="Annual Cost"
+                                                             required="true"/>
+                                        </lightning:layoutItem>
+                                    </aura:if>
+
+
+                                    <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6"
+                                                          mediumDeviceSize="6">
+                                        <lightning:input aura:id="field" name="ualUtilityAccountNumber"
+                                                         type="text"
+                                                         label="Utility Account Number"
+                                                         value="{!ualItem.Name}"
+                                                         required="true"/>
+                                    </lightning:layoutItem>
+                                    <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6"
+                                                          mediumDeviceSize="6">
+                                        <lightning:input aura:id="field" name="ualNameOnAccount"
+                                                         type="text"
+                                                         label="Name exactly as it appears on your utility account"
+                                                         value="{!ualItem.Name_on_Account__c}"
+                                                         required="true"/>
+                                    </lightning:layoutItem>
+                                    <lightning:layoutItem padding="around-small" size="12">
+                                        <lightning:input aura:id="field" name="checkbox"
+                                                         type="checkbox"
+                                                         label="Service Address is same as Billing Address"
+                                                         checked="{!ualItem.Same_Address__c}"
+                                                         class="slds-p-left&#45;&#45;small "/>
+                                    </lightning:layoutItem>
+                                </lightning:layout>
+
+                                <aura:if isTrue="{!!ualItem.Same_Address__c}">
+                                    <lightning:layout multipleRows="true">
+                                        <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6"
+                                                              mediumDeviceSize="6">
+                                            <lightning:input aura:id="field" name="ualServiceAddress"
+                                                             label="Service Address"
+                                                             value="{!ualItem.Service_Address__c}"
+                                                             required="true"/>
+                                        </lightning:layoutItem>
+                                        <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6"
+                                                              mediumDeviceSize="6">
+                                            <lightning:input aura:id="field" name="ualServiceCity"
+                                                             label="City"
+                                                             value="{!ualItem.Service_City__c}"
+                                                             required="true"/>
+                                        </lightning:layoutItem>
+                                        <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6"
+                                                              mediumDeviceSize="6">
+
+                                            <lightning:select aura:id="field" name="ualServiceState"
+                                                              label="State"
+                                                              value="{!ualItem.Service_State__c}"
+                                                              required="true">
+                                                <option value="">Choose state...</option>
+                                                <aura:iteration items="{!v.abbrevStates}" var="s">
+                                                    <option value="{!s}" text="{!s}"></option>
+                                                </aura:iteration>
+                                            </lightning:select>
+                                        </lightning:layoutItem>
+                                        <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6"
+                                                              mediumDeviceSize="6">
+                                            <lightning:input aura:id="field" name="ualServiceZipCode"
+                                                             label="Service ZIP Code"
+                                                             value="{!ualItem.Service_Zip_Code__c}"
+                                                             disabled="true"
+                                                             required="true"/>
+                                        </lightning:layoutItem>
+
+
+                                    </lightning:layout>
+
+                                </aura:if>
+
+                                <aura:if isTrue="{!_index + 1 == v.ualList.length}">
+                                    <aura:if isTrue="{!v.ualList.length > 1}">
+                                        <div class="slds-clearfix slds-p-top_medium">
+                                            <div class="slds-float_left">
+                                                <lightning:button label="Remove Additional Utility Account"
+                                                                  onclick="{!c.removePreviousUAL}"/>
+                                            </div>
+                                        </div>
+                                    </aura:if>
+                                    <div class="slds-clearfix slds-p-top_medium">
+                                        <aura:if isTrue="{!!v.selectedProduct.Disable_Multiple_UAL_CSAP__c}">
+                                            <div class="slds-float_left">
+                                                <lightning:button label="Add Additional Utility Account"
+                                                                  onclick="{!c.addUAL}"/>
+                                            </div>
+                                        </aura:if>
+                                        <div class="slds-float_right">
+                                            <lightning:button label="Next" onclick="{!c.submitEnergyInfo}"/>
+                                        </div>
+                                    </div>
+                                </aura:if>
+                            </form>
+                        </fieldset>
+                    </aura:iteration>
                 </div>
-                <div class="slds-float_right">
-                  <lightning:button label="Next" onclick="{!c.submitEnergyInfo}"/>
+            </aura:if>
+
+
+            <aura:if isTrue="{!v.page == 'UtilityAccountUpload'}">
+                <div aria-labelledby="utilityAccountInformationFormAttachment">
+                    <aura:iteration items="{!v.ualList}" var="ualItem">
+                        <fieldset
+                                class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
+                            <form class="slds-form--stacked">
+                                <aura:if isTrue="{!_index == 0}">
+                                    <lightning:layout multipleRows="true">
+                                        <lightning:layoutItem class="slds-align_absolute-center slds-p-horizontal--large"
+                                                              padding="around-small"
+                                                              size="12">
+                                            <div class="slds-text-align--center">
+                                                Please upload a utility bill for the utility account(s) below.​
+                                            </div>
+                                        </lightning:layoutItem>
+                                    </lightning:layout>
+                                </aura:if>
+                                <lightning:layout multipleRows="true">
+                                    <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6"
+                                                          mediumDeviceSize="6">
+                                        <div><strong>Utility Account Number:</strong>&nbsp; {!ualItem.Name}</div>
+                                        <div><strong>Name on Account:</strong>&nbsp; {!ualItem.Name_on_Account__c}</div>
+                                        <div><strong>Service Address:</strong>&nbsp; {!ualItem.Service_Address__c}</div>
+                                    </lightning:layoutItem>
+                                    <lightning:layoutItem padding="around-small" size="12" largeDeviceSize="6"
+                                                          mediumDeviceSize="6">
+                                        <lightning:fileUpload label="Upload Bill"
+                                                              name="fileUploader"
+                                                              multiple="true"
+                                                              recordId="{!ualItem.Id}"
+                                                              onuploadfinished="{!c.handleUploadFinished}"/>
+                                    </lightning:layoutItem>
+                                </lightning:layout>
+                                <aura:if isTrue="{!_index + 1 == v.ualList.length}">
+                                    <div class="slds-clearfix slds-p-top_medium">
+                                        <div class="slds-float_left">
+                                        </div>
+                                        <div class="slds-float_right">
+                                            <lightning:button label="Next" onclick="{!c.finishStage}"/>
+                                        </div>
+                                    </div>
+                                </aura:if>
+                            </form>
+                        </fieldset>
+                        <br />
+                    </aura:iteration>
                 </div>
-              </div>
-            </form>
-          </fieldset>
-        </div>
-      </aura:if>
+            </aura:if>
 
-      <!--CSAP 2.1 does not maintain ability to add more than one UAL; keeping this here in case we do want to add more later-->
-      <aura:if isTrue="{!v.page == 'AddMoreUAL'}">
-        <div aria-labelledby="addToApplicationForm">
-          <fieldset class="slds-box slds-theme--default slds-container_center">
-            <legend id="ApplyingFor" class="slds-text-heading--small slds-p-vertical--medium slds-align_absolute-center">
-              <b class="slds-section__title--large slds-p-horizontal_large">  Do you have any additional Utility Accounts at this Property?  </b>
-            </legend>
-            <lightning:layout multipleRows="true" horizontalAlign="center">
-              <lightning:layoutItem size="3" smallDeviceSize="6" mediumDeviceSize="3">
-                <aura:if isTrue="{!v.lead.Status == 'Qualified'}">
-                  <div class="slds-visual-picker slds-visual-picker_large">
-                    <a onclick="{!c.addUAL}">
-                      <label for="visual-picker-add-utility">
-                    <span class="slds-visual-picker__figure slds-visual-picker__icon slds-align_absolute-center">
-                      <span class="slds-icon_container" title="description of icon when needed">
-                        <lightning:icon class="blueIcon" iconName="utility:light_bulb" size="x-large"/>
-                      </span>
-                    </span>
-                        <span class="slds-visual-picker__body">
-                      <div class="slds-text-body--large--blue"><b>Add another utility to </b></div>
-                      <div class="slds-text-body--large--stream"><b>{!v.lead.Company}</b></div>
-                    </span>
-                      </label>
-                    </a>
-                  </div>
-                </aura:if>
-              </lightning:layoutItem>
-            </lightning:layout>
-          </fieldset>
-        </div>
-        <div class="slds-clearfix slds-p-top_medium slds-align_absolute-center">
-          <lightning:button label="No, Continue to Next Step" onclick="{!c.finishStage}"/>
-        </div>
-      </aura:if>
-      <!--End of AddMoreUAL page-->
 
-      <aura:if isTrue="{!v.page == 'CompletedUtilityInfo'}">
-        <div aria-labelledby="addToApplicationForm">
-          <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
-            <legend id="ApplyingFor" class="slds-text-heading--medium slds-text-align--center slds-p-vertical--small slds-align_absolute-center">
-              <b class="slds-p-horizontal_large">Utility Information Saved</b>
-            </legend>
-            <form class="slds-form--stacked" style="text-align: center">
-              <lightning:layout multipleRows="true" horizontalAlign="center">
-                <lightning:layoutItem size="12" class="slds-text-align--center slds-p-horizontal--large slds-m-bottom--large">
-                  You've completed the information we needed for this customer and they have been notified. You may close this window.
-                </lightning:layoutItem>
-              </lightning:layout>
-            </form>
-          </fieldset>
-        </div>
-      </aura:if>
-    </aura:set>
-  </aura:if>
+            <aura:if isTrue="{!v.page == 'CompletedUtilityInfo'}">
+                <div aria-labelledby="addToApplicationForm">
+                    <fieldset
+                            class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
+                        <legend id="ApplyingFor"
+                                class="slds-text-heading--medium slds-text-align--center slds-p-vertical--small slds-align_absolute-center">
+                            <b class="slds-p-horizontal_large">Utility Information Saved</b>
+                        </legend>
+                        <form class="slds-form--stacked" style="text-align: center">
+                            <lightning:layout multipleRows="true" horizontalAlign="center">
+                                <lightning:layoutItem size="12"
+                                                      class="slds-text-align--center slds-p-horizontal--large slds-m-bottom--large">
+                                    You've completed the information we needed for this customer and they have been
+                                    notified. You may
+                                    close this window.
+                                </lightning:layoutItem>
+                            </lightning:layout>
+                        </form>
+                    </fieldset>
+                </div>
+            </aura:if>
+        </aura:set>
+    </aura:if>
 
 
 </aura:component>
