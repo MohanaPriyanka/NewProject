@@ -462,4 +462,19 @@ public with sharing class SharedSolarSystemHandlerTest {
         System.assertEquals(9.4616,sssUpdated.Capacity_Committed_kW_DC__c);
         System.assertEquals(23.0769,sssUpdated.Anchor_capacity_reserved__c);
     }
+
+    @IsTest
+    public static void testStageUpdate(){
+        List<Shared_Solar_System__c> testSSS = [
+            SELECT Name, Capacity_Committed_kW_DC__c, Stage__c
+            FROM Shared_Solar_System__c
+            WHERE Name = 'Oxford Barrett St. P1'
+        ];
+
+        String response = SharedSolarSystemHandler.updateStage(testSSS[0].Id,'Pending');
+        System.assertEquals('Success',response);
+
+        String responseTwo = SharedSolarSystemHandler.updateStage(testSSS[0].Id,'Acquisition');
+        System.assertNotEquals('Success',responseTwo);
+    }
 }
