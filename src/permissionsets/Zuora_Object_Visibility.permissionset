@@ -332,4 +332,16 @@
         <object>Zuora__ZInvoice__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
+    <tabSettings>
+        <tab>Zuora__CustomerAccount__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>Zuora__Payment__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>Zuora__ZInvoice__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
 </PermissionSet>
