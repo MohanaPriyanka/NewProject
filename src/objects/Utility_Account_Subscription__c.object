@@ -1018,6 +1018,23 @@ IF(
         <type>Currency</type>
     </fields>
     <label>Utility Account Subscription</label>
+    <listViews>
+        <fullName>Customer_Community_List_Community_Solar_Subscriptions</fullName>
+        <columns>NAME</columns>
+        <columns>Status__c</columns>
+        <columns>Shared_Solar_System_Name__c</columns>
+        <columns>Estimated_Annual_Subscription_kWh__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Next_Schedule_Z_Status__c</field>
+            <operation>equals</operation>
+            <value>Active Subscription</value>
+        </filters>
+        <label>Community Solar Subscriptions</label>
+        <sharedTo>
+            <group>All_Communities_Users</group>
+        </sharedTo>
+    </listViews>
     <nameField>
         <label>Utility Account Number</label>
         <trackHistory>false</trackHistory>

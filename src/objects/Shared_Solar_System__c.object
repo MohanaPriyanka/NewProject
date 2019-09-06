@@ -1260,6 +1260,20 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
         <type>Url</type>
     </fields>
     <fields>
+        <fullName>Project_Information_short__c</fullName>
+        <description>This is the information that is displayed within the Project carousel in the Customer Portal, and is meant to be a short blurb to give info at a glance. Character count is purposefully kept smaller than the full information field.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the information that is displayed within the Project carousel in the Customer Portal, and is meant to be a short blurb to give info at a glance.</inlineHelpText>
+        <label>Project Information (short)</label>
+        <length>250</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Project_Location_and_Customer_Allocation__c</fullName>
         <description>Displayed in the CS Customer Disclosure Form</description>
         <externalId>false</externalId>
