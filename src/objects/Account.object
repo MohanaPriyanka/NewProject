@@ -432,6 +432,16 @@ IMAGE(&quot;/resource/1553274837000/Crown_Icon&quot;, &quot;crown&quot;),
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Autopay_Date_Last_Enrolled__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The last day someone opted in to Autopay</inlineHelpText>
+        <label>Autopay Date Last Enrolled</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>B_Corp__c</fullName>
         <externalId>false</externalId>
         <label>B Corporation</label>
