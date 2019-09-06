@@ -27735,6 +27735,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Shared_Solar_System__c.Information__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Last_Sch_Z_Enacted_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -27847,6 +27852,11 @@
         <editable>false</editable>
         <field>Shared_Solar_System__c.Project_Capacity_Available_kW_DC__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Project_Image__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -30645,6 +30655,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Utility_Account_Subscription__c.Estimated_Annual_Subscription_kWh__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Utility_Account_Subscription__c.Full_Anticipated_NMC_Allocation_kWh__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -30752,6 +30767,11 @@
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Shared_Solar_System_Name__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Subscription__c.Status__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -49587,6 +49607,10 @@
     <tabVisibilities>
         <tab>Utility_Account_Log__c</tab>
         <visibility>DefaultOff</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Utility_Account_Subscription__c</tab>
+        <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>Utility_NMC_Tariff__c</tab>

@@ -9,22 +9,22 @@
     <emailSenderName>BlueWave</emailSenderName>
     <enableCustomVFErrorPageOverrides>false</enableCustomVFErrorPageOverrides>
     <enableDirectMessages>false</enableDirectMessages>
-    <enableGuestChatter>false</enableGuestChatter>
-    <enableGuestFileAccess>false</enableGuestFileAccess>
+    <enableGuestChatter>true</enableGuestChatter>
+    <enableGuestFileAccess>true</enableGuestFileAccess>
     <enableInvitation>false</enableInvitation>
     <enableKnowledgeable>false</enableKnowledgeable>
     <enableMemberVisibility>true</enableMemberVisibility>
     <enableNicknameDisplay>false</enableNicknameDisplay>
     <enablePrivateMessages>false</enablePrivateMessages>
     <enableReputation>false</enableReputation>
-    <enableShowAllNetworkSettings>false</enableShowAllNetworkSettings>
+    <enableShowAllNetworkSettings>true</enableShowAllNetworkSettings>
     <enableSiteAsContainer>true</enableSiteAsContainer>
     <enableTalkingAboutStats>false</enableTalkingAboutStats>
     <enableTopicAssignmentRules>true</enableTopicAssignmentRules>
     <enableTopicSuggestions>false</enableTopicSuggestions>
     <enableUpDownVote>false</enableUpDownVote>
     <forgotPasswordTemplate>Emails_to_Delete/CommunityForgotPasswordEmailTemplate</forgotPasswordTemplate>
-    <gatherCustomerSentimentData>true</gatherCustomerSentimentData>
+    <gatherCustomerSentimentData>false</gatherCustomerSentimentData>
     <navigationLinkSet>
         <navigationMenuItem>
             <label>My Account</label>
@@ -37,7 +37,7 @@
             <label>My Solar</label>
             <position>2</position>
             <publiclyAvailable>false</publiclyAvailable>
-            <target>/mysolar</target>
+            <target>/my-solar-subscription</target>
             <type>InternalLink</type>
         </navigationMenuItem>
         <navigationMenuItem>
@@ -80,7 +80,7 @@
             <label>Logout</label>
             <position>5</position>
             <publiclyAvailable>true</publiclyAvailable>
-            <target>https://bluewavememberportal.force.com/secur/logout.jsp</target>
+            <target>https://lucy-bluewavememberportal.force.com/secur/logout.jsp</target>
             <targetPreference>OpenExternalLinkInSameTab</targetPreference>
             <type>ExternalLink</type>
         </navigationMenuItem>
@@ -89,7 +89,7 @@
         <permissionSet>AccessToModifyCSPortal</permissionSet>
         <profile>Admin</profile>
         <profile>customer community plus login user</profile>
-        <profile>community solar community user</profile>
+        <profile>Community Solar Community User</profile>
     </networkMemberGroups>
     <networkPageOverrides>
         <changePasswordPageOverrideSetting>Standard</changePasswordPageOverrideSetting>

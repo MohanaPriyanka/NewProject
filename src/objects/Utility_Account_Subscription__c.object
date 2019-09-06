@@ -45,7 +45,6 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>false</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableReports>true</enableReports>
@@ -372,6 +371,22 @@ Round(( Subscribed_Annual_Cost_of_Electricity__c / 0.1933 / Opportunity__r.Share
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Estimated_Annual_Subscription_kWh__c</fullName>
+        <description>This is displayed to customers in the customer portal.</description>
+        <externalId>false</externalId>
+        <formula>Customer_Subscription_KW_DC__c *  Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>This is displayed to customers in the customer portal.</inlineHelpText>
+        <label>Estimated Annual Subscription (kWh)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Finaled__c</fullName>
@@ -747,6 +762,43 @@ Round(( Subscribed_Annual_Cost_of_Electricity__c / 0.1933 / Opportunity__r.Share
         <formula>Opportunity__r.Shared_Solar_System_Name__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Shared Solar System Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+ ISBLANK(Date_Removed_from_Project__c)=false,
+&quot;Inactive&quot;,
+
+IF(
+
+  ISPICKVAL(Next_Schedule_Z_Status__c,&quot;Active Subscription&quot;)
+&amp;&amp;
+ Current_Schedule_Z_Status__c=&quot;Not Yet Enacted&quot;,
+&quot;Coming Soon&quot;,
+
+IF(
+  ISPICKVAL(Next_Schedule_Z_Status__c,&quot;Active Subscription&quot;)
+&amp;&amp;
+ Current_Schedule_Z_Status__c=&quot;Enacted&quot;,
+&quot;Active&quot;,
+
+IF(
+  ISPICKVAL(Next_Schedule_Z_Status__c,&quot;Inactive Subscription&quot;)
+&amp;&amp;
+ Current_Schedule_Z_Status__c=&quot;Enacted&quot;,
+&quot;Pending Removal&quot;,&quot;&quot;)
+
+
+)
+)
+)</formula>
+        <label>Status</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
