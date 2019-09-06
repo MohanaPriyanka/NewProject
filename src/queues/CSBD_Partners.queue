@@ -2,7 +2,15 @@
 <Queue xmlns="http://soap.sforce.com/2006/04/metadata">
     <doesSendEmailToMembers>false</doesSendEmailToMembers>
     <name>CSBD - Partners</name>
+    <queueMembers>
+        <users>
+            <user>bclark@bluewavesolar.com</user>
+        </users>
+    </queueMembers>
     <queueSobject>
         <sobjectType>Lead</sobjectType>
+    </queueSobject>
+    <queueSobject>
+        <sobjectType>Shared_Solar_System__c</sobjectType>
     </queueSobject>
 </Queue>

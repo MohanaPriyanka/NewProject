@@ -4,6 +4,25 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
         updateSSS();
     }
 
+    @AuraEnabled
+    public static String updateStage(String sssToUpdate, String newStage) {
+        Shared_Solar_System__c sss = new Shared_Solar_System__c();
+        sss.Id = sssToUpdate;
+        sss.Stage__c = newStage;
+        try {
+            update sss;
+            return 'Success';
+        } catch (Exception excep){
+            String customMessage = excep.getMessage();
+            if (customMessage.contains('FIELD_CUSTOM_VALIDATION_EXCEPTION')){
+                Integer location = customMessage.indexOf('FIELD_CUSTOM_VALIDATION_EXCEPTION');
+                Integer length = customMessage.length();
+                customMessage = customMessage.subString(location + 35, length);
+            }
+            return customMessage;
+        }
+    }
+
     public void updateSSS() {
         Map<Id, Shared_Solar_System__c> oldSSSMap = new Map<Id, Shared_Solar_System__c>();
         List<Shared_Solar_System__c> newSSSList = getSSSList();
