@@ -79,11 +79,15 @@ public with sharing class BillingAccountServiceTest {
         update zuoraAccounts;
         Test.stopTest();
 
+        List<Error_Log__c> errors = [SELECT Id, Message__c FROM Error_Log__c];
+        system.debug(errors);
+
         List<Account> updatedAutopayAccounts = [
-            SELECT Id, Recurring_Billing__c
+            SELECT Id, Recurring_Billing__c, Autopay_Date_Last_Enrolled__c
             FROM Account
             WHERE Recurring_Billing__c = true
         ];
         System.assertEquals(5,updatedAutopayAccounts.size());
+        System.assertEquals(Date.today(),updatedAutopayAccounts[0].Autopay_Date_Last_Enrolled__c);
     }
 }

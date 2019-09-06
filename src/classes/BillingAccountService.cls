@@ -17,6 +17,9 @@ public without sharing class BillingAccountService{
                         Id = zAccount.Zuora__Account__r.Id,
                         Recurring_Billing__c = zAccount.Zuora__AutoPay__c
                     );
+                    if (zAccount.Zuora__AutoPay__c){
+                        propAccount.Autopay_Date_Last_Enrolled__c = Date.today();
+                    }
                     propAccountsToUpdate.add(propAccount);
                 }
             }
