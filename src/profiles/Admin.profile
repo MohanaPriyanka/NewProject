@@ -917,6 +917,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>SharedSolarSystemHandlerTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>SiteLoginController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -29311,6 +29315,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Shared_Solar_System__c.Stage__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Shared_Solar_System__c.State__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -51742,6 +51751,10 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>RecalculateUALCost</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>SSS_Stages</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>

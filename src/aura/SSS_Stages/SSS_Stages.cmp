@@ -1,0 +1,113 @@
+<aura:component controller="SharedSolarSystemHandler" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId">
+ <aura:attribute name="recordFromVF" type="String"/>
+ <aura:attribute name="currentStage" type="String"/>
+ <aura:attribute name="currentOwner" type="String"/>
+
+ <aura:attribute name="showSave" type="Boolean" default="false"/>
+ <aura:attribute name="errorMessage" type="String"/>
+ <aura:attribute name="successfulUpdate" type="Boolean"/>
+
+ <aura:attribute name="selectedStage" type="String"/>
+
+ <lightning:picklistPath aura:id="picklistPath"
+                           recordId="{!v.recordFromVF}"
+                           variant="non-linear"
+                           picklistFieldApiName="Stage__c"
+                           onselect="{!c.handleSelect}">
+ </lightning:picklistPath>
+  <div class="slds-align_absolute-center slds-p-top--small">
+   <aura:if isTrue="{!v.showSave}">
+   <lightning:button name="saveStage"
+                     label="Update Stage"
+                     onclick="{!c.updateSSSStage}"
+                     class="slds-text-body_small slds-button--brand
+                            slds-p-left_small slds-p-right_small"/>
+  </aura:if>
+  <aura:if isTrue="{!v.successfulUpdate}">
+   Stage change successful, please &nbsp;
+   <a href="{!'/' + v.recordFromVF}" target="_top">
+    <lightning:button name="saveStage"
+                      label="Refresh"
+                      class="slds-text-body_small slds-button--brand
+                             slds-p-left_small slds-p-right_small"/>
+    </a>
+   <aura:set attribute="else">
+     <div class="slds-p-around--medium slds-text-color_error">
+      <b>{!v.errorMessage}</b>
+     </div>
+   </aura:set>
+  </aura:if>
+ </div>
+ <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
+  <div class="slds-col slds-size_2-of-12 slds-p-around--large">
+   <lightning:icon iconName="utility:user"
+                   size="large"
+                   class="slds-p-right_small slds-align_absolute-center"/>
+   <h3 class="slds-text-heading_medium slds-text-color_default slds-p-top--small slds-align_absolute-center">
+    <b>{!v.currentStage}</b>
+   </h3>
+   <h3 class="slds-text-body_large slds-text-color_default slds-align_absolute-center slds-p-top--small">
+    Owner: &nbsp; <b>{!v.currentOwner}</b>
+   </h3>
+  </div>
+  <div class="slds-col slds-size_10-of-12">
+
+   <aura:if isTrue="{!v.currentStage == 'Pending'}">
+    <div>Trigger for creation: CSBD discretion (when client opportunity becomes some level of real)</div>
+    <br></br>
+    <div><i>Required to move from Pending to Onboarding:</i></div>
+    <li>Signed Client Contract</li>
+    <li>Distinct list of projects included under contract</li>
+    <li>Customer Contract</li>
+    <li>Any other data provided by the client at this stage <b>should be treated as estimates (System Size, Utility, State, Product etc)</b></li>
+   </aura:if>
+
+   <aura:if isTrue="{!v.currentStage == 'Onboarding'}">
+    <div>While we are onboarding a project before we open it to customer sales, we will need to gather data from the client</div>
+    <br></br>
+    <div><i><b>Required to move from Onboarding to Acquisition:</b></i></div>
+    <li>Utility and Load Zone</li>
+    <li>Product</li>
+    <li>Project Address</li>
+    <li>Estimated COD and PTO Date</li>
+    <li>Credit Score Requirement</li>
+    <li>Total System Size (kW DC)</li>
+    <li>Project Yield</li>
+    <li>Anchor Capacity</li>
+    <li>Credit Value ("Utility NMC Tariff")</li>
+   </aura:if>
+
+   <aura:if isTrue="{!v.currentStage == 'Acquisition'}">
+    <div>While we are actively signing up customers to a project.</div>
+    <br></br>
+    <div><b>Important Updates During this Stage:</b></div>
+    <li><u>Open Checkbox:</u> Determines if the project is open to sales</li>
+    <li><u>Assignment Order:</u> Determines which projects get filled first if a customer is eligible for more than 1 </li>
+    <li><u>Sales Partners:</u> List of partners who can subscribe customers to that project</li>
+    <li><u>Credit Score Requirement:</u> may need to be modified over time to maintain a project average</li>
+    <li><u>Anchor Capacity:</u> may need to be modified over time as requirements change</li>
+    <br></br>
+    <div><i><b>Required to move from Acquisition to Management:</b></i></div>
+    <li>Project is fully subscribed (Committed Capacity = Total System Size)</li>
+    <li>Open = false</li>
+    <li>Updates to Estimated COD and PTO Date</li>
+   </aura:if>
+
+   <aura:if isTrue="{!v.currentStage == 'Management'}">
+    <div>While we are managing customer subscriptions, allocation schedules and billing.</div>
+    <br></br>
+    <div><b>Important Updates During this Stage:</b></div>
+    <li>Allocation Schedules</li>
+    <li>Production Updates</li>
+   </aura:if>
+
+   <aura:if isTrue="{!v.currentStage == 'Inactive'}">
+    Used for:
+    <li>Potential projects that never end up happening </li>
+    <li>Projects that we are no longer managing</li>
+    <li>Archived records</li>
+   </aura:if>
+  </div>
+ </div>
+
+</aura:component>
