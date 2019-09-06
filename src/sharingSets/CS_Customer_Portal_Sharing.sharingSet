@@ -12,7 +12,13 @@
         <objectField>Id</objectField>
         <userField>Contact</userField>
     </accessMappings>
+    <accessMappings>
+        <accessLevel>Read</accessLevel>
+        <object>Utility_Account_Log__c</object>
+        <objectField>Account__c.Parent_Account__c</objectField>
+        <userField>Account</userField>
+    </accessMappings>
     <name>CS Customer Portal Sharing</name>
-    <profiles>community solar community user</profiles>
+    <profiles>Community Solar Community User</profiles>
     <profiles>customer community plus login user</profiles>
 </SharingSet>
