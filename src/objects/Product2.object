@@ -548,6 +548,16 @@ IF (Loan_Term__c = 162, &quot;fifteenth&quot;, &quot;&quot;) )</formula>
         <trackHistory>false</trackHistory>
     </fields>
     <fields>
+        <fullName>Disable_Multiple_UAL_CSAP__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>When checked, customer can only apply with 1 Utility Account in CSAP</inlineHelpText>
+        <label>Disable Multiple UAL in CSAP</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Disbursal_Terms__c</fullName>
         <externalId>false</externalId>
         <label>Disbursal Terms</label>
