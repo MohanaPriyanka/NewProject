@@ -80,16 +80,16 @@
             <label>Logout</label>
             <position>5</position>
             <publiclyAvailable>true</publiclyAvailable>
-            <target>https://lucy-bluewavememberportal.force.com/secur/logout.jsp</target>
+            <target>https://bluewavememberportal.force.com/secur/logout.jsp</target>
             <targetPreference>OpenExternalLinkInSameTab</targetPreference>
             <type>ExternalLink</type>
         </navigationMenuItem>
     </navigationLinkSet>
     <networkMemberGroups>
         <permissionSet>AccessToModifyCSPortal</permissionSet>
-        <profile>Admin</profile>
+        <profile>admin</profile>
         <profile>customer community plus login user</profile>
-        <profile>Community Solar Community User</profile>
+        <profile>community solar community user</profile>
     </networkMemberGroups>
     <networkPageOverrides>
         <changePasswordPageOverrideSetting>Standard</changePasswordPageOverrideSetting>
