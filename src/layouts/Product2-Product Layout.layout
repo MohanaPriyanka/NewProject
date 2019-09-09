@@ -67,6 +67,10 @@
                 <behavior>Required</behavior>
                 <field>Lender_of_Record__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Disable_Multiple_UAL_CSAP__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>

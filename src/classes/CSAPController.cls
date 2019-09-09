@@ -363,7 +363,8 @@ public without sharing class CSAPController {
     @AuraEnabled
     public static Product2 getProduct (String productId) {
         return [
-                SELECT Id, Name, Program__c, Customer_Subscription_Type__c, Default_Residential_Usage__c, Default_Business_Usage__c
+                SELECT Id, Name, Program__c, Customer_Subscription_Type__c, Default_Residential_Usage__c,
+                    Default_Business_Usage__c, Disable_Multiple_UAL_CSAP__c
                 FROM Product2
                 WHERE Id = :productId
         ];
