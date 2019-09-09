@@ -35017,6 +35017,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Product2.Disable_Multiple_UAL_CSAP__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Product2.Disbursal_Terms__c</field>
         <readable>true</readable>
     </fieldPermissions>

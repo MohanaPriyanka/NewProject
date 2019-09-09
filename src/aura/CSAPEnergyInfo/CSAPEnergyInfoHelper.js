@@ -11,6 +11,7 @@
         ualList.push(ual);
         helper.setDefaultUsageAmounts(component, event, helper);
     },
+
     setDefaultUsageAmounts : function (component, event, helper) {
         var lead = component.get("v.lead");
         var product = component.get("v.selectedProduct");
