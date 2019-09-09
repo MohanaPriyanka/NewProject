@@ -1,5 +1,5 @@
 /**
- * Tested By: ZuoraAccountSelectorTest
+ * Tested By: ZuoraAccountSelectorTest, BillingAccountServiceTest
  */
 
 public without sharing class ZuoraAccountSelector {
@@ -85,5 +85,21 @@ public without sharing class ZuoraAccountSelector {
         String queryResponse = ZuoraAPIHelper.query(queryString, false);
         QueryResultAccount acctBalances = (QueryResultAccount)JSON.deserialize(queryResponse, QueryResultAccount.class);
         return acctBalances.records[0];
+    }
+
+    public static List<Zuora__CustomerAccount__c> getBillingAccountsById (Set<Id> accountIds){
+        if (!Schema.sObjectType.Zuora__CustomerAccount__c.isQueryable() ||
+            !Schema.sObjectType.Zuora__CustomerAccount__c.fields.Zuora__AutoPay__c.isAccessible() ||
+            !Schema.sObjectType.Zuora__CustomerAccount__c.fields.Zuora__Account__c.isAccessible()) {
+            throw new Util.FatalBWException('Insufficient permissions');
+        }
+        return [
+            SELECT Id, Name,
+                Zuora__AutoPay__c,
+                Zuora__Account__r.Id,
+                Zuora__Account__r.Recurring_Billing__c
+            FROM Zuora__CustomerAccount__c
+            WHERE Id IN : accountIds
+        ];
     }
 }
