@@ -31,7 +31,7 @@
   <aura:attribute name="AutopayAcknowledgement" type="Boolean" default="false"/>
   <aura:attribute name="SelectedPaymentMethod" type="String" default=""/>
   <aura:handler name="change" value="{!v.SelectedPaymentMethod}" action="{!c.clearFields}"/>
-  <aura:attribute name="PaymentMethodsAccepted" type="String[]" default="[['Bank Account', 'ACH'],['Credit/Debit Card', 'Credit Card']]"/>
+  <aura:attribute name="PaymentMethodsAccepted" type="String[]"/>
   <aura:attribute name="States" type="String[]"/>
   <aura:attribute name="expirationYears" type="String[]"/>
   <aura:attribute name="ErrorText" type="String"/>

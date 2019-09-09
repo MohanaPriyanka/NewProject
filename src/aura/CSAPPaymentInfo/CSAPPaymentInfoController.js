@@ -52,6 +52,7 @@
             var lead = component.get("v.lead");
             getProduct.setParams({"productId": lead.Product__c});
             getProduct.setCallback(this, function(response) {
+                component.set('v.loading', false);
                 if (response.getState() === 'SUCCESS') {
                     var product = response.getReturnValue();
                     if (product.Program__c.includes('SREC')) {
@@ -63,6 +64,7 @@
                 }
             })
             if (lead.Product__c) {
+                component.set('v.loading', true);
                 $A.enqueueAction(getProduct);
             }
         }
