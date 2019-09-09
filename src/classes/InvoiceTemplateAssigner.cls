@@ -45,10 +45,13 @@ public without sharing class InvoiceTemplateAssigner implements Database.Batchab
 
     public void executeBatch() {
         if (invoiceTemplateList != null){
-            Database.executeBatch(this, 20);
+            Database.executeBatch(this, 45);
         }
     }
 
+    @SupressWarnings('PMD.ApexCRUDViolation')
+    // We want users who don't have access to Zuora templates to be
+    // able to get all zuora accounts and apply a template
     public List<zqu__InvoiceTemplate__c> getTemplateList(){
         List<zqu__InvoiceTemplate__c> invoiceTemplates = [
             SELECT Id, Name, Brand_Key__c,
@@ -59,6 +62,9 @@ public without sharing class InvoiceTemplateAssigner implements Database.Batchab
         return invoiceTemplates;
     }
 
+    @SupressWarnings('PMD.ApexCRUDViolation')
+    // We want users who don't have access to Zuora templates to be
+    // able to get all zuora accounts and apply a template
     public List<Account> getAccounts(){
         List<Account> accounts = [
             SELECT Id, Name, Zuora_Id__c,
