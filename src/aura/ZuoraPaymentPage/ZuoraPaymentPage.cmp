@@ -3,6 +3,7 @@
   <aura:attribute name="paymentPageMetadata" type="Object"/>
   <aura:attribute name="paymentType" type="String"/>
   <aura:attribute name="consentToStorePaymentCredential" type="Boolean"/>
+  <!-- Isn't compatible with locker service, so we're setting the version of this component to 39. -->
   <ltng:require scripts="{!$Resource.Zuora131Min}"/>
   <aura:handler name="change" value="{!v.paymentType}" action="{!c.renderPaymentFrame}"/>
 
