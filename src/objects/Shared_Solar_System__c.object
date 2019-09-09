@@ -194,6 +194,44 @@
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>Actual_Mechanical_Completion_Override__c</fullName>
+        <description>Manually populate this field for SSS -  If filled in, the date will override the formula in the Actual Mechanical Completion field on the shared solar system.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Manually populate this field for SSS - If filled in, the date will override the formula in the Actual Mechanical Completion field on the shared solar system.</inlineHelpText>
+        <label>Actual Mechanical Completion Override</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Actual_Mechanical_Completion_Pull__c</fullName>
+        <description>Date value in this field is pulled from the &apos;Actual Final Completion&apos; value from the Project object; Field will be hidden on SSS layout</description>
+        <externalId>false</externalId>
+        <formula>Project_Management__r.Actual_Final_Completion__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Date value in this field is pulled from the &apos;Actual Final Completion&apos; value from the Project object; Field will be hidden on SSS layout</inlineHelpText>
+        <label>Actual Mechanical Completion Pull</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Actual_Mechanical_Completion__c</fullName>
+        <description>Field populated by either &quot;Actual Mechanical Completion Pull&quot; or by &apos;Actual Mechanical Completion Override&apos; if it has been manually populated.</description>
+        <externalId>false</externalId>
+        <formula>BLANKVALUE(Actual_Mechanical_Completion_Override__c, Actual_Mechanical_Completion_Pull__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Field populated by either &quot;Actual Mechanical Completion Pull&quot; or by &apos;Actual Mechanical Completion Override&apos; if it has been manually populated.</inlineHelpText>
+        <label>Actual Mechanical Completion</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>Actual_PTO_Date_MANUAL__c</fullName>
         <description>Actual PTO Date to be manually populated for SSS without a PM relationship</description>
         <externalId>false</externalId>
@@ -920,6 +958,44 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>This is the 15th of the month after the Actual Credit Flow to Customer Date (or the Estimated Credit Flow to Customer Date if former is blank). If the Estimated first BW Bill Date Override field is filled in, it override this formula and show that instead</inlineHelpText>
         <label>Estimated First BW Bill Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Estimated_Mechanical_Completion_Override__c</fullName>
+        <description>Manually populate this field for SSS - If filled in, the date will override the formula in the Estimated Mechanical Completion field on the shared solar system.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Manually populate this field for SSS - If filled in, the date will override the formula in the Estimated Mechanical Completion field on the shared solar system.</inlineHelpText>
+        <label>Estimated Mechanical Completion Override</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Estimated_Mechanical_Completion_Pull__c</fullName>
+        <description>Date value in this field is pulled from the &apos;Mechanical Installed&apos; value from the Project object; Field will be hidden on SSS layout</description>
+        <externalId>false</externalId>
+        <formula>Project_Management__r.Mechanical_Installed__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Date value in this field is pulled from the &apos;Mechanical Installed&apos; value from the Project object; Field will be hidden on SSS layout</inlineHelpText>
+        <label>Estimated Mechanical Completion Pull</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Estimated_Mechanical_Completion__c</fullName>
+        <description>Field populated by either &quot;Estimated Mechanical Completion Pull&quot; or by &apos;Estimated Mechanical Completion Override&apos; if it has been manually populated.</description>
+        <externalId>false</externalId>
+        <formula>BLANKVALUE(Estimated_Mechanical_Completion_Override__c, Estimated_Mechanical_Completion_Pull__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Field populated by either &quot;Estimated Mechanical Completion Pull&quot; or by &apos;Estimated Mechanical Completion Override&apos; if it has been manually populated.</inlineHelpText>
+        <label>Estimated Mechanical Completion</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
