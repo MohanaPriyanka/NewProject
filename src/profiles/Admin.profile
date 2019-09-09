@@ -529,6 +529,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>InvoiceTemplateAssigner</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>InvoiceTemplateAssignerTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>LREngine</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -46893,6 +46901,26 @@
         <field>trailheadapp__User_Trailmix__c.trailheadapp__User__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>zqu__InvoiceTemplate__c.Active__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>zqu__InvoiceTemplate__c.Anchor__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>zqu__InvoiceTemplate__c.Autopay__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>zqu__InvoiceTemplate__c.Brand_Key__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <layoutAssignments>
         <layout>Account-Account Layout</layout>
     </layoutAssignments>
@@ -47897,6 +47925,9 @@
     <layoutAssignments>
         <layout>agf__ADM_Scrum_Team__c-agf__Scrum Team Layout</layout>
         <recordType>agf__ADM_Scrum_Team__c.agf__Scrum_Team</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>zqu__InvoiceTemplate__c-zqu__Invoice Template Layout</layout>
     </layoutAssignments>
     <objectPermissions>
         <allowCreate>true</allowCreate>
