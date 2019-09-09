@@ -770,6 +770,7 @@ Round(( Subscribed_Annual_Cost_of_Electricity__c / 0.1933 / Opportunity__r.Share
     </fields>
     <fields>
         <fullName>Status__c</fullName>
+        <description>This is displayed in the customer portal as a way of showing the status of a customer&apos;s subscription.</description>
         <externalId>false</externalId>
         <formula>IF(
  ISBLANK(Date_Removed_from_Project__c)=false,
@@ -798,6 +799,7 @@ IF(
 )
 )
 )</formula>
+        <inlineHelpText>This is displayed in the customer portal as a way of showing the status of a customer&apos;s subscription.</inlineHelpText>
         <label>Status</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
