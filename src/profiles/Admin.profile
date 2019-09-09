@@ -53789,10 +53789,6 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
-        <name>TraceXdsQueries</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
         <name>TransactionalEmailSend</name>
     </userPermissions>
     <userPermissions>
