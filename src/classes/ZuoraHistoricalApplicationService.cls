@@ -447,7 +447,10 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
         return payables;
     }
 
-    // Used just to sort credit memos and payments. Transfer payments should get
+    // Used just to sort credit memos and payments. Transfer payments should get sorted before other credit memos
+    // and payments, to avoid a historical import issue: for four customers, the transfer debit memo for an entity
+    // is created after all payments for that entity were processed, so the debit memo was left outstanding and a
+    // payment was left unapplied.
     public class Payable implements Comparable {
         @TestVisible
         private Datetime payableDate;

@@ -4,6 +4,9 @@
  */
 
 public with sharing class ChargentTransactionSelector {
+    // Suppressing ApexCRUDViolation because relationship fields in the where clause seem to trigger a false positive
+    // https://salesforce.stackexchange.com/questions/276077/resolve-pmds-apexcrudviolation
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     public List<ChargentOrders__Transaction__c> selectForZuoraHistory(String zuoraAccountId) {
         if (!Schema.SObjectType.ChargentOrders__Transaction__c.isAccessible() ||
             !Schema.SObjectType.ChargentOrders__Transaction__c.fields.Id.isAccessible() ||
