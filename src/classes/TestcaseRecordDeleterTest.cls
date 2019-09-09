@@ -591,6 +591,7 @@ public class TestcaseRecordDeleterTest {
                 Total_System_Size_kW_AC__c  = 996,
                 Credit_Score_Requirement__c = 200,
                 Assignment_order__c = '2',
+                Client_Account__c = clientAccount2.Id,
                 Utility_NMC_Tariff__c = eversizeNMC.Id,
                 Expected_Yield_kWh_kW__c = 1300,
                 Assemblage_Count__c = 1,

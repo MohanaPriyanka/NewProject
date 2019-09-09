@@ -1004,7 +1004,7 @@ public class TestBillCreationandPayment {
 
     @isTest public static void overpaymentMultipleSBSameEntity(){
         Entity__c entity = [
-            SELECT Id, Gateway__c, Client_Account__c
+            SELECT Id, Gateway__c, Client_Account__r.Id
             FROM Entity__c
             WHERE Name = 'Oxford Barrett St. P1'
         ];
@@ -1016,8 +1016,9 @@ public class TestBillCreationandPayment {
 
         // Want to test when a customer has 2 SBs for the same entity in a bill period
         sssList[0].BWC_Project_Entity_Manual__c = entity.Id;
+        sssList[0].Client_Account__c = entity.Client_Account__r.Id;
         sssList[1].BWC_Project_Entity_Manual__c = entity.Id;
-        sssList[1].Client_Account__c = entity.Client_Account__c;
+        sssList[1].Client_Account__c = entity.Client_Account__r.Id;
         update sssList;
 
         Util.disableTrigger('Disable_AccountBillTrigger__c'); // TO Avoid SOQL Limits in data setup
