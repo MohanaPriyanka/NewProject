@@ -98,11 +98,13 @@ public class ProductEscalationTest {
 
         Entity__c entity1 = new Entity__c(
             Name = 'Project A Oak Road',
+            Client_Account__c = clientAccount.Id,
             Gateway__c = chGateway.Id);
         insert entity1;
 
         Entity__c entity2 = new Entity__c(
             Name = 'Project B Main St',
+            Client_Account__c = clientAccount.Id,
             Gateway__c = chGateway.Id);
         insert entity2;
 

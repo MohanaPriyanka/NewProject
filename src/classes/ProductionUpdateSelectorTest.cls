@@ -57,7 +57,10 @@ public class ProductionUpdateSelectorTest {
         Contact clientContact = new Contact(AccountId = clientAccount.Id, FirstName = 'Test', LastName = 'Client');
         insert clientContact;
 
-        Entity__c entity1 = new Entity__c(Name = 'Project A Oak Road');
+        Entity__c entity1 = new Entity__c(
+            Name = 'Project A Oak Road',
+            Client_Account__c = clientAccount.Id
+        );
         insert entity1;
 
         Shared_Solar_System__c sss1 =
