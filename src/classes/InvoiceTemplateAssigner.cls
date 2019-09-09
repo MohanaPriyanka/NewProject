@@ -1,5 +1,6 @@
 public without sharing class InvoiceTemplateAssigner implements Database.Batchable<SObject>, Database.Stateful, Database.AllowsCallouts{
     public List<zqu__InvoiceTemplate__c> invoiceTemplateList;
+    public List<Account> accountsToUpdate;
     public CS_Bill_Setting__c csBillSetting;
 
     public class ZuoraInvoiceTemplate {
@@ -12,11 +13,34 @@ public without sharing class InvoiceTemplateAssigner implements Database.Batchab
         public Boolean isAnchor;
         public String clientBrandKey;
         public String id;
+
+        public TemplateKey(Account account){
+            this.isAutopay = account.Recurring_Billing__c;
+            this.clientBrandKey = account.Parent_Account__r.Client_Brand_Key__c;
+            if (account.Count_of_Large_Offtake_Opps__c > 0){
+                this.isAnchor = true;
+            } else {
+                this.isAnchor = false;
+            }
+        }
+
+        public Boolean matches(zqu__InvoiceTemplate__c invoiceTemplate){
+            Boolean isMatch = false;
+            if (invoiceTemplate.Autopay__c == this.isAutopay
+                && invoiceTemplate.Anchor__c == this.isAnchor
+                && invoiceTemplate.Brand_Key__c == this.clientBrandKey){
+                isMatch = true;
+            }
+            return isMatch;
+        }
     }
 
     public InvoiceTemplateAssigner() {
         invoiceTemplateList = getTemplateList();
         csBillSetting = CSBillSettingSelector.getBillSetting();
+        if (accountsToUpdate == null){
+            accountsToUpdate = getAccounts();
+        }
     }
 
     public void executeBatch() {
@@ -35,13 +59,18 @@ public without sharing class InvoiceTemplateAssigner implements Database.Batchab
         return invoiceTemplates;
     }
 
-    public Database.QueryLocator start(Database.BatchableContext bc) {
-        String query =  'SELECT Id, Name, Zuora_Id__c, ' +
-                        'Parent_Account__r.Client_Brand_Key__c, ' +
-                        'Recurring_Billing__c, Count_of_Large_Offtake_Opps__c '+
-                        'FROM Account '+
-                        'WHERE Zuora_Id__c != null';
-        return Database.getQueryLocator(query);
+    public List<Account> getAccounts(){
+        List<Account> accounts = [
+            SELECT Id, Name, Zuora_Id__c,
+            Parent_Account__r.Client_Brand_Key__c,
+            Recurring_Billing__c, Count_of_Large_Offtake_Opps__c
+            FROM Account
+            WHERE Zuora_Id__c != null];
+        return accounts;
+    }
+
+    public List<Account> start(Database.BatchableContext bc) {
+        return accountsToUpdate;
     }
 
     public void execute(Database.BatchableContext bc, List<Account> scope){
@@ -51,44 +80,32 @@ public without sharing class InvoiceTemplateAssigner implements Database.Batchab
     }
 
     public List<ZuoraAPI.ZuoraAccount> assignTemplates(List<Account> accountsToAssign, List<zqu__InvoiceTemplate__c> invoiceTemplates){
-        TemplateKey templateKey = new TemplateKey();
+        TemplateKey templateKey;
 
         Map<String,ZuoraAPI.ZuoraAccount> accountsToUpdate = new Map<String,ZuoraAPI.ZuoraAccount>();
 
         for (Account account : accountsToAssign){
+            templateKey = new TemplateKey(account);
+
             ZuoraAPI.ZuoraAccount zAccount = new ZuoraAPI.ZuoraAccount();
             zAccount.Id = account.Zuora_Id__c;
-            templateKey.isAutopay = account.Recurring_Billing__c;
-            templateKey.clientBrandKey = account.Parent_Account__r.Client_Brand_Key__c;
-
-            if (account.Count_of_Large_Offtake_Opps__c > 0){
-                templateKey.isAnchor = true;
+            if (templateKey.isAnchor){
                 zAccount.Notes = csBillSetting.Default_Bill_Message_for_Autopay__c;
             } else {
-                templateKey.isAnchor = false;
                 zAccount.Notes = csBillSetting.Default_Bill_Message_for_Non_Autopay__c;
             }
             for (zqu__InvoiceTemplate__c template : invoiceTemplates){
-                if (checkTemplateMatch(template, templateKey)){
+                if (templateKey.matches(template)){
                     zAccount.InvoiceTemplateId = template.zqu__ZuoraId__c;
+                    accountsToUpdate.put(account.Zuora_Id__c, zAccount);
+                    break;
                 }
-                accountsToUpdate.put(account.Zuora_Id__c, zAccount);
             }
             if (zAccount.InvoiceTemplateId == null){
                 Logger.logLater('InvoiceTemplateAssigner','Cannot find template','Account:' + String.valueOf(account.Id)+ ' ' + String.valueOf(templateKey), Logger.ERROR);
             }
         }
         return accountsToUpdate.values();
-    }
-
-    public Boolean checkTemplateMatch(zqu__InvoiceTemplate__c invoiceTemplate, TemplateKey templateKey) {
-        Boolean isMatch = false;
-        if (invoiceTemplate.Autopay__c == templateKey.isAutopay
-            && invoiceTemplate.Anchor__c == templateKey.isAnchor
-            && invoiceTemplate.Brand_Key__c == templateKey.clientBrandKey){
-                isMatch = true;
-        }
-        return isMatch;
     }
 
     public void updateAccountsInZuora(List<ZuoraAPI.ZuoraAccount> zuoraAccounts) {
@@ -98,12 +115,14 @@ public without sharing class InvoiceTemplateAssigner implements Database.Batchab
 
         try {
             HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/action/update', item, true);
-            List<ZuoraAPI.SaveResult> result = (List<ZuoraAPI.SaveResult>) System.JSON.deserialize(response.getBody(), List<ZuoraAPI.SaveResult>.class);
-            if (!result[0].Success) {
-                String customErrorMessage =
-                    'Object: ' + String.valueOf(item) +
-                        ' Zuora Error Message: ' + String.valueOf(result[0].Errors);
-                Logger.logLater('InvoiceTemplateAssigner', 'updateAccountsInZuora', customErrorMessage, 'ERROR');
+            List<ZuoraAPI.SaveResult> resultList = (List<ZuoraAPI.SaveResult>) System.JSON.deserialize(response.getBody(), List<ZuoraAPI.SaveResult>.class);
+            for (ZuoraAPI.SaveResult result : resultList){
+                if (!result.Success) {
+                    String customErrorMessage =
+                        'Object: ' + String.valueOf(item) +
+                            ' Zuora Error Message: ' + String.valueOf(result.Errors);
+                    Logger.logLater('InvoiceTemplateAssigner', 'updateAccountsInZuora', customErrorMessage, 'ERROR');
+                }
             }
         } catch (Exception unhandledException) {
             Logger.logLater(
