@@ -108,6 +108,23 @@ public with sharing class ZuoraHistoricalApplicationTest {
     }
 
     @IsTest
+    public static void testChargentTransactionSelectorInsufficientPermissions() {
+        ChargentTransactionSelector transactionSelector = new ChargentTransactionSelector();
+        User pmStandardUser = [SELECT Id FROM User WHERE Profile.Name = 'PM Force.com user' AND IsActive = TRUE LIMIT 1];
+        Boolean exceptionCaught = false;
+        // Since an PM User should never have permissions to query transactions
+        System.runAs(pmStandardUser) {
+            try {
+                transactionSelector.selectForZuoraHistory('');
+            } catch (Util.FatalBWException bwe) {
+                exceptionCaught = true;
+                System.assertEquals('Insufficient permissions', bwe.getMessage());
+            }
+        }
+        System.assert(exceptionCaught);
+    }
+
+    @IsTest
     public static void testMockProvider() {
         MockChargentTransactionSelector transactionSelector = new MockChargentTransactionSelector(0);
         List<MockProvider.MethodCall> methodCalls = transactionSelector.getMethodCallsByName('selectForZuoraHistory');
@@ -189,6 +206,61 @@ public with sharing class ZuoraHistoricalApplicationTest {
         System.assertEquals(2, payments, 'Expected 2 payment callouts: one to create and another to apply');
         System.assertEquals(3, debitmemos, 'Expected 3 debit memo callouts: create, post, and get');
         System.assertEquals(0, creditmemos, 'Expected 0 credit memo callouts');
+    }
+
+    @IsTest
+    public static void testPayableSorting() {
+        List<ZuoraHistoricalApplicationService.Payable> payables = new List<ZuoraHistoricalApplicationService.Payable>();
+
+        ZuoraAPI.CreditMemoWithItem creditMemoWithItem = new ZuoraAPI.CreditMemoWithItem();
+        ZuoraAPI.ZuoraCreditMemo creditMemo = new ZuoraAPI.ZuoraCreditMemo();
+        creditMemo.creditMemoDate = Date.newInstance(2019, 1, 1);
+        creditMemoWithItem.CreditMemo = creditMemo;
+        payables.add(new ZuoraHistoricalApplicationService.Payable(creditMemoWithItem));
+
+        ZuoraAPI.CreditMemoWithItem creditMemoWithItem2 = new ZuoraAPI.CreditMemoWithItem();
+        ZuoraAPI.ZuoraCreditMemo creditMemo2 = new ZuoraAPI.ZuoraCreditMemo();
+        creditMemo2.creditMemoDate = Date.newInstance(2018, 11, 1);
+        creditMemoWithItem2.CreditMemo = creditMemo2;
+        payables.add(new ZuoraHistoricalApplicationService.Payable(creditMemoWithItem2));
+
+        ChargentOrders__Transaction__c payment = new ChargentOrders__Transaction__c(
+            ChargentOrders__Type__c = 'Transfer',
+            ChargentOrders__Amount__c = -1,
+            CreatedDate = Datetime.newInstance(2019, 2, 1)
+        );
+        payables.add(new ZuoraHistoricalApplicationService.Payable(payment));
+        ChargentOrders__Transaction__c payment2 = new ChargentOrders__Transaction__c(
+            ChargentOrders__Type__c = 'Transfer',
+            ChargentOrders__Amount__c = 1,
+            CreatedDate = Datetime.newInstance(2019, 2, 1)
+        );
+        payables.add(new ZuoraHistoricalApplicationService.Payable(payment2));
+        ChargentOrders__Transaction__c payment3 = new ChargentOrders__Transaction__c(
+            ChargentOrders__Type__c = 'Charge',
+            ChargentOrders__Amount__c = 1,
+            CreatedDate = Datetime.newInstance(2018, 12, 1)
+        );
+        payables.add(new ZuoraHistoricalApplicationService.Payable(payment3));
+        ChargentOrders__Transaction__c payment4 = new ChargentOrders__Transaction__c(
+            ChargentOrders__Type__c = 'Transfer',
+            ChargentOrders__Amount__c = 1,
+            CreatedDate = Datetime.newInstance(2019, 12, 1)
+        );
+        payables.add(new ZuoraHistoricalApplicationService.Payable(payment4));
+
+        payables.sort();
+
+        // The transfers should go first
+        System.assertEquals(Date.newInstance(2019,2,1), payables[0].payableDate.date());
+        System.assertEquals(Date.newInstance(2019,2,1), payables[1].payableDate.date());
+        System.assertEquals(Date.newInstance(2019,12,1), payables[2].payableDate.date());
+        // Then the early credit memo
+        System.assertEquals(Date.newInstance(2018,11,1), payables[3].payableDate);
+        // Then the early payment
+        System.assertEquals(Date.newInstance(2018,12,1), payables[4].payableDate.date());
+        // Then the credit memo
+        System.assertEquals(Date.newInstance(2019,1,1), payables[5].payableDate);
     }
 
     /*************
