@@ -1219,6 +1219,16 @@
     <custom>false</custom>
     <fieldPermissions>
         <editable>true</editable>
+        <field>API_Credential__c.Credential_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>API_Credential__c.Credential_Secret__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>APXTConga4__Composer_QuickMerge__c.APXTConga4__Conga_Solution__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -28754,6 +28764,21 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Shared_Solar_System__c.Actual_Mechanical_Completion_Override__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Actual_Mechanical_Completion_Pull__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Actual_Mechanical_Completion__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Shared_Solar_System__c.Actual_PTO_Date_MANUAL__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -29005,6 +29030,21 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Estimated_First_Bill_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Shared_Solar_System__c.Estimated_Mechanical_Completion_Override__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Estimated_Mechanical_Completion_Pull__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Estimated_Mechanical_Completion__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
