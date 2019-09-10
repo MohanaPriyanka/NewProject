@@ -1219,6 +1219,16 @@
     <custom>false</custom>
     <fieldPermissions>
         <editable>true</editable>
+        <field>API_Credential__c.Credential_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>API_Credential__c.Credential_Secret__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>APXTConga4__Composer_QuickMerge__c.APXTConga4__Conga_Solution__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -53786,6 +53796,10 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>SubscribeToLightningReports</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>TraceXdsQueries</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
