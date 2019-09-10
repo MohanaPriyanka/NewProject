@@ -2236,7 +2236,7 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <columns>CASES.STATUS</columns>
         <columns>CASES.PRIORITY</columns>
         <columns>CASES.CREATED_DATE_DATE_ONLY</columns>
-        <filterScope>Mine</filterScope>
+        <filterScope>Everything</filterScope>
         <filters>
             <field>CASES.STATUS</field>
             <operation>equals</operation>
@@ -2249,8 +2249,8 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         </filters>
         <filters>
             <field>CASES.CREATED_DATE_DATE_ONLY</field>
-            <operation>greaterThan</operation>
-            <value>2/6/2019 12:00 AM</value>
+            <operation>greaterOrEqual</operation>
+            <value>1/30/2019 12:00 AM</value>
         </filters>
         <label>My Closed Cases</label>
         <sharedTo>
@@ -2262,10 +2262,12 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <columns>CASES.CASE_NUMBER</columns>
         <columns>NAME</columns>
         <columns>CASES.SUBJECT</columns>
+        <columns>Case_Update__c</columns>
         <columns>CASES.STATUS</columns>
         <columns>CASES.PRIORITY</columns>
         <columns>CASES.CREATED_DATE_DATE_ONLY</columns>
-        <filterScope>Mine</filterScope>
+        <columns>CASES.LAST_UPDATE_DATE_ONLY</columns>
+        <filterScope>Everything</filterScope>
         <filters>
             <field>CASES.STATUS</field>
             <operation>equals</operation>

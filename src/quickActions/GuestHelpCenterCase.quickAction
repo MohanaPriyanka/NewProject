@@ -2,6 +2,14 @@
 <QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
     <description>Allows guest users (public) on FAQ/Help Center community to create cases</description>
     <fieldOverrides>
+        <field>Case_Type__c</field>
+        <literalValue>Customer</literalValue>
+    </fieldOverrides>
+    <fieldOverrides>
+        <field>Origin</field>
+        <literalValue>Web</literalValue>
+    </fieldOverrides>
+    <fieldOverrides>
         <field>Status</field>
         <literalValue>New</literalValue>
     </fieldOverrides>
