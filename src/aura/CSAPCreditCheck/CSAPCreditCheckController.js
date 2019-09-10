@@ -14,6 +14,19 @@
         if (component.get("v.page") === 'CreditCheckResult' && event.getParam("eventType")=== "INITIATED"){
             var a = component.get("c.checkCredit");
             $A.enqueueAction(a);
+
+
+            if (!component.get('v.creditStatusTimeout')) {
+                var actionGetTimeout = component.get("c.getCreditCheckTimeout");
+                actionGetTimeout.setCallback(this,function(resp) {
+                    if(resp.getState() == 'SUCCESS') {
+                        component.set("v.creditStatusTimeout", resp.getReturnValue());
+                    } else {
+                        component.set("v.creditStatusTimeout", 60000);
+                    }
+                });
+                $A.enqueueAction(actionGetTimeout);
+            }
         }
     },
 
