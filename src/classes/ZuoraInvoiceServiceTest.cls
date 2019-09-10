@@ -86,7 +86,8 @@ public with sharing class ZuoraInvoiceServiceTest {
         System.assertEquals(0, sfdcInvoices.size());
 
         List<Zuora__ZInvoice__c> invoiceList = [
-            SELECT Id, Content_Document_Id__c, Bill_Document_Content_Version_ID__c
+            SELECT Id, Content_Document_Id__c, Bill_Document_Content_Version_ID__c,
+                Ready_For_Email_Send__c, Ready_For_Paper_Bill_Queue__c
             FROM Zuora__ZInvoice__c
             WHERE Id IN : invoiceMap.keySet()
         ];
@@ -94,6 +95,8 @@ public with sharing class ZuoraInvoiceServiceTest {
         System.assertNotEquals(0,invoiceList.size());
         System.assertEquals('0680a000003HjQqAAK',invoiceList[0].Bill_Document_Content_Version_ID__c);
         System.assertEquals('06A0a000002SwvOEAS',invoiceList[0].Content_Document_Id__c);
+        System.assert(invoiceList[0].Ready_For_Email_Send__c);
+        System.assert(invoiceList[0].Ready_For_Paper_Bill_Queue__c);
     }
 
     @IsTest
