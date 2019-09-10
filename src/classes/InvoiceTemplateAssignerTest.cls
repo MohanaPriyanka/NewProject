@@ -70,6 +70,8 @@ public class InvoiceTemplateAssignerTest {
             Name = 'Anchor Property',
             Recurring_Billing__c = true,
             Zuora_Id__c = 'AnchorAutopay',
+            Zuora_Invoice_Message_1_of_2__c = 'Custom Message One',
+            Zuora_Invoice_Message_2_of_2__c = 'Custom Message Two',
             Parent_Account__c = accountParent.Id);
         Account accountB = new Account(
             Name = 'Smallofftake Property',
@@ -125,8 +127,9 @@ public class InvoiceTemplateAssignerTest {
     @isTest public static void testAutopay() {
         List<Account> acctList = [
             SELECT Id, Name, Zuora_Id__c,
-            Parent_Account__r.Client_Brand_Key__c,
-            Recurring_Billing__c, Count_of_Large_Offtake_Opps__c
+                Parent_Account__r.Client_Brand_Key__c,
+                Recurring_Billing__c, Count_of_Large_Offtake_Opps__c,
+                Zuora_Invoice_Message_1_of_2__c, Zuora_Invoice_Message_2_of_2__c
             FROM Account
             WHERE Zuora_Id__c != null ];
 
@@ -141,7 +144,8 @@ public class InvoiceTemplateAssignerTest {
         for (ZuoraAPI.ZuoraAccount account : zuoraAccount){
             if (account.Id == 'AnchorAutopay'){
                 System.assertEquals('ampAutopay', account.InvoiceTemplateId);
-                System.assertEquals(AUTOPAY_MESSAGE, account.Notes);
+                System.assertEquals('Custom Message One', account.Notes);
+                System.assertEquals('Custom Message Two', account.BillMessage_Zcustom);
             } else {
                 System.assertEquals('bwNonAnchor', account.InvoiceTemplateId);
                 System.assertEquals(NON_AUTOPAY_MESSAGE, account.Notes);

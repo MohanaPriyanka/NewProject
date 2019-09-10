@@ -69,7 +69,9 @@ public without sharing class InvoiceTemplateAssigner implements Database.Batchab
         List<Account> accounts = [
             SELECT Id, Name, Zuora_Id__c,
             Parent_Account__r.Client_Brand_Key__c,
-            Recurring_Billing__c, Count_of_Large_Offtake_Opps__c
+            Recurring_Billing__c, Count_of_Large_Offtake_Opps__c,
+            Zuora_Invoice_Message_1_of_2__c,
+            Zuora_Invoice_Message_2_of_2__c
             FROM Account
             WHERE Zuora_Id__c != null];
         return accounts;
@@ -85,26 +87,37 @@ public without sharing class InvoiceTemplateAssigner implements Database.Batchab
         Logger.flushLogs();
     }
 
+    public ZuoraAPI.ZuoraAccount setBillMessage(Account sfAccount, ZuoraAPI.ZuoraAccount zAccount){
+        if (sfAccount.Zuora_Invoice_Message_1_of_2__c != null){
+            zAccount.Notes = sfAccount.Zuora_Invoice_Message_1_of_2__c;
+        } else if (sfAccount.Recurring_Billing__c){
+            zAccount.Notes = csBillSetting.Default_Bill_Message_for_Autopay__c;
+        } else {
+            zAccount.Notes = csBillSetting.Default_Bill_Message_for_Non_Autopay__c;
+        }
+        if (sfAccount.Zuora_Invoice_Message_2_of_2__c != null){
+            zAccount.BillMessage_Zcustom = sfAccount.Zuora_Invoice_Message_2_of_2__c;
+        } else {
+            zAccount.BillMessage_Zcustom = null;
+        }
+        return zAccount;
+    }
+
     public List<ZuoraAPI.ZuoraAccount> assignTemplates(List<Account> accountsToAssign, List<zqu__InvoiceTemplate__c> invoiceTemplates){
         TemplateKey templateKey;
 
         Map<String,ZuoraAPI.ZuoraAccount> accountsToUpdate = new Map<String,ZuoraAPI.ZuoraAccount>();
 
         for (Account account : accountsToAssign){
-            templateKey = new TemplateKey(account);
-
             ZuoraAPI.ZuoraAccount zAccount = new ZuoraAPI.ZuoraAccount();
             zAccount.Id = account.Zuora_Id__c;
-            if (templateKey.isAnchor){
-                zAccount.Notes = csBillSetting.Default_Bill_Message_for_Autopay__c;
-            } else {
-                zAccount.Notes = csBillSetting.Default_Bill_Message_for_Non_Autopay__c;
-            }
+            zAccount = setBillMessage(account, zAccount);
+            templateKey = new TemplateKey(account);
             for (zqu__InvoiceTemplate__c template : invoiceTemplates){
                 if (templateKey.matches(template)){
                     zAccount.InvoiceTemplateId = template.zqu__ZuoraId__c;
                     accountsToUpdate.put(account.Zuora_Id__c, zAccount);
-                    break;
+                break;
                 }
             }
             if (zAccount.InvoiceTemplateId == null){

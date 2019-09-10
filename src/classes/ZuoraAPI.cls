@@ -113,6 +113,7 @@ public with sharing class ZuoraAPI {
         @AuraEnabled
         public Decimal Balance;
         public String InvoiceTemplateId;
+        public String BillMessage_Zcustom;
         public String CrmId;
         public String BillToId;
         public String CreatedDate;
