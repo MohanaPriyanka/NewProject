@@ -74,7 +74,7 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
             return getPayment(endpoint);
         } else if (endpoint.contains('/v1/paymentgateways')) {
             return getGateways();
-        } else if (endpoint.contains('/v1/object/bill-run')){
+        } else if (endpoint.contains('/v1/object/bill-run')) {
             return getBillRun();
         } else if (endpoint.contains('/v1/object/rate-plan-charge/')) {
             return getRatePlanCharge(endpoint);
@@ -283,10 +283,7 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
                 saveResults.add(saveResult);
             }
             res.setBody(JSON.serialize(saveResults));
-        } else if (body.contains('"type":"PaymentMethod"')) {
-            String responseBody = '[{"Success":true,"Id":"2c92c0f86a0c41a5016a1f41d63a2f96"}]';
-            res.setBody(responseBody);
-        } else if (body.contains('"type":"Invoice"')){
+        } else if (body.contains('"type":"PaymentMethod"')){
             String responseBody = '[{"Success":true,"Id":"2c92c0f86a0c41a5016a1f41d63a2f96"}]';
             res.setBody(responseBody);
         } else {
@@ -411,6 +408,8 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
                 '"RatePlanChargeId":"2c92c0f96ae3b195016ae5e3668e0c15"' +
                 '}'
             );
+        } else if (endpoint.contains('zzz123_')){
+            res.setBody('{"Success":true,"Id":"2c92c0f86a0c41a5016a1f41d63a2f96"}');
         } else {
             ZuoraAPI.Invoice result = new ZuoraAPI.Invoice();
             result.id = '12345';
