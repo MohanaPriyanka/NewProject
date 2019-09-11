@@ -65,4 +65,17 @@ public with sharing class AccountsSelectorTest {
         AccountsSelector accountsSelector = new AccountsSelector();
         System.assertEquals(accountsSelector.selectPropertyAccountsByLeadIds(new Set<Id>{newLead.Id}).size(), 1, 'Expected only one property account to be returned');
     }
+
+    @IsTest public static void testselectAccountsWithBillMessages() {
+        Id propertyRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Property').getRecordTypeId();
+        Account propertyAccount = new Account(
+            RecordTypeId = propertyRecordTypeId,
+            Name = 'Test Account',
+            Zuora_Invoice_Message_2_of_2__c = 'XXX',
+            Zuora_Invoice_Message_1_of_2__c = 'xxx'
+        );
+        insert propertyAccount;
+
+        System.assertEquals(1,accountsSelector.selectAccountsWithBillMessages().size());
+    }
 }
