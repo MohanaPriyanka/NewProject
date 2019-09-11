@@ -1,4 +1,4 @@
-public without sharing class InvoiceTemplateAssigner implements Database.Batchable<SObject>, Database.Stateful, Database.AllowsCallouts{
+public without sharing class InvoiceTemplateAssigner implements Schedulable, Database.Batchable<SObject>, Database.Stateful, Database.AllowsCallouts{
     public List<zqu__InvoiceTemplate__c> invoiceTemplateList;
     public List<Account> accountsToUpdate;
     public CS_Bill_Setting__c csBillSetting;
@@ -154,6 +154,27 @@ public without sharing class InvoiceTemplateAssigner implements Database.Batchab
     }
 
     public void finish(Database.BatchableContext bc){
-        // Need to have finish method in batch job
+        try {
+            InvoiceTemplateAssigner clearAccountFieldsJob = new InvoiceTemplateAssigner();
+            Datetime dt = Datetime.now();
+            dt = dt.addDays(10);
+            String cronExpress = '0 ' + dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
+            System.schedule('Clear Account Message Fields',cronExpress,clearAccountFieldsJob);
+        } catch (Exception excep) {
+            Logger.logNow('InvoiceTemplateAssigner','scheduleAccountClear','Account Clear could not be scheduled' + excep.getMessage());
+        }
+    }
+
+    public void execute(SchedulableContext SC){
+        clearAccountFields();
+    }
+
+    public void clearAccountFields(){
+        List<Account> accountsWithMessages = AccountsSelector.selectAccountsWithBillMessages();
+        for (Account acct : accountsWithMessages){
+            acct.Zuora_Invoice_Message_1_of_2__c = null;
+            acct.Zuora_Invoice_Message_2_of_2__c = null;
+        }
+        update accountsWithMessages;
     }
 }

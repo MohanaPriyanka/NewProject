@@ -591,6 +591,7 @@ public with sharing class ZuoraAPI {
         public Decimal balance;
         public String Body;
         public String InvoiceNumber;
+        public Boolean RegenerateInvoicePDF;
     }
 
     public class InvoiceItem {
@@ -727,5 +728,13 @@ public with sharing class ZuoraAPI {
         public String name;
         public Boolean isActive;
         public Boolean isDefault;
+    }
+
+    public class BillRun{
+        public Boolean AutoEmail;
+        public Boolean AutoPost;
+        public Boolean AutoRenewal;
+        public Date InvoiceDate;
+        public Date TargetDate;
     }
 }
