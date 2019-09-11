@@ -2,9 +2,6 @@ public class ZuoraInvoiceRegenerationService implements Database.Batchable<SObje
     public List<Zuora__ZInvoice__c> invoicesToUpdate;
 
     public void executeBatch() {
-        system.debug('HEYHYE');
-        system.debug(invoicesToUpdate);
-
         if (invoicesToUpdate != null){
             Database.executeBatch(this, 45);
         }
