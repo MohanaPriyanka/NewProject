@@ -12,4 +12,12 @@ public with sharing class ZuoraInvoiceSelector {
             WHERE Downloaded_Date__c = NULL
         ];
     }
+
+    public static List<Zuora__ZInvoice__c> getInvoicesByDate(Date invoiceDate) {
+        return [
+            SELECT Id, Zuora__ZuoraId__c
+            FROM Zuora__ZInvoice__c
+            WHERE Zuora__InvoiceDate__c = : invoiceDate
+        ];
+    }
 }
