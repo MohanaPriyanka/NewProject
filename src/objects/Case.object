@@ -2060,7 +2060,7 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <columns>CASES.STATUS</columns>
         <columns>CASES.PRIORITY</columns>
         <columns>CASES.CREATED_DATE_DATE_ONLY</columns>
-        <filterScope>Mine</filterScope>
+        <filterScope>Everything</filterScope>
         <filters>
             <field>CASES.STATUS</field>
             <operation>equals</operation>
@@ -2090,8 +2090,8 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <columns>CASES.STATUS</columns>
         <columns>CASES.PRIORITY</columns>
         <columns>CASES.CREATED_DATE_DATE_ONLY</columns>
-        <columns>CASES.LAST_UPDATE</columns>
-        <filterScope>Mine</filterScope>
+        <columns>CASES.LAST_UPDATE_DATE_ONLY</columns>
+        <filterScope>Everything</filterScope>
         <filters>
             <field>CASES.STATUS</field>
             <operation>equals</operation>

@@ -5,16 +5,20 @@
         <literalValue>Customer</literalValue>
     </fieldOverrides>
     <fieldOverrides>
+        <field>ContactId</field>
+        <formula>$User.ContactId</formula>
+    </fieldOverrides>
+    <fieldOverrides>
+        <field>How_Can_We_Help__c</field>
+        <formula>&quot;New Portal Case&quot;</formula>
+    </fieldOverrides>
+    <fieldOverrides>
         <field>Origin</field>
         <literalValue>Web</literalValue>
     </fieldOverrides>
     <fieldOverrides>
         <field>Product_Line__c</field>
         <literalValue>Community Solar</literalValue>
-    </fieldOverrides>
-    <fieldOverrides>
-        <field>Status</field>
-        <literalValue>New</literalValue>
     </fieldOverrides>
     <optionsCreateFeedItem>true</optionsCreateFeedItem>
     <quickActionLayout>

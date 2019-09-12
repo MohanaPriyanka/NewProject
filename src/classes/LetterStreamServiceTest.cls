@@ -221,6 +221,7 @@ public with sharing class LetterStreamServiceTest {
         System.assert(lss.csv.contains('Duplex'));
         System.assert(lss.csv.contains('Ink'));
         System.assert(lss.csv.contains('Paper'));
+        System.assert(lss.csv.contains('Extra Inserts'));
     }
 
     @IsTest
@@ -619,7 +620,7 @@ public with sharing class LetterStreamServiceTest {
         insert accountParentInvalid;
 
         // try to exceed heap size
-        StaticResource static_resource = [SELECT Id, Body
+        StaticResource staticResource = [SELECT Id, Body
             FROM StaticResource
             WHERE Name = 'LargeFileTest'
             LIMIT 1
@@ -629,7 +630,7 @@ public with sharing class LetterStreamServiceTest {
             docs.add(new ContentVersion(
                 Title = 'test document',
                 PathOnClient = 'test_Doc.pdf',
-                VersionData = static_resource.Body
+                VersionData = staticResource.Body
             ));
         }
 
@@ -948,5 +949,21 @@ public with sharing class LetterStreamServiceTest {
         // should not queue any new jobs, because the original job failed with 1 bill
         System.assertEquals(originalAsyncApexJobs.size(), asyncApexJobs.size());
         System.assertEquals(1, errorLogs.size());
+    }
+
+    @IsTest
+    public static void testGetPages() {
+        LetterStreamService.LetterParameters parameters = new LetterStreamService.LetterParameters();
+        System.assertEquals('v', parameters.getPages());
+        parameters.pages = '2';
+        System.assertEquals('2', parameters.getPages());
+    }
+
+    @IsTest
+    public static void testExtraInserts() {
+        LetterStreamService.LetterParameters parameters = new LetterStreamService.LetterParameters();
+        System.assertEquals('', parameters.getExtraInserts());
+        parameters.extraInserts = '23423|12345';
+        System.assertEquals('23423|12345', parameters.getExtraInserts());
     }
 }
