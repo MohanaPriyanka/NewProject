@@ -8,10 +8,31 @@
 
 
 public without sharing class LetterStreamService {
-    public String csvHeaders = 'UniqueDocId,PDFFileName,RecipientName1,RecipientName2,RecipientAddr1,RecipientAddr2,RecipientCity,' +
-        'RecipientState, RecipientZip,SenderName1,SenderName2,SenderAddr1,SenderAddr2,SenderCity,SenderState,' +
-        'SenderZip,PageCount,MailType (firstclass|certified|postcard|flat),CoverSheet (Y|N),Duplex (Y|N),Ink (B|C),' +
-        'Paper (W(hite-default)|Y(ellow)|P(ink)|B(lue))';
+    public String csvHeaders = 'UniqueDocId,' +
+        'PDFFileName,' +
+        'RecipientName1,' +
+        'RecipientName2,' +
+        'RecipientAddr1,' +
+        'RecipientAddr2,' +
+        'RecipientCity,' +
+        'RecipientState,' +
+        'RecipientZip,' +
+        'SenderName1,' +
+        'SenderName2,' +
+        'SenderAddr1,' +
+        'SenderAddr2,' +
+        'SenderCity,' +
+        'SenderState,' +
+        'SenderZip,' +
+        'PageCount,' +
+        'MailType,' +
+        'CoverSheet,' +
+        'Duplex,' +
+        'Ink,' +
+        'Paper,' +
+        'Return Envelope,' +
+        'Affidavit,' +
+        'Extra Inserts';
 
     public String csv = '';
 
@@ -206,14 +227,20 @@ public without sharing class LetterStreamService {
         csv += (Util.prepForCSV(params.recipientState) + ','); // RecipientState
         csv += (Util.prepForCSV(params.recipientPostalCode) + ','); //RecipientZip
         csv += blueWaveAddress();
-        csv += (Util.prepForCSV(params.pages) + ','); // page count
+        csv += (Util.prepForCSV(params.getPages()) + ','); // page count
         csv += 'firstclass,'; // mailType
         csv += 'N,'; // coversheet
         csv += 'Y,'; // duplex
         csv += 'C,'; // ink
         csv += 'W,'; // Paper
+        csv += 'N,'; // Return Envelope
+        csv += 'N,'; // Affidavit
+        csv += Util.prepForCSV(params.getExtraInserts()); // Extra Inserts
+
     }
 
+    // Selecting BW_Address should be open to all users
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     public String blueWaveAddress() {
         String bwAddress = '';
         BW_Address__c address = [
@@ -239,6 +266,34 @@ public without sharing class LetterStreamService {
         public String recipientState;
         public String recipientPostalCode;
         public String pages;
+        public String extraInserts;
+
+        // Undocumented LetterStream feature to handle the case where we don't have a page count
+        // On Wed, Sep 4, 2019 at 12:53 PM MST, David Patterson <production@letterstream.com> wrote:
+        // Hi Peter,
+        //
+        // Me again. We've decided to give you a "Variable Page Count Identifier" that you can push to us instead of a
+        // page count number. You'd simply use a "v" (no quotes) in that field instead of a page count.
+        //
+        // We'll use this flag value to skip the page count verification.
+        public String getPages() {
+            if (String.isBlank(pages)) {
+                return 'v';
+            } else {
+                return pages;
+            }
+        }
+
+        // Undocumented feature:
+        // Remembered Items can be called and added to API mailings by using the POST argument "extrainserts".
+        // Multiple Remembered Items can be called/included by simply using a pipe delimiter (ie 1297|3294).
+        public String getExtraInserts() {
+            if (String.isBlank(extraInserts)) {
+                return '';
+            } else {
+                return extraInserts;
+            }
+        }
 
         public void generateFromAccountBill(Account_Bill__c accountBill, ContentDocument document) {
             fileId = accountBill.Id;
