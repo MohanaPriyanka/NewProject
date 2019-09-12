@@ -16,7 +16,11 @@ public class ZuoraInvoiceRegenerationService implements Database.Batchable<SObje
     }
 
     public static void regenerateInvoicePDFs(List<Zuora__ZInvoice__c> invoices){
-        uploadToZuora(convertSFToZuoraInvoice(invoices));
+        try{
+            uploadToZuora(convertSFToZuoraInvoice(invoices));
+        } catch(Exception excep) {
+            Logger.logLater('ZuoraInvoiceRegenerationService', 'regenerateInvoicePDFs', String.valueOf(invoices) + excep.getMessage() + '\n' + excep.getStackTraceString());
+        }
     }
     public static void uploadToZuora (List<ZuoraAPI.Invoice> zuoraInvoices) {
         for (ZuoraAPI.Invoice zInvoice : zuoraInvoices) {
