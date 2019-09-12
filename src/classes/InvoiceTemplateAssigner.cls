@@ -1,5 +1,5 @@
 // Methods in batch class must be global or public, so suppress warnings:
-@SuppressWarnings('PMD.ExcessiveParameterList')
+@SuppressWarnings('PMD.ExcessivePublicCount')
 public without sharing class InvoiceTemplateAssigner implements Schedulable, Database.Batchable<SObject>, Database.Stateful, Database.AllowsCallouts{
     public List<zqu__InvoiceTemplate__c> invoiceTemplateList;
     public List<Account> accountsToUpdate;
