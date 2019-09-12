@@ -8,9 +8,21 @@
     </accessMappings>
     <accessMappings>
         <accessLevel>Read</accessLevel>
+        <object>Case</object>
+        <objectField>Contact.Account</objectField>
+        <userField>Contact.Account</userField>
+    </accessMappings>
+    <accessMappings>
+        <accessLevel>Read</accessLevel>
         <object>Contact</object>
         <objectField>Id</objectField>
         <userField>Contact</userField>
+    </accessMappings>
+    <accessMappings>
+        <accessLevel>Read</accessLevel>
+        <object>Utility_Account_Log__c</object>
+        <objectField>Account__c.Parent_Account__c</objectField>
+        <userField>Account</userField>
     </accessMappings>
     <name>CS Customer Portal Sharing</name>
     <profiles>community solar community user</profiles>
