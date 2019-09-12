@@ -1,14 +1,16 @@
+// Methods in batch class must be global or public, so suppress warnings:
+@SuppressWarnings('PMD.ExcessiveParameterList')
 public without sharing class InvoiceTemplateAssigner implements Schedulable, Database.Batchable<SObject>, Database.Stateful, Database.AllowsCallouts{
     public List<zqu__InvoiceTemplate__c> invoiceTemplateList;
     public List<Account> accountsToUpdate;
-    public CS_Bill_Setting__c csBillSetting;
+    private CS_Bill_Setting__c csBillSetting;
 
     public class ZuoraInvoiceTemplate {
         public String name;
         public String id;
     }
 
-    public class TemplateKey {
+    private class TemplateKey {
         public Boolean isAutopay;
         public Boolean isAnchor;
         public String clientBrandKey;
@@ -49,7 +51,7 @@ public without sharing class InvoiceTemplateAssigner implements Schedulable, Dat
         }
     }
 
-    @SupressWarnings('PMD.ApexCRUDViolation')
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     // We want users who don't have access to Zuora templates to be
     // able to get all zuora accounts and apply a template
     public List<zqu__InvoiceTemplate__c> getTemplateList(){
@@ -62,7 +64,7 @@ public without sharing class InvoiceTemplateAssigner implements Schedulable, Dat
         return invoiceTemplates;
     }
 
-    @SupressWarnings('PMD.ApexCRUDViolation')
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     // We want users who don't have access to Zuora templates to be
     // able to get all zuora accounts and apply a template
     public List<Account> getAccounts(){
@@ -87,7 +89,7 @@ public without sharing class InvoiceTemplateAssigner implements Schedulable, Dat
         Logger.flushLogs();
     }
 
-    public ZuoraAPI.ZuoraAccount setBillMessage(Account sfAccount, ZuoraAPI.ZuoraAccount zAccount){
+    private ZuoraAPI.ZuoraAccount setBillMessage(Account sfAccount, ZuoraAPI.ZuoraAccount zAccount){
         if (sfAccount.Zuora_Invoice_Message_1_of_2__c != null){
             zAccount.Notes = sfAccount.Zuora_Invoice_Message_1_of_2__c;
         } else if (sfAccount.Recurring_Billing__c){
@@ -127,7 +129,7 @@ public without sharing class InvoiceTemplateAssigner implements Schedulable, Dat
         return accountsToUpdate.values();
     }
 
-    public void updateAccountsInZuora(List<ZuoraAPI.ZuoraAccount> zuoraAccounts) {
+    private void updateAccountsInZuora(List<ZuoraAPI.ZuoraAccount> zuoraAccounts) {
         ZuoraAPI.ActionItems item = new ZuoraAPI.ActionItems();
         item.type = 'Account';
         item.objects = zuoraAccounts;
@@ -161,7 +163,7 @@ public without sharing class InvoiceTemplateAssigner implements Schedulable, Dat
             String cronExpress = '0 ' + dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
             System.schedule('Clear Account Message Fields',cronExpress,clearAccountFieldsJob);
         } catch (Exception excep) {
-            Logger.logNow('InvoiceTemplateAssigner','scheduleAccountClear','Account Clear could not be scheduled' + excep.getMessage());
+            Logger.logNow('InvoiceTemplateAssigner','scheduleAccountClear','Account Clear could not be scheduled' + excep.getMessage(),'WARN');
         }
     }
 
