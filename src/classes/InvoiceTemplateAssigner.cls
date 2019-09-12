@@ -100,7 +100,7 @@ public without sharing class InvoiceTemplateAssigner implements Schedulable, Dat
         if (sfAccount.Zuora_Invoice_Message_2_of_2__c != null){
             zAccount.BillMessage_Zcustom = sfAccount.Zuora_Invoice_Message_2_of_2__c;
         } else {
-            zAccount.BillMessage_Zcustom = null;
+            zAccount.BillMessage_Zcustom = '';
         }
         return zAccount;
     }
