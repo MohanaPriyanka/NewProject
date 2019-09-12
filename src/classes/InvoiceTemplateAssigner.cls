@@ -119,7 +119,7 @@ public without sharing class InvoiceTemplateAssigner implements Schedulable, Dat
                 if (templateKey.matches(template)){
                     zAccount.InvoiceTemplateId = template.zqu__ZuoraId__c;
                     accountsToUpdate.put(account.Zuora_Id__c, zAccount);
-                break;
+                    break;
                 }
             }
             if (zAccount.InvoiceTemplateId == null){
@@ -172,11 +172,19 @@ public without sharing class InvoiceTemplateAssigner implements Schedulable, Dat
     }
 
     public void clearAccountFields(){
-        List<Account> accountsWithMessages = AccountsSelector.selectAccountsWithBillMessages();
-        for (Account acct : accountsWithMessages){
-            acct.Zuora_Invoice_Message_1_of_2__c = null;
-            acct.Zuora_Invoice_Message_2_of_2__c = null;
+        try {
+            List<Account> accountsWithMessages = AccountsSelector.selectAccountsWithBillMessages();
+            for (Account acct : accountsWithMessages){
+                acct.Zuora_Invoice_Message_1_of_2__c = null;
+                acct.Zuora_Invoice_Message_2_of_2__c = null;
+            }
+            if (accountsWithMessages.size() > 150) {
+                Database.executeBatch(new GenericBatchDMLOperation(accountsWithMessages, 'Update'));
+            } else {
+                update accountsWithMessages;
+            }
+        } catch (Exception excep) {
+            Logger.logNow('InvoiceTemplateAssigner','clearAccountFields','Account Clear could not be executed' + excep.getMessage(),'WARN');
         }
-        update accountsWithMessages;
     }
 }
