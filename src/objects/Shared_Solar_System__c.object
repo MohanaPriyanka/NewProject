@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata"
+      xmlns:n1="http://www.w3.org/2001/XMLSchema-instance">
     <actionOverrides>
         <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Small</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -9,7 +20,27 @@
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
         <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -17,7 +48,27 @@
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
         <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -25,7 +76,27 @@
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
         <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -33,24 +104,62 @@
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
         <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
         <type>Default</type>
     </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
     <allowInChatterGroups>true</allowInChatterGroups>
+    <articleTypeChannelDisplay n1:nil="true" />
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <customSettingsType n1:nil="true" />
     <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description n1:nil="true" />
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
+    <enableChangeDataCapture>false</enableChangeDataCapture>
+    <enableDivisions>false</enableDivisions>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
     <enableFeeds>true</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableReports>true</enableReports>
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
+    <eventType n1:nil="true" />
     <externalSharingModel>Private</externalSharingModel>
     <fields>
         <fullName>Actual_COD_Date__c</fullName>
@@ -1805,6 +1914,48 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Stage__c</fullName>
+        <defaultValue>&quot;Pending&quot;</defaultValue>
+        <externalId>false</externalId>
+        <label>Stage</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Pending</fullName>
+                    <default>false</default>
+                    <label>Pending</label>
+                </value>
+                <value>
+                    <fullName>Onboarding</fullName>
+                    <default>false</default>
+                    <label>Onboarding</label>
+                </value>
+                <value>
+                    <fullName>Acquisition</fullName>
+                    <default>false</default>
+                    <label>Acquisition</label>
+                </value>
+                <value>
+                    <fullName>Management</fullName>
+                    <default>false</default>
+                    <label>Management</label>
+                </value>
+                <value>
+                    <fullName>Inactive</fullName>
+                    <default>false</default>
+                    <label>Inactive</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>State__c</fullName>
         <externalId>false</externalId>
         <label>State</label>
@@ -2138,6 +2289,8 @@ null)</formula>
         <type>Number</type>
         <unique>false</unique>
     </fields>
+    <gender n1:nil="true" />
+    <household>false</household>
     <label>Shared Solar System</label>
     <listViews>
         <fullName>All</fullName>
@@ -3177,6 +3330,85 @@ null)</formula>
     </recordTypes>
     <searchLayouts/>
     <sharingModel>Private</sharingModel>
+    <startsWith n1:nil="true" />
+    <validationRules>
+        <fullName>Acquisition_Credit_Score_Requir_Required</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+ISCHANGED(Stage__c),
+ISPICKVAL(Stage__c,&quot;Acquisition&quot;),
+OR (
+Credit_Score_Requirement__c = 0,
+ISBLANK(Credit_Score_Requirement__c)
+)
+)</errorConditionFormula>
+        <errorMessage>Cannot change status to acquisition without populating the Credit Score Requirement field</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Acquisition_Estimated_COD_PTO_Required</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+ISCHANGED(Stage__c),
+ISPICKVAL(Stage__c,&quot;Acquisition&quot;),
+OR (
+ISBLANK(Estimated_COD_Date_Manual__c),
+ISBLANK(Estimated_PTO_Date_MANUAL__c)
+)
+)</errorConditionFormula>
+        <errorMessage>Cannot change status to acquisition without populating the Estimated COD and PTO dates</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Acquisition_Product_UNMC_Required</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+ISCHANGED(Stage__c),
+ISPICKVAL(Stage__c,&quot;Acquisition&quot;),
+OR(
+ISBLANK(Product__c),
+ISBLANK(Utility_NMC_Tariff__c)
+)
+)</errorConditionFormula>
+        <errorMessage>Cannot change status to acquisition without populating the Product and Utility NMC Tariff (credit value)</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Acquisition_System_Size_Required</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+ISCHANGED(Stage__c),
+ISPICKVAL(Stage__c,&quot;Acquisition&quot;),
+OR (
+Total_System_Size_kWh_DC__c = 0,
+ISBLANK(Total_System_Size_kWh_DC__c)
+)
+)</errorConditionFormula>
+        <errorMessage>Cannot change status to acquisition without populating the System Size KW DC field</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Acquisition_Utility_LZ_Required</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+ISCHANGED(Stage__c),
+ISPICKVAL(Stage__c,&quot;Acquisition&quot;),
+OR(
+ISBLANK(Utility__c),
+ISBLANK(Service_Territories__c)
+)
+)</errorConditionFormula>
+        <errorMessage>Cannot change status to acquisition without populating the utility and load zone</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Acquisition_Yield_Required</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+ISCHANGED(Stage__c),
+ISPICKVAL(Stage__c,&quot;Acquisition&quot;),
+OR (
+Expected_Yield_kWh_kW__c = 0,
+ISBLANK(Expected_Yield_kWh_kW__c)
+)
+)</errorConditionFormula>
+        <errorMessage>Cannot change status to acquisition without populating the Expected Yield field</errorMessage>
+    </validationRules>
     <validationRules>
         <fullName>Client_Account_Validation</fullName>
         <active>true</active>
@@ -3191,6 +3423,30 @@ Client_Account__c != BWC_Project_Entity_Manual__r.Client_Account__c
         <errorMessage>The Client Account on the Shared Solar System and the Client Account on the Entity are not the same. If the Client Account on the Entity is not filled in, make sure that it is.</errorMessage>
     </validationRules>
     <validationRules>
+        <fullName>Management_Fully_Subscribed</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+ISCHANGED(Stage__c),
+ISPICKVAL(Stage__c,&quot;Management&quot;),
+OR(
+ISBLANK(Total_System_Size_kWh_DC__c),
+Total_System_Size_kWh_DC__c = 0, 
+Capacity_Available_to_be_Reserved__c &gt; 10
+)
+)</errorConditionFormula>
+        <errorMessage>Cannot change status to management without fully subscribing the project</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Management_Open_Is_False</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+ISCHANGED(Stage__c),
+ISPICKVAL(Stage__c,&quot;Management&quot;),
+Open__c
+)</errorConditionFormula>
+        <errorMessage>Cannot change status to management without first closing the SSS for sales</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>NMC_Tariff_Not_Retired</fullName>
         <active>true</active>
         <description>A Shared Solar System shouldn&apos;t have a retired tariff.</description>
@@ -3202,6 +3458,50 @@ ISCHANGED(Utility_NMC_Tariff__c)
 
 )</errorConditionFormula>
         <errorMessage>You cannot use an NMC Tariff with Status=Retired. Use an active tariff, or change the tariff status to active if it is active.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Onboarding_Client_Account_Required</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+ISCHANGED(Stage__c),
+ISPICKVAL(Stage__c,&quot;Onboarding&quot;),
+ISBLANK(Client_Account__c)
+)</errorConditionFormula>
+        <errorMessage>Cannot change status to onboarding without linking an SSS to a client account</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Open_SSS</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+ISCHANGED(Open__c),
+Open__c,
+OR(
+ISBLANK(Capacity_Available_to_be_Reserved__c),
+Capacity_Available_to_be_Reserved__c = 0 ,
+ISBLANK(Total_System_Size_kWh_DC__c),
+Total_System_Size_kWh_DC__c = 0,
+ISBLANK(Expected_Yield_kWh_kW__c),
+Expected_Yield_kWh_kW__c = 0,
+ISBLANK(Sales_Partners__c),
+ISPICKVAL(Assignment_Order__c,&quot;&quot;),
+ISBLANK(Product__c),
+ISBLANK(Utility_NMC_Tariff__c),
+ISBLANK(Utility__c),
+ISBLANK(Service_Territories__c),
+ISBLANK(Service_Territories__c),
+ISBLANK(Maximum_Subscription_Cost__c ),
+Maximum_Subscription_Cost__c = 0,
+ISBLANK(Credit_Score_Requirement__c),
+Credit_Score_Requirement__c = 0
+)
+)</errorConditionFormula>
+        <errorMessage>Can&apos;t set a SSS as Open without:
+1.) System Size and Yield
+2.) Capacity Available to Be Reserved &gt; 0 
+3.) Product and Utility NMC Tariff
+4.) Utility and Service Territories
+5) Maximum Subscription Cost &gt; 0
+6.) Credit Score Requirement</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>PM_Team_Locks</fullName>

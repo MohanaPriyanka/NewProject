@@ -1,0 +1,26 @@
+<apex:page standardController="Shared_Solar_System__c" standardStylesheets="false">
+<apex:includeLightning />
+<apex:slds />
+<div class="slds-scope padded" id="lightning"/>
+
+<script>
+
+    var sssId = "{!Shared_Solar_System__c.Id}";
+    var sssStage = "{!Shared_Solar_System__c.Stage__c}";
+    var sssOwner = "{!Shared_Solar_System__c.Owner.Name}";
+
+    $Lightning.use("c:SSS_StagesApp", function() {
+        $Lightning.createComponent(
+            "c:SSS_Stages",
+            {
+                "recordFromVF": sssId,
+                "currentStage" : sssStage,
+                "currentOwner" : sssOwner
+            },
+            "lightning",
+
+            function(cmp) {
+            });
+    });
+</script>
+</apex:page>
