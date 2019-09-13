@@ -411,6 +411,16 @@ IF(
         <type>Summary</type>
     </fields>
     <fields>
+        <fullName>Subscriptions__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Total number of subscriptions on Allocation Schedule</inlineHelpText>
+        <label>Subscriptions</label>
+        <summaryForeignKey>Schedule_Z_Subscription__c.Schedule_Z__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
         <fullName>Utility__c</fullName>
         <externalId>false</externalId>
         <formula>Shared_Solar_System__r.System_Utility__c</formula>
