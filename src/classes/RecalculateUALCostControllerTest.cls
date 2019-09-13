@@ -17,10 +17,10 @@ public class RecalculateUALCostControllerTest {
         insert bfgUser;
         Test.loadData(Utility__c.SObjectType, 'TestCSUtility');
         Test.loadData(Utility_NMC_Tariff__c.SObjectType, 'TestCSUtilityNMCTariff');
+        Test.loadData(Product2.SObjectType, 'RecalcUALTestProduct');
         Test.loadData(Shared_Solar_System__c.SObjectType, 'RecalcUALTestSharedSolarSystem');
         Test.loadData(Account.SObjectType, 'RecalcUALTestAccount');
         Test.loadData(Utility_Account_Log__c.SObjectType, 'RecalcUALTestUtilityAccountLog');
-        Test.loadData(Product2.SObjectType, 'RecalcUALTestProduct');
         Test.startTest();
         Test.loadData(Opportunity.SObjectType, 'RecalcUALTestOpportunity');
         Test.stopTest();
