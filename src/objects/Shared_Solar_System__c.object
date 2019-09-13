@@ -1076,6 +1076,17 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Information__c</fullName>
+        <externalId>false</externalId>
+        <label>Information</label>
+        <length>131072</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>25</visibleLines>
+    </fields>
+    <fields>
         <fullName>Last_Sch_Z_Enacted_Date__c</fullName>
         <description>This field is populated with the maximum Date Enacted by Utility field on all related Allocation Schedule records. If it needs to be updated, please update the Allocation Schedule record.</description>
         <externalId>false</externalId>
@@ -1424,6 +1435,32 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Project_Image__c</fullName>
+        <description>This is the project image that is displayed in the Customer Portal. It needs to be a link to an publicly accessible image.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the project image that is displayed in the Customer Portal. It needs to be a link to an publicly accessible image.</inlineHelpText>
+        <label>Project Image</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Project_Information_short__c</fullName>
+        <description>This is the information that is displayed within the Project carousel in the Customer Portal, and is meant to be a short blurb to give info at a glance. Character count is purposefully kept smaller than the full information field.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the information that is displayed within the Project carousel in the Customer Portal, and is meant to be a short blurb to give info at a glance.</inlineHelpText>
+        <label>Project Information (short)</label>
+        <length>250</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
@@ -2421,6 +2458,15 @@ null)</formula>
         <sharedTo>
             <group>BFG</group>
         </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Customer_Portal_View</fullName>
+        <columns>NAME</columns>
+        <columns>Project_Image__c</columns>
+        <columns>Information__c</columns>
+        <columns>Project_Information_short__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>Customer Portal View (do not edit)</label>
     </listViews>
     <listViews>
         <fullName>Oxford_Barrett_Assemblage</fullName>
