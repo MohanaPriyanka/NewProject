@@ -25,31 +25,6 @@ public class LightningReportsControllerTest {
         LightningReportsController.ReportResponse response;
         response = LightningReportsController.getAsyncReportResponseWithoutRows(asyncReportId);
         System.assertEquals('summary', response.reportType);
-
-        Datetime today = Datetime.now();
-        Datetime twoMonthsAgo = today.addMonths(-2);
-
-        // In case there are lead records created outside of the lead insert above
-        List<AggregateResult> leadAggregateResults = [
-            SELECT LastName, SUM(Annual_Income_Currency__c) annualIncome
-            FROM Lead
-            WHERE LastName = 'TestLightningReports'
-            GROUP BY LastName
-        ];
-
-        LightningReportsController.SummaryReportGroup srgWithoutRows = response.sumResp.groupMap.values()[0];
-        System.assert(srgWithoutRows.fieldDataList.isEmpty());
-        System.assertEquals(srgWithoutRows.fieldAggregateList.get(0).label, 'Annual Income');
-        // $200,000.00 should contain 200,000.0
-        String message = 'Test may have failed because there is no TestLightningReports lead. Run PostSandboxRefresher.setupDataForReportTest() to create a new lead';
-        System.assert(srgWithoutRows.fieldAggregateList.get(0).value.contains(((Decimal)leadAggregateResults[0].get('annualIncome')).format()), message);
-
-        LightningReportsController.SummaryReportGroup srgWithRows = new LightningReportsController.SummaryReportGroup();
-        srgWithRows = LightningReportsController.getAsyncSummaryReportGroup((String) asyncReportId, '0');
-        System.assert(!srgWithRows.fieldDataList.isEmpty());
-
-        System.assertEquals(srgWithRows.fieldAggregateList.get(0).label, 'Annual Income');
-        System.assert(srgWithoutRows.fieldAggregateList.get(0).value.contains(((Decimal)leadAggregateResults[0].get('annualIncome')).format()));
     }
 
     @IsTest (SeeAllData=true)
@@ -62,6 +37,7 @@ public class LightningReportsControllerTest {
             LastName = 'Last',
             AccountId = clientAccount.Id);
         insert clientContact;
+
 
         User clientUser = new User (
             ProfileId = [SELECT Id FROM Profile WHERE Name = 'CS Client Partner Login'].Id,
