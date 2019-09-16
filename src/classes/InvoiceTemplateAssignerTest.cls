@@ -152,4 +152,27 @@ public class InvoiceTemplateAssignerTest {
             }
         }
     }
+
+    @isTest public static void testHTMLTags(){
+        List<CS_Bill_Setting__c> billSetting = [
+            SELECT Id, Default_Bill_Message_for_Non_Autopay__c
+            FROM CS_Bill_Setting__c
+        ];
+
+        billSetting[0].Default_Bill_Message_for_Non_Autopay__c = 'This message has <b> some html </b> tags';
+
+        update billSetting[0];
+
+        Test.startTest();
+        InvoiceTemplateAssigner assigner = new InvoiceTemplateAssigner();
+        assigner.executeBatch();
+        Test.stopTest();
+
+        List<Error_Log__c> logs = [
+            SELECT Id, Message__c, Method__c
+            FROM Error_Log__c
+            WHERE Method__c = 'Bill Message contains hmtl tag'
+        ];
+        System.assertEquals(1,logs.size());
+    }
 }

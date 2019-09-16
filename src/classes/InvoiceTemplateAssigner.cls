@@ -114,6 +114,10 @@ public without sharing class InvoiceTemplateAssigner implements Schedulable, Dat
             ZuoraAPI.ZuoraAccount zAccount = new ZuoraAPI.ZuoraAccount();
             zAccount.Id = account.Zuora_Id__c;
             zAccount = setBillMessage(account, zAccount);
+            if (zAccount.Notes.contains('>') || zAccount.BillMessage_Zcustom.contains('>')){
+                Logger.logLater('InvoiceTemplateAssigner','Bill Message contains hmtl tag',String.valueOf(zAccount), Logger.ERROR);
+                break;
+            }
             templateKey = new TemplateKey(account);
             for (zqu__InvoiceTemplate__c template : invoiceTemplates){
                 if (templateKey.matches(template)){
