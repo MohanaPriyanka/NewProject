@@ -662,7 +662,7 @@
 
 Name = &quot;Oxford Barrett St. P2&quot;, Name = &quot;Oxford Barrett St. P1&quot;), &quot;Class 2&quot;,
 
-IF(AND(   Total_System_Size_kW_AC__c &gt; 60, Total_System_Size_kW_AC__c  &lt;= 1000), &quot;Class 2&quot;, 
+IF(AND(   Total_System_Size_kW_AC__c &gt; 60, Total_System_Size_kW_AC__c  &lt;= 1000), &quot;Class 2&quot;,
 
 IF ( Total_System_Size_kW_AC__c &gt; 1000, &quot;Class 3&quot;, null)))</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
@@ -1425,7 +1425,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
     <fields>
         <fullName>Project_Capacity_Available_kW_DC__c</fullName>
         <externalId>false</externalId>
-        <formula>if( Anchor_Capacity_Reserved__c &gt;0, Total_System_Size_kWh_DC__c - Anchor_Capacity_Reserved__c - Capacity_Committed_kW_DC__c, 
+        <formula>if( Anchor_Capacity_Reserved__c &gt;0, Total_System_Size_kWh_DC__c - Anchor_Capacity_Reserved__c - Capacity_Committed_kW_DC__c,
 Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Capacity not yet Committed (kW DC)</label>
@@ -3475,6 +3475,19 @@ ISBLANK(Expected_Yield_kWh_kW__c)
 )
 )</errorConditionFormula>
         <errorMessage>Cannot change status to acquisition without populating the Expected Yield field</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Client_Account_Validation</fullName>
+        <active>true</active>
+        <description>Checks to make sure that the Client Account on the SSS is the same as the Client Account on the Entity.</description>
+        <errorConditionFormula>(
+Client_Account__c != BWC_Project_Entity_Manual__r.Client_Account__c
+&amp;&amp;
+ ISBLANK(BWC_Project_Entity_Manual__r.Client_Account__c
+)=false
+
+)</errorConditionFormula>
+        <errorMessage>The Client Account on the Shared Solar System and the Client Account on the Entity are not the same. If the Client Account on the Entity is not filled in, make sure that it is.</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>Management_Fully_Subscribed</fullName>
