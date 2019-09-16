@@ -559,6 +559,12 @@
         <sortOrder>Desc</sortOrder>
     </relatedLists>
     <relatedLists>
+        <fields>CAMPAIGN.NAME</fields>
+        <fields>CONTACT.NAME</fields>
+        <fields>INFLUENCE</fields>
+        <relatedList>RelatedCampaignInfluence2List</relatedList>
+    </relatedLists>
+    <relatedLists>
         <relatedList>RelatedNoteList</relatedList>
     </relatedLists>
     <relatedLists>
