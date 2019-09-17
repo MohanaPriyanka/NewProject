@@ -1,0 +1,16 @@
+/**
+ * Created by SarahRenfro on 7/25/2019.
+ */
+
+.THIS .footer{
+    min-height: 93px;
+    background-color: t(colorBackgroundButtonBrand);
+    align-content: center;
+
+}
+
+.THIS .footer div{
+    color: white;
+    text-align: center;
+    font-size: .5rem;
+}

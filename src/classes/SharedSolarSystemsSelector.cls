@@ -45,4 +45,15 @@ public class SharedSolarSystemsSelector {
         }
         return sssList;
     }
+
+    public static Shared_Solar_System__c getMyProject(String projectId) {
+        Shared_Solar_System__c myProject = [
+            SELECT Id, Name, Metric_Tons_of_CO2_Offset__c, Home_Electricity_Offset__c, Waitlist__c, Subscribers__c,  Project_Image__c
+            FROM Shared_Solar_System__c
+            WHERE Id = :projectId
+            LIMIT 1
+        ];
+        return myProject;
+    }
+
 }
