@@ -10,6 +10,22 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
+        <label>Stage</label>
+        <layoutColumns>
+            <layoutItems>
+                <height>400</height>
+                <page>SSS_Stages</page>
+                <showLabel>false</showLabel>
+                <showScrollbars>true</showScrollbars>
+                <width>100%</width>
+            </layoutItems>
+        </layoutColumns>
+        <style>OneColumn</style>
+    </layoutSections>
+    <layoutSections>
+        <customLabel>true</customLabel>
+        <detailHeading>true</detailHeading>
+        <editHeading>true</editHeading>
         <label>Project View</label>
         <layoutColumns>
             <layoutItems>
@@ -277,6 +293,10 @@
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Maximum_Subscription_Cost__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Maximum_Subscription_Assemblage__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
