@@ -1242,10 +1242,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ConcurrentSessionsPolicyCondition</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>CongaTemplateAssigner</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -1303,10 +1299,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>DashboardHeaderControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>DataLoaderLeadExportCondition</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -3539,22 +3531,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ScheduleZTriggerHandlerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SessionPlugin</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SessionPluginTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SharedSolarSystemApexSharing</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SharedSolarSystemApexSharingTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -16838,11 +16814,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>AuthorizationForm.EffectiveToDate</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>AuthorizationForm.IsSignatureRequired</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -42752,11 +42723,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Schedule_Z__c.Subscriptions__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Schedule_Z__c.Utility__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -43102,11 +43068,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Shared_Solar_System__c.Home_Electricity_Offset__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Shared_Solar_System__c.Host_Utility_Account_Number__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -43159,11 +43120,6 @@
         <editable>false</editable>
         <field>Shared_Solar_System__c.Meter__c</field>
         <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Shared_Solar_System__c.Metric_Tons_of_CO2_Offset__c</field>
-        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -43327,11 +43283,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Shared_Solar_System__c.Subscribers__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Shared_Solar_System__c.System_Type__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -43427,11 +43378,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Shared_Solar_System__c.Waitlist__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Shared_Solar_System__c.XXX_App_ID_WO__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -43448,11 +43394,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.kW_needed_to_hit_payment_threshold__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Shared_Solar_System__c.sfxId__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -68548,9 +68489,6 @@
         <layout>Asset_Management__c-Asset Management Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>AuthorizationForm-Authorization Form Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Autopay_Schedule__c-Autopay Schedule Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -72666,15 +72604,6 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
-        <object>MacroUsage</object>
-        <viewAllRecords>false</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>false</allowCreate>
-        <allowDelete>false</allowDelete>
-        <allowEdit>false</allowEdit>
-        <allowRead>false</allowRead>
-        <modifyAllRecords>false</modifyAllRecords>
         <object>Management_Reporting__ChangeEvent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -73423,15 +73352,6 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>QuickText</object>
-        <viewAllRecords>false</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>false</allowCreate>
-        <allowDelete>false</allowDelete>
-        <allowEdit>false</allowEdit>
-        <allowRead>false</allowRead>
-        <modifyAllRecords>false</modifyAllRecords>
-        <object>QuickTextUsage</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
