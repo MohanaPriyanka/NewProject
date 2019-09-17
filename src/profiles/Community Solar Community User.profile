@@ -10666,10 +10666,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>trailheadapp__TrailheadQueue_Test</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>trailheadapp__TrailheadService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
