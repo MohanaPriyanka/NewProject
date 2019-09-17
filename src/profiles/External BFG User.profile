@@ -795,6 +795,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>SharedSolarSystemsSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SharedSolarSystemsSelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>SiteLoginController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -27425,6 +27433,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Schedule_Z__c.Subscriptions__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Schedule_Z__c.Utility__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -27759,6 +27772,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Home_Electricity_Offset__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Shared_Solar_System__c.Host_Utility_Account_Number__c</field>
         <readable>true</readable>
@@ -27812,6 +27830,11 @@
         <editable>true</editable>
         <field>Shared_Solar_System__c.Meter__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Metric_Tons_of_CO2_Offset__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -27965,6 +27988,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Shared_Solar_System__c.Subscribers__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.System_Type__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -28051,6 +28079,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Waitlist_Yes_No__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Waitlist__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

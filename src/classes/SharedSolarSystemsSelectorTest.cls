@@ -88,7 +88,8 @@ public with sharing class SharedSolarSystemsSelectorTest {
         insert new List<Shared_Solar_System__c>{sss1, sss2, sss3, sss4};
     }
 
-    @IsTest public static void testGetSharedSolarSystemsWithCapacityByUtilityAndLoadZone() {
+    @IsTest
+    public static void testGetSharedSolarSystemsWithCapacityByUtilityAndLoadZone() {
         Map<String, Id> utilityMap = new Map<String, Id>();
         for(Utility__c utility : [SELECT Id, Name FROM Utility__c]){
             utilityMap.put(utility.Name, utility.Id);
@@ -151,7 +152,8 @@ public with sharing class SharedSolarSystemsSelectorTest {
         System.assertEquals(4, ngAndEversourceSharedSolarSystems.size());
     }
 
-    @isTest static void testGetSSSWithoutProdUpdates(){
+    @IsTest
+    static void testGetSSSWithoutProdUpdates(){
         Date todaysDate = Date.today();
         List<Id> prodIdList;
 
@@ -170,4 +172,14 @@ public with sharing class SharedSolarSystemsSelectorTest {
         System.assertEquals(0,sssList.size());
         System.assertEquals(0,sss2List.size());
     }
+
+    @IsTest
+    static void testGetMyProject() {
+        Shared_Solar_System__c myProject = [SELECT Id FROM Shared_Solar_System__c LIMIT 1];
+
+        Shared_Solar_System__c checkProject = SharedSolarSystemsSelector.getMyProject(myProject.Id);
+
+        System.assertNotEquals(null, checkProject);
+    }
+
 }

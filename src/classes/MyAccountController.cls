@@ -42,6 +42,11 @@ public without sharing class MyAccountController {
     }
 
     @AuraEnabled
+    public static Shared_Solar_System__c getProject(String projectId) {
+        return SharedSolarSystemsSelector.getMyProject(projectId);
+    }
+
+    @AuraEnabled
     public static List<Account> getMenuLabelList() {
         List<Account> propertyAccountLabelList = [
             SELECT Id, Name, Parent_Account_ID__c, Total_Outstanding_Balance__c

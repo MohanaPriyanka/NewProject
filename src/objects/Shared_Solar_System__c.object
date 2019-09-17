@@ -1064,6 +1064,22 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Home_Electricity_Offset__c</fullName>
+        <externalId>false</externalId>
+        <formula>Metric_Tons_of_CO2_Offset__c /5.734</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>EPA Calculation from July 2019
+# of Single Family Homes offset by project</inlineHelpText>
+        <label>Home Electricity Offset</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Host_Utility_Account_Number__c</fullName>
         <externalId>false</externalId>
         <label>Host Utility Account Number</label>
@@ -1207,6 +1223,21 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Metric_Tons_of_CO2_Offset__c</fullName>
+        <externalId>false</externalId>
+        <formula>(Total_System_Size_kWh_DC__c  * Expected_Yield_kWh_kW__c)*7.07*0.0001</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>EPA Calculation as of July 2019</inlineHelpText>
+        <label>Annual Metric Tons of CO2 Offset</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
         <unique>false</unique>
     </fields>
     <fields>
@@ -2012,6 +2043,23 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Subscribers__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Total # of Allocation Schedules assigned to Project</inlineHelpText>
+        <label>Subscribers</label>
+        <summarizedField>Schedule_Z__c.Subscriptions__c</summarizedField>
+        <summaryFilterItems>
+            <field>Schedule_Z__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Billing</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Schedule_Z__c.Shared_Solar_System__c</summaryForeignKey>
+        <summaryOperation>max</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
         <fullName>System_Type__c</fullName>
         <externalId>false</externalId>
         <label>XXXSystem Type</label>
@@ -2280,6 +2328,17 @@ null)</formula>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Waitlist__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>If checked, this project is a waitlist</inlineHelpText>
+        <label>Waitlist</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>XXX_App_ID_WO__c</fullName>
