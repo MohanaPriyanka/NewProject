@@ -3201,6 +3201,20 @@ IF(AND(Application_Type__c=&quot;Joint&quot;,TEXT(Joint_Applicant_Type__c)=&quot
         </valueSet>
     </fields>
     <fields>
+        <fullName>Email_Template_Parent_Account_ID__c</fullName>
+        <description>This field is a duplicate of the Parent Account ID -- was required to be referenced in an email template since there were 2 other fields with similar API names and field labels that the merge-fields were not working.</description>
+        <externalId>false</externalId>
+        <formula>Account.Parent_Account__r.Id</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>This field is a duplicate of the Parent Account ID -- was required to be referenced in an email template since there were 2 other fields with similar API names and field labels that the merge-fields were not working.</inlineHelpText>
+        <label>Email Template Parent Account ID</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Email__c</fullName>
         <externalId>false</externalId>
         <label>Email</label>
