@@ -1,14 +1,16 @@
-public without sharing class InvoiceTemplateAssigner implements Database.Batchable<SObject>, Database.Stateful, Database.AllowsCallouts{
+// Methods in batch class must be global or public, so suppress warnings:
+@SuppressWarnings('PMD.ExcessivePublicCount')
+public without sharing class InvoiceTemplateAssigner implements Schedulable, Database.Batchable<SObject>, Database.Stateful, Database.AllowsCallouts{
     public List<zqu__InvoiceTemplate__c> invoiceTemplateList;
     public List<Account> accountsToUpdate;
-    public CS_Bill_Setting__c csBillSetting;
+    private CS_Bill_Setting__c csBillSetting;
 
     public class ZuoraInvoiceTemplate {
         public String name;
         public String id;
     }
 
-    public class TemplateKey {
+    private class TemplateKey {
         public Boolean isAutopay;
         public Boolean isAnchor;
         public String clientBrandKey;
@@ -49,7 +51,7 @@ public without sharing class InvoiceTemplateAssigner implements Database.Batchab
         }
     }
 
-    @SupressWarnings('PMD.ApexCRUDViolation')
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     // We want users who don't have access to Zuora templates to be
     // able to get all zuora accounts and apply a template
     public List<zqu__InvoiceTemplate__c> getTemplateList(){
@@ -62,14 +64,16 @@ public without sharing class InvoiceTemplateAssigner implements Database.Batchab
         return invoiceTemplates;
     }
 
-    @SupressWarnings('PMD.ApexCRUDViolation')
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     // We want users who don't have access to Zuora templates to be
     // able to get all zuora accounts and apply a template
     public List<Account> getAccounts(){
         List<Account> accounts = [
             SELECT Id, Name, Zuora_Id__c,
             Parent_Account__r.Client_Brand_Key__c,
-            Recurring_Billing__c, Count_of_Large_Offtake_Opps__c
+            Recurring_Billing__c, Count_of_Large_Offtake_Opps__c,
+            Zuora_Invoice_Message_1_of_2__c,
+            Zuora_Invoice_Message_2_of_2__c
             FROM Account
             WHERE Zuora_Id__c != null];
         return accounts;
@@ -85,21 +89,36 @@ public without sharing class InvoiceTemplateAssigner implements Database.Batchab
         Logger.flushLogs();
     }
 
+    private ZuoraAPI.ZuoraAccount setBillMessage(Account sfAccount, ZuoraAPI.ZuoraAccount zAccount){
+        if (sfAccount.Zuora_Invoice_Message_1_of_2__c != null){
+            zAccount.Notes = sfAccount.Zuora_Invoice_Message_1_of_2__c;
+        } else if (sfAccount.Recurring_Billing__c){
+            zAccount.Notes = csBillSetting.Default_Bill_Message_for_Autopay__c;
+        } else {
+            zAccount.Notes = csBillSetting.Default_Bill_Message_for_Non_Autopay__c;
+        }
+        if (sfAccount.Zuora_Invoice_Message_2_of_2__c != null){
+            zAccount.BillMessage_Zcustom = sfAccount.Zuora_Invoice_Message_2_of_2__c;
+        } else {
+            zAccount.BillMessage_Zcustom = '';
+        }
+        return zAccount;
+    }
+
     public List<ZuoraAPI.ZuoraAccount> assignTemplates(List<Account> accountsToAssign, List<zqu__InvoiceTemplate__c> invoiceTemplates){
         TemplateKey templateKey;
 
         Map<String,ZuoraAPI.ZuoraAccount> accountsToUpdate = new Map<String,ZuoraAPI.ZuoraAccount>();
 
         for (Account account : accountsToAssign){
-            templateKey = new TemplateKey(account);
-
             ZuoraAPI.ZuoraAccount zAccount = new ZuoraAPI.ZuoraAccount();
             zAccount.Id = account.Zuora_Id__c;
-            if (templateKey.isAnchor){
-                zAccount.Notes = csBillSetting.Default_Bill_Message_for_Autopay__c;
-            } else {
-                zAccount.Notes = csBillSetting.Default_Bill_Message_for_Non_Autopay__c;
+            zAccount = setBillMessage(account, zAccount);
+            if (zAccount.Notes.contains('>') || zAccount.BillMessage_Zcustom.contains('>')){
+                Logger.logLater('InvoiceTemplateAssigner','Bill Message contains hmtl tag',String.valueOf(zAccount), Logger.ERROR);
+                break;
             }
+            templateKey = new TemplateKey(account);
             for (zqu__InvoiceTemplate__c template : invoiceTemplates){
                 if (templateKey.matches(template)){
                     zAccount.InvoiceTemplateId = template.zqu__ZuoraId__c;
@@ -114,7 +133,7 @@ public without sharing class InvoiceTemplateAssigner implements Database.Batchab
         return accountsToUpdate.values();
     }
 
-    public void updateAccountsInZuora(List<ZuoraAPI.ZuoraAccount> zuoraAccounts) {
+    private void updateAccountsInZuora(List<ZuoraAPI.ZuoraAccount> zuoraAccounts) {
         ZuoraAPI.ActionItems item = new ZuoraAPI.ActionItems();
         item.type = 'Account';
         item.objects = zuoraAccounts;
@@ -141,6 +160,35 @@ public without sharing class InvoiceTemplateAssigner implements Database.Batchab
     }
 
     public void finish(Database.BatchableContext bc){
-        // Need to have finish method in batch job
+        try {
+            InvoiceTemplateAssigner clearAccountFieldsJob = new InvoiceTemplateAssigner();
+            Datetime dt = Datetime.now();
+            dt = dt.addDays(10);
+            String cronExpress = '0 ' + dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
+            System.schedule('Clear Account Message Fields',cronExpress,clearAccountFieldsJob);
+        } catch (Exception excep) {
+            Logger.logNow('InvoiceTemplateAssigner','scheduleAccountClear','Account Clear could not be scheduled' + excep.getMessage(),'WARN');
+        }
+    }
+
+    public void execute(SchedulableContext SC){
+        clearAccountFields();
+    }
+
+    public void clearAccountFields(){
+        try {
+            List<Account> accountsWithMessages = AccountsSelector.selectAccountsWithBillMessages();
+            for (Account acct : accountsWithMessages){
+                acct.Zuora_Invoice_Message_1_of_2__c = null;
+                acct.Zuora_Invoice_Message_2_of_2__c = null;
+            }
+            if (accountsWithMessages.size() > 150) {
+                Database.executeBatch(new GenericBatchDMLOperation(accountsWithMessages, 'Update'));
+            } else {
+                update accountsWithMessages;
+            }
+        } catch (Exception excep) {
+            Logger.logNow('InvoiceTemplateAssigner','clearAccountFields','Account Clear could not be executed' + excep.getMessage(),'WARN');
+        }
     }
 }

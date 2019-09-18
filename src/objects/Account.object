@@ -4054,6 +4054,26 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Zuora_Invoice_Message_1_of_2__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>If left blank, the default autopay or non-autopay message will be used. Limited to 200 characters. Shows up in top left box of invoice template</inlineHelpText>
+        <label>Zuora Invoice Message 1 of 2</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Zuora_Invoice_Message_2_of_2__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>If left blank, the default autopay or non-autopay message will be used. Limited to 200 characters</inlineHelpText>
+        <label>Zuora Invoice Message 2 of 2</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
         <fullName>Zuora_Payment_Ref_Id_Expiration_Date__c</fullName>
         <description>Date/Time of Zuora Ref Id expiration. If time has past, the Id is invalid</description>
         <externalId>false</externalId>

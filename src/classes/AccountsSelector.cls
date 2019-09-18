@@ -64,6 +64,15 @@ public without sharing class AccountsSelector {
         ];
     }
 
+    public static List<Account> selectAccountsWithBillMessages() {
+        return [
+            SELECT Id, Zuora_Invoice_Message_1_of_2__c, Zuora_Invoice_Message_2_of_2__c
+            FROM Account
+            WHERE Zuora_Invoice_Message_1_of_2__c != null
+            OR Zuora_Invoice_Message_2_of_2__c != null
+        ];
+    }
+
     public Account selectOne(Id accountId) {
         List<Account> accounts = this.selectAll(new Set<Id>{accountId});
         if (accounts.isEmpty()) {
