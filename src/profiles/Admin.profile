@@ -385,6 +385,26 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ContentDocumentSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ContentDocumentSelectorTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ContentMailerAsyncService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ContentMailerService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ContentMailerServiceTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CreateOrderandPaymentRequest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -526,6 +546,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ImageScrollerControllerTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>InvocableCSBillLetterStreamSend</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -1126,6 +1150,30 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ZuoraAccountServiceTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraGLServiceTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraInvoiceAsyncService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraInvoiceSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraInvoiceSelectorTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraInvoiceService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraInvoiceServiceTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -23697,6 +23745,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Email_Template_Parent_Account_ID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Opportunity.Email__c</field>
         <readable>true</readable>
@@ -32734,6 +32787,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Zuora__CustomerAccount__c.Lifetime_Savings__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Zuora__ZInvoice__c.LetterStreamJob__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -47840,6 +47898,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Zuora_Contact__c-Zuora Contact Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Zuora__ZInvoice__c-Zuora__ZInvoice Z-Force Layout v2%2E9</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>agf__ADM_Product_Tag__c-agf__Product Tag Layout</layout>

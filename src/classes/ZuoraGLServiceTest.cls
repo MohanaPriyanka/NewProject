@@ -7,6 +7,8 @@ public class ZuoraGLServiceTest {
 
     @IsTest
     private static void testBuildQueryString() {
+        ZuoraAPIHelper.setZuoraLive(false);
+
         Date startDate = Date.newInstance(2019,03,12);
         Date endDate = Date.newInstance(2019,04,12);
 
@@ -37,19 +39,18 @@ public class ZuoraGLServiceTest {
         System.assert(invoiceItemsWithDate.contains('TIMESTAMP'));
         System.assert(!invoiceItemsNullDate.contains('TIMESTAMP'));
 
-        // Post Zuora Go Live, should use different dates for payment parts.
-        // Going forward, we will report on payments when they are applied:
-        // Historical Migration, we reported on transactions when they were made.
-        Zuora_Setting__mdt zuoraSetting = ZuoraAPIHelper.getZuoraSetting();
-        zuoraSetting.Zuora_Is_Live__c = true;
-
-        String postGoLiveDM = ZuoraGLSelector.getPaymentPartsDM(startDate, endDate);
-        String postGoLiveIV = ZuoraGLSelector.getPaymentPartsIV(startDate, endDate);
-
         System.assert(paymentPartsDMWithDate.contains('effectiveDate'));
         System.assert(paymentPartsIVWithDate.contains('effectiveDate'));
         System.assert(!paymentPartsDMWithDate.contains('createddate'));
         System.assert(!paymentPartsIVWithDate.contains('createddate'));
+
+        // Post Zuora Go Live, should use different dates for payment parts.
+        // Going forward, we will report on payments when they are applied:
+        // Historical Migration, we reported on transactions when they were made.
+        ZuoraAPIHelper.setZuoraLive(true);
+
+        String postGoLiveDM = ZuoraGLSelector.getPaymentPartsDM(startDate, endDate);
+        String postGoLiveIV = ZuoraGLSelector.getPaymentPartsIV(startDate, endDate);
         System.assert(postGoLiveDM.contains('createddate'));
         System.assert(postGoLiveIV.contains('createddate'));
         System.assert(!postGoLiveDM.contains('effectiveDate'));
