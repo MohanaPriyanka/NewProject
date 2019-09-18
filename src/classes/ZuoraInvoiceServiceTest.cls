@@ -7,8 +7,8 @@ public with sharing class ZuoraInvoiceServiceTest {
     @TestSetup
     public static void testSetup() {
         List<Zuora__ZInvoice__c> invoices = new List<Zuora__ZInvoice__c>();
-        invoices.add(new Zuora__ZInvoice__c(Zuora__ZuoraId__c = '12345'));
-        invoices.add(new Zuora__ZInvoice__c(Zuora__ZuoraId__c = '67890'));
+        invoices.add(new Zuora__ZInvoice__c(Zuora__Zuora_Id__c = '2c92c0fb6d1fe1f0016d216a87b54440'));
+        invoices.add(new Zuora__ZInvoice__c(Zuora__Zuora_Id__c = '2c92c0fb6d1fe1f0016d216a87b54441'));
 
         insert invoices;
         ContentMailerServiceTest.testSetup();
@@ -36,7 +36,7 @@ public with sharing class ZuoraInvoiceServiceTest {
         System.assertEquals(1, zuoraInvoices.size());
         System.assertEquals(1, sfdcInvoices.size());
         System.assertEquals(1, zuoraInvoiceIdToSFDCId.values().size());
-        System.assertEquals(idFor12345, zuoraInvoiceIdToSFDCId.get('12345'));
+        System.assertEquals(idFor12345, zuoraInvoiceIdToSFDCId.get('2c92c0fb6d1fe1f0016d216a87b54440'));
     }
 
     @IsTest
@@ -44,20 +44,20 @@ public with sharing class ZuoraInvoiceServiceTest {
         List<ZuoraAPI.Invoice> zuoraInvoices = new List<ZuoraAPI.Invoice>();
         ZuoraAPI.Invoice zuoraInvoice = new ZuoraAPI.Invoice();
         zuoraInvoice.Body = 'SGVsbG8gV29ybGQ=';
-        zuoraInvoice.id = '12345';
+        zuoraInvoice.id = '2c92c0fb6d1fe1f0016d216a87b54440';
         zuoraInvoice.InvoiceNumber = 'INV-12345';
         zuoraInvoices.add(zuoraInvoice);
         ZuoraAPI.Invoice zuoraInvoice2 = new ZuoraAPI.Invoice();
         zuoraInvoice2.Body = 'SGVsbG8gV29ybGQ=';
-        zuoraInvoice2.id = '67890';
+        zuoraInvoice2.id = '2c92c0fb6d1fe1f0016d216a87b54441';
         zuoraInvoice2.InvoiceNumber = 'INV-67890';
         zuoraInvoices.add(zuoraInvoice2);
 
         ZuoraInvoiceService invoiceService = new ZuoraInvoiceService(null);
         Map<String, ContentVersion> idToContentVersion = invoiceService.insertContentVersions(zuoraInvoices);
 
-        System.assertEquals('INV-12345.pdf', idToContentVersion.get('12345').Title);
-        System.assertEquals('INV-67890.pdf', idToContentVersion.get('67890').Title);
+        System.assertEquals('INV-12345.pdf', idToContentVersion.get('2c92c0fb6d1fe1f0016d216a87b54440').Title);
+        System.assertEquals('INV-67890.pdf', idToContentVersion.get('2c92c0fb6d1fe1f0016d216a87b54441').Title);
     }
 
     @IsTest
@@ -81,7 +81,7 @@ public with sharing class ZuoraInvoiceServiceTest {
             ContentVersion version = new ContentVersion(
                 Id = '0680a000003HjQqAAK'
             );
-            invToContentVersion.put(zInvoice.Zuora__ZuoraId__c, version);
+            invToContentVersion.put(zInvoice.Zuora__Zuora_Id__c, version);
         }
 
         ZuoraInvoiceService invoiceService = new ZuoraInvoiceService(null);
