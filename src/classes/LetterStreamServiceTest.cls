@@ -584,7 +584,7 @@ public with sharing class LetterStreamServiceTest {
     public static void testSendLettersAvoidHeapSize() {
         TestFactory.insertBWAddress();
         TestFactory.insertLetterStreamSettings();
-
+        ZuoraAPIHelper.setZuoraLive(false);
 
         Datetime now = Datetime.now();
 
