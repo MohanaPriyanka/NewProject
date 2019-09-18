@@ -6,14 +6,21 @@
  *************************************************************************************/
 
 public with sharing class ZuoraInvoiceAsyncService implements Queueable, Database.AllowsCallouts, Database.Batchable<Zuora__ZInvoice__c> {
+    public enum OperationType {DOWNLOAD, MAIL}
+    public OperationType mode;
     public List<Zuora__ZInvoice__c> allInvoicesToDownload;
-
-    public ZuoraInvoiceAsyncService() {
-        allInvoicesToDownload = new List<Zuora__ZInvoice__c>();
-    }
+    public List<Zuora__ZInvoice__c> allInvoicesToMail;
+    public List<Zuora__ZInvoice__c> invoicesAlreadySent;
 
     public ZuoraInvoiceAsyncService(List<Zuora__ZInvoice__c> sfdcZInvoices) {
+        mode = OperationType.DOWNLOAD;
         allInvoicesToDownload = sfdcZInvoices;
+    }
+
+    public ZuoraInvoiceAsyncService(OperationType mode) {
+        this.mode = mode;
+        this.allInvoicesToMail = new List<Zuora__ZInvoice__c>();
+        this.invoicesAlreadySent = new List<Zuora__ZInvoice__c>();
     }
 
     public void initForDownload() {
@@ -21,12 +28,26 @@ public with sharing class ZuoraInvoiceAsyncService implements Queueable, Databas
     }
 
     public Iterable<Zuora__ZInvoice__c> start(Database.BatchableContext context) {
-        return allInvoicesToDownload;
+        if (mode == OperationType.DOWNLOAD) {
+            return allInvoicesToDownload;
+        } else {
+            return allInvoicesToMail;
+        }
     }
 
     public void execute(Database.BatchableContext context, List<Zuora__ZInvoice__c> scope) {
-        ZuoraInvoiceService invoiceService = new ZuoraInvoiceService(scope);
-        invoiceService.downloadPDFs();
+        try {
+            ZuoraInvoiceService invoiceService = new ZuoraInvoiceService(scope);
+            if (mode == OperationType.DOWNLOAD) {
+                invoiceService.downloadPDFs();
+            } else {
+                invoiceService.queueInvoicesToMail(scope);
+            }
+        } catch (Exception e) {
+            Logger.logNow('ZuoraInvoiceAsyncService', 'execute', e.getMessage() + '\n' + e.getStackTraceString() + '\n' + scope, Logger.ERROR);
+        } finally {
+            Logger.flushLogs();
+        }
     }
 
     public void finish(Database.BatchableContext context) {

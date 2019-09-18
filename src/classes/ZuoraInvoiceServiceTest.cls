@@ -11,7 +11,12 @@ public with sharing class ZuoraInvoiceServiceTest {
         invoices.add(new Zuora__ZInvoice__c(Zuora__ZuoraId__c = '67890'));
 
         insert invoices;
+        ContentMailerServiceTest.testSetup();
     }
+
+    /*
+     * Download from Zuora tests
+     */
 
     @IsTest
     public static void testQueryForPDF() {
@@ -95,13 +100,13 @@ public with sharing class ZuoraInvoiceServiceTest {
         System.assertNotEquals(0,invoiceList.size());
         System.assertEquals('0680a000003HjQqAAK',invoiceList[0].Bill_Document_Content_Version_ID__c);
         System.assertEquals('06A0a000002SwvOEAS',invoiceList[0].Content_Document_Id__c);
-        System.assert(invoiceList[0].Ready_For_Email_Send__c);
-        System.assert(invoiceList[0].Ready_For_Paper_Bill_Queue__c);
+        System.assert(invoiceList[0].Ready_for_Email_Send__c);
+        System.assert(invoiceList[0].Ready_for_Paper_Bill_Queue__c);
     }
 
     @IsTest
     public static void testDownloadPDFAsync() {
-        ZuoraInvoiceAsyncService asyncService = new ZuoraInvoiceAsyncService();
+        ZuoraInvoiceAsyncService asyncService = new ZuoraInvoiceAsyncService(ZuoraInvoiceAsyncService.OperationType.DOWNLOAD);
         asyncService.initForDownload();
         System.assertEquals(2, asyncService.allInvoicesToDownload.size());
         Id zuoraInvoiceId = asyncService.allInvoicesToDownload[0].Id;
@@ -165,5 +170,132 @@ public with sharing class ZuoraInvoiceServiceTest {
         System.assertEquals(1, zuoraInvoices.size());
         System.assertEquals(System.today(), zuoraInvoices[0].Downloaded_Date__c);
         System.assertEquals(1, zuoraInvoices[0].ContentDocumentLinks.size());
+    }
+
+    /*
+     * Upload to Letterstream tests
+     */
+    @IsTest
+    private static void testBatchAndQueue() {
+        List<Zuora__ZInvoice__c> invoices = ZuoraInvoiceSelector.getInvoicesToMail();
+        Set<Account> accounts = new Set<Account>();
+        for (Zuora__ZInvoice__c zInvoice : invoices) {
+            Account account = new Account(
+                Id = zInvoice.Zuora__BillingAccount__r.Zuora__Account__c,
+                Name = 'Test',
+                BillingStreet = 'Street',
+                BillingCity = 'City',
+                BillingState = 'Massachusetts',
+                BillingPostalCode = 'PostalCode'
+            );
+            accounts.add(account);
+        }
+        update new List<Account>(accounts);
+
+        ZuoraAPIHelper.setZuoraLive(true);
+        Test.startTest();
+        InvocableCSBillLetterStreamSend.sendLetters();
+        Test.stopTest();
+
+        List<Error_Log__c> errorLogs = [
+            SELECT Message__c
+            FROM Error_Log__c
+            WHERE Severity__c = 'Error'
+        ];
+        System.assertEquals(0, errorLogs.size());
+        System.assertEquals(1, ContentMailerService.calloutsMade);
+    }
+
+    @IsTest
+    private static void testGetAllContentParamsToQueueValidAddresses() {
+        List<Zuora__ZInvoice__c> invoices = ZuoraInvoiceSelector.getInvoicesToMail();
+        System.assert(invoices.size() > 0);
+        Set<Account> accounts = new Set<Account>();
+        for (Zuora__ZInvoice__c zInvoice : invoices) {
+            Account account = new Account(
+                Id = zInvoice.Zuora__BillingAccount__r.Zuora__Account__c,
+                Name = 'Test',
+                BillingStreet = 'Street',
+                BillingCity = 'City',
+                BillingState = 'Massachusetts',
+                BillingPostalCode = 'PostalCode'
+            );
+            accounts.add(account);
+        }
+        update new List<Account>(accounts);
+
+        invoices = ZuoraInvoiceSelector.getInvoicesToMail();
+        ZuoraInvoiceService invoiceService = new ZuoraInvoiceService(null);
+        for (Zuora__ZInvoice__c zInvoice : invoices) {
+            System.assert(invoiceService.invoiceAddressValid(zInvoice));
+        }
+
+        Test.startTest();
+        List<ContentMailerService.Param> params = invoiceService.getAllContentParamsToQueue(invoices);
+        Test.stopTest();
+        System.assertEquals(invoices.size(), params.size());
+        for (ContentMailerService.Param param : params) {
+            System.assertEquals('Test', param.recipientName);
+            System.assertEquals('Street', param.street);
+            System.assertEquals('City', param.city);
+            System.assertEquals('Massachusetts', param.state);
+            System.assertEquals('PostalCode', param.postalCode);
+        }
+        List<Case> cases = [
+            SELECT Id
+            FROM Case
+            WHERE Subject = 'Cannot send bill to Community Solar customer.'
+        ];
+        System.assertEquals(0, cases.size());
+    }
+
+    @IsTest
+    private static void testGetAllContentParamsToQueueInvalidAddresses() {
+        List<Zuora__ZInvoice__c> invoices = ZuoraInvoiceSelector.getInvoicesToMail();
+        System.assert(invoices.size() > 0);
+
+        ZuoraInvoiceService invoiceService = new ZuoraInvoiceService(null);
+        for (Zuora__ZInvoice__c zInvoice : invoices) {
+            System.assert(!invoiceService.invoiceAddressValid(zInvoice));
+        }
+
+        Test.startTest();
+        List<ContentMailerService.Param> params = invoiceService.getAllContentParamsToQueue(invoices);
+        Test.stopTest();
+        System.assertEquals(0, params.size());
+        List<Case> cases = [
+            SELECT Id
+            FROM Case
+            WHERE Subject = 'Cannot send bill to Community Solar customer.'
+        ];
+        System.assertEquals(invoices.size(), cases.size());
+    }
+
+    @IsTest
+    private static void testInvalidAddressAndCaseCreation() {
+        List<Zuora__ZInvoice__c> invoices = ZuoraInvoiceSelector.getInvoicesToMail();
+        System.assert(invoices.size() > 0);
+        System.assertEquals(null, invoices[0].Zuora__BillingAccount__r.Zuora__Account__r.BillingStreet);
+
+        Test.startTest();
+        ZuoraInvoiceService invoiceService = new ZuoraInvoiceService(null);
+        System.assert(!invoiceService.invoiceAddressValid(invoices[0]));
+        Id accountId = invoices[0].Zuora__BillingAccount__r.Zuora__Account__c;
+        Account acct = new Account(
+            Id = accountId,
+            BillingStreet = 'Street',
+            BillingCity = 'City',
+            BillingState = 'Massachusetts',
+            BillingPostalCode = 'PostalCode'
+        );
+        update acct;
+        invoices = ZuoraInvoiceSelector.getInvoicesToMail();
+        System.assertEquals(accountId, invoices[0].Zuora__BillingAccount__r.Zuora__Account__c);
+        System.assert(invoiceService.invoiceAddressValid(invoices[0]));
+
+        Case c = invoiceService.createCaseForInvalidAddress(invoices[0]);
+        insert c;
+        System.assertEquals('Cannot send bill to Community Solar customer.', c.Subject);
+        Test.stopTest();
     }
 }

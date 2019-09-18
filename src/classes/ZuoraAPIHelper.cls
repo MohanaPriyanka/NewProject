@@ -5,6 +5,7 @@
  *************************************************************************************/
 
 public with sharing class ZuoraAPIHelper {
+    @TestVisible
     private static Zuora_Setting__mdt zuoraSetting;
     @TestVisible
     private static Long calloutMillis = 0;
@@ -93,6 +94,15 @@ public with sharing class ZuoraAPIHelper {
         return response;
     }
 
+    // For testing only, to mock mdt
+    @TestVisible
+    private static void setZuoraLive(Boolean live) {
+        Zuora_Setting__mdt zuoraSetting = new Zuora_Setting__mdt(
+            Zuora_Is_Live__c = live
+        );
+        ZuoraAPIHelper.zuoraSetting = zuoraSetting;
+    }
+
     public static Zuora_Setting__mdt getZuoraSetting() {
         if (zuoraSetting != null) {
             return zuoraSetting;
@@ -112,6 +122,7 @@ public with sharing class ZuoraAPIHelper {
         return zuoraSetting;
     }
 
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     public static API_Credential__c getOAuthCredential(String credentialName){
          API_Credential__c credential = [
             SELECT Id, Credential_Id__c, Credential_Secret__c

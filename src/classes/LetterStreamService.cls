@@ -36,6 +36,10 @@ public without sharing class LetterStreamService {
 
     public String csv = '';
 
+    public Blob getCSV() {
+        return Blob.valueOf(csv);
+    }
+
     public LetterStreamJob__c parseLetterStreamResponse(String responseXML) {
         XmlStreamReader responseReader = new XmlStreamReader(responseXML);
 
@@ -51,6 +55,8 @@ public without sharing class LetterStreamService {
         return newJob;
     }
 
+    // Since we want to insert Letterstreamjobs independent of user permissions:
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     public LetterStreamJob__c parseLetterStreamMessage(XmlStreamReader responseReader) {
         String responseCode;
         String details;
@@ -267,6 +273,20 @@ public without sharing class LetterStreamService {
         public String recipientPostalCode;
         public String pages;
         public String extraInserts;
+
+        public LetterParameters() {
+        }
+
+        public LetterParameters(ContentMailerService.Param contentMailerParam) {
+            this.fileId = contentMailerParam.linkedEntityId;
+            this.fileName = contentMailerParam.fileName;
+            this.recipientName = contentMailerParam.recipientName;
+            this.recipientStreet = contentMailerParam.street;
+            this.recipientCity = contentMailerParam.city;
+            this.recipientState = contentMailerParam.state;
+            this.recipientPostalCode = contentMailerParam.postalCode;
+            this.extraInserts = contentMailerParam.extraInserts;
+        }
 
         // Undocumented LetterStream feature to handle the case where we don't have a page count
         // On Wed, Sep 4, 2019 at 12:53 PM MST, David Patterson <production@letterstream.com> wrote:

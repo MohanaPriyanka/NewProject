@@ -4,15 +4,22 @@
  * Test: LetterStreamServiceTest
  */
 
-@isTest
-global class LetterStreamAPIMock implements HttpCalloutMock {
+@IsTest
+public class LetterStreamAPIMock implements HttpCalloutMock {
     public List<Account_Bill__c> accountBills;
+
+    public LetterStreamAPIMock() {
+        Account_Bill__c accountBill = new Account_Bill__c(
+            Id = Util.getFakeId(Account_Bill__c.SObjectType)
+        );
+        accountBills = new List<Account_Bill__c>{accountBill};
+    }
 
     public LetterStreamAPIMock(List<Account_Bill__c> accountBills) {
         this.accountBills = accountBills;
     }
 
-    global HttpResponse respond(HttpRequest req) {
+    public HttpResponse respond(HttpRequest req) {
         // Only send a mock response for a specific endpoint and method.
         String endpoint = req.getEndpoint();
 
