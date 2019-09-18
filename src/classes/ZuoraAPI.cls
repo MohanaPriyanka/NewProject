@@ -113,6 +113,7 @@ public with sharing class ZuoraAPI {
         @AuraEnabled
         public Decimal Balance;
         public String InvoiceTemplateId;
+        public String BillMessage_Zcustom;
         public String CrmId;
         public String BillToId;
         public String CreatedDate;
@@ -590,6 +591,7 @@ public with sharing class ZuoraAPI {
         public Decimal balance;
         public String Body;
         public String InvoiceNumber;
+        public Boolean RegenerateInvoicePDF;
     }
 
     public class InvoiceItem {
@@ -726,5 +728,13 @@ public with sharing class ZuoraAPI {
         public String name;
         public Boolean isActive;
         public Boolean isDefault;
+    }
+
+    public class BillRun{
+        public Boolean AutoEmail;
+        public Boolean AutoPost;
+        public Boolean AutoRenewal;
+        public Date InvoiceDate;
+        public Date TargetDate;
     }
 }
