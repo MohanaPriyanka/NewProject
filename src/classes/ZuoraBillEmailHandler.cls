@@ -1,6 +1,7 @@
-public without sharing class ZuoraBillEmailHandler implements Database.Batchable<sObject> {
+public without sharing class ZuoraBillEmailHandler implements Database.Batchable<sObject>, Database.Stateful {
     public List<Zuora__ZInvoice__c> invoicesToSend;
     public Map<String, EmailTemplate> templatesMap;
+    public Integer countOfUniqueEmails = 0;
 
     public List<Zuora__ZInvoice__c> start(Database.BatchableContext bc) {
         return invoicesToSend;
@@ -11,7 +12,7 @@ public without sharing class ZuoraBillEmailHandler implements Database.Batchable
         List<EmailTemplate> templates = [
             SELECT Id, HtmlValue, Body, DeveloperName
             FROM EmailTemplate
-            WHERE DeveloperName LIKE '%CS_Monthly_Invoice_Email%'
+            WHERE DeveloperName LIKE '%Zuora_Monthly_Invoice_Email%'
         ];
         for (EmailTemplate template : templates) {
             templatesMap.put(template.DeveloperName, template);
@@ -39,8 +40,8 @@ public without sharing class ZuoraBillEmailHandler implements Database.Batchable
         List<Task> tasksToCreate = new List<Task>();
         List<Case> casesToCreate = new List<Case>();
         String emailStatusMessage;
-
         OrgWideEmailAddress senderEmail = MessagingService.getCustomerCareEmail();
+        List<String> emailAddressList = new List<String>();
 
         for (Zuora__ZInvoice__c invoice : invoices) {
             if (invoice.Zuora__BillingAccount__r.Zuora__Account__r.Bill_Delivery_Preference__c == 'Paper Only') {
@@ -56,12 +57,14 @@ public without sharing class ZuoraBillEmailHandler implements Database.Batchable
                 invoice.Email_Sent__c = false;
             } else {
                 emailStatusMessage = 'Email Send Initiated';
+                emailAddressList = getAddresses(invoice);
+                countOfUniqueEmails += emailAddressList.size(); // if sent to 2 people, counts as 2 emails against limit
                 Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
                 mail.setUseSignature(false);
                 mail.setOrgWideEmailAddressId(senderEmail.Id);
                 mail.setSubject(invoice.Zuora__BillingAccount__r.Zuora__Account__r.Name + ', Your Community Solar Share Has Posted');
                 mail.setHtmlBody(getHTML(invoice));
-                mail.setToAddresses(getAddresses(invoice));
+                mail.setToAddresses(emailAddressList);
                 mail.setEntityAttachments(getAttachments(invoice));
                 emailsToSend.add(mail);
                 invoice.Email_Sent__c = true;
@@ -89,7 +92,7 @@ public without sharing class ZuoraBillEmailHandler implements Database.Batchable
     }
 
     private Case createCase(String subject, Zuora__ZInvoice__c invoice) {
-        Case customerCareCase = new CaseFactory().getCase('Customer Care');
+        Case customerCareCase = new CaseFactory().getCase('Customer_Care');
         customerCareCase.Subject = subject;
         customerCareCase.Priority = 'Medium';
         customerCareCase.Product_Line__c = 'Community Solar';
@@ -98,8 +101,8 @@ public without sharing class ZuoraBillEmailHandler implements Database.Batchable
         customerCareCase.Origin = 'Other';
         customerCareCase.Case_Type__c = 'BlueWave';
         customerCareCase.Disable_Followup_Email__c = true;
-        customerCareCase.Description = 'Account Bill ' + invoice.Name + ' (' + invoice.Id + ') had an error ' +
-            'when emailing account bills.';
+        customerCareCase.Description = 'Invoice ' + invoice.Name + ' (' + invoice.Id + ') had an error ' +
+            'when emailing bills.';
         return customerCareCase;
     }
 
@@ -114,7 +117,7 @@ public without sharing class ZuoraBillEmailHandler implements Database.Batchable
 
     private String getHTML(Zuora__ZInvoice__c zuoraInvoice){
         String htmlBody;
-        String billTemplateName = 'CS_Monthly_Invoice_Email_' + zuoraInvoice.Zuora__BillingAccount__r.Zuora__Account__r.Client_Brand_Key__c;
+        String billTemplateName = 'Zuora_Monthly_Invoice_Email_' + zuoraInvoice.Zuora__BillingAccount__r.Zuora__Account__r.Client_Brand_Key__c;
         if (zuoraInvoice.Zuora__BillingAccount__r.Zuora__Account__r.Client_Brand_Key__c != null) {
             if (templatesMap.containsKey(billTemplateName)){
                 htmlBody = templatesMap.get(billTemplateName).HtmlValue;
@@ -122,7 +125,7 @@ public without sharing class ZuoraBillEmailHandler implements Database.Batchable
                 Logger.logNow('BatchCSBillEmailHandler', 'execute', 'Cannot Find Email Template: ' + billTemplateName);
             }
         } else {
-            htmlBody = templatesMap.get('CS_Monthly_Invoice_Email_BluewaveLogo').HtmlValue;
+            htmlBody = templatesMap.get('Zuora_Monthly_Invoice_Email_BluewaveLogo').HtmlValue;
         }
         htmlBody = htmlBody.replace('{!AccountName}', zuoraInvoice.Zuora__BillingAccount__r.Zuora__Account__r.Name);
         htmlBody = htmlBody.replace('{!Account_Bill_Property_Id}', zuoraInvoice.Zuora__BillingAccount__r.Zuora__Account__r.Id);
@@ -144,13 +147,13 @@ public without sharing class ZuoraBillEmailHandler implements Database.Batchable
         // TO DO
         /*
            if (invoice.WelcomeLetterIdField != null){
-               attachmentIds.add(invoice.WelcomeLetterIdField);
+               attachmentIds.add(invoice.Additional_Inserts__c);
            }
         */
         return attachmentIds;
     }
 
     public void finish(Database.BatchableContext bc){
-        // nothing to do
+        Logger.logNow('ZuoraBillEmailHandler','finish','Email Send finished. Count of emails:' + String.valueOf(countOfUniqueEmails));
     }
 }
