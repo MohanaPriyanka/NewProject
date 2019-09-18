@@ -107,6 +107,19 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>LetterStreamJob__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Populated by ContentMailerService when this invoice is sent to LetterStream for mailing</inlineHelpText>
+        <label>LetterStreamJob</label>
+        <referenceTo>LetterStreamJob__c</referenceTo>
+        <relationshipLabel>Invoices</relationshipLabel>
+        <relationshipName>Invoices</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Ready_for_Email_Send__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
