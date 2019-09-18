@@ -408,7 +408,7 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
             );
         } else {
             ZuoraAPI.Invoice result = new ZuoraAPI.Invoice();
-            result.id = '12345';
+            result.id = '2c92c0fb6d1fe1f0016d216a87b54440';
             result.accountId = 'BW-00000076';
             result.amount = 123.45;
             result.balance = 23.45;

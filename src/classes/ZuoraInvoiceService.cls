@@ -50,10 +50,10 @@ public with sharing class ZuoraInvoiceService {
     private List<ZuoraAPI.Invoice> queryZuoraForInvoicePDF(List<Zuora__ZInvoice__c> sfdcZuoraInvoices, Map<String, Id> zuoraInvoiceIdToSFDCId) {
         List<ZuoraAPI.Invoice> zuoraInvoices = new List<ZuoraAPI.Invoice>();
         while (!sfdcZuoraInvoices.isEmpty()) {
-            zuoraInvoiceIdToSFDCId.put(sfdcZuoraInvoices[0].Zuora__ZuoraId__c, sfdcZuoraInvoices[0].Id);
+            zuoraInvoiceIdToSFDCId.put(sfdcZuoraInvoices[0].Zuora__Zuora_Id__c, sfdcZuoraInvoices[0].Id);
             // A 90k invoice takes ~300k of heap since it's base 64 encoded and we're saving to the log, so a 2MB invoice
             // would take 6MB?
-            HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('GET', '/v1/object/invoice/' + sfdcZuoraInvoices[0].Zuora__ZuoraId__c, null, false);
+            HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('GET', '/v1/object/invoice/' + sfdcZuoraInvoices[0].Zuora__Zuora_Id__c, null, false);
             zuoraInvoices.add((ZuoraAPI.Invoice) System.JSON.deserialize(response.getBody(), ZuoraAPI.Invoice.class));
             response = null;
             // Anything that is left needs to be queued for download
@@ -78,7 +78,7 @@ public with sharing class ZuoraInvoiceService {
                 Content_Document_Id__c = contentDocumentLink.ContentDocumentId,
                 Ready_for_Email_Send__c = true,
                 Ready_for_Paper_Bill_Queue__c = true,
-                Bill_Document_Content_Version_ID__c = invoiceToVersion.get(zInvoices.get(contentDocumentLink.LinkedEntityId).Zuora__ZuoraId__c).Id
+                Bill_Document_Content_Version_ID__c = invoiceToVersion.get(zInvoices.get(contentDocumentLink.LinkedEntityId).Zuora__Zuora_Id__c).Id
             );
             zuoraInvoicesToUpdate.add(zuoraInvoiceToUpdate);
         }

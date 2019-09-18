@@ -11,7 +11,7 @@ public with sharing class ZuoraInvoiceSelectorTest {
         System.assertEquals(0, zInvoices.size());
 
         Zuora__ZInvoice__c zInvoice = new Zuora__ZInvoice__c(
-            Zuora__ZuoraId__c = '12345'
+            Zuora__Zuora_Id__c = '12345'
         );
         insert zInvoice;
 

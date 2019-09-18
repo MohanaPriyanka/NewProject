@@ -1165,6 +1165,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ZuoraInvoiceSelectorTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ZuoraInvoiceService</apexClass>
         <enabled>true</enabled>
     </classAccesses>
