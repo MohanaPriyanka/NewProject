@@ -3510,10 +3510,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>SessionPlugin</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>SessionPluginTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
