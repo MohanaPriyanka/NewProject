@@ -81170,10 +81170,6 @@
     </userPermissions>
     <userPermissions>
         <enabled>false</enabled>
-        <name>LMOutboundMessagingUserPerm</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
         <name>ModifyDataClassification</name>
     </userPermissions>
     <userPermissions>
