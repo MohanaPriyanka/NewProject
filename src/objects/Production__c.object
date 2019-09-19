@@ -176,22 +176,6 @@
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Credits_Billed__c</fullName>
-        <description>Rollup of Transfer Parts Credits Billed field with Type = Transfer</description>
-        <externalId>false</externalId>
-        <label>Credits Billed</label>
-        <summarizedField>Transfer_Parts__c.Credits_Billed__c</summarizedField>
-        <summaryFilterItems>
-            <field>Transfer_Parts__c.Type__c</field>
-            <operation>equals</operation>
-            <value>Transfer</value>
-        </summaryFilterItems>
-        <summaryForeignKey>Transfer_Parts__c.Production__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
         <fullName>Credits_Generated__c</fullName>
         <externalId>false</externalId>
         <label>Credits Generated</label>
@@ -200,22 +184,6 @@
         <scale>2</scale>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Credits_Transferred__c</fullName>
-        <description>Rollup of Transfer {arts Amount field with Type = Transfer</description>
-        <externalId>false</externalId>
-        <label>Credits Transferred</label>
-        <summarizedField>Transfer_Parts__c.Amount__c</summarizedField>
-        <summaryFilterItems>
-            <field>Transfer_Parts__c.Type__c</field>
-            <operation>equals</operation>
-            <value>Transfer</value>
-        </summaryFilterItems>
-        <summaryForeignKey>Transfer_Parts__c.Production__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
     </fields>
     <fields>
         <fullName>Production_kWh__c</fullName>
@@ -252,22 +220,6 @@
         <scale>2</scale>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Utility_Fees__c</fullName>
-        <description>Rollup of Transfer Parts Amount field with Type = Fee</description>
-        <externalId>false</externalId>
-        <label>Utility Fees</label>
-        <summarizedField>Transfer_Parts__c.Amount__c</summarizedField>
-        <summaryFilterItems>
-            <field>Transfer_Parts__c.Type__c</field>
-            <operation>equals</operation>
-            <value>Fee</value>
-        </summaryFilterItems>
-        <summaryForeignKey>Transfer_Parts__c.Production__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
     </fields>
     <label>Production</label>
     <listViews>
