@@ -1294,10 +1294,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>DataLoaderLeadExportCondition</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>DisbursalHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
