@@ -16426,11 +16426,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>AuthorizationForm.IsSignatureRequired</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>AuthorizationForm.RevisionNumber</field>
         <readable>true</readable>
     </fieldPermissions>
