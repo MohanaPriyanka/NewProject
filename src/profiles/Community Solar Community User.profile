@@ -646,10 +646,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>BlogComponentControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>BlueWaveParent</apexClass>
         <enabled>false</enabled>
     </classAccesses>
