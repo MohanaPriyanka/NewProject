@@ -12,6 +12,7 @@
   <aura:attribute name="productList" type="Object[]"/>
   <aura:attribute name="selectedProduct" type="Object"/>
   <aura:attribute name="ShowDateError" type="Boolean"/>
+  <aura:attribute name="continueUrl" type="String"/>
 
   <aura:set attribute="STAGENAME" value="NAV_Credit_Check"/>
   <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
