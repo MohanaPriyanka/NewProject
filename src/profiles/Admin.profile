@@ -27130,18 +27130,8 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Production__c.Credits_Billed__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Production__c.Credits_Generated__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Production__c.Credits_Transferred__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -27152,11 +27142,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Production__c.Untransferred_Credits__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Production__c.Utility_Fees__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
