@@ -45,7 +45,6 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>false</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableReports>true</enableReports>
@@ -372,6 +371,22 @@ Round(( Subscribed_Annual_Cost_of_Electricity__c / 0.1933 / Opportunity__r.Share
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Estimated_Annual_Subscription_kWh__c</fullName>
+        <description>This is displayed to customers in the customer portal.</description>
+        <externalId>false</externalId>
+        <formula>Customer_Subscription_KW_DC__c *  Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>This is displayed to customers in the customer portal.</inlineHelpText>
+        <label>Estimated Annual Subscription (kWh)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Finaled__c</fullName>
@@ -754,6 +769,45 @@ Round(( Subscribed_Annual_Cost_of_Electricity__c / 0.1933 / Opportunity__r.Share
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Status__c</fullName>
+        <description>This is displayed in the customer portal as a way of showing the status of a customer&apos;s subscription using a combination of Current Allocation Schedule Status, Next Allocation Schedule Status, and Date Removed</description>
+        <externalId>false</externalId>
+        <formula>IF(
+ ISBLANK(Date_Removed_from_Project__c)=false,
+&quot;Inactive&quot;,
+
+IF(
+
+  ISPICKVAL(Next_Schedule_Z_Status__c,&quot;Active Subscription&quot;)
+&amp;&amp;
+ Current_Schedule_Z_Status__c=&quot;Not Yet Enacted&quot;,
+&quot;Coming Soon&quot;,
+
+IF(
+  ISPICKVAL(Next_Schedule_Z_Status__c,&quot;Active Subscription&quot;)
+&amp;&amp;
+ Current_Schedule_Z_Status__c=&quot;Enacted&quot;,
+&quot;Active&quot;,
+
+IF(
+  ISPICKVAL(Next_Schedule_Z_Status__c,&quot;Inactive Subscription&quot;)
+&amp;&amp;
+ Current_Schedule_Z_Status__c=&quot;Enacted&quot;,
+&quot;Pending Removal&quot;,&quot;&quot;)
+
+
+)
+)
+)</formula>
+        <inlineHelpText>This is displayed in the customer portal as a way of showing the status of a customer&apos;s subscription using a combination of Current Allocation Schedule Status, Next Allocation Schedule Status, and Date Removed</inlineHelpText>
+        <label>Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Subscribed_Annual_Cost_of_Electricity__c</fullName>
         <description>Used for SREC CS contracts. Check the Subscription Type to see if this fields should be used. It is used to calculate the future customer subscription kW DC field for Opportunities with the SREC CS Product. It is populated manually.</description>
         <externalId>false</externalId>
@@ -966,6 +1020,23 @@ Round(( Subscribed_Annual_Cost_of_Electricity__c / 0.1933 / Opportunity__r.Share
         <type>Currency</type>
     </fields>
     <label>Utility Account Subscription</label>
+    <listViews>
+        <fullName>Customer_Community_List_Community_Solar_Subscriptions</fullName>
+        <columns>NAME</columns>
+        <columns>Status__c</columns>
+        <columns>Shared_Solar_System_Name__c</columns>
+        <columns>Estimated_Annual_Subscription_kWh__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Next_Schedule_Z_Status__c</field>
+            <operation>equals</operation>
+            <value>Active Subscription</value>
+        </filters>
+        <label>Community Solar Subscriptions</label>
+        <sharedTo>
+            <group>All_Communities_Users</group>
+        </sharedTo>
+    </listViews>
     <nameField>
         <label>Utility Account Number</label>
         <trackHistory>false</trackHistory>
