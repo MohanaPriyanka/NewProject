@@ -19656,11 +19656,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Client_Utility_Account_Subscription__c.Utility_Account_Subscription__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Commission_Payment__c.Amount_Due__c</field>
         <readable>false</readable>
     </fieldPermissions>
