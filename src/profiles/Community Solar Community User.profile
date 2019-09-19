@@ -1234,10 +1234,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ConcurrentSessionsPolicyCondition</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>CongaTemplateAssigner</apexClass>
         <enabled>false</enabled>
     </classAccesses>
