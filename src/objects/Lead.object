@@ -117,15 +117,7 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Future Prospect</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Load Zone Check Needed</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Lost</fullName>
             <default>false</default>
         </values>
         <values>
