@@ -275,6 +275,7 @@ public without sharing class CSAPController {
         insertedLead.Continue_Application_Link__c = continueApplicationUrl;
         update insertedLead;
 
+        lead.Continue_Application_Link__c = continueApplicationUrl;
         lead.LoadZone__c = insertedLead.LoadZone__c;
         lead.Utility_relationship__c = insertedLead.Utility_relationship__c;
         lead.Confirm_Utility__c = insertedLead.Confirm_Utility__c;
