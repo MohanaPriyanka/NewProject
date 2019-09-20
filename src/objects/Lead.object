@@ -150,11 +150,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Expired</fullName>
+            <fullName>Future Prospect</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Load Zone Check Needed</fullName>
+            <fullName>Lost</fullName>
             <default>false</default>
         </values>
         <values>
@@ -174,23 +174,11 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>Ready for Credit Check</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Sales Qualified</fullName>
             <default>false</default>
         </values>
         <values>
-            <fullName>Unfinished</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>Unqualified</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Waitlist</fullName>
             <default>false</default>
         </values>
     </businessProcesses>

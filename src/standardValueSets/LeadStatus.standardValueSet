@@ -175,4 +175,16 @@
         <label>Declined</label>
         <converted>false</converted>
     </standardValue>
+    <standardValue>
+        <fullName>Lost</fullName>
+        <default>false</default>
+        <label>Lost</label>
+        <converted>false</converted>
+    </standardValue>
+    <standardValue>
+        <fullName>Future Prospect</fullName>
+        <default>false</default>
+        <label>Future Prospect</label>
+        <converted>false</converted>
+    </standardValue>
 </StandardValueSet>
