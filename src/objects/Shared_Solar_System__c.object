@@ -150,7 +150,6 @@
     <description n1:nil="true" />
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableDivisions>false</enableDivisions>
     <enableEnhancedLookup>false</enableEnhancedLookup>
     <enableFeeds>true</enableFeeds>
@@ -616,7 +615,7 @@
     <fields>
         <fullName>Capacity_Available_to_be_Reserved__c</fullName>
         <externalId>false</externalId>
-        <formula>if( Anchor_Capacity_Reserved__c &gt;0,  Total_System_Size_kW_DC_QC__c - Anchor_Capacity_Reserved__c - Total_Capacity_Committed_Reserved__c, Total_CS_Capacity_kW_DC_Formula__c -  Total_Capacity_Committed_Reserved__c)</formula>
+        <formula>if( Anchor_Capacity_Reserved__c &gt;0,  Total_System_Size_kWh_DC__c - Anchor_Capacity_Reserved__c - Total_Capacity_Committed_Reserved__c, Total_CS_Capacity_kW_DC_Formula__c -  Total_Capacity_Committed_Reserved__c)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Capacity Available to be Reserved(kW DC)</label>
         <precision>18</precision>
@@ -659,9 +658,9 @@
 
 Name = &quot;Oxford Barrett St. P2&quot;, Name = &quot;Oxford Barrett St. P1&quot;), &quot;Class 2&quot;,
 
-IF(AND(   Total_System_Size_kW_AC_QC__c &gt; 60, Total_System_Size_kW_AC_QC__c  &lt;= 1000), &quot;Class 2&quot;, 
+IF(AND(   Total_System_Size_kW_AC__c &gt; 60, Total_System_Size_kW_AC__c &lt;= 1000), &quot;Class 2&quot;, 
 
-IF ( Total_System_Size_kW_AC_QC__c &gt; 1000, &quot;Class 3&quot;, null)))</formula>
+IF ( Total_System_Size_kW_AC__c &gt; 1000, &quot;Class 3&quot;, null)))</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>System Class</label>
         <required>false</required>
@@ -729,7 +728,7 @@ IF ( Total_System_Size_kW_AC_QC__c &gt; 1000, &quot;Class 3&quot;, null)))</form
     <fields>
         <fullName>Conversion_Rate__c</fullName>
         <externalId>false</externalId>
-        <formula>Total_System_Size_kW_AC_QC__c /  Total_System_Size_kW_DC_QC__c</formula>
+        <formula>Total_System_Size_kWh_DC__c/Total_System_Size_kW_AC__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Conversion Rate</label>
         <precision>18</precision>
@@ -1451,7 +1450,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
     <fields>
         <fullName>Project_Capacity_Available_kW_DC__c</fullName>
         <externalId>false</externalId>
-        <formula>if( Anchor_Capacity_Reserved__c &gt;0, Total_System_Size_kW_DC_QC__c - Anchor_Capacity_Reserved__c - Capacity_Committed_kW_DC__c, 
+        <formula>if( Anchor_Capacity_Reserved__c &gt;0, Total_System_Size_kWh_DC__c - Anchor_Capacity_Reserved__c - Capacity_Committed_kW_DC__c, 
 Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Capacity not yet Committed (kW DC)</label>
@@ -2133,7 +2132,7 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
         <externalId>false</externalId>
         <formula>Project_Management__r.Total_System_Size_kW_AC__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Total System Size (kW AC)</label>
+        <label>XXXTotal System Size (kW AC)</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -2147,7 +2146,7 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
         <externalId>false</externalId>
         <formula>IF( ISBLANK(  Project_Management__c ),  Total_System_Size_kW_AC__c , Total_System_Size_kW_AC_Project__c )</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Total System Size (kW AC)</label>
+        <label>XXXTotal System Size (kW AC)</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -2174,7 +2173,7 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
         <externalId>false</externalId>
         <formula>IF( ISBLANK( Project_Management__c ),  Total_System_Size_kWh_DC__c , Total_System_Size_kW_DC__c)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Total System Size (kW DC)</label>
+        <label>XXXTotal System Size (kW DC)</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -2200,6 +2199,7 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
     <fields>
         <fullName>Total_System_Size_kWh_DC__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>Use this field to calculate SSS information</inlineHelpText>
         <label>Total System Size (kW DC)</label>
         <precision>8</precision>
         <required>false</required>
