@@ -154,45 +154,73 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
     <fields>
-        <fullName>Allocation_Schedule__c</fullName>
-        <deleteConstraint>Restrict</deleteConstraint>
-        <description>The Allocation Schd. field within Transfer looking up the Allocation Schd. object.</description>
+        <fullName>Credit_Value__c</fullName>
         <externalId>false</externalId>
-        <label>Allocation Schedule</label>
-        <referenceTo>Schedule_Z__c</referenceTo>
-        <relationshipLabel>Transfers</relationshipLabel>
-        <relationshipName>Transfers</relationshipName>
-        <required>true</required>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Attempted_Transfer__c</fullName>
-        <externalId>false</externalId>
-        <label>Attempted Transfer</label>
-        <precision>13</precision>
+        <label>Credit Value</label>
+        <precision>18</precision>
         <required>false</required>
-        <scale>3</scale>
+        <scale>6</scale>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Bill_Period__c</fullName>
-        <deleteConstraint>Restrict</deleteConstraint>
-        <description>The Transfer object is looking up to the Bill Period object.</description>
+        <fullName>Credits_Available_for_Allocation__c</fullName>
         <externalId>false</externalId>
-        <label>Bill Period</label>
-        <referenceTo>Bill_Period__c</referenceTo>
-        <relationshipLabel>Transfers</relationshipLabel>
-        <relationshipName>Transfers</relationshipName>
+        <formula>Credits_Generated__c  -  Utility_Fees__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Credits Available for Allocation</label>
+        <precision>18</precision>
         <required>false</required>
+        <scale>2</scale>
         <trackTrending>false</trackTrending>
-        <type>Lookup</type>
+        <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Date_of_Transfer__c</fullName>
+        <fullName>Credits_Billed__c</fullName>
+        <description>Rollup of Transfer Parts Credits Billed field with Type = Transfer</description>
         <externalId>false</externalId>
-        <label>Date of Transfer</label>
+        <label>Credits Billed</label>
+        <summarizedField>Transfer_Part__c.Credits_Billed__c</summarizedField>
+        <summaryFilterItems>
+            <field>Transfer_Part__c.Type__c</field>
+            <operation>equals</operation>
+            <value>Transfer</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Transfer_Part__c.Production__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Credits_Generated__c</fullName>
+        <externalId>false</externalId>
+        <label>Credits Generated</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Credits_Transferred__c</fullName>
+        <description>Rollup of Transfer {arts Amount field with Type = Transfer</description>
+        <externalId>false</externalId>
+        <label>Credits Transferred</label>
+        <summarizedField>Transfer_Part__c.Amount__c</summarizedField>
+        <summaryFilterItems>
+            <field>Transfer_Part__c.Type__c</field>
+            <operation>equals</operation>
+            <value>Transfer</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Transfer_Part__c.Production__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>End_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>End Date</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Date</type>
@@ -201,68 +229,86 @@
         <fullName>Production_Update__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <inlineHelpText>The Production Update that created the Transfer record for historical data</inlineHelpText>
+        <inlineHelpText>This is the Production Update that created the Production record for historical data</inlineHelpText>
         <label>Production Update (TEMP)</label>
         <referenceTo>Energy_Usage_Update__c</referenceTo>
-        <relationshipLabel>Transfers</relationshipLabel>
-        <relationshipName>Transfers</relationshipName>
+        <relationshipLabel>Production</relationshipLabel>
+        <relationshipName>Production</relationshipName>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Production_kWh__c</fullName>
+        <externalId>false</externalId>
+        <label>Production (kWh)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Shared_Solar_System__c</fullName>
         <deleteConstraint>Restrict</deleteConstraint>
-        <description>The Transfer object is looking up to the SSS object.</description>
         <externalId>false</externalId>
+        <inlineHelpText>The Production object is looking up to the SSS object.</inlineHelpText>
         <label>Shared Solar System</label>
         <referenceTo>Shared_Solar_System__c</referenceTo>
-        <relationshipLabel>Transfers</relationshipLabel>
-        <relationshipName>Transfers</relationshipName>
+        <relationshipLabel>Productions</relationshipLabel>
+        <relationshipName>Productions</relationshipName>
         <required>true</required>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Transfer_Type__c</fullName>
+        <fullName>Start_Date__c</fullName>
         <externalId>false</externalId>
-        <label>Transfer Type</label>
+        <label>Start Date</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Excess Credit</fullName>
-                    <default>false</default>
-                    <label>Excess Credit</label>
-                </value>
-                <value>
-                    <fullName>On-Time</fullName>
-                    <default>false</default>
-                    <label>On-Time</label>
-                </value>
-                <value>
-                    <fullName>Returned</fullName>
-                    <default>false</default>
-                    <label>Returned</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
+        <type>Date</type>
     </fields>
-    <label>Transfer</label>
+    <fields>
+        <fullName>Untransferred_Credits__c</fullName>
+        <externalId>false</externalId>
+        <formula>Credits_Available_for_Allocation__c  -  Credits_Transferred__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Untransferred Credits</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Utility_Fees__c</fullName>
+        <description>Rollup of Transfer Parts Amount field with Type = Fee</description>
+        <externalId>false</externalId>
+        <label>Utility Fees</label>
+        <summarizedField>Transfer_Part__c.Amount__c</summarizedField>
+        <summaryFilterItems>
+            <field>Transfer_Part__c.Type__c</field>
+            <operation>equals</operation>
+            <value>Fee</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Transfer_Part__c.Production__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <label>Production</label>
     <listViews>
         <fullName>All</fullName>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
     <nameField>
-        <label>Transfer Name</label>
+        <label>Production Name</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Transfers</pluralLabel>
+    <pluralLabel>Production</pluralLabel>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
