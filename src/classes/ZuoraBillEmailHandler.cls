@@ -154,6 +154,6 @@ public without sharing class ZuoraBillEmailHandler implements Database.Batchable
     }
 
     public void finish(Database.BatchableContext bc){
-        Logger.logNow('ZuoraBillEmailHandler','finish','Email Send finished. Count of emails:' + String.valueOf(countOfUniqueEmails));
+        Logger.logNow('ZuoraBillEmailHandler','finish','Email Send finished. Count of emails:' + String.valueOf(countOfUniqueEmails),'INFO');
     }
 }

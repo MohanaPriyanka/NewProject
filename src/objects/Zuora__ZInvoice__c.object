@@ -166,6 +166,17 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Additional_Inserts__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>For letterstream or other mailer, used to store the ID of additional inserts included with invoice pdf sent via paper mail.</inlineHelpText>
+        <label>Additional Inserts</label>
+        <length>200</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Bill_Document_Content_Version_ID__c</fullName>
         <description>This is where the content version ID of the most recent published pdf for an invoice needs to go in order for it to be visible in the customer portal.</description>
         <externalId>false</externalId>
@@ -633,6 +644,9 @@ IF(TODAY() - Zuora__DueDate__c &lt;= 90, &quot;61-90&quot;, &quot;91-&quot;)))))
     <label>Invoice</label>
     <listViews>
         <fullName>Zuora__All</fullName>
+        <columns>NAME</columns>
+        <columns>Ready_for_Email_Send__c</columns>
+        <columns>Email_Sent__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
