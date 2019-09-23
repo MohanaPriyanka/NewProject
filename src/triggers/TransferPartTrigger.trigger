@@ -5,6 +5,9 @@
  */
 
 trigger TransferPartTrigger on Transfer_Part__c (after insert, after update) {
+    if (Util.isDisabled('Disable_TransferTrigger__c')) {
+        return;
+    }
 
     TransferPartService transferPartService = new TransferPartService();
 
