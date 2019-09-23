@@ -198,6 +198,19 @@
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>Production_Update__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>The Production Update that created the Transfer record for historical data</inlineHelpText>
+        <label>Production Update (TEMP)</label>
+        <referenceTo>Energy_Usage_Update__c</referenceTo>
+        <relationshipLabel>Transfers</relationshipLabel>
+        <relationshipName>Transfers</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Shared_Solar_System__c</fullName>
         <deleteConstraint>Restrict</deleteConstraint>
         <description>The Transfer object is looking up to the SSS object.</description>
