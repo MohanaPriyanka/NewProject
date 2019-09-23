@@ -46,8 +46,9 @@ public with sharing class ChargentTransactionSelector {
             FROM ChargentOrders__Transaction__c
             WHERE ChargentOrders__Order__r.Entity__r.Name != 'BlueWave Finance Group, LLC'
             AND ChargentOrders__Response_Status__c != 'Error'
-            AND ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Zuora_Id__c =: zuoraAccountId
             AND ChargentOrders__Response_Status__c != 'Declined'
+            AND ChargentOrders__Response_Status__c != 'Voided'
+            AND ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Zuora_Id__c =: zuoraAccountId
             AND ChargentOrders__Amount__c != 0
             AND ChargentOrders__Amount__c != NULL
             ORDER BY Date_of_Transaction__c
