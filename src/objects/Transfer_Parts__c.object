@@ -271,31 +271,5 @@
     <pluralLabel>Transfer Parts</pluralLabel>
     <searchLayouts/>
     <sharingModel>ControlledByParent</sharingModel>
-    <validationRules>
-        <fullName>Fee_Paid_To_field_required_for_Fee</fullName>
-        <active>true</active>
-        <errorConditionFormula>AND( 
-ISPICKVAL(Type__c, &quot;Fee&quot;), 
-OR( 
-ISBLANK(TEXT(Fee_Paid_To__c)), 
-NOT(ISBLANK(Transfer__c)) 
-) 
-)</errorConditionFormula>
-        <errorMessage>Fee Paid To field cannot be blank if your Type is selected as Fee. 
-Transfer field has to be blank if your Type is selected as Fee.</errorMessage>
-    </validationRules>
-    <validationRules>
-        <fullName>Transfer_field_required_for_Transfer</fullName>
-        <active>true</active>
-        <errorConditionFormula>AND( 
-ISPICKVAL(Type__c, &quot;Transfer&quot;), 
-OR( 
-NOT(ISBLANK(TEXT(Fee_Paid_To__c))), 
-(ISBLANK(Transfer__c)) 
-) 
-)</errorConditionFormula>
-        <errorMessage>Transfer field cannot be blank if your Type is selected as Transfer. 
-Fee Paid To field has to be blank if your Type is selected as Transfer.</errorMessage>
-    </validationRules>
     <visibility>Public</visibility>
 </CustomObject>
