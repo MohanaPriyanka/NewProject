@@ -25,7 +25,7 @@
     <fields>
         <fullName>CS_Account__c</fullName>
         <externalId>false</externalId>
-        <formula>Utility_Account_Subscription__r.Opportunity__r.Account.AccountNumber</formula>
+        <formula>Utility_Account_Subscription__r.Opportunity__r.Account.Account_Number__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>CS Account #</label>
         <required>false</required>
