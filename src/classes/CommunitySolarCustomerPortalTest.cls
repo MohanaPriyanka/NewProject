@@ -463,7 +463,7 @@ public without sharing class CommunitySolarCustomerPortalTest {
 
         Schedule_Z__c scheduleZ = [
             SELECT Id, Shared_Solar_System__r.Utility__r.Number_of_Decimal_Places__c,
-                Shared_Solar_System__r.Total_System_Size_kW_DC_QC__c
+                Shared_Solar_System__r.Total_System_Size_kWh_DC__c
             FROM Schedule_Z__c
             WHERE Name = '18-0515 Oxford Barrett St. P2'
         ];
@@ -473,7 +473,7 @@ public without sharing class CommunitySolarCustomerPortalTest {
             Utility_Account_Subscription__c = uas.Id,
             Customer_Subscription_kW_DC__c = uas.Customer_Subscription_KW_DC__c,
             Number_of_Decimal_Places__c = scheduleZ.Shared_Solar_System__r.Utility__r.Number_of_Decimal_Places__c,
-            System_Size_kW_DC__c = scheduleZ.Shared_Solar_System__r.Total_System_Size_kW_DC_QC__c
+            System_Size_kW_DC__c = scheduleZ.Shared_Solar_System__r.Total_System_Size_kWh_DC__c
         );
 
         insert newSub;
