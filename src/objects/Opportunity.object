@@ -3588,7 +3588,7 @@ max(1250,0.05*(Requested_Loan_Amount__c)),
         <fullName>Green_Button_Data_Received__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <label>Green Button Data Received</label>
+        <label>Green Button Data/kWh Info Received</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
