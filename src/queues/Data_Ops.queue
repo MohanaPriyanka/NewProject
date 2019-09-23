@@ -10,6 +10,9 @@
         </users>
     </queueMembers>
     <queueSobject>
+        <sobjectType>Case</sobjectType>
+    </queueSobject>
+    <queueSobject>
         <sobjectType>Shared_Solar_System__c</sobjectType>
     </queueSobject>
 </Queue>
