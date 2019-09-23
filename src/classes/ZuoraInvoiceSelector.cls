@@ -28,4 +28,27 @@ public with sharing class ZuoraInvoiceSelector {
             ORDER BY Id
         ];
     }
+
+    public static List<Zuora__ZInvoice__c> getInvoicesByDate(Date invoiceDate) {
+        return [
+            SELECT Id, Zuora__ZuoraId__c
+            FROM Zuora__ZInvoice__c
+            WHERE Zuora__InvoiceDate__c = : invoiceDate
+        ];
+    }
+
+    public static List<Zuora__ZInvoice__c> getInvoicesForEmail() {
+        return [
+            SELECT Id, Name, Zuora__ZuoraId__c,
+                Bill_Document_Content_Version_ID__c,
+                Zuora__BillingAccount__r.Zuora__Account__r.Name,
+                Zuora__BillingAccount__r.Zuora__Account__r.Id,
+                Zuora__BillingAccount__r.Zuora__Account__r.Client_Brand_Key__c,
+                Zuora__BillingAccount__r.Zuora__Account__r.Bill_Delivery_Preference__c,
+                Zuora__BillingAccount__r.Zuora__Account__r.Send_Bills_Contact__r.Email,
+                Zuora__BillingAccount__r.Zuora__Account__r.Additional_Contact__r.Email
+            FROM Zuora__ZInvoice__c
+            WHERE Ready_For_Email_Send__c = true
+        ];
+    }
 }
