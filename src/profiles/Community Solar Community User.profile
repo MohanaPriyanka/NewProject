@@ -42738,11 +42738,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Shared_Solar_System__c.Actual_First_Bill_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Shared_Solar_System__c.Actual_Mechanical_Completion_Override__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -68492,6 +68487,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Asset_Management__c-Asset Management Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>AuthorizationForm-Authorization Form Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Autopay_Schedule__c-Autopay Schedule Layout</layout>

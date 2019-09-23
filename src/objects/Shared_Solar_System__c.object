@@ -150,7 +150,6 @@
     <description n1:nil="true" />
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableDivisions>false</enableDivisions>
     <enableEnhancedLookup>false</enableEnhancedLookup>
     <enableFeeds>true</enableFeeds>
@@ -176,17 +175,6 @@
         <fullName>Actual_Credits_Flowing_Date__c</fullName>
         <externalId>false</externalId>
         <label>XXXActual Utility NMC to Customer Date</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Actual_First_Bill_Date__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>This field must be manually populated after the first production update</inlineHelpText>
-        <label>Actual First BW Bill Date</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -1052,6 +1040,18 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>First_Bill_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>First bill date from related Production Updates</inlineHelpText>
+        <label>First Bill Date</label>
+        <summarizedField>Energy_Usage_Update__c.Date__c</summarizedField>
+        <summaryForeignKey>Energy_Usage_Update__c.Shared_Solar_System__c</summaryForeignKey>
+        <summaryOperation>min</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
     </fields>
     <fields>
         <fullName>Graph_Box__c</fullName>
@@ -2465,7 +2465,6 @@ null)</formula>
         <columns>Est_Utility_NMC_to_Customer_Override__c</columns>
         <columns>Actual_Credits_Flowing_Date__c</columns>
         <columns>Estimated_First_BW_Bill_Override__c</columns>
-        <columns>Actual_First_Bill_Date__c</columns>
         <columns>Comments__c</columns>
         <columns>System_Utility__c</columns>
         <filterScope>Everything</filterScope>

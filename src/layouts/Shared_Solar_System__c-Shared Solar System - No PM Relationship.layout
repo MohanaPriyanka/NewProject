@@ -370,8 +370,8 @@
                 <field>Estimated_First_BW_Bill_Override__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Actual_First_Bill_Date__c</field>
+                <behavior>Readonly</behavior>
+                <field>First_Bill_Date__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
