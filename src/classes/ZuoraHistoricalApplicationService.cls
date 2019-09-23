@@ -163,7 +163,7 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
 
     @TestVisible
     private void handleTransfer(ChargentOrders__Transaction__c trx) {
-        if (trx.ChargentOrders__Amount__c < 0) {
+        if (trx.ChargentOrders__Amount__c > 0) {
             ZuoraSubscriptionService.ClientProject clientProjectAssignment = getClientProjectFromTransaction(trx, true);
             createAndApplyCreditMemo(trx, clientProjectAssignment, 'Transfer');
         } else {
@@ -251,10 +251,8 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
         ZuoraAPI.CreditMemo creditMemo = new ZuoraAPI.CreditMemo();
         creditMemo.accountId = trx.ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Zuora_Id__c;
         ZuoraAPI.CreditCharge creditCharge = new ZuoraAPI.CreditCharge();
-        if (trx.ChargentOrders__Amount__c > 0) {
-            throw new Util.FatalBWException('Expected a negative amount when creating credit memo for transaction ' + trx.Id);
-        }
-        creditCharge.amount = -trx.ChargentOrders__Amount__c;
+        // Amount can be negative (refunds) or positive (transfers) and Zuora needs a positive amount for a credit memo.
+        creditCharge.amount = Math.abs(trx.ChargentOrders__Amount__c);
         creditCharge.chargeId = clientProjectAssignment.productRatePlanChargeId;
         creditMemo.charges = new List<ZuoraAPI.CreditCharge>();
         creditMemo.charges.add(creditCharge);
