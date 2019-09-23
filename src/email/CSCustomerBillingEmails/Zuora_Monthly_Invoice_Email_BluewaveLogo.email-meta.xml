@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Used in Batch Email Send</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Zuora Monthly Invoice Email BluewaveLogo</name>
+    <style>none</style>
+    <subject>Your BlueWave Bill is Ready!</subject>
+    <textOnly>Hello {!Account.Name},
+
+Your BlueWave Community Solar subscription statement has been posted! Please see attached for a copy of your statement.
+
+This statement reflects the net metering credits that appeared on your utility bill from {!Credits_Period}.
+
+To check the status of your account and make a payment online, please log into your BlueWave Portal.
+
+Log Into Your Portal Here
+
+Thanks for being part of the Wave, we&apos;re glad you&apos;re here
+-All of us here at BlueWave
+
+BlueWave Customer Care
+844.786.4100 | customercare@bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>
