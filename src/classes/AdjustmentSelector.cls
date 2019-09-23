@@ -1,7 +1,7 @@
 /* Tested by ZuoraUsageServiceTest, ZuoraCreditDebitMemoServiceTest
  */
 
-public class AdjustmentSelector {
+public without sharing class AdjustmentSelector {
     public static Database.QueryLocator getAdjustmentsNotYetInZuora(Boolean typeIsUsage) {
         String queryString =
             'SELECT ' +
