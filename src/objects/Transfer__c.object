@@ -224,6 +224,28 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Total_Transferred__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of Amounts of all Transfer Parts</inlineHelpText>
+        <label>Total Transferred</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Transfer_Amount__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Transfer Amount populated from Utility Account Bill</inlineHelpText>
+        <label>Transfer Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>Transfer_Type__c</fullName>
         <externalId>false</externalId>
         <label>Transfer Type</label>
