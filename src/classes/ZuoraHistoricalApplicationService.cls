@@ -129,7 +129,7 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
                 createAndApplyCreditMemo(trx, clientProjectAssignment, 'Refund');
             }
             when 'Refund' {
-                handleReturn(trx);
+                handleRefund(trx);
             }
             when else {
                 if (trx.ChargentOrders__Response_Status__c == 'Returned') {
@@ -142,23 +142,24 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
         }
     }
 
-    @TestVisible
     private void handleReturn(ChargentOrders__Transaction__c trx) {
-        // Process the return from the positive transaction, and ignore the negative
+        handleReturnOrRefund(trx, 'Returned Payment');
+    }
+
+    private void handleRefund(ChargentOrders__Transaction__c trx) {
+        handleReturnOrRefund(trx, 'Refund');
+    }
+
+    private void handleReturnOrRefund(ChargentOrders__Transaction__c trx, String reasonCode) {
+        // The negative part of the return should become a debit memo, the positive handled like a payment
         if (trx.ChargentOrders__Amount__c < 0) {
-            return;
+            ZuoraSubscriptionService.ClientProject clientProjectAssignment = getClientProjectFromTransaction(trx, false);
+            ZuoraAPI.ZuoraDebitMemo zuoraDebitMemo = createAndPostDebitMemo(trx, clientProjectAssignment, reasonCode);
+            addDebitMemoToOutstandingItems(zuoraDebitMemo);
+        } else {
+            ZuoraAPI.Payment payment = createPayment(trx);
+            applyPayment(trx, payment);
         }
-
-        ZuoraAPI.Payment payment = createPayment(trx);
-
-        ZuoraSubscriptionService.ClientProject clientProjectAssignment = getClientProjectFromTransaction(trx, false);
-        ZuoraAPI.ZuoraDebitMemo zuoraDebitMemo = createAndPostDebitMemo(trx, clientProjectAssignment, 'Returned Payment');
-        ZuoraOutstandingItemsService.OutstandingItem outstandingItem = debitMemoToOutstandingItems(zuoraDebitMemo);
-        outstandingItem.AmountToApply = payment.amount;
-
-        ZuoraAPI.ZuoraPaymentApplication paymentApplication =
-            outstandingItemToPaymentApplication(new List<ZuoraOutstandingItemsService.OutstandingItem>{outstandingItem}, trx.CreatedDate);
-        ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/payments/' + payment.id + '/apply', paymentApplication, false);
     }
 
     @TestVisible
@@ -286,7 +287,7 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
         ZuoraAPI.DebitMemo debitMemo = new ZuoraAPI.DebitMemo();
         debitMemo.accountId = trx.ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Zuora_Id__c;
         ZuoraAPI.DebitMemoCharge debitMemoCharge = new ZuoraAPI.DebitMemoCharge();
-        debitMemoCharge.amount = trx.ChargentOrders__Amount__c;
+        debitMemoCharge.amount = Math.abs(trx.ChargentOrders__Amount__c);
         debitMemoCharge.chargeId = clientProjectAssignment.productRatePlanChargeId;
         debitMemo.charges = new List<ZuoraAPI.DebitMemoCharge>();
         debitMemo.charges.add(debitMemoCharge);
@@ -308,7 +309,7 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
         zuoraDebitMemo.id = zResponse.Id;
         zuoraDebitMemo.accountId = debitMemo.accountId;
         zuoraDebitMemo.debitMemoDate = debitMemo.effectiveDate;
-        zuoraDebitMemo.amount = debitMemoCharge.amount;
+        zuoraDebitMemo.amount = Math.abs(debitMemoCharge.amount);
         zuoraDebitMemo.Project_Zcustom = debitMemo.Project_Zcustom;
         zuoraDebitMemo.ClientOwner_Zcustom = debitMemo.ClientOwner_Zcustom;
 
@@ -467,15 +468,23 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
             this.payment = payment;
         }
 
-        public Boolean isTransfer() {
-            return (payment != null && payment.ChargentOrders__Type__c == 'Transfer');
+        public Boolean sortFirst() {
+            if (payment != null) {
+                if (payment.ChargentOrders__Amount__c < 0 &&
+                    (payment.ChargentOrders__Type__c == 'Transfer' ||
+                        payment.ChargentOrders__Type__c == 'Refund' ||
+                        payment.ChargentOrders__Response_Status__c == 'Returned')) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public Integer compareTo(Object compareTo) {
             Payable compareToItem = (Payable) compareTo;
             // If both items are transfers, or if none are transfers, just compare dates.
-            if ((this.isTransfer() && compareToItem.isTransfer()) ||
-                (!this.isTransfer() && !compareToItem.isTransfer())) {
+            if ((this.sortFirst() && compareToItem.sortFirst()) ||
+                (!this.sortFirst() && !compareToItem.sortFirst())) {
                 return simpleComparison(compareToItem);
             } else {
                 return transferComparison(compareToItem);
@@ -495,7 +504,7 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
         // This is used if one of the comparisons, but not both, is a transfer. The Transfer
         // always goes first (-1).
         private Integer transferComparison(Payable compareToItem) {
-            if (this.isTransfer()) {
+            if (this.sortFirst()) {
                 return -1;
             } else {
                 return 1;
