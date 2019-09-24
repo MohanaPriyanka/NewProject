@@ -112,6 +112,13 @@ public class InvoiceTemplateAssignerTest {
     }
 
     @isTest public static void testBatchRun(){
+        List<Error_Log__c> oldLogs = [
+            SELECT Id, Message__c
+            FROM Error_Log__c
+            WHERE Class__c = 'ZuoraAPIHelper'
+        ];
+        System.assertEquals(0,oldLogs.size());
+
         Test.startTest();
         InvoiceTemplateAssigner assigner = new InvoiceTemplateAssigner();
         assigner.executeBatch();
@@ -120,6 +127,7 @@ public class InvoiceTemplateAssignerTest {
         List<Error_Log__c> logs = [
             SELECT Id, Message__c
             FROM Error_Log__c
+            WHERE Class__c = 'ZuoraAPIHelper'
         ];
         System.assertEquals(1,logs.size());
     }
