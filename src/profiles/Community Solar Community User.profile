@@ -41450,11 +41450,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Shared_Solar_System__c.Actual_First_Bill_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Shared_Solar_System__c.Actual_Mechanical_Completion_Override__c</field>
         <readable>false</readable>
     </fieldPermissions>
