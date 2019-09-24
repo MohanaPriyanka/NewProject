@@ -275,6 +275,7 @@ public without sharing class CSAPController {
         insertedLead.Continue_Application_Link__c = continueApplicationUrl;
         update insertedLead;
 
+        lead.Continue_Application_Link__c = continueApplicationUrl;
         lead.LoadZone__c = insertedLead.LoadZone__c;
         lead.Utility_relationship__c = insertedLead.Utility_relationship__c;
         lead.Confirm_Utility__c = insertedLead.Confirm_Utility__c;
@@ -363,7 +364,8 @@ public without sharing class CSAPController {
     @AuraEnabled
     public static Product2 getProduct(String productId) {
         return [
-                SELECT Id, Name, Program__c, Customer_Subscription_Type__c, Default_Residential_Usage__c, Default_Business_Usage__c
+                SELECT Id, Name, Program__c, Customer_Subscription_Type__c, Default_Residential_Usage__c,
+                        Default_Business_Usage__c, Disable_Multiple_UAL_CSAP__c
                 FROM Product2
                 WHERE Id = :productId
         ];
