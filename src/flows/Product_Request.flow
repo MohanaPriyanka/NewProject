@@ -738,6 +738,13 @@
                     <stringValue>Data and Finance Operations</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>varTeamName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Accounting</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>scrOps_Work_Request</targetReference>
             </connector>
