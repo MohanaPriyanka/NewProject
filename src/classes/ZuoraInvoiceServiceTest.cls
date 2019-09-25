@@ -172,6 +172,64 @@ public with sharing class ZuoraInvoiceServiceTest {
         System.assertEquals(1, zuoraInvoices[0].ContentDocumentLinks.size());
     }
 
+    @IsTest
+    private static void testBatchFailure() {
+        List<Zuora__ZInvoice__c> invoices = new List<Zuora__ZInvoice__c>();
+        for (Integer i = 0; i < 200; i++) {
+            invoices.add(new Zuora__ZInvoice__c());
+        }
+        ZuoraInvoiceAsyncService asyncService = new ZuoraInvoiceAsyncService(invoices);
+        List<Error_Log__c> errorLogs = [
+            SELECT Message__c
+            FROM Error_Log__c
+            WHERE Severity__c = :Logger.ERROR
+            AND Class__c = 'ZuoraInvoiceAsyncService'
+        ];
+        System.assertEquals(0, errorLogs.size());
+
+        Test.startTest();
+        Database.executeBatch(asyncService, 200);
+        Test.stopTest();
+
+        errorLogs = [
+            SELECT Message__c
+            FROM Error_Log__c
+            WHERE Severity__c = :Logger.ERROR
+            AND Class__c = 'ZuoraInvoiceAsyncService'
+        ];
+        System.assertEquals(1, errorLogs.size());
+        System.assert(errorLogs[0].Message__c.contains('Call downloadPDFs with fewer'));
+    }
+
+    @IsTest
+    private static void testQueueableFailure() {
+        List<Zuora__ZInvoice__c> invoices = new List<Zuora__ZInvoice__c>();
+        for (Integer i = 0; i < 200; i++) {
+            invoices.add(new Zuora__ZInvoice__c());
+        }
+        ZuoraInvoiceAsyncService asyncService = new ZuoraInvoiceAsyncService(invoices);
+        List<Error_Log__c> errorLogs = [
+            SELECT Message__c
+            FROM Error_Log__c
+            WHERE Severity__c = :Logger.ERROR
+            AND Class__c = 'ZuoraInvoiceAsyncService'
+        ];
+        System.assertEquals(0, errorLogs.size());
+
+        Test.startTest();
+        System.enqueueJob(asyncService);
+        Test.stopTest();
+
+        errorLogs = [
+            SELECT Message__c
+            FROM Error_Log__c
+            WHERE Severity__c = :Logger.ERROR
+            AND Class__c = 'ZuoraInvoiceAsyncService'
+        ];
+        System.assertEquals(1, errorLogs.size());
+        System.assert(errorLogs[0].Message__c.contains('Call downloadPDFs with fewer'));
+    }
+
     /*
      * Upload to Letterstream tests
      */
