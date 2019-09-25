@@ -44,7 +44,11 @@ public with sharing class ZuoraInvoiceAsyncService implements Queueable, Databas
                 invoiceService.queueInvoicesToMail(scope);
             }
         } catch (Exception e) {
-            Logger.logNow('ZuoraInvoiceAsyncService', 'execute', e.getMessage() + '\n' + e.getStackTraceString() + '\n' + scope, Logger.ERROR);
+            Logger.logNow(
+                'ZuoraInvoiceAsyncService',
+                'execute batch',
+                e.getMessage() + '\n' + e.getStackTraceString() + '\n' + scope,
+                Logger.ERROR);
         } finally {
             Logger.flushLogs();
         }
@@ -54,7 +58,17 @@ public with sharing class ZuoraInvoiceAsyncService implements Queueable, Databas
     }
 
     public void execute(QueueableContext context) {
-        ZuoraInvoiceService invoiceService = new ZuoraInvoiceService(allInvoicesToDownload);
-        invoiceService.downloadPDFs();
+        try {
+            ZuoraInvoiceService invoiceService = new ZuoraInvoiceService(allInvoicesToDownload);
+            invoiceService.downloadPDFs();
+        } catch (Exception e) {
+            Logger.logNow(
+                'ZuoraInvoiceAsyncService',
+                'execute queueable',
+                e.getMessage() + '\n' + e.getStackTraceString() + '\n' + allInvoicesToDownload,
+                Logger.ERROR);
+        } finally {
+            Logger.flushLogs();
+        }
     }
 }
