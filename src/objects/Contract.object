@@ -162,6 +162,11 @@
                     <label>Anchor Customer Contract</label>
                 </value>
                 <value>
+                    <fullName>BPD Scout Agreement</fullName>
+                    <default>false</default>
+                    <label>BPD Scout Agreement</label>
+                </value>
+                <value>
                     <fullName>Client Service Agreement</fullName>
                     <default>false</default>
                     <label>Client Service Agreement</label>
@@ -172,6 +177,11 @@
                     <label>Consumer Disclosure Form</label>
                 </value>
                 <value>
+                    <fullName>Customer Contract Template</fullName>
+                    <default>false</default>
+                    <label>Customer Contract Template</label>
+                </value>
+                <value>
                     <fullName>Engineering, Procurement and Construction Contract (EPC)</fullName>
                     <default>false</default>
                     <label>Engineering, Procurement and Construction Contract (EPC)</label>
@@ -180,11 +190,6 @@
                     <fullName>Financing Agreement</fullName>
                     <default>false</default>
                     <label>Financing Agreement</label>
-                </value>
-                <value>
-                    <fullName>Lease Agreement</fullName>
-                    <default>false</default>
-                    <label>Lease Agreement</label>
                 </value>
                 <value>
                     <fullName>Lease Option Agreement</fullName>
@@ -207,19 +212,9 @@
                     <label>NDA</label>
                 </value>
                 <value>
-                    <fullName>Partner MSA</fullName>
+                    <fullName>Sales Partner Agreement</fullName>
                     <default>false</default>
-                    <label>Partner MSA</label>
-                </value>
-                <value>
-                    <fullName>Partner SOW</fullName>
-                    <default>false</default>
-                    <label>Partner SOW</label>
-                </value>
-                <value>
-                    <fullName>Partner SSA</fullName>
-                    <default>false</default>
-                    <label>Partner SSA</label>
+                    <label>Sales Partner Agreement</label>
                 </value>
                 <value>
                     <fullName>Small-Offtake Customer Contract</fullName>
@@ -989,6 +984,10 @@
                 <default>false</default>
             </values>
             <values>
+                <fullName>BPD Scout Agreement</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Client Service Agreement</fullName>
                 <default>false</default>
             </values>
@@ -997,15 +996,15 @@
                 <default>false</default>
             </values>
             <values>
+                <fullName>Customer Contract Template</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Engineering%2C Procurement and Construction Contract %28EPC%29</fullName>
                 <default>false</default>
             </values>
             <values>
                 <fullName>Financing Agreement</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lease Agreement</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1025,15 +1024,7 @@
                 <default>false</default>
             </values>
             <values>
-                <fullName>Partner MSA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner SOW</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner SSA</fullName>
+                <fullName>Sales Partner Agreement</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1338,6 +1329,10 @@
                 <default>false</default>
             </values>
             <values>
+                <fullName>BPD Scout Agreement</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Client Service Agreement</fullName>
                 <default>false</default>
             </values>
@@ -1346,15 +1341,15 @@
                 <default>false</default>
             </values>
             <values>
+                <fullName>Customer Contract Template</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Engineering%2C Procurement and Construction Contract %28EPC%29</fullName>
                 <default>false</default>
             </values>
             <values>
                 <fullName>Financing Agreement</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lease Agreement</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1374,15 +1369,7 @@
                 <default>false</default>
             </values>
             <values>
-                <fullName>Partner MSA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner SOW</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner SSA</fullName>
+                <fullName>Sales Partner Agreement</fullName>
                 <default>false</default>
             </values>
             <values>
