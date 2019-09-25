@@ -58,7 +58,7 @@ public with sharing class ZuoraInvoiceService {
             response = null;
             // Anything that is left needs to be queued for download
             sfdcZuoraInvoices.remove(0);
-            // Stop trying to get data when using half the heap, since we'll ne<<ed more heap to store the ConventVersion
+            // Stop trying to get data when using half the heap, since we'll need more heap to store the ConventVersion
             if (Limits.getHeapSize() > Limits.getLimitHeapSize() * .5 || Test.isRunningTest()) {
                 break;
             }
@@ -97,7 +97,7 @@ public with sharing class ZuoraInvoiceService {
             );
             zuoraInvoiceIdToConventVersion.put(zuoraInvoice.id, cv);
         }
-        insert zuoraInvoiceIdToConventVersion.values();
+        Util.insertSObjs(zuoraInvoiceIdToConventVersion.values());
         // We could return the map here, and it would have ContentVersion Ids, but it doesn't have the ContentDocumentId
         // that was created, so we have to query for that and put the updated version back in the map
         Map<Id, ContentVersion> contentVersionWithContentDocumentIdMap = new Map<Id, ContentVersion>([
