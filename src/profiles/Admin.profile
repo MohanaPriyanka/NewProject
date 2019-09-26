@@ -8704,11 +8704,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Energy_Usage_Update__c.Shared_Solar_System__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Energy_Usage_Update__c.Size_off_NMCs__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -22995,11 +22990,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Annual_SRECs_Est__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Opportunity.Anticipated_Cost_of_Electricity__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
