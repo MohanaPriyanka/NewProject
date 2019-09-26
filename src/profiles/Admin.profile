@@ -22849,11 +22849,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Opportunity.ACH_Account_Types__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Opportunity.ACH_Bank_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>

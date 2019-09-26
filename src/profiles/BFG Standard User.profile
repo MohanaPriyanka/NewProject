@@ -16197,11 +16197,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Contract.Customer_Payment_Methords__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Contract.Delinquency_Protocol__c</field>
         <readable>true</readable>
     </fieldPermissions>
