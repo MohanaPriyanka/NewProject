@@ -321,6 +321,17 @@ Round(( Subscribed_Annual_Cost_of_Electricity__c / Opportunity__r.NMC_Value__c/ 
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Date_Client_Invoice_Sent__c</fullName>
+        <description>This is the date the invoice that includes this UAS was sent to the Client. It is populated manually by Operations.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the date the invoice that includes this UAS was sent to the Client. It is populated manually by Operations.</inlineHelpText>
+        <label>Date Client Invoice Sent</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>Date_Removed_from_Project__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Populated with Date Allocation Schedule Retired by Utility when &quot;Date Allocation Schedule Retired by Utility&quot; on all related Allocation Schedule Subscriptions is populated AND Date Utility Account Cancelled is NOT populated</inlineHelpText>

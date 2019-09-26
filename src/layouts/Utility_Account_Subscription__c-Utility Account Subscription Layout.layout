@@ -30,8 +30,16 @@
                 <field>RecordTypeId</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Current_Schedule_Z_Status__c</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Next_Schedule_Z_Status__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Status__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -101,7 +109,7 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>BFG_Invoice_Number__c</field>
+                <field>Date_Client_Invoice_Sent__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
