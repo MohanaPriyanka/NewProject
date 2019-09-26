@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
     <alerts>
-        <fullName>CS_System_Started_Billing</fullName>
-        <description>CS System Started Billing</description>
-        <protected>false</protected>
-        <recipients>
-            <recipient>CS_System_Production_Billing</recipient>
-            <type>group</type>
-        </recipients>
-        <senderAddress>noreply@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>unfiled$public/CS_System_Started_Billing</template>
-    </alerts>
-    <alerts>
         <fullName>Shared_Solar_System_is_Full</fullName>
         <ccEmails>sales@bluewave-capital.com</ccEmails>
         <ccEmails>communitysolar@bluewave-capital.com</ccEmails>
