@@ -30713,6 +30713,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Utility_Account_Subscription__c.Date_Client_Invoice_Sent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Utility_Account_Subscription__c.Date_Removed_from_Project__c</field>
         <readable>false</readable>
     </fieldPermissions>
