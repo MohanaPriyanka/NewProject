@@ -118,18 +118,6 @@
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>BFG_Invoice_Number__c</fullName>
-        <externalId>false</externalId>
-        <label>BFG Invoice Number</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Calculated_Customer_Subscription_kW_DC__c</fullName>
         <externalId>false</externalId>
         <formula>Calculated_NMC_Alloaction_kWh__c / Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c</formula>

@@ -30652,11 +30652,6 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Utility_Account_Subscription__c.BFG_Invoice_Number__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Calculated_Customer_Subscription_kW_DC__c</field>
         <readable>false</readable>
