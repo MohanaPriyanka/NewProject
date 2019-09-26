@@ -162,6 +162,11 @@
                     <label>Anchor Customer Contract</label>
                 </value>
                 <value>
+                    <fullName>BPD Scout Agreement</fullName>
+                    <default>false</default>
+                    <label>BPD Scout Agreement</label>
+                </value>
+                <value>
                     <fullName>Client Service Agreement</fullName>
                     <default>false</default>
                     <label>Client Service Agreement</label>
@@ -172,6 +177,11 @@
                     <label>Consumer Disclosure Form</label>
                 </value>
                 <value>
+                    <fullName>Customer Contract Template</fullName>
+                    <default>false</default>
+                    <label>Customer Contract Template</label>
+                </value>
+                <value>
                     <fullName>Engineering, Procurement and Construction Contract (EPC)</fullName>
                     <default>false</default>
                     <label>Engineering, Procurement and Construction Contract (EPC)</label>
@@ -180,11 +190,6 @@
                     <fullName>Financing Agreement</fullName>
                     <default>false</default>
                     <label>Financing Agreement</label>
-                </value>
-                <value>
-                    <fullName>Lease Agreement</fullName>
-                    <default>false</default>
-                    <label>Lease Agreement</label>
                 </value>
                 <value>
                     <fullName>Lease Option Agreement</fullName>
@@ -207,19 +212,9 @@
                     <label>NDA</label>
                 </value>
                 <value>
-                    <fullName>Partner MSA</fullName>
+                    <fullName>Sales Partner Agreement</fullName>
                     <default>false</default>
-                    <label>Partner MSA</label>
-                </value>
-                <value>
-                    <fullName>Partner SOW</fullName>
-                    <default>false</default>
-                    <label>Partner SOW</label>
-                </value>
-                <value>
-                    <fullName>Partner SSA</fullName>
-                    <default>false</default>
-                    <label>Partner SSA</label>
+                    <label>Sales Partner Agreement</label>
                 </value>
                 <value>
                     <fullName>Small-Offtake Customer Contract</fullName>
@@ -641,6 +636,17 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Other_Party__c</fullName>
+        <externalId>false</externalId>
+        <label>Other Party(s)</label>
+        <length>150</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>OwnerExpirationNotice</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
@@ -672,6 +678,18 @@
         <fullName>Project_Value__c</fullName>
         <externalId>false</externalId>
         <label>Contract/Project Value</label>
+        <length>200</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Reason_for_Date_Needed__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Please provide a reason for specifying &apos;Date Needed&apos;</inlineHelpText>
+        <label>Reason for Date Needed</label>
         <length>200</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
@@ -813,9 +831,9 @@
                     <label>Business Applications</label>
                 </value>
                 <value>
-                    <fullName>Business Operations</fullName>
+                    <fullName>Business Development</fullName>
                     <default>false</default>
-                    <label>Business Operations</label>
+                    <label>Business Development</label>
                 </value>
                 <value>
                     <fullName>Client Operations</fullName>
@@ -871,6 +889,11 @@
                     <fullName>UX Development</fullName>
                     <default>false</default>
                     <label>UX Development</label>
+                </value>
+                <value>
+                    <fullName>People</fullName>
+                    <default>false</default>
+                    <label>People</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -972,6 +995,10 @@
                 <default>false</default>
             </values>
             <values>
+                <fullName>BPD Scout Agreement</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Client Service Agreement</fullName>
                 <default>false</default>
             </values>
@@ -980,15 +1007,15 @@
                 <default>false</default>
             </values>
             <values>
+                <fullName>Customer Contract Template</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Engineering%2C Procurement and Construction Contract %28EPC%29</fullName>
                 <default>false</default>
             </values>
             <values>
                 <fullName>Financing Agreement</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lease Agreement</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1008,15 +1035,7 @@
                 <default>false</default>
             </values>
             <values>
-                <fullName>Partner MSA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner SOW</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner SSA</fullName>
+                <fullName>Sales Partner Agreement</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1236,13 +1255,28 @@
             </values>
         </picklistValues>
         <picklistValues>
+            <picklist>Status</picklist>
+            <values>
+                <fullName>Activated</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Draft</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>In Approval Process</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Team_Submitted_By__c</picklist>
             <values>
                 <fullName>Business Applications</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Business Operations</fullName>
+                <fullName>Business Development</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1283,6 +1317,10 @@
             </values>
             <values>
                 <fullName>Originations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>People</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1302,6 +1340,10 @@
                 <default>false</default>
             </values>
             <values>
+                <fullName>BPD Scout Agreement</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Client Service Agreement</fullName>
                 <default>false</default>
             </values>
@@ -1310,15 +1352,15 @@
                 <default>false</default>
             </values>
             <values>
+                <fullName>Customer Contract Template</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Engineering%2C Procurement and Construction Contract %28EPC%29</fullName>
                 <default>false</default>
             </values>
             <values>
                 <fullName>Financing Agreement</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lease Agreement</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1338,15 +1380,7 @@
                 <default>false</default>
             </values>
             <values>
-                <fullName>Partner MSA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner SOW</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner SSA</fullName>
+                <fullName>Sales Partner Agreement</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1566,13 +1600,28 @@
             </values>
         </picklistValues>
         <picklistValues>
+            <picklist>Status</picklist>
+            <values>
+                <fullName>Activated</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Draft</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>In Approval Process</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Team_Submitted_By__c</picklist>
             <values>
                 <fullName>Business Applications</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Business Operations</fullName>
+                <fullName>Business Development</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1613,6 +1662,10 @@
             </values>
             <values>
                 <fullName>Originations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>People</fullName>
                 <default>false</default>
             </values>
             <values>

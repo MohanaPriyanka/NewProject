@@ -16421,6 +16421,11 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract.Other_Party__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Contract.OwnerExpirationNotice</field>
         <readable>true</readable>
@@ -16438,6 +16443,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Contract.Project_Value__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract.Reason_for_Date_Needed__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -37287,6 +37297,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Shared_Solar_System__c.Actual_First_Bill_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Shared_Solar_System__c.Actual_Mechanical_Completion_Override__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -55604,6 +55619,9 @@
     <layoutAssignments>
         <layout>Contract-Client Contract Layout</layout>
         <recordType>Contract.Client_Contract</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Contract-Contract Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Contract-General Contract Layout</layout>
