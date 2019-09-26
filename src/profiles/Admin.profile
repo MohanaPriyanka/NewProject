@@ -22884,11 +22884,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Opportunity.Added_To_Paper_Bill_Queue_c__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Opportunity.Addendum_Exhibit_D_Recieved__c</field>
         <readable>true</readable>
     </fieldPermissions>
