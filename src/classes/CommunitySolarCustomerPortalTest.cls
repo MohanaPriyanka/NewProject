@@ -197,7 +197,7 @@ public without sharing class CommunitySolarCustomerPortalTest {
         insert transA;
 
         Map<String, Account> customerAccountMap = new Map<String, Account>();
-        for (Account customerAccount : [SELECT Id, Name, Parent_Account_ID__c, Total_Outstanding_Balance__c
+        for (Account customerAccount : [SELECT Id, Name, Parent_Account_ID__c, Total_Outstanding_Balance_Merge__c
         FROM Account]){
             customerAccountMap.put(customerAccount.Name, customerAccount);
         }
