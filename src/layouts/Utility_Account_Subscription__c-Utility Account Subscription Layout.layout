@@ -101,7 +101,7 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>BFG_Invoice_Number__c</field>
+                <field>Date_Client_Invoice_Sent__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
