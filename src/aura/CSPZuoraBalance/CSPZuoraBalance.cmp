@@ -1,4 +1,4 @@
-<aura:component implements="forceCommunity:availableForAllPageTypes,force:hasRecordId" controller="ZuoraAccountSelector">
+<aura:component implements="forceCommunity:availableForAllPageTypes,force:hasRecordId,flexipage:availableForAllPageTypes" controller="ZuoraAccountSelector">
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
   <aura:attribute name="myBill" type="Decimal"/>
   <aura:attribute name="autopayMethod" type="String"/>
