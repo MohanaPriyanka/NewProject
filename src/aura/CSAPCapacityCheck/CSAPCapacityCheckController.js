@@ -57,6 +57,7 @@
     },
 
     checkCredit : function(component, event, helper) {
+
         var billNotUploaded = !component.get("v.electricBill1") && !component.get('v.isLargeFile') && !component.get("v.partnerApp");
         var initials = component.get("v.initials");
         if (billNotUploaded) {
@@ -65,8 +66,10 @@
         if (initials == null){
             alert("Please sign your initials for the Terms and Conditions");
         }
-
         if (helper.validatePageFields(component) && !billNotUploaded && initials != null ) {
+            //Disable after the first click to prevent the user from clicking it again
+            event.getSource().set("v.disabled", true);
+
             var lead = component.get("v.lead");
             helper.storeTermsConditions(component, event, helper);
             helper.saveSObject(component, lead.Id, "Lead", null, null, lead);
