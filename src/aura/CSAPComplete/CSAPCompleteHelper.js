@@ -16,7 +16,7 @@
                     reject();
                 } else {
                     component.set('v.lead', resp.getReturnValue());
-                    component.set('v.loadingText', 'Generating your contract...');
+                    component.set('v.loadingText', 'Generating your contract(s)...');
                     resolve();
                 }
             });
@@ -25,7 +25,8 @@
             $A.getCallback(function() {
                 var sendDocuSign = component.get('c.sendEmbeddedContract');
                 sendDocuSign.setParams({
-                    'lead': component.get('v.lead')
+                    'lead': component.get('v.lead'),
+                    'oppCounter': 0
                 });
                 sendDocuSign.setCallback(this, function(docuSignResp) {
                     if (docuSignResp.getState() !== "SUCCESS") {

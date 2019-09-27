@@ -13,8 +13,14 @@
       <div class="slds-icon-eq__bar"></div>
       <span class="slds-assistive-text">Loading</span>
     </div>
-    <div class="slds-text-body--regular slds-align_absolute-center">
+    <div class="slds-align_absolute-center slds-text-align--center">
       {!v.loadingText}
+      <br></br>
+      <br></br>
+      Your subscription could be provided by several solar farms. Each solar farm requires its own agreement.
+      <br></br>
+      Please review and sign each agreement as it loads below.
+
     </div>
   </aura:if>
 
