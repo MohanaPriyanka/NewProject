@@ -39,9 +39,28 @@ public class ZuoraInvoiceRegenServiceTest {
 
     @IsTest
     public static void testInvoiceRegenerationBatch() {
+        List<Error_Log__c> beforeLogs = [
+            SELECT Id, Message__c
+            FROM Error_Log__c
+            WHERE Class__c = 'ZuoraAPIHelper'
+        ];
+        System.assertEquals(0,beforeLogs.size());
+
         List<Zuora__ZInvoice__c> zInvoices = ZuoraInvoiceSelector.getInvoicesByDate(Date.newInstance(2019,05,20));
         System.assertEquals(4, zInvoices.size());
-        ZuoraInvoiceRegenerationService.regenerateInvoicePDFs(zInvoices);
+
+        Test.startTest();
+        ZuoraInvoiceRegenerationService regen = new ZuoraInvoiceRegenerationService();
+        regen.invoicesToUpdate = zInvoices;
+        regen.executeBatch();
+        Test.stopTest();
+
+        List<Error_Log__c> afterLogs = [
+            SELECT Id, Message__c
+            FROM Error_Log__c
+            WHERE Class__c = 'ZuoraAPIHelper'
+        ];
+        System.assertEquals(1,afterLogs.size());
     }
 
     @IsTest

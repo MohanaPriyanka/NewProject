@@ -27,15 +27,8 @@ public class ZuoraInvoiceRegenerationService implements Database.Batchable<SObje
             HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('PUT', '/v1/object/invoice/' + zInvoice.Id, zInvoice, false);
             ZuoraAPI.SaveResult result = (ZuoraAPI.SaveResult) System.JSON.deserialize(response.getBody(), ZuoraAPI.SaveResult.class);
             if (!result.Success) {
-                String customErrorMessage =
-                    'Object: ' + String.valueOf(zInvoice) +
-                        ' Zuora Error Message: ' + String.valueOf(result.Errors);
-                Logger.logLater(
-                    'ZuoraController',
-                    'regeneratePDFs',
-                    customErrorMessage,
-                    Logger.ERROR
-                );
+                String customErrorMessage = 'Object: ' + String.valueOf(zInvoice) + ' Zuora Error Message: ' + String.valueOf(result.Errors);
+                Logger.logLater('ZuoraController', 'regeneratePDFs', customErrorMessage, Logger.ERROR);
             }
         }
         Logger.flushLogs();
