@@ -14,6 +14,20 @@
         if (component.get("v.page") === 'CreditCheckResult' && event.getParam("eventType")=== "INITIATED"){
             var a = component.get("c.checkCredit");
             $A.enqueueAction(a);
+
+
+
+            if (!component.get('v.creditStatusTimeout')) {
+                var actionGetTimeout = component.get("c.getCreditCheckTimeout");
+                actionGetTimeout.setCallback(this,function(resp) {
+                    if(resp.getState() == 'SUCCESS') {
+                        component.set("v.creditStatusTimeout", resp.getReturnValue());
+                    } else {
+                        component.set("v.creditStatusTimeout", 60000);
+                    }
+                });
+                $A.enqueueAction(actionGetTimeout);
+            }
         }
     },
 
@@ -21,6 +35,8 @@
         if (helper.validatePageFields(component)) {
             component.set("v.page", "CreditCheckResult");
             var lead = component.get("v.lead");
+            component.set("v.continueUrl", lead.Continue_Application_Link__c);
+
             helper.saveSObject(component, lead.Id, "Lead", null, null, lead);
             component.set('v.loading', true);
 
@@ -44,12 +60,22 @@
                         component.set("v.creditStatusPoller", creditPollerInterval);
                     }, 10000);
 
-                    // checkCreditStatus should clearInterval it finds a Credit Report Log or
+                    // checkCreditStatus should clearInterval if it finds a Credit Report Log or
                     // a Credit Report on the Lead, but just in case, stop checking after a minute
                     const timeoutInterval = window.setTimeout(function() {
-                        component.set("v.creditStatusText",
-                            "Credit request timed out, please wait a minute, refresh the page, and log in again");
                         window.clearInterval(component.get("v.creditStatusPoller"));
+                        var toastEvent = $A.get("e.force:showToast");
+                        toastEvent.setParams({
+                            mode: 'sticky',
+                            type: 'error',
+                            message: 'Error',
+                            messageTemplate: 'Oh no! Looks like this is taking too long! {0}',
+                            messageTemplateData: [{
+                                url: component.get("v.continueUrl"),
+                                label: 'Click here to continue the application.',
+                            }]
+                        });
+                        toastEvent.fire();
                     }, component.get("v.creditStatusTimeout"));
                     component.set("v.creditStatusTimeoutID", timeoutInterval);
                 } else {
