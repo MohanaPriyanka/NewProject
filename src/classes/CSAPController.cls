@@ -33,7 +33,10 @@ public without sharing class CSAPController {
                 // CSAP will use this to send a DocuSign contract for a converted lead. If we have multiple opportunities
                 // for the lead, we'll just get the first. Ordering by created date should get the one(s) that were created
                 // in the transaction that converted the lead.
-                SELECT Id, Parent_Account_Name__c FROM Opportunities__r ORDER BY CreatedDate DESC, Opportunity_Order__c ASC LIMIT 1
+                        SELECT Id, Parent_Account_Name__c
+                        FROM Opportunities__r
+                        ORDER BY CreatedDate DESC, Opportunity_Order__c ASC
+                        LIMIT 1
             )
             FROM Lead
             WHERE Id = :leadId
@@ -167,7 +170,8 @@ public without sharing class CSAPController {
         Lead insertedLead = [
             SELECT LoadZone__c, Utility_relationship__c, ZipCode__c, ZipCode__r.LZ__c, ZipCode__r.Utility_Junction_Count__c
             FROM Lead
-            WHERE Id = :lead.Id];
+                WHERE Id = :lead.Id
+        ];
 
         lead.ZipCode__c = insertedLead.ZipCode__c;
 
@@ -204,7 +208,7 @@ public without sharing class CSAPController {
         }
 
         //Set boolean based on BIS (and BlueWave Test Partner?) or Partner to determine application process
-        if (customerPartner.Name == 'BlueWave Inside Sales' || customerPartner.Name == 'BlueWave Test Partner'){
+        if (customerPartner.Name == 'CS Self-Originations' || customerPartner.Name == 'BlueWave Test Partner') {
             partnerApp = false;
         } else {
             partnerApp = true;
@@ -264,7 +268,8 @@ public without sharing class CSAPController {
         Lead insertedLead = [
             SELECT LoadZone__c, Utility_relationship__c, Confirm_Utility__c
             FROM Lead
-            WHERE Id = :lead.Id];
+                WHERE Id = :lead.Id
+        ];
 
 
         String continueApplicationUrl = Util.getCommunitySiteURL('Apply') + '/s/csap-payment?leadId=' + lead.Id;
@@ -282,7 +287,8 @@ public without sharing class CSAPController {
             SELECT Id, Partner_Name__c, Application_Source_Phase_2__c, System_Assignment__c,
                 LASERCA__Home_State__c, Application_Type__c, Utility_relationship__c, LoadZone__c
             FROM Lead
-            WHERE Id = :leadId];
+                WHERE Id = :leadId
+        ];
         if (lead.Utility_relationship__c == null || lead.LoadZone__c == null) {
             return false;
         }
@@ -323,9 +329,11 @@ public without sharing class CSAPController {
     // there's no credit report. Customer Care can always pull credit through the UI if needed
     @AuraEnabled
     public static void pullCreditStatus(Lead lead) {
-        Lead l = [SELECT Id, Name, Personal_Credit_Report__c, Date_of_Application__c, Application_Source_Phase_2__c
+        Lead l = [
+                SELECT Id, Name, Personal_Credit_Report__c, Date_of_Application__c, Application_Source_Phase_2__c
                   FROM Lead
-                  WHERE Id =:lead.Id];
+                WHERE Id = :lead.Id
+        ];
         Organization o = [SELECT IsSandbox FROM Organization LIMIT 1];
         String name = l.Name.toLowerCase();
         if (o.IsSandbox || name.contains('testcase')) {
@@ -355,7 +363,11 @@ public without sharing class CSAPController {
 
     @AuraEnabled
     public static Product2 getProduct (String productId) {
-        return [SELECT Id, Name, Program__c, Customer_Subscription_Type__c FROM Product2 WHERE Id =: productId];
+        return [
+                SELECT Id, Name, Program__c, Customer_Subscription_Type__c, Default_Residential_Usage__c, Default_Business_Usage__c
+                FROM Product2
+                WHERE Id = :productId
+        ];
     }
 
     @AuraEnabled
@@ -384,6 +396,7 @@ public without sharing class CSAPController {
             WHERE Parent_Account__c = :primaryLead.Parent_Account__c
             AND Status = 'Qualified'
         ];
+
         // make sure that the lead owner is a user, if not set it to API
         Boolean updatedLeadOwner = false;
         User apiUser = [
@@ -437,11 +450,13 @@ public without sharing class CSAPController {
     }
 
     private static Lead setupParentAccount(Lead lead, Partner__c customerPartner) {
-        User apiUser = [SELECT Id, Name, Username
+        User apiUser = [
+                SELECT Id, Name, Username
         FROM User
         WHERE Name = 'API'
         AND IsActive = TRUE
-        LIMIT 1];
+                LIMIT 1
+        ];
 
         Group csInsideSales = [
             SELECT Id, Name
@@ -473,7 +488,6 @@ public without sharing class CSAPController {
         if(customerPartner.Email__c != null){
             lead.Partner_Email__c = customerPartner.Email__c;
         }
-
 
 
         // only need to insert contact if they don't have a parent account already
@@ -524,6 +538,12 @@ public without sharing class CSAPController {
         CapacityService.ZipcodeResponse capacityServiceResponse = service.findCapacityByZipcode(zipcode);
         return capacityServiceResponse.hasCapacity();
         
+    }
+
+    @AuraEnabled
+    public static List<Utility_Account_Log__c> saveUtilityAccountLogList(List<Utility_Account_Log__c> ualList) {
+        upsert ualList;
+        return ualList;
     }
 
     @AuraEnabled

@@ -57,7 +57,7 @@
     },
 
     checkCredit : function(component, event, helper) {
-        var billNotUploaded = !component.get("v.electricBill1") && !component.get('v.isLargeFile');
+        var billNotUploaded = !component.get("v.electricBill1") && !component.get('v.isLargeFile') && !component.get("v.partnerApp");
         var initials = component.get("v.initials");
         if (billNotUploaded) {
             alert("Please upload your recent electric bill");
@@ -96,8 +96,9 @@
                 $A.enqueueAction(skipToEnd);
             }), 5000);
     },
-
-    handleEBill1 : function(component, event, helper) {
-        helper.handleAttachment(component, event, helper, helper.ELECTRIC_BILL_1);
+    handleUploadFinished : function (component, event, helper) {
+        var uploadedFiles = event.getParam("files");
+        component.set("v.fileUploadedText", uploadedFiles.length + " file(s) uploaded.");
+        component.set("v.electricBill1", true);
     }
 })

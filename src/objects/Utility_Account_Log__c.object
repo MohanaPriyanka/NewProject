@@ -457,6 +457,15 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Same_Address__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Same Address?</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Service_Address_Formula__c</fullName>
         <externalId>false</externalId>
         <formula>Account__r.Street_Address__c</formula>

@@ -164,7 +164,7 @@ public with sharing class CSAPControllerTest {
     }
 
     public static Lead getLeadForTest() {
-        Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
+        Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Mass Renewables' LIMIT 1];
 
         Lead lead = new Lead(
             FirstName = 'Tester',
@@ -515,7 +515,7 @@ public with sharing class CSAPControllerTest {
 
         Test.startTest();
         Boolean partnerApp = CSAPController.checkApplicationPartner(checkLead.Partner_Lookup__r.Id);
-        System.assertEquals(false, partnerApp);
+        System.assertEquals(true, partnerApp);
         Test.stopTest();
 
     }

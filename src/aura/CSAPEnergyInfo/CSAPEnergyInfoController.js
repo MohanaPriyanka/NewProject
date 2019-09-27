@@ -6,14 +6,21 @@
             helper.handleNavEvent(component, event, helper, "UtilityAccountInformation");
         }
         if (component.get('v.STAGENAME') === 'NAV_Energy_Information' && component.get('v.page') === 'UtilityAccountInformation' && event.getParam("eventType")=== "INITIATED") {
+
+            component.set("v.loading", true);
+            component.set("v.loadingText", "Loading...");
             var lead = component.get('v.lead');
             var action = component.get("c.getProduct");
             var ual = component.get("v.ual");
             var productId = lead.Product__c;
+
             action.setParams({"productId" : productId});
             action.setCallback(this, function(resp) {
                 if (resp.getState() === "SUCCESS") {
-                    component.set('v.selectedProduct', resp.getReturnValue());
+                    component.set("v.selectedProduct", resp.getReturnValue());
+                    helper.addUAL(component, event, helper);
+                    component.set("v.loading", false);
+                    component.set("v.loadingText", "");
                 } else {
                     helper.logError("CSAPEnergyInfoController", "getProduct", resp.getError(), lead);
                 }
@@ -51,7 +58,6 @@
                 helper.getUSStates(component, "v.abbrevStates", true);
             }
         }
-
     },
 
     goToUtilityAccountInformation : function(component, event, helper) {
@@ -65,47 +71,65 @@
     },
 
     addUAL : function(component, event, helper) {
-        var ual = {
-            sobjectType: "Utility_Account_Log__c"
-        };
-        //Go back to the Utility Account Information Page
-        var ualList = component.get("v.ualList");
-        ualList.push(ual);
-        component.set("v.ual", ual);
-        component.set("v.ualList", ualList);
-        component.set("v.page", "UtilityAccountInformation");
+        helper.addUAL(component, event, helper);
     },
-
-    //finishStage :
+    removePreviousUAL : function(component, event, helper) {
+        var ualList = component.get("v.ualList");
+        ualList.pop();
+        component.set("v.ualList", ualList);
+    },
     submitEnergyInfo :  function(component, event, helper) {
         if(helper.validatePageFields(component)){
             var ual = component.get("v.ual");
             var lead = component.get("v.lead");
             var partnerApp = component.get("v.partnerApp");
 
-
-            if (ual.Lead__c == null){
-                ual.Lead__c = lead.Id;
+            var ualList = component.get("v.ualList");
+            for(var i = 0; i < ualList.length; i++) {
+                var ualItem = ualList[i];
+                if(ualItem.Lead__c == null){
+                    ualItem.Lead__c = lead.Id;
+                }
+                var utility = component.get('v.utility');
+                ualItem.Utility__c = utility.Id;
+                if (ualItem.Same_Address__c){
+                    ualItem.Service_Address__c = lead.LASERCA__Home_Address__c;
+                    ualItem.Service_City__c = lead.LASERCA__Home_City__c;
+                    ualItem.Service_State__c = lead.LASERCA__Home_State__c;
+                    ualItem.Service_Zip_Code__c = lead.Parcel_Zip__c;
+                }
             }
 
-            var utility = component.get('v.utility');
-            ual.Utility_lookup__c = utility.Id;
+            var saveUALList = component.get("c.saveUtilityAccountLogList");
+            saveUALList.setParams({'ualList' : ualList});
+            saveUALList.setCallback(this, function(resp) {
+                if (resp.getState() === "SUCCESS") {
+                    component.set("v.loading", false);
+                    component.set("v.loadingText", "");
 
-            if (partnerApp) {
-                ual.Annual_kWh__c = 8000;
-            }
+                    component.set('v.ualList', resp.getReturnValue());
+                    if (partnerApp){
+                        component.set("v.page", "UtilityAccountUpload");
+                    } else {
+                        var action = component.get('c.sendEmailForPaymentInfo');
+                        action.setParams({
+                            "lead": lead
+                        });
+                        action.setCallback(this, function(resp) {
+                            if (resp.getState() === "SUCCESS") {
+                                component.set("v.loading", false);
+                                component.set('v.page', 'CompletedUtilityInfo');
+                            } else {
+                                helper.logError("CSAPEnergyInfoController", "finishStage",
+                                    "There was an issue saving this information. We have recorded this error and will review it.",
+                                    resp.getError());
+                            }
+                        })
+                        $A.enqueueAction(action);
+                    }
 
-            if (component.get("v.sameAddress")){
-                ual.Service_Address__c = lead.LASERCA__Home_Address__c;
-                ual.Service_City__c = lead.LASERCA__Home_City__c;
-                ual.Service_State__c = lead.LASERCA__Home_State__c;
-            }
-
-            var saveUAL = component.get('c.saveUtilityAccountLog');
-            saveUAL.setParams({'ual' : ual});
-            saveUAL.setCallback(this, function(resp) {
-                if (resp.getState() !== 'SUCCESS') {
-                    helper.logError("CSAPEnergyInfoController", "goToAddMore", resp.getError(), lead);
+                } else if (resp.getState() !== 'SUCCESS') {
+                    helper.logError("CSAPEnergyInfoController", "saveUtilityAccountLogList", resp.getError(), lead);
                 }
             });
 
@@ -114,35 +138,23 @@
             } else {
                 component.set("v.loading", true);
                 component.set("v.loadingText", "Saving utility account information...");
-                $A.enqueueAction(saveUAL);
+                $A.enqueueAction(saveUALList);
             }
-         if (component.get("v.partnerApp")){
-             helper.finishStage(component, event, helper);
-         } else {
-             var action = component.get('c.sendEmailForPaymentInfo');
-             action.setParams({
-                 "lead": lead
-             });
-             action.setCallback(this, function(resp) {
-                 if (resp.getState() === "SUCCESS") {
-                     component.set("v.loading", false);
-                     component.set('v.page', 'CompletedUtilityInfo');
-                 } else {
-                     helper.logError("CSAPEnergyInfoController", "finishStage",
-                         "There was an issue saving this information. We have recorded this error and will review it.",
-                         resp.getError());
-                 }
-             })
-             $A.enqueueAction(action);
-         }
-
-
         }
+    },
+    finishStage :  function(component, event, helper) {
+        component.set("v.loading", true);
+        component.set("v.loadingText", "Processing...");
+        helper.finishStage(component, event, helper);
     },
 
     handleChange : function (component, event, helper) {
         var checkCmp = component.find("checkbox");
         var result = checkCmp.get("v.value");
         component.set("v.sameAddress", result );
+    },
+    handleUploadFinished : function (component, event, helper) {
+        var uploadedFiles = event.getParam("files");
+        event.getSource().set("v.label", uploadedFiles.length + " file(s) uploaded.");
     }
 })

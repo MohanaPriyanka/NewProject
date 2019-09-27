@@ -1,14 +1,15 @@
 <aura:component controller="CSAPController" access="global" implements="forceCommunity:availableForAllPageTypes" extends="c:CSAPParent">
-  <aura:attribute name="hasCapacity" type="String"/>
-  <aura:attribute name="loading" type="Boolean"/>
-  <aura:attribute name="loadingText" type="Boolean"/>
-  <aura:attribute name="noCapacityReason" type="String"/>
-  <aura:attribute name="partnerApp" type="Boolean"/>
-  <aura:attribute name="attachments" type="Attachment[]"/>
-  <aura:attribute name="electricBill1" type="Object"/>
-  <aura:attribute name="isLargeFile" type="Boolean"/>
-  <aura:attribute name="initials" type="String"/>
-  <aura:attribute name="termsConditions" type="String" default="I agree to BlueWave's Privacy Policy. By entering my initials below, I also grant
+    <aura:attribute name="hasCapacity" type="String"/>
+    <aura:attribute name="loading" type="Boolean"/>
+    <aura:attribute name="loadingText" type="Boolean"/>
+    <aura:attribute name="noCapacityReason" type="String"/>
+    <aura:attribute name="partnerApp" type="Boolean"/>
+    <aura:attribute name="attachments" type="Attachment[]"/>
+    <aura:attribute name="electricBill1" type="Object"/>
+    <aura:attribute name="fileUploadedText" type="String"/>
+    <aura:attribute name="isLargeFile" type="Boolean"/>
+    <aura:attribute name="initials" type="String"/>
+    <aura:attribute name="termsConditions" type="String" default="I agree to BlueWave's Privacy Policy. By entering my initials below, I also grant
                                                                 BlueWave permission to perform a soft pull of my credit history
                                                                 (which will NOT impact my credit score), to use my credit history to
                                                                 process my application and for any other lawful purpose, to access my
@@ -25,7 +26,7 @@
                                                                the document that I have electronically signed, and returns the
                                                                contract to me with its countersignature."/>
 
-  <aura:attribute name="partnerTermsConditions" type="String" default="By entering your initials below, you are agreeing to BlueWave's Privacy Policy.
+    <aura:attribute name="partnerTermsConditions" type="String" default="By entering your initials below, you are agreeing to BlueWave's Privacy Policy.
                                                                You are also granting BlueWave permission to perform a soft pull of
                                                                your credit history (which will NOT impact your credit score), to use
                                                                your credit history to process your application and for any other lawful
@@ -41,231 +42,232 @@
                                                                BlueWave and you) after BlueWave verifies your eligibility, approves
                                                                the document that you have electronically signed, and returns the
                                                                contract to you with its countersignature."/>
-  <aura:set attribute="STAGENAME" value="NAV_Capacity_Check"/>
-  <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
-  <ltng:require styles="{!$Resource.animations}"/>
-  <lightning:notificationsLibrary aura:id="notifLib"/>
+    <aura:set attribute="STAGENAME" value="NAV_Capacity_Check"/>
+    <aura:handler event="c:CSAPNavigationEvent" action="{!c.handleNavEvent}"/>
+    <ltng:require styles="{!$Resource.animations}"/>
+    <lightning:notificationsLibrary aura:id="notifLib"/>
 
 
-  <aura:if isTrue="{!v.page == 'CapacityCheck'}">
-    <aura:if isTrue="{!v.loading}">
-      <div class="slds-icon-eq slds-is-animated slds-align_absolute-center slds-p-top_medium" title="Description of the icon when needed">
-        <div class="slds-icon-eq__bar"></div>
-        <div class="slds-icon-eq__bar"></div>
-        <div class="slds-icon-eq__bar"></div>
-        <span class="slds-assistive-text">Text alternative when needed</span>
-      </div>
-      <div class="slds-text-body--regular slds-align_absolute-center">
-        {!v.loadingText}
-      </div>
+    <aura:if isTrue="{!v.page == 'CapacityCheck'}">
+        <aura:if isTrue="{!v.loading}">
+            <div class="slds-icon-eq slds-is-animated slds-align_absolute-center slds-p-top_medium" title="Description of the icon when needed">
+                <div class="slds-icon-eq__bar"></div>
+                <div class="slds-icon-eq__bar"></div>
+                <div class="slds-icon-eq__bar"></div>
+                <span class="slds-assistive-text">Text alternative when needed</span>
+            </div>
+            <div class="slds-text-body--regular slds-align_absolute-center">
+                {!v.loadingText}
+            </div>
+        </aura:if>
+        <aura:if isTrue="{!not(v.loading)}">
+            <aura:if isTrue="{!v.hasCapacity == 'Yes'}">
+                <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
+                    <legend id="ssnForm" class="slds-text-heading--medium slds-text-align--center slds-p-vertical--medium slds-align_absolute-center">
+                        <aura:if isTrue="{!v.partnerApp}">
+                            <b class="slds-p-horizontal_large"> {!v.partnerApp ? 'Collect Consent and Check Eligibility' : 'Upload Bill, Collect Consent, and Check Eligibility'} </b>
+                            <aura:set attribute="else">
+                                <b class="slds-p-horizontal_large"> Almost finished! </b>
+                            </aura:set>
+                        </aura:if>
+                    </legend>
+                    <form class="slds-form--stacked">
+                        <lightning:layout aura:id="uploadBill" class="animated" multipleRows="true" horizontalAlign="center">
+                            <aura:if isTrue="{!!v.partnerApp}">
+                                <div class="slds-align--absolute-center">
+                                    <b> Upload your electric bill.</b>
+                                </div>
+
+                                <div class="slds-align--absolute-center slds-text-align--center slds-p-horizontal--large">
+                                    Please upload a recent electric bill so we can determine how much community solar is
+                                    right for you.
+                                </div>
+                                <lightning:layoutItem class="slds-align--absolute-center" padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                                    <lightning:fileUpload label=""
+                                                          name="fileUploader"
+                                                          multiple="true"
+                                                          recordId="{!v.lead.Id}"
+                                                          onuploadfinished="{!c.handleUploadFinished}"/>
+                                </lightning:layoutItem>
+                                <lightning:layoutItem class="slds-align--absolute-center" padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                                    <b>{!v.fileUploadedText}</b>
+                                </lightning:layoutItem>
+                            </aura:if>
+
+
+                            <aura:if isTrue="{!v.partnerApp}">
+                                <lightning:layoutItem class="slds-align--absolute-center slds-p-horizontal--small slds-p-top--medium" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                                    <div class="slds-align--absolute-center">
+                                        <b> Consumer Disclosures</b>
+                                    </div>
+                                </lightning:layoutItem>
+                                <lightning:layoutItem class="slds-align--absolute-center slds-p-horizontal--small slds-p-bottom--medium" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                                    <div class="slds-text-align--center">
+                                        Sales representatives must collect applicant's consent to the following Terms
+                                        and Conditions. Check out our
+                                        <lightning:formattedUrl value="https://bluewavesolar.com/privacy-policy" target="_blank" label="Privacy Policy" tooltip="Go to Privacy Policy"/>
+                                        for more details.
+                                    </div>
+                                </lightning:layoutItem>
+                                <aura:set attribute="else">
+                                    <lightning:layoutItem class="slds-align--absolute-center slds-p-horizontal--small slds-p-bottom--medium" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                                        <div class="slds-align--absolute-center">
+                                            <b> What happens next?</b>
+                                        </div>
+                                    </lightning:layoutItem>
+                                    <lightning:layoutItem class="slds-align--absolute-center slds-p-horizontal--small slds-p-bottom--medium" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                                        <div class="slds-text-align--center">
+                                            We’ll review your application to ensure everything fits with the community
+                                            solar farm in your area.
+                                            We’ll be in touch soon to finalize your subscription and answer any
+                                            questions you may have before enrolling.
+                                            You can check out our
+                                            <lightning:formattedUrl value="https://bluewavesolar.com/privacy-policy" target="_blank" label="Privacy Policy" tooltip="Go to Privacy Policy"/>
+                                            for more details.
+                                        </div>
+                                    </lightning:layoutItem>
+                                </aura:set>
+                            </aura:if>
+                            <lightning:layout multipleRows="true" horizontalAlign="center">
+                                <lightning:layoutItem padding="around-medium" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                                    <div class="slds-align--absolute-center slds-p-bottom--small">
+                                        <b> Terms and Conditions </b>
+                                    </div>
+                                </lightning:layoutItem>
+                                <lightning:layoutItem>
+                                    <div class="slds-p-left_small slds-p-right_small">
+                                        <div class="slds-text-body_regular slds-text-align--center slds-p-horizontal--medium slds-text-color_default">
+                                            <aura:if isTrue="{!v.partnerApp}">
+                                                {!v.partnerTermsConditions}
+                                                <aura:set attribute="else">
+                                                    {!v.termsConditions}
+                                                </aura:set>
+                                            </aura:if>
+                                        </div>
+                                    </div>
+                                </lightning:layoutItem>
+                                <lightning:layoutItem size="6" largeDeviceSize="3" mediumDeviceSize="5">
+                                    <div class="slds-p-top_medium slds-align--absolute-center">
+                                        <lightning:input
+                                                required="true"
+                                                class="slds-form_horizontal slds-align--absolute-center slds-text-align--center"
+                                                label="Applicant's Initials"
+                                                value="{!v.initials}"/>
+                                    </div>
+                                </lightning:layoutItem>
+                            </lightning:layout>
+
+                            <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                                <div class="slds-align--absolute-center">
+                                    <aura:if isTrue="{!v.partnerApp}">
+                                        <lightning:button label="Next" onclick="{!c.checkCredit}"/>
+                                        <aura:set attribute="else">
+                                            <lightning:button label="Submit Application" onclick="{!c.checkCredit}"/>
+                                        </aura:set>
+                                    </aura:if>
+                                </div>
+                            </lightning:layoutItem>
+                        </lightning:layout>
+                    </form>
+                </fieldset>
+            </aura:if>
+        </aura:if>
     </aura:if>
-    <aura:if isTrue="{!not(v.loading)}">
-      <aura:if isTrue="{!v.hasCapacity == 'Yes'}">
+
+    <aura:if isTrue="{!v.page == 'NoCapacity'}">
+        <aura:if isTrue="{!v.hasCapacity == 'No'}">
+            <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
+                <legend id="noCapacity" class="slds-text-heading--medium slds-text-align--center slds-p-vertical--small slds-align_absolute-center">
+                    <b class="slds-p-horizontal_large"> We're Sorry </b>
+                </legend>
+                <form class="slds-form--stacked">
+                    <lightning:layout multipleRows="true" horizontalAlign="center">
+                        <aura:if isTrue="{!v.noCapacityReason == 'NYHasSolar'}">
+                            <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                                <div class="slds-align--absolute-center slds-text-body--large--blue">
+                                    Unfortunately, because of state regulations, customers who already have rooftop
+                                    solar are not eligible to participate in the Community Solar program at this time.
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                                <div class="slds-align--absolute-center slds-text-body--large--blue">
+                                    You can now close this window.
+                                </div>
+                            </lightning:layoutItem>
+                        </aura:if>
+
+                        <aura:if isTrue="{!!v.noCapacityReason}">
+                            <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                                <div class="slds-align--absolute-center slds-text-body--large--blue">
+                                    Unfortunately, we do not have any projects in your area.
+                                </div>
+                            </lightning:layoutItem>
+                            <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                                <div class="slds-align--absolute-center slds-text-body--large--blue">
+                                    You've been added to our wait list and will be notified if and when we have a
+                                    project in your area!
+                                </div>
+                            </lightning:layoutItem>
+
+                            <aura:if isTrue="{!v.lead.Application_Source_Phase_2__c == null}">
+                                <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                                    <div class="slds-align--absolute-center slds-text-body--large--blue">
+                                        You can now close this window.
+                                    </div>
+                                </lightning:layoutItem>
+                                <aura:set attribute="else">
+                                    <div class="slds-align--absolute-center slds-text-body--large--blue">
+                                        If you are not redirected in 5 seconds click the button below to continue the
+                                        application
+                                    </div>
+                                    <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                                        <div class="slds-align--absolute-center">
+                                            <lightning:button label="Continue" onclick="{!c.skipToEnd}"/>
+                                        </div>
+                                    </lightning:layoutItem>
+                                </aura:set>
+                            </aura:if>
+                        </aura:if>
+                    </lightning:layout>
+                </form>
+            </fieldset>
+        </aura:if>
+    </aura:if>
+
+    <aura:if isTrue="{!v.page == 'ApplicationComplete'}">
         <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
-          <legend id="ssnForm" class="slds-text-heading--medium slds-text-align--center slds-p-vertical--medium slds-align_absolute-center">
-            <aura:if isTrue="{!v.partnerApp}">
-              <b class="slds-p-horizontal_large"> Upload Bill, Collect Consent, and Check Eligibility </b>
-              <aura:set attribute="else">
-                <b class="slds-p-horizontal_large"> Almost finished! </b>
-              </aura:set>
-            </aura:if>
-          </legend>
-          <div class="slds-align--absolute-center" >
-            <b> Upload your electric bill.</b>
-          </div>
-          <form class="slds-form--stacked">
-            <lightning:layout aura:id="uploadBill" class="animated" multipleRows="true" horizontalAlign="center">
-              <div class="slds-align--absolute-center slds-text-align--center slds-p-horizontal--large">
-                Please upload a recent electric bill so we can determine how much community solar is right for you.
-              </div>
-              <lightning:layoutItem class="slds-align--absolute-center" padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-                <lightning:input  aura:id="field" type="file" name="files" multiple="true" onchange="{!c.handleEBill1}"/>
-              </lightning:layoutItem>
+            <legend id="ssnForm" class="slds-text-heading--medium slds-text-align--center slds-p-vertical--small slds-align_absolute-center">
+                <b class="slds-p-horizontal_large"> All set! We'll take it from here! </b>
+            </legend>
+            <form class="slds-form--stacked">
+                <lightning:layout aura:id="greatNews" class="animated" multipleRows="true" horizontalAlign="center">
+                    <lightning:layoutItem class="slds-align_absolute-center slds-p-horizontal--large slds-text-align--center" padding="around-medium" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                        Thank you for your application. We'll review your utility bill and energy usage, then contact
+                        you soon about next steps.
+                    </lightning:layoutItem>
+                    <lightning:layoutItem class="slds-align_absolute-center slds-p-horizontal--large slds-text-align--center" padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
+                        In the meantime, check out our Support Center and Blog to learn more about BlueWave Community
+                        Solar.
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="12" class="slds-align--absolute-center slds-m-top--medium">
+                        <div style="width: 200px">
+                            <a href="https://bluewavememberportal.force.com/Support/s/?_ga=2.183388271.870291340.1551394202-1521039906.1540480948">
+                                <img src="{!$Resource.resourceIcon}" style="width: 50px"/>
+                                <b class="slds-m-left--medium"> Support&nbsp;Center </b>
+                            </a>
+                        </div>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem size="12" class="slds-align--absolute-center slds-m-top--medium slds-m-bottom--large">
+                        <div style="width: 200px">
+                            <a href="https://bluewavesolar.com/bw-resources/blog">
+                                <img src="{!$Resource.blogIcon}" style="width: 50px"/>
+                                <b class="slds-m-left--medium "> BlueWave Blog </b>
+                            </a>
+                        </div>
+                    </lightning:layoutItem>
 
-              <aura:if isTrue="{!not(empty(v.electricBill1)) || not(empty(v.electricBill2))}">
-                <lightning:layoutItem class="slds-align--absolute-center" padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-                  Uploaded Bills:
-                </lightning:layoutItem>
-                <lightning:layoutItem class="slds-align--absolute-center" size="4">
-                  <ul>
-                    <aura:iteration items="{!v.electricBill1}" var="attachment">
-                      <li class="slds-text-body--regular">{!attachment}</li>
-                    </aura:iteration>
-                    <aura:iteration items="{!v.electricBill2}" var="attachment">
-                      <li>{!attachment}</li>
-                    </aura:iteration>
-                  </ul>
-                </lightning:layoutItem>
-              </aura:if>
-
-
-
-
-              <aura:if isTrue="{!v.partnerApp}">
-                <lightning:layoutItem class="slds-align--absolute-center slds-p-horizontal--small slds-p-top--medium" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-                  <div class="slds-align--absolute-center" >
-                    <b> Consumer Disclosures</b>
-                  </div>
-                </lightning:layoutItem>
-                <lightning:layoutItem class="slds-align--absolute-center slds-p-horizontal--small slds-p-bottom--medium" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-                  <div class="slds-text-align--center" >
-                    Sales representatives must collect applicant's consent to the following Terms and Conditions. Check out our
-                    <lightning:formattedUrl value="https://bluewavesolar.com/privacy-policy" target="_blank" label="Privacy Policy" tooltip="Go to Privacy Policy"/>
-                    for more details.
-                  </div>
-                </lightning:layoutItem>
-                <aura:set attribute="else">
-                  <lightning:layoutItem class="slds-align--absolute-center slds-p-horizontal--small slds-p-bottom--medium" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-                    <div class="slds-align--absolute-center" >
-                      <b> What happens next?</b>
-                    </div>
-                  </lightning:layoutItem>
-                    <lightning:layoutItem class="slds-align--absolute-center slds-p-horizontal--small slds-p-bottom--medium" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-                    <div class="slds-text-align--center" >
-                      We’ll review your application to ensure everything fits with the community solar farm in your area.
-                      We’ll be in touch soon to finalize your subscription and answer any questions you may have before enrolling.
-                      You can check out our
-                      <lightning:formattedUrl value="https://bluewavesolar.com/privacy-policy" target="_blank" label="Privacy Policy" tooltip="Go to Privacy Policy"/>
-                      for more details.
-                    </div>
-                  </lightning:layoutItem>
-                </aura:set>
-              </aura:if>
-              <lightning:layout multipleRows="true" horizontalAlign="center">
-              <lightning:layoutItem padding="around-medium" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-                <div class="slds-align--absolute-center slds-p-bottom--small" >
-                  <b> Terms and Conditions </b>
-                </div>
-              </lightning:layoutItem>
-              <lightning:layoutItem>
-                <div class="slds-p-left_small slds-p-right_small">
-                  <div class="slds-text-body_regular slds-text-align--center slds-p-horizontal--medium slds-text-color_default">
-                    <aura:if isTrue="{!v.partnerApp}">
-                      {!v.partnerTermsConditions}
-                      <aura:set attribute="else">
-                        {!v.termsConditions}
-                      </aura:set>
-                    </aura:if>
-                  </div>
-                </div>
-              </lightning:layoutItem>
-              <lightning:layoutItem size="6" largeDeviceSize="3" mediumDeviceSize="5">
-                <div class="slds-p-top_medium slds-align--absolute-center">
-                  <lightning:input
-                    required="true"
-                    class="slds-form_horizontal slds-align--absolute-center slds-text-align--center"
-                    label="Applicant's Initials"
-                    value="{!v.initials}"/>
-                </div>
-              </lightning:layoutItem>
-              </lightning:layout>
-
-              <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-                <div class="slds-align--absolute-center">
-                  <aura:if isTrue="{!v.partnerApp}">
-                    <lightning:button label="Next" onclick="{!c.checkCredit}"/>
-                    <aura:set attribute="else">
-                      <lightning:button label="Submit Application" onclick="{!c.checkCredit}"/>
-                    </aura:set>
-                  </aura:if>
-                </div>
-              </lightning:layoutItem>
-            </lightning:layout>
-          </form>
+                </lightning:layout>
+            </form>
         </fieldset>
-      </aura:if>
-  </aura:if>
-  </aura:if>
-
-  <aura:if isTrue="{!v.page == 'NoCapacity'}">
-    <aura:if isTrue="{!v.hasCapacity == 'No'}">
-      <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
-        <legend id="noCapacity" class="slds-text-heading--medium slds-text-align--center slds-p-vertical--small slds-align_absolute-center">
-          <b class="slds-p-horizontal_large"> We're Sorry </b>
-        </legend>
-        <form class="slds-form--stacked">
-          <lightning:layout multipleRows="true" horizontalAlign="center">
-            <aura:if isTrue="{!v.noCapacityReason == 'NYHasSolar'}">
-              <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-                <div class="slds-align--absolute-center slds-text-body--large--blue">
-                  Unfortunately, because of state regulations, customers who already have rooftop solar are not eligible to participate in the Community Solar program at this time.
-                </div>
-              </lightning:layoutItem>
-              <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-                <div class="slds-align--absolute-center slds-text-body--large--blue">
-                  You can now close this window.
-                </div>
-              </lightning:layoutItem>
-            </aura:if>
-
-            <aura:if isTrue="{!!v.noCapacityReason}">
-              <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-                <div class="slds-align--absolute-center slds-text-body--large--blue">
-                  Unfortunately, we do not have any projects in your area.
-                </div>
-              </lightning:layoutItem>
-              <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-                <div class="slds-align--absolute-center slds-text-body--large--blue">
-                  You've been added to our wait list and will be notified if and when we have a project in your area!
-                </div>
-              </lightning:layoutItem>
-
-              <aura:if isTrue="{!v.lead.Application_Source_Phase_2__c == null}">
-                <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-                  <div class="slds-align--absolute-center slds-text-body--large--blue">
-                    You can now close this window.
-                  </div>
-                </lightning:layoutItem>
-                <aura:set attribute="else">
-                  <div class="slds-align--absolute-center slds-text-body--large--blue">
-                    If you are not redirected in 5 seconds click the button below to continue the application
-                  </div>
-                  <lightning:layoutItem padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12" >
-                    <div class="slds-align--absolute-center">
-                      <lightning:button label="Continue" onclick="{!c.skipToEnd}"/>
-                    </div>
-                  </lightning:layoutItem>
-                </aura:set>
-              </aura:if>
-            </aura:if>
-          </lightning:layout>
-        </form>
-      </fieldset>
     </aura:if>
-  </aura:if>
-
-  <aura:if isTrue="{!v.page == 'ApplicationComplete'}">
-    <fieldset class="slds-box slds-theme--default slds-container_center slds-size--11-of-12 slds-large-size--2-of-3">
-      <legend id="ssnForm" class="slds-text-heading--medium slds-text-align--center slds-p-vertical--small slds-align_absolute-center">
-        <b class="slds-p-horizontal_large"> All set! We'll take it from here! </b>
-      </legend>
-      <form class="slds-form--stacked">
-        <lightning:layout aura:id="greatNews" class="animated" multipleRows="true" horizontalAlign="center">
-          <lightning:layoutItem class="slds-align_absolute-center slds-p-horizontal--large slds-text-align--center" padding="around-medium" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-            Thank you for your application. We'll review your utility bill and energy usage, then contact you soon about next steps.
-          </lightning:layoutItem>
-          <lightning:layoutItem class="slds-align_absolute-center slds-p-horizontal--large slds-text-align--center" padding="around-small" size="12" smallDeviceSize="12" mediumDeviceSize="12">
-            In the meantime, check out our Support Center and Blog to learn more about BlueWave Community Solar.
-          </lightning:layoutItem>
-          <lightning:layoutItem  size = "12" class="slds-align--absolute-center slds-m-top--medium">
-            <div style="width: 200px">
-              <a href="https://bluewavememberportal.force.com/Support/s/?_ga=2.183388271.870291340.1551394202-1521039906.1540480948">
-                <img src="{!$Resource.resourceIcon}" style="width: 50px"/>
-                <b class="slds-m-left--medium"> Support&nbsp;Center </b>
-              </a>
-            </div>
-          </lightning:layoutItem>
-          <lightning:layoutItem size ="12"  class="slds-align--absolute-center slds-m-top--medium slds-m-bottom--large">
-            <div style="width: 200px">
-              <a href="https://bluewavesolar.com/bw-resources/blog">
-                <img src="{!$Resource.blogIcon}" style="width: 50px"/>
-                <b class="slds-m-left--medium "> BlueWave Blog </b>
-              </a>
-            </div>
-          </lightning:layoutItem>
-
-        </lightning:layout>
-      </form>
-    </fieldset>
-  </aura:if>
 </aura:component>
