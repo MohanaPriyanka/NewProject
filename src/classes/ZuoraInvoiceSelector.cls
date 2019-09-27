@@ -3,7 +3,7 @@
  * Description: 
  * Test: ZuoraInvoiceSelectorTest
  *************************************************************************************/
-
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public with sharing class ZuoraInvoiceSelector {
     public static List<Zuora__ZInvoice__c> getInvoicesToDownload() {
         return [
@@ -50,5 +50,30 @@ public with sharing class ZuoraInvoiceSelector {
             FROM Zuora__ZInvoice__c
             WHERE Ready_For_Email_Send__c = true
         ];
+    }
+
+    public static String getOutstandingBalanceByAccountQuery(List<Zuora__CustomerAccount__c> billAccounts) {
+        String queryString = 'SELECT ' +
+            'SUM(m.balance) as MemoBalance, ' +
+            'MIN(m.duedate) as MemoDueDate, ' +
+            'SUM(iv.balance) as InvoiceBalance, ' +
+            'MIN(iv.duedate) as InvoiceDueDate, ' +
+            'iv.accountid as AccountId ' +
+            'FROM Invoice iv ' +
+            'FULL JOIN DebitMemo m ON iv.accountid = m.accountid ' +
+            'WHERE iv.balance > 0 ';
+
+        if (billAccounts != null){
+            for (Integer i = 0;i < billAccounts.size(); i++){
+                if (i == 0){
+                    queryString += 'AND (iv.accountid = \'' + billAccounts[i].Zuora__Zuora_Id__c + '\'';
+                } else {
+                    queryString += 'OR iv.accountid = \'' + billAccounts[i].Zuora__Zuora_Id__c + '\'';
+                }
+            }
+            queryString += ') ';
+        }
+        queryString += 'GROUP BY iv.accountid ';
+        return queryString;
     }
 }
