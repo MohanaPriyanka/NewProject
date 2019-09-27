@@ -5,7 +5,27 @@
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
         <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -13,7 +33,27 @@
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
         <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -21,7 +61,27 @@
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
         <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -29,7 +89,27 @@
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
         <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
@@ -37,340 +117,52 @@
         <type>Default</type>
     </actionOverrides>
     <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
         <actionName>View</actionName>
         <type>Default</type>
     </actionOverrides>
-    <allowInChatterGroups>true</allowInChatterGroups>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
-    <enableActivities>true</enableActivities>
+    <deprecated>false</deprecated>
+    <description>Zuora Invoice object. Invoices are bills that you send to customers.</description>
+    <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
-    <enableFeeds>true</enableFeeds>
-    <enableHistory>true</enableHistory>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ReadWrite</externalSharingModel>
-    <fields>
-        <fullName>Approved_Commission_Payment_Total_Due__c</fullName>
-        <externalId>false</externalId>
-        <label>Approved Commission Payment Total Due</label>
-        <summarizedField>Commission_Payment__c.Amount_Due__c</summarizedField>
-        <summaryFilterItems>
-            <field>Commission_Payment__c.Status__c</field>
-            <operation>equals</operation>
-            <value>Approved</value>
-        </summaryFilterItems>
-        <summaryForeignKey>Commission_Payment__c.Invoice__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
-        <fullName>Date_QC_Complete__c</fullName>
-        <externalId>false</externalId>
-        <label>Date QC Complete</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Date_Received__c</fullName>
-        <externalId>false</externalId>
-        <label>Date Received</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Date_Rejected__c</fullName>
-        <externalId>false</externalId>
-        <label>Date Rejected</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Date_Submitted_to_Accounting__c</fullName>
-        <externalId>false</externalId>
-        <label>Date Submitted to Accounting</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Days_to_QC_Complete__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF( ISBLANK(Days_to_QC_Manual__c)=TRUE,
-CASE(MOD( Date_Received__c - DATE(1985,6,24),7), 
-  0 , CASE( MOD( Date_QC_Complete__c - Date_Received__c ,7),1,2,2,3,3,4,4,5,5,5,6,5,1), 
-  1 , CASE( MOD( Date_QC_Complete__c - Date_Received__c ,7),1,2,2,3,3,4,4,4,5,4,6,5,1), 
-  2 , CASE( MOD( Date_QC_Complete__c - Date_Received__c ,7),1,2,2,3,3,3,4,3,5,4,6,5,1), 
-  3 , CASE( MOD( Date_QC_Complete__c - Date_Received__c ,7),1,2,2,2,3,2,4,3,5,4,6,5,1), 
-  4 , CASE( MOD( Date_QC_Complete__c - Date_Received__c ,7),1,1,2,1,3,2,4,3,5,4,6,5,1), 
-  5 , CASE( MOD( Date_QC_Complete__c - Date_Received__c ,7),1,0,2,1,3,2,4,3,5,4,6,5,0), 
-  6 , CASE( MOD( Date_QC_Complete__c - Date_Received__c ,7),1,1,2,2,3,3,4,4,5,5,6,5,0), 
-  999) 
-  + 
-  (FLOOR(( Date_QC_Complete__c - Date_Received__c )/7)*5)-1,
-
-Days_to_QC_Manual__c)</formula>
-        <inlineHelpText>Uses Manual field if filled in, otherwise calculates based on dates (excludes weekends).</inlineHelpText>
-        <label>Days to QC Complete</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Days_to_QC_Manual__c</fullName>
-        <externalId>false</externalId>
-        <label>Days to QC (Manual)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Due_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Due Date</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Due_to_Accounting__c</fullName>
-        <externalId>false</externalId>
-        <label>Due to Accounting</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Invoice_Auto_Number__c</fullName>
-        <displayFormat>INV-{00000}</displayFormat>
-        <externalId>false</externalId>
-        <label>Invoice Auto Number</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>AutoNumber</type>
-    </fields>
-    <fields>
-        <fullName>Invoice_Type__c</fullName>
-        <externalId>false</externalId>
-        <label>Invoice Type</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Direct</fullName>
-                    <default>false</default>
-                    <label>Direct</label>
-                </value>
-                <value>
-                    <fullName>Submitted by Partner</fullName>
-                    <default>false</default>
-                    <label>Submitted by Partner</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
-        <fullName>Notes__c</fullName>
-        <externalId>false</externalId>
-        <label>Notes</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>TextArea</type>
-    </fields>
-    <fields>
-        <fullName>Partner__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Partner</label>
-        <referenceTo>Partner__c</referenceTo>
-        <relationshipLabel>Invoices</relationshipLabel>
-        <relationshipName>Invoices</relationshipName>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Product_Line__c</fullName>
-        <externalId>false</externalId>
-        <label>Product Line</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Community Solar</fullName>
-                    <default>false</default>
-                    <label>Community Solar</label>
-                </value>
-                <value>
-                    <fullName>Residential Loan</fullName>
-                    <default>false</default>
-                    <label>Residential Loan</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
-        <fullName>Status__c</fullName>
-        <externalId>false</externalId>
-        <label>Status</label>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Received &gt;&gt; QC</fullName>
-                    <default>false</default>
-                    <label>Received &gt;&gt; QC</label>
-                </value>
-                <value>
-                    <fullName>QC Complete &gt;&gt; Submit to Accounting</fullName>
-                    <default>false</default>
-                    <label>QC Complete &gt;&gt; Submit to Accounting</label>
-                </value>
-                <value>
-                    <fullName>Submitted to Accounting</fullName>
-                    <default>false</default>
-                    <label>Submitted to Accounting</label>
-                </value>
-                <value>
-                    <fullName>Rejected</fullName>
-                    <default>false</default>
-                    <label>Rejected</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
-        <fullName>Type__c</fullName>
-        <externalId>false</externalId>
-        <label>Type</label>
-        <length>50</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
     <label>Invoice</label>
-    <listViews>
-        <fullName>All</fullName>
-        <columns>NAME</columns>
-        <columns>Status__c</columns>
-        <columns>Partner__c</columns>
-        <columns>CREATED_DATE</columns>
-        <columns>Due_Date__c</columns>
-        <columns>Due_to_Accounting__c</columns>
-        <filterScope>Everything</filterScope>
-        <label>All</label>
-    </listViews>
-    <listViews>
-        <fullName>RL_Invoices</fullName>
-        <columns>NAME</columns>
-        <columns>Partner__c</columns>
-        <columns>Status__c</columns>
-        <columns>Date_Received__c</columns>
-        <columns>Date_QC_Complete__c</columns>
-        <columns>Date_Submitted_to_Accounting__c</columns>
-        <columns>Date_Rejected__c</columns>
-        <filterScope>Everything</filterScope>
-        <filters>
-            <field>Product_Line__c</field>
-            <operation>equals</operation>
-            <value>Residential Loan</value>
-        </filters>
-        <label>RL Invoices</label>
-        <sharedTo>
-            <allInternalUsers></allInternalUsers>
-        </sharedTo>
-    </listViews>
     <nameField>
-        <label>Invoice Name</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
+        <label>Invoice Number</label>
         <type>Text</type>
     </nameField>
     <pluralLabel>Invoices</pluralLabel>
     <searchLayouts/>
-    <sharingModel>ReadWrite</sharingModel>
-    <startsWith>Vowel</startsWith>
+    <sharingModel>Private</sharingModel>
     <visibility>Public</visibility>
-    <webLinks>
-        <fullName>Approved_Invoice_Generation</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <hasMenubar>false</hasMenubar>
-        <hasScrollbars>true</hasScrollbars>
-        <hasToolbar>false</hasToolbar>
-        <height>600</height>
-        <isResizable>true</isResizable>
-        <linkType>url</linkType>
-        <masterLabel>Approved Invoice Generation</masterLabel>
-        <openType>newWindow</openType>
-        <position>none</position>
-        <protected>false</protected>
-        <showsLocation>false</showsLocation>
-        <showsStatus>false</showsStatus>
-        <url>https://composer.congamerge.com?SolMgr=1 
-&amp;sessionId={!API.Session_ID} 
-&amp;serverUrl={!API.Partner_Server_URL_290} 
-&amp;Id={!Invoice__c.Id}
-&amp;QueryId=[CPs]a270a000001dIFQ
-&amp;TemplateId=a2F0a000001VB4m
-&amp;DefaultPDF=1 
-&amp;SC0=1 
-&amp;SC1=Attachments 
-&amp;AC0=1</url>
-    </webLinks>
 </CustomObject>
