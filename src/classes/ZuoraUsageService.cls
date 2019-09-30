@@ -4,30 +4,30 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         public List<ZuoraUsage> objects;
     }
 
-    private class ZuoraUsage {
-        private String AccountId;
-        private String ChargeNumber;
-        private Datetime EndDateTime;
-        private Decimal Quantity;
-        private Datetime StartDateTime;
-        private String SubscriptionNumber;
-        private String Description;
-        private String ProjectName_Zcustom;
-        private Decimal SolarSavings_Zcustom;
-        private Decimal UtilityCredit_Zcustom;
-        private String CRM_ID_Zcustom;
-        private String Legacy_Invoice_Id_Zcustom;
-        private Date Legacy_Invoice_Date_Zcustom;
-        private String UOM = 'Dollars';
+    public class ZuoraUsage {
+        public String AccountId;
+        public String ChargeNumber;
+        public Datetime EndDateTime;
+        public Decimal Quantity;
+        public Datetime StartDateTime;
+        public String SubscriptionNumber;
+        public String Description;
+        public String ProjectName_Zcustom;
+        public Decimal SolarSavings_Zcustom;
+        public Decimal UtilityCredit_Zcustom;
+        public String CRM_ID_Zcustom;
+        public String Legacy_Invoice_Id_Zcustom;
+        public Date Legacy_Invoice_Date_Zcustom;
+        public String UOM = 'Dollars';
     }
 
-    private class ZuoraResponse {
-        private String Success;
-        private String Id;
-        private List<ZuoraError> Errors;
+    public class ZuoraResponse {
+        public String Success;
+        public String Id;
+        public List<ZuoraError> Errors;
     }
 
-    private class ZuoraError {
+    public class ZuoraError {
         public String Code;
         public String Message;
     }

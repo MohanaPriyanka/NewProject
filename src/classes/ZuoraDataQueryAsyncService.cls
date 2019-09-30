@@ -18,7 +18,11 @@ public class ZuoraDataQueryAsyncService implements Queueable, Database.AllowsCal
 
     private void checkZuoraQueryStatus(){
         zuoraQueryResult = ZuoraDataQueryService.checkDataQueryStatus(zuoraQueryResult);
-
+        Integer minutesToRetry = 120;
+        List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
+        if (systemProperties.size() > 0 && systemProperties[0].get('Zuora_Data_Query_Minutes_To_Retry__c') != null) {
+            minutesToRetry = (Integer)systemProperties[0].get('Zuora_Data_Query_Minutes_To_Retry__c');
+        }
         if (zuoraQueryResult.data.queryStatus != null && zuoraQueryResult.data.id != null) {
             // Query can be fired from UI or from Apex
             // If made from UI, update existing record
@@ -41,15 +45,16 @@ public class ZuoraDataQueryAsyncService implements Queueable, Database.AllowsCal
                 attemptedQuery.numberOfRetries -= 1;
                 ZuoraDataQueryService newQueryJob = new ZuoraDataQueryService();
                 newQueryJob.scheduledQuery = attemptedQuery;
-                Datetime dt = Datetime.now().addHours(2);
+                Datetime dt = Datetime.now().addMinutes(minutesToRetry);
                 String cronExpress = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
                 System.schedule('DataQuery: ' + dataQuery.Zuora_Id__c,cronExpress,newQueryJob);
                 Logger.logNow(
                     'ZuoraDataQueryAsyncService',
                     'scheduledRetry',
-                    'Retrying this Query in 2 hours: ' + String.valueOf(attemptedQuery) + String.valueOf(zuoraQueryResult),
+                    'Retrying this Query in ' + String.valueOf(minutesToRetry) + ' minutes: ' + String.valueOf(attemptedQuery) + String.valueOf(zuoraQueryResult),
                     'WARN'
                 );
+                dataQuery.Data_From_Zuora__c = 'Will Retry: ' + String.valueOf(zuoraQueryResult);
             } else if (zuoraQueryResult.data.queryStatus == 'failed'){
                 dataQuery.Data_From_Zuora__c = 'Will not retry, hit error: ' + String.valueOf(zuoraQueryResult);
             }
