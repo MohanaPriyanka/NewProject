@@ -1,7 +1,7 @@
 /*************************************************************************************
  * Created By: peteryao on 2019-08-24  
  * Description:
- * Test: ZuoraReturnedPaymentServiceTest
+ * Test: ZuoraReturnedPaymentServiceTest, ZuoraInvoiceRegenServiceTest
  *************************************************************************************/
 
 public with sharing class ZuoraController {
@@ -51,5 +51,24 @@ public with sharing class ZuoraController {
         public Boolean success;
         @AuraEnabled
         public String message;
+    }
+
+    public static String executeBillRun(Date invoiceDate) {
+        ZuoraAPI.BillRun zBillRun = new ZuoraAPI.BillRun();
+        zBillRun.AutoEmail = false;
+        zBillRun.AutoPost = true;
+        zBillRun.AutoRenewal = true;
+        zBillRun.InvoiceDate = invoiceDate;
+        zBillRun.TargetDate = invoiceDate;
+
+        HttpResponse billRunResponse = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/object/bill-run', zBillRun, true);
+        return billRunResponse.getBody();
+    }
+
+    public static void regeneratePDFs(Date invoiceDate) {
+        List<Zuora__ZInvoice__c> invoicesToRegen = ZuoraInvoiceSelector.getInvoicesByDate(invoiceDate);
+        ZuoraInvoiceRegenerationService regen = new ZuoraInvoiceRegenerationService();
+        regen.invoicesToUpdate = invoicesToRegen;
+        regen.executeBatch();
     }
 }
