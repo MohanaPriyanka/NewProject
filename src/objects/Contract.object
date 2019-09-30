@@ -197,11 +197,6 @@
                     <label>Lease Option Agreement</label>
                 </value>
                 <value>
-                    <fullName>Loan Origination and Servicing Agreement</fullName>
-                    <default>false</default>
-                    <label>Loan Origination and Servicing Agreement</label>
-                </value>
-                <value>
                     <fullName>Membership Interest Purchase Agreement (MIPA)</fullName>
                     <default>false</default>
                     <label>Membership Interest Purchase Agreement (MIPA)</label>
@@ -1023,10 +1018,6 @@
                 <default>false</default>
             </values>
             <values>
-                <fullName>Loan Origination and Servicing Agreement</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Membership Interest Purchase Agreement %28MIPA%29</fullName>
                 <default>false</default>
             </values>
@@ -1255,21 +1246,6 @@
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Status</picklist>
-            <values>
-                <fullName>Activated</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Draft</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>In Approval Process</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Team_Submitted_By__c</picklist>
             <values>
                 <fullName>Business Applications</fullName>
@@ -1325,6 +1301,21 @@
             </values>
             <values>
                 <fullName>UX Development</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status</picklist>
+            <values>
+                <fullName>Activated</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Draft</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>In Approval Process</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -1368,10 +1359,6 @@
                 <default>false</default>
             </values>
             <values>
-                <fullName>Loan Origination and Servicing Agreement</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Membership Interest Purchase Agreement %28MIPA%29</fullName>
                 <default>false</default>
             </values>
@@ -1600,21 +1587,6 @@
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Status</picklist>
-            <values>
-                <fullName>Activated</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Draft</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>In Approval Process</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Team_Submitted_By__c</picklist>
             <values>
                 <fullName>Business Applications</fullName>
@@ -1670,6 +1642,21 @@
             </values>
             <values>
                 <fullName>UX Development</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status</picklist>
+            <values>
+                <fullName>Activated</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Draft</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>In Approval Process</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
