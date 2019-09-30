@@ -1341,8 +1341,9 @@ CASE(Days_Past_Due__c,
     <fields>
         <fullName>Days_Past_Due__c</fullName>
         <externalId>false</externalId>
-        <formula>IF((TODAY()-Max_Overdue_Due_Date__c) &lt;= 0, 0, 
-IF(Total_Outstanding_Balance__c  &gt; 1, (TODAY()-Max_Overdue_Due_Date__c), 0))</formula>
+        <formula>IF(Total_Outstanding_Balance_Merge__c &gt; 1,
+MAX(TODAY()-Max_Overdue_Due_Date_Merge__c,0),
+0)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Account Days Past Due</label>
         <precision>18</precision>
@@ -2057,6 +2058,26 @@ IF(
         <summaryOperation>max</summaryOperation>
         <trackHistory>false</trackHistory>
         <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Max_Overdue_Due_Date_Merge__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF($CustomMetadata.Zuora_Setting__mdt.Production.Zuora_Is_Live__c, Max_Overdue_Due_Date_Zuora__c, Max_Overdue_Due_Date__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Max Overdue Due Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Max_Overdue_Due_Date_Zuora__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Zuora Data : Due date of oldest invoice or debit memo with a balance</inlineHelpText>
+        <label>Max Overdue Due Date Zuora</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
     </fields>
     <fields>
         <fullName>Max_Overdue_Due_Date__c</fullName>
@@ -3817,6 +3838,30 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <summaryOperation>sum</summaryOperation>
         <trackHistory>false</trackHistory>
         <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Total_Outstanding_Balance_Merge__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF($CustomMetadata.Zuora_Setting__mdt.Production.Zuora_Is_Live__c, Total_Outstanding_Balance_Zuora__c , Total_Outstanding_Balance__c )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Total Outstanding Balance</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_Outstanding_Balance_Zuora__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Zuora Data: sum of balance on all debit memos and invoices</inlineHelpText>
+        <label>Total Outstanding Balance Zuora</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Total_Outstanding_Balance__c</fullName>
