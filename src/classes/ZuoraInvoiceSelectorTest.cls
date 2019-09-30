@@ -45,4 +45,44 @@ public with sharing class ZuoraInvoiceSelectorTest {
         zInvoices = ZuoraInvoiceSelector.getInvoicesByDate(Date.newInstance(2019,05,20));
         System.assertEquals(0, zInvoices.size());
     }
+
+    @IsTest
+    public static void testBalanceOutstandingByAccount() {
+        Account newSFAccountOne = new Account(
+            Name = 'Account One',
+            Recurring_Billing__c = false
+        );
+        Account newSFAccountTwo = new Account(
+            Name = 'Account Two',
+            Recurring_Billing__c = false
+        );
+
+        insert new List<Account>{newSFAccountOne, newSFAccountTwo};
+
+        Zuora__CustomerAccount__c newZuoraAccountOne = new Zuora__CustomerAccount__c(
+            Name = 'Account Name',
+            Zuora__Account__c = newSFAccountOne.Id,
+            Zuora__Zuora_Id__c = '222222222222222222222',
+            Zuora__AutoPay__c = false
+        );
+        Zuora__CustomerAccount__c newZuoraAccountTwo = new Zuora__CustomerAccount__c(
+            Name = 'Account Name',
+            Zuora__Account__c = newSFAccountTwo.Id,
+            Zuora__Zuora_Id__c = '333333333333333333333',
+            Zuora__AutoPay__c = false
+        );
+
+        List<Zuora__CustomerAccount__c> zAccounts = new List<Zuora__CustomerAccount__c>{newZuoraAccountOne, newZuoraAccountTwo};
+        insert zAccounts;
+
+        String queryStringWithAccounts = ZuoraInvoiceSelector.getOutstandingBalanceByAccountQuery(zAccounts);
+        System.assert(queryStringWithAccounts.contains('222222222222222222222'));
+        System.assert(queryStringWithAccounts.contains('333333333333333333333'));
+        System.assert(queryStringWithAccounts.contains('AND (iv.accountid ='));
+
+        String queryStringNoAccounts = ZuoraInvoiceSelector.getOutstandingBalanceByAccountQuery(null);
+        System.assert(!queryStringNoAccounts.contains('222222222222222222222'));
+        System.assert(!queryStringNoAccounts.contains('333333333333333333333'));
+        System.assert(!queryStringNoAccounts.contains('AND (iv.accountid ='));
+    }
 }
