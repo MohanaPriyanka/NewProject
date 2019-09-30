@@ -40401,11 +40401,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Utility_Account_Subscription__c.BFG_Invoice_Number__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Calculated_Customer_Subscription_kW_DC__c</field>
         <readable>true</readable>
@@ -40463,6 +40458,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Customer_Subscription_KW_DC__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Subscription__c.Date_Client_Invoice_Sent__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -64889,6 +64889,10 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ManageLeads</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>ManageReportsInPubFolders</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
