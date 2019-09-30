@@ -49,12 +49,59 @@ public without sharing class ZuoraUsageBatchSend implements Database.Batchable<s
 
     public void finish(Database.BatchableContext bc){
         if (Util.getSystemPropertyCheckbox('Update_Usage_Records_With_ZuoraId__c')) {
+
+            // For historical migration, we want to make sure old data doesn't change when we update UASBs and Adjustments,
+            // so we track historical changes and log them:
+
+            Datetime startTime = Datetime.now();
+            Util.disableTrigger('Disable_System_Bill_Trigger__c');
+            Util.disableTrigger('Disable_AccountBillTrigger__c');
+            Util.disableTrigger('Disable_AccountTrigger__c');
+            Util.disableTrigger('Disable_BillAdjustmentTrigger__c');
             if (uasbToUpdate.size() > 0){
                 update uasbToUpdate;
             }
             if (adjustToUpdate.size() > 0){
                 update adjustToUpdate;
             }
+            Logger.logNow('ZuoraUsageBatchSend','finish',checkFieldUpdates(startTime),'WARN');
+            Util.enableTrigger('Disable_System_Bill_Trigger__c');
+            Util.enableTrigger('Disable_AccountBillTrigger__c');
+            Util.enableTrigger('Disable_AccountTrigger__c');
+            Util.enableTrigger('Disable_BillAdjustmentTrigger__c');
         }
+    }
+
+    public String checkFieldUpdates(Datetime startTime){
+        String history = 'Field History Tracking: ';
+        startTime = startTime.addMinutes(-1);
+        List<UASB__History> uasbHistory = [
+            SELECT ParentId, CreatedDate, Field, OldValue, NewValue
+            FROM UASB__History
+            WHERE CreatedDate >= :startTime
+            ORDER BY CreatedDate DESC
+        ];
+        for (UASB__History uasb : uasbHistory) {
+            history += '[UASB Updates]' + String.valueOf(uasb);
+        }
+        List<System_Bill__History> systemBillHistory = [
+            SELECT ParentId, CreatedDate, CreatedBy.Name, Field, OldValue, NewValue
+            FROM System_Bill__History
+            WHERE CreatedDate >= :startTime
+            ORDER BY CreatedDate DESC
+        ];
+        for (System_Bill__History sb : systemBillHistory) {
+            history += '[SB Updates]' + String.valueOf(sb);
+        }
+        List<Account_Bill__History> accountBillHistory = [
+            SELECT ParentId, CreatedDate, CreatedBy.Name, Field, OldValue, NewValue
+            FROM Account_Bill__History
+            WHERE CreatedDate >= :startTime
+            ORDER BY CreatedDate DESC
+        ];
+        for (Account_Bill__History ab : accountBillHistory) {
+            history += '[AB Updates]' + String.valueOf(ab);
+        }
+        return history;
     }
 }
