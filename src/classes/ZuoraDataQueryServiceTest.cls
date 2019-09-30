@@ -31,8 +31,7 @@ public class ZuoraDataQueryServiceTest {
         result = ZuoraDataQueryService.checkDataQueryStatus(result);
         System.assertEquals('completed', result.data.queryStatus);
 
-        result = ZuoraDataQueryService.getDataFromDataQuery(result);
-        String allDataAsString = result.data.allData;
+        String allDataAsString = result.getDataFromDataQuery();
         System.assert(allDataAsString.length() > 200);
     }
 
@@ -93,8 +92,10 @@ public class ZuoraDataQueryServiceTest {
         dataResult.Id = 'queryCompleted';
         result.data = dataResult;
 
+        ZuoraDataQueryService.DataQueryRequest request = new ZuoraDataQueryService.DataQueryRequest();
+
         Test.startTest();
-        ZuoraDataQueryAsyncService.queueCheckDataQueryStatus(result, null, null);
+        ZuoraDataQueryAsyncService.queueCheckDataQueryStatus(result, request);
         Test.stopTest();
 
         List<Zuora_Data_Query__c> updatedQueries = [
@@ -125,8 +126,12 @@ public class ZuoraDataQueryServiceTest {
         dataResult.Id = 'queryFailed';
         result.data = dataResult;
 
+        ZuoraDataQueryService.DataQueryRequest request = new ZuoraDataQueryService.DataQueryRequest();
+        request.recordId = newQueryFromUI.Id;
+        request.numberOfRetries = 3;
+
         Test.startTest();
-        ZuoraDataQueryAsyncService.queueCheckDataQueryStatus(result, null, newQueryFromUI.Id);
+        ZuoraDataQueryAsyncService.queueCheckDataQueryStatus(result, request);
         Test.stopTest();
 
         List<Zuora_Data_Query__c> updatedQueries = [
@@ -139,5 +144,16 @@ public class ZuoraDataQueryServiceTest {
         System.assertEquals('failed', updatedQueries[0].Status__c);
         String dataAsString = updatedQueries[0].Data_From_Zuora__c;
         System.assert(dataAsString.contains('Query failed'));
+
+        Datetime dtNow = Datetime.now();
+
+        List<AsyncApexJob> scheduledJobs = [
+            SELECT ApexClassId, Id, JobItemsProcessed, JobType,
+                Status, NumberOfErrors, MethodName
+            FROM AsyncApexJob
+            WHERE JobType = 'ScheduledApex'
+        ];
+
+        System.assertEquals(1,scheduledJobs.size());
     }
 }

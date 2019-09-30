@@ -4,29 +4,30 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         public List<ZuoraUsage> objects;
     }
 
-    public class ZuoraUsage {
-        public String AccountId;
-        public String ChargeNumber;
-        public Datetime EndDateTime;
-        public Decimal Quantity;
-        public Datetime StartDateTime;
-        public String SubscriptionNumber;
-        public String Description;
-        public Decimal SolarSavings_Zcustom;
-        public Decimal UtilityCredit_Zcustom;
-        public String CRM_ID_Zcustom;
-        public String Legacy_Invoice_Id_Zcustom;
-        public Date Legacy_Invoice_Date_Zcustom;
-        public String UOM = 'Dollars';
+    private class ZuoraUsage {
+        private String AccountId;
+        private String ChargeNumber;
+        private Datetime EndDateTime;
+        private Decimal Quantity;
+        private Datetime StartDateTime;
+        private String SubscriptionNumber;
+        private String Description;
+        private String ProjectName_Zcustom;
+        private Decimal SolarSavings_Zcustom;
+        private Decimal UtilityCredit_Zcustom;
+        private String CRM_ID_Zcustom;
+        private String Legacy_Invoice_Id_Zcustom;
+        private Date Legacy_Invoice_Date_Zcustom;
+        private String UOM = 'Dollars';
     }
 
-    public class ZuoraResponse {
-        public String Success;
-        public String Id;
-        public List<ZuoraError> Errors;
+    private class ZuoraResponse {
+        private String Success;
+        private String Id;
+        private List<ZuoraError> Errors;
     }
 
-    public class ZuoraError {
+    private class ZuoraError {
         public String Code;
         public String Message;
     }
@@ -63,7 +64,7 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         return zuoraObject;
     }
 
-    public static ZuoraUsage convertUASBToUsage(UASB__c uasb){
+    private static ZuoraUsage convertUASBToUsage(UASB__c uasb){
         ZuoraUsage usage = new ZuoraUsage();
         String zuoraAcctId = uasb.Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c;
         ZuoraAPI.OrderBySubscriptionOwner subscription = ZuoraSubscriptionService.getOrderBySubscriptionOwner(zuoraAcctId);
@@ -77,6 +78,7 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         // UASB Date__c is the date of the production update, favored over using the Billing Period Start and End Date
         usage.StartDateTime = firstOfTheMonth(uasb.Date__c);
         usage.EndDateTime = firstOfTheMonth(uasb.Date__c) + 1;
+        usage.ProjectName_Zcustom = uasb.Shared_Solar_System__r.Name;
         usage.Description = uasb.Shared_Solar_System__r.Utility__r.Name
             + ' #'
             + uasb.Utility_Account_Subscription__r.Utility_Account_Log__r.Name;
@@ -88,7 +90,7 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         return usage;
     }
 
-    public static ZuoraUsage convertAdjustToUsage(Bill_Adjustment__c adjust){
+    private static ZuoraUsage convertAdjustToUsage(Bill_Adjustment__c adjust){
         ZuoraUsage usage = new ZuoraUsage();
         String zuoraAcctId = adjust.Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c;
         ZuoraAPI.OrderBySubscriptionOwner subscription = ZuoraSubscriptionService.getOrderBySubscriptionOwner(zuoraAcctId);
@@ -101,6 +103,7 @@ public class ZuoraUsageService implements Database.AllowsCallouts{
         usage.Quantity = adjust.Adjustment_Amount__c;
         usage.StartDateTime = firstOfTheMonth(adjust.UASB__r.Date__c);
         usage.EndDateTime = firstOfTheMonth(adjust.UASB__r.Date__c) + 1;
+        usage.ProjectName_Zcustom = adjust.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Name;
         usage.Description = adjust.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Utility__r.Name
             + ' #'
             + adjust.Utility_Account_Subscription__r.Utility_Account_Log__r.Name;

@@ -2,7 +2,7 @@
 Created By Jordan Pentaleri 08/2019
 Tested By: ZuoraGLServiceTest
 *************************************************************************************/
-
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public with sharing class ZuoraGLService implements Schedulable {
     public Integer daysToLookBack;
 
@@ -40,10 +40,6 @@ public with sharing class ZuoraGLService implements Schedulable {
         List<GeneralLedgerItem> ledgerItems = new List<GeneralLedgerItem>();
         List<Journal_Entry__c> journalEntriesList = new List<Journal_Entry__c>();
 
-        // Zuora's response isn't true JSON, so we have to modify to be able to deserialize:
-        response = response.replace('}','},');
-        response = response.substring(0,response.length()-1);
-        response = '[' + response + ']';
         ledgerItems = (List<GeneralLedgerItem>)JSON.deserialize(response, List<GeneralLedgerItem>.class);
 
         for (GeneralLedgerItem ledger : ledgerItems){

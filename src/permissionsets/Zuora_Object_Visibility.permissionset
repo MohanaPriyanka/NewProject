@@ -3,6 +3,26 @@
     <description>Grants &apos;Read&apos; to Billing Acct, Invoice, Payment, Credit Memo, Debit Memo</description>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.Max_Overdue_Due_Date_Merge__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Max_Overdue_Due_Date_Zuora__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Total_Outstanding_Balance_Merge__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Total_Outstanding_Balance_Zuora__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Zuora__CreditMemo__c.Zuora__Comments__c</field>
         <readable>true</readable>
     </fieldPermissions>

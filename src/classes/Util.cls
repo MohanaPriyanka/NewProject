@@ -3,6 +3,8 @@
  * Description: Common methods used across the org
  * Tested by: UtilTest
  *************************************************************************************/
+
+@SuppressWarnings('PMD.ApexCRUDViolation,PMD.ExcessivePublicCount')
 public without sharing class Util {
     // We're starting to get this error in Apex tests in Sept 2017:
     // System.DmlException: Insert failed. First exception on row 0; first error:
@@ -128,6 +130,18 @@ public without sharing class Util {
         Domain d = [SELECT Domain, DomainType FROM Domain WHERE Domain LIKE '%memberportal%' LIMIT 1];
         Network n = [SELECT Name,UrlPathPrefix FROM Network WHERE Name = :communityName LIMIT 1];
         return 'https://' + d.Domain + '/' + n.UrlPathPrefix;
+    }
+
+    public static Date minTwoDates(Date dateOne, Date dateTwo) {
+        if (dateOne != null && dateTwo != null){
+            return dateOne < dateTwo ? dateOne : dateTwo;
+        } else if (dateOne != null){
+            return dateOne;
+        } else if (dateTwo != null){
+            return dateTwo;
+        } else {
+            return null;
+        }
     }
 
     // Because Math.min and Math.max only supports two arguments
