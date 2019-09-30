@@ -8,38 +8,6 @@
         <label>Contract Information</label>
         <layoutColumns>
             <layoutItems>
-                <behavior>Required</behavior>
-                <field>Date_Submitted__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
-                <field>Team_Submitted_By__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
-                <field>Project_Description__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
-                <field>Project_Value__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
-                <field>BlueWave_Entity_Involved__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
-                <field>Other_Party__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
-                <field>Risk__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
-                <field>Contract_Type__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>OwnerId</field>
             </layoutItems>
@@ -124,10 +92,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Customer_Payment_Methods__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
-                <field>State_Applications__c</field>
             </layoutItems>
         </layoutColumns>
         <style>OneColumn</style>
@@ -303,16 +267,6 @@
         <layoutColumns/>
         <style>CustomLinks</style>
     </layoutSections>
-    <miniLayout>
-        <fields>Date_Submitted__c</fields>
-        <fields>Team_Submitted_By__c</fields>
-        <fields>Project_Description__c</fields>
-        <fields>Project_Value__c</fields>
-        <fields>BlueWave_Entity_Involved__c</fields>
-        <fields>Other_Party__c</fields>
-        <fields>Risk__c</fields>
-        <fields>Contract_Type__c</fields>
-    </miniLayout>
     <relatedContent>
         <relatedContentItems>
             <layoutItem>
