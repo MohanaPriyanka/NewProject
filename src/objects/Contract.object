@@ -77,7 +77,7 @@
         <externalId>false</externalId>
         <label>BlueWave Entity(s) Involved</label>
         <length>150</length>
-        <required>false</required>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
@@ -148,7 +148,7 @@
         <fullName>Contract_Type__c</fullName>
         <externalId>false</externalId>
         <label>Contract Type</label>
-        <required>false</required>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Picklist</type>
@@ -195,11 +195,6 @@
                     <fullName>Lease Option Agreement</fullName>
                     <default>false</default>
                     <label>Lease Option Agreement</label>
-                </value>
-                <value>
-                    <fullName>Loan Origination and Servicing Agreement</fullName>
-                    <default>false</default>
-                    <label>Loan Origination and Servicing Agreement</label>
                 </value>
                 <value>
                     <fullName>Membership Interest Purchase Agreement (MIPA)</fullName>
@@ -489,7 +484,7 @@
         <fullName>Date_Submitted__c</fullName>
         <externalId>false</externalId>
         <label>Date Submitted</label>
-        <required>false</required>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Date</type>
@@ -629,7 +624,7 @@
         <externalId>false</externalId>
         <label>Other Party(s)</label>
         <length>150</length>
-        <required>false</required>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
@@ -657,7 +652,7 @@
         <externalId>false</externalId>
         <label>Contract/Project Description</label>
         <length>200</length>
-        <required>false</required>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
@@ -668,7 +663,7 @@
         <externalId>false</externalId>
         <label>Contract/Project Value</label>
         <length>200</length>
-        <required>false</required>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
@@ -748,7 +743,7 @@
         <inlineHelpText>Please write any material risks involved and how they can be mitigated.</inlineHelpText>
         <label>Risk</label>
         <length>200</length>
-        <required>false</required>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
@@ -773,7 +768,7 @@
         <fullName>State_Applications__c</fullName>
         <externalId>false</externalId>
         <label>State(s) Applications</label>
-        <required>false</required>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>MultiselectPicklist</type>
@@ -806,7 +801,7 @@
         <fullName>Team_Submitted_By__c</fullName>
         <externalId>false</externalId>
         <label>Team Submitted By</label>
-        <required>false</required>
+        <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Picklist</type>
@@ -1012,10 +1007,6 @@
                 <default>false</default>
             </values>
             <values>
-                <fullName>Loan Origination and Servicing Agreement</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Membership Interest Purchase Agreement %28MIPA%29</fullName>
                 <default>false</default>
             </values>
@@ -1244,21 +1235,6 @@
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Status</picklist>
-            <values>
-                <fullName>Activated</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Draft</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>In Approval Process</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Team_Submitted_By__c</picklist>
             <values>
                 <fullName>Business Applications</fullName>
@@ -1314,6 +1290,21 @@
             </values>
             <values>
                 <fullName>UX Development</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status</picklist>
+            <values>
+                <fullName>Activated</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Draft</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>In Approval Process</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -1357,10 +1348,6 @@
                 <default>false</default>
             </values>
             <values>
-                <fullName>Loan Origination and Servicing Agreement</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Membership Interest Purchase Agreement %28MIPA%29</fullName>
                 <default>false</default>
             </values>
@@ -1589,21 +1576,6 @@
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Status</picklist>
-            <values>
-                <fullName>Activated</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Draft</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>In Approval Process</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Team_Submitted_By__c</picklist>
             <values>
                 <fullName>Business Applications</fullName>
@@ -1659,6 +1631,21 @@
             </values>
             <values>
                 <fullName>UX Development</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status</picklist>
+            <values>
+                <fullName>Activated</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Draft</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>In Approval Process</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
