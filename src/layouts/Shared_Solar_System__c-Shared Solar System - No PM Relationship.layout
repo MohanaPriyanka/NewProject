@@ -84,6 +84,14 @@
                 <behavior>Edit</behavior>
                 <field>Project_Location_and_Customer_Allocation__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>CDG_Host_Account__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Host_Account_Name__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -333,19 +341,11 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Estimated_Mechanical_Completion_Override__c</field>
+                <field>Meter_Reading_Schedule__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>Estimated_Mechanical_Completion__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Actual_Mechanical_Completion_Override__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Actual_Mechanical_Completion__c</field>
+                <field>Upcoming_Meter_Read_Date__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -378,20 +378,12 @@
                 <field>Estimated_First_BW_Bill_Override__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>First_Bill_Date__c</field>
+                <behavior>Edit</behavior>
+                <field>Actual_First_Bill_Date__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Count_of_Transfers__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Meter_Reading_Schedule__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Upcoming_Meter_Read_Date__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
