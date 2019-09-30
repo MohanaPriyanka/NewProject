@@ -1206,7 +1206,13 @@ public class TestBillCreationandPayment {
 
         List<Account> acctList = new List<Account>();
         acctList.add(accountA);
-        system.AssertEquals( 2, (PreviewProductionUpdateResults.getTransactions(acctList)).size());
+        Zuora_Setting__mdt zuoraSetting = ZuoraAPIHelper.getZuoraSetting();
+
+        if (zuoraSetting.Zuora_Is_Live__c){
+            system.AssertEquals( 0, (PreviewProductionUpdateResults.getTransactions(acctList)).size());
+        } else {
+            system.AssertEquals( 2, (PreviewProductionUpdateResults.getTransactions(acctList)).size());
+        }
 
         List<Overpayment__c> overpayList = [  SELECT Id, Name,
             Overpayment_Amount__c

@@ -1,7 +1,7 @@
 <aura:component controller="PreviewProductionUpdateResults" access="global">
  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
  <aura:attribute name="accountLookupId" type="Account[]"/>  
- <aura:attribute name="transactionList" type="ChargentOrders__Transaction__c[]"/>   
+ <aura:attribute name="transactionList" type="Object[]"/>
     
  <table class="slds-table slds-table_bordered slds-table_cell-buffer">
   <thead>
@@ -16,10 +16,10 @@
          <div class="slds-truncate" title="BillsGenerated">Amount</div>
       </th>
       <th scope="col">
-        <div class="slds-truncate" title="BillsGenerated">Order Number</div>
+        <div class="slds-truncate" title="BillsGenerated">Payment Method</div>
       </th>
       <th scope="col">
-        <div class="slds-truncate" title="BillsGenerated">Payment Method</div>
+        <div class="slds-truncate" title="BillsGenerated">Payment Type</div>
       </th>
       <th scope="col">
          <div class="slds-truncate" title="BillsGenerated">Response Status</div>
@@ -28,7 +28,7 @@
          <div class="slds-truncate" title="BillsGenerated">Gateway</div>
       </th>
       <th scope="col">
-         <div class="slds-truncate" title="BillsGenerated">Order: Recurring Status</div>
+         <div class="slds-truncate" title="BillsGenerated">Autopay</div>
       </th>
     </tr>
   </thead>
@@ -36,28 +36,28 @@
    <aura:iteration items="{!v.transactionList}" var="trans">
       <tr>
        <td>
-         <div class="slds-truncate" ><a href="{!'/' + trans.Id}"  target="_blank"><ui:outputText value="{!trans.Name}"/></a></div>
+         <div class="slds-truncate" ><a href="{!'/' + trans.SFRecordId}"  target="_blank"><ui:outputText value="{!trans.TransactionNumber}"/></a></div>
        </td>
        <td>
-         <div class="slds-truncate" ><ui:outputDate value="{!trans.ChargentOrders__Gateway_Date__c}" format="MM/DD/YYYY hh:mm a"/></div>
+         <div class="slds-truncate" ><ui:outputDate value="{!trans.PaymentDate}" format="MM/DD/YYYY hh:mm a"/></div>
        </td>
        <td>
-         <div class="slds-truncate" ><ui:outputCurrency value="{!trans.ChargentOrders__Amount__c}"/></div>
+         <div class="slds-truncate" ><ui:outputCurrency value="{!trans.PaymentAmount}"/></div>
        </td>
        <td>
-         <div class="slds-truncate" ><ui:outputText value="{!trans.ChargentOrders__Order__r.Name}"/></div>
+         <div class="slds-truncate" ><ui:outputText value="{!trans.PaymentMethod}"/></div>
        </td>
        <td>
-         <div class="slds-truncate" ><ui:outputText value="{!trans.ChargentOrders__Order__r.ChargentOrders__Payment_Method__c}"/></div>
+         <div class="slds-truncate" ><ui:outputText value="{!trans.PaymentType}"/></div>
        </td>
        <td>
-         <div class="slds-truncate" ><ui:outputText value="{!trans.ChargentOrders__Response_Status__c}"/></div>
+         <div class="slds-truncate" ><ui:outputText value="{!trans.ResponseStatus}"/></div>
        </td>
        <td>
-         <div class="slds-truncate" ><ui:outputText value="{!trans.ChargentOrders__Gateway__r.Name}"/></div>
+         <div class="slds-truncate" ><ui:outputText value="{!trans.GatewayName}"/></div>
        </td>
        <td>
-         <div class="slds-truncate" ><ui:outputText value="{!trans.ChargentOrders__Order__r.ChargentOrders__Payment_Status__c}"/></div>
+         <div class="slds-truncate" ><ui:outputText value="{!trans.AutopayStatus}"/></div>
        </td>
     </tr>
    </aura:iteration>
