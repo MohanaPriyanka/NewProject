@@ -28,21 +28,27 @@
     </matchingRules>
     <matchingRules>
         <fullName>Lead_Duplicate_Rule_DTC</fullName>
+        <booleanFilter>1 AND 2 AND 3 AND (3 OR 4)</booleanFilter>
         <description>A stricter lead matching rule than is used for CSAP leads.</description>
         <label>Lead Duplicate Rule DTC</label>
         <matchingRuleItems>
-            <blankValueBehavior>MatchBlanks</blankValueBehavior>
+            <blankValueBehavior>NullNotAllowed</blankValueBehavior>
             <fieldName>FirstName</fieldName>
-            <matchingMethod>FirstName</matchingMethod>
+            <matchingMethod>Exact</matchingMethod>
         </matchingRuleItems>
         <matchingRuleItems>
-            <blankValueBehavior>MatchBlanks</blankValueBehavior>
+            <blankValueBehavior>NullNotAllowed</blankValueBehavior>
             <fieldName>LastName</fieldName>
             <matchingMethod>Exact</matchingMethod>
         </matchingRuleItems>
         <matchingRuleItems>
-            <blankValueBehavior>MatchBlanks</blankValueBehavior>
+            <blankValueBehavior>NullNotAllowed</blankValueBehavior>
             <fieldName>Email</fieldName>
+            <matchingMethod>Exact</matchingMethod>
+        </matchingRuleItems>
+        <matchingRuleItems>
+            <blankValueBehavior>NullNotAllowed</blankValueBehavior>
+            <fieldName>Phone</fieldName>
             <matchingMethod>Exact</matchingMethod>
         </matchingRuleItems>
         <ruleStatus>Active</ruleStatus>
