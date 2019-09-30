@@ -3,7 +3,7 @@
     <actionOnInsert>Allow</actionOnInsert>
     <actionOnUpdate>Allow</actionOnUpdate>
     <alertText xsi:nil="true"/>
-    <description xsi:nil="true"/>
+    <description>Duplicate rule to catch DTC leads (not CSAP).</description>
     <duplicateRuleFilter>
         <booleanFilter xsi:nil="true"/>
         <duplicateRuleFilterItems>
