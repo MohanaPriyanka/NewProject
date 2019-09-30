@@ -123,8 +123,14 @@ public class ZuoraGLServiceTest {
         ZuoraDataQueryService.MethodToRunAfter methodToRunAfter = new ZuoraDataQueryService.MethodToRunAfter();
         methodToRunAfter.methodName = 'GL_InvoiceItem';
 
+        ZuoraDataQueryService.DataQueryRequest queryRequest = new ZuoraDataQueryService.DataQueryRequest();
+        queryRequest.queryString = null;
+        queryRequest.numberOfRetries = 0;
+        queryRequest.recordId = null;
+        queryRequest.method = methodToRunAfter;
+
         Test.startTest();
-        ZuoraDataQueryAsyncService.queueCheckDataQueryStatus(result, methodToRunAfter, null);
+        ZuoraDataQueryAsyncService.queueCheckDataQueryStatus(result, queryRequest);
         Test.stopTest();
 
         List<Journal_Entry__c> updatedJE = [
@@ -162,8 +168,14 @@ public class ZuoraGLServiceTest {
         ZuoraDataQueryService.MethodToRunAfter methodToRunAfter = new ZuoraDataQueryService.MethodToRunAfter();
         methodToRunAfter.methodName = 'GL_DebitMemo';
 
+        ZuoraDataQueryService.DataQueryRequest queryRequest = new ZuoraDataQueryService.DataQueryRequest();
+        queryRequest.queryString = null;
+        queryRequest.numberOfRetries = 0;
+        queryRequest.recordId = null;
+        queryRequest.method = methodToRunAfter;
+
         Test.startTest();
-        ZuoraDataQueryAsyncService.queueCheckDataQueryStatus(result, methodToRunAfter, null);
+        ZuoraDataQueryAsyncService.queueCheckDataQueryStatus(result, queryRequest);
         Test.stopTest();
 
         List<Journal_Entry__c> updatedJE = [
@@ -192,8 +204,14 @@ public class ZuoraGLServiceTest {
         ZuoraDataQueryService.MethodToRunAfter methodToRunAfter = new ZuoraDataQueryService.MethodToRunAfter();
         methodToRunAfter.methodName = 'GL_CreditMemo';
 
+        ZuoraDataQueryService.DataQueryRequest queryRequest = new ZuoraDataQueryService.DataQueryRequest();
+        queryRequest.queryString = null;
+        queryRequest.numberOfRetries = 0;
+        queryRequest.recordId = null;
+        queryRequest.method = methodToRunAfter;
+
         Test.startTest();
-        ZuoraDataQueryAsyncService.queueCheckDataQueryStatus(result, methodToRunAfter, null);
+        ZuoraDataQueryAsyncService.queueCheckDataQueryStatus(result, queryRequest);
         Test.stopTest();
 
         List<Journal_Entry__c> updatedJE = [
@@ -222,8 +240,14 @@ public class ZuoraGLServiceTest {
         ZuoraDataQueryService.MethodToRunAfter methodToRunAfter = new ZuoraDataQueryService.MethodToRunAfter();
         methodToRunAfter.methodName = 'GL_PaymentPartDM';
 
+        ZuoraDataQueryService.DataQueryRequest queryRequest = new ZuoraDataQueryService.DataQueryRequest();
+        queryRequest.queryString = null;
+        queryRequest.numberOfRetries = 0;
+        queryRequest.recordId = null;
+        queryRequest.method = methodToRunAfter;
+
         Test.startTest();
-        ZuoraDataQueryAsyncService.queueCheckDataQueryStatus(result, methodToRunAfter, null);
+        ZuoraDataQueryAsyncService.queueCheckDataQueryStatus(result, queryRequest);
         Test.stopTest();
 
         List<Journal_Entry__c> updatedJE = [

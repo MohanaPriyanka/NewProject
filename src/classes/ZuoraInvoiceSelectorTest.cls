@@ -78,11 +78,11 @@ public with sharing class ZuoraInvoiceSelectorTest {
         String queryStringWithAccounts = ZuoraInvoiceSelector.getOutstandingBalanceByAccountQuery(zAccounts);
         System.assert(queryStringWithAccounts.contains('222222222222222222222'));
         System.assert(queryStringWithAccounts.contains('333333333333333333333'));
-        System.assert(queryStringWithAccounts.contains('AND (iv.accountid ='));
+        System.assert(queryStringWithAccounts.contains('Id ='));
 
         String queryStringNoAccounts = ZuoraInvoiceSelector.getOutstandingBalanceByAccountQuery(null);
         System.assert(!queryStringNoAccounts.contains('222222222222222222222'));
         System.assert(!queryStringNoAccounts.contains('333333333333333333333'));
-        System.assert(!queryStringNoAccounts.contains('AND (iv.accountid ='));
+        System.assert(!queryStringNoAccounts.contains('Id ='));
     }
 }
