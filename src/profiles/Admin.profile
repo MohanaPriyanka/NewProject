@@ -26599,7 +26599,22 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Product2.Default_Business_Usage__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Product2.Default_Residential_Usage__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Product2.Description</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Product2.Disable_Multiple_UAL_CSAP__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -32050,6 +32065,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Account_Log__c.Rate_Class__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility_Account_Log__c.Same_Address__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

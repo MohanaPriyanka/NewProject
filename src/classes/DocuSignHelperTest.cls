@@ -17,16 +17,16 @@ public with sharing class DocuSignHelperTest {
         Test.loadData(Account.SObjectType, 'TestRLAccount');
         Test.loadData(Contact.SObjectType, 'TestRLContact');
         List<Opportunity> opportunities =
-            Test.loadData(Opportunity.SObjectType, 'TestRLOpportunity');
+                Test.loadData(Opportunity.SObjectType, 'TestRLOpportunity');
         List<Lead> leads =
-            Test.loadData(Lead.SObjectType, 'TestRLLead');
+                Test.loadData(Lead.SObjectType, 'TestRLLead');
         List<LASERCA__Personal_Credit_Report__c> pcrs =
-            Test.loadData(LASERCA__Personal_Credit_Report__c.SObjectType, 'TestRLPCR');
+                Test.loadData(LASERCA__Personal_Credit_Report__c.SObjectType, 'TestRLPCR');
         Test.loadData(LASERCA__Trade_Accounts__c.SObjectType, 'TestRLTradeAccounts');
         Test.loadData(Loan__c.SObjectType, 'TestRLLoan');
         Test.loadData(Residential_Equipment__c.SObjectType, 'TestRLResidentialEquipment');
         List<Partner_Task__c> partnerTasks =
-            Test.loadData(Partner_Task__c.SObjectType, 'TestRLPartnerTask');
+                Test.loadData(Partner_Task__c.SObjectType, 'TestRLPartnerTask');
         Test.loadData(dsfs__DocuSign_Status__c.SObjectType, 'TestRLDocuSignStatus');
         Test.loadData(dsfs__DocuSign_Recipient_Status__c.SObjectType, 'TestRLDocuSignRecipient');
 
@@ -82,7 +82,7 @@ public with sharing class DocuSignHelperTest {
 
     private static Id getParentTaskLead(Partner_Task__c task, Map<Id, Partner_Task__c> partnerTaskMap) {
         System.assertNotEquals(null, task.Comments__c,
-            'A task with no lead is a subtask, which should have a parent task Id in the Comments__c field for loading');
+                'A task with no lead is a subtask, which should have a parent task Id in the Comments__c field for loading');
         Partner_Task__c parentTask = partnerTaskMap.get(task.Comments__c);
         if (parentTask.Lead__c != null) {
             return parentTask.Lead__c;
@@ -95,8 +95,8 @@ public with sharing class DocuSignHelperTest {
         Map<Id, LASERCA__Credit_Report_Log__c> triggerNewMap = new Map<Id, LASERCA__Credit_Report_Log__c>();
         for (LASERCA__Personal_Credit_Report__c pcr : pcrs) {
             LASERCA__Credit_Report_Log__c crl = new LASERCA__Credit_Report_Log__c(
-                LASERCA__Personal_Credit_Report__c = pcr.Id,
-                LASERCA__Status__c = 'Completed'
+                    LASERCA__Personal_Credit_Report__c = pcr.Id,
+                    LASERCA__Status__c = 'Completed'
             );
             triggerNewMap.put(pcr.Id, crl);
         }
@@ -106,11 +106,9 @@ public with sharing class DocuSignHelperTest {
     @IsTest
     static void testLoanCreationAndUpdate() {
         Opportunity opp = [
-            SELECT Id, Lead__c, Contract_Status__c, Partner_Sales_Agreement_Status__c, BlueWave_Signature_Status__c,
-            (SELECT Id FROM Partner_Tasks__r WHERE (Name = 'Obtain Contract Signature' OR Name = 'Provide Sales Agreement')),
-            (SELECT Id, dsfs__Envelope_Status__c FROM dsfs__R00N80000002fD9vEAE__r)
-            FROM Opportunity
-            WHERE Lead__r.FirstName = 'Retired'
+                SELECT Id, Lead__c, Contract_Status__c, Partner_Sales_Agreement_Status__c, BlueWave_Signature_Status__c, (SELECT Id FROM Partner_Tasks__r WHERE (Name = 'Obtain Contract Signature' OR Name = 'Provide Sales Agreement')), (SELECT Id, dsfs__Envelope_Status__c FROM dsfs__R00N80000002fD9vEAE__r)
+                FROM Opportunity
+                WHERE Lead__r.FirstName = 'Retired'
         ];
         System.debug(LoggingLevel.ERROR, 'Limit tracking: ' + Limits.getQueries() + ' of ' + Limits.getLimitQueries());
         System.assertEquals(1, opp.dsfs__R00N80000002fD9vEAE__r.size());
@@ -131,8 +129,8 @@ public with sharing class DocuSignHelperTest {
         Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
 
         Lead lead = new Lead(
-            Id = opp.Lead__c,
-            Change_Order_Status__c = 'Customer Authorized'
+                Id = opp.Lead__c,
+                Change_Order_Status__c = 'Customer Authorized'
         );
         update lead;
         // This should void the existing package and create a new one
@@ -144,11 +142,9 @@ public with sharing class DocuSignHelperTest {
         System.assertEquals(1, DocuSignHelper.oppLoansSent.size());
 
         opp = [
-            SELECT Id, Contract_Status__c, Partner_Sales_Agreement_Status__c, BlueWave_Signature_Status__c,
-            (SELECT Id, dsfs__Envelope_Status__c FROM dsfs__R00N80000002fD9vEAE__r),
-            (SELECT Id, Status__c, Completion_Date__c FROM Partner_Tasks__r WHERE (Name = 'Obtain Contract Signature' OR Name = 'Provide Sales Agreement'))
-            FROM Opportunity
-            WHERE Id = :opp.Id
+                SELECT Id, Contract_Status__c, Partner_Sales_Agreement_Status__c, BlueWave_Signature_Status__c, (SELECT Id, dsfs__Envelope_Status__c FROM dsfs__R00N80000002fD9vEAE__r), (SELECT Id, Status__c, Completion_Date__c FROM Partner_Tasks__r WHERE (Name = 'Obtain Contract Signature' OR Name = 'Provide Sales Agreement'))
+                FROM Opportunity
+                WHERE Id = :opp.Id
         ];
         System.debug(LoggingLevel.ERROR, 'Limit tracking: ' + Limits.getQueries() + ' of ' + Limits.getLimitQueries());
         System.assertEquals('Sent', opp.Contract_Status__c);
@@ -163,11 +159,9 @@ public with sharing class DocuSignHelperTest {
     @IsTest
     static void testVoidFromProcessBuilder() {
         Opportunity opp = [
-            SELECT Id, Lead__c, Contract_Status__c, Partner_Sales_Agreement_Status__c, BlueWave_Signature_Status__c,
-            (SELECT Id FROM Partner_Tasks__r WHERE (Name = 'Obtain Contract Signature' OR Name = 'Provide Sales Agreement')),
-            (SELECT Id, dsfs__Envelope_Status__c, dsfs__DocuSign_Envelope_ID__c FROM dsfs__R00N80000002fD9vEAE__r)
-            FROM Opportunity
-            WHERE Lead__r.FirstName = 'Retired'
+                SELECT Id, Lead__c, Contract_Status__c, Partner_Sales_Agreement_Status__c, BlueWave_Signature_Status__c, (SELECT Id FROM Partner_Tasks__r WHERE (Name = 'Obtain Contract Signature' OR Name = 'Provide Sales Agreement')), (SELECT Id, dsfs__Envelope_Status__c, dsfs__DocuSign_Envelope_ID__c FROM dsfs__R00N80000002fD9vEAE__r)
+                FROM Opportunity
+                WHERE Lead__r.FirstName = 'Retired'
         ];
         System.debug(LoggingLevel.ERROR, 'Limit tracking: ' + Limits.getQueries() + ' of ' + Limits.getLimitQueries());
         System.assertEquals(1, opp.dsfs__R00N80000002fD9vEAE__r.size());
@@ -193,7 +187,9 @@ public with sharing class DocuSignHelperTest {
         DocuSignVoid_Invocable.VoidRequest voidRequest = new DocuSignVoid_Invocable.VoidRequest();
         voidRequest.envelopeId = opp.dsfs__R00N80000002fD9vEAE__r[0].dsfs__DocuSign_Envelope_ID__c;
         voidRequest.reason = 'Test void reason';
-        DocuSignVoid_Invocable.voidPackages(new List<DocuSignVoid_Invocable.VoidRequest>{voidRequest});
+        DocuSignVoid_Invocable.voidPackages(new List<DocuSignVoid_Invocable.VoidRequest>{
+                voidRequest
+        });
         Test.stopTest();
 
         // Make sure voidPackages() didn't run into any errors. Because DocuSign logs back into the instance to update
@@ -207,11 +203,9 @@ public with sharing class DocuSignHelperTest {
     @IsTest
     static void testVoidCalloutException() {
         Opportunity opp = [
-            SELECT Id, Lead__c, Contract_Status__c, Partner_Sales_Agreement_Status__c, BlueWave_Signature_Status__c,
-            (SELECT Id FROM Partner_Tasks__r WHERE (Name = 'Obtain Contract Signature' OR Name = 'Provide Sales Agreement')),
-            (SELECT Id, dsfs__Envelope_Status__c, dsfs__DocuSign_Envelope_ID__c FROM dsfs__R00N80000002fD9vEAE__r)
-            FROM Opportunity
-            WHERE Lead__r.FirstName = 'Retired'
+                SELECT Id, Lead__c, Contract_Status__c, Partner_Sales_Agreement_Status__c, BlueWave_Signature_Status__c, (SELECT Id FROM Partner_Tasks__r WHERE (Name = 'Obtain Contract Signature' OR Name = 'Provide Sales Agreement')), (SELECT Id, dsfs__Envelope_Status__c, dsfs__DocuSign_Envelope_ID__c FROM dsfs__R00N80000002fD9vEAE__r)
+                FROM Opportunity
+                WHERE Lead__r.FirstName = 'Retired'
         ];
 
         Test.startTest();
@@ -221,7 +215,9 @@ public with sharing class DocuSignHelperTest {
         DocuSignVoid_Invocable.VoidRequest voidRequest = new DocuSignVoid_Invocable.VoidRequest();
         voidRequest.envelopeId = opp.dsfs__R00N80000002fD9vEAE__r[0].dsfs__DocuSign_Envelope_ID__c;
         voidRequest.reason = 'CalloutException';
-        DocuSignVoid_Invocable.voidPackages(new List<DocuSignVoid_Invocable.VoidRequest>{voidRequest});
+        DocuSignVoid_Invocable.voidPackages(new List<DocuSignVoid_Invocable.VoidRequest>{
+                voidRequest
+        });
         Test.stopTest();
 
         List<Error_Log__c> errors = [SELECT Id, Method__c, Message__c FROM Error_Log__c];
@@ -234,26 +230,24 @@ public with sharing class DocuSignHelperTest {
     @IsTest
     static void testVoidChildren() {
         Opportunity opp = [
-            SELECT Id, Lead__c, Contract_Status__c, Partner_Sales_Agreement_Status__c, BlueWave_Signature_Status__c,
-            (SELECT Id FROM Partner_Tasks__r WHERE (Name = 'Obtain Contract Signature' OR Name = 'Provide Sales Agreement')),
-            (SELECT Id, dsfs__Envelope_Status__c, dsfs__DocuSign_Envelope_ID__c FROM dsfs__R00N80000002fD9vEAE__r)
-            FROM Opportunity
-            WHERE Lead__r.FirstName = 'Retired'
+                SELECT Id, Lead__c, Contract_Status__c, Partner_Sales_Agreement_Status__c, BlueWave_Signature_Status__c, (SELECT Id FROM Partner_Tasks__r WHERE (Name = 'Obtain Contract Signature' OR Name = 'Provide Sales Agreement')), (SELECT Id, dsfs__Envelope_Status__c, dsfs__DocuSign_Envelope_ID__c FROM dsfs__R00N80000002fD9vEAE__r)
+                FROM Opportunity
+                WHERE Lead__r.FirstName = 'Retired'
         ];
 
         dsfs__DocuSign_Status__c envelopeStatus = [
-            SELECT Id, dsfs__Envelope_Status__c
-            FROM dsfs__DocuSign_Status__c
-            WHERE dsfs__DocuSign_Envelope_ID__c = : opp.dsfs__R00N80000002fD9vEAE__r[0].dsfs__DocuSign_Envelope_ID__c
-            LIMIT 1
+                SELECT Id, dsfs__Envelope_Status__c
+                FROM dsfs__DocuSign_Status__c
+                WHERE dsfs__DocuSign_Envelope_ID__c = :opp.dsfs__R00N80000002fD9vEAE__r[0].dsfs__DocuSign_Envelope_ID__c
+                LIMIT 1
         ];
 
         System.assertNotEquals('Voided', envelopeStatus.dsfs__Envelope_Status__c);
 
         List<dsfs__DocuSign_Recipient_Status__c> recipientStatuses = [
-            SELECT Id, dsfs__Recipient_Status__c
-            FROM dsfs__DocuSign_Recipient_Status__c
-            WHERE dsfs__Parent_Status_Record__c = : envelopeStatus.Id
+                SELECT Id, dsfs__Recipient_Status__c
+                FROM dsfs__DocuSign_Recipient_Status__c
+                WHERE dsfs__Parent_Status_Record__c = :envelopeStatus.Id
         ];
 
         for (dsfs__DocuSign_Recipient_Status__c recipientStatus : recipientStatuses) {
@@ -276,9 +270,9 @@ public with sharing class DocuSignHelperTest {
         Test.stopTest();
 
         recipientStatuses = [
-            SELECT Id, dsfs__Recipient_Status__c
-            FROM dsfs__DocuSign_Recipient_Status__c
-            WHERE dsfs__Parent_Status_Record__c = : envelopeStatus.Id
+                SELECT Id, dsfs__Recipient_Status__c
+                FROM dsfs__DocuSign_Recipient_Status__c
+                WHERE dsfs__Parent_Status_Record__c = :envelopeStatus.Id
         ];
 
         for (dsfs__DocuSign_Recipient_Status__c recipientStatus : recipientStatuses) {
@@ -299,51 +293,53 @@ public with sharing class DocuSignHelperTest {
         update sysProp;
 
         Utility__c nationalGrid = new Utility__c(
-            Name = 'National Grid',
-            Number_of_Decimal_Places__c = 2
+                Name = 'National Grid',
+                Number_of_Decimal_Places__c = 2
         );
 
-        insert new List<Utility__c>{nationalGrid};
+        insert new List<Utility__c>{
+                nationalGrid
+        };
 
-        Utility_NMC_Tariff__c nmcRate =  new Utility_NMC_Tariff__c(
-            Value_of_Net_Metering_Credit__c = 1,
-            Name = 'Nation Grid WCMA Class 2 - S/F 2016',
-            Sizing_Rate__c = true,
-            Date__c = Date.today()
+        Utility_NMC_Tariff__c nmcRate = new Utility_NMC_Tariff__c(
+                Value_of_Net_Metering_Credit__c = 1,
+                Name = 'Nation Grid WCMA Class 2 - S/F 2016',
+                Sizing_Rate__c = true,
+                Date__c = Date.today()
         );
         insert nmcRate;
 
         Product2 csProduct = new Product2(
-            Name = 'Community Solar - SREC 16-01',
-            Family = 'Community Solar',
-            Product_Type__c = 'Community Solar',
-            State__c = 'MA',
-            ProductCode = 'CS - BlueWave - 10%',
-            IsActive = True,
-            Lender_of_Record__c = 'BlueWave',
-            NMC_Discount__c = 10,
-            Annual_kWh_Maximum__c = 100000000,
-            NM_Rate_Floor__c = 0,
-            Monthly_Late_Fee__c = 1
+                Name = 'Community Solar - SREC 16-01',
+                Family = 'Community Solar',
+                Product_Type__c = 'Community Solar',
+                State__c = 'MA',
+                ProductCode = 'CS - BlueWave - 10%',
+                IsActive = True,
+                Lender_of_Record__c = 'BlueWave',
+                NMC_Discount__c = 10,
+                Annual_kWh_Maximum__c = 100000000,
+                NM_Rate_Floor__c = 0,
+                Monthly_Late_Fee__c = 1
         );
         insert csProduct;
 
         Shared_Solar_System__c sss1 = new Shared_Solar_System__c(
-            Name = 'Oxford Barrett St. P1',
-            Service_Territories__c = 'WCMA; SEMA',
-            Open__c = true,
-            Reserved_Capacity_kW_DC__c = '0',
-            Capacity_Committed_kW_DC__c = 0,
-            Total_System_Size_kWh_DC__c = 1445.86,
-            Total_System_Size_kW_AC__c  = 996,
-            Utility__c = nationalGrid.Id,
-            Credit_Score_Requirement__c = 200,
-            Assignment_order__c = '1',
-            Utility_NMC_Tariff__c = nmcRate.Id,
-            Product__c = csProduct.Id,
-            Expected_Yield_kWh_kW__c = 1300,
-            Assemblage_Count__c = 1,
-            Maximum_Subscription_Assemblage__c = 25
+                Name = 'Oxford Barrett St. P1',
+                Service_Territories__c = 'WCMA; SEMA',
+                Open__c = true,
+                Reserved_Capacity_kW_DC__c = '0',
+                Capacity_Committed_kW_DC__c = 0,
+                Total_System_Size_kWh_DC__c = 1445.86,
+                Total_System_Size_kW_AC__c = 996,
+                Utility__c = nationalGrid.Id,
+                Credit_Score_Requirement__c = 200,
+                Assignment_order__c = '1',
+                Utility_NMC_Tariff__c = nmcRate.Id,
+                Product__c = csProduct.Id,
+                Expected_Yield_kWh_kW__c = 1300,
+                Assemblage_Count__c = 1,
+                Maximum_Subscription_Assemblage__c = 25
         );
 
 
@@ -354,55 +350,55 @@ public with sharing class DocuSignHelperTest {
         insert Partner;
 
         BSST__c newSalesTeam = new BSST__c (Name = 'Partner',
-            Partner__c = Partner.Id,
-            Custom_ID__c = 'partner');
+                Partner__c = Partner.Id,
+                Custom_ID__c = 'partner');
 
         insert newSalesTeam;
 
         Lead lead = new Lead(
-            LastName = 'Chan',
-            FirstName = 'Joey',
-            Email = 'test@email.com',
-            Electricity_Provider__c = 'National Grid',
-            Utility_relationship__c = nationalGrid.Id,
-            LoadZone__c = 'WCMA',
-            Company = 'Cloud Jedi',
-            Status = 'Qualified',
-            Product_Line__c = 'Community Solar',
-            Product__c = csProduct.Id,
-            Custom_ID__c = 'partner',
-            System_Assignment__c = 'Automatic - Assignment Order'
+                LastName = 'Chan',
+                FirstName = 'Joey',
+                Email = 'test@email.com',
+                Electricity_Provider__c = 'National Grid',
+                Utility_relationship__c = nationalGrid.Id,
+                LoadZone__c = 'WCMA',
+                Company = 'Cloud Jedi',
+                Status = 'Qualified',
+                Product_Line__c = 'Community Solar',
+                Product__c = csProduct.Id,
+                Custom_ID__c = 'partner',
+                System_Assignment__c = 'Automatic - Assignment Order'
         );
         insert lead;
 
         Lead lead2 = new Lead (LastName = 'Jordan',
-            FirstName = 'Pentaleri',
-            Email = 'test@email.com',
-            Electricity_Provider__c = 'National Grid',
-            Utility_relationship__c = nationalGrid.Id,
-            LoadZone__c = 'WCMA',
-            Company = 'Cloud Jedi',
-            Status = 'Qualified',
-            Product_Line__c = 'Community Solar',
-            Product__c = csProduct.Id,
-            System_Assignment__c = 'Automatic - Assignment Order'
+                FirstName = 'Pentaleri',
+                Email = 'test@email.com',
+                Electricity_Provider__c = 'National Grid',
+                Utility_relationship__c = nationalGrid.Id,
+                LoadZone__c = 'WCMA',
+                Company = 'Cloud Jedi',
+                Status = 'Qualified',
+                Product_Line__c = 'Community Solar',
+                Product__c = csProduct.Id,
+                System_Assignment__c = 'Automatic - Assignment Order'
         );
         insert lead2;
 
-        LASERCA__Personal_Credit_Report__c pcr = (LASERCA__Personal_Credit_Report__c)TestFactory.createSObject(
-            new LASERCA__Personal_Credit_Report__c(
-                LASERCA__Lead__c = lead.Id,
-                LASERCA__Credit_Score_TransUnion__c = '700'
-            ),
-            true
+        LASERCA__Personal_Credit_Report__c pcr = (LASERCA__Personal_Credit_Report__c) TestFactory.createSObject(
+                new LASERCA__Personal_Credit_Report__c(
+                        LASERCA__Lead__c = lead.Id,
+                        LASERCA__Credit_Score_TransUnion__c = '700'
+                ),
+                true
         );
 
-        LASERCA__Personal_Credit_Report__c pcr2 = (LASERCA__Personal_Credit_Report__c)TestFactory.createSObject(
-            new LASERCA__Personal_Credit_Report__c(
-                LASERCA__Lead__c = lead2.Id,
-                LASERCA__Credit_Score_TransUnion__c = '700'
-            ),
-            true
+        LASERCA__Personal_Credit_Report__c pcr2 = (LASERCA__Personal_Credit_Report__c) TestFactory.createSObject(
+                new LASERCA__Personal_Credit_Report__c(
+                        LASERCA__Lead__c = lead2.Id,
+                        LASERCA__Credit_Score_TransUnion__c = '700'
+                ),
+                true
         );
         lead.Personal_Credit_Report__c = pcr.Id;
         lead2.Personal_Credit_Report__c = pcr2.Id;
@@ -411,25 +407,24 @@ public with sharing class DocuSignHelperTest {
         update lead;
 
 
-
         Utility_Account_Log__c ual = new Utility_Account_Log__c(
-            Lead__c = lead.Id,
-            Annual_Cost_of_Electricity__c = 10000,
-            Name_on_Account__c = 'Joey Chan'
+                Lead__c = lead.Id,
+                Annual_Cost_of_Electricity__c = 10000,
+                Name_on_Account__c = 'Joey Chan'
         );
         insert ual;
 
         Utility_Account_Log__c ual2 = new Utility_Account_Log__c(
-            Lead__c = lead2.Id,
-            Annual_Cost_of_Electricity__c = 10000,
-            Name_on_Account__c = 'Joey Chan'
+                Lead__c = lead2.Id,
+                Annual_Cost_of_Electricity__c = 10000,
+                Name_on_Account__c = 'Joey Chan'
         );
         insert ual2;
 
 
         Database.leadConvert lc = new Database.leadConvert();
         lc.setLeadId(lead.id);
-        LeadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE IsConverted=true LIMIT 1];
+        LeadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE IsConverted = true LIMIT 1];
         lc.setConvertedStatus(convertStatus.MasterLabel);
         lc.setDoNotCreateOpportunity(true);
         Database.LeadConvertResult lcr = Database.convertLead(lc);
@@ -437,26 +432,26 @@ public with sharing class DocuSignHelperTest {
 
         Database.leadConvert ld = new Database.leadConvert();
         ld.setLeadId(lead2.id);
-        LeadStatus convertStatus2 = [SELECT Id, MasterLabel FROM LeadStatus WHERE IsConverted=true LIMIT 1];
+        LeadStatus convertStatus2 = [SELECT Id, MasterLabel FROM LeadStatus WHERE IsConverted = true LIMIT 1];
         ld.setConvertedStatus(convertStatus2.MasterLabel);
         ld.setDoNotCreateOpportunity(true);
         Database.LeadConvertResult ldr = Database.convertLead(ld);
 
-        for (Opportunity opp : [SELECT Id FROM Opportunity]){
+        for (Opportunity opp : [SELECT Id FROM Opportunity]) {
 
             dsfs__DocuSign_Status__c newDocStat = new dsfs__DocuSign_Status__c(
-                dsfs__Opportunity__c = opp.Id,
-                dsfs__Envelope_Status__c = 'Sent',
-                dsfs__DocuSign_Envelope_ID__c = 'testEnvelopeId'
+                    dsfs__Opportunity__c = opp.Id,
+                    dsfs__Envelope_Status__c = 'Sent',
+                    dsfs__DocuSign_Envelope_ID__c = 'testEnvelopeId'
             );
             insert newDocStat;
 
             dsfs__DocuSign_Recipient_Status__c newDRS = new dsfs__DocuSign_Recipient_Status__c(
-                Name = 'TestCase',
-                dsfs__Parent_Status_Record__c =newDocStat.Id,
-                dsfs__DocuSign_Recipient_Id__c = 'D50030',
-                dsfs__DocuSign_Recipient_Email__c = 'nobody@bluewavesolar.com',
-                dsfs__Recipient_Status__c = 'Sent'
+                    Name = 'TestCase',
+                    dsfs__Parent_Status_Record__c = newDocStat.Id,
+                    dsfs__DocuSign_Recipient_Id__c = 'D50030',
+                    dsfs__DocuSign_Recipient_Email__c = 'nobody@bluewavesolar.com',
+                    dsfs__Recipient_Status__c = 'Sent'
             );
             insert newDRS;
         }
@@ -467,32 +462,32 @@ public with sharing class DocuSignHelperTest {
 
         List<Id> idList = new List<Id>();
         List<Opportunity> oppList = [
-            SELECT Id, Name, Parent_Account_Name__c, Salesperson_Email__c,
-                Sales_tag__c, Application_Type__c,
-                Email__c, Co_Applicant_Email__c, Co_Applicant_Full_Name__c,
-                Docusign_Template__c, Shared_Solar_System__r.Name,
-                AccountId, Shared_Solar_System__c
-            FROM Opportunity
-            WHERE Lead__c = :lead.Id
+                SELECT Id, Name, Parent_Account_Name__c, Salesperson_Email__c,
+                        Sales_tag__c, Application_Type__c,
+                        Email__c, Co_Applicant_Email__c, Co_Applicant_Full_Name__c,
+                        Docusign_Template__c, Shared_Solar_System__r.Name,
+                        AccountId, Shared_Solar_System__c
+                FROM Opportunity
+                WHERE Lead__c = :lead.Id
         ];
         System.assertEquals(1, oppList.size());
         idList.add(oppList[0].Id);
 
         List<AsyncApexJob> queuedJobsBefore = [
-            SELECT Id, Status, NumberOfErrors,
-                JobItemsProcessed,
-                TotalJobItems, CreatedBy.Email
-            FROM AsyncApexJob
+                SELECT Id, Status, NumberOfErrors,
+                        JobItemsProcessed,
+                        TotalJobItems, CreatedBy.Email
+                FROM AsyncApexJob
         ];
 
-        DocuSignHelper.sendCSPackage(oppList[0],1,1);
+        DocuSignHelper.sendCSPackage(oppList[0], 1, 1);
         Test.stopTest();
 
         List<AsyncApexJob> queuedJobsAfter = [
-            SELECT Id, Status, NumberOfErrors,
-                JobItemsProcessed,
-                TotalJobItems, CreatedBy.Email
-            FROM AsyncApexJob
+                SELECT Id, Status, NumberOfErrors,
+                        JobItemsProcessed,
+                        TotalJobItems, CreatedBy.Email
+                FROM AsyncApexJob
         ];
 
         // We'll retry sending a contract up to 3 times before stopping
@@ -504,8 +499,8 @@ public with sharing class DocuSignHelperTest {
         System.assert(queuedJobsAfter.size() == 1, 'Should have queued jobs to send');
 
         List<Error_Log__c> errorLogs = [
-            SELECT Id, Class__c, Method__c, Message__c
-            FROM Error_Log__c
+                SELECT Id, Class__c, Method__c, Message__c
+                FROM Error_Log__c
         ];
 
         System.assert(errorLogs.size() == 1, 'We should have 1 message that logs that the Opp is sending, plus AutoRetry messages');
@@ -521,8 +516,14 @@ public with sharing class DocuSignHelperTest {
         Test.startTest();
         Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
         Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
-        String callbackURL = CSAPController.sendEmbeddedContract(lead);
-        System.assert(callbackURL.contains('success'));
+
+        //There should be two opportunities
+        String callbackURL1 = CSAPController.sendEmbeddedContract(lead, 0);
+        System.assert(callbackURL1.contains('event=signing_complete'));
+        System.assert(callbackURL1.contains('contract-show'));
+
+        String callbackURL2 = CSAPController.sendEmbeddedContract(lead, 1);
+        System.assert(callbackURL2.contains('contract-complete'));
         Test.stopTest();
     }
 
@@ -533,7 +534,7 @@ public with sharing class DocuSignHelperTest {
         Test.startTest();
         Test.setMock(WebServiceMock.class, new DocuSignAPIMockImpl());
         Test.setMock(HttpCalloutMock.class, new DocuSignAPIMockImpl());
-        String callbackURL = CSAPController.sendEmbeddedContract(lead);
+        String callbackURL = CSAPController.sendEmbeddedContract(lead, 0);
         // If we hit an exception, we expect it to be handled and for the callback URL to be the exception one
         System.assert(callbackURL.contains('exception'));
         List<Error_Log__c> errorLogs = [SELECT Id, Message__c FROM Error_Log__c];
@@ -554,65 +555,82 @@ public with sharing class DocuSignHelperTest {
         update sysProp;
 
         Utility__c nationalGrid = new Utility__c(
-            Name = 'National Grid',
-            Number_of_Decimal_Places__c = 2
+                Name = 'National Grid',
+                Number_of_Decimal_Places__c = 2
         );
 
         insert new List<Utility__c>{
-            nationalGrid
+                nationalGrid
         };
 
         Utility_NMC_Tariff__c nmcRate = new Utility_NMC_Tariff__c(
-            Value_of_Net_Metering_Credit__c = 1,
-            Name = 'Nation Grid WCMA Class 2 - S/F 2016',
-            Sizing_Rate__c = true,
-            Date__c = Date.today()
+                Value_of_Net_Metering_Credit__c = 1,
+                Name = 'Nation Grid WCMA Class 2 - S/F 2016',
+                Sizing_Rate__c = true,
+                Date__c = Date.today()
         );
         insert nmcRate;
 
         Product2 csProduct = new Product2(
-            Name = 'Community Solar - SREC 16-01',
-            Family = 'Community Solar',
-            Product_Type__c = 'Community Solar',
-            State__c = 'MA',
-            ProductCode = 'CS - BlueWave - 10%',
-            IsActive = true,
-            Lender_of_Record__c = 'BlueWave',
-            NMC_Discount__c = 10,
-            Annual_kWh_Maximum__c = 100000000,
-            NM_Rate_Floor__c = 0,
-            Monthly_Late_Fee__c = 1
+                Name = 'Community Solar - SREC 16-01',
+                Family = 'Community Solar',
+                Product_Type__c = 'Community Solar',
+                State__c = 'MA',
+                ProductCode = 'CS - BlueWave - 10%',
+                IsActive = true,
+                Lender_of_Record__c = 'BlueWave',
+                NMC_Discount__c = 10,
+                Annual_kWh_Maximum__c = 100000000,
+                NM_Rate_Floor__c = 0,
+                Monthly_Late_Fee__c = 1
         );
         insert csProduct;
 
         Shared_Solar_System__c sss1 = new Shared_Solar_System__c(
-            Name = 'Oxford Barrett St. P1',
-            Service_Territories__c = 'WCMA; SEMA',
-            Open__c = true,
-            Reserved_Capacity_kW_DC__c = '0',
-            Capacity_Committed_kW_DC__c = 0,
-            Total_System_Size_kWh_DC__c = 1445.86,
-            Total_System_Size_kW_AC__c = 996,
-            Utility__c = nationalGrid.Id,
-            Credit_Score_Requirement__c = 200,
-            Assignment_Order__c = '1',
-            Utility_NMC_Tariff__c = nmcRate.Id,
-            Product__c = csProduct.Id,
-            Expected_Yield_kWh_kW__c = 1300,
-            Assemblage_Count__c = 1,
-            Maximum_Subscription_Assemblage__c = 25
+                Name = 'Oxford Barrett St. P1',
+                Service_Territories__c = 'WCMA; SEMA',
+                Open__c = true,
+                Reserved_Capacity_kW_DC__c = '0',
+                Capacity_Committed_kW_DC__c = 0,
+                Total_System_Size_kWh_DC__c = 1445.86,
+                Total_System_Size_kW_AC__c = 996,
+                Utility__c = nationalGrid.Id,
+                Credit_Score_Requirement__c = 200,
+                Assignment_Order__c = '1',
+                Utility_NMC_Tariff__c = nmcRate.Id,
+                Product__c = csProduct.Id,
+                Expected_Yield_kWh_kW__c = 1300,
+                Assemblage_Count__c = 1,
+                Maximum_Subscription_Assemblage__c = 25,
+                Sales_Partners__c = 'Barbara Cerullo; Boston Solar'
         );
 
-
-        sss1.Sales_Partners__c = 'Barbara Cerullo; Boston Solar';
-        insert sss1;
+        Shared_Solar_System__c sss2 = new Shared_Solar_System__c(
+                Name = 'Oxford Barrett St. P2',
+                Service_Territories__c = 'WCMA; SEMA',
+                Open__c = true,
+                Reserved_Capacity_kW_DC__c = '0',
+                Capacity_Committed_kW_DC__c = 0,
+                Total_System_Size_kWh_DC__c = 1445.86,
+                Total_System_Size_kW_AC__c = 996,
+                Utility__c = nationalGrid.Id,
+                Credit_Score_Requirement__c = 200,
+                Assignment_Order__c = '1',
+                Utility_NMC_Tariff__c = nmcRate.Id,
+                Product__c = csProduct.Id,
+                Expected_Yield_kWh_kW__c = 1300,
+                Assemblage_Count__c = 1,
+                Maximum_Subscription_Assemblage__c = 25,
+                Sales_Partners__c = 'Barbara Cerullo; Boston Solar'
+        );
+        insert new List<Shared_Solar_System__c>{sss1, sss2};
 
         Partner__c Partner = new Partner__c(Name = 'Boston Solar');
         insert Partner;
 
         BSST__c newSalesTeam = new BSST__c (Name = 'Partner',
-            Partner__c = Partner.Id,
-            Custom_ID__c = 'partner');
+                Partner__c = Partner.Id,
+                Custom_ID__c = 'partner');
 
         insert newSalesTeam;
 
@@ -620,28 +638,28 @@ public with sharing class DocuSignHelperTest {
         insert parentAccount;
 
         Lead lead = new Lead(
-            LastName = 'Chan',
-            FirstName = 'Joey',
-            Email = email + '@email.com',
-            Electricity_Provider__c = 'National Grid',
-            Utility_relationship__c = nationalGrid.Id,
-            LoadZone__c = 'WCMA',
-            Company = 'Cloud Jedi',
-            Status = 'Qualified',
-            Product_line__c = 'Community Solar',
-            Product__c = csProduct.Id,
-            Custom_ID__c = 'partner',
-            System_Assignment__c = 'Automatic - Assignment Order',
-            Parent_Account__c = parentAccount.Id
+                LastName = 'Chan',
+                FirstName = 'Joey',
+                Email = email + '@email.com',
+                Electricity_Provider__c = 'National Grid',
+                Utility_relationship__c = nationalGrid.Id,
+                LoadZone__c = 'WCMA',
+                Company = 'Cloud Jedi',
+                Status = 'Qualified',
+                Product_line__c = 'Community Solar',
+                Product__c = csProduct.Id,
+                Custom_ID__c = 'partner',
+                System_Assignment__c = 'Automatic - Assignment Order',
+                Parent_Account__c = parentAccount.Id
         );
         insert lead;
 
         LASERCA__Personal_Credit_Report__c pcr = (LASERCA__Personal_Credit_Report__c) TestFactory.createSObject(
-            new LASERCA__Personal_Credit_Report__c(
-                LASERCA__Lead__c = lead.Id,
-                LASERCA__Credit_Score_TransUnion__c = '700'
-            ),
-            true
+                new LASERCA__Personal_Credit_Report__c(
+                        LASERCA__Lead__c = lead.Id,
+                        LASERCA__Credit_Score_TransUnion__c = '700'
+                ),
+                true
         );
 
         lead.Personal_Credit_Report__c = pcr.Id;
@@ -649,9 +667,9 @@ public with sharing class DocuSignHelperTest {
         update lead;
 
         Utility_Account_Log__c ual = new Utility_Account_Log__c(
-            Lead__c = lead.Id,
-            Annual_Cost_of_Electricity__c = 10000,
-            Name_on_Account__c = 'Joey Chan'
+                Lead__c = lead.Id,
+                Annual_kWh__c = 35000,
+                Name_on_Account__c = 'Joey Chan'
         );
         insert ual;
 
@@ -667,7 +685,7 @@ public with sharing class DocuSignHelperTest {
 
     public class DocuSignTimeoutMock implements WebServiceMock, HttpCalloutMock {
         public HTTPResponse respond(HTTPRequest req) {
-            CalloutException e = (CalloutException)CalloutException.class.newInstance();
+            CalloutException e = (CalloutException) CalloutException.class.newInstance();
             e.setMessage('Exceeded maximum time allotted for callout');
             String endpoint = req.getEndpoint();
 
@@ -684,44 +702,42 @@ public with sharing class DocuSignHelperTest {
         }
 
         public void doInvoke(
-            Object stub,
-            Object request,
-            Map<String, Object> response,
-            String endpoint,
-            String soapAction,
-            String requestName,
-            String responseNS,
-            String responseName,
-            String responseType) {
-            CalloutException e = (CalloutException)CalloutException.class.newInstance();
+                Object stub,
+                Object request,
+                Map<String, Object> response,
+                String endpoint,
+                String soapAction,
+                String requestName,
+                String responseNS,
+                String responseName,
+                String responseType) {
+            CalloutException e = (CalloutException) CalloutException.class.newInstance();
             e.setMessage('Exceeded maximum time allotted for callout');
-            if(request instanceOf DocuSignAPI.AcknowledgeAuthoritativeCopyExport_element) {
-                response.put( 'response_x', new DocuSignAPI.AcknowledgeAuthoritativeCopyExportResponse_element());
-            }
-            else if(request instanceOf DocuSignAPI.CreateEnvelopeFromTemplatesAndForms_element) {
+            if (request instanceOf DocuSignAPI.AcknowledgeAuthoritativeCopyExport_element) {
+                response.put('response_x', new DocuSignAPI.AcknowledgeAuthoritativeCopyExportResponse_element());
+            } else if (request instanceOf DocuSignAPI.CreateEnvelopeFromTemplatesAndForms_element) {
                 DocuSignAPI.CreateEnvelopeFromTemplatesAndFormsResponse_element responseX =
-                    new DocuSignAPI.CreateEnvelopeFromTemplatesAndFormsResponse_element();
+                        new DocuSignAPI.CreateEnvelopeFromTemplatesAndFormsResponse_element();
                 responseX.CreateEnvelopeFromTemplatesAndFormsResult = new DocuSignAPI.EnvelopeStatus();
                 responseX.CreateEnvelopeFromTemplatesAndFormsResult.Status = 'Created';
                 responseX.CreateEnvelopeFromTemplatesAndFormsResult.EnvelopeID = 'DummyID';
-                response.put( 'response_x', responseX);
+                response.put('response_x', responseX);
                 throw e;
-            }
-            else if(request instanceOf DocuSignAPI.RequestTemplateWithDocumentFields_element) {
+            } else if (request instanceOf DocuSignAPI.RequestTemplateWithDocumentFields_element) {
                 DocuSignAPI.RequestTemplateWithDocumentFieldsResponse_element templateResponse =
-                    new DocuSignAPI.RequestTemplateWithDocumentFieldsResponse_element();
+                        new DocuSignAPI.RequestTemplateWithDocumentFieldsResponse_element();
                 templateResponse.RequestTemplateWithDocumentFieldsResult =
-                    new DocuSignAPI.EnvelopeTemplate();
+                        new DocuSignAPI.EnvelopeTemplate();
                 templateResponse.RequestTemplateWithDocumentFieldsResult.Envelope =
-                    new DocuSignAPI.Envelope();
+                        new DocuSignAPI.Envelope();
                 templateResponse.RequestTemplateWithDocumentFieldsResult.Envelope.Recipients =
-                    new DocuSignAPI.ArrayOfRecipient();
+                        new DocuSignAPI.ArrayOfRecipient();
                 templateResponse.RequestTemplateWithDocumentFieldsResult.Envelope.Recipients.Recipient =
-                    new List<DocuSignAPI.Recipient>();
+                        new List<DocuSignAPI.Recipient>();
                 DocuSignAPI.Recipient recipient = new DocuSignAPI.Recipient();
                 recipient.RoleName = 'Signer 1';
                 templateResponse.RequestTemplateWithDocumentFieldsResult.Envelope.Recipients.Recipient.add(recipient);
-                response.put( 'response_x', templateResponse);
+                response.put('response_x', templateResponse);
             }
         }
     }

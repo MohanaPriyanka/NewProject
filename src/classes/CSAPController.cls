@@ -33,7 +33,9 @@ public without sharing class CSAPController {
                 // CSAP will use this to send a DocuSign contract for a converted lead. If we have multiple opportunities
                 // for the lead, we'll just get the first. Ordering by created date should get the one(s) that were created
                 // in the transaction that converted the lead.
-                SELECT Id, Parent_Account_Name__c FROM Opportunities__r ORDER BY CreatedDate DESC, Opportunity_Order__c ASC LIMIT 1
+                        SELECT Id, Parent_Account_Name__c
+                        FROM Opportunities__r
+                        ORDER BY CreatedDate DESC, Opportunity_Order__c ASC
             )
             FROM Lead
             WHERE Id = :leadId
@@ -167,7 +169,8 @@ public without sharing class CSAPController {
         Lead insertedLead = [
             SELECT LoadZone__c, Utility_relationship__c, ZipCode__c, ZipCode__r.LZ__c, ZipCode__r.Utility_Junction_Count__c
             FROM Lead
-            WHERE Id = :lead.Id];
+                WHERE Id = :lead.Id
+        ];
 
         lead.ZipCode__c = insertedLead.ZipCode__c;
 
@@ -204,7 +207,7 @@ public without sharing class CSAPController {
         }
 
         //Set boolean based on BIS (and BlueWave Test Partner?) or Partner to determine application process
-        if (customerPartner.Name == 'BlueWave Inside Sales' || customerPartner.Name == 'BlueWave Test Partner'){
+        if (customerPartner.Name == 'CS Self-Originations' || customerPartner.Name == 'BlueWave Test Partner') {
             partnerApp = false;
         } else {
             partnerApp = true;
@@ -264,13 +267,15 @@ public without sharing class CSAPController {
         Lead insertedLead = [
             SELECT LoadZone__c, Utility_relationship__c, Confirm_Utility__c
             FROM Lead
-            WHERE Id = :lead.Id];
+                WHERE Id = :lead.Id
+        ];
 
 
         String continueApplicationUrl = Util.getCommunitySiteURL('Apply') + '/s/csap-payment?leadId=' + lead.Id;
         insertedLead.Continue_Application_Link__c = continueApplicationUrl;
         update insertedLead;
 
+        lead.Continue_Application_Link__c = continueApplicationUrl;
         lead.LoadZone__c = insertedLead.LoadZone__c;
         lead.Utility_relationship__c = insertedLead.Utility_relationship__c;
         lead.Confirm_Utility__c = insertedLead.Confirm_Utility__c;
@@ -282,7 +287,8 @@ public without sharing class CSAPController {
             SELECT Id, Partner_Name__c, Application_Source_Phase_2__c, System_Assignment__c,
                 LASERCA__Home_State__c, Application_Type__c, Utility_relationship__c, LoadZone__c
             FROM Lead
-            WHERE Id = :leadId];
+                WHERE Id = :leadId
+        ];
         if (lead.Utility_relationship__c == null || lead.LoadZone__c == null) {
             return false;
         }
@@ -323,9 +329,11 @@ public without sharing class CSAPController {
     // there's no credit report. Customer Care can always pull credit through the UI if needed
     @AuraEnabled
     public static void pullCreditStatus(Lead lead) {
-        Lead l = [SELECT Id, Name, Personal_Credit_Report__c, Date_of_Application__c, Application_Source_Phase_2__c
+        Lead l = [
+                SELECT Id, Name, Personal_Credit_Report__c, Date_of_Application__c, Application_Source_Phase_2__c
                   FROM Lead
-                  WHERE Id =:lead.Id];
+                WHERE Id = :lead.Id
+        ];
         Organization o = [SELECT IsSandbox FROM Organization LIMIT 1];
         String name = l.Name.toLowerCase();
         if (o.IsSandbox || name.contains('testcase')) {
@@ -355,7 +363,12 @@ public without sharing class CSAPController {
 
     @AuraEnabled
     public static Product2 getProduct (String productId) {
-        return [SELECT Id, Name, Program__c, Customer_Subscription_Type__c FROM Product2 WHERE Id =: productId];
+        return [
+                SELECT Id, Name, Program__c, Customer_Subscription_Type__c, Default_Residential_Usage__c,
+                        Default_Business_Usage__c, Disable_Multiple_UAL_CSAP__c
+                FROM Product2
+                WHERE Id = :productId
+        ];
     }
 
     @AuraEnabled
@@ -384,6 +397,7 @@ public without sharing class CSAPController {
             WHERE Parent_Account__c = :primaryLead.Parent_Account__c
             AND Status = 'Qualified'
         ];
+
         // make sure that the lead owner is a user, if not set it to API
         Boolean updatedLeadOwner = false;
         User apiUser = [
@@ -437,11 +451,13 @@ public without sharing class CSAPController {
     }
 
     private static Lead setupParentAccount(Lead lead, Partner__c customerPartner) {
-        User apiUser = [SELECT Id, Name, Username
+        User apiUser = [
+                SELECT Id, Name, Username
         FROM User
         WHERE Name = 'API'
         AND IsActive = TRUE
-        LIMIT 1];
+                LIMIT 1
+        ];
 
         Group csInsideSales = [
             SELECT Id, Name
@@ -473,7 +489,6 @@ public without sharing class CSAPController {
         if(customerPartner.Email__c != null){
             lead.Partner_Email__c = customerPartner.Email__c;
         }
-
 
 
         // only need to insert contact if they don't have a parent account already
@@ -527,6 +542,12 @@ public without sharing class CSAPController {
     }
 
     @AuraEnabled
+    public static List<Utility_Account_Log__c> saveUtilityAccountLogList(List<Utility_Account_Log__c> ualList) {
+        upsert ualList;
+        return ualList;
+    }
+
+    @AuraEnabled
     public static void saveUtilityAccountLog(Utility_Account_Log__c ual) {
         upsert ual;
 
@@ -571,7 +592,9 @@ public without sharing class CSAPController {
         update lead;
 
 
-        EmailService.createCSCustomerRequestPaymentInfoEmails(new List<Lead>{lead});
+        EmailService.createCSCustomerRequestPaymentInfoEmails(new List<Lead>{
+                lead
+        });
         Messaging.SendEmailResult[] result = EmailService.sendMessages();
 
         if (!result.isEmpty() && result[0].isSuccess()) {
@@ -582,18 +605,14 @@ public without sharing class CSAPController {
             return false;
         }
     }
-
-    @AuraEnabled
-    public static String sendEmbeddedContract(Lead lead) {
-        // We should query the lead since it might not be fully populated (with a list of opportunities)
-        lead = getLead(lead.Id, lead.Email);
-        return sendEmbeddedContract(lead.Opportunities__r[0]);
-    }
-
     // See https://github.com/docusign/sfdc-recipe-embedded-signing/blob/master/src/classes/DS_Recipe_Signer_View_Controller.cls
     // for comments on DocuSign API usage for embedded signing
-    public static String sendEmbeddedContract(Opportunity opp) {
-        Opportunity opportunity = OpportunitiesSelector.selectForContractSend(opp.Id);
+    @AuraEnabled
+    public static String sendEmbeddedContract(Lead lead, Integer oppCounter) {
+        // We should query the lead since it might not be fully populated (with a list of opportunities)
+        lead = getLead(lead.Id, lead.Email);
+
+        Opportunity opp = OpportunitiesSelector.selectForContractSend(lead.Opportunities__r[oppCounter].Id);
 
         DocuSignAPI.RequestRecipientTokenAuthenticationAssertion assertion =
             new DocuSignAPI.RequestRecipientTokenAuthenticationAssertion();
@@ -603,21 +622,35 @@ public without sharing class CSAPController {
         assertion.SecurityDomain = 'CSAPController';
 
         DocuSignAPI.RequestRecipientTokenClientURLs urls = new DocuSignAPI.RequestRecipientTokenClientURLs();
-        String returnURLBase = Util.getCommunitySiteURL('Apply') + '/s/contract-complete?event=';
-        urls.OnSigningComplete  = returnURLBase + 'signing_complete';
-        urls.OnViewingComplete  = returnURLBase + 'viewing_complete';
-        urls.OnCancel           = returnURLBase + 'cancel';
-        urls.OnDecline          = returnURLBase + 'decline';
-        urls.OnSessionTimeout   = returnURLBase + 'session_timeout';
-        urls.OnTTLExpired       = returnURLBase + 'ttl_expired';
-        urls.OnException        = returnURLBase + 'exception';
-        urls.OnAccessCodeFailed = returnURLBase + 'failed_access_code';
-        urls.OnIdCheckFailed    = returnURLBase + 'failed_id_check';
-        urls.OnFaxPending       = returnURLBase + 'fax_pending';
+
+
+        String returnURLBase = Util.getCommunitySiteURL('Apply') + '/s/';
+
+        if ((lead.Opportunities__r.size() - 1) == oppCounter) {
+            urls.OnSigningComplete = returnURLBase + 'contract-complete' + '?event=signing_complete';
+        } else {
+            String showContract = returnURLBase;
+            showContract += 'contract-show';
+            showContract += '?oppCounter=' + (oppCounter + 1);
+            showContract += '&oppTotal=' + lead.Opportunities__r.size();
+            showContract += '&leadId=' + lead.Id;
+            showContract += '&leadEmail=' + lead.Email;
+            urls.OnSigningComplete = showContract + '&event=signing_complete';
+        }
+
+        urls.OnViewingComplete = returnURLBase + 'contract-complete?event=viewing_complete';
+        urls.OnCancel = returnURLBase + 'contract-complete?event=cancel';
+        urls.OnDecline = returnURLBase + 'contract-complete?event=decline';
+        urls.OnSessionTimeout = returnURLBase + 'contract-complete?event=session_timeout';
+        urls.OnTTLExpired = returnURLBase + 'contract-complete?event=ttl_expired';
+        urls.OnException = returnURLBase + 'contract-complete?event=exception';
+        urls.OnAccessCodeFailed = returnURLBase + 'contract-complete?event=failed_access_code';
+        urls.OnIdCheckFailed = returnURLBase + 'contract-complete?event=failed_id_check';
+        urls.OnFaxPending = returnURLBase + 'contract-complete?event=fax_pending';
 
         DocuSignAPI.EnvelopeStatus envelopeStatus;
         try {
-            envelopeStatus = DocuSignHelper.sendCSPackage(opportunity, 1, 1);
+            envelopeStatus = DocuSignHelper.sendCSPackage(opp, 1, 1);
         } catch (Exception e) {
             // Something bad and uncaught happened, have the Lightning Component show the user the exception page
             Logger.logLater('CSAPController', 'sendEmbeddedContract', 'Unhanded exception caught for : ' + opp.Id + '\n' + e.getMessage(), 'Error');
@@ -649,7 +682,7 @@ public without sharing class CSAPController {
                 userName = rs.UserName;
                 email = rs.Email;
                 recipientType = rs.Type_x;
-                clientUserId = DocuSignHelper.getCaptiveInfo(opportunity, rs.Type_x).ClientUserId;
+                clientUserId = DocuSignHelper.getCaptiveInfo(opp, rs.Type_x).ClientUserId;
             }
         }
         if (userName == null || email == null) {
