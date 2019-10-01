@@ -236,7 +236,7 @@
     <fields>
         <fullName>Account_Balance__c</fullName>
         <externalId>false</externalId>
-        <formula>Total_Outstanding_Balance__c - Unapplied_Overpayments__c</formula>
+        <formula>Total_Outstanding_Balance_Merge__c - Unapplied_Overpayments__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>Can be negative, inclusive of unapplied overpayments. Total_Outstanding_Balance__c - Unapplied_Overpayments__c</inlineHelpText>
         <label>Account Balance</label>
@@ -957,7 +957,7 @@ Days_Past_Due__c = 90)</formula>
         <fullName>Collection_Email_To_Fire_Today__c</fullName>
         <externalId>false</externalId>
         <formula>OR(
-(Max_Overdue_Due_Date__c - 3 = Today()),
+(Max_Overdue_Due_Date_Merge__c - 3 = Today()),
 Days_Past_Due__c = 7, 
 Days_Past_Due__c = 15, 
 Days_Past_Due__c = 30,
@@ -2617,7 +2617,7 @@ IMAGE(&quot;/servlet/servlet.FileDownload?file=&quot; &amp; Partner__r.Logo__c, 
     <fields>
         <fullName>Past_Due_Status__c</fullName>
         <externalId>false</externalId>
-        <formula>IF( OR(Total_Outstanding_Balance__c =0,Recurring_Billing__c = TRUE), &quot;Current and Autopay&quot;, 
+        <formula>IF( OR(Total_Outstanding_Balance_Merge__c =0,Recurring_Billing__c = TRUE), &quot;Current and Autopay&quot;, 
 IF(Days_Past_Due__c =0, &quot;Current and Autopay&quot;, 
 IF(Days_Past_Due__c &lt;= 30 , &quot;1-30 Days Late&quot;, 
 IF(Days_Past_Due__c &lt;= 60, &quot;31-60 Days Late&quot;, 
@@ -15388,7 +15388,7 @@ COPY THE URL FROM THIS BUTTON and paste it into your own custom button or link. 
         <masterLabel>Account Info Page</masterLabel>
         <openType>sidebar</openType>
         <protected>false</protected>
-        <url>/apex/accountinfo?accountID={!Account.Id}&amp;acctName={!Account.Name}&amp;totalBalance={!TEXT(Account.Total_Outstanding_Balance__c)}&amp;isParentAcct=TRUE</url>
+        <url>/apex/accountinfo?accountID={!Account.Id}&amp;acctName={!Account.Name}&amp;totalBalance={!TEXT(Account.Total_Outstanding_Balance_Merge__c)}&amp;isParentAcct=TRUE</url>
     </webLinks>
     <webLinks>
         <fullName>Account_info_Page</fullName>
@@ -15403,7 +15403,7 @@ COPY THE URL FROM THIS BUTTON and paste it into your own custom button or link. 
         <url>/apex/accountinfo?
 accountID={!Account.Id}
 &amp;acctName={!Account.Name}
-&amp;totalBalance={!TEXT(Account.Total_Outstanding_Balance__c)}
+&amp;totalBalance={!TEXT(Account.Total_Outstanding_Balance_Merge__c)}
 &amp;isParentAcct</url>
     </webLinks>
     <webLinks>
