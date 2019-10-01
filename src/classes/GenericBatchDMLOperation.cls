@@ -37,7 +37,6 @@ public without sharing class GenericBatchDMLOperation implements Database.Batcha
         if (triggersToDisable != null){
             for (String triggerAsString : triggersToDisable){
                 Util.disableTrigger(triggerAsString);
-                System.debug('TRIGGER' + triggerAsString);
             }
         }
         GenericResult[] resultList;
