@@ -365,10 +365,6 @@
                 <field>Actual_PTO_Date__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Upcoming_Meter_Read_Date__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Estimated_Mechanical_Completion_Override__c</field>
             </layoutItems>
@@ -415,8 +411,8 @@
                 <field>Estimated_First_Bill_Date__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Actual_First_Bill_Date__c</field>
+                <behavior>Readonly</behavior>
+                <field>First_Bill_Date__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
@@ -425,6 +421,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Meter_Reading_Schedule__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Upcoming_Meter_Read_Date__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
