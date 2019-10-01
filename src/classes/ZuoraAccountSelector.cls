@@ -1,7 +1,7 @@
 /**
  * Tested By: ZuoraAccountSelectorTest, BillingAccountServiceTest
  */
-
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ZuoraAccountSelector {
     public class QueryResultAccount{
         public List<ZuoraAPI.ZuoraAccount> records;
@@ -95,11 +95,27 @@ public without sharing class ZuoraAccountSelector {
         }
         return [
             SELECT Id, Name,
+                Zuora__Zuora_Id__c,
                 Zuora__AutoPay__c,
                 Zuora__Account__r.Id,
-                Zuora__Account__r.Recurring_Billing__c
+                Zuora__Account__r.Recurring_Billing__c,
+                Zuora__Account__r.Total_Outstanding_Balance_Zuora__c,
+                Zuora__Account__r.Max_Overdue_Due_Date_Zuora__c
             FROM Zuora__CustomerAccount__c
             WHERE Id IN : accountIds
+        ];
+    }
+
+    public static List<Zuora__CustomerAccount__c> getAllBillingAccounts (){
+        return [
+            SELECT Id, Name,
+                Zuora__Zuora_Id__c,
+                Zuora__AutoPay__c,
+                Zuora__Account__r.Id,
+                Zuora__Account__r.Recurring_Billing__c,
+                Zuora__Account__r.Total_Outstanding_Balance_Zuora__c,
+                Zuora__Account__r.Max_Overdue_Due_Date_Zuora__c
+            FROM Zuora__CustomerAccount__c
         ];
     }
 }

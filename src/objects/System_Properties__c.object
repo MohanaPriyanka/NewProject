@@ -431,6 +431,18 @@ Production: BlueWave Inside Sales</inlineHelpText>
         <type>Email</type>
         <unique>false</unique>
     </fields>
+    <fields>
+        <fullName>Zuora_Data_Query_Minutes_to_Retry__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>We will resubmit a data query to Zuora after X number of minutes if it fails</inlineHelpText>
+        <label>Zuora Data Query Minutes to Retry</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
     <label>System Properties</label>
     <visibility>Protected</visibility>
 </CustomObject>

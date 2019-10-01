@@ -53,27 +53,31 @@ public with sharing class ZuoraInvoiceSelector {
     }
 
     public static String getOutstandingBalanceByAccountQuery(List<Zuora__CustomerAccount__c> billAccounts) {
-        String queryString = 'SELECT ' +
-            'SUM(m.balance) as MemoBalance, ' +
-            'MIN(m.duedate) as MemoDueDate, ' +
-            'SUM(iv.balance) as InvoiceBalance, ' +
-            'MIN(iv.duedate) as InvoiceDueDate, ' +
-            'iv.accountid as AccountId ' +
-            'FROM Invoice iv ' +
-            'FULL JOIN DebitMemo m ON iv.accountid = m.accountid ' +
-            'WHERE iv.balance > 0 ';
+        String queryString = 'SELECT Id as AccountId, ' +
+            '(SELECT SUM(m.balance) ' +
+                'FROM DebitMemo m ' +
+                'WHERE m.accountid = acct.Id AND m.balance > 0) as MemoBalance, '+
+            '(SELECT MIN(m.duedate) '+
+                'FROM DebitMemo m ' +
+                'WHERE m.accountid = acct.Id AND m.balance > 0) as MemoDueDate, ' +
+            '(SELECT SUM(iv.balance) ' +
+                'FROM Invoice iv ' +
+                'WHERE iv.accountid = acct.Id AND iv.balance > 0) as InvoiceBalance, ' +
+            '(SELECT MIN(iv.duedate) '+
+                'FROM Invoice iv ' +
+                'WHERE iv.accountid = acct.Id AND iv.balance > 0) as InvoiceDueDate ' +
+            'FROM Account acct ';
 
         if (billAccounts != null){
             for (Integer i = 0;i < billAccounts.size(); i++){
                 if (i == 0){
-                    queryString += 'AND (iv.accountid = \'' + billAccounts[i].Zuora__Zuora_Id__c + '\'';
+                    queryString += 'WHERE (Id = \'' + billAccounts[i].Zuora__Zuora_Id__c + '\'';
                 } else {
-                    queryString += 'OR iv.accountid = \'' + billAccounts[i].Zuora__Zuora_Id__c + '\'';
+                    queryString += 'OR Id = \'' + billAccounts[i].Zuora__Zuora_Id__c + '\'';
                 }
             }
             queryString += ') ';
         }
-        queryString += 'GROUP BY iv.accountid ';
         return queryString;
     }
 }

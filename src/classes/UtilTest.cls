@@ -83,6 +83,19 @@ public with sharing class UtilTest {
     }
 
     @IsTest
+    public static void testMinTwoDates() {
+        Date older = Date.newInstance(2014,02,03);
+        Date newer = Date.newInstance(2017,04,23);
+
+        System.assertEquals(older, Util.minTwoDates(older,newer));
+        System.assertEquals(older, Util.minTwoDates(newer,older));
+        System.assertEquals(older, Util.minTwoDates(null,older));
+        System.assertEquals(null, Util.minTwoDates(null,null));
+        System.assertEquals(newer, Util.minTwoDates(newer,null));
+        System.assertEquals(newer, Util.minTwoDates(newer,newer));
+    }
+
+    @IsTest
     public static void testGetActiveProducts() {
         LoanTestRecordWarehouse.partnerSetup();
         insert LoanTestRecordWarehouse.getLoanProductsVariableInterestRatesandTerms();

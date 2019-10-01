@@ -151,6 +151,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.Max_Overdue_Due_Date_Merge__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Max_Overdue_Due_Date_Zuora__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.Maxed_Out_Opportunities__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -317,6 +327,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Total_Net_Metering_Credits_Allocated__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Total_Outstanding_Balance_Merge__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Total_Outstanding_Balance_Zuora__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
