@@ -403,12 +403,12 @@
                 <field>Actual_Credits_Flowing_Date__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Estimated_First_BW_Bill_Override__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Estimated_First_Bill_Date__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Estimated_First_BW_Bill_Override__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
