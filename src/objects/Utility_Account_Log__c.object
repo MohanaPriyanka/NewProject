@@ -45,7 +45,6 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>false</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableReports>false</enableReports>
@@ -642,6 +641,19 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Utility_Acct_Number_no_dashes__c</fullName>
+        <description>This is a formula field that removes the dashes from a UAL name. It is used in the allocation schedule conga document for NYSEG.</description>
+        <externalId>false</externalId>
+        <formula>SUBSTITUTE(Name,&quot;-&quot;,&quot;&quot;)</formula>
+        <inlineHelpText>This is a formula field that removes the dashes from a UAL name. It is used in the allocation schedule conga document for NYSEG.</inlineHelpText>
+        <label>Utility Acct Number (no dashes)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Utility_NMC_Tariff__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -723,7 +735,7 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Utility Account Logs</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>Read</sharingModel>
     <visibility>Public</visibility>
     <webLinks>
