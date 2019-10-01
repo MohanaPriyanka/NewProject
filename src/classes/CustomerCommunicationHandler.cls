@@ -32,12 +32,12 @@ public class CustomerCommunicationHandler implements Database.Batchable<sObject>
         String query = 'SELECT Id, Name, Send_Bills_Contact__c, ' +
                         'Last_Bill_Send_Date__c, Do_not_Send_Bills__c, ' +
                         'Recurring_Billing__c, Days_Past_Due__c, ' + 
-                        'RecordTypeId, Total_Outstanding_Balance__c, ' +
+                        'RecordTypeId, Total_Outstanding_Balance_Merge__c, ' +
                         'Total_Billed__c, Client_Brand_Key__c, ' +
                         'Collection_Call_Today__c, Collection_Email_To_Fire_Today__c, ' +
-                        'Max_Overdue_Due_Date__c ' +
+                        'Max_Overdue_Due_Date_Merge__c ' +
                         'FROM Account ' +
-                        'WHERE Total_Outstanding_Balance__c > 1 ' +
+                        'WHERE Total_Outstanding_Balance_Merge__c > 1 ' +
                         'AND Send_Bills_Contact__c != null ' +
                         'AND Do_not_Send_Bills__c = false ' +
                         'AND (Collection_Email_To_Fire_Today__c = true ' +
@@ -70,12 +70,12 @@ public class CustomerCommunicationHandler implements Database.Batchable<sObject>
             }
             if (contactid != null && act.Collection_Email_To_Fire_Today__c) {
                 Date todaysDate = system.today();
-                Date sendBillReminderDate = act.Max_Overdue_Due_Date__c - 3;
+                Date sendBillReminderDate = act.Max_Overdue_Due_Date_Merge__c - 3;
                 String email;
                 String htmlBody;
                 String fullName = act.Name;
                 String subject = 'Your BlueWave account is ' + act.Days_Past_Due__c + ' days past due';
-                String dollar = String.valueof(act.Total_Outstanding_Balance__c);
+                String dollar = String.valueof(act.Total_Outstanding_Balance_Merge__c);
                 String balance = '$' + dollar;
                 String templateKey = '';
 
@@ -90,7 +90,7 @@ public class CustomerCommunicationHandler implements Database.Batchable<sObject>
                 }
                 if (fullName != null && balance != null){
                     htmlBody = htmlBody.replace('{!Account.Name}', fullName);
-                    htmlBody = htmlBody.replace('{!Account.Total_Outstanding_Balance__c}', balance);
+                    htmlBody = htmlBody.replace('{!Account.Total_Outstanding_Balance_Merge__c}', balance);
                 }
                 if (htmlBody != null && htmlBody != 'DONOTSEND'){
                     Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
