@@ -373,7 +373,7 @@
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
             <name>myRule_15</name>
-            <conditionLogic>((3 and 4 and 10 and 11) or (6 and 7 and 10 and 11) or (6 and 8 and 9 and 10 and 11)) and 1 and 2 and 5 and 12</conditionLogic>
+            <conditionLogic>((3 and 4 and 10 and 11) or (6 and 7 and 10 and 11) or (6 and 8 and 9 and 10 and 11)) and 1 and 2 and 5</conditionLogic>
             <conditions>
                 <processMetadataValues>
                     <name>inputDataType</name>
@@ -719,37 +719,6 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Qualified</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_current.StageName</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>QC In Process</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -1381,7 +1350,7 @@
         </rules>
         <rules>
             <name>myRule_15_pmetrule</name>
-            <conditionLogic>((3 and 4 and 10 and 11) or (6 and 7 and 10 and 11) or (6 and 8 and 9 and 10 and 11)) and 1 and 2 and 5 and 12</conditionLogic>
+            <conditionLogic>((3 and 4 and 10 and 11) or (6 and 7 and 10 and 11) or (6 and 8 and 9 and 10 and 11)) and 1 and 2 and 5</conditionLogic>
             <conditions>
                 <processMetadataValues>
                     <name>inputDataType</name>
@@ -1727,37 +1696,6 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Qualified</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <processMetadataValues>
-                    <name>inputDataType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>leftHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>operatorDataType</name>
-                    <value>
-                        <stringValue>String</stringValue>
-                    </value>
-                </processMetadataValues>
-                <processMetadataValues>
-                    <name>rightHandSideType</name>
-                    <value>
-                        <stringValue>Picklist</stringValue>
-                    </value>
-                </processMetadataValues>
-                <leftValueReference>myVariable_old.StageName</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>QC In Process</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -2222,7 +2160,7 @@
                 <stringValue>TEXT(PRIORVALUE([Opportunity].StageName ))</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_12_myRule_11_A3_2592856443</name>
+        <name>formula_12_myRule_11_A3_5412381574</name>
         <dataType>String</dataType>
         <expression>TEXT(PRIORVALUE({!myVariable_current.StageName} ))</expression>
     </formulas>
@@ -2233,7 +2171,7 @@
                 <stringValue>NOW()</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_13_myRule_11_A2_8184465568</name>
+        <name>formula_13_myRule_11_A2_1220004412</name>
         <dataType>DateTime</dataType>
         <expression>NOW()</expression>
     </formulas>
@@ -2244,7 +2182,7 @@
                 <stringValue>TEXT (PRIORVALUE ( [Opportunity].StageName ))</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_16_myRule_15_A3_0706007307</name>
+        <name>formula_16_myRule_15_A3_3375080771</name>
         <dataType>String</dataType>
         <expression>TEXT (PRIORVALUE ( {!myVariable_current.StageName} ))</expression>
     </formulas>
@@ -2255,7 +2193,7 @@
                 <stringValue>NOW()</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_17_myRule_15_A2_3326596120</name>
+        <name>formula_17_myRule_15_A2_4092922663</name>
         <dataType>DateTime</dataType>
         <expression>NOW()</expression>
     </formulas>
@@ -2266,7 +2204,7 @@
                 <stringValue>TODAY()</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_20_myRule_19_A4_5465446851</name>
+        <name>formula_20_myRule_19_A4_1914621207</name>
         <dataType>Date</dataType>
         <expression>TODAY()</expression>
     </formulas>
@@ -2277,7 +2215,7 @@
                 <stringValue>TODAY()</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_21_myRule_19_A2_9650211410</name>
+        <name>formula_21_myRule_19_A2_3492072464</name>
         <dataType>Date</dataType>
         <expression>TODAY()</expression>
     </formulas>
@@ -2289,7 +2227,7 @@
 </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_3_myRule_1_A2_0298155710</name>
+        <name>formula_3_myRule_1_A2_4023813332</name>
         <dataType>String</dataType>
         <expression>TEXT({!myVariable_current.StageName})</expression>
     </formulas>
@@ -2300,7 +2238,7 @@
                 <stringValue>TEXT(PRIORVALUE([Opportunity].StageName ) )</stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_4_myRule_1_A2_7874317058</name>
+        <name>formula_4_myRule_1_A2_8851711969</name>
         <dataType>String</dataType>
         <expression>TEXT(PRIORVALUE({!myVariable_current.StageName} ) )</expression>
     </formulas>
@@ -2311,11 +2249,11 @@
                 <stringValue>NOW() </stringValue>
             </value>
         </processMetadataValues>
-        <name>formula_5_myRule_1_A1_7518880498</name>
+        <name>formula_5_myRule_1_A1_6354166546</name>
         <dataType>DateTime</dataType>
         <expression>NOW()</expression>
     </formulas>
-    <interviewLabel>Opportunity_Create_Edit-21_InterviewLabel</interviewLabel>
+    <interviewLabel>Opportunity_Create_Edit-17_InterviewLabel</interviewLabel>
     <label>Opportunity Create/Edit</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -2449,7 +2387,7 @@
             </processMetadataValues>
             <field>Previous_Stage__c</field>
             <value>
-                <elementReference>formula_12_myRule_11_A3_2592856443</elementReference>
+                <elementReference>formula_12_myRule_11_A3_5412381574</elementReference>
             </value>
         </inputAssignments>
         <object>Opportunity_Change_History__c</object>
@@ -2561,7 +2499,7 @@
             </processMetadataValues>
             <field>Previous_Stage__c</field>
             <value>
-                <elementReference>formula_16_myRule_15_A3_0706007307</elementReference>
+                <elementReference>formula_16_myRule_15_A3_3375080771</elementReference>
             </value>
         </inputAssignments>
         <object>Opportunity_Change_History__c</object>
@@ -2607,7 +2545,7 @@
             </processMetadataValues>
             <field>ActivityDate</field>
             <value>
-                <elementReference>formula_21_myRule_19_A2_9650211410</elementReference>
+                <elementReference>formula_21_myRule_19_A2_3492072464</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -2851,7 +2789,7 @@
             </processMetadataValues>
             <field>ActivityDate</field>
             <value>
-                <elementReference>formula_20_myRule_19_A4_5465446851</elementReference>
+                <elementReference>formula_20_myRule_19_A4_1914621207</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -3095,7 +3033,7 @@
             </processMetadataValues>
             <field>New_Stage__c</field>
             <value>
-                <elementReference>formula_3_myRule_1_A2_0298155710</elementReference>
+                <elementReference>formula_3_myRule_1_A2_4023813332</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -3161,7 +3099,7 @@
             </processMetadataValues>
             <field>Previous_Stage__c</field>
             <value>
-                <elementReference>formula_4_myRule_1_A2_7874317058</elementReference>
+                <elementReference>formula_4_myRule_1_A2_8851711969</elementReference>
             </value>
         </inputAssignments>
         <object>Opportunity_Change_History__c</object>
@@ -3720,7 +3658,7 @@
             </processMetadataValues>
             <field>Closed_On__c</field>
             <value>
-                <elementReference>formula_13_myRule_11_A2_8184465568</elementReference>
+                <elementReference>formula_13_myRule_11_A2_1220004412</elementReference>
             </value>
         </inputAssignments>
         <object>Opportunity_Change_History__c</object>
@@ -3935,7 +3873,7 @@
             </processMetadataValues>
             <field>Closed_On__c</field>
             <value>
-                <elementReference>formula_17_myRule_15_A2_3326596120</elementReference>
+                <elementReference>formula_17_myRule_15_A2_4092922663</elementReference>
             </value>
         </inputAssignments>
         <object>Opportunity_Change_History__c</object>
@@ -4067,7 +4005,7 @@
             </processMetadataValues>
             <field>Closed_On__c</field>
             <value>
-                <elementReference>formula_5_myRule_1_A1_7518880498</elementReference>
+                <elementReference>formula_5_myRule_1_A1_6354166546</elementReference>
             </value>
         </inputAssignments>
         <object>Opportunity_Change_History__c</object>
