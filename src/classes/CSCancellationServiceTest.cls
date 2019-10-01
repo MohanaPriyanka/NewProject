@@ -340,13 +340,13 @@ public with sharing class CSCancellationServiceTest {
         // Assert Accounts have no outstanding balance.  There should be a total of 6 accounts - 3 property and 3 parent.
 
         List<Account> acctList = [
-            SELECT Id, Total_Outstanding_Balance__c
+            SELECT Id, Total_Outstanding_Balance_Merge__c
             FROM Account
         ];
 
         System.assertEquals(6, acctList.size());
         for (Account acct : acctList) {
-            System.assertEquals(0, acct.Total_Outstanding_Balance__c);
+            System.assertEquals(0, acct.Total_Outstanding_Balance_Merge__c);
         }
 
         // Assert there are no Schedule Z's that qualify for cancellation
@@ -359,7 +359,7 @@ public with sharing class CSCancellationServiceTest {
             WHERE Utility_Account_Subscription__r.Next_Schedule_Z_Status__c = 'Inactive Subscription'
             AND (Schedule_Z_Status__c = 'Replaced with newly Enacted Schedule Z'
             OR Utility_Account_Subscription__r.Reason_for_Cancellation__c = 'Utility Account Cancelled')
-            AND (Utility_Account_Subscription__r.Utility_Account_Log__r.Account__r.Total_Outstanding_Balance__c = 0
+            AND (Utility_Account_Subscription__r.Utility_Account_Log__r.Account__r.Total_Outstanding_Balance_Merge__c = 0
             OR Utility_Account_Subscription__r.Utility_Account_Log__r.Account__r.Last_Bill_Send_Date_New_Charges__c > :sixMonthsAgo)
             AND Utility_Account_Subscription__r.Opportunity__r.StageName != 'Cancelled'
         ];

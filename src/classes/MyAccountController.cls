@@ -49,7 +49,7 @@ public without sharing class MyAccountController {
     @AuraEnabled
     public static List<Account> getMenuLabelList() {
         List<Account> propertyAccountLabelList = [
-            SELECT Id, Name, Parent_Account_ID__c, Total_Outstanding_Balance__c
+            SELECT Id, Name, Parent_Account_ID__c, Total_Outstanding_Balance_Merge__c
             FROM Account
             WHERE Parent_Account__c = : customerUser.Contact.AccountId];
 
