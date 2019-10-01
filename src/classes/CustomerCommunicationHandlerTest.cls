@@ -329,8 +329,8 @@ public class CustomerCommunicationHandlerTest{
         String jobId = System.schedule('CustomerCommunicationHandler', cronExpress, m );
         Test.stopTest();
 
-        List<Account> accountlist = [SELECT Id, Name, RecordTypeId, Max_Overdue_Due_Date__c,
-                                    Total_Outstanding_Balance__c, Total_Billed__c,
+        List<Account> accountlist = [SELECT Id, Name, RecordTypeId, Max_Overdue_Due_Date_Merge__c,
+                                    Total_Outstanding_Balance_Merge__c, Total_Billed__c,
                                     Send_Bills_Contact__c, Days_Past_Due__c
                                     FROM Account];
         System.assertNotEquals(0, accountlist.size());
@@ -374,8 +374,8 @@ public class CustomerCommunicationHandlerTest{
         String jobId = System.schedule('CustomerCommunicationHandler', cronExpress, m );
         Test.stopTest();
 
-        List<Account> accountlist = [SELECT Id, Name, RecordTypeId, Max_Overdue_Due_Date__c,
-            Total_Outstanding_Balance__c, Total_Billed__c,
+        List<Account> accountlist = [SELECT Id, Name, RecordTypeId, Max_Overdue_Due_Date_Merge__c,
+            Total_Outstanding_Balance_Merge__c, Total_Billed__c,
             Send_Bills_Contact__c, Days_Past_Due__c
         FROM Account];
         System.assertNotEquals(0, accountlist.size());
@@ -419,8 +419,8 @@ public class CustomerCommunicationHandlerTest{
         String jobId = System.schedule('CustomerCommunicationHandler', cronExpress, m );
         Test.stopTest();
 
-        List<Account> accountlist = [SELECT Id, Name, RecordTypeId, Max_Overdue_Due_Date__c,
-            Total_Outstanding_Balance__c, Total_Billed__c,
+        List<Account> accountlist = [SELECT Id, Name, RecordTypeId, Max_Overdue_Due_Date_Merge__c,
+            Total_Outstanding_Balance_Merge__c, Total_Billed__c,
             Send_Bills_Contact__c, Days_Past_Due__c
         FROM Account];
         System.assertNotEquals(0, accountlist.size());
