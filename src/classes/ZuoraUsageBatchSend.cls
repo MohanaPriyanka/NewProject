@@ -54,21 +54,24 @@ public without sharing class ZuoraUsageBatchSend implements Database.Batchable<s
             // so we track historical changes and log them:
 
             Datetime startTime = Datetime.now();
-            Util.disableTrigger('Disable_System_Bill_Trigger__c');
-            Util.disableTrigger('Disable_AccountBillTrigger__c');
-            Util.disableTrigger('Disable_AccountTrigger__c');
-            Util.disableTrigger('Disable_BillAdjustmentTrigger__c');
+            List<SObject> recordsToUpdate = new List<SObject>();
             if (uasbToUpdate.size() > 0){
-                update uasbToUpdate;
+                recordsToUpdate.addAll(uasbToUpdate);
             }
             if (adjustToUpdate.size() > 0){
-                update adjustToUpdate;
+                recordsToUpdate.addAll(adjustToUpdate);
+            }
+            if (recordsToUpdate.size() > 0){
+                GenericBatchDMLOperation batchDML = new GenericBatchDMLOperation(recordsToUpdate, 'Update');
+                batchDML.triggersToDisable = new List<String>{
+                    'Disable_System_Bill_Trigger__c',
+                    'Disable_AccountBillTrigger__c',
+                    'Disable_AccountTrigger__c',
+                    'Disable_BillAdjustmentTrigger__c'
+                };
+                Database.executeBatch(batchDML);
             }
             Logger.logNow('ZuoraUsageBatchSend','finish',checkFieldUpdates(startTime),'WARN');
-            Util.enableTrigger('Disable_System_Bill_Trigger__c');
-            Util.enableTrigger('Disable_AccountBillTrigger__c');
-            Util.enableTrigger('Disable_AccountTrigger__c');
-            Util.enableTrigger('Disable_BillAdjustmentTrigger__c');
         }
     }
 

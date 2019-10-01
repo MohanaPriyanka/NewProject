@@ -306,4 +306,114 @@ private class PostSandboxRefresherTest {
         // Should be one lead set up by the setup method
         System.assertEquals(1, leads.size());
     }
+
+    @IsTest
+    static void testGenericBatchDMLTriggerSwitch(){
+        List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
+        delete systemProperties;
+
+        System_Properties__c property = new System_Properties__c(Name = 'System');
+        property.Disable_AccountBillTrigger__c = true;
+        insert property;
+
+        List<Account_Bill__c> accountBills = [
+            SELECT Id, Name, Comments__c
+            FROM Account_Bill__c
+        ];
+        System.assertEquals(23,accountBills.size());
+
+        for (Account_Bill__c acctBill : accountBills){
+            acctBill.Comments__c = 'This is a comment';
+        }
+
+        Test.startTest();
+            GenericBatchDMLOperation batchDML = new GenericBatchDMLOperation(accountBills, 'Update');
+            batchDML.triggersToDisable = new List<String>{
+                'Disable_System_Bill_Trigger__c',
+                'Disable_AccountBillTrigger__c',
+                'Disable_AccountTrigger__c'
+            };
+            Database.executeBatch(batchDML);
+        Test.stopTest();
+
+        List<Account_Bill__c> updatedAccountBills = [
+            SELECT Id, Comments__c
+            FROM Account_Bill__c
+        ];
+
+        System.assertEquals('This is a comment',updatedAccountBills[0].Comments__c);
+
+        List<System_Properties__c> updatedSystemProperties = System_Properties__c.getAll().values();
+        system.assertEquals(false,updatedSystemProperties[0].get('Disable_AccountBillTrigger__c'));
+    }
+
+    @IsTest
+    static void testGenericBatchDMLTriggerOff() {
+        List<Error_Log__c> triggerOffWarning = [
+            SELECT Id
+            FROM Error_Log__c
+            WHERE Class__c = 'BillingAccountTrigger'
+            AND Method__c = 'TriggerDisabled'
+        ];
+
+        System.assertEquals(0,triggerOffWarning.size());
+
+        Account newSFAccountOne = new Account(
+            Name = 'Account One',
+            Recurring_Billing__c = false
+        );
+        Account newSFAccountTwo = new Account(
+            Name = 'Account Two',
+            Recurring_Billing__c = false
+        );
+
+        insert new List<Account>{newSFAccountOne, newSFAccountTwo};
+
+        Zuora__CustomerAccount__c newZuoraAccountOne = new Zuora__CustomerAccount__c(
+            Name = 'Account Name',
+            Zuora__Account__c = newSFAccountOne.Id,
+            Zuora__Zuora_Id__c = '222222222222222222222',
+            Zuora__AutoPay__c = false
+        );
+        Zuora__CustomerAccount__c newZuoraAccountTwo = new Zuora__CustomerAccount__c(
+            Name = 'Account Name',
+            Zuora__Account__c = newSFAccountTwo.Id,
+            Zuora__Zuora_Id__c = '333333333333333333333',
+            Zuora__AutoPay__c = false
+        );
+
+        List<Zuora__CustomerAccount__c> zAccounts = new List<Zuora__CustomerAccount__c>{newZuoraAccountOne, newZuoraAccountTwo};
+        insert zAccounts;
+
+        newZuoraAccountOne.Zuora__AutoPay__c = true;
+        newZuoraAccountTwo.Zuora__AutoPay__c = true;
+
+        Test.startTest();
+            GenericBatchDMLOperation batchDML = new GenericBatchDMLOperation(zAccounts, 'Update');
+            batchDML.triggersToDisable = new List<String>{
+                'Disable_Billing_Account_Trigger__c',
+                'Disable_AccountTrigger__c'
+            };
+            Database.executeBatch(batchDML);
+        Test.stopTest();
+
+        List<Zuora__CustomerAccount__c> billingAccounts = [
+            SELECT Id, Zuora__AutoPay__c
+            FROM Zuora__CustomerAccount__c
+            WHERE Id = : newZuoraAccountOne.Id
+            OR Id = : newZuoraAccountTwo.Id
+        ];
+
+        System.assertEquals(true,billingAccounts[0].Zuora__AutoPay__c);
+        System.assertEquals(true,billingAccounts[0].Zuora__AutoPay__c);
+
+        List<Error_Log__c> updatedTriggerOffWarning = [
+            SELECT Id
+            FROM Error_Log__c
+            WHERE Class__c = 'BillingAccountTrigger'
+            AND Method__c = 'TriggerDisabled'
+        ];
+
+        System.assertEquals(1,updatedTriggerOffWarning.size());
+    }
 }
