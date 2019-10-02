@@ -16,10 +16,10 @@
          <div class="slds-truncate" title="BillsGenerated">Amount</div>
       </th>
       <th scope="col">
-        <div class="slds-truncate" title="BillsGenerated">Order Number</div>
+        <div class="slds-truncate" title="BillsGenerated">Payment Method</div>
       </th>
       <th scope="col">
-        <div class="slds-truncate" title="BillsGenerated">Payment Method</div>
+        <div class="slds-truncate" title="BillsGenerated">Payment Type</div>
       </th>
       <th scope="col">
          <div class="slds-truncate" title="BillsGenerated">Response Status</div>

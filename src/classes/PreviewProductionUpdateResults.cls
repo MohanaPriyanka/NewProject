@@ -326,7 +326,7 @@ public without sharing class PreviewProductionUpdateResults{
                 zuoraPayment.OrderNumber = zPayment.Zuora__PaymentMethod__c;
                 zuoraPayment.PaymentMethod = zPayment.Zuora__Type__c;
                 zuoraPayment.ResponseStatus = zPayment.Zuora__Status__c;
-                zuoraPayment.AutopayStatus = 'Account:' + String.valueOf(zPayment.Zuora__BillingAccount__r.Zuora__AutoPay__c);
+                zuoraPayment.AutopayStatus = 'Account: ' + String.valueOf(zPayment.Zuora__BillingAccount__r.Zuora__AutoPay__c);
                 transactionDetailList.add(zuoraPayment);
             }
         } else {
