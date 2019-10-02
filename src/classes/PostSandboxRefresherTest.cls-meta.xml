@@ -11,5 +11,10 @@
         <minorNumber>55</minorNumber>
         <namespace>ChargentOrders</namespace>
     </packageVersions>
+    <packageVersions>
+        <majorNumber>5</majorNumber>
+        <minorNumber>2</minorNumber>
+        <namespace>Zuora</namespace>
+    </packageVersions>
     <status>Active</status>
 </ApexClass>
