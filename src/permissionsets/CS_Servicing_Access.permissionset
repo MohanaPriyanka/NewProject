@@ -916,11 +916,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Bill_Period__c.Total_Billed_STAMPED__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>ChargentOrders__ChargentOrder__c.Account_Bill__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -3086,17 +3081,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Transfer_Part__c.Estimated_kWh__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Transfer_Part__c.Fee_Paid_To__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Transfer_Part__c.Percent_of_Production__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3131,22 +3116,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Transfer__c.Bills_Generated__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Transfer__c.Date_of_Bills_Generated__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Transfer__c.Date_of_Transfer__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Transfer__c.Default_Credit_Value__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3157,11 +3127,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Transfer__c.Total_Transferred__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Transfer__c.Total_kWh_Transferred__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
