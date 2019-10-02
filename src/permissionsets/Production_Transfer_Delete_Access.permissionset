@@ -267,10 +267,6 @@
         <visibility>Visible</visibility>
     </tabSettings>
     <tabSettings>
-        <tab>Production__c</tab>
-        <visibility>Visible</visibility>
-    </tabSettings>
-    <tabSettings>
         <tab>Transfer_Part__c</tab>
         <visibility>Visible</visibility>
     </tabSettings>
