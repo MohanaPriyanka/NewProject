@@ -16,19 +16,13 @@
          <div class="slds-truncate" title="BillsGenerated">Amount</div>
       </th>
       <th scope="col">
+        <div class="slds-truncate" title="BillsGenerated">Order Number</div>
+      </th>
+      <th scope="col">
         <div class="slds-truncate" title="BillsGenerated">Payment Method</div>
       </th>
       <th scope="col">
-        <div class="slds-truncate" title="BillsGenerated">Payment Type</div>
-      </th>
-      <th scope="col">
          <div class="slds-truncate" title="BillsGenerated">Response Status</div>
-      </th>
-      <th scope="col">
-         <div class="slds-truncate" title="BillsGenerated">Gateway</div>
-      </th>
-      <th scope="col">
-         <div class="slds-truncate" title="BillsGenerated">Autopay</div>
       </th>
     </tr>
   </thead>
@@ -45,19 +39,13 @@
          <div class="slds-truncate" ><ui:outputCurrency value="{!trans.PaymentAmount}"/></div>
        </td>
        <td>
+         <div class="slds-truncate" ><ui:outputText value="{!trans.OrderNumber}"/></div>
+       </td>
+       <td>
          <div class="slds-truncate" ><ui:outputText value="{!trans.PaymentMethod}"/></div>
        </td>
        <td>
-         <div class="slds-truncate" ><ui:outputText value="{!trans.PaymentType}"/></div>
-       </td>
-       <td>
          <div class="slds-truncate" ><ui:outputText value="{!trans.ResponseStatus}"/></div>
-       </td>
-       <td>
-         <div class="slds-truncate" ><ui:outputText value="{!trans.GatewayName}"/></div>
-       </td>
-       <td>
-         <div class="slds-truncate" ><ui:outputText value="{!trans.AutopayStatus}"/></div>
        </td>
     </tr>
    </aura:iteration>
