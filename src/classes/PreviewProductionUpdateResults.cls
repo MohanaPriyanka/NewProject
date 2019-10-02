@@ -286,6 +286,8 @@ public without sharing class PreviewProductionUpdateResults{
         public String PaymentMethod;
         @AuraEnabled
         public String ResponseStatus;
+        @AuraEnabled
+        public String AutopayStatus;
     }
 
     @AuraEnabled
@@ -324,6 +326,7 @@ public without sharing class PreviewProductionUpdateResults{
                 zuoraPayment.OrderNumber = zPayment.Zuora__PaymentMethod__c;
                 zuoraPayment.PaymentMethod = zPayment.Zuora__Type__c;
                 zuoraPayment.ResponseStatus = zPayment.Zuora__Status__c;
+                zuoraPayment.AutopayStatus = 'Account:' + String.valueOf(zPayment.Zuora__BillingAccount__r.Zuora__AutoPay__c);
                 transactionDetailList.add(zuoraPayment);
             }
         } else {
@@ -349,6 +352,7 @@ public without sharing class PreviewProductionUpdateResults{
                 chargentTransaction.OrderNumber = chTransaction.ChargentOrders__Order__r.Name;
                 chargentTransaction.PaymentMethod = chTransaction.ChargentOrders__Order__r.ChargentOrders__Payment_Method__c;
                 chargentTransaction.ResponseStatus = chTransaction.ChargentOrders__Response_Status__c;
+                chargentTransaction.AutopayStatus = chTransaction.ChargentOrders__Order__r.ChargentOrders__Payment_Status__c;
                 transactionDetailList.add(chargentTransaction);
             }
         }

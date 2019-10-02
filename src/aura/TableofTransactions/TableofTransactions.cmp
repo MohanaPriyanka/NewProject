@@ -24,6 +24,9 @@
       <th scope="col">
          <div class="slds-truncate" title="BillsGenerated">Response Status</div>
       </th>
+      <th scope="col">
+         <div class="slds-truncate" title="BillsGenerated">Autopay</div>
+      </th>
     </tr>
   </thead>
   <tbody>     
@@ -46,6 +49,9 @@
        </td>
        <td>
          <div class="slds-truncate" ><ui:outputText value="{!trans.ResponseStatus}"/></div>
+       </td>
+       <td>
+         <div class="slds-truncate" ><ui:outputText value="{!trans.AutopayStatus}"/></div>
        </td>
     </tr>
    </aura:iteration>
