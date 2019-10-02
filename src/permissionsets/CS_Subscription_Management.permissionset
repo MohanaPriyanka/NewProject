@@ -1110,10 +1110,6 @@
         <visibility>Available</visibility>
     </tabSettings>
     <tabSettings>
-        <tab>Production__c</tab>
-        <visibility>Available</visibility>
-    </tabSettings>
-    <tabSettings>
         <tab>Rate_Class__c</tab>
         <visibility>Visible</visibility>
     </tabSettings>
