@@ -19,7 +19,8 @@ public without sharing class GenericBatchDMLOperation implements Database.Batcha
     public String dmlOperation;
     public List<SObject> sobjList = new List<SObject>();
     public String log = '';
-    
+    public List<String> triggersToDisable;
+
     public GenericBatchDMLOperation(List<SObject> sobjListPassed,
                                     String dmlOperationPassed) {
         sobjList = sobjListPassed;
@@ -33,6 +34,11 @@ public without sharing class GenericBatchDMLOperation implements Database.Batcha
     }
    
     public void execute(Database.BatchableContext batchableContext, List<SObject> scope) {
+        if (triggersToDisable != null){
+            for (String triggerAsString : triggersToDisable){
+                Util.disableTrigger(triggerAsString);
+            }
+        }
         GenericResult[] resultList;
         if (dmlOperation == 'Insert') {
             resultList = saveResult2GR(Database.insert(scope, false));
@@ -83,6 +89,11 @@ public without sharing class GenericBatchDMLOperation implements Database.Batcha
             email.setSubject('Error in Batch DML process!');
             email.setPlainTextBody(this.log);
             MessagingService.sendEmail(new List<Messaging.SingleEmailMessage>{email});
+        }
+        if (triggersToDisable != null){
+            for (String triggerString : triggersToDisable){
+                Util.enableTrigger(triggerString);
+            }
         }
     }
 

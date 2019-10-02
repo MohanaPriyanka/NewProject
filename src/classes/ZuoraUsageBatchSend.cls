@@ -49,11 +49,26 @@ public without sharing class ZuoraUsageBatchSend implements Database.Batchable<s
 
     public void finish(Database.BatchableContext bc){
         if (Util.getSystemPropertyCheckbox('Update_Usage_Records_With_ZuoraId__c')) {
+
+            // For historical migration, we want to make sure old data doesn't change when we update UASBs and Adjustments,
+            // so we track historical changes and log them:
+
+            List<SObject> recordsToUpdate = new List<SObject>();
             if (uasbToUpdate.size() > 0){
-                update uasbToUpdate;
+                recordsToUpdate.addAll(uasbToUpdate);
             }
             if (adjustToUpdate.size() > 0){
-                update adjustToUpdate;
+                recordsToUpdate.addAll(adjustToUpdate);
+            }
+            if (recordsToUpdate.size() > 0){
+                GenericBatchDMLOperation batchDML = new GenericBatchDMLOperation(recordsToUpdate, 'Update');
+                batchDML.triggersToDisable = new List<String>{
+                    'Disable_System_Bill_Trigger__c',
+                    'Disable_AccountBillTrigger__c',
+                    'Disable_AccountTrigger__c',
+                    'Disable_BillAdjustmentTrigger__c'
+                };
+                Database.executeBatch(batchDML);
             }
         }
     }
