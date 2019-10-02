@@ -53,7 +53,6 @@ public without sharing class ZuoraUsageBatchSend implements Database.Batchable<s
             // For historical migration, we want to make sure old data doesn't change when we update UASBs and Adjustments,
             // so we track historical changes and log them:
 
-            Datetime startTime = Datetime.now();
             List<SObject> recordsToUpdate = new List<SObject>();
             if (uasbToUpdate.size() > 0){
                 recordsToUpdate.addAll(uasbToUpdate);
@@ -71,40 +70,6 @@ public without sharing class ZuoraUsageBatchSend implements Database.Batchable<s
                 };
                 Database.executeBatch(batchDML);
             }
-            Logger.logNow('ZuoraUsageBatchSend','finish',checkFieldUpdates(startTime),'WARN');
         }
-    }
-
-    public String checkFieldUpdates(Datetime startTime){
-        String history = 'Field History Tracking: ';
-        startTime = startTime.addMinutes(-1);
-        List<UASB__History> uasbHistory = [
-            SELECT ParentId, CreatedDate, Field, OldValue, NewValue
-            FROM UASB__History
-            WHERE CreatedDate >= :startTime
-            ORDER BY CreatedDate DESC
-        ];
-        for (UASB__History uasb : uasbHistory) {
-            history += '[UASB Updates]' + String.valueOf(uasb);
-        }
-        List<System_Bill__History> systemBillHistory = [
-            SELECT ParentId, CreatedDate, CreatedBy.Name, Field, OldValue, NewValue
-            FROM System_Bill__History
-            WHERE CreatedDate >= :startTime
-            ORDER BY CreatedDate DESC
-        ];
-        for (System_Bill__History sb : systemBillHistory) {
-            history += '[SB Updates]' + String.valueOf(sb);
-        }
-        List<Account_Bill__History> accountBillHistory = [
-            SELECT ParentId, CreatedDate, CreatedBy.Name, Field, OldValue, NewValue
-            FROM Account_Bill__History
-            WHERE CreatedDate >= :startTime
-            ORDER BY CreatedDate DESC
-        ];
-        for (Account_Bill__History ab : accountBillHistory) {
-            history += '[AB Updates]' + String.valueOf(ab);
-        }
-        return history;
     }
 }

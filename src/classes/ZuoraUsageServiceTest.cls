@@ -141,14 +141,6 @@ public class ZuoraUsageServiceTest {
         ];
         System.assertEquals(1, errors.size());
 
-        List<Error_Log__c> historyLogging = [
-            SELECT Id, Message__c
-            FROM Error_Log__c
-            WHERE Class__c = 'ZuoraUsageBatchSend'
-            AND Method__c = 'finish'
-        ];
-        System.assertEquals(1, historyLogging.size());
-
         Database.QueryLocator queryLocator = UASBSelector.uasbsNotYetInZuora();
         Database.QueryLocatorIterator iterator = queryLocator.iterator();
         List<UASB__c> failedUASB = new List<UASB__c>();
