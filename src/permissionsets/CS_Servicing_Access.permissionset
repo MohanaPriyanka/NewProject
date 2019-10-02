@@ -4064,10 +4064,6 @@
         <visibility>Visible</visibility>
     </tabSettings>
     <tabSettings>
-        <tab>Transfer_Part__c</tab>
-        <visibility>Available</visibility>
-    </tabSettings>
-    <tabSettings>
         <tab>Transfer__c</tab>
         <visibility>Available</visibility>
     </tabSettings>
