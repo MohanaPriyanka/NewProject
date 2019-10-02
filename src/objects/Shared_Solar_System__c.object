@@ -602,6 +602,20 @@
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>CDG_Host_Account__c</fullName>
+        <description>This is the Community Distributed Generation Host Account name that is used for NY Allocation Schedules. It is only needed for NY Shared Solar Systems.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the Community Distributed Generation Host Account name that is used for NY Allocation Schedules. It is only needed for NY Shared Solar Systems</inlineHelpText>
+        <label>CDG Host Account</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Capacity_Available_to_be_Reserved__c</fullName>
         <externalId>false</externalId>
         <formula>if( Anchor_Capacity_Reserved__c &gt;0,  Total_System_Size_kWh_DC__c - Anchor_Capacity_Reserved__c - Total_Capacity_Committed_Reserved__c, Total_CS_Capacity_kW_DC_Formula__c -  Total_Capacity_Committed_Reserved__c)</formula>
@@ -1073,6 +1087,20 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Host_Account_Name__c</fullName>
+        <description>This is the Account Name used in the NY Allocation Schedule template in Conga. It is currently only needed for NY Shared Solar System Records.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the Account Name used in the NY Allocation Schedule template in Conga. It is currently only needed for NY Shared Solar System Records.</inlineHelpText>
+        <label>Host Account Name</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
@@ -3433,7 +3461,7 @@ null)</formula>
             </values>
         </picklistValues>
     </recordTypes>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>Private</sharingModel>
     <startsWith n1:nil="true" />
     <validationRules>
