@@ -1799,6 +1799,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <label>Renewable Connections, LLC</label>
                 </value>
                 <value>
+                    <fullName>Renewables Worldwide</fullName>
+                    <default>false</default>
+                    <label>Renewables Worldwide</label>
+                </value>
+                <value>
                     <fullName>Resonant Energy</fullName>
                     <default>false</default>
                     <label>Resonant Energy</label>
@@ -1882,6 +1887,16 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <fullName>Yeloha</fullName>
                     <default>false</default>
                     <label>Yeloha</label>
+                </value>
+                <value>
+                    <fullName>Different Test Partner</fullName>
+                    <default>false</default>
+                    <label>Different Test Partner</label>
+                </value>
+                <value>
+                    <fullName>Other Test Partner</fullName>
+                    <default>false</default>
+                    <label>Other Test Partner</label>
                 </value>
                 <value>
                     <fullName>Oxford100</fullName>
@@ -2646,6 +2661,10 @@ null)</formula>
                 <default>false</default>
             </values>
             <values>
+                <fullName>Different Test Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Ecogen Services</fullName>
                 <default>false</default>
             </values>
@@ -2731,6 +2750,10 @@ null)</formula>
             </values>
             <values>
                 <fullName>Renewable Connections%2C LLC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Renewables Worldwide</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -2875,17 +2898,6 @@ null)</formula>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Partner__c</picklist>
-            <values>
-                <fullName>BlueWave Incentive Program</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Boston Solar</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Picklist__c</picklist>
             <values>
                 <fullName>AMP</fullName>
@@ -2916,69 +2928,6 @@ null)</formula>
             </values>
             <values>
                 <fullName>2</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Service_Territories__c</picklist>
-            <values>
-                <fullName>Capital</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Central</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Dunwoodie</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Genesee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Hudson Valley</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Long Island</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Millwood</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mohawk Valley</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>N%2EY%2EC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>North</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>West</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -3073,6 +3022,10 @@ null)</formula>
                 <default>false</default>
             </values>
             <values>
+                <fullName>Different Test Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Ecogen Services</fullName>
                 <default>false</default>
             </values>
@@ -3158,6 +3111,10 @@ null)</formula>
             </values>
             <values>
                 <fullName>Renewable Connections%2C LLC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Renewables Worldwide</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -3302,17 +3259,6 @@ null)</formula>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Partner__c</picklist>
-            <values>
-                <fullName>BlueWave Incentive Program</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Boston Solar</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Picklist__c</picklist>
             <values>
                 <fullName>AMP</fullName>
@@ -3347,69 +3293,6 @@ null)</formula>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Service_Territories__c</picklist>
-            <values>
-                <fullName>Capital</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Central</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Dunwoodie</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Genesee</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Hudson Valley</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Long Island</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Millwood</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mohawk Valley</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>N%2EY%2EC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>North</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>West</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Service_Territory__c</picklist>
             <values>
                 <fullName>Duke Energy Carolinas %28DEC%29</fullName>
@@ -3433,7 +3316,7 @@ null)</formula>
             </values>
         </picklistValues>
     </recordTypes>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>Private</sharingModel>
     <startsWith n1:nil="true" />
     <validationRules>
