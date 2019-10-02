@@ -177,11 +177,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Transfer__c.Allocation_Schedule__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Transfer__c.Attempted_Transfer__c</field>
         <readable>true</readable>
     </fieldPermissions>
