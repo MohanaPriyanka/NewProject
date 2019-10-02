@@ -4,7 +4,7 @@
  + * When the "Preview Bills" button is hit on a Production Update, this finds all related UASes and 
  + * calculates what their bill will be (NMCs allocated and then with 10% discount)
  + * 
- + * Tested By: TestBillCreationandPayment
+ + * Tested By: TestBillCreationandPayment, ZuoraPaymentSelectorTest
  + *************************************************************************************/
 
 
@@ -281,9 +281,9 @@ public without sharing class PreviewProductionUpdateResults{
         @AuraEnabled
         public Decimal PaymentAmount;
         @AuraEnabled
-        public String OrderNumber;
-        @AuraEnabled
         public String PaymentMethod;
+        @AuraEnabled
+        public String PaymentType;
         @AuraEnabled
         public String ResponseStatus;
         @AuraEnabled
@@ -301,21 +301,7 @@ public without sharing class PreviewProductionUpdateResults{
         }
 
         if (zuoraSetting.Zuora_Is_Live__c) {
-            List<Zuora__Payment__c> zuoraPayments = [
-                SELECT Id, Name,
-                    Zuora__Amount__c,
-                    Zuora__BillingAccount__r.Zuora__Account__r.Id,
-                    Zuora__GatewayResponse__c,
-                    Zuora__PaymentMethod__c,
-                    Zuora__Status__c,
-                    Zuora__Type__c,
-                    Zuora__Effective_Date__c,
-                    Zuora__BillingAccount__r.Zuora__PaymentGateway__r.Name,
-                    Zuora__BillingAccount__r.Zuora__AutoPay__c
-                FROM Zuora__Payment__c
-                WHERE Zuora__BillingAccount__r.Zuora__Account__r.Id IN :propertyAccountIds
-                ORDER BY Zuora__Effective_Date__c DESC
-            ];
+            List<Zuora__Payment__c> zuoraPayments = ZuoraPaymentSelector.selectByAccount(propertyAccountIds);
 
             for (Zuora__Payment__c zPayment : zuoraPayments){
                 TransactionDetail zuoraPayment = new TransactionDetail();
@@ -323,8 +309,8 @@ public without sharing class PreviewProductionUpdateResults{
                 zuoraPayment.TransactionNumber = zPayment.Name;
                 zuoraPayment.PaymentDate = Date.valueOf(zPayment.Zuora__Effective_Date__c);
                 zuoraPayment.PaymentAmount = zPayment.Zuora__Amount__c;
-                zuoraPayment.OrderNumber = zPayment.Zuora__PaymentMethod__c;
-                zuoraPayment.PaymentMethod = zPayment.Zuora__Type__c;
+                zuoraPayment.PaymentMethod = zPayment.Zuora__PaymentMethod__c;
+                zuoraPayment.PaymentType = zPayment.Zuora__Type__c;
                 zuoraPayment.ResponseStatus = zPayment.Zuora__Status__c;
                 zuoraPayment.AutopayStatus = 'Account: ' + String.valueOf(zPayment.Zuora__BillingAccount__r.Zuora__AutoPay__c);
                 transactionDetailList.add(zuoraPayment);
@@ -349,8 +335,8 @@ public without sharing class PreviewProductionUpdateResults{
                 chargentTransaction.TransactionNumber = chTransaction.Name;
                 chargentTransaction.PaymentDate = Date.valueOf(chTransaction.ChargentOrders__Gateway_Date__c);
                 chargentTransaction.PaymentAmount = chTransaction.ChargentOrders__Amount__c;
-                chargentTransaction.OrderNumber = chTransaction.ChargentOrders__Order__r.Name;
-                chargentTransaction.PaymentMethod = chTransaction.ChargentOrders__Order__r.ChargentOrders__Payment_Method__c;
+                chargentTransaction.PaymentMethod = chTransaction.ChargentOrders__Order__r.Name;
+                chargentTransaction.PaymentType = chTransaction.ChargentOrders__Order__r.ChargentOrders__Payment_Method__c;
                 chargentTransaction.ResponseStatus = chTransaction.ChargentOrders__Response_Status__c;
                 chargentTransaction.AutopayStatus = chTransaction.ChargentOrders__Order__r.ChargentOrders__Payment_Status__c;
                 transactionDetailList.add(chargentTransaction);

@@ -7,25 +7,25 @@
   <thead>
     <tr class="slds-text-title_caps">
       <th scope="col">
-         <div class="slds-truncate" title="BillsGenerated">Transaction #</div>
+         <div class="slds-truncate">Transaction #</div>
       </th>
       <th scope="col">
-         <div class="slds-truncate" title="BillsGenerated">Transaction Date</div>
+         <div class="slds-truncate">Transaction Date</div>
       </th>
       <th scope="col">
-         <div class="slds-truncate" title="BillsGenerated">Amount</div>
+         <div class="slds-truncate">Amount</div>
       </th>
       <th scope="col">
-        <div class="slds-truncate" title="BillsGenerated">Payment Method</div>
+        <div class="slds-truncate">Payment Method</div>
       </th>
       <th scope="col">
-        <div class="slds-truncate" title="BillsGenerated">Payment Type</div>
+        <div class="slds-truncate">Payment Type</div>
       </th>
       <th scope="col">
-         <div class="slds-truncate" title="BillsGenerated">Response Status</div>
+         <div class="slds-truncate">Response Status</div>
       </th>
       <th scope="col">
-         <div class="slds-truncate" title="BillsGenerated">Autopay</div>
+         <div class="slds-truncate">Autopay</div>
       </th>
     </tr>
   </thead>
@@ -42,10 +42,10 @@
          <div class="slds-truncate" ><ui:outputCurrency value="{!trans.PaymentAmount}"/></div>
        </td>
        <td>
-         <div class="slds-truncate" ><ui:outputText value="{!trans.OrderNumber}"/></div>
+         <div class="slds-truncate" ><ui:outputText value="{!trans.PaymentMethod}"/></div>
        </td>
        <td>
-         <div class="slds-truncate" ><ui:outputText value="{!trans.PaymentMethod}"/></div>
+         <div class="slds-truncate" ><ui:outputText value="{!trans.PaymentType}"/></div>
        </td>
        <td>
          <div class="slds-truncate" ><ui:outputText value="{!trans.ResponseStatus}"/></div>
