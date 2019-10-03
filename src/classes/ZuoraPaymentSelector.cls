@@ -15,4 +15,23 @@ public with sharing class ZuoraPaymentSelector {
             WHERE Id IN :ids
         ];
     }
+
+    public static List<Zuora__Payment__c> selectByAccount(List<Id> propertyAccountIds) {
+        List<Zuora__Payment__c> zuoraPayments = [
+            SELECT Id, Name,
+                Zuora__Amount__c,
+                Zuora__BillingAccount__r.Zuora__Account__r.Id,
+                Zuora__GatewayResponse__c,
+                Zuora__PaymentMethod__c,
+                Zuora__Status__c,
+                Zuora__Type__c,
+                Zuora__Effective_Date__c,
+                Zuora__BillingAccount__r.Zuora__PaymentGateway__r.Name,
+                Zuora__BillingAccount__r.Zuora__AutoPay__c
+            FROM Zuora__Payment__c
+            WHERE Zuora__BillingAccount__r.Zuora__Account__r.Id IN :propertyAccountIds
+            ORDER BY Zuora__Effective_Date__c DESC
+        ];
+        return zuoraPayments;
+    }
 }
