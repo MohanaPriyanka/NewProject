@@ -72,8 +72,6 @@ public with sharing class ZuoraAccountReconciliationService {
             actionItems.objects = zuoraAccountsToUpdate;
             ZuoraAPIHelper.actionUpdate(actionItems);
         }
-        System.debug(LoggingLevel.ERROR, zuoraAccountIds);
-        System.debug(LoggingLevel.ERROR, zuoraAccountIdList);
     }
 
     @TestVisible
@@ -81,8 +79,6 @@ public with sharing class ZuoraAccountReconciliationService {
         List<ZuoraAPI.ZuoraAccount> zuoraAccountsToUpdate = new List<ZuoraAPI.ZuoraAccount>();
         for (ZuoraAPI.ZuoraAccount zuoraAccount : zuoraAccounts) {
             Map<String, Object> sfdcAccount = zuoraIdToSFDCAccountMap.get(zuoraAccount.Id);
-            System.debug(LoggingLevel.ERROR, zuoraAccount.Id);
-            System.debug(LoggingLevel.ERROR, sfdcAccount);
             if (sfdcAccount == null) {
                 Logger.logLater(
                     'ZuoraAccountReconciliationService',
