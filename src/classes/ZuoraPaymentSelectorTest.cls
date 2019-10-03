@@ -83,7 +83,7 @@ public with sharing class ZuoraPaymentSelectorTest {
         List<Account> accountList = new List<Account>{accountTwo};
         List<Id> accountIdList = new List<Id>{accountTwo.Id};
 
-        system.AssertEquals( 3, (ZuoraPaymentSelector.selectByAccount(accountIdList).size());
+        system.AssertEquals( 3, (ZuoraPaymentSelector.selectByAccount(accountIdList).size()));
 
         Zuora_Setting__mdt zuoraSetting = ZuoraAPIHelper.getZuoraSetting();
         if (zuoraSetting.Zuora_Is_Live__c){
