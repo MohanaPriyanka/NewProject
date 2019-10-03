@@ -4,7 +4,7 @@
  + * When the "Preview Bills" button is hit on a Production Update, this finds all related UASes and 
  + * calculates what their bill will be (NMCs allocated and then with 10% discount)
  + * 
- + * Tested By: TestBillCreationandPayment
+ + * Tested By: TestBillCreationandPayment, ZuoraPaymentSelectorTest
  + *************************************************************************************/
 
 
@@ -271,25 +271,78 @@ public without sharing class PreviewProductionUpdateResults{
         }
     }
 
+    public class TransactionDetail {
+        @AuraEnabled
+        public Id SFRecordId;
+        @AuraEnabled
+        public String TransactionNumber;
+        @AuraEnabled
+        public Date PaymentDate;
+        @AuraEnabled
+        public Decimal PaymentAmount;
+        @AuraEnabled
+        public String PaymentMethod;
+        @AuraEnabled
+        public String PaymentType;
+        @AuraEnabled
+        public String ResponseStatus;
+        @AuraEnabled
+        public String AutopayStatus;
+    }
+
     @AuraEnabled
-    public static List<ChargentOrders__Transaction__c> getTransactions (List<Account> accountLookup) {
-        List<String> idList = new List<String>();
-        String stringId;
-        for (Account acc : accountLookup){
-            stringId = acc.Id;
-            idList.add(stringId.substring(0,15));
+    public static List<TransactionDetail> getTransactions (List<Account> accountLookup) {
+        List<Id> propertyAccountIds = new List<Id>();
+        List<TransactionDetail> transactionDetailList = new List<TransactionDetail>();
+        Zuora_Setting__mdt zuoraSetting = ZuoraAPIHelper.getZuoraSetting();
+
+        for (Account propAccount : accountLookup){
+            propertyAccountIds.add(propAccount.Id);
         }
-        List<ChargentOrders__Transaction__c> transactionList = [SELECT Name, Id, ChargentOrders__Gateway_Date__c,
-            ChargentOrders__Amount__c,
-            ChargentOrders__Response_Status__c,
-            ChargentOrders__Gateway__r.Name,
-            ChargentOrders__Order__r.Name,
-            ChargentOrders__Order__r.ChargentOrders__Payment_Status__c,
-            ChargentOrders__Order__r.ChargentOrders__Payment_Method__c
-        FROM ChargentOrders__Transaction__c
-        WHERE Property_Account_ID__c IN : idList
-        ORDER BY  ChargentOrders__Gateway_Date__c DESC];
-        return transactionList;
+
+        if (zuoraSetting.Zuora_Is_Live__c) {
+            List<Zuora__Payment__c> zuoraPayments = ZuoraPaymentSelector.selectByAccount(propertyAccountIds);
+
+            for (Zuora__Payment__c zPayment : zuoraPayments){
+                TransactionDetail zuoraPayment = new TransactionDetail();
+                zuoraPayment.SFRecordId = zPayment.Id;
+                zuoraPayment.TransactionNumber = zPayment.Name;
+                zuoraPayment.PaymentDate = Date.valueOf(zPayment.Zuora__Effective_Date__c);
+                zuoraPayment.PaymentAmount = zPayment.Zuora__Amount__c;
+                zuoraPayment.PaymentMethod = zPayment.Zuora__PaymentMethod__c;
+                zuoraPayment.PaymentType = zPayment.Zuora__Type__c;
+                zuoraPayment.ResponseStatus = zPayment.Zuora__Status__c;
+                zuoraPayment.AutopayStatus = 'Account: ' + String.valueOf(zPayment.Zuora__BillingAccount__r.Zuora__AutoPay__c);
+                transactionDetailList.add(zuoraPayment);
+            }
+        } else {
+            List<ChargentOrders__Transaction__c> transactionList = [
+                SELECT Name, Id, ChargentOrders__Gateway_Date__c,
+                    ChargentOrders__Amount__c,
+                    ChargentOrders__Response_Status__c,
+                    ChargentOrders__Gateway__r.Name,
+                    ChargentOrders__Order__r.Name,
+                    ChargentOrders__Order__r.ChargentOrders__Payment_Status__c,
+                    ChargentOrders__Order__r.ChargentOrders__Payment_Method__c,
+                    ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Id
+                FROM ChargentOrders__Transaction__c
+                WHERE ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Id IN : propertyAccountIds
+                ORDER BY ChargentOrders__Gateway_Date__c DESC];
+
+            for (ChargentOrders__Transaction__c chTransaction : transactionList){
+                TransactionDetail chargentTransaction = new TransactionDetail();
+                chargentTransaction.SFRecordId = chTransaction.Id;
+                chargentTransaction.TransactionNumber = chTransaction.Name;
+                chargentTransaction.PaymentDate = Date.valueOf(chTransaction.ChargentOrders__Gateway_Date__c);
+                chargentTransaction.PaymentAmount = chTransaction.ChargentOrders__Amount__c;
+                chargentTransaction.PaymentMethod = chTransaction.ChargentOrders__Order__r.Name;
+                chargentTransaction.PaymentType = chTransaction.ChargentOrders__Order__r.ChargentOrders__Payment_Method__c;
+                chargentTransaction.ResponseStatus = chTransaction.ChargentOrders__Response_Status__c;
+                chargentTransaction.AutopayStatus = chTransaction.ChargentOrders__Order__r.ChargentOrders__Payment_Status__c;
+                transactionDetailList.add(chargentTransaction);
+            }
+        }
+        return transactionDetailList;
     }
 
     public static UASB__c getUASB(Schedule_Z_Subscription__c szs, Energy_Usage_Update__c production, Decimal transferCount, Decimal totalNMCs, Decimal totalProduction, Decimal nmcRate){
