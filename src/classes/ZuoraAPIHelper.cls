@@ -3,12 +3,14 @@
  * Description: 
  * Test: ZuoraAPIHelperTest
  *************************************************************************************/
-
+// Allowing too many public methods for this utility class
+@SuppressWarnings('PMD.ExcessivePublicCount')
 public with sharing class ZuoraAPIHelper {
     @TestVisible
     private static Zuora_Setting__mdt zuoraSetting;
     @TestVisible
     private static Long calloutMillis = 0;
+    @TestVisible
     private static Integer maxCalloutMillis = 105*1000;
     // Because we use the Zuora.zApi package, we can't use Limits.getCallouts to know how many callouts that namespace
     // consumes. So we need to manage it ourselves.
@@ -32,6 +34,8 @@ public with sharing class ZuoraAPIHelper {
         return (maxCalloutMillis - calloutMillis)/1000;
     }
 
+    // Not addressing this because the method already has many dependencies.
+    @SuppressWarnings('PMD.ExcessiveParameterList')
     public static HttpResponse callJsonEndpoint(String method, String endpoint, Object jsonBody, Boolean flush) {
         // Since there is a 120 second cumulative timeout for callouts, abort if we don't have a 15 second cushion left
         // (which is arbitrary). Starting the transaction and having Salesforce abort it may end up an with finished or
@@ -62,6 +66,8 @@ public with sharing class ZuoraAPIHelper {
         return sendHttpRequest(request, endpoint, flush, true);
     }
 
+    // Not addressing this because the method already has many dependencies.
+    @SuppressWarnings('PMD.ExcessiveParameterList')
     public static HttpResponse sendHttpRequest(HttpRequest request, String endpoint, Boolean flush, Boolean useZAPI){
         HttpResponse response;
         if (Test.isRunningTest()) {
@@ -157,6 +163,40 @@ public with sharing class ZuoraAPIHelper {
         return response.getBody();
     }
 
+    public static final Integer maxActionUpdateRecords = 50;
+    public static void actionUpdate(ZuoraAPI.ActionItems actionItems) {
+        if (actionItems.objects.size() > maxActionUpdateRecords) {
+            throw new Util.FatalBWException('Call action update with fewer than 50 records');
+        }
+        HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('PUT', '/v1/action/update/', actionItems, false);
+        if (response.getStatusCode() != 200) {
+            throw new Util.BWException('Received status ' + response.getStatusCode() + ': ' + response.getBody());
+        }
+        List<ZuoraAPI.SaveResult> saveResults = (List<ZuoraAPI.SaveResult>) System.JSON.deserialize(response.getBody(), List<ZuoraAPI.SaveResult>.class);
+        if (containsErrors(saveResults, actionItems.objects)) {
+            throw new Util.BWException('/v1/action/update did not save one or more records');
+        }
+    }
+
+    public static Boolean containsErrors(List<ZuoraAPI.SaveResult> saveResults, List<Object> objects) {
+        if (saveResults.size() != objects.size()) {
+            throw new Util.BWException('Received ' + saveResults.size() + ' when updating ' + objects.size() + ' objects: ' + JSON.serialize(objects));
+        }
+        Boolean errorFound = false;
+        for (Integer i = 0; i < saveResults.size(); i++) {
+            if (!saveResults[0].Success) {
+                errorFound = true;
+                Logger.logLater(
+                    'ZuoraAPIHelper',
+                    'containsErrors',
+                    JSON.serialize(saveResults[i].Errors) + ': ' + JSON.serialize(objects[i]),
+                    Logger.ERROR
+                );
+            }
+        }
+        return errorFound;
+    }
+
     public static String cleanJSON(String json) {
         return json.replace('__c', '_Zcustom')
             .replace('"currency" :', '"currency_Zreserved" :')
@@ -164,7 +204,7 @@ public with sharing class ZuoraAPIHelper {
     }
 
     public static String generateOAuthToken() {
-        String token = (String) Cache.org.get('ZuoraOAuthToken');
+        String token = (String) Cache.Org.get('ZuoraOAuthToken');
         if (token == null) {
             API_Credential__c credential = getOAuthCredential('Zuora_O_Auth');
             String oAuthCredential =
@@ -172,7 +212,7 @@ public with sharing class ZuoraAPIHelper {
                 '&grant_type=client_credentials' +
                 '&client_secret=' + credential.Credential_Secret__c;
 
-            HttpResponse response = ZuoraAPIHelper.callURLEncodedEndpoint('POST','/oauth/token',oAuthCredential,false);
+            HttpResponse response = ZuoraAPIHelper.callURLEncodedEndpoint('POST','/oauth/token',oAuthCredential);
             ZuoraAPI.OAuthResponse zAuthorization = new ZuoraAPI.OAuthResponse();
             zAuthorization = (ZuoraAPI.OAuthResponse)JSON.deserialize(response.getBody(), ZuoraAPI.OAuthResponse.class);
             Cache.Org.put('ZuoraOAuthToken', zAuthorization.access_token, zAuthorization.expires_in);
@@ -182,7 +222,7 @@ public with sharing class ZuoraAPIHelper {
         }
     }
 
-    public static HttpResponse callURLEncodedEndpoint(String method, String endpoint, String urlBody, Boolean flush) {
+    public static HttpResponse callURLEncodedEndpoint(String method, String endpoint, String urlBody) {
         Zuora_Setting__mdt zuoraSetting = getZuoraSetting();
         HttpRequest request = new HttpRequest();
         request.setMethod(method);
@@ -191,9 +231,11 @@ public with sharing class ZuoraAPIHelper {
         if (urlBody != null) {
             request.setBody(urlBody);
         }
-        return sendHttpRequest(request, endpoint, flush, true);
+        return sendHttpRequest(request, endpoint, false, true);
     }
 
+    // Not addressing this because the method already has dependencies.
+    @SuppressWarnings('PMD.ExcessiveParameterList')
     public static HttpResponse callJSONEndpointWithOAuth(String method, String endpoint, Object jsonBody, Boolean flush) {
         String zAuthToken = ZuoraAPIHelper.generateOAuthToken();
         Zuora_Setting__mdt zuoraSetting = getZuoraSetting();
