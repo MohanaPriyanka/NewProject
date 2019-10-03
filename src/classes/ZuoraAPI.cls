@@ -736,5 +736,6 @@ public with sharing class ZuoraAPI {
         public Boolean AutoRenewal;
         public Date InvoiceDate;
         public Date TargetDate;
+        public String Batch;
     }
 }
