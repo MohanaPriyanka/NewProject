@@ -30,6 +30,8 @@ public without sharing class ZuoraAccountService {
         createAccounts(propertyAccounts, accountIdToLeadMap);
     }
 
+    // Since we want to insert Zuora Contacts and update the Account with a Zuora Id as system
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     private static void createAccounts(List<Account> propertyAccounts, Map<Id, Lead> accountIdToLeadMap) {
         Map<Id, String> accountIdToZuoraIdMap =
             createAccountShells(accountIdToLeadMap, propertyAccounts);
@@ -56,38 +58,9 @@ public without sharing class ZuoraAccountService {
         ZuoraAPI.ActionItems actionItems = new ZuoraAPI.ActionItems();
         actionItems.type = 'Account';
         for (Account propertyAccount : propertyAccounts) {
-            ZuoraAPI.ZuoraAccount zuoraAccount = new ZuoraAPI.ZuoraAccount();
+            ZuoraAPI.ZuoraAccount zuoraAccount = new ZuoraAPI.ZuoraAccount(propertyAccount);
             actionItems.objects.add(zuoraAccount);
-            zuoraAccount.AccountNumber = propertyAccount.Account_Number__c;
-            zuoraAccount.AutoPay = false;
-            zuoraAccount.Batch = 'Batch1';
-            // Since we're setting the Usage End Date to be the first of the month, a Bill Cycle Day of 10 will include
-            // it, and will also allow us to have invoice dates as early as the 13th (which we need to import history)
-            zuoraAccount.BillCycleDay = 10;
-            zuoraAccount.CrmId = propertyAccount.Id;
-            zuoraAccount.Currency_Zreserved = 'USD';
-            zuoraAccount.Name = propertyAccount.Name;
-            zuoraAccount.PaymentTerm = 'Net 30';
-            zuoraAccount.Status = 'Draft';
-            zuoraAccount.AdditionalEmailAddresses = propertyAccount.Additional_Contact__r.Email;
-            // Assign the payment method if hasn't expired
-            if (accountIdToConvertedLeadMap == null) {
-                continue;
-            }
-            Lead convertedLead = accountIdToConvertedLeadMap.get(propertyAccount.Id);
-            if (convertedLead.Zuora_Payment_Ref_Id_Expiration_Date__c != null &&
-                convertedLead.Zuora_Payment_Ref_Id_Expiration_Date__c.getTime() > Datetime.now().getTime()) {
-                zuoraAccount.DefaultPaymentMethodId = convertedLead.Zuora_Payment_Ref_Id__c;
-                // As of June 2019, if a lead provides a payment method, it is for autopay, so we'll set autopay to true
-                zuoraAccount.AutoPay = true;
-            } else {
-                Logger.logLater(
-                    'ZuoraAccountService',
-                    'createAccount',
-                    'Found an expired payment method for Lead Id ' + convertedLead.Id + ' at ' + Datetime.now().getTime(),
-                    Logger.ERROR
-                );
-            }
+            assignPaymentMethodToAccount(accountIdToConvertedLeadMap, propertyAccount, zuoraAccount);
         }
 
         HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/action/create', actionItems, false);
@@ -104,6 +77,26 @@ public without sharing class ZuoraAccountService {
             accountIdToZuoraIdMap.put(propertyAccounts[i].Id, saveResults[i].Id);
         }
         return accountIdToZuoraIdMap;
+    }
+
+    private static void assignPaymentMethodToAccount(Map<Id, Lead> accountIdToConvertedLeadMap, Account propertyAccount, ZuoraAPI.ZuoraAccount zuoraAccount) {
+        if (accountIdToConvertedLeadMap == null) {
+            return;
+        }
+        Lead convertedLead = accountIdToConvertedLeadMap.get(propertyAccount.Id);
+        if (convertedLead.Zuora_Payment_Ref_Id_Expiration_Date__c != null &&
+            convertedLead.Zuora_Payment_Ref_Id_Expiration_Date__c.getTime() > Datetime.now().getTime()) {
+            zuoraAccount.DefaultPaymentMethodId = convertedLead.Zuora_Payment_Ref_Id__c;
+            // As of June 2019, if a lead provides a payment method, it is for autopay, so we'll set autopay to true
+            zuoraAccount.AutoPay = true;
+        } else {
+            Logger.logLater(
+                'ZuoraAccountService',
+                'createAccount',
+                'Found an expired payment method for Lead Id ' + convertedLead.Id + ' at ' + Datetime.now().getTime(),
+                Logger.ERROR
+            );
+        }
     }
 
     @TestVisible
@@ -172,14 +165,7 @@ public without sharing class ZuoraAccountService {
             );
             zuoraContacts.add(zuoraContact);
         }
-        HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('PUT', '/v1/action/update/', actionItems, false);
-        if (response.getStatusCode() != 200) {
-            throw new Util.BWException('Received status ' + response.getStatusCode() + ': ' + response.getBody());
-        }
-        List<ZuoraAPI.SaveResult> saveResults = (List<ZuoraAPI.SaveResult>) System.JSON.deserialize(response.getBody(), List<ZuoraAPI.SaveResult>.class);
-        if (saveResults.size() != propertyAccounts.size()) {
-            throw new Util.BWException('Received ' + saveResults.size() + ' when updating ' + propertyAccounts.size() + ' accounts');
-        }
+        ZuoraAPIHelper.actionUpdate(actionItems);
         return zuoraContacts;
     }
 }

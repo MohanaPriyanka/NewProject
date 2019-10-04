@@ -6,13 +6,17 @@
 @IsTest
 public with sharing class AccountsSelectorTest {
     @TestSetup public static void testSetup() {
-        Util.disableTrigger('Disable_AccountTrigger__c');
-        Util.disableTrigger('Disable_ContactTrigger__c');
-
+        Util.disableAllTriggers();
+        Test.loadData(Utility__c.SObjectType, 'TestCSUtility');
+        Test.loadData(Utility_NMC_Tariff__c.SObjectType, 'TestCSUtilityNMCTariff');
+        Test.loadData(Load_U__c.SObjectType, 'TestCSLoadU');
+        Test.loadData(ChargentBase__Gateway__c.SObjectType, 'TestCSGateway');
         Test.loadData(Contact.SObjectType, 'TestCSContact');
         Test.loadData(Account.SObjectType, 'TestCSAccount');
-        Util.enableTrigger('Disable_AccountTrigger__c');
-        Util.enableTrigger('Disable_ContactTrigger__c');
+        Test.loadData(Entity__c.SObjectType, 'TestCSEntity');
+        Test.loadData(Shared_Solar_System__c.SObjectType, 'TestCSSharedSolarSystem');
+        Test.loadData(Opportunity.SObjectType, 'TestCSOpportunity');
+        Util.enableAllTriggers();
     }
 
     @IsTest public static void testSelectCS67() {
@@ -76,6 +80,18 @@ public with sharing class AccountsSelectorTest {
         );
         insert propertyAccount;
 
-        System.assertEquals(1,accountsSelector.selectAccountsWithBillMessages().size());
+        System.assertEquals(1,AccountsSelector.selectAccountsWithBillMessages().size());
+    }
+
+    @IsTest
+    public static void testSelectForReconciliation() {
+        List<String> zuoraAccountIds = new List<String>{'2c92c0f86ab120de016ab427c9032366', '2c92c0f86ab120de016ab427c9032362'};
+        AccountsSelector accountSelector = new AccountsSelector();
+        List<Map<String, Object>> accounts = accountSelector.selectForReconciliation(zuoraAccountIds);
+        System.assertEquals(2, accounts.size());
+
+        zuoraAccountIds = new List<String>{'foo', 'bar'};
+        accounts = accountSelector.selectForReconciliation(zuoraAccountIds);
+        System.assertEquals(0, accounts.size());
     }
 }
