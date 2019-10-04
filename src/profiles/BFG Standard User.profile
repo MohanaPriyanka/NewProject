@@ -15086,6 +15086,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Utility_Account_Subscription__c.Customer__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Commission_Payment__c.Amount_Due__c</field>
         <readable>true</readable>
@@ -55393,6 +55398,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Client_Health_Report__c-Monthly Client Report Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Client_Utility_Account_Subscription__c-Client Utility Account Subscription Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>CollaborationGroup-Group Layout</layout>

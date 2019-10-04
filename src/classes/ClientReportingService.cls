@@ -153,6 +153,31 @@ public without sharing class ClientReportingService {
 
     }
 
+    public static void updateClientUAS(Map<Id, Opportunity> oppMap, Map<Id, Opportunity> oldOppMap) {
+        Set<Id> oppToUpdate = new Set<Id>();
+        for (Opportunity opp : oppMap.values()) {
+            if (opp.Shared_Solar_System__c != oldOppMap.get(opp.Id).Shared_Solar_System__c) {
+                oppToUpdate.add(opp.Id);
+            }
+        }
+
+        if (oppToUpdate.size() > 0 ) {
+            List<Client_Utility_Account_Subscription__c> clientUASList = [
+                SELECT Id, Shared_Solar_System__c, Utility_Account_Subscription__r.Opportunity__c
+                FROM Client_Utility_Account_Subscription__c
+                WHERE Utility_Account_Subscription__r.Opportunity__c IN :oppToUpdate
+            ];
+
+            if (clientUASList.size() > 0 ){
+                for (Client_Utility_Account_Subscription__c cUAS : clientUASList) {
+                    cUAS.Shared_Solar_System__c = oppMap.get(cUAS.Utility_Account_Subscription__r.Opportunity__c).Shared_Solar_System__c;
+                }
+
+                update clientUASList;
+            }
+        }
+    }
+
 
     public static void insertClientALSS(List<Schedule_Z_Subscription__c> szsList) {
         List<Client_Allocation_Schedule_Subscription__c> clientALSSList = new List<Client_Allocation_Schedule_Subscription__c>();

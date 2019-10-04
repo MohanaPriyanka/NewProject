@@ -7099,6 +7099,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Client_Utility_Account_Subscription__c.Customer__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Client_Utility_Account_Subscription__c.Opportunity_Stage__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -47246,6 +47251,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Client_Health_Report__c-Monthly Client Report Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Client_Utility_Account_Subscription__c-Client Utility Account Subscription Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>CollaborationGroup-BW Community Solar Member Portal</layout>

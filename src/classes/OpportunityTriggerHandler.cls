@@ -23,6 +23,8 @@ public without sharing class OpportunityTriggerHandler {
         if (!acctsToCancel.isEmpty()) {
             CSCancellationService.closeAccounts(acctsToCancel);
         }
+
+        ClientReportingService.updateClientUAS(newMap, oldMap);
     }
 
     public void customIdSwapOpp(List<Opportunity> oppList, Map<ID, Opportunity> oldOppMap){

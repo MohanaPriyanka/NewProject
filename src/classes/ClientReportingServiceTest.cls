@@ -207,7 +207,7 @@ public with sharing class ClientReportingServiceTest {
     public static void testClientUAS() {
         Utility_Account_Log__c ual = [SELECT Id FROM Utility_Account_Log__c LIMIT 1];
 
-        Opportunity opp = [SELECT Id, Shared_Solar_System__c FROM Opportunity LIMIT 1];
+        Opportunity opp = [SELECT Id, Name, Shared_Solar_System__c, Shared_Solar_System__r.Name FROM Opportunity LIMIT 1];
 
         Utility_Account_Subscription__c uas = new Utility_Account_Subscription__c(
             Name = '123456',
@@ -222,13 +222,13 @@ public with sharing class ClientReportingServiceTest {
         Test.startTest();
 
         Client_Utility_Account_Subscription__c clientUAS = [
-            SELECT Id, Opportunity__c, Annual_Cost_of_Electricity_Future__c, Annual_kWh_Subscription_Future__c, Shared_Solar_System__c
+            SELECT Id, Customer__c, Annual_Cost_of_Electricity_Future__c, Annual_kWh_Subscription_Future__c, Shared_Solar_System__c
             FROM Client_Utility_Account_Subscription__c
             WHERE Utility_Account_Subscription__c = :uas.Id
             LIMIT 1
         ];
 
-        System.assertEquals(opp.Id, clientUAS.Opportunity__c);
+        System.assertEquals(opp.Name, clientUAS.Customer__c);
         System.assertEquals(300, clientUAS.Annual_Cost_of_Electricity_Future__c);
         System.assertEquals(7000, clientUAS.Annual_kWh_Subscription_Future__c);
         System.assertEquals(opp.Shared_Solar_System__c, clientUAS.Shared_Solar_System__c);
@@ -239,7 +239,7 @@ public with sharing class ClientReportingServiceTest {
         update uas;
 
         Client_Utility_Account_Subscription__c clientUASUpdate = [
-            SELECT Id, Opportunity__c, Annual_Cost_of_Electricity_Future__c, Annual_kWh_Subscription_Future__c, Shared_Solar_System__c
+            SELECT Id, Annual_Cost_of_Electricity_Future__c, Annual_kWh_Subscription_Future__c, Shared_Solar_System__c
             FROM Client_Utility_Account_Subscription__c
             WHERE Utility_Account_Subscription__c = :uas.Id
             LIMIT 1
@@ -247,11 +247,42 @@ public with sharing class ClientReportingServiceTest {
 
         System.assertEquals(500, clientUASUpdate.Annual_Cost_of_Electricity_Future__c);
 
+        //Test update of Opp's SSS
+        Shared_Solar_System__c sss2 = [
+            SELECT Id, Name
+            FROM Shared_Solar_System__c
+            WHERE Id != :opp.Shared_Solar_System__c
+            LIMIT 1
+        ];
+
+        opp.Shared_Solar_System__c = sss2.Id;
+        update opp;
+
+
+        Utility_Account_Subscription__c uasUpdate = [
+            SELECT Id, Shared_Solar_System_Name__c
+            FROM Utility_Account_Subscription__c
+            WHERE Id = :uas.Id
+            LIMIT 1
+        ];
+
+        Client_Utility_Account_Subscription__c clientUASUpdate2 = [
+            SELECT Id, Annual_Cost_of_Electricity_Future__c, Annual_kWh_Subscription_Future__c, Shared_Solar_System__c
+            FROM Client_Utility_Account_Subscription__c
+            WHERE Utility_Account_Subscription__c = :uas.Id
+            LIMIT 1
+        ];
+
+        System.assertEquals(sss2.Name, uasUpdate.Shared_Solar_System_Name__c);
+        System.assertEquals(sss2.Id, clientUASUpdate2.Shared_Solar_System__c);
+
+        System.assertEquals(500, clientUASUpdate.Annual_Cost_of_Electricity_Future__c);
+
         //Test deletion of parent UAS
         delete uas;
 
         List<Client_Utility_Account_Subscription__c> clientUASDelete = [
-            SELECT Id, Opportunity__c, Annual_Cost_of_Electricity_Future__c, Annual_kWh_Subscription_Future__c, Shared_Solar_System__c
+            SELECT Id, Annual_Cost_of_Electricity_Future__c, Annual_kWh_Subscription_Future__c, Shared_Solar_System__c
             FROM Client_Utility_Account_Subscription__c
             WHERE Utility_Account_Subscription__c = :uas.Id
             LIMIT 1
