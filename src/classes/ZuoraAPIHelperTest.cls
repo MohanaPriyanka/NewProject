@@ -106,4 +106,30 @@ public with sharing class ZuoraAPIHelperTest {
         }
         System.assert(exceptionCaught, 'ZuoraAPIHelper should have thrown an exception before hitting the uncatchable System.LimitException');
     }
+
+    @IsTest
+    public static void testActionUpdate() {
+        ZuoraAPI.ActionItems accountActionItems = new ZuoraAPI.ActionItems();
+        accountActionItems.type = 'AccountWithErrors';
+        accountActionItems.objects = new List<ZuoraAPI.ZuoraAccount>();
+        accountActionItems.objects.add(new ZuoraAPI.ZuoraAccount());
+
+        Boolean caughtException = false;
+        try {
+            ZuoraAPIHelper.actionUpdate(accountActionItems);
+        } catch (Util.BWException bwe) {
+            caughtException = true;
+            Logger.flushLogs();
+        }
+        System.assert(caughtException, 'Expected to catch an exception');
+        List<Error_Log__c> errorLogs = [
+            SELECT Id
+            FROM Error_Log__c
+            WHERE Class__c = 'ZuoraAPIHelper'
+            AND Method__c = 'containsErrors'
+            AND Severity__c = :Logger.ERROR
+        ];
+        System.assertEquals(1, errorLogs.size());
+    }
+
 }

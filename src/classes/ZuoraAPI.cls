@@ -86,6 +86,7 @@ public with sharing class ZuoraAPI {
     }
 
     // https://www.zuora.com/developer/api-reference/#operation/POST_Account
+    public static String accountFieldsToReconcile = 'PaymentGateway, PaymentTerm';
     public class ZuoraAccount {
         public String AccountNumber;
         public Boolean AllowInvoiceEdit;
@@ -120,6 +121,58 @@ public with sharing class ZuoraAPI {
         public String DefaultPaymentMethodId;
         public String Currency_Zreserved;
         public String AdditionalEmailAddresses;
+        // Used by action/update to null a field that's set
+        public List<String> fieldsToNull;
+
+        // Default constructor
+        public ZuoraAccount() {
+        }
+
+        public ZuoraAccount(Account propertyAccount) {
+            this.AccountNumber = propertyAccount.Account_Number__c;
+            this.AutoPay = false;
+            this.Batch = 'Batch1';
+            // Since we're setting the Usage End Date to be the first of the month, a Bill Cycle Day of 10 will include
+            // it, and will also allow us to have invoice dates as early as the 13th (which we need to import history)
+            this.BillCycleDay = 10;
+            this.CrmId = propertyAccount.Id;
+            this.Currency_Zreserved = 'USD';
+            this.Name = propertyAccount.Name;
+            this.PaymentTerm = 'Net 30';
+            this.Status = 'Draft';
+            this.AdditionalEmailAddresses = propertyAccount.Additional_Contact__r.Email;
+        }
+
+        // Assumes results from AccountSelector.selectForReconciliation
+        public ZuoraAccount(Map<String, Object> reconciliationResult) {
+            this.Id = (String) reconciliationResult.get('Zuora_Id__c');
+            this.PaymentTerm = daysInBillPeriodToPaymentTerm((Decimal) reconciliationResult.get('DaysInBillingPeriod'));
+            if (reconciliationResult.get('DistinctGateways') == 0) {
+                this.fieldsToNull = new List<String>{'PaymentGateway'};
+            } else if (reconciliationResult.get('DistinctGateways') == 1) {
+                this.PaymentGateway = (String) reconciliationResult.get('GatewayName');
+            } else {
+                Logger.logLater('ZuoraAccount', 'constructor', 'More than one gateway found for ' + this.Id + ', using the default gateway', Logger.WARN);
+                this.fieldsToNull = new List<String>{'PaymentGateway'};
+            }
+        }
+
+        public Boolean hasReconciliationVariance(ZuoraAccount reconciliationResult) {
+            if (reconciliationResult == null) {
+                return true;
+            } else {
+                return this.PaymentTerm != reconciliationResult.PaymentTerm ||
+                    this.PaymentGateway != reconciliationResult.PaymentGateway;
+            }
+        }
+
+        private String daysInBillPeriodToPaymentTerm(Decimal daysInBillPeriod) {
+            if (daysInBillPeriod == null) {
+                return 'Net 30';
+            } else {
+                return 'Net ' + String.valueOf(daysInBillPeriod);
+            }
+        }
     }
 
     // https://www.zuora.com/developer/api-reference/#operation/Object_POSTContact
