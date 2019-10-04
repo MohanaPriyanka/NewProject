@@ -3,7 +3,8 @@
  * Description: Can extend fflib_SObjectSelector
  * Test: AccountsSelectorTest
  *************************************************************************************/
-
+// These should run as system for backend processing
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class AccountsSelector {
     public static List<Account> selectCS67DaysPastDueWithAnchorOpps() {
         return [
@@ -98,5 +99,25 @@ public without sharing class AccountsSelector {
             WHERE Lead__c = :leadIds
             AND RecordType.Name = 'Property'
         ];
+    }
+
+    // Returns a map instead of the aggregate result list so it can be mocked (since we can't deserialize AggregateResult):
+    // https://salesforce.stackexchange.com/questions/203810/how-to-deserialize-aggregateresults
+    public List<Map<String, Object>> selectForReconciliation(List<String> zuoraAccountIds) {
+        List<Map<String, Object>> results = new List<Map<String, Object>>();
+        List<AggregateResult> aggregateResults = [
+            SELECT Account.Id Id, Account.Zuora_Id__c Zuora_Id__c, Account.Name AccountName,
+                MAX(Product__r.Days_in_Bill_Period__c) DaysInBillingPeriod,
+                COUNT_DISTINCT(Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Gateway__r.Name) DistinctGateways,
+                MAX(Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Gateway__r.Name) GatewayName
+            FROM Opportunity
+            WHERE StageName = 'Complete'
+            AND Account.Zuora_Id__c IN :zuoraAccountIds
+            GROUP BY Account.Id, Account.Zuora_Id__c, Account.Name
+        ];
+        for (AggregateResult aggregateResult : aggregateResults) {
+            results.add(aggregateResult.getPopulatedFieldsAsMap());
+        }
+        return results;
     }
 }
