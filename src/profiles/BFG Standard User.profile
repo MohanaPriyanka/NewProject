@@ -51416,29 +51416,29 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>copado__User_Story__c.How_has_this_been_tested__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>copado__User_Story__c.Work_Details__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>copado__User_Story__c.Work_Requested_By__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>copado__User_Story__c.Work_Required__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
+        <editable>true</editable>
         <field>copado__User_Story__c.Work__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -51527,6 +51527,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>copado__User_Story__c.copado__Environment_Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>copado__User_Story__c.copado__Environment__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -51564,6 +51569,11 @@
         <editable>false</editable>
         <field>copado__User_Story__c.copado__Last_Compliance_Scan_Date__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>copado__User_Story__c.copado__Last_Promotion_Date__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
