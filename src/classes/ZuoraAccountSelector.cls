@@ -91,12 +91,20 @@ public without sharing class ZuoraAccountSelector {
             throw new Util.BWException('ZOQL only allows 200 conditions; run this query with fewer account ids');
         }
         String whereClause = 'WHERE Id = \'' + zuoraAccountIds[0] + '\'';
-        for (Integer i = 1; i < zuoraAccountIds.size()-1; i++) {
+        for (Integer i = 1; i < zuoraAccountIds.size(); i++) {
             whereClause += ' OR Id = \'' + zuoraAccountIds[i] + '\'';
         }
         String queryString = 'SELECT ' + fields + ' FROM Account ' + whereClause;
         String queryResponse = ZuoraAPIHelper.query(queryString, false);
         QueryResultAccount queryResultAccount = (QueryResultAccount)JSON.deserialize(queryResponse, QueryResultAccount.class);
+        if (queryResultAccount.records.size() != zuoraAccountIds.size()) {
+            Logger.logLater(
+                'ZuoraAccountSelector',
+                'query',
+                'Not all accounts could be found: accountIds: ' + JSON.serialize(zuoraAccountIds) + '\n' +
+                ' query response: ' + JSON.serialize(queryResultAccount.records),
+                Logger.WARN);
+        }
         return queryResultAccount.records;
     }
 

@@ -141,6 +141,9 @@ public with sharing class ZuoraAccountReconciliationServiceTest {
 
         System.assertEquals(2, ZuoraAPIHelper.endpointsCalled.size(), 'Expected one callout for query, another for /action/update');
         System.assertEquals('/v1/action/query', ZuoraAPIHelper.endpointsCalled[0].endpoint);
+        for (String zuoraAccountId : zuoraAccountIds) {
+            System.assert(ZuoraAPIHelper.endpointsCalled[0].jsonBody.contains(zuoraAccountId));
+        }
         System.assertEquals('/v1/action/update/', ZuoraAPIHelper.endpointsCalled[1].endpoint);
         System.assert(ZuoraAPIHelper.endpointsCalled[1].jsonBody.contains('2c92c0f86b78f56c016b7b00480c2e24'));
     }
