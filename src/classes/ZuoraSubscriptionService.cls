@@ -151,6 +151,7 @@ public with sharing class ZuoraSubscriptionService {
     // There can be a list of client/project combinations included with the OrderActionParam (in the SubscriptionParam
     // structure) that get turned into additional Subscription Rate Plan Charges.
     public class OrderActionParam {
+        public String zuoraAccountId;
         public String accountNumber;
         public String subscriptionNumber;
         public Date orderDate;

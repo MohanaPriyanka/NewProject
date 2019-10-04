@@ -335,7 +335,7 @@ public with sharing class ZuoraAccountServiceTest {
             WHERE Severity__c = :Logger.ERROR
         ];
         System.assertEquals(1, errorLogs.size());
-        System.assert(errorLogs[0].Message__c.contains('Zuora account creation failed for lead'));
+        System.assert(errorLogs[0].Message__c.contains('Zuora account async CREATE operation failed for lead'));
     }
 
     @IsTest

@@ -273,6 +273,16 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
         HttpResponse res = getJSON();
         if (body.contains('ThrowException')) {
             throw new Util.BWException('Test callout exception');
+        } else if (body.contains('"type":"AccountWithErrors"')) {
+            AccountActionItems actionItems = (AccountActionItems) JSON.deserialize(body, AccountActionItems.class);
+            List<ZuoraAPI.SaveResult> saveResults = new List<ZuoraAPI.SaveResult>();
+            for (ZuoraAPI.ZuoraAccount account : actionItems.objects) {
+                ZuoraAPI.SaveResult saveResult = new ZuoraAPI.SaveResult();
+                saveResult.Id = genericId;
+                saveResult.Success = false;
+                saveResults.add(saveResult);
+            }
+            res.setBody(JSON.serialize(saveResults));
         } else if (body.contains('"type":"Account"')) {
             AccountActionItems actionItems = (AccountActionItems) JSON.deserialize(body, AccountActionItems.class);
             List<ZuoraAPI.SaveResult> saveResults = new List<ZuoraAPI.SaveResult>();
