@@ -308,6 +308,15 @@ public with sharing class ZuoraHistoricalApplicationTest {
         System.assertEquals(1, payables[9].payment.ChargentOrders__Amount__c);
     }
 
+    @IsTest
+    public static void testPayableRounding() {
+        useMocks(1);
+        List<ChargentOrders__Transaction__c> transactions = batchApply.transactionSelector.selectForZuoraHistory('');
+        System.assertEquals(1668.299, transactions[0].ChargentOrders__Amount__c);
+        ZuoraHistoricalApplicationService.Payable payable = new ZuoraHistoricalApplicationService.Payable(transactions[0]);
+        System.assertEquals(1668.30, payable.payment.ChargentOrders__Amount__c);
+    }
+
     /*************
      *** MOCKS ***
      *************/
@@ -338,7 +347,7 @@ public with sharing class ZuoraHistoricalApplicationTest {
                 '"url" : "/services/data/v46.0/sobjects/ChargentOrders__Transaction__c/a21S00000011rB7IAI"' +
                 '},' +
                 '"Id" : "a21S00000011rB7IAI",' +
-                '"ChargentOrders__Amount__c" : 1668.29,' +
+                '"ChargentOrders__Amount__c" : 1668.299,' +
                 '"ChargentOrders__Order__c" : "a1yS0000000tv4wIAA",' +
                 '"Client__c" : "001S000000yKIOEIA4",' +
                 '"CreatedDate" : "2019-06-20T04:20:19.000+0000",' +

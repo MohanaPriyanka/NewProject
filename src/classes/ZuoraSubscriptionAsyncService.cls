@@ -139,7 +139,8 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
         allSubscriptionsToCreate = accountNumberToSubscriptionMap.values();
     }
 
-    private void updateSubscriptionMap(List<AggregateResult> aggregateResults, Map<Id, Account> accountMap,
+    // public method to support anonymous apex loads
+    public void updateSubscriptionMap(List<AggregateResult> aggregateResults, Map<Id, Account> accountMap,
         Map<String, ZuoraSubscriptionService.SubscriptionParam> accountNumberToSubscriptionMap) {
         for (AggregateResult aggregateResult : aggregateResults) {
             Account propertyAccount = accountMap.get(aggregateResult.Id);
@@ -160,7 +161,8 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
         }
     }
 
-    private void getRatePlanIds() {
+    // public method to support anonymous apex loads
+    public void getRatePlanIds() {
         List<zqu__ProductRatePlan__c> ratePlans =
             ZuoraProductRatePlanSelector.getProductRatePlan('Community Solar Subscriptions');
         if (ratePlans.size() != 1) {
@@ -211,7 +213,6 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
 
     public void execute(Database.BatchableContext context, List<ZuoraSubscriptionService.SubscriptionParam> scope) {
         createSubscriptions(scope);
-        Logger.flushLogs();
     }
 
     public void finish(Database.BatchableContext context) {
@@ -219,7 +220,6 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
 
     public void execute(QueueableContext context) {
         createSubscriptions(allSubscriptionsToCreate);
-        Logger.flushLogs();
     }
 
     public void createSubscriptions(List<ZuoraSubscriptionService.SubscriptionParam> allSubscriptionParams) {
