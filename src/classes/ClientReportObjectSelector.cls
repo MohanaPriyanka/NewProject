@@ -3,6 +3,7 @@
  */
 
 public with sharing class ClientReportObjectSelector {
+    @SuppressWarnings('PMD.ApexCRUDViolation')
 
     public static List<Client_Utility_Account_Subscription__c> getClientUASesByUASIds(Set<Id> uasIds) {
         return [
