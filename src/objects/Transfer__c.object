@@ -146,7 +146,7 @@
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableFeeds>false</enableFeeds>
-    <enableHistory>false</enableHistory>
+    <enableHistory>true</enableHistory>
     <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
     <enableSearch>true</enableSearch>
@@ -162,7 +162,8 @@
         <referenceTo>Schedule_Z__c</referenceTo>
         <relationshipLabel>Transfers</relationshipLabel>
         <relationshipName>Transfers</relationshipName>
-        <required>true</required>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
@@ -190,12 +191,33 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Bills_Generated__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Bills Generated</label>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Date_of_Transfer__c</fullName>
         <externalId>false</externalId>
         <label>Date of Transfer</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Default_Credit_Value__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>NMCRate for creating UASBs in markets where $ credit value is NOT set at the customer level (MA)</inlineHelpText>
+        <label>Default Credit Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Production_Update__c</fullName>
@@ -250,6 +272,7 @@
         <externalId>false</externalId>
         <label>Transfer Type</label>
         <required>false</required>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
@@ -271,6 +294,11 @@
                     <default>false</default>
                     <label>Returned</label>
                 </value>
+                <value>
+                    <fullName>Error</fullName>
+                    <default>false</default>
+                    <label>Error</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
@@ -282,10 +310,16 @@
     </listViews>
     <nameField>
         <label>Transfer Name</label>
+        <trackHistory>false</trackHistory>
         <type>Text</type>
     </nameField>
     <pluralLabel>Transfers</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts>
+        <searchResultsAdditionalFields>Bill_Period__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Date_of_Transfer__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Transfer_Amount__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Total_Transferred__c</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

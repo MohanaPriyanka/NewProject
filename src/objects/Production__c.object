@@ -251,16 +251,16 @@
     </fields>
     <fields>
         <fullName>Shared_Solar_System__c</fullName>
-        <deleteConstraint>Restrict</deleteConstraint>
         <externalId>false</externalId>
-        <inlineHelpText>The Production object is looking up to the SSS object.</inlineHelpText>
         <label>Shared Solar System</label>
         <referenceTo>Shared_Solar_System__c</referenceTo>
-        <relationshipLabel>Productions</relationshipLabel>
-        <relationshipName>Productions</relationshipName>
-        <required>true</required>
+        <relationshipLabel>Production</relationshipLabel>
+        <relationshipName>Production</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
         <trackTrending>false</trackTrending>
-        <type>Lookup</type>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <fields>
         <fullName>Start_Date__c</fullName>
@@ -309,7 +309,7 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Production</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>
