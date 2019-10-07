@@ -169,14 +169,8 @@
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
-            <restricted>true</restricted>
             <valueSetDefinition>
                 <sorted>false</sorted>
-                <value>
-                    <fullName>Host Account Bill Updated</fullName>
-                    <default>false</default>
-                    <label>Host Account Bill Updated</label>
-                </value>
                 <value>
                     <fullName>Host Account Bill QCed</fullName>
                     <default>false</default>
@@ -216,6 +210,11 @@
                     <fullName>Not Billing this Month</fullName>
                     <default>false</default>
                     <label>Not Billing this Month</label>
+                </value>
+                <value>
+                    <fullName>Host Account Bill Uploaded</fullName>
+                    <default>false</default>
+                    <label>Host Account Bill Uploaded</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -378,6 +377,18 @@
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
+    <fields>
+        <fullName>Total_Billed_STAMPED__c</fullName>
+        <description>This field is temporary for migrating historical data from PU to Bill Periods</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This field is temporary for migrating historical data from PU to Bill Periods</inlineHelpText>
+        <label>Total Billed (STAMPED)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
     <label>Bill Period</label>
     <listViews>
         <fullName>All</fullName>
@@ -389,7 +400,7 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Bill Periods</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>
