@@ -5260,6 +5260,19 @@ if( or(text(Status) = &quot;Cancelled&quot;, text(Status) = &quot;Not Interested
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Utility_Name__c</fullName>
+        <description>created for hubspot integration</description>
+        <externalId>false</externalId>
+        <formula>Utility_relationship__r.Name</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>created for hubspot integration</inlineHelpText>
+        <label>Utility (Name)</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Utility_Partner_Relationship__c</fullName>
         <externalId>false</externalId>
         <label>XXXXX Utility Partner Relationship</label>
