@@ -528,6 +528,23 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>Status__c</fields>
+        <fields>Date_Submitted_to_Utility__c</fields>
+        <fields>Date_Enacted_by_Utility__c</fields>
+        <fields>CREATED_DATE</fields>
+        <relatedList>Schedule_Z__c.Shared_Solar_System__c</relatedList>
+        <sortField>CREATED_DATE</sortField>
+        <sortOrder>Desc</sortOrder>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>Bill_Number__c</fields>
+        <fields>Opportunity_Id__c</fields>
+        <fields>Opportunity__c</fields>
+        <relatedList>System_Bill__c.Shared_Solar_System__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
         <fields>ChargentBase__Merchant_ID__c</fields>
         <fields>ChargentBase__Security_Key__c</fields>
         <fields>ChargentBase__Require_AVS__c</fields>
@@ -540,19 +557,6 @@
         <relatedList>ChargentBase__Gateway__c.Shared_Solar_System__c</relatedList>
     </relatedLists>
     <relatedLists>
-        <relatedList>RelatedNoteList</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <fields>Status__c</fields>
-        <fields>Date_Submitted_to_Utility__c</fields>
-        <fields>Date_Enacted_by_Utility__c</fields>
-        <fields>CREATED_DATE</fields>
-        <relatedList>Schedule_Z__c.Shared_Solar_System__c</relatedList>
-        <sortField>CREATED_DATE</sortField>
-        <sortOrder>Desc</sortOrder>
-    </relatedLists>
-    <relatedLists>
         <fields>CASES.CASE_NUMBER</fields>
         <fields>CASES.SUBJECT</fields>
         <fields>CASES.CREATED_DATE</fields>
@@ -561,11 +565,10 @@
         <relatedList>Case.Shared_Solar_System__c</relatedList>
     </relatedLists>
     <relatedLists>
-        <fields>NAME</fields>
-        <fields>Bill_Number__c</fields>
-        <fields>Opportunity_Id__c</fields>
-        <fields>Opportunity__c</fields>
-        <relatedList>System_Bill__c.Shared_Solar_System__c</relatedList>
+        <relatedList>RelatedEntityHistoryList</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <relatedList>RelatedNoteList</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
