@@ -216,11 +216,7 @@ public without sharing class ClientReportingService {
             uasIds.add(uas.Id);
         }
 
-        List<Client_Utility_Account_Subscription__c> clientUASList = [
-            SELECT Id
-            FROM Client_Utility_Account_Subscription__c
-            WHERE Utility_Account_Subscription__c IN :uasIds
-        ];
+        List<Client_Utility_Account_Subscription__c> clientUASList = ClientReportObjectSelector.getClientUASesByUASIds(uasIds);
 
         delete clientUASList;
     }
@@ -232,11 +228,8 @@ public without sharing class ClientReportingService {
             szsIds.add(szs.Id);
         }
 
-        List<Client_Allocation_Schedule_Subscription__c> clientALSSList = [
-            SELECT Id
-            FROM Client_Allocation_Schedule_Subscription__c
-            WHERE Allocation_Schedule_Subscription__c IN :szsIds
-        ];
+
+        List<Client_Allocation_Schedule_Subscription__c> clientALSSList = ClientReportObjectSelector.getClientALSSBySZSIds(szsIds);
 
         delete clientALSSList;
     }
@@ -254,11 +247,7 @@ public without sharing class ClientReportingService {
             uasToALSSMap.put(alss.Utility_Account_Subscription__c, alss.Id);
         }
 
-        List<Client_Utility_Account_Subscription__c> clientUASList = [
-            SELECT Id, Utility_Account_Subscription__c
-            FROM Client_Utility_Account_Subscription__c
-            WHERE Utility_Account_Subscription__c IN :uasIds
-        ];
+        List<Client_Utility_Account_Subscription__c> clientUASList = ClientReportObjectSelector.getClientUASesByUASIds(uasIds);
 
         for (Client_Utility_Account_Subscription__c clientUAS : clientUASList) {
                 // Map --> key = ALSS Id, value = client UAS

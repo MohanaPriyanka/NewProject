@@ -1178,6 +1178,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ClientReportObjectSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ClientReportingService</apexClass>
         <enabled>false</enabled>
     </classAccesses>

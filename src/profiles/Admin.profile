@@ -329,6 +329,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ClientReportObjectSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ClientReportingService</apexClass>
         <enabled>true</enabled>
     </classAccesses>
