@@ -165,7 +165,7 @@
         <externalId>false</externalId>
         <label>Actual COD Date</label>
         <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
+        <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
@@ -181,13 +181,24 @@
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>Actual_First_Bill_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>This field must be manually populated after the first production update</inlineHelpText>
+        <label>Actual First BW Bill Date</label>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>Actual_Mechanical_Completion_Override__c</fullName>
         <description>Manually populate this field for SSS -  If filled in, the date will override the formula in the Actual Mechanical Completion field on the shared solar system.</description>
         <externalId>false</externalId>
         <inlineHelpText>Manually populate this field for SSS - If filled in, the date will override the formula in the Actual Mechanical Completion field on the shared solar system.</inlineHelpText>
         <label>Actual Mechanical Completion Override</label>
         <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
+        <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
@@ -225,7 +236,7 @@
         <inlineHelpText>Actual PTO Date to be manually populated for SSS without a PM relationship</inlineHelpText>
         <label>Actual PTO Date (MANUAL OVERRIDE)</label>
         <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
+        <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
@@ -261,7 +272,7 @@
         <externalId>false</externalId>
         <label>Actual Utility NMC to Host Account Date</label>
         <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
+        <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
@@ -363,7 +374,7 @@
         <externalId>false</externalId>
         <label>Assignment Order</label>
         <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
+        <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
@@ -777,7 +788,7 @@ IF ( Total_System_Size_kW_AC__c &gt; 1000, &quot;Class 3&quot;, null)))</formula
         <precision>5</precision>
         <required>false</required>
         <scale>0</scale>
-        <trackFeedHistory>false</trackFeedHistory>
+        <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
@@ -836,7 +847,7 @@ IF ( Total_System_Size_kW_AC__c &gt; 1000, &quot;Class 3&quot;, null)))</formula
         <externalId>false</externalId>
         <label>Est Utility NMC to Host Account Date</label>
         <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
+        <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
@@ -874,7 +885,7 @@ IF ( Total_System_Size_kW_AC__c &gt; 1000, &quot;Class 3&quot;, null)))</formula
         <externalId>false</externalId>
         <label>Estimated COD Date</label>
         <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
+        <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
@@ -937,7 +948,7 @@ Actual_PTO_Date__c +14)))</formula>
         <inlineHelpText>If filled in, the date will override the formula in the Estimated First BW Bill Date field on the shared solar system.</inlineHelpText>
         <label>Estimated First BW Bill Override</label>
         <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
+        <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
@@ -969,7 +980,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <inlineHelpText>Manually populate this field for SSS - If filled in, the date will override the formula in the Estimated Mechanical Completion field on the shared solar system.</inlineHelpText>
         <label>Estimated Mechanical Completion Override</label>
         <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
+        <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
@@ -1007,7 +1018,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <inlineHelpText>Manually populate this field for SSS without PM relationships</inlineHelpText>
         <label>Estimated PTO Date (MANUAL OVERRIDE)</label>
         <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
+        <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
@@ -1045,7 +1056,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <precision>12</precision>
         <required>false</required>
         <scale>4</scale>
-        <trackFeedHistory>false</trackFeedHistory>
+        <trackFeedHistory>true</trackFeedHistory>
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
@@ -1638,8 +1649,8 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
         <externalId>false</externalId>
         <label>Sales Partners</label>
         <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>MultiselectPicklist</type>
         <valueSet>
@@ -1827,11 +1838,6 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <label>Renewable Connections, LLC</label>
                 </value>
                 <value>
-                    <fullName>Renewables Worldwide</fullName>
-                    <default>false</default>
-                    <label>Renewables Worldwide</label>
-                </value>
-                <value>
                     <fullName>Resonant Energy</fullName>
                     <default>false</default>
                     <label>Resonant Energy</label>
@@ -1917,13 +1923,9 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <label>Yeloha</label>
                 </value>
                 <value>
-                    <fullName>Different Test Partner</fullName>
-                    <default>false</default>
-                    <label>Different Test Partner</label>
-                </value>
-                <value>
                     <fullName>Other Test Partner</fullName>
                     <default>false</default>
+                    <isActive>false</isActive>
                     <label>Other Test Partner</label>
                 </value>
                 <value>
