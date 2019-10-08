@@ -5,6 +5,7 @@
  *************************************************************************************/
 
 public with sharing class ZuoraHistoricalApplicationService implements ZuoraOutstandingItemsService.Processor, Queueable, Database.AllowsCallouts {
+    @TestVisible
     private List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems;
     private ZuoraOutstandingItemsService.ProcessingParameter processingParameter;
     @TestVisible
@@ -201,6 +202,7 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
         applyCreditMemo(payable);
     }
 
+    @TestVisible
     private ZuoraSubscriptionService.ClientProject getClientProjectFromTransaction(ChargentOrders__Transaction__c trx, Boolean withOpenBalance) {
         // We need the client, project, and charge Id to create a memo, and for credit memos, we want to create one with an existing outstanding item
         ZuoraSubscriptionService.ClientProject clientProjectAssignment;
@@ -221,7 +223,8 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
             }
         } else {
             for (ZuoraSubscriptionService.ClientProject clientProject : clientProjects) {
-                if (projectUniqueIdToEntityMap.get(clientProject.projectName) == trx.ChargentOrders__Order__r.Entity__c) {
+                if (clientProject.clientName == trx.Client__r.Account_Number__c &&
+                    projectUniqueIdToEntityMap.get(clientProject.projectName) == trx.ChargentOrders__Order__r.Entity__c) {
                     clientProjectAssignment = clientProject;
                     break;
                 }
