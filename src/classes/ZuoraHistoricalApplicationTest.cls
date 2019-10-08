@@ -308,12 +308,78 @@ public with sharing class ZuoraHistoricalApplicationTest {
         System.assertEquals(1, payables[9].payment.ChargentOrders__Amount__c);
     }
 
+    @IsTest
+    public static void testPayableRounding() {
+        useMocks(1);
+        List<ChargentOrders__Transaction__c> transactions = batchApply.transactionSelector.selectForZuoraHistory('');
+        System.assertEquals(1668.299, transactions[0].ChargentOrders__Amount__c);
+        ZuoraHistoricalApplicationService.Payable payable = new ZuoraHistoricalApplicationService.Payable(transactions[0]);
+        System.assertEquals(1668.30, payable.payment.ChargentOrders__Amount__c);
+    }
+
+    @IsTest
+    public static void testClientProjectMapping() {
+        MockChargentTransactionSelector mockChargentTransactionSelector = new MockChargentTransactionSelector(1);
+        mockChargentTransactionSelector.clientAccountNumber = 'BW-0023171';
+        ChargentTransactionSelector chargentTransactionSelector =
+            (ChargentTransactionSelector) Test.createStub(ChargentTransactionSelector.class, mockChargentTransactionSelector);
+
+        ZuoraHistoricalApplicationService zuoraHistoricalApplicationService = new ZuoraHistoricalApplicationService();
+        zuoraHistoricalApplicationService.projectUniqueIdToEntityMap = new Map<String, Id>{'SSS-000023'=>'a1IS0000002MNiOMAW', 'SSS-000024'=>'a1IS0000002MNiPMAW'};
+        String serializedOutstandingItems = '[{' +
+            '"Project":"SSS-000023",' +
+            '"Client":"BW-0023170",' +
+            '"ParentId":"2c92c0946c8aedff016c8c5cb0016fe0",' +
+            '"IsInvoiceItem":true,' +
+            '"Id":"2c92c0946c8aedff016c8c5cb00f6fe3",' +
+            '"EffectiveDate":"2019-03-13T00:00:00.000Z",' +
+            '"AmountOutstanding":8887.230000000' +
+            '}]';
+        zuoraHistoricalApplicationService.outstandingItems =
+            (List<ZuoraOutstandingItemsService.OutstandingItem>) JSON.deserialize(serializedOutstandingItems, List<ZuoraOutstandingItemsService.OutstandingItem>.class);
+
+        ChargentOrders__Transaction__c trx = chargentTransactionSelector.selectForZuoraHistory('')[0];
+        ZuoraAPI.OrderBySubscriptionOwner orderBySubscriptionOwner =
+            ZuoraSubscriptionService.getOrderBySubscriptionOwner(trx.ChargentOrders__Order__r.Account_Bill__r.Parent_Account__r.Zuora_Id__c);
+        Set<ZuoraSubscriptionService.ClientProject> clientProjects =
+            orderBySubscriptionOwner.getClientProjectsFromOrders();
+        Boolean foundClientProject = false;
+        /*
+           clientProjects:
+           BW-0023170, SSS-000023
+           BW-0024201, SSS-000023
+           BW-0023170, SSS-000024
+           BW-00000385, SSS-000098
+           BW-00000385, SSS-000099
+         */
+        for (ZuoraSubscriptionService.ClientProject clientProject : clientProjects) {
+            if (clientProject.projectName == 'SSS-000023' && clientProject.clientName == 'BW-0023171') {
+                foundClientProject = true;
+            }
+        }
+        System.assert(!foundClientProject, 'Did not expect to find a SSS-000023 and client BW-0023171 in the mock data');
+        System.assertEquals('BW-0023171', trx.Client__r.Account_Number__c);
+
+        Test.startTest();
+        Boolean caughtException = false;
+        try {
+            zuoraHistoricalApplicationService.getClientProjectFromTransaction(trx, false);
+        } catch (Util.FatalBWException fbwe) {
+            caughtException = true;
+            System.assert(fbwe.getMessage().contains('Could not assign this transfer'));
+        }
+        System.assert(caughtException);
+
+        Test.stopTest();
+    }
+
     /*************
      *** MOCKS ***
      *************/
 
     public class MockChargentTransactionSelector extends MockProvider {
         private Integer numberOfTransactions;
+        public String clientAccountNumber = 'BW-0023170';
         public MockChargentTransactionSelector(Integer numberOfTransactions) {
             this.numberOfTransactions = numberOfTransactions;
         }
@@ -338,7 +404,7 @@ public with sharing class ZuoraHistoricalApplicationTest {
                 '"url" : "/services/data/v46.0/sobjects/ChargentOrders__Transaction__c/a21S00000011rB7IAI"' +
                 '},' +
                 '"Id" : "a21S00000011rB7IAI",' +
-                '"ChargentOrders__Amount__c" : 1668.29,' +
+                '"ChargentOrders__Amount__c" : 1668.299,' +
                 '"ChargentOrders__Order__c" : "a1yS0000000tv4wIAA",' +
                 '"Client__c" : "001S000000yKIOEIA4",' +
                 '"CreatedDate" : "2019-06-20T04:20:19.000+0000",' +
@@ -348,7 +414,14 @@ public with sharing class ZuoraHistoricalApplicationTest {
                 '"url" : "/services/data/v46.0/sobjects/ChargentOrders__ChargentOrder__c/a1yS0000000tv4wIAA"' +
                 '},' +
                 '"Id" : "a1yS0000000tv4wIAA",' +
-                '"Entity__c" : "a1IS0000002MNiPMAW"' +
+                '"Entity__c" : "a1IS0000002MNiPMAW",' +
+                '"Account_Bill__r":{"attributes":{"type":"Account_Bill__c","url":"/services/data/v46.0/sobjects/Account_Bill__c/a1n0a000002wHyNAAU"},' +
+                '"Id":"a1n0a000002wHyNAAU",' +
+                '"Parent_Account__c":"001j000000kWP1CAAW",' +
+                '"Parent_Account__r":{"attributes":{"type":"Account","url":"/services/data/v46.0/sobjects/Account/001j000000kWP1CAAW"},' +
+                '"Id":"001j000000kWP1CAAW",' +
+                '"Zuora_Id__c":"2c92c0f96c8afb5d016c8c5b4d4c7b6e"}' +
+                '}' +
                 '},' +
                 '"Client__r" : {' +
                 '"attributes" : {' +
@@ -356,8 +429,8 @@ public with sharing class ZuoraHistoricalApplicationTest {
                 '"url" : "/services/data/v46.0/sobjects/Account/001S000000yKIOEIA4"' +
                 '},' +
                 '"Id" : "001S000000yKIOEIA4",' +
-                '"Account_Number__c" : "BW-0023170"' +
-                '}' +
+                '"Account_Number__c" : "'+clientAccountNumber+'"' +
+                '}'+
                 '}';
             return (ChargentOrders__Transaction__c) JSON.deserialize(serialized, ChargentOrders__Transaction__c.class);
         }
