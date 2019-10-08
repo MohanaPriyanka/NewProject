@@ -326,7 +326,7 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
 
         HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/payments', payment, false);
         payment = (ZuoraAPI.Payment) JSON.deserialize(ZuoraAPIHelper.cleanJSON(response.getBody()), ZuoraAPI.Payment.class);
-        if (payment.id == null) {
+        if (!payment.success) {
             throw new Util.FatalBWException('Payment creation failed: ' + response.getBody());
         }
         return payment;
