@@ -39,7 +39,7 @@ public class ZuoraCreditDebitMemoService{
         }
     }
 
-    public static ZuoraAPI.DebitMemo convertSFAdjustToDebitMemo (Bill_Adjustment__c adjust){
+    public static ZuoraAPI.DebitMemo convertSFAdjustToDebitMemo(Bill_Adjustment__c adjust) {
         ZuoraAPI.DebitMemoCharge debitCharge = new ZuoraAPI.DebitMemoCharge();
         debitCharge.amount = adjust.Adjustment_Amount__c;
         debitCharge.chargeId = getChargeFromAdjustment(adjust);
@@ -106,11 +106,19 @@ public class ZuoraCreditDebitMemoService{
 
     public static void postCreditMemo(String creditMemoId){
         String urlParam = '/v1/creditmemos/'+ creditMemoId + '/post';
-        ZuoraAPIHelper.callJsonEndpoint('POST',urlParam,null,false);
+        HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('POST',urlParam,null,false);
+        ZuoraAPI.ZuoraCreditMemo creditMemo = (ZuoraAPI.ZuoraCreditMemo) JSON.deserialize(ZuoraAPIHelper.cleanJSON(response.getBody()), ZuoraAPI.ZuoraCreditMemo.class);
+        if (creditMemo.id == null) {
+            throw new Util.FatalBWException('Credit memo post failed: ' + response.getBody());
+        }
     }
 
     public static void postDebitMemo(String debitMemoId){
         String urlParam = '/v1/debitmemos/'+ debitMemoId + '/post';
-        ZuoraAPIHelper.callJsonEndpoint('POST',urlParam,null,false);
+        HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('POST',urlParam,null,false);
+        ZuoraAPI.ZuoraDebitMemo debitMemo = (ZuoraAPI.ZuoraDebitMemo) JSON.deserialize(ZuoraAPIHelper.cleanJSON(response.getBody()), ZuoraAPI.ZuoraDebitMemo.class);
+        if (debitMemo.id == null) {
+            throw new Util.FatalBWException('Debit memo post failed: ' + response.getBody());
+        }
     }
 }
