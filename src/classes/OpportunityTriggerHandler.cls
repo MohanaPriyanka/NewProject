@@ -23,6 +23,8 @@ public without sharing class OpportunityTriggerHandler {
         if (!acctsToCancel.isEmpty()) {
             CSCancellationService.closeAccounts(acctsToCancel);
         }
+
+        ClientReportingService.updateClientUAS(newMap, oldMap);
     }
 
     public void customIdSwapOpp(List<Opportunity> oppList, Map<ID, Opportunity> oldOppMap){
@@ -113,6 +115,11 @@ public without sharing class OpportunityTriggerHandler {
                 && newOpp.Subscription_Size_for_Invoicing__c == null){
                     opportunityList.add(newOpp);
             }
+
+            //if sss changes
+
+            // query for client uas where Opportunity ID = opp
+            // update client uas
         }
         if (opportunityList.size() > 0){
             for (AggregateResult uasSUM : [SELECT Opportunity__r.Id oppId,

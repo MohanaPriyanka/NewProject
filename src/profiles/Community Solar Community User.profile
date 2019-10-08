@@ -20028,11 +20028,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Client_Utility_Account_Subscription__c.Opportunity__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Client_Utility_Account_Subscription__c.Project_Co_Assignment_Date__c</field>
         <readable>false</readable>
     </fieldPermissions>
