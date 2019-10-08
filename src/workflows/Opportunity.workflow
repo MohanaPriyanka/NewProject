@@ -1156,7 +1156,7 @@ IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + 1)/12),
     </rules>
     <rules>
         <fullName>Internal - RS - Joint App Expiration</fullName>
-        <active>true</active>
+        <active>false</active>
         <description>This is used to notify the BWOC when the 1 signer of a joint RL app has signer, but the 2nd did not sign within 24 hours. They have to go in and void the contract and resend it since signers must sign within 24 hrs of eachother</description>
         <formula>AND( Contract_Status__c=&quot;Completed&quot;, Co_Applicant_Signature_Status__c!=&quot;Completed&quot;,
  CONTAINS(Application_Type__c,&quot;Joint&quot;)=true,
