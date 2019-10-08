@@ -213,6 +213,7 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
 
     public void execute(Database.BatchableContext context, List<ZuoraSubscriptionService.SubscriptionParam> scope) {
         createSubscriptions(scope);
+        Logger.flushLogs();
     }
 
     public void finish(Database.BatchableContext context) {
@@ -220,6 +221,7 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
 
     public void execute(QueueableContext context) {
         createSubscriptions(allSubscriptionsToCreate);
+        Logger.flushLogs();
     }
 
     public void createSubscriptions(List<ZuoraSubscriptionService.SubscriptionParam> allSubscriptionParams) {
