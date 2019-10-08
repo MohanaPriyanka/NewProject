@@ -720,6 +720,7 @@ public with sharing class ZuoraAPI {
         public Date effectiveDate;
         public String TransactionId_Zcustom;
         public String ResponseStatus_Zcustom;
+        public Boolean success;
     }
 
     public class PaymentParts {
