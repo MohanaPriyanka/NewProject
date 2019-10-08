@@ -5,6 +5,7 @@
  *************************************************************************************/
 
 public with sharing class ZuoraHistoricalApplicationService implements ZuoraOutstandingItemsService.Processor, Queueable, Database.AllowsCallouts {
+    @TestVisible
     private List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems;
     private ZuoraOutstandingItemsService.ProcessingParameter processingParameter;
     @TestVisible
@@ -102,14 +103,11 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
         ZuoraCreditMemoAllocationService.CreditMemoApplication creditMemoApplication =
             ZuoraCreditMemoAllocationService.groupByInvoiceAndDebitMemo(payable.creditMemo, itemsWithApplication);
         String urlString = '/v1/creditmemos/' + payable.creditMemo.CreditMemo.id +'/apply';
-        Logger.logLater('ZuoraCreditMemoAllocationService', 'processOutstandingItems',
-            'Request Endpoint: ' + urlString + '\n' +
-                'Request Body: ' + JSON.serialize(creditMemoApplication),
-            Logger.INFO);
         HttpResponse response = ZuoraAPIHelper.callJsonEndpoint( 'PUT', urlString, creditMemoApplication, false);
-        Logger.logLater('ZuoraCreditMemoAllocationService', 'processOutstandingItems',
-            'Response Body: ' + response.getBody(),
-            Logger.INFO);
+        ZuoraAPI.ZuoraCreditMemo creditMemo = (ZuoraAPI.ZuoraCreditMemo) JSON.deserialize(ZuoraAPIHelper.cleanJSON(response.getBody()), ZuoraAPI.ZuoraCreditMemo.class);
+        if (creditMemo.id == null) {
+            throw new Util.FatalBWException('Credit memo application failed: ' + response.getBody());
+        }
     }
 
     private void createAndApplyPayment(ChargentOrders__Transaction__c trx) {
@@ -204,6 +202,7 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
         applyCreditMemo(payable);
     }
 
+    @TestVisible
     private ZuoraSubscriptionService.ClientProject getClientProjectFromTransaction(ChargentOrders__Transaction__c trx, Boolean withOpenBalance) {
         // We need the client, project, and charge Id to create a memo, and for credit memos, we want to create one with an existing outstanding item
         ZuoraSubscriptionService.ClientProject clientProjectAssignment;
@@ -224,7 +223,8 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
             }
         } else {
             for (ZuoraSubscriptionService.ClientProject clientProject : clientProjects) {
-                if (projectUniqueIdToEntityMap.get(clientProject.projectName) == trx.ChargentOrders__Order__r.Entity__c) {
+                if (clientProject.clientName == trx.Client__r.Account_Number__c &&
+                    projectUniqueIdToEntityMap.get(clientProject.projectName) == trx.ChargentOrders__Order__r.Entity__c) {
                     clientProjectAssignment = clientProject;
                     break;
                 }
@@ -329,6 +329,9 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
 
         HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/payments', payment, false);
         payment = (ZuoraAPI.Payment) JSON.deserialize(ZuoraAPIHelper.cleanJSON(response.getBody()), ZuoraAPI.Payment.class);
+        if (!payment.success) {
+            throw new Util.FatalBWException('Payment creation failed: ' + response.getBody());
+        }
         return payment;
     }
 
@@ -349,7 +352,11 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
 
         ZuoraAPI.ZuoraPaymentApplication paymentApplication = outstandingItemToPaymentApplication(itemsToApply, trx.CreatedDate);
         if (paymentApplication.hasItemsToApply()) {
-            ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/payments/' + payment.id + '/apply', paymentApplication, false);
+            HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/payments/' + payment.id + '/apply', paymentApplication, false);
+            payment = (ZuoraAPI.Payment) JSON.deserialize(ZuoraAPIHelper.cleanJSON(response.getBody()), ZuoraAPI.Payment.class);
+            if (!payment.success) {
+                throw new Util.FatalBWException('Payment application failed: ' + response.getBody());
+            }
         }
         return paymentApplication;
     }
@@ -439,8 +446,7 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
             payables.add(new Payable(creditMemo));
         }
         for (ChargentOrders__Transaction__c payment : payments) {
-            payables.add(new
-                Payable(payment));
+            payables.add(new Payable(payment));
         }
         payables.sort();
         return payables;
@@ -464,6 +470,7 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
         }
 
         public Payable(ChargentOrders__Transaction__c payment) {
+            payment.ChargentOrders__Amount__c = payment.ChargentOrders__Amount__c.setScale(2, RoundingMode.HALF_UP);
             this.payableDate = payment.CreatedDate;
             this.payment = payment;
         }
