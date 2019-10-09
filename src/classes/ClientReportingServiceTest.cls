@@ -207,7 +207,7 @@ public with sharing class ClientReportingServiceTest {
     public static void testClientUAS() {
         Utility_Account_Log__c ual = [SELECT Id FROM Utility_Account_Log__c LIMIT 1];
 
-        Opportunity opp = [SELECT Id, Shared_Solar_System__c FROM Opportunity LIMIT 1];
+        Opportunity opp = [SELECT Id, Name, Shared_Solar_System__c, Shared_Solar_System__r.Name FROM Opportunity LIMIT 1];
 
         Utility_Account_Subscription__c uas = new Utility_Account_Subscription__c(
             Name = '123456',
@@ -221,41 +221,52 @@ public with sharing class ClientReportingServiceTest {
 
         Test.startTest();
 
-        Client_Utility_Account_Subscription__c clientUAS = [
-            SELECT Id, Opportunity__c, Annual_Cost_of_Electricity_Future__c, Annual_kWh_Subscription_Future__c, Shared_Solar_System__c
-            FROM Client_Utility_Account_Subscription__c
-            WHERE Utility_Account_Subscription__c = :uas.Id
-            LIMIT 1
-        ];
+        List<Client_Utility_Account_Subscription__c> clientUAS = ClientReportObjectSelector.getClientUASesByUASIds(new Set<Id>{uas.Id});
 
-        System.assertEquals(opp.Id, clientUAS.Opportunity__c);
-        System.assertEquals(300, clientUAS.Annual_Cost_of_Electricity_Future__c);
-        System.assertEquals(7000, clientUAS.Annual_kWh_Subscription_Future__c);
-        System.assertEquals(opp.Shared_Solar_System__c, clientUAS.Shared_Solar_System__c);
+        System.assertEquals(opp.Name, clientUAS[0].Customer__c);
+        System.assertEquals(300, clientUAS[0].Annual_Cost_of_Electricity_Future__c);
+        System.assertEquals(7000, clientUAS[0].Annual_kWh_Subscription_Future__c);
+        System.assertEquals(opp.Shared_Solar_System__c, clientUAS[0].Shared_Solar_System__c);
 
 
         //Test an update to parent UAS
         uas.Subscribed_Annual_Cost_of_Electricity__c = 500;
         update uas;
 
-        Client_Utility_Account_Subscription__c clientUASUpdate = [
-            SELECT Id, Opportunity__c, Annual_Cost_of_Electricity_Future__c, Annual_kWh_Subscription_Future__c, Shared_Solar_System__c
-            FROM Client_Utility_Account_Subscription__c
-            WHERE Utility_Account_Subscription__c = :uas.Id
+        List<Client_Utility_Account_Subscription__c> clientUASUpdate = ClientReportObjectSelector.getClientUASesByUASIds(new Set<Id>{uas.Id});
+
+        System.assertEquals(500, clientUASUpdate[0].Annual_Cost_of_Electricity_Future__c);
+
+        //Test update of Opp's SSS
+        Shared_Solar_System__c sss2 = [
+            SELECT Id, Name
+            FROM Shared_Solar_System__c
+            WHERE Id != :opp.Shared_Solar_System__c
             LIMIT 1
         ];
 
-        System.assertEquals(500, clientUASUpdate.Annual_Cost_of_Electricity_Future__c);
+        opp.Shared_Solar_System__c = sss2.Id;
+        update opp;
+
+
+        Utility_Account_Subscription__c uasUpdate = [
+            SELECT Id, Shared_Solar_System_Name__c
+            FROM Utility_Account_Subscription__c
+            WHERE Id = :uas.Id
+            LIMIT 1
+        ];
+
+        List<Client_Utility_Account_Subscription__c> clientUASUpdate2 = ClientReportObjectSelector.getClientUASesByUASIds(new Set<Id>{uas.Id});
+
+        System.assertEquals(sss2.Name, uasUpdate.Shared_Solar_System_Name__c);
+        System.assertEquals(sss2.Id, clientUASUpdate2[0].Shared_Solar_System__c);
+
+        System.assertEquals(500, clientUASUpdate[0].Annual_Cost_of_Electricity_Future__c);
 
         //Test deletion of parent UAS
         delete uas;
 
-        List<Client_Utility_Account_Subscription__c> clientUASDelete = [
-            SELECT Id, Opportunity__c, Annual_Cost_of_Electricity_Future__c, Annual_kWh_Subscription_Future__c, Shared_Solar_System__c
-            FROM Client_Utility_Account_Subscription__c
-            WHERE Utility_Account_Subscription__c = :uas.Id
-            LIMIT 1
-        ];
+        List<Client_Utility_Account_Subscription__c> clientUASDelete = ClientReportObjectSelector.getClientUASesByUASIds(new Set<Id>{uas.Id});
 
         System.assertEquals(0, clientUASDelete.size());
 
@@ -279,12 +290,7 @@ public with sharing class ClientReportingServiceTest {
         );
         insert uas;
 
-        Client_Utility_Account_Subscription__c clientUAS = [
-            SELECT Id
-            FROM Client_Utility_Account_Subscription__c
-            WHERE Utility_Account_Subscription__c = :uas.Id
-            LIMIT 1
-        ];
+       List<Client_Utility_Account_Subscription__c> clientUAS = ClientReportObjectSelector.getClientUASesByUASIds(new Set<Id>{uas.Id});
 
         Schedule_Z__c sz = [SELECT Id FROM Schedule_Z__c LIMIT 1];
 
@@ -300,36 +306,24 @@ public with sharing class ClientReportingServiceTest {
 
         Test.startTest();
 
-        Client_Allocation_Schedule_Subscription__c clientALSS= [
-            SELECT Id, Client_Utility_Account_Subscription__c, Customer_Subscription_kW_DC__c, Allocation_Schedule__c
-            FROM Client_Allocation_Schedule_Subscription__c
-            WHERE Allocation_Schedule_Subscription__c = :alss.Id
-        ];
+        List<Client_Allocation_Schedule_Subscription__c> clientALSS = ClientReportObjectSelector.getClientALSSBySZSIds(new Set<Id>{alss.Id});
 
-        System.assertEquals(sz.Id, clientALSS.Allocation_Schedule__c );
-        System.assertEquals(clientUAS.Id, clientAlSS.Client_Utility_Account_Subscription__c);
-        System.assertEquals(alss.Customer_Subscription_kW_DC__c, clientALSS.Customer_Subscription_kW_DC__c);
+        System.assertEquals(sz.Id, clientALSS[0].Allocation_Schedule__c );
+        System.assertEquals(clientUAS[0].Id, clientAlSS[0].Client_Utility_Account_Subscription__c);
+        System.assertEquals(alss.Customer_Subscription_kW_DC__c, clientALSS[0].Customer_Subscription_kW_DC__c);
 
         //Test update of parent ALSS
         alss.Customer_Subscription_kW_DC__c = 7;
         update alss;
 
-        Client_Allocation_Schedule_Subscription__c clientALSSUpdate = [
-            SELECT Id, Client_Utility_Account_Subscription__c, Customer_Subscription_kW_DC__c, Allocation_Schedule__c
-            FROM Client_Allocation_Schedule_Subscription__c
-            WHERE Allocation_Schedule_Subscription__c = :alss.Id
-        ];
+        List<Client_Allocation_Schedule_Subscription__c> clientALSSUpdate = ClientReportObjectSelector.getClientALSSBySZSIds(new Set<Id>{alss.Id});
 
-        System.assertEquals(7, clientALSSUpdate.Customer_Subscription_kW_DC__c);
+        System.assertEquals(7, clientALSSUpdate[0].Customer_Subscription_kW_DC__c);
 
         //Test delete of parent ALSS
         delete alss;
 
-        List<Client_Allocation_Schedule_Subscription__c> clientALSSDelete = [
-            SELECT Id, Client_Utility_Account_Subscription__c, Customer_Subscription_kW_DC__c, Allocation_Schedule__c
-            FROM Client_Allocation_Schedule_Subscription__c
-            WHERE Allocation_Schedule_Subscription__c = :alss.Id
-        ];
+        List<Client_Allocation_Schedule_Subscription__c> clientALSSDelete = ClientReportObjectSelector.getClientALSSBySZSIds(new Set<Id>{alss.Id});
 
         System.assertEquals(0, clientALSSDelete.size());
 

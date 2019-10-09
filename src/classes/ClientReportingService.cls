@@ -153,6 +153,28 @@ public without sharing class ClientReportingService {
 
     }
 
+    public static void updateClientUAS(Map<Id, Opportunity> oppMap, Map<Id, Opportunity> oldOppMap) {
+        Set<Id> oppsToUpdate = new Set<Id>();
+        for (Opportunity opp : oppMap.values()) {
+            if (opp.Shared_Solar_System__c != oldOppMap.get(opp.Id).Shared_Solar_System__c) {
+                oppsToUpdate.add(opp.Id);
+            }
+        }
+
+        if (oppsToUpdate.size() > 0 ) {
+
+            List<Client_Utility_Account_Subscription__c> clientUASList = ClientReportObjectSelector.getClientUASesByOppIds(oppsToUpdate);
+
+            if (clientUASList.size() > 0 ){
+                for (Client_Utility_Account_Subscription__c cUAS : clientUASList) {
+                    cUAS.Shared_Solar_System__c = oppMap.get(cUAS.Utility_Account_Subscription__r.Opportunity__c).Shared_Solar_System__c;
+                }
+
+                update clientUASList;
+            }
+        }
+    }
+
 
     public static void insertClientALSS(List<Schedule_Z_Subscription__c> szsList) {
         List<Client_Allocation_Schedule_Subscription__c> clientALSSList = new List<Client_Allocation_Schedule_Subscription__c>();
@@ -191,11 +213,7 @@ public without sharing class ClientReportingService {
             uasIds.add(uas.Id);
         }
 
-        List<Client_Utility_Account_Subscription__c> clientUASList = [
-            SELECT Id
-            FROM Client_Utility_Account_Subscription__c
-            WHERE Utility_Account_Subscription__c IN :uasIds
-        ];
+        List<Client_Utility_Account_Subscription__c> clientUASList = ClientReportObjectSelector.getClientUASesByUASIds(uasIds);
 
         delete clientUASList;
     }
@@ -207,11 +225,8 @@ public without sharing class ClientReportingService {
             szsIds.add(szs.Id);
         }
 
-        List<Client_Allocation_Schedule_Subscription__c> clientALSSList = [
-            SELECT Id
-            FROM Client_Allocation_Schedule_Subscription__c
-            WHERE Allocation_Schedule_Subscription__c IN :szsIds
-        ];
+
+        List<Client_Allocation_Schedule_Subscription__c> clientALSSList = ClientReportObjectSelector.getClientALSSBySZSIds(szsIds);
 
         delete clientALSSList;
     }
@@ -229,11 +244,7 @@ public without sharing class ClientReportingService {
             uasToALSSMap.put(alss.Utility_Account_Subscription__c, alss.Id);
         }
 
-        List<Client_Utility_Account_Subscription__c> clientUASList = [
-            SELECT Id, Utility_Account_Subscription__c
-            FROM Client_Utility_Account_Subscription__c
-            WHERE Utility_Account_Subscription__c IN :uasIds
-        ];
+        List<Client_Utility_Account_Subscription__c> clientUASList = ClientReportObjectSelector.getClientUASesByUASIds(uasIds);
 
         for (Client_Utility_Account_Subscription__c clientUAS : clientUASList) {
                 // Map --> key = ALSS Id, value = client UAS
