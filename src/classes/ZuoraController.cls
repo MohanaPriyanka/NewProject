@@ -60,6 +60,7 @@ public with sharing class ZuoraController {
         zBillRun.AutoRenewal = true;
         zBillRun.InvoiceDate = invoiceDate;
         zBillRun.TargetDate = invoiceDate;
+        zBillRun.Batch = 'Batch2';
 
         HttpResponse billRunResponse = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/object/bill-run', zBillRun, true);
         return billRunResponse.getBody();
