@@ -17,7 +17,9 @@ public with sharing class RESTRouterV2Test {
         '"zipCode": "10901",' +
         '"eiaId": "1234",' +
         '"continueApplicationLink": "http://switch.bluewavesolar.invalid",' +
-        '"productName": "CS Product"';
+        '"productName": "CS Product",' +
+        '"referralName": "RefFirst RefLast",' +
+        '"referralEmail": "refemail@invalid.bluewavesolar.com"';
 
     private static String validPropertyAccount =
         '   "billingStreet": "Test billing street",' +
