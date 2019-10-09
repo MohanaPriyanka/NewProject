@@ -26,6 +26,8 @@ public without sharing class RestLead {
     public String continueApplicationLink;
     public List<RestPropertyAccount> propertyAccounts;
     public String campaignId;
+    public String referralName;
+    public String referralEmail;
 
     public RestLead() {
     }
@@ -52,10 +54,9 @@ public without sharing class RestLead {
         this.eiaId = lead.Utility_relationship__r.EIA_ID__c;
         this.continueApplicationLink = lead.Continue_Application_Link__c;
         this.campaignId = lead.Manual_Campaign_ID__c;
-
+        this.referralName = lead.Referral_Name__c;
+        this.referralEmail = lead.Referral_Email__c;
     }
-
-
 
     public void validateCreateFields() {
         validateBasicFields();
@@ -87,7 +88,6 @@ public without sharing class RestLead {
     private void validateBusinessFieldsIfRequired() {
         if (applicationType != 'Residential') {
             Util.validateStrings(new Map<String, String>{
-                'businessPhone' => businessPhone,
                 'businessName' => businessName,
                 'businessTitle' => businessTitle
             });
@@ -130,6 +130,8 @@ public without sharing class RestLead {
         if (fieldNames.contains('businessTitle')) baseLead.Business_Title__c = this.businessTitle;
         if (fieldNames.contains('applicationCompleteDate')) baseLead.Application_Complete_Date__c = this.applicationCompleteDate;
         if (fieldNames.contains('campaignId')) baseLead.Manual_Campaign_ID__c = this.campaignId;
+        if (fieldNames.contains('referralName')) baseLead.Referral_Name__c = this.referralName;
+        if (fieldNames.contains('referralEmail')) baseLead.Referral_Email__c = this.referralEmail;
         if (fieldNames.contains('continueApplicationLink')) baseLead.Continue_Application_Link__c = this.continueApplicationLink;
 
         updateDerivedFields(new RestLead(baseLead), baseLead);
@@ -168,6 +170,8 @@ public without sharing class RestLead {
             Application_Complete_Date__c = this.applicationCompleteDate,
             Status = 'Sales Qualified',
             Manual_Campaign_ID__c = this.campaignId,
+            Referral_Name__c = this.referralName,
+            Referral_Email__c = this.referralEmail,
             Continue_Application_Link__c = this.continueApplicationLink
         );
 

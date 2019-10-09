@@ -46,7 +46,6 @@ public with sharing class RestLeadTest {
 
         validNonResidentialLead = validResidentialLead.clone();
         validNonResidentialLead.applicationType = 'Non-Residential';
-        validNonResidentialLead.businessPhone = '555-555-5555';
         validNonResidentialLead.businessName = 'My cool company';
         validNonResidentialLead.businessTitle = 'Janitor';
 
@@ -114,13 +113,13 @@ public with sharing class RestLeadTest {
     }
 
     @IsTest
-    public static void testValidateCreateFieldsNonResiNoBusinessPhone() {
+    public static void testValidateCreateFieldsNonResiNoBusinessName() {
         try {
-            invalidNonResidentialLead.businessPhone = null;
+            invalidNonResidentialLead.businessName = null;
             invalidNonResidentialLead.validateCreateFields();
             System.assert(false, 'Validation should not pass');
         } catch (Exception e) {
-            System.assert(e.getMessage().containsIgnoreCase('businessPhone'), 'Should inform consumer that businessPhone is invalid');
+            System.assert(e.getMessage().containsIgnoreCase('businessName'), 'Should inform consumer that bsuinessName is invalid');
         }
     }
 
