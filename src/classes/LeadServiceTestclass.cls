@@ -358,7 +358,7 @@ public class LeadServiceTestclass {
         System.assertEquals(1, oppList.size());
         System.assertEquals('Albany Post Rd Solar Farm', oppList[0].Shared_Solar_System__r.Name);
         System.assertEquals(convertedLead.Personal_Credit_Report__c, oppList[0].Personal_Credit_Report2__c);
-        System.assertEquals('QC In Progress'.toLowerCase(), oppList[0].StageName.toLowerCase());
+        System.assertEquals('QC In Process', oppList[0].StageName);
 
         //test uas creation
         System.assertNotEquals(null, uasList);
