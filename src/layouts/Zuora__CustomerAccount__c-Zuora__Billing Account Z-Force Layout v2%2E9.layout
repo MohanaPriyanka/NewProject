@@ -218,6 +218,7 @@
         <fields>NAME</fields>
         <fields>Zuora__Balance2__c</fields>
         <fields>Zuora__TotalAmount__c</fields>
+        <fields>Zuora__PaymentAmount__c</fields>
         <fields>Zuora__DueDate__c</fields>
         <fields>Zuora__InvoiceDate__c</fields>
         <fields>Zuora__Status__c</fields>
