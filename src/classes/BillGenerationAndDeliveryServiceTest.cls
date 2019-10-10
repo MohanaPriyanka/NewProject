@@ -13,37 +13,44 @@ public class BillGenerationAndDeliveryServiceTest {
     }
 
     @isTest public static void testBillGenerationAndABSummary(){
-        List<Account_Bill__c> acctBillToUpdate = new List<Account_Bill__c>();
+        Zuora_Setting__mdt zuoraSetting = ZuoraAPIHelper.getZuoraSetting();
+        if (!zuoraSetting.Zuora_Is_Live__c) {
+            List<Account_Bill__c> acctBillToUpdate = new List<Account_Bill__c>();
 
-        Test.startTest();
-        BillGenerationConsoleController.runThisMonthsBills();
-        Test.stopTest();
+            Test.startTest();
+            BillGenerationConsoleController.runThisMonthsBills();
+            Test.stopTest();
 
-        String abSummary = BillGenerationConsoleController.getAccountBillSummary();
+            String abSummary = BillGenerationConsoleController.getBillSummary();
 
-        System.assertEquals('Generated Account Bills: 5',abSummary.substring(0,26));
-        System.assertEquals('Ready for Email Send: 0 bills (0%)' ,abSummary.substring(29,63));
-        System.assertEquals('Ready for Paper Send: 0 bills (0%)',abSummary.substring(66,100));
+            System.assertEquals('Generated Bills: 5', abSummary.substring(0, 18));
+            System.assertEquals('Ready for Email Send: 0 bills (0%)', abSummary.substring(21, 55));
+            System.assertEquals('Ready for Paper Send: 0 bills (0%)', abSummary.substring(58, 92));
 
-        for (Account_Bill__c acctBill : [
-            SELECT Id, Name, Ready_for_Email_Send__c
-            FROM Account_Bill__c]){
+            for (Account_Bill__c acctBill : [
+                SELECT Id, Name, Ready_for_Email_Send__c
+                FROM Account_Bill__c
+            ]) {
                 acctBill.Ready_for_Email_Send__c = true;
                 acctBillToUpdate.add(acctBill);
+            }
+
+            update acctBillToUpdate;
+
+            String newABSummary = BillGenerationConsoleController.getBillSummary();
+
+            System.assertEquals('Generated Bills: 5', newABSummary.substring(0, 18));
+            System.assertEquals('Ready for Email Send: 5 bills (100%)', newABSummary.substring(21, 57));
+            System.assertEquals('Ready for Paper Send: 0 bills (0%)', newABSummary.substring(60, 94));
         }
-
-        update acctBillToUpdate;
-
-        String newABSummary = BillGenerationConsoleController.getAccountBillSummary();
-
-        System.assertEquals('Generated Account Bills: 5',newABSummary.substring(0,26));
-        System.assertEquals('Ready for Email Send: 5 bills (100%)' ,newABSummary.substring(29,65));
-        System.assertEquals('Ready for Paper Send: 0 bills (0%)',newABSummary.substring(68,102));
     }
 
     @isTest public static void testNoBillsInserted(){
-        String newABSummary = BillGenerationConsoleController.getAccountBillSummary();
-        System.assertEquals('Generated Account Bills: 0',newABSummary.substring(0,26));
+        Zuora_Setting__mdt zuoraSetting = ZuoraAPIHelper.getZuoraSetting();
+        if (!zuoraSetting.Zuora_Is_Live__c) {
+            String newABSummary = BillGenerationConsoleController.getBillSummary();
+            System.assertEquals('Generated Bills: 0', newABSummary.substring(0, 18));
+        }
     }
 
     @isTest public static void simulateBatch(){

@@ -85,4 +85,40 @@ public with sharing class ZuoraInvoiceSelectorTest {
         System.assert(!queryStringNoAccounts.contains('333333333333333333333'));
         System.assert(!queryStringNoAccounts.contains('Id ='));
     }
+
+    @IsTest
+    public static void testInvoiceSummary() {
+        Date billDate = Date.newInstance(2019,04,20);
+
+        Zuora__ZInvoice__c zInvoiceOne = new Zuora__ZInvoice__c(
+            Zuora__ZuoraId__c = '12345',
+            Ready_For_Email_Send__c = true,
+            Zuora__InvoiceDate__c = billDate
+        );
+        insert zInvoiceOne;
+
+        Zuora__ZInvoice__c zInvoiceTwo = new Zuora__ZInvoice__c(
+            Zuora__ZuoraId__c = '12346',
+            Ready_For_Email_Send__c = true,
+            Zuora__InvoiceDate__c = billDate
+        );
+        insert zInvoiceTwo;
+
+        Zuora__ZInvoice__c zInvoiceThree = new Zuora__ZInvoice__c(
+            Zuora__ZuoraId__c = '12347',
+            Ready_For_Email_Send__c = false,
+            Zuora__InvoiceDate__c = billDate
+        );
+        insert zInvoiceThree;
+
+        List<AggregateResult> aggResult = ZuoraInvoiceSelector.getInvoiceSummary(billDate.addDays(-3));
+        Integer invoiceCount;
+
+        for (AggregateResult aggregateResult : aggResult)  {
+            if((Boolean)aggregateResult.get('Ready_For_Email_Send__c')){
+                invoiceCount = (Integer)aggregateResult.get('numberOfRecords');
+            }
+        }
+        System.assertEquals(2,invoiceCount);
+    }
 }

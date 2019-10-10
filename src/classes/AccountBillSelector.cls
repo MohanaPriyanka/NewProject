@@ -25,7 +25,7 @@ public without sharing class AccountBillSelector {
     public static List<AggregateResult> getAccountBillSummary(Integer billMonth, String billYear) {
         List<AggregateResult> accountBillSummary = [
             SELECT COUNT(Id) numberOfRecords,
-                Ready_for_Email_Send__c, Ready_For_Paper_Bill_Queue__c, Published__c, Added_To_Paper_Bill_Queue__c
+                Ready_for_Email_Send__c, Ready_For_Paper_Bill_Queue__c, Published__c CompletedBills, Added_To_Paper_Bill_Queue__c
             FROM Account_Bill__c
             WHERE Month__c = : billMonth
             AND Year__c = : billYear
