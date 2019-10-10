@@ -63,7 +63,7 @@ private class BatchAuthNetReturnedTransactionsTest {
             WHERE Class__c = 'BatchAuthNetReturnedTransactions'
             AND Method__c = 'Returned Transaction Results'
         ];
-        System.assertEquals(2, errorLogs.size());
+        System.assertEquals(1, errorLogs.size());
         System.assert(errorLogs[0].Message__c.contains('40034118357'));
     }
 
