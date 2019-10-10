@@ -21,10 +21,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>Power_of_One__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
                 <field>NPS_Comp_Value__c</field>
             </layoutItems>
         </layoutColumns>
