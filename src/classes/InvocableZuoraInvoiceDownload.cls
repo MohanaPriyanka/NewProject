@@ -7,7 +7,7 @@ Limitations:
     https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_classes_annotation_InvocableMethod.htm
 */
 
-public class InvocableZuoraInvoiceDownload {
+public without sharing class InvocableZuoraInvoiceDownload {
     @InvocableMethod(label='ZuoraInvoiceDownload')
     public static void invoiceDownload(){
         ZuoraInvoiceAsyncService asyncService = new ZuoraInvoiceAsyncService(ZuoraInvoiceAsyncService.OperationType.DOWNLOAD);
