@@ -78,7 +78,7 @@ public with sharing class ZuoraGLSelector {
         String payPartDebitMemoQuery = 'SELECT m.Project__c as Project, ';
         if (zuoraSetting.Zuora_Is_Live__c) {
             // Going forward, we will report on payments when they are applied:
-            payPartDebitMemoQuery += 'p.createddate as GLDate, ';
+            payPartDebitMemoQuery += 'p.createddate as GLDatetime, ';
         } else {
             // Historical Migration, we reported on transactions when they were made.
             payPartDebitMemoQuery += 'py.effectiveDate as GLDate, ';
@@ -111,7 +111,7 @@ public with sharing class ZuoraGLSelector {
         String payPartInvoiceQuery = 'SELECT rp.Project__c as Project, ';
         if (zuoraSetting.Zuora_Is_Live__c) {
             // Going forward, we will report on payments when they are applied:
-            payPartInvoiceQuery += 'p.createddate as GLDate, ';
+            payPartInvoiceQuery += 'p.createddate as GLDatetime, ';
         } else {
             // Historical Migration, we reported on transactions when they were made.
             payPartInvoiceQuery += 'py.effectiveDate as GLDate, ';

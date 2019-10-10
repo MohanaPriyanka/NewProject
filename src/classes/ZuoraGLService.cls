@@ -31,6 +31,7 @@ public with sharing class ZuoraGLService implements Schedulable {
         String Client;
         String CustomerAccount;
         Date GLDate;
+        Datetime GLDatetime;
         Decimal Amount;
         String ReasonCode;
         String ExternalId;
@@ -48,7 +49,11 @@ public with sharing class ZuoraGLService implements Schedulable {
             entry.Project__c = ledger.Project;
             entry.Client__c = ledger.Client;
             entry.Customer_Account__c = ledger.CustomerAccount;
-            entry.Date__c = ledger.GLDate;
+            if (ledger.GLDatetime != null){
+                entry.Date__c = Date.valueOf(ledger.GLDatetime);
+            } else {
+                entry.Date__c = ledger.GLDate;
+            }
             entry.Amount__c = ledger.Amount;
             entry.Reason_Code__c = ledger.reasonCode;
             entry.External_Id__c = ledger.ExternalId;
