@@ -19,6 +19,7 @@ public without sharing class AccountBillSelector {
         if (idsToGet != null && !idsToGet.isEmpty()) {
             query += '\n AND Id IN : ' + idSet;
         }
+        query = String.escapeSingleQuotes(query);
         return Database.query(query);
     }
 
