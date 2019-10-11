@@ -30,6 +30,7 @@ public with sharing class ZuoraGLService implements Schedulable {
         String Project;
         String Client;
         String CustomerAccount;
+        String CRMId;
         Date GLDate;
         Datetime GLDatetime;
         Decimal Amount;
@@ -49,9 +50,12 @@ public with sharing class ZuoraGLService implements Schedulable {
             entry.Project__c = ledger.Project;
             entry.Client__c = ledger.Client;
             entry.Customer_Account__c = ledger.CustomerAccount;
-            if (ledger.GLDatetime != null){
+            if (objectType == 'PaymentPart' && ledger.CRMId == null){
+                // Use CRMId as a switch for historical data v. new data in Zuora.
+                // Going forward, we will report on payments when they are applied:
                 entry.Date__c = Date.valueOf(ledger.GLDatetime);
             } else {
+                // Historical Migration, we reported on transactions when they were made.
                 entry.Date__c = ledger.GLDate;
             }
             entry.Amount__c = ledger.Amount;
