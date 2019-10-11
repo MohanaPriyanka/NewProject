@@ -15,11 +15,11 @@ public without sharing class AccountBillSelector {
             'WHERE Published__c = TRUE ' +
             'AND Ready_For_Paper_Bill_Queue__c = TRUE ' +
             'AND Bill_Attach_Document__c != NULL ';
-        Set<Id> IdsToSet = idsToGet;
+        Set<Id> idsToSet = idsToGet;
 
         if (idsToGet != null && !idsToGet.isEmpty()) {
             query += '\n AND Id IN (';
-            for (Id idToSet : IdsToSet) {
+            for (Id idToSet : idsToSet) {
                 query += '\'' + idToSet + '\',';
             }
             query = query.removeEnd(',');
