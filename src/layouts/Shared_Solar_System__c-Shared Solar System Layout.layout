@@ -579,6 +579,17 @@
     <relatedLists>
         <relatedList>RelatedNoteList</relatedList>
     </relatedLists>
+    <relatedLists>
+        <excludeButtons>MassChangeOwner</excludeButtons>
+        <fields>NAME</fields>
+        <fields>Milestone_Date__c</fields>
+        <fields>Status__c</fields>
+        <fields>Requirement_Type__c</fields>
+        <fields>Percentage__c</fields>
+        <relatedList>Milestone__c.Shared_Solar_System__c</relatedList>
+        <sortField>Milestone_Date__c</sortField>
+        <sortOrder>Asc</sortOrder>
+    </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
     <showInteractionLogPanel>false</showInteractionLogPanel>
