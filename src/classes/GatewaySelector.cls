@@ -10,6 +10,7 @@ public without sharing class GatewaySelector {
             SELECT Id, ChargentBase__Merchant_ID__c, ChargentBase__Security_Key__c
             FROM ChargentBase__Gateway__c
             WHERE ChargentBase__Active__c = TRUE
+            AND RecordType.Name = 'Authorize.net'
         ];
     }
 }
