@@ -15,10 +15,12 @@ public without sharing class AccountBillSelector {
             'WHERE Published__c = TRUE ' +
             'AND Ready_For_Paper_Bill_Queue__c = TRUE ' +
             'AND Bill_Attach_Document__c != NULL ';
+
         if (idsToGet != null && !idsToGet.isEmpty()) {
             query += '\n AND Id IN (';
             for (Id idToSet : idsToGet) {
-                query += '\'' + String.escapeSingleQuotes(idToSet) + '\',';
+                String idEscaped = String.escapeSingleQuotes(idToSet);
+                query += '\'' + idEscaped + '\',';
             }
             query = query.removeEnd(',');
             query += ')';
