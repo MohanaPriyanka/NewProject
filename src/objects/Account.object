@@ -2394,6 +2394,19 @@ TODAY()- BLANKVALUE(Postcard_2__c,DATE(1900,1,1))
         </valueSet>
     </fields>
     <fields>
+        <fullName>Outstanding_TPF_Amount__c</fullName>
+        <description>Netsuite TPF Total Open Amount is manually entered into this SF field to reflect TPF amounts outstanding for this partner</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Netsuite TPF Total Open Amount is manually entered into this SF field to reflect TPF amounts outstanding for this partner</inlineHelpText>
+        <label>Outstanding TPF Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>Override_Delinquency_Removal__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
