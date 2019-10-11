@@ -45,9 +45,9 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>false</enableFeeds>
     <enableHistory>true</enableHistory>
+    <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
@@ -809,6 +809,23 @@
         </valueSet>
     </fields>
     <fields>
+        <fullName>NPS_Comp_Value__c</fullName>
+        <description>This field is used for reporting NPS scores. It is as follows (Detractor = -1, Passive = 0, Promoter = 1)</description>
+        <externalId>false</externalId>
+        <formula>IF( NPS__c &gt; 8, 1,
+    IF(NPS__c &lt; 7, -1, 0)
+)</formula>
+        <inlineHelpText>This field is used for reporting NPS scores. It is as follows (Detractor = -1, Passive = 0, Promoter = 1)</inlineHelpText>
+        <label>NPS Comp Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>NPS_Type__c</fullName>
         <externalId>false</externalId>
         <label>NPS Type</label>
@@ -1018,6 +1035,20 @@
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Power_of_One__c</fullName>
+        <externalId>false</externalId>
+        <formula>1</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Power of One</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Rank_Co_s_Comms__c</fullName>
@@ -3690,7 +3721,7 @@ New York</description>
             </values>
         </picklistValues>
     </recordTypes>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>Private</sharingModel>
     <startsWith>Vowel</startsWith>
     <visibility>Public</visibility>
