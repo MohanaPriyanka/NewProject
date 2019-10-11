@@ -73,21 +73,14 @@ public with sharing class ZuoraGLSelector {
     }
 
     public static String getPaymentPartsDM(Date startDate, Date endDate){
-        Zuora_Setting__mdt zuoraSetting = ZuoraAPIHelper.getZuoraSetting();
-
-        String payPartDebitMemoQuery = 'SELECT m.Project__c as Project, ';
-        if (zuoraSetting.Zuora_Is_Live__c) {
-            // Going forward, we will report on payments when they are applied:
-            payPartDebitMemoQuery += 'p.createddate as GLDate, ';
-        } else {
-            // Historical Migration, we reported on transactions when they were made.
-            payPartDebitMemoQuery += 'py.effectiveDate as GLDate, ';
-        }
-        payPartDebitMemoQuery +=
+        String payPartDebitMemoQuery = 'SELECT m.Project__c as Project, ' +
             'm.ClientOwner__c as Client, '+
             'a.accountnumber as CustomerAccount, ' +
             'p.amount as Amount, ' +
             'm.accountid as AccountId, ' +
+            'p.createddate as GLDatetime, ' +
+            'py.effectiveDate as GLDate, ' +
+            'py.TransactionID__c as CRMId, ' +
             'p.Id as ExternalId ' +
             'FROM PaymentPartItem p ' +
             'INNER JOIN PaymentPart pt ON p.paymentpartid = pt.Id ' +
@@ -106,22 +99,14 @@ public with sharing class ZuoraGLSelector {
     }
 
     public static String getPaymentPartsIV(Date startDate, Date endDate){
-        Zuora_Setting__mdt zuoraSetting = ZuoraAPIHelper.getZuoraSetting();
-
-        String payPartInvoiceQuery = 'SELECT rp.Project__c as Project, ';
-        if (zuoraSetting.Zuora_Is_Live__c) {
-            // Going forward, we will report on payments when they are applied:
-            payPartInvoiceQuery += 'p.createddate as GLDate, ';
-        } else {
-            // Historical Migration, we reported on transactions when they were made.
-            payPartInvoiceQuery += 'py.effectiveDate as GLDate, ';
-        }
-
-        payPartInvoiceQuery +=
+        String payPartInvoiceQuery = 'SELECT rp.Project__c as Project, ' +
             'rp.ClientOwner__c as Client, ' +
             'a.accountnumber as CustomerAccount, ' +
             'p.amount as Amount, ' +
             'iv.accountid as AccountId, ' +
+            'p.createddate as GLDatetime, ' +
+            'py.effectiveDate as GLDate, ' +
+            'py.TransactionID__c as CRMId, ' +
             'p.Id as ExternalId ' +
             'FROM PaymentPartItem p ' +
             'INNER JOIN PaymentPart pt ON p.paymentpartid = pt.Id ' +

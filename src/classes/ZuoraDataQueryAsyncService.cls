@@ -60,6 +60,7 @@ public class ZuoraDataQueryAsyncService implements Queueable, Database.AllowsCal
             }
             upsert dataQuery Id;
             if (zuoraQueryResult.data.queryStatus == 'in_progress' || zuoraQueryResult.data.queryStatus == 'accepted') {
+                attemptedQuery.recordId = dataQuery.Id;
                 queueCheckDataQueryStatus(zuoraQueryResult, attemptedQuery);
             }
         }
