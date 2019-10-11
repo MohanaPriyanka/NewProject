@@ -5,14 +5,38 @@ public with sharing class InvocableZuoraActionsTest {
         ZuoraCreditDebitMemoServiceTest.testDataSetup();
         InvoiceTemplateAssignerTest.setupTestData();
 
+        ContentVersion cv = new ContentVersion(
+            ContentLocation = 'S',
+            VersionData = EncodingUtil.base64Decode('invoice body'),
+            Title = 'InvoiceNumber.pdf',
+            PathOnClient = '/InvoiceNumber.pdf'
+        );
+        insert cv;
+
+        List<ContentVersion> contentVersions = [SELECT Id, ContentDocumentId FROM ContentVersion WHERE Id =: cv.Id];
+        List<ContentDocumentLink> contentDocumentLinks = new List<ContentDocumentLink>();
+
         List<Zuora__ZInvoice__c> allInvoices = [
             SELECT Id
             FROM Zuora__ZInvoice__c
         ];
         for (Zuora__ZInvoice__c invoice : allInvoices){
+            invoice.Ready_for_Paper_Bill_Queue__c = true;
+            invoice.Added_to_Paper_Bill_Queue__c = false;
+            ContentDocumentLink cdl = new ContentDocumentLink(
+                ContentDocumentId = contentVersions[0].ContentDocumentId,
+                LinkedEntityId = invoice.Id,
+                ShareType = 'I'
+            );
+            invoice.Content_Document_Id__c = contentVersions[0].ContentDocumentId;
+            contentDocumentLinks.add(cdl);
             invoice.Zuora__InvoiceDate__c = Date.newInstance(2019,04,20);
+            invoice.Downloaded_Date__c = System.today();
         }
+        insert contentDocumentLinks;
         update allInvoices;
+        TestFactory.insertBWAddress();
+        TestFactory.insertLetterStreamSettings();
     }
 
     @IsTest public static void testBillRun() {
@@ -50,9 +74,30 @@ public with sharing class InvocableZuoraActionsTest {
     }
 
     @IsTest public static void testInvoiceDownload() {
+        List<Zuora__ZInvoice__c> allInvoices = [
+            SELECT Id
+            FROM Zuora__ZInvoice__c
+        ];
+        for (Zuora__ZInvoice__c invoice : allInvoices){
+            invoice.Downloaded_Date__c = null;
+        }
+        update allInvoices;
+
+        List<AsyncApexJob> beforeJobs = [
+            SELECT Id, Status, JobItemsProcessed, TotalJobItems, NumberOfErrors
+            FROM AsyncApexJob
+        ];
+        System.assertEquals(0,beforeJobs.size());
+
         Test.startTest();
             InvocableZuoraInvoiceDownload.invoiceDownload();
         Test.stopTest();
+
+        List<AsyncApexJob> afterJobs = [
+            SELECT Id, Status, JobItemsProcessed, TotalJobItems, NumberOfErrors
+            FROM AsyncApexJob
+        ];
+        System.assertEquals(1,afterJobs.size());
     }
 
     @IsTest public static void testMemoApply() {
@@ -100,9 +145,21 @@ public with sharing class InvocableZuoraActionsTest {
     }
 
     @IsTest public static void testPaperMailSend() {
+        List<AsyncApexJob> beforeJobs = [
+            SELECT Id, Status, JobItemsProcessed, TotalJobItems, NumberOfErrors
+            FROM AsyncApexJob
+        ];
+        System.assertEquals(0,beforeJobs.size());
+
         Test.startTest();
             InvocableZuoraPaperMailSend.paperMailSend();
         Test.stopTest();
+
+        List<AsyncApexJob> afterJobs = [
+            SELECT Id, Status, JobItemsProcessed, TotalJobItems, NumberOfErrors
+            FROM AsyncApexJob
+        ];
+        System.assertEquals(1,afterJobs.size());
     }
 
     @IsTest public static void testTemplateAssigner() {

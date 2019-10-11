@@ -10,8 +10,6 @@ Limitations:
 public class InvocableZuoraPaperMailSend {
     @InvocableMethod(label='ZuoraPaperMailSend')
     public static void paperMailSend(){
-        ZuoraInvoiceAsyncService asyncService = new ZuoraInvoiceAsyncService(ZuoraInvoiceAsyncService.OperationType.MAIL);
-        asyncService.allInvoicesToMail = ZuoraInvoiceSelector.getInvoicesToMail();
-        System.enqueueJob(asyncService);
+        ZuoraInvoiceService.batchInvoicesToMail(ZuoraInvoiceSelector.getInvoicesToMail());
     }
 }
