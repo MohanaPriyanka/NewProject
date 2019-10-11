@@ -36798,6 +36798,31 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Milestone__c.Description__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Milestone__c.Milestone_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Milestone__c.Percentage__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Milestone__c.Requirement_Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Milestone__c.Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.ACH_Account_Number__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -69441,6 +69466,9 @@
         <layout>Meter_Reading_Schedule__c-Meter Reading Schedule Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Milestone__c-Milestone Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Operations_Group_Assignment__c-Operations Group Assignment Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -69698,10 +69726,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Shared_Solar_System__c-Shared Solar System Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Shared_Solar_System__c-Shared Solar System Layout</layout>
-        <recordType>Shared_Solar_System__c.SSS_PM_Relationship</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Snapshot_Report_Object__c-Landowner Last Contact Object Layout</layout>
@@ -73122,6 +73146,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>Meter_Reading_Schedule__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>Milestone__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
