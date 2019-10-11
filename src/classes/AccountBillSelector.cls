@@ -15,12 +15,15 @@ public without sharing class AccountBillSelector {
             'WHERE Published__c = TRUE ' +
             'AND Ready_For_Paper_Bill_Queue__c = TRUE ' +
             'AND Bill_Attach_Document__c != NULL ';
-        Set<Id> idSet = idsToGet;
         if (idsToGet != null && !idsToGet.isEmpty()) {
-            query += '\n AND Id IN : ' + idSet;
+            query += '\n AND Id IN (';
+            for (Id idToSet : idsToGet) {
+                query += '\'' + String.escapeSingleQuotes(idToSet) + '\',';
+            }
+            query = query.removeEnd(',');
+            query += ')';
         }
-        String newQuery = String.escapeSingleQuotes(query);
-        return Database.query(newQuery);
+        return Database.query(query);
     }
 
     @SuppressWarnings('PMD.ApexCRUDViolation')
