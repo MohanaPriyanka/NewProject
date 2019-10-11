@@ -7,8 +7,6 @@ public class ZuoraGLServiceTest {
 
     @IsTest
     private static void testBuildQueryString() {
-        ZuoraAPIHelper.setZuoraLive(false);
-
         Date startDate = Date.newInstance(2019,03,12);
         Date endDate = Date.newInstance(2019,04,12);
 
@@ -41,20 +39,8 @@ public class ZuoraGLServiceTest {
 
         System.assert(paymentPartsDMWithDate.contains('effectiveDate'));
         System.assert(paymentPartsIVWithDate.contains('effectiveDate'));
-        System.assert(!paymentPartsDMWithDate.contains('createddate'));
-        System.assert(!paymentPartsIVWithDate.contains('createddate'));
-
-        // Post Zuora Go Live, should use different dates for payment parts.
-        // Going forward, we will report on payments when they are applied:
-        // Historical Migration, we reported on transactions when they were made.
-        ZuoraAPIHelper.setZuoraLive(true);
-
-        String postGoLiveDM = ZuoraGLSelector.getPaymentPartsDM(startDate, endDate);
-        String postGoLiveIV = ZuoraGLSelector.getPaymentPartsIV(startDate, endDate);
-        System.assert(postGoLiveDM.contains('createddate'));
-        System.assert(postGoLiveIV.contains('createddate'));
-        System.assert(!postGoLiveDM.contains('effectiveDate'));
-        System.assert(!postGoLiveIV.contains('effectiveDate'));
+        System.assert(paymentPartsDMWithDate.contains('createddate'));
+        System.assert(paymentPartsIVWithDate.contains('createddate'));
     }
 
     @IsTest
@@ -258,5 +244,26 @@ public class ZuoraGLServiceTest {
 
         System.assertEquals(0,originalJE.size());
         System.assertEquals(14,updatedJE.size());
+
+        List<Journal_Entry__c> checkGoLiveSwitch = [
+            SELECT Id, Date__c, External_Id__c
+            FROM Journal_Entry__c
+            WHERE External_Id__c = '2c92c0fa6c8aee37016c928a815955c0'
+            OR External_Id__c = '2c92c0fb6c8afb4e016c926615190872'
+            ORDER BY External_Id__c
+        ];
+
+        // Post Zuora Go Live, should use different dates for payment parts.
+        // Going forward, we will report on payments when they are applied:
+        // Historical Migration, we reported on transactions when they were made.
+
+        // Historical Migration:
+        System.assertEquals('2c92c0fa6c8aee37016c928a815955c0',checkGoLiveSwitch[0].External_Id__c);
+        System.assertEquals(Date.newInstance(2019,08,01),checkGoLiveSwitch[0].Date__c);
+
+        // Post Go live:
+        System.assertEquals('2c92c0fb6c8afb4e016c926615190872',checkGoLiveSwitch[1].External_Id__c);
+        System.assertEquals(Date.newInstance(2019,10,01),checkGoLiveSwitch[1].Date__c);
+
     }
 }
