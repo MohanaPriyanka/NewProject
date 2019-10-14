@@ -134,8 +134,8 @@ private class BatchAuthNetReturnedTransactionsTest {
 
     @IsTest
     public static void testSchedule() {
+        AuthNetScheduler.gatewaySelector = (GatewaySelector) Test.createStub(GatewaySelector.class, new MockGatewaySelector());
         AuthNetScheduler authNetScheduler = new AuthNetScheduler();
-        authNetScheduler.gatewaySelector = (GatewaySelector) Test.createStub(GatewaySelector.class, new MockGatewaySelector());
         Test.startTest();
         Test.setMock(System.HttpCalloutMock.class, new TransactionMock(1));
         authNetScheduler.execute(null);
