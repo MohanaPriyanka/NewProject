@@ -5,9 +5,14 @@
 
 public without sharing class AuthNetScheduler implements Schedulable, Database.AllowsCallouts {
     @TestVisible
-    private GatewaySelector gatewaySelector = new GatewaySelector();
+    public static GatewaySelector gatewaySelector = new GatewaySelector();
 
     public void execute(SchedulableContext sc) {
+        AuthNetScheduler.startJob();
+    }
+
+    @Future(Callout=true)
+    public static void startJob() {
         List<AuthNetAPI.MerchantAuthentication> merchantAuthentications = new List<AuthNetAPI.MerchantAuthentication>();
 
         List<ChargentBase__Gateway__c> gateways = gatewaySelector.getGatewaysForAuthentication();
