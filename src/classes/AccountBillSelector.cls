@@ -6,7 +6,6 @@
 
 
 public without sharing class AccountBillSelector {
-    @SuppressWarnings('PMD.ApexCRUDViolation')
     public static List<Account_Bill__c> getAccountBillsReadyToBeSent(Set<Id> idsToGet) {
         String query = 'SELECT Id, Parent_Account__r.Name, Parent_Account__r.BillingStreet, ' +
             'Parent_Account__r.BillingCity, Parent_Account__r.BillingState, Parent_Account__r.BillingPostalCode, ' +
@@ -15,17 +14,11 @@ public without sharing class AccountBillSelector {
             'WHERE Published__c = TRUE ' +
             'AND Ready_For_Paper_Bill_Queue__c = TRUE ' +
             'AND Bill_Attach_Document__c != NULL ';
-        Set<Id> idsToSet = idsToGet;
 
         if (idsToGet != null && !idsToGet.isEmpty()) {
-            query += '\n AND Id IN (';
-            for (Id idToSet : idsToSet) {
-                String safeVar = String.escapeSingleQuotes(idToSet);
-                query += '\'' + safeVar + '\',';
-            }
-            query = query.removeEnd(',');
-            query += ')';
+            query += '\n AND Id IN : idsToGet ';
         }
+
         return Database.query(query);
     }
 
