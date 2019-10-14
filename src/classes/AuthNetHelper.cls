@@ -1,8 +1,15 @@
-public class AuthNetHelper {
+/*
+ * Created by: Joey Chan
+ * Tested by: BatchAuthNetReturnedTransactionsTest
+  */
 
+public without sharing class AuthNetHelper {
     @TestVisible
     private static Long calloutMillis = 0;
+    @TestVisible
+    private static List<EndpointCall> endpointsCalled = new List<EndpointCall>();
 
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     public static HttpResponse callJsonEndpoint(String method, String jsonBody, Boolean flush) {
         if(Limits.getCallouts() >= Limits.getLimitCallouts()){
             throw new Util.BWException('Callout limit exceeded.');
@@ -12,6 +19,7 @@ public class AuthNetHelper {
                     ' seconds of cumulative callout time has been consumed. Retry in a different transaction.');
         }
         String authNetUrl;
+        // TODO: Move this into a selector and don't suppress ApexCRUDViolation
         Organization o = [SELECT IsSandbox FROM Organization LIMIT 1];
         if (o.IsSandbox || Test.isRunningTest()) {
             authNetUrl = 'https://apitest.authorize.net/xml/v1/request.api';
@@ -44,6 +52,9 @@ public class AuthNetHelper {
         response = http.send(request);
         Long finish = System.currentTimeMillis();
         calloutMillis += (finish - start);
+        if (Test.isRunningTest()) {
+            endpointsCalled.add(new EndpointCall(request.getEndpoint(), request.getBody(), response.getBody()));
+        }
 
         Logger.logLater(
                 'AuthNetHelper',
@@ -58,5 +69,17 @@ public class AuthNetHelper {
             Logger.flushLogs();
         }
         return response;
+    }
+
+    @TestVisible
+    private class EndpointCall {
+        public String endpoint;
+        public String jsonBody;
+        public String response;
+        public EndpointCall(String endpoint, String jsonBody, String response) {
+            this.endpoint = endpoint;
+            this.jsonBody = jsonBody;
+            this.response = response;
+        }
     }
 }
