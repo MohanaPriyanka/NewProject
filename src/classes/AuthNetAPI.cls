@@ -1,12 +1,13 @@
 /**
  * Created by joeychan on 2019-07-27.
  */
-
+@SuppressWarnings('PMD.ExcessivePublicCount')
 public with sharing class AuthNetAPI {
     public GetSettledBatchListRequest getSettledBatchListRequest;
     public GetTransactionListRequest getTransactionListRequest;
     public List<BatchList> batchList { get; set; }
     public List<Transactions> transactions { get; set; }
+    public Integer totalNumInResultSet;
 
     public class Transactions {
         public Boolean hasReturnedItems { get; set; }
