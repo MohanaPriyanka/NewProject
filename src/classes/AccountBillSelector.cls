@@ -20,7 +20,8 @@ public without sharing class AccountBillSelector {
         if (idsToGet != null && !idsToGet.isEmpty()) {
             query += '\n AND Id IN (';
             for (Id idToSet : idsToSet) {
-                query += '\'' + idToSet + '\',';
+                String safeVar = String.escapeSingleQuotes(idToSet);
+                query += '\'' + safeVar + '\',';
             }
             query = query.removeEnd(',');
             query += ')';
