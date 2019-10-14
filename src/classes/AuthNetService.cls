@@ -14,7 +14,12 @@ public with sharing class AuthNetService {
         //BOM or "Byte Order Mark". It is usually received as the first few bytes of a file,
         //telling you how to interpret the encoding of the rest of the data. You can simply remove the character to continue.
         String resBody = res.getBody().trim().replace('\uFEFF', '');
-        AuthNetAPI authNetSettledBatch = (AuthNetAPI) JSON.deserialize(resBody, AuthNetAPI.class);
+        AuthNetAPI authNetSettledBatch;
+        try {
+            authNetSettledBatch = (AuthNetAPI) JSON.deserialize(resBody, AuthNetAPI.class);
+        } catch (JSONException jse) {
+            throw new Util.FatalBWException(jse.getMessage() + '\n' + resBody);
+        }
 
         return getBatchIdList(authNetSettledBatch);
     }
@@ -31,7 +36,7 @@ public with sharing class AuthNetService {
         return batchIdList;
     }
 
-    public static List<AuthNetAPI.Transactions> getTransactionListRequest(String merchantName, String transKey, String batchId, String pagingOffset, String pagingLimit) {
+    public static AuthNetAPI getTransactionListRequest(String merchantName, String transKey, String batchId, String pagingOffset, String pagingLimit) {
         AuthNetAPI req = new AuthNetAPI();
         req.getTransactionListRequest = new AuthNetAPI.GetTransactionListRequest();
         req.getTransactionListRequest.CbatchId = batchId;
@@ -48,8 +53,14 @@ public with sharing class AuthNetService {
         HttpResponse res = AuthNetHelper.callJsonEndpoint('POST', JSON.serialize(req, true), false);
 
         String resBody = res.getBody().trim().replace('\uFEFF', '');
-        AuthNetAPI authNetTransaction = (AuthNetAPI) JSON.deserialize(resBody, AuthNetAPI.class);
-        return authNetTransaction.transactions;
+        AuthNetAPI authNetTransaction;
+        try {
+            authNetTransaction = (AuthNetAPI) JSON.deserialize(resBody, AuthNetAPI.class);
+        } catch (JSONException jse) {
+            throw new Util.FatalBWException(jse.getMessage() + '\n' + resBody);
+        }
+
+        return authNetTransaction;
     }
 
     public static List<AuthNetAPI.Transactions> getReturnedTransactions(List<AuthNetAPI.Transactions> allTransactions) {

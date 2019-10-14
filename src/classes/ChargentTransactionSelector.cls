@@ -1,6 +1,6 @@
 /**
  * Created by PeterYao on 7/24/2019.
- * Tested by: ZuoraHistoricalApplicationTest
+ * Tested by: ZuoraHistoricalApplicationTest, ZuoraSubscriptionServiceTest
  */
 
 public with sharing class ChargentTransactionSelector {
@@ -52,6 +52,16 @@ public with sharing class ChargentTransactionSelector {
             AND ChargentOrders__Amount__c != 0
             AND ChargentOrders__Amount__c != NULL
             ORDER BY Date_of_Transaction__c
+        ];
+    }
+
+    @SuppressWarnings('PMD.ApexCRUDViolation')
+    public List<ChargentOrders__Transaction__c> selectTransactionsNotMarkedReturned(List<String> gatewayTransactionIds) {
+        return [
+            SELECT Id
+            FROM ChargentOrders__Transaction__c
+            WHERE ChargentOrders__Response_Status__c != 'Returned'
+            AND ChargentOrders__Gateway_ID__c IN :gatewayTransactionIds
         ];
     }
 }

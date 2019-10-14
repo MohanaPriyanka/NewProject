@@ -31,7 +31,7 @@ public with sharing class ZuoraSubscriptionServiceTest {
         Test.loadData(Utility_Account_Bill__c.SObjectType, 'TestCSUtilityAccountBill');
         Test.loadData(UASB__c.SObjectType, 'TestCSUASB');
         Test.loadData(ChargentOrders__ChargentOrder__c.SObjectType, 'TestCSChargentOrder');
-
+        Test.loadData(ChargentOrders__Transaction__c.SObjectType, 'TestCSTransaction');
         TestFactory.setCSBillSettings();
 
         // Because there's no way to populate self lookups:
@@ -347,5 +347,37 @@ public with sharing class ZuoraSubscriptionServiceTest {
         obso =
             ZuoraSubscriptionService.getOrderBySubscriptionOwnerPage('/v1/orders/subscriptionOwner/ExistingAccountPage', null);
         System.assertEquals(4, obso.orders.size());
+    }
+
+    @IsTest
+    public static void testTransactionSelectorForReturns() {
+        List<ChargentOrders__Transaction__c> transactions = [
+            SELECT Id, ChargentOrders__Response_Status__c
+            FROM ChargentOrders__Transaction__c
+        ];
+        Integer i = 12345;
+        List<ChargentOrders__Transaction__c> returnedTransactions = new List<ChargentOrders__Transaction__c>();
+        List<ChargentOrders__Transaction__c> approvedTransactions = new List<ChargentOrders__Transaction__c>();
+        List<String> transactionIds = new List<String>();
+        for (ChargentOrders__Transaction__c trx : transactions) {
+            transactionIds.add(String.valueOf(i));
+            if (trx.ChargentOrders__Response_Status__c == 'Error') {
+                trx.ChargentOrders__Response_Status__c = 'Returned';
+                trx.ChargentOrders__Gateway_ID__c = String.valueOf(i);
+                returnedTransactions.add(trx);
+            } else {
+                trx.ChargentOrders__Gateway_ID__c = String.valueOf(i);
+                approvedTransactions.add(trx);
+            }
+            i++;
+        }
+        update transactions;
+        System.assertEquals(2, returnedTransactions.size());
+        System.assertEquals(5, approvedTransactions.size());
+
+        ChargentTransactionSelector transactionSelector = new ChargentTransactionSelector();
+        List<ChargentOrders__Transaction__c> returnedTransactionsFromSelector =
+            transactionSelector.selectTransactionsNotMarkedReturned(transactionIds);
+        System.assertEquals(approvedTransactions.size(), returnedTransactionsFromSelector.size());
     }
 }
