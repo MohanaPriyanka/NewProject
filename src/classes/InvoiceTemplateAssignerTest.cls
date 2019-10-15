@@ -3,7 +3,7 @@ public class InvoiceTemplateAssignerTest {
     public static final String NON_AUTOPAY_MESSAGE = 'Non-Autopay Message';
     public static final String AUTOPAY_MESSAGE = 'Autopay Message';
 
-    @testSetup static void setupTestData() {
+    @testSetup public static void setupTestData() {
         zqu__InvoiceTemplate__c anchorTemplate = new zqu__InvoiceTemplate__c(
             Active__c = true,
             Autopay__c = false,
