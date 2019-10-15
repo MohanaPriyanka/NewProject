@@ -26162,6 +26162,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>BlueWave_Surveys__c.NPS_Comp_Value__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Lead.LASERCA__Co_Applicant_Social_Security_Number__c</field>
         <readable>true</readable>
@@ -26249,6 +26254,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.LastTransferDate</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>BlueWave_Surveys__c.Power_of_One__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
