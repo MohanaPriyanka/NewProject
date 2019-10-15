@@ -43,7 +43,7 @@
         <actionName>InvocableZuoraPaperMailSend</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Done_SCreen</targetReference>
+            <targetReference>Zuora_Memo_Apply</targetReference>
         </connector>
     </actionCalls>
     <actionCalls>
@@ -86,12 +86,12 @@
         <description>Queries outstanding credit memos in Zuora, and applies them to invoices by client and project</description>
         <name>Zuora_Memo_Apply</name>
         <label>Memo Apply</label>
-        <locationX>374</locationX>
-        <locationY>292</locationY>
+        <locationX>1186</locationX>
+        <locationY>182</locationY>
         <actionName>InvocableZuoraMemoApply</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Template_Assigner_Screen</targetReference>
+            <targetReference>Done_SCreen</targetReference>
         </connector>
     </actionCalls>
     <actionCalls>
@@ -103,7 +103,7 @@
         <actionName>InvocableZuoraMemoUpload</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Zuora_Memo_Apply</targetReference>
+            <targetReference>Template_Assigner_Screen</targetReference>
         </connector>
     </actionCalls>
     <description>Walks through the steps of invoice creation, modification and delivery for monthly CS statements</description>
@@ -125,8 +125,8 @@
     <screens>
         <name>Done_SCreen</name>
         <label>Done</label>
-        <locationX>1148</locationX>
-        <locationY>395</locationY>
+        <locationX>1186</locationX>
+        <locationY>396</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -269,7 +269,7 @@
     <screens>
         <name>Send_Via_Paper_Screen</name>
         <label>Send Via Paper</label>
-        <locationX>1055</locationX>
+        <locationX>1063</locationX>
         <locationY>394</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
