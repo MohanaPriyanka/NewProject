@@ -1,25 +1,26 @@
-<!DOCTYPE html>
+<messaging:emailTemplate relatedToType="Case" subject="">
+<messaging:htmlEmailBody>
 <!--[if IE]><html xmlns="http://www.w3.org/1999/xhtml" class="ie"><![endif]--><!--[if !IE]>
 <!--><html style="margin:0;padding:0;height:100%" xmlns="http://www.w3.org/1999/xhtml"><!--<![endif]-->
-
-
+ 
+ 
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
 <meta content="IE=edge" http-equiv="X-UA-Compatible" />
-<title></title>
+<title>How was your experience with BlueWave?</title>
 <style>
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:300,600);
 </style>
-
+ 
 <style>
-@media (max-width: 396.2517882689557px) {
+@media (max-width: 220.0px) {
   .logo-image {
     width: 100%;
   }
 }
-
+ 
 </style>
-
+ 
 <style>
 @media only screen and (max-width: 619px) {
   .layout {
@@ -47,7 +48,7 @@
     text-transform: uppercase;
   }
 }
-
+ 
 </style>
 <style>
 @media only screen and (max-width: 619px) {
@@ -60,7 +61,7 @@
     text-transform: uppercase;
   }
 }
-
+ 
 </style>
 <style>
 @media only screen and (max-width: 400px) {
@@ -128,82 +129,85 @@ a:focus{text-decoration:underline !important}
 .rating a:hover{text-decoration:none !important}
 .rating a:focus{text-decoration:none !important}</style></head>
 <body style="margin:0;box-sizing:border-box;height:100%">
-<div style="background-color:#236192;">
+<div style="background-color:#387CDF;">
 <!--[if gte mso 9]>
 <v:background xmlns:v="urn:schemas-microsoft-com:vml" fill="t">
-<v:fill type="tile" src="" color="#236192"/>
+<v:fill type="tile" src="" color="#387CDF"/>
 </v:background>
 <![endif]-->
 <table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%">
 <tr>
 <td align="left" background="" style="background-repeat: no-repeat; background-size: auto 100%; background-size: cover;" valign="top">
-<div class="wrapper" style="min-width:260px;padding:10px;min-height:100%;box-sizing:border-box;height:100%;font-family:'Open Sans', sans-serif;font-size:11px;font-weight:300;line-height:26px">
+<div class="wrapper" style="min-width:260px;padding:10px 10px 60px;min-height:100%;box-sizing:border-box;height:100%;font-family:'Open Sans', sans-serif;font-size:11px;font-weight:300;line-height:26px">
 <div style="Margin-bottom: 34px; text-align: right;">
 </div>
-<div class="logo" style="text-align: center; margin-bottom: 30px; margin-top: 30px;"><img class="logo-image" alt="GetFeedback" style="-ms-interpolation-mode:bicubic;border:0;vertical-align: bottom;" src="https://getfeedback.imgix.net/uploads/images/5645990/d4151f93ce1259cd1084dee966d071f8c8cfc672.png?ixlib=rb-0.3.4&auto=compress%2Cformat&w=&fit=clip&s=d1298a874639801f67213c67eb853b82&w=500&h=250&fit=clip" /></div>
+<div class="logo" style="text-align: center; margin-bottom: 30px; margin-top: 30px;"><img class="logo-image" alt="GetFeedback" style="-ms-interpolation-mode:bicubic;border:0;vertical-align: bottom;" src="https://getfeedback.imgix.net/uploads/images/5995240/ce55af8e2bc8b432526674773e25a0489497c732.png?ixlib=rb-0.3.4&auto=compress%2Cformat&w=&fit=clip&s=f23686ad818bf975909aa2daec2bae45&w=400&h=150&fit=clip" /></div>
 <table align="center" class="layout" width="600" style="background-color:#ffffff;border-radius:2px;border-spacing:0;color:#222222;margin-right:auto;margin-left:auto;-webkit-font-smoothing:antialiased;font-family:'Open Sans', sans-serif;font-size:11px;font-weight:300;line-height:26px;width:600px">
 <tr>
 <td class="padded" style="padding: 18px 20px; background-color: #ffffff">
+<h1 style="color:#222222;font-family:'Open Sans', sans-serif;font-size:18px;text-align:center;font-weight:bold;line-height:26px;margin:14px 0 14px 0;">How was your experience with BlueWave?</h1>
 <h2 style="color:#222222;font-family:'Open Sans', sans-serif;font-size:18px;font-weight:bold;line-height:26px;margin:14px 0 14px 0;font-size:16px;text-align:center;">On a 1-5 scale, 
-how easy did BlueWave make it to solve your issue today?</h2>
+how easy did BlueWave make it to solve your issue?</h2>
 <div class="rating rating-numbers" style="display:table;margin-right:auto;margin-left:auto">
 <!--[if (mso)|(IE)]>
 <table width="200" align="center"><tr>
 <![endif]-->
 <!--[if (mso)|(IE)]> <td> <![endif]-->
 <div style="display:table-cell;width:36px;padding: 0 2px;">
-<a href="https://www.getfeedback.com/r/MTWhv3iL?CaseID={!Case.Id}&gf_q%5B5174343%5D=1" style="color:#00B2A9;background-color:#00B2A9;border-color:#00B2A9;border-radius:2px;border-style:solid;color:#FFFFFF;font-weight:bold;text-align:center;text-decoration:none;box-shadow:0px 1px 3px rgba(0,0,0,0.2);border-width:9px;display:block;font-size:16px;margin-bottom:4px;">
- 1 
+<a href="https://www.getfeedback.com/r/zUXoLcx8?Case_ID={!Case.Id}&gf_q%5B6495959%5D=1" style="color:#141C34;background-color:#141C34;border-color:#141C34;border-radius:2px;border-style:solid;color:#FFFFFF;font-weight:bold;text-align:center;text-decoration:none;box-shadow:0px 1px 3px rgba(0,0,0,0.2);border-width:9px;display:block;font-size:16px;margin-bottom:4px;">
+ 1 
 </a>
 </div>
 <!--[if (mso)|(IE)]> </td> <![endif]-->
 <!--[if (mso)|(IE)]> <td> <![endif]-->
 <div style="display:table-cell;width:36px;padding: 0 2px;">
-<a href="https://www.getfeedback.com/r/MTWhv3iL?CaseID={!Case.Id}&gf_q%5B5174343%5D=2" style="color:#00B2A9;background-color:#00B2A9;border-color:#00B2A9;border-radius:2px;border-style:solid;color:#FFFFFF;font-weight:bold;text-align:center;text-decoration:none;box-shadow:0px 1px 3px rgba(0,0,0,0.2);border-width:9px;display:block;font-size:16px;margin-bottom:4px;">
- 2 
+<a href="https://www.getfeedback.com/r/zUXoLcx8?Case_ID={!Case.Id}&gf_q%5B6495959%5D=2" style="color:#141C34;background-color:#141C34;border-color:#141C34;border-radius:2px;border-style:solid;color:#FFFFFF;font-weight:bold;text-align:center;text-decoration:none;box-shadow:0px 1px 3px rgba(0,0,0,0.2);border-width:9px;display:block;font-size:16px;margin-bottom:4px;">
+ 2 
 </a>
 </div>
 <!--[if (mso)|(IE)]> </td> <![endif]-->
 <!--[if (mso)|(IE)]> <td> <![endif]-->
 <div style="display:table-cell;width:36px;padding: 0 2px;">
-<a href="https://www.getfeedback.com/r/MTWhv3iL?CaseID={!Case.Id}&gf_q%5B5174343%5D=3" style="color:#00B2A9;background-color:#00B2A9;border-color:#00B2A9;border-radius:2px;border-style:solid;color:#FFFFFF;font-weight:bold;text-align:center;text-decoration:none;box-shadow:0px 1px 3px rgba(0,0,0,0.2);border-width:9px;display:block;font-size:16px;margin-bottom:4px;">
- 3 
+<a href="https://www.getfeedback.com/r/zUXoLcx8?Case_ID={!Case.Id}&gf_q%5B6495959%5D=3" style="color:#141C34;background-color:#141C34;border-color:#141C34;border-radius:2px;border-style:solid;color:#FFFFFF;font-weight:bold;text-align:center;text-decoration:none;box-shadow:0px 1px 3px rgba(0,0,0,0.2);border-width:9px;display:block;font-size:16px;margin-bottom:4px;">
+ 3 
 </a>
 </div>
 <!--[if (mso)|(IE)]> </td> <![endif]-->
 <!--[if (mso)|(IE)]> <td> <![endif]-->
 <div style="display:table-cell;width:36px;padding: 0 2px;">
-<a href="https://www.getfeedback.com/r/MTWhv3iL?CaseID={!Case.Id}&gf_q%5B5174343%5D=4" style="color:#00B2A9;background-color:#00B2A9;border-color:#00B2A9;border-radius:2px;border-style:solid;color:#FFFFFF;font-weight:bold;text-align:center;text-decoration:none;box-shadow:0px 1px 3px rgba(0,0,0,0.2);border-width:9px;display:block;font-size:16px;margin-bottom:4px;">
- 4 
+<a href="https://www.getfeedback.com/r/zUXoLcx8?Case_ID={!Case.Id}&gf_q%5B6495959%5D=4" style="color:#141C34;background-color:#141C34;border-color:#141C34;border-radius:2px;border-style:solid;color:#FFFFFF;font-weight:bold;text-align:center;text-decoration:none;box-shadow:0px 1px 3px rgba(0,0,0,0.2);border-width:9px;display:block;font-size:16px;margin-bottom:4px;">
+ 4 
 </a>
 </div>
 <!--[if (mso)|(IE)]> </td> <![endif]-->
 <!--[if (mso)|(IE)]> <td> <![endif]-->
 <div style="display:table-cell;width:36px;padding: 0 2px;">
-<a href="https://www.getfeedback.com/r/MTWhv3iL?CaseID={!Case.Id}&gf_q%5B5174343%5D=5" style="color:#00B2A9;background-color:#00B2A9;border-color:#00B2A9;border-radius:2px;border-style:solid;color:#FFFFFF;font-weight:bold;text-align:center;text-decoration:none;box-shadow:0px 1px 3px rgba(0,0,0,0.2);border-width:9px;display:block;font-size:16px;margin-bottom:4px;">
- 5 
+<a href="https://www.getfeedback.com/r/zUXoLcx8?Case_ID={!Case.Id}&gf_q%5B6495959%5D=5" style="color:#141C34;background-color:#141C34;border-color:#141C34;border-radius:2px;border-style:solid;color:#FFFFFF;font-weight:bold;text-align:center;text-decoration:none;box-shadow:0px 1px 3px rgba(0,0,0,0.2);border-width:9px;display:block;font-size:16px;margin-bottom:4px;">
+ 5 
 </a>
 </div>
 <!--[if (mso)|(IE)]> </td> <![endif]-->
 <!--[if (mso)|(IE)]> </tr></table> <![endif]-->
 </div>
-<table align="center" cellpadding="0" cellspacing="0" class="labels" style="max-width: 100%; Margin-left: auto; Margin-right: auto;display: none" width="200">
+<table align="center" cellpadding="0" cellspacing="0" class="labels" style="max-width: 100%; Margin-left: auto; Margin-right: auto; display: none;" width="200">
 <tr>
 <td style="color:#7e7e7e;font-family:'Open Sans', sans-serif;font-size:12px;text-transform:uppercase;text-align:left;">Really hard</td>
 <td style="color:#7e7e7e;font-family:'Open Sans', sans-serif;font-size:12px;text-transform:uppercase;text-align:right;">Really easy</td>
 </tr>
 </table>
+<center>
+<div class="EmailBuilder-footerMessage-container" style="color:#5A5A5A;margin-top:65px;font-size:11px;">
+</div>
+</center>
+<center style="margin-top:20px;font-size:11px;">
+<a href="https://getfeedback.com/?ref=cme" style="color:#141C34;color:#000;text-decoration:none;"><span style="mso-text-raise:4px;">Sent with</span> 
+<img alt="GetFeedback" width="89" height="14" valign="middle" src="https://assets.cdn.getfeedback.com/assets/email/template/getfeedback-dark-8c27c29e972042cbf0dfb854886ea4bee52e6657ce0deff6f6ca42feddd53ad8.png" style="-ms-interpolation-mode:bicubic;border:0" />
+</a>
+<div style="font-size:10px;line-height:10px;"></div>
+</center>
 </td>
 </tr>
 </table>
-<div class="spacer" style="font-size:36px;line-height:36px"> </div>
-<center>
-<a href="https://getfeedback.com/?ref=cme" style="color:#00B2A9;color:#ECF0F1;text-decoration:none;"><span style="mso-text-raise:4px;">Sent with</span> 
-<img alt="GetFeedback" width="89" height="14" valign="middle" src="https://assets.cdn.getfeedback.com/assets/email/template/getfeedback-light-194f3a462b621bf35109ec38fcbf9bebbc7aaa6abb1fd1ef46f4f49b652d431a.png" style="-ms-interpolation-mode:bicubic;border:0" />
-</a>
-<div style="font-size:10px;line-height:10px;"> </div>
-</center>
-<div class="spacer" style="font-size:36px;line-height:36px"></div>
 </div>
 </td>
 </tr>
@@ -211,3 +215,6 @@ how easy did BlueWave make it to solve your issue today?</h2>
 </div>
 </body>
 </html>
+ 
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>
