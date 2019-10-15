@@ -24,6 +24,26 @@
         <fullName>FileType</fullName>
     </fields>
     <fields>
+        <fullName>File_Category__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Currently used to determine what files are moved from Lead to Opp for Switch contracts, and sent for DS Signature</inlineHelpText>
+        <label>File Category</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Customer Contract</fullName>
+                    <default>false</default>
+                    <label>Customer Contract</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>IsAssetEnabled</fullName>
     </fields>
     <fields>
