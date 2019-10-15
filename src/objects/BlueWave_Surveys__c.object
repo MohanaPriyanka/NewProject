@@ -45,9 +45,9 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>false</enableFeeds>
     <enableHistory>true</enableHistory>
+    <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
@@ -809,6 +809,23 @@
         </valueSet>
     </fields>
     <fields>
+        <fullName>NPS_Comp_Value__c</fullName>
+        <description>This field is used for reporting NPS scores. It is as follows (Detractor = -1, Passive = 0, Promoter = 1)</description>
+        <externalId>false</externalId>
+        <formula>IF( NPS__c &gt; 8, 1,
+    IF(NPS__c &lt; 7, -1, 0)
+)</formula>
+        <inlineHelpText>This field is used for reporting NPS scores. It is as follows (Detractor = -1, Passive = 0, Promoter = 1)</inlineHelpText>
+        <label>NPS Comp Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>NPS_Type__c</fullName>
         <externalId>false</externalId>
         <label>NPS Type</label>
@@ -1018,6 +1035,20 @@
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Power_of_One__c</fullName>
+        <externalId>false</externalId>
+        <formula>1</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Power of One</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Rank_Co_s_Comms__c</fullName>
@@ -1509,6 +1540,63 @@ New York</description>
         <active>true</active>
         <label>CS Customer Survey</label>
         <picklistValues>
+            <picklist>Biggest_motivator_for_CS_signup__c</picklist>
+            <values>
+                <fullName>A family%2Ffriend recommended community solar or BlueWave</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Environmental benefit of supporting solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Going completely solar by adding community solar to a rooftop installation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Monthly energy savings</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>CS_Biz_Benefits__c</picklist>
+            <values>
+                <fullName>Ability to sell to the small business community</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Differentiation from competing installers</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Providing an option to customers unable to install rooftop systems</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Topping off rooftop customers with Community Solar</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>CS_Sales_y_n__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Cust_Top_3__c</picklist>
             <values>
                 <fullName>Affordable monthly payments</fullName>
@@ -1548,6 +1636,128 @@ New York</description>
             </values>
             <values>
                 <fullName>Total cost of ownership</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>How_you_heard_about_BW__c</picklist>
+            <values>
+                <fullName>A customer mentioned hearing about BlueWave loans</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Another solar installer mentioned BlueWave</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>I met the BlueWave team at a trade show or community event</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>I saw BlueWave advertising and followed up</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Someone from BlueWave reached out to me directly</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>State_s_in_which_you_partner_with_BW__c</picklist>
+            <values>
+                <fullName>Massachusetts - BlueWave Home Solar Loan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Massachusetts - Mass Solar Loan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>North Carolina</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rhode Island</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>South Carolina</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Top_3_fin_selection__c</picklist>
+            <values>
+                <fullName>Application processing time</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Availability of multiple loan types</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Interest rate</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Monthly payment calculation for customers</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Online portal functionality</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner support %26 training</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Requirements on homeowner FICO score %2F creditworthiness</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>First_Deal_gear_selection__c</picklist>
+            <values>
+                <fullName>Swell</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yeti</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>NPS_Category__c</picklist>
+            <values>
+                <fullName>Detractor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Passive</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Promoter</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>NPS_Type__c</picklist>
+            <values>
+                <fullName>Customer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -1645,17 +1855,6 @@ New York</description>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>First_Deal_gear_selection__c</picklist>
-            <values>
-                <fullName>Swell</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yeti</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>How_you_heard_about_BW__c</picklist>
             <values>
                 <fullName>A customer mentioned hearing about BlueWave loans</fullName>
@@ -1675,32 +1874,6 @@ New York</description>
             </values>
             <values>
                 <fullName>Someone from BlueWave reached out to me directly</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>NPS_Category__c</picklist>
-            <values>
-                <fullName>Detractor</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Passive</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Promoter</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>NPS_Type__c</picklist>
-            <values>
-                <fullName>Customer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -1759,6 +1932,43 @@ New York</description>
             </values>
             <values>
                 <fullName>Requirements on homeowner FICO score %2F creditworthiness</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>First_Deal_gear_selection__c</picklist>
+            <values>
+                <fullName>Swell</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yeti</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>NPS_Category__c</picklist>
+            <values>
+                <fullName>Detractor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Passive</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Promoter</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>NPS_Type__c</picklist>
+            <values>
+                <fullName>Customer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -1856,17 +2066,6 @@ New York</description>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>First_Deal_gear_selection__c</picklist>
-            <values>
-                <fullName>Swell</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yeti</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>How_you_heard_about_BW__c</picklist>
             <values>
                 <fullName>A customer mentioned hearing about BlueWave loans</fullName>
@@ -1886,36 +2085,6 @@ New York</description>
             </values>
             <values>
                 <fullName>Someone from BlueWave reached out to me directly</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>NPS_Category__c</picklist>
-            <values>
-                <fullName>Detractor</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Passive</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Promoter</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>NPS_Type__c</picklist>
-            <values>
-                <fullName>Customer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -1974,6 +2143,47 @@ New York</description>
             </values>
             <values>
                 <fullName>Requirements on homeowner FICO score %2F creditworthiness</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>First_Deal_gear_selection__c</picklist>
+            <values>
+                <fullName>Swell</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yeti</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>NPS_Category__c</picklist>
+            <values>
+                <fullName>Detractor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Passive</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Promoter</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>NPS_Type__c</picklist>
+            <values>
+                <fullName>Customer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -2072,17 +2282,6 @@ New York</description>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>First_Deal_gear_selection__c</picklist>
-            <values>
-                <fullName>Swell</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yeti</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>How_you_heard_about_BW__c</picklist>
             <values>
                 <fullName>A customer mentioned hearing about BlueWave loans</fullName>
@@ -2102,36 +2301,6 @@ New York</description>
             </values>
             <values>
                 <fullName>Someone from BlueWave reached out to me directly</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>NPS_Category__c</picklist>
-            <values>
-                <fullName>Detractor</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Passive</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Promoter</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>NPS_Type__c</picklist>
-            <values>
-                <fullName>Customer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -2190,6 +2359,47 @@ New York</description>
             </values>
             <values>
                 <fullName>Requirements on homeowner FICO score %2F creditworthiness</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>First_Deal_gear_selection__c</picklist>
+            <values>
+                <fullName>Swell</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yeti</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>NPS_Category__c</picklist>
+            <values>
+                <fullName>Detractor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Passive</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Promoter</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>NPS_Type__c</picklist>
+            <values>
+                <fullName>Customer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -2278,22 +2488,23 @@ New York</description>
                 <default>false</default>
             </values>
             <values>
+                <fullName>Purchasing energy from alternative energy sources apart from community solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Purchasing products that help you save money and optimize your energy use</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reviewing your energy usage or savings online</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>The interest rate of the loan</fullName>
                 <default>false</default>
             </values>
             <values>
                 <fullName>Total cost of ownership</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>First_Deal_gear_selection__c</picklist>
-            <values>
-                <fullName>Swell</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yeti</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -2317,36 +2528,6 @@ New York</description>
             </values>
             <values>
                 <fullName>Someone from BlueWave reached out to me directly</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>NPS_Category__c</picklist>
-            <values>
-                <fullName>Detractor</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Passive</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Promoter</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>NPS_Type__c</picklist>
-            <values>
-                <fullName>Customer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -2405,6 +2586,47 @@ New York</description>
             </values>
             <values>
                 <fullName>Requirements on homeowner FICO score %2F creditworthiness</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>First_Deal_gear_selection__c</picklist>
+            <values>
+                <fullName>Swell</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yeti</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>NPS_Category__c</picklist>
+            <values>
+                <fullName>Detractor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Passive</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Promoter</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>NPS_Type__c</picklist>
+            <values>
+                <fullName>Customer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -2503,17 +2725,6 @@ New York</description>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>First_Deal_gear_selection__c</picklist>
-            <values>
-                <fullName>Swell</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yeti</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>How_you_heard_about_BW__c</picklist>
             <values>
                 <fullName>A customer mentioned hearing about BlueWave loans</fullName>
@@ -2533,36 +2744,6 @@ New York</description>
             </values>
             <values>
                 <fullName>Someone from BlueWave reached out to me directly</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>NPS_Category__c</picklist>
-            <values>
-                <fullName>Detractor</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Passive</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Promoter</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>NPS_Type__c</picklist>
-            <values>
-                <fullName>Customer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -2621,6 +2802,47 @@ New York</description>
             </values>
             <values>
                 <fullName>Requirements on homeowner FICO score %2F creditworthiness</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>First_Deal_gear_selection__c</picklist>
+            <values>
+                <fullName>Swell</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yeti</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>NPS_Category__c</picklist>
+            <values>
+                <fullName>Detractor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Passive</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Promoter</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>NPS_Type__c</picklist>
+            <values>
+                <fullName>Customer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -2719,17 +2941,6 @@ New York</description>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>First_Deal_gear_selection__c</picklist>
-            <values>
-                <fullName>Swell</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yeti</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>How_you_heard_about_BW__c</picklist>
             <values>
                 <fullName>A customer mentioned hearing about BlueWave loans</fullName>
@@ -2749,32 +2960,6 @@ New York</description>
             </values>
             <values>
                 <fullName>Someone from BlueWave reached out to me directly</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>NPS_Category__c</picklist>
-            <values>
-                <fullName>Detractor</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Passive</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Promoter</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>NPS_Type__c</picklist>
-            <values>
-                <fullName>Customer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -2833,6 +3018,43 @@ New York</description>
             </values>
             <values>
                 <fullName>Requirements on homeowner FICO score %2F creditworthiness</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>First_Deal_gear_selection__c</picklist>
+            <values>
+                <fullName>Swell</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yeti</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>NPS_Category__c</picklist>
+            <values>
+                <fullName>Detractor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Passive</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Promoter</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>NPS_Type__c</picklist>
+            <values>
+                <fullName>Customer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -2931,17 +3153,6 @@ New York</description>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>First_Deal_gear_selection__c</picklist>
-            <values>
-                <fullName>Swell</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yeti</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>How_you_heard_about_BW__c</picklist>
             <values>
                 <fullName>A customer mentioned hearing about BlueWave loans</fullName>
@@ -2961,36 +3172,6 @@ New York</description>
             </values>
             <values>
                 <fullName>Someone from BlueWave reached out to me directly</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>NPS_Category__c</picklist>
-            <values>
-                <fullName>Detractor</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Passive</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Promoter</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>NPS_Type__c</picklist>
-            <values>
-                <fullName>Customer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -3049,6 +3230,47 @@ New York</description>
             </values>
             <values>
                 <fullName>Requirements on homeowner FICO score %2F creditworthiness</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>First_Deal_gear_selection__c</picklist>
+            <values>
+                <fullName>Swell</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yeti</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>NPS_Category__c</picklist>
+            <values>
+                <fullName>Detractor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Passive</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Promoter</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>NPS_Type__c</picklist>
+            <values>
+                <fullName>Customer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -3146,17 +3368,6 @@ New York</description>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>First_Deal_gear_selection__c</picklist>
-            <values>
-                <fullName>Swell</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yeti</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>How_you_heard_about_BW__c</picklist>
             <values>
                 <fullName>A customer mentioned hearing about BlueWave loans</fullName>
@@ -3176,32 +3387,6 @@ New York</description>
             </values>
             <values>
                 <fullName>Someone from BlueWave reached out to me directly</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>NPS_Category__c</picklist>
-            <values>
-                <fullName>Detractor</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Passive</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Promoter</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>NPS_Type__c</picklist>
-            <values>
-                <fullName>Customer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -3260,6 +3445,43 @@ New York</description>
             </values>
             <values>
                 <fullName>Requirements on homeowner FICO score %2F creditworthiness</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>First_Deal_gear_selection__c</picklist>
+            <values>
+                <fullName>Swell</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yeti</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>NPS_Category__c</picklist>
+            <values>
+                <fullName>Detractor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Passive</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Promoter</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>NPS_Type__c</picklist>
+            <values>
+                <fullName>Customer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -3357,17 +3579,6 @@ New York</description>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>First_Deal_gear_selection__c</picklist>
-            <values>
-                <fullName>Swell</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yeti</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>How_you_heard_about_BW__c</picklist>
             <values>
                 <fullName>A customer mentioned hearing about BlueWave loans</fullName>
@@ -3387,36 +3598,6 @@ New York</description>
             </values>
             <values>
                 <fullName>Someone from BlueWave reached out to me directly</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>NPS_Category__c</picklist>
-            <values>
-                <fullName>Detractor</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Passive</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Promoter</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>NPS_Type__c</picklist>
-            <values>
-                <fullName>Customer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -3475,6 +3656,47 @@ New York</description>
             </values>
             <values>
                 <fullName>Requirements on homeowner FICO score %2F creditworthiness</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>First_Deal_gear_selection__c</picklist>
+            <values>
+                <fullName>Swell</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yeti</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>NPS_Category__c</picklist>
+            <values>
+                <fullName>Detractor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Passive</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Promoter</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>NPS_Type__c</picklist>
+            <values>
+                <fullName>Customer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -3572,17 +3794,6 @@ New York</description>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>First_Deal_gear_selection__c</picklist>
-            <values>
-                <fullName>Swell</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Yeti</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>How_you_heard_about_BW__c</picklist>
             <values>
                 <fullName>A customer mentioned hearing about BlueWave loans</fullName>
@@ -3602,32 +3813,6 @@ New York</description>
             </values>
             <values>
                 <fullName>Someone from BlueWave reached out to me directly</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>NPS_Category__c</picklist>
-            <values>
-                <fullName>Detractor</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Passive</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Promoter</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>NPS_Type__c</picklist>
-            <values>
-                <fullName>Customer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -3689,8 +3874,45 @@ New York</description>
                 <default>false</default>
             </values>
         </picklistValues>
+        <picklistValues>
+            <picklist>First_Deal_gear_selection__c</picklist>
+            <values>
+                <fullName>Swell</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yeti</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>NPS_Category__c</picklist>
+            <values>
+                <fullName>Detractor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Passive</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Promoter</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>NPS_Type__c</picklist>
+            <values>
+                <fullName>Customer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
     </recordTypes>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>Private</sharingModel>
     <startsWith>Vowel</startsWith>
     <visibility>Public</visibility>
