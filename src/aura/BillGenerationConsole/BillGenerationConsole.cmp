@@ -60,7 +60,7 @@
                 <h1 class="slds-text-heading--small slds-p-bottom--x-small slds-p-right--medium">Bills are done generating!</h1>
               </div>
               <div>
-                <lightning:button aura:id="NEXT" label="Apply Adjustments and Next" variant="brand" onclick="{!c.nextFlowStep}" />
+                <lightning:button aura:id="NEXT" label="Next" variant="brand" onclick="{!c.nextFlowStep}" />
               </div>
               <aura:set attribute="else">
                 <lightning:button aura:id="generateBills"

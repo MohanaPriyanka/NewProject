@@ -31,10 +31,20 @@ public class BillGenerationConsoleController {
     }
 
     @AuraEnabled
-    public static String getAccountBillSummary() {
+    public static String getBillSummary() {
         Date today = System.Today();
+        Zuora_Setting__mdt zuoraSetting = ZuoraAPIHelper.getZuoraSetting();
+        if (zuoraSetting.Zuora_Is_Live__c) {
+            List<AggregateResult> aggregateInvoices = ZuoraInvoiceSelector.getInvoiceSummary(System.Today().addDays(-3));
+            return handleAggregateResult(aggregateInvoices);
+        } else {
+            List<AggregateResult> aggregateAccountBills = AccountBillSelector.getAccountBillSummary(today.month(), String.valueOf(today.year()));
+            return handleAggregateResult(aggregateAccountBills);
+        }
+    }
 
-        List<AggregateResult> aggregateAccountBills = AccountBillSelector.getAccountBillSummary(today.month(),String.valueOf(today.year()));
+    @AuraEnabled
+    public static String handleAggregateResult(List<AggregateResult> aggregateBills) {
         BillStatusSummary summaryStats = new BillStatusSummary();
         summaryStats.totalCount = 0;
         summaryStats.readyForEmail = 0;
@@ -42,7 +52,7 @@ public class BillGenerationConsoleController {
         summaryStats.publishedAB = 0;
         summaryStats.addedToPaper = 0;
 
-        for (AggregateResult aggregateResult : aggregateAccountBills)  {
+        for (AggregateResult aggregateResult : aggregateBills)  {
             summaryStats.totalCount += (Integer)aggregateResult.get('numberOfRecords');
             if((Boolean)aggregateResult.get('Ready_For_Email_Send__c')){
                 summaryStats.readyForEmail += (Integer)aggregateResult.get('numberOfRecords');
@@ -50,7 +60,7 @@ public class BillGenerationConsoleController {
             if((Boolean)aggregateResult.get('Ready_For_Paper_Bill_Queue__c')){
                 summaryStats.readyForPaper += (Integer)aggregateResult.get('numberOfRecords');
             }
-            if((Boolean)aggregateResult.get('Published__c')){
+            if((Boolean)aggregateResult.get('CompletedBills')){
                 summaryStats.publishedAB += (Integer)aggregateResult.get('numberOfRecords');
             }
             if((Boolean)aggregateResult.get('Added_To_Paper_Bill_Queue__c')){
@@ -64,7 +74,7 @@ public class BillGenerationConsoleController {
         String percentReadyAddedToPaper = getPercentOfTotal(summaryStats.addedToPaper, summaryStats.totalCount);
 
         String response =
-            'Generated Account Bills: ' + summaryStats.totalCount + ' / ' +
+            'Generated Bills: ' + summaryStats.totalCount + ' / ' +
             'Ready for Email Send: ' + summaryStats.readyForEmail + ' bills ' + percentReadyEmail + ' / ' +
             'Ready for Paper Send: ' + summaryStats.readyForPaper + ' bills ' + percentReadyPaper + ' / ' +
             'Sent via Email: ' + summaryStats.publishedAB + ' bills ' + percentReadyPublished + ' / ' +

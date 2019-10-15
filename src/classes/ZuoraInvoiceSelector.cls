@@ -80,4 +80,15 @@ public with sharing class ZuoraInvoiceSelector {
         }
         return queryString;
     }
+
+    public static List<AggregateResult> getInvoiceSummary(Date minInvoiceDate) {
+        List<AggregateResult> invoiceSummary = [
+            SELECT COUNT(Id) numberOfRecords,
+                Ready_for_Email_Send__c, Ready_For_Paper_Bill_Queue__c, Email_Sent__c CompletedBills, Added_To_Paper_Bill_Queue__c
+            FROM Zuora__ZInvoice__c
+            WHERE Zuora__InvoiceDate__c > : minInvoiceDate
+            GROUP BY Ready_for_Email_Send__c, Ready_For_Paper_Bill_Queue__c, Email_Sent__c, Added_To_Paper_Bill_Queue__c
+        ];
+        return invoiceSummary;
+    }
 }

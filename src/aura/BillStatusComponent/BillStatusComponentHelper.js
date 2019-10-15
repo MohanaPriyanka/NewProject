@@ -1,6 +1,6 @@
 ({
     getAccountBillSummary : function(component, helper) {
-        var actionGetAccountBillSummary = component.get("c.getAccountBillSummary");
+        var actionGetAccountBillSummary = component.get("c.getBillSummary");
         if (actionGetAccountBillSummary){
             actionGetAccountBillSummary.setCallback(this,function(resp){
                 if (resp.getState() === 'SUCCESS') {
