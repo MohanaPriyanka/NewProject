@@ -4602,6 +4602,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>BlueWave_Surveys__c.NPS_Comp_Value__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>BlueWave_Surveys__c.NPS_Type__c</field>
         <readable>true</readable>
@@ -4689,6 +4694,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>BlueWave_Surveys__c.Portal_Name_3__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>BlueWave_Surveys__c.Power_of_One__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
