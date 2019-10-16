@@ -156,7 +156,7 @@
     <fields>
         <fullName>Amount__c</fullName>
         <externalId>false</externalId>
-        <label>Amount</label>
+        <label>Credit Amount</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -269,6 +269,17 @@
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
+    <fields>
+        <fullName>kWh_Amount__c</fullName>
+        <externalId>false</externalId>
+        <label>kWh Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
     <label>Transfer Part</label>
     <listViews>
         <fullName>All</fullName>
@@ -280,7 +291,7 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Transfer Parts</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
     <validationRules>
         <fullName>Fee_Paid_To_field_required_for_Fee</fullName>
