@@ -170,12 +170,25 @@
     <fields>
         <fullName>Attempted_Transfer__c</fullName>
         <externalId>false</externalId>
-        <label>Attempted Transfer</label>
+        <label>Attempted Credit Transfer</label>
         <precision>13</precision>
         <required>false</required>
         <scale>3</scale>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Attempted_kWh_Transfer__c</fullName>
+        <externalId>false</externalId>
+        <label>Attempted kWh Transfer</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Bill_Period__c</fullName>
@@ -187,8 +200,21 @@
         <relationshipLabel>Transfers</relationshipLabel>
         <relationshipName>Transfers</relationshipName>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Billing_Method__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT(Shared_Solar_System__r.Billing_Method__c)</formula>
+        <inlineHelpText>Bills are generated differently depending on NMC or kWh</inlineHelpText>
+        <label>Billing Method</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Bills_Generated__c</fullName>
@@ -204,6 +230,7 @@
         <externalId>false</externalId>
         <label>Date of Transfer</label>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
     </fields>
@@ -229,32 +256,49 @@
         <relationshipLabel>Transfers</relationshipLabel>
         <relationshipName>Transfers</relationshipName>
         <required>false</required>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Shared_Solar_System__c</fullName>
-        <deleteConstraint>Restrict</deleteConstraint>
         <description>The Transfer object is looking up to the SSS object.</description>
         <externalId>false</externalId>
         <label>Shared Solar System</label>
         <referenceTo>Shared_Solar_System__c</referenceTo>
         <relationshipLabel>Transfers</relationshipLabel>
         <relationshipName>Transfers</relationshipName>
-        <required>true</required>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Lookup</type>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <fields>
         <fullName>Total_Transferred__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Sum of Amounts of all Transfer Parts</inlineHelpText>
-        <label>Total Transferred</label>
+        <inlineHelpText>Sum of Credit Amounts of all Transfer Parts</inlineHelpText>
+        <label>Total Credits Transferred</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Total_kWh_Transferred__c</fullName>
+        <description>Aggregated Sum of kWh from Transfer Parts</description>
+        <externalId>false</externalId>
+        <label>Total kWh Transferred</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>3</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Transfer_Amount__c</fullName>
@@ -264,6 +308,7 @@
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
     </fields>
@@ -301,6 +346,19 @@
                 </value>
             </valueSetDefinition>
         </valueSet>
+    </fields>
+    <fields>
+        <fullName>Transfer_kWh__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Actual # of kWh&apos;s transferred off host account</inlineHelpText>
+        <label>Transfer kWh</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
     </fields>
     <label>Transfer</label>
     <listViews>
