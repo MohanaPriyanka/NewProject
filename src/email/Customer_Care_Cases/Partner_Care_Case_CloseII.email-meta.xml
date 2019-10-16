@@ -5,8 +5,8 @@
     <encodingKey>ISO-8859-1</encodingKey>
     <name>Partner Care Case Close</name>
     <style>none</style>
-    <subject>Did BlueWave help you resolve your issue today?</subject>
-    <textOnly>On a 1-5 scale, how easy did BlueWave make it to solve your issue today?
+    <subject>Did BlueWave help you resolve your issue? Case: {!Case.CaseNumber}</subject>
+    <textOnly>On a 1-5 scale, how easy did BlueWave make it to solve your issue?
 1
 2
 3
