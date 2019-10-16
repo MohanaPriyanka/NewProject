@@ -19,7 +19,9 @@ public class ZuoraOutstandingItemsService{
     }
 
     public class QueryResultDebitMemo {
-        public List<ZuoraAPI.ZuoraDebitMemo> Debitmemos;
+        public List<ZuoraAPI.ZuoraDebitMemo> DebitMemos;
+        String nextPage;
+        Boolean success;
     }
 
     public class QueryResultDebitMemoItem {
@@ -183,20 +185,38 @@ public class ZuoraOutstandingItemsService{
     }
 
     public static List<ZuoraAPI.ZuoraDebitMemo> getOutstandingDebitMemos(String zAcctId) {
-        // TODO: Handle > 40 debit memos
-        HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('GET','/v1/debitmemos?accountId=' + zAcctId + '&status=Posted&pageSize=40',null,false);
-        String responseBody = response.getBody();
-        responseBody = ZuoraAPIHelper.cleanJSON(responseBody);
-        QueryResultDebitMemo result =
-            (QueryResultDebitMemo)JSON.deserialize(responseBody, QueryResultDebitMemo.class);
-        List<ZuoraAPI.ZuoraDebitMemo> debitMemosWithBalance = new List<ZuoraAPI.ZuoraDebitMemo>();
+        List<ZuoraAPI.ZuoraDebitMemo> debitMemos = getAllOutstandingDebitMemos(zAcctId, null, null);
 
-        for (ZuoraAPI.ZuoraDebitMemo debitMemo : result.Debitmemos){
+        List<ZuoraAPI.ZuoraDebitMemo> debitMemosWithBalance = new List<ZuoraAPI.ZuoraDebitMemo>();
+        for (ZuoraAPI.ZuoraDebitMemo debitMemo : debitMemos){
             if (debitMemo.balance > 0 && debitMemo.accountId == zAcctId){
                 debitMemosWithBalance.add(debitMemo);
             }
         }
         return debitMemosWithBalance;
+    }
+
+    private static List<ZuoraAPI.ZuoraDebitMemo> getAllOutstandingDebitMemos(String zAcctId, List<ZuoraAPI.ZuoraDebitMemo> debitMemos, String url) {
+        if (debitMemos == null) {
+            debitMemos = new List<ZuoraAPI.ZuoraDebitMemo>();
+        }
+        if (url == null) {
+            url = '/v1/debitmemos?accountId=' + zAcctId + '&status=Posted&pageSize=40';
+        }
+        HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('GET',url,null,false);
+        QueryResultDebitMemo result =
+            (QueryResultDebitMemo) JSON.deserialize(ZuoraAPIHelper.cleanJSON(response.getBody()), QueryResultDebitMemo.class);
+        if (result.success) {
+            debitMemos.addAll(result.DebitMemos);
+        } else {
+            throw new Util.BWException('Debit Memo query failed for account: ' + zAcctId);
+        }
+
+        if (result.nextPage != null) {
+            return getAllOutstandingDebitMemos(zAcctId, debitMemos, result.nextPage);
+        } else {
+            return debitMemos;
+        }
     }
 
     public static ZuoraAPI.DebitMemoWithItems getDebitMemoItems(ZuoraAPI.ZuoraDebitMemo debitMemo) {
