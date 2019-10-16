@@ -72,11 +72,13 @@ public class InvoiceTemplateAssignerTest {
             Zuora_Id__c = 'AnchorAutopay',
             Zuora_Invoice_Message_1_of_2__c = 'Custom Message One',
             Zuora_Invoice_Message_2_of_2__c = 'Custom Message Two',
+            Client_Brand_Key__c = 'AmpRed',
             Parent_Account__c = accountParent.Id);
         Account accountB = new Account(
             Name = 'Smallofftake Property',
             Recurring_Billing__c = false,
             Zuora_Id__c = 'SmallNonAutopay',
+            Client_Brand_Key__c = 'BluewaveLogo',
             Parent_Account__c = accountParent2.Id);
         insert new List<Account>{accountA, accountB};
 
@@ -135,7 +137,7 @@ public class InvoiceTemplateAssignerTest {
     @isTest public static void testAutopay() {
         List<Account> acctList = [
             SELECT Id, Name, Zuora_Id__c,
-                Parent_Account__r.Client_Brand_Key__c,
+                Client_Brand_Key__c,
                 Recurring_Billing__c, Count_of_Large_Offtake_Opps__c,
                 Zuora_Invoice_Message_1_of_2__c, Zuora_Invoice_Message_2_of_2__c
             FROM Account
