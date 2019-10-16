@@ -46697,6 +46697,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Shared_Solar_System__c.Project_Image__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Utility_NMC_Tariff__c.Year_of_Tariff__c</field>
         <readable>false</readable>
