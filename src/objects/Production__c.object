@@ -154,6 +154,17 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
     <fields>
+        <fullName>Billing_Method__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT(Shared_Solar_System__r.Billing_Method__c)</formula>
+        <inlineHelpText>Bills are generated differently depending on NMC or kWh</inlineHelpText>
+        <label>Billing Method</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Credit_Value__c</fullName>
         <externalId>false</externalId>
         <label>Credit Value</label>
@@ -283,6 +294,19 @@
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Untransferred_kWh__c</fullName>
+        <externalId>false</externalId>
+        <formula>Production_kWh__c -  kWh_Transferred__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Untransferred kWh</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Utility_Fees__c</fullName>
         <description>Rollup of Transfer Parts Amount field with Type = Fee</description>
         <externalId>false</externalId>
@@ -293,6 +317,16 @@
             <operation>equals</operation>
             <value>Fee</value>
         </summaryFilterItems>
+        <summaryForeignKey>Transfer_Part__c.Production__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>kWh_Transferred__c</fullName>
+        <externalId>false</externalId>
+        <label>kWh Transferred</label>
+        <summarizedField>Transfer_Part__c.kWh_Amount__c</summarizedField>
         <summaryForeignKey>Transfer_Part__c.Production__c</summaryForeignKey>
         <summaryOperation>sum</summaryOperation>
         <trackTrending>false</trackTrending>
