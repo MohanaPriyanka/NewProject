@@ -72,15 +72,6 @@
         <object>Knowledge__kav</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
-    <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
-        <object>Solution</object>
-        <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
     <recordTypeVisibilities>
         <recordType>Knowledge__kav.How_To</recordType>
         <visible>true</visible>
