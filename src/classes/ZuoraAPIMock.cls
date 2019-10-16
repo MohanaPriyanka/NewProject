@@ -841,7 +841,8 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
                 '"success":true' +
                 '}');
         } else {
-            res.setBody('{ "debitmemos" : [ ' +
+            res.setBody('{ "success":true,' +
+                '"debitmemos" : [ ' +
                 '{ "id" : "2c92c0f96b695c76016b6c860fc277f4", ' +
                 '"number" : "DM00000019", ' +
                 '"accountId" : "2c92c0f86ae3a4ad016ae5e247886605", ' +
