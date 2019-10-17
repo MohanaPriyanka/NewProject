@@ -38,14 +38,22 @@ public class ZuoraOutstandingItemsService{
         public Boolean IsInvoiceItem; // Only DebitMemo or InvoiceItem
         public Decimal AmountToApply;
 
+        // Compares by effective date first. If dates are the same between invoice items, sorts by project. If projects
+        // are the same, then sorts by client.
         public Integer compareTo(Object compareTo) {
             OutstandingItem compareToItem = (OutstandingItem) compareTo;
             Integer returnValue = 0;
             if (EffectiveDate > compareToItem.EffectiveDate) {
-                // Set return value to a positive value.
                 returnValue = 1;
             } else if (EffectiveDate < compareToItem.EffectiveDate) {
-                // Set return value to a negative value.
+                returnValue = -1;
+            } else if (Project > compareToItem.Project) {
+                returnValue = 1;
+            } else if (Project < compareToItem.Project) {
+                returnValue = -1;
+            } else if (Client > compareToItem.Client) {
+                returnValue = 1;
+            } else if (Client < compareToItem.Client) {
                 returnValue = -1;
             }
             return returnValue;
