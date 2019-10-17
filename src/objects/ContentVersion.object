@@ -40,6 +40,11 @@
                     <default>false</default>
                     <label>Customer Contract</label>
                 </value>
+                <value>
+                    <fullName>Customer Bill</fullName>
+                    <default>false</default>
+                    <label>Customer Bill</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
