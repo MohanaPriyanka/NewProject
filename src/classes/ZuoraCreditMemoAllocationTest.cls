@@ -2,6 +2,10 @@
 public class ZuoraCreditMemoAllocationTest {
     // Don't use actual test setup method because we aren't committing to the database, but still want to reuse:
     public static List<ZuoraOutstandingItemsService.OutstandingItem> testDataSetup() {
+        return testDataSetup(false);
+    }
+
+    public static List<ZuoraOutstandingItemsService.OutstandingItem> testDataSetup(Boolean duplicateProjects) {
         // Oldest to newest, Ids are unique:
         ZuoraOutstandingItemsService.OutstandingItem itemOne = new ZuoraOutstandingItemsService.OutstandingItem();
         itemOne.AmountOutstanding = 5;
@@ -47,7 +51,45 @@ public class ZuoraCreditMemoAllocationTest {
             itemFour, itemOne, itemThree, itemTwo
         };
 
+        if (duplicateProjects) {
+            ZuoraOutstandingItemsService.OutstandingItem itemFive = new ZuoraOutstandingItemsService.OutstandingItem();
+            itemFive.AmountOutstanding = 2;
+            itemFive.AmountToApply = 0;
+            itemFive.EffectiveDate = Datetime.newInstance(2019,02,01,13,10,00);
+            itemFive.Project = 'SSS-0000017';
+            itemFive.Client = 'BW-0000122';
+            itemFive.Id = 'itemFive';
+            itemFive.ParentId = 'invoiceTwo';
+            itemFive.IsInvoiceItem = true;
+            unsortedItemList.add(itemFive);
+
+            ZuoraOutstandingItemsService.OutstandingItem itemSix = new ZuoraOutstandingItemsService.OutstandingItem();
+            itemSix.AmountOutstanding = 2;
+            itemSix.AmountToApply = 0;
+            itemSix.EffectiveDate = Datetime.newInstance(2019,02,01,13,10,00);
+            itemSix.Project = 'SSS-0000009';
+            itemSix.Client = 'BW-0000122';
+            itemSix.Id = 'itemSix';
+            itemSix.ParentId = 'invoiceTwo';
+            itemSix.IsInvoiceItem = true;
+            unsortedItemList.add(itemSix);
+        }
+
         return unsortedItemList;
+    }
+
+    @IsTest
+    private static void testSortOutstandingItemsByDateAndProject() {
+        List<ZuoraOutstandingItemsService.OutstandingItem> sortedList = testDataSetup(true).clone();
+
+        sortedList.sort();
+
+        for (Integer i = 0; i < sortedList.size()-1; i++) {
+            System.assert(
+                sortedList[i].EffectiveDate < sortedList[i+1].EffectiveDate ||
+                    (sortedList[i].EffectiveDate == sortedList[i+1].EffectiveDate &&
+                        (sortedList[i].Project < sortedList[i+1].Project)));
+        }
     }
 
     @IsTest
