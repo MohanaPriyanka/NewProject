@@ -465,7 +465,7 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
                 <sorted>false</sorted>
                 <value>
                     <fullName>Customer</fullName>
-                    <default>true</default>
+                    <default>false</default>
                     <label>Customer</label>
                 </value>
                 <value>
@@ -4090,6 +4090,25 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <businessProcess>Customer Care Case</businessProcess>
         <label>Partner Care Case</label>
         <picklistValues>
+            <picklist>Case_Type__c</picklist>
+            <values>
+                <fullName>3rd Party</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>BlueWave</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Vendor</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Assignee_If_Different__c</picklist>
             <values>
                 <fullName>Alex Schulte</fullName>
@@ -4117,25 +4136,6 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
             </values>
             <values>
                 <fullName>Trevor Lennox</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Case_Type__c</picklist>
-            <values>
-                <fullName>3rd Party</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>BlueWave</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer</fullName>
-                <default>true</default>
-            </values>
-            <values>
-                <fullName>Vendor</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
