@@ -310,7 +310,12 @@ public with sharing class ZuoraAccountReconciliationServiceTest {
         accountFromZuora.PaymentTerm = 'Net 30';
         accountFromZuora.PaymentGateway = 'Chargent Gateway B';
         accountFromZuora.communicationProfileId = 'BluewaveLogoXXX';
-        System.assert(!accountFromZuora.hasReconciliationVariance(accountToTest), 'Did not expect a reconciliation variance');
+        Zuora_Setting__mdt zuoraSetting = ZuoraAPIHelper.getZuoraSetting();
+        if (zuoraSetting.Zuora_Is_Live__c) {
+            System.assert(!accountFromZuora.hasReconciliationVariance(accountToTest), 'Did not expect a reconciliation variance');
+        } else {
+            System.assert(accountFromZuora.hasReconciliationVariance(accountToTest), 'Expected a reconciliation variance');
+        }
     }
 
     @IsTest
