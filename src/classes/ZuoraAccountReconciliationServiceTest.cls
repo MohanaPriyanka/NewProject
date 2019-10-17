@@ -290,6 +290,44 @@ public with sharing class ZuoraAccountReconciliationServiceTest {
         System.assertEquals(50, accountReconciliationService.getBatchOfAccountsToReconcile(new Set<String>(strings)).size());
     }
 
+    @IsTest
+    public static void testCommunicationProfile() {
+        Account propertyAccount = new Account(
+            Name = 'Account B',
+            Client_Brand_Key__c = 'BluewaveLogo'
+        );
+        ZuoraAPI.ZuoraAccount accountToTest = new ZuoraAPI.ZuoraAccount(propertyAccount);
+        accountToTest.PaymentTerm = 'Net 30';
+        accountToTest.PaymentGateway = 'Chargent Gateway B';
+
+        ZuoraAPI.ZuoraAccount accountFromZuora = new ZuoraAPI.ZuoraAccount();
+        accountFromZuora.PaymentTerm = 'Net 30';
+        accountFromZuora.PaymentGateway = 'Chargent Gateway B';
+        accountFromZuora.communicationProfileId = 'AmpRed';
+        System.assert(accountFromZuora.hasReconciliationVariance(accountToTest), 'Expected a reconciliation variance');
+
+        accountFromZuora = new ZuoraAPI.ZuoraAccount();
+        accountFromZuora.PaymentTerm = 'Net 30';
+        accountFromZuora.PaymentGateway = 'Chargent Gateway B';
+        accountFromZuora.communicationProfileId = 'BluewaveLogoXXX';
+        System.assert(!accountFromZuora.hasReconciliationVariance(accountToTest), 'Did not expect a reconciliation variance');
+    }
+
+    @IsTest
+    public static void testClientBrandKeyValues(){
+        List<String> clientBrandKeys = new List<String>();
+        Schema.DescribeFieldResult field = Account.Client_Brand_Key__c.getDescribe();
+
+        for (Schema.PicklistEntry f : field.getPicklistValues()) {
+            clientBrandKeys.add(f.getLabel());
+        }
+        System.assert(clientBrandKeys.size() > 0);
+
+        for (String clientBrandKey : clientBrandKeys){
+            System.assert(ZuoraAPI.brandKeyToCommProfileMap.containsKey(clientBrandKey),'Need to Add Brand Key to Map: ' + clientBrandKey);
+        }
+    }
+
     /*************
      *** MOCKS ***
      *************/

@@ -106,4 +106,20 @@ public with sharing class ZuoraAccountReconciliationService {
         return zuoraIdToSFDCAccountsMap;
     }
 
+    public static Map<String, String> brandKeyToCommProfileMap() {
+        Zuora_Setting__mdt zuoraSetting = ZuoraAPIHelper.getZuoraSetting();
+        if (zuoraSetting.Zuora_Is_Live__c) {
+            return new Map<String, String>{
+                'AmpRed' => 'AmpRedXXXXXX',
+                'AmpBlack' => 'AmpBlackXXXXX',
+                'BluewaveLogo' => 'BluewaveLogoXXX'
+            };
+        } else {
+            return new Map<String, String>{
+                'AmpRed' => '2c92c0f96dd8b66e016ddb28c0b929cb',
+                'AmpBlack' => '2c92c0f86dd8a86e016ddb2dc6504027',
+                'BluewaveLogo' => '2c92c0f96dd8b66e016ddb21fe130d9d'
+            };
+        }
+    }
 }

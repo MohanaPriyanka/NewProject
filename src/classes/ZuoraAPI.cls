@@ -85,8 +85,10 @@ public with sharing class ZuoraAPI {
         public String AccountId;
     }
 
+    public static Map<String,String> brandKeyToCommProfileMap = ZuoraAccountReconciliationService.brandKeyToCommProfileMap();
+
     // https://www.zuora.com/developer/api-reference/#operation/POST_Account
-    public static String accountFieldsToReconcile = 'PaymentGateway, PaymentTerm';
+    public static String accountFieldsToReconcile = 'PaymentGateway, PaymentTerm, communicationProfileId';
     public class ZuoraAccount {
         public String AccountNumber;
         public Boolean AllowInvoiceEdit;
@@ -123,6 +125,7 @@ public with sharing class ZuoraAPI {
         public String AdditionalEmailAddresses;
         // Used by action/update to null a field that's set
         public List<String> fieldsToNull;
+        public String communicationProfileId;
 
         // Default constructor
         public ZuoraAccount() {
@@ -141,6 +144,7 @@ public with sharing class ZuoraAPI {
             this.PaymentTerm = 'Net 30';
             this.Status = 'Draft';
             this.AdditionalEmailAddresses = propertyAccount.Additional_Contact__r.Email;
+            this.communicationProfileId = brandKeyToCommProfileMap.get(propertyAccount.Client_Brand_Key__c);
         }
 
         // Assumes results from AccountSelector.selectForReconciliation
@@ -162,7 +166,8 @@ public with sharing class ZuoraAPI {
                 return true;
             } else {
                 return this.PaymentTerm != reconciliationResult.PaymentTerm ||
-                    this.PaymentGateway != reconciliationResult.PaymentGateway;
+                    this.PaymentGateway != reconciliationResult.PaymentGateway ||
+                    this.communicationProfileId != reconciliationResult.communicationProfileId;
             }
         }
 
@@ -792,4 +797,5 @@ public with sharing class ZuoraAPI {
         public Date TargetDate;
         public String Batch;
     }
+
 }
