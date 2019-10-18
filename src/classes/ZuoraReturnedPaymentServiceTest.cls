@@ -28,8 +28,7 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
         insert payMethod;
 
         Zuora__Payment__c payment = new Zuora__Payment__c(
-            Zuora__Payment_Method__c = payMethod.Id,
-            Zuora__PaymentMethod__c = 'TestPaymentMethod',
+            Zuora__PaymentMethodId__c = '2c92c0f86a0c41a5016a1f41d63a2f96',
             Name = 'PY1234',
             Zuora__BillingAccount__c = billingAccount.Id,
             Zuora__Amount__c = 23
@@ -154,12 +153,12 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
     @IsTest
     private static void testCaseCreation() {
         List<Zuora__Payment__c> payment = [
-            SELECT Id, Zuora__BillingAccount__r.Zuora__Account__c, Zuora__Payment_Method__c
+            SELECT Id, Zuora__BillingAccount__r.Zuora__Account__c, Zuora__PaymentMethodId__c
             FROM Zuora__Payment__c
         ];
         System.assertEquals(1,payment.size());
         System.assertNotEquals(null,payment[0].Zuora__BillingAccount__r.Zuora__Account__c);
-        System.assertNotEquals(null,payment[0].Zuora__Payment_Method__c);
+        System.assertNotEquals(null,payment[0].Zuora__PaymentMethodId__c);
 
         List<Case> beforeCases = [
             SELECT Id, Zuora_Payment_Method__c, AccountId
@@ -176,13 +175,13 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
         Test.stopTest();
 
         List<Case> afterCases = [
-            SELECT Id, Zuora_Payment_Method__c, AccountId
+            SELECT Id, Zuora_Payment_Method__r.Zuora__External_Id__c, AccountId
             FROM Case
         ];
 
         System.assertEquals(1, afterCases.size());
         System.assertEquals(payment[0].Zuora__BillingAccount__r.Zuora__Account__c, afterCases[0].AccountId);
-        System.assertEquals(payment[0].Zuora__Payment_Method__c, afterCases[0].Zuora_Payment_Method__c);
+        System.assertEquals(payment[0].Zuora__PaymentMethodId__c, afterCases[0].Zuora_Payment_Method__r.Zuora__External_Id__c);
     }
 
     @IsTest
