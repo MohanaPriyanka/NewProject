@@ -1099,7 +1099,7 @@ IF(  ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__CreditCardType__c, &quot;
         <columns>NAME</columns>
         <columns>Lifetime_Savings__c</columns>
         <columns>Zuora__TotalInvoiceBalance__c</columns>
-        <columns>Zuora__AutoPay__c</columns>
+        <columns>View_Account__c</columns>
         <filterScope>Everything</filterScope>
         <label>My Community Solar Accounts</label>
         <sharedTo>

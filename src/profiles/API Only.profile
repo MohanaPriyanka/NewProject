@@ -31911,6 +31911,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Zuora__CustomerAccount__c.View_Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>agf__ADM_Acceptance_Criterion__c.agf__Description__c</field>
         <readable>true</readable>

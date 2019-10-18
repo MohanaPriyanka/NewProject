@@ -45685,6 +45685,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Zuora__CustomerAccount__c.View_Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Zuora__CustomerAccount__c.Zuora__AccountNumber__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -64444,6 +64449,12 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Zuora__CustomerAccount__c-Customer Portal User View</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Zuora__Payment__c-Customer Portal View</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Zuora__ZInvoice__c-Customer Portal View</layout>
     </layoutAssignments>
     <objectPermissions>
         <allowCreate>false</allowCreate>
