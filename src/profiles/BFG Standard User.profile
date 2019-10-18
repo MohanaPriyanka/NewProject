@@ -3494,6 +3494,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ZuoraController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ZuoraPaymentSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>

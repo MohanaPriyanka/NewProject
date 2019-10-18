@@ -1165,6 +1165,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ZuoraController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ZuoraGLServiceTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>

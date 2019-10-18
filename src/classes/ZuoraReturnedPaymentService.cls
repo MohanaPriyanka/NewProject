@@ -100,17 +100,16 @@ public with sharing class ZuoraReturnedPaymentService {
     }
 
     public Boolean removePaymentMethodFromAccount(Zuora__Payment__c returnedPayment) {
-        String zuoraAcctId = returnedPayment.Zuora__BillingAccount__c;
+        String zuoraAcctId = returnedPayment.Zuora__BillingAccount__r.Zuora__Zuora_Id__c;
         Boolean paymentMethodUpdateNeeded = false;
-
         ZuoraAPI.ZuoraAccount accountFromZuora = ZuoraAccountSelector.getAccountFromZuora(zuoraAcctId);
 
         // If they've already provided a new payment method, we don't want to overwrite it:
-        if (accountFromZuora.DefaultPaymentMethodId == returnedPayment.Zuora__Payment_Method__r.Zuora__External_Id__c){
+        if (accountFromZuora.DefaultPaymentMethodId == returnedPayment.Zuora__PaymentMethodId__c){
             ZuoraAPI.ZuoraAccount account = new ZuoraAPI.ZuoraAccount();
             account.Id = zuoraAcctId;
             account.AutoPay = false;
-            account.DefaultPaymentMethodId = null;
+            account.DefaultPaymentMethodId = ZuoraPaymentMethodSelector.getDefaultPaymentMethodId();
 
             ZuoraAPI.ActionItems items = new ZuoraAPI.ActionItems();
             items.type = 'Account';
@@ -122,9 +121,13 @@ public with sharing class ZuoraReturnedPaymentService {
     }
 
     public Case createCaseForReturns(Zuora__Payment__c zuoraPayment) {
+        List<Zuora__PaymentMethod__c> methods = ZuoraPaymentMethodSelector.getSFRecordFromZuoraId(new List<String>{zuoraPayment.Zuora__PaymentMethodId__c});
+        if (methods.size() != 1){
+            Logger.logNow('ZuoraPaymentMethodSelector','createCaseForReturns',String.valueOf(zuoraPayment));
+            throw new Util.FatalBWException('Could not match a zuora payment method id to a record in Salesforce.');
+        }
         CaseFactory caseFactory = new CaseFactory();
         Case newCase = caseFactory.getCase('Customer_Care');
-
         newCase.Subject = 'Customer Transaction Marked as Returned';
         newCase.Priority = 'Medium';
         newCase.Product_Line__c = 'Community Solar';
@@ -134,7 +137,7 @@ public with sharing class ZuoraReturnedPaymentService {
         newCase.Case_Type__c = 'BlueWave';
         newCase.Disable_Followup_Email__c = true;
         newCase.AccountId = zuoraPayment.Zuora__BillingAccount__r.Zuora__Account__c;
-        newCase.Zuora_Payment_Method__c = zuoraPayment.Zuora__Payment_Method__c;
+        newCase.Zuora_Payment_Method__c = methods[0].Id;
 
         return newCase;
     }

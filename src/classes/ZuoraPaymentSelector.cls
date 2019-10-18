@@ -12,9 +12,9 @@ public with sharing class ZuoraPaymentSelector {
         return [
             SELECT Id, Zuora__EXT_ID__c,
                 Zuora__BillingAccount__c,
+                Zuora__BillingAccount__r.Zuora__Zuora_Id__c,
                 Zuora__BillingAccount__r.Zuora__Account__c,
-                Zuora__Payment_Method__c,
-                Zuora__Payment_Method__r.Zuora__External_Id__c
+                Zuora__PaymentMethodId__c
             FROM Zuora__Payment__c
             WHERE Id IN :ids
         ];
