@@ -27,22 +27,15 @@
     <gatherCustomerSentimentData>false</gatherCustomerSentimentData>
     <navigationLinkSet>
         <navigationMenuItem>
-            <label>My Account</label>
-            <position>1</position>
-            <publiclyAvailable>false</publiclyAvailable>
-            <target>/myaccount</target>
-            <type>InternalLink</type>
-        </navigationMenuItem>
-        <navigationMenuItem>
             <label>My Solar</label>
-            <position>2</position>
+            <position>1</position>
             <publiclyAvailable>false</publiclyAvailable>
             <target>/my-solar-subscription</target>
             <type>InternalLink</type>
         </navigationMenuItem>
         <navigationMenuItem>
             <label>Support</label>
-            <position>3</position>
+            <position>2</position>
             <publiclyAvailable>true</publiclyAvailable>
             <subMenu>
                 <navigationMenuItem>
@@ -71,14 +64,14 @@
         </navigationMenuItem>
         <navigationMenuItem>
             <label>Settings</label>
-            <position>4</position>
+            <position>3</position>
             <publiclyAvailable>false</publiclyAvailable>
             <target>/accountinfo</target>
             <type>InternalLink</type>
         </navigationMenuItem>
         <navigationMenuItem>
             <label>Logout</label>
-            <position>5</position>
+            <position>4</position>
             <publiclyAvailable>true</publiclyAvailable>
             <target>https://bluewavememberportal.force.com/secur/logout.jsp</target>
             <targetPreference>OpenExternalLinkInSameTab</targetPreference>
