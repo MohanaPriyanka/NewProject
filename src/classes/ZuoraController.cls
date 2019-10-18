@@ -10,6 +10,7 @@ public with sharing class ZuoraController {
     @TestVisible
     private static ZuoraPaymentSelector paymentSelector = new ZuoraPaymentSelector();
 
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     @AuraEnabled
     public static PaymentReturnResult reverseReturnedPayment(Id paymentId) {
         PaymentReturnResult paymentReturnResult = new PaymentReturnResult();

@@ -1173,6 +1173,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ZuoraHistoricalApplicationService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ZuoraInvoiceAsyncService</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1190,6 +1194,14 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ZuoraInvoiceServiceTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraPaymentMethodSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraPaymentMethodSelectorTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
