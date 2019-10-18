@@ -47238,6 +47238,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>zqu__CommunicationProfile__c.Client_Brand_Key__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>zqu__InvoiceTemplate__c.Active__c</field>
         <readable>true</readable>
     </fieldPermissions>
