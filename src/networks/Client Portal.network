@@ -49,8 +49,15 @@
             <type>MenuLabel</type>
         </navigationMenuItem>
         <navigationMenuItem>
-            <label>Logout</label>
+            <label>Files</label>
             <position>2</position>
+            <publiclyAvailable>false</publiclyAvailable>
+            <target>/contentdocument/ContentDocument/All</target>
+            <type>InternalLink</type>
+        </navigationMenuItem>
+        <navigationMenuItem>
+            <label>Logout</label>
+            <position>3</position>
             <publiclyAvailable>false</publiclyAvailable>
             <target>https://bluewavememberportal.force.com/secur/logout.jsp</target>
             <targetPreference>OpenExternalLinkInSameTab</targetPreference>
