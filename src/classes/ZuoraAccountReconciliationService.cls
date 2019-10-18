@@ -107,19 +107,18 @@ public with sharing class ZuoraAccountReconciliationService {
     }
 
     public static Map<String, String> brandKeyToCommProfileMap() {
-        Zuora_Setting__mdt zuoraSetting = ZuoraAPIHelper.getZuoraSetting();
-        if (zuoraSetting.Zuora_Is_Live__c) {
-            return new Map<String, String>{
-                'AmpRed' => 'AmpRedXXXXXX',
-                'AmpBlack' => 'AmpBlackXXXXX',
-                'BluewaveLogo' => 'BluewaveLogoXXX'
-            };
-        } else {
-            return new Map<String, String>{
-                'AmpRed' => '2c92c0f96dd8b66e016ddb28c0b929cb',
-                'AmpBlack' => '2c92c0f86dd8a86e016ddb2dc6504027',
-                'BluewaveLogo' => '2c92c0f96dd8b66e016ddb21fe130d9d'
-            };
+        Map<String, String> brandKeyToZuoraId = new Map<String, String>();
+        for (zqu__CommunicationProfile__c communicationProfile : [
+                SELECT Id, zqu__ZuoraId__c, Client_Brand_Key__c
+                FROM zqu__CommunicationProfile__c]) {
+            String brandKey = communicationProfile.Client_Brand_Key__c;
+            if (brandKeyToZuoraId.containsKey(brandKey)){
+                Logger.logLater('ZuoraAccountReconciliationService',
+                                'brandKeyToCommProfileMap',
+                                 'More than 1 communication profile was found for the brand key' + brandKey);
+            }
+            brandKeyToZuoraId.put(brandKey, communicationProfile.zqu__ZuoraId__c);
         }
+        return brandKeyToZuoraId;
     }
 }
