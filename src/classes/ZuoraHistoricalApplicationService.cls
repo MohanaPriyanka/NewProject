@@ -84,14 +84,7 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
         if (defaultPaymentMethodId != null) {
             return;
         }
-        String result = ZuoraAPIHelper.query('SELECT Id, AccountId FROM PaymentMethod WHERE Type = \'Cash\' AND AccountId = NULL LIMIT 1',
-            false);
-        ZuoraAPI.ZuoraQueryResult queryResult = (ZuoraAPI.ZuoraQueryResult) JSON.deserialize(result, ZuoraAPI.ZuoraQueryResult.class);
-        if (queryResult.records.size() >= 1) {
-            defaultPaymentMethodId = queryResult.records[0].Id;
-        } else {
-            throw new Util.FatalBWException('Did not find a default payment method id to use');
-        }
+        defaultPaymentMethodId = ZuoraPaymentMethodSelector.getDefaultPaymentMethodId();
     }
 
     private void applyCreditMemo(Payable payable) {
