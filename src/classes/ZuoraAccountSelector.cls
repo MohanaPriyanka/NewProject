@@ -56,7 +56,7 @@ public without sharing class ZuoraAccountSelector {
     }
 
     @TestVisible
-    private static ZuoraAPI.ZuoraAccount getAccountFromZuora(String zuoraAcctId) {
+    public static ZuoraAPI.ZuoraAccount getAccountFromZuora(String zuoraAcctId) {
         String fields = 'Id, ' +
             'AccountNumber, ' +
             'DefaultPaymentMethodId, ' +
