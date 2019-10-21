@@ -34043,6 +34043,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>agf__ADM_Epic__c.Status_Notes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>agf__ADM_Epic__c.Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>agf__ADM_Epic__c.agf__Category__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -35634,6 +35644,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>agf__ADM_Product_Tag__c.Exclude_from_Work_Request_form__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>agf__ADM_Product_Tag__c.Product__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -48266,6 +48281,9 @@
         <layout>Zuora__ZInvoice__c-Zuora__ZInvoice Z-Force Layout v2%2E9</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>agf__ADM_Epic__c-agf__Epic Layout Feed Based</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>agf__ADM_Product_Tag__c-agf__Product Tag Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -54041,10 +54059,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ManageHealthCheck</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>ManageHubConnections</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
