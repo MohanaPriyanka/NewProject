@@ -1,0 +1,2 @@
+Customer,TransactionId,Type,EffectiveDate,ProjectName,ClientName,StartingAmount,ApplicationAmount,ExpectedAmount,CreateApplication
+Webster Family Campground,a210a00000a4YVDAA2,ProjectMapping,1/20/2018,SSS-000018,BW-0021776,,,,FALSE

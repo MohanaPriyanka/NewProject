@@ -4,78 +4,149 @@
  */
 
 public with sharing class ZuoraHistoricalCustomApplicationService {
-    public static Map<Id, String> transactionIdToCustomerName = new Map<Id, String>{
-        'a210a00000GkIXgAAN' => 'NNF',
-        'a210a00000AnnHTAAZ' => 'Stelios',
-        'a210a0000010tTCAAY' => 'YongShing'
-    };
+    private Map<Id, CustomApplications> transactionIdsToPaymentApplications;
+    @TestVisible
+    private StaticResourceSelector staticResourceSelector = new StaticResourceSelector();
 
-    public static void customApplication(Id transactionId, List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems, List<ZuoraOutstandingItemsService.OutstandingItem> itemsToApply) {
-        switch on transactionIdToCustomerName.get(transactionId) {
-            when 'NNF' {
-                applyNNF(outstandingItems, itemsToApply);
-            } when 'Stelios' {
-                applyStelios(outstandingItems, itemsToApply);
-            } when 'YongShing' {
-                applyYongShing(outstandingItems, itemsToApply);
+    public ZuoraHistoricalCustomApplicationService() {
+    }
+
+    public void init() {
+        transactionIdsToPaymentApplications = new Map<Id, CustomApplications>();
+        StaticResource sr = staticResourceSelector.getStaticResource('ZuoraCustomPaymentApplications');
+        CSVReader csvReader = new CSVReader(sr.Body.toString());
+        String[] line;
+        csvReader.readLine(); // skip the header line
+        while ((line = csvReader.readLine()) != null) {
+            PaymentApplication pa = new PaymentApplication(line);
+            if (transactionIdsToPaymentApplications.containsKey(pa.transactionId)) {
+                transactionIdsToPaymentApplications.get(pa.transactionId).add(pa);
+            } else {
+                transactionIdsToPaymentApplications.put(pa.transactionId, new CustomApplications(pa));
+            }
+        }
+    }
+
+    public void log(Id trxId, String method, Object obj, String severity) {
+        if (hasCustomApplication(trxId)) {
+            Logger.logLater('ZuoraHistoricalCustomApplicationService', trxId + ': ' + method, JSON.serializePretty(obj), severity);
+        }
+    }
+
+    public Boolean hasCustomApplication(Id transactionId) {
+        return transactionIdsToPaymentApplications.containsKey(transactionId);
+    }
+
+    public String getProjectMapping(Id transactionId) {
+        if (!hasCustomApplication(transactionId) || transactionIdsToPaymentApplications.get(transactionId).projectMapping == null) {
+            return null;
+        }
+
+        return transactionIdsToPaymentApplications.get(transactionId).projectMapping.projectName;
+    }
+
+    public void customApplication(Id transactionId, List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems, List<ZuoraOutstandingItemsService.OutstandingItem> itemsToApply) {
+        if (!hasCustomApplication(transactionId)) {
+            return;
+        }
+        Logger.logLater('ZuoraHistoricalCustomApplicationService', transactionId + ': ' + 'applyPayment postapplication', JSON.serializePretty(outstandingItems), Logger.WARN);
+        Logger.logLater('ZuoraHistoricalCustomApplicationService', transactionId + ': ' + 'itemsToApply', JSON.serializePretty(itemsToApply), Logger.WARN);
+
+        List<PaymentApplication> outstandingItemApplications =
+            transactionIdsToPaymentApplications.get(transactionId).outstandingItemApplications;
+        List<PaymentApplication> itemApplications =
+            transactionIdsToPaymentApplications.get(transactionId).itemApplications;
+
+        for (ZuoraOutstandingItemsService.OutstandingItem oi : outstandingItems) {
+            checkAndSetOutstandingItem(oi, outstandingItemApplications, itemsToApply);
+        }
+        for (ZuoraOutstandingItemsService.OutstandingItem applyItem : itemsToApply) {
+            checkAndSetApplyItem(applyItem, itemApplications);
+        }
+    }
+
+    @TestVisible
+    private void checkAndSetOutstandingItem(ZuoraOutstandingItemsService.OutstandingItem outstandingItem,
+        List<PaymentApplication> paymentApplications, List<ZuoraOutstandingItemsService.OutstandingItem> itemsToApply) {
+        for (PaymentApplication pa : paymentApplications) {
+            if (pa.isRelevant(outstandingItem)) {
+                pa.handleOutstandingItem(outstandingItem, itemsToApply);
             }
         }
     }
 
     @TestVisible
-    private static void applyNNF(List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems, List<ZuoraOutstandingItemsService.OutstandingItem> itemsToApply) {
-        for (ZuoraOutstandingItemsService.OutstandingItem oi : outstandingItems) {
-            checkAndSetOutstandingItem(oi, Date.newInstance(2018, 6, 15), 'SSS-000021', 209.20, 0, 0);
-            checkAndSetOutstandingItem(oi, Date.newInstance(2018, 6, 15), 'SSS-000017', 209.20, 209.20, 209.20);
-        }
-        for (ZuoraOutstandingItemsService.OutstandingItem applyItem : itemsToApply) {
-            checkAndSetApplyItem(applyItem, Date.newInstance(2018, 6, 15), 'SSS-000021', 1.15, 210.35);
-            checkAndSetApplyItem(applyItem, Date.newInstance(2018, 6, 15), 'SSS-000017', 216.50, 7.30);
+    private void checkAndSetApplyItem(ZuoraOutstandingItemsService.OutstandingItem applyItem,
+        List<PaymentApplication> itemApplications) {
+        for (PaymentApplication pa : itemApplications) {
+            if (pa.isRelevant(applyItem)) {
+                pa.handleItemApplication(applyItem);
+            }
         }
     }
 
-    @TestVisible
-    private static void applyStelios(List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems, List<ZuoraOutstandingItemsService.OutstandingItem> itemsToApply) {
-        for (ZuoraOutstandingItemsService.OutstandingItem oi : outstandingItems) {
-            checkAndSetOutstandingItem(oi, Date.newInstance(2017, 5, 15), 'SSS-000019', 165.06, 37.13, 0);
-            checkAndSetOutstandingItem(oi, Date.newInstance(2017, 5, 15), 'SSS-000020', 59.12, 37.14, 38.49);
-            checkAndSetOutstandingItem(oi, Date.newInstance(2017, 5, 15), 'SSS-000021', 122.62, 37.13, 122.62, itemsToApply);
-            checkAndSetOutstandingItem(oi, Date.newInstance(2017, 5, 15), 'SSS-000016', 109.91, 37.15, 109.91, itemsToApply);
-            checkAndSetOutstandingItem(oi, Date.newInstance(2017, 5, 15), 'SSS-000017', 105.26, 37.14, 105.26, itemsToApply);
+    public class CustomApplications {
+        List<PaymentApplication> outstandingItemApplications;
+        List<PaymentApplication> itemApplications;
+        // Used to force a returned payment to go to a project
+        PaymentApplication projectMapping;
+
+        public CustomApplications(PaymentApplication pa) {
+            outstandingItemApplications = new List<PaymentApplication>();
+            itemApplications = new List<PaymentApplication>();
+            add(pa);
         }
-        for (ZuoraOutstandingItemsService.OutstandingItem applyItem : itemsToApply) {
-            checkAndSetApplyItem(applyItem, Date.newInstance(2017, 5, 15), 'SSS-000019', 37.13, 165.06);
-            checkAndSetApplyItem(applyItem, Date.newInstance(2017, 5, 15), 'SSS-000020', 37.14, 20.63);
+
+        public void add(PaymentApplication pa) {
+            if (pa.type == 'OutstandingItem') {
+                outstandingItemApplications.add(pa);
+            } else if (pa.type == 'ApplyItem') {
+                itemApplications.add(pa);
+            } else if (pa.type == 'ProjectMapping') {
+                projectMapping = pa;
+            } else {
+                throw new Util.BWException('Unknown custom payment application type found in csv: ' + pa);
+            }
         }
     }
 
-    @TestVisible
-    private static void applyYongShing(List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems, List<ZuoraOutstandingItemsService.OutstandingItem> itemsToApply) {
-        for (ZuoraOutstandingItemsService.OutstandingItem oi : outstandingItems) {
-            checkAndSetOutstandingItem(oi, Date.newInstance(2018, 6, 15), 'SSS-000017', 212.59, 0, 212.59);
-            checkAndSetOutstandingItem(oi, Date.newInstance(2018, 6, 15), 'SSS-000019', 307.41, 0, 14.56);
-            checkAndSetOutstandingItem(oi, Date.newInstance(2018, 6, 15), 'SSS-000016', 231.79, 227.15, 0);
-        }
-        for (ZuoraOutstandingItemsService.OutstandingItem applyItem : itemsToApply) {
-            checkAndSetApplyItem(applyItem, Date.newInstance(2018, 6, 15), 'SSS-000017', 0, 212.59);
-            checkAndSetApplyItem(applyItem, Date.newInstance(2018, 6, 15), 'SSS-000019', 0, 14.56);
-            checkAndSetApplyItem(applyItem, Date.newInstance(2018, 6, 15), 'SSS-000016', 227.15, 231.79);
-        }
-    }
+    public class PaymentApplication {
+        public String customer;
+        public String transactionId;
+        public String type;
+        public Date effectiveDate;
+        public String projectName;
+        public String clientName;
+        public Decimal startingAmount;
+        public Decimal applicationAmount;
+        public Decimal expectedAmount;
+        public Boolean createApplication;
 
-    @TestVisible
-    private static void checkAndSetOutstandingItem(ZuoraOutstandingItemsService.OutstandingItem outstandingItem,
-        Date effectiveDate, String project, Decimal startingAmount, Decimal applicationAmount, Decimal expectedAmount) {
-        checkAndSetOutstandingItem(outstandingItem, effectiveDate, project, startingAmount, applicationAmount, expectedAmount, null);
-    }
+        public PaymentApplication() {
+        }
 
-    @TestVisible
-    private static void checkAndSetOutstandingItem(ZuoraOutstandingItemsService.OutstandingItem outstandingItem,
-        Date effectiveDate, String project, Decimal startingAmount, Decimal applicationAmount, Decimal expectedAmount, List<ZuoraOutstandingItemsService.OutstandingItem> itemsToApply) {
-        if (outstandingItem.EffectiveDate == effectiveDate && outstandingItem.Project == project) {
+        public PaymentApplication(String[] csvLine) {
+            this.customer = csvLine[0];
+            this.transactionId = csvLine[1];
+            this.type = csvLine[2];
+            this.effectiveDate = Date.parse(csvLine[3]);
+            this.projectName = csvLine[4];
+            this.clientName = csvLine[5];
+            this.startingAmount = Decimal.valueOf(Util.nullToZero(csvLine[6]));
+            this.applicationAmount = Decimal.valueOf(Util.nullToZero(csvLine[7]));
+            this.expectedAmount = Decimal.valueOf(Util.nullToZero(csvLine[8]));
+            this.createApplication = Boolean.valueOf(Util.nullToZero(csvLine[9]));
+        }
+
+        public Boolean isRelevant(ZuoraOutstandingItemsService.OutstandingItem oi) {
+            return (oi.EffectiveDate == this.effectiveDate && oi.Project == this.projectName);
+        }
+
+        public void handleOutstandingItem(ZuoraOutstandingItemsService.OutstandingItem outstandingItem,
+            List<ZuoraOutstandingItemsService.OutstandingItem> itemsToApply) {
             if (outstandingItem.AmountOutstanding == expectedAmount) {
                 outstandingItem.AmountOutstanding = startingAmount - applicationAmount;
-                if (itemsToApply != null) {
+                if (createApplication) {
                     ZuoraOutstandingItemsService.OutstandingItem newApplyItem = outstandingItem.clone();
                     newApplyItem.AmountToApply = applicationAmount;
                     itemsToApply.add(newApplyItem);
@@ -84,24 +155,20 @@ public with sharing class ZuoraHistoricalCustomApplicationService {
                 Logger.logLater(
                     'ZuoraHistoricalApplicationService',
                     'custom applyPayment',
-                    'Expected ' + project + ' to have '+ expectedAmount +' outstanding' + '\n' + JSON.serialize(outstandingItem),
+                    'Expected ' + projectName + ' to have '+ expectedAmount +' outstanding' + '\n' + JSON.serialize(outstandingItem),
                     Logger.ERROR
                 );
             }
         }
-    }
 
-    @TestVisible
-    private static void checkAndSetApplyItem(ZuoraOutstandingItemsService.OutstandingItem applyItem,
-        Date effectiveDate, String project, Decimal amountToApply, Decimal expectedAmount) {
-        if (applyItem.EffectiveDate == effectiveDate && applyItem.Project == project) {
+        public void handleItemApplication(ZuoraOutstandingItemsService.OutstandingItem applyItem) {
             if (applyItem.AmountToApply == expectedAmount) {
-                applyItem.AmountToApply = amountToApply;
+                applyItem.AmountToApply = applicationAmount;
             } else {
                 Logger.logLater(
                     'ZuoraHistoricalApplicationService',
                     'custom applyPayment',
-                    'Expected ' + project + ' to have ' + expectedAmount + ' applied' + '\n' + JSON.serialize(applyItem),
+                    'Expected ' + projectName + ' to have ' + expectedAmount + ' applied' + '\n' + JSON.serialize(applyItem),
                     Logger.ERROR);
             }
         }

@@ -144,6 +144,18 @@ public without sharing class Util {
         }
     }
 
+    public static Date maxTwoDates(Date dateOne, Date dateTwo) {
+        if (dateOne != null && dateTwo != null){
+            return dateOne > dateTwo ? dateOne : dateTwo;
+        } else if (dateOne != null){
+            return dateOne;
+        } else if (dateTwo != null){
+            return dateTwo;
+        } else {
+            return null;
+        }
+    }
+
     // Because Math.min and Math.max only supports two arguments
     public static Decimal min(List<Decimal> decimalValues) {
         decimalValues.sort();
