@@ -933,7 +933,7 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
         <fullName>Chargent_Order__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <label>Chargent Order</label>
+        <label>XXX Chargent Order</label>
         <referenceTo>ChargentOrders__ChargentOrder__c</referenceTo>
         <relationshipLabel>Cases</relationshipLabel>
         <relationshipName>Cases</relationshipName>
@@ -1861,6 +1861,20 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Zuora_Payment_Method__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>The payment method that caused this case to be created.</inlineHelpText>
+        <label>Zuora Payment Method</label>
+        <referenceTo>Zuora__PaymentMethod__c</referenceTo>
+        <relationshipLabel>Cases</relationshipLabel>
+        <relationshipName>Cases</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>agf__ADM_Work__c</fullName>
