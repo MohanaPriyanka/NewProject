@@ -107,13 +107,14 @@ public without sharing class AccountsSelector {
         List<Map<String, Object>> results = new List<Map<String, Object>>();
         List<AggregateResult> aggregateResults = [
             SELECT Account.Id Id, Account.Zuora_Id__c Zuora_Id__c, Account.Name AccountName,
+                Account.Client_Brand_Key__c communicationProfileId,
                 MAX(Product__r.Days_in_Bill_Period__c) DaysInBillingPeriod,
                 COUNT_DISTINCT(Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Gateway__r.Name) DistinctGateways,
                 MAX(Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Gateway__r.Name) GatewayName
             FROM Opportunity
             WHERE StageName = 'Complete'
             AND Account.Zuora_Id__c IN :zuoraAccountIds
-            GROUP BY Account.Id, Account.Zuora_Id__c, Account.Name
+            GROUP BY Account.Id, Account.Zuora_Id__c, Account.Name, Account.Client_Brand_Key__c
         ];
         for (AggregateResult aggregateResult : aggregateResults) {
             results.add(aggregateResult.getPopulatedFieldsAsMap());
