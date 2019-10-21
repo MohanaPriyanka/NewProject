@@ -34,7 +34,7 @@ public without sharing class ZuoraAccountService {
     @SuppressWarnings('PMD.ApexCRUDViolation')
     private static void createAccounts(List<Account> propertyAccounts, Map<Id, Lead> accountIdToLeadMap) {
         Map<Id, String> accountIdToZuoraIdMap =
-            createAccountShells(accountIdToLeadMap, propertyAccounts);
+            createAccountShells(propertyAccounts);
 
         Map<String, String> accountIdToZuoraContactIdMap =
             createContact(propertyAccounts, accountIdToZuoraIdMap);
@@ -50,7 +50,7 @@ public without sharing class ZuoraAccountService {
         Logger.flushLogs();
     }
 
-    private static Map<Id, String> createAccountShells(Map<Id, Lead> accountIdToLeadMap, List<Account> propertyAccounts) {
+    private static Map<Id, String> createAccountShells(List<Account> propertyAccounts) {
         // https://www.zuora.com/developer/api-reference/#operation/Action_POSTcreate
         if (propertyAccounts.size() > 50) {
             throw new Util.BWException('Only 50 accounts can be created in Zuora at a time through this method');
