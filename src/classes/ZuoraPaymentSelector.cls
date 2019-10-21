@@ -10,7 +10,11 @@ public with sharing class ZuoraPaymentSelector {
             throw new Util.FatalBWException('Insufficient permissions');
         }
         return [
-            SELECT Id, Zuora__EXT_ID__c
+            SELECT Id, Zuora__EXT_ID__c,
+                Zuora__BillingAccount__c,
+                Zuora__BillingAccount__r.Zuora__Zuora_Id__c,
+                Zuora__BillingAccount__r.Zuora__Account__c,
+                Zuora__PaymentMethodId__c
             FROM Zuora__Payment__c
             WHERE Id IN :ids
         ];

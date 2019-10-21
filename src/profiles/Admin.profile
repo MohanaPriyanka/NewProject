@@ -3930,6 +3930,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ZuoraPaymentMethodSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraPaymentMethodSelectorTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ZuoraPaymentPageController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -18359,6 +18367,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.Utility_Follow_Up_Required__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.Zuora_Payment_Method__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
