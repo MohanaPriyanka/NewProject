@@ -88,7 +88,7 @@ public with sharing class ZuoraAPI {
     public static Map<String,String> brandKeyToCommProfileMap = ZuoraAccountReconciliationService.brandKeyToCommProfileMap();
 
     // https://www.zuora.com/developer/api-reference/#operation/POST_Account
-    public static String accountFieldsToReconcile = 'PaymentGateway, PaymentTerm, communicationProfileId';
+    public static String accountFieldsToReconcile = 'PaymentGateway, PaymentTerm, CommunicationProfileId';
     public class ZuoraAccount {
         public String AccountNumber;
         public Boolean AllowInvoiceEdit;
@@ -125,7 +125,7 @@ public with sharing class ZuoraAPI {
         public String AdditionalEmailAddresses;
         // Used by action/update to null a field that's set
         public List<String> fieldsToNull;
-        public String communicationProfileId;
+        public String CommunicationProfileId;
 
         // Default constructor
         public ZuoraAccount() {
@@ -144,13 +144,14 @@ public with sharing class ZuoraAPI {
             this.PaymentTerm = 'Net 30';
             this.Status = 'Draft';
             this.AdditionalEmailAddresses = propertyAccount.Additional_Contact__r.Email;
-            this.communicationProfileId = brandKeyToCommProfileMap.get(propertyAccount.Client_Brand_Key__c);
+            this.CommunicationProfileId = brandKeyToCommProfileMap.get(propertyAccount.Client_Brand_Key__c);
         }
 
         // Assumes results from AccountSelector.selectForReconciliation
         public ZuoraAccount(Map<String, Object> reconciliationResult) {
             this.Id = (String) reconciliationResult.get('Zuora_Id__c');
             this.PaymentTerm = daysInBillPeriodToPaymentTerm((Decimal) reconciliationResult.get('DaysInBillingPeriod'));
+            this.CommunicationProfileId = brandKeyToCommProfileMap.get((String) reconciliationResult.get('CommunicationProfileId'));
             if (reconciliationResult.get('DistinctGateways') == 0) {
                 this.fieldsToNull = new List<String>{'PaymentGateway'};
             } else if (reconciliationResult.get('DistinctGateways') == 1) {
@@ -167,7 +168,7 @@ public with sharing class ZuoraAPI {
             } else {
                 return this.PaymentTerm != reconciliationResult.PaymentTerm ||
                     this.PaymentGateway != reconciliationResult.PaymentGateway ||
-                    this.communicationProfileId != reconciliationResult.communicationProfileId;
+                    this.CommunicationProfileId != reconciliationResult.CommunicationProfileId;
             }
         }
 
