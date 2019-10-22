@@ -7330,11 +7330,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Contract.Link_to_Box_Drive__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Contract.Management_Fee_Detail__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -13015,11 +13010,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Lead.Source__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Lead.State_Market__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -13036,11 +13026,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Storage__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Lead.SubmitterIP__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -25450,11 +25435,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Opportunity.test12345__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Opportunity.zqu__CurrentGenerators__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -31315,31 +31295,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Transfer_Parts__c.Amount__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Transfer_Parts__c.Credits_Billed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Transfer_Parts__c.Fee_Paid_To__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Transfer_Parts__c.Transfer__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Transfer_Parts__c.Type__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Transfer__c.Allocation_Schedule__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -31366,11 +31321,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Transfer__c.Default_Credit_Value__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Transfer__c.Record_Type__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -32720,27 +32670,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Utility_Bill_Line_Item__c.Credits_Billed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Utility_Bill_Line_Item__c.Group__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Utility_Bill_Line_Item__c.Item_Amount__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Utility_Bill_Line_Item__c.Type__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Bill_Line_Item__c.XXXType__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -41496,11 +41431,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Work__c.Case__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>agf__ADM_Work__c.Contract__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
