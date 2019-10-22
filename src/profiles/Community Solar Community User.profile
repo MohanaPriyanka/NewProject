@@ -84096,7 +84096,7 @@
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-        <default>false</default>
+        <default>true</default>
         <recordType>Shared_Solar_System__c.SSS_No_PM_Relationship</recordType>
         <visible>false</visible>
     </recordTypeVisibilities>
