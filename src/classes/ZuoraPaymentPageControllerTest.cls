@@ -204,7 +204,9 @@ public with sharing class ZuoraPaymentPageControllerTest {
         payment.accountId = '2c92c0f86ae3a4ad016ae5e247886605';
         payment.id = 'XXXXXX';
 
-        ZuoraPaymentPageController.applyPaymentToBalance(payment);
+        Test.startTest();
+            ZuoraPaymentPageController.applyPaymentInFuture(JSON.serialize(payment));
+        Test.stopTest();
 
         List<Error_Log__c> logs = [
             SELECT Id
@@ -212,7 +214,7 @@ public with sharing class ZuoraPaymentPageControllerTest {
             WHERE Class__c = 'ZuoraPaymentPageController'
             AND Method__c = 'applyPaymentToBalance'
         ];
-
+        // Don't want any errors:
         System.assertEquals(0,logs.size());
     }
 }

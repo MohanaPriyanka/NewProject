@@ -97,8 +97,9 @@ public with sharing class ZuoraPaymentPageController {
                         ' with paymentAmount: ' + paymentAmount +
                         ' and payment method Id: ' + paymentMethodId;
                 Logger.logNow('ZuoraPaymentPageController', 'makePayment', customErrorMessage, 'ERROR');
-            } else {
-                applyPaymentToBalance(newPayment);
+            } else if (result.status == 'Processed'){
+                String paymentAsString = JSON.serialize(newPayment);
+                applyPaymentInFuture(paymentAsString);
             }
         } catch (Exception unhandledException) {
             Logger.logNow('ZuoraPaymentPageController', 'makePayment', unhandledException.getMessage(), 'ERROR');
@@ -155,7 +156,12 @@ public with sharing class ZuoraPaymentPageController {
         return handleGeneralUpdate('toggleAutopayAndPaymentMethod',item);
     }
 
-    @AuraEnabled
+    @Future
+    public static void applyPaymentInFuture(String paymentAsString){
+        ZuoraAPI.Payment successfulPayment = (ZuoraAPI.Payment) JSON.deserialize(paymentAsString, ZuoraAPI.Payment.class);
+        applyPaymentToBalance(successfulPayment);
+    }
+
     public static void applyPaymentToBalance(ZuoraAPI.Payment successfulPayment){
         try {
             List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems;
