@@ -189,21 +189,16 @@ public with sharing class ZuoraPaymentPageController {
         for (ZuoraOutstandingItemsService.OutstandingItem item : outstandingItems){
             if (paymentAmount == 0){
                 break;
-            } else {
-                paymentAmount = paymentAmount.setScale(2, RoundingMode.HALF_UP);
             }
+            paymentAmount = paymentAmount.setScale(2, RoundingMode.HALF_UP);
+            item.AmountOutstanding = item.AmountOutstanding.setScale(2, RoundingMode.HALF_UP);
             applicationAmount = Math.min(paymentAmount,item.AmountOutstanding);
-            applicationAmount = applicationAmount.setScale(2, RoundingMode.HALF_UP);
             paymentAmount -= applicationAmount;
             if (item.IsInvoiceItem){
-                InvoiceApplication invoice = new InvoiceApplication();
-                invoice.invoiceId = item.id;
-                invoice.amount = applicationAmount;
+                InvoiceApplication invoice = new InvoiceApplication(item.id,applicationAmount);
                 application.invoices.add(invoice);
             } else {
-                DebitMemoApplication debitMemo = new DebitMemoApplication();
-                debitMemo.debitMemoId = item.id;
-                debitMemo.amount = applicationAmount;
+                DebitMemoApplication debitMemo = new DebitMemoApplication(item.id, applicationAmount);
                 application.debitMemos.add(debitMemo);
             }
         }
@@ -218,10 +213,18 @@ public with sharing class ZuoraPaymentPageController {
     public class InvoiceApplication {
         public String invoiceId;
         public Decimal amount;
+        public InvoiceApplication(String invoiceId, Decimal amount){
+            this.invoiceId = invoiceId;
+            this.amount = amount;
+        }
     }
 
     public class DebitMemoApplication {
         public String debitMemoId;
         public Decimal amount;
+        public DebitMemoApplication(String debitMemoId, Decimal amount){
+            this.debitMemoId = debitMemoId;
+            this.amount = amount;
+        }
     }
 }
