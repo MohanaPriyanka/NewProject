@@ -38,22 +38,14 @@ public class ZuoraOutstandingItemsService{
         public Boolean IsInvoiceItem; // Only DebitMemo or InvoiceItem
         public Decimal AmountToApply;
 
-        // Compares by effective date first. If dates are the same between invoice items, sorts by project. If projects
-        // are the same, then sorts by client.
         public Integer compareTo(Object compareTo) {
             OutstandingItem compareToItem = (OutstandingItem) compareTo;
             Integer returnValue = 0;
             if (EffectiveDate > compareToItem.EffectiveDate) {
+                // Set return value to a positive value.
                 returnValue = 1;
             } else if (EffectiveDate < compareToItem.EffectiveDate) {
-                returnValue = -1;
-            } else if (Project > compareToItem.Project) {
-                returnValue = 1;
-            } else if (Project < compareToItem.Project) {
-                returnValue = -1;
-            } else if (Client > compareToItem.Client) {
-                returnValue = 1;
-            } else if (Client < compareToItem.Client) {
+                // Set return value to a negative value.
                 returnValue = -1;
             }
             return returnValue;
@@ -141,6 +133,36 @@ public class ZuoraOutstandingItemsService{
             System.enqueueJob(asyncService);
         }
         return asyncService;
+    }
+
+    // Use this if you don't need Invoice or Debit Memo Items, ie, if you are project & client agnostic:
+    public static List<OutstandingItem> processOutstandingParentRecordsByDate(String zuoraAccountId){
+        List<OutstandingItem> outstandingParentRecords = new List<OutstandingItem>();
+        List<ZuoraAPI.Invoice> invoices = getOutstandingInvoices(zuoraAccountId);
+        List<ZuoraAPI.ZuoraDebitMemo> debitMemos = getOutstandingDebitMemos(zuoraAccountId);
+
+        if (invoices.size() > 0) {
+            for (ZuoraAPI.Invoice invoice : invoices) {
+                OutstandingItem invItem = new OutstandingItem();
+                invItem.Id = invoice.id;
+                invItem.AmountOutstanding = invoice.balance;
+                invItem.EffectiveDate = Datetime.newInstance(invoice.invoiceDate.year(), invoice.invoiceDate.month(), invoice.invoiceDate.day());
+                invItem.IsInvoiceItem = true;
+                outstandingParentRecords.add(invItem);
+            }
+        }
+        if (debitMemos.size() > 0) {
+            for (ZuoraAPI.ZuoraDebitMemo debitMemo : debitMemos) {
+                OutstandingItem debitItem = new OutstandingItem();
+                debitItem.Id = debitMemo.id;
+                debitItem.AmountOutstanding = debitMemo.balance;
+                debitItem.EffectiveDate = Datetime.newInstance(debitMemo.debitMemoDate.year(), debitMemo.debitMemoDate.month(), debitMemo.debitMemoDate.day());
+                debitItem.IsInvoiceItem = false;
+                outstandingParentRecords.add(debitItem);
+            }
+        }
+        outstandingParentRecords.sort();
+        return outstandingParentRecords;
     }
 
     public static List<ZuoraAPI.Invoice> getOutstandingInvoices(String zuoraAcctId) {
@@ -263,6 +285,7 @@ public class ZuoraOutstandingItemsService{
     public class ProcessingParameter {
         public String processorClassName;
         public ZuoraAPI.CreditMemoWithItem creditMemo;
+        public ZuoraAPI.Payment payment;
         public List<ZuoraHistoricalApplicationService.Payable> payables;
         public List<OutstandingItem> allOutstandingItems;
 

@@ -56,6 +56,10 @@ public with sharing class ZuoraPaymentPageController {
         public String status; // 'Error' or 'Processed'
         @AuraEnabled
         public Boolean success;
+        @AuraEnabled
+        public String id;
+        @AuraEnabled
+        public String accountId;
     }
 
     @AuraEnabled
@@ -67,7 +71,6 @@ public with sharing class ZuoraPaymentPageController {
             throw new AuraHandledException(response.getBody());
         }
     }
-
 
     @AuraEnabled
     public static ZuoraAccountSelector.AccountWithPaymentMethod getAccountAndPayMethodFromZuora (String sfAccountId){
@@ -94,6 +97,8 @@ public with sharing class ZuoraPaymentPageController {
                         ' with paymentAmount: ' + paymentAmount +
                         ' and payment method Id: ' + paymentMethodId;
                 Logger.logNow('ZuoraPaymentPageController', 'makePayment', customErrorMessage, 'ERROR');
+            } else {
+                applyPaymentToBalance(newPayment);
             }
         } catch (Exception unhandledException) {
             Logger.logNow('ZuoraPaymentPageController', 'makePayment', unhandledException.getMessage(), 'ERROR');
@@ -148,5 +153,69 @@ public with sharing class ZuoraPaymentPageController {
         item.objects = new List<Object>{accountToUpdate};
 
         return handleGeneralUpdate('toggleAutopayAndPaymentMethod',item);
+    }
+
+    @AuraEnabled
+    public static void applyPaymentToBalance(ZuoraAPI.Payment successfulPayment){
+        try {
+            List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems;
+            outstandingItems = ZuoraOutstandingItemsService.processOutstandingParentRecordsByDate(successfulPayment.accountId);
+            PaymentApplication application = applyPaymentToOutstandingItems(outstandingItems, successfulPayment);
+            HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('PUT', '/v1/payments/' + successfulPayment.id + '/apply', application);
+            PaymentResponse result = (PaymentResponse) System.JSON.deserialize(response.getBody(), PaymentResponse.class);
+            if (!result.success) {
+                Logger.logNow('ZuoraPaymentPageController', 'applyPaymentToBalance', response.getBody(), Logger.ERROR);
+            }
+        } catch (Exception applicationException) {
+            Logger.logNow('ZuoraPaymentPageController', 'applyPaymentToBalance', applicationException.getMessage() + applicationException.getStackTraceString(), 'ERROR');
+        }
+    }
+
+    @AuraEnabled
+    public static PaymentApplication applyPaymentToOutstandingItems(List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems,
+                                                                    ZuoraAPI.Payment payment){
+        PaymentApplication application = new PaymentApplication();
+        application.invoices = new List<InvoiceApplication>();
+        application.debitMemos = new List<DebitMemoApplication>();
+
+        Decimal paymentAmount = payment.amount;
+        Decimal applicationAmount;
+        for (ZuoraOutstandingItemsService.OutstandingItem item : outstandingItems){
+            if (paymentAmount == 0){
+                break;
+            } else {
+                paymentAmount = paymentAmount.setScale(2, RoundingMode.HALF_UP);
+            }
+            applicationAmount = Math.min(paymentAmount,item.AmountOutstanding);
+            applicationAmount = applicationAmount.setScale(2, RoundingMode.HALF_UP);
+            paymentAmount -= applicationAmount;
+            if (item.IsInvoiceItem){
+                InvoiceApplication invoice = new InvoiceApplication();
+                invoice.invoiceId = item.id;
+                invoice.amount = applicationAmount;
+                application.invoices.add(invoice);
+            } else {
+                DebitMemoApplication debitMemo = new DebitMemoApplication();
+                debitMemo.debitMemoId = item.id;
+                debitMemo.amount = applicationAmount;
+                application.debitMemos.add(debitMemo);
+            }
+        }
+        return application;
+    }
+
+    public class PaymentApplication {
+        public List<invoiceApplication> invoices;
+        public List<debitMemoApplication> debitMemos;
+    }
+
+    public class InvoiceApplication {
+        public String invoiceId;
+        public Decimal amount;
+    }
+
+    public class DebitMemoApplication {
+        public String debitMemoId;
+        public Decimal amount;
     }
 }
