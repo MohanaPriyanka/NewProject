@@ -65,6 +65,7 @@
         </navigationMenuItem>
     </navigationLinkSet>
     <networkMemberGroups>
+        <permissionSet>Manage_External_Users</permissionSet>
         <profile>admin</profile>
         <profile>cs client partner login</profile>
     </networkMemberGroups>
