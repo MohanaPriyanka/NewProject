@@ -141,6 +141,11 @@ public class ZuoraCreditMemoAllocationService implements ZuoraOutstandingItemsSe
             CreditMemoApplicationDebitMemo debitToApply = new CreditMemoApplicationDebitMemo(debitMemoId, debitMemoToItemMap.get(debitMemoId), debitMemoToAmountMap.get(debitMemoId));
             application.debitMemos.add(debitToApply);
         }
+
+        if (application.invoices.size() == 0 && application.debitMemos.size() == 0) {
+            throw new Util.FatalBWException('Could not find anything to apply this credit memo to. Credit Memo\n' + creditMemo + '\n' +
+                'Outstanding items:\n' + JSON.serializePretty(outstandingBillItems));
+        }
         return application;
     }
 

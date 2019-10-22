@@ -113,6 +113,14 @@ public class ZuoraOutstandingItemsService{
                 itemsToApply.add(outstandingItemToApply);
             }
         }
+        if (itemsToApply.size() == 0) {
+            Logger.logLater(
+                'ZuoraOutstandingItemsService',
+                'applyToOutstandingItems',
+                'Tried to apply ' + amountToApply + ' for ' + project + ', ' + client + ', ' + entity + ', but could' +
+                    'not find anything in outstanding items: ' + JSON.serializePretty(outstandingItems),
+                Logger.WARN);
+        }
         return itemsToApply;
     }
 
