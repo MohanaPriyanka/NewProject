@@ -1157,6 +1157,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ZuoraAccountSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ZuoraAccountService</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1165,7 +1169,15 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ZuoraController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ZuoraGLServiceTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraHistoricalApplicationService</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -1186,6 +1198,26 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ZuoraInvoiceServiceTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraPaymentMethodSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraPaymentMethodSelectorTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraPaymentSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraReturnedPaymentService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraReturnedPaymentServiceTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -5474,6 +5506,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Case.Utility_Follow_Up_Required__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.Zuora_Payment_Method__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -33138,6 +33175,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Zuora__ZInvoice__c.Legacy_Invoice_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Zuora__ZInvoice__c.LetterStreamJob__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -34039,6 +34081,16 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>agf__ADM_Epic__c.Estimated_Time_Commitment__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>agf__ADM_Epic__c.Status_Notes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>agf__ADM_Epic__c.Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -35634,6 +35686,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>agf__ADM_Product_Tag__c.Exclude_from_Work_Request_form__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>agf__ADM_Product_Tag__c.Product__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -48264,6 +48321,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Zuora__ZInvoice__c-Zuora__ZInvoice Z-Force Layout v2%2E9</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>agf__ADM_Epic__c-agf__Epic Layout Feed Based</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>agf__ADM_Product_Tag__c-agf__Product Tag Layout</layout>

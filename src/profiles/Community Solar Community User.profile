@@ -42545,7 +42545,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>SMART_Data__c.Location_Adder__c</field>
+        <field>Shared_Solar_System__c.Project_Image__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -46420,8 +46420,13 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Utility_Account_Log__c.Max_Capacity_of_System__c</field>
-        <readable>false</readable>
+        <field>Zuora__CustomerAccount__c.View_Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Zuora__CustomerAccount__c.Zuora__AccountNumber__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -84082,7 +84087,7 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
-        <recordType>Product_Profile__c.Solar_Loan</recordType>
+        <recordType>P   roduct_Profile__c.Solar_Loan</recordType>
         <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>

@@ -10,6 +10,7 @@ public with sharing class ZuoraController {
     @TestVisible
     private static ZuoraPaymentSelector paymentSelector = new ZuoraPaymentSelector();
 
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     @AuraEnabled
     public static PaymentReturnResult reverseReturnedPayment(Id paymentId) {
         PaymentReturnResult paymentReturnResult = new PaymentReturnResult();
@@ -29,6 +30,9 @@ public with sharing class ZuoraController {
             returnedPaymentService.markPaymentReturned(payments[0].Zuora__EXT_ID__c);
             paymentReturnResult.debitMemos = debitMemos;
             paymentReturnResult.success = true;
+            returnedPaymentService.removePaymentMethodFromAccount(payments[0]);
+            Case newCase = returnedPaymentService.createCaseForReturns(payments[0]);
+            insert newCase;
         } catch (Exception e) {
             String message = 'Failed reversing payment ' + paymentId + ':\n' + e.getMessage() + '\n' + e.getStackTraceString();
             Logger.logLater(
