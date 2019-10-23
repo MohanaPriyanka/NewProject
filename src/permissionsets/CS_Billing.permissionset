@@ -30085,11 +30085,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Transfer__c.Record_Type__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Transfer__c.Total_Transferred__c</field>
         <readable>false</readable>
     </fieldPermissions>
