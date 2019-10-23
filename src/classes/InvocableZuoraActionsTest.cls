@@ -163,6 +163,12 @@ public with sharing class InvocableZuoraActionsTest {
     }
 
     @IsTest public static void testTemplateAssigner() {
+        List<zqu__InvoiceTemplate__c> templates = [
+            SELECT Id
+            FROM zqu__InvoiceTemplate__c
+        ];
+        delete templates;
+
         List<Error_Log__c> beforeLogs = [
             SELECT Id, Class__c, Message__c, Method__c
             FROM Error_Log__c
