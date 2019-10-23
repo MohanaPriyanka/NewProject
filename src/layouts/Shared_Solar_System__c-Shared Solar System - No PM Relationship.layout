@@ -387,10 +387,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>First_Bill_Date__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
                 <field>Count_of_Transfers__c</field>
             </layoutItems>
             <layoutItems>
@@ -400,6 +396,14 @@
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Upcoming_Meter_Read_Date__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>First_Bill_Date__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Billing_Method__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
