@@ -6980,11 +6980,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Contract.Prior_Contracts__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Contract.Project_Description__c</field>
         <readable>false</readable>
     </fieldPermissions>
