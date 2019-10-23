@@ -90,7 +90,7 @@ public with sharing class ZuoraHistoricalCustomApplicationTest {
     @IsTest
     public static void testCheckAndSetApplyItem() {
         String outstandingItemJSON =
-            '{"Project":"SSS-000021","ParentId":"2c92c0fb6daab15c016dae43cee5361d","IsInvoiceItem":false,"Id":"2c92c0fb6daab15c016dae43cefd361e","EffectiveDate":"2019-06-15T00:00:00.000Z","Client":"BW-0021776","AmountToApply":100,"AmountOutstanding":0.920000000}';
+            '{"Project":"SSS-000021","ParentId":"2c92c0fb6daab15c016dae43cee5361d","IsInvoiceItem":false,"Id":"2c92c0fb6daab15c016dae43cefd361e","EffectiveDate":"2019-06-15T00:00:00.000Z","Client":"BW-0021776","AmountToApply":100,"AmountOutstanding":9200.00000}';
         ZuoraOutstandingItemsService.OutstandingItem oi =
             (ZuoraOutstandingItemsService.OutstandingItem) JSON.deserialize(outstandingItemJSON, ZuoraOutstandingItemsService.OutstandingItem.class);
         Decimal newAmountToApply = 90;
