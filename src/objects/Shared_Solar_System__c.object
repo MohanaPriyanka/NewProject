@@ -767,15 +767,16 @@ IF ( Total_System_Size_kW_AC__c &gt; 1000, &quot;Class 3&quot;, null)))</formula
     <fields>
         <fullName>Count_of_Transfers__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Total # of Transfers that have Bills Generated</inlineHelpText>
+        <inlineHelpText>Rollup of Production Update field. All PU where Bills Generated = true. Increases by every non zero transfer (ie, multiple transfers count as &gt;1 and $0 transfers don&apos;t count)</inlineHelpText>
         <label>Count of Transfers</label>
+        <summarizedField>Energy_Usage_Update__c.Count_of_Transfers__c</summarizedField>
         <summaryFilterItems>
-            <field>Transfer__c.Bills_Generated__c</field>
+            <field>Energy_Usage_Update__c.Generate_Bills__c</field>
             <operation>equals</operation>
             <value>True</value>
         </summaryFilterItems>
-        <summaryForeignKey>Transfer__c.Shared_Solar_System__c</summaryForeignKey>
-        <summaryOperation>count</summaryOperation>
+        <summaryForeignKey>Energy_Usage_Update__c.Shared_Solar_System__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Summary</type>
