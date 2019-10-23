@@ -59,7 +59,7 @@ public without sharing class AccountsSelector {
                 Send_Bills_Contact__r.Id, Send_Bills_Contact__r.FirstName, Send_Bills_Contact__r.LastName,
                 Send_Bills_Contact__r.Email, Recurring_Billing__c,
                 Address_Attn__c, BillingStreet, BillingCity, BillingState, BillingPostalCode,
-                Additional_Contact__r.Email
+                Additional_Contact__r.Email, Client_Brand_Key__c
             FROM Account
             WHERE Id IN :accountIds
         ];
