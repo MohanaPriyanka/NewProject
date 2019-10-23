@@ -144,7 +144,7 @@ public class ZuoraOutstandingItemsService{
     }
 
     // Use this if you don't need Invoice or Debit Memo Items, ie, if you are project & client agnostic:
-    public static List<OutstandingItem> processOutstandingParentRecordsByDate(String zuoraAccountId){
+    public static List<OutstandingItem> getOutstandingItemParentsByDate(String zuoraAccountId){
         List<OutstandingItem> outstandingParentRecords = new List<OutstandingItem>();
         List<ZuoraAPI.Invoice> invoices = getOutstandingInvoices(zuoraAccountId);
         List<ZuoraAPI.ZuoraDebitMemo> debitMemos = getOutstandingDebitMemos(zuoraAccountId);

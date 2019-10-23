@@ -36,7 +36,7 @@ public with sharing class ZuoraPaymentPageController {
         pageMetadata.ccRsaSignature = ccRsaSignature;
         pageMetadata.achRsaSignature = achRsaSignature;
         pageMetadata.ccPaymentPageId = getHostedPaymentPageId(domain, true, pageMetadata.zuoraSetting);
-        pageMetadata.achPaymentPageId = getHostedPaymentPageId(domain, true, pageMetadata.zuoraSetting);
+        pageMetadata.achPaymentPageId = getHostedPaymentPageId(domain, false, pageMetadata.zuoraSetting);
         return pageMetadata;
     }
 
@@ -44,7 +44,6 @@ public with sharing class ZuoraPaymentPageController {
     private static String getHostedPaymentPageId(String domain, Boolean creditCard, Zuora_Setting__mdt zuoraSetting) {
         // Hosted Payment Pages are domain specific
         // Eg.) bluewavememberportal.force.com (community) or bluewavesolar.lightning.force.com (internal)
-
         if (domain.contains('lightning.force.com') && creditCard){
             return zuoraSetting.CC_Payment_Page_Id_Internal__c;
         } else if (domain.contains('lightning.force.com')){
@@ -120,6 +119,7 @@ public with sharing class ZuoraPaymentPageController {
                         ' and payment method Id: ' + paymentMethodId;
                 Logger.logNow('ZuoraPaymentPageController', 'makePayment', customErrorMessage, 'ERROR');
             } else if (result.status == 'Processed'){
+                newPayment.id = result.id;
                 String paymentAsString = JSON.serialize(newPayment);
                 applyPaymentInFuture(paymentAsString);
             }
@@ -178,7 +178,7 @@ public with sharing class ZuoraPaymentPageController {
         return handleGeneralUpdate('toggleAutopayAndPaymentMethod',item);
     }
 
-    @Future
+    @Future(callout=true)
     public static void applyPaymentInFuture(String paymentAsString){
         ZuoraAPI.Payment successfulPayment = (ZuoraAPI.Payment) JSON.deserialize(paymentAsString, ZuoraAPI.Payment.class);
         applyPaymentToBalance(successfulPayment);
@@ -187,13 +187,14 @@ public with sharing class ZuoraPaymentPageController {
     public static void applyPaymentToBalance(ZuoraAPI.Payment successfulPayment){
         try {
             List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems;
-            outstandingItems = ZuoraOutstandingItemsService.processOutstandingParentRecordsByDate(successfulPayment.accountId);
+            outstandingItems = ZuoraOutstandingItemsService.getOutstandingItemParentsByDate(successfulPayment.accountId);
             PaymentApplication application = applyPaymentToOutstandingItems(outstandingItems, successfulPayment);
             HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('PUT', '/v1/payments/' + successfulPayment.id + '/apply', application);
             PaymentResponse result = (PaymentResponse) System.JSON.deserialize(response.getBody(), PaymentResponse.class);
             if (!result.success) {
-                Logger.logNow('ZuoraPaymentPageController', 'applyPaymentToBalance', response.getBody(), Logger.ERROR);
+                Logger.logNow('ZuoraPaymentPageController', 'applyPaymentToBalance', 'Failure in Zuora:' + response.getBody() + String.valueOf(successfulPayment), Logger.ERROR);
             }
+            Logger.flushLogs();
         } catch (Exception applicationException) {
             Logger.logNow('ZuoraPaymentPageController', 'applyPaymentToBalance', applicationException.getMessage() + applicationException.getStackTraceString(), 'ERROR');
         }

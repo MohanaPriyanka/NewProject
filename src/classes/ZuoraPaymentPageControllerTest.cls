@@ -186,7 +186,7 @@ public with sharing class ZuoraPaymentPageControllerTest {
         payment.id = 'XXXXXX';
 
         List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems;
-        outstandingItems = ZuoraOutstandingItemsService.processOutstandingParentRecordsByDate(payment.accountId);
+        outstandingItems = ZuoraOutstandingItemsService.getOutstandingItemParentsByDate(payment.accountId);
 
         System.assertEquals(3,outstandingItems.size());
         System.assertEquals(270,outstandingItems[0].AmountOutstanding);

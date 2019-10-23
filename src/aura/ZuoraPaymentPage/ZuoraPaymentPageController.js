@@ -3,7 +3,7 @@
  */
 ({
     doInit: function(component, event, helper) {
-        var getPaymentPageMetadataAction = component.get('c.getPageMetadata');
+        var getPaymentPageMetadataAction = component.get('c.getPageMetadataWithDomain');
         var hostname = window.location.hostname;
 
         getPaymentPageMetadataAction.setParams({
