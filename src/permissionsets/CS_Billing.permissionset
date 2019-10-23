@@ -40070,11 +40070,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>agf__ADM_Work__c.Contract__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>agf__ADM_Work__c.Created_During_Sprint__c</field>
         <readable>false</readable>
     </fieldPermissions>
