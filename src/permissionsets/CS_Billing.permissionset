@@ -31435,11 +31435,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Utility_Bill_Line_Item__c.Item_Amount__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Utility_Bill_Line_Item__c.Type__c</field>
         <readable>false</readable>
     </fieldPermissions>
