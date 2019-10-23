@@ -106,4 +106,19 @@ public with sharing class ZuoraAccountReconciliationService {
         return zuoraIdToSFDCAccountsMap;
     }
 
+    public static Map<String, String> brandKeyToCommProfileMap() {
+        Map<String, String> brandKeyToZuoraId = new Map<String, String>();
+        for (zqu__CommunicationProfile__c communicationProfile : [
+                SELECT Id, zqu__ZuoraId__c, Client_Brand_Key__c
+                FROM zqu__CommunicationProfile__c]) {
+            String brandKey = communicationProfile.Client_Brand_Key__c;
+            if (brandKeyToZuoraId.containsKey(brandKey)){
+                Logger.logLater('ZuoraAccountReconciliationService',
+                                'brandKeyToCommProfileMap',
+                                 'More than 1 communication profile was found for the brand key' + brandKey);
+            }
+            brandKeyToZuoraId.put(brandKey, communicationProfile.zqu__ZuoraId__c);
+        }
+        return brandKeyToZuoraId;
+    }
 }

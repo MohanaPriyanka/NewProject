@@ -3802,6 +3802,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ZuoraAccountReconciliationService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraAccountReconciliationServiceTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ZuoraAccountSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -47480,6 +47488,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Zuora__CustomerAccount__c.View_Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Zuora__CustomerAccount__c.Zuora__AccountNumber__c</field>
         <readable>true</readable>
@@ -54777,11 +54790,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>agf__ADM_Solution_Overview__c.agf__Marketing_Name__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Zuora__CustomerAccount__c.View_Account__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -65302,6 +65310,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>zqu__Catalog_Sync_History__c.zqu__Sync_seconds__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>zqu__CommunicationProfile__c.Client_Brand_Key__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

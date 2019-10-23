@@ -290,6 +290,46 @@ public with sharing class ZuoraAccountReconciliationServiceTest {
         System.assertEquals(50, accountReconciliationService.getBatchOfAccountsToReconcile(new Set<String>(strings)).size());
     }
 
+    @IsTest
+    public static void testCommunicationProfile() {
+        zqu__CommunicationProfile__c bwLogo = new zqu__CommunicationProfile__c(
+            Name = 'BlueWaveLogo Active',
+            Client_Brand_Key__c = 'BluewaveLogo',
+            zqu__ZuoraId__c = '2c92c0f96dd8b66e016ddb21fe130d9d'
+        );
+        zqu__CommunicationProfile__c ampRed = new zqu__CommunicationProfile__c(
+            Name = 'BlueWaveLogo Active',
+            Client_Brand_Key__c = 'AmpRed',
+            zqu__ZuoraId__c = '2c92c0f96dd8b66e016ddb28c0b929cb'
+        );
+        zqu__CommunicationProfile__c ampBlack = new zqu__CommunicationProfile__c(
+            Name = 'BlueWaveLogo Active',
+            Client_Brand_Key__c = 'AmpBlack',
+            zqu__ZuoraId__c = '2c92c0f86dd8a86e016ddb2dc6504027'
+        );
+        insert new List<zqu__CommunicationProfile__c>{bwLogo, ampRed, ampBlack};
+
+        Account propertyAccount = new Account(
+            Name = 'Account B',
+            Client_Brand_Key__c = 'BluewaveLogo'
+        );
+        ZuoraAPI.ZuoraAccount accountToTest = new ZuoraAPI.ZuoraAccount(propertyAccount);
+        accountToTest.PaymentTerm = 'Net 30';
+        accountToTest.PaymentGateway = 'Chargent Gateway B';
+
+        ZuoraAPI.ZuoraAccount accountFromZuora = new ZuoraAPI.ZuoraAccount();
+        accountFromZuora.PaymentTerm = 'Net 30';
+        accountFromZuora.PaymentGateway = 'Chargent Gateway B';
+        accountFromZuora.communicationProfileId = '2c92c0f96dd8b66e016ddb28c0b929cb';
+        System.assert(accountFromZuora.hasReconciliationVariance(accountToTest), 'Expected a reconciliation variance');
+
+        accountFromZuora = new ZuoraAPI.ZuoraAccount();
+        accountFromZuora.PaymentTerm = 'Net 30';
+        accountFromZuora.PaymentGateway = 'Chargent Gateway B';
+        accountFromZuora.communicationProfileId = '2c92c0f96dd8b66e016ddb21fe130d9d';
+        System.assert(!accountFromZuora.hasReconciliationVariance(accountToTest), 'Did not expect a reconciliation variance');
+    }
+
     /*************
      *** MOCKS ***
      *************/
