@@ -31440,11 +31440,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Utility_Bill_Line_Item__c.XXXType__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Utility_NMC_Tariff__c.Active__c</field>
         <readable>false</readable>
     </fieldPermissions>
