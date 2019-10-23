@@ -18,7 +18,7 @@ public without sharing class InvoiceTemplateAssigner implements Schedulable, Dat
 
         public TemplateKey(Account account){
             this.isAutopay = account.Recurring_Billing__c;
-            this.clientBrandKey = account.Parent_Account__r.Client_Brand_Key__c;
+            this.clientBrandKey = account.Client_Brand_Key__c;
             if (account.Count_of_Large_Offtake_Opps__c > 0){
                 this.isAnchor = true;
             } else {
@@ -70,7 +70,7 @@ public without sharing class InvoiceTemplateAssigner implements Schedulable, Dat
     public List<Account> getAccounts(){
         List<Account> accounts = [
             SELECT Id, Name, Zuora_Id__c,
-            Parent_Account__r.Client_Brand_Key__c,
+            Client_Brand_Key__c,
             Recurring_Billing__c, Count_of_Large_Offtake_Opps__c,
             Zuora_Invoice_Message_1_of_2__c,
             Zuora_Invoice_Message_2_of_2__c
