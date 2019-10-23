@@ -3,7 +3,7 @@
         let actionGetBalance = component.get("c.getAccountAndPayMethodFromZuora");
 
         actionGetBalance.setParams({
-            "sfAccountId" : component.get("v.recordId")
+            "sfAccountId" : component.get("v.sfAccountId")
         });
 
         actionGetBalance.setCallback(this,function(resp) {

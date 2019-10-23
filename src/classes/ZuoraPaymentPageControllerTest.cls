@@ -25,7 +25,7 @@ public with sharing class ZuoraPaymentPageControllerTest {
     @IsTest
     public static void testGetPageMetadata() {
         Test.setMock(HttpCalloutMock.class, new ZuoraAPIMock());
-        ZuoraPaymentPageController.PaymentPageMetadata paymentPageMetadata = ZuoraPaymentPageController.getPageMetadata();
+        ZuoraPaymentPageController.PaymentPageMetadata paymentPageMetadata = ZuoraPaymentPageController.getPageMetadataWithDomain('bluewavememberportal.force.com');
         System.assertEquals('30689', paymentPageMetadata.ccRsaSignature.tenantId);
 
         Organization o = [SELECT IsSandbox FROM Organization];
@@ -35,6 +35,13 @@ public with sharing class ZuoraPaymentPageControllerTest {
             WHERE Is_Sandbox__c = :o.IsSandbox
         ];
         System.assertEquals(zuoraSettings[0].API_Endpoint_URL__c, paymentPageMetadata.zuoraSetting.API_Endpoint_URL__c);
+
+        String communityCCPage = paymentPageMetadata.ccPaymentPageId;
+        System.assertNotEquals(null, communityCCPage);
+        ZuoraPaymentPageController.PaymentPageMetadata paymentPageMetadataInternal = ZuoraPaymentPageController.getPageMetadataWithDomain('bluewavesolar.lightning.force.com');
+        System.assertNotEquals(communityCCPage, paymentPageMetadataInternal.ccPaymentPageId);
+        System.assertNotEquals(null, paymentPageMetadataInternal.ccPaymentPageId);
+        System.assertEquals(zuoraSettings[0].API_Endpoint_URL__c, paymentPageMetadataInternal.zuoraSetting.API_Endpoint_URL__c);
     }
 
     @IsTest

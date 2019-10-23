@@ -6,12 +6,12 @@
 
 public with sharing class ZuoraPaymentPageController {
     @AuraEnabled
-    public static PaymentPageMetadata getPageMetadata() {
+    public static PaymentPageMetadata getPageMetadataWithDomain(String domain) {
         PaymentPageMetadata pageMetadata = new PaymentPageMetadata();
         pageMetadata.zuoraSetting = ZuoraAPIHelper.getZuoraSetting();
         Map<String, Object> ccJsonBody = new Map<String, Object>();
         ccJsonBody.put('method', 'POST');
-        ccJsonBody.put('pageId', pageMetadata.zuoraSetting.CC_Payment_Page_Id__c);
+        ccJsonBody.put('pageId', getHostedPaymentPageId(domain, true, pageMetadata.zuoraSetting));
         ccJsonBody.put('uri', pageMetadata.zuoraSetting.Hosted_Payment_Page_URI__c);
         HttpResponse ccResponse = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/rsa-signatures', ccJsonBody, false);
         ZuoraAPI.RSASignature ccRsaSignature;
@@ -23,7 +23,7 @@ public with sharing class ZuoraPaymentPageController {
 
         Map<String, Object> achJsonBody = new Map<String, Object>();
         achJsonBody.put('method', 'POST');
-        achJsonBody.put('pageId', pageMetadata.zuoraSetting.ACH_Payment_Page_Id__c);
+        achJsonBody.put('pageId', getHostedPaymentPageId(domain, false, pageMetadata.zuoraSetting));
         achJsonBody.put('uri', pageMetadata.zuoraSetting.Hosted_Payment_Page_URI__c);
         ZuoraAPI.RSASignature achRsaSignature;
         HttpResponse achResponse = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/rsa-signatures', achJsonBody);
@@ -35,7 +35,25 @@ public with sharing class ZuoraPaymentPageController {
 
         pageMetadata.ccRsaSignature = ccRsaSignature;
         pageMetadata.achRsaSignature = achRsaSignature;
+        pageMetadata.ccPaymentPageId = getHostedPaymentPageId(domain, true, pageMetadata.zuoraSetting);
+        pageMetadata.achPaymentPageId = getHostedPaymentPageId(domain, true, pageMetadata.zuoraSetting);
         return pageMetadata;
+    }
+
+    @TestVisible
+    private static String getHostedPaymentPageId(String domain, Boolean creditCard, Zuora_Setting__mdt zuoraSetting) {
+        // Hosted Payment Pages are domain specific
+        // Eg.) bluewavememberportal.force.com (community) or bluewavesolar.lightning.force.com (internal)
+
+        if (domain.contains('lightning.force.com') && creditCard){
+            return zuoraSetting.CC_Payment_Page_Id_Internal__c;
+        } else if (domain.contains('lightning.force.com')){
+            return zuoraSetting.ACH_Payment_Page_Id_Internal__c;
+        } else if (creditCard){
+            return zuoraSetting.CC_Payment_Page_Id__c;
+        } else {
+            return zuoraSetting.ACH_Payment_Page_Id__c;
+        }
     }
 
     public class PaymentPageMetadata {
@@ -45,6 +63,10 @@ public with sharing class ZuoraPaymentPageController {
         public ZuoraAPI.RSASignature achRsaSignature;
         @AuraEnabled
         public Zuora_Setting__mdt zuoraSetting;
+        @AuraEnabled
+        public String ccPaymentPageId;
+        @AuraEnabled
+        public String achPaymentPageId;
     }
 
     public class PaymentResponse {
