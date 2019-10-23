@@ -1157,6 +1157,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ZuoraAccountReconciliationService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraAccountReconciliationServiceTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ZuoraAccountSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -47291,6 +47299,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>trailheadapp__User_Trailmix__c.trailheadapp__User__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>zqu__CommunicationProfile__c.Client_Brand_Key__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
