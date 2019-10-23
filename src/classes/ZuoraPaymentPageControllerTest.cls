@@ -40,7 +40,6 @@ public with sharing class ZuoraPaymentPageControllerTest {
         System.assertNotEquals(null, communityCCPage);
         ZuoraPaymentPageController.PaymentPageMetadata paymentPageMetadataInternal = ZuoraPaymentPageController.getPageMetadataWithDomain('bluewavesolar.lightning.force.com');
         System.assertNotEquals(communityCCPage, paymentPageMetadataInternal.ccPaymentPageId);
-        System.assertNotEquals(null, paymentPageMetadataInternal.ccPaymentPageId);
         System.assertEquals(zuoraSettings[0].API_Endpoint_URL__c, paymentPageMetadataInternal.zuoraSetting.API_Endpoint_URL__c);
     }
 
