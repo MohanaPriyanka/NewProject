@@ -43,6 +43,8 @@ public with sharing class ZuoraHistoricalCustomApplicationTest {
         pa.type = 'ApplyItem';
         pa.effectiveDate = Date.newInstance(2019, 6, 15);
         pa.projectName = 'SSS-000021';
+        pa.clientName = 'BW-0021776';
+        pa.isInvoice = false;
         pa.startingAmount = 9200;
         pa.applicationAmount = newAmountToApply;
         pa.expectedAmount = 9200;
@@ -67,6 +69,8 @@ public with sharing class ZuoraHistoricalCustomApplicationTest {
         pa.type = 'ApplyItem';
         pa.effectiveDate = Date.newInstance(2019, 6, 15);
         pa.projectName = 'SSS-000021';
+        pa.clientName = 'BW-0021776';
+        pa.isInvoice = false;
         pa.startingAmount = 9200;
         pa.applicationAmount = newAmountToApply;
         pa.expectedAmount = 9200;
@@ -95,6 +99,8 @@ public with sharing class ZuoraHistoricalCustomApplicationTest {
         pa.type = 'ApplyItem';
         pa.effectiveDate = Date.newInstance(2019, 6, 15);
         pa.projectName = 'SSS-000021';
+        pa.clientName = 'BW-0021776';
+        pa.isInvoice = false;
         pa.applicationAmount = newAmountToApply;
         pa.expectedAmount = 100;
         List<ZuoraHistoricalCustomApplicationService.PaymentApplication> paList = new List<ZuoraHistoricalCustomApplicationService.PaymentApplication>{pa};
@@ -118,8 +124,8 @@ public with sharing class ZuoraHistoricalCustomApplicationTest {
             StaticResource sr = new StaticResource(
                 Id = Util.getFakeId(StaticResource.SObjectType),
                 Body = Blob.valueOf('Customer,TransactionId,Type,EffectiveDate,ProjectName,ClientName,StartingAmount,ApplicationAmount,ExpectedAmount,CreateApplication\n' +
-                    'Stelios,a210a00000GkIXgAAN,OutstandingItem,4/18/2017,SSS-000019,BW-0021776,203.35,181.19,0,FALSE\n' +
-                    'WFC,a210a00000a4YVDAA2,ProjectMapping,1/20/2018,SSS-000018,BW-0021776,,,,FALSE')
+                    'Stelios,a210a00000GkIXgAAN,OutstandingItem,4/18/2017,SSS-000019,BW-0021776,203.35,181.19,0,TRUE,FALSE\n' +
+                    'WFC,a210a00000a4YVDAA2,ProjectMapping,1/20/2018,SSS-000018,BW-0021776,,,,TRUE,FALSE')
             );
             return sr;
         }

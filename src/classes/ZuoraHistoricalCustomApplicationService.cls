@@ -120,6 +120,7 @@ public with sharing class ZuoraHistoricalCustomApplicationService {
         public Decimal startingAmount;
         public Decimal applicationAmount;
         public Decimal expectedAmount;
+        public Boolean isInvoice;
         public Boolean createApplication;
 
         public PaymentApplication() {
@@ -135,11 +136,15 @@ public with sharing class ZuoraHistoricalCustomApplicationService {
             this.startingAmount = Decimal.valueOf(Util.nullToZero(csvLine[6]));
             this.applicationAmount = Decimal.valueOf(Util.nullToZero(csvLine[7]));
             this.expectedAmount = Decimal.valueOf(Util.nullToZero(csvLine[8]));
-            this.createApplication = Boolean.valueOf(Util.nullToZero(csvLine[9]));
+            this.isInvoice = Boolean.valueOf(csvLine[9]);
+            this.createApplication = Boolean.valueOf(csvLine[10]);
         }
 
         public Boolean isRelevant(ZuoraOutstandingItemsService.OutstandingItem oi) {
-            return (oi.EffectiveDate == this.effectiveDate && oi.Project == this.projectName);
+            return (oi.EffectiveDate == this.effectiveDate &&
+                oi.Project == this.projectName &&
+                oi.Client == this.clientName &&
+                oi.IsInvoiceItem == this.isInvoice);
         }
 
         public void handleOutstandingItem(ZuoraOutstandingItemsService.OutstandingItem outstandingItem,
@@ -156,20 +161,24 @@ public with sharing class ZuoraHistoricalCustomApplicationService {
                     'ZuoraHistoricalApplicationService',
                     'custom applyPayment',
                     'Expected ' + projectName + ' to have '+ expectedAmount +' outstanding' + '\n' + JSON.serialize(outstandingItem),
-                    Logger.ERROR
+                    Logger.WARN
                 );
             }
         }
 
         public void handleItemApplication(ZuoraOutstandingItemsService.OutstandingItem applyItem) {
             if (applyItem.AmountToApply == expectedAmount) {
-                applyItem.AmountToApply = applicationAmount;
+                // There might be two debit memos for same project, client, and amount to apply (0), e.g. a client credit
+                // and late fee, both not being applied by this transaction. We need to update the right one.
+                if (applyItem.AmountOutstanding >= applicationAmount) {
+                    applyItem.AmountToApply = applicationAmount;
+                }
             } else {
                 Logger.logLater(
                     'ZuoraHistoricalApplicationService',
                     'custom applyPayment',
                     'Expected ' + projectName + ' to have ' + expectedAmount + ' applied' + '\n' + JSON.serialize(applyItem),
-                    Logger.ERROR);
+                    Logger.WARN);
             }
         }
     }

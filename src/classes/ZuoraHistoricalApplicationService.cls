@@ -421,10 +421,7 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
                 effectiveDate = outstandingItem.EffectiveDate + 1;
             }
         }
-        // Because effectiveDate, a Datetime, is in GMT and this happens when converting to paymentApplication.effectiveDate, a Date:
-        // System.debug(LoggingLevel.ERROR, effectiveDate); // 2017-04-18 00:00:00
-        // System.debug(LoggingLevel.ERROR, Date.newInstance(effectiveDate.year(), effectiveDate.month(), effectiveDate.day())); // 2017-04-17 00:00:00
-        paymentApplication.effectiveDate = Date.parse(effectiveDate.formatGmt('MM/dd/YYYY'));
+        paymentApplication.effectiveDate = DateUtil.convertGmtToDate(effectiveDate);
         paymentApplication.invoices = invoiceToInvoiceItemMap.values();
         paymentApplication.debitMemos = debitMemoToDebitMemoItemMap.values();
 

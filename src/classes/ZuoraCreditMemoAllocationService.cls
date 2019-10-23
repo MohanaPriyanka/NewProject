@@ -114,11 +114,11 @@ public class ZuoraCreditMemoAllocationService implements ZuoraOutstandingItemsSe
         // "message" : "The effective date in the request must be later than or equal to the latest effective date 10/18/2019 of application."
         // But 10/18/2019 (the date on which the application was attempted) isn't found anywhere.
         // The effectiveDate of the application must also be after the credit memo date and all of the applied items.
-        Date effectiveDate =  Util.maxTwoDates(Date.today(), creditMemo.CreditMemo.creditMemoDate);
+        Date effectiveDate =  DateUtil.max(Date.today(), creditMemo.CreditMemo.creditMemoDate);
 
         for (ZuoraOutstandingItemsService.OutstandingItem billItem : outstandingBillItems) {
             if (billItem.EffectiveDate > effectiveDate) {
-                effectiveDate = Date.parse(billItem.EffectiveDate.formatGmt('MM/dd/YYYY'));
+                effectiveDate = DateUtil.convertGmtToDate(billItem.EffectiveDate);
             }
             // If it is a match, create an application:
             if (billItem.IsInvoiceItem){
