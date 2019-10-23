@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>Client_Brand_Key__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>If the communication profile has this field set, it will be used for all accounts marked with that Client Brand Key. Each Client Brand Key should only have 1 related communication profile</inlineHelpText>
+        <label>Client Brand Key</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Client_Logo_Filenames</valueSetName>
+        </valueSet>
+    </fields>
+</CustomObject>
