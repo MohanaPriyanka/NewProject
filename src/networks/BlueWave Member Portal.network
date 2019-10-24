@@ -80,10 +80,9 @@
     </navigationLinkSet>
     <networkMemberGroups>
         <permissionSet>AccessToModifyCSPortal</permissionSet>
-        <permissionSet>Manage_External_Users</permissionSet>
-        <profile>admin</profile>
+        <profile>Admin</profile>
         <profile>customer community plus login user</profile>
-        <profile>community solar community user</profile>
+        <profile>Community Solar Community User</profile>
     </networkMemberGroups>
     <networkPageOverrides>
         <changePasswordPageOverrideSetting>Standard</changePasswordPageOverrideSetting>
