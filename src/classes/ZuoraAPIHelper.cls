@@ -163,54 +163,24 @@ public with sharing class ZuoraAPIHelper {
         return response.getBody();
     }
 
-    public static void actionUpdate(ZuoraAPI.ActionItems actionItems) {
-        genericAction(actionItems, 'Update');
-    }
-
-    public static final Set<String> possibleDmlOperation = new Set<String>{'Insert','Update','Delete'};
     public static final Integer maxActionUpdateRecords = 50;
-    public static List<ZuoraAPI.SaveResult> genericAction(Object item, String dmlOperation){
-        HttpResponse response;
-        Integer countOfRecords;
-        String objectAsString;
-        ZuoraAPI.ZuoraDelete deleteItem;
-        ZuoraAPI.ActionItems actionItem;
-
-        if (!possibleDmlOperation.contains(dmlOperation)) {
-            throw new Util.FatalBWException('Incorrect dmlOperation' + dmlOperation);
+    public static void actionUpdate(ZuoraAPI.ActionItems actionItems) {
+        if (actionItems.objects.size() > maxActionUpdateRecords) {
+            throw new Util.FatalBWException('Call action update with fewer than 50 records');
         }
-
-        if (dmlOperation == 'Delete') {
-            deleteItem = (ZuoraAPI.ZuoraDelete)item;
-            countOfRecords = deleteItem.Ids.size();
-            objectAsString = JSON.serialize(deleteItem);
-        } else {
-            actionItem = (ZuoraAPI.ActionItems)item;
-            countOfRecords = actionItem.objects.size();
-            objectAsString = JSON.serialize(actionItem);
-        }
-
-        if (countOfRecords > maxActionUpdateRecords) {
-            throw new Util.FatalBWException('Call action with fewer than ' + maxActionUpdateRecords + ' records');
-        }
-
-        if (dmlOperation == 'Delete') {
-            response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/action/delete', deleteItem, false);
-        } else if (dmlOperation == 'Insert') {
-            response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/action/create', actionItem, false);
-        } else if (dmlOperation == 'Update'){
-            response = ZuoraAPIHelper.callJsonEndpoint('PUT', '/v1/action/update', actionItem, false);
-        }
-        return handleActionResponse(response, objectAsString, countOfRecords);
-    }
-
-    public static List<ZuoraAPI.SaveResult> handleActionResponse(HttpResponse response, String jsonForDebug, Integer recordCount) {
+        HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('PUT', '/v1/action/update/', actionItems, false);
         if (response.getStatusCode() != 200) {
             throw new Util.BWException('Received status ' + response.getStatusCode() + ': ' + response.getBody());
         }
         List<ZuoraAPI.SaveResult> saveResults = (List<ZuoraAPI.SaveResult>) System.JSON.deserialize(response.getBody(), List<ZuoraAPI.SaveResult>.class);
-        if (saveResults.size() != recordCount) {
-            throw new Util.BWException('Received ' + saveResults.size() + ' when updating ' + recordCount + ' objects: ' + jsonForDebug);
+        if (containsErrors(saveResults, actionItems.objects)) {
+            throw new Util.BWException('/v1/action/update did not save one or more records');
+        }
+    }
+
+    public static Boolean containsErrors(List<ZuoraAPI.SaveResult> saveResults, List<Object> objects) {
+        if (saveResults.size() != objects.size()) {
+            throw new Util.BWException('Received ' + saveResults.size() + ' when updating ' + objects.size() + ' objects: ' + JSON.serialize(objects));
         }
         Boolean errorFound = false;
         for (Integer i = 0; i < saveResults.size(); i++) {
@@ -219,15 +189,12 @@ public with sharing class ZuoraAPIHelper {
                 Logger.logLater(
                     'ZuoraAPIHelper',
                     'containsErrors',
-                    JSON.serialize(saveResults[i].Errors) + ': ' + jsonForDebug,
+                    JSON.serialize(saveResults[i].Errors) + ': ' + JSON.serialize(objects[i]),
                     Logger.ERROR
                 );
             }
         }
-        if (errorFound) {
-            throw new Util.BWException('/v1/action did not save one or more records');
-        }
-        return saveResults;
+        return errorFound;
     }
 
     public static String cleanJSON(String json) {
