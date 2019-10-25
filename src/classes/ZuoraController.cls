@@ -76,4 +76,53 @@ public with sharing class ZuoraController {
         regen.invoicesToUpdate = invoicesToRegen;
         regen.executeBatch();
     }
+
+    public static void queueDataQueryForTemplateFields(Date startDate, Date endDate) {
+        String queryString = ZuoraInvoiceSelector.getInvoiceTotalQuery(startDate, endDate);
+        ZuoraDataQueryService.MethodToRunAfter methodToRunWhenComplete = new ZuoraDataQueryService.MethodToRunAfter();
+        methodToRunWhenComplete.methodName = 'updateCustomTemplateFields';
+        ZuoraDataQueryService.callFromApex(queryString,methodToRunWhenComplete);
+    }
+
+    @TestVisible
+    private class InvoiceSummaryFields{
+        String AccountId;
+        String LastInvoice;
+        Decimal PaymentSum;
+        Decimal CreditMemoSum;
+        Decimal DebitMemoSum;
+    }
+
+    public class InvoiceCustomFields{
+        String Id;
+        Decimal CustomTemplateMerge_1_Zcustom;
+        Decimal CustomTemplateMerge_2_Zcustom;
+    }
+
+    public static ZuoraAPI.ActionItems updateCustomTemplateFields(String queryData) {
+        ZuoraAPI.ActionItems actionItem = new ZuoraAPI.ActionItems();
+        actionItem.type = 'Invoice';
+        actionItem.objects = new List<InvoiceCustomFields>();
+
+        try {
+            List<InvoiceSummaryFields> summaryList;
+            summaryList = (List<InvoiceSummaryFields>)JSON.deserialize(queryData, List<InvoiceSummaryFields>.class);
+
+            for (InvoiceSummaryFields summary : summaryList){
+                if (summary.LastInvoice != null) {
+                    InvoiceCustomFields invoiceToUpdate = new InvoiceCustomFields();
+                    invoiceToUpdate.Id = summary.LastInvoice;
+                    Decimal memoSum = Util.nullToZero(summary.DebitMemoSum) - Util.nullToZero(summary.CreditMemoSum);
+                    invoiceToUpdate.CustomTemplateMerge_1_Zcustom = memoSum;
+                    invoiceToUpdate.CustomTemplateMerge_2_Zcustom = Util.nullToZero(summary.PaymentSum);
+                    actionItem.objects.add(invoiceToUpdate);
+                }
+            }
+            ZuoraGenericBatchOperation batchUpdate = new ZuoraGenericBatchOperation(actionItem, 'Update');
+            Database.executeBatch(batchUpdate, 50);
+        } catch (Exception excep) {
+            Logger.logNow('ZuoraController', 'updateCustomTemplateFields', excep.getMessage() + excep.getStackTraceString(), 'ERROR');
+        }
+        return actionItem;
+    }
 }

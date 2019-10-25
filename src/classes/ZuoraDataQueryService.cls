@@ -190,6 +190,9 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
                 when 'updateDaysPastDue' {
                     ZuoraBillingAccountService.updateDaysPastDue(response,method.recordIds);
                 }
+                when 'updateCustomTemplateFields' {
+                    ZuoraController.updateCustomTemplateFields(response);
+                }
             }
         } catch (Exception excep) {
             Logger.logNow('ZuoraDataQueryService', 'handlePostQueryJob', 'for method: ' + method + excep.getMessage() + '\n' + excep.getStackTraceString());

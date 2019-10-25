@@ -116,7 +116,8 @@ public with sharing class ZuoraAPIHelper {
         Organization o = [SELECT IsSandbox FROM Organization];
             List<Zuora_Setting__mdt> zuoraSettings = [
                 SELECT Id, DeveloperName, CC_Payment_Page_Id__c, ACH_Payment_Page_Id__c,
-                    Hosted_Payment_Page_URI__c, API_Endpoint_URL__c, Zuora_Is_Live__c
+                    Hosted_Payment_Page_URI__c, API_Endpoint_URL__c, Zuora_Is_Live__c,
+                    ACH_Payment_Page_Id_Internal__c, CC_Payment_Page_Id_Internal__c
                 FROM Zuora_Setting__mdt
             WHERE Is_Sandbox__c = :o.IsSandbox
             ];
@@ -159,28 +160,57 @@ public with sharing class ZuoraAPIHelper {
         zuoraDelete.ids = objectIds;
         zuoraDelete.type = objectType;
         HttpResponse response = callJsonEndpoint('POST', '/v1/action/delete', zuoraDelete, flush);
-        System.debug(LoggingLevel.ERROR, response.getBody());
         return response.getBody();
     }
 
-    public static final Integer maxActionUpdateRecords = 50;
     public static void actionUpdate(ZuoraAPI.ActionItems actionItems) {
-        if (actionItems.objects.size() > maxActionUpdateRecords) {
-            throw new Util.FatalBWException('Call action update with fewer than 50 records');
+        genericAction(actionItems, 'Update');
+    }
+
+    public static final Set<String> possibleDmlOperation = new Set<String>{'Insert','Update','Delete'};
+    public static final Integer maxActionUpdateRecords = 50;
+    public static List<ZuoraAPI.SaveResult> genericAction(Object item, String dmlOperation){
+        HttpResponse response;
+        Integer countOfRecords;
+        String objectAsString;
+        ZuoraAPI.ZuoraDelete deleteItem;
+        ZuoraAPI.ActionItems actionItem;
+
+        if (!possibleDmlOperation.contains(dmlOperation)) {
+            throw new Util.FatalBWException('Incorrect dmlOperation' + dmlOperation);
         }
-        HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('PUT', '/v1/action/update/', actionItems, false);
+
+        if (dmlOperation == 'Delete') {
+            deleteItem = (ZuoraAPI.ZuoraDelete)item;
+            countOfRecords = deleteItem.Ids.size();
+            objectAsString = JSON.serialize(deleteItem);
+        } else {
+            actionItem = (ZuoraAPI.ActionItems)item;
+            countOfRecords = actionItem.objects.size();
+            objectAsString = JSON.serialize(actionItem);
+        }
+
+        if (countOfRecords > maxActionUpdateRecords) {
+            throw new Util.FatalBWException('Call action with fewer than ' + maxActionUpdateRecords + ' records');
+        }
+
+        if (dmlOperation == 'Delete') {
+            response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/action/delete', deleteItem, false);
+        } else if (dmlOperation == 'Insert') {
+            response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/action/create', actionItem, false);
+        } else if (dmlOperation == 'Update'){
+            response = ZuoraAPIHelper.callJsonEndpoint('PUT', '/v1/action/update', actionItem, false);
+        }
+        return handleActionResponse(response, objectAsString, countOfRecords);
+    }
+
+    public static List<ZuoraAPI.SaveResult> handleActionResponse(HttpResponse response, String jsonForDebug, Integer recordCount) {
         if (response.getStatusCode() != 200) {
             throw new Util.BWException('Received status ' + response.getStatusCode() + ': ' + response.getBody());
         }
         List<ZuoraAPI.SaveResult> saveResults = (List<ZuoraAPI.SaveResult>) System.JSON.deserialize(response.getBody(), List<ZuoraAPI.SaveResult>.class);
-        if (containsErrors(saveResults, actionItems.objects)) {
-            throw new Util.BWException('/v1/action/update did not save one or more records');
-        }
-    }
-
-    public static Boolean containsErrors(List<ZuoraAPI.SaveResult> saveResults, List<Object> objects) {
-        if (saveResults.size() != objects.size()) {
-            throw new Util.BWException('Received ' + saveResults.size() + ' when updating ' + objects.size() + ' objects: ' + JSON.serialize(objects));
+        if (saveResults.size() != recordCount) {
+            throw new Util.BWException('Received ' + saveResults.size() + ' when updating ' + recordCount + ' objects: ' + jsonForDebug);
         }
         Boolean errorFound = false;
         for (Integer i = 0; i < saveResults.size(); i++) {
@@ -189,12 +219,15 @@ public with sharing class ZuoraAPIHelper {
                 Logger.logLater(
                     'ZuoraAPIHelper',
                     'containsErrors',
-                    JSON.serialize(saveResults[i].Errors) + ': ' + JSON.serialize(objects[i]),
+                    JSON.serialize(saveResults[i].Errors) + ': ' + jsonForDebug,
                     Logger.ERROR
                 );
             }
         }
-        return errorFound;
+        if (errorFound) {
+            throw new Util.BWException('/v1/action did not save one or more records');
+        }
+        return saveResults;
     }
 
     public static String cleanJSON(String json) {
