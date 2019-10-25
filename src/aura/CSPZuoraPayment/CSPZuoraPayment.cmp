@@ -31,6 +31,7 @@
   <aura:attribute name="newPaymentMethodId" type="String"/>
   <aura:attribute name="missingFieldsMessage" type="String" default="Please complete all required fields to continue"/>
   <aura:attribute name="responseMessage" type="String"/>
+  <aura:attribute name="sfAccountId" type="String"/>
 
   <aura:if isTrue="{!$Browser.isPhone}">
     <article class="">

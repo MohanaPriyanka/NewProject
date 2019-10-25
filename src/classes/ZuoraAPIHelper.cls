@@ -116,7 +116,8 @@ public with sharing class ZuoraAPIHelper {
         Organization o = [SELECT IsSandbox FROM Organization];
             List<Zuora_Setting__mdt> zuoraSettings = [
                 SELECT Id, DeveloperName, CC_Payment_Page_Id__c, ACH_Payment_Page_Id__c,
-                    Hosted_Payment_Page_URI__c, API_Endpoint_URL__c, Zuora_Is_Live__c
+                    Hosted_Payment_Page_URI__c, API_Endpoint_URL__c, Zuora_Is_Live__c,
+                    ACH_Payment_Page_Id_Internal__c, CC_Payment_Page_Id_Internal__c
                 FROM Zuora_Setting__mdt
             WHERE Is_Sandbox__c = :o.IsSandbox
             ];
@@ -159,7 +160,6 @@ public with sharing class ZuoraAPIHelper {
         zuoraDelete.ids = objectIds;
         zuoraDelete.type = objectType;
         HttpResponse response = callJsonEndpoint('POST', '/v1/action/delete', zuoraDelete, flush);
-        System.debug(LoggingLevel.ERROR, response.getBody());
         return response.getBody();
     }
 

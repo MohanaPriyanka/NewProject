@@ -3,7 +3,7 @@
         let actionGetBalance = component.get("c.getAccountAndPayMethodFromZuora");
 
         actionGetBalance.setParams({
-            "sfAccountId" : component.get("v.recordId")
+            "sfAccountId" : component.get("v.sfAccountId")
         });
 
         actionGetBalance.setCallback(this,function(resp) {
@@ -200,7 +200,7 @@
                         responseMessage = 'Your payment has been approved.';
                     }
                 } else {
-                    responseMessage = 'Payment Failed: ' + paymentResponse.gatewayResponse;
+                    responseMessage = 'Payment Failed';
                 }
             } else {
                 responseMessage = 'A system error has occurred, we were unable to submit your payment. We have been notified and will contact you with further instructions.';
