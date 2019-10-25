@@ -155,7 +155,7 @@ public with sharing class ZuoraPaymentPageControllerTest {
         payment.amount = 62.12;
 
         // Test partial payment:
-        ZuoraPaymentPageController.PaymentApplication application;
+        ZuoraAPI.ZuoraPaymentApplication application;
         application = ZuoraPaymentPageController.applyPaymentToOutstandingItems(unsortedItemList, payment);
         System.assertEquals(1,application.invoices.size());
         System.assertEquals(2,application.debitMemos.size());
@@ -165,7 +165,7 @@ public with sharing class ZuoraPaymentPageControllerTest {
 
         // Test full payment:
         payment.amount = 67;
-        ZuoraPaymentPageController.PaymentApplication secondApplication;
+        ZuoraAPI.ZuoraPaymentApplication secondApplication;
         secondApplication = ZuoraPaymentPageController.applyPaymentToOutstandingItems(unsortedItemList, payment);
         System.assertEquals(2,secondApplication.invoices.size());
         System.assertEquals(2,secondApplication.debitMemos.size());
@@ -195,7 +195,7 @@ public with sharing class ZuoraPaymentPageControllerTest {
         System.assert(outstandingItems[0].EffectiveDate < outstandingItems[1].EffectiveDate);
         System.assert(outstandingItems[1].EffectiveDate < outstandingItems[2].EffectiveDate);
 
-        ZuoraPaymentPageController.PaymentApplication application;
+        ZuoraAPI.ZuoraPaymentApplication application;
         application = ZuoraPaymentPageController.applyPaymentToOutstandingItems(outstandingItems, payment);
 
         System.assertEquals(2,application.invoices.size());
