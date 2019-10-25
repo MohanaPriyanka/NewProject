@@ -16,6 +16,8 @@ public class ZuoraOutstandingItemsService{
 
     public class QueryResultInvoiceItems {
         public List<ZuoraAPI.InvoiceItem> InvoiceItems;
+        String nextPage;
+        Boolean success;
     }
 
     public class QueryResultDebitMemo {
@@ -111,6 +113,14 @@ public class ZuoraOutstandingItemsService{
                 itemsToApply.add(outstandingItemToApply);
             }
         }
+        if (itemsToApply.size() == 0) {
+            Logger.logLater(
+                'ZuoraOutstandingItemsService',
+                'applyToOutstandingItems',
+                'Tried to apply ' + amountToApply + ' for ' + project + ', ' + client + ', ' + entity + ', but could' +
+                    'not find anything in outstanding items: ' + JSON.serializePretty(outstandingItems),
+                Logger.WARN);
+        }
         return itemsToApply;
     }
 
@@ -155,13 +165,28 @@ public class ZuoraOutstandingItemsService{
     }
 
     public static ZuoraAPI.InvoiceWithItems getInvoiceItems(ZuoraAPI.Invoice invoice) {
-        HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('GET','/v1/invoices/' + invoice.id +'/items',null,false);
-        QueryResultInvoiceItems itemsQuery =
-            (QueryResultInvoiceItems)JSON.deserialize(response.getBody(), QueryResultInvoiceItems.class);
         ZuoraAPI.InvoiceWithItems invoiceRecord = new ZuoraAPI.InvoiceWithItems();
         invoiceRecord.invoice = invoice;
-        invoiceRecord.items = itemsQuery.InvoiceItems;
+        invoiceRecord.items = getAllInvoiceItems(invoice.id);
         return invoiceRecord;
+    }
+
+    public static List<ZuoraAPI.InvoiceItem> getAllInvoiceItems(String invoiceItemId) {
+        return getAllInvoiceItems('/v1/invoices/' + invoiceItemId +'/items', new List<ZuoraAPI.InvoiceItem>());
+    }
+
+    private static List<ZuoraAPI.InvoiceItem> getAllInvoiceItems(String url, List<ZuoraAPI.InvoiceItem> invoiceItems) {
+        HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('GET',url,null,false);
+        QueryResultInvoiceItems itemsQuery =
+            (QueryResultInvoiceItems)JSON.deserialize(response.getBody(), QueryResultInvoiceItems.class);
+        if (!itemsQuery.success) {
+            throw new Util.BWException('Caught exception getting invoice items:\n' + response.getBody());
+        }
+        invoiceItems.addAll(itemsQuery.InvoiceItems);
+        if (itemsQuery.nextPage != null) {
+            return getAllInvoiceItems(itemsQuery.nextPage, invoiceItems);
+        }
+        return invoiceItems;
     }
 
     public static List<OutstandingItem> convertInvoiceItems(ZuoraAPI.InvoiceWithItems invoiceWithBalance){
