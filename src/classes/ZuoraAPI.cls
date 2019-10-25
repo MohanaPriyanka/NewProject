@@ -699,6 +699,7 @@ public with sharing class ZuoraAPI {
         public Decimal balance;
         public String Project_Zcustom;
         public String ClientOwner_Zcustom;
+        public String CRM_ID_Zcustom;
     }
 
     public class ZuoraDebitMemoItem {
