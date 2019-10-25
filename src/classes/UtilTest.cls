@@ -6,7 +6,7 @@
 @IsTest
 public with sharing class UtilTest {
     @IsTest
-    public static void testInsertSObj() {
+    private static void testInsertSObj() {
         Profile profile = [
             SELECT Id
             FROM Profile
@@ -37,7 +37,7 @@ public with sharing class UtilTest {
     }
 
     @IsTest
-    public static void testDatabaseOperation() {
+    private static void testDatabaseOperation() {
         List<Error_Log__c> errorLogs = [SELECT Id FROM Error_Log__c];
         // Shouldn't be any error logs yet
         System.assertEquals(0, errorLogs.size());
@@ -57,7 +57,7 @@ public with sharing class UtilTest {
     }
 
     @isTest
-    public static void testDatabaseUpdate(){
+    private static void testDatabaseUpdate(){
         Account acct = new Account(Name = 'Account');
         insert acct;
 
@@ -74,7 +74,7 @@ public with sharing class UtilTest {
     }
 
     @IsTest
-    public static void testNullToZero() {
+    private static void testNullToZero() {
         Decimal nullToZero;
         System.assertEquals(null, nullToZero);
 
@@ -83,20 +83,7 @@ public with sharing class UtilTest {
     }
 
     @IsTest
-    public static void testMinTwoDates() {
-        Date older = Date.newInstance(2014,02,03);
-        Date newer = Date.newInstance(2017,04,23);
-
-        System.assertEquals(older, Util.minTwoDates(older,newer));
-        System.assertEquals(older, Util.minTwoDates(newer,older));
-        System.assertEquals(older, Util.minTwoDates(null,older));
-        System.assertEquals(null, Util.minTwoDates(null,null));
-        System.assertEquals(newer, Util.minTwoDates(newer,null));
-        System.assertEquals(newer, Util.minTwoDates(newer,newer));
-    }
-
-    @IsTest
-    public static void testGetActiveProducts() {
+    private static void testGetActiveProducts() {
         LoanTestRecordWarehouse.partnerSetup();
         insert LoanTestRecordWarehouse.getLoanProductsVariableInterestRatesandTerms();
         Partner__c partner = [SELECT Id FROM Partner__c WHERE Name = 'Bluewave Inside Sales' LIMIT 1];
@@ -127,14 +114,14 @@ public with sharing class UtilTest {
     }
 
     @IsTest
-    public static void testGetCommunitySiteURL() {
+    private static void testGetCommunitySiteURL() {
         String siteURL = Util.getCommunitySiteURL('Apply');
         System.assert(siteURL.contains('bluewavememberportal'), 'Should contain link to BlueWave Member Portal');
         System.assert(siteURL.contains('apply'), 'Should include apply in the URL');
     }
 
     @IsTest
-    public static void testMinAndMax() {
+    private static void testMinAndMax() {
         List<Decimal> listOfNumbers = new List<Decimal>{12,342,1,342,-12,10000};
 
         System.assertEquals(-12, Util.min(listOfNumbers));
@@ -142,7 +129,7 @@ public with sharing class UtilTest {
     }
 
     @IsTest
-    public static void testPrintLimits() {
+    private static void testPrintLimits() {
         Boolean errorCaught = false;
         try {
             Util.printCPULimit('Print CPU Limit');
@@ -160,14 +147,14 @@ public with sharing class UtilTest {
     }
 
     @IsTest
-    public static void testPrepForCSV() {
+    private static void testPrepForCSV() {
         String unprepped = 'this is$_@an \n=+ un\n}pr{e[pp]ed, str)ing(.';
         String expected = 'this is_an  unprepped string.';
         System.assertEquals(expected, Util.prepForCSV(unprepped));
     }
 
     @IsTest
-    public static void testTriggerDisable() {
+    private static void testTriggerDisable() {
         // By default, if there's no system property, triggers are not disabled
         System.assertEquals(false, Util.isDisabled('Disable_LoanTrigger__c'));
         System_Properties__c property = new System_Properties__c(Name = 'System', Disable_LoanTrigger__c = true);
@@ -197,7 +184,7 @@ public with sharing class UtilTest {
         System.assertEquals(0, Limits.getQueries());
     }
     @IsTest
-    public static void testAllTriggerToggle() {
+    private static void testAllTriggerToggle() {
         // By default, if there's no system property, triggers are not disabled
         System.assertEquals(false, Util.isDisabled('Disable_LoanTrigger__c'));
         Util.disableAllTriggers();
@@ -213,7 +200,7 @@ public with sharing class UtilTest {
     }
 
     @IsTest
-    public static void testObscureText() {
+    private static void testObscureText() {
         String textToObscure = 'secret1234';
         String expectedAll = '**********';
         String expectedLast1 = '*********4';
@@ -232,7 +219,7 @@ public with sharing class UtilTest {
     }
 
     @IsTest
-    public static void testReparentAttachment() {
+    private static void testReparentAttachment() {
         Lead residentialLead = new Lead(
             LastName = 'testcase',
             Company = 'Util'
@@ -282,7 +269,7 @@ public with sharing class UtilTest {
     }
 
     @IsTest
-    public static void testGetSystemPropertyString() {
+    private static void testGetSystemPropertyString() {
         System.assertEquals('', Util.getSystemPropertyString('Zuora_Contact_Substitution_Email__c'));
         System_Properties__c property = new System_Properties__c(
             Name = 'System',
@@ -293,7 +280,7 @@ public with sharing class UtilTest {
     }
 
     @IsTest
-    public static void testGetSystemPropertyCheckbox() {
+    private static void testGetSystemPropertyCheckbox() {
         System.assertEquals(false, Util.getSystemPropertyCheckbox('Disable_LoanTrigger__c'));
         System_Properties__c property = new System_Properties__c(Name = 'System', Disable_LoanTrigger__c = true);
         insert property;
@@ -301,7 +288,7 @@ public with sharing class UtilTest {
     }
 
     @IsTest
-    public static void testValidateStringsWithNullValue() {
+    private static void testValidateStringsWithNullValue() {
         Map<String, String> requiredFields = new Map<String, String>{'nullField'=>null, 'validString'=>'hello world' };
         try {
             Util.validateStrings(requiredFields);
@@ -312,7 +299,7 @@ public with sharing class UtilTest {
     }
 
     @IsTest
-    public static void testValidateStringsWithValidValues() {
+    private static void testValidateStringsWithValidValues() {
         Map<String, String> requiredFields = new Map<String, String>{'validString'=>'hello world', 'anotherValidField'=>'foobar' };
         try {
             Util.validateStrings(requiredFields);
@@ -323,7 +310,7 @@ public with sharing class UtilTest {
     }
 
     @IsTest
-    public static void testGetFakeId() {
+    private static void testGetFakeId() {
         String id = Util.getFakeId(Schema.Account.SObjectType);
         System.assertEquals('001000000000000', id, 'Fake ID should be 15 characters long, and have the proper 3-digit prefix for the entity');
     }

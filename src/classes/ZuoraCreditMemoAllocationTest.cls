@@ -414,12 +414,16 @@ public class ZuoraCreditMemoAllocationTest {
         List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems = testDataSetup();
         ZuoraAPI.CreditMemoWithItem creditMemoWithItem = new ZuoraAPI.CreditMemoWithItem();
         ZuoraAPI.ZuoraCreditMemo creditMemo = new ZuoraAPI.ZuoraCreditMemo();
-        creditMemo.Project_Zcustom = '';
-        creditMemo.ClientOwner_Zcustom = '';
+        creditMemo.unappliedAmount = 2;
+        creditMemo.Project_Zcustom = 'SSS-0000012';
+        creditMemo.ClientOwner_Zcustom = 'BW-0000123';
         creditMemoWithItem.CreditMemo = creditMemo;
+        creditMemoWithItem.Item = new ZuoraAPI.ZuoraCreditMemoItem();
+        creditMemoWithItem.Item.id = '2c92c0fa6dd8a849016dda43519d2fa6';
 
         ZuoraOutstandingItemsService.ProcessingParameter processingParameter =
             new ZuoraOutstandingItemsService.ProcessingParameter('ZuoraCreditMemoAllocationService', creditMemoWithItem);
+        processingParameter.allOutstandingItems = outstandingItems;
         ZuoraCreditMemoAllocationService allocationService = new ZuoraCreditMemoAllocationService();
         allocationService.processOutstandingItems(testDataSetup(), processingParameter);
         System.assertEquals(1, ZuoraAPIHelper.numberCalloutsForZuoraNamespace, 'Should have executed one callout to allocate credit memo');

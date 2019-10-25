@@ -5,6 +5,9 @@
  *************************************************************************************/
 
 public with sharing class ZuoraHistoricalApplicationService implements ZuoraOutstandingItemsService.Processor, Queueable, Database.AllowsCallouts {
+
+    @TestVisible
+    private ZuoraHistoricalCustomApplicationService customApplicationService = new ZuoraHistoricalCustomApplicationService();
     @TestVisible
     private List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems;
     private ZuoraOutstandingItemsService.ProcessingParameter processingParameter;
@@ -16,12 +19,14 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
 
     // Required when instantiating via Type.newInstance()
     public ZuoraHistoricalApplicationService() {
+        this.customApplicationService.init();
     }
 
     public ZuoraHistoricalApplicationService(List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems,
         ZuoraOutstandingItemsService.ProcessingParameter processingParameter) {
         this.outstandingItems = outstandingItems;
         this.processingParameter = processingParameter;
+        this.customApplicationService.init();
     }
 
     public void processOutstandingItems(List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems,
@@ -88,6 +93,13 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
     }
 
     private void applyCreditMemo(Payable payable) {
+        // Since applyToOutstandingItems updates the amounts outstanding in outstandingItems, we want to make sure we
+        // can call the endpoint. Otherwise, the application will already be represented in the outstandingItems when
+        // we retry.
+        if (ZuoraAPIHelper.getCalloutsRemaining() < 1 || ZuoraAPIHelper.getCalloutSecondsRemaining() < 20) {
+            throw new Util.BWException('Not applying creditMemo ' + payable + ' because of callouts (' + ZuoraAPIHelper.getCalloutsRemaining() +
+                ') OR time (' + ZuoraAPIHelper.getCalloutSecondsRemaining() + ') remaining. Will retry.');
+        }
         List<ZuoraOutstandingItemsService.OutstandingItem> itemsWithApplication =
             ZuoraOutstandingItemsService.applyToOutstandingItems(
                 outstandingItems,
@@ -209,17 +221,14 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
 
         if (withOpenBalance) {
             for (ZuoraOutstandingItemsService.OutstandingItem outstandingItem : outstandingItems) {
-                if (outstandingItem.AmountOutstanding > 0 &&
-                    outstandingItem.Client == trx.Client__r.Account_Number__c &&
-                    projectUniqueIdToEntityMap.get(outstandingItem.Project) == trx.ChargentOrders__Order__r.Entity__c) {
+                if (matchesClientEntityOrProject(outstandingItem, trx)) {
                     clientProjectAssignment = getClientProjectFromOutstandingItem(outstandingItem, clientProjects);
                     break;
                 }
             }
         } else {
             for (ZuoraSubscriptionService.ClientProject clientProject : clientProjects) {
-                if (clientProject.clientName == trx.Client__r.Account_Number__c &&
-                    projectUniqueIdToEntityMap.get(clientProject.projectName) == trx.ChargentOrders__Order__r.Entity__c) {
+                if (matchesClientEntityOrProject(clientProject, trx)) {
                     clientProjectAssignment = clientProject;
                     break;
                 }
@@ -230,6 +239,27 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
             throw new Util.FatalBWException('Could not assign this transfer transaction to a project with an open balance: ' + trx.Id);
         }
         return clientProjectAssignment;
+    }
+
+    private Boolean matchesClientEntityOrProject(ZuoraOutstandingItemsService.OutstandingItem outstandingItem, ChargentOrders__Transaction__c trx) {
+        if (outstandingItem.AmountOutstanding <= 0 ||
+            outstandingItem.Client != trx.Client__r.Account_Number__c) {
+            return false;
+        }
+        if (customApplicationService.hasCustomApplication(trx.Id) && customApplicationService.getProjectMapping(trx.Id) != null) {
+            return customApplicationService.getProjectMapping(trx.Id) == outstandingItem.Project;
+        }
+        return projectUniqueIdToEntityMap.get(outstandingItem.Project) == trx.ChargentOrders__Order__r.Entity__c;
+    }
+
+    private Boolean matchesClientEntityOrProject(ZuoraSubscriptionService.ClientProject clientProject, ChargentOrders__Transaction__c trx) {
+        if (clientProject.clientName != trx.Client__r.Account_Number__c) {
+            return false;
+        }
+        if (customApplicationService.hasCustomApplication(trx.Id) && customApplicationService.getProjectMapping(trx.Id) != null) {
+            return customApplicationService.getProjectMapping(trx.Id) == clientProject.projectName;
+        }
+        return projectUniqueIdToEntityMap.get(clientProject.projectName) == trx.ChargentOrders__Order__r.Entity__c;
     }
 
     private ZuoraSubscriptionService.ClientProject getClientProjectFromOutstandingItem(ZuoraOutstandingItemsService.OutstandingItem outstandingItem, Set<ZuoraSubscriptionService.ClientProject> clientProjects) {
@@ -331,9 +361,8 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
     }
 
     private ZuoraAPI.ZuoraPaymentApplication applyPayment(ChargentOrders__Transaction__c trx, ZuoraAPI.Payment payment) {
-        if (ZuoraHistoricalCustomApplicationService.transactionIdToCustomerName.keySet().contains(trx.Id)) {
-            Logger.logLater('ZuoraHistoricalApplicationService', 'applyPayment preapplication', JSON.serialize(outstandingItems), Logger.ERROR);
-        }
+        customApplicationService.log(trx.Id, 'applyPayment preapplication', outstandingItems, Logger.WARN);
+
         List<ZuoraOutstandingItemsService.OutstandingItem> itemsToApply =
             ZuoraOutstandingItemsService.applyToOutstandingItems(
                 outstandingItems,
@@ -347,22 +376,14 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
                 // application)
                 null
             );
-        if (ZuoraHistoricalCustomApplicationService.transactionIdToCustomerName.keySet().contains(trx.Id)) {
-            Logger.logLater('ZuoraHistoricalApplicationService', 'applyPayment postapplication', JSON.serialize(outstandingItems), Logger.ERROR);
-            Logger.logLater('ZuoraHistoricalApplicationService', 'applyPayment itemsToApply', JSON.serialize(itemsToApply), Logger.ERROR);
-            ZuoraHistoricalCustomApplicationService.customApplication(trx.Id, outstandingItems, itemsToApply);
-        }
 
+        customApplicationService.customApplication(trx.Id, outstandingItems, itemsToApply);
         ZuoraAPI.ZuoraPaymentApplication paymentApplication = outstandingItemToPaymentApplication(itemsToApply, trx.CreatedDate);
-        if (ZuoraHistoricalCustomApplicationService.transactionIdToCustomerName.keySet().contains(trx.Id)) {
-            Logger.logLater('ZuoraHistoricalApplicationService', 'applyPayment paymentApplication', JSON.serialize(paymentApplication), Logger.ERROR);
-        }
+        customApplicationService.log(trx.Id, 'applyPayment paymentApplication', paymentApplication, Logger.WARN);
+
         if (paymentApplication.hasItemsToApply()) {
             HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/payments/' + payment.id + '/apply', paymentApplication, false);
             payment = (ZuoraAPI.Payment) JSON.deserialize(ZuoraAPIHelper.cleanJSON(response.getBody()), ZuoraAPI.Payment.class);
-            if (ZuoraHistoricalCustomApplicationService.transactionIdToCustomerName.keySet().contains(trx.Id)) {
-                Logger.logLater('ZuoraHistoricalApplicationService', ' applyPayment after payment application', response.getBody(), Logger.ERROR);
-            }
             if (!payment.success) {
                 throw new Util.FatalBWException('Payment application failed: ' + response.getBody() + '\n' + JSON.serialize(paymentApplication));
             }
@@ -393,9 +414,10 @@ public with sharing class ZuoraHistoricalApplicationService implements ZuoraOuts
                 effectiveDate = outstandingItem.EffectiveDate + 1;
             }
         }
-        paymentApplication.effectiveDate = Date.newInstance(effectiveDate.year(), effectiveDate.month(), effectiveDate.day());
+        paymentApplication.effectiveDate = DateUtil.convertGmtToDate(effectiveDate);
         paymentApplication.invoices = invoiceToInvoiceItemMap.values();
         paymentApplication.debitMemos = debitMemoToDebitMemoItemMap.values();
+
         return paymentApplication;
     }
 

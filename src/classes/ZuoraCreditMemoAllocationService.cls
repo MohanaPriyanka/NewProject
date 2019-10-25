@@ -6,32 +6,58 @@
 @SuppressWarnings('PMD.VariableNamingConventions')
 public class ZuoraCreditMemoAllocationService implements ZuoraOutstandingItemsService.Processor {
     public class CreditMemoApplication {
-        public List<CreditMemoApplicationInvoice> Invoices;
-        public List<CreditMemoApplicationDebitMemo> DebitMemos;
+        public Date effectiveDate;
+        public List<CreditMemoApplicationInvoice> invoices;
+        public List<CreditMemoApplicationDebitMemo> debitMemos;
+        public CreditMemoApplication(Date effectiveDate) {
+            this.effectiveDate = effectiveDate;
+            this.invoices = new List<CreditMemoApplicationInvoice>();
+            this.debitMemos = new List<CreditMemoApplicationDebitMemo>();
+        }
     }
 
     public class CreditMemoApplicationInvoice {
-        public String InvoiceId;
-        public List<CreditMemoApplicationInvoiceItem> Items;
-        public Decimal Amount;
+        public String invoiceId;
+        public List<CreditMemoApplicationInvoiceItem> items;
+        public Decimal amount;
+        public CreditMemoApplicationInvoice(String invoiceId, List<CreditMemoApplicationInvoiceItem> items, Decimal amount) {
+            this.invoiceId = invoiceId;
+            this.items = items;
+            this.amount = amount;
+        }
     }
 
     public class CreditMemoApplicationInvoiceItem {
-        public String InvoiceItemId;
-        public String CreditMemoItemId;
-        public Decimal Amount;
+        public String invoiceItemId;
+        public String creditMemoItemId;
+        public Decimal amount;
+        public CreditMemoApplicationInvoiceItem(ZuoraOutstandingItemsService.OutstandingItem billItem, ZuoraAPI.CreditMemoWithItem creditMemo) {
+            this.amount = billItem.AmountToApply;
+            this.creditMemoItemId = creditMemo.Item.id;
+            this.invoiceItemId = billItem.Id;
+        }
     }
 
     public class CreditMemoApplicationDebitMemo {
-        public String DebitMemoId;
-        public List<CreditMemoApplicationDebitMemoItem> Items;
-        public Decimal Amount;
+        public String debitMemoId;
+        public List<CreditMemoApplicationDebitMemoItem> items;
+        public Decimal amount;
+        public CreditMemoApplicationDebitMemo(String debitMemoId, List<CreditMemoApplicationDebitMemoItem> items, Decimal amount) {
+            this.debitMemoId = debitMemoId;
+            this.items = items;
+            this.amount = amount;
+        }
     }
 
     public class CreditMemoApplicationDebitMemoItem {
-        public String DebitMemoItemId;
-        public String CreditMemoItemId;
-        public Decimal Amount;
+        public String debitMemoItemId;
+        public String creditMemoItemId;
+        public Decimal amount;
+        public CreditMemoApplicationDebitMemoItem(ZuoraOutstandingItemsService.OutstandingItem billItem, ZuoraAPI.CreditMemoWithItem creditMemo) {
+            this.amount = billItem.AmountToApply;
+            this.creditMemoItemId = creditMemo.Item.id;
+            this.debitMemoItemId = billItem.Id;
+        }
     }
 
     public class QueryResultCreditMemo {
@@ -82,63 +108,77 @@ public class ZuoraCreditMemoAllocationService implements ZuoraOutstandingItemsSe
         Map<String,List<CreditMemoApplicationDebitMemoItem>> debitMemoToItemMap = new Map<String,List<CreditMemoApplicationDebitMemoItem>>();
         Map<String,Decimal> debitMemoToAmountMap = new Map<String,Decimal>();
 
+        // It doesn't seem to work to post-date an application before today:
+        // Request Endpoint: https://rest.apisandbox.zuora.com/v1/creditmemos/2c92c0fa6dcf208a016dd62bf97f53f3/apply
+        // Request Body: {"invoices":[{"items":[{"invoiceItemId":"2c92c0fa6dd8a849016dda4351ad2fa8","creditMemoItemId":"2c92c0fa6dcf208a016dd62bf99953f4","amount":0.170000000}],"invoiceId":"2c92c0fa6dd8a849016dda43519d2fa6","amount":0.170000000}],"effectiveDate":"2018-06-15","debitMemos":[]}
+        // "message" : "The effective date in the request must be later than or equal to the latest effective date 10/18/2019 of application."
+        // But 10/18/2019 (the date on which the application was attempted) isn't found anywhere.
+        // The effectiveDate of the application must also be after the credit memo date and all of the applied items.
+        Date effectiveDate =  DateUtil.max(Date.today(), creditMemo.CreditMemo.creditMemoDate);
+
         for (ZuoraOutstandingItemsService.OutstandingItem billItem : outstandingBillItems){
+            if (billItem.EffectiveDate > effectiveDate) {
+                effectiveDate = DateUtil.convertGmtToDate(billItem.EffectiveDate);
+            }
             // If it is a match, create an application:
             if (billItem.IsInvoiceItem){
-                CreditMemoApplicationInvoiceItem invoiceItem = new CreditMemoApplicationInvoiceItem();
-                invoiceItem.amount = billItem.AmountToApply;
-                invoiceItem.creditMemoItemId = creditMemo.Item.id;
-                invoiceItem.invoiceItemId = billItem.Id;
-                if (invoiceToItemMap.containsKey(billItem.ParentId)){
-                    List<CreditMemoApplicationInvoiceItem> itemList = invoiceToItemMap.get(billItem.ParentId);
-                    itemList.add(invoiceItem);
-                    invoiceToItemMap.put(billItem.ParentId,itemList);
-                    Decimal invoiceSubTotal = invoiceToAmountMap.get(billItem.ParentId);
-                    invoiceSubTotal += billItem.AmountToApply;
-                    invoiceToAmountMap.put(billItem.ParentId,invoiceSubTotal);
+                CreditMemoApplicationInvoiceItem invoiceItem = new CreditMemoApplicationInvoiceItem(billItem, creditMemo);
+                addToInvoiceMaps(invoiceToItemMap, billItem, invoiceItem, invoiceToAmountMap);
                 } else {
-                    invoiceToItemMap.put(billItem.ParentId,new List<CreditMemoApplicationInvoiceItem>{invoiceItem});
-                    invoiceToAmountMap.put(billItem.ParentId, billItem.AmountToApply);
+                CreditMemoApplicationDebitMemoItem debitMemoItem = new CreditMemoApplicationDebitMemoItem(billItem, creditMemo);
+                addToDebitMemoMaps(debitMemoToItemMap, billItem, debitMemoItem, debitMemoToAmountMap);
                 }
-            } else {
-                CreditMemoApplicationDebitMemoItem debitMemoItem = new CreditMemoApplicationDebitMemoItem();
-                debitMemoItem.amount = billItem.AmountToApply;
-                debitMemoItem.creditMemoItemId = creditMemo.Item.id;
-                debitMemoItem.debitMemoItemId = billItem.Id;
-                if (debitMemoToItemMap.containsKey(billItem.ParentId)){
-                    List<CreditMemoApplicationDebitMemoItem> itemList = debitMemoToItemMap.get(billItem.ParentId);
-                    itemList.add(debitMemoItem);
-                    debitMemoToItemMap.put(billItem.ParentId,itemList);
-                    Decimal debitSubTotal = debitMemoToAmountMap.get(billItem.ParentId);
-                    debitSubTotal += billItem.AmountToApply;
-                    debitMemoToAmountMap.put(billItem.ParentId,debitSubTotal);
-                } else {
-                    debitMemoToItemMap.put(billItem.ParentId,new List<CreditMemoApplicationDebitMemoItem>{debitMemoItem});
-                    debitMemoToAmountMap.put(billItem.ParentId, billItem.AmountToApply);
-                }
-            }
         }
 
-        CreditMemoApplication application = new CreditMemoApplication();
-        application.Invoices = new List<CreditMemoApplicationInvoice>();
-        application.DebitMemos = new List<CreditMemoApplicationDebitMemo>();
+        CreditMemoApplication application = new CreditMemoApplication(effectiveDate);
 
         for (String invoiceId : invoiceToItemMap.keySet()){
-            CreditMemoApplicationInvoice invoiceToApply = new CreditMemoApplicationInvoice();
-            invoiceToApply.InvoiceId = invoiceId;
-            invoiceToApply.Amount = invoiceToAmountMap.get(invoiceId);
-            invoiceToApply.Items = invoiceToItemMap.get(invoiceId);
-            application.Invoices.add(invoiceToApply);
+            CreditMemoApplicationInvoice invoiceToApply = new CreditMemoApplicationInvoice(invoiceId, invoiceToItemMap.get(invoiceId), invoiceToAmountMap.get(invoiceId));
+            application.invoices.add(invoiceToApply);
         }
 
         for (String debitMemoId : debitMemoToItemMap.keySet()){
-            CreditMemoApplicationDebitMemo debitToApply = new CreditMemoApplicationDebitMemo();
-            debitToApply.DebitMemoId = debitMemoId;
-            debitToApply.Amount = debitMemoToAmountMap.get(debitMemoId);
-            debitToApply.Items = debitMemoToItemMap.get(debitMemoId);
-            application.DebitMemos.add(debitToApply);
+            CreditMemoApplicationDebitMemo debitToApply = new CreditMemoApplicationDebitMemo(debitMemoId, debitMemoToItemMap.get(debitMemoId), debitMemoToAmountMap.get(debitMemoId));
+            application.debitMemos.add(debitToApply);
+        }
+
+        if (application.invoices.size() == 0 && application.debitMemos.size() == 0) {
+            throw new Util.FatalBWException('Could not find anything to apply this credit memo to. Credit Memo\n' + creditMemo + '\n' +
+                'Outstanding items:\n' + JSON.serializePretty(outstandingBillItems));
         }
         return application;
+    }
+
+    private static void addToDebitMemoMaps(Map<String, List<CreditMemoApplicationDebitMemoItem>> debitMemoToItemMap, ZuoraOutstandingItemsService.OutstandingItem billItem, CreditMemoApplicationDebitMemoItem debitMemoItem, Map<String, Decimal> debitMemoToAmountMap) {
+        if (debitMemoToItemMap.containsKey(billItem.ParentId)) {
+            List<CreditMemoApplicationDebitMemoItem> itemList = debitMemoToItemMap.get(billItem.ParentId);
+            itemList.add(debitMemoItem);
+            debitMemoToItemMap.put(billItem.ParentId, itemList);
+            Decimal debitSubTotal = debitMemoToAmountMap.get(billItem.ParentId);
+            debitSubTotal += billItem.AmountToApply;
+            debitMemoToAmountMap.put(billItem.ParentId, debitSubTotal);
+        } else {
+            debitMemoToItemMap.put(billItem.ParentId, new List<CreditMemoApplicationDebitMemoItem>{
+                debitMemoItem
+            });
+            debitMemoToAmountMap.put(billItem.ParentId, billItem.AmountToApply);
+        }
+    }
+
+    private static void addToInvoiceMaps(Map<String, List<CreditMemoApplicationInvoiceItem>> invoiceToItemMap, ZuoraOutstandingItemsService.OutstandingItem billItem, CreditMemoApplicationInvoiceItem invoiceItem, Map<String, Decimal> invoiceToAmountMap) {
+        if (invoiceToItemMap.containsKey(billItem.ParentId)) {
+            List<CreditMemoApplicationInvoiceItem> itemList = invoiceToItemMap.get(billItem.ParentId);
+            itemList.add(invoiceItem);
+            invoiceToItemMap.put(billItem.ParentId, itemList);
+            Decimal invoiceSubTotal = invoiceToAmountMap.get(billItem.ParentId);
+            invoiceSubTotal += billItem.AmountToApply;
+            invoiceToAmountMap.put(billItem.ParentId, invoiceSubTotal);
+        } else {
+            invoiceToItemMap.put(billItem.ParentId, new List<CreditMemoApplicationInvoiceItem>{
+                invoiceItem
+            });
+            invoiceToAmountMap.put(billItem.ParentId, billItem.AmountToApply);
+        }
     }
 
     public static QueryResultCreditMemo getCreditMemosByPage(String urlString){
