@@ -64,7 +64,7 @@
                     <aura:if isTrue="{!v.showZuoraPaymentCmp}">
                       <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
                         <div class="slds-col slds-size_12-of-12">
-                          <c:CSPZuoraPayment makePaymentOrManageAutopay="{!v.makePaymentOrManageAutopay}"/>
+                          <c:CSPZuoraPayment makePaymentOrManageAutopay="{!v.makePaymentOrManageAutopay}" sfAccountId="{!v.recordId}"/>
                         </div>
                       </div>
                       <aura:set attribute="else">
@@ -139,7 +139,7 @@
                 <lightning:layout multipleRows="true">
                   <lightning:layoutItem class="slds-p-bottom_small" size="12">
                     <aura:if isTrue="{!v.showZuoraPaymentCmp}">
-                      <c:CSPZuoraPayment makePaymentOrManageAutopay="{!v.makePaymentOrManageAutopay}"/>
+                      <c:CSPZuoraPayment makePaymentOrManageAutopay="{!v.makePaymentOrManageAutopay}" sfAccountId="{!v.recordId}"/>
                       <aura:set attribute="else">
                         <lightning:button aura:id="signupForAutopay"
                                           name="signupForAutopay"

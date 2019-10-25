@@ -153,6 +153,36 @@ public class ZuoraOutstandingItemsService{
         return asyncService;
     }
 
+    // Use this if you don't need Invoice or Debit Memo Items, ie, if you are project & client agnostic:
+    public static List<OutstandingItem> getOutstandingItemParentsByDate(String zuoraAccountId){
+        List<OutstandingItem> outstandingParentRecords = new List<OutstandingItem>();
+        List<ZuoraAPI.Invoice> invoices = getOutstandingInvoices(zuoraAccountId);
+        List<ZuoraAPI.ZuoraDebitMemo> debitMemos = getOutstandingDebitMemos(zuoraAccountId);
+
+        if (invoices.size() > 0) {
+            for (ZuoraAPI.Invoice invoice : invoices) {
+                OutstandingItem invItem = new OutstandingItem();
+                invItem.Id = invoice.id;
+                invItem.AmountOutstanding = invoice.balance;
+                invItem.EffectiveDate = Datetime.newInstance(invoice.invoiceDate.year(), invoice.invoiceDate.month(), invoice.invoiceDate.day());
+                invItem.IsInvoiceItem = true;
+                outstandingParentRecords.add(invItem);
+            }
+        }
+        if (debitMemos.size() > 0) {
+            for (ZuoraAPI.ZuoraDebitMemo debitMemo : debitMemos) {
+                OutstandingItem debitItem = new OutstandingItem();
+                debitItem.Id = debitMemo.id;
+                debitItem.AmountOutstanding = debitMemo.balance;
+                debitItem.EffectiveDate = Datetime.newInstance(debitMemo.debitMemoDate.year(), debitMemo.debitMemoDate.month(), debitMemo.debitMemoDate.day());
+                debitItem.IsInvoiceItem = false;
+                outstandingParentRecords.add(debitItem);
+            }
+        }
+        outstandingParentRecords.sort();
+        return outstandingParentRecords;
+    }
+
     public static List<ZuoraAPI.Invoice> getOutstandingInvoices(String zuoraAcctId) {
         String queryString = 'SELECT ' +
             'id, accountId, amount, invoiceDate, balance ' +

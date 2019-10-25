@@ -3,7 +3,13 @@
  */
 ({
     doInit: function(component, event, helper) {
-        var getPaymentPageMetadataAction = component.get('c.getPageMetadata');
+        var getPaymentPageMetadataAction = component.get('c.getPageMetadataWithDomain');
+        var hostname = window.location.hostname;
+
+        getPaymentPageMetadataAction.setParams({
+            "domain" : hostname
+        });
+
         getPaymentPageMetadataAction.setCallback(this, function(resp) {
             if (resp.getState() === 'SUCCESS') {
                 component.set('v.paymentPageMetadata', resp.getReturnValue());
@@ -19,10 +25,10 @@
         var paymentType = component.get('v.paymentType');
         var paymentPageId, rsaSignature;
         if (paymentType === 'Credit Card') {
-            paymentPageId = paymentPageMetadata.zuoraSetting.CC_Payment_Page_Id__c;
+            paymentPageId = paymentPageMetadata.ccPaymentPageId;
             rsaSignature = paymentPageMetadata.ccRsaSignature;
         } else if (paymentType === 'ACH') {
-            paymentPageId = paymentPageMetadata.zuoraSetting.ACH_Payment_Page_Id__c;
+            paymentPageId = paymentPageMetadata.achPaymentPageId;
             rsaSignature = paymentPageMetadata.achRsaSignature;
         } else {
             return;

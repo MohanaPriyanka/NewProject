@@ -165,7 +165,12 @@ public without sharing class InvoiceTemplateAssigner implements Schedulable, Dat
             Datetime dt = Datetime.now();
             dt = dt.addDays(10);
             String cronExpress = '0 ' + dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
-            System.schedule('Clear Account Message Fields',cronExpress,clearAccountFieldsJob);
+            String scheduledJobName = 'Clear Account Message Fields';
+            // To avoid error 'a job is already scheduled with name XX':
+            if (Test.isRunningTest()){
+                scheduledJobName = 'Some crazy name we will not duplicate in reality';
+            }
+            System.schedule(scheduledJobName,cronExpress,clearAccountFieldsJob);
         } catch (Exception excep) {
             Logger.logNow('InvoiceTemplateAssigner','scheduleAccountClear','Account Clear could not be scheduled' + excep.getMessage(),'WARN');
         }
