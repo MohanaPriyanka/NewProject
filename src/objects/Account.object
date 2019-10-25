@@ -724,8 +724,9 @@ CASE(TEXT(Cancellation_Reason__c),
 &quot;Does Not Understand Product&quot;, &quot;Customer Not Satisfied with Product&quot;,
 &quot;Product Does Not Meet Needs&quot;,  &quot;Customer Not Satisfied with Product&quot;,
 &quot;Unhappy with BW Service&quot;,  &quot;Customer Not Satisfied with Product&quot;,
+&quot;Financial Hardship&quot;, &quot;Financial Hardship/Death&quot;,
+&quot;Death&quot;, &quot;Financial Hardship/Death&quot;,
 &quot;Unable to Establish Communication&quot;, &quot;Other&quot;,
-&quot;Financial Hardship&quot;, &quot;Other&quot;,
 &quot;Other&quot;, &quot;Other&quot;,
 &quot; &quot;) 
 
