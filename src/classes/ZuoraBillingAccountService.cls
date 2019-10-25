@@ -116,7 +116,7 @@ public without sharing class ZuoraBillingAccountService implements Schedulable{
         for (BalanceQueryResult result : results){
             AccountSummary summary = new AccountSummary();
             summary.TotalBalance = Util.nullToZero(result.MemoBalance) + Util.nullToZero(result.InvoiceBalance);
-            summary.MinDueDate = Util.minTwoDates(result.MemoDueDate, result.InvoiceDueDate);
+            summary.MinDueDate = DateUtil.min(result.MemoDueDate, result.InvoiceDueDate);
             zuoraIdToAccountSummary.put(result.AccountId, summary);
         }
         return zuoraIdToAccountSummary;
