@@ -4,7 +4,7 @@
  * Test: ZuoraReturnedPaymentServiceTest, ZuoraInvoiceRegenServiceTest
  *************************************************************************************/
 
-public with sharing class ZuoraController {
+public with sharing class ZuoraController implements ZuoraDataQueryService.Processor  {
     @TestVisible
     private static ZuoraReturnedPaymentService returnedPaymentService = new ZuoraReturnedPaymentService();
     @TestVisible

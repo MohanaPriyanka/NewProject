@@ -3,7 +3,7 @@ Created By Jordan Pentaleri 08/2019
 Tested By: ZuoraGLServiceTest
 *************************************************************************************/
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public with sharing class ZuoraGLService implements Schedulable {
+public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryService.Processor {
     public Integer daysToLookBack;
 
     public void execute(SchedulableContext ctx){
@@ -39,32 +39,33 @@ public with sharing class ZuoraGLService implements Schedulable {
         String ExternalId;
     }
 
-    public static void executePostQueryJob(ZuoraDataQueryService.ProcessingParameter method, String response) {
+    public void executePostQueryJob(ZuoraDataQueryService.ProcessingParameter method, String response) {
+        ZuoraDataQueryService.ProcessingParameter newMethod = new ZuoraDataQueryService.ProcessingParameter(method);
         switch on method.methodName {
             // GL Methods: Insert one object's journal entries, then queue next object:
             when 'GL_InvoiceItem' {
                 ZuoraGLService.generalGLRecordInsert(response, 'InvoiceItem');
                 String queryString = ZuoraGLSelector.getCreditMemos(method.startDate, method.endDate);
-                method.methodName = 'GL_CreditMemo';
-                ZuoraDataQueryService.callFromApex(queryString, method);
+                newMethod.methodName = 'GL_CreditMemo';
+                ZuoraDataQueryService.callFromApex(queryString, newMethod);
             }
             when 'GL_CreditMemo' {
                 ZuoraGLService.generalGLRecordInsert(response, 'CreditMemo');
                 String queryString = ZuoraGLSelector.getDebitMemos(method.startDate, method.endDate);
-                method.methodName = 'GL_DebitMemo';
-                ZuoraDataQueryService.callFromApex(queryString, method);
+                newMethod.methodName = 'GL_DebitMemo';
+                ZuoraDataQueryService.callFromApex(queryString, newMethod);
             }
             when 'GL_DebitMemo' {
                 ZuoraGLService.generalGLRecordInsert(response, 'DebitMemo');
                 String queryString = ZuoraGLSelector.getPaymentPartsDM(method.startDate, method.endDate);
-                method.methodName = 'GL_PaymentPartDM';
-                ZuoraDataQueryService.callFromApex(queryString, method);
+                newMethod.methodName = 'GL_PaymentPartDM';
+                ZuoraDataQueryService.callFromApex(queryString, newMethod);
             }
             when 'GL_PaymentPartDM' {
                 ZuoraGLService.generalGLRecordInsert(response, 'PaymentPart');
                 String queryString = ZuoraGLSelector.getPaymentPartsIV(method.startDate, method.endDate);
-                method.methodName = 'GL_PaymentPartIV';
-                ZuoraDataQueryService.callFromApex(queryString, method);
+                newMethod.methodName = 'GL_PaymentPartIV';
+                ZuoraDataQueryService.callFromApex(queryString, newMethod);
             }
             when 'GL_PaymentPartIV' {
                 ZuoraGLService.generalGLRecordInsert(response, 'PaymentPart');

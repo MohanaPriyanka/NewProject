@@ -175,10 +175,9 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
     public static void handlePostQueryJob(String response, ProcessingParameter method){
         try {
             // Zuora's response isn't true JSON, so we have to modify to be able to deserialize:
-         //   response = response.replace('}','},');
-         //   response = response.substring(0,response.length()-1);
-         //   response = '[' + response + ']';
-
+            response = response.replace('}','},');
+            response = response.substring(0,response.length()-1);
+            response = '[' + response + ']';
             if (method.className != null) {
                 Processor jobToProcess = (Processor) Type.forName(method.className).newInstance();
                 jobToProcess.executePostQueryJob(method, response);

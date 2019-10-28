@@ -1,5 +1,5 @@
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public without sharing class ZuoraBillingAccountService implements Schedulable{
+public without sharing class ZuoraBillingAccountService implements Schedulable, ZuoraDataQueryService.Processor {
     public static void updatePropertyAccount(List<Zuora__CustomerAccount__c> billingAccounts) {
         Set<Id> zAccountIds = (new Map<Id,Zuora__CustomerAccount__c>(billingAccounts)).keySet();
         checkPropertyAccountDiscrepancy(zAccountIds);
