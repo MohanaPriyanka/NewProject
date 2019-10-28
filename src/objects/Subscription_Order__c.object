@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>Application_Date__c</fullName>
+        <description>This is the date that the Subscription Order was approved. It is populated automatically when the Status field is set to approved. Subscription Orders cannot be edited once they&apos;ve been approved and posted.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the date that the Subscription Order was approved. It is populated automatically when the Status field is set to approved. Subscription Orders cannot be edited once they&apos;ve been approved and posted.</inlineHelpText>
+        <label>Application Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Approval_Status__c</fullName>
+        <description>Subscription Orders will not be rolled up to the utility account subscription until they are marked as approved. Once approved, they cannot be changed.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Subscription Orders will not be rolled up to the utility account subscription until they are marked as approved. Once approved, they cannot be changed.</inlineHelpText>
+        <label>Approval Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Approved</fullName>
+                    <default>false</default>
+                    <label>Approved</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Calculated_Change_in_Percent_Share_of_Sy__c</fullName>
+        <externalId>false</externalId>
+        <formula>ROUND( Calculated_Change_in_Subscription_KW_DC__c / Total_System_Size_kW_DC__c ,  Utility_Number_of_Decimal_Places__c  + 2)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Calculated Change in Percent Share of Sy</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>5</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Calculated_Change_in_Subscription_KW_DC__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+
+AND(TEXT( Product__r.Customer_Subscription_Type__c )=&apos;kWh&apos;, Change_in_Annual_kWh__c&gt;0),
+
+Change_in_Annual_kWh__c/ Expected_Yield_kWh_kW__c ,
+
+IF( Utility_Account_Subscription__r.UAS_Number__c &gt; 1 ,
+
+Change_in_Annual_Cost__c / Value_of_NMC__c / Expected_Yield_kWh_kW__c,
+
+IF(
+
+OR( Utility_Account_Subscription__r.Auto_Unround__c = TRUE , Utility_Account_Subscription__r.UAS_Number__c = 1),
+
+Utility_Account_Subscription__r.UAS_Number__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c,
+
+
+IF(
+
+OR(Utility_Account_Subscription__r.UAS_Number__c=1, Utility_Account_Subscription__r.Shared_Solar_System__r.Name = &apos;Fairhaven Mill Rd&apos;, 
+
+Utility_Account_Subscription__r.Shared_Solar_System__r.Name= &apos;Oxford Clara Barton&apos;),
+
+Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4, 0)/4,0))))</formula>
+        <label>Calculated Change in Subscription KW DC</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Change_in_Annual_Cost__c</fullName>
+        <description>This is used for subscription orders where the related product is sized using dollars. It represents the net change from previously approved subscription orders.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is used for subscription orders where the related product is sized using dollars. It represents the net change from previously approved subscription orders.</inlineHelpText>
+        <label>Change in Annual Cost</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Change_in_Annual_kWh__c</fullName>
+        <description>This is used for Subscription Orders where the related product is sized in kwh. It represents the net change from previously approved subscription orders.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is used for Subscription Orders where the related product is sized in kwh. It represents the net change from previously approved subscription orders.</inlineHelpText>
+        <label>Change in Annual kWh</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Change_in_Percent_Share_of_System__c</fullName>
+        <description>This field is stamped with the value of the calculated Change in Percent Share of System field on subscription order automatically hen it is approved. We need a static field for tracking purposes and to use in rollup summary fields .</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This field is stamped with the value of the calculated Change in Percent Share of System field on subscription order automatically hen it is approved. We need a static field for tracking purposes and to use in rollup summary fields .</inlineHelpText>
+        <label>Change in Percent Share</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>5</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Change_in_Subscription_KW_DC__c</fullName>
+        <description>This is the net change in kW DC. This field is blank until the subscription order gets approved, at which point it is automatically populated with the value in the calculated Change in Subscription (KW DC) field on subscription order. It&apos;s important to have a static value for tracking purposes, and to use in rollup summary fields.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the net change in kW DC. This field is blank until the subscription order gets approved, at which point it is automatically populated with the value in the calculated Change in Subscription (KW DC) field on subscription order.</inlineHelpText>
+        <label>Change in Subscription (KW DC)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Client_Account__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <description>This is the Client Account that was on the related Shared Solar System at the time the Subscription Order was created.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the Client Account that was on the related Shared Solar System at the time the Subscription Order was created.</inlineHelpText>
+        <label>Client Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Subscription Orders</relationshipLabel>
+        <relationshipName>Subscription_Orders</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Expected_Yield_kWh_kW__c</fullName>
+        <description>This is the Expected Yield (kWh/kW) from the related shared solar system at the time the subscription order was created.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the Expected Yield (kWh/kW) from the related shared solar system at the time the subscription order was created.</inlineHelpText>
+        <label>Expected Yield (kWh/kW)</label>
+        <precision>12</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Product__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Product</label>
+        <referenceTo>Product2</referenceTo>
+        <relationshipLabel>Subscription Orders</relationshipLabel>
+        <relationshipName>Subscription_Orders</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Total_System_Size_kW_DC__c</fullName>
+        <description>This is the Total System Size kW DC on the related shared solar system at the time the subscription order was created.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the Total System Size kW DC on the related shared solar system at the time the subscription order was created.</inlineHelpText>
+        <label>Total System Size kW DC</label>
+        <precision>8</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Type</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Transfer</fullName>
+                    <default>false</default>
+                    <label>Transfer</label>
+                </value>
+                <value>
+                    <fullName>Cancellation</fullName>
+                    <default>false</default>
+                    <label>Cancellation</label>
+                </value>
+                <value>
+                    <fullName>Shared Solar System Update</fullName>
+                    <default>false</default>
+                    <label>Shared Solar System Update</label>
+                </value>
+                <value>
+                    <fullName>Resize</fullName>
+                    <default>false</default>
+                    <label>Resize</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Utility_Account_Subscription__c</fullName>
+        <externalId>false</externalId>
+        <label>Utility Account Subscription</label>
+        <referenceTo>Utility_Account_Subscription__c</referenceTo>
+        <relationshipLabel>Subscription Orders</relationshipLabel>
+        <relationshipName>Subscription_Orders</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>true</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Utility_NMC_Tariff__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <description>This is the Utility NMC Tariff that was on either the related Opportunity or Shared Solar System at the time that this record was created.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the Utility NMC Tariff that was on either the related Opportunity or Shared Solar System at the time that this record was created.</inlineHelpText>
+        <label>Utility NMC Tariff</label>
+        <referenceTo>Utility_NMC_Tariff__c</referenceTo>
+        <relationshipLabel>Subscription Orders</relationshipLabel>
+        <relationshipName>Subscription_Orders</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Utility_Number_of_Decimal_Places__c</fullName>
+        <description>This is the number of decimal places on the related utility record. It is static, and stamped at record creation. We need it in case the decimal places on Utility ever changes.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the number of decimal places on the related utility record. It is static, and stamped at record creation.</inlineHelpText>
+        <label>Utility: Number of Decimal Places</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Value_of_NMC__c</fullName>
+        <description>This is the Value of NMC that was on the related NMC Tariff at the time the subscription order was created.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the Value of NMC that was on the related NMC Tariff at the time the subscription order was created.</inlineHelpText>
+        <label>Value of NMC</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+</CustomObject>

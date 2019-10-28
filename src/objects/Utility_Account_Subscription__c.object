@@ -53,6 +53,23 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ControlledByParent</externalSharingModel>
     <fields>
+        <fullName>Annual_Cost_Future_Rollup__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>This is a rollup of all approved subscription orders</inlineHelpText>
+        <label>Annual Cost (Future)</label>
+        <summarizedField>Subscription_Order__c.Change_in_Annual_Cost__c</summarizedField>
+        <summaryFilterItems>
+            <field>Subscription_Order__c.Approval_Status__c</field>
+            <operation>equals</operation>
+            <value>Approved</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Subscription_Order__c.Utility_Account_Subscription__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
         <fullName>Annual_Cost_of_Electricity_Current__c</fullName>
         <description>Used in SREC contracts. This is based off of the NMC value on the Opportunity. It shows how many dollars are included in the Current Customer Subscription kW DC.</description>
         <externalId>false</externalId>
@@ -93,6 +110,23 @@
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Annual_kWh_Subscription_Future_Rollup__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>This is a rollup of all approved subscription orders.</inlineHelpText>
+        <label>Annual kWh Subscription (Future)</label>
+        <summarizedField>Subscription_Order__c.Change_in_Annual_kWh__c</summarizedField>
+        <summaryFilterItems>
+            <field>Subscription_Order__c.Approval_Status__c</field>
+            <operation>equals</operation>
+            <value>Approved</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Subscription_Order__c.Utility_Account_Subscription__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
     </fields>
     <fields>
         <fullName>Annual_kwh_subscription_future__c</fullName>
@@ -411,6 +445,40 @@ Round(( Subscribed_Annual_Cost_of_Electricity__c / 0.1933 / Opportunity__r.Share
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Future_Customer_Subscription_KWDC_Rollup__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>This is a rollup of all approved subscription orders.</inlineHelpText>
+        <label>Future Customer Subscription (KW DC)</label>
+        <summarizedField>Subscription_Order__c.Change_in_Subscription_KW_DC__c</summarizedField>
+        <summaryFilterItems>
+            <field>Subscription_Order__c.Approval_Status__c</field>
+            <operation>equals</operation>
+            <value>Approved</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Subscription_Order__c.Utility_Account_Subscription__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Future_Share_of_System_Rollup__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>This is a rollup of all approved subscription orders</inlineHelpText>
+        <label>Future Share of System</label>
+        <summarizedField>Subscription_Order__c.Change_in_Percent_Share_of_System__c</summarizedField>
+        <summaryFilterItems>
+            <field>Subscription_Order__c.Approval_Status__c</field>
+            <operation>equals</operation>
+            <value>Approved</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Subscription_Order__c.Utility_Account_Subscription__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
     </fields>
     <fields>
         <fullName>Future_Share_of_System__c</fullName>
@@ -766,6 +834,21 @@ Round(( Subscribed_Annual_Cost_of_Electricity__c / 0.1933 / Opportunity__r.Share
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Shared_Solar_System__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>This is the SSS on the Opportunity when the UAS was created. The SSS on an existing UAS should never be changed.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the SSS on the Opportunity when the UAS was created. The SSS on an existing UAS should never be changed.</inlineHelpText>
+        <label>Shared Solar System</label>
+        <referenceTo>Shared_Solar_System__c</referenceTo>
+        <relationshipLabel>Utility Account Subscriptions</relationshipLabel>
+        <relationshipName>Utility_Account_Subscriptions</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Status__c</fullName>
