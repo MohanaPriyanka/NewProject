@@ -15,6 +15,17 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Copado_API_Key__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>API Key for the user that Copado webhooks can use (e.g. to deploy a promotion).</inlineHelpText>
+        <label>Copado API Key</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Credit_Check_Timeout__c</fullName>
         <defaultValue>60000</defaultValue>
         <externalId>false</externalId>
