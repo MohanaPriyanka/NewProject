@@ -33,7 +33,7 @@
                 <field>Shared_Solar_System__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
+                <behavior>Edit</behavior>
                 <field>Client_Account__c</field>
             </layoutItems>
             <layoutItems>

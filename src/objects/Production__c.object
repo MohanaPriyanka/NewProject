@@ -359,5 +359,17 @@
     <pluralLabel>Production</pluralLabel>
     <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Client_Account_Edit_Permissions</fullName>
+        <active>true</active>
+        <description>Only Internal BFG users with access to the Client Account field are able to edit after creation.</description>
+        <errorConditionFormula>IF(
+  AND(
+   ISCHANGED( Client_Account__c), 
+   CONTAINS($Profile.Name, &quot;External BFG User&quot;)
+  ), TRUE, FALSE)</errorConditionFormula>
+        <errorDisplayField>Client_Account__c</errorDisplayField>
+        <errorMessage>Only Internal BFG users can edit Client Account.</errorMessage>
+    </validationRules>
     <visibility>Public</visibility>
 </CustomObject>
