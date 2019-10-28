@@ -159,19 +159,19 @@ public with sharing class ZuoraAPIHelper {
         ZuoraAPI.ActionItems item = new ZuoraAPI.ActionItems();
         item.type = objectType;
         item.Ids = objectIds;
-        List<ZuoraAPI.SaveResult> results = genericAction(item, actionDMLOperations.DELETE_action);
+        List<ZuoraAPI.SaveResult> results = genericAction(item, actionDMLOperations.DMLDELETE);
         return JSON.serialize(results);
     }
 
     public static void actionUpdate(ZuoraAPI.ActionItems actionItems) {
-        genericAction(actionItems, actionDMLOperations.UPDATE_action);
+        genericAction(actionItems, actionDMLOperations.DMLUPDATE);
     }
 
     // 'insert', 'update' and 'delete' are reserved so add _action to variable name:
     public enum actionDMLOperations {
-        INSERT_action,
-        UPDATE_action,
-        DELETE_action
+        DMLINSERT,
+        DMLUPDATE,
+        DMLDELETE
     }
 
     public static final Integer maxActionUpdateRecords = 50;
@@ -182,7 +182,7 @@ public with sharing class ZuoraAPIHelper {
         ZuoraAPI.ActionItems actionItem = (ZuoraAPI.ActionItems)item;
         String objectAsString = JSON.serialize(actionItem);
 
-        if (dmlOperation == actionDMLOperations.DELETE_action) {
+        if (dmlOperation == actionDMLOperations.DMLDELETE) {
             countOfRecords = actionItem.Ids.size();
         } else {
             countOfRecords = actionItem.objects.size();
@@ -192,11 +192,11 @@ public with sharing class ZuoraAPIHelper {
             throw new Util.FatalBWException('Call action with fewer than ' + maxActionUpdateRecords + ' records');
         }
 
-        if (dmlOperation == actionDMLOperations.DELETE_action) {
+        if (dmlOperation == actionDMLOperations.DMLDELETE) {
             response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/action/delete', actionItem, false);
-        } else if (dmlOperation == actionDMLOperations.INSERT_action) {
+        } else if (dmlOperation == actionDMLOperations.DMLINSERT) {
             response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/action/create', actionItem, false);
-        } else if (dmlOperation == actionDMLOperations.UPDATE_action){
+        } else if (dmlOperation == actionDMLOperations.DMLUPDATE){
             response = ZuoraAPIHelper.callJsonEndpoint('PUT', '/v1/action/update', actionItem, false);
         }
         return handleActionResponse(response, objectAsString, countOfRecords);

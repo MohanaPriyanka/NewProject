@@ -22,7 +22,7 @@ public class ZuoraGenericBatchOperationTest {
         actionItem.objects.add(accountThree);
 
         Test.startTest();
-            ZuoraGenericBatchOperation batchUpdate = new ZuoraGenericBatchOperation(actionItem, ZuoraAPIHelper.actionDMLOperations.UPDATE_action);
+            ZuoraGenericBatchOperation batchUpdate = new ZuoraGenericBatchOperation(actionItem, ZuoraAPIHelper.actionDMLOperations.DMLUPDATE);
             Database.executeBatch(batchUpdate, 50);
         Test.stopTest();
 
@@ -62,7 +62,7 @@ public class ZuoraGenericBatchOperationTest {
         actionItem.objects.add(accountThree);
 
         Test.startTest();
-            ZuoraGenericBatchOperation batchUpdate = new ZuoraGenericBatchOperation(actionItem, ZuoraAPIHelper.actionDMLOperations.INSERT_action);
+            ZuoraGenericBatchOperation batchUpdate = new ZuoraGenericBatchOperation(actionItem, ZuoraAPIHelper.actionDMLOperations.DMLINSERT);
             Database.executeBatch(batchUpdate, 50);
         Test.stopTest();
 
@@ -88,7 +88,7 @@ public class ZuoraGenericBatchOperationTest {
         actionItem.objects.add('123XXXXXXXXXXXXXXX');
 
         Test.startTest();
-            ZuoraGenericBatchOperation batchUpdate = new ZuoraGenericBatchOperation(actionItem, ZuoraAPIHelper.actionDMLOperations.DELETE_action);
+            ZuoraGenericBatchOperation batchUpdate = new ZuoraGenericBatchOperation(actionItem, ZuoraAPIHelper.actionDMLOperations.DMLDELETE);
             Database.executeBatch(batchUpdate, 50);
         Test.stopTest();
 

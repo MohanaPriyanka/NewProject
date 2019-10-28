@@ -187,7 +187,7 @@ public with sharing class ZuoraBillingAccountServiceTest {
 
         Test.startTest();
             ZuoraDataQueryService.ProcessingParameter finishMethod = new ZuoraDataQueryService.ProcessingParameter();
-            finishMethod.className = 'ZuoraController';
+            finishMethod.className = 'ZuoraBillingAccountService';
             finishMethod.methodName = 'updateDaysPastDue';
             finishMethod.recordIds = accountIdSet;
             ZuoraDataQueryService.handlePostQueryJob(expectedResponse,finishMethod);
@@ -268,7 +268,7 @@ public with sharing class ZuoraBillingAccountServiceTest {
 
         Test.startTest();
             ZuoraDataQueryService.ProcessingParameter finishMethod = new ZuoraDataQueryService.ProcessingParameter();
-            finishMethod.className = 'ZuoraController';
+            finishMethod.className = 'ZuoraBillingAccountService';
             finishMethod.methodName = 'updateDaysPastDue';
             finishMethod.recordIds = accountIdSet;
             ZuoraDataQueryService.handlePostQueryJob(expectedResponse,finishMethod);

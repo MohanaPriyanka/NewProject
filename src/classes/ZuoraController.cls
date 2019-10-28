@@ -94,13 +94,7 @@ public with sharing class ZuoraController implements ZuoraDataQueryService.Proce
         Decimal DebitMemoSum;
     }
 
-    public class InvoiceCustomFields{
-        String Id;
-        Decimal CustomTemplateMerge_1_Zcustom;
-        Decimal CustomTemplateMerge_2_Zcustom;
-    }
-
-    public static void executePostQueryJob(ZuoraDataQueryService.ProcessingParameter parameter, String response){
+    public void executePostQueryJob(ZuoraDataQueryService.ProcessingParameter parameter, String response){
         if (parameter.methodName == 'updateCustomTemplateFields'){
             updateCustomTemplateFields(response);
         }
@@ -109,7 +103,7 @@ public with sharing class ZuoraController implements ZuoraDataQueryService.Proce
     public static ZuoraAPI.ActionItems updateCustomTemplateFields(String queryData) {
         ZuoraAPI.ActionItems actionItem = new ZuoraAPI.ActionItems();
         actionItem.type = 'Invoice';
-        actionItem.objects = new List<InvoiceCustomFields>();
+        actionItem.objects = new List<ZuoraAPI.Invoice>();
 
         try {
             List<InvoiceSummaryFields> summaryList;
@@ -117,7 +111,7 @@ public with sharing class ZuoraController implements ZuoraDataQueryService.Proce
 
             for (InvoiceSummaryFields summary : summaryList){
                 if (summary.LastInvoice != null) {
-                    InvoiceCustomFields invoiceToUpdate = new InvoiceCustomFields();
+                    ZuoraAPI.Invoice invoiceToUpdate = new ZuoraAPI.Invoice();
                     invoiceToUpdate.Id = summary.LastInvoice;
                     Decimal memoSum = Util.nullToZero(summary.DebitMemoSum) - Util.nullToZero(summary.CreditMemoSum);
                     invoiceToUpdate.CustomTemplateMerge_1_Zcustom = memoSum;
@@ -125,7 +119,7 @@ public with sharing class ZuoraController implements ZuoraDataQueryService.Proce
                     actionItem.objects.add(invoiceToUpdate);
                 }
             }
-            ZuoraGenericBatchOperation batchUpdate = new ZuoraGenericBatchOperation(actionItem, ZuoraAPIHelper.actionDMLOperations.UPDATE_action);
+            ZuoraGenericBatchOperation batchUpdate = new ZuoraGenericBatchOperation(actionItem, ZuoraAPIHelper.actionDMLOperations.DMLUPDATE);
             Database.executeBatch(batchUpdate, 50);
         } catch (Exception excep) {
             Logger.logNow('ZuoraController', 'updateCustomTemplateFields', excep.getMessage() + excep.getStackTraceString(), 'ERROR');

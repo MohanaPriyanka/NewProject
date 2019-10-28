@@ -56,7 +56,7 @@ public without sharing class ZuoraBillingAccountService implements Schedulable, 
         }
     }
 
-    public static void executePostQueryJob(ZuoraDataQueryService.ProcessingParameter parameter, String response){
+    public void executePostQueryJob(ZuoraDataQueryService.ProcessingParameter parameter, String response){
         updateDaysPastDue(response, parameter.recordIds);
     }
 
