@@ -118,7 +118,7 @@ public with sharing class ZuoraController {
                     actionItem.objects.add(invoiceToUpdate);
                 }
             }
-            ZuoraGenericBatchOperation batchUpdate = new ZuoraGenericBatchOperation(actionItem, 'Update');
+            ZuoraGenericBatchOperation batchUpdate = new ZuoraGenericBatchOperation(actionItem, ZuoraAPIHelper.actionDMLOperations.UPDATE_action);
             Database.executeBatch(batchUpdate, 50);
         } catch (Exception excep) {
             Logger.logNow('ZuoraController', 'updateCustomTemplateFields', excep.getMessage() + excep.getStackTraceString(), 'ERROR');

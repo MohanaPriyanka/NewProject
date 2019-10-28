@@ -99,19 +99,19 @@ public with sharing class ZuoraInvoiceSelector {
                 '(SELECT SUM(dm.totalamount) ' +
                 'FROM DebitMemo dm ' +
                 'WHERE dm.accountid = acct.Id ' +
-                'AND dm.memodate > DATE \'' + String.valueOf(startDate) + '\' ' +
+                'AND dm.memodate >= DATE \'' + String.valueOf(startDate) + '\' ' +
                 'AND dm.memodate < DATE \'' + String.valueOf(endDate) + '\') as DebitMemoSum, ' +
 
                 '(SELECT SUM(cm.totalamount) ' +
                 'FROM CreditMemo cm ' +
                 'WHERE cm.accountid = acct.Id ' +
-                'AND cm.memodate > DATE \'' + String.valueOf(startDate) + '\' ' +
+                'AND cm.memodate >= DATE \'' + String.valueOf(startDate) + '\' ' +
                 'AND cm.memodate < DATE \'' + String.valueOf(endDate) + '\') as CreditMemoSum, ' +
 
                 '(SELECT SUM(py.Amount) ' +
                 'FROM Payment py ' +
                 'WHERE py.accountid = acct.Id ' +
-                'AND py.EffectiveDate > DATE \'' + String.valueOf(startDate) + '\' ' +
+                'AND py.EffectiveDate >= DATE \'' + String.valueOf(startDate) + '\' ' +
                 'AND py.EffectiveDate < DATE \'' + String.valueOf(endDate) + '\') as PaymentSum, ' +
 
                 '(SELECT MIN(iv.id) ' +

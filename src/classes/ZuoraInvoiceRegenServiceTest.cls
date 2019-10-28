@@ -29,7 +29,6 @@ public class ZuoraInvoiceRegenServiceTest {
     public static void testInvoiceRegenLogic() {
         List<Zuora__ZInvoice__c> zInvoices = ZuoraInvoiceSelector.getInvoicesByDate(Date.newInstance(2019,05,20));
         System.assertEquals(4, zInvoices.size());
-        system.debug(zInvoices);
 
         List<ZuoraAPI.Invoice> zuoraInvoices = ZuoraInvoiceRegenerationService.convertSFToZuoraInvoice(zInvoices);
         System.assertEquals(4,zuoraInvoices.size());

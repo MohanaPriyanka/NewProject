@@ -262,6 +262,7 @@ public with sharing class ZuoraAPI {
     public class ActionItems {
         public String type;
         public List<Object> objects;
+        public List<String> ids;
         public ActionItems() {
             objects = new List<Object>();
         }
@@ -562,16 +563,6 @@ public with sharing class ZuoraAPI {
         public String Id;
     }
 
-    // https://www.zuora.com/developer/api-reference/#operation/Action_POSTdelete
-    public class ZuoraDelete {
-        public List<String> ids;
-        public String type;
-    }
-
-    public class ZuoraDeleteRecord {
-        public String Id;
-    }
-
     // https://www.zuora.com/developer/api-reference/#operation/GET_OrdersBySubscriptionOwner
     public class OrderBySubscriptionOwner {
         public List<Order> orders;
@@ -655,6 +646,8 @@ public with sharing class ZuoraAPI {
         public String Body;
         public String InvoiceNumber;
         public Boolean RegenerateInvoicePDF;
+        public Decimal CustomTemplateMerge_1_Zcustom;
+        public Decimal CustomTemplateMerge_2_Zcustom;
     }
 
     public class InvoiceItem {

@@ -22,7 +22,7 @@ public class ZuoraGenericBatchOperationTest {
         actionItem.objects.add(accountThree);
 
         Test.startTest();
-            ZuoraGenericBatchOperation batchUpdate = new ZuoraGenericBatchOperation(actionItem, 'Update');
+            ZuoraGenericBatchOperation batchUpdate = new ZuoraGenericBatchOperation(actionItem, ZuoraAPIHelper.actionDMLOperations.UPDATE_action);
             Database.executeBatch(batchUpdate, 50);
         Test.stopTest();
 
@@ -62,7 +62,7 @@ public class ZuoraGenericBatchOperationTest {
         actionItem.objects.add(accountThree);
 
         Test.startTest();
-            ZuoraGenericBatchOperation batchUpdate = new ZuoraGenericBatchOperation(actionItem, 'Insert');
+            ZuoraGenericBatchOperation batchUpdate = new ZuoraGenericBatchOperation(actionItem, ZuoraAPIHelper.actionDMLOperations.INSERT_action);
             Database.executeBatch(batchUpdate, 50);
         Test.stopTest();
 
@@ -85,13 +85,10 @@ public class ZuoraGenericBatchOperationTest {
         ZuoraAPI.ActionItems actionItem = new ZuoraAPI.ActionItems();
         actionItem.type = 'Account';
         actionItem.objects = new List<Object>();
-
-        ZuoraAPI.ZuoraDeleteRecord recordToDelete = new ZuoraAPI.ZuoraDeleteRecord();
-        recordToDelete.Id = '123XXXXXXXXXXXXXXX';
-        actionItem.objects.add(recordToDelete);
+        actionItem.objects.add('123XXXXXXXXXXXXXXX');
 
         Test.startTest();
-            ZuoraGenericBatchOperation batchUpdate = new ZuoraGenericBatchOperation(actionItem, 'Delete');
+            ZuoraGenericBatchOperation batchUpdate = new ZuoraGenericBatchOperation(actionItem, ZuoraAPIHelper.actionDMLOperations.DELETE_action);
             Database.executeBatch(batchUpdate, 50);
         Test.stopTest();
 

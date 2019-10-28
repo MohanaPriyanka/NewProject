@@ -155,50 +155,48 @@ public with sharing class ZuoraAPIHelper {
         return response.getBody();
     }
 
-    public static String deleteObjects(List<String> objectIds, String objectType, Boolean flush) {
-        ZuoraAPI.ZuoraDelete zuoraDelete = new ZuoraAPI.ZuoraDelete();
-        zuoraDelete.ids = objectIds;
-        zuoraDelete.type = objectType;
-        HttpResponse response = callJsonEndpoint('POST', '/v1/action/delete', zuoraDelete, flush);
-        return response.getBody();
+    public static String deleteObjects(List<String> objectIds, String objectType) {
+        ZuoraAPI.ActionItems item = new ZuoraAPI.ActionItems();
+        item.type = objectType;
+        item.Ids = objectIds;
+        List<ZuoraAPI.SaveResult> results = genericAction(item, actionDMLOperations.DELETE_action);
+        return JSON.serialize(results);
     }
 
     public static void actionUpdate(ZuoraAPI.ActionItems actionItems) {
-        genericAction(actionItems, 'Update');
+        genericAction(actionItems, actionDMLOperations.UPDATE_action);
     }
 
-    public static final Set<String> possibleDmlOperation = new Set<String>{'Insert','Update','Delete'};
+    // 'insert', 'update' and 'delete' are reserved so add _action to variable name:
+    public enum actionDMLOperations {
+        INSERT_action,
+        UPDATE_action,
+        DELETE_action
+    }
+
     public static final Integer maxActionUpdateRecords = 50;
-    public static List<ZuoraAPI.SaveResult> genericAction(Object item, String dmlOperation){
+    public static List<ZuoraAPI.SaveResult> genericAction(Object item, actionDMLOperations dmlOperation){
         HttpResponse response;
         Integer countOfRecords;
-        String objectAsString;
-        ZuoraAPI.ZuoraDelete deleteItem;
-        ZuoraAPI.ActionItems actionItem;
 
-        if (!possibleDmlOperation.contains(dmlOperation)) {
-            throw new Util.FatalBWException('Incorrect dmlOperation' + dmlOperation);
-        }
+        ZuoraAPI.ActionItems actionItem = (ZuoraAPI.ActionItems)item;
+        String objectAsString = JSON.serialize(actionItem);
 
-        if (dmlOperation == 'Delete') {
-            deleteItem = (ZuoraAPI.ZuoraDelete)item;
-            countOfRecords = deleteItem.Ids.size();
-            objectAsString = JSON.serialize(deleteItem);
+        if (dmlOperation == actionDMLOperations.DELETE_action) {
+            countOfRecords = actionItem.Ids.size();
         } else {
-            actionItem = (ZuoraAPI.ActionItems)item;
             countOfRecords = actionItem.objects.size();
-            objectAsString = JSON.serialize(actionItem);
         }
 
         if (countOfRecords > maxActionUpdateRecords) {
             throw new Util.FatalBWException('Call action with fewer than ' + maxActionUpdateRecords + ' records');
         }
 
-        if (dmlOperation == 'Delete') {
-            response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/action/delete', deleteItem, false);
-        } else if (dmlOperation == 'Insert') {
+        if (dmlOperation == actionDMLOperations.DELETE_action) {
+            response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/action/delete', actionItem, false);
+        } else if (dmlOperation == actionDMLOperations.INSERT_action) {
             response = ZuoraAPIHelper.callJsonEndpoint('POST', '/v1/action/create', actionItem, false);
-        } else if (dmlOperation == 'Update'){
+        } else if (dmlOperation == actionDMLOperations.UPDATE_action){
             response = ZuoraAPIHelper.callJsonEndpoint('PUT', '/v1/action/update', actionItem, false);
         }
         return handleActionResponse(response, objectAsString, countOfRecords);
@@ -219,13 +217,13 @@ public with sharing class ZuoraAPIHelper {
                 Logger.logLater(
                     'ZuoraAPIHelper',
                     'containsErrors',
-                    JSON.serialize(saveResults[i].Errors) + ': ' + jsonForDebug,
+                    JSON.serialize(saveResults[i].Errors),
                     Logger.ERROR
                 );
             }
         }
         if (errorFound) {
-            throw new Util.BWException('/v1/action did not save one or more records');
+            throw new Util.BWException('/v1/action did not save one or more records: ' + jsonForDebug);
         }
         return saveResults;
     }

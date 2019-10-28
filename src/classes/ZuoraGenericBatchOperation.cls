@@ -1,18 +1,24 @@
+/*************************************************************************************
+ * Created By: Jordan Pentaleri on 2019-10-28
+ * Description: Takes a list of JSON objects, groups into batches and calls the generic
+ * action update calls, described here:
+ * https://www.zuora.com/developer/api-reference/#tag/Actions
+ *
+ * Test: ZuoraGenericBatchOperationTest
+ *************************************************************************************/
+
 public without sharing class ZuoraGenericBatchOperation implements Database.Batchable<Object>,Database.Stateful, Database.AllowsCallouts {
-    public Set<String> possibleDmlOperation = new Set<String>{'Insert','Update','Delete'};
-    public String dmlOperation;
-    // For delete calls, jsonObjects = ZuoraAPI.ZuoraDeleteRecord (just Id, no other fields)
+    public ZuoraAPIHelper.actionDMLOperations dmlOperation;
+    // For delete calls, jsonObjects is just a list of Strings (Zuora Id)
     public List<Object> jsonObjects = new List<Object>();
     public String type;
     public List<ZuoraAPI.SaveResult> saveResults;
 
-    public ZuoraGenericBatchOperation(ZuoraAPI.ActionItems actionItem, String dmlOperationPassed) {
+    public ZuoraGenericBatchOperation(ZuoraAPI.ActionItems actionItem, ZuoraAPIHelper.actionDMLOperations dmlOperationPassed) {
         jsonObjects = actionItem.objects;
         type = actionItem.type;
+        dmlOperation = dmlOperationPassed;
         saveResults = new List<ZuoraAPI.SaveResult>();
-        if (possibleDmlOperation.contains(dmlOperationPassed)) {
-            dmlOperation = dmlOperationPassed;
-        }
     }
 
     public List<Object> start(Database.BatchableContext bc) {
@@ -21,26 +27,21 @@ public without sharing class ZuoraGenericBatchOperation implements Database.Batc
 
     public void execute(Database.BatchableContext batchableContext, List<Object> scope) {
         try {
-            List<ZuoraAPI.SaveResult> results;
-            if (dmlOperation == 'Insert' || dmlOperation == 'Update') {
-                ZuoraAPI.ActionItems item = new ZuoraAPI.ActionItems();
-                item.type = type;
-                item.objects = scope;
-                results = ZuoraAPIHelper.genericAction(item, dmlOperation);
-            } else if (dmlOperation == 'Delete') {
-                ZuoraAPI.ZuoraDelete item = new ZuoraAPI.ZuoraDelete();
-                item.type = type;
-                item.Ids = new List<String>();
-                for (Object obj : scope) {
-                    ZuoraAPI.ZuoraDeleteRecord record = (ZuoraAPI.ZuoraDeleteRecord) obj;
-                    item.Ids.add(record.Id);
+            ZuoraAPI.ActionItems item = new ZuoraAPI.ActionItems();
+            item.type = type;
+            if (dmlOperation == ZuoraAPIHelper.actionDMLOperations.INSERT_action
+                || dmlOperation == ZuoraAPIHelper.actionDMLOperations.UPDATE_action ) {
+                    item.objects = scope;
+            } else if (dmlOperation == ZuoraAPIHelper.actionDMLOperations.DELETE_action ) {
+                for (Object recordId : scope) {
+                    item.ids = new List<String>();
+                    item.ids.add((String) recordId);
                 }
-                results = ZuoraAPIHelper.genericAction(item, dmlOperation);
             }
-            saveResults.addAll(results);
+            saveResults.addAll(ZuoraAPIHelper.genericAction(item, dmlOperation));
         } catch (Exception failureException){
-            String errorMessage = failureException.getMessage() + failureException.getStackTraceString();
-            errorMessage += String.valueOf(scope);
+            String errorMessage = failureException.getMessage() + '\n' + failureException.getStackTraceString() + '\n';
+            errorMessage += JSON.serialize(scope);
             Logger.logLater('ZuoraGenericBatchOperation', 'execute', errorMessage, 'ERROR');
         }
         Logger.flushLogs();
