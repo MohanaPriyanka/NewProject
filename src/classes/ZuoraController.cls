@@ -79,7 +79,8 @@ public with sharing class ZuoraController {
 
     public static void queueDataQueryForTemplateFields(Date startDate, Date endDate) {
         String queryString = ZuoraInvoiceSelector.getInvoiceTotalQuery(startDate, endDate);
-        ZuoraDataQueryService.MethodToRunAfter methodToRunWhenComplete = new ZuoraDataQueryService.MethodToRunAfter();
+        ZuoraDataQueryService.ProcessingParameter methodToRunWhenComplete = new ZuoraDataQueryService.ProcessingParameter();
+        methodToRunWhenComplete.className = 'ZuoraController';
         methodToRunWhenComplete.methodName = 'updateCustomTemplateFields';
         ZuoraDataQueryService.callFromApex(queryString,methodToRunWhenComplete);
     }
@@ -97,6 +98,12 @@ public with sharing class ZuoraController {
         String Id;
         Decimal CustomTemplateMerge_1_Zcustom;
         Decimal CustomTemplateMerge_2_Zcustom;
+    }
+
+    public static void executePostQueryJob(ZuoraDataQueryService.ProcessingParameter parameter, String response){
+        if (parameter.methodName == 'updateCustomTemplateFields'){
+            updateCustomTemplateFields(response);
+        }
     }
 
     public static ZuoraAPI.ActionItems updateCustomTemplateFields(String queryData) {
