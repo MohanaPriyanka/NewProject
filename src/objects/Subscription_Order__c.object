@@ -101,9 +101,9 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <externalId>false</externalId>
         <inlineHelpText>This is used for subscription orders where the related product is sized using dollars. It represents the net change from previously approved subscription orders.</inlineHelpText>
         <label>Change in Annual Cost</label>
-        <precision>18</precision>
+        <precision>16</precision>
         <required>false</required>
-        <scale>2</scale>
+        <scale>6</scale>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
