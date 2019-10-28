@@ -19,7 +19,8 @@ public with sharing class ZuoraGLService implements Schedulable {
             Zuora does not perform well when multiple queries are running at the same time.
         */
         String queryString = ZuoraGLSelector.getInvoiceItems(startDate, endDate);
-        ZuoraDataQueryService.MethodToRunAfter methodToRunAfter = new ZuoraDataQueryService.MethodToRunAfter();
+        ZuoraDataQueryService.ProcessingParameter methodToRunAfter = new ZuoraDataQueryService.ProcessingParameter();
+        methodToRunAfter.className = 'ZuoraGLService';
         methodToRunAfter.methodName = 'GL_InvoiceItem';
         methodToRunAfter.startDate = startDate;
         methodToRunAfter.endDate = endDate;
@@ -36,6 +37,39 @@ public with sharing class ZuoraGLService implements Schedulable {
         Decimal Amount;
         String ReasonCode;
         String ExternalId;
+    }
+
+    public static void executePostQueryJob(ZuoraDataQueryService.ProcessingParameter method, String response) {
+        switch on method.methodName {
+            // GL Methods: Insert one object's journal entries, then queue next object:
+            when 'GL_InvoiceItem' {
+                ZuoraGLService.generalGLRecordInsert(response, 'InvoiceItem');
+                String queryString = ZuoraGLSelector.getCreditMemos(method.startDate, method.endDate);
+                method.methodName = 'GL_CreditMemo';
+                ZuoraDataQueryService.callFromApex(queryString, method);
+            }
+            when 'GL_CreditMemo' {
+                ZuoraGLService.generalGLRecordInsert(response, 'CreditMemo');
+                String queryString = ZuoraGLSelector.getDebitMemos(method.startDate, method.endDate);
+                method.methodName = 'GL_DebitMemo';
+                ZuoraDataQueryService.callFromApex(queryString, method);
+            }
+            when 'GL_DebitMemo' {
+                ZuoraGLService.generalGLRecordInsert(response, 'DebitMemo');
+                String queryString = ZuoraGLSelector.getPaymentPartsDM(method.startDate, method.endDate);
+                method.methodName = 'GL_PaymentPartDM';
+                ZuoraDataQueryService.callFromApex(queryString, method);
+            }
+            when 'GL_PaymentPartDM' {
+                ZuoraGLService.generalGLRecordInsert(response, 'PaymentPart');
+                String queryString = ZuoraGLSelector.getPaymentPartsIV(method.startDate, method.endDate);
+                method.methodName = 'GL_PaymentPartIV';
+                ZuoraDataQueryService.callFromApex(queryString, method);
+            }
+            when 'GL_PaymentPartIV' {
+                ZuoraGLService.generalGLRecordInsert(response, 'PaymentPart');
+            }
+        }
     }
 
     public static void generalGLRecordInsert(String response, String objectType){
