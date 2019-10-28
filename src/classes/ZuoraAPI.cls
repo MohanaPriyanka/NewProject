@@ -141,7 +141,7 @@ public with sharing class ZuoraAPI {
             this.CrmId = propertyAccount.Id;
             this.Currency_Zreserved = 'USD';
             this.Name = propertyAccount.Name;
-            this.PaymentTerm = 'Net 30';
+            this.PaymentTerm = 'Net 20';
             this.Status = 'Draft';
             this.AdditionalEmailAddresses = propertyAccount.Additional_Contact__r.Email;
             this.CommunicationProfileId = brandKeyToCommProfileMap.get(propertyAccount.Client_Brand_Key__c);
