@@ -121,7 +121,7 @@ public class ZuoraInvoiceRegenServiceTest {
 
         System.assertEquals(0,invoiceOne.CustomTemplateMerge_1_Zcustom);
         System.assertEquals(749.08,invoiceOne.CustomTemplateMerge_2_Zcustom);
-        System.assertEquals(100,invoiceTwo.CustomTemplateMerge_1_Zcustom);
+        System.assertEquals(-100.00,invoiceTwo.CustomTemplateMerge_1_Zcustom);
         System.assertEquals(889.08,invoiceTwo.CustomTemplateMerge_2_Zcustom);
         System.assertEquals(246,invoiceThree.CustomTemplateMerge_1_Zcustom);
         System.assertEquals(0,invoiceThree.CustomTemplateMerge_2_Zcustom);
