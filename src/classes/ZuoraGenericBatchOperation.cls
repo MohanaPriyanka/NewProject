@@ -8,13 +8,13 @@
  *************************************************************************************/
 
 public without sharing class ZuoraGenericBatchOperation implements Database.Batchable<Object>,Database.Stateful, Database.AllowsCallouts {
-    public ZuoraAPIHelper.actionDMLOperations dmlOperation;
+    public ZuoraAPIHelper.ActionDMLOperations dmlOperation;
     // For delete calls, jsonObjects is just a list of Strings (Zuora Id)
     public List<Object> jsonObjects = new List<Object>();
     public String type;
     public List<ZuoraAPI.SaveResult> saveResults;
 
-    public ZuoraGenericBatchOperation(ZuoraAPI.ActionItems actionItem, ZuoraAPIHelper.actionDMLOperations dmlOperationPassed) {
+    public ZuoraGenericBatchOperation(ZuoraAPI.ActionItems actionItem, ZuoraAPIHelper.ActionDMLOperations dmlOperationPassed) {
         jsonObjects = actionItem.objects;
         type = actionItem.type;
         dmlOperation = dmlOperationPassed;
@@ -29,10 +29,10 @@ public without sharing class ZuoraGenericBatchOperation implements Database.Batc
         try {
             ZuoraAPI.ActionItems item = new ZuoraAPI.ActionItems();
             item.type = type;
-            if (dmlOperation == ZuoraAPIHelper.actionDMLOperations.DMLINSERT
-                || dmlOperation == ZuoraAPIHelper.actionDMLOperations.DMLUPDATE ) {
+            if (dmlOperation == ZuoraAPIHelper.ActionDMLOperations.DMLINSERT
+                || dmlOperation == ZuoraAPIHelper.ActionDMLOperations.DMLUPDATE ) {
                     item.objects = scope;
-            } else if (dmlOperation == ZuoraAPIHelper.actionDMLOperations.DMLDELETE ) {
+            } else if (dmlOperation == ZuoraAPIHelper.ActionDMLOperations.DMLDELETE ) {
                 for (Object recordId : scope) {
                     item.ids = new List<String>();
                     item.ids.add((String) recordId);

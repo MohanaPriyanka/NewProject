@@ -56,22 +56,6 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
         public Date startDate;
         public Date endDate;
         public Set<Id> recordIds;
-
-        public ProcessingParameter(ProcessingParameter param){
-            this.className = param.className;
-            this.methodName = param.methodName;
-            this.startDate = param.startDate;
-            this.endDate = param.endDate;
-            this.recordIds = param.recordIds;
-        }
-
-        public ProcessingParameter(){
-            this.className = null;
-            this.methodName = null;
-            this.startDate = null;
-            this.endDate = null;
-            this.recordIds = null;
-        }
     }
 
     public interface Processor {
