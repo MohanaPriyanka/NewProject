@@ -105,7 +105,7 @@ public class ZuoraInvoiceRegenServiceTest {
             '"DebitMemoSum":null,"CreditMemoSum":100.00000,' +
             '"PaymentSum":889.080000,"LastInvoice":"2c92c0fa6dd8a85d016dd9d6d1ce1e9f"}, ' +
             '{"AccountId":"2c92c0f96dcf2f3e016dd5a9ae697f0d",' +
-            '"DebitMemoSum":123.000000,"CreditMemoSum":123.000000,' +
+            '"DebitMemoSum":123.000000,"CreditMemoSum":10.000000,' +
             '"PaymentSum":null,"LastInvoice":"2c92c0fb6dd8b653016dda565da8602a"}]';
 
         Test.startTest();
@@ -123,7 +123,7 @@ public class ZuoraInvoiceRegenServiceTest {
         System.assertEquals(749.08,invoiceOne.CustomTemplateMerge_2_Zcustom);
         System.assertEquals(-100.00,invoiceTwo.CustomTemplateMerge_1_Zcustom);
         System.assertEquals(889.08,invoiceTwo.CustomTemplateMerge_2_Zcustom);
-        System.assertEquals(246,invoiceThree.CustomTemplateMerge_1_Zcustom);
+        System.assertEquals(113.00,invoiceThree.CustomTemplateMerge_1_Zcustom);
         System.assertEquals(0,invoiceThree.CustomTemplateMerge_2_Zcustom);
     }
 }
