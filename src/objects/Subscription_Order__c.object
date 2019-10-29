@@ -303,9 +303,10 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <label>All</label>
     </listViews>
     <nameField>
+        <displayFormat>SO-{00000}</displayFormat>
         <label>Subscription Order Name</label>
         <trackHistory>false</trackHistory>
-        <type>Text</type>
+        <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Subscription Orders</pluralLabel>
     <searchLayouts />
