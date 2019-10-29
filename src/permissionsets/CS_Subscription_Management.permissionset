@@ -156,6 +156,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Production__c.Client_Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>APXTConga4__Conga_Solution_Parameter__c.APXTConga4__Value__c</field>
         <readable>false</readable>
