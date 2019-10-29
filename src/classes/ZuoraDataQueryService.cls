@@ -49,19 +49,24 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
         private String errorMessage;
     }
 
-    public class MethodToRunAfter {
-        public String methodName;
+    public class ProcessingParameter {
+        public String className;
         // optional variables:
+        public String methodName;
         public Date startDate;
         public Date endDate;
         public Set<Id> recordIds;
+    }
+
+    public interface Processor {
+        void executePostQueryJob(ProcessingParameter method, String response);
     }
 
     public class DataQueryRequest{
         public String queryString;
         public Integer numberOfRetries;
         public Id recordId; // only populated for queries from UI (insert trigger)
-        public MethodToRunAfter method; // only populated for apex/scheduled queries
+        public ProcessingParameter method; // only populated for apex/scheduled queries
     }
 
     public DataQueryRequest scheduledQuery;
@@ -83,7 +88,7 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
         }
     }
 
-    public static void callFromApex(String queryString, MethodToRunAfter methodToRunWhenComplete) {
+    public static void callFromApex(String queryString, ProcessingParameter methodToRunWhenComplete) {
         DataQueryRequest query = new DataQueryRequest();
         query.queryString = queryString;
         query.numberOfRetries = 2;
@@ -151,45 +156,15 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
         return dataResult;
     }
 
-    public static void handlePostQueryJob(String response, MethodToRunAfter method){
+    public static void handlePostQueryJob(String response, ProcessingParameter method){
         try {
             // Zuora's response isn't true JSON, so we have to modify to be able to deserialize:
             response = response.replace('}','},');
             response = response.substring(0,response.length()-1);
             response = '[' + response + ']';
-
-            switch on method.methodName {
-                // GL Methods: Insert one object's journal entries, then queue next object:
-                when 'GL_InvoiceItem' {
-                    ZuoraGLService.generalGLRecordInsert(response, 'InvoiceItem');
-                    String queryString = ZuoraGLSelector.getCreditMemos(method.startDate, method.endDate);
-                    method.methodName = 'GL_CreditMemo';
-                    ZuoraDataQueryService.callFromApex(queryString,method);
-                }
-                when 'GL_CreditMemo' {
-                    ZuoraGLService.generalGLRecordInsert(response, 'CreditMemo');
-                    String queryString = ZuoraGLSelector.getDebitMemos(method.startDate, method.endDate);
-                    method.methodName = 'GL_DebitMemo';
-                    ZuoraDataQueryService.callFromApex(queryString,method);
-                }
-                when 'GL_DebitMemo' {
-                    ZuoraGLService.generalGLRecordInsert(response, 'DebitMemo');
-                    String queryString = ZuoraGLSelector.getPaymentPartsDM(method.startDate, method.endDate);
-                    method.methodName = 'GL_PaymentPartDM';
-                    ZuoraDataQueryService.callFromApex(queryString,method);
-                }
-                when 'GL_PaymentPartDM' {
-                    ZuoraGLService.generalGLRecordInsert(response, 'PaymentPart');
-                    String queryString = ZuoraGLSelector.getPaymentPartsIV(method.startDate, method.endDate);
-                    method.methodName = 'GL_PaymentPartIV';
-                    ZuoraDataQueryService.callFromApex(queryString,method);
-                }
-                when 'GL_PaymentPartIV' {
-                    ZuoraGLService.generalGLRecordInsert(response, 'PaymentPart');
-                }
-                when 'updateDaysPastDue' {
-                    ZuoraBillingAccountService.updateDaysPastDue(response,method.recordIds);
-                }
+            if (method.className != null) {
+                Processor jobToProcess = (Processor) Type.forName(method.className).newInstance();
+                jobToProcess.executePostQueryJob(method, response);
             }
         } catch (Exception excep) {
             Logger.logNow('ZuoraDataQueryService', 'handlePostQueryJob', 'for method: ' + method + excep.getMessage() + '\n' + excep.getStackTraceString());

@@ -121,4 +121,14 @@ public with sharing class ZuoraInvoiceSelectorTest {
         }
         System.assertEquals(2,invoiceCount);
     }
+
+    @IsTest
+    public static void testInvoiceQuery(){
+        Date startDate = Date.newInstance(2019,10,02);
+        Date endDate = Date.newInstance(2019,10,07);
+
+        String queryString = ZuoraInvoiceSelector.getInvoiceTotalQuery(startDate,endDate);
+        system.assert(queryString.contains('2019-10-02'));
+        system.assert(queryString.contains('2019-10-07'));
+    }
 }

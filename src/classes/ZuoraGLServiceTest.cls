@@ -106,7 +106,8 @@ public class ZuoraGLServiceTest {
         dataResult.Id = '7742a20c-18ea-4fde-b185-4aed364ce22c';
         result.data = dataResult;
 
-        ZuoraDataQueryService.MethodToRunAfter methodToRunAfter = new ZuoraDataQueryService.MethodToRunAfter();
+        ZuoraDataQueryService.ProcessingParameter methodToRunAfter = new ZuoraDataQueryService.ProcessingParameter();
+        methodToRunAfter.className = 'ZuoraGLService';
         methodToRunAfter.methodName = 'GL_InvoiceItem';
 
         ZuoraDataQueryService.DataQueryRequest queryRequest = new ZuoraDataQueryService.DataQueryRequest();
@@ -151,7 +152,8 @@ public class ZuoraGLServiceTest {
         dataResult.Id = '7742a20c-18ea-4fde-b185-4aed364ce22c';
         result.data = dataResult;
 
-        ZuoraDataQueryService.MethodToRunAfter methodToRunAfter = new ZuoraDataQueryService.MethodToRunAfter();
+        ZuoraDataQueryService.ProcessingParameter methodToRunAfter = new ZuoraDataQueryService.ProcessingParameter();
+        methodToRunAfter.className = 'ZuoraGLService';
         methodToRunAfter.methodName = 'GL_DebitMemo';
 
         ZuoraDataQueryService.DataQueryRequest queryRequest = new ZuoraDataQueryService.DataQueryRequest();
@@ -187,7 +189,8 @@ public class ZuoraGLServiceTest {
         dataResult.Id = '7742a20c-18ea-4fde-b185-4aed364ce22c';
         result.data = dataResult;
 
-        ZuoraDataQueryService.MethodToRunAfter methodToRunAfter = new ZuoraDataQueryService.MethodToRunAfter();
+        ZuoraDataQueryService.ProcessingParameter methodToRunAfter = new ZuoraDataQueryService.ProcessingParameter();
+        methodToRunAfter.className = 'ZuoraGLService';
         methodToRunAfter.methodName = 'GL_CreditMemo';
 
         ZuoraDataQueryService.DataQueryRequest queryRequest = new ZuoraDataQueryService.DataQueryRequest();
@@ -223,7 +226,8 @@ public class ZuoraGLServiceTest {
         dataResult.Id = '7742a20c-18ea-4fde-b185-4aed364ce22c';
         result.data = dataResult;
 
-        ZuoraDataQueryService.MethodToRunAfter methodToRunAfter = new ZuoraDataQueryService.MethodToRunAfter();
+        ZuoraDataQueryService.ProcessingParameter methodToRunAfter = new ZuoraDataQueryService.ProcessingParameter();
+        methodToRunAfter.className = 'ZuoraGLService';
         methodToRunAfter.methodName = 'GL_PaymentPartDM';
 
         ZuoraDataQueryService.DataQueryRequest queryRequest = new ZuoraDataQueryService.DataQueryRequest();
