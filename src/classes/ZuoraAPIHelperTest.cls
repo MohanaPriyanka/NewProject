@@ -80,8 +80,8 @@ public with sharing class ZuoraAPIHelperTest {
 
     @IsTest
     public static void testDelete() {
-        String result = ZuoraAPIHelper.deleteObjects(new List<String>{'12345'}, 'Account', false);
-        System.assert(result.contains('"success": true'));
+        String result = ZuoraAPIHelper.deleteObjects(new List<String>{'12345'}, 'Account');
+        System.assert(result.contains('"Success":true'));
     }
 
     @IsTest

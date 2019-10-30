@@ -1,5 +1,5 @@
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public without sharing class ZuoraBillingAccountService implements Schedulable{
+public without sharing class ZuoraBillingAccountService implements Schedulable, ZuoraDataQueryService.Processor {
     public static void updatePropertyAccount(List<Zuora__CustomerAccount__c> billingAccounts) {
         Set<Id> zAccountIds = (new Map<Id,Zuora__CustomerAccount__c>(billingAccounts)).keySet();
         checkPropertyAccountDiscrepancy(zAccountIds);
@@ -39,8 +39,8 @@ public without sharing class ZuoraBillingAccountService implements Schedulable{
 
     public static void startDaysPastDueUpdate(Set<Id> accountsToCheck) {
         try {
-            ZuoraDataQueryService.MethodToRunAfter finishMethod = new ZuoraDataQueryService.MethodToRunAfter();
-            finishMethod.methodName = 'updateDaysPastDue';
+            ZuoraDataQueryService.ProcessingParameter finishMethod = new ZuoraDataQueryService.ProcessingParameter();
+            finishMethod.className = 'ZuoraBillingAccountService';
             String queryString;
             if (accountsToCheck == null){
                 queryString = ZuoraInvoiceSelector.getOutstandingBalanceByAccountQuery(null);
@@ -54,6 +54,10 @@ public without sharing class ZuoraBillingAccountService implements Schedulable{
         } catch (Exception excep){
             Logger.logNow('ZuoraBillingAccountService','startDaysPastDueUpdate',excep.getMessage() + excep.getStackTraceString());
         }
+    }
+
+    public void executePostQueryJob(ZuoraDataQueryService.ProcessingParameter parameter, String response){
+        updateDaysPastDue(response, parameter.recordIds);
     }
 
     public static void updateDaysPastDue(String queryResponse, Set<Id> recordIds) {

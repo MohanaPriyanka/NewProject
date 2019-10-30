@@ -4,7 +4,7 @@
  * Test: ZuoraReturnedPaymentServiceTest, ZuoraInvoiceRegenServiceTest
  *************************************************************************************/
 
-public with sharing class ZuoraController {
+public with sharing class ZuoraController implements ZuoraDataQueryService.Processor  {
     @TestVisible
     private static ZuoraReturnedPaymentService returnedPaymentService = new ZuoraReturnedPaymentService();
     @TestVisible
@@ -75,5 +75,55 @@ public with sharing class ZuoraController {
         ZuoraInvoiceRegenerationService regen = new ZuoraInvoiceRegenerationService();
         regen.invoicesToUpdate = invoicesToRegen;
         regen.executeBatch();
+    }
+
+    public static void queueDataQueryForTemplateFields(Date startDate, Date endDate) {
+        String queryString = ZuoraInvoiceSelector.getInvoiceTotalQuery(startDate, endDate);
+        ZuoraDataQueryService.ProcessingParameter methodToRunWhenComplete = new ZuoraDataQueryService.ProcessingParameter();
+        methodToRunWhenComplete.className = 'ZuoraController';
+        methodToRunWhenComplete.methodName = 'updateCustomTemplateFields';
+        ZuoraDataQueryService.callFromApex(queryString,methodToRunWhenComplete);
+    }
+
+    @TestVisible
+    private class InvoiceSummaryFields{
+        String AccountId;
+        String LastInvoice;
+        Decimal PaymentSum;
+        Decimal CreditMemoSum;
+        Decimal DebitMemoSum;
+    }
+
+    public void executePostQueryJob(ZuoraDataQueryService.ProcessingParameter parameter, String response){
+        if (parameter.methodName == 'updateCustomTemplateFields'){
+            updateCustomTemplateFields(response);
+        }
+    }
+
+    public static ZuoraAPI.ActionItems updateCustomTemplateFields(String queryData) {
+        ZuoraAPI.ActionItems actionItem = new ZuoraAPI.ActionItems();
+        actionItem.type = 'Invoice';
+        actionItem.objects = new List<ZuoraAPI.Invoice>();
+
+        try {
+            List<InvoiceSummaryFields> summaryList;
+            summaryList = (List<InvoiceSummaryFields>)JSON.deserialize(queryData, List<InvoiceSummaryFields>.class);
+
+            for (InvoiceSummaryFields summary : summaryList){
+                if (summary.LastInvoice != null) {
+                    ZuoraAPI.Invoice invoiceToUpdate = new ZuoraAPI.Invoice();
+                    invoiceToUpdate.Id = summary.LastInvoice;
+                    Decimal memoSum = Util.nullToZero(summary.DebitMemoSum) - Util.nullToZero(summary.CreditMemoSum);
+                    invoiceToUpdate.CustomTemplateMerge_1_Zcustom = memoSum;
+                    invoiceToUpdate.CustomTemplateMerge_2_Zcustom = Util.nullToZero(summary.PaymentSum);
+                    actionItem.objects.add(invoiceToUpdate);
+                }
+            }
+            ZuoraGenericBatchOperation batchUpdate = new ZuoraGenericBatchOperation(actionItem, ZuoraAPIHelper.actionDMLOperations.DMLUPDATE);
+            Database.executeBatch(batchUpdate, 50);
+        } catch (Exception excep) {
+            Logger.logNow('ZuoraController', 'updateCustomTemplateFields', excep.getMessage() + excep.getStackTraceString(), 'ERROR');
+        }
+        return actionItem;
     }
 }
