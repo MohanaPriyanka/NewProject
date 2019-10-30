@@ -91,4 +91,35 @@ public with sharing class ZuoraInvoiceSelector {
         ];
         return invoiceSummary;
     }
+
+    public static String getInvoiceTotalQuery(Date startDate, Date endDate) {
+        String queryString =
+            'SELECT Id as AccountId, ' +
+
+                '(SELECT SUM(dm.totalamount) ' +
+                'FROM DebitMemo dm ' +
+                'WHERE dm.accountid = acct.Id ' +
+                'AND dm.memodate >= DATE \'' + String.valueOf(startDate) + '\' ' +
+                'AND dm.memodate < DATE \'' + String.valueOf(endDate) + '\') as DebitMemoSum, ' +
+
+                '(SELECT SUM(cm.totalamount) ' +
+                'FROM CreditMemo cm ' +
+                'WHERE cm.accountid = acct.Id ' +
+                'AND cm.memodate >= DATE \'' + String.valueOf(startDate) + '\' ' +
+                'AND cm.memodate < DATE \'' + String.valueOf(endDate) + '\') as CreditMemoSum, ' +
+
+                '(SELECT SUM(py.Amount) ' +
+                'FROM Payment py ' +
+                'WHERE py.accountid = acct.Id ' +
+                'AND py.EffectiveDate >= DATE \'' + String.valueOf(startDate) + '\' ' +
+                'AND py.EffectiveDate < DATE \'' + String.valueOf(endDate) + '\') as PaymentSum, ' +
+
+                '(SELECT MIN(iv.id) ' +
+                'FROM Invoice iv ' +
+                'WHERE iv.accountid = acct.Id ' +
+                'AND iv.InvoiceDate > DATE \'' + String.valueOf(endDate) + '\') as LastInvoice ' +
+
+            'FROM Account acct';
+        return queryString;
+    }
 }

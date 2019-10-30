@@ -338,6 +338,11 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
         } else if (body.contains('"type":"PaymentMethod"')){
             String responseBody = '[{"Success":true,"Id":"2c92c0f86a0c41a5016a1f41d63a2f96"}]';
             res.setBody(responseBody);
+        } else if (body.contains('"type":"Invoice"')){
+            String responseBody = '[{"Success":true,"Id":"2c92c0f86a0c41a5016a1f41d63a2f96"},' +
+                '{"Success":true,"Id":"2c92c0f86a0c41a5016a1f41d63a2123"},' +
+                '{"Success":true,"Id":"2c92c0f86a0c41a5016a1f41d63a2456"}]';
+            res.setBody(responseBody);
         } else {
             throw new Util.BWException('Unhandled action create: ' + body);
         }
