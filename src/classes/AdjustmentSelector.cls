@@ -24,7 +24,8 @@ public without sharing class AdjustmentSelector {
                 'AND Applied_to_Bill__c = true ' +
                 // Ignore Returns, because we'll always create a debit memo for returned payments in Zuora
                 'AND Adjustment_Type__c != \'Returned Payment\' ' +
-                'AND Adjustment_Type__c != \'Returned Check Payment\' ';
+                'AND Adjustment_Type__c != \'Returned Check Payment\' ' +
+                'AND Adjustment_Type__c != \'Project Payment Transfer\' ';
 
         if (typeIsUsage){
             queryString += 'AND Adjustment_Type__c = \'Production\' ';

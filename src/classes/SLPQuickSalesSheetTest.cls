@@ -115,39 +115,4 @@ public without sharing class SLPQuickSalesSheetTest{
       }
       Test.stopTest();  
   }
-
-  @IsTest(SeeAllData=true)
-  static void testGuest() {
-      Profile guestProfile = [SELECT Id FROM Profile WHERE Name = 'Apply Profile'];
-
-      User guestUser = new User(
-          ProfileId = guestProfile.Id,
-          FirstName = 'Test',
-          LastName = 'SLPQuickSalesSheet',
-          Username = 'bw421356@test.com',
-          Email = 'bw421356@test.com',
-          Alias = 'bfg_usr',
-          CommunityNickname = 'SLPQuickSalesSheet',
-          TimeZoneSidKey = 'America/New_York',
-          LocaleSidKey = 'en_US',
-          EmailEncodingKey = 'ISO-8859-1',
-          LanguageLocaleKey = 'en_US');
-
-      System.runAs(guestUser) {
-          ContentVersion testDoc = new ContentVersion(
-              Title ='Test Doc',
-              PathOnClient='/test.pdf'
-          );
-          testDoc.VersionData = Blob.valueOf('This is the body of the pdf');
-          Util.insertSObj(testDoc);
-          List<ContentVersion> contentList = [
-              SELECT ContentDocumentId
-              FROM ContentVersion
-              WHERE Id = :testDoc.Id
-          ];
-          // Make sure ContentVersionTrigger doesn't complain about a guest user inserting ContentVersion
-          System.assertEquals(1, contentList.size());
-      }
-  }
-
 }
