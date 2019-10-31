@@ -165,6 +165,20 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Client_Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Client who owned the project at the time of Production</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Client who owned the project at the time of Production</inlineHelpText>
+        <label>Client Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Production</relationshipLabel>
+        <relationshipName>Production</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Credit_Value__c</fullName>
         <externalId>false</externalId>
         <label>Credit Value</label>
@@ -345,6 +359,18 @@
     <pluralLabel>Production</pluralLabel>
     <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Client_Account_Edit_Permissions</fullName>
+        <active>true</active>
+        <description>Only Internal BFG users with access to the Client Account field are able to edit after creation.</description>
+        <errorConditionFormula>IF(
+  AND(
+   ISCHANGED( Client_Account__c), 
+   CONTAINS($Profile.Name, &quot;External BFG User&quot;)
+  ), TRUE, FALSE)</errorConditionFormula>
+        <errorDisplayField>Client_Account__c</errorDisplayField>
+        <errorMessage>Only Internal BFG users can edit Client Account.</errorMessage>
+    </validationRules>
     <validationRules>
         <fullName>Require_Billing_Method_to_Create_Record</fullName>
         <active>false</active>
