@@ -29,11 +29,11 @@ public class BillGenerationConsoleController {
         prodUpdateList = ProductionUpdateSelector.getProductionUpdatesByMonth(today.month(),String.valueOf(today.year()));
 
         if (zuoraSetting.Zuora_Is_Live__c){
-            EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(prodUpdateList);
-            ee.runBills();
-        } else {
             BillGenerationAsyncService billGen = new BillGenerationAsyncService(prodUpdateList);
             billGen.executeBatchJob();
+        } else {
+            EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(prodUpdateList);
+            ee.runBills();
         }
 
     }
