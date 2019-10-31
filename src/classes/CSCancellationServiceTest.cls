@@ -12,6 +12,7 @@ public with sharing class CSCancellationServiceTest {
         //Set up delinquent customers
         Shared_Solar_System__c sss = [SELECT Id FROM Shared_Solar_System__c WHERE Name = 'SSS1' LIMIT 1];
         CustomerCommunicationHandlerTest.createBills(System.today() - 88, sss.Id); // 68 days late
+        CustomerCommunicationHandlerTest.mockZuoraFields();
         List <Account_Bill__c> accountBillList = [
             SELECT Id, Parent_Account__r.Id, Parent_Account__r.Cancellation_Request_Date__c,
                 Parent_Account__r.Cancellation_Comments__c, Parent_Account__r.Cancellation_Reason__c
@@ -89,6 +90,7 @@ public with sharing class CSCancellationServiceTest {
             acctBill.Published__c = true;
         }
         update accountBillList;
+        CustomerCommunicationHandlerTest.mockZuoraFields();
 
         Test.startTest();
         MessagingService.onlyUseActiveTemplates = false;

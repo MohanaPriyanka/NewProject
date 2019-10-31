@@ -154,10 +154,6 @@ public class TestBillCreationForCancelledCustomers {
         TestFactory.insertBWAddress();
         TestFactory.setCSBillSettings();
 
-        Date todaysDate = Date.today();
-        Date oneMonthAgo = todaysDate.addMonths(-1);
-        Date oneMonthInFuture = todaysDate.addMonths(1);
-
         String firstName1 = 'acA';
         String firstName2 = 'acB';
         String firstName3 = 'acC';
@@ -198,24 +194,16 @@ public class TestBillCreationForCancelledCustomers {
         Account propAccount1 = new Account(
             name = accountName1,
             Parent_Account__c = accountParent1.Id,
-            Send_Bills_Contact__c = contact1.Id,
-            Total_Outstanding_Balance_Zuora__c = 100,
-            Max_Overdue_Due_Date_Zuora__c = oneMonthAgo
-        );
+            Send_Bills_Contact__c = contact1.Id);
         Account propAccount2 = new Account(
             name = accountName2,
             Parent_Account__c = accountParent2.Id,
-            Send_Bills_Contact__c = contact2.Id,
-            Total_Outstanding_Balance_Zuora__c = 100,
-            Max_Overdue_Due_Date_Zuora__c = oneMonthAgo
-        );
+            Send_Bills_Contact__c = contact2.Id);
         Account propAccount3 = new Account(
             name = accountName3,
             Parent_Account__c = accountParent3.Id,
-            Send_Bills_Contact__c = contact3.Id,
-            Total_Outstanding_Balance_Zuora__c = 100,
-            Max_Overdue_Due_Date_Zuora__c = oneMonthAgo
-        );
+            Send_Bills_Contact__c = contact3.Id);
+
         insert new List<Account>{
             propAccount1, propAccount2, propAccount3
         };
@@ -364,6 +352,9 @@ public class TestBillCreationForCancelledCustomers {
         );
 
         insert new List<Schedule_Z__c>{schZOne, schZTwo};
+        Date todaysDate = Date.today();
+        Date oneMonthAgo = todaysDate.addMonths(-1);
+        Date oneMonthInFuture = todaysDate.addMonths(1);
 
         Energy_Usage_Update__c firstProdUpdateSSS1 = new Energy_Usage_Update__c (
             Name = 'sssA - August 2016',
@@ -398,6 +389,7 @@ public class TestBillCreationForCancelledCustomers {
 
         TestBillCreationandPayment.runProductionUpdate(new List<Id>{firstProdUpdateSSS1.Id, firstProdUpdateSSS2.Id});
         setBillsToPublished();
+        CustomerCommunicationHandlerTest.mockZuoraFields();
         Test.stopTest();
     }
 
