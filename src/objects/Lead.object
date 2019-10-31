@@ -4205,6 +4205,11 @@ IF(ISPICKVAL(Personal_Credit_Report__r.Solar_Loan_Pre_Qualification_Status__c, &
                     <label>Signing up for community solar</label>
                 </value>
                 <value>
+                    <fullName>Solar for my commercial property</fullName>
+                    <default>false</default>
+                    <label>Solar for my commercial property</label>
+                </value>
+                <value>
                     <fullName>Financing my solar system</fullName>
                     <default>false</default>
                     <label>Financing my solar system</label>
@@ -4250,6 +4255,36 @@ IF(ISPICKVAL(Personal_Credit_Report__r.Solar_Loan_Pre_Qualification_Status__c, &
                     <default>false</default>
                     <isActive>false</isActive>
                     <label>Developing Solar</label>
+                </value>
+                <value>
+                    <fullName>Providing rooftop solar financing</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Providing rooftop solar financing</label>
+                </value>
+                <value>
+                    <fullName>Solar for my business</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Solar for my business</label>
+                </value>
+                <value>
+                    <fullName>Solar for my home</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Solar for my home</label>
+                </value>
+                <value>
+                    <fullName>Solar for my land</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Solar for my land</label>
+                </value>
+                <value>
+                    <fullName>Solar project development</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Solar project development</label>
                 </value>
                 <value>
                     <fullName>Something else</fullName>
@@ -7439,29 +7474,25 @@ SEMA = 13 -14</inlineHelpText>
         <description>Community Solar Lead</description>
         <label>BFG - Community Solar (Residential)</label>
         <picklistValues>
-            <picklist>LeadSource</picklist>
+            <picklist>Name</picklist>
             <values>
-                <fullName>CSAP</fullName>
+                <fullName>Dr%2E</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Other</fullName>
+                <fullName>Mr%2E</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Partner</fullName>
+                <fullName>Mrs%2E</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Switch</fullName>
+                <fullName>Ms%2E</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Third-Party</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
+                <fullName>Prof%2E</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -7496,54 +7527,38 @@ SEMA = 13 -14</inlineHelpText>
                 <default>false</default>
             </values>
             <values>
+                <fullName>Solar for my commercial property</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Something else%2E%2E%2E</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Objections__c</picklist>
+            <picklist>LeadSource</picklist>
             <values>
-                <fullName>Autopay</fullName>
+                <fullName>CSAP</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Credit check</fullName>
+                <fullName>Other</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Distrust%2FMisunderstanding</fullName>
+                <fullName>Partner</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Double bill</fullName>
+                <fullName>Switch</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Go off the grid</fullName>
+                <fullName>Third-Party</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Lack of savings</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Length of contract</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Not convinced of env%2E benefits</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Termination period</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Too busy</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Wait Time</fullName>
+                <fullName>Website</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -8061,21 +8076,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Load_Zone__c</picklist>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Loan_Term_Override__c</picklist>
             <values>
                 <fullName>108</fullName>
@@ -8091,29 +8091,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>180</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Name</picklist>
-            <values>
-                <fullName>Dr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mrs%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ms%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Prof%2E</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -8201,209 +8178,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>State_Market__c</picklist>
-            <values>
-                <fullName>AK</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AZ</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CO</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>DE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>FL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>GA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>HI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ID</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>KS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>KY</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ME</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MO</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ND</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NJ</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NV</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NY</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OK</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>RI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TX</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>UT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WV</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WY</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>System_Assignment__c</picklist>
             <values>
                 <fullName>Automatic - Assignment Order</fullName>
@@ -8426,33 +8200,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Utility_1__c</picklist>
-            <values>
-                <fullName>Eversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Eversource %2F MLP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MLP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid%2FEversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WMECO</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>debt_income_status__c</picklist>
             <values>
                 <fullName>Approved</fullName>
@@ -8470,29 +8217,25 @@ SEMA = 13 -14</inlineHelpText>
         <businessProcess>CS</businessProcess>
         <label>BFG - Community Solar (Anchor)</label>
         <picklistValues>
-            <picklist>LeadSource</picklist>
+            <picklist>Name</picklist>
             <values>
-                <fullName>CSAP</fullName>
+                <fullName>Dr%2E</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Other</fullName>
+                <fullName>Mr%2E</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Partner</fullName>
+                <fullName>Mrs%2E</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Switch</fullName>
+                <fullName>Ms%2E</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Third-Party</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
+                <fullName>Prof%2E</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -8527,46 +8270,38 @@ SEMA = 13 -14</inlineHelpText>
                 <default>false</default>
             </values>
             <values>
+                <fullName>Solar for my commercial property</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Something else%2E%2E%2E</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Objections__c</picklist>
+            <picklist>LeadSource</picklist>
             <values>
-                <fullName>Autopay</fullName>
+                <fullName>CSAP</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Credit check</fullName>
+                <fullName>Other</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Distrust%2FMisunderstanding</fullName>
+                <fullName>Partner</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Double bill</fullName>
+                <fullName>Switch</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Lack of savings</fullName>
+                <fullName>Third-Party</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Length of contract</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Not convinced of env%2E benefits</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Termination period</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Too busy</fullName>
+                <fullName>Website</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -9080,21 +8815,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Load_Zone__c</picklist>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Loan_Term_Override__c</picklist>
             <values>
                 <fullName>108</fullName>
@@ -9110,29 +8830,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>180</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Name</picklist>
-            <values>
-                <fullName>Dr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mrs%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ms%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Prof%2E</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -9220,209 +8917,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>State_Market__c</picklist>
-            <values>
-                <fullName>AK</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AZ</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CO</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>DE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>FL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>GA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>HI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ID</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>KS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>KY</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ME</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MO</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ND</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NJ</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NV</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NY</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OK</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>RI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TX</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>UT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WV</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WY</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>System_Assignment__c</picklist>
             <values>
                 <fullName>Automatic - Assignment Order</fullName>
@@ -9441,33 +8935,6 @@ SEMA = 13 -14</inlineHelpText>
             <picklist>Type_of_Avidia_Service_Provider__c</picklist>
             <values>
                 <fullName>None of the above</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Utility_1__c</picklist>
-            <values>
-                <fullName>Eversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Eversource %2F MLP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MLP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid%2FEversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WMECO</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -9490,6 +8957,68 @@ SEMA = 13 -14</inlineHelpText>
         <compactLayoutAssignment>CS_BD_Compact</compactLayoutAssignment>
         <label>BFG - Community Solar (Business)</label>
         <picklistValues>
+            <picklist>Name</picklist>
+            <values>
+                <fullName>Dr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mrs%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ms%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Product_Interest__c</picklist>
+            <values>
+                <fullName>Community Solar services</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Developing a solar farm</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Financing my solar system</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Joining the BlueWave team</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Providing solar financing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Selling community solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Signing up for community solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my commercial property</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Something else%2E%2E%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>LeadSource</picklist>
             <values>
                 <fullName>CSAP</fullName>
@@ -9517,88 +9046,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Product_Interest__c</picklist>
-            <values>
-                <fullName>Community Solar services</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Developing a solar farm</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Financing my solar system</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Joining the BlueWave team</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Providing solar financing</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Selling community solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Signing up for community solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Something else%2E%2E%2E</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Objections__c</picklist>
-            <values>
-                <fullName>Autopay</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Credit check</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Distrust%2FMisunderstanding</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Double bill</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Go off the grid</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of savings</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Length of contract</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Not convinced of env%2E benefits</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Termination period</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Too busy</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Wait Time</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Approval_Status__c</picklist>
             <values>
                 <fullName>Approved</fullName>
@@ -10112,21 +9559,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Load_Zone__c</picklist>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Loan_Term_Override__c</picklist>
             <values>
                 <fullName>108</fullName>
@@ -10142,29 +9574,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>180</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Name</picklist>
-            <values>
-                <fullName>Dr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mrs%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ms%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Prof%2E</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -10252,209 +9661,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>State_Market__c</picklist>
-            <values>
-                <fullName>AK</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AZ</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CO</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>DE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>FL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>GA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>HI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ID</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>KS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>KY</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ME</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MO</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ND</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NJ</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NV</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NY</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OK</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>RI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TX</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>UT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WV</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WY</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>System_Assignment__c</picklist>
             <values>
                 <fullName>Automatic - Assignment Order</fullName>
@@ -10473,33 +9679,6 @@ SEMA = 13 -14</inlineHelpText>
             <picklist>Type_of_Avidia_Service_Provider__c</picklist>
             <values>
                 <fullName>None of the above</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Utility_1__c</picklist>
-            <values>
-                <fullName>Eversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Eversource %2F MLP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MLP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid%2FEversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WMECO</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -10521,6 +9700,29 @@ SEMA = 13 -14</inlineHelpText>
         <businessProcess>Residential Loan</businessProcess>
         <label>BFG - DOER Solar Loan</label>
         <picklistValues>
+            <picklist>Name</picklist>
+            <values>
+                <fullName>Dr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mrs%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ms%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Product_Interest__c</picklist>
             <values>
                 <fullName>Community Solar services</fullName>
@@ -10548,6 +9750,10 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Signing up for community solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my commercial property</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -11127,21 +10333,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Load_Zone__c</picklist>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Loan_Term_Override__c</picklist>
             <values>
                 <fullName>108</fullName>
@@ -11157,29 +10348,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>180</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Name</picklist>
-            <values>
-                <fullName>Dr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mrs%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ms%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Prof%2E</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -11267,209 +10435,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>State_Market__c</picklist>
-            <values>
-                <fullName>AK</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AZ</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CO</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>DE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>FL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>GA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>HI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ID</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>KS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>KY</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ME</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MO</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ND</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NJ</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NV</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NY</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OK</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>RI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TX</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>UT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WV</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WY</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>System_Assignment__c</picklist>
             <values>
                 <fullName>Automatic - Assignment Order</fullName>
@@ -11504,25 +10469,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Real Estate Appraiser</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Utility_1__c</picklist>
-            <values>
-                <fullName>Eversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MLP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WMECO</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -11544,6 +10490,29 @@ SEMA = 13 -14</inlineHelpText>
         <businessProcess>Residential Loan</businessProcess>
         <label>BFG - DOER Solar Loan (Co-Applicant)</label>
         <picklistValues>
+            <picklist>Name</picklist>
+            <values>
+                <fullName>Dr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mrs%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ms%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Product_Interest__c</picklist>
             <values>
                 <fullName>Community Solar services</fullName>
@@ -11571,6 +10540,10 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Signing up for community solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my commercial property</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -12150,21 +11123,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Load_Zone__c</picklist>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Loan_Term_Override__c</picklist>
             <values>
                 <fullName>108</fullName>
@@ -12180,29 +11138,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>180</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Name</picklist>
-            <values>
-                <fullName>Dr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mrs%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ms%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Prof%2E</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -12290,209 +11225,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>State_Market__c</picklist>
-            <values>
-                <fullName>AK</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AZ</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CO</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>DE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>FL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>GA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>HI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ID</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>KS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>KY</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ME</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MO</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ND</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NJ</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NV</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NY</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OK</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>RI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TX</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>UT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WV</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WY</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>System_Assignment__c</picklist>
             <values>
                 <fullName>Automatic - Assignment Order</fullName>
@@ -12531,25 +11263,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Utility_1__c</picklist>
-            <values>
-                <fullName>Eversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MLP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WMECO</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>debt_income_status__c</picklist>
             <values>
                 <fullName>Approved</fullName>
@@ -12566,6 +11279,29 @@ SEMA = 13 -14</inlineHelpText>
         <active>true</active>
         <businessProcess>Residential Loan</businessProcess>
         <label>BFG - MA Solar Loan (Co-Applicant)</label>
+        <picklistValues>
+            <picklist>Name</picklist>
+            <values>
+                <fullName>Dr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mrs%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ms%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Product_Interest__c</picklist>
             <values>
@@ -12594,6 +11330,10 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Signing up for community solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my commercial property</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -13165,21 +11905,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Load_Zone__c</picklist>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Loan_Term_Override__c</picklist>
             <values>
                 <fullName>108</fullName>
@@ -13195,29 +11920,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>180</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Name</picklist>
-            <values>
-                <fullName>Dr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mrs%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ms%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Prof%2E</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -13305,209 +12007,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>State_Market__c</picklist>
-            <values>
-                <fullName>AK</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AZ</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CO</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>DE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>FL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>GA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>HI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ID</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>KS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>KY</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ME</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MO</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ND</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NJ</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NV</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NY</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OK</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>RI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TX</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>UT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WV</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WY</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>System_Assignment__c</picklist>
             <values>
                 <fullName>Automatic - Assignment Order</fullName>
@@ -13542,25 +12041,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Real Estate Appraiser</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Utility_1__c</picklist>
-            <values>
-                <fullName>Eversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MLP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WMECO</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -13583,6 +12063,29 @@ SEMA = 13 -14</inlineHelpText>
         <description>Record Type for All NC Residential Solar Loans</description>
         <label>BFG - NC Solar Loan</label>
         <picklistValues>
+            <picklist>Name</picklist>
+            <values>
+                <fullName>Dr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mrs%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ms%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Product_Interest__c</picklist>
             <values>
                 <fullName>Community Solar services</fullName>
@@ -13610,6 +12113,10 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Signing up for community solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my commercial property</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -14181,21 +12688,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Load_Zone__c</picklist>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Loan_Term_Override__c</picklist>
             <values>
                 <fullName>108</fullName>
@@ -14211,29 +12703,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>180</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Name</picklist>
-            <values>
-                <fullName>Dr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mrs%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ms%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Prof%2E</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -14321,209 +12790,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>State_Market__c</picklist>
-            <values>
-                <fullName>AK</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AZ</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CO</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>DE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>FL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>GA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>HI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ID</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>KS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>KY</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ME</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MO</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ND</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NJ</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NV</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NY</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OK</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>RI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TX</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>UT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WV</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WY</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>System_Assignment__c</picklist>
             <values>
                 <fullName>Automatic - Assignment Order</fullName>
@@ -14558,33 +12824,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Real Estate Appraiser</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Utility_1__c</picklist>
-            <values>
-                <fullName>Duke Energy</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Eversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MLP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SCE%26G</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WMECO</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -14606,6 +12845,29 @@ SEMA = 13 -14</inlineHelpText>
         <businessProcess>Residential Loan</businessProcess>
         <label>BFG - NC Solar Loan (Co-Applicant)</label>
         <picklistValues>
+            <picklist>Name</picklist>
+            <values>
+                <fullName>Dr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mrs%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ms%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Product_Interest__c</picklist>
             <values>
                 <fullName>Community Solar services</fullName>
@@ -14633,6 +12895,10 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Signing up for community solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my commercial property</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -15204,21 +13470,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Load_Zone__c</picklist>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Loan_Term_Override__c</picklist>
             <values>
                 <fullName>108</fullName>
@@ -15234,29 +13485,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>180</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Name</picklist>
-            <values>
-                <fullName>Dr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mrs%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ms%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Prof%2E</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -15344,209 +13572,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>State_Market__c</picklist>
-            <values>
-                <fullName>AK</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AZ</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CO</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>DE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>FL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>GA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>HI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ID</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>KS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>KY</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ME</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MO</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ND</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NJ</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NV</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NY</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OK</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>RI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TX</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>UT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WV</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WY</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>System_Assignment__c</picklist>
             <values>
                 <fullName>Automatic - Assignment Order</fullName>
@@ -15581,33 +13606,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Real Estate Appraiser</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Utility_1__c</picklist>
-            <values>
-                <fullName>Duke Energy</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Eversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MLP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SCE%26G</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WMECO</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -15630,6 +13628,29 @@ SEMA = 13 -14</inlineHelpText>
         <description>Record Type for All SC Residential Solar Loans</description>
         <label>BFG - SC Solar Loan</label>
         <picklistValues>
+            <picklist>Name</picklist>
+            <values>
+                <fullName>Dr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mrs%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ms%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Product_Interest__c</picklist>
             <values>
                 <fullName>Community Solar services</fullName>
@@ -15657,6 +13678,10 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Signing up for community solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my commercial property</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -16228,21 +14253,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Load_Zone__c</picklist>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Loan_Term_Override__c</picklist>
             <values>
                 <fullName>108</fullName>
@@ -16258,29 +14268,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>180</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Name</picklist>
-            <values>
-                <fullName>Dr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mrs%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ms%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Prof%2E</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -16368,209 +14355,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>State_Market__c</picklist>
-            <values>
-                <fullName>AK</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AZ</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CO</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>DE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>FL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>GA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>HI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ID</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>KS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>KY</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ME</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MO</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ND</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NJ</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NV</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NY</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OK</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>RI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TX</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>UT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WV</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WY</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>System_Assignment__c</picklist>
             <values>
                 <fullName>Automatic - Assignment Order</fullName>
@@ -16605,33 +14389,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Real Estate Appraiser</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Utility_1__c</picklist>
-            <values>
-                <fullName>Duke Energy</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Eversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MLP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SCE%26G</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WMECO</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -16653,6 +14410,29 @@ SEMA = 13 -14</inlineHelpText>
         <businessProcess>Residential Loan</businessProcess>
         <label>BFG - SC Solar Loan (Co-Applicant)</label>
         <picklistValues>
+            <picklist>Name</picklist>
+            <values>
+                <fullName>Dr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mrs%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ms%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Product_Interest__c</picklist>
             <values>
                 <fullName>Community Solar services</fullName>
@@ -16680,6 +14460,10 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Signing up for community solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my commercial property</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -17251,21 +15035,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Load_Zone__c</picklist>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Loan_Term_Override__c</picklist>
             <values>
                 <fullName>108</fullName>
@@ -17281,29 +15050,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>180</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Name</picklist>
-            <values>
-                <fullName>Dr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mrs%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ms%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Prof%2E</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -17391,209 +15137,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>State_Market__c</picklist>
-            <values>
-                <fullName>AK</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AZ</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CO</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>DE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>FL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>GA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>HI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ID</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>KS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>KY</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ME</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MO</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ND</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NJ</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NV</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NY</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OK</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>RI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TX</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>UT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WV</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WY</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>System_Assignment__c</picklist>
             <values>
                 <fullName>Automatic - Assignment Order</fullName>
@@ -17628,33 +15171,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Real Estate Appraiser</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Utility_1__c</picklist>
-            <values>
-                <fullName>Duke Energy</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Eversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MLP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SCE%26G</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WMECO</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -17676,6 +15192,29 @@ SEMA = 13 -14</inlineHelpText>
         <businessProcess>Residential Loan</businessProcess>
         <label>BFG - MA Solar Loan</label>
         <picklistValues>
+            <picklist>Name</picklist>
+            <values>
+                <fullName>Dr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mrs%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ms%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Product_Interest__c</picklist>
             <values>
                 <fullName>Community Solar services</fullName>
@@ -17703,6 +15242,10 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Signing up for community solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my commercial property</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -18274,21 +15817,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Load_Zone__c</picklist>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Loan_Term_Override__c</picklist>
             <values>
                 <fullName>108</fullName>
@@ -18304,29 +15832,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>180</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Name</picklist>
-            <values>
-                <fullName>Dr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mrs%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ms%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Prof%2E</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -18414,209 +15919,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>State_Market__c</picklist>
-            <values>
-                <fullName>AK</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AZ</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CO</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>DE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>FL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>GA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>HI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ID</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>KS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>KY</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ME</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MO</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ND</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NJ</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NV</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NY</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OK</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>RI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TX</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>UT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WV</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WY</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>System_Assignment__c</picklist>
             <values>
                 <fullName>Automatic - Assignment Order</fullName>
@@ -18655,25 +15957,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Utility_1__c</picklist>
-            <values>
-                <fullName>Eversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MLP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WMECO</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>debt_income_status__c</picklist>
             <values>
                 <fullName>Approved</fullName>
@@ -18690,6 +15973,29 @@ SEMA = 13 -14</inlineHelpText>
         <active>true</active>
         <businessProcess>Residential Loan</businessProcess>
         <label>BlueWave Solar Loan</label>
+        <picklistValues>
+            <picklist>Name</picklist>
+            <values>
+                <fullName>Dr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mrs%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ms%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Product_Interest__c</picklist>
             <values>
@@ -18718,6 +16024,10 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Signing up for community solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my commercial property</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -19297,21 +16607,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Load_Zone__c</picklist>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Loan_Term_Override__c</picklist>
             <values>
                 <fullName>108</fullName>
@@ -19327,29 +16622,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>180</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Name</picklist>
-            <values>
-                <fullName>Dr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mrs%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ms%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Prof%2E</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -19437,209 +16709,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>State_Market__c</picklist>
-            <values>
-                <fullName>AK</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AZ</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CO</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>DE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>FL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>GA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>HI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ID</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>KS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>KY</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ME</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MO</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ND</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NJ</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NV</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NY</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OK</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>RI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TX</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>UT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WV</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WY</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>System_Assignment__c</picklist>
             <values>
                 <fullName>Automatic - Assignment Order</fullName>
@@ -19678,41 +16747,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Utility_1__c</picklist>
-            <values>
-                <fullName>Duke Energy</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Eversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Eversource %2F MLP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MLP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid%2FEversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SCE%26G</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WMECO</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>debt_income_status__c</picklist>
             <values>
                 <fullName>Approved</fullName>
@@ -19730,6 +16764,29 @@ SEMA = 13 -14</inlineHelpText>
         <businessProcess>C %26 I</businessProcess>
         <label>C&amp;I</label>
         <picklistValues>
+            <picklist>Name</picklist>
+            <values>
+                <fullName>Dr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mrs%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ms%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Product_Interest__c</picklist>
             <values>
                 <fullName>Community Solar services</fullName>
@@ -19760,7 +16817,176 @@ SEMA = 13 -14</inlineHelpText>
                 <default>false</default>
             </values>
             <values>
+                <fullName>Solar for my commercial property</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Something else%2E%2E%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Industry</picklist>
+            <values>
+                <fullName>Agriculture</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Apparel</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Banking</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Biotechnology</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Chemicals</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Communications</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Construction</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Consulting</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Education</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Electronics</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Energy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Engineering</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Entertainment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Environmental</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Finance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Food %26 Beverage</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Government</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Healthcare</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Hospitality</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Insurance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Landowner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Machinery</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Manufacturing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Media</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not For Profit</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Recreation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Retail</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Shipping</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Technology</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Telecommunications</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Transportation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Utilities</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Rating</picklist>
+            <values>
+                <fullName>Cold</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Hot</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Warm</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -19771,6 +16997,29 @@ SEMA = 13 -14</inlineHelpText>
         <businessProcess>CS</businessProcess>
         <label>Lead</label>
         <picklistValues>
+            <picklist>Name</picklist>
+            <values>
+                <fullName>Dr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mrs%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ms%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Product_Interest__c</picklist>
             <values>
                 <fullName>Community Solar services</fullName>
@@ -19801,50 +17050,11 @@ SEMA = 13 -14</inlineHelpText>
                 <default>false</default>
             </values>
             <values>
+                <fullName>Solar for my commercial property</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Something else%2E%2E%2E</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Objections__c</picklist>
-            <values>
-                <fullName>Autopay</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Credit check</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Distrust%2FMisunderstanding</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Double bill</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lack of savings</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Length of contract</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Not convinced of env%2E benefits</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Termination period</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Too busy</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Wait Time</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -20401,21 +17611,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Load_Zone__c</picklist>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Loan_Term_Override__c</picklist>
             <values>
                 <fullName>108</fullName>
@@ -20431,29 +17626,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>180</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Name</picklist>
-            <values>
-                <fullName>Dr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mrs%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ms%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Prof%2E</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -20541,209 +17713,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>State_Market__c</picklist>
-            <values>
-                <fullName>AK</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AZ</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CO</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>DE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>FL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>GA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>HI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ID</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>KS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>KY</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ME</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MO</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ND</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NJ</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NV</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NY</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OK</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>RI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TX</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>UT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WV</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WY</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>System_Assignment__c</picklist>
             <values>
                 <fullName>Automatic - Assignment Order</fullName>
@@ -20766,25 +17735,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Utility_1__c</picklist>
-            <values>
-                <fullName>Eversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MLP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WMECO</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>debt_income_status__c</picklist>
             <values>
                 <fullName>Approved</fullName>
@@ -20802,29 +17752,25 @@ SEMA = 13 -14</inlineHelpText>
         <businessProcess>General</businessProcess>
         <label>Lead (General)</label>
         <picklistValues>
-            <picklist>LeadSource</picklist>
+            <picklist>Name</picklist>
             <values>
-                <fullName>CSAP</fullName>
+                <fullName>Dr%2E</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Other</fullName>
+                <fullName>Mr%2E</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Partner</fullName>
+                <fullName>Mrs%2E</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Switch</fullName>
+                <fullName>Ms%2E</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Third-Party</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
+                <fullName>Prof%2E</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -20859,50 +17805,38 @@ SEMA = 13 -14</inlineHelpText>
                 <default>false</default>
             </values>
             <values>
+                <fullName>Solar for my commercial property</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Something else%2E%2E%2E</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Objections__c</picklist>
+            <picklist>LeadSource</picklist>
             <values>
-                <fullName>Autopay</fullName>
+                <fullName>CSAP</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Credit check</fullName>
+                <fullName>Other</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Distrust%2FMisunderstanding</fullName>
+                <fullName>Partner</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Double bill</fullName>
+                <fullName>Switch</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Lack of savings</fullName>
+                <fullName>Third-Party</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Length of contract</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Not convinced of env%2E benefits</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Termination period</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Too busy</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Wait Time</fullName>
+                <fullName>Website</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -21443,21 +18377,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Load_Zone__c</picklist>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Loan_Term_Override__c</picklist>
             <values>
                 <fullName>108</fullName>
@@ -21473,29 +18392,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>180</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Name</picklist>
-            <values>
-                <fullName>Dr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mrs%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ms%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Prof%2E</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -21583,209 +18479,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>State_Market__c</picklist>
-            <values>
-                <fullName>AK</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AZ</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CO</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>DE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>FL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>GA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>HI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ID</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>KS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>KY</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ME</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MO</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ND</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NJ</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NV</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NY</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OK</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>RI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TX</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>UT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WV</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WY</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>System_Assignment__c</picklist>
             <values>
                 <fullName>Automatic - Assignment Order</fullName>
@@ -21820,41 +18513,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Real Estate Appraiser</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Utility_1__c</picklist>
-            <values>
-                <fullName>Duke Energy</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Eversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Eversource %2F MLP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MLP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid%2FEversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SCE%26G</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WMECO</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -22872,6 +19530,29 @@ SEMA = 13 -14</inlineHelpText>
         <description>Utility - Duke Energy Lead Type</description>
         <label>Utility - Duke Energy</label>
         <picklistValues>
+            <picklist>Name</picklist>
+            <values>
+                <fullName>Dr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mrs%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ms%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Product_Interest__c</picklist>
             <values>
                 <fullName>Community Solar services</fullName>
@@ -22887,6 +19568,10 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Signing up for community solar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solar for my commercial property</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -23443,21 +20128,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Load_Zone__c</picklist>
-            <values>
-                <fullName>NEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SEMA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WCMA</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Loan_Term_Override__c</picklist>
             <values>
                 <fullName>108</fullName>
@@ -23473,29 +20143,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>180</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Name</picklist>
-            <values>
-                <fullName>Dr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mrs%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ms%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Prof%2E</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -23583,209 +20230,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>State_Market__c</picklist>
-            <values>
-                <fullName>AK</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>AZ</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CO</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>DE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>FL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>GA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>HI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ID</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IL</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>IN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>KS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>KY</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>LA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ME</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MO</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>ND</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NJ</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NV</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>NY</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OK</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>OR</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>PA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>RI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>SD</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TN</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>TX</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>UT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>VT</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WI</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WV</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WY</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>System_Assignment__c</picklist>
             <values>
                 <fullName>Automatic - Assignment Order</fullName>
@@ -23804,25 +20248,6 @@ SEMA = 13 -14</inlineHelpText>
             <picklist>Type_of_Avidia_Service_Provider__c</picklist>
             <values>
                 <fullName>None of the above</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Utility_1__c</picklist>
-            <values>
-                <fullName>Eversource</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>MLP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>National Grid</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>WMECO</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
