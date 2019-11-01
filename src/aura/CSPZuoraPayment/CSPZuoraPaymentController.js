@@ -39,6 +39,7 @@
     },
 
     sendToZuora : function(component, event, helper) {
+        event.getSource().set("v.disabled", true);
         component.set("v.showSpinner", true);
         helper.sendToZuoraHelper(component, event, helper);
     },
