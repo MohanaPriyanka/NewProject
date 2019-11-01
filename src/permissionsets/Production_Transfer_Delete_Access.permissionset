@@ -2802,31 +2802,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>AuthorizationForm.DefaultAuthFormTextId</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>AuthorizationForm.EffectiveFromDate</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>AuthorizationForm.EffectiveToDate</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>AuthorizationForm.IsSignatureRequired</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>AuthorizationForm.RevisionNumber</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>AuthorizationFormConsent.DocumentVersionId</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -2838,21 +2813,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>AuthorizationFormText.ContentDocumentId</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>AuthorizationFormText.FullAuthorizationFormUrl</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>AuthorizationFormText.Locale</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>AuthorizationFormText.SummaryAuthFormText</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7142,26 +7102,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>ContactPointTypeConsent.DataUsePurposeId</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ContactPointTypeConsent.DoubleConsentCaptureDate</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ContactPointTypeConsent.EffectiveFrom</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ContactPointTypeConsent.EffectiveTo</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Contract.ActivatedById</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -7467,21 +7407,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>DataUseLegalBasis.Description</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>DataUseLegalBasis.Source</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>DataUsePurpose.Description</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>DataUsePurpose.IsMaintainablePerContactPoint</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -7493,11 +7418,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>DataUsePurpose.IsMaintainablePerType</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>DataUsePurpose.LegalBasisId</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -12992,11 +12912,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Lead.Source__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Lead.State_Market__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -13013,11 +12928,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Storage__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Lead.SubmitterIP__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -27286,11 +27196,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Production__c.Has_Transfers__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Production__c.Production_Update__c</field>
         <readable>true</readable>
@@ -32138,11 +32043,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Bill__c.Total_System_NMCs__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Bill__c.Transfer__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -41538,11 +41438,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Work__c.Case__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>agf__ADM_Work__c.Contract__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
