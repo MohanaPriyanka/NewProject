@@ -356,20 +356,4 @@ public with sharing class ZuoraInvoiceServiceTest {
         System.assertEquals('Cannot send bill to Community Solar customer.', c.Subject);
         Test.stopTest();
     }
-
-    @IsTest
-    private static void testGetCommunityId(){
-        ZuoraInvoiceService serv = new ZuoraInvoiceService(new List<Zuora__ZInvoice__c>{});
-        serv.getCommunityId();
-
-        Logger.flushLogs();
-
-        List<Error_Log__c> errorLogs = [
-            SELECT Id, Message__c
-            FROM Error_Log__c
-            WHERE Class__c = 'ZuoraInvoiceService'
-            AND Method__c = 'getCommunityId'
-        ];
-        System.assert(errorLogs[0].Message__c.contains('ConnectApi methods are not supported in data siloed tests'));
-    }
 }
