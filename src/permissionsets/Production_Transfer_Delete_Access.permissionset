@@ -30892,11 +30892,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Utility_Account_Bill__c.Transfer__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Utility_Account_Bill__c.Unique_Id__c</field>
         <readable>false</readable>
     </fieldPermissions>
