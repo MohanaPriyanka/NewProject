@@ -10,7 +10,6 @@ public with sharing class ZuoraInvoiceService {
     private ContentDocumentSelector contentDocumentSelector = new ContentDocumentSelector();
     public List<Zuora__ZInvoice__c> sfdcZuoraInvoices;
     public Map<Id, Zuora__ZInvoice__c> invoiceMap;
-    public String communityId;
 
     public ZuoraInvoiceService(List<Zuora__ZInvoice__c> sfdcZuoraInvoices) {
         this.sfdcZuoraInvoices = sfdcZuoraInvoices;
@@ -117,32 +116,17 @@ public with sharing class ZuoraInvoiceService {
     // Since we want this to run as system independent of user permissions
     @SuppressWarnings('PMD.ApexCRUDViolation')
     private List<ContentDocumentLink> insertContentDocumentLinks(List<ZuoraAPI.Invoice> zuoraInvoices, Map<String, ContentVersion> zuoraInvoiceIdToConventVersion, Map<String, Id> zuoraInvoiceIdToSFDCId) {
-        // 'ConnectApi methods are not supported in data siloed tests. Please use @IsTest(SeeAllData=true)'
-        // To avoid having to use SeeAllData we don't cover the second Content Document Link in tests
-        if (communityId == null && !Test.isRunningTest()){
-            this.communityId = getCommunityId();
-        }
-        List<ContentDocumentLink> invoiceContentDocumentLinks = new List<ContentDocumentLink>();
-        List<ContentDocumentLink> communityContentDocumentLinks = new List<ContentDocumentLink>();
+        List<ContentDocumentLink> contentDocumentLinks = new List<ContentDocumentLink>();
         for (ZuoraAPI.Invoice zuoraInvoice : zuoraInvoices) {
             ContentDocumentLink cdl = new ContentDocumentLink();
             cdl.ContentDocumentId = zuoraInvoiceIdToConventVersion.get(zuoraInvoice.id).ContentDocumentId;
             cdl.LinkedEntityId = zuoraInvoiceIdToSFDCId.get(zuoraInvoice.id);
             cdl.ShareType = 'I';
-            invoiceContentDocumentLinks.add(cdl);
-
-            if (communityID != null) {
-                ContentDocumentLink commLink = new ContentDocumentLink();
-                commLink.LinkedEntityId = communityID;
-                commLink.Visibility = 'AllUsers';
-                commLink.ShareType = 'V';
-                commLink.ContentDocumentId = zuoraInvoiceIdToConventVersion.get(zuoraInvoice.id).ContentDocumentId;
-                communityContentDocumentLinks.add(commLink);
-            }
+            cdl.Visibility = 'AllUsers';
+            contentDocumentLinks.add(cdl);
         }
-        communityContentDocumentLinks.addAll(invoiceContentDocumentLinks);
-        insert communityContentDocumentLinks;
-        return invoiceContentDocumentLinks;
+        insert contentDocumentLinks;
+        return contentDocumentLinks;
     }
 
     public static void batchInvoicesToMail(List<Zuora__ZInvoice__c> invoicesToMail) {
