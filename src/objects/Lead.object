@@ -7474,6 +7474,33 @@ SEMA = 13 -14</inlineHelpText>
         <description>Community Solar Lead</description>
         <label>BFG - Community Solar (Residential)</label>
         <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>CSAP</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Switch</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Third-Party</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Name</picklist>
             <values>
                 <fullName>Dr%2E</fullName>
@@ -7532,33 +7559,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Something else%2E%2E%2E</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>LeadSource</picklist>
-            <values>
-                <fullName>CSAP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Switch</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Third-Party</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -8217,6 +8217,33 @@ SEMA = 13 -14</inlineHelpText>
         <businessProcess>CS</businessProcess>
         <label>BFG - Community Solar (Anchor)</label>
         <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>CSAP</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Switch</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Third-Party</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Name</picklist>
             <values>
                 <fullName>Dr%2E</fullName>
@@ -8275,33 +8302,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Something else%2E%2E%2E</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>LeadSource</picklist>
-            <values>
-                <fullName>CSAP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Switch</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Third-Party</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -8957,6 +8957,33 @@ SEMA = 13 -14</inlineHelpText>
         <compactLayoutAssignment>CS_BD_Compact</compactLayoutAssignment>
         <label>BFG - Community Solar (Business)</label>
         <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>CSAP</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Switch</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Third-Party</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Name</picklist>
             <values>
                 <fullName>Dr%2E</fullName>
@@ -9015,33 +9042,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Something else%2E%2E%2E</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>LeadSource</picklist>
-            <values>
-                <fullName>CSAP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Switch</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Third-Party</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -9700,6 +9700,21 @@ SEMA = 13 -14</inlineHelpText>
         <businessProcess>Residential Loan</businessProcess>
         <label>BFG - DOER Solar Loan</label>
         <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Name</picklist>
             <values>
                 <fullName>Dr%2E</fullName>
@@ -10290,45 +10305,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>WCMA Unitil</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>LeadSource</picklist>
-            <values>
-                <fullName>BWC GIS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Door Knocking</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>External Referral</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Scout</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Word of mouth</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -10490,6 +10466,21 @@ SEMA = 13 -14</inlineHelpText>
         <businessProcess>Residential Loan</businessProcess>
         <label>BFG - DOER Solar Loan (Co-Applicant)</label>
         <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Name</picklist>
             <values>
                 <fullName>Dr%2E</fullName>
@@ -11084,45 +11075,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>LeadSource</picklist>
-            <values>
-                <fullName>BWC GIS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Door Knocking</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>External Referral</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Scout</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Word of mouth</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Loan_Term_Override__c</picklist>
             <values>
                 <fullName>108</fullName>
@@ -11279,6 +11231,21 @@ SEMA = 13 -14</inlineHelpText>
         <active>true</active>
         <businessProcess>Residential Loan</businessProcess>
         <label>BFG - MA Solar Loan (Co-Applicant)</label>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Name</picklist>
             <values>
@@ -11862,45 +11829,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>WCMA Unitil</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>LeadSource</picklist>
-            <values>
-                <fullName>BWC GIS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Door Knocking</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>External Referral</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Scout</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Word of mouth</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -12063,6 +11991,21 @@ SEMA = 13 -14</inlineHelpText>
         <description>Record Type for All NC Residential Solar Loans</description>
         <label>BFG - NC Solar Loan</label>
         <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Name</picklist>
             <values>
                 <fullName>Dr%2E</fullName>
@@ -12645,45 +12588,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>WCMA Unitil</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>LeadSource</picklist>
-            <values>
-                <fullName>BWC GIS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Door Knocking</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>External Referral</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Scout</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Word of mouth</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -12845,6 +12749,21 @@ SEMA = 13 -14</inlineHelpText>
         <businessProcess>Residential Loan</businessProcess>
         <label>BFG - NC Solar Loan (Co-Applicant)</label>
         <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Name</picklist>
             <values>
                 <fullName>Dr%2E</fullName>
@@ -13427,45 +13346,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>WCMA Unitil</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>LeadSource</picklist>
-            <values>
-                <fullName>BWC GIS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Door Knocking</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>External Referral</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Scout</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Word of mouth</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -13628,6 +13508,21 @@ SEMA = 13 -14</inlineHelpText>
         <description>Record Type for All SC Residential Solar Loans</description>
         <label>BFG - SC Solar Loan</label>
         <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Name</picklist>
             <values>
                 <fullName>Dr%2E</fullName>
@@ -14210,45 +14105,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>WCMA Unitil</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>LeadSource</picklist>
-            <values>
-                <fullName>BWC GIS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Door Knocking</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>External Referral</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Scout</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Word of mouth</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -14410,6 +14266,21 @@ SEMA = 13 -14</inlineHelpText>
         <businessProcess>Residential Loan</businessProcess>
         <label>BFG - SC Solar Loan (Co-Applicant)</label>
         <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Name</picklist>
             <values>
                 <fullName>Dr%2E</fullName>
@@ -14992,45 +14863,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>WCMA Unitil</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>LeadSource</picklist>
-            <values>
-                <fullName>BWC GIS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Door Knocking</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>External Referral</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Scout</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Word of mouth</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -15192,6 +15024,21 @@ SEMA = 13 -14</inlineHelpText>
         <businessProcess>Residential Loan</businessProcess>
         <label>BFG - MA Solar Loan</label>
         <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Name</picklist>
             <values>
                 <fullName>Dr%2E</fullName>
@@ -15778,45 +15625,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>LeadSource</picklist>
-            <values>
-                <fullName>BWC GIS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Door Knocking</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>External Referral</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Scout</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Word of mouth</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Loan_Term_Override__c</picklist>
             <values>
                 <fullName>108</fullName>
@@ -15973,6 +15781,21 @@ SEMA = 13 -14</inlineHelpText>
         <active>true</active>
         <businessProcess>Residential Loan</businessProcess>
         <label>BlueWave Solar Loan</label>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Name</picklist>
             <values>
@@ -16568,45 +16391,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>LeadSource</picklist>
-            <values>
-                <fullName>BWC GIS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Door Knocking</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>External Referral</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Scout</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Word of mouth</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Loan_Term_Override__c</picklist>
             <values>
                 <fullName>108</fullName>
@@ -16763,6 +16547,21 @@ SEMA = 13 -14</inlineHelpText>
         <active>true</active>
         <businessProcess>C %26 I</businessProcess>
         <label>C&amp;I</label>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Name</picklist>
             <values>
@@ -16961,21 +16760,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>LeadSource</picklist>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Rating</picklist>
             <values>
                 <fullName>Cold</fullName>
@@ -16996,6 +16780,21 @@ SEMA = 13 -14</inlineHelpText>
         <active>true</active>
         <businessProcess>CS</businessProcess>
         <label>Lead</label>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Name</picklist>
             <values>
@@ -17572,45 +17371,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>LeadSource</picklist>
-            <values>
-                <fullName>BWC GIS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Door Knocking</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>External Referral</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Scout</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Word of mouth</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Loan_Term_Override__c</picklist>
             <values>
                 <fullName>108</fullName>
@@ -17752,6 +17512,33 @@ SEMA = 13 -14</inlineHelpText>
         <businessProcess>General</businessProcess>
         <label>Lead (General)</label>
         <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>CSAP</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Switch</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Third-Party</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Name</picklist>
             <values>
                 <fullName>Dr%2E</fullName>
@@ -17810,33 +17597,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Something else%2E%2E%2E</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>LeadSource</picklist>
-            <values>
-                <fullName>CSAP</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Switch</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Third-Party</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -19530,6 +19290,21 @@ SEMA = 13 -14</inlineHelpText>
         <description>Utility - Duke Energy Lead Type</description>
         <label>Utility - Duke Energy</label>
         <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Name</picklist>
             <values>
                 <fullName>Dr%2E</fullName>
@@ -20085,45 +19860,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>WCMA Unitil</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>LeadSource</picklist>
-            <values>
-                <fullName>BWC GIS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Door Knocking</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>External Referral</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Scout</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Word of mouth</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
