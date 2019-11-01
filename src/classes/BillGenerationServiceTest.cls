@@ -195,7 +195,7 @@ public class BillGenerationServiceTest {
         for (Schedule_Z_Subscription__c szs : szsList) {
             uasIdsAlreadyBilling.add(szs.Utility_Account_Subscription__c);
         }
-        List<Schedule_Z_Subscription__c> overdue = BillGenerationService.getOverdueScheduleZSubscriptions(uasIdsAlreadyBilling);
+        List<Schedule_Z_Subscription__c> overdue = ScheduleZSubscriptionSelector.getOverdueSZSubscriptions(System_Properties__c.getAll().values()[0], uasIdsAlreadyBilling);
 
         System.assertEquals(4,uasIdsAlreadyBilling.size());
         System.assertEquals(2,overdue.size());

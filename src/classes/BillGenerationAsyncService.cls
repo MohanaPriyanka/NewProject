@@ -36,19 +36,18 @@ public class BillGenerationAsyncService implements Database.Batchable<Schedule_Z
             //  When we are ready to retire old architecture, create new method:
             //  BillGenerationService.onlyCreateUASBs();
         } catch (Exception excep){
-            Logger.logNow(
-                'BillGenerationAsyncService',
-                'execute',
-                JSON.serialize(scope) + '\n' + excep.getMessage() + '\n' + excep.getStackTraceString(),
-                Logger.ERROR
-            );
+            Logger.logNow('BillGenerationAsyncService', 'execute', JSON.serialize(scope) + '\n' + excep.getMessage() + '\n' + excep.getStackTraceString(), Logger.ERROR);
         }
     }
 
     public void finish(Database.BatchableContext bc){
-        for (Energy_Usage_Update__c productionUpdate : productionUpdates){
-            productionUpdate.Generate_Bills__c = true;
+        try {
+            for (Energy_Usage_Update__c productionUpdate : productionUpdates){
+                productionUpdate.Generate_Bills__c = true;
+            }
+            update productionUpdates;
+        } catch (Exception excep){
+            Logger.logNow('BillGenerationAsyncService', 'finish', JSON.serialize(productionUpdates) + '\n' + excep.getMessage() + '\n' + excep.getStackTraceString(), Logger.ERROR);
         }
-        update productionUpdates;
     }
 }
