@@ -122,6 +122,7 @@ public with sharing class ZuoraInvoiceService {
             cdl.ContentDocumentId = zuoraInvoiceIdToConventVersion.get(zuoraInvoice.id).ContentDocumentId;
             cdl.LinkedEntityId = zuoraInvoiceIdToSFDCId.get(zuoraInvoice.id);
             cdl.ShareType = 'I';
+            cdl.Visibility = 'AllUsers';
             contentDocumentLinks.add(cdl);
         }
         insert contentDocumentLinks;
