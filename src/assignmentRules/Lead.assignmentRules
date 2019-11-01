@@ -76,21 +76,27 @@
             <template>CS_Application_Email_Notifications/Lead_Assignment_Notification</template>
         </ruleEntry>
         <ruleEntry>
+            <assignedTo>C_I</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>1 OR 2</booleanFilter>
+            <criteriaItems>
+                <field>Lead.Product_Interest__c</field>
+                <operation>equals</operation>
+                <value>Solar for my commercial property</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Lead.Record_Type_ID__c</field>
+                <operation>equals</operation>
+                <value>0120a000000LT8n</value>
+            </criteriaItems>
+            <template>CS_Application_Email_Notifications/Lead_Assignment_Notification</template>
+        </ruleEntry>
+        <ruleEntry>
             <assignedTo>Marketing</assignedTo>
             <assignedToType>Queue</assignedToType>
             <criteriaItems>
                 <field>Lead.Product_Interest__c</field>
                 <operation>notEqual</operation>
-            </criteriaItems>
-            <template>CS_Application_Email_Notifications/Lead_Assignment_Notification</template>
-        </ruleEntry>
-        <ruleEntry>
-            <assignedTo>C_I</assignedTo>
-            <assignedToType>Queue</assignedToType>
-            <criteriaItems>
-                <field>Lead.Record_Type_ID__c</field>
-                <operation>equals</operation>
-                <value>0120a000000LT8n</value>
             </criteriaItems>
             <template>CS_Application_Email_Notifications/Lead_Assignment_Notification</template>
         </ruleEntry>
