@@ -199,22 +199,6 @@ public with sharing class ZuoraInvoiceService {
     }
 
     @TestVisible
-    private String getCommunityId(){
-        String communityId;
-        try {
-            ConnectApi.CommunityPage comm = ConnectApi.Communities.getCommunities();
-            for (ConnectApi.Community community : comm.communities) {
-                if (community.name == 'BlueWave Member Portal') {
-                    communityId = community.id;
-                }
-            }
-        } catch (Exception excep) {
-            Logger.logLater('ZuoraInvoiceService','getCommunityId',excep.getMessage());
-        }
-        return communityId;
-    }
-
-    @TestVisible
     private Case createCaseForInvalidAddress(Zuora__ZInvoice__c invoice) {
         Case newCase = caseFactory.getCase('Customer_Care');
 
