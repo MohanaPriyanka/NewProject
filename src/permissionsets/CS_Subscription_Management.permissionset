@@ -151,16 +151,6 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Production__c.Credit_Value__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Production__c.Client_Account__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>APXTConga4__Conga_Solution_Parameter__c.APXTConga4__Value__c</field>
         <readable>false</readable>
@@ -2812,6 +2802,31 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>AuthorizationForm.DefaultAuthFormTextId</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AuthorizationForm.EffectiveFromDate</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AuthorizationForm.EffectiveToDate</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AuthorizationForm.IsSignatureRequired</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AuthorizationForm.RevisionNumber</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>AuthorizationFormConsent.DocumentVersionId</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -2823,6 +2838,21 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>AuthorizationFormText.ContentDocumentId</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AuthorizationFormText.FullAuthorizationFormUrl</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AuthorizationFormText.Locale</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>AuthorizationFormText.SummaryAuthFormText</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3447,6 +3477,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>BlueWave_Surveys__c.NPS_Comp_Value__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>BlueWave_Surveys__c.NPS_Type__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -3533,6 +3568,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>BlueWave_Surveys__c.Portal_Name_3__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>BlueWave_Surveys__c.Power_of_One__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -4318,6 +4358,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Case.Utility_Follow_Up_Required__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.Zuora_Payment_Method__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -7097,6 +7142,26 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>ContactPointTypeConsent.DataUsePurposeId</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>ContactPointTypeConsent.DoubleConsentCaptureDate</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>ContactPointTypeConsent.EffectiveFrom</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>ContactPointTypeConsent.EffectiveTo</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Contract.ActivatedById</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -7402,6 +7467,21 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>DataUseLegalBasis.Description</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>DataUseLegalBasis.Source</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>DataUsePurpose.Description</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>DataUsePurpose.IsMaintainablePerContactPoint</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -7413,6 +7493,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>DataUsePurpose.IsMaintainablePerType</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>DataUsePurpose.LegalBasisId</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -12907,6 +12992,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Lead.Source__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Lead.State_Market__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -12923,6 +13013,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Storage__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.SubmitterIP__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -22767,6 +22862,31 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Milestone__c.Description__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Milestone__c.Milestone_Date__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Milestone__c.Percentage__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Milestone__c.Requirement_Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Milestone__c.Status__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Opportunity.ACH_Account_Number__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -27136,6 +27256,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Production__c.Client_Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Production__c.Credits_Available_for_Allocation__c</field>
         <readable>true</readable>
@@ -27159,6 +27284,11 @@
         <editable>true</editable>
         <field>Production__c.End_Date__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Production__c.Has_Transfers__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -32012,6 +32142,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Utility_Account_Bill__c.Transfer__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Utility_Account_Bill__c.Unique_Id__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -36202,6 +36337,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Zuora__ZInvoice__c.Legacy_Invoice_Id__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Zuora__ZInvoice__c.LetterStreamJob__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -37027,7 +37167,47 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>agf__ADM_Cloud__c.agf__Cloud_Lead__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>agf__ADM_Cloud__c.agf__Cloud_Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Cloud__c.agf__Escalation_Security_Contact__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Cloud__c.agf__Primary_Security_Contact__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Cloud__c.agf__Secondary_Security_Contact__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Cloud__c.agf__Security_Approval_Group_Name__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Cloud__c.agf__Security_Guidance__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Cloud__c.agf__Security_Guidence__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Cloud__c.agf__Tertiary_Security_Contact__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -37047,6 +37227,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>agf__ADM_Column_History__c.agf__Column_Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>agf__ADM_Column_History__c.agf__Duration_By_Work_Days__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -37062,6 +37247,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>agf__ADM_Column_Status_Assignment__c.agf__Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>agf__ADM_Column__c.agf__Active__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -37073,6 +37263,21 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Column__c.agf__Parent_Column__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Column__c.agf__PreId__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Column__c.agf__Pre_ParentId__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Column__c.agf__Type__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -37263,6 +37468,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Epic__c.Estimated_Time_Commitment__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Epic__c.Status_Notes__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Epic__c.Status__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -38697,6 +38912,46 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>agf__ADM_Parent_Cloud__c.agf__Alternate_Roster_Owner__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Parent_Cloud__c.agf__Cloud_Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Parent_Cloud__c.agf__Finance_Business_Partner__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Parent_Cloud__c.agf__Legal_Representative__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Parent_Cloud__c.agf__Parent_Cloud_Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Parent_Cloud__c.agf__Roster_Enabled__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Parent_Cloud__c.agf__Roster_Owner__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Parent_Cloud__c.agf__Senior_Engineering_Leader__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>agf__ADM_Parent_Work__c.agf__Child_Scheduled_Build__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -38858,6 +39113,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Product_Tag__c.Exclude_from_Work_Request_form__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Product_Tag__c.Product__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -39997,6 +40257,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>agf__ADM_Scrum_Team__c.agf__Exclude_Capacity_Reports__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>agf__ADM_Scrum_Team__c.agf__External_ID__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -40012,12 +40277,22 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>agf__ADM_Scrum_Team__c.agf__Include_Lightning_Platform_Freeze__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>agf__ADM_Scrum_Team__c.agf__Kanban__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Scrum_Team__c.agf__Lock_Report__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Scrum_Team__c.agf__Number_of_new_org62_Cases__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -40038,6 +40313,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Scrum_Team__c.agf__Parent_Cloud__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Scrum_Team__c.agf__Prefer_Board_Column_Auto_Update__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -41262,6 +41542,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>agf__ADM_Work__c.Contract__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>agf__ADM_Work__c.Created_During_Sprint__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -41418,6 +41703,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Work__c.agf__Backburner_Rank__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Work__c.agf__Board_Column_Rank__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Work__c.agf__Board_Column__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -50912,6 +51207,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>zqu__CommunicationProfile__c.Client_Brand_Key__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>zqu__CommunicationProfile__c.zqu__BillingEntity__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -53573,6 +53873,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>zqu__Quote__c.zqu__GenerateInvoice__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>zqu__Quote__c.zqu__HasValidationErrors__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
