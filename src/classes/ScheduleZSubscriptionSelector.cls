@@ -79,11 +79,9 @@ public with sharing class ScheduleZSubscriptionSelector {
         ];
     }
 
-    public static List<Schedule_Z_Subscription__c> getOverdueSZSubscriptions(System_Properties__c sysProp, Set<Id> uasIdsAlreadyBilling){
+    public static List<Schedule_Z_Subscription__c> getOverdueSZSubscriptions(Decimal minimumBalance, Date maxPastDueDate, Set<Id> uasIdsAlreadyBilling){
         Set<Id> overdueUASIds = new Set<Id>();
         List<Schedule_Z_Subscription__c> overdueSZSes = new List<Schedule_Z_Subscription__c>();
-        Decimal minimumBalance = Util.nullToZero(sysProp.Minimum_Balance_Bills_for_Cancelled__c);
-        Date maxPastDueDate = Date.today().addDays(-(Integer.valueOf(Util.nullToZero(sysProp.Days_Generate_Bills_For_Cancelled__c))));
 
         // For accounts with a balance, get all UASes that have at least 1 UASB that are not already getting a bill:
         List<AggregateResult> overdueUASBs = [
