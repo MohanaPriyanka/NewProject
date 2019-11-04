@@ -124,9 +124,9 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
     </fields>
     <fields>
         <fullName>Change_in_Percent_Share_of_System__c</fullName>
-        <description>This field is stamped with the value of the calculated Change in Percent Share of System field on subscription order automatically hen it is approved. We need a static field for tracking purposes and to use in rollup summary fields .</description>
+        <description>This field is stamped with the value of the calculated Change in Percent Share of System field on subscription order automatically when it is approved. We need a static field for tracking purposes and to use in rollup summary fields .</description>
         <externalId>false</externalId>
-        <inlineHelpText>This field is stamped with the value of the calculated Change in Percent Share of System field on subscription order automatically hen it is approved. We need a static field for tracking purposes and to use in rollup summary fields .</inlineHelpText>
+        <inlineHelpText>This field is stamped with the value of the calculated Change in Percent Share of System field on subscription order automatically when it is approved. We need a static field for tracking purposes and to use in rollup summary fields .</inlineHelpText>
         <label>Change in Percent Share</label>
         <precision>18</precision>
         <required>false</required>
