@@ -159,10 +159,11 @@
         <externalId>false</externalId>
         <inlineHelpText>Additional Information for this Milestone</inlineHelpText>
         <label>Description</label>
-        <required>false</required>
+        <length>1000</length>
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>TextArea</type>
+        <type>LongTextArea</type>
+        <visibleLines>4</visibleLines>
     </fields>
     <fields>
         <fullName>Milestone_Date__c</fullName>
@@ -200,14 +201,26 @@
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
-                    <fullName>Up To</fullName>
+                    <fullName>At Least</fullName>
                     <default>false</default>
-                    <label>Up To</label>
+                    <label>At Least</label>
+                </value>
+                <value>
+                    <fullName>Equal To</fullName>
+                    <default>false</default>
+                    <label>Equal To</label>
                 </value>
                 <value>
                     <fullName>No More Than</fullName>
                     <default>false</default>
+                    <isActive>false</isActive>
                     <label>No More Than</label>
+                </value>
+                <value>
+                    <fullName>Up To</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Up To</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -257,6 +270,11 @@
                     <fullName>Replaced</fullName>
                     <default>false</default>
                     <label>Replaced</label>
+                </value>
+                <value>
+                    <fullName>Missed</fullName>
+                    <default>false</default>
+                    <label>Missed</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
