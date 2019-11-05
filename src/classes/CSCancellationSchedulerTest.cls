@@ -13,6 +13,8 @@ private class CSCancellationSchedulerTest {
         List<Shared_Solar_System__c> sss = [SELECT Id FROM Shared_Solar_System__c ORDER BY Name ASC ];
 
         CustomerCommunicationHandlerTest.createBills(System.today() - 88, sss[0].Id); // 67 days late
+        CustomerCommunicationHandlerTest.mockZuoraFields();
+
         List <Account_Bill__c> accountBills = [
             SELECT Id, Published__c, Parent_Account__r.Id
             FROM Account_Bill__c

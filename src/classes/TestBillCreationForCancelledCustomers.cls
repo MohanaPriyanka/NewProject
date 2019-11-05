@@ -389,6 +389,7 @@ public class TestBillCreationForCancelledCustomers {
 
         TestBillCreationandPayment.runProductionUpdate(new List<Id>{firstProdUpdateSSS1.Id, firstProdUpdateSSS2.Id});
         setBillsToPublished();
+        CustomerCommunicationHandlerTest.mockZuoraFields();
         Test.stopTest();
     }
 
