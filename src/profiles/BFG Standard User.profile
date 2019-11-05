@@ -64853,7 +64853,7 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>standard-QuickText</tab>
-        <visibility>Hidden</visibility>
+        <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>standard-Quote</tab>
