@@ -306,6 +306,23 @@ public class CustomerCommunicationHandlerTest{
         update productionUpdate;
     }
 
+    public static void mockZuoraFields(){
+        List<Account> accounts = [
+            SELECT Id,
+                Max_Overdue_Due_Date_Zuora__c,
+                Total_Outstanding_Balance_Zuora__c,
+                Max_Overdue_Due_Date__c,
+                Total_Outstanding_Balance__c
+            FROM Account
+        ];
+
+        for (Account acct : accounts){
+            acct.Max_Overdue_Due_Date_Zuora__c = acct.Max_Overdue_Due_Date__c;
+            acct.Total_Outstanding_Balance_Zuora__c = acct.Total_Outstanding_Balance__c;
+        }
+        update accounts;
+    }
+
     public static testmethod void testThreeDayWarning(){
         Test.startTest();
 
@@ -320,6 +337,7 @@ public class CustomerCommunicationHandlerTest{
             acctBill.Published__c = True;
         }
         update listaccountBills;
+        mockZuoraFields();
 
         Datetime dt = Datetime.now();
         // Test both the scheduling of the class and the execution of the batch
@@ -365,6 +383,7 @@ public class CustomerCommunicationHandlerTest{
             acctBill.Published__c = True;
         }
         update listaccountBills;
+        mockZuoraFields();
 
         Datetime dt = Datetime.now();
         // Test both the scheduling of the class and the batch execution
@@ -410,6 +429,7 @@ public class CustomerCommunicationHandlerTest{
             acctBill.Published__c = True;
         }
         update listaccountBills;
+        mockZuoraFields();
 
         Datetime dt = Datetime.now();
         // Test both the scheduling of the class and the execution of the batch
@@ -455,6 +475,7 @@ public class CustomerCommunicationHandlerTest{
             acctBill.Published__c = True;
         }
         update listaccountBills;
+        mockZuoraFields();
 
         CustomerCommunicationHandler m = new CustomerCommunicationHandler();
         Database.executeBatch(m, 10);
@@ -481,6 +502,7 @@ public class CustomerCommunicationHandlerTest{
             acctBill.Published__c = True;
         }
         update listaccountBills;
+        mockZuoraFields();
 
         CustomerCommunicationHandler m = new CustomerCommunicationHandler();
         Database.executeBatch(m, 10);
