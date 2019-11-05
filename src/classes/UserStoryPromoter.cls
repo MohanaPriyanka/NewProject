@@ -1,7 +1,7 @@
 /*************************************************************************************
  * Created By: peteryao on 10/24/19  
  * Description: Promotes User Stories to production on schedule.
- * Test: 
+ * Test: UserStoryPromoterTest
  *************************************************************************************/
 
 public without sharing class UserStoryPromoter implements Schedulable {
@@ -28,6 +28,9 @@ public without sharing class UserStoryPromoter implements Schedulable {
             if (userStory.copado__Promoted_User_Stories__r.size() == 0) {
                 addStoryToPromotionList(userStory, storiesToPromote);
             }
+        }
+        if (storiesToPromote.isEmpty()) {
+            return;
         }
         copado__Promotion__c promotion = createPromotion();
         String testLevel = addStoriesToPromotion(storiesToPromote, promotion);
