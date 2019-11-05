@@ -22,6 +22,7 @@ public with sharing class CSCancellationServiceTest {
             acctBill.Published__c = true;
         }
         update accountBillList;
+        CustomerCommunicationHandlerTest.mockZuoraFields();
 
         Test.startTest();
         CSCancellationService.handleOverdueAccounts();
@@ -89,6 +90,7 @@ public with sharing class CSCancellationServiceTest {
             acctBill.Published__c = true;
         }
         update accountBillList;
+        CustomerCommunicationHandlerTest.mockZuoraFields();
 
         Test.startTest();
         MessagingService.onlyUseActiveTemplates = false;

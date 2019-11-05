@@ -23,11 +23,19 @@ public class BillGenerationConsoleController {
 
     @AuraEnabled
     public static void runThisMonthsBills() {
+        Zuora_Setting__mdt zuoraSetting = ZuoraAPIHelper.getZuoraSetting();
         Date today = System.Today();
         List<Energy_Usage_Update__c> prodUpdateList;
         prodUpdateList = ProductionUpdateSelector.getProductionUpdatesByMonth(today.month(),String.valueOf(today.year()));
-        EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(prodUpdateList);
-        ee.runBills();
+
+        if (zuoraSetting.Zuora_Is_Live__c){
+            BillGenerationAsyncService billGen = new BillGenerationAsyncService(prodUpdateList);
+            billGen.executeBatchJob();
+        } else {
+            EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(prodUpdateList);
+            ee.runBills();
+        }
+
     }
 
     @AuraEnabled
