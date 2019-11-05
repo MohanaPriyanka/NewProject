@@ -45,6 +45,31 @@
                     <default>false</default>
                     <label>Customer Bill</label>
                 </value>
+                <value>
+                    <fullName>Customer Disclosure Form</fullName>
+                    <default>false</default>
+                    <label>Customer Disclosure Form</label>
+                </value>
+                <value>
+                    <fullName>Partial Customer Agreement Packet</fullName>
+                    <default>false</default>
+                    <label>Partial Customer Agreement Packet</label>
+                </value>
+                <value>
+                    <fullName>Full Customer Agreement Packet</fullName>
+                    <default>false</default>
+                    <label>Full Customer Agreement Packet</label>
+                </value>
+                <value>
+                    <fullName>Customer Agreement</fullName>
+                    <default>false</default>
+                    <label>Customer Agreement</label>
+                </value>
+                <value>
+                    <fullName>Customer Utility Bill</fullName>
+                    <default>false</default>
+                    <label>Customer Utility Bill</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
