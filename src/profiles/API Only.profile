@@ -31922,6 +31922,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Zuora__ZInvoice__c.Downloaded_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Zuora__ZInvoice__c.Legacy_Invoice_Id__c</field>
         <readable>true</readable>
     </fieldPermissions>
