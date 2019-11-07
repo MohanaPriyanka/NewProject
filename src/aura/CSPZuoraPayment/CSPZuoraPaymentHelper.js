@@ -128,7 +128,6 @@
     },
 
     sendToZuoraHelper : function(component, event, helper) {
-        component.set("v.showSpinner", true);
         let payPageOrManageAuto = component.get("v.makePaymentOrManageAutopay");
 
         if (payPageOrManageAuto === true){
