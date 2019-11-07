@@ -14,8 +14,7 @@
     <lightning:spinner alternativeText="Loading..." size="medium"/>
     <aura:set attribute="else">
       <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
-        <div class="slds-col slds-size_1-of-12"/>
-        <div class="slds-col slds-size_11-of-12">
+        <div class="slds-col slds-size_12-of-12">
           <h3 class="slds-text-heading_large slds-p-bottom_x-large slds-p-top_large slds-text-color_default">
             <b>My Account</b>
           </h3>
@@ -23,8 +22,7 @@
       </div>
       <aura:if isTrue="{!v.showError}">
         <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
-          <div class="slds-col slds-size_1-of-12"/>
-          <div class="slds-col slds-size_10-of-12">
+          <div class="slds-col slds-size_11-of-12">
             <h3 class="slds-text-heading_small slds-text-color_default">
               {!v.errorMessage}
             </h3>
@@ -34,8 +32,7 @@
         <aura:set attribute="else">
           <aura:if isTrue="{!$Browser.isPhone}">
             <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
-              <div class="slds-col slds-size_1-of-12"/>
-              <div class="slds-col slds-size_10-of-12">
+              <div class="slds-col slds-size_11-of-12">
                 <lightning:layout multipleRows="true">
                   <lightning:layoutItem class="slds-p-bottom_small" size="12">
                     <h3 class="slds-text-title_caps"><b>Current Balance Due:</b></h3>
@@ -98,14 +95,12 @@
                   </lightning:layoutItem>
                 </lightning:layout>
               </div>
-              <div class="slds-col slds-size_1-of-12"/>
             </div>
           </aura:if>
 
           <aura:if isTrue="{!!$Browser.isPhone}">
 
             <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
-              <div class="slds-col slds-size_1-of-12"/>
               <div class="slds-col slds-size_5-of-12">
                 <lightning:layout multipleRows="true">
                   <lightning:layoutItem class="slds-p-bottom_small" size="12">
