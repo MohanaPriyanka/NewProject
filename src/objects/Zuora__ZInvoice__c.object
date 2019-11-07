@@ -157,6 +157,15 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
     <fields>
+        <fullName>Downloaded_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Date that ZuoraInvoiceService downloaded the PDF for this invoice. Indicates that it should not try to retrieve the PDF for the invoice for download.</inlineHelpText>
+        <label>Downloaded Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>Legacy_Invoice_Id__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>The Account Bill Id if the invoice is from the historical migration</inlineHelpText>
