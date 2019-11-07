@@ -54793,6 +54793,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Zuora__ZInvoice__c.Downloaded_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>agf__ADM_Solution_Overview__c.agf__Marketing_Name__c</field>
         <readable>true</readable>
