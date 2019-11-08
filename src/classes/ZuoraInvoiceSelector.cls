@@ -59,13 +59,13 @@ public with sharing class ZuoraInvoiceSelector {
                 'WHERE m.accountid = acct.Id AND m.balance > 0) as MemoBalance, '+
             '(SELECT MIN(m.duedate) '+
                 'FROM DebitMemo m ' +
-                'WHERE m.accountid = acct.Id AND m.balance > 0) as MemoDueDate, ' +
+                'WHERE m.accountid = acct.Id AND m.balance > 1) as MemoDueDate, ' +
             '(SELECT SUM(iv.balance) ' +
                 'FROM Invoice iv ' +
                 'WHERE iv.accountid = acct.Id AND iv.balance > 0) as InvoiceBalance, ' +
             '(SELECT MIN(iv.duedate) '+
                 'FROM Invoice iv ' +
-                'WHERE iv.accountid = acct.Id AND iv.balance > 0) as InvoiceDueDate ' +
+                'WHERE iv.accountid = acct.Id AND iv.balance > 1) as InvoiceDueDate ' +
             'FROM Account acct ';
 
         if (billAccounts != null){
