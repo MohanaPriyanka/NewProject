@@ -15042,6 +15042,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Allocation_Schedule_Subscription__c.kW_Allocation__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Client_Health_Report__c.BlueWave_Rating__c</field>
         <readable>true</readable>
@@ -15145,6 +15150,11 @@
         <editable>false</editable>
         <field>Client_Utility_Account_Subscription__c.Customer__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Utility_Account_Subscription__c.kW_Allocation__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -37087,6 +37097,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Schedule_Z_Subscription__c.kW_Allocation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Schedule_Z__c.Applied_to_Production_Starting__c</field>
         <readable>true</readable>
@@ -40859,6 +40874,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Account_Subscription__c.calculated_annual_cost_of_electricity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Subscription__c.kW_Allocation__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -55518,6 +55538,9 @@
         <layout>ChargentOrders__Transaction__c-ChargentOrders__Transaction Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Client_Allocation_Schedule_Subscription__c-Client Allocation Schedule Subscription Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Client_Health_Report__c-Monthly Client Report Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -56263,14 +56286,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Utility_Account_Subscription__c-Utility Account Subscription Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Utility_Account_Subscription__c-Utility Account Subscription Layout</layout>
-        <recordType>Utility_Account_Subscription__c.Utility_Account_Subscription_Editable</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Utility_Account_Subscription__c-Utility Account Subscription Layout</layout>
-        <recordType>Utility_Account_Subscription__c.Utility_Account_Subscription_on_Schedule_Z</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Utility_Bill_Line_Item__c-Utility Bill Line Item Layout</layout>
