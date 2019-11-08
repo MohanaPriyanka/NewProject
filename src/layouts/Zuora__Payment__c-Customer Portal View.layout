@@ -23,7 +23,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Zuora__SubmittedOn__c</field>
+                <field>Zuora__Effective_Date__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -57,7 +57,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h29000000VCvQ</masterLabel>
+        <masterLabel>00h0a00000BtkrQ</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>
