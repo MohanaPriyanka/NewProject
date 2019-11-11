@@ -1,6 +1,6 @@
 //Test: AccountTriggerHandlerTestClass, CSCancellationServiceTest
 
-trigger AccountTrigger on Account (before insert, before update, after update) {
+trigger AccountTrigger on Account (before insert, before update, after update, before delete) {
     if (Util.isDisabled('Disable_AccountTrigger__c')) {
         return;
     }
@@ -13,6 +13,8 @@ trigger AccountTrigger on Account (before insert, before update, after update) {
             accountTriggerHandler.onBeforeUpdate(Trigger.new);
         } when AFTER_UPDATE {
             accountTriggerHandler.onAfterUpdate(Trigger.oldMap, Trigger.newMap);
+        } when BEFORE_DELETE {
+            accountTriggerHandler.preventZuoraAccountsFromDelete(Trigger.old);
         }
     }
 }
