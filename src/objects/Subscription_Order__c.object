@@ -14,24 +14,13 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ControlledByParent</externalSharingModel>
     <fields>
-        <fullName>Application_Date__c</fullName>
-        <description>This is the date that the Subscription Order was approved. It is populated automatically when the Status field is set to approved. Subscription Orders cannot be edited once they&apos;ve been approved and posted.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>This is the date that the Subscription Order was approved. It is populated automatically when the Status field is set to approved. Subscription Orders cannot be edited once they&apos;ve been approved and posted.</inlineHelpText>
-        <label>Application Date</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>DateTime</type>
-    </fields>
-    <fields>
         <fullName>Approval_Status__c</fullName>
         <description>Subscription Orders will not be rolled up to the utility account subscription until they are marked as approved. Once approved, they cannot be changed.</description>
         <externalId>false</externalId>
         <inlineHelpText>Subscription Orders will not be rolled up to the utility account subscription until they are marked as approved. Once approved, they cannot be changed.</inlineHelpText>
         <label>Approval Status</label>
         <required>false</required>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
@@ -104,7 +93,7 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <precision>16</precision>
         <required>false</required>
         <scale>6</scale>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
     </fields>
@@ -117,7 +106,7 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
@@ -131,7 +120,7 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <precision>18</precision>
         <required>false</required>
         <scale>5</scale>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Percent</type>
     </fields>
@@ -140,11 +129,11 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <description>This is the net change in kW DC. This field is blank until the subscription order gets approved, at which point it is automatically populated with the value in the calculated Change in Subscription (KW DC) field on subscription order. It&apos;s important to have a static value for tracking purposes, and to use in rollup summary fields.</description>
         <externalId>false</externalId>
         <inlineHelpText>This is the net change in kW DC. This field is blank until the subscription order gets approved, at which point it is automatically populated with the value in the calculated Change in Subscription (KW DC) field on subscription order.</inlineHelpText>
-        <label>Change in Subscription (KW DC)</label>
+        <label>Approved Change in Subscription (KW DC)</label>
         <precision>18</precision>
         <required>false</required>
         <scale>4</scale>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
@@ -160,7 +149,7 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <relationshipLabel>Subscription Orders</relationshipLabel>
         <relationshipName>Subscription_Orders</relationshipName>
         <required>false</required>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
@@ -169,7 +158,7 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <externalId>false</externalId>
         <label>Comments</label>
         <required>false</required>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>TextArea</type>
     </fields>
@@ -180,7 +169,7 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <inlineHelpText>This is the date that the Subscription Order was approved. It is populated automatically when the Status field is set to approved. Subscription Orders cannot be edited once they&apos;ve been approved and posted.</inlineHelpText>
         <label>Effective Date</label>
         <required>false</required>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>DateTime</type>
     </fields>
@@ -193,7 +182,7 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <precision>12</precision>
         <required>false</required>
         <scale>4</scale>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
@@ -207,7 +196,7 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <relationshipLabel>Subscription Orders</relationshipLabel>
         <relationshipName>Subscription_Orders</relationshipName>
         <required>false</required>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
@@ -220,7 +209,7 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <precision>8</precision>
         <required>false</required>
         <scale>2</scale>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
@@ -230,7 +219,7 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <externalId>false</externalId>
         <label>Type</label>
         <required>false</required>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
@@ -269,7 +258,7 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <relationshipName>Subscription_Orders</relationshipName>
         <relationshipOrder>0</relationshipOrder>
         <reparentableMasterDetail>false</reparentableMasterDetail>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>MasterDetail</type>
         <writeRequiresMasterRead>true</writeRequiresMasterRead>
@@ -285,7 +274,7 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <relationshipLabel>Subscription Orders</relationshipLabel>
         <relationshipName>Subscription_Orders</relationshipName>
         <required>false</required>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
@@ -298,7 +287,7 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
@@ -312,7 +301,7 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
     </fields>
@@ -325,7 +314,7 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
     <nameField>
         <displayFormat>SO-{00000}</displayFormat>
         <label>Subscription Order Name</label>
-        <trackHistory>false</trackHistory>
+        <trackHistory>true</trackHistory>
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Subscription Orders</pluralLabel>
