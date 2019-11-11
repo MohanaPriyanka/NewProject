@@ -137,6 +137,21 @@
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
+    <fields>
+        <fullName>kW_Allocation__c</fullName>
+        <externalId>false</externalId>
+        <formula>Allocation_Schedule_Subscription__r.kW_Allocation__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>kW size based on % subscription on allocation schedule</inlineHelpText>
+        <label>kW Allocation</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
     <label>Client Allocation Schedule Subscription</label>
     <nameField>
         <label>Client Allocation Schedule  Name</label>

@@ -1018,6 +1018,22 @@ IF(
         <trackTrending>false</trackTrending>
         <type>Currency</type>
     </fields>
+    <fields>
+        <fullName>kW_Allocation__c</fullName>
+        <description>This field multiplies the ROUNDED Future Shared of System by the System Size in kW DC.</description>
+        <externalId>false</externalId>
+        <formula>Future_Share_of_System__c * Opportunity__r.Shared_Solar_System__r.Total_System_Size_kWh_DC__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>kW size based on % subscription on allocation schedule</inlineHelpText>
+        <label>kW Allocation</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
     <label>Utility Account Subscription</label>
     <listViews>
         <fullName>Customer_Community_List_Community_Solar_Subscriptions</fullName>

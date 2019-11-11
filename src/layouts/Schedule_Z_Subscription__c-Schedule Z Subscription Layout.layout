@@ -26,6 +26,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
+                <field>kW_Allocation__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
                 <field>Percent_Share__c</field>
             </layoutItems>
             <layoutItems>
