@@ -25,4 +25,37 @@ public class AccountTriggerHandlerTestClass {
         System.assertEquals(account.Sales_Representative__r.Id, salesRep.Id);
         System.assertEquals(account.Partner__r.Id, partner.Id);
     }
+
+    @IsTest
+    private static void testPreventDeletion() {
+        Account accountA = new Account(
+            Name = 'Test',
+            Zuora_Id__c = '2c92a0ff6e3f9d59016e411e1efa6e15'
+        );
+        insert accountA;
+        Account accountB = new Account(
+            Name = 'TestB'
+        );
+        insert accountB;
+
+        Boolean caughtException = false;
+        try {
+            Database.merge(accountB, accountA);
+        } catch (DmlException de) {
+            System.assert(de.getMessage().contains('Zuora'));
+            caughtException = true;
+        }
+        System.assert(caughtException, 'Expected the merge to fail because the Zuora account is being deleted');
+
+        caughtException = false;
+        Database.MergeResult mergeResult;
+        try {
+            mergeResult = Database.merge(accountA, accountB);
+        } catch (Exception e) {
+            System.debug(LoggingLevel.ERROR, e.getMessage());
+            System.assert(false, 'Expected the merge to work because the Zuora account is not deleted');
+        }
+        System.assert(mergeResult.isSuccess());
+        System.assert(!caughtException);
+    }
 }
