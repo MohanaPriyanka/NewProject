@@ -31401,7 +31401,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>UASB__c.Client_Account_Number__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
