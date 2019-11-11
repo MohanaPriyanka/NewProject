@@ -23,22 +23,6 @@
                 <behavior>Readonly</behavior>
                 <field>Subscription_Type__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Future_Customer_Subscription_KWDC_Rollup__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Future_Share_of_System_Rollup__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Annual_Cost_Future_Rollup__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Annual_kWh_Subscription_Future_Rollup__c</field>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -306,10 +290,6 @@
     <relatedLists>
         <fields>NAME</fields>
         <relatedList>Client_Utility_Account_Subscription__c.Utility_Account_Subscription__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <relatedList>Subscription_Order__c.Utility_Account_Subscription__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
