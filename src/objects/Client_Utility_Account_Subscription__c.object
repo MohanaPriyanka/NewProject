@@ -163,6 +163,18 @@
     <eventType n1:nil="true" />
     <externalSharingModel>Private</externalSharingModel>
     <fields>
+        <fullName>Account_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Opportunity__r.Account.Name</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Account Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Annual_Cost_of_Electricity_Future__c</fullName>
         <externalId>false</externalId>
         <formula>Utility_Account_Subscription__r.Subscribed_Annual_Cost_of_Electricity__c</formula>
@@ -188,6 +200,98 @@
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Autopay__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Opportunity__r.Account.Recurring_Billing__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Autopay</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>CS_Account__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Opportunity__r.Account.Account_Number__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>CS Account #</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CS_Status__c</fullName>
+        <externalId>false</externalId>
+        <formula>text( Utility_Account_Subscription__r.Opportunity__r.Account.Status__c )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>CS Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Cancellation_Reason__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Opportunity__r.Account.Cancellation_Reason_External__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Cancellation Reason</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Cancellation_Request_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Opportunity__r.Account.Cancellation_Request_Date__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Cancellation Request Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Contract_Close_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Opportunity__r.Contract_Close_Date__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Contract Close Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Customer_Group__c</fullName>
+        <externalId>false</externalId>
+        <formula>text(Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Customer Group</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Customer__c</fullName>
+        <description>Opportunity Name</description>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.Opportunity__r.Name</formula>
+        <label>Customer</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
@@ -284,6 +388,18 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Opportunity_Stage__c</fullName>
+        <externalId>false</externalId>
+        <formula>text(Utility_Account_Subscription__r.Opportunity__r.StageName )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Opportunity Stage</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Opportunity__c</fullName>
         <externalId>false</externalId>
         <formula>Utility_Account_Subscription__r.Opportunity__c</formula>
@@ -307,122 +423,6 @@
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Account_Name__c</fullName>
-        <externalId>false</externalId>
-        <formula>Utility_Account_Subscription__r.Opportunity__r.Account.Name</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Account Name</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Autopay__c</fullName>
-        <externalId>false</externalId>
-        <formula>Utility_Account_Subscription__r.Opportunity__r.Account.Recurring_Billing__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Autopay</label>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>CS_Account__c</fullName>
-        <externalId>false</externalId>
-        <formula>Utility_Account_Subscription__r.Opportunity__r.Account.Account_Number__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>CS Account #</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>CS_Status__c</fullName>
-        <externalId>false</externalId>
-        <formula>text( Utility_Account_Subscription__r.Opportunity__r.Account.Status__c )</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>CS Status</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Cancellation_Reason__c</fullName>
-        <externalId>false</externalId>
-        <formula>Utility_Account_Subscription__r.Opportunity__r.Account.Cancellation_Reason_External__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Cancellation Reason</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Cancellation_Request_Date__c</fullName>
-        <externalId>false</externalId>
-        <formula>Utility_Account_Subscription__r.Opportunity__r.Account.Cancellation_Request_Date__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Cancellation Request Date</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Contract_Close_Date__c</fullName>
-        <externalId>false</externalId>
-        <formula>Utility_Account_Subscription__r.Opportunity__r.Contract_Close_Date__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Contract Close Date</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Customer_Group__c</fullName>
-        <externalId>false</externalId>
-        <formula>text(Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Customer Group</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Customer__c</fullName>
-        <description>Opportunity Name</description>
-        <externalId>false</externalId>
-        <formula>Utility_Account_Subscription__r.Opportunity__r.Name</formula>
-        <label>Customer</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Opportunity_Stage__c</fullName>
-        <externalId>false</externalId>
-        <formula>text(Utility_Account_Subscription__r.Opportunity__r.StageName )</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Opportunity Stage</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Shared_Solar_System__c</fullName>
@@ -475,6 +475,20 @@
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
+    <fields>
+        <fullName>kW_Allocation__c</fullName>
+        <externalId>false</externalId>
+        <formula>Utility_Account_Subscription__r.kW_Allocation__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>kW size based on % subscription on allocation schedule</inlineHelpText>
+        <label>kW Allocation</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
     <gender n1:nil="true" />
     <household>false</household>
     <label>Client Utility Account Subscription</label>
@@ -486,7 +500,7 @@
     <pluralLabel>Client Utility Account Subscriptions</pluralLabel>
     <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
     <recordTypeTrackHistory>false</recordTypeTrackHistory>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <startsWith n1:nil="true" />
     <visibility>Public</visibility>
