@@ -37,4 +37,13 @@ public without sharing class AccountTriggerHandler {
             }
         }
     }
+
+    public void preventZuoraAccountsFromDelete(List<Account> accounts) {
+        for (Account account : accounts) {
+            if (!String.isBlank(account.Zuora_Id__c)) {
+                account.addError('This account has a Zuora Id. Delete it from Zuora first if there is no activity, ' +
+                    'remove the Zuora Id, and attempt the delete again');
+            }
+        }
+    }
 }
