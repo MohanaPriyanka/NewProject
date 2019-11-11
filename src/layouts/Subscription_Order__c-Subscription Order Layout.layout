@@ -19,11 +19,15 @@
                 <behavior>Edit</behavior>
                 <field>Type__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Comments__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Application_Date__c</field>
+                <field>Effective_Date__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>

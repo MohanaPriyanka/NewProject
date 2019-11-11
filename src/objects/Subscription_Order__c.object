@@ -127,7 +127,7 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <description>This field is stamped with the value of the calculated Change in Percent Share of System field on subscription order automatically when it is approved. We need a static field for tracking purposes and to use in rollup summary fields .</description>
         <externalId>false</externalId>
         <inlineHelpText>This field is stamped with the value of the calculated Change in Percent Share of System field on subscription order automatically when it is approved. We need a static field for tracking purposes and to use in rollup summary fields .</inlineHelpText>
-        <label>Change in Percent Share</label>
+        <label>Approved Change in Percent Share</label>
         <precision>18</precision>
         <required>false</required>
         <scale>5</scale>
@@ -163,6 +163,26 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Comments__c</fullName>
+        <externalId>false</externalId>
+        <label>Comments</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Effective_Date__c</fullName>
+        <description>This is the date that the Subscription Order was approved. It is populated automatically when the Status field is set to approved. Subscription Orders cannot be edited once they&apos;ve been approved and posted.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the date that the Subscription Order was approved. It is populated automatically when the Status field is set to approved. Subscription Orders cannot be edited once they&apos;ve been approved and posted.</inlineHelpText>
+        <label>Effective Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
     </fields>
     <fields>
         <fullName>Expected_Yield_kWh_kW__c</fullName>
