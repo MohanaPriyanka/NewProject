@@ -142,6 +142,9 @@
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
+            <connector>
+                <targetReference>Apply_Memos</targetReference>
+            </connector>
             <label>Skip Bill Run outcome</label>
         </rules>
     </decisions>
@@ -746,7 +749,7 @@
         <showHeader>false</showHeader>
     </screens>
     <startElementReference>GenerateUASBs</startElementReference>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <description>Response from the API after we try to execute a bill Run</description>
         <name>BillRun_Response</name>
