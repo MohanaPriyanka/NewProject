@@ -800,7 +800,7 @@ IF( ISPICKVAL(Class__c, &quot;Class 3&quot;), (Transmission_Charge__c +  Transit
         <active>true</active>
         <errorConditionFormula>AND(
 ISCHANGED(Value_of_NMC__c),
-PRIORVALUE(Value_of_NMC__c)!=null 
+PRIORVALUE(Value_of_NMC__c)!=0 
 )</errorConditionFormula>
         <errorMessage>The Value of NMC Tariff cannot be changed after it&apos;s been created. If you need to change the tariff value, please create a new tariff record, and related it to the appropriate shared solar systems. This is to ensure that we track all subscription changes.</errorMessage>
     </validationRules>
