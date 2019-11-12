@@ -263,6 +263,9 @@ public without sharing class DocuSignHelper {
             } else if (r.RoleName == 'Recipient 3'){
                 r.UserName = opp.Parent_Account_Name__c;
                 r.Email = opp.Email__c;
+            } else if (r.RoleName == 'Customer CC'){
+                r.UserName = opp.Parent_Account_Name__c;
+                r.Email = opp.Email__c;
             } else {
                 Logger.logLater('DocuSignHelper', 'sendCSPackage', 'error in mapping this recipient:' + String.valueOf(r.RoleName), 'Error');
             }
