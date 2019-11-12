@@ -29392,11 +29392,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Subscription_Order__c.Application_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Subscription_Order__c.Approval_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
