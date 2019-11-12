@@ -9,6 +9,8 @@ public with sharing class ZuoraAccountReconciliationService {
     @TestVisible
     private AccountsSelector accountsSelector = new AccountsSelector();
     @TestVisible
+    private ZuoraAccountSelector zuoraAcctSelector = new ZuoraAccountSelector();
+    @TestVisible
     private ZuoraAccountAsyncService nextAccountAsyncService;
 
     public void reconcileZuoraWithSFDC(Set<String> zuoraAccountIds, Set<String> zuoraAccountIdsReconciled) {
@@ -60,7 +62,7 @@ public with sharing class ZuoraAccountReconciliationService {
     private void reconcileZuoraWithSFDCInner(Set<String> zuoraAccountIds) {
         List<String> zuoraAccountIdList = new List<String>(zuoraAccountIds);
         List<ZuoraAPI.ZuoraAccount> zuoraAccounts =
-            ZuoraAccountSelector.query(zuoraAccountIdList, ZuoraAPI.accountFieldsToReconcile);
+            zuoraAcctSelector.query(zuoraAccountIdList, ZuoraAPI.accountFieldsToReconcile);
         Map<String, Map<String, Object>> zuoraIdToSFDCAccountMap = getZuoraIdToSFDCAccountMap(zuoraAccountIdList);
 
         List<ZuoraAPI.ZuoraAccount> zuoraAccountsToUpdate =
