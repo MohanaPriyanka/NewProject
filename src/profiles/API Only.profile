@@ -1063,10 +1063,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>testReferralCode</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>testTraunchCapitalMetrics</apexClass>
         <enabled>true</enabled>
     </classAccesses>
