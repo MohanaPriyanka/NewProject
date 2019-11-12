@@ -187,7 +187,7 @@ Bill_Document_Content_Version_ID__c)=true,
 
 &quot;Statement Coming Soon&quot;,
 
-HYPERLINK(&quot;/sfc/servlet.shepherd/version/download&quot;&amp;Bill_Document_Content_Version_ID__c,&quot;View Statement&quot;,&quot;_self&quot;)
+HYPERLINK(&quot;/sfc/servlet.shepherd/version/download/&quot;&amp;Bill_Document_Content_Version_ID__c,&quot;View Statement&quot;,&quot;_self&quot;)
 
 )</formula>
         <label>Statement</label>
