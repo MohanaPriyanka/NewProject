@@ -1,15 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <name>BillingBatchUpdate</name>
+        <label>BillingBatchUpdate</label>
+        <locationX>760</locationX>
+        <locationY>83</locationY>
+        <actionName>InvocableZuoraBillingBatchUpdate</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Template_Assigner_Screen</targetReference>
+        </connector>
+        <inputParameters>
+            <name>invoiceDates</name>
+            <value>
+                <elementReference>Invoice_Date</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
         <description>Makes API call to Zuora to execute a bill run, which gets outstanding usage and creates invoices.</description>
         <name>FlowZuoraBillRun</name>
         <label>Bill Run Execute</label>
-        <locationX>690</locationX>
-        <locationY>183</locationY>
+        <locationX>1165</locationX>
+        <locationY>66</locationY>
         <actionName>InvocableZuoraBillRun</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Download_Invoices_Screen</targetReference>
+            <targetReference>Apply_Memos</targetReference>
         </connector>
         <inputParameters>
             <name>invoiceDates</name>
@@ -26,8 +43,8 @@
         <description>Queries for invoices in SF that do not have a pdf, get that pdf from Zuora and download it as a file.</description>
         <name>InvoiceDownload</name>
         <label>InvoiceDownload</label>
-        <locationX>824</locationX>
-        <locationY>190</locationY>
+        <locationX>1521</locationX>
+        <locationY>63</locationY>
         <actionName>InvocableZuoraInvoiceDownload</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -38,32 +55,32 @@
         <description>Gets zuora invoices marked as ready for paper send and uploads them to letterstream</description>
         <name>PaperMailSend</name>
         <label>PaperMailSend</label>
-        <locationX>1072</locationX>
-        <locationY>182</locationY>
+        <locationX>2040</locationX>
+        <locationY>66</locationY>
         <actionName>InvocableZuoraPaperMailSend</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Zuora_Memo_Apply</targetReference>
+            <targetReference>Done_SCreen</targetReference>
         </connector>
     </actionCalls>
     <actionCalls>
         <description>Assigns bill templates to Zuora Accounts based on criteria (client, anchor v non anchor, etc)</description>
         <name>TemplateAssigner</name>
         <label>TemplateAssigner</label>
-        <locationX>475</locationX>
-        <locationY>185</locationY>
+        <locationX>992</locationX>
+        <locationY>78</locationY>
         <actionName>InvocableZuoraTemplateAssigner</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Input_Bill_Date</targetReference>
+            <targetReference>Execute_Bill_Run_Screen</targetReference>
         </connector>
     </actionCalls>
     <actionCalls>
         <description>Gets all UASBs and Bill Adjustments that have not been uploaded to Zuora yet and uploads them</description>
         <name>UsageUpload</name>
         <label>UsageUpload</label>
-        <locationX>198</locationX>
-        <locationY>180</locationY>
+        <locationX>318</locationX>
+        <locationY>50</locationY>
         <actionName>InvocableZuoraUsageUpload</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -74,8 +91,8 @@
         <description>Queries for all invoices marked as Ready for Email = true, and send through email from Salesforce with the bill pdf as an attachment.</description>
         <name>Zuora_Email_Send</name>
         <label>Zuora Email Send</label>
-        <locationX>968</locationX>
-        <locationY>183</locationY>
+        <locationX>1787</locationX>
+        <locationY>68</locationY>
         <actionName>InvocableZuoraEmailSend</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -86,26 +103,248 @@
         <description>Queries outstanding credit memos in Zuora, and applies them to invoices by client and project</description>
         <name>Zuora_Memo_Apply</name>
         <label>Memo Apply</label>
-        <locationX>1186</locationX>
-        <locationY>182</locationY>
+        <locationX>1317</locationX>
+        <locationY>60</locationY>
         <actionName>InvocableZuoraMemoApply</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Done_SCreen</targetReference>
+            <targetReference>Download_Invoices_Screen</targetReference>
         </connector>
     </actionCalls>
     <actionCalls>
         <description>Uploads bill adjustments in SF that are not yet in Zuora</description>
         <name>Zuora_Memo_Upload</name>
         <label>Memo Upload</label>
-        <locationX>320</locationX>
-        <locationY>186</locationY>
+        <locationX>521</locationX>
+        <locationY>67</locationY>
         <actionName>InvocableZuoraMemoUpload</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Template_Assigner_Screen</targetReference>
+            <targetReference>Input_Bill_Date</targetReference>
         </connector>
     </actionCalls>
+    <decisions>
+        <name>Skip_Bill_Run_Decision</name>
+        <label>Skip Bill Run Decision</label>
+        <locationX>1047</locationX>
+        <locationY>226</locationY>
+        <defaultConnector>
+            <targetReference>FlowZuoraBillRun</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Skip_Bill_Run_outcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Skip_Bill_Run</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Skip Bill Run outcome</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Skip_Billing_Batch_Update_Decision</name>
+        <label>Skip Billing Batch Update Decision</label>
+        <locationX>611</locationX>
+        <locationY>245</locationY>
+        <defaultConnector>
+            <targetReference>BillingBatchUpdate</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Skip_Billing_Batch_Update_Outcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Skip_Billing_Batch_Update</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Template_Assigner_Screen</targetReference>
+            </connector>
+            <label>Skip Billing Batch Update Outcome</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Skip_Download_Invoices</name>
+        <label>Skip Download Invoices</label>
+        <locationX>1425</locationX>
+        <locationY>196</locationY>
+        <defaultConnector>
+            <targetReference>InvoiceDownload</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Download_Invoices_Outcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Skip_Download_PDFs</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Send_Via_Email_Screen</targetReference>
+            </connector>
+            <label>Skip Download Invoices Outcome</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Skip_Email_Send_Decision</name>
+        <label>Skip Email Send Decision</label>
+        <locationX>1683</locationX>
+        <locationY>197</locationY>
+        <defaultConnector>
+            <targetReference>Zuora_Email_Send</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Skip_Email_Send_Outcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Skip_Email_Send</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Send_Via_Paper_Screen</targetReference>
+            </connector>
+            <label>Skip Email Send Outcome</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Skip_Memo_Application_Decision</name>
+        <label>Skip Memo Application Decision</label>
+        <locationX>1268</locationX>
+        <locationY>229</locationY>
+        <defaultConnector>
+            <targetReference>Zuora_Memo_Apply</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Skip_Memo_Applicaiton</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Skip_Memo_Application</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Download_Invoices_Screen</targetReference>
+            </connector>
+            <label>Skip Memo Applicaiton</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Skip_Memo_Apply_Decision</name>
+        <label>Skip Memo Apply Decision</label>
+        <locationX>393</locationX>
+        <locationY>240</locationY>
+        <defaultConnector>
+            <targetReference>Zuora_Memo_Upload</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Skip_Memo_Apply</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Skip_Apply_Memos</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Input_Bill_Date</targetReference>
+            </connector>
+            <label>Skip Memo Apply</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Skip_Paper_Mail_Decision</name>
+        <label>Skip Paper Mail Decision</label>
+        <locationX>1934</locationX>
+        <locationY>211</locationY>
+        <defaultConnector>
+            <targetReference>PaperMailSend</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Skip_Paper_Mail_Outcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Skip_Paper_Mail</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Done_SCreen</targetReference>
+            </connector>
+            <label>Skip Paper Mail Outcome</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Skip_Template_Assigner_Decision</name>
+        <label>Skip Template Assigner Decision</label>
+        <locationX>837</locationX>
+        <locationY>221</locationY>
+        <defaultConnector>
+            <targetReference>TemplateAssigner</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Skip_Template_Assigner_Outcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Skip_Template_Assigner</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Execute_Bill_Run_Screen</targetReference>
+            </connector>
+            <label>Skip Template Assigner Outcome</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Skip_Usage_Decision</name>
+        <label>Skip Usage Decision</label>
+        <locationX>187</locationX>
+        <locationY>186</locationY>
+        <defaultConnector>
+            <targetReference>UsageUpload</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Skip_Usage_Outcome</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Skip_Usage</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Upload_Adjustments_To_Zuora_Screen</targetReference>
+            </connector>
+            <label>Skip Usage Outcome</label>
+        </rules>
+    </decisions>
     <description>Walks through the steps of invoice creation, modification and delivery for monthly CS statements</description>
     <interviewLabel>Zuora Bill Generation Console {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Zuora Bill Generation Console</label>
@@ -123,10 +362,45 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <screens>
+        <name>Apply_Memos</name>
+        <label>Apply Memos</label>
+        <locationX>1180</locationX>
+        <locationY>556</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Skip_Memo_Application_Decision</targetReference>
+        </connector>
+        <fields>
+            <name>Display_Text_memo</name>
+            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;Apply Credit Memos&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;When you hit Next, Zuora will take outstanding credit memos and apply them to invoices and debit memos, effecting days past due. &lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Skip_Memo_Application</name>
+            <dataType>Boolean</dataType>
+            <defaultValue>
+                <booleanValue>false</booleanValue>
+            </defaultValue>
+            <fieldText>Skip This Step</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Bill_Status_memo_application</name>
+            <extensionName>c:BillStatusComponent</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
         <name>Done_SCreen</name>
         <label>Done</label>
-        <locationX>1186</locationX>
-        <locationY>396</locationY>
+        <locationX>2115</locationX>
+        <locationY>573</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -147,18 +421,28 @@
     <screens>
         <name>Download_Invoices_Screen</name>
         <label>Download Invoices</label>
-        <locationX>810</locationX>
-        <locationY>393</locationY>
+        <locationX>1389</locationX>
+        <locationY>550</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>InvoiceDownload</targetReference>
+            <targetReference>Skip_Download_Invoices</targetReference>
         </connector>
         <fields>
             <name>Download_PDFS_Text</name>
             <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 15pt; color: rgb(62, 62, 60);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Download PDFs&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 10pt; color: rgb(62, 62, 60);&quot;&gt;This step will download all Zuora PDFs to Salesforce and mark invoices as &quot;Ready for Email&quot; and &quot;Ready for Paper Bill Queue&quot;&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Skip_Download_PDFs</name>
+            <dataType>Boolean</dataType>
+            <defaultValue>
+                <booleanValue>false</booleanValue>
+            </defaultValue>
+            <fieldText>Skip this Step</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>BillStatus_Download</name>
@@ -172,18 +456,28 @@
     <screens>
         <name>Execute_Bill_Run_Screen</name>
         <label>Execute Bill Run</label>
-        <locationX>681</locationX>
-        <locationY>398</locationY>
+        <locationX>1001</locationX>
+        <locationY>556</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>FlowZuoraBillRun</targetReference>
+            <targetReference>Skip_Bill_Run_Decision</targetReference>
         </connector>
         <fields>
             <name>Execute_Bill_Run_Text</name>
-            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 18px; color: rgb(62, 62, 60);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Execute Bill Run&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60);&quot;&gt;When you hit Next, Zuora will create invoices from previously uploaded usage.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;color: rgb(62, 62, 60); font-size: 18px;&quot;&gt;﻿Execute Bill Run&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60);&quot;&gt;When you hit Next, Zuora will create invoices from previously uploaded usage.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Skip_Bill_Run</name>
+            <dataType>Boolean</dataType>
+            <defaultValue>
+                <booleanValue>false</booleanValue>
+            </defaultValue>
+            <fieldText>Skip this Step</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>BillStatus_ExecuteBilLRun</name>
@@ -197,8 +491,8 @@
     <screens>
         <name>GenerateUASBs</name>
         <label>GenerateUASBs</label>
-        <locationX>49</locationX>
-        <locationY>395</locationY>
+        <locationX>50</locationX>
+        <locationY>536</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -217,13 +511,13 @@
     <screens>
         <name>Input_Bill_Date</name>
         <label>Input Bill Date</label>
-        <locationX>565</locationX>
-        <locationY>398</locationY>
+        <locationX>515</locationX>
+        <locationY>541</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Execute_Bill_Run_Screen</targetReference>
+            <targetReference>Update_Batches</targetReference>
         </connector>
         <fields>
             <name>Invoice_Date</name>
@@ -244,18 +538,28 @@
     <screens>
         <name>Send_Via_Email_Screen</name>
         <label>Send Via Email</label>
-        <locationX>954</locationX>
-        <locationY>398</locationY>
+        <locationX>1610</locationX>
+        <locationY>571</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Zuora_Email_Send</targetReference>
+            <targetReference>Skip_Email_Send_Decision</targetReference>
         </connector>
         <fields>
             <name>Send_Via_Email_Text</name>
             <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;color: rgb(62, 62, 60); font-size: 15pt;&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Send Via Email&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60);&quot;&gt;Clicking next will find all invoices marked as &quot;Ready for Email Send&quot; and attempt to send them. Any emails that fail will have a task logged on the specific invoice record&lt;/span&gt;&lt;span style=&quot;color: rgb(62, 62, 60); font-size: 10pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Skip_Email_Send</name>
+            <dataType>Boolean</dataType>
+            <defaultValue>
+                <booleanValue>false</booleanValue>
+            </defaultValue>
+            <fieldText>Skip This Step</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>BillStatus_Email</name>
@@ -269,18 +573,28 @@
     <screens>
         <name>Send_Via_Paper_Screen</name>
         <label>Send Via Paper</label>
-        <locationX>1063</locationX>
-        <locationY>394</locationY>
+        <locationX>1844</locationX>
+        <locationY>578</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>PaperMailSend</targetReference>
+            <targetReference>Skip_Paper_Mail_Decision</targetReference>
         </connector>
         <fields>
             <name>Send_Via_Paper_Text</name>
             <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 18px; color: rgb(62, 62, 60);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Send to LetterStream&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 10pt; color: rgb(62, 62, 60);&quot;&gt;Uploads bill pdfs to LetterStream. It will query for all invoices marked as &quot;Ready for Paper Bill Queue&quot;&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Skip_Paper_Mail</name>
+            <dataType>Boolean</dataType>
+            <defaultValue>
+                <booleanValue>false</booleanValue>
+            </defaultValue>
+            <fieldText>Skip This Step</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>BillStatus_Letter</name>
@@ -294,18 +608,28 @@
     <screens>
         <name>Template_Assigner_Screen</name>
         <label>TemplateAssigner</label>
-        <locationX>459</locationX>
-        <locationY>398</locationY>
+        <locationX>769</locationX>
+        <locationY>540</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>TemplateAssigner</targetReference>
+            <targetReference>Skip_Template_Assigner_Decision</targetReference>
         </connector>
         <fields>
             <name>Template_Assigner_Text</name>
             <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 18px; color: rgb(62, 62, 60);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Assign Templates and Send Messaging to Zuora&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60);&quot;&gt;When you click next, automation will run to find the appropriate invoice template for bills, based on the client, autopay, etc. and set the Zuora Invoice Template field on the account.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60);&quot;&gt;The welcome letter insert (if the customers first bill) will be stored on the Invoice record in Salesforce. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60);&quot;&gt;Additionally, it will automatically populate the bill message from either the system default message or the account message override fields.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Skip_Template_Assigner</name>
+            <dataType>Boolean</dataType>
+            <defaultValue>
+                <booleanValue>false</booleanValue>
+            </defaultValue>
+            <fieldText>Skip This Step</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>BillStatus_Templates</name>
@@ -317,20 +641,65 @@
         <showHeader>false</showHeader>
     </screens>
     <screens>
-        <name>Upload_Adjustments_To_Zuora_Screen</name>
-        <label>Adjustment Upload</label>
-        <locationX>303</locationX>
-        <locationY>401</locationY>
+        <name>Update_Batches</name>
+        <label>Update Batches</label>
+        <locationX>606</locationX>
+        <locationY>538</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Zuora_Memo_Upload</targetReference>
+            <targetReference>Skip_Billing_Batch_Update_Decision</targetReference>
+        </connector>
+        <fields>
+            <name>Text_BatchUpdate</name>
+            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;Update Billing Batches in Zuora&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This step will update the batch (pre-billing, billing, post-billing) of accounts in Zuora, to prevent customers who haven&apos;t had usage uploaded from getting $0 bills, but making sure that customers who recently cancelled get $0 bills if they have a balance outstanding. &lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Skip_Billing_Batch_Update</name>
+            <dataType>Boolean</dataType>
+            <defaultValue>
+                <booleanValue>false</booleanValue>
+            </defaultValue>
+            <fieldText>Skip This Step</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>BillStatus_Batches</name>
+            <extensionName>c:BillStatusComponent</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Upload_Adjustments_To_Zuora_Screen</name>
+        <label>Adjustment Upload</label>
+        <locationX>347</locationX>
+        <locationY>535</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Skip_Memo_Apply_Decision</targetReference>
         </connector>
         <fields>
             <name>Upload_Adjustments_Text</name>
-            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;color: rgb(62, 62, 60); font-size: 18px;&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Apply Credit Memos in Zuora&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60);&quot;&gt;This step will upload adjustments as credit and debit memos to Zuora and apply them to invoices.&amp;nbsp;&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 18px; color: rgb(62, 62, 60);&quot;&gt;﻿Apply Credit Memos in Zuora&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60);&quot;&gt;This step will upload new adjustments as credit and debit memos to Zuora.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Skip_Apply_Memos</name>
+            <dataType>Boolean</dataType>
+            <defaultValue>
+                <booleanValue>false</booleanValue>
+            </defaultValue>
+            <fieldText>Skip this Step</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>BillStatus_CreditMemo</name>
@@ -344,18 +713,28 @@
     <screens>
         <name>Usage_Upload_Screen</name>
         <label>Usage Upload</label>
-        <locationX>190</locationX>
-        <locationY>395</locationY>
+        <locationX>186</locationX>
+        <locationY>538</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>UsageUpload</targetReference>
+            <targetReference>Skip_Usage_Decision</targetReference>
         </connector>
         <fields>
             <name>UsageUpload_Text</name>
             <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 18px; color: rgb(62, 62, 60);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Upload Usage to Zuora&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60);&quot;&gt;When you hit Next, UASBs and Production adjustments will be uploaded to Zuora. This will create usage records under a customer&apos;s account but will not create Invoices yet&lt;/span&gt;&lt;span style=&quot;color: rgb(62, 62, 60); font-size: 10pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Skip_Usage</name>
+            <dataType>Boolean</dataType>
+            <defaultValue>
+                <booleanValue>false</booleanValue>
+            </defaultValue>
+            <fieldText>Skip this Step</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>BillStatus_Usage</name>
@@ -367,7 +746,7 @@
         <showHeader>false</showHeader>
     </screens>
     <startElementReference>GenerateUASBs</startElementReference>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <description>Response from the API after we try to execute a bill Run</description>
         <name>BillRun_Response</name>
