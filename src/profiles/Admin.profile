@@ -9207,6 +9207,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Entity__c.Type_of_Project__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Entity__c.Web_Access_Username__c</field>
         <readable>true</readable>
