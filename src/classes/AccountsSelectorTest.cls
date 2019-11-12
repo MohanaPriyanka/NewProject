@@ -15,7 +15,16 @@ public with sharing class AccountsSelectorTest {
         Test.loadData(Account.SObjectType, 'TestCSAccount');
         Test.loadData(Entity__c.SObjectType, 'TestCSEntity');
         Test.loadData(Shared_Solar_System__c.SObjectType, 'TestCSSharedSolarSystem');
+        Test.loadData(Utility_Account_Log__c.SObjectType, 'TestCSUtilityAccountLog');
         Test.loadData(Opportunity.SObjectType, 'TestCSOpportunity');
+        Test.loadData(Utility_Account_Subscription__c.SObjectType, 'TestCSUtilityAccountSubscription');
+        Test.loadData(Schedule_Z__c.SObjectType, 'TestCSScheduleZ');
+        Test.loadData(Schedule_Z_Subscription__c.SObjectType, 'TestCSScheduleZSubscription');
+        Test.loadData(Energy_Usage_Update__c.SObjectType, 'TestCSProdUpdate');
+        Test.loadData(Account_Bill__c.SObjectType, 'TestCSAccountBill');
+        Test.loadData(System_Bill__c.SObjectType, 'TestCSSystemBill');
+        Test.loadData(Utility_Account_Bill__c.SObjectType, 'TestCSUtilityAccountBill');
+        Test.loadData(UASB__c.SObjectType, 'TestCSUASB');
         Util.enableAllTriggers();
     }
 
@@ -93,5 +102,35 @@ public with sharing class AccountsSelectorTest {
         zuoraAccountIds = new List<String>{'foo', 'bar'};
         accounts = accountSelector.selectForReconciliation(zuoraAccountIds);
         System.assertEquals(0, accounts.size());
+    }
+
+    @IsTest
+    public static void testSelectAccountsWithUASBs() {
+        Map<Id,Opportunity> oppsToUpdate = new Map<Id,Opportunity>();
+        Account newAccount = new Account(Name = 'Test Account');
+        insert newAccount;
+
+        List<UASB__c> uasbList = [
+            SELECT Id, Opportunity__c, Utility_Account_Subscription__c,
+                Utility_Account_Subscription__r.Opportunity__r.AccountId,
+                Bill_Date__c
+            FROM UASB__c
+            LIMIT 12
+        ];
+        system.assertEquals(12,uasbList.size());
+
+        for (UASB__c uasb : uasbList){
+            uasb.Bill_Date__c = Date.newInstance(2018,04,15);
+            Opportunity opp = new Opportunity();
+            opp.Id = uasb.Opportunity__c;
+            opp.AccountId = newAccount.Id;
+            oppsToUpdate.put(opp.Id,opp);
+        }
+        update oppsToUpdate.values();
+        update uasbList;
+
+        AccountsSelector selector = new AccountsSelector();
+        Map<Id,Integer> acctIdToUASBMap = selector.selectAccountsWithUASBs(Date.newInstance(2016,01,01));
+        System.assertEquals(12,acctIdToUASBMap.get(newAccount.Id));
     }
 }

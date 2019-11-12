@@ -208,4 +208,10 @@ public with sharing class InvocableZuoraActionsTest {
         ];
         System.assertEquals(1,afterLogs.size());
     }
+
+    @IsTest public static void testBillingBatch() {
+        Date invoiceDate = Date.newInstance(2019,02,15);
+        List<String> response = InvocableZuoraBillingBatchUpdate.billingBatchUpdate(new List<Date>{invoiceDate});
+        System.assertEquals(1,response.size());
+    }
 }
