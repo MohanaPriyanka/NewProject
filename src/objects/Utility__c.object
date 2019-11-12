@@ -45,7 +45,6 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableReports>false</enableReports>
@@ -128,7 +127,18 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Utilities</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Lock_Number_of_Decimals</fullName>
+        <active>true</active>
+        <description>This prevents changes to the # of decimals field. It&apos;s needed because if the # of decimals changes, we&apos;d need to log subscription orders for all UASs under that utility.</description>
+        <errorConditionFormula>AND(
+ISCHANGED(Number_of_Decimal_Places__c),
+PRIORVALUE(Number_of_Decimal_Places__c)!=null
+)</errorConditionFormula>
+        <errorDisplayField>Number_of_Decimal_Places__c</errorDisplayField>
+        <errorMessage>The number of decimal places on a utility cannot be changed once set. Please contact Business Applications if this needs to be changed. This is a safety measure to ensure that the appropriate subscription orders are created.</errorMessage>
+    </validationRules>
     <visibility>Public</visibility>
 </CustomObject>
