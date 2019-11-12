@@ -102,7 +102,8 @@ public with sharing class ZuoraReturnedPaymentService {
     public Boolean removePaymentMethodFromAccount(Zuora__Payment__c returnedPayment) {
         String zuoraAcctId = returnedPayment.Zuora__BillingAccount__r.Zuora__Zuora_Id__c;
         Boolean paymentMethodUpdateNeeded = false;
-        ZuoraAPI.ZuoraAccount accountFromZuora = ZuoraAccountSelector.getAccountFromZuora(zuoraAcctId);
+        ZuoraAccountSelector selector = new ZuoraAccountSelector();
+        ZuoraAPI.ZuoraAccount accountFromZuora = selector.getAccountFromZuora(zuoraAcctId);
 
         // If they've already provided a new payment method, we don't want to overwrite it:
         if (accountFromZuora.DefaultPaymentMethodId == returnedPayment.Zuora__PaymentMethodId__c){
