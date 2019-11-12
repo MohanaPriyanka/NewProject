@@ -116,7 +116,8 @@ public with sharing class ZuoraBillingAccountServiceTest {
         Set<Id> accountIdSet = new Set<Id>{zuoraAccounts[0].Id, zuoraAccounts[1].Id, zuoraAccounts[2].Id};
 
         Test.startTest();
-           ZuoraBillingAccountService.startDaysPastDueUpdate(accountIdSet);
+            ZuoraBillingAccountService service = new ZuoraBillingAccountService();
+            service.startDaysPastDueUpdate(accountIdSet);
         Test.stopTest();
 
         List<Zuora_Data_Query__c> queries = [

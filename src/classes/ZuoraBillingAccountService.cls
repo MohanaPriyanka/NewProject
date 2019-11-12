@@ -1,5 +1,6 @@
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ZuoraBillingAccountService implements Schedulable, ZuoraDataQueryService.Processor {
+    private ZuoraAccountSelector zuoraAcctSelector = new ZuoraAccountSelector();
     public static void updatePropertyAccount(List<Zuora__CustomerAccount__c> billingAccounts) {
         Set<Id> zAccountIds = (new Map<Id,Zuora__CustomerAccount__c>(billingAccounts)).keySet();
         checkPropertyAccountDiscrepancy(zAccountIds);
@@ -10,11 +11,12 @@ public without sharing class ZuoraBillingAccountService implements Schedulable, 
     }
 
     @Future
+    // Future methods must be declared as static
     public static void checkPropertyAccountDiscrepancy(Set<Id> accountsToCheck) {
         try {
             List<Account> propAccountsToUpdate = new List<Account>();
-
-            List<Zuora__CustomerAccount__c> zuoraAccounts = ZuoraAccountSelector.getBillingAccountsById(accountsToCheck);
+            ZuoraAccountSelector selector = new ZuoraAccountSelector();
+            List<Zuora__CustomerAccount__c> zuoraAccounts = selector.getBillingAccountsById(accountsToCheck);
 
             for (Zuora__CustomerAccount__c zAccount : zuoraAccounts) {
                 if (zAccount.Zuora__AutoPay__c != zAccount.Zuora__Account__r.Recurring_Billing__c) {
@@ -37,7 +39,7 @@ public without sharing class ZuoraBillingAccountService implements Schedulable, 
         }
     }
 
-    public static void startDaysPastDueUpdate(Set<Id> accountsToCheck) {
+    public void startDaysPastDueUpdate(Set<Id> accountsToCheck) {
         try {
             ZuoraDataQueryService.ProcessingParameter finishMethod = new ZuoraDataQueryService.ProcessingParameter();
             finishMethod.className = 'ZuoraBillingAccountService';
@@ -46,7 +48,7 @@ public without sharing class ZuoraBillingAccountService implements Schedulable, 
                 queryString = ZuoraInvoiceSelector.getOutstandingBalanceByAccountQuery(null);
             } else {
                 queryString = ZuoraInvoiceSelector.getOutstandingBalanceByAccountQuery(
-                    ZuoraAccountSelector.getBillingAccountsById(accountsToCheck)
+                    zuoraAcctSelector.getBillingAccountsById(accountsToCheck)
                 );
                 finishMethod.recordIds = accountsToCheck;
             }
@@ -60,15 +62,15 @@ public without sharing class ZuoraBillingAccountService implements Schedulable, 
         updateDaysPastDue(response, parameter.recordIds);
     }
 
-    public static void updateDaysPastDue(String queryResponse, Set<Id> recordIds) {
+    public void updateDaysPastDue(String queryResponse, Set<Id> recordIds) {
         try {
             List<Account> accountsToUpdate = new List<Account>();
             Map<String, AccountSummary> zuoraIdToAccountSummary = summarizeBalanceQueryResult(queryResponse);
             List<Zuora__CustomerAccount__c> zuoraBillingAccounts;
             if (recordIds == null){
-                zuoraBillingAccounts = ZuoraAccountSelector.getAllBillingAccounts();
+                zuoraBillingAccounts = zuoraAcctSelector.getAllBillingAccounts();
             } else {
-                zuoraBillingAccounts = ZuoraAccountSelector.getBillingAccountsById(recordIds);
+                zuoraBillingAccounts = zuoraAcctSelector.getBillingAccountsById(recordIds);
             }
             for (Zuora__CustomerAccount__c zuoraAccount : zuoraBillingAccounts){
                 String zuoraId = zuoraAccount.Zuora__Zuora_Id__c;

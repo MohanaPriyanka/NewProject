@@ -18,7 +18,7 @@ public without sharing class ZuoraAccountSelector {
         public ZuoraAPI.PaymentMethod paymentMethod;
     }
 
-    public static String getZuoraAccountFromSFAccount (String sfAccountId) {
+    public String getZuoraAccountFromSFAccount (String sfAccountId) {
         Zuora__CustomerAccount__c salesforceAccount = [
             SELECT Id, Zuora__Zuora_Id__c
             FROM Zuora__CustomerAccount__c
@@ -28,7 +28,7 @@ public without sharing class ZuoraAccountSelector {
         return salesforceAccount.Zuora__Zuora_Id__c;
     }
 
-    public static ZuoraAPI.PaymentGateway getGatewayIdFromGatewayName (String gatewayName) {
+    public ZuoraAPI.PaymentGateway getGatewayIdFromGatewayName (String gatewayName) {
         HttpResponse response = ZuoraAPIHelper.callJsonEndpoint( 'GET', '/v1/paymentgateways', null, false );
         QueryResultGateways gatewayList = (QueryResultGateways)JSON.deserialize(response.getBody(), QueryResultGateways.class);
         ZuoraAPI.PaymentGateway selectedGateway;
@@ -43,12 +43,15 @@ public without sharing class ZuoraAccountSelector {
     }
 
     @AuraEnabled
+    // Non static AuraEnabled methods may not have parameters, but we need to pass through SF Id, so keep this as static
+    // and re-instantiate ZuoraAccountSelector:
     public static AccountWithPaymentMethod getAccountWithDefaultPaymentMethod (String sfAccountId) {
-        String zuoraAcctId = getZuoraAccountFromSFAccount(sfAccountId);
-        ZuoraAPI.ZuoraAccount acct = getAccountFromZuora(zuoraAcctId);
+        ZuoraAccountSelector selector = new ZuoraAccountSelector();
+        String zuoraAcctId = selector.getZuoraAccountFromSFAccount(sfAccountId);
+        ZuoraAPI.ZuoraAccount acct = selector.getAccountFromZuora(zuoraAcctId);
         AccountWithPaymentMethod acctWithMethod = new AccountWithPaymentMethod();
         acctWithMethod.account = acct;
-        acctWithMethod.account.PaymentGateway = getGatewayIdFromGatewayName(acct.PaymentGateway).id;
+        acctWithMethod.account.PaymentGateway = selector.getGatewayIdFromGatewayName(acct.PaymentGateway).id;
         if (acct.DefaultPaymentMethodId != null){
             acctWithMethod.paymentMethod = ZuoraPaymentPageController.getPaymentMethod(acct.DefaultPaymentMethodId);
         }
@@ -56,7 +59,7 @@ public without sharing class ZuoraAccountSelector {
     }
 
     @TestVisible
-    public static ZuoraAPI.ZuoraAccount getAccountFromZuora(String zuoraAcctId) {
+    public ZuoraAPI.ZuoraAccount getAccountFromZuora(String zuoraAcctId) {
         String fields = 'Id, ' +
             'AccountNumber, ' +
             'DefaultPaymentMethodId, ' +
@@ -77,11 +80,11 @@ public without sharing class ZuoraAccountSelector {
         return accountQuery(zuoraAcctId, fields);
     }
 
-    private static ZuoraAPI.ZuoraAccount accountQuery(String zuoraAcctId, String fields) {
+    private ZuoraAPI.ZuoraAccount accountQuery(String zuoraAcctId, String fields) {
         return query(new List<String>{zuoraAcctId}, fields)[0];
     }
 
-    public static List<ZuoraAPI.ZuoraAccount> query(List<String> zuoraAccountIds, String fields) {
+    public List<ZuoraAPI.ZuoraAccount> query(List<String> zuoraAccountIds, String fields) {
         if (zuoraAccountIds == null || zuoraAccountIds.size() == 0) {
             throw new Util.BWException('Query zuora accounts with at least one Zuora Account Id');
         }
@@ -108,7 +111,7 @@ public without sharing class ZuoraAccountSelector {
         return queryResultAccount.records;
     }
 
-    public static List<Zuora__CustomerAccount__c> getBillingAccountsById (Set<Id> accountIds){
+    public List<Zuora__CustomerAccount__c> getBillingAccountsById (Set<Id> accountIds){
         if (!Schema.SObjectType.Zuora__CustomerAccount__c.isQueryable() ||
             !Schema.SObjectType.Zuora__CustomerAccount__c.fields.Zuora__AutoPay__c.isAccessible() ||
             !Schema.SObjectType.Zuora__CustomerAccount__c.fields.Zuora__Account__c.isAccessible()) {
@@ -127,7 +130,7 @@ public without sharing class ZuoraAccountSelector {
         ];
     }
 
-    public static List<Zuora__CustomerAccount__c> getAllBillingAccounts (){
+    public List<Zuora__CustomerAccount__c> getAllBillingAccounts (){
         return [
             SELECT Id, Name,
                 Zuora__Zuora_Id__c,
@@ -135,7 +138,8 @@ public without sharing class ZuoraAccountSelector {
                 Zuora__Account__r.Id,
                 Zuora__Account__r.Recurring_Billing__c,
                 Zuora__Account__r.Total_Outstanding_Balance_Zuora__c,
-                Zuora__Account__r.Max_Overdue_Due_Date_Zuora__c
+                Zuora__Account__r.Max_Overdue_Due_Date_Zuora__c,
+                Zuora__Batch__c
             FROM Zuora__CustomerAccount__c
         ];
     }
