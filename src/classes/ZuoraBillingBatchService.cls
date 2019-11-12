@@ -9,7 +9,6 @@ public with sharing class ZuoraBillingBatchService {
     public ZuoraAPI.ActionItems updateAccountBatches(Date invoiceDate) {
         ZuoraAPI.ActionItems actionItem = new ZuoraAPI.ActionItems();
         actionItem.type = 'Account';
-        actionItem.objects = new List<Object>();
 
         try {
             // We only want to get customers who have UASBs from the current period
