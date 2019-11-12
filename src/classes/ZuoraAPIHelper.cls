@@ -212,7 +212,7 @@ public with sharing class ZuoraAPIHelper {
         }
         Boolean errorFound = false;
         for (Integer i = 0; i < saveResults.size(); i++) {
-            if (!saveResults[0].Success) {
+            if (!saveResults[i].Success) {
                 errorFound = true;
                 Logger.logLater(
                     'ZuoraAPIHelper',

@@ -121,4 +121,18 @@ public without sharing class AccountsSelector {
         }
         return results;
     }
+
+    public Map<Id,Integer> selectAccountsWithUASBs(Date cutoffDate) {
+        Map<Id,Integer> accountIdsWithUASBs = new Map<Id,Integer>();
+        List<AggregateResult> accountsWithUsage = [
+            SELECT COUNT(Id) uasb, Utility_Account_Subscription__r.Opportunity__r.AccountId acctId
+            FROM UASB__c
+            WHERE Date__c > : cutoffDate
+            GROUP BY Utility_Account_Subscription__r.Opportunity__r.AccountId
+        ];
+        for (AggregateResult result : accountsWithUsage){
+            accountIdsWithUASBs.put((String)result.get('acctId'),(Integer)result.get('uasb'));
+        }
+        return accountIdsWithUASBs;
+    }
 }
