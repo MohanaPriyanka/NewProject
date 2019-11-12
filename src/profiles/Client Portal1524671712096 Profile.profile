@@ -982,10 +982,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>testReferralCode</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>testTraunchCapitalMetrics</apexClass>
         <enabled>false</enabled>
     </classAccesses>
