@@ -56,6 +56,10 @@
                 <field>Operating_Agreement__c</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Type_of_Project__c</field>
+            </layoutItems>
+            <layoutItems>
                 <emptySpace>true</emptySpace>
             </layoutItems>
             <layoutItems>
@@ -199,6 +203,9 @@
         <fields>Foreign_Registration__c</fields>
         <fields>LAST_UPDATE</fields>
         <relatedList>State_Registration__c.Entity__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <relatedList>RelatedEntityHistoryList</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
