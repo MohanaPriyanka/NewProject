@@ -487,7 +487,8 @@
         <scale>6</scale>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Currency</type>
+        <type>Number</type>
+        <unique>false</unique>
     </fields>
     <gender n1:nil="true" />
     <household>false</household>
