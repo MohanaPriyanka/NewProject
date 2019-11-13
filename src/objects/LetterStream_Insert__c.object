@@ -143,33 +143,22 @@
     <allowInChatterGroups>false</allowInChatterGroups>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <deploymentStatus>Deployed</deploymentStatus>
-    <deprecated>false</deprecated>
-    <description>Zuora Invoice object. Invoices are bills that you send to customers.</description>
-    <enableActivities>true</enableActivities>
+    <description>Place to store Inserts that we send through letterstream, for example welcome letters with CS Bills</description>
+    <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableEnhancedLookup>false</enableEnhancedLookup>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
-    <enableSearch>true</enableSearch>
+    <enableSearch>false</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
     <fields>
-        <fullName>Downloaded_Date__c</fullName>
+        <fullName>Content_Version_ID__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Date that ZuoraInvoiceService downloaded the PDF for this invoice. Indicates that it should not try to retrieve the PDF for the invoice for download.</inlineHelpText>
-        <label>Downloaded Date</label>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Legacy_Invoice_Id__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>The Account Bill Id if the invoice is from the historical migration</inlineHelpText>
-        <label>Legacy Invoice Id</label>
+        <inlineHelpText>Used when sending via email</inlineHelpText>
+        <label>Content Version ID</label>
         <length>18</length>
         <required>false</required>
         <trackTrending>false</trackTrending>
@@ -177,24 +166,22 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>LetterStream_Insert__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
+        <fullName>Letterstream_ID__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>If this field is populated with an insert record, the file will be mailed and emailed along with the Invoice PDF</inlineHelpText>
-        <label>LetterStream Insert</label>
-        <referenceTo>LetterStream_Insert__c</referenceTo>
-        <relationshipLabel>Invoices</relationshipLabel>
-        <relationshipName>Invoices</relationshipName>
+        <inlineHelpText>Id of the insert in Letterstream, used during paper mail send</inlineHelpText>
+        <label>Letterstream ID</label>
+        <length>250</length>
         <required>false</required>
         <trackTrending>false</trackTrending>
-        <type>Lookup</type>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
-    <label>Invoice</label>
+    <label>LetterStream Insert</label>
     <nameField>
-        <label>Invoice Number</label>
+        <label>LetterStream Insert Name</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Invoices</pluralLabel>
+    <pluralLabel>LetterStream Inserts</pluralLabel>
     <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
