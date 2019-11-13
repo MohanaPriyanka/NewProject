@@ -34975,11 +34975,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Zuora__ZInvoice__c.Additional_Inserts__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Zuora__ZInvoice__c.Bill_Document_Content_Version_ID__c</field>
         <readable>false</readable>
     </fieldPermissions>
