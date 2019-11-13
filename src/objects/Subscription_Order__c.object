@@ -164,9 +164,9 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
     </fields>
     <fields>
         <fullName>Effective_Date__c</fullName>
-        <description>This is the date that the Subscription Order was approved. It is populated automatically when the Status field is set to approved. Subscription Orders cannot be edited once they&apos;ve been approved and posted.</description>
+        <description>This is the date that the Subscription Order was approved. It is populated automatically when the Status field is set to approved. Subscription Orders cannot be edited once they&apos;ve been approved.</description>
         <externalId>false</externalId>
-        <inlineHelpText>This is the date that the Subscription Order was approved. It is populated automatically when the Status field is set to approved. Subscription Orders cannot be edited once they&apos;ve been approved and posted.</inlineHelpText>
+        <inlineHelpText>This is the date that the Subscription Order was approved. It is populated automatically when the Status field is set to approved. Subscription Orders cannot be edited once they&apos;ve been approved.</inlineHelpText>
         <label>Effective Date</label>
         <required>false</required>
         <trackHistory>true</trackHistory>
