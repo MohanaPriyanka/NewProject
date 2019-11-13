@@ -45,7 +45,6 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>true</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableReports>true</enableReports>
@@ -904,6 +903,32 @@
         </valueSet>
     </fields>
     <fields>
+        <fullName>Type_of_Project__c</fullName>
+        <externalId>false</externalId>
+        <label>Type of Project</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>C&amp;I</fullName>
+                    <default>false</default>
+                    <label>C&amp;I</label>
+                </value>
+                <value>
+                    <fullName>Ground Mount</fullName>
+                    <default>false</default>
+                    <label>Ground Mount</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Web_Access_Username__c</fullName>
         <externalId>false</externalId>
         <formula>Gateway__r.Web_Access_Username__c</formula>
@@ -944,6 +969,17 @@
         <fullName>BWC_Business_Entity</fullName>
         <active>true</active>
         <label>BWC Business Entity</label>
+        <picklistValues>
+            <picklist>Type_of_Project__c</picklist>
+            <values>
+                <fullName>C%26I</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ground Mount</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>FL_Annual_Report__c</picklist>
             <values>
@@ -1140,6 +1176,17 @@
         <active>true</active>
         <label>BWC Project Entity</label>
         <picklistValues>
+            <picklist>Type_of_Project__c</picklist>
+            <values>
+                <fullName>C%26I</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ground Mount</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>FL_Annual_Report__c</picklist>
             <values>
                 <fullName>2016</fullName>
@@ -1330,202 +1377,7 @@
             </values>
         </picklistValues>
     </recordTypes>
-    <recordTypes>
-        <fullName>BWC_SE_Project_Entity</fullName>
-        <active>true</active>
-        <label>BWC SE Project Entity</label>
-        <picklistValues>
-            <picklist>FL_Annual_Report__c</picklist>
-            <values>
-                <fullName>2016</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2017</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2018</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2019</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2020</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2021</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2022</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Latest_MA_Annual_Report__c</picklist>
-            <values>
-                <fullName>2015</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2016</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2017</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2018</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2019</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2020</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>NC_Annual_Report__c</picklist>
-            <values>
-                <fullName>2016</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2017</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2018</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2019</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2020</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2021</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2022</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>NY_Biennial_Report__c</picklist>
-            <values>
-                <fullName>2016</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2017</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2018</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2019</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2020</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2021</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2022</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2023</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2024</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>RI_Annual_Report__c</picklist>
-            <values>
-                <fullName>2016</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2017</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2018</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2019</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2020</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2021</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2022</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Status__c</picklist>
-            <values>
-                <fullName>In Good Standing</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>In Process</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Not Started</fullName>
-                <default>true</default>
-            </values>
-            <values>
-                <fullName>Not in Good Standing</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sold</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Terminated - DO NOT USE</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Termination in process</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-    </recordTypes>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>Read</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>
