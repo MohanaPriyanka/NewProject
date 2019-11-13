@@ -44478,6 +44478,91 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Approval_Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Calculated_Change_in_Percent_Share_of_Sy__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Calculated_Change_in_Subscription_KW_DC__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Change_in_Annual_Cost__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Change_in_Annual_kWh__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Change_in_Percent_Share_of_System__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Change_in_Subscription_KW_DC__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Client_Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Comments__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Effective_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Expected_Yield_kWh_kW__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Product__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Total_System_Size_kW_DC__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Utility_NMC_Tariff__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Utility_Number_of_Decimal_Places__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Value_of_NMC__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Subscription_Transfer__c.Effective_Date__c</field>
         <readable>false</readable>
@@ -46589,6 +46674,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Utility_Account_Subscription__c.Annual_Cost_Future_Rollup__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Utility_Account_Subscription__c.Annual_Cost_of_Electricity_Current__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -46600,6 +46690,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Annual_kWh_Subscription_Current__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Subscription__c.Annual_kWh_Subscription_Future_Rollup__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -46714,6 +46809,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Utility_Account_Subscription__c.Future_Customer_Subscription_KWDC_Rollup__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Subscription__c.Future_Share_of_System_Rollup__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Utility_Account_Subscription__c.Future_Share_of_System__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -46820,6 +46925,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Shared_Solar_System_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility_Account_Subscription__c.Shared_Solar_System__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -69885,6 +69995,9 @@
         <layout>Submittals__c-Submittal Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Subscription_Order__c-Subscription Order Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Subscription_Transfer__c-Subscription Transfer Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -74333,6 +74446,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>Submittals__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>Subscription_Order__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -85000,6 +85122,10 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>Solar_Loan_Syndication__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Subscription_Order__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
