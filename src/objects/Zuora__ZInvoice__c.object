@@ -176,6 +176,26 @@
         <type>Text</type>
         <unique>false</unique>
     </fields>
+    <fields>
+        <fullName>Statement__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+
+ISBLANK(
+
+Bill_Document_Content_Version_ID__c)=true,
+
+&quot;Statement Coming Soon&quot;,
+
+HYPERLINK(&quot;/sfc/servlet.shepherd/version/download/&quot;&amp;Bill_Document_Content_Version_ID__c,&quot;View Statement&quot;,&quot;_self&quot;)
+
+)</formula>
+        <label>Statement</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
     <label>Invoice</label>
     <nameField>
         <label>Invoice Number</label>
