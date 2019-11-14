@@ -144,12 +144,9 @@ public without sharing class ZuoraBillEmailHandler implements Database.Batchable
     private List<String> getAttachments(Zuora__ZInvoice__c zuoraInvoice){
         List<String> attachmentIds = new List<String>();
         attachmentIds.add(zuoraInvoice.Bill_Document_Content_Version_ID__c);
-        // TO DO
-        /*
-           if (invoice.WelcomeLetterIdField != null){
-               attachmentIds.add(invoice.Additional_Inserts__c);
-           }
-        */
+        if (zuoraInvoice.LetterStream_Insert__r.Content_Version_ID__c != null){
+            attachmentIds.add(zuoraInvoice.LetterStream_Insert__r.Content_Version_ID__c);
+        }
         return attachmentIds;
     }
 

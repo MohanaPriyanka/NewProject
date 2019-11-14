@@ -179,6 +179,7 @@ public with sharing class ZuoraInvoiceService {
             contentParam.city = invoice.Zuora__BillingAccount__r.Zuora__Account__r.BillingCity;
             contentParam.state = invoice.Zuora__BillingAccount__r.Zuora__Account__r.BillingState;
             contentParam.postalCode = invoice.Zuora__BillingAccount__r.Zuora__Account__r.BillingPostalCode;
+            contentParam.extraInserts = invoice.LetterStream_Insert__r.Letterstream_ID__c;
             contentParams.add(contentParam);
         }
         return contentParams;

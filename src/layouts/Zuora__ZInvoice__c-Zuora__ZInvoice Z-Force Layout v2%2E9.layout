@@ -78,6 +78,10 @@
                 <behavior>Edit</behavior>
                 <field>Content_Document_Id__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>LetterStream_Insert__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
