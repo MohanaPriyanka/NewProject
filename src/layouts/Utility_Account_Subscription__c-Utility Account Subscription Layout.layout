@@ -162,6 +162,10 @@
                 <behavior>Readonly</behavior>
                 <field>Customer_Subscription_KW_DC__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>kW_Allocation__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
