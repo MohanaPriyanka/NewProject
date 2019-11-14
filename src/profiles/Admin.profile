@@ -5362,6 +5362,16 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.Permission_Set_Expiration_Date_Time__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Case.Permission_Set_ID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Case.Power_of_One__c</field>
         <readable>true</readable>
@@ -7027,6 +7037,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Allocation_Schedule_Subscription__c.kW_Allocation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Client_Health_Report__c.BlueWave_Rating__c</field>
         <readable>true</readable>
@@ -7174,6 +7189,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Client_Utility_Account_Subscription__c.Opportunity_Stage__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Utility_Account_Subscription__c.kW_Allocation__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -13494,6 +13514,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>LetterStreamJob__c.Piece_Count__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>LetterStream_Insert__c.Content_Version_ID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>LetterStream_Insert__c.Letterstream_ID__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -28947,6 +28977,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Schedule_Z_Subscription__c.kW_Allocation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Schedule_Z__c.Applied_to_Production_Starting__c</field>
         <readable>true</readable>
@@ -32837,6 +32872,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Subscription__c.kW_Allocation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Bill_Line_Item__c.Amount__c</field>
         <readable>true</readable>
@@ -33204,6 +33244,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Zuora__ZInvoice__c.LetterStreamJob__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Zuora__ZInvoice__c.LetterStream_Insert__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -47554,6 +47599,9 @@
         <layout>ChargentOrders__Transaction__c-ChargentOrders__Transaction Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Client_Allocation_Schedule_Subscription__c-Client Allocation Schedule Subscription Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Client_Health_Report__c-Monthly Client Report Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -47834,6 +47882,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>LetterStreamJob__c-LetterStreamJob Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>LetterStream_Insert__c-LetterStream Insert Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>LetterStream_Piece__c-LetterStream Piece Layout</layout>
@@ -48311,14 +48362,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Utility_Account_Subscription__c-Utility Account Subscription Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Utility_Account_Subscription__c-Utility Account Subscription Layout</layout>
-        <recordType>Utility_Account_Subscription__c.Utility_Account_Subscription_Editable</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Utility_Account_Subscription__c-Utility Account Subscription Layout</layout>
-        <recordType>Utility_Account_Subscription__c.Utility_Account_Subscription_on_Schedule_Z</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Utility_Bill_Line_Item__c-Utility Bill Line Item Layout</layout>
@@ -49088,6 +49131,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>LetterStreamJob__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>LetterStream_Insert__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>

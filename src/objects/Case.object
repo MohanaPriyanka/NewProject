@@ -1240,6 +1240,28 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Permission_Set_Expiration_Date_Time__c</fullName>
+        <description>Date/Time that the provisioned permission set will expire.</description>
+        <externalId>false</externalId>
+        <label>Permission Set Expiration Date/Time</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Permission_Set_ID__c</fullName>
+        <description>ID of the permission set that is being requested via the permission requestor flow</description>
+        <externalId>false</externalId>
+        <label>Permission Set ID</label>
+        <length>18</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Power_of_One__c</fullName>
         <externalId>false</externalId>
         <formula>1</formula>
@@ -4872,6 +4894,29 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <errorConditionFormula>AND(TEXT(Chargent_Order__r.ChargentOrders__Payment_Status__c) = &apos;Error&apos;, AND(TEXT(Status) = &apos;Closed&apos;,
              TEXT(PRIORVALUE(Status)) != &apos;Closed&apos;))</errorConditionFormula>
         <errorMessage>Don&apos;t close a case related to a Chargent Order with Payment Status &apos;Error&apos;. Instead, update the Payment Status to &apos;Complete&apos; to indicate it should no longer be used. Then, close the case, or let the case creator automatically close it next time it runs.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Prevent_Editing_Permission_Related_Field</fullName>
+        <active>true</active>
+        <description>Prevents anyone from creating a permissions request case that is &quot;In Progress&quot; (will trigger provisioning of permissions) or editing an existing case.</description>
+        <errorConditionFormula>AND(
+    TEXT(Type) = &quot;Permissions Request&quot;,
+    RecordType.DeveloperName = &quot;Product_Support&quot;, /*this applies only to permissions cases which trigger auto assignment of perm sets */
+    OR(
+            AND( /*if a case is new, it must be set to &quot;Awaiting Internal Team&quot; */
+                ISNEW(),
+                TEXT(Status)!=&quot;Awaiting Internal Team&quot;
+               ),
+              
+            AND( /*if a case is not new, it must either be after the perm expiration date and set to closed, or else it can&apos;t be edited */
+                NOT(ISNEW()),
+                IF(NOW() &gt; Permission_Set_Expiration_Date_Time__c &amp;&amp; TEXT(Status) = &quot;Closed&quot;,FALSE,TRUE)
+               
+                )
+                
+        )      
+)</errorConditionFormula>
+        <errorMessage>You cannot update or manually create permission provisioning cases.</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>Resolution_required_when_closing_a_case</fullName>

@@ -343,8 +343,22 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
                 '{"Success":true,"Id":"2c92c0f86a0c41a5016a1f41d63a2123"},' +
                 '{"Success":true,"Id":"2c92c0f86a0c41a5016a1f41d63a2456"}]';
             res.setBody(responseBody);
+        } else if (body.contains('"type":"Contact"')) {
+            ContactActionItems actionItems = (ContactActionItems) JSON.deserialize(body, ContactActionItems.class);
+            List<ZuoraAPI.SaveResult> saveResults = new List<ZuoraAPI.SaveResult>();
+            for (ZuoraAPI.ZuoraContact contact : actionItems.objects) {
+                ZuoraAPI.SaveResult saveResult = new ZuoraAPI.SaveResult();
+                if (contact.FirstName == null) {
+                    saveResult.Success = false;
+                } else {
+                    saveResult.Id = genericId;
+                    saveResult.Success = true;
+                }
+                saveResults.add(saveResult);
+            }
+            res.setBody(JSON.serialize(saveResults));
         } else {
-            throw new Util.BWException('Unhandled action create: ' + body);
+            throw new Util.BWException('Unhandled action update: ' + body);
         }
         return res;
     }

@@ -1,6 +1,7 @@
 //Test: AccountTriggerHandlerTestClass, CSCancellationServiceTest
 
 public without sharing class AccountTriggerHandler {
+    private static ZuoraAccountService zuoraAccountService = new ZuoraAccountService();
 
     public void onBeforeInsert(List<Account> newAccounts) {
         customIdSwapAccount(newAccounts);
@@ -14,6 +15,12 @@ public without sharing class AccountTriggerHandler {
             UtilityAccountSubscriptions.getUASesForManuallyCancelledAccounts(newMap, oldMap);
         if (!uasesToCancel.isEmpty()) {
             CSCancellationService.processSubscriptionCancellations(uasesToCancel);
+        }
+
+        ZuoraAccountService.ZuoraAccountUpdate zuoraAccountsToUpdate =
+            zuoraAccountService.accountsWithZuoraUpdates(oldMap, newMap);
+        if (zuoraAccountsToUpdate.hasChanges()) {
+            zuoraAccountService.handleAccountUpdates(zuoraAccountsToUpdate);
         }
     }
 

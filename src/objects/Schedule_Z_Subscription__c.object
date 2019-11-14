@@ -204,6 +204,22 @@
         <type>MasterDetail</type>
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
+    <fields>
+        <fullName>kW_Allocation__c</fullName>
+        <description>This field multiplies the Future Share of System by the System Size in kw DC. This is different from the other kw DC field we have because it uses the rounded (determined by utility) share of system.</description>
+        <externalId>false</externalId>
+        <formula>Percent_Share__c *  Schedule_Z__r.Shared_Solar_System__r.Total_System_Size_kWh_DC__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>kW size based on % subscription on allocation schedule</inlineHelpText>
+        <label>kW Allocation</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
     <label>Allocation Schedule Subscription</label>
     <nameField>
         <displayFormat>ALSS-{0000}</displayFormat>
@@ -212,7 +228,7 @@
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Allocation Schedule Subscriptions</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
     <startsWith>Vowel</startsWith>
     <validationRules>
