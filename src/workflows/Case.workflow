@@ -8,9 +8,8 @@
             <field>ContactId</field>
             <type>contactLookup</type>
         </recipients>
-        <senderAddress>customercare@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>Customer_Care_Cases/Customer_Care_Case_CloseII</template>
+        <senderType>CurrentUser</senderType>
+        <template>Product_Team/Permissions_Rejection</template>
     </alerts>
     <alerts>
         <fullName>Case_Close_Email_Alert_to_Customer_Phone</fullName>
@@ -60,6 +59,38 @@
         <senderType>OrgWideEmailAddress</senderType>
         <template>Customer_Care_Cases/Partner_Care_Case_CloseII</template>
     </alerts>
+    <alerts>
+        <fullName>Permissions_Approved</fullName>
+        <description>Permissions Approved</description>
+        <protected>false</protected>
+        <recipients>
+            <field>ContactEmail</field>
+            <type>email</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>Product_Team/Permissions_Approved</template>
+    </alerts>
+    <fieldUpdates>
+        <fullName>Case_Set_Status_to_In_Progress</fullName>
+        <description>Used by Permission Request approval process</description>
+        <field>Status</field>
+        <literalValue>In Progress</literalValue>
+        <name>Case: Set Status to In Progress</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>true</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Set_Case_Status_to_Closed</fullName>
+        <description>Used in the permissions provisioning process when an approval is rejected.</description>
+        <field>Status</field>
+        <literalValue>Closed</literalValue>
+        <name>Set Case Status to Closed</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
     <rules>
         <fullName>Case Close %3A Response to Customer Email</fullName>
         <actions>
