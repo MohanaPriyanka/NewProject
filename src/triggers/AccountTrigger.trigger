@@ -1,4 +1,6 @@
-//Test: AccountTriggerHandlerTestClass, CSCancellationServiceTest
+/*
+ * Tested by: AccountTriggerHandlerTestClass, CSCancellationServiceTest, ZuoraAccountServiceTest
+ */
 
 trigger AccountTrigger on Account (before insert, before update, after update, before delete) {
     if (Util.isDisabled('Disable_AccountTrigger__c')) {

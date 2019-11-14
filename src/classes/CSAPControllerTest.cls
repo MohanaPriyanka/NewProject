@@ -720,7 +720,7 @@ public with sharing class CSAPControllerTest {
             WHERE Email = 'testymctesterson@tester.com'
             LIMIT 1
         ];
-        // Insert 10 other property accounts
+        // Insert 2 other property accounts
         List<Utility_Account_Log__c> ualList = new List<Utility_Account_Log__c>();
 
         ualList.add(new Utility_Account_Log__c(
@@ -731,7 +731,7 @@ public with sharing class CSAPControllerTest {
 
         List<ChargentOrders__ChargentOrder__c> orderList = new List<ChargentOrders__ChargentOrder__c>();
         List<Lead> leadList = new List<Lead>();
-        for (Integer i = 0; i < 10; i++) {
+        for (Integer i = 0; i < 2; i++) {
             Lead nonResidentialLead = residentialLead.clone();
             nonResidentialLead.Id = null;
             nonResidentialLead.Application_Type__c = 'Non-Residential';
@@ -770,8 +770,8 @@ public with sharing class CSAPControllerTest {
         // The lead in the testSetup is residential, and should be converted
         System.assertEquals(true, residentialLead.IsConverted);
         opps = [SELECT Id, OwnerId, Name FROM Opportunity];
-        // And there should be 10 Non-Residential opps, plus the Residential opp after conversion
-        System.assertEquals(11, opps.size());
+        // And there should be 2 Non-Residential opps, plus the Residential opp after conversion
+        System.assertEquals(3, opps.size());
 
         System.assertEquals(apiUser.Id, opps[0].OwnerId);
 
