@@ -2,6 +2,7 @@
 public without sharing class SLPQuickSalesSheetTest{
     @IsTest(SeeAllData=true)
     static void createQssAndLink() {
+        Util.enableTrigger('Disable_ContentDocumentLinkTrigger__c');
     Partner__c partnerOne = new Partner__c(Name = 'Account One',
                                           Logo__c = 'PartnerFile');
     insert partnerOne;  

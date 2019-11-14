@@ -183,6 +183,7 @@ public with sharing class ZuoraAPI {
 
     // https://www.zuora.com/developer/api-reference/#operation/Object_POSTContact
     public class ZuoraContact {
+        public String Id;
         public String AccountId;
         public String Address1; // Attention
         public String Address2; // Street
@@ -191,17 +192,9 @@ public with sharing class ZuoraAPI {
         public String PostalCode;
         public String Country;
         public String Description;
-        public String Fax;
         public String FirstName;
-        public String HomePhone;
         public String LastName;
-        public String MobilePhone;
-        public String NickName;
-        public String OtherPhone;
-        public String OtherPhoneType;
         public String PersonalEmail;
-        public String TaxRegion;
-        public String WorkEmail;
         public String CRM_ID_Zcustom;
     }
 
