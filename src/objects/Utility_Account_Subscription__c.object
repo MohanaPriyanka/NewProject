@@ -1204,6 +1204,24 @@ IF(
         <errorMessage>The Project Company field cannot be changed by this user. Please contact your System Administrator or a BlueWave Executive if you need to change the assignment of a contract to a Project Company.</errorMessage>
     </validationRules>
     <validationRules>
+        <fullName>Opportunity_and_SSS_Lock</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+
+ISNEW()=false, /*does not apply to new records*/
+
+OR(
+   AND( ISCHANGED(Shared_Solar_System__c)=true,
+        NOT(PRIORVALUE(Shared_Solar_System__c)=&quot;&quot;) /*prevent SSS changes once populated*/
+),
+   AND( ISCHANGED( Opportunity__c )=true,
+        NOT(PRIORVALUE(Opportunity__c)=&quot;&quot;) /*prevent opp changes once populated*/
+)
+)
+)</errorConditionFormula>
+        <errorMessage>The Shared Solar System and Opportunity on a Utility Account Subscription cannot be changed. If you are trying to change the Shared Solar System, do so on the Opportunity.</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>Sizing_Control</fullName>
         <active>true</active>
         <description>This validation rule prevents a user from filling in the wrong sizing fields (kWh or Cost) on the UAS.</description>
