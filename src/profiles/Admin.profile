@@ -13497,6 +13497,16 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>LetterStream_Insert__c.Content_Version_ID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>LetterStream_Insert__c.Letterstream_ID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>LetterStream_Piece__c.LetterStream_Job_Id__c</field>
         <readable>true</readable>
@@ -33208,6 +33218,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Zuora__ZInvoice__c.LetterStream_Insert__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>agf__ADM_Acceptance_Criterion__c.agf__Description__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -47836,6 +47851,9 @@
         <layout>LetterStreamJob__c-LetterStreamJob Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>LetterStream_Insert__c-LetterStream Insert Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>LetterStream_Piece__c-LetterStream Piece Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -49088,6 +49106,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>LetterStreamJob__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>LetterStream_Insert__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>

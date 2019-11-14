@@ -21,6 +21,7 @@ public with sharing class ZuoraInvoiceSelector {
                 Zuora__BillingAccount__r.Zuora__Account__r.BillingCity,
                 Zuora__BillingAccount__r.Zuora__Account__r.BillingState,
                 Zuora__BillingAccount__r.Zuora__Account__r.BillingPostalCode,
+                LetterStream_Insert__r.Letterstream_ID__c,
                 Content_Document_Id__c
             FROM Zuora__ZInvoice__c
             WHERE Ready_for_Paper_Bill_Queue__c = TRUE
@@ -46,7 +47,8 @@ public with sharing class ZuoraInvoiceSelector {
                 Zuora__BillingAccount__r.Zuora__Account__r.Client_Brand_Key__c,
                 Zuora__BillingAccount__r.Zuora__Account__r.Bill_Delivery_Preference__c,
                 Zuora__BillingAccount__r.Zuora__Account__r.Send_Bills_Contact__r.Email,
-                Zuora__BillingAccount__r.Zuora__Account__r.Additional_Contact__r.Email
+                Zuora__BillingAccount__r.Zuora__Account__r.Additional_Contact__r.Email,
+                LetterStream_Insert__r.Content_Version_ID__c
             FROM Zuora__ZInvoice__c
             WHERE Ready_For_Email_Send__c = true
         ];
