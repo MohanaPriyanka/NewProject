@@ -58,7 +58,7 @@ public without sharing class AccountsSelector {
             SELECT Id, Name, Account_Number__c, Zuora_Id__c, Send_Bills_Contact__c, Send_Bills_Contact__r.AccountId,
                 Send_Bills_Contact__r.Id, Send_Bills_Contact__r.FirstName, Send_Bills_Contact__r.LastName,
                 Send_Bills_Contact__r.Email, Recurring_Billing__c,
-                Address_Attn__c, BillingStreet, BillingCity, BillingState, BillingPostalCode,
+                Address_Attn__c, BillingStreet, BillingCity, BillingState, BillingPostalCode, BillingCountry,
                 Additional_Contact__r.Email, Client_Brand_Key__c
             FROM Account
             WHERE Id IN :accountIds
@@ -84,8 +84,10 @@ public without sharing class AccountsSelector {
 
     public List<Account> selectAll(Set<Id> accountIds) {
         return [
-            SELECT Id, Name, BillingStreet, BillingCity, BillingStateCode, BillingPostalCode,
-                Zuora_Payment_Ref_Id__c, Zuora_Payment_Ref_Id_Expiration_Date__c, Lead__c
+            SELECT Id, Name, Address_Attn__c, BillingStreet, BillingCity, BillingState, BillingStateCode, BillingPostalCode, BillingCountry,
+                Zuora_Payment_Ref_Id__c, Zuora_Payment_Ref_Id_Expiration_Date__c, Lead__c,
+                Send_Bills_Contact__c, Send_Bills_Contact__r.Email, Send_Bills_Contact__r.FirstName, Send_Bills_Contact__r.LastName,
+                Zuora_Id__c
             FROM Account
             WHERE Id = :accountIds
         ];

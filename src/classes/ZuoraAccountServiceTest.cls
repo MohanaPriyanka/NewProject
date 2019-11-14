@@ -3,6 +3,9 @@
  */
 @IsTest
 public with sharing class ZuoraAccountServiceTest {
+    public static void useMocks() {
+        ZuoraAccountService.accountSelector = (AccountsSelector) Test.createStub(AccountsSelector.class, new MockAccountsSelector());
+    }
     @TestSetup
     public static void setupTestData() {
         CSAPControllerTest.setupTestData();
@@ -426,7 +429,10 @@ public with sharing class ZuoraAccountServiceTest {
     public static void testNoSendBillsContact() {
         Account propertyAccount = new Account(
             Name = 'Property',
-            Zuora_Id__c = '12345'
+            Zuora_Id__c = '12345',
+            BillingCity = 'Boston',
+            BillingState = 'Massachusetts',
+            BillingCountry = 'United States'
         );
         insert propertyAccount;
 
@@ -445,5 +451,161 @@ public with sharing class ZuoraAccountServiceTest {
             'Expected contact creation to be successful, even if there is no send bills contact');
         System.assert(Logger.logs.values()[0][0].message.contains('"LastName":"Billing Contact","FirstName":"Default"'),
             'Expected to create a Default Billing Contact if no send bills contact');
+        System.assert(Logger.logs.values()[0][0].message.contains('"City":"Boston"') &&
+            Logger.logs.values()[0][0].message.contains('"State":"Massachusetts"') &&
+            Logger.logs.values()[0][0].message.contains('"Country":"United States"'),
+            'Expected to set the address for the default contact');
+    }
+
+    @IsTest
+    private static void testHandleAccountUpdates() {
+        Account account = [SELECT Id, Name, Address_Attn__c FROM Account LIMIT 1];
+        account.Zuora_Id__c = '123455';
+        account.Name = account.Name + ' Changed';
+        account.Address_Attn__c = account.Address_Attn__c + ' Changed';
+        Test.startTest();
+        update account;
+        Test.stopTest();
+
+        Boolean foundContactCreate = false;
+        Boolean foundBillToUpdate = false;
+        Boolean foundNameUpdate = false;
+        for (ZuoraAPIHelper.EndpointCall endpointCall : ZuoraAPIHelper.endpointsCalled) {
+            if (endpointCall.endpoint == '/v1/action/create' && endpointCall.jsonBody.contains('\"type\":\"Contact\"')) {
+                foundContactCreate = true;
+            } else if (endpointCall.endpoint == '/v1/action/update' && endpointCall.jsonBody.contains('\"type\":\"Account\"')) {
+                if (endpointCall.jsonBody.contains('BillTo')) {
+                    foundBillToUpdate = true;
+                } else if (endpointCall.jsonBody.contains('Name')) {
+                    foundNameUpdate = true;
+                }
+            }
+        }
+        System.assert(foundBillToUpdate, 'Did not find the account updated with the Bill To');
+        System.assert(foundNameUpdate, 'Did not find the account update for the Name');
+        System.assert(foundContactCreate, 'Did not find a contact create');
+    }
+
+    @IsTest
+    private static void testHandleAccountNameUpdatesFuture() {
+        useMocks();
+        Test.startTest();
+        ZuoraAccountService.handleAccountNameUpdates(new Set<Id>{'001S000000yKIYqIAO'});
+        Test.stopTest();
+        System.assertEquals(1, ZuoraAPIHelper.endpointsCalled.size());
+        System.assert(ZuoraAPIHelper.endpointsCalled[0].jsonBody.contains('\"type\":\"Account\"'));
+        System.assertEquals('/v1/action/update', ZuoraAPIHelper.endpointsCalled[0].endpoint);
+    }
+
+    @IsTest
+    private static void testHandleAccountAddressUpdatesFuture() {
+        useMocks();
+        Test.startTest();
+        ZuoraAccountService.handleAccountAddressUpdatesFuture(new Set<Id>{'001S000000yKIYqIAO'});
+        Test.stopTest();
+        System.assertEquals(2, ZuoraAPIHelper.endpointsCalled.size());
+        System.assertEquals('/v1/action/create', ZuoraAPIHelper.endpointsCalled[0].endpoint);
+        System.assert(ZuoraAPIHelper.endpointsCalled[0].jsonBody.contains('\"type\":\"Contact\"'),
+            'First endpoint should create a contact');
+        System.assertEquals('/v1/action/update', ZuoraAPIHelper.endpointsCalled[1].endpoint);
+        System.assert(ZuoraAPIHelper.endpointsCalled[1].jsonBody.contains('\"type\":\"Account\"'),
+            'Second endpoint should update the account with the contact as Bill To');
+    }
+
+    @IsTest
+    private static void testAccountsWithZuoraUpdates() {
+        String json = '{"attributes":{"type":"Account","url":"/services/data/v47.0/sobjects/Account/001S000000yKIYqIAO"},' +
+            '"Id":"001S000000yKIYqIAO",' +
+            '"Name":"Keith Morgan",' +
+            '"BillingStreet":"8888 Main Street",' +
+            '"BillingCity":"Boston",' +
+            '"BillingState":"Massachusetts",' +
+            '"BillingStateCode":"MA",' +
+            '"BillingPostalCode":"12312",' +
+            '"BillingCountry":"United States",' +
+            '"Send_Bills_Contact__c":"003S0000016Y23tIAC"}';
+        Account oldAccount = (Account) System.JSON.deserialize(json, Account.class);
+        Account newAccount = oldAccount.clone(true);
+        newAccount.Name = oldAccount.Name + ' Changed';
+        Map<Id, Account> oldAccounts = new Map<Id, Account>();
+        Map<Id, Account> newAccounts = new Map<Id, Account>();
+        oldAccounts.put(oldAccount.Id, oldAccount);
+        newAccounts.put(newAccount.Id, newAccount);
+        System.assertEquals(false, new ZuoraAccountService().accountsWithZuoraUpdates(oldAccounts, newAccounts).hasChanges(),
+            'No changes expected because accounts have no zuora id'
+        );
+        oldAccount.Zuora_Id__c = '123455';
+        newAccount.Zuora_Id__c = '123455';
+        System.assertEquals(true, new ZuoraAccountService().accountsWithZuoraUpdates(oldAccounts, newAccounts).hasChanges());
+
+
+    }
+
+    @IsTest
+    private static void testAccountNeedsAddressUpdate() {
+        String json = '{"attributes":{"type":"Account","url":"/services/data/v47.0/sobjects/Account/001S000000yKIYqIAO"},' +
+            '"Id":"001S000000yKIYqIAO",' +
+            '"Name":"Keith Morgan",' +
+            '"BillingStreet":"8888 Main Street",' +
+            '"BillingCity":"Boston",' +
+            '"BillingState":"Massachusetts",' +
+            '"BillingStateCode":"MA",' +
+            '"BillingPostalCode":"12312",' +
+            '"BillingCountry":"United States",' +
+            '"Send_Bills_Contact__c":"003S0000016Y23tIAC"}';
+        Account oldAccount = (Account) System.JSON.deserialize(json, Account.class);
+        Account newAccount = oldAccount.clone(true);
+        newAccount.BillingCity = 'Somerville';
+        System.assertEquals(false, new ZuoraAccountService().accountNeedsAddressUpdate(oldAccount, newAccount),
+            'Expected no change necessary because there is no Zuora Id'
+        );
+        newAccount.Zuora_Id__c = '123456';
+        System.assertEquals(true, new ZuoraAccountService().accountNeedsAddressUpdate(oldAccount, newAccount),
+            'Expected to need to update Zuora'
+        );
+        newAccount.BillingCity = oldAccount.BillingCity;
+        System.assertNotEquals(null, newAccount.Zuora_Id__c, 'Zuora Id is still set');
+        System.assertEquals(false, new ZuoraAccountService().accountNeedsAddressUpdate(oldAccount, newAccount),
+            'Expected no change necessary because addresses are the same'
+        );
+        newAccount.Name = oldAccount.Name + ' Changed';
+        System.assertEquals(false, new ZuoraAccountService().accountNeedsAddressUpdate(oldAccount, newAccount),
+            'Expected no change necessary because there is no address change'
+        );
+    }
+
+
+    /*************
+      *** MOCKS ***
+      *************/
+    public class MockAccountsSelector extends MockProvider {
+        public MockAccountsSelector() {
+        }
+
+        public override Object handleMethodCall(MethodCall methodCall) {
+            switch on methodCall.stubbedMethodName {
+                when 'selectAll' {
+                    String json = '[{"attributes":{"type":"Account","url":"/services/data/v47.0/sobjects/Account/001S000000yKIYqIAO"},' +
+                        '"Id":"001S000000yKIYqIAO",' +
+                        '"Name":"Keith Morgan",' +
+                        '"BillingStreet":"8888 Main Street",' +
+                        '"BillingCity":"Boston",' +
+                        '"BillingState":"Massachusetts",' +
+                        '"BillingStateCode":"MA",' +
+                        '"BillingPostalCode":"12312",' +
+                        '"BillingCountry":"United States",' +
+                        '"Send_Bills_Contact__c":"003S0000016Y23tIAC",' +
+                        '"Zuora_Id__c":"2c92c0f86e5e38b0016e5fc9f13d15fb",' +
+                        '"Send_Bills_Contact__r":{"attributes":{"type":"Contact","url":"/services/data/v47.0/sobjects/Contact/003S0000016Y23tIAC"},' +
+                        '"Id":"003S0000016Y23tIAC",' +
+                        '"Email":"bulk@bluewavesolar.com.disabledagain",' +
+                        '"FirstName":"Keith",' +
+                        '"LastName":"Morgan"}}]';
+                    List<Account> accounts = (List<Account>) System.JSON.deserialize(json, List<Account>.class);
+                    return accounts;
+                }
+            }
+            return null;
+        }
     }
 }

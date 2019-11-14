@@ -59,25 +59,25 @@ public with sharing class ZuoraBillingBatchServiceTest {
                 when 'getAllBillingAccounts' {
                     List<Zuora__CustomerAccount__c> zuoraBillingAccounts = new List<Zuora__CustomerAccount__c>();
                     Zuora__CustomerAccount__c acctOne = new Zuora__CustomerAccount__c(
-                        Id = 'a716C00000002L3AAA',
+                        Id = Util.getFakeId(Zuora__CustomerAccount__c.SObjectType),
                         Zuora__Account__c = '001j0000013wv8iAAA',
                         Zuora__Zuora_Id__c = 'xxxxxxxxxx123',
                         Zuora__Batch__c = 'Batch1'
                     );
                     Zuora__CustomerAccount__c acctTwo = new Zuora__CustomerAccount__c(
-                        Id = 'a716C00000002L4AAA',
+                        Id = Util.getFakeId(Zuora__CustomerAccount__c.SObjectType),
                         Zuora__Account__c = '001j0000013wv8jAAA',
                         Zuora__Zuora_Id__c = 'xxxxxxxxxx456',
                         Zuora__Batch__c = 'Batch2'
                     );
                     Zuora__CustomerAccount__c acctThree = new Zuora__CustomerAccount__c(
-                        Id = 'a716C00000002L5AAA',
+                        Id = Util.getFakeId(Zuora__CustomerAccount__c.SObjectType),
                         Zuora__Account__c = '001j0000013wv8kAAA',
                         Zuora__Zuora_Id__c = 'xxxxxxxxxx789',
                         Zuora__Batch__c = 'Batch3'
                     );
                     Zuora__CustomerAccount__c acctFour = new Zuora__CustomerAccount__c(
-                        Id = 'a716C00000002L6AAA',
+                        Id = Util.getFakeId(Zuora__CustomerAccount__c.SObjectType),
                         Zuora__Account__c = '001j0000013wv8lAAA',
                         Zuora__Zuora_Id__c = 'xxxxxxxxxx101',
                         Zuora__Batch__c = 'Batch2'
