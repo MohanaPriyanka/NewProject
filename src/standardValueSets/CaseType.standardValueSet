@@ -16,4 +16,9 @@
         <default>false</default>
         <label>Question</label>
     </standardValue>
+    <standardValue>
+        <fullName>Permissions Request</fullName>
+        <default>false</default>
+        <label>Permissions Request</label>
+    </standardValue>
 </StandardValueSet>

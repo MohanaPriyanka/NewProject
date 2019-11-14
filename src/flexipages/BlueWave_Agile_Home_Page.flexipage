@@ -38,6 +38,9 @@
         <type>Region</type>
     </flexiPageRegions>
     <flexiPageRegions>
+        <componentInstances>
+            <componentName>runtime_approval_process:pendingApprovalCard</componentName>
+        </componentInstances>
         <name>bottomRight</name>
         <type>Region</type>
     </flexiPageRegions>
