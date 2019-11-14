@@ -883,6 +883,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Zuora__ZInvoice__c.LetterStream_Insert__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Zuora__ZInvoice__c.Ready_for_Email_Send__c</field>
         <readable>true</readable>
     </fieldPermissions>
