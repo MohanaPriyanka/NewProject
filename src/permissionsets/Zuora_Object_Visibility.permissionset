@@ -1050,6 +1050,10 @@
         <object>Zuora__ZInvoice__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
+    <pageAccesses>
+        <apexPage>Zuora__viewInvoicePdf</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
     <tabSettings>
         <tab>Zuora__CustomerAccount__c</tab>
         <visibility>Visible</visibility>
