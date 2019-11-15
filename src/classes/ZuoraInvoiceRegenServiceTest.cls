@@ -115,9 +115,9 @@ public class ZuoraInvoiceRegenServiceTest {
         System.assertEquals('Invoice',actionItem.type);
         System.assertEquals(3,actionItem.objects.size());
 
-        ZuoraAPI.Invoice invoiceOne = (ZuoraAPI.Invoice)actionItem.objects[0];
-        ZuoraAPI.Invoice invoiceTwo = (ZuoraAPI.Invoice)actionItem.objects[1];
-        ZuoraAPI.Invoice invoiceThree = (ZuoraAPI.Invoice)actionItem.objects[2];
+        ZuoraController.InvoiceCustomFields invoiceOne = (ZuoraController.InvoiceCustomFields)actionItem.objects[0];
+        ZuoraController.InvoiceCustomFields invoiceTwo = (ZuoraController.InvoiceCustomFields)actionItem.objects[1];
+        ZuoraController.InvoiceCustomFields invoiceThree = (ZuoraController.InvoiceCustomFields)actionItem.objects[2];
 
         System.assertEquals(0,invoiceOne.CustomTemplateMerge_1_Zcustom);
         System.assertEquals(749.08,invoiceOne.CustomTemplateMerge_2_Zcustom);

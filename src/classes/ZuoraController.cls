@@ -94,6 +94,13 @@ public with sharing class ZuoraController implements ZuoraDataQueryService.Proce
         Decimal DebitMemoSum;
     }
 
+    // Can't use ZuoraAPI.Invoice because Id needs to capitalized for Action Update call, but lowercase for other uses:
+    public class InvoiceCustomFields{
+        public String Id;
+        public Decimal CustomTemplateMerge_1_Zcustom;
+        public Decimal CustomTemplateMerge_2_Zcustom;
+    }
+
     public void executePostQueryJob(ZuoraDataQueryService.ProcessingParameter parameter, String response){
         if (parameter.methodName == 'updateCustomTemplateFields'){
             updateCustomTemplateFields(response);
@@ -103,7 +110,7 @@ public with sharing class ZuoraController implements ZuoraDataQueryService.Proce
     public static ZuoraAPI.ActionItems updateCustomTemplateFields(String queryData) {
         ZuoraAPI.ActionItems actionItem = new ZuoraAPI.ActionItems();
         actionItem.type = 'Invoice';
-        actionItem.objects = new List<ZuoraAPI.Invoice>();
+        actionItem.objects = new List<InvoiceCustomFields>();
 
         try {
             List<InvoiceSummaryFields> summaryList;
@@ -111,7 +118,7 @@ public with sharing class ZuoraController implements ZuoraDataQueryService.Proce
 
             for (InvoiceSummaryFields summary : summaryList){
                 if (summary.LastInvoice != null) {
-                    ZuoraAPI.Invoice invoiceToUpdate = new ZuoraAPI.Invoice();
+                    InvoiceCustomFields invoiceToUpdate = new InvoiceCustomFields();
                     invoiceToUpdate.Id = summary.LastInvoice;
                     Decimal memoSum = Util.nullToZero(summary.DebitMemoSum) - Util.nullToZero(summary.CreditMemoSum);
                     invoiceToUpdate.CustomTemplateMerge_1_Zcustom = memoSum;
