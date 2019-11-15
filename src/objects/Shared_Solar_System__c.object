@@ -1738,6 +1738,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <label>CS Self-Originations</label>
                 </value>
                 <value>
+                    <fullName>Different Test Partner</fullName>
+                    <default>false</default>
+                    <label>Different Test Partner</label>
+                </value>
+                <value>
                     <fullName>Ecogen Services</fullName>
                     <default>false</default>
                     <label>Ecogen Services</label>
@@ -1836,6 +1841,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <fullName>Renewable Connections, LLC</fullName>
                     <default>false</default>
                     <label>Renewable Connections, LLC</label>
+                </value>
+                <value>
+                    <fullName>Renewables Worldwide</fullName>
+                    <default>false</default>
+                    <label>Renewables Worldwide</label>
                 </value>
                 <value>
                     <fullName>Resonant Energy</fullName>
