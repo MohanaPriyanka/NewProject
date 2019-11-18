@@ -32,7 +32,7 @@ public with sharing class ZuoraInvoiceSelector {
 
     public static List<Zuora__ZInvoice__c> getInvoicesByDate(Date invoiceDate) {
         return [
-            SELECT Id, Zuora__ZuoraId__c, Zuora__External_Id__c
+            SELECT Id, Zuora__ZuoraId__c, Zuora__Zuora_Id__c
             FROM Zuora__ZInvoice__c
             WHERE Zuora__InvoiceDate__c = : invoiceDate
         ];
