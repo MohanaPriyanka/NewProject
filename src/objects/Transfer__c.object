@@ -145,6 +145,7 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
     <enableFeeds>false</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableLicensing>false</enableLicensing>
@@ -379,5 +380,17 @@
         <searchResultsAdditionalFields>Total_Transferred__c</searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Make_Attempted_Transfer_Field_Required</fullName>
+        <active>true</active>
+        <description>The Attempted Transfer field is made to be required for new records created on or after 11/18/19.</description>
+        <errorConditionFormula>OR(
+    ISNEW(),
+    DATEVALUE(CreatedDate)&gt;= DATE(2019,11,18)
+  ) 
+&amp;&amp;
+ISBLANK(Attempted_Transfer__c)</errorConditionFormula>
+        <errorMessage>The Attempted Transfer field needs to be populated before this record can be saved.</errorMessage>
+    </validationRules>
     <visibility>Public</visibility>
 </CustomObject>
