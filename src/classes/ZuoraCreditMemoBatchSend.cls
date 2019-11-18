@@ -20,8 +20,10 @@ public without sharing class ZuoraCreditMemoBatchSend implements Database.Batcha
     public void execute(Database.BatchableContext bc, List<SObject> scope){
         try {
             for (SObject scopeLine : scope){
-                Bill_Adjustment__c adjust = (Bill_Adjustment__c)scopeLine;
-                adjustToUpdateSet.add(ZuoraCreditDebitMemoService.createCreditOrDebitMemo(adjust));
+                Bill_Adjustment__c adjust = ZuoraCreditDebitMemoService.createCreditOrDebitMemo((Bill_Adjustment__c) scopeLine);
+                if (adjust != null && adjust.Id != null) {
+                    adjustToUpdateSet.add(adjust);
+                }
             }
         } catch (Exception excep){
             Logger.logLater('ZuoraCreditMemoBatchSend', 'execute', excep.getMessage() + '\n' + excep.getStackTraceString());
@@ -29,11 +31,16 @@ public without sharing class ZuoraCreditMemoBatchSend implements Database.Batcha
         Logger.flushLogs();
     }
 
-    public void finish(Database.BatchableContext bc){
-        if (Util.getSystemPropertyCheckbox('Update_Usage_Records_With_ZuoraId__c')) {
-            List<Bill_Adjustment__c> adjustmentsToUpdate = new List<Bill_Adjustment__c>();
-            adjustmentsToUpdate.addAll(adjustToUpdateSet);
-            update adjustmentsToUpdate;
+    public void finish(Database.BatchableContext bc) {
+        try {
+            if (Util.getSystemPropertyCheckbox('Update_Usage_Records_With_ZuoraId__c')) {
+                List<Bill_Adjustment__c> adjustmentsToUpdate = new List<Bill_Adjustment__c>();
+                adjustmentsToUpdate.addAll(adjustToUpdateSet);
+                update adjustmentsToUpdate;
+            }
+        } catch (Exception excep){
+            Logger.logLater('ZuoraCreditMemoBatchSend', 'finish', excep.getMessage() + '\n' + excep.getStackTraceString());
         }
+        Logger.flushLogs();
     }
 }
