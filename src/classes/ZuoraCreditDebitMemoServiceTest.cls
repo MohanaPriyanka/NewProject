@@ -153,6 +153,38 @@ public class ZuoraCreditDebitMemoServiceTest {
         System.assertEquals(2, debitList.size());
     }
 
+    // Tests for the case raised in this error log: https://bluewavesolar.my.salesforce.com/a3u0a000000E1zz
+    @IsTest
+    private static void testBatchWithNoIds() {
+        ZuoraAPIMock.createCMWithNoId = true;
+        ZuoraAPIMock.createDMWithNoId = true;
+
+        // disableTrigger just sets a system property checkbox to true
+        Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
+
+        // 6 adjustments exist, but one should be excluded, because already has a zuora ID:
+        Database.QueryLocator queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(false);
+        Database.QueryLocatorIterator iterator = queryLocator.iterator();
+        List<Bill_Adjustment__c> beforeCallList = new List<Bill_Adjustment__c>();
+        Integer i = 0;
+        while (iterator.hasNext()) {
+            beforeCallList.add((Bill_Adjustment__c) iterator.next());
+            i++;
+        }
+        System.assertEquals(5, i);
+
+        Test.startTest();
+        ZuoraCreditMemoBatchSend zSend = new ZuoraCreditMemoBatchSend();
+        zSend.executeBatch();
+        Test.stopTest();
+
+        List<Error_Log__c> errorLogs = [
+            SELECT Message__c FROM Error_Log__c WHERE Severity__c = :Logger.ERROR
+        ];
+        System.assertEquals(1, errorLogs.size());
+        System.assert(errorLogs[0].Message__c.contains('Memo did not successfully create:'));
+    }
+
     @IsTest
     private static void testAPICallWithMock() {
         // disableTrigger just sets a system property checkbox to true
