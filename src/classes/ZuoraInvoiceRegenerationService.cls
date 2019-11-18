@@ -40,7 +40,7 @@ public class ZuoraInvoiceRegenerationService implements Database.Batchable<SObje
 
         for (Zuora__ZInvoice__c sfInvoice : sfInvoices){
             ZuoraAPI.Invoice zuoraInvoice = new ZuoraAPI.Invoice();
-            zuoraInvoice.Id = sfInvoice.Zuora__ZuoraId__c;
+            zuoraInvoice.Id = sfInvoice.Zuora__Zuora_Id__c;
             zuoraInvoice.RegenerateInvoicePDF = true;
             zuoraInvoices.add(zuoraInvoice);
         }
