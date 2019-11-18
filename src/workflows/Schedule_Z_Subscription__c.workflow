@@ -12,7 +12,7 @@
     <fieldUpdates>
         <fullName>Add_System_Size</fullName>
         <field>System_Size_kW_DC__c</field>
-        <formula>Schedule_Z__r.Shared_Solar_System__r.Total_System_Size_kW_DC_QC__c</formula>
+        <formula>Schedule_Z__r.Shared_Solar_System__r.Total_System_Size_kWh_DC__c</formula>
         <name>Add System Size</name>
         <notifyAssignee>false</notifyAssignee>
         <operation>Formula</operation>
