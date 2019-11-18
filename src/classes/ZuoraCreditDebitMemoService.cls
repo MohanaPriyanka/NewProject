@@ -87,7 +87,7 @@ public class ZuoraCreditDebitMemoService{
         zResponse = (ZuoraAPI.GenericResponse)JSON.deserialize(response.getBody(), ZuoraAPI.GenericResponse.class);
         Bill_Adjustment__c adjustToUpdate;
 
-        if (zResponse.success){
+        if (zResponse.success && !String.isBlank(zResponse.Id)) {
             adjustToUpdate = new Bill_Adjustment__c(
                 Id = memoCRMId,
                 Zuora_Id__c = zResponse.Id
@@ -98,8 +98,8 @@ public class ZuoraCreditDebitMemoService{
                 postDebitMemo(zResponse.Id);
             }
         } else {
-            String errorMessage = memoCRMId + '_' + String.valueOf(zResponse.reasons);
-            Logger.logLater('ZuoraCreditDebitMemoService', 'handleAPIResponse', errorMessage);
+            String errorMessage = 'Memo did not successfully create: ' + memoCRMId + '\n' + response.getBody();
+            Logger.logLater('ZuoraCreditDebitMemoService', 'handleAPIResponse', errorMessage, Logger.ERROR);
         }
         return adjustToUpdate;
     }
