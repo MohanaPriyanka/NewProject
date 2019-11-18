@@ -2,23 +2,23 @@
 public class ZuoraInvoiceRegenServiceTest {
     @testSetup public static void testDataSetup() {
         Zuora__ZInvoice__c invoiceOne = new Zuora__ZInvoice__c(
-            Zuora__ZuoraId__c = 'zzz123_00001',
+            Zuora__External_Id__c = 'zzz123_00001',
             Zuora__InvoiceDate__c = Date.newInstance(2019,05,20)
         );
         Zuora__ZInvoice__c invoiceTwo = new Zuora__ZInvoice__c(
-            Zuora__ZuoraId__c = 'zzz123_00002',
+            Zuora__External_Id__c = 'zzz123_00002',
             Zuora__InvoiceDate__c = Date.newInstance(2019,05,20)
         );
         Zuora__ZInvoice__c invoiceThree = new Zuora__ZInvoice__c(
-            Zuora__ZuoraId__c = 'zzz123_00003',
+            Zuora__External_Id__c = 'zzz123_00003',
             Zuora__InvoiceDate__c = Date.newInstance(2019,05,20)
         );
         Zuora__ZInvoice__c invoiceFour = new Zuora__ZInvoice__c(
-            Zuora__ZuoraId__c = 'zzz123_00004',
+            Zuora__External_Id__c = 'zzz123_00004',
             Zuora__InvoiceDate__c = Date.newInstance(2019,05,20)
         );
         Zuora__ZInvoice__c invoiceFromPastPeriod = new Zuora__ZInvoice__c(
-            Zuora__ZuoraId__c = 'zzz123_00005',
+            Zuora__External_Id__c = 'zzz123_00005',
             Zuora__InvoiceDate__c = Date.newInstance(2019,04,20)
         );
         insert new List<Zuora__ZInvoice__c>{invoiceOne, invoiceTwo, invoiceThree, invoiceFour, invoiceFromPastPeriod};
