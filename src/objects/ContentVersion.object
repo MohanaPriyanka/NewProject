@@ -36,16 +36,6 @@
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
-                    <fullName>Customer Contract</fullName>
-                    <default>false</default>
-                    <label>Customer Contract</label>
-                </value>
-                <value>
-                    <fullName>Customer Bill</fullName>
-                    <default>false</default>
-                    <label>Customer Bill</label>
-                </value>
-                <value>
                     <fullName>Customer Disclosure Form</fullName>
                     <default>false</default>
                     <label>Customer Disclosure Form</label>
@@ -69,6 +59,18 @@
                     <fullName>Customer Utility Bill</fullName>
                     <default>false</default>
                     <label>Customer Utility Bill</label>
+                </value>
+                <value>
+                    <fullName>Customer Bill</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Customer Bill</label>
+                </value>
+                <value>
+                    <fullName>Customer Contract</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Customer Contract</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
