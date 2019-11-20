@@ -42,7 +42,8 @@
                 <field>Status__c</field>
             </layoutItems>
             <layoutItems>
-                <emptySpace>true</emptySpace>
+                <behavior>Edit</behavior>
+                <field>Bill_Delivery_Preference__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -111,11 +112,92 @@
                 <field>Additional_Contact__c</field>
             </layoutItems>
             <layoutItems>
+                <emptySpace>true</emptySpace>
+            </layoutItems>
+            <layoutItems>
+                <emptySpace>true</emptySpace>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Last_Bill_Send_Date__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Last_Bill_Send_Date_New_Charges__c</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Bill_Delivery_Preference__c</field>
+                <field>Date_of_Last_Payment__c</field>
+            </layoutItems>
+            <layoutItems>
+                <emptySpace>true</emptySpace>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Net_Metering_Credits_Allocated__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Credit_Adjustments__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Total_Lifetime_Credits_Allocated__c</field>
+            </layoutItems>
+            <layoutItems>
+                <emptySpace>true</emptySpace>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Total_Billed__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Total_Late_Fees__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Total_Adjustments__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Total_Amount_Billed__c</field>
+            </layoutItems>
+            <layoutItems>
+                <emptySpace>true</emptySpace>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Total_Payments__c</field>
+            </layoutItems>
+            <layoutItems>
+                <emptySpace>true</emptySpace>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Total_Outstanding_Balance__c</field>
+            </layoutItems>
+            <layoutItems>
+                <emptySpace>true</emptySpace>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Unapplied_Overpayments__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Account_Balance__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Total_Savings__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Savings_Adjustments__c</field>
+            </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Total_Lifetime_Savings__c</field>
@@ -139,7 +221,12 @@
                 <field>Past_Due_Status__c</field>
             </layoutItems>
             <layoutItems>
-                <emptySpace>true</emptySpace>
+                <behavior>Readonly</behavior>
+                <field>First_Bill_Date__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Max_Account_Bill_Number__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -152,7 +239,7 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>Bill Messaging</label>
+        <label>Paper Check Mailing</label>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -167,16 +254,7 @@
                 <field>Send_Checks_Address__c</field>
             </layoutItems>
         </layoutColumns>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Zuora_Invoice_Message_1_of_2__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Zuora_Invoice_Message_2_of_2__c</field>
-            </layoutItems>
-        </layoutColumns>
+        <layoutColumns/>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
     <layoutSections>
@@ -263,6 +341,7 @@
         <fields>Name</fields>
         <fields>ParentId</fields>
         <fields>Recurring_Billing__c</fields>
+        <fields>Total_Outstanding_Balance__c</fields>
     </miniLayout>
     <quickActionList>
         <quickActionListItems>
@@ -307,37 +386,6 @@
         </relatedContentItems>
     </relatedContent>
     <relatedLists>
-        <fields>NAME</fields>
-        <fields>Zuora__TotalInvoiceBalance__c</fields>
-        <relatedList>Zuora__CustomerAccount__c.Zuora__Account__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <fields>Premise_Number__c</fields>
-        <fields>Annual_Cost_of_Electricity__c</fields>
-        <fields>Subscribed_Annual_Cost_of_Electricity__c</fields>
-        <fields>Service_Address_Formula__c</fields>
-        <fields>Service_Apt_Suit_Formula__c</fields>
-        <fields>Service_City_Formula__c</fields>
-        <fields>Service_State_Formula__c</fields>
-        <fields>Service_Zip_Code_Formula__c</fields>
-        <relatedList>Utility_Account_Log__c.Account__c</relatedList>
-        <sortField>Subscribed_Annual_Cost_of_Electricity__c</sortField>
-        <sortOrder>Desc</sortOrder>
-    </relatedLists>
-    <relatedLists>
-        <fields>OPPORTUNITY.NAME</fields>
-        <fields>Shared_Solar_System__c</fields>
-        <fields>CS_Capacity_Allocated__c</fields>
-        <fields>OPPORTUNITY.STAGE_NAME</fields>
-        <fields>Partner_tag2__c</fields>
-        <fields>OPPORTUNITY.CREATED_DATE</fields>
-        <relatedList>RelatedOpportunityList</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <relatedList>RelatedNoteList</relatedList>
-    </relatedLists>
-    <relatedLists>
         <fields>TASK.SUBJECT</fields>
         <fields>TASK.WHO_NAME</fields>
         <fields>TASK.WHAT_NAME</fields>
@@ -356,7 +404,105 @@
         <relatedList>RelatedHistoryList</relatedList>
     </relatedLists>
     <relatedLists>
+        <fields>NAME</fields>
+        <fields>Premise_Number__c</fields>
+        <fields>Annual_Cost_of_Electricity__c</fields>
+        <fields>Subscribed_Annual_Cost_of_Electricity__c</fields>
+        <fields>Service_Address_Formula__c</fields>
+        <fields>Service_Apt_Suit_Formula__c</fields>
+        <fields>Service_City_Formula__c</fields>
+        <fields>Service_State_Formula__c</fields>
+        <fields>Service_Zip_Code_Formula__c</fields>
+        <relatedList>Utility_Account_Log__c.Account__c</relatedList>
+        <sortField>Subscribed_Annual_Cost_of_Electricity__c</sortField>
+        <sortOrder>Desc</sortOrder>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>ChargentOrders__Billing_First_Name__c</fields>
+        <fields>ChargentOrders__Billing_Last_Name__c</fields>
+        <fields>ChargentOrders__Payment_Method__c</fields>
+        <fields>ChargentOrders__Card_Type__c</fields>
+        <fields>ChargentOrders__Card_Last_4__c</fields>
+        <fields>ChargentOrders__Payment_Status__c</fields>
+        <relatedList>ChargentOrders__ChargentOrder__c.ChargentOrders__Account__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>OPPORTUNITY.NAME</fields>
+        <fields>Shared_Solar_System__c</fields>
+        <fields>CS_Capacity_Allocated__c</fields>
+        <fields>OPPORTUNITY.STAGE_NAME</fields>
+        <fields>Partner_tag2__c</fields>
+        <fields>OPPORTUNITY.CREATED_DATE</fields>
+        <relatedList>RelatedOpportunityList</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>FULL_NAME</fields>
+        <fields>CONTACT.EMAIL</fields>
+        <fields>CONTACT.PHONE1</fields>
+        <fields>CONTACT.TITLE</fields>
+        <fields>Email_Archive__c</fields>
+        <fields>CONTACT.CREATED_DATE</fields>
+        <relatedList>RelatedContactList</relatedList>
+        <sortField>CONTACT.CREATED_DATE</sortField>
+        <sortOrder>Desc</sortOrder>
+    </relatedLists>
+    <relatedLists>
+        <fields>CASES.CASE_NUMBER</fields>
+        <fields>NAME</fields>
+        <fields>CASES.SUBJECT</fields>
+        <fields>CASES.PRIORITY</fields>
+        <fields>CASES.CREATED_DATE_DATE_ONLY</fields>
+        <fields>CASES.STATUS</fields>
+        <fields>OWNER_NAME</fields>
+        <relatedList>RelatedCaseList</relatedList>
+    </relatedLists>
+    <relatedLists>
         <relatedList>RelatedEntityHistoryList</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>Total_Due__c</fields>
+        <fields>Bill_Number__c</fields>
+        <fields>Total_Payments_This_Month__c</fields>
+        <fields>Late_Fees__c</fields>
+        <fields>Days_Past_Due__c</fields>
+        <fields>Total_Due_This_Month__c</fields>
+        <fields>Overpayment_Amount_Rollup__c</fields>
+        <fields>Published__c</fields>
+        <fields>Date__c</fields>
+        <relatedList>Account_Bill__c.Parent_Account__c</relatedList>
+        <sortField>Date__c</sortField>
+        <sortOrder>Desc</sortOrder>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>Bill_Due_Date__c</fields>
+        <fields>Total_Due__c</fields>
+        <fields>Balance_Net_Late_Payments__c</fields>
+        <fields>Carry_Over_Balance__c</fields>
+        <fields>Total_Payments_This_Month__c</fields>
+        <fields>Shared_Solar_System__c</fields>
+        <fields>Distribute_This_Balance_12mo__c</fields>
+        <fields>Distribute_This_Balance_as_Payment_Plan__c</fields>
+        <fields>Adjustments__c</fields>
+        <relatedList>System_Bill__c.Property_Account__c</relatedList>
+        <sortField>Bill_Due_Date__c</sortField>
+        <sortOrder>Desc</sortOrder>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>Requested_By__c</fields>
+        <fields>OWNER.LAST_NAME</fields>
+        <fields>Requested_Delivery_Date__c</fields>
+        <relatedList>Product_Group_Assignment__c.Account__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>Related_Contract_Parties__c.Account__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <relatedList>RelatedNoteList</relatedList>
     </relatedLists>
     <relatedObjects>ParentId</relatedObjects>
     <showEmailCheckbox>false</showEmailCheckbox>
