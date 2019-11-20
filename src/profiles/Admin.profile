@@ -8194,6 +8194,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contract.ActiveContract__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contract.BillingAddress</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -8329,6 +8334,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contract.Link_to_Box_Drive__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contract.Management_Fee_Detail__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -8374,12 +8384,27 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contract.Parent_Contract__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contract.Payment_Methods__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contract.Project_Description__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Contract.Project_Value__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract.Ready_for_Approval__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -38155,6 +38180,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>agf__ADM_Work__c.Case__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>agf__ADM_Work__c.Contract__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
