@@ -16948,6 +16948,31 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Entity_Contract_Junction__c.Active__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Entity_Contract_Junction__c.Contract__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Entity_Contract_Junction__c.End_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Entity_Contract_Junction__c.Entity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Entity_Contract_Junction__c.Start_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Entity__c.Client_Account__c</field>
         <readable>true</readable>
@@ -55619,10 +55644,6 @@
         <layout>Contract-General Contract Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Contract-General Contract Layout</layout>
-        <recordType>Contract.General_Contract</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Daily_Production_Update__c-Daily Production Update Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -55649,15 +55670,14 @@
         <recordType>Energy_Usage_Update__c.Production_Update_RL</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Entity_Contract_Junction__c-Entity Contract Junction Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Entity__c-BWC Business Entity Layout</layout>
         <recordType>Entity__c.BWC_Business_Entity</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Entity__c-BWC Project Entity Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Entity__c-BWC Project Entity Layout</layout>
-        <recordType>Entity__c.BWC_Project_Entity</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Entity__c-BWC SE Project Entity Layout</layout>
@@ -63977,6 +63997,10 @@
     <tabVisibilities>
         <tab>Energy_Usage_Update__c</tab>
         <visibility>DefaultOff</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Entity_Contract_Junction__c</tab>
+        <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>Entity__c</tab>
