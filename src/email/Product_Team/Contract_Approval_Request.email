@@ -1,0 +1,6 @@
+<table border="0" cellpadding="5" width="550" cellspacing="5" height="400" >
+<tr valign="top" height="400" >
+<td tEditID="c1r1" style=" background-color:#FFFFFF; bEditID:r3st1; color:#000000; bLabel:main; font-size:12pt; font-family:arial;" aEditID="c1r1" locked="0" >
+<![CDATA[<div style="font-size: 12pt;"><font face="arial">Your approval is requested for this <a href="{!Contract.Link}">Contract</a>:</font></div><div style="font-size: 12pt;"><font face="arial"><br></font></div><div>Name: {!Contract.Name}</div><div>Type:&nbsp;{!Contract.Contract_Type__c}</div><div>Link to Contract on Box Drive:&nbsp;<a href="{!Contract.Link}">{!Contract.Link_to_Box_Drive__c}</a></div><div><br></div><div>Approve or Reject:&nbsp;{!ApprovalRequest.Internal_URL}</div><div><br></div><div>Submitted on:&nbsp;{!Contract.Date_Submitted__c}&nbsp;</div><div>Submitted by:&nbsp;{!Contract.Submitted_By__c}</div><div><br></div>]]></td>
+</tr>
+</table>
