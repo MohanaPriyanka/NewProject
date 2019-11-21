@@ -768,7 +768,6 @@
     NOT(ISBLANK(State_Applications__c)),
     NOT(ISBLANK(Risk__c)),
     NOT(ISBLANK(TEXT(Team_Submitted_By__c))),
-    NOT(ISBLANK(Submitted_By__c)),
     NOT(ISBLANK(Direct_Manager__c)),
     NOT(ISBLANK(Link_to_Box_Drive__c))          
 )</formula>
