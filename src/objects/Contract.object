@@ -82,7 +82,7 @@
         <fullName>ActiveContract__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <inlineHelpText>Currently active version of this contract</inlineHelpText>
+        <inlineHelpText>Active version of this contract; this field is normally populated when a contract has been superseded or replaced by another version.</inlineHelpText>
         <label>Active Contract</label>
         <referenceTo>Contract</referenceTo>
         <relationshipLabel>Previous Contracts</relationshipLabel>
@@ -686,7 +686,7 @@
         <fullName>Parent_Contract__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <inlineHelpText>This field is used for Amendments (related list).</inlineHelpText>
+        <inlineHelpText>This field is normally populated on contracts that are amendments to an active contract.</inlineHelpText>
         <label>Parent Contract</label>
         <referenceTo>Contract</referenceTo>
         <relationshipLabel>Amendments</relationshipLabel>
