@@ -557,6 +557,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>InvocableZuoraInvoiceDownload</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>InvoiceTemplateAssigner</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -602,6 +606,14 @@
     </classAccesses>
     <classAccesses>
         <apexClass>LetterStreamAPIMock</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>LetterStreamInsertSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>LetterStreamInsertSelectorTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -1209,6 +1221,14 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ZuoraOutstandingItemsAsyncService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraOutstandingItemsAsyncServiceTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ZuoraPaymentMethodSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1234,6 +1254,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ZuoraSubscriptionService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraSubscriptionServiceTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -13514,12 +13538,37 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>LetterStream_Insert__c.Active__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>LetterStream_Insert__c.Anchor__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>LetterStream_Insert__c.Client_Brand_Key__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>LetterStream_Insert__c.Content_Version_ID__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>LetterStream_Insert__c.Letterstream_ID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>LetterStream_Insert__c.Product_Program__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>LetterStream_Insert__c.Utility__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

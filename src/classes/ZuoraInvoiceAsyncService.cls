@@ -11,6 +11,12 @@ public with sharing class ZuoraInvoiceAsyncService implements Queueable, Databas
     public List<Zuora__ZInvoice__c> allInvoicesToDownload;
     public List<Zuora__ZInvoice__c> allInvoicesToMail;
     public List<Zuora__ZInvoice__c> invoicesAlreadySent;
+    @TestVisible
+    private static ZuoraInvoiceSelector invoiceSelector = new ZuoraInvoiceSelector();
+    @TestVisible
+    private static AccountsSelector accountSelector = new AccountsSelector();
+    @TestVisible
+    private static ZuoraInvoiceService invoiceService = new ZuoraInvoiceService(null);
 
     public ZuoraInvoiceAsyncService(List<Zuora__ZInvoice__c> sfdcZInvoices) {
         mode = OperationType.DOWNLOAD;
@@ -69,6 +75,80 @@ public with sharing class ZuoraInvoiceAsyncService implements Queueable, Databas
                 Logger.ERROR);
         } finally {
             Logger.flushLogs();
+        }
+    }
+
+    @Future
+    public static void findFirstInvoiceAndSetInsertsFuture(Set<Id> invoiceIds) {
+        try {
+            invoiceService.setFirstBillInsert(getDecoratedFirstInvoices(invoiceIds));
+        } catch (Exception e) {
+            Logger.logLater(
+                'ZuoraInvoiceAsyncService',
+                'findFirstInvoiceAndSetInsertsFuture',
+                'Exception caught: ' + e.getMessage() + '\n' + e.getStackTraceString(),
+                Logger.ERROR
+            );
+        } finally {
+            Logger.flushLogs();
+        }
+    }
+
+    @TestVisible
+    private static List<DecoratedInvoice> getDecoratedFirstInvoices(Set<Id> invoiceIds) {
+        List<DecoratedInvoice> firstBillInvoices = new List<DecoratedInvoice>();
+
+        List<Zuora__ZInvoice__c> allInvoices = invoiceSelector.getAll(invoiceIds);
+        Map<Id, Zuora__ZInvoice__c> accountIdToInvoice = new Map<Id, Zuora__ZInvoice__c>();
+        for (Zuora__ZInvoice__c zInvoice : allInvoices) {
+            accountIdToInvoice.put(zInvoice.Zuora__Account__c, zInvoice);
+        }
+
+        List<Account> propertyAccounts = accountSelector.selectAll(accountIdToInvoice.keySet());
+        for (Account account : propertyAccounts) {
+            DecoratedInvoice decoratedInvoice = new DecoratedInvoice(account, accountIdToInvoice.get(account.Id));
+            firstBillInvoices.add(decoratedInvoice);
+        }
+        return firstBillInvoices;
+    }
+
+    public class DecoratedInvoice {
+        public Zuora__ZInvoice__c invoice;
+        public Id utilityId;
+        public String program;
+        public Boolean anchor;
+        public String clientBrandKey;
+
+        public DecoratedInvoice(Account propertyAccount, Zuora__ZInvoice__c invoice) {
+            this.invoice = invoice;
+            this.anchor = (propertyAccount.Count_of_Large_Offtake_Opps__c >= 1);
+            this.clientBrandKey = propertyAccount.Client_Brand_Key__c;
+            setUtilityAndProgram(propertyAccount);
+        }
+
+        private void setUtilityAndProgram(Account propertyAccount) {
+            for (Opportunity opportunity : propertyAccount.Opportunities) {
+                if (program == null) {
+                    program = opportunity.Shared_Solar_System__r.Product__r.Program__c;
+                } else if (program != opportunity.Shared_Solar_System__r.Product__r.Program__c) {
+                    Logger.logLater(
+                        'DecoratedInvoice',
+                        'setUtilityAndProgram',
+                        'Multiple programs found for account when setting welcome letter: ' + propertyAccount,
+                        Logger.ERROR
+                    );
+                }
+                if (utilityId == null) {
+                    utilityId = opportunity.Shared_Solar_System__r.Utility__c;
+                } else if (utilityId != opportunity.Shared_Solar_System__r.Utility__c) {
+                    Logger.logLater(
+                        'DecoratedInvoice',
+                        'setUtilityAndProgram',
+                        'Multiple utilities found for account when setting welcome letter: ' + propertyAccount,
+                        Logger.ERROR
+                    );
+                }
+            }
         }
     }
 }

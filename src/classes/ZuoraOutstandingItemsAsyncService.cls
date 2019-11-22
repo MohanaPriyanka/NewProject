@@ -66,9 +66,9 @@ public with sharing class ZuoraOutstandingItemsAsyncService implements Queueable
         if (invoices.size() == 0 && debitMemos.size() == 0) {
             try {
                 processOutstandingItems();
-            } catch (Exception e) {
+            } catch (Util.BWException e) {
                 Logger.logLater('ZuoraOutstandingItems', 'execute',
-                    'Unexpected exception caught processing outstanding items: ' +
+                    'Requeueing after catching BWException processing outstanding items: ' +
                         JSON.serialize(processingParameter.allOutstandingItems) + '\n' +
                         e.getMessage() + '\n' +
                         e.getStackTraceString(),
@@ -76,10 +76,19 @@ public with sharing class ZuoraOutstandingItemsAsyncService implements Queueable
                 );
                 requeueJob();
                 return;
+            } catch (Exception e) {
+                Logger.logLater('ZuoraOutstandingItems', 'execute',
+                    'Caught fatal exception while processing outstanding items: ' +
+                        JSON.serialize(processingParameter.allOutstandingItems) + '\n' +
+                        e.getMessage() + '\n' +
+                        e.getStackTraceString(),
+                    Logger.ERROR
+                );
             }
         } else {
             requeueJob();
         }
+        Logger.flushLogs();
     }
 
     private void requeueJob() {

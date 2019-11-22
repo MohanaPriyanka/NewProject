@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>MSLP</fullName>
+        <default>false</default>
+        <label>MSLP</label>
+    </customValue>
+    <customValue>
+        <fullName>BlueWave Solar Loan</fullName>
+        <default>false</default>
+        <label>BlueWave Solar Loan</label>
+    </customValue>
+    <customValue>
+        <fullName>SMART - Community Solar</fullName>
+        <default>false</default>
+        <label>SMART - Community Solar</label>
+    </customValue>
+    <customValue>
+        <fullName>SREC - Community Solar</fullName>
+        <default>false</default>
+        <label>SREC - Community Solar</label>
+    </customValue>
+    <customValue>
+        <fullName>CED Ensemble</fullName>
+        <default>false</default>
+        <label>CED Ensemble</label>
+    </customValue>
+    <customValue>
+        <fullName>VDER - Community Solar</fullName>
+        <default>false</default>
+        <label>VDER - Community Solar</label>
+    </customValue>
+    <description>Used to further specify a product (e.g. SREC vs SMART)</description>
+    <masterLabel>Product Program</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

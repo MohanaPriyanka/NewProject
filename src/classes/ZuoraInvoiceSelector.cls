@@ -124,4 +124,12 @@ public with sharing class ZuoraInvoiceSelector {
             'FROM Account acct';
         return queryString;
     }
+
+    public List<Zuora__ZInvoice__c> getAll(Set<Id> invoiceIds) {
+        return [
+            SELECT Id, Zuora__Account__c
+            FROM Zuora__ZInvoice__c
+            WHERE Id = :invoiceIds
+        ];
+    }
 }

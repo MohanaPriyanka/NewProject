@@ -7,7 +7,6 @@
 public with sharing class ZuoraSubscriptionServiceTest {
     @TestSetup
     public static void testSetup() {
-        Test.startTest();
         Util.disableAllTriggers();
 
         TestFactory.insertBWAddress();
@@ -20,8 +19,8 @@ public with sharing class ZuoraSubscriptionServiceTest {
         Test.loadData(Entity__c.SObjectType, 'TestCSEntity');
         Test.loadData(Shared_Solar_System__c.SObjectType, 'TestCSSharedSolarSystem');
         Test.loadData(Utility_Account_Log__c.SObjectType, 'TestCSUtilityAccountLog');
+        Test.startTest();
         Test.loadData(Opportunity.SObjectType, 'TestCSOpportunity');
-        Test.stopTest();
         Test.loadData(Utility_Account_Subscription__c.SObjectType, 'TestCSUtilityAccountSubscription');
         Test.loadData(Schedule_Z__c.SObjectType, 'TestCSScheduleZ');
         Test.loadData(Schedule_Z_Subscription__c.SObjectType, 'TestCSScheduleZSubscription');
@@ -30,6 +29,7 @@ public with sharing class ZuoraSubscriptionServiceTest {
         Test.loadData(System_Bill__c.SObjectType, 'TestCSSystemBill');
         Test.loadData(Utility_Account_Bill__c.SObjectType, 'TestCSUtilityAccountBill');
         Test.loadData(UASB__c.SObjectType, 'TestCSUASB');
+        Test.stopTest();
         Test.loadData(ChargentOrders__ChargentOrder__c.SObjectType, 'TestCSChargentOrder');
         Test.loadData(ChargentOrders__Transaction__c.SObjectType, 'TestCSTransaction');
         TestFactory.setCSBillSettings();

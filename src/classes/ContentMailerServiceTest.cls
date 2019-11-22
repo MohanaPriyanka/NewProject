@@ -16,6 +16,14 @@ public with sharing class ContentMailerServiceTest {
             Zuora__Account__c = account.Id
         );
         insert customerAccount;
+
+        // Not really needed, but the invoice insert will log an error if there's no corresponding letterstream insert
+        // for it
+        LetterStream_Insert__c letterStreamInsert = new LetterStream_Insert__c(
+            Client_Brand_Key__c = 'BluewaveLogo'
+        );
+        insert letterStreamInsert;
+
         // ContentMailerService sends Content attached to an SObject, so while it's not specific to ZInvoice, we need
         // some SObject to use for testing (that has a Letterstreamjob__c field). Right now, that's only Account Bill
         // and ZInvoice.
