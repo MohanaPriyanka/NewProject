@@ -6,12 +6,20 @@
 public with sharing class ZuoraInvoiceServiceTest {
     @TestSetup
     public static void testSetup() {
-        List<Zuora__ZInvoice__c> invoices = new List<Zuora__ZInvoice__c>();
-        invoices.add(new Zuora__ZInvoice__c(Zuora__Zuora_Id__c = '2c92c0fb6d1fe1f0016d216a87b54440'));
-        invoices.add(new Zuora__ZInvoice__c(Zuora__Zuora_Id__c = '2c92c0fb6d1fe1f0016d216a87b54441'));
-
-        insert invoices;
         ContentMailerServiceTest.testSetup();
+        Zuora__CustomerAccount__c customerAccount = [SELECT Id, Zuora__Account__c FROM Zuora__CustomerAccount__c LIMIT 1];
+        List<Zuora__ZInvoice__c> invoices = new List<Zuora__ZInvoice__c>();
+        invoices.add(new Zuora__ZInvoice__c(
+            Zuora__Account__c = customerAccount.Zuora__Account__c,
+            Zuora__BillingAccount__c = customerAccount.Id,
+            Zuora__Zuora_Id__c = '2c92c0fb6d1fe1f0016d216a87b54440'
+        ));
+        invoices.add(new Zuora__ZInvoice__c(
+            Zuora__Account__c = customerAccount.Zuora__Account__c,
+            Zuora__BillingAccount__c = customerAccount.Id,
+            Zuora__Zuora_Id__c = '2c92c0fb6d1fe1f0016d216a87b54441'
+        ));
+        insert invoices;
     }
 
     /*
@@ -260,6 +268,7 @@ public with sharing class ZuoraInvoiceServiceTest {
             FROM Error_Log__c
             WHERE Severity__c = 'Error'
         ];
+        System.debug(LoggingLevel.ERROR, errorLogs);
         System.assertEquals(0, errorLogs.size());
         System.assertEquals(1, ContentMailerService.calloutsMade);
     }
@@ -438,8 +447,10 @@ public with sharing class ZuoraInvoiceServiceTest {
     private static void testGetDecoratedFirstInvoices() {
         useMocks();
 
-        List<ZuoraInvoiceAsyncService.DecoratedInvoice> firstBillInvoices = ZuoraInvoiceAsyncService.getDecoratedFirstInvoices(new Set<Id>());
+        List<ZuoraInvoiceAsyncService.DecoratedInvoice> firstBillInvoices = ZuoraInvoiceAsyncService.getDecoratedFirstInvoices(new Set<Id>{'001S000000000FIRST'});
         System.assertEquals(1, firstBillInvoices.size());
+        firstBillInvoices = ZuoraInvoiceAsyncService.getDecoratedFirstInvoices(new Set<Id>{'001S000000NOTFIRST'});
+        System.assertEquals(0, firstBillInvoices.size());
     }
 
     @IsTest
@@ -505,7 +516,25 @@ public with sharing class ZuoraInvoiceServiceTest {
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
                 when 'getAll' {
-                    String invoiceJson = '[{"attributes":{"type":"Zuora__ZInvoice__c","url":"/services/data/v47.0/sobjects/Zuora__ZInvoice__c/a7KS0000000E8d2MAC"},"Id":"a7KS0000000E8d2MAC","Zuora__Account__c":"001S000000yKIPXIA4"}]';
+                    List<Id> invoiceIds = new List<Id>((Set<Id>) methodCall.listOfArgs[0]);
+                    String invoiceJson = '[';
+                    for (Integer i = 0; i < invoiceIds.size(); i++) {
+                        String invoiceId = invoiceIds[i];
+                        String accountId;
+                        if (invoiceId.contains('NOTFIRST')) {
+                            accountId = '001S000000NOTFIRST';
+                        } else {
+                            accountId = '001S000000000FIRST';
+                        }
+                        invoiceJson +=
+                            '{"attributes":{"type":"Zuora__ZInvoice__c","url":"/services/data/v47.0/sobjects/Zuora__ZInvoice__c/a7KS0000000E8d2MAC"},' +
+                                '"Id":"'+invoiceIds+'","Zuora__Account__c":"'+accountId+'"}';
+                        if (i < invoiceIds.size() - 1) {
+                            invoiceJson += ',';
+                        }
+
+                    }
+                    invoiceJson += ']';
                     List<Zuora__ZInvoice__c> invoices = (List<Zuora__ZInvoice__c>) JSON.deserialize(invoiceJson, List<Zuora__ZInvoice__c>.class);
                     return invoices;
                 }
@@ -521,27 +550,63 @@ public with sharing class ZuoraInvoiceServiceTest {
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
                 when 'selectAll' {
-                    String accountWithTwoOppsJson = '[{"attributes":{"type":"Account","url":"/services/data/v47.0/sobjects/Account/001S000000yKIPXIA4"},' +
-                        '"Id":"001S000000yKIPXIA4","Name":"Ritchie Ho 20","BillingStreet":"1 Main","BillingCity":"Boston",' +
-                        '"BillingState":"Massachusetts","BillingStateCode":"MA","BillingPostalCode":"12312",' +
-                        '"BillingCountry":"United States","Send_Bills_Contact__c":"003S0000016Y1znIAC","Client_Brand_Key__c":"BluewaveLogo",' +
-                        '"Count_of_Large_Offtake_Opps__c":0,"Zuora_Id__c":"2c92c0f86e5e38b0016e5fc9634e0f22",' +
-                        '"Opportunities":{"totalSize":2,"done":true,"records":[' +
-                        '{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/006S000000CwOfgIAF"},' +
-                        '"AccountId":"001S000000yKIPXIA4","Id":"006S000000CwOfgIAF","Shared_Solar_System__c":"a1JS0000003BMvKMAW",' +
-                        '"Shared_Solar_System__r":{"attributes":{"type":"Shared_Solar_System__c","url":"/services/data/v47.0/sobjects/Shared_Solar_System__c/a1JS0000003BMvKMAW"},' +
-                        '"Id":"a1JS0000003BMvKMAW","Product__c":"01tS0000005j7AVIAY","Utility__c":"a1MS0000008BldqMAC",' +
-                        '"Product__r":{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AVIAY"},' +
-                        '"Id":"01tS0000005j7AVIAY","Program__c":"SREC - Community Solar"}}},' +
-                        '{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/006S000000CwOfhIAF"},' +
-                        '"AccountId":"001S000000yKIPXIA4","Id":"006S000000CwOfhIAF","Shared_Solar_System__c":"a1JS0000003BMvJMAW",' +
-                        '"Shared_Solar_System__r":{"attributes":{"type":"Shared_Solar_System__c","url":"/services/data/v47.0/sobjects/Shared_Solar_System__c/a1JS0000003BMvJMAW"},' +
-                        '"Id":"a1JS0000003BMvJMAW","Product__c":"01tS0000005j7AWIAY","Utility__c":"a1MS0000008BldqMAC",' +
-                        '"Product__r":{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AWIAY"},' +
-                        '"Id":"01tS0000005j7AWIAY","Program__c":"SREC - Community Solar"}}}]},' +
-                        '"Send_Bills_Contact__r":{"attributes":{"type":"Contact","url":"/services/data/v47.0/sobjects/Contact/003S0000016Y1znIAC"},' +
-                        '"Id":"003S0000016Y1znIAC","Email":"bulk@bluewavesolar.com.disabledagain","FirstName":"Ritchie","LastName":"Ho 20"}}]';
-                    List<Account> accounts = (List<Account>) JSON.deserialize(accountWithTwoOppsJson, List<Account>.class);
+                    Set<Id> accountIds =
+                        (Set<Id>) methodCall.listOfArgs[0];
+                    String json;
+                    if (accountIds.contains('001S000000NOTFIRST')) {
+                        // Includes two invoices
+                        json = '[{"attributes":{"type":"Account","url":"/services/data/v47.0/sobjects/Account/001S000000yKIPXIA4"},' +
+                            '"Id":"001S000000yKIPXIA4","Name":"Ritchie Ho 20","BillingStreet":"1 Main","BillingCity":"Boston",' +
+                            '"BillingState":"Massachusetts","BillingStateCode":"MA","BillingPostalCode":"12312",' +
+                            '"BillingCountry":"United States","Send_Bills_Contact__c":"003S0000016Y1znIAC","Client_Brand_Key__c":"BluewaveLogo",' +
+                            '"Count_of_Large_Offtake_Opps__c":0,"Zuora_Id__c":"2c92c0f86e5e38b0016e5fc9634e0f22",' +
+                            '"Zuora__Invoices__r":{"totalSize":2,"done":true,"records":[' +
+                            '{"attributes":{"type":"Zuora__ZInvoice__c","url":"/services/data/v47.0/sobjects/Zuora__ZInvoice__c/a7KS0000000E8g8MAC"},' +
+                            '"Zuora__Account__c":"001S000000yKISFIA4","Id":"a7KS0000000E8g8MAC"},' +
+                            '{"attributes":{"type":"Zuora__ZInvoice__c","url":"/services/data/v47.0/sobjects/Zuora__ZInvoice__c/a7KS0000000E8g8MAC"},' +
+                            '"Zuora__Account__c":"001S000000yKISFIA4","Id":"a7KS0000000E8g8MAD"}]},' +
+                            '"Opportunities":{"totalSize":2,"done":true,"records":[' +
+                            '{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/006S000000CwOfgIAF"},' +
+                            '"AccountId":"001S000000yKIPXIA4","Id":"006S000000CwOfgIAF","Shared_Solar_System__c":"a1JS0000003BMvKMAW",' +
+                            '"Shared_Solar_System__r":{"attributes":{"type":"Shared_Solar_System__c","url":"/services/data/v47.0/sobjects/Shared_Solar_System__c/a1JS0000003BMvKMAW"},' +
+                            '"Id":"a1JS0000003BMvKMAW","Product__c":"01tS0000005j7AVIAY","Utility__c":"a1MS0000008BldqMAC",' +
+                            '"Product__r":{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AVIAY"},' +
+                            '"Id":"01tS0000005j7AVIAY","Program__c":"SREC - Community Solar"}}},' +
+                            '{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/006S000000CwOfhIAF"},' +
+                            '"AccountId":"001S000000yKIPXIA4","Id":"006S000000CwOfhIAF","Shared_Solar_System__c":"a1JS0000003BMvJMAW",' +
+                            '"Shared_Solar_System__r":{"attributes":{"type":"Shared_Solar_System__c","url":"/services/data/v47.0/sobjects/Shared_Solar_System__c/a1JS0000003BMvJMAW"},' +
+                            '"Id":"a1JS0000003BMvJMAW","Product__c":"01tS0000005j7AWIAY","Utility__c":"a1MS0000008BldqMAC",' +
+                            '"Product__r":{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AWIAY"},' +
+                            '"Id":"01tS0000005j7AWIAY","Program__c":"SREC - Community Solar"}}}]},' +
+                            '"Send_Bills_Contact__r":{"attributes":{"type":"Contact","url":"/services/data/v47.0/sobjects/Contact/003S0000016Y1znIAC"},' +
+                            '"Id":"003S0000016Y1znIAC","Email":"bulk@bluewavesolar.com.disabledagain","FirstName":"Ritchie","LastName":"Ho 20"}}]';
+                    } else {
+                        // Includes one invoice
+                        json = '[{"attributes":{"type":"Account","url":"/services/data/v47.0/sobjects/Account/001S000000yKIPXIA4"},' +
+                            '"Id":"001S000000yKIPXIA4","Name":"Ritchie Ho 20","BillingStreet":"1 Main","BillingCity":"Boston",' +
+                            '"BillingState":"Massachusetts","BillingStateCode":"MA","BillingPostalCode":"12312",' +
+                            '"BillingCountry":"United States","Send_Bills_Contact__c":"003S0000016Y1znIAC","Client_Brand_Key__c":"BluewaveLogo",' +
+                            '"Count_of_Large_Offtake_Opps__c":0,"Zuora_Id__c":"2c92c0f86e5e38b0016e5fc9634e0f22",' +
+                            '"Zuora__Invoices__r":{"totalSize":1,"done":true,"records":[' +
+                            '{"attributes":{"type":"Zuora__ZInvoice__c","url":"/services/data/v47.0/sobjects/Zuora__ZInvoice__c/a7KS0000000E8g8MAC"},' +
+                            '"Zuora__Account__c":"001S000000yKISFIA4","Id":"a7KS0000000E8g8MAC"}]},' +
+                            '"Opportunities":{"totalSize":2,"done":true,"records":[' +
+                            '{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/006S000000CwOfgIAF"},' +
+                            '"AccountId":"001S000000yKIPXIA4","Id":"006S000000CwOfgIAF","Shared_Solar_System__c":"a1JS0000003BMvKMAW",' +
+                            '"Shared_Solar_System__r":{"attributes":{"type":"Shared_Solar_System__c","url":"/services/data/v47.0/sobjects/Shared_Solar_System__c/a1JS0000003BMvKMAW"},' +
+                            '"Id":"a1JS0000003BMvKMAW","Product__c":"01tS0000005j7AVIAY","Utility__c":"a1MS0000008BldqMAC",' +
+                            '"Product__r":{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AVIAY"},' +
+                            '"Id":"01tS0000005j7AVIAY","Program__c":"SREC - Community Solar"}}},' +
+                            '{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/006S000000CwOfhIAF"},' +
+                            '"AccountId":"001S000000yKIPXIA4","Id":"006S000000CwOfhIAF","Shared_Solar_System__c":"a1JS0000003BMvJMAW",' +
+                            '"Shared_Solar_System__r":{"attributes":{"type":"Shared_Solar_System__c","url":"/services/data/v47.0/sobjects/Shared_Solar_System__c/a1JS0000003BMvJMAW"},' +
+                            '"Id":"a1JS0000003BMvJMAW","Product__c":"01tS0000005j7AWIAY","Utility__c":"a1MS0000008BldqMAC",' +
+                            '"Product__r":{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AWIAY"},' +
+                            '"Id":"01tS0000005j7AWIAY","Program__c":"SREC - Community Solar"}}}]},' +
+                            '"Send_Bills_Contact__r":{"attributes":{"type":"Contact","url":"/services/data/v47.0/sobjects/Contact/003S0000016Y1znIAC"},' +
+                            '"Id":"003S0000016Y1znIAC","Email":"bulk@bluewavesolar.com.disabledagain","FirstName":"Ritchie","LastName":"Ho 20"}}]';
+                    }
+                    List<Account> accounts = (List<Account>) System.JSON.deserialize(json, List<Account>.class);
                     return accounts;
                 }
             }

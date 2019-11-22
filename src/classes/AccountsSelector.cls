@@ -88,9 +88,13 @@ public without sharing class AccountsSelector {
                 Zuora_Payment_Ref_Id__c, Zuora_Payment_Ref_Id_Expiration_Date__c, Lead__c,
                 Send_Bills_Contact__c, Send_Bills_Contact__r.Email, Send_Bills_Contact__r.FirstName, Send_Bills_Contact__r.LastName,
                 Client_Brand_Key__c, Count_of_Large_Offtake_Opps__c,
-                Zuora_Id__c, (
+                Zuora_Id__c,
+            (
                 SELECT Id, Shared_Solar_System__r.Product__r.Program__c, Shared_Solar_System__r.Utility__c
                 FROM Opportunities WHERE Product_Line__c = 'Community Solar' AND StageName = 'Complete'
+            ), (
+                SELECT Id
+                FROM Zuora__Invoices__r
             )
             FROM Account
             WHERE Id = :accountIds

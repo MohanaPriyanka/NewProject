@@ -101,13 +101,19 @@ public with sharing class ZuoraInvoiceAsyncService implements Queueable, Databas
         List<Zuora__ZInvoice__c> allInvoices = invoiceSelector.getAll(invoiceIds);
         Map<Id, Zuora__ZInvoice__c> accountIdToInvoice = new Map<Id, Zuora__ZInvoice__c>();
         for (Zuora__ZInvoice__c zInvoice : allInvoices) {
-            accountIdToInvoice.put(zInvoice.Zuora__Account__c, zInvoice);
+            if (zInvoice.Zuora__Account__c == null) {
+                Logger.logLater('ZuoraInvoiceAsyncService', 'getDecoratedFirstInvoices', 'Found invoice with no Account: ' + zInvoice.Id, Logger.ERROR);
+            } else {
+                accountIdToInvoice.put(zInvoice.Zuora__Account__c, zInvoice);
+            }
         }
 
         List<Account> propertyAccounts = accountSelector.selectAll(accountIdToInvoice.keySet());
         for (Account account : propertyAccounts) {
-            DecoratedInvoice decoratedInvoice = new DecoratedInvoice(account, accountIdToInvoice.get(account.Id));
-            firstBillInvoices.add(decoratedInvoice);
+            if (account.Zuora__Invoices__r.size() == 1) {
+                DecoratedInvoice decoratedInvoice = new DecoratedInvoice(account, accountIdToInvoice.get(account.Id));
+                firstBillInvoices.add(decoratedInvoice);
+            }
         }
         return firstBillInvoices;
     }
