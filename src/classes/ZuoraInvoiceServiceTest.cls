@@ -268,7 +268,6 @@ public with sharing class ZuoraInvoiceServiceTest {
             FROM Error_Log__c
             WHERE Severity__c = 'Error'
         ];
-        System.debug(LoggingLevel.ERROR, errorLogs);
         System.assertEquals(0, errorLogs.size());
         System.assertEquals(1, ContentMailerService.calloutsMade);
     }
