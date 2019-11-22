@@ -97,19 +97,15 @@
                 <behavior>Required</behavior>
                 <field>State_Applications__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
-                <field>Risk__c</field>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
                 <behavior>Required</behavior>
-                <field>Team_Submitted_By__c</field>
+                <field>Risk__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
-                <field>Submitted_By__c</field>
+                <field>Team_Submitted_By__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
