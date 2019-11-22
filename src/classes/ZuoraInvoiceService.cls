@@ -10,6 +10,8 @@ public with sharing class ZuoraInvoiceService {
     private ContentDocumentSelector contentDocumentSelector = new ContentDocumentSelector();
     public List<Zuora__ZInvoice__c> sfdcZuoraInvoices;
     public Map<Id, Zuora__ZInvoice__c> invoiceMap;
+    @TestVisible
+    private static LetterStreamInsertSelector insertSelector = new LetterStreamInsertSelector();
 
     public ZuoraInvoiceService(List<Zuora__ZInvoice__c> sfdcZuoraInvoices) {
         this.sfdcZuoraInvoices = sfdcZuoraInvoices;
@@ -217,5 +219,27 @@ public with sharing class ZuoraInvoiceService {
         newCase.AccountId = invoice.Zuora__BillingAccount__r.Zuora__Account__c;
 
         return newCase;
+    }
+
+    // Can be used to set the insert on an invoice that isn't the first bill
+    @SuppressWarnings('PMD.ApexCRUDViolation')
+    public void setFirstBillInsert(List<ZuoraInvoiceAsyncService.DecoratedInvoice> decoratedInvoices) {
+        Map<String, LetterStream_Insert__c> insertMap = insertSelector.getInsertMap();
+        List<Zuora__ZInvoice__c> invoicesToUpdate = new List<Zuora__ZInvoice__c>();
+
+        for (ZuoraInvoiceAsyncService.DecoratedInvoice decoratedInvoice : decoratedInvoices) {
+            LetterStream_Insert__c letterStreamInsert = insertMap.get(LetterStreamInsertSelector.getInvoiceKey(decoratedInvoice));
+            if (letterStreamInsert == null) {
+                Logger.logLater(
+                    'ZuoraInvoiceService',
+                    'setFirstBillInsert',
+                    'Did not find an insert for this invoice: ' + JSON.serialize(decoratedInvoice) + '\n' + JSON.serialize(insertMap),
+                    Logger.ERROR);
+            } else {
+                decoratedInvoice.invoice.LetterStream_Insert__c = letterStreamInsert.Id;
+                invoicesToUpdate.add(decoratedInvoice.invoice);
+            }
+        }
+        update invoicesToUpdate;
     }
 }

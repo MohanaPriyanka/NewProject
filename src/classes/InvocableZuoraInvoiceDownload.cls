@@ -12,6 +12,6 @@ public without sharing class InvocableZuoraInvoiceDownload {
     public static void invoiceDownload(){
         ZuoraInvoiceAsyncService asyncService = new ZuoraInvoiceAsyncService(ZuoraInvoiceAsyncService.OperationType.DOWNLOAD);
         asyncService.initForDownload();
-        Database.executeBatch(asyncService);
+        Database.executeBatch(asyncService, 100);
     }
 }

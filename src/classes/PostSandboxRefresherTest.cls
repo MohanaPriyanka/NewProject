@@ -200,7 +200,7 @@ private class PostSandboxRefresherTest {
 
         Test.startTest();
         PostSandboxRefresher.FirstAccountHelper firstAccountHelper = new PostSandboxRefresher.FirstAccountHelper(csDataSetting);
-        firstAccountHelper.execute(null);
+        System.enqueueJob(firstAccountHelper);
         Test.stopTest();
 
         List<Opportunity> opportunities = [SELECT Id FROM Opportunity WHERE Product_Line__c != 'Community Solar'];
@@ -215,10 +215,9 @@ private class PostSandboxRefresherTest {
 
         PostSandboxRefresher.SolarSystemHelper solarSystemHelper = new PostSandboxRefresher.SolarSystemHelper(csDataSetting);
         solarSystemHelper.execute(null);
-
         Test.startTest();
-        PostSandboxRefresher.SecondAccountHelper SecondAccountHelper = new PostSandboxRefresher.SecondAccountHelper(csDataSetting);
-        SecondAccountHelper.execute(null);
+        PostSandboxRefresher.SecondAccountHelper secondAccountHelper = new PostSandboxRefresher.SecondAccountHelper(csDataSetting);
+        System.enqueueJob(secondAccountHelper);
         Test.stopTest();
 
         List<Opportunity> opportunities = [SELECT Id FROM Opportunity WHERE Product_Line__c != 'Community Solar'];
@@ -235,14 +234,19 @@ private class PostSandboxRefresherTest {
         solarSystemHelper.execute(null);
 
         Test.startTest();
-        PostSandboxRefresher.ProductionUpdateHelper productionUpdateHelper = new PostSandboxRefresher.ProductionUpdateHelper(csDataSetting);
-        productionUpdateHelper.execute(null);
-        PostSandboxRefresher.ProductionUpdateHelper2 productionUpdateHelper2 = new PostSandboxRefresher.ProductionUpdateHelper2(csDataSetting);
-        productionUpdateHelper2.execute(null);
-        PostSandboxRefresher.ProductionUpdateHelper3 productionUpdateHelper3 = new PostSandboxRefresher.ProductionUpdateHelper3(csDataSetting);
-        productionUpdateHelper3.execute(null);
-
+        Boolean caughtException = false;
+        try {
+            PostSandboxRefresher.ProductionUpdateHelper productionUpdateHelper = new PostSandboxRefresher.ProductionUpdateHelper(csDataSetting);
+            productionUpdateHelper.execute(null);
+            PostSandboxRefresher.ProductionUpdateHelper2 productionUpdateHelper2 = new PostSandboxRefresher.ProductionUpdateHelper2(csDataSetting);
+            productionUpdateHelper2.execute(null);
+            PostSandboxRefresher.ProductionUpdateHelper3 productionUpdateHelper3 = new PostSandboxRefresher.ProductionUpdateHelper3(csDataSetting);
+            productionUpdateHelper3.execute(null);
+        } catch (Exception e) {
+            caughtException = true;
+        }
         Test.stopTest();
+        System.assert(!caughtException);
     }
 
     @IsTest
@@ -258,14 +262,22 @@ private class PostSandboxRefresherTest {
         gatewayHelper.execute(null);
 
         Test.startTest();
-        PostSandboxRefresher.paymentHelper paymentHelper = new PostSandboxRefresher.paymentHelper(csDataSetting);
-        paymentHelper.execute(null);
+        Boolean caughtException = false;
+        try {
+            PostSandboxRefresher.paymentHelper paymentHelper = new PostSandboxRefresher.paymentHelper(csDataSetting);
+            paymentHelper.execute(null);
+        } catch (Exception e) {
+            caughtException = true;
+        }
         Test.stopTest();
+        System.assert(!caughtException);
     }
 
     @IsTest
     static void testDeleteCSRecords() {
         PostSandboxRefresher.deleteCSRecords();
+        List<Account> accounts = [SELECT Id FROM Account];
+        System.assertEquals(0, accounts.size());
     }
 
     @IsTest
