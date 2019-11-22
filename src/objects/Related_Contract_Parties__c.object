@@ -150,7 +150,7 @@
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableFeeds>true</enableFeeds>
-    <enableHistory>false</enableHistory>
+    <enableHistory>true</enableHistory>
     <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
     <enableSearch>true</enableSearch>
@@ -168,6 +168,7 @@
         <relationshipName>Account_Related_Contract_Parties</relationshipName>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
@@ -182,6 +183,7 @@
         <relationshipName>Related_Contract_Parties</relationshipName>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
@@ -191,6 +193,7 @@
         <label>Date</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Date</type>
     </fields>
@@ -200,6 +203,7 @@
         <label>Description</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>TextArea</type>
     </fields>
@@ -209,6 +213,7 @@
         <label>Type</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
@@ -230,9 +235,11 @@
     </fields>
     <label>Related Contract Parties</label>
     <nameField>
-        <label>Related Contract Parties Name</label>
+        <displayFormat>{0000000}</displayFormat>
+        <label>Related Contract Parties Number</label>
         <trackFeedHistory>false</trackFeedHistory>
-        <type>Text</type>
+        <trackHistory>true</trackHistory>
+        <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Related Contract Parties</pluralLabel>
     <searchLayouts />
