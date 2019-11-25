@@ -40,6 +40,8 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
             return getRatePlanCharge(req.getBody());
         } else if (endpoint.contains('/v1/action/query') && req.getBody().contains(' FROM Account')) {
             return getAccount();
+        } else if (endpoint.contains('v1/action/query') && req.getBody().contains(' FROM PaymentMethod')) {
+            return getActionQueryPayMethod(req.getBody());
         } else if (endpoint.contains('v1/action/query')) {
             return getActionQuery(req.getBody());
         } else if (endpoint.contains('v1/action/delete')) {
@@ -366,6 +368,14 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
         } else {
             throw new Util.BWException('Unhandled action update: ' + body);
         }
+        return res;
+    }
+
+    public static HttpResponse getActionQueryPayMethod(String body) {
+        HttpResponse res = getJSON();
+        res.setBody('{"records":[{"Id":"2c92c0f869330b78016949ef5a7517ab","Name":"Cash"},' +
+            '{"Id":"2c92c0f869330b78016949ef5a7517cc","Name":"Credit Card"},' +
+            '{"Id":"2c92c0f869330b78016949ef5a7517dd","Name":"Check"}],"size":3,"done":true}');
         return res;
     }
 
@@ -1117,86 +1127,101 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
                 '' +
                     '{"Project":"SSS-000070","Client":"BW-0011514","GLDate":"2019-03-01",' +
                     '"GLDatetime":"2019-03-01T20:49:26-04:00",'+
-                    '"TransactionID__c":null,' +
+                    '"CRMId":null,' +
                     '"CustomerAccount":"BW-0013285","Amount":19.690000,' +
+                    '"Gateway":"BCS Single Gateway",'+
                     '"AccountId":"2c92c0f96c8596ce016c8718b27c3c3c",' +
                     '"ExternalId":"2c92c0fa6c8aee2e016c926763d231d0"} ' +
                     '{"Project":"SSS-000019","Client":"BW-0009470","GLDate":"2019-05-01",' +
                     '"GLDatetime":"2019-08-01T20:49:26-04:00",' +
-                    '"TransactionID__c":"a00001231242as",' +
+                    '"CRMId":"a00001231242as",' +
                     '"CustomerAccount":"bw-04639","Amount":328.330000,' +
+                    '"Gateway":"BCS Single Gateway",'+
+                    '"ArchivedChargentData":"{\\"PaymentMethod\\":\\"ACH\\",\\"GatewayRefId\\":\\"xxxxxx123\\",\\"GatewayName\\":\\"Lake Waconia\\",\\"ClientNumber\\":\\"BW-00222\\"}",' +
                     '"AccountId":"2c92c0f96c8596ce016c87202b9d2a80",' +
                     '"ExternalId":"2c92c0fa6c8aee37016c928a815955c0"} ' +
                     '{"Project":"SSS-000087","Client":"BW-0011514","GLDate":"2019-07-01",' +
                     '"GLDatetime":null,'+
-                    '"TransactionID__c":null,' +
+                    '"CRMId":null,' +
                     '"CustomerAccount":"bw-00803","Amount":19.100000,' +
+                    '"Gateway":"BCS Single Gateway",'+
                     '"AccountId":"2c92c0f86c858923016c872551192523",' +
                     '"ExternalId":"2c92c0fb6c8afb33016c928738435224"} ' +
                     '{"Project":"SSS-000070","Client":"BW-0011514","GLDate":"2019-01-01",' +
                     '"GLDatetime":"2019-10-01T20:49:26-04:00",' +
-                    '"TransactionID__c":null,' +
+                    '"CRMId":null,' +
                     '"CustomerAccount":"BW-0013262","Amount":34.000000,' +
+                    '"Gateway":"BCS Single Gateway",'+
                     '"AccountId":"2c92c0f86c858922016c871893cd7504",' +
                     '"ExternalId":"2c92c0fb6c8afb4e016c926615190872"} ' +
                     '{"Project":"SSS-000071","Client":"BW-0011514","GLDate":"2019-03-01",' +
                     '"GLDatetime":null,' +
-                    '"TransactionID__c":null,' +
+                    '"CRMId":null,' +
                     '"CustomerAccount":"BW-0012690","Amount":33.890000,' +
+                    '"Lockbox":"AMPLockbox_BW-0000333",'+
                     '"AccountId":"2c92c0f96c8596ce016c8717ebc26323",' +
-                    '"ExternalId":"2c92c0fb6c8afb4e016c926d8fd03f5a"} ' +
+                    '"ExternalId":"2c92c0fb6c8afb4e016c926615190873"} ' +
                     '{"Project":"SSS-000068","Client":"BW-0011514","GLDate":"2019-06-01",' +
                     '"GLDatetime":null,' +
-                    '"TransactionID__c":null,' +
+                    '"CRMId":null,' +
                     '"CustomerAccount":"BW-0013802","Amount":22.470000,' +
+                    '"Lockbox":"BWTrust_BW-0000111",'+
                     '"AccountId":"2c92c0f96c8596ce016c87194923685d",' +
-                    '"ExternalId":"2c92c0fb6c8afb4e016c925afaec2e13"} ' +
+                    '"ExternalId":"2c92c0fb6c8afb4e016c926615190874"} ' +
                     '{"Project":"SSS-000071","Client":"BW-0011514","GLDate":"2019-07-08",' +
                     '"GLDatetime":null,' +
-                    '"TransactionID__c":null,' +
+                    '"CRMId":null,' +
                     '"CustomerAccount":"BW-0012618","Amount":112.980000,' +
+                    '"Gateway":"BCS Single Gateway",'+
                     '"AccountId":"2c92c0f86c858923016c8717c67d1209",' +
                     '"ExternalId":"2c92c0fb6c8afb4e016c9262b7c86b11"} ' +
                     '{"Project":"SSS-000087","Client":"BW-0011514","GLDate":"2019-06-01",' +
                     '"GLDatetime":null,' +
-                    '"TransactionID__c":null,' +
+                    '"CRMId":null,' +
                     '"CustomerAccount":"BW-0013995","Amount":74.290000,' +
+                    '"Gateway":"BCS Single Gateway",'+
                     '"AccountId":"2c92c0f86c85891e016c871a28a541ad",' +
                     '"ExternalId":"2c92c0fb6c8afb49016c926205805ebf"} ' +
                     '{"Project":"SSS-000019","Client":"BW-0009470","GLDate":"2019-01-07",' +
                     '"GLDatetime":null,' +
-                    '"TransactionID__c":null,' +
+                    '"CRMId":null,' +
                     '"CustomerAccount":"bw-04803","Amount":301.920000,' +
+                    '"Gateway":"BCS Single Gateway",'+
                     '"AccountId":"2c92c0f96c8596ce016c87208eb10692",' +
                     '"ExternalId":"2c92c0fa6c8aee24016c928961437a75"} ' +
                     '{"Project":"SSS-000016","Client":"BW-0009470","GLDate":"2019-03-29",' +
                     '"GLDatetime":null,' +
-                    '"TransactionID__c":null,' +
+                    '"CRMId":null,' +
                     '"CustomerAccount":"BW-0007283","Amount":173.960000,' +
+                    '"Gateway":"BCS Single Gateway",'+
                     '"AccountId":"2c92c0f86c858922016c87172a376e9d",' +
                     '"ExternalId":"2c92c0fa6c8aee24016c929406a2570f"} ' +
                     '{"Project":"SSS-000069","Client":"BW-0011514","GLDate":"2019-06-01",' +
                     '"GLDatetime":null,' +
-                    '"TransactionID__c":null,' +
+                    '"CRMId":null,' +
                     '"CustomerAccount":"BW-0012937","Amount":86.920000,' +
+                    '"Gateway":"BCS Single Gateway",'+
                     '"AccountId":"2c92c0f86c858923016c871832b214cb",' +
                     '"ExternalId":"2c92c0fa6c8aee2e016c925f61d86a9b"} ' +
                     '{"Project":"SSS-000070","Client":"BW-0011514","GLDate":"2019-04-01",' +
                     '"GLDatetime":null,' +
-                    '"TransactionID__c":null,' +
+                    '"CRMId":null,' +
                     '"CustomerAccount":"BW-0013318","Amount":26.440000,' +
+                    '"Gateway":"BCS Single Gateway",'+
                     '"AccountId":"2c92c0f96c8596ce016c8718b5383c60",' +
                     '"ExternalId":"2c92c0fa6c8aee37016c926a024f5f0e"} ' +
                     '{"Project":"SSS-000070","Client":"BW-0011514","GLDate":"2018-12-01",' +
                     '"GLDatetime":null,' +
-                    '"TransactionID__c":null,' +
+                    '"CRMId":null,' +
                     '"CustomerAccount":"BW-0013262","Amount":117.780000,' +
+                    '"Gateway":"BCS Single Gateway",'+
                     '"AccountId":"2c92c0f86c858922016c871893cd7504",' +
                     '"ExternalId":"2c92c0fb6c8afb49016c92661341028a"} ' +
                     '{"Project":"SSS-000070","Client":"BW-0011514","GLDate":"2019-04-01",' +
                     '"GLDatetime":null,' +
-                    '"TransactionID__c":null,' +
+                    '"CRMId":null,' +
                     '"CustomerAccount":"BW-0013274","Amount":14.400000,' +
+                    '"Gateway":"BCS Single Gateway",'+
                     '"AccountId":"2c92c0f86c858922016c8718952b7510",' +
                     '"ExternalId":"2c92c0fa6c8aee2e016c92668a082a3f"}'
             );
