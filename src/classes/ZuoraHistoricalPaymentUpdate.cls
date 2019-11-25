@@ -49,6 +49,7 @@ public class ZuoraHistoricalPaymentUpdate implements Database.AllowsCallouts, Qu
             isPayment = false;
             historicalChargentDataMigration();
         }
+        Logger.flushLogs();
     }
 
     public void historicalChargentDataMigration() {
@@ -59,15 +60,13 @@ public class ZuoraHistoricalPaymentUpdate implements Database.AllowsCallouts, Qu
             }
             Map<Id,ChargentOrders__Transaction__c> chTransactionMap = transactionSelector.getTransactionsById(transIdList);
 
-            Integer calloutCount = 0;
             Set<ZuoraAPI.Payment> paymentsThisBatch = new Set<ZuoraAPI.Payment>();
             for (ZuoraAPI.Payment historicPayment : paymentsToUpdate){
-                if (ZuoraAPIHelper.getCalloutsRemaining() < 1){
+                if (ZuoraAPIHelper.getCalloutsRemaining() == 0){
                     ZuoraHistoricalPaymentUpdate nextPayUpdate = new ZuoraHistoricalPaymentUpdate();
                     nextPayUpdate.isPayment = isPayment;
                     nextPayUpdate.paymentsToUpdate = paymentsToUpdate;
                     nextPayUpdate.updatedPayments = updatedPayments;
-                    Logger.flushLogs();
                     System.enqueueJob(nextPayUpdate);
                     return;
                 }
@@ -86,11 +85,10 @@ public class ZuoraHistoricalPaymentUpdate implements Database.AllowsCallouts, Qu
                     Logger.logLater('ZuoraHistoricalPaymentUpdate', 'historicalChargentDataMigration', JSON.serialize(responsePayment));
                 }
                 paymentsThisBatch.add(historicPayment);
-                calloutCount += 1;
             }
             paymentsToUpdate.removeAll(paymentsThisBatch);
         } catch (Exception excep) {
-            Logger.logLater('ZuoraHistoricalPaymentUpdate', 'historicalChargentDataMigration', excep.getMessage() + excep.getStackTraceString(), 'ERROR');
+            Logger.logNow('ZuoraHistoricalPaymentUpdate', 'historicalChargentDataMigration', excep.getMessage() + excep.getStackTraceString(), 'ERROR');
         }
     }
 
