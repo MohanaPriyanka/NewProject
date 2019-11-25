@@ -48,7 +48,18 @@
         <actionName>View</actionName>
         <type>Default</type>
     </actionOverrides>
-    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <compactLayoutAssignment>BW_Contract_Compact_Layout</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>BW_Contract_Compact_Layout</fullName>
+        <fields>Name</fields>
+        <fields>AccountId</fields>
+        <fields>Status</fields>
+        <fields>StartDate</fields>
+        <fields>EndDate</fields>
+        <fields>ContractTerm</fields>
+        <fields>ContractNumber</fields>
+        <label>BW Contract Compact Layout</label>
+    </compactLayouts>
     <enableFeeds>true</enableFeeds>
     <fields>
         <fullName>AccountId</fullName>
@@ -66,6 +77,20 @@
         <fullName>ActivatedDate</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
+    </fields>
+    <fields>
+        <fullName>ActiveContract__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Active version of this contract; this field is normally populated when a contract has been superseded or replaced by another version.</inlineHelpText>
+        <label>Active Contract</label>
+        <referenceTo>Contract</referenceTo>
+        <relationshipLabel>Previous Contracts</relationshipLabel>
+        <relationshipName>Contracts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>BillingAddress</fullName>
@@ -177,6 +202,11 @@
                     <label>Consumer Disclosure Form</label>
                 </value>
                 <value>
+                    <fullName>Customer Assignment</fullName>
+                    <default>false</default>
+                    <label>Customer Assignment</label>
+                </value>
+                <value>
                     <fullName>Customer Contract Template</fullName>
                     <default>false</default>
                     <label>Customer Contract Template</label>
@@ -197,9 +227,9 @@
                     <label>Lease Option Agreement</label>
                 </value>
                 <value>
-                    <fullName>Membership Interest Purchase Agreement (MIPA)</fullName>
+                    <fullName>Membership Interest Purchase Agreement (MIPA) and Ancillary Documents</fullName>
                     <default>false</default>
-                    <label>Membership Interest Purchase Agreement (MIPA)</label>
+                    <label>Membership Interest Purchase Agreement (MIPA) and Ancillary Documents</label>
                 </value>
                 <value>
                     <fullName>NDA</fullName>
@@ -220,6 +250,42 @@
                     <fullName>Vendor Agreement</fullName>
                     <default>false</default>
                     <label>Vendor Agreement</label>
+                </value>
+                <value>
+                    <fullName>Lease Agreement</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Lease Agreement</label>
+                </value>
+                <value>
+                    <fullName>Loan Origination and Servicing Agreement</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Loan Origination and Servicing Agreement</label>
+                </value>
+                <value>
+                    <fullName>Membership Interest Purchase Agreement (MIPA)</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Membership Interest Purchase Agreement (MIPA)</label>
+                </value>
+                <value>
+                    <fullName>Partner MSA</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Partner MSA</label>
+                </value>
+                <value>
+                    <fullName>Partner SOW</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Partner SOW</label>
+                </value>
+                <value>
+                    <fullName>Partner SSA</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Partner SSA</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -523,6 +589,17 @@
         <trackHistory>true</trackHistory>
     </fields>
     <fields>
+        <fullName>Link_to_Box_Drive__c</fullName>
+        <description>This is the link to a Box folder which will store different versions of this contract.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the link to a Box folder which will store different versions of this contract.</inlineHelpText>
+        <label>Link to Box Drive</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Url</type>
+    </fields>
+    <fields>
         <fullName>Management_Fee_Detail__c</fullName>
         <externalId>false</externalId>
         <label>Management Fee Detail</label>
@@ -642,7 +719,54 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Parent_Contract__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>This field is normally populated on contracts that are amendments to an active contract.</inlineHelpText>
+        <label>Parent Contract</label>
+        <referenceTo>Contract</referenceTo>
+        <relationshipLabel>Amendments</relationshipLabel>
+        <relationshipName>ParentContracts</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Payment_Methods__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Payment Methods Accepted</inlineHelpText>
+        <label>Payment Methods</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>ACH</fullName>
+                    <default>false</default>
+                    <label>ACH</label>
+                </value>
+                <value>
+                    <fullName>Credit Card</fullName>
+                    <default>false</default>
+                    <label>Credit Card</label>
+                </value>
+                <value>
+                    <fullName>Paper Check</fullName>
+                    <default>false</default>
+                    <label>Paper Check</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
         <fullName>Pricebook2Id</fullName>
+        <inlineHelpText>This financial field does not need to be populated.</inlineHelpText>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
@@ -661,13 +785,35 @@
     <fields>
         <fullName>Project_Value__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>Numerical value of a project - Please enter $0 if there&apos;s no value attached to the project yet.</inlineHelpText>
         <label>Contract/Project Value</label>
-        <length>200</length>
+        <precision>14</precision>
         <required>false</required>
+        <scale>4</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Ready_for_Approval__c</fullName>
+        <description>This is a formula field that will be fulfilled only when all fields for Contract Approvals are filled out.</description>
+        <externalId>false</externalId>
+        <formula>AND(
+    NOT(ISBLANK(TEXT(Contract_Type__c))),
+    NOT(ISBLANK(Project_Description__c)),
+    NOT(ISBLANK(Project_Value__c)),
+    NOT(ISBLANK(Other_Party__c)),
+    NOT(ISBLANK(State_Applications__c)),
+    NOT(ISBLANK(Risk__c)),
+    NOT(ISBLANK(TEXT(Team_Submitted_By__c))),
+    NOT(ISBLANK(Direct_Manager__c)),
+    NOT(ISBLANK(Link_to_Box_Drive__c))          
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>All fields in the Contract Approvals section need to be filled out before this record is Ready for Approval.</inlineHelpText>
+        <label>Ready for Approval</label>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Reason_for_Date_Needed__c</fullName>
@@ -968,6 +1114,8 @@
         </filters>
         <label>My In Approval Contracts</label>
     </listViews>
+    <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
     <recordTypes>
         <fullName>Client_Contract</fullName>
         <active>true</active>
@@ -1007,7 +1155,7 @@
                 <default>false</default>
             </values>
             <values>
-                <fullName>Membership Interest Purchase Agreement %28MIPA%29</fullName>
+                <fullName>Membership Interest Purchase Agreement %28MIPA%29 and Ancillary Documents</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1024,6 +1172,102 @@
             </values>
             <values>
                 <fullName>Vendor Agreement</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Customer_Billing_Communications__c</picklist>
+            <values>
+                <fullName>Autopay Sign-Up</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Collections</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Monthly Statement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other%2C see detail</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Payment Receipt</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project Assignment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Schedule Z Filing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Termination</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Upcoming Bill</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Customer_Payment_Methods__c</picklist>
+            <values>
+                <fullName>ACH</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Credit Card</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Paper Check</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Payment_Methods__c</picklist>
+            <values>
+                <fullName>ACH</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Credit Card</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Paper Check</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Reporting_Requirements__c</picklist>
+            <values>
+                <fullName>Accounts Aging</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Accounts Receivable</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Terminations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Days Sales Outstanding %28DSO%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other%2C see detail</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project Attrition</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -1235,6 +1479,89 @@
             </values>
         </picklistValues>
         <picklistValues>
+            <picklist>Status</picklist>
+            <values>
+                <fullName>Activated</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Draft</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Expired</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>In Approval Process</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Superseded</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Customer_Acquisition_Invoicing_Timing__c</picklist>
+            <values>
+                <fullName>Annual</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Monthly</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>One-Time</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Quarterly</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Customer_Communication_Branding__c</picklist>
+            <values>
+                <fullName>BlueWave</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cobranding with Client</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Customer_Money_Transfer_Method__c</picklist>
+            <values>
+                <fullName>Customer pays BW and BW Remits Monthly</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer pays Project Co Directly</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Management_Invoicing_Timing__c</picklist>
+            <values>
+                <fullName>Annual</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Monthly</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>One-Time</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Quarterly</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Team_Submitted_By__c</picklist>
             <values>
                 <fullName>Business Applications</fullName>
@@ -1290,21 +1617,6 @@
             </values>
             <values>
                 <fullName>UX Development</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Status</picklist>
-            <values>
-                <fullName>Activated</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Draft</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>In Approval Process</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -1332,6 +1644,10 @@
                 <default>false</default>
             </values>
             <values>
+                <fullName>Customer Assignment</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Customer Contract Template</fullName>
                 <default>false</default>
             </values>
@@ -1348,7 +1664,7 @@
                 <default>false</default>
             </values>
             <values>
-                <fullName>Membership Interest Purchase Agreement %28MIPA%29</fullName>
+                <fullName>Membership Interest Purchase Agreement %28MIPA%29 and Ancillary Documents</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1365,6 +1681,102 @@
             </values>
             <values>
                 <fullName>Vendor Agreement</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Customer_Billing_Communications__c</picklist>
+            <values>
+                <fullName>Autopay Sign-Up</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Collections</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Monthly Statement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other%2C see detail</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Payment Receipt</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project Assignment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Schedule Z Filing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Termination</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Upcoming Bill</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Customer_Payment_Methods__c</picklist>
+            <values>
+                <fullName>ACH</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Credit Card</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Paper Check</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Payment_Methods__c</picklist>
+            <values>
+                <fullName>ACH</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Credit Card</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Paper Check</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Reporting_Requirements__c</picklist>
+            <values>
+                <fullName>Accounts Aging</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Accounts Receivable</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Terminations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Days Sales Outstanding %28DSO%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other%2C see detail</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project Attrition</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -1576,6 +1988,89 @@
             </values>
         </picklistValues>
         <picklistValues>
+            <picklist>Status</picklist>
+            <values>
+                <fullName>Activated</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Draft</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Expired</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>In Approval Process</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Superseded</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Customer_Acquisition_Invoicing_Timing__c</picklist>
+            <values>
+                <fullName>Annual</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Monthly</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>One-Time</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Quarterly</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Customer_Communication_Branding__c</picklist>
+            <values>
+                <fullName>BlueWave</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cobranding with Client</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Customer_Money_Transfer_Method__c</picklist>
+            <values>
+                <fullName>Customer pays BW and BW Remits Monthly</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer pays Project Co Directly</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Management_Invoicing_Timing__c</picklist>
+            <values>
+                <fullName>Annual</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Monthly</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>One-Time</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Quarterly</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Team_Submitted_By__c</picklist>
             <values>
                 <fullName>Business Applications</fullName>
@@ -1631,21 +2126,6 @@
             </values>
             <values>
                 <fullName>UX Development</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Status</picklist>
-            <values>
-                <fullName>Activated</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Draft</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>In Approval Process</fullName>
                 <default>false</default>
             </values>
         </picklistValues>

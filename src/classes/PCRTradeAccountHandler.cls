@@ -44,9 +44,6 @@ public without sharing class PCRTradeAccountHandler {
     }
 
     public static List<LASERCA__Trade_Accounts__c> makeTradeAccountAdjustments(Map<Id, LASERCA__Trade_Accounts__c> tradeAccounts, Lead lead, Loan_Data__c capitalPool) {
-        if (lead.Application_Type__c == 'Joint') {
-            tradeAccounts.putAll(deduplicateTradeAccounts(lead, tradeAccounts.values()));
-        }
         tradeAccounts.putAll(adjustAutomotiveAccounts(tradeAccounts.values(), capitalPool));
 
         if (tradeAccounts.size() > 0) {
@@ -67,39 +64,6 @@ public without sharing class PCRTradeAccountHandler {
             }
         }
         return tradeAccountsToUpdate;
-    }
-
-    public static List<LASERCA__Trade_Accounts__c> deduplicateTradeAccounts(Lead lead, List<LASERCA__Trade_Accounts__c> tradeAccounts) {
-        List<LASERCA__Trade_Accounts__c> tradeAccountsToUpdate = new List<LASERCA__Trade_Accounts__c>();
-        Map<String, LASERCA__Trade_Accounts__c> primaryTradeAccounts = new Map<String, LASERCA__Trade_Accounts__c>();
-        Map<String, LASERCA__Trade_Accounts__c> coAppTradeAccounts = new Map<String, LASERCA__Trade_Accounts__c>();
-        for (LASERCA__Trade_Accounts__c tradeAccount : tradeAccounts) {
-            String accountCriteria = matchAccountCriteria(tradeAccount);
-            if (tradeAccount.LASERCA__Personal_Credit_Report__c == lead.Personal_Credit_Report__c) {
-                primaryTradeAccounts.put(accountCriteria, tradeAccount);
-            } else if (tradeAccount.LASERCA__Personal_Credit_Report__c == lead.Personal_Credit_Report_Co_Applicant__c) {
-                coAppTradeAccounts.put(accountCriteria, tradeAccount);
-            }
-        }
-        for (LASERCA__Trade_Accounts__c tradeAccount : coAppTradeAccounts.values()) {
-            String accountCriteria = matchAccountCriteria(tradeAccount);
-            if (primaryTradeAccounts.containsKey(accountCriteria)) {
-                tradeAccount.Exclude_From_Rollup__c = true;
-                tradeAccountsToUpdate.add(tradeAccount);
-            }
-        }
-        return tradeAccountsToUpdate;
-    }
-
-    public static String matchAccountCriteria(LASERCA__Trade_Accounts__c tradeAccount) {
-        String accountCriteria;
-        accountCriteria += tradeAccount.LASERCA__Name_of_the_Institution__c;
-        accountCriteria += ('_' + tradeAccount.LASERCA__Account_Ownership_Type__c);
-        accountCriteria += ('_' + tradeAccount.LASERCA__Account_Balance__c);
-        if (tradeAccount.LASERCA__Open_Date__c != null) {
-            accountCriteria += ('_' + tradeAccount.LASERCA__Open_Date__c.format());
-        }
-        return accountCriteria;
     }
 
     public static Integer capitalPoolRemainingAutoPaymentExclusion(Loan_Data__c capitalPool) {
