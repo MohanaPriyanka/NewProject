@@ -4,6 +4,22 @@
 @IsTest
 public with sharing class ZuoraOutstandingItemsAsyncServiceTest {
     @IsTest
+    public static void testOutstandingItems() {
+        List<ZuoraAPI.Invoice> invoices = new List<ZuoraAPI.Invoice>();
+        ZuoraAPI.Invoice invoice = new ZuoraAPI.Invoice();
+        invoice.id = '2c92c0856ae3a471016ae5ebd8fa5444';
+        invoices.add(invoice);
+        ZuoraOutstandingItemsAsyncService asyncService =
+            new ZuoraOutstandingItemsAsyncService(invoices, null, new ZuoraOutstandingItemsService.ProcessingParameter('MissingClass', new ZuoraAPI.CreditMemoWithItem()));
+        asyncService.execute(null);
+        List<Error_Log__c> errorLogs = [SELECT Id, Message__c FROM Error_Log__c WHERE Severity__c = :Logger.ERROR];
+        System.assertEquals(1, errorLogs.size());
+        System.assert(errorLogs[0].Message__c.contains('Attempt to de-reference a null object'),
+            'Expected a null object when processOutstandingItems tries to create a new instance of MissingClass');
+        System.assertEquals(null, asyncService.nextChainedJob, 'A ZuoraOutstandingItemsAsyncService job should not be queued');
+    }
+
+    @IsTest
     public static void testRequeueInvoices() {
         List<ZuoraAPI.Invoice> invoices = new List<ZuoraAPI.Invoice>();
         ZuoraAPI.Invoice invoice = new ZuoraAPI.Invoice();
