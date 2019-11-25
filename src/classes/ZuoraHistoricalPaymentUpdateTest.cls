@@ -68,7 +68,7 @@ public with sharing class ZuoraHistoricalPaymentUpdateTest {
         chargentData = (ZuoraAPI.ArchivedChargentData)System.JSON.deserialize(updatedPaymentList[2].ArchivedChargentData_Zcustom, ZuoraAPI.ArchivedChargentData.class);
         System.assertEquals('Gateway Two',chargentData.GatewayName);
         System.assertEquals('BW-000123333',chargentData.ClientNumber);
-        System.assertEquals('Credit Card',chargentData.PaymentMethod);
+        System.assertEquals('CreditCard',chargentData.PaymentMethod);
         System.assertEquals('xxx12345679',chargentData.GatewayRefId);
 
         chargentData = (ZuoraAPI.ArchivedChargentData)System.JSON.deserialize(updatedPaymentList[3].ArchivedChargentData_Zcustom, ZuoraAPI.ArchivedChargentData.class);
@@ -80,7 +80,7 @@ public with sharing class ZuoraHistoricalPaymentUpdateTest {
         chargentData = (ZuoraAPI.ArchivedChargentData)System.JSON.deserialize(updatedPaymentList[4].ArchivedChargentData_Zcustom, ZuoraAPI.ArchivedChargentData.class);
         System.assertEquals('Gateway Three',chargentData.GatewayName);
         System.assertEquals('BW-000123333',chargentData.ClientNumber);
-        System.assertEquals('Credit Card',chargentData.PaymentMethod);
+        System.assertEquals('CreditCard',chargentData.PaymentMethod);
         System.assertEquals('xxx12345679',chargentData.GatewayRefId);
     }
 
