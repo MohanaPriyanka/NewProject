@@ -40,13 +40,6 @@ public with sharing class ZuoraHistoricalPaymentUpdateTest {
         batchUpdate.isPayment = true;
         batchUpdate.historicalChargentDataMigration();
 
-        List<Error_Log__c> logs = [
-            SELECT Id, Message__c, Method__c
-            FROM Error_Log__c
-        ];
-
-        system.debug(logs);
-
         System.assertEquals(5,batchUpdate.updatedPayments.size());
         List<ZuoraAPI.Payment> updatedPaymentList = new List<ZuoraAPI.Payment>();
         updatedPaymentList.addAll(batchUpdate.updatedPayments);

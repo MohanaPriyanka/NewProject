@@ -62,9 +62,12 @@ public class ZuoraHistoricalPaymentUpdate implements Database.AllowsCallouts, Qu
             Integer calloutCount = 0;
             Set<ZuoraAPI.Payment> paymentsThisBatch = new Set<ZuoraAPI.Payment>();
             for (ZuoraAPI.Payment historicPayment : paymentsToUpdate){
-                if (calloutCount == 50){
+                if (ZuoraAPIHelper.getCalloutsRemaining() < 1){
                     ZuoraHistoricalPaymentUpdate nextPayUpdate = new ZuoraHistoricalPaymentUpdate();
                     nextPayUpdate.isPayment = isPayment;
+                    nextPayUpdate.paymentsToUpdate = paymentsToUpdate;
+                    nextPayUpdate.updatedPayments = updatedPayments;
+                    Logger.flushLogs();
                     System.enqueueJob(nextPayUpdate);
                     return;
                 }
@@ -79,13 +82,15 @@ public class ZuoraHistoricalPaymentUpdate implements Database.AllowsCallouts, Qu
                 ZuoraAPI.Payment responsePayment = (ZuoraAPI.Payment)JSON.deserialize(response.getBody(), ZuoraAPI.Payment.class);
                 if (responsePayment.success){
                     updatedPayments.add(paymentToUpdate);
+                } else {
+                    Logger.logLater('ZuoraHistoricalPaymentUpdate', 'historicalChargentDataMigration', JSON.serialize(responsePayment));
                 }
                 paymentsThisBatch.add(historicPayment);
                 calloutCount += 1;
             }
             paymentsToUpdate.removeAll(paymentsThisBatch);
         } catch (Exception excep) {
-            Logger.logNow('ZuoraHistoricalPaymentUpdate', 'historicalChargentDataMigration', excep.getMessage() + excep.getStackTraceString(), 'ERROR');
+            Logger.logLater('ZuoraHistoricalPaymentUpdate', 'historicalChargentDataMigration', excep.getMessage() + excep.getStackTraceString(), 'ERROR');
         }
     }
 
