@@ -1,3 +1,7 @@
+/*
+ * Tested by: OpportunityTriggerTest,LeadTriggerHandlerTest,CSCancellationServiceTest,DisbursalHandlerTest,LoanHandlerTestClass
+ */
+
 trigger OpportunityTrigger on Opportunity (before insert, after insert, before update, after update) {
     if (Util.isDisabled('Disable_OpportunityTrigger__c')) {
         return;
@@ -13,10 +17,6 @@ trigger OpportunityTrigger on Opportunity (before insert, after insert, before u
         opportunityTriggerHandler.onAfterUpdate(Trigger.oldMap, Trigger.newMap);
     }
     
-    if (Trigger.isUpdate && Trigger.isBefore) {
-        ChargentOrderCreationhandler.createChargentOrder(Trigger.new, Trigger.old);
-    }
-
     if (Trigger.isInsert && Trigger.isBefore) {
         opportunityTriggerHandler.OnBeforeInsert(Trigger.new);
     } else if(Trigger.isUpdate && Trigger.isBefore) {
