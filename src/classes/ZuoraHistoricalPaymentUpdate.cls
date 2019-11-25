@@ -59,16 +59,15 @@ public class ZuoraHistoricalPaymentUpdate implements Database.AllowsCallouts, Qu
                 transIdList.add(historicPayment.TransactionId_Zcustom);
             }
             Map<Id,ChargentOrders__Transaction__c> chTransactionMap = transactionSelector.getTransactionsById(transIdList);
+            ZuoraHistoricalPaymentUpdate nextPayUpdate = new ZuoraHistoricalPaymentUpdate();
+            nextPayUpdate.isPayment = isPayment;
+            Boolean requiresRequeue = false;
 
             Set<ZuoraAPI.Payment> paymentsThisBatch = new Set<ZuoraAPI.Payment>();
             for (ZuoraAPI.Payment historicPayment : paymentsToUpdate){
                 if (ZuoraAPIHelper.getCalloutsRemaining() == 0){
-                    ZuoraHistoricalPaymentUpdate nextPayUpdate = new ZuoraHistoricalPaymentUpdate();
-                    nextPayUpdate.isPayment = isPayment;
-                    nextPayUpdate.paymentsToUpdate = paymentsToUpdate;
-                    nextPayUpdate.updatedPayments = updatedPayments;
-                    System.enqueueJob(nextPayUpdate);
-                    return;
+                    requiresRequeue = true;
+                    break;
                 }
                 ZuoraAPI.Payment paymentToUpdate;
                 paymentToUpdate = matchChargentFieldsToZuora(chTransactionMap.get(historicPayment.TransactionId_Zcustom));
@@ -87,9 +86,17 @@ public class ZuoraHistoricalPaymentUpdate implements Database.AllowsCallouts, Qu
                 paymentsThisBatch.add(historicPayment);
             }
             paymentsToUpdate.removeAll(paymentsThisBatch);
+            if (requiresRequeue){
+                nextPayUpdate.paymentsToUpdate = paymentsToUpdate;
+                nextPayUpdate.updatedPayments = updatedPayments;
+                System.enqueueJob(nextPayUpdate);
+            }
         } catch (Exception excep) {
             Logger.logNow('ZuoraHistoricalPaymentUpdate', 'historicalChargentDataMigration', excep.getMessage() + excep.getStackTraceString(), 'ERROR');
         }
+        Logger.logLater('ZuoraHistoricalPaymentUpdate', 'updatedPayments', JSON.serialize(updatedPayments), 'INFO');
+        Logger.logLater('ZuoraHistoricalPaymentUpdate', 'paymentsToUpdate', JSON.serialize(paymentsToUpdate), 'INFO');
+        Logger.flushLogs();
     }
 
     public ZuoraAPI.Payment matchChargentFieldsToZuora(ChargentOrders__Transaction__c chTransaction) {
