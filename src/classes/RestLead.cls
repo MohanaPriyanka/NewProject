@@ -48,7 +48,7 @@ public without sharing class RestLead {
         this.partnerId = lead.Partner_Lookup__c;
         this.salesRepId = lead.bs_Sales_ID__c;
         this.productName = lead.Product__r.Name;
-        this.businessPhone = lead.Phone;
+        this.businessPhone = lead.Business_Phone__c;
         this.businessTitle = lead.Business_Title__c;
         this.applicationCompleteDate = lead.Application_Complete_Date__c;
         this.eiaId = lead.Utility_relationship__r.EIA_ID__c;
@@ -114,7 +114,10 @@ public without sharing class RestLead {
         if (fieldNames.contains('firstName')) baseLead.FirstName = this.firstName;
         if (fieldNames.contains('lastName')) baseLead.LastName = this.lastName;
         if (fieldNames.contains('email')) baseLead.Email = this.email;
-        if (fieldNames.contains('mobilePhone')) baseLead.MobilePhone = this.mobilePhone;
+        if (fieldNames.contains('mobilePhone')) {
+            baseLead.MobilePhone = this.mobilePhone;
+            baseLead.Phone = this.mobilePhone;
+        }
         if (fieldNames.contains('businessName')) baseLead.Company = this.businessName;
         if (fieldNames.contains('streetAddress')) baseLead.LASERCA__Home_Address__c = this.streetAddress;
         if (fieldNames.contains('streetAddress')) baseLead.Street = this.streetAddress;
@@ -126,7 +129,7 @@ public without sharing class RestLead {
         if (fieldNames.contains('zipCode')) baseLead.PostalCode = this.zipCode;
         if (fieldNames.contains('zipCode')) baseLead.Parcel_Zip__c = this.zipCode; // TODO: remove once qualification goes off of UAL's zip, instead of the Lead's parcel zip
         if (fieldNames.contains('loadZone')) baseLead.LoadZone__c = this.loadZone;
-        if (fieldNames.contains('businessPhone')) baseLead.Phone = this.businessPhone;
+        if (fieldNames.contains('businessPhone')) baseLead.Business_Phone__c = this.businessPhone;
         if (fieldNames.contains('businessTitle')) baseLead.Business_Title__c = this.businessTitle;
         if (fieldNames.contains('applicationCompleteDate')) baseLead.Application_Complete_Date__c = this.applicationCompleteDate;
         if (fieldNames.contains('campaignId')) baseLead.Manual_Campaign_ID__c = this.campaignId;
@@ -150,6 +153,7 @@ public without sharing class RestLead {
             LastName = this.lastName,
             Email = this.email,
             MobilePhone = this.mobilePhone,
+            Phone = this.mobilePhone,
             Company = this.businessName,
             Application_Type__c = this.applicationType,
             LASERCA__Home_Address__c = this.streetAddress,
@@ -164,7 +168,7 @@ public without sharing class RestLead {
             LeadSource = 'Switch',
             LoadZone__c = this.loadZone,
             Product_line__c = 'Community Solar',
-            Phone = this.businessPhone,
+            Business_Phone__c = this.businessPhone,
             Business_Title__c = this.businessTitle,
             Customer_type__c = this.applicationType,
             Application_Complete_Date__c = this.applicationCompleteDate,
