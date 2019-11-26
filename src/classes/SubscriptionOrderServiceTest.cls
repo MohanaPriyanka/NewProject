@@ -100,7 +100,7 @@ private class SubscriptionOrderServiceTest {
             ];
 
             Shared_Solar_System__c sss = [
-                SELECT Id, Client_Account__c, Expected_Yield_kWh_kW__c, Total_System_Size_kW_DC__c,
+                SELECT Id, Client_Account__c, Expected_Yield_kWh_kW__c, Total_System_Size_kWh_DC__c,
                     Utility__r.Number_of_Decimal_Places__c
                 FROM Shared_Solar_System__c
                 LIMIT 1
@@ -128,7 +128,7 @@ private class SubscriptionOrderServiceTest {
 
             System.assertEquals(sss.Client_Account__c, checkSO.Client_Account__c);
             System.assertEquals(sss.Expected_Yield_kWh_kW__c, checkSO.Expected_Yield_kWh_kW__c);
-            System.assertEquals(sss.Total_System_Size_kW_DC__c, checkSO.Total_System_Size_kW_DC__c);
+            System.assertEquals(sss.Total_System_Size_kWh_DC__c, checkSO.Total_System_Size_kW_DC__c);
             System.assertEquals(sss.Utility__r.Number_of_Decimal_Places__c, checkSO.Utility_Number_of_Decimal_Places__c );
             System.assertEquals(opp.NMC_Tariff__c, checkSO.Utility_NMC_Tariff__c);
             System.assertEquals(opp.NMC_Tariff__r.Value_of_NMC__c, checkSO.Value_of_NMC__c);
