@@ -415,7 +415,7 @@ Round(( Subscribed_Annual_Cost_of_Electricity__c / 0.1933 / Opportunity__r.Share
     <fields>
         <fullName>Future_Share_of_System__c</fullName>
         <externalId>false</externalId>
-        <formula>ROUND(Customer_Subscription_KW_DC__c/ Opportunity__r.Shared_Solar_System__r.Total_System_Size_kW_DC_QC__c, Opportunity__r.Shared_Solar_System__r.Utility__r.Number_of_Decimal_Places__c + 2)</formula>
+        <formula>ROUND(Customer_Subscription_KW_DC__c/ Opportunity__r.Shared_Solar_System__r.Total_System_Size_kWh_DC__c, Opportunity__r.Shared_Solar_System__r.Utility__r.Number_of_Decimal_Places__c + 2)</formula>
         <label>Future Share of System</label>
         <precision>18</precision>
         <required>false</required>
@@ -745,7 +745,7 @@ Round(( Subscribed_Annual_Cost_of_Electricity__c / 0.1933 / Opportunity__r.Share
     <fields>
         <fullName>Share_of_System__c</fullName>
         <externalId>false</externalId>
-        <formula>Customer_Subscription_KW_DC_STATIC__c /  Opportunity__r.Shared_Solar_System__r.Total_System_Size_kW_DC_QC__c</formula>
+        <formula>Customer_Subscription_KW_DC_STATIC__c /  Opportunity__r.Shared_Solar_System__r.Total_System_Size_kWh_DC__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Current Share of System</label>
         <precision>18</precision>

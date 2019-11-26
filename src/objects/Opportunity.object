@@ -7809,7 +7809,7 @@ if(and( isnull(Disbursal_1_Contract_Signature_Checkbox__c )=False,isnull( Disbur
     <fields>
         <fullName>Subscription_Share__c</fullName>
         <externalId>false</externalId>
-        <formula>CS_Capacity_Allocated__c /   Shared_Solar_System__r.Total_System_Size_kW_DC_QC__c</formula>
+        <formula>CS_Capacity_Allocated__c /   Shared_Solar_System__r.Total_System_Size_kWh_DC__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Subscription Share</label>
         <precision>18</precision>
@@ -8087,7 +8087,7 @@ DOER_Solar_Loan__c ==TRUE,(( Monthly_Payment__c *   Product__r.Loan_Term__c )+( 
     <fields>
         <fullName>Total_System_Size__c</fullName>
         <externalId>false</externalId>
-        <formula>Shared_Solar_System__r.Total_System_Size_kW_DC_QC__c</formula>
+        <formula>Shared_Solar_System__r.Total_System_Size_kWh_DC__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Total System Size</label>
         <precision>18</precision>
