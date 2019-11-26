@@ -622,14 +622,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>BatchConvertLeads</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>BatchConvertLeadsTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>BatchCreditSRECHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1790,35 +1782,11 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>LightningForgotPasswordController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LightningForgotPasswordControllerTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LightningLoginFormController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LightningLoginFormControllerTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>LightningReportsController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>LightningReportsControllerTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LightningSelfRegisterController</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>LightningSelfRegisterControllerTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -2870,10 +2838,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>MPM4_BASE__MPM4_Task_Sync_Disable_Behavior</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>MPM4_BASE__MPM4_Test_Util</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -3042,15 +3006,7 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>MPM4_BASE__Milestone1_Project_CreationCntr_Behavior</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>MPM4_BASE__Milestone1_Project_Creation_Behavior</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>MPM4_BASE__Milestone1_Project_Creation_Controller</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -3202,23 +3158,11 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>MPM4_BASE__Milestone2_MSProj_Import_Behavior</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>MPM4_BASE__Milestone2_MSProj_Import_Utility</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>MPM4_BASE__Milestone2_Project_Task_RL_Behavior</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>MPM4_BASE__Milestone2_Project_Task_RL_Controller</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>MPM4_BASE__Milestone2_Resource_Gantt_Behavior</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -3295,10 +3239,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>MPM4_BASE__TH_Settings_Controller_Behavior</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>MPM4_BASE__TH_Time_Entry_Sort_Behavior</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -3711,14 +3651,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ScheduleZTriggerHandlerTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SharedSolarSystemApexSharing</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SharedSolarSystemApexSharingTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -17128,31 +17060,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>AuthorizationForm.DefaultAuthFormTextId</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>AuthorizationForm.EffectiveFromDate</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>AuthorizationForm.EffectiveToDate</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>AuthorizationForm.IsSignatureRequired</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>AuthorizationForm.RevisionNumber</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>AuthorizationFormConsent.DocumentVersionId</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -17164,21 +17071,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>AuthorizationFormText.ContentDocumentId</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>AuthorizationFormText.FullAuthorizationFormUrl</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>AuthorizationFormText.Locale</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>AuthorizationFormText.SummaryAuthFormText</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -21488,26 +21380,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>ContactPointTypeConsent.DataUsePurposeId</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ContactPointTypeConsent.DoubleConsentCaptureDate</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ContactPointTypeConsent.EffectiveFrom</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>ContactPointTypeConsent.EffectiveTo</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>ContentVersion.File_Category__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -21818,21 +21690,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>DataUseLegalBasis.Description</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>DataUseLegalBasis.Source</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>DataUsePurpose.Description</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>DataUsePurpose.IsMaintainablePerContactPoint</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -21844,11 +21701,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>DataUsePurpose.IsMaintainablePerType</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>DataUsePurpose.LegalBasisId</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -25814,11 +25666,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Lead.Approval_Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Lead.Auto_Convert__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -36643,11 +36490,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Milestone_Import_ID__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Milestone_Kickoff__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -40149,11 +39991,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>PartnerMarketingBudget.Description</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>PartnerMarketingBudget.ParentMdfBudgetId</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -69318,10 +69155,6 @@
         <recordType>Account.Account_Default</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Account-Association</layout>
-        <recordType>Account.Associations</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Account-BW Founders%2FExecutives%2FPrincipals</layout>
         <recordType>Account.BW_Founders</recordType>
     </layoutAssignments>
@@ -69615,10 +69448,6 @@
     <layoutAssignments>
         <layout>Entity__c-BWC Project Entity Layout</layout>
         <recordType>Entity__c.BWC_Project_Entity</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Entity__c-BWC SE Project Entity Layout</layout>
-        <recordType>Entity__c.BWC_SE_Project_Entity</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Equipment_Log__c-EPC Equipment Log Layout</layout>
@@ -70143,9 +69972,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Raw_Feeder_Data__x-Raw Feeder Data Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Req_Perm_Set__mdt-Requestable Permission Set Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Request_for_Information__c-Request for Information Layout</layout>
@@ -76354,10 +76180,6 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>MPM4_BASE__Milestone1_Project_Creation</apexPage>
-        <enabled>true</enabled>
-    </pageAccesses>
-    <pageAccesses>
         <apexPage>MPM4_BASE__Milestone1_Project_Report</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
@@ -76386,15 +76208,7 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>MPM4_BASE__Milestone2_Complete_Action</apexPage>
-        <enabled>true</enabled>
-    </pageAccesses>
-    <pageAccesses>
         <apexPage>MPM4_BASE__Milestone2_Gantt_Behavior</apexPage>
-        <enabled>true</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>MPM4_BASE__Milestone2_Home</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
@@ -76403,10 +76217,6 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>MPM4_BASE__Milestone2_Project_Task_RL</apexPage>
-        <enabled>true</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>MPM4_BASE__Milestone2_Resource_Gantt</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
@@ -78632,11 +78442,6 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Account.Account_Default</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>Account.Associations</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
