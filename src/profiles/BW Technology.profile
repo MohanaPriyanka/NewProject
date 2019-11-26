@@ -1094,10 +1094,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ChargentOrderCreationhandlertest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ChargentOrders__LightningActionBtnController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
