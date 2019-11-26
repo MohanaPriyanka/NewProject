@@ -90,49 +90,99 @@ private class SubscriptionOrderServiceTest {
 
     }
 
-        @IsTest
-        static void testSubscriptionOrderInsert() {
+    @IsTest
+    static void testSubscriptionOrderInsert() {
 
-            Utility_Account_Subscription__c uas = [
-                SELECT Id, Shared_Solar_System__c, Opportunity__c, Name, Shared_Solar_System__r.Client_Account__c
-                FROM Utility_Account_Subscription__c
-                LIMIT 1
-            ];
+        Utility_Account_Subscription__c uas = [
+            SELECT Id, Shared_Solar_System__c, Opportunity__c, Name, Shared_Solar_System__r.Client_Account__c
+            FROM Utility_Account_Subscription__c
+            LIMIT 1
+        ];
 
-            Shared_Solar_System__c sss = [
-                SELECT Id, Client_Account__c, Expected_Yield_kWh_kW__c, Total_System_Size_kWh_DC__c,
-                    Utility__r.Number_of_Decimal_Places__c
-                FROM Shared_Solar_System__c
-                LIMIT 1
-            ];
+        Shared_Solar_System__c sss = [
+            SELECT Id, Client_Account__c, Expected_Yield_kWh_kW__c, Total_System_Size_kWh_DC__c,
+                Utility__r.Number_of_Decimal_Places__c
+            FROM Shared_Solar_System__c
+            LIMIT 1
+        ];
 
-            Opportunity opp = [
-                SELECT Id, NMC_Tariff__c, NMC_Tariff__r.Value_of_NMC__c, Product__c
-                FROM Opportunity
-                WHERE Id = :uas.Opportunity__c
-                LIMIT 1
-            ];
+        Opportunity opp = [
+            SELECT Id, NMC_Tariff__c, NMC_Tariff__r.Value_of_NMC__c, Product__c
+            FROM Opportunity
+            WHERE Id = :uas.Opportunity__c
+            LIMIT 1
+        ];
 
-            Subscription_Order__c so = new Subscription_Order__c(
-                Utility_Account_Subscription__c = uas.Id
-            );
+        Subscription_Order__c so = new Subscription_Order__c(
+            Utility_Account_Subscription__c = uas.Id
+        );
 
-            insert so;
+        insert so;
 
-            Subscription_Order__c checkSO = [
-                SELECT Id, Client_Account__c, Expected_Yield_kWh_kW__c, Total_System_Size_kW_DC__c, Utility_NMC_Tariff__c,
-                    Utility_Number_of_Decimal_Places__c, Value_of_NMC__c, Product__c
-                FROM Subscription_Order__c
-                LIMIT 1
-            ];
+        Subscription_Order__c checkSO = [
+            SELECT Id, Client_Account__c, Expected_Yield_kWh_kW__c, Total_System_Size_kW_DC__c, Utility_NMC_Tariff__c,
+                Utility_Number_of_Decimal_Places__c, Value_of_NMC__c, Product__c
+            FROM Subscription_Order__c
+            LIMIT 1
+        ];
 
-            System.assertEquals(sss.Client_Account__c, checkSO.Client_Account__c);
-            System.assertEquals(sss.Expected_Yield_kWh_kW__c, checkSO.Expected_Yield_kWh_kW__c);
-            System.assertEquals(sss.Total_System_Size_kWh_DC__c, checkSO.Total_System_Size_kW_DC__c);
-            System.assertEquals(sss.Utility__r.Number_of_Decimal_Places__c, checkSO.Utility_Number_of_Decimal_Places__c );
-            System.assertEquals(opp.NMC_Tariff__c, checkSO.Utility_NMC_Tariff__c);
-            System.assertEquals(opp.NMC_Tariff__r.Value_of_NMC__c, checkSO.Value_of_NMC__c);
-            System.assertEquals(opp.Product__c, checkSO.Product__c);
+        System.assertEquals(sss.Client_Account__c, checkSO.Client_Account__c);
+        System.assertEquals(sss.Expected_Yield_kWh_kW__c, checkSO.Expected_Yield_kWh_kW__c);
+        System.assertEquals(sss.Total_System_Size_kWh_DC__c, checkSO.Total_System_Size_kW_DC__c);
+        System.assertEquals(sss.Utility__r.Number_of_Decimal_Places__c, checkSO.Utility_Number_of_Decimal_Places__c );
+        System.assertEquals(opp.NMC_Tariff__c, checkSO.Utility_NMC_Tariff__c);
+        System.assertEquals(opp.NMC_Tariff__r.Value_of_NMC__c, checkSO.Value_of_NMC__c);
+        System.assertEquals(opp.Product__c, checkSO.Product__c);
+
+    }
+
+    @IsTest
+    public static void testWaitlistSubscriptionOrder() {
+        Utility_Account_Subscription__c uas = [
+            SELECT Id, Shared_Solar_System__c, Opportunity__c, Name, Shared_Solar_System__r.Client_Account__c
+            FROM Utility_Account_Subscription__c
+            LIMIT 1
+        ];
+
+        Shared_Solar_System__c sss = [
+            SELECT Id, Client_Account__c, Expected_Yield_kWh_kW__c, Total_System_Size_kWh_DC__c,
+                Utility__r.Number_of_Decimal_Places__c
+            FROM Shared_Solar_System__c
+            LIMIT 1
+        ];
+
+        sss.Client_Account__c = null;
+        update sss;
+
+        Opportunity opp = [
+            SELECT Id, NMC_Tariff__c, NMC_Tariff__r.Value_of_NMC__c, Product__c
+            FROM Opportunity
+            WHERE Id = :uas.Opportunity__c
+            LIMIT 1
+        ];
+
+        Subscription_Order__c so = new Subscription_Order__c(
+            Utility_Account_Subscription__c = uas.Id
+        );
+
+        insert so;
+
+        Subscription_Order__c checkSO = [
+            SELECT Id, Client_Account__c, Expected_Yield_kWh_kW__c, Total_System_Size_kW_DC__c, Utility_NMC_Tariff__c,
+                Utility_Number_of_Decimal_Places__c, Value_of_NMC__c, Product__c
+            FROM Subscription_Order__c
+            LIMIT 1
+        ];
+
+        System.assertEquals(null, checkSO.Client_Account__c);
+        System.assertEquals(sss.Expected_Yield_kWh_kW__c, checkSO.Expected_Yield_kWh_kW__c);
+        System.assertEquals(sss.Total_System_Size_kWh_DC__c, checkSO.Total_System_Size_kW_DC__c);
+        System.assertEquals(sss.Utility__r.Number_of_Decimal_Places__c, checkSO.Utility_Number_of_Decimal_Places__c );
+        System.assertEquals(opp.NMC_Tariff__c, checkSO.Utility_NMC_Tariff__c);
+        System.assertEquals(opp.NMC_Tariff__r.Value_of_NMC__c, checkSO.Value_of_NMC__c);
+        System.assertEquals(opp.Product__c, checkSO.Product__c);
+
+
 
     }
 }

@@ -18,9 +18,7 @@ public without sharing class SubscriptionOrderService {
         for (Subscription_Order__c so : soList) {
             Utility_Account_Subscription__c uas = soToUASMap.get(so.Utility_Account_Subscription__c);
             try {
-                if (uas.Shared_Solar_System__r.Client_Account__c != null) {
-                    so.Client_Account__c = uas.Shared_Solar_System__r.Client_Account__c;
-                }
+                so.Client_Account__c = uas.Shared_Solar_System__r.Client_Account__c;
                 so.Expected_Yield_kWh_kW__c = uas.Shared_Solar_System__r.Expected_Yield_kWh_kW__c;
                 so.Total_System_Size_kW_DC__c = uas.Shared_Solar_System__r.Total_System_Size_kWh_DC__c;
                 so.Utility_Number_of_Decimal_Places__c = uas.Shared_Solar_System__r.Utility__r.Number_of_Decimal_Places__c;
