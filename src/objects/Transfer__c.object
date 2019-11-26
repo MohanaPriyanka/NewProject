@@ -383,14 +383,17 @@
     <validationRules>
         <fullName>Make_Attempted_Transfer_Field_Required</fullName>
         <active>true</active>
-        <description>The Attempted Transfer field is made to be required for new records created on or after 11/18/19.</description>
+        <description>The Attempted Credit Transfer and Attempted kWh Transfer fields are made to be required for new records created on or after 11/25/19.</description>
         <errorConditionFormula>OR(
-    ISNEW(),
-    DATEVALUE(CreatedDate)&gt;= DATE(2019,11,18)
-  ) 
+ISNEW(),
+DATEVALUE(CreatedDate)&gt;= DATE(2019,11,25)
+)
 &amp;&amp;
-ISBLANK(Attempted_Transfer__c)</errorConditionFormula>
-        <errorMessage>The Attempted Transfer field needs to be populated before this record can be saved.</errorMessage>
+OR(
+ISBLANK(Attempted_Transfer__c),
+ISBLANK(Attempted_kWh_Transfer__c)
+)</errorConditionFormula>
+        <errorMessage>The Attempted Credit Transfer and Attempted kWh Transfer fields need to be populated before this record can be saved.</errorMessage>
     </validationRules>
     <visibility>Public</visibility>
 </CustomObject>
