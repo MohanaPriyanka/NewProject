@@ -5,6 +5,9 @@
  */
 
 trigger SubscriptionOrderTrigger on Subscription_Order__c (before insert) {
+    if (Util.isDisabled('Disable_SubscriptionOrder_Trigger__c')) {
+        return;
+    }
     SubscriptionOrderService subscriptionOrderService = new SubscriptionOrderService();
 
     if (Trigger.isBefore && Trigger.isInsert) {

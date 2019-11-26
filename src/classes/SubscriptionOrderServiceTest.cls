@@ -182,7 +182,5 @@ private class SubscriptionOrderServiceTest {
         System.assertEquals(opp.NMC_Tariff__r.Value_of_NMC__c, checkSO.Value_of_NMC__c);
         System.assertEquals(opp.Product__c, checkSO.Product__c);
 
-
-
     }
 }
