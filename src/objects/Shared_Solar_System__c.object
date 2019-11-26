@@ -2158,7 +2158,7 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
     <fields>
         <fullName>Total_CS_Capacity_kW_DC_Formula__c</fullName>
         <externalId>false</externalId>
-        <formula>Total_System_Size_kW_DC_QC__c - Anchor_Capacity_Reserved__c</formula>
+        <formula>Total_System_Size_kWh_DC__c - Anchor_Capacity_Reserved__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Total CS Capacity (kW DC)</label>
         <precision>18</precision>
