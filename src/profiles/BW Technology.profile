@@ -1782,10 +1782,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>LightningSelfRegisterControllerTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>LiveText__AcceptedConversationInfo</apexClass>
         <enabled>true</enabled>
     </classAccesses>
