@@ -74948,10 +74948,6 @@
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>Bill_Generation_Console</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>Bill_Period__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
