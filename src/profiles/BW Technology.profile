@@ -622,10 +622,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>BatchConvertLeads</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>BatchConvertLeadsTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
