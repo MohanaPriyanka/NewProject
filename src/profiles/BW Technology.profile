@@ -71393,10 +71393,6 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>MPM4_BASE__Milestone1_Project_Creation</apexPage>
-        <enabled>true</enabled>
-    </pageAccesses>
-    <pageAccesses>
         <apexPage>MPM4_BASE__Milestone1_Project_Report</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
