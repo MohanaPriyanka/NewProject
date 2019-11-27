@@ -154,6 +154,18 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>Client_Owner__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Client Owner</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Payment Gateways</relationshipLabel>
+        <relationshipName>Payment_Gateways</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
     <label>Payment Gateway</label>
     <nameField>
         <label>PaymentGateway Name</label>
