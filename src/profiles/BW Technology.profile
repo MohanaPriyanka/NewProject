@@ -25418,11 +25418,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Lead.Auto_Convert__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Lead.Automatic_Product_Assignment__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -64378,10 +64373,6 @@
         <recordType>Account.Account_Default</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Account-Association</layout>
-        <recordType>Account.Associations</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Account-BW Founders%2FExecutives%2FPrincipals</layout>
         <recordType>Account.BW_Founders</recordType>
     </layoutAssignments>
@@ -73692,11 +73683,6 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Account.Account_Default</recordType>
-        <visible>true</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>Account.Associations</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
