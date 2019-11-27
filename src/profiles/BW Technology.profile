@@ -71397,10 +71397,6 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>MPM4_BASE__Milestone2_Resource_Gantt</apexPage>
-        <enabled>true</enabled>
-    </pageAccesses>
-    <pageAccesses>
         <apexPage>MPM4_BASE__TH_Behavior</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
