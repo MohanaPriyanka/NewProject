@@ -2998,10 +2998,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>MPM4_BASE__Milestone1_Project_CreationCntr_Behavior</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>MPM4_BASE__Milestone1_Project_Creation_Behavior</apexClass>
         <enabled>true</enabled>
     </classAccesses>
