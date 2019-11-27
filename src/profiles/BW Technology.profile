@@ -35403,11 +35403,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Milestone_Import_ID__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Milestone_Kickoff__c</field>
         <readable>true</readable>
     </fieldPermissions>
