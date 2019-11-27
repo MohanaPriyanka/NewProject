@@ -65187,9 +65187,6 @@
         <layout>Raw_Feeder_Data__x-Raw Feeder Data Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Req_Perm_Set__mdt-Requestable Permission Set Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Request_for_Information__c-Request for Information Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
