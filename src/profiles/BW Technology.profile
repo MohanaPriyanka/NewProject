@@ -71405,10 +71405,6 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>MPM4_BASE__Milestone2_Complete_Action</apexPage>
-        <enabled>true</enabled>
-    </pageAccesses>
-    <pageAccesses>
         <apexPage>MPM4_BASE__Milestone2_Gantt_Behavior</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
