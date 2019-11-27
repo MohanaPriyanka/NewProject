@@ -71389,10 +71389,6 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>MPM4_BASE__Milestone2_Home</apexPage>
-        <enabled>true</enabled>
-    </pageAccesses>
-    <pageAccesses>
         <apexPage>MPM4_BASE__Milestone2_Project_Planner_Behavior</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
