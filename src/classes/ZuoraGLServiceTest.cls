@@ -3,6 +3,7 @@ public class ZuoraGLServiceTest {
     @TestSetup
     public static void testSetup(){
         ZuoraAPIHelperTest.testSetup();
+        GatewaySelectorTest.testDataSetup();
     }
 
     @IsTest
@@ -215,6 +216,13 @@ public class ZuoraGLServiceTest {
 
     @IsTest
     private static void testPaymentPartInsert() {
+        Account bluewaveAccount = [
+            SELECT Id, Account_Number__c
+            FROM Account
+            WHERE Name = 'BlueWave'
+            LIMIT 1
+        ];
+
         List<Journal_Entry__c> originalJE = [
             SELECT Id
             FROM Journal_Entry__c
@@ -250,10 +258,12 @@ public class ZuoraGLServiceTest {
         System.assertEquals(14,updatedJE.size());
 
         List<Journal_Entry__c> checkGoLiveSwitch = [
-            SELECT Id, Date__c, External_Id__c
+            SELECT Id, Date__c, External_Id__c, Deposit_Account__c, Paid_To_Client__c
             FROM Journal_Entry__c
             WHERE External_Id__c = '2c92c0fa6c8aee37016c928a815955c0'
             OR External_Id__c = '2c92c0fb6c8afb4e016c926615190872'
+            OR External_Id__c = '2c92c0fb6c8afb4e016c926615190873'
+            OR External_Id__c = '2c92c0fb6c8afb4e016c926615190874'
             ORDER BY External_Id__c
         ];
 
@@ -261,13 +271,27 @@ public class ZuoraGLServiceTest {
         // Going forward, we will report on payments when they are applied:
         // Historical Migration, we reported on transactions when they were made.
 
-        // Historical Migration:
+        // Historical Migration, get gateway from ArchivedChargentData:
         System.assertEquals('2c92c0fa6c8aee37016c928a815955c0',checkGoLiveSwitch[0].External_Id__c);
-        System.assertEquals(Date.newInstance(2019,08,01),checkGoLiveSwitch[0].Date__c);
+        System.assertEquals(Date.newInstance(2019,05,01),checkGoLiveSwitch[0].Date__c);
+        System.assertEquals('Lake Waconia',checkGoLiveSwitch[0].Deposit_Account__c);
+        System.assertEquals('BW-00222',checkGoLiveSwitch[0].Paid_To_Client__c);
 
-        // Post Go live:
+        // Post Go Live & Electronic Gateway:
         System.assertEquals('2c92c0fb6c8afb4e016c926615190872',checkGoLiveSwitch[1].External_Id__c);
         System.assertEquals(Date.newInstance(2019,10,01),checkGoLiveSwitch[1].Date__c);
+        System.assertEquals('BCS Single Gateway',checkGoLiveSwitch[1].Deposit_Account__c);
+        System.assertEquals(bluewaveAccount.Account_Number__c,checkGoLiveSwitch[1].Paid_To_Client__c);
+        System.assertNotEquals(null,checkGoLiveSwitch[1].Paid_To_Client__c);
 
+        // Post Go Live & BW Lockbox:
+        System.assertEquals('2c92c0fb6c8afb4e016c926615190873',checkGoLiveSwitch[2].External_Id__c);
+        System.assertEquals('AMPLockbox',checkGoLiveSwitch[2].Deposit_Account__c);
+        System.assertEquals('BW-0000333',checkGoLiveSwitch[2].Paid_To_Client__c);
+
+        // Post Go Live & AMP Lockbox:
+        System.assertEquals('2c92c0fb6c8afb4e016c926615190874',checkGoLiveSwitch[3].External_Id__c);
+        System.assertEquals('BWTrust',checkGoLiveSwitch[3].Deposit_Account__c);
+        System.assertEquals('BW-0000111',checkGoLiveSwitch[3].Paid_To_Client__c);
     }
 }

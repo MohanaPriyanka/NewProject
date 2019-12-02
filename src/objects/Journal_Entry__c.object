@@ -244,6 +244,17 @@ Text(Object_Type__c),
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>Deposit_Account__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Either Gateway or Lockbox that a payment was accepted into</inlineHelpText>
+        <label>Deposit Account</label>
+        <length>200</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>External_Id__c</fullName>
         <caseSensitive>false</caseSensitive>
         <externalId>true</externalId>
@@ -284,6 +295,52 @@ Text(Object_Type__c),
                     <fullName>PaymentPart</fullName>
                     <default>false</default>
                     <label>PaymentPart</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Paid_To_Client__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The client to whom payments were directed. Ie, the owner of the gateway or lockbox at the time of the payment</inlineHelpText>
+        <label>Paid To Client</label>
+        <length>200</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Payment_Method__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>For payment parts, or for returned payments (debit memos), populated with the payment method</inlineHelpText>
+        <label>Payment Method</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>ACH</fullName>
+                    <default>false</default>
+                    <label>ACH</label>
+                </value>
+                <value>
+                    <fullName>CreditCard</fullName>
+                    <default>false</default>
+                    <label>CreditCard</label>
+                </value>
+                <value>
+                    <fullName>Check</fullName>
+                    <default>false</default>
+                    <label>Check</label>
+                </value>
+                <value>
+                    <fullName>Cash</fullName>
+                    <default>false</default>
+                    <label>Cash</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -344,7 +401,7 @@ Reason_Code__c)
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Journal Entries</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

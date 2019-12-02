@@ -18,7 +18,7 @@ public with sharing class ZuoraPaymentMethodSelector {
     @SuppressWarnings('PMD.ApexCRUDViolation')
     public static List<Zuora__PaymentMethod__c> getSFRecordFromZuoraId (List<String> zuoraIds){
         List<Zuora__PaymentMethod__c> sfPaymentMethods = [
-            SELECT Id, Zuora__External_Id__c
+            SELECT Id, Zuora__External_Id__c, Zuora__Type__c
             FROM Zuora__PaymentMethod__c
             WHERE Zuora__External_Id__c IN : zuoraIds
         ];

@@ -59,9 +59,13 @@ public with sharing class ZuoraGLSelector {
                 'm.reasonCode as ReasonCode, ' +
                 'm.totalamount as Amount, ' +
                 'm.accountid as AccountId, ' +
-                'm.Id as ExternalId ' +
-            'FROM DebitMemo m ' +
-            'INNER JOIN Account a ON m.accountid = a.Id';
+                'm.Id as ExternalId, ' +
+                'm.Gateway__c as Gateway, ' +
+                'm.Lockbox__c as Lockbox, ' +
+                'm.PaymentMethod__c as PaymentMethod, ' +
+                'm.ArchivedChargentData_Zcustom as ArchivedChargentData ' +
+                'FROM DebitMemo m ' +
+                'INNER JOIN Account a ON m.accountid = a.Id';
 
         if (startDate != null && endDate != null){
             Datetime startTime = DateTime.newInstance(startDate.year(),startDate.month(),startDate.day());
@@ -81,10 +85,15 @@ public with sharing class ZuoraGLSelector {
             'p.createddate as GLDatetime, ' +
             'py.effectiveDate as GLDate, ' +
             'py.TransactionID__c as CRMId, ' +
+            'py.Gateway as Gateway, ' +
+            'py.Lockbox__c as Lockbox, ' +
+            'pm.type as PaymentMethod, ' +
+            'py.ArchivedChargentData_Zcustom as ArchivedChargentData, ' +
             'p.Id as ExternalId ' +
             'FROM PaymentPartItem p ' +
             'INNER JOIN PaymentPart pt ON p.paymentpartid = pt.Id ' +
             'INNER JOIN Payment py ON pt.paymentid = py.Id ' +
+            'INNER JOIN PaymentMethod pm ON py.paymentmethodId = pm.Id ' +
             'INNER JOIN DebitMemoItem d ON p.debitmemoitemid = d.Id ' +
             'INNER JOIN DebitMemo m ON d.debitMemoId = m.Id ' +
             'INNER JOIN Account a ON m.accountid = a.Id';
@@ -107,10 +116,15 @@ public with sharing class ZuoraGLSelector {
             'p.createddate as GLDatetime, ' +
             'py.effectiveDate as GLDate, ' +
             'py.TransactionID__c as CRMId, ' +
+            'py.Gateway as Gateway, ' +
+            'py.Lockbox__c as Lockbox, ' +
+            'pm.type as PaymentMethod, ' +
+            'py.ArchivedChargentData_Zcustom as ArchivedChargentData, ' +
             'p.Id as ExternalId ' +
             'FROM PaymentPartItem p ' +
             'INNER JOIN PaymentPart pt ON p.paymentpartid = pt.Id ' +
             'INNER JOIN Payment py ON pt.paymentid = py.Id ' +
+            'INNER JOIN PaymentMethod pm ON py.paymentmethodId = pm.Id ' +
             'INNER JOIN InvoiceItem it ON p.invoiceitemid = it.Id ' +
             'INNER JOIN RatePlanCharge rp ON it.rateplanchargeid = rp.Id ' +
             'INNER JOIN Invoice iv ON it.invoiceid = iv.Id '+
