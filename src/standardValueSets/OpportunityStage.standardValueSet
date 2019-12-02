@@ -308,4 +308,12 @@
         <probability>100</probability>
         <won>true</won>
     </standardValue>
+    <standardValue>
+        <fullName>Awaiting Information Requested</fullName>
+        <default>false</default>
+        <label>Awaiting Information Requested</label>
+        <closed>false</closed>
+        <forecastCategory>Omitted</forecastCategory>
+        <won>false</won>
+    </standardValue>
 </StandardValueSet>
