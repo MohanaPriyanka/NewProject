@@ -121,6 +121,7 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
             SELECT Id, Message__c
             FROM Error_Log__c
             WHERE Class__c = 'ZuoraController'
+            AND (NOT Method__c = 'getPaymentMethod')
             AND Severity__c = :Logger.ERROR
         ];
         System.assertEquals(1, errorLogs.size());
@@ -170,6 +171,8 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
             ZuoraPaymentSelector selector = new ZuoraPaymentSelector();
             List<Zuora__Payment__c> paymentList = selector.selectById(new Set<Id>{payment[0].Id});
             ZuoraReturnedPaymentService returnedPaymentService = new ZuoraReturnedPaymentService();
+            List<Zuora__PaymentMethod__c> methods = ZuoraPaymentMethodSelector.getSFRecordFromZuoraId(new List<String>{payment[0].Zuora__PaymentMethodId__c});
+            returnedPaymentService.payMethod = methods[0];
             Case caseToInsert = returnedPaymentService.createCaseForReturns(paymentList[0]);
             insert caseToInsert;
         Test.stopTest();
