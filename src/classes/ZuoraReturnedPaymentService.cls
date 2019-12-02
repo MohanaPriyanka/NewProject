@@ -4,6 +4,8 @@
  */
 
 public with sharing class ZuoraReturnedPaymentService {
+    public Zuora__PaymentMethod__c payMethod;
+
     // Used to reverse payments that are found to be returned by leaving the payment as applied, but creating a new
     // debit memo with the current effective date. Will affect aging, since the original payment is left applied.
     public List<ZuoraAPI.DebitMemo> convertPaymentToDebitMemos(String paymentId) {
@@ -86,6 +88,16 @@ public with sharing class ZuoraReturnedPaymentService {
         debitMemo.charges = new List<ZuoraAPI.DebitMemoCharge>{debitCharge};
         debitMemo.reasonCode = 'Returned Payment';
         debitMemo.comment = 'Original Payment ' + payment.id + ', PaymentPartItem ' + paymentPartItem.id;
+        // Stamp payment values for later use in GL download:
+        debitMemo.ArchivedChargentData_Zcustom = payment.ArchivedChargentData_Zcustom;
+        debitMemo.Gateway_Zcustom = payment.gatewayId;
+        debitMemo.Lockbox_Zcustom = payment.Lockbox_Zcustom;
+
+        List<Zuora__PaymentMethod__c> methods = ZuoraPaymentMethodSelector.getSFRecordFromZuoraId(new List<String>{payment.PaymentMethodId});
+        if (methods.size() > 0){
+            payMethod = methods[0];
+            debitMemo.PaymentMethod_Zcustom = payMethod.Zuora__Type__c;
+        }
         return debitMemo;
     }
 
@@ -122,11 +134,6 @@ public with sharing class ZuoraReturnedPaymentService {
     }
 
     public Case createCaseForReturns(Zuora__Payment__c zuoraPayment) {
-        List<Zuora__PaymentMethod__c> methods = ZuoraPaymentMethodSelector.getSFRecordFromZuoraId(new List<String>{zuoraPayment.Zuora__PaymentMethodId__c});
-        if (methods.size() != 1){
-            Logger.logNow('ZuoraPaymentMethodSelector','createCaseForReturns',String.valueOf(zuoraPayment));
-            throw new Util.FatalBWException('Could not match a zuora payment method id to a record in Salesforce.');
-        }
         CaseFactory caseFactory = new CaseFactory();
         Case newCase = caseFactory.getCase('Customer_Care');
         newCase.Subject = 'Customer Transaction Marked as Returned';
@@ -138,7 +145,11 @@ public with sharing class ZuoraReturnedPaymentService {
         newCase.Case_Type__c = 'BlueWave';
         newCase.Disable_Followup_Email__c = true;
         newCase.AccountId = zuoraPayment.Zuora__BillingAccount__r.Zuora__Account__c;
-        newCase.Zuora_Payment_Method__c = methods[0].Id;
+        if (payMethod != null){
+            newCase.Zuora_Payment_Method__c = payMethod.Id;
+        } else {
+            Logger.logNow('ZuoraReturnedPaymentService','getPaymentMethod',String.valueOf(zuoraPayment));
+        }
 
         return newCase;
     }
