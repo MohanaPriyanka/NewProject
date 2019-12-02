@@ -3,7 +3,7 @@
  * Description: 
  * Test: PermissionsSelectorTest
  *************************************************************************************/
-
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public with sharing class PermissionsSelector {
     // Users with the Author Apex profile permission get a generated non-custom permission set for apex classes.
     // This excludes those permission sets.
