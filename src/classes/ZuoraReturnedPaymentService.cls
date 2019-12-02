@@ -88,17 +88,11 @@ public with sharing class ZuoraReturnedPaymentService {
         debitMemo.charges = new List<ZuoraAPI.DebitMemoCharge>{debitCharge};
         debitMemo.reasonCode = 'Returned Payment';
         debitMemo.comment = 'Original Payment ' + payment.id + ', PaymentPartItem ' + paymentPartItem.id;
-
         // Stamp payment values for later use in GL download:
-        if (payment.ArchivedChargentData_Zcustom != null){
-            debitMemo.ArchivedChargentData_Zcustom = payment.ArchivedChargentData_Zcustom;
-        }
-        if (payment.gatewayId != null){
-            debitMemo.Gateway_Zcustom = payment.gatewayId;
-        }
-        if (payment.Lockbox_Zcustom != null){
-            debitMemo.Lockbox_Zcustom = payment.Lockbox_Zcustom;
-        }
+        debitMemo.ArchivedChargentData_Zcustom = payment.ArchivedChargentData_Zcustom;
+        debitMemo.Gateway_Zcustom = payment.gatewayId;
+        debitMemo.Lockbox_Zcustom = payment.Lockbox_Zcustom;
+
         List<Zuora__PaymentMethod__c> methods = ZuoraPaymentMethodSelector.getSFRecordFromZuoraId(new List<String>{payment.PaymentMethodId});
         if (methods.size() > 0){
             payMethod = methods[0];
@@ -154,7 +148,7 @@ public with sharing class ZuoraReturnedPaymentService {
         if (payMethod != null){
             newCase.Zuora_Payment_Method__c = payMethod.Id;
         } else {
-            Logger.logNow('ZuoraReturnedPaymentService','getPaymentMethod',String.valueOf(zuoraPayment));
+            Logger.logNow('ZuoraController','getPaymentMethod',String.valueOf(zuoraPayment));
         }
 
         return newCase;
