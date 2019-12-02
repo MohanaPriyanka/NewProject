@@ -142,13 +142,17 @@ public without sharing class ClientReportingService {
         List<Utility_Account_Subscription__c> parentUASList = UASSelector.selectByIds(parentIds);
 
         for (Utility_Account_Subscription__c parent : parentUASList) {
-            Client_Utility_Account_Subscription__c child = new Client_Utility_Account_Subscription__c(
-                Name = 'C' + parent.Name,
-                Utility_Account_Subscription__c = parent.Id,
-                Shared_Solar_System__c = parent.Opportunity__r.Shared_Solar_System__r.Id
-            );
-            clientUASList.add(child);
+            if (parent.Opportunity__c != null){
+                Client_Utility_Account_Subscription__c child = new Client_Utility_Account_Subscription__c(
+                    Name = 'C' + parent.Name,
+                    Utility_Account_Subscription__c = parent.Id,
+                    Shared_Solar_System__c = parent.Opportunity__r.Shared_Solar_System__r.Id
+                );
+                clientUASList.add(child);
+            }
+
         }
+
         insert clientUASList;
 
     }
