@@ -148,7 +148,7 @@ public with sharing class ZuoraReturnedPaymentService {
         if (payMethod != null){
             newCase.Zuora_Payment_Method__c = payMethod.Id;
         } else {
-            Logger.logNow('ZuoraController','getPaymentMethod',String.valueOf(zuoraPayment));
+            Logger.logNow('ZuoraReturnedPaymentService','getPaymentMethod',String.valueOf(zuoraPayment));
         }
 
         return newCase;
