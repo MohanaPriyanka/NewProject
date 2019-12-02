@@ -63,7 +63,7 @@ public with sharing class ZuoraGLSelector {
                 'm.Gateway__c as Gateway, ' +
                 'm.Lockbox__c as Lockbox, ' +
                 'm.PaymentMethod__c as PaymentMethod, ' +
-                'm.ArchivedChargentData_Zcustom as ArchivedChargentData ' +
+                'm.ArchivedChargentData__c as ArchivedChargentData ' +
                 'FROM DebitMemo m ' +
                 'INNER JOIN Account a ON m.accountid = a.Id';
 
@@ -88,7 +88,7 @@ public with sharing class ZuoraGLSelector {
             'py.Gateway as Gateway, ' +
             'py.Lockbox__c as Lockbox, ' +
             'pm.type as PaymentMethod, ' +
-            'py.ArchivedChargentData_Zcustom as ArchivedChargentData, ' +
+            'py.ArchivedChargentData__c as ArchivedChargentData, ' +
             'p.Id as ExternalId ' +
             'FROM PaymentPartItem p ' +
             'INNER JOIN PaymentPart pt ON p.paymentpartid = pt.Id ' +
@@ -101,8 +101,11 @@ public with sharing class ZuoraGLSelector {
         if (startDate != null && endDate != null){
             Datetime startTime = DateTime.newInstance(startDate.year(),startDate.month(),startDate.day());
             Datetime endTime = DateTime.newInstance(endDate.year(),endDate.month(),endDate.day());
-            payPartDebitMemoQuery += ' WHERE m.memodate > TIMESTAMP \'' + String.valueOf(startTime)+ '\'';
-            payPartDebitMemoQuery += ' AND m.memodate < TIMESTAMP \'' + String.valueOf(endTime)+ '\'';
+            payPartDebitMemoQuery += ' WHERE py.effectiveDate > TIMESTAMP \'' + String.valueOf(startTime)+ '\'';
+            payPartDebitMemoQuery += ' AND py.effectiveDate < TIMESTAMP \'' + String.valueOf(endTime)+ '\'';
+            payPartDebitMemoQuery += ' AND py.Status = \'Processed\' ';
+        } else {
+            payPartDebitMemoQuery += ' WHERE py.Status = \'Processed\' ';
         }
         return payPartDebitMemoQuery;
     }
@@ -119,7 +122,7 @@ public with sharing class ZuoraGLSelector {
             'py.Gateway as Gateway, ' +
             'py.Lockbox__c as Lockbox, ' +
             'pm.type as PaymentMethod, ' +
-            'py.ArchivedChargentData_Zcustom as ArchivedChargentData, ' +
+            'py.ArchivedChargentData__c as ArchivedChargentData, ' +
             'p.Id as ExternalId ' +
             'FROM PaymentPartItem p ' +
             'INNER JOIN PaymentPart pt ON p.paymentpartid = pt.Id ' +
@@ -133,8 +136,11 @@ public with sharing class ZuoraGLSelector {
         if (startDate != null && endDate != null){
             Datetime startTime = DateTime.newInstance(startDate.year(),startDate.month(),startDate.day());
             Datetime endTime = DateTime.newInstance(endDate.year(),endDate.month(),endDate.day());
-            payPartInvoiceQuery += ' WHERE iv.invoicedate > TIMESTAMP \'' + String.valueOf(startTime)+ '\'';
-            payPartInvoiceQuery += ' AND iv.invoicedate < TIMESTAMP \'' + String.valueOf(endTime)+ '\'';
+            payPartInvoiceQuery += ' WHERE py.effectiveDate > TIMESTAMP \'' + String.valueOf(startTime)+ '\'';
+            payPartInvoiceQuery += ' AND py.effectiveDate < TIMESTAMP \'' + String.valueOf(endTime)+ '\'';
+            payPartInvoiceQuery += ' AND py.Status = \'Processed\' ';
+        } else {
+            payPartInvoiceQuery += ' WHERE py.Status = \'Processed\' ';
         }
         return payPartInvoiceQuery;
     }
