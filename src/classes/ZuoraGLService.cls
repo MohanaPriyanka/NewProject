@@ -106,7 +106,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
                 entry.Date__c = ledger.GLDate;
             }
 
-            if ((objectType == 'DebitMemo' && ledger.reasonCode == 'Returned Payment') || objectType == 'PaymentPart') {
+            if ((objectType == 'DebitMemo' && (ledger.reasonCode == 'Returned Payment' || ledger.reasonCode == 'Refund')) || objectType == 'PaymentPart') {
                 if (ledger.ArchivedChargentData == null){
                     entry = setZuoraPaymentFields(ledger, entry);
                 } else {
