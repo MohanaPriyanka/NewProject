@@ -19,6 +19,7 @@ private class TransferPartServiceTest {
             Service_Territory__c = 'SEMA',
             Service_Territories__c = 'SEMA',
             Open__c = true,
+            Billing_Method__c = 'NMC',
             Reserved_Capacity_kW_DC__c = '10',
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
@@ -35,6 +36,7 @@ private class TransferPartServiceTest {
             Service_Territory__c = 'NEMA',
             Service_Territories__c = 'NEMA',
             Open__c = true,
+            Billing_Method__c = 'kWh',
             Reserved_Capacity_kW_DC__c = '10',
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
@@ -56,15 +58,20 @@ private class TransferPartServiceTest {
             Status__c = 'Billing'
         );
 
+        Schedule_Z__c scheduleZ2 = new Schedule_Z__c(
+            Name = '18-0515 Oxford Barrett St. P2',
+            Shared_Solar_System__c = sss2.Id,
+            Date_Enacted_by_Utility__c = Date.newInstance(2018,1,1),
+            Status__c = 'Billing'
+        );
 
 
-        insert scheduleZ1;
+        insert new List<Schedule_Z__c>{scheduleZ1, scheduleZ2};
 
         Production__c prod1 = new Production__c(
             Name = 'SSS 1 Production - May 2019',
             Shared_Solar_System__c = sss1.Id,
             Production_kWh__c = 20000,
-            Credit_Value__c = 0.14,
             Credits_Generated__c = 10000,
             Start_Date__c = Date.newInstance(2019, 5, 1),
             End_Date__c = Date.newInstance(2019, 5, 29)
@@ -74,7 +81,6 @@ private class TransferPartServiceTest {
             Name = 'SSS 1 Production - June 2019',
             Shared_Solar_System__c = sss1.Id,
             Production_kWh__c = 15000,
-            Credit_Value__c = 0.14,
             Credits_Generated__c = 8000,
             Start_Date__c = Date.newInstance(2019, 6, 1),
             End_Date__c = Date.newInstance(2019, 6, 29)
@@ -84,14 +90,29 @@ private class TransferPartServiceTest {
             Name = 'SSS 1 Production - July 2019',
             Shared_Solar_System__c = sss1.Id,
             Production_kWh__c = 10000,
-            Credit_Value__c = 0.14,
             Credits_Generated__c = 5000,
             Start_Date__c = Date.newInstance(2019, 7, 1),
             End_Date__c = Date.newInstance(2019, 7, 29)
         );
 
+        Production__c prodB1 = new Production__c(
+            Name = 'SSS 2 Production - May 2019',
+            Shared_Solar_System__c = sss2.Id,
+            Production_kWh__c = 18000,
+            Start_Date__c = Date.newInstance(2019, 5, 1),
+            End_Date__c = Date.newInstance(2019, 5, 29)
+        );
 
-        insert new List<Production__c> {prod1, prod2, prod3};
+        Production__c prodB2 = new Production__c(
+            Name = 'SSS 2 Production - June 2019',
+            Shared_Solar_System__c = sss2.Id,
+            Production_kWh__c = 15000,
+            Start_Date__c = Date.newInstance(2019, 6, 1),
+            End_Date__c = Date.newInstance(2019, 6, 29)
+        );
+
+
+        insert new List<Production__c> {prod1, prod2, prod3, prodB1, prodB2};
 
         Transfer_Part__c utilityFee = new Transfer_Part__c(
             Name = 'Eversource Utility Fee May 2019',
@@ -107,8 +128,10 @@ private class TransferPartServiceTest {
         Transfer__c onTime1 = new Transfer__c(
             Name = 'On-Time May Transfer',
             Allocation_Schedule__c = scheduleZ1.Id,
+            Transfer_Type__c = 'On-Time',
             Shared_Solar_System__c = sss1.Id,
             Attempted_Transfer__c = 9950,
+            Attempted_kWh_Transfer__c = 19000,
             Transfer_Amount__c = 9950,
             Date_of_Transfer__c = Date.newInstance(2019, 6, 4)
         );
@@ -117,8 +140,10 @@ private class TransferPartServiceTest {
         Transfer__c onTime2 = new Transfer__c(
             Name = 'On-Time June Transfer',
             Allocation_Schedule__c = scheduleZ1.Id,
+            Transfer_Type__c = 'On-Time',
             Shared_Solar_System__c = sss1.Id,
             Attempted_Transfer__c = 7900,
+            Attempted_kWh_Transfer__c = 14000,
             Transfer_Amount__c = 7900,
             Date_of_Transfer__c = Date.newInstance(2019, 7, 4)
         );
@@ -129,17 +154,37 @@ private class TransferPartServiceTest {
             Allocation_Schedule__c = scheduleZ1.Id,
             Shared_Solar_System__c = sss1.Id,
             Attempted_Transfer__c = 4980,
+            Attempted_kWh_Transfer__c = 9000,
             Transfer_Amount__c = 4980,
             Date_of_Transfer__c = Date.newInstance(2019, 8, 4)
         );
 
-        insert new List<Transfer__c> {onTime1, onTime2, onTimeToUpdate};
+        Transfer__c onTimeB1 = new Transfer__c(
+            Name = 'On-Time sss2 May Transfer',
+            Allocation_Schedule__c = scheduleZ2.Id,
+            Transfer_Type__c = 'On-Time',
+            Shared_Solar_System__c = sss2.Id,
+            Attempted_Transfer__c = 8500,
+            Attempted_kWh_Transfer__c = 17000,
+            Transfer_kWh__c = 17000,
+            Date_of_Transfer__c = Date.newInstance(2019, 6, 4)
+        );
 
-        onTime1.Transfer_Type__c = 'On-Time';
-        onTime2.Transfer_Type__c = 'On-Time';
+        Transfer__c onTimeToUpdateB2 = new Transfer__c(
+            Name = 'On-Time sss2 June Transfer',
+            Allocation_Schedule__c = scheduleZ2.Id,
+            Shared_Solar_System__c = sss2.Id,
+            Attempted_Transfer__c = 7000,
+            Attempted_kWh_Transfer__c = 14500,
+            Transfer_kWh__c = 14500,
+            Date_of_Transfer__c = Date.newInstance(2019, 7, 4)
+        );
 
-        update new List<Transfer__c> {onTime1, onTime2};
 
+        insert new List<Transfer__c> {onTime1, onTime2, onTimeToUpdate, onTimeB1, onTimeToUpdateB2};
+
+        TransferPartService transferPartService = new TransferPartService();
+        transferPartService.createPartsFromTransfer(new List<Transfer__c>{onTime1, onTime2, onTimeB1});
 
     }
 
@@ -170,7 +215,12 @@ private class TransferPartServiceTest {
             LIMIT 1
         ];
 
-        Transfer__c checkTransfer = [SELECT Id, Total_Transferred__c FROM Transfer__c WHERE Id = :onTime.Id LIMIT 1];
+        Transfer__c checkTransfer = [
+            SELECT Id, Total_Transferred__c, Total_kWh_Transferred__c
+            FROM Transfer__c
+            WHERE Id = :onTime.Id
+            LIMIT 1
+        ];
 
         System.assertEquals(1, onTimeParts.size());
         System.assertEquals('Transfer', onTimeParts[0].Type__c);
@@ -181,6 +231,57 @@ private class TransferPartServiceTest {
         System.assertEquals(4980, production.Credits_Transferred__c);
         System.assertEquals(20, production.Untransferred_Credits__c);
 
+    }
+
+    @IsTest
+    public static void testkWhProductions() {
+        Shared_Solar_System__c sss2 = [
+            SELECT Id
+            FROM Shared_Solar_System__c
+            WHERE Name = 'SSS 2'
+            LIMIT 1
+        ];
+
+        List<Production__c> kwhProductions = [
+            SELECT Id, kWh_Transferred__c, Untransferred_kWh__c
+            FROM Production__c
+            WHERE Shared_Solar_System__c = :sss2.Id
+            ORDER BY Start_Date__c ASC
+        ];
+
+        System.assertEquals(17000, kwhProductions[0].kWh_Transferred__c);
+        System.assertEquals(1000, kwhProductions[0].Untransferred_kWh__c);
+        System.assertEquals(0, kwhProductions[1].kWh_Transferred__c);
+
+        Transfer__c onTimeTransfer = [
+            SELECT Id, Total_kWh_Transferred__c
+            FROM Transfer__c
+            WHERE Name = 'On-Time sss2 June Transfer'
+            LIMIT 1
+        ];
+
+        System.assertEquals(null, onTimeTransfer.Total_kWh_Transferred__c);
+        onTimeTransfer.Transfer_Type__c = 'On-Time';
+        update onTimeTransfer;
+
+        List<Production__c> checkKwhProductions = [
+            SELECT Id, kWh_Transferred__c, Untransferred_kWh__c
+            FROM Production__c
+            WHERE Shared_Solar_System__c = :sss2.Id
+            ORDER BY Start_Date__c ASC
+        ];
+
+        Transfer__c transfer = [
+            SELECT Id, Total_kWh_Transferred__c
+            FROM Transfer__c
+            WHERE Id = :onTimeTransfer.Id
+            LIMIT 1
+        ];
+
+
+        System.assertEquals(14500, checkKwhProductions[1].kWh_Transferred__c);
+        System.assertEquals(500, checkKwhProductions[1].Untransferred_kWh__c);
+        System.assertEquals(14500, transfer.Total_kWh_Transferred__c);
 
     }
 
@@ -194,6 +295,7 @@ private class TransferPartServiceTest {
             LIMIT 1
         ];
 
+
         Schedule_Z__c scheduleZ = [SELECT Id FROM Schedule_Z__c LIMIT 1];
 
         Transfer__c excessTransfer = new Transfer__c(
@@ -201,6 +303,7 @@ private class TransferPartServiceTest {
             Allocation_Schedule__c = scheduleZ.Id,
             Shared_Solar_System__c = sss1.Id,
             Attempted_Transfer__c = 40,
+            Attempted_kWh_Transfer__c = 100,
             Transfer_Amount__c = 40,
             Date_of_Transfer__c = Date.newInstance(2019, 8, 2)
         );
@@ -217,19 +320,18 @@ private class TransferPartServiceTest {
         ];
 
         List<Production__c> productions = [
-            SELECT Id, Name, Credits_Transferred__c, Untransferred_Credits__c
+            SELECT Id, Name, Credits_Transferred__c, Untransferred_Credits__c, Credits_Available_for_Allocation__c
             FROM Production__c
             WHERE Id = :excessParts[0].Production__c
             ORDER BY Start_Date__c DESC
         ];
 
         Transfer__c checkTransfer = [
-            SELECT Id, Total_Transferred__c
+            SELECT Id, Total_Transferred__c, Total_kWh_Transferred__c
             FROM Transfer__c
             WHERE Id = :excessTransfer.Id
             LIMIT 1
         ];
-
 
         System.assertEquals(1, excessParts.size());
         System.assertEquals(40, excessParts[0].Amount__c);
@@ -259,6 +361,7 @@ private class TransferPartServiceTest {
             Allocation_Schedule__c = scheduleZ.Id,
             Shared_Solar_System__c = sss1.Id,
             Attempted_Transfer__c = 130,
+            Attempted_kWh_Transfer__c = 200,
             Transfer_Amount__c = 130,
             Date_of_Transfer__c = Date.newInstance(2019, 8, 2)
         );
@@ -276,16 +379,18 @@ private class TransferPartServiceTest {
         ];
 
         List<Production__c> productions = [
-            SELECT Id, Name, Credits_Transferred__c, Untransferred_Credits__c
+            SELECT Id, Name, Credits_Transferred__c, Untransferred_Credits__c, Credits_Available_for_Allocation__c, Production_kWh__c
             FROM Production__c
+            WHERE Shared_Solar_System__c = :sss1.Id
             ORDER BY Start_Date__c ASC
         ];
         Transfer__c checkTransfer = [
-            SELECT Id, Total_Transferred__c, Transfer_Amount__c
+            SELECT Id, Total_Transferred__c, Transfer_Amount__c, Total_kWh_Transferred__c
             FROM Transfer__c
             WHERE Id = :excessTransfer.Id
             LIMIT 1
         ];
+
 
         System.assertEquals(2, excessParts.size());
         System.assertEquals(checkTransfer.Total_Transferred__c, excessTransfer.Transfer_Amount__c);
@@ -329,6 +434,7 @@ private class TransferPartServiceTest {
             Allocation_Schedule__c = scheduleZ.Id,
             Shared_Solar_System__c = sss1.Id,
             Attempted_Transfer__c = 150,
+            Attempted_kWh_Transfer__c = 280,
             Transfer_Amount__c = 150,
             Date_of_Transfer__c = Date.newInstance(2019, 8, 2)
         );
