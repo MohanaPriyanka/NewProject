@@ -1357,4 +1357,23 @@ ISBLANK(Annual_kwh_subscription_future__c)=false)
         <showsStatus>false</showsStatus>
         <url>/500/e?&amp;RecordType=012j00000000HA8&amp;ent=Case&amp;cas14=Customer Care Case&amp;CF00Nj000000BVHR9_lkid={!Utility_Account_Subscription__c.Utility_Account_LogId__c}&amp;CF00Nj000000BVHR9={!Utility_Account_Subscription__c.Utility_Account_Log__c}&amp;CF00Nj000000ARyea_lktp={!Utility_Account_Subscription__c.OpportunityId__c}&amp;CF00Nj000000ARyea={!Utility_Account_Subscription__c.Opportunity__c}&amp;00Nj000000BVAYr=Utility Account Data Inaccurate or Missing&amp;cas11=Web</url>
     </webLinks>
+    <webLinks>
+        <fullName>New_Subscription_Order</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>New Subscription Order</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/flow/User_Subscription_Order_Creation?var_UASID={!Utility_Account_Subscription__c.Id}&amp;retURL=home/home.jsp</url>
+    </webLinks>
 </CustomObject>
