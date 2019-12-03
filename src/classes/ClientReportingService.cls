@@ -3,7 +3,7 @@
  * Description: Methods to aid with CS Client Reporting, e.g. client owner stamping
  * Test: ClientReportingServiceTest
  *************************************************************************************/
-
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ClientReportingService {
     public static void beforeTransactionInsert(List<ChargentOrders__Transaction__c> transactions) {
         Set<Id> orderIds = new Set<Id>();

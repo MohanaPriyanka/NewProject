@@ -3,8 +3,8 @@
  * Description: Can extend fflib_SObjectSelector
  * Test: OpportunitiesSelectorTest
  *************************************************************************************/
-
-public class OpportunitiesSelector {
+@SuppressWarnings('PMD.ApexCRUDViolation')
+public without sharing class OpportunitiesSelector {
     // To be used when cancelling opportunities, so we also exclude Anchors and Public Offtake
     public static List<Opportunity> selectAllCompleteCSWithUASesAndSystemBills() {
         return [
