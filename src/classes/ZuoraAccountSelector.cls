@@ -3,15 +3,17 @@
  */
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ZuoraAccountSelector {
-    public class QueryResultAccount{
+    public class QueryResultAccount {
         public List<ZuoraAPI.ZuoraAccount> records;
+        public Integer size;
+        public Boolean done;
     }
 
-    public class QueryResultGateways{
+    public class QueryResultGateways {
         public List<ZuoraAPI.PaymentGateway> paymentgateways;
     }
 
-    public class AccountWithPaymentMethod{
+    public class AccountWithPaymentMethod {
         @AuraEnabled
         public ZuoraAPI.ZuoraAccount account;
         @AuraEnabled
@@ -142,5 +144,14 @@ public without sharing class ZuoraAccountSelector {
                 Zuora__Batch__c
             FROM Zuora__CustomerAccount__c
         ];
+    }
+
+    public List<ZuoraAPI.ZuoraAccount> getAutopayAccountsWithBalance() {
+        String query = 'SELECT Id, CRMId, Balance FROM Account WHERE Autopay = true AND Balance > 0';
+        QueryResultAccount queryResultAccount = (QueryResultAccount)JSON.deserialize(ZuoraAPIHelper.query(query, false), QueryResultAccount.class);
+        if (queryResultAccount.done = false) {
+            Logger.logLater('ZuoraAccountSelector', 'getAutopayAccountsWithBalance', 'More than 2000 records found, but only 2000 supported. Implement queryMore.', Logger.ERROR);
+        }
+        return queryResultAccount.records;
     }
 }
