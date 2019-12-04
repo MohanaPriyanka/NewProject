@@ -141,11 +141,4 @@ public class ZuoraCreditDebitMemoService{
             batchSend.executeBatch();
         }
     }
-
-    @Future
-    public static void callMemoApplyInFuture(){
-        ZuoraMemoBatchApply batchApply = new ZuoraMemoBatchApply();
-        batchApply.startApplication();
-        batchApply.runBatch();
-    }
 }
