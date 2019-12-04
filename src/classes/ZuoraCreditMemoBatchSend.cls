@@ -39,6 +39,11 @@ public without sharing class ZuoraCreditMemoBatchSend implements Database.Batcha
 
     public void finish(Database.BatchableContext bc) {
         try {
+            if (mode == AdjustmentType.PostWhenApproved){
+                ZuoraMemoBatchApply batchApply = new ZuoraMemoBatchApply();
+                batchApply.startApplication();
+                batchApply.runBatch();
+            }
             if (Util.getSystemPropertyCheckbox('Update_Usage_Records_With_ZuoraId__c')) {
                 List<Bill_Adjustment__c> adjustmentsToUpdate = new List<Bill_Adjustment__c>();
                 adjustmentsToUpdate.addAll(adjustToUpdateSet);

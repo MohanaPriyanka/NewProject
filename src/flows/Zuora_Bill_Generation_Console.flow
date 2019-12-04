@@ -125,6 +125,9 @@
         <locationY>89</locationY>
         <actionName>InvocableZuoraMemoUpload</actionName>
         <actionType>apex</actionType>
+        <connector>
+            <targetReference>Update_Batches</targetReference>
+        </connector>
         <inputParameters>
             <name>invoiceDates</name>
             <value>
