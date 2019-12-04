@@ -323,14 +323,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>CreditCardFeeUpdateHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>CreditCardFeeUpdateHandlerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>CustomerCareHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -631,10 +623,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>PaymentGatewayAssignmentHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>PermissionsSelectorTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -819,14 +807,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>SystemBillQualityChecker</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SystemBillQualityCheckerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>SystemBillsSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -972,10 +952,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>opp4LZUTriggerTestClass</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>paymentGatewayAssignmentHandlerTestclass</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
