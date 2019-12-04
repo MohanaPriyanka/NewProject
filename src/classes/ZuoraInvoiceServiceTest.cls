@@ -7,17 +7,39 @@ public with sharing class ZuoraInvoiceServiceTest {
     @TestSetup
     public static void testSetup() {
         ContentMailerServiceTest.testSetup();
-        Zuora__CustomerAccount__c customerAccount = [SELECT Id, Zuora__Account__c FROM Zuora__CustomerAccount__c LIMIT 1];
+
+        Account paperOnlyProperty = new Account(
+            Name = 'Account Property',
+            Bill_Delivery_Preference__c = 'Email only'
+        );
+        Account normalProperty = new Account(
+            Name = 'Account Property',
+            Bill_Delivery_Preference__c = 'Email and Paper'
+        );
+        insert new List<Account>{paperOnlyProperty, normalProperty};
+
+        Zuora__CustomerAccount__c billingAccount1 = new Zuora__CustomerAccount__c(
+            Name = 'Test BillingAccount',
+            Zuora__Zuora_Id__c = 'XXXXXXXXXX123',
+            Zuora__Account__c = paperOnlyProperty.Id
+        );
+        Zuora__CustomerAccount__c billingAccount2 = new Zuora__CustomerAccount__c(
+            Name = 'Test BillingAccount',
+            Zuora__Zuora_Id__c = 'XXXXXXXXXX123',
+            Zuora__Account__c = normalProperty.Id
+        );
+        insert new List<Zuora__CustomerAccount__c>{billingAccount1, billingAccount2};
+
         List<Zuora__ZInvoice__c> invoices = new List<Zuora__ZInvoice__c>();
         invoices.add(new Zuora__ZInvoice__c(
-            Zuora__Account__c = customerAccount.Zuora__Account__c,
-            Zuora__BillingAccount__c = customerAccount.Id,
-            Zuora__Zuora_Id__c = '2c92c0fb6d1fe1f0016d216a87b54440'
+            Zuora__Account__c = paperOnlyProperty.Id,
+            Zuora__Zuora_Id__c = '2c92c0fb6d1fe1f0016d216a87b54440',
+            Zuora__BillingAccount__c = billingAccount1.Id
         ));
         invoices.add(new Zuora__ZInvoice__c(
-            Zuora__Account__c = customerAccount.Zuora__Account__c,
-            Zuora__BillingAccount__c = customerAccount.Id,
-            Zuora__Zuora_Id__c = '2c92c0fb6d1fe1f0016d216a87b54441'
+            Zuora__Account__c = normalProperty.Id,
+            Zuora__Zuora_Id__c = '2c92c0fb6d1fe1f0016d216a87b54441',
+            Zuora__BillingAccount__c = billingAccount2.Id
         ));
         insert invoices;
     }
@@ -103,13 +125,16 @@ public with sharing class ZuoraInvoiceServiceTest {
                 Ready_For_Email_Send__c, Ready_For_Paper_Bill_Queue__c
             FROM Zuora__ZInvoice__c
             WHERE Id IN : invoiceMap.keySet()
+            ORDER BY Zuora__Zuora_Id__c
         ];
 
         System.assertNotEquals(0,invoiceList.size());
         System.assertEquals('0680a000003HjQqAAK',invoiceList[0].Bill_Document_Content_Version_ID__c);
         System.assertEquals('06A0a000002SwvOEAS',invoiceList[0].Content_Document_Id__c);
         System.assert(invoiceList[0].Ready_for_Email_Send__c);
-        System.assert(invoiceList[0].Ready_for_Paper_Bill_Queue__c);
+        System.assert(!invoiceList[0].Ready_for_Paper_Bill_Queue__c);
+        System.assert(invoiceList[1].Ready_for_Email_Send__c);
+        System.assert(invoiceList[1].Ready_for_Paper_Bill_Queue__c);
     }
 
     @IsTest
