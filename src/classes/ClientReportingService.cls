@@ -150,10 +150,14 @@ public without sharing class ClientReportingService {
                 );
                 clientUASList.add(child);
             }
-
         }
 
-        insert clientUASList;
+        try {
+            insert clientUASList;
+        } catch (Exception e) {
+            Logger.logNow('ClientReportingService', 'insertClientUAS', JSON.serialize(uasList) + '\n' + 'Unable to insert Client UASes for UASes: ' + e.getMessage() +
+                '\n' + e.getStackTraceString());
+        }
 
     }
 

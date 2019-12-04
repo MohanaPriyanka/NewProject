@@ -1,5 +1,7 @@
 /**
  * Created by SarahRenfro on 8/6/2019.
+ *
+ * Tested By: UtilityAccountSubscriptionHandlerTest and ClientReportingServiceTest
  */
 
 trigger UtilityAccountSubscriptionTrigger on Utility_Account_Subscription__c (after insert, after update, before insert, before update, before delete) {
@@ -11,14 +13,13 @@ trigger UtilityAccountSubscriptionTrigger on Utility_Account_Subscription__c (af
         if (Trigger.isDelete) {
             ClientReportingService.deleteClientUAS(Trigger.old);
         } else if (Trigger.isInsert) {
-            UtilityAccountSubscriptionHandler.onBeforeInsert(Trigger.new);
-        } else if (Trigger.isUpdate) {
-            UtilityAccountSubscriptionHandler.onBeforeUpdate(Trigger.new, Trigger.oldMap);
+            UtilityAccountSubscriptionHandler.assignSSS(Trigger.new);
         }
     }
 
     if (Trigger.isAfter)  {
         if (Trigger.isUpdate) {
+            UtilityAccountSubscriptionHandler.assignSSS(Trigger.new, Trigger.oldMap);
         } else if (Trigger.isInsert) {
             ClientReportingService.insertClientUAS(Trigger.new);
         }
