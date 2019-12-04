@@ -21161,11 +21161,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__ImportID__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Index_Helper__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -50020,6 +50015,10 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>LightningConsoleAllowedForUser</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>LightningExperienceUser</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
