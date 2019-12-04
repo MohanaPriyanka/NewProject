@@ -39,16 +39,15 @@ public with sharing class ZuoraPaymentSelector {
         return zuoraPayments;
     }
 
-    public static String getFailedPaymentsFromPaymentRun(Date paymentExecutionDate) {
-        Datetime paymentRunDate =
-            Datetime.newInstance(paymentExecutionDate.year(), paymentExecutionDate.month(), paymentExecutionDate.day());
-
+    public static String getFailedPaymentRunPaymentsFromLastDay(Datetime endDatetime) {
+        Datetime startDatetime = endDatetime - 1;
         return 'SELECT p.Id, p.Status, p.AccountId, p.PaymentMethodId, p.GatewayResponse, a.CrmId, pr.ExecutedDate ' +
             ' FROM Payment p ' +
             'INNER JOIN PaymentRun pr on pr.PaymentRunNumber = p.SourceName ' +
             'INNER JOIN Account a on p.AccountId = a.Id ' +
             'WHERE p.Source = \'PaymentRun\' ' +
             'AND p.Status != \'Processed\' ' +
-            'AND pr.ExecutedDate > TIMESTAMP \'' + String.valueOf(paymentRunDate)+ '\'';
+            'AND pr.ExecutedDate > TIMESTAMP \'' + startDatetime.formatGmt('YYYY-MM-dd HH:mm:ss') + '\'' +
+            'AND pr.ExecutedDate < TIMESTAMP \'' + endDatetime.formatGmt('YYYY-MM-dd HH:mm:ss') + '\'';
     }
 }
