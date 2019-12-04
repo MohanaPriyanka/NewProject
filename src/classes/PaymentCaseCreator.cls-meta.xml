@@ -3,13 +3,8 @@
     <apiVersion>43.0</apiVersion>
     <packageVersions>
         <majorNumber>5</majorNumber>
-        <minorNumber>55</minorNumber>
-        <namespace>ChargentBase</namespace>
-    </packageVersions>
-    <packageVersions>
-        <majorNumber>5</majorNumber>
-        <minorNumber>55</minorNumber>
-        <namespace>ChargentOrders</namespace>
+        <minorNumber>2</minorNumber>
+        <namespace>Zuora</namespace>
     </packageVersions>
     <status>Active</status>
 </ApexClass>

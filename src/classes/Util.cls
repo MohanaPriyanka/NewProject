@@ -19,6 +19,7 @@ public without sharing class Util {
         insertSObjs(sobjs, 0, null, null);
     }
 
+    @SuppressWarnings('PMD.ExcessiveParameterList')
     private static void insertSObjs(List<SObject> sobjs, Integer count, String message, String stack) {
         if (count >= MAX_TRIES) {
             throw new BWException(message + '\n' + stack);
@@ -37,6 +38,7 @@ public without sharing class Util {
     public static void updateSObjs(List<SObject> sobjs) {
         updateSObjs(sobjs, 0, null, null);
     }
+    @SuppressWarnings('PMD.ExcessiveParameterList')
     private static void updateSObjs(List<SObject> sobjs, Integer count, String message, String stack) {
         if (count >= MAX_TRIES) {
             throw new BWException(message + '\n' + stack);
@@ -59,6 +61,7 @@ public without sharing class Util {
     public static Boolean insertAndLog(List<SObject> sobjs, String classname, String method) {
         return databaseOperationAndLog(DatabaseOperation.DBINSERT, sobjs, classname, method);
     }
+    @SuppressWarnings('PMD.ExcessiveParameterList')
     private static Boolean databaseOperationAndLog(DatabaseOperation operation, List<SObject> sobjs, String classname, String method) {
         Database.SaveResult[] saveResults;
         if (operation == DatabaseOperation.DBINSERT) {
@@ -288,10 +291,11 @@ public without sharing class Util {
         }
     }
 
+    // Checkboxes can be null, but this should only return true or false.
     public static Boolean getSystemPropertyCheckbox(String propertyName) {
         List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
-        if (systemProperties.size() > 0) {
-            return (Boolean) systemProperties[0].get(propertyName);
+        if (systemProperties.size() > 0 && ((Boolean) systemProperties[0].get(propertyName)) == true) {
+            return true;
         }
         return false;
     }
