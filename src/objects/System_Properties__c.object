@@ -383,6 +383,15 @@ Production: BlueWave Inside Sales</inlineHelpText>
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Send_Payment_Case_Emails__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Sends emails from the PaymentCaseCreator which runs after autopay</inlineHelpText>
+        <label>Send Payment Case Emails</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>System_Bill_Generation_Grace_Period__c</fullName>
         <defaultValue>15</defaultValue>
         <externalId>false</externalId>

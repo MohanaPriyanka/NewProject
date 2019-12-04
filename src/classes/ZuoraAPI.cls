@@ -713,7 +713,7 @@ public with sharing class ZuoraAPI {
         public List<ZuoraDebitMemoItem> items;
     }
 
-    // For historical payment load and return processing:
+    // For historical payment load, return processing, and payment case creation:
     // https://www.zuora.com/developer/api-reference/#operation/POST_CreatePayment
     public class Payment {
         public String id;
@@ -731,6 +731,9 @@ public with sharing class ZuoraAPI {
         public String Lockbox_zcustom;
         public String ArchivedChargentData_Zcustom;
         public Boolean success;
+        // Populated by a DataQuery result
+        public String CrmId;
+        public String GatewayResponse;
     }
 
     public class ArchivedChargentData {
