@@ -350,15 +350,6 @@ Production: BlueWave Inside Sales</inlineHelpText>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Last_Automated_Bill_QC_Check__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Timestamp (in GMT) of the automated System Bill check, used to find bills updated since this date to check</inlineHelpText>
-        <label>Last Automated Bill QC Check</label>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>DateTime</type>
-    </fields>
-    <fields>
         <fullName>Last_Lease_Dimensions_File_Processed__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Name of the last Lease Dimensions Payment Report file imported as Transaction Applications. Set by the Lease Dimensions Import visualforce page</inlineHelpText>
