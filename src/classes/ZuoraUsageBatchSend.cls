@@ -2,6 +2,7 @@ public without sharing class ZuoraUsageBatchSend implements Database.Batchable<s
     public List<UASB__c> uasbToUpdate = new List<UASB__c>();
     public List<Bill_Adjustment__c> adjustToUpdate = new List<Bill_Adjustment__c>();
     public String queryString;
+    public Date invoiceDate;
     public enum UsageType {UASBS, ADJUSTMENTS}
     public UsageType type;
 
@@ -9,8 +10,9 @@ public without sharing class ZuoraUsageBatchSend implements Database.Batchable<s
         Database.executeBatch(this, 50);
     }
 
-    public ZuoraUsageBatchSend(UsageType usageType) {
+    public ZuoraUsageBatchSend(UsageType usageType, Date invoiceDate) {
         this.type = usageType;
+        this.invoiceDate = invoiceDate;
     }
 
     public Database.QueryLocator start(Database.BatchableContext bc){
@@ -20,7 +22,7 @@ public without sharing class ZuoraUsageBatchSend implements Database.Batchable<s
             if (type == UsageType.UASBS) {
                 return UASBSelector.uasbsNotYetInZuora();
             } else if (type == UsageType.ADJUSTMENTS) {
-                return AdjustmentSelector.getAdjustmentsNotYetInZuora(true);
+                return AdjustmentSelector.getAdjustmentsNotYetInZuora(true, ZuoraCreditMemoBatchSend.AdjustmentType.PostNextBill);
             } else {
                 throw new Util.BWException('Set type to UASBS or ADJUSTMENTS');
             }
@@ -29,7 +31,7 @@ public without sharing class ZuoraUsageBatchSend implements Database.Batchable<s
 
     public void execute(Database.BatchableContext bc, List<SObject> scope) {
         try {
-            ZuoraUsageService.ZuoraUsageItems zuoraUsage = ZuoraUsageService.convertSFUsageToZuoraUsage(scope);
+            ZuoraUsageService.ZuoraUsageItems zuoraUsage = ZuoraUsageService.convertSFUsageToZuoraUsage(scope, invoiceDate);
             Logger.clearLogs();
             HttpResponse usageUploadResponse = ZuoraAPIHelper.callJsonEndpoint('POST','/v1/action/create',zuoraUsage,false);
             Map<String, List<SObject>> recordsToUpdate = ZuoraUsageService.handleAPIResponse(zuoraUsage.objects, usageUploadResponse);
