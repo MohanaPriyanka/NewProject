@@ -34,8 +34,6 @@ public without sharing class PaymentCaseCreator implements Schedulable, ZuoraDat
     private static Map<String,String> friendlyGatewayResponseMap = new Map<String,String>{
         'Invalid Route.' =>
             'Invalid Routing Number. Please check that Bank Account Number and Routing Number are not reversed.',
-        'System.JSONException! Unexpected character (\'S\' (code 83)): expected a valid value (number, String, array, object, \'true\', \'fal' =>
-            'The transaction took too long. Please call BlueWave support and ask them to check the Gateway before trying again.',
         'Please enter a \'Bank Account Number\'' => 'Invalid Bank Account Number. Please double check the Bank Account Number entered.'
     };
 
@@ -47,7 +45,7 @@ public without sharing class PaymentCaseCreator implements Schedulable, ZuoraDat
     private Map<Id, Account> accountIdToAccountMap;
 
     public void execute(SchedulableContext sc) {
-        String queryString = ZuoraPaymentSelector.getFailedPaymentsFromPaymentRun(System.today() - 1);
+        String queryString = ZuoraPaymentSelector.getFailedPaymentRunPaymentsFromLastDay(System.now());
         ZuoraDataQueryService.ProcessingParameter param = new ZuoraDataQueryService.ProcessingParameter();
         param.className = 'PaymentCaseCreator';
         ZuoraDataQueryService.callFromApex(queryString, param);
