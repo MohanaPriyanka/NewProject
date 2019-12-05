@@ -39,7 +39,8 @@ public without sharing class ZuoraCreditMemoBatchSend implements Database.Batcha
 
     public void finish(Database.BatchableContext bc) {
         try {
-            if (mode == AdjustmentType.PostWhenApproved){
+            // No more than one executeBatch can be called from a test method
+            if (mode == AdjustmentType.PostWhenApproved && !Test.isRunningTest()){
                 ZuoraMemoBatchApply batchApply = new ZuoraMemoBatchApply();
                 batchApply.startApplication();
                 batchApply.runBatch();
