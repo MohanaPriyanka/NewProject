@@ -948,6 +948,11 @@
                     <label>Exec Committee</label>
                 </value>
                 <value>
+                    <fullName>FERC</fullName>
+                    <default>false</default>
+                    <label>FERC</label>
+                </value>
+                <value>
                     <fullName>Finance</fullName>
                     <default>false</default>
                     <label>Finance</label>
@@ -1133,6 +1138,11 @@
                     <label>Project Partners</label>
                 </value>
                 <value>
+                    <fullName>PV + ESS Applications</fullName>
+                    <default>false</default>
+                    <label>PV + ESS Applications</label>
+                </value>
+                <value>
                     <fullName>Real Estate</fullName>
                     <default>false</default>
                     <label>Real Estate</label>
@@ -1253,14 +1263,24 @@
                     <label>Structure/Strategy</label>
                 </value>
                 <value>
+                    <fullName>Study Payments</fullName>
+                    <default>false</default>
+                    <label>Study Payments</label>
+                </value>
+                <value>
                     <fullName>System Operations</fullName>
                     <default>false</default>
                     <label>System Operations</label>
                 </value>
                 <value>
-                    <fullName>Telcom Construction</fullName>
+                    <fullName>Telecom Construction</fullName>
                     <default>false</default>
-                    <label>Telcom Construction</label>
+                    <label>Telecom Construction</label>
+                </value>
+                <value>
+                    <fullName>Telecom Payments</fullName>
+                    <default>false</default>
+                    <label>Telecom Payments</label>
                 </value>
                 <value>
                     <fullName>Third Party Interests (Scouts &amp; Offtake)</fullName>
@@ -1276,6 +1296,16 @@
                     <fullName>Utility Design</fullName>
                     <default>false</default>
                     <label>Utility Design</label>
+                </value>
+                <value>
+                    <fullName>Utility Studies</fullName>
+                    <default>false</default>
+                    <label>Utility Studies</label>
+                </value>
+                <value>
+                    <fullName>Wireless Test</fullName>
+                    <default>false</default>
+                    <label>Wireless Test</label>
                 </value>
             </valueSetDefinition>
             <valueSettings>
@@ -1417,16 +1447,11 @@
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>Asset Management</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <controllingFieldValue>Project Management - Construction</controllingFieldValue>
-                <valueName>EPC</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
                 <valueName>ESS Application</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+                <valueName>FERC</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
@@ -1442,35 +1467,11 @@
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>IX Meetings</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
                 <valueName>MassACA</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>Net-Metering</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>Ongoing Tasks</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>Payment/Deadline</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>Detailed Study</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>SIS</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>SIS Payment</valueName>
+                <valueName>PV + ESS Applications</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
@@ -1478,11 +1479,15 @@
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>SRECS</valueName>
+                <valueName>Study Payments</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>Telcom Construction</valueName>
+                <valueName>Telecom Construction</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+                <valueName>Telecom Payments</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
@@ -1493,8 +1498,20 @@
                 <valueName>Utility Design</valueName>
             </valueSettings>
             <valueSettings>
+                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+                <valueName>Utility Studies</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
+                <valueName>Wireless Test</valueName>
+            </valueSettings>
+            <valueSettings>
                 <controllingFieldValue>Project Management - Construction</controllingFieldValue>
                 <valueName>Construction Administration</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Project Management - Construction</controllingFieldValue>
+                <valueName>EPC</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Construction</controllingFieldValue>
