@@ -435,4 +435,102 @@ public class ScheduleZTriggerHandlerTest {
         System.assert(logs[0].Message__c.contains('zuora.com/v1/orders'));
         System.assert(logs[0].Message__c.contains('CreateSubscription'));
     }
+
+    @IsTest static void testMostRecentALSSUpdate() {
+        List<Utility_Account_Subscription__c> initialUASList = [
+            SELECT Id, Name, Most_Recent_Enacted_ALSS__c
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__r.StageName = 'Complete'
+            ORDER BY Opportunity__r.Shared_Solar_System_Name__c
+        ];
+
+        System.assertEquals(3,initialUASList.size());
+        System.assertEquals(null,initialUASList[0].Most_Recent_Enacted_ALSS__c);
+        System.assertEquals(null,initialUASList[1].Most_Recent_Enacted_ALSS__c);
+        System.assertEquals(null,initialUASList[2].Most_Recent_Enacted_ALSS__c);
+
+        for (Utility_Account_Subscription__c uas : initialUASList){
+            uas.Next_Schedule_Z_Status__c = 'Active Subscription';
+        }
+        update initialUASList;
+
+        List<Shared_Solar_System__c> sharedSolarSystems = [
+            SELECT Id
+            FROM Shared_Solar_System__c
+            ORDER BY Name
+        ];
+
+        Test.startTest();
+
+        Schedule_Z__c sss1FirstAllocationSchedule = new Schedule_Z__c(
+            Name = '18-0515 Oxford Barrett St. P1',
+            Shared_Solar_System__c = sharedSolarSystems[0].Id,
+            Status__c = 'QC Complete'
+        );
+
+        Schedule_Z__c sss2FirstAllocationSchedule = new Schedule_Z__c(
+            Name = '18-0615 Oxford Barrett St. P2',
+            Shared_Solar_System__c =  sharedSolarSystems[1].Id,
+            Status__c = 'QC Complete'
+        );
+
+        List<Schedule_Z__c> szsList = new List<Schedule_Z__c>{sss1FirstAllocationSchedule,sss2FirstAllocationSchedule};
+        insert szsList;
+
+        sss1FirstAllocationSchedule.Status__c = 'Enacted by Utility';
+        sss2FirstAllocationSchedule.Status__c = 'Enacted by Utility';
+        // Because a process builder sets Date_Enacted_by_Utility to today(), override:
+        sss1FirstAllocationSchedule.Date_Enacted_by_Utility__c = System.today().addDays(-2);
+        sss2FirstAllocationSchedule.Date_Enacted_by_Utility__c = System.today().addDays(-2);
+        update szsList;
+
+        List<Utility_Account_Subscription__c> updatedUASListOne = [
+            SELECT Id, Name, Most_Recent_Enacted_ALSS__c, Most_Recent_Enacted_ALSS__r.Schedule_Z__c
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__r.StageName = 'Complete'
+            ORDER BY Opportunity__r.Shared_Solar_System_Name__c
+        ];
+
+        System.assertEquals(3,updatedUASListOne.size());
+        System.assertEquals(sss1FirstAllocationSchedule.Id,updatedUASListOne[0].Most_Recent_Enacted_ALSS__r.Schedule_Z__c);
+        System.assertEquals(sss1FirstAllocationSchedule.Id,updatedUASListOne[1].Most_Recent_Enacted_ALSS__r.Schedule_Z__c);
+        System.assertEquals(sss2FirstAllocationSchedule.Id,updatedUASListOne[2].Most_Recent_Enacted_ALSS__r.Schedule_Z__c);
+
+        Schedule_Z__c sss1SecondAllocationSchedule = new Schedule_Z__c(
+            Name = '18-0515 Oxford Barrett St. P1',
+            Shared_Solar_System__c = sharedSolarSystems[0].Id,
+            Status__c = 'QC Complete'
+        );
+
+        Schedule_Z__c sss2SecondAllocationSchedule = new Schedule_Z__c(
+            Name = '18-0615 Oxford Barrett St. P2',
+            Shared_Solar_System__c =  sharedSolarSystems[1].Id,
+            Status__c = 'QC Complete'
+        );
+
+        List<Schedule_Z__c> secondSZList = new List<Schedule_Z__c>{sss1SecondAllocationSchedule,sss2SecondAllocationSchedule};
+        insert secondSZList;
+
+        sss1SecondAllocationSchedule.Status__c = 'Enacted by Utility';
+        sss2SecondAllocationSchedule.Status__c = 'Enacted by Utility';
+        // First group of Schedule Zs were dated 2 days ago:
+        sss1SecondAllocationSchedule.Date_Enacted_by_Utility__c = System.today().addDays(-5);
+        sss2SecondAllocationSchedule.Date_Enacted_by_Utility__c = System.today().addDays(-1);
+        update secondSZList;
+
+        List<Utility_Account_Subscription__c> updatedUASListTwo = [
+            SELECT Id, Name, Most_Recent_Enacted_ALSS__c, Most_Recent_Enacted_ALSS__r.Schedule_Z__c
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__r.StageName = 'Complete'
+            ORDER BY Opportunity__r.Shared_Solar_System_Name__c
+        ];
+
+        System.assertEquals(3,updatedUASListTwo.size());
+        // sss1 should still be linked to the first schedule z, since sss1SecondAllocationSchedule is dated before sss1FirstAllocationSchedule
+        System.assertEquals(sss1FirstAllocationSchedule.Id,updatedUASListTwo[0].Most_Recent_Enacted_ALSS__r.Schedule_Z__c);
+        System.assertEquals(sss1FirstAllocationSchedule.Id,updatedUASListTwo[1].Most_Recent_Enacted_ALSS__r.Schedule_Z__c);
+
+        // but sss2 should be linked to the second schedule z, since sss2SecondAllocationSchedule is dated after sss2FirstAllocationSchedule
+        System.assertEquals(sss2SecondAllocationSchedule.Id,updatedUASListTwo[2].Most_Recent_Enacted_ALSS__r.Schedule_Z__c);
+    }
 }

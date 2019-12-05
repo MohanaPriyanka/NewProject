@@ -139,6 +139,10 @@
                 <behavior>Edit</behavior>
                 <field>Subscribed_Annual_Cost_of_Electricity__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>kw_Allocation__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -162,10 +166,6 @@
                 <behavior>Readonly</behavior>
                 <field>Customer_Subscription_KW_DC__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>kW_Allocation__c</field>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -187,10 +187,14 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Customer_Subscription_KW_DC_STATIC__c</field>
+                <field>Most_Recent_Enacted_ALSS__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Customer_Subscription_KW_DC_STATIC__c</field>
+            </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Share_of_System__c</field>
