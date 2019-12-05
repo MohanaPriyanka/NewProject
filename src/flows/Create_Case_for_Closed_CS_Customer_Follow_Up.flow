@@ -786,7 +786,7 @@
                 <leftValueReference>myVariable_current.Contract_Status__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Sent</stringValue>
+                    <stringValue>Complete</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -823,7 +823,7 @@
             <connector>
                 <targetReference>myRule_5_pmetdec</targetReference>
             </connector>
-            <label>Customer Sig. Status = Sent</label>
+            <label>Customer Sig. Status = Complete</label>
         </rules>
     </decisions>
     <decisions>
@@ -1137,7 +1137,7 @@
                 <leftValueReference>myVariable_old.Contract_Status__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Sent</stringValue>
+                    <stringValue>Complete</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -1174,9 +1174,9 @@
             <label>Previously Met - Prev</label>
         </rules>
     </decisions>
-    <description>This is another Opportunity Edit/Create PB that should eventually be consolidated into a single Opp create/edit</description>
-    <interviewLabel>Create_Case_for_Closed_CS_Customer_Follow_Up-31_InterviewLabel</interviewLabel>
-    <label>Opportunity Create/Edit 2)</label>
+    <description>This is a second Opportunity Create/Edit PB that should eventually be consolidated into a single Opp Create/Edit</description>
+    <interviewLabel>Create_Case_for_Closed_CS_Customer_Follow_Up-32_InterviewLabel</interviewLabel>
+    <label>Opportunity Create/Edit 2</label>
     <processMetadataValues>
         <name>ObjectType</name>
         <value>
@@ -1577,7 +1577,7 @@
             </processMetadataValues>
             <field>Subject</field>
             <value>
-                <stringValue>EMAIL LOG: CS Partner: App Approved &amp; Contract Sent</stringValue>
+                <stringValue>EMAIL LOG: CS Partner: App Approved &amp; Contract Signed</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
