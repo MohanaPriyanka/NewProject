@@ -9,18 +9,14 @@ trigger UtilityAccountSubscriptionTrigger on Utility_Account_Subscription__c (af
         return;
     }
 
-    if (Trigger.isBefore) {
-        if (Trigger.isDelete) {
+    switch on Trigger.operationType {
+        when BEFORE_INSERT {
+            UtilityAccountSubscriptionHandler.assignSSSOnInsert(Trigger.new);
+        } when BEFORE_UPDATE {
+            UtilityAccountSubscriptionHandler.assignSSSOnUpdate(Trigger.new, Trigger.oldMap);
+        } when BEFORE_DELETE {
             ClientReportingService.deleteClientUAS(Trigger.old);
-        } else if (Trigger.isInsert) {
-            UtilityAccountSubscriptionHandler.assignSSS(Trigger.new);
-        }
-    }
-
-    if (Trigger.isAfter)  {
-        if (Trigger.isUpdate) {
-            UtilityAccountSubscriptionHandler.assignSSS(Trigger.new, Trigger.oldMap);
-        } else if (Trigger.isInsert) {
+        } when AFTER_INSERT {
             ClientReportingService.insertClientUAS(Trigger.new);
         }
     }
