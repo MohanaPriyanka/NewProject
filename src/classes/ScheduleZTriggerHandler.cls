@@ -63,6 +63,11 @@ public without sharing class ScheduleZTriggerHandler {
             update uasesToRetire;
         }
 
+        List<Utility_Account_Subscription__c> uasesToUpdate = matchALSSToUAS(enactedScheduleZS);
+        if (uasesToUpdate.size() > 0){
+            update uasesToUpdate;
+        }
+
         if (Util.getSystemPropertyCheckbox('Use_Zuora_For_Subscription_Billing__c') && enactedScheduleZS.size() > 0) {
             ZuoraSubscriptionAsyncService asyncService = new ZuoraSubscriptionAsyncService();
             asyncService.initForScheduleZEnactment(enactedScheduleZS);
@@ -159,5 +164,29 @@ public without sharing class ScheduleZTriggerHandler {
         }
 
         insert scheduleZSubscriptions;
+    }
+
+    public static List<Utility_Account_Subscription__c> matchALSSToUAS(List<Schedule_Z__c> enactedAllocationSchedules){
+        List<Utility_Account_Subscription__c> uasesToUpdate = new List<Utility_Account_Subscription__c>();
+
+        List<Id> enactedALSIds = new List<Id>();
+        for (Schedule_Z__c allocationSchedule : enactedAllocationSchedules){
+            enactedALSIds.add(allocationSchedule.Id);
+        }
+
+        List<Schedule_Z_Subscription__c> allocationSubscriptions = ScheduleZSubscriptionSelector.getALSSFromALS(enactedALSIds);
+
+        for (Schedule_Z_Subscription__c alss : allocationSubscriptions){
+            Date uasEnactedDate = alss.Utility_Account_Subscription__r.Most_Recent_Enacted_ALSS__r.Schedule_Z__r.Date_Enacted_by_Utility__c;
+            Date alssEnactedDate = alss.Schedule_Z__r.Date_Enacted_by_Utility__c;
+
+            if (uasEnactedDate == null || uasEnactedDate <= alssEnactedDate){
+                Utility_Account_Subscription__c uasToUpdate = new Utility_Account_Subscription__c();
+                uasToUpdate.Id = alss.Utility_Account_Subscription__c;
+                uasToUpdate.Most_Recent_Enacted_ALSS__c = alss.Id;
+                uasesToUpdate.add(uasToUpdate);
+            }
+        }
+        return uasesToUpdate;
     }
 }

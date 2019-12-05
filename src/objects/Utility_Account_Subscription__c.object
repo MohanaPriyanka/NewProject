@@ -564,6 +564,20 @@ Round(( Subscribed_Annual_Cost_of_Electricity__c / 0.1933 / Opportunity__r.Share
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Most_Recent_Enacted_ALSS__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>The last filing with the utility that this customer had. Stamped with the most recently enacted allocation schedule subscription. If customer drops off all allocation schedules, this field does not clear, so that it can be used for cancellation reporting.</inlineHelpText>
+        <label>Most Recent Enacted ALSS</label>
+        <referenceTo>Schedule_Z_Subscription__c</referenceTo>
+        <relationshipLabel>Utility Account Subscriptions</relationshipLabel>
+        <relationshipName>Utility_Account_Subscriptions_MostRecent</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Name_on_Account_From_Log__c</fullName>
         <externalId>false</externalId>
         <formula>Utility_Account_Log__r.Name_on_Account__c</formula>

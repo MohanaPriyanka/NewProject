@@ -40853,6 +40853,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Utility_Account_Subscription__c.Most_Recent_Enacted_ALSS__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Utility_Account_Subscription__c.Name_on_Account_From_Log__c</field>
         <readable>true</readable>
     </fieldPermissions>

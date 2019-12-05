@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Allows for a user to update Date Enacted by Utility on an ALSS after is been updated</description>
+    <label>Update Date Enacted on ALSS</label>
+</CustomPermission>
