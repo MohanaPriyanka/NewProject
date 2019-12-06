@@ -10,8 +10,10 @@ Limitations:
 public class InvocableZuoraMemoUpload {
 
     @InvocableMethod(label='ZuoraMemoUpload')
-    public static void memoUpload(){
+    public static void memoUpload(List<Date> invoiceDates){
         ZuoraCreditMemoBatchSend batchMemoSend = new ZuoraCreditMemoBatchSend();
+        // Assuming only 1 Invoice Date is passed through, only make a list because of invocable limitations:
+        batchMemoSend.effectiveDate = invoiceDates[0];
         batchMemoSend.executeBatch();
     }
 }

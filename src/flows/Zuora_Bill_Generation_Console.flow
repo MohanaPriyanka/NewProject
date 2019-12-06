@@ -79,13 +79,19 @@
         <description>Gets all UASBs and Bill Adjustments that have not been uploaded to Zuora yet and uploads them</description>
         <name>UsageUpload</name>
         <label>UsageUpload</label>
-        <locationX>318</locationX>
-        <locationY>50</locationY>
+        <locationX>375</locationX>
+        <locationY>84</locationY>
         <actionName>InvocableZuoraUsageUpload</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>Upload_Adjustments_To_Zuora_Screen</targetReference>
         </connector>
+        <inputParameters>
+            <name>invoiceDates</name>
+            <value>
+                <elementReference>Invoice_Date</elementReference>
+            </value>
+        </inputParameters>
     </actionCalls>
     <actionCalls>
         <description>Queries for all invoices marked as Ready for Email = true, and send through email from Salesforce with the bill pdf as an attachment.</description>
@@ -115,13 +121,19 @@
         <description>Uploads bill adjustments in SF that are not yet in Zuora</description>
         <name>Zuora_Memo_Upload</name>
         <label>Memo Upload</label>
-        <locationX>521</locationX>
-        <locationY>67</locationY>
+        <locationX>523</locationX>
+        <locationY>89</locationY>
         <actionName>InvocableZuoraMemoUpload</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Input_Bill_Date</targetReference>
+            <targetReference>Update_Batches</targetReference>
         </connector>
+        <inputParameters>
+            <name>invoiceDates</name>
+            <value>
+                <elementReference>Invoice_Date</elementReference>
+            </value>
+        </inputParameters>
     </actionCalls>
     <decisions>
         <name>Skip_Bill_Run_Decision</name>
@@ -251,7 +263,7 @@
     <decisions>
         <name>Skip_Memo_Apply_Decision</name>
         <label>Skip Memo Apply Decision</label>
-        <locationX>393</locationX>
+        <locationX>453</locationX>
         <locationY>240</locationY>
         <defaultConnector>
             <targetReference>Zuora_Memo_Upload</targetReference>
@@ -268,7 +280,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Input_Bill_Date</targetReference>
+                <targetReference>Update_Batches</targetReference>
             </connector>
             <label>Skip Memo Apply</label>
         </rules>
@@ -326,8 +338,8 @@
     <decisions>
         <name>Skip_Usage_Decision</name>
         <label>Skip Usage Decision</label>
-        <locationX>187</locationX>
-        <locationY>186</locationY>
+        <locationX>258</locationX>
+        <locationY>189</locationY>
         <defaultConnector>
             <targetReference>UsageUpload</targetReference>
         </defaultConnector>
@@ -500,10 +512,10 @@
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Usage_Upload_Screen</targetReference>
+            <targetReference>Input_Bill_Date</targetReference>
         </connector>
         <fields>
-            <name>BillGenConsoleCMP</name>
+            <name>Bill_Gen_console</name>
             <extensionName>c:BillGenerationConsole</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <isRequired>true</isRequired>
@@ -514,13 +526,13 @@
     <screens>
         <name>Input_Bill_Date</name>
         <label>Input Bill Date</label>
-        <locationX>515</locationX>
-        <locationY>541</locationY>
+        <locationX>158</locationX>
+        <locationY>535</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Update_Batches</targetReference>
+            <targetReference>Usage_Upload_Screen</targetReference>
         </connector>
         <fields>
             <name>Invoice_Date</name>
@@ -681,8 +693,8 @@
     <screens>
         <name>Upload_Adjustments_To_Zuora_Screen</name>
         <label>Adjustment Upload</label>
-        <locationX>347</locationX>
-        <locationY>535</locationY>
+        <locationX>401</locationX>
+        <locationY>533</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -691,7 +703,7 @@
         </connector>
         <fields>
             <name>Upload_Adjustments_Text</name>
-            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 18px; color: rgb(62, 62, 60);&quot;&gt;﻿Apply Credit Memos in Zuora&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60);&quot;&gt;This step will upload new adjustments as credit and debit memos to Zuora.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;color: rgb(62, 62, 60); font-size: 18px; --darkmode-inline-color:#b7b4af;&quot; data-darkmode-inline-color=&quot;&quot;&gt;Upload Memos to Zuora&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60); --darkmode-inline-color:#b7b4af;&quot; data-darkmode-inline-color=&quot;&quot;&gt;This step will upload approved adjustments as credit and debit memos to Zuora.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -716,8 +728,8 @@
     <screens>
         <name>Usage_Upload_Screen</name>
         <label>Usage Upload</label>
-        <locationX>186</locationX>
-        <locationY>538</locationY>
+        <locationX>263</locationX>
+        <locationY>529</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
