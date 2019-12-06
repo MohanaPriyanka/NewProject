@@ -7,7 +7,6 @@ public without sharing class ZuoraAccountService {
     @TestVisible
     private static AccountsSelector accountSelector = new AccountsSelector();
 
-    //Going to call this for Switch
     public static void createAccounts(List<Account> propertyAccounts) {
         if (propertyAccounts.size() == 0) {
             return;
@@ -192,7 +191,6 @@ public without sharing class ZuoraAccountService {
             zuoraContacts.add(zuoraContact);
         }
 
-        //Cant do DML before callout (ZuoraAPIHelper.update)
         insert zuoraContacts;
 
     }
