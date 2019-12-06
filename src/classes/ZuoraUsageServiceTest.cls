@@ -104,7 +104,7 @@ public class ZuoraUsageServiceTest {
         }
         System.assertEquals(12, i);
 
-        queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(true);
+        queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(true, ZuoraCreditMemoBatchSend.AdjustmentType.PostNextBill);
         iterator = queryLocator.iterator();
         i = 0;
         while (iterator.hasNext()) {
@@ -121,7 +121,7 @@ public class ZuoraUsageServiceTest {
         Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
         Test.startTest();
         finishTestSetup();
-        ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend(ZuoraUsageBatchSend.UsageType.UASBS);
+        ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend(ZuoraUsageBatchSend.UsageType.UASBS, System.today());
         zSend.executeBatch();
         Test.stopTest();
 
@@ -157,7 +157,7 @@ public class ZuoraUsageServiceTest {
         Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
         Test.startTest();
         finishTestSetup();
-        ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend(ZuoraUsageBatchSend.UsageType.ADJUSTMENTS);
+        ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend(ZuoraUsageBatchSend.UsageType.ADJUSTMENTS, System.today());
         zSend.executeBatch();
         Test.stopTest();
 
@@ -177,7 +177,7 @@ public class ZuoraUsageServiceTest {
         ];
         System.assertEquals(1, errors.size());
 
-        Database.QueryLocator queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(true);
+        Database.QueryLocator queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(true, ZuoraCreditMemoBatchSend.AdjustmentType.PostNextBill);
         Database.QueryLocatorIterator iterator = queryLocator.iterator();
         List<Bill_Adjustment__c> failedAdjust = new List<Bill_Adjustment__c>();
         while (iterator.hasNext()) {
@@ -190,7 +190,7 @@ public class ZuoraUsageServiceTest {
     private static void testCallWithoutUpdatingUASBs() {
         Test.startTest();
         finishTestSetup();
-        ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend(ZuoraUsageBatchSend.UsageType.UASBS);
+        ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend(ZuoraUsageBatchSend.UsageType.UASBS, null);
         zSend.executeBatch();
         Test.stopTest();
 
@@ -218,7 +218,7 @@ public class ZuoraUsageServiceTest {
     private static void testIndividualAccountLoad() {
         Test.startTest();
         finishTestSetup();
-        ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend(ZuoraUsageBatchSend.UsageType.UASBS);
+        ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend(ZuoraUsageBatchSend.UsageType.UASBS, null);
         String query =
             'SELECT Id, Name, Date__c, System_Bill__c,' +
                 '    Net_Metering_Credits_Allocated__c, Savings__c,' +

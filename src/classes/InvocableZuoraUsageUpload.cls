@@ -9,10 +9,10 @@ Limitations:
 
 public class InvocableZuoraUsageUpload {
     @InvocableMethod(label='ZuoraUsageUpload')
-    public static void usageUpload(){
-        ZuoraUsageBatchSend uasbSend = new ZuoraUsageBatchSend(ZuoraUsageBatchSend.UsageType.UASBS);
+    public static void usageUpload(List<Date> invoiceDates){
+        ZuoraUsageBatchSend uasbSend = new ZuoraUsageBatchSend(ZuoraUsageBatchSend.UsageType.UASBS,invoiceDates[0]);
         uasbSend.executeBatch();
-        ZuoraUsageBatchSend adjustSend = new ZuoraUsageBatchSend(ZuoraUsageBatchSend.UsageType.ADJUSTMENTS);
+        ZuoraUsageBatchSend adjustSend = new ZuoraUsageBatchSend(ZuoraUsageBatchSend.UsageType.ADJUSTMENTS,invoiceDates[0]);
         adjustSend.executeBatch();
     }
 }

@@ -9,5 +9,6 @@ trigger BillAdjustmentTrigger on Bill_Adjustment__c (before update) {
     }
     if (Trigger.isUpdate && Trigger.isBefore){
         ClientReportingService.beforeAdjustmentUpdate(Trigger.new);
+        ZuoraCreditDebitMemoService.beforeAdjustmentUpdate(Trigger.new);
     }
 }

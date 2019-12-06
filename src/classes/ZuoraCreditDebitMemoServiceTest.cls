@@ -4,11 +4,9 @@ public class ZuoraCreditDebitMemoServiceTest {
         MultipleMonthProductionUpdateTest.multipleMonthTest();
         setBillsToUnPublished();
 
-        List<UASB__c> uasbList = [
-            SELECT Id, Name, Utility_Account_Subscription__r.Id,
-                Opportunity__r.Shared_Solar_System__r.Unique_ID__c
-            FROM UASB__c
-            ORDER BY Date__c
+        List<Utility_Account_Subscription__c> uasList = [
+            SELECT Id, Opportunity__r.Shared_Solar_System__r.Unique_ID__c
+            FROM Utility_Account_Subscription__c
             LIMIT 2
         ];
 
@@ -21,8 +19,7 @@ public class ZuoraCreditDebitMemoServiceTest {
 
         Bill_Adjustment__c adjustOne = new Bill_Adjustment__c(
             Name = 'UASoneAdjustment',
-            Utility_Account_Subscription__c = uasbList[0].Utility_Account_Subscription__r.Id,
-            UASB__c = uasbList[0].Id,
+            Utility_Account_Subscription__c = uasList[0].Id,
             Adjustment_Type__c = 'BW Credit',
             Client__c = clientAccount.Id,
             Adjustment_Amount__c = -90,
@@ -31,8 +28,7 @@ public class ZuoraCreditDebitMemoServiceTest {
 
         Bill_Adjustment__c adjustTwo = new Bill_Adjustment__c(
             Name = 'UASoneAdjustment2',
-            Utility_Account_Subscription__c = uasbList[0].Utility_Account_Subscription__r.Id,
-            UASB__c = uasbList[0].Id,
+            Utility_Account_Subscription__c = uasList[0].Id,
             Adjustment_Type__c = 'Client Credit',
             Client__c = clientAccount.Id,
             Adjustment_Amount__c = -45,
@@ -41,8 +37,7 @@ public class ZuoraCreditDebitMemoServiceTest {
 
         Bill_Adjustment__c adjustThree = new Bill_Adjustment__c(
             Name = 'UASoneAdjustment3',
-            Utility_Account_Subscription__c = uasbList[1].Utility_Account_Subscription__r.Id,
-            UASB__c = uasbList[1].Id,
+            Utility_Account_Subscription__c = uasList[1].Id,
             Adjustment_Type__c = 'BW Credit',
             Client__c = clientAccount.Id,
             Adjustment_Amount__c = -15,
@@ -51,8 +46,7 @@ public class ZuoraCreditDebitMemoServiceTest {
 
         Bill_Adjustment__c adjustFour = new Bill_Adjustment__c(
             Name = 'UASoneAdjustment4',
-            Utility_Account_Subscription__c = uasbList[1].Utility_Account_Subscription__r.Id,
-            UASB__c = uasbList[1].Id,
+            Utility_Account_Subscription__c = uasList[1].Id,
             Adjustment_Type__c = 'BW Credit',
             Client__c = clientAccount.Id,
             Adjustment_Amount__c = -99,
@@ -62,8 +56,7 @@ public class ZuoraCreditDebitMemoServiceTest {
 
         Bill_Adjustment__c adjustFive = new Bill_Adjustment__c(
             Name = 'UASoneAdjustment5',
-            Utility_Account_Subscription__c = uasbList[1].Utility_Account_Subscription__r.Id,
-            UASB__c = uasbList[1].Id,
+            Utility_Account_Subscription__c = uasList[1].Id,
             Adjustment_Type__c = 'BW Credit',
             Client__c = clientAccount.Id,
             Adjustment_Amount__c = 12,
@@ -72,16 +65,35 @@ public class ZuoraCreditDebitMemoServiceTest {
 
         Bill_Adjustment__c adjustSix = new Bill_Adjustment__c(
             Name = 'UASoneAdjustment6',
-            Utility_Account_Subscription__c = uasbList[1].Utility_Account_Subscription__r.Id,
-            UASB__c = uasbList[1].Id,
+            Utility_Account_Subscription__c = uasList[1].Id,
             Adjustment_Type__c = 'BW Credit',
             Client__c = clientAccount.Id,
             Adjustment_Amount__c = 18,
             Approval_Status__c = 'Approved',
             Reason_For_Adjustment__c = 'Needs adjustment');
 
+        Bill_Adjustment__c adjustSeven = new Bill_Adjustment__c(
+            Name = 'UASoneAdjustment7',
+            Utility_Account_Subscription__c = uasList[1].Id,
+            Adjustment_Type__c = 'BW Credit',
+            Client__c = clientAccount.Id,
+            Adjustment_Amount__c = 22,
+            Approval_Status__c = 'Pending',
+            Effective__c = 'Post When Approved',
+            Reason_For_Adjustment__c = 'Needs adjustment');
 
-        insert new List<Bill_Adjustment__c>{adjustOne, adjustTwo, adjustThree, adjustFour, adjustFive, adjustSix};
+        Bill_Adjustment__c adjustEight = new Bill_Adjustment__c(
+            Name = 'UASoneAdjustment8',
+            Utility_Account_Subscription__c = uasList[1].Id,
+            Adjustment_Type__c = 'BW Credit',
+            Client__c = clientAccount.Id,
+            Adjustment_Amount__c = 23,
+            Approval_Status__c = 'Pending',
+            Effective__c = 'Post When Approved',
+            Reason_For_Adjustment__c = 'Needs adjustment');
+
+
+        insert new List<Bill_Adjustment__c>{adjustOne, adjustTwo, adjustThree, adjustFour, adjustFive, adjustSix, adjustSeven, adjustEight};
 
         List<Account> accounts = [
             SELECT Id, Name, Zuora_Id__c
@@ -93,7 +105,7 @@ public class ZuoraCreditDebitMemoServiceTest {
         String accountKey = 'CID' +
             clientAccount.Account_Number__c +
             'SID' +
-            uasbList[0].Opportunity__r.Shared_Solar_System__r.Unique_ID__c +
+            uasList[0].Opportunity__r.Shared_Solar_System__r.Unique_ID__c +
             'END';
 
         for (Account accts : accounts){
@@ -121,7 +133,7 @@ public class ZuoraCreditDebitMemoServiceTest {
         Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
 
         // 6 adjustments exist, but one should be excluded, because already has a zuora ID:
-        Database.QueryLocator queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(false);
+        Database.QueryLocator queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(false, ZuoraCreditMemoBatchSend.AdjustmentType.PostNextBill);
         Database.QueryLocatorIterator iterator = queryLocator.iterator();
         List<Bill_Adjustment__c> beforeCallList = new List<Bill_Adjustment__c>();
         Integer i = 0;
@@ -162,8 +174,9 @@ public class ZuoraCreditDebitMemoServiceTest {
         // disableTrigger just sets a system property checkbox to true
         Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
 
-        // 6 adjustments exist, but one should be excluded, because already has a zuora ID:
-        Database.QueryLocator queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(false);
+        // 8 adjustments exist, but one should be excluded, because already has a zuora ID and 2 should be
+        // excluded because they are not approved:
+        Database.QueryLocator queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(false, ZuoraCreditMemoBatchSend.AdjustmentType.PostNextBill);
         Database.QueryLocatorIterator iterator = queryLocator.iterator();
         List<Bill_Adjustment__c> beforeCallList = new List<Bill_Adjustment__c>();
         Integer i = 0;
@@ -190,8 +203,9 @@ public class ZuoraCreditDebitMemoServiceTest {
         // disableTrigger just sets a system property checkbox to true
         Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
 
-        // 6 adjustments exist, but one should be excluded, because already has a zuora ID:
-        Database.QueryLocator queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(false);
+        // 8 adjustments exist, but one should be excluded, because already has a zuora ID and 2 should be
+        // excluded because they are not approved:
+        Database.QueryLocator queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(false, ZuoraCreditMemoBatchSend.AdjustmentType.PostNextBill);
         Database.QueryLocatorIterator iterator = queryLocator.iterator();
         List<Bill_Adjustment__c> beforeCallList = new List<Bill_Adjustment__c>();
         Integer i = 0;
@@ -205,7 +219,7 @@ public class ZuoraCreditDebitMemoServiceTest {
 
         Test.startTest();
         for (Bill_Adjustment__c adjust : beforeCallList){
-            adjustmentsToUpdate.add(ZuoraCreditDebitMemoService.createCreditOrDebitMemo(adjust));
+            adjustmentsToUpdate.add(ZuoraCreditDebitMemoService.createCreditOrDebitMemo(adjust, System.today()));
         }
         Test.stopTest();
 
@@ -217,7 +231,7 @@ public class ZuoraCreditDebitMemoServiceTest {
 
     @IsTest
     private static void testCallWithoutUpdatingAdjustment() {
-        Database.QueryLocator queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(false);
+        Database.QueryLocator queryLocator = AdjustmentSelector.getAdjustmentsNotYetInZuora(false, ZuoraCreditMemoBatchSend.AdjustmentType.PostNextBill);
         Database.QueryLocatorIterator iterator = queryLocator.iterator();
         List<Bill_Adjustment__c> beforeCallList = new List<Bill_Adjustment__c>();
         Integer i = 0;
@@ -238,5 +252,41 @@ public class ZuoraCreditDebitMemoServiceTest {
             WHERE Zuora_Id__c = '2c92c0fa6a3458e1016a45ac238e0d74'
         ];
         System.assertEquals(0, adjustList.size());
+    }
+
+    @IsTest
+    private static void testOnApprovalSend(){
+        // disableTrigger just sets a system property checkbox to true
+        Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
+
+        List<Bill_Adjustment__c> beforeAdjustments = [
+            SELECT Id
+            FROM Bill_Adjustment__c
+            WHERE Zuora_Id__c != null
+        ];
+        system.assertEquals(1,beforeAdjustments.size());
+
+        List<Bill_Adjustment__c> unapprovedAdjustments = [
+            SELECT Id
+            FROM Bill_Adjustment__c
+            WHERE Approval_Status__c != 'Approved'
+        ];
+
+        for (Bill_Adjustment__c adjust : unapprovedAdjustments){
+            adjust.Approval_Status__c = 'Approved';
+        }
+        System.assertEquals(2,unapprovedAdjustments.size());
+
+        Test.startTest();
+            update unapprovedAdjustments;
+        Test.stopTest();
+
+        // 8 adjustments exist, 1 already has Zuora_ID__c, 2 Post on Approval, 5 Post on Next Bill:
+        List<Bill_Adjustment__c> afterAdjustments = [
+            SELECT Id
+            FROM Bill_Adjustment__c
+            WHERE Zuora_Id__c != null
+        ];
+        system.assertEquals(3,afterAdjustments.size());
     }
 }
