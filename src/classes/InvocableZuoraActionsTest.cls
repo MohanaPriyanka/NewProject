@@ -124,22 +124,25 @@ public with sharing class InvocableZuoraActionsTest {
     @IsTest public static void testMemoUpload() {
         // disableTrigger just sets a system property checkbox to true
         Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
+        Date invoiceDate = Date.newInstance(2019,02,15);
 
         List<Bill_Adjustment__c> adjustmentsBefore = [
             SELECT Id, Zuora_Id__c
             FROM Bill_Adjustment__c
             WHERE Zuora_Id__c = null
+            AND Approval_Status__c = 'Approved'
         ];
         System.assertEquals(5,adjustmentsBefore.size());
 
         Test.startTest();
-            InvocableZuoraMemoUpload.memoUpload();
+            InvocableZuoraMemoUpload.memoUpload(new List<Date>{invoiceDate});
         Test.stopTest();
 
         List<Bill_Adjustment__c> adjustmentsAfter = [
             SELECT Id, Zuora_Id__c
             FROM Bill_Adjustment__c
             WHERE Zuora_Id__c = null
+            AND Approval_Status__c = 'Approved'
         ];
         System.assertEquals(0,adjustmentsAfter.size());
     }
@@ -190,6 +193,8 @@ public with sharing class InvocableZuoraActionsTest {
     }
 
     @IsTest public static void testUsageUpload() {
+        Date invoiceDate = Date.newInstance(2019,02,15);
+
         List<Error_Log__c> beforeLogs = [
             SELECT Id, Class__c, Message__c, Method__c
             FROM Error_Log__c
@@ -198,7 +203,7 @@ public with sharing class InvocableZuoraActionsTest {
         System.assertEquals(0,beforeLogs.size());
 
         Test.startTest();
-            InvocableZuoraUsageUpload.usageUpload();
+            InvocableZuoraUsageUpload.usageUpload(new List<Date>{invoiceDate});
         Test.stopTest();
 
         List<Error_Log__c> afterLogs = [

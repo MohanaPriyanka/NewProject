@@ -46,7 +46,6 @@
     <description>CS Billing: If we know that a UAS is going to need adjustments on a future bill, they are stored here until that bill is generated</description>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>false</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableReports>true</enableReports>
@@ -339,6 +338,31 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Effective__c</fullName>
+        <externalId>false</externalId>
+        <label>Effective</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Post on Next Bill</fullName>
+                    <default>true</default>
+                    <label>Post on Next Bill</label>
+                </value>
+                <value>
+                    <fullName>Post When Approved</fullName>
+                    <default>false</default>
+                    <label>Post When Approved</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Intermediate_Outstanding__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Used in OverpaymentApplication, even though it isn&apos;t populated</inlineHelpText>
@@ -562,7 +586,7 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Bill Adjustments</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <validationRules>
         <fullName>Adjustment_Type_Is_Required</fullName>
@@ -587,6 +611,16 @@ UASB__r.Adjustment_Amount__c != Adjustment_Amount__c)</errorConditionFormula>
         <errorConditionFormula>IF( ISPICKVAL(Adjustment_Type__c, &apos;Production&apos;),  ISBLANK( Credits_Allocated__c) , FALSE)</errorConditionFormula>
         <errorDisplayField>Credits_Allocated__c</errorDisplayField>
         <errorMessage>Bill Adjustments from Production Errors must have Credits Allocated filled in</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Usage_Must_Be_Posted_on_Next_Bill</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+ISPICKVAL(Adjustment_Type__c, &quot;Production&quot;),
+Adjustment_Amount__c &gt; 0,
+ISPICKVAL(Effective__c, &quot;Post When Approved&quot;)
+)</errorConditionFormula>
+        <errorMessage>Positive Production Adjustments must have Effective = Post on Next Bill</errorMessage>
     </validationRules>
     <visibility>Public</visibility>
 </CustomObject>

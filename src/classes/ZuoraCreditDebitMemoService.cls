@@ -9,10 +9,12 @@ Can't use generic create/edit/delete actions
 */
 
 public class ZuoraCreditDebitMemoService{
-    public static Bill_Adjustment__c createCreditOrDebitMemo(Bill_Adjustment__c adjustment){
+
+    public static Bill_Adjustment__c createCreditOrDebitMemo(Bill_Adjustment__c adjustment, Date effectiveDate){
         if (adjustment.Adjustment_Amount__c < 0){
             ZuoraAPI.CreditMemo creditMemo;
             creditMemo = convertSFAdjustToCreditMemo(adjustment);
+            creditMemo.effectiveDate = effectiveDate;
             HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('POST','/v1/creditmemos',creditMemo,false);
             adjustment = handleAPIResponse(
                 creditMemo.CRM_ID_Zcustom,
@@ -22,6 +24,7 @@ public class ZuoraCreditDebitMemoService{
         } else {
             ZuoraAPI.DebitMemo debitMemo;
             debitMemo = convertSFAdjustToDebitMemo(adjustment);
+            debitMemo.effectiveDate = effectiveDate;
             HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('POST','/v1/debitmemos',debitMemo,false);
             adjustment = handleAPIResponse(
                 debitMemo.CRM_ID_Zcustom,
@@ -46,7 +49,6 @@ public class ZuoraCreditDebitMemoService{
 
         ZuoraAPI.DebitMemo debitMemo = new ZuoraAPI.DebitMemo();
         debitMemo.accountId = adjust.Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c;
-        debitMemo.effectiveDate = adjust.UASB__r.Date__c;
         debitMemo.Project_Zcustom = adjust.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c;
         debitMemo.ClientOwner_Zcustom = adjust.Client__r.Account_Number__c;
         debitMemo.charges = new List<ZuoraAPI.DebitMemoCharge>{debitCharge};
@@ -63,7 +65,6 @@ public class ZuoraCreditDebitMemoService{
 
         ZuoraAPI.CreditMemo creditMemo = new ZuoraAPI.CreditMemo();
         creditMemo.accountId = adjust.Utility_Account_Subscription__r.Opportunity__r.Account.Zuora_Id__c;
-        creditMemo.effectiveDate = adjust.UASB__r.Date__c;
         creditMemo.Project_Zcustom = adjust.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Unique_ID__c;
         creditMemo.ClientOwner_Zcustom = adjust.Client__r.Account_Number__c;
         creditMemo.charges = new List<ZuoraAPI.CreditCharge>{chargeLine};
@@ -119,6 +120,25 @@ public class ZuoraCreditDebitMemoService{
         ZuoraAPI.ZuoraDebitMemo debitMemo = (ZuoraAPI.ZuoraDebitMemo) JSON.deserialize(ZuoraAPIHelper.cleanJSON(response.getBody()), ZuoraAPI.ZuoraDebitMemo.class);
         if (debitMemo.id == null) {
             throw new Util.FatalBWException('Debit memo post failed: ' + response.getBody());
+        }
+    }
+
+    public static void beforeAdjustmentUpdate(List<Bill_Adjustment__c> adjustmentsToCheck){
+        Boolean adjustmentsToUpload = false;
+
+        for (Bill_Adjustment__c adjust : adjustmentsToCheck){
+            if (adjust.Approval_Status__c == 'Approved'
+                && adjust.Effective__c == 'Post When Approved'
+                && adjust.Zuora_Id__c == null){
+                adjustmentsToUpload = true;
+                break;
+            }
+        }
+
+        if (adjustmentsToUpload){
+            ZuoraCreditMemoBatchSend batchSend = new ZuoraCreditMemoBatchSend();
+            batchSend.mode = ZuoraCreditMemoBatchSend.AdjustmentType.PostWhenApproved;
+            batchSend.executeBatch();
         }
     }
 }
