@@ -84,15 +84,17 @@
         let ratioButtons = component.find("radioButtonPaymentAmount").get("v.value");
         let zAcctBalance = component.get("v.zuoraAccountAndPayMethod").account.Balance;
         component.set("v.customPaymentAmountMessage", '');
+        let customPaymentAmount = component.get("v.customChargeAmount");
 
         if (ratioButtons === 'customAmount'){
-            let customPaymentAmount = component.get("v.customChargeAmount");
             component.set("v.paymentAmount", Math.max(0,Math.min(customPaymentAmount,zAcctBalance)));
             if (customPaymentAmount < 0) {
                 component.set("v.customPaymentAmountMessage", 'Payment amount must be greater than zero.');
             } else if (customPaymentAmount > zAcctBalance) {
                 component.set("v.customPaymentAmountMessage", 'Payment amount can not be more than your current outstanding balance.');
             }
+        } else if (customPaymentAmount > 0){
+            component.set("v.balanceSelection",'customAmount');
         } else {
             component.set("v.paymentAmount", Math.max(0,zAcctBalance));
         }
