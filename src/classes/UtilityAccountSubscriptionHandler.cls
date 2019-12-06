@@ -32,13 +32,11 @@ public without sharing class UtilityAccountSubscriptionHandler {
         }
 
         Map<Id, Opportunity> uasToOppMap = OpportunitiesSelector.selectOpportunityMap(oppIds);
-        List<Utility_Account_Subscription__c> updateUASList = new List<Utility_Account_Subscription__c>();
 
         for (Utility_Account_Subscription__c uas : uasList) {
             if (uas.Opportunity__c != null && oldMap.get(uas.Id).Opportunity__c == null && uas.Shared_Solar_System__c == null) {
                 Opportunity opp = uasToOppMap.get(uas.Opportunity__c);
                 uas.Shared_Solar_System__c = opp.Shared_Solar_System__c;
-                updateUASList.add(uas);
             }
         }
 
