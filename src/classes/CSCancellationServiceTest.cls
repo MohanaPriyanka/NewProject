@@ -692,17 +692,16 @@ public with sharing class CSCancellationServiceTest {
         insert newUASes;
 
         // Creates bills for accounts that are dated 1/1/2018, implying all of these accounts are done billing.
-        List<Shared_Solar_System__c> sss = [SELECT Id FROM Shared_Solar_System__c ORDER BY Name];
+        List<Shared_Solar_System__c> sss = [SELECT Id FROM Shared_Solar_System__c ORDER BY Name DESC];
         CustomerCommunicationHandlerTest.createBills(Date.newInstance(2018, 1, 1), sss[0].Id);
         Test.startTest();
         CustomerCommunicationHandlerTest.createBills(Date.newInstance(2018, 1, 1), sss[1].Id);
-        CustomerCommunicationHandlerTest.createBills(Date.newInstance(2018, 1, 1), sss[2].Id);
 
         // Update UASes to match test scenarios in
         // https://www.lucidchart.com/documents/edit/28ddde15-529b-4b09-b858-35bba5e77e37/5
         for (Utility_Account_Subscription__c utilityAccountSubscription : newUASes) {
             switch on utilityAccountSubscription.Name {
-                when '0000234 Clone', '0000236 Clone' {
+                when '0000236 Clone' {
                     utilityAccountSubscription.Transferring_Subsc_to_Another_UAS__c = true;
                     utilityAccountSubscription.Next_Schedule_Z_Status__c = 'Inactive Subscription';
                 } when '0000238 Clone' {
@@ -737,10 +736,7 @@ public with sharing class CSCancellationServiceTest {
                 System.assert(Opportunities.finishedBilling(opp));
                 System.assert(!Opportunities.isCancelledWaitlist(opp));
                 switch on opp.Name {
-                    when 'Jordan Jordan 0000234' {
-                        System.assert(Opportunities.hasActiveUASes(opp));
-                        System.assert(!Opportunities.allUASesTransferring(opp));
-                    } when 'Jordan Jordan 0000236' {
+                    when 'Jordan Jordan 0000236' {
                         System.assert(!Opportunities.hasActiveUASes(opp));
                         System.assert(Opportunities.allUASesTransferring(opp));
                     } when 'Jordan Jordan 0000238' {
@@ -754,10 +750,9 @@ public with sharing class CSCancellationServiceTest {
         }
 
         // Since there's a single opportunity for a single system, we generate a single bill with a single UAS that's still active
-        System.assertEquals(3, systemBills.size());
+        System.assertEquals(2, systemBills.size());
         System.assertEquals('Complete', systemBills[0].Opportunity__r.StageName);
         System.assertEquals('Complete', systemBills[1].Opportunity__r.StageName);
-        System.assertEquals('Complete', systemBills[2].Opportunity__r.StageName);
 
         CSCancellationService.cancelOpportunities(CSCancellationService.getOpportunitiesToCancel());
         Test.stopTest();
@@ -775,8 +770,6 @@ public with sharing class CSCancellationServiceTest {
         System.assertEquals('Complete', oppList[1].StageName);
         System.assertEquals('Jordan Jordan 0000238', oppList[2].Name);
         System.assertEquals('Cancelled', oppList[2].StageName);
-
-        Util.enableTrigger('Disable_Client_Objects_Trigger__c');
     }
 
     @IsTest static void testSetupDataForAccountDateRemovedIsCorrect() {
