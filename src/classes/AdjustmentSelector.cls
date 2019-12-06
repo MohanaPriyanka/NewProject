@@ -27,10 +27,10 @@ public without sharing class AdjustmentSelector {
 
         if (typeIsUsage){
             queryString += 'AND Adjustment_Type__c = \'Production\' ';
-            queryString += 'AND Adjustment_Amount__c > 0';
+            queryString += 'AND Adjustment_Amount__c > 0 ';
         } else {
             queryString += 'AND(Adjustment_Type__c != \'Production\' ';
-            queryString += 'OR Adjustment_Amount__c < 0)';
+            queryString += 'OR Adjustment_Amount__c < 0) ';
         }
 
         if (mode == ZuoraCreditMemoBatchSend.AdjustmentType.PostWhenApproved){
