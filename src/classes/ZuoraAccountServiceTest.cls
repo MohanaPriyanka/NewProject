@@ -92,6 +92,90 @@ public with sharing class ZuoraAccountServiceTest {
     }
 
     @IsTest
+    static void testZuoraAccountCreationSwitchLead() {
+
+        User apiUser = [
+            SELECT Id, Name, Username
+            FROM User
+            WHERE Name = 'API'
+            AND IsActive = TRUE
+            LIMIT 1
+        ];
+
+        Product2 smartProduct = [
+            SELECT Id
+            FROM Product2
+            WHERE IsActive = TRUE
+            AND Program__c = 'SMART - Community Solar'
+            LIMIT 1
+        ];
+
+        Lead residentialLead = CSAPControllerTest.getLeadForTest();
+
+        residentialLead.Status = 'Qualified';
+        residentialLead.LeadSource = 'Switch';
+        residentialLead.OwnerId = apiUser.Id;
+        residentialLead.Product__c = smartProduct.Id;
+        insert residentialLead;
+
+        CSAPControllerTest.pullCreditForLead(residentialLead.Id);
+
+        residentialLead = [
+            SELECT Id, CSAP_Stage__c, FirstName, LastName, Email, Phone, LASERCA__Birthdate__c, Street, City, State, PostalCode,
+                Application_Type__c, LASERCA__Home_Address__c, LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c, LASERCA__SSN__c,
+                Company, Type_of_Business__c, Business_Title__c, Number_of_Years_in_Business__c, Number_of_Years_at_Location__c,
+                Credit_Check_Acknowledged__c, Privacy_Policy_Acknowledged__c, Utility_Bill_Access_Acknowledged__c,
+                Previous_BW_Applicant__c, Estimated_Install_Date__c, System_Size_kW_DC__c, Product_line__c,
+                LASERCA__Pull_Credit_Report__c, Parent_Account__c, Parcel_Zip__c, Electricity_Provider__c,
+                Parent_Account__r.Owner.Name, Parent_Account__r.Owner.Id, Utility_relationship__c, Utility_relationship__r.Id, Personal_Credit_Report__c,
+                Status, Product__c, Product__r.Program__c, Partner_Lookup__c, bs_Sales_ID__c, Date_of_Application__c
+            FROM Lead
+            WHERE Email = 'testymctesterson@tester.com'
+            LIMIT 1
+        ];
+
+        LeadService leadService = new LeadService();
+        Account propertyAccount = leadService.buildPropertyAccountFromLegacyLead(residentialLead);
+        propertyAccount.Zuora_Payment_Ref_Id__c = '12345678901234567890123456789012';
+        insert propertyAccount;
+
+        Utility_Account_Log__c ual = leadService.buildUtilityAccountLogFromLegacyLead(residentialLead, propertyAccount);
+        insert ual;
+
+        Test.startTest();
+        ZuoraAccountService.createAccounts(new List<Account> {propertyAccount});
+
+        Test.stopTest();
+
+        residentialLead = [
+            SELECT Id, Email, IsConverted, ConvertedAccountId
+            FROM Lead
+            WHERE Email = 'testymctesterson@tester.com'
+            AND Application_Type__c = 'Residential'
+        ];
+
+        propertyAccount = [
+            SELECT Id, Zuora_Payment_Ref_Id__c, Zuora_Id__c
+            FROM Account
+            WHERE Lead__c = :residentialLead.Id
+        ];
+
+        List<Account> propertyAccounts = AccountsSelector.selectWithSendBillsContact(new Set<Id>{propertyAccount.Id});
+
+        // The account and contact should now have a zuora Id
+        System.assertEquals(1, propertyAccounts.size());
+        System.assertEquals(ZuoraAPIMock.genericId, propertyAccounts[0].Zuora_Id__c);
+        // There should be a Zuora Contact record under the Salesforce Contact
+        List<Zuora_Contact__c> zuoraContacts = [
+            SELECT Id, Zuora_Id__c, Contact__c
+            FROM Zuora_Contact__c
+        ];
+        System.assertEquals(1, zuoraContacts.size());
+        System.assertEquals(ZuoraAPIMock.genericId, zuoraContacts[0].Zuora_Id__c);
+
+    }
+
+    @IsTest
     static void testZuoraAccountCreationIssue() {
         User apiUser = [
             SELECT Id, Name, Username
