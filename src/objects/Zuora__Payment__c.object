@@ -69,6 +69,16 @@ The Payment object holds all of the information about an individual payment, inc
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>ResponseStatus__c</fullName>
+        <externalId>false</externalId>
+        <label>ResponseStatus</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Zuora__Account__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <deprecated>false</deprecated>
