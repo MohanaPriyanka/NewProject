@@ -214,12 +214,41 @@
                             <form class="slds-form--stacked">
                                 <aura:if isTrue="{!_index == 0}">
                                     <lightning:layout multipleRows="true">
-                                        <lightning:layoutItem class="slds-align_absolute-center slds-p-horizontal--large"
+                                        <lightning:layoutItem class="slds-p-horizontal--large"
                                                               padding="around-small"
                                                               size="12">
-                                            <div class="slds-text-align--center">
-                                                Please upload a utility bill for the utility account(s) below.​
-                                            </div>
+
+                                            <aura:if isTrue="{!v.selectedProduct.Program__c == 'SREC - Community Solar'}">
+
+                                                <div class="slds-grid slds-wrap">
+                                                    <div class="slds-col slds-size_1-of-4"></div>
+                                                    <div class="slds-col slds-size_2-of-4">
+                                                        <div class="slds-text-align--center">
+                                                            For the utility account(s) below,
+                                                            please upload:
+                                                        </div>
+                                                        <div class="slds-clearfix">
+                                                            <div class="slds-float_left">
+
+                                                                <ol class="slds-list_ordered">
+                                                                    <li>A recent electric bill and</li>
+                                                                    <li>A 12-month record of your payment history. Record
+                                                                        of your
+                                                                        payment history (Green Button data) can be
+                                                                        pulled
+                                                                        directly
+                                                                        from your utility's website.
+                                                                    </li>
+                                                                </ol>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="slds-col slds-size_1-of-4"></div>
+                                                </div>
+                                                <aura:set attribute="else">
+                                                    Please upload a utility bill for the utility account(s) below.​
+                                                </aura:set>
+                                            </aura:if>
                                         </lightning:layoutItem>
                                     </lightning:layout>
                                 </aura:if>
@@ -250,7 +279,7 @@
                                 </aura:if>
                             </form>
                         </fieldset>
-                        <br />
+                        <br/>
                     </aura:iteration>
                 </div>
             </aura:if>
