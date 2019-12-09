@@ -21435,11 +21435,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__ImportID__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Index_Helper__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -31991,6 +31986,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Zuora__CustomerAccount__c.View_Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Zuora__Payment__c.ResponseStatus__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

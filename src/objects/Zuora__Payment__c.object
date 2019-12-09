@@ -58,6 +58,27 @@ The Payment object holds all of the information about an individual payment, inc
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ControlledByParent</externalSharingModel>
     <fields>
+        <fullName>Payment_Status__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( ISBLANK(ResponseStatus__c),TEXT(Zuora__Status__c), ResponseStatus__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Payment Status</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ResponseStatus__c</fullName>
+        <externalId>false</externalId>
+        <label>ResponseStatus</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Zuora__Account__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <deprecated>false</deprecated>
