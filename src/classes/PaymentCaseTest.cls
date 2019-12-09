@@ -112,6 +112,88 @@ private class PaymentCaseTest {
         System.assertEquals(1, MessagingService.emailsSent.size(), 'Expected a single email to be sent');
     }
 
+    @IsTest
+    private static void testCloseAutopayCasesOnPaymentMethodUpdate() {
+        useMocks();
+        Id customerAccountId = Util.getFakeId(Zuora__CustomerAccount__c.SObjectType);
+
+        Zuora__CustomerAccount__c oldCustomerAccount = new Zuora__CustomerAccount__c(
+            Id = customerAccountId,
+            Zuora__Account__c = '001S000000yKIZjIAO',
+            Name = 'Old'
+        );
+        Zuora__CustomerAccount__c newCustomerAccount = new Zuora__CustomerAccount__c(
+            Id = customerAccountId,
+            Zuora__Account__c = '001S000000yKIZjIAO',
+            Name = 'Old',
+            Zuora__Default_Payment_Method__c = Util.getFakeId(Zuora__PaymentMethod__c.SObjectType)
+        );
+        Test.startTest();
+        pcc.closeAutopayCasesOnPaymentMethodUpdate(
+            new Map<Id, Zuora__CustomerAccount__c>{oldCustomerAccount.Id => oldCustomerAccount},
+            new Map<Id, Zuora__CustomerAccount__c>{newCustomerAccount.Id => newCustomerAccount}
+        );
+        Test.stopTest();
+        List<Error_Log__c> errorLogs = [
+            SELECT Class__c, Method__c, Message__c
+            FROM Error_Log__c
+            WHERE Method__c = 'closeAutopayCasesFuture'
+            AND Severity__c = :Logger.ERROR
+        ];
+        System.assertEquals(1, errorLogs.size());
+        System.assert(errorLogs[0].Message__c.contains('Database error INVALID_CROSS_REFERENCE_KEY: invalid cross reference id'),
+            'Expected to try to update a case but fail because of mocked data');
+    }
+
+    @IsTest
+    private static void testDoNotCloseAutopayCasesOnPaymentMethodUpdate() {
+        useMocks();
+        Id customerAccountId = Util.getFakeId(Zuora__CustomerAccount__c.SObjectType);
+
+        Zuora__CustomerAccount__c oldCustomerAccount = new Zuora__CustomerAccount__c(
+            Id = customerAccountId,
+            Zuora__Account__c = '001S000000yKIZjIAO',
+            Name = 'Old',
+            Zuora__Default_Payment_Method__c = Util.getFakeId(Zuora__PaymentMethod__c.SObjectType)
+        );
+        Zuora__CustomerAccount__c newCustomerAccount = new Zuora__CustomerAccount__c(
+            Id = customerAccountId,
+            Zuora__Account__c = '001S000000yKIZjIAO',
+            Name = 'Updated',
+            Zuora__Default_Payment_Method__c = Util.getFakeId(Zuora__PaymentMethod__c.SObjectType)
+        );
+        Test.startTest();
+        pcc.closeAutopayCasesOnPaymentMethodUpdate(
+            new Map<Id, Zuora__CustomerAccount__c>{oldCustomerAccount.Id => oldCustomerAccount},
+            new Map<Id, Zuora__CustomerAccount__c>{newCustomerAccount.Id => newCustomerAccount}
+        );
+        Test.stopTest();
+        List<Error_Log__c> errorLogs = [
+            SELECT Class__c, Method__c, Message__c
+            FROM Error_Log__c
+            WHERE Method__c = 'closeAutopayCasesFuture'
+            AND Severity__c = :Logger.ERROR
+        ];
+        System.assertEquals(0, errorLogs.size());
+    }
+
+    @IsTest
+    private static void testCloseAutopayCasesFuture() {
+        useMocks();
+        Test.startTest();
+        PaymentCaseCreator.closeAutopayCasesFuture(new Set<Id>());
+        Test.stopTest();
+        List<Error_Log__c> errorLogs = [
+            SELECT Class__c, Method__c, Message__c
+            FROM Error_Log__c
+            WHERE Method__c = 'closeAutopayCasesFuture'
+            AND Severity__c = :Logger.ERROR
+        ];
+        System.assertEquals(1, errorLogs.size());
+        System.assert(errorLogs[0].Message__c.contains('Database error INVALID_CROSS_REFERENCE_KEY: invalid cross reference id'),
+            'Expected to try to update a case but fail because of mocked data');
+    }
+
     /*************
       *** MOCKS ***
       *************/
@@ -127,23 +209,25 @@ private class PaymentCaseTest {
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
                 when 'selectAll' {
-                    String json = '[{"attributes":{"type":"Account","url":"/services/data/v47.0/sobjects/Account/001S000000yKIZjIAO"},' +
-                        '"Id":"001S000000yKIZjIAO","Name":"Denise Corcoran","BillingStreet":"90 Main","BillingCity":"Boston",' +
-                        '"BillingState":"Massachusetts","BillingStateCode":"MA","BillingPostalCode":"12312","BillingCountry":"United States",' +
-                        '"Send_Bills_Contact__c":"003S0000016Y24OIAS","Client_Brand_Key__c":"BluewaveLogo","Count_of_Large_Offtake_Opps__c":0,' +
-                        '"Zuora_Id__c":"2c92c0f86e5e38b0016e5fc9f3da1612",' +
-                        '"Zuora__Invoices__r":{"totalSize":1,"done":true,"records":[' +
-                        '{"attributes":{"type":"Zuora__ZInvoice__c","url":"/services/data/v47.0/sobjects/Zuora__ZInvoice__c/a7KS0000000ELWfMAO"},' +
-                        '"Zuora__Account__c":"001S000000yKIZjIAO","Id":"a7KS0000000ELXKMA4","Zuora__DueDate__c":"2019-11-09"}]},' +
-                        '"Opportunities":{"totalSize":1,"done":true,"records":[' +
-                        '{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/006S000000CwOjyIAF"},' +
-                        '"AccountId":"001S000000yKIZjIAO","Id":"006S000000CwOjyIAF","Shared_Solar_System__c":"a1JS0000003BMvJMAW",' +
-                        '"Shared_Solar_System__r":{"attributes":{"type":"Shared_Solar_System__c","url":"/services/data/v47.0/sobjects/Shared_Solar_System__c/a1JS0000003BMvJMAW"},' +
-                        '"Id":"a1JS0000003BMvJMAW","Product__c":"01tS0000005j7AWIAY","Utility__c":"a1MS0000008BldqMAC",' +
-                        '"Product__r":{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AWIAY"},' +
-                        '"Id":"01tS0000005j7AWIAY","Program__c":"SREC - Community Solar"}}}]},' +
-                        '"Send_Bills_Contact__r":{"attributes":{"type":"Contact","url":"/services/data/v47.0/sobjects/Contact/003S0000016Y24OIAS"},' +
-                        '"Id":"003S0000016Y24OIAS","Email":"pyao@bluewavesolar.com","FirstName":"Albert","LastName":"Price 10"}}]';
+                     String json = '[{"attributes":{"type":"Account","url":"/services/data/v47.0/sobjects/Account/001S000000yKIZjIAO"},' +
+                         '"Id":"001S000000yKIZjIAO","Name":"Denise Corcoran","BillingStreet":"90 Main","BillingCity":"Boston",' +
+                         '"BillingState":"Massachusetts","BillingStateCode":"MA","BillingPostalCode":"12312","BillingCountry":"United States",' +
+                         '"Send_Bills_Contact__c":"003S0000016Y24OIAS","Client_Brand_Key__c":"BluewaveLogo","Count_of_Large_Offtake_Opps__c":0,' +
+                         '"Zuora_Id__c":"2c92c0f86e5e38b0016e5fc9f3da1612",' +
+                         '"Cases":{"totalSize":1,"done":true,"records":[{"attributes":{"type":"Case","url":"/services/data/v47.0/sobjects/Case/500S000000BJ9ZOIA2"},' +
+                         '"AccountId":"001S000000yKIZjIAO","Id":"500S000000BJ9ZOIA1","Zuora_Payment_Method__c":"a70S0000000E6KCIA1"}]},' +
+                         '"Zuora__Invoices__r":{"totalSize":1,"done":true,"records":[' +
+                         '{"attributes":{"type":"Zuora__ZInvoice__c","url":"/services/data/v47.0/sobjects/Zuora__ZInvoice__c/a7KS0000000ELWfMAO"},' +
+                         '"Zuora__Account__c":"001S000000yKIZjIAO","Id":"a7KS0000000ELXKMA4","Zuora__DueDate__c":"2019-11-09"}]},' +
+                         '"Opportunities":{"totalSize":1,"done":true,"records":[' +
+                         '{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/006S000000CwOjyIAF"},' +
+                         '"AccountId":"001S000000yKIZjIAO","Id":"006S000000CwOjyIAF","Shared_Solar_System__c":"a1JS0000003BMvJMAW",' +
+                         '"Shared_Solar_System__r":{"attributes":{"type":"Shared_Solar_System__c","url":"/services/data/v47.0/sobjects/Shared_Solar_System__c/a1JS0000003BMvJMAW"},' +
+                         '"Id":"a1JS0000003BMvJMAW","Product__c":"01tS0000005j7AWIAY","Utility__c":"a1MS0000008BldqMAC",' +
+                         '"Product__r":{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AWIAY"},' +
+                         '"Id":"01tS0000005j7AWIAY","Program__c":"SREC - Community Solar"}}}]},' +
+                         '"Send_Bills_Contact__r":{"attributes":{"type":"Contact","url":"/services/data/v47.0/sobjects/Contact/003S0000016Y24OIAS"},' +
+                         '"Id":"003S0000016Y24OIAS","Email":"pyao@bluewavesolar.com","FirstName":"Albert","LastName":"Price 10"}}]';
                     List<Account> accounts = (List<Account>) System.JSON.deserialize(json, List<Account>.class);
                     return accounts;
                 }

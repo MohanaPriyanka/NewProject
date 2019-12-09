@@ -43,6 +43,7 @@ public without sharing class PaymentCaseCreator implements Schedulable, ZuoraDat
     private static AccountsSelector accountsSelector = new AccountsSelector();
     private static CaseFactory caseFactory = new CaseFactory();
     private Map<Id, Account> accountIdToAccountMap;
+    public static final String AUTOPAY_CASE_PREFIX = 'Automatic Payment Error';
 
     public void execute(SchedulableContext sc) {
         String queryString = ZuoraPaymentSelector.getFailedPaymentRunPaymentsFromLastDay(System.now());
@@ -140,7 +141,7 @@ public without sharing class PaymentCaseCreator implements Schedulable, ZuoraDat
         } else {
             newCase.Description = 'No payment for an autopay account with balance';
         }
-        newCase.Subject = 'Automatic Payment Error [' + caseTypeSubjectMap.get(type) + ']';
+        newCase.Subject = AUTOPAY_CASE_PREFIX + ' [' + caseTypeSubjectMap.get(type) + ']';
         newCase.Priority = 'Medium';
         newCase.Product_Line__c = 'Community Solar';
         newCase.Category__c = 'Billing-Payment';
@@ -264,5 +265,52 @@ public without sharing class PaymentCaseCreator implements Schedulable, ZuoraDat
         mail.setPlainTextBody(errorMessage);
         mail.setToAddresses(new List<String>{'product@bluewavesolar.com'});
         return mail;
+    }
+
+    public void closeAutopayCasesOnPaymentMethodUpdate(Map<Id, Zuora__CustomerAccount__c> oldCustomerAccounts, Map<Id, Zuora__CustomerAccount__c> newCustomerAccounts) {
+        try {
+            Set<Id> propertyAccountIds = findDefaultPaymentMethodUpdates(oldCustomerAccounts, newCustomerAccounts);
+            if (!propertyAccountIds.isEmpty()) {
+                closeAutopayCasesFuture(propertyAccountIds);
+            }
+        } catch (Exception e) {
+            Logger.logNow('PaymentCaseCreator', 'closeAutopayCasesOnPaymentMethodUpdate', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+        }
+    }
+
+    private Set<Id> findDefaultPaymentMethodUpdates(Map<Id, Zuora__CustomerAccount__c> oldCustomerAccounts, Map<Id, Zuora__CustomerAccount__c> newCustomerAccounts) {
+        Set<Id> propertyAccountIds = new Set<Id>();
+        for (Zuora__CustomerAccount__c oldAccount : oldCustomerAccounts.values()) {
+            if (oldAccount.Zuora__Default_Payment_Method__c != newCustomerAccounts.get(oldAccount.Id).Zuora__Default_Payment_Method__c) {
+                propertyAccountIds.add(oldAccount.Zuora__Account__c);
+            }
+        }
+        return propertyAccountIds;
+    }
+
+    @Future
+    public static void closeAutopayCasesFuture(Set<Id> propertyAccountsWithPaymentMethodChanges) {
+        List<Case> openPaymentMethodCases = new List<Case>();
+        try {
+            List<Account> accounts = accountsSelector.selectAll(propertyAccountsWithPaymentMethodChanges);
+            for (Account account : accounts) {
+                if (!account.Cases.isEmpty()) {
+                    openPaymentMethodCases.addAll(account.Cases);
+                }
+            }
+            for (Case paymentMethodCase : openPaymentMethodCases) {
+                paymentMethodCase.Status = 'Closed';
+                paymentMethodCase.Resolution__c = 'Other';
+            }
+            System.debug(LoggingLevel.ERROR, openPaymentMethodCases);
+            Util.updateAndLog(openPaymentMethodCases, 'PaymentCaseCreator', 'closeAutopayCasesFuture');
+        } catch (Exception e) {
+            Logger.logNow(
+                'PaymentCaseCreator',
+                'findAndCloseAutopayCasesFuture',
+                JSON.serialize(propertyAccountsWithPaymentMethodChanges) + '\n' + e.getMessage() + '\n' + e.getStackTraceString(),
+                Logger.ERROR
+            );
+        }
     }
 }

@@ -97,6 +97,12 @@ public without sharing class AccountsSelector {
                 SELECT Id, Zuora__DueDate__c
                 FROM Zuora__Invoices__r
                 ORDER BY Zuora__DueDate__c DESC
+            ), (
+                SELECT Id, Zuora_Payment_Method__c
+                FROM Cases
+                WHERE IsClosed = FALSE
+                AND Zuora_Payment_Method__c != NULL
+                AND Subject LIKE :PaymentCaseCreator.AUTOPAY_CASE_PREFIX + '%'
             )
             FROM Account
             WHERE Id = :accountIds
