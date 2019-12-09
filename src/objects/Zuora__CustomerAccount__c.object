@@ -1098,7 +1098,7 @@ IF(  ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__CreditCardType__c, &quot;
         <fullName>EXTERNAL_My_Community_Solar_Accounts</fullName>
         <columns>NAME</columns>
         <columns>Lifetime_Savings__c</columns>
-        <columns>Zuora__TotalInvoiceBalance__c</columns>
+        <columns>Zuora__Balance__c</columns>
         <columns>View_Account__c</columns>
         <filterScope>Everything</filterScope>
         <label>My Community Solar Accounts</label>
@@ -1110,7 +1110,7 @@ IF(  ISPICKVAL(Zuora__Default_Payment_Method__r.Zuora__CreditCardType__c, &quot;
         <fullName>My_Community_Solar_Accounts</fullName>
         <columns>NAME</columns>
         <columns>Lifetime_Savings__c</columns>
-        <columns>Zuora__TotalInvoiceBalance__c</columns>
+        <columns>Zuora__Balance__c</columns>
         <columns>Zuora__AutoPay__c</columns>
         <filterScope>Everything</filterScope>
         <label>My Community Solar Accounts</label>
