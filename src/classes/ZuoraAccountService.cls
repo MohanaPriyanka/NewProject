@@ -8,7 +8,7 @@ public without sharing class ZuoraAccountService {
     private static AccountsSelector accountSelector = new AccountsSelector();
 
     public static void createAccounts(List<Account> propertyAccounts) {
-        if (propertyAccounts.size() == 0) {
+        if (propertyAccounts == null) {
             return;
         }
         createAccounts(propertyAccounts, null);
