@@ -302,7 +302,6 @@ public without sharing class PaymentCaseCreator implements Schedulable, ZuoraDat
                 paymentMethodCase.Status = 'Closed';
                 paymentMethodCase.Resolution__c = 'Other';
             }
-            System.debug(LoggingLevel.ERROR, openPaymentMethodCases);
             Util.updateAndLog(openPaymentMethodCases, 'PaymentCaseCreator', 'closeAutopayCasesFuture');
         } catch (Exception e) {
             Logger.logNow(

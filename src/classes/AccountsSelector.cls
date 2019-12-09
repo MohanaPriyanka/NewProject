@@ -102,7 +102,6 @@ public without sharing class AccountsSelector {
                 FROM Cases
                 WHERE IsClosed = FALSE
                 AND Zuora_Payment_Method__c != NULL
-                AND Subject LIKE :PaymentCaseCreator.AUTOPAY_CASE_PREFIX + '%'
             )
             FROM Account
             WHERE Id = :accountIds
