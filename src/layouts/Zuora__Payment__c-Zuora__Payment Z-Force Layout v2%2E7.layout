@@ -34,6 +34,10 @@
                 <behavior>Edit</behavior>
                 <field>Zuora__AccountingCode__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Payment_Status__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
