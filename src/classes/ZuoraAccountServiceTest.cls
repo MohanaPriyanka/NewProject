@@ -143,9 +143,7 @@ public with sharing class ZuoraAccountServiceTest {
         insert ual;
 
         Test.startTest();
-        //TODO: Why doesnt it work with the Async Service?
         ZuoraAccountService.createAccounts(new List<Account> {propertyAccount});
-//        System.enqueueJob(new ZuoraAccountAsyncService(new List<Account>{propertyAccount}));
 
         Test.stopTest();
 

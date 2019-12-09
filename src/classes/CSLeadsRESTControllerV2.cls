@@ -34,9 +34,6 @@ global without sharing class CSLeadsRESTControllerV2 extends RESTController {
 
                     List<Account> propertyAccounts = accountsSelector.selectPropertyAccountsByLeadIds(new Set<Id> {leadToUpdate.Id});
                     ZuoraAccountService.createAccounts(propertyAccounts);
-                   // System.enqueueJob(new ZuoraAccountAsyncService(propertyAccounts));
-
-//
                 }
                 requestLead.mergeFields(requestMap.keySet(), leadToUpdate);
 
