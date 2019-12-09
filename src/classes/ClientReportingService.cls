@@ -3,7 +3,7 @@
  * Description: Methods to aid with CS Client Reporting, e.g. client owner stamping
  * Test: ClientReportingServiceTest
  *************************************************************************************/
-
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ClientReportingService {
     public static void beforeTransactionInsert(List<ChargentOrders__Transaction__c> transactions) {
         Set<Id> orderIds = new Set<Id>();
@@ -73,7 +73,7 @@ public without sharing class ClientReportingService {
     }
 
     public static void updateClientReports( Map<ID, Client_Health_Report__c> oldReportMap,
-                                            Map<ID, Client_Health_Report__c> newReportMap) {
+        Map<ID, Client_Health_Report__c> newReportMap) {
         for (Client_Health_Report__c newReport : newReportMap.values()) {
             if (!oldReportMap.get(newReport.Id).Recalculate_Health_Score__c && newReport.Recalculate_Health_Score__c){
                 newReport.Client_Health_Score__c = Util.roundValue(calculateClientHealthScore(newReport),2,null);
@@ -123,8 +123,8 @@ public without sharing class ClientReportingService {
         }
         Decimal healthScore = 10 + (
             (customerDSO*(1/countOfVariables)) + (clientDSO*(1/countOfVariables)) + (nps*(1/countOfVariables)) +
-            (bluewaveRating*(3/(countOfVariables*4))) + (openCases*(1/(countOfVariables*4))) +
-            (utilization*(1/countOfVariables)));
+                (bluewaveRating*(3/(countOfVariables*4))) + (openCases*(1/(countOfVariables*4))) +
+                (utilization*(1/countOfVariables)));
 
         return healthScore;
     }
@@ -142,15 +142,19 @@ public without sharing class ClientReportingService {
         List<Utility_Account_Subscription__c> parentUASList = UASSelector.selectByIds(parentIds);
 
         for (Utility_Account_Subscription__c parent : parentUASList) {
-            Client_Utility_Account_Subscription__c child = new Client_Utility_Account_Subscription__c(
-                Name = 'C' + parent.Name,
-                Utility_Account_Subscription__c = parent.Id,
-                Shared_Solar_System__c = parent.Opportunity__r.Shared_Solar_System__r.Id
-            );
-            clientUASList.add(child);
+            if (parent.Opportunity__c != null) {
+                Client_Utility_Account_Subscription__c child = new Client_Utility_Account_Subscription__c(
+                    Name = 'C' + parent.Name,
+                    Utility_Account_Subscription__c = parent.Id,
+                    Shared_Solar_System__c = parent.Opportunity__r.Shared_Solar_System__r.Id
+                );
+                clientUASList.add(child);
+            }
         }
-        insert clientUASList;
 
+        if (clientUASList.size() > 0 ) {
+            insert clientUASList;
+        }
     }
 
     public static void updateClientUAS(Map<Id, Opportunity> oppMap, Map<Id, Opportunity> oldOppMap) {
@@ -162,7 +166,6 @@ public without sharing class ClientReportingService {
         }
 
         if (oppsToUpdate.size() > 0 ) {
-
             List<Client_Utility_Account_Subscription__c> clientUASList = ClientReportObjectSelector.getClientUASesByOppIds(oppsToUpdate);
 
             if (clientUASList.size() > 0 ){
@@ -247,8 +250,8 @@ public without sharing class ClientReportingService {
         List<Client_Utility_Account_Subscription__c> clientUASList = ClientReportObjectSelector.getClientUASesByUASIds(uasIds);
 
         for (Client_Utility_Account_Subscription__c clientUAS : clientUASList) {
-                // Map --> key = ALSS Id, value = client UAS
-                alssToClientUASMap.put(uasToALSSMap.get(clientUAS.Utility_Account_Subscription__c), clientUAS);
+            // Map --> key = ALSS Id, value = client UAS
+            alssToClientUASMap.put(uasToALSSMap.get(clientUAS.Utility_Account_Subscription__c), clientUAS);
         }
 
         return alssToClientUASMap;

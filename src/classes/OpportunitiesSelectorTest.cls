@@ -32,4 +32,14 @@ public with sharing class OpportunitiesSelectorTest {
         Opportunity opp = [SELECT Id FROM Opportunity LIMIT 1];
         System.assertNotEquals(null, OpportunitiesSelector.selectForContractSend(opp.Id));
     }
+
+    @IsTest
+    public static void testSelectForMap() {
+        List<Opportunity> opps = [SElECT Id FROM Opportunity LIMIT 3];
+        Set<Id> oppIds = new Set<Id>();
+        for (Opportunity opp : opps) {
+            oppIds.add(opp.Id);
+        }
+        System.assertNotEquals(null, OpportunitiesSelector.selectOpportunityMap(oppIds));
+    }
 }
