@@ -31,6 +31,9 @@ global without sharing class CSLeadsRESTControllerV2 extends RESTController {
                 if (requestLead.applicationCompleteDate != null && leadToUpdate.Application_Complete_Date__c == null) {
                     //pull credit, only once; on first time the app complete date is set
                     leadToUpdate.Soft_Pull_Credit_Report__c = true;
+                    List<Account> propertyAccounts =  accountsSelector.selectPropertyAccountsByLeadIds(new Set<Id> {requestLead.Id});
+                    ZuoraAccountService.createAccounts(propertyAccounts);
+//
                 }
                 requestLead.mergeFields(requestMap.keySet(), leadToUpdate);
 
