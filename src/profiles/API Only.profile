@@ -143,14 +143,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>AutopayChecker</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>AutopayCheckerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>BatchCSBillEmailHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -271,14 +263,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ChargentOrderCreationhandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ChargentOrderCreationhandlertest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>CoApplicantConvertTestClass</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -337,14 +321,6 @@
     <classAccesses>
         <apexClass>CreateUALController</apexClass>
         <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>CreditCardFeeUpdateHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>CreditCardFeeUpdateHandlerTest</apexClass>
-        <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>CustomerCareHandler</apexClass>
@@ -655,10 +631,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>PaymentGatewayAssignmentHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>PermissionsSelectorTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -704,14 +676,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>RecalculateUALCostControllerTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>RecurringPaymentsHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>RecurringPaymentsHandlerTestClass</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -841,14 +805,6 @@
     <classAccesses>
         <apexClass>SystemBillPaymentRollUpHandler</apexClass>
         <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SystemBillQualityChecker</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SystemBillQualityCheckerTest</apexClass>
-        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>SystemBillsSelector</apexClass>
@@ -1036,10 +992,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>opp4LZUTriggerTestClass</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>paymentGatewayAssignmentHandlerTestclass</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>

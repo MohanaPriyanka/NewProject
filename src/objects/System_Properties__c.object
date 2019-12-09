@@ -203,6 +203,14 @@ Production: BlueWave Inside Sales</inlineHelpText>
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Disable_SubscriptionOrder_Trigger__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Disable SubscriptionOrder Trigger</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Disable_System_Bill_Trigger__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -342,15 +350,6 @@ Production: BlueWave Inside Sales</inlineHelpText>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Last_Automated_Bill_QC_Check__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Timestamp (in GMT) of the automated System Bill check, used to find bills updated since this date to check</inlineHelpText>
-        <label>Last Automated Bill QC Check</label>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>DateTime</type>
-    </fields>
-    <fields>
         <fullName>Last_Lease_Dimensions_File_Processed__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Name of the last Lease Dimensions Payment Report file imported as Transaction Applications. Set by the Lease Dimensions Import visualforce page</inlineHelpText>
@@ -381,6 +380,15 @@ Production: BlueWave Inside Sales</inlineHelpText>
         <scale>2</scale>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Send_Payment_Case_Emails__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Sends emails from the PaymentCaseCreator which runs after autopay</inlineHelpText>
+        <label>Send Payment Case Emails</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>System_Bill_Generation_Grace_Period__c</fullName>

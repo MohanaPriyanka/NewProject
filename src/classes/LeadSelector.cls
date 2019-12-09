@@ -31,7 +31,7 @@ public without sharing class LeadSelector {
                 Partner_Lookup__c, Partner_Lookup__r.Id, bs_Sales_ID__c, Customer_Referral__c, Product__c, Phone,
                 Business_Title__c, Utility_relationship__r.Name, Product__r.Name, Application_Complete_Date__c, Status,
                 Utility_relationship__r.EIA_ID__c, Continue_Application_Link__c, Product_line__c, Manual_Campaign_ID__c,
-                Utility_relationship__r.Id, Referral_Name__c, Referral_Email__c
+                Utility_relationship__r.Id, Referral_Name__c, Referral_Email__c, Business_Phone__c
             FROM Lead
             WHERE Id = :leadIds
         ];

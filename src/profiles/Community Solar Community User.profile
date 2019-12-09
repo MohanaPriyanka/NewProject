@@ -67,6 +67,11 @@
         <visible>false</visible>
     </applicationVisibilities>
     <applicationVisibilities>
+        <application>HubSpot_Inc__HubSpot_Sync</application>
+        <default>false</default>
+        <visible>false</visible>
+    </applicationVisibilities>
+    <applicationVisibilities>
         <application>LiveText__LiveText_Admin</application>
         <default>false</default>
         <visible>false</visible>
@@ -301,6 +306,11 @@
         <default>false</default>
         <visible>false</visible>
     </applicationVisibilities>
+    <categoryGroupVisibilities>
+        <dataCategories>Community_Solar</dataCategories>
+        <dataCategoryGroup>Product_Line</dataCategoryGroup>
+        <visibility>CUSTOM</visibility>
+    </categoryGroupVisibilities>
     <classAccesses>
         <apexClass>APXTConga4__CleanUpRecords2TestClass</apexClass>
         <enabled>false</enabled>
@@ -594,15 +604,19 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>AuthNetScheduler</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>AuthNetService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>AutopayChecker</apexClass>
+        <apexClass>AuthSessionSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>AutopayCheckerTest</apexClass>
+        <apexClass>AuthSessionSelectorTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -638,22 +652,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>BillingAccountService</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>BillingAccountServiceTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>BlogComponentController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>BlogComponentControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>BlueWaveParent</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -671,14 +669,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>CSAPControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>CSBillQualityCheckScheduler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>CSBillQualityCheckSchedulerTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -1098,14 +1088,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ChargentOrderCreationhandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ChargentOrderCreationhandlertest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ChargentOrders__LightningActionBtnController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -1194,6 +1176,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ClientReportObjectSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ClientReportingService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -1242,6 +1228,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ConcurrentSessionsPolicyCondition</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ConcurrentSessionsPolicyConditionTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CongaTemplateAssigner</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -1258,6 +1252,26 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ContentDocumentSelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ContentDocumentSelectorTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ContentMailerAsyncService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ContentMailerService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ContentMailerServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>CreateOrderandPaymentRequest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -1267,14 +1281,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>CreateUALController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>CreditCardFeeUpdateHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>CreditCardFeeUpdateHandlerTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -1299,6 +1305,14 @@
     </classAccesses>
     <classAccesses>
         <apexClass>DashboardHeaderControllerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>DataLoaderLeadExportCondition</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>DataLoaderLeadExportConditionTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -1410,11 +1424,39 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>GatewaySelector</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>GenericBatchDMLOperation</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>HomeController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>HubSpot_Inc__HubSpotController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>HubSpot_Inc__HubSpotGlobals</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>HubSpot_Inc__HubSpotLeadNurturing</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>HubSpot_Inc__HubSpotMessageLogger</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>HubSpot_Inc__HubSpotPendingChanges</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>HubSpot_Inc__HubSpotVersionResource</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -1439,6 +1481,42 @@
     </classAccesses>
     <classAccesses>
         <apexClass>InvocableCSBillTemplateAssigner</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>InvocableZuoraActionsTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>InvocableZuoraBillRun</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>InvocableZuoraEmailSend</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>InvocableZuoraInvoiceDownload</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>InvocableZuoraMemoApply</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>InvocableZuoraMemoUpload</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>InvocableZuoraPaperMailSend</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>InvocableZuoraTemplateAssigner</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>InvocableZuoraUsageUpload</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -3250,6 +3328,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>PCFL__ContentController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>PCFL__ContentControllerTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>PCRApprovalHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3295,10 +3381,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>PaymentCaseTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>PaymentGatewayAssignmentHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -3403,14 +3485,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>RecalculateUALCostControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>RecurringPaymentsHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>RecurringPaymentsHandlerTestClass</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -3534,6 +3608,22 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>SessionPlugin</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SessionPluginTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SharedSolarSystemApexSharing</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SharedSolarSystemApexSharingTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>SharedSolarSystemHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3571,14 +3661,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>SystemBillPaymentRollUpHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SystemBillQualityChecker</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SystemBillQualityCheckerTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -3770,6 +3852,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ZuoraAccountReconciliationService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraAccountReconciliationServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ZuoraAccountSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3783,6 +3873,22 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ZuoraAccountServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraBillEmailHandler</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraBillEmailHandlerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraBillingAccountService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraBillingAccountServiceTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -3846,6 +3952,14 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>ZuoraHistoricalCustomApplicationService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraHistoricalCustomApplicationTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ZuoraHistoricalLateFeeService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3855,6 +3969,14 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ZuoraInvoiceAsyncService</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraInvoiceRegenServiceTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ZuoraInvoiceRegenerationService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -5376,6 +5498,10 @@
     <classAccesses>
         <apexClass>agf__ADM_SprintVirtualWallControllerTests</apexClass>
         <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>agf__ADM_SprintVirtualWallUtility</apexClass>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>agf__ADM_StampBatch</apexClass>
@@ -10438,10 +10564,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>paymentGatewayAssignmentHandlerTestclass</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>rcsfl__AdminUIController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -10667,10 +10789,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>trailheadapp__TrailheadQueue</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>trailheadapp__TrailheadQueue_Test</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -15189,6 +15307,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.Max_Overdue_Due_Date_Merge__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Max_Overdue_Due_Date_Zuora__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.Max_Overdue_Due_Date__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -15305,6 +15433,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Outstanding_Legal_Actions__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Outstanding_TPF_Amount__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -15689,6 +15822,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Account.Total_Outstanding_Balance_Merge__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Total_Outstanding_Balance_Zuora__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Account.Total_Outstanding_Balance__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -15775,6 +15918,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Zuora_Id__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Zuora_Invoice_Message_1_of_2__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Zuora_Invoice_Message_2_of_2__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -16814,7 +16967,27 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>AuthorizationForm.IsSignatureRequired</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>AuthorizationForm.RevisionNumber</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>AuthorizationFormConsent.DocumentVersionId</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>AuthorizationFormConsent.Status</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>AuthorizationFormText.ContentDocumentId</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -17174,6 +17347,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Bill_Period__c.Total_Billed_STAMPED__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>BlueWave_Blog__c.Audience__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -17448,6 +17626,11 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>BlueWave_Surveys__c.NPS_Comp_Value__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>BlueWave_Surveys__c.NPS_Type__c</field>
         <readable>true</readable>
@@ -17535,6 +17718,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>BlueWave_Surveys__c.Portal_Name_3__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>BlueWave_Surveys__c.Power_of_One__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -19979,12 +20167,57 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Client_Utility_Account_Subscription__c.Account_Name__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Client_Utility_Account_Subscription__c.Annual_Cost_of_Electricity_Future__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Client_Utility_Account_Subscription__c.Annual_kWh_Subscription_Future__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Utility_Account_Subscription__c.Autopay__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Utility_Account_Subscription__c.CS_Account__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Utility_Account_Subscription__c.CS_Status__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Utility_Account_Subscription__c.Cancellation_Reason__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Utility_Account_Subscription__c.Cancellation_Request_Date__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Utility_Account_Subscription__c.Contract_Close_Date__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Utility_Account_Subscription__c.Customer_Group__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Utility_Account_Subscription__c.Customer__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -20024,6 +20257,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Client_Utility_Account_Subscription__c.Opportunity_Stage__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Utility_Account_Subscription__c.Opportunity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Client_Utility_Account_Subscription__c.Project_Co_Assignment_Date__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -20035,6 +20278,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Client_Utility_Account_Subscription__c.Utility_Account_Number__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Client_Utility_Account_Subscription__c.Utility_Account_Subscription__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -21084,6 +21332,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Contract.BlueWave_Entity_Involved__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Contract.BlueWave_Entity__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -21116,6 +21369,11 @@
         <editable>true</editable>
         <field>Contract.ContractTerm</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract.Contract_Type__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -21184,6 +21442,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Contract.Date_Needed__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract.Date_Submitted__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Contract.Delinquency_Protocol__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -21191,6 +21459,11 @@
         <editable>true</editable>
         <field>Contract.Description</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract.Direct_Manager__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -21233,6 +21506,11 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract.Other_Party__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Contract.OwnerExpirationNotice</field>
         <readable>true</readable>
@@ -21244,12 +21522,32 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Contract.Project_Description__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract.Project_Value__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract.Reason_for_Date_Needed__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Contract.Reporting_Requirements_Detail__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Contract.Reporting_Requirements__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract.Risk__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -21266,6 +21564,21 @@
         <editable>true</editable>
         <field>Contract.StartDate</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract.State_Applications__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract.Submitted_By__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contract.Team_Submitted_By__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -21725,11 +22038,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Energy_Usage_Update__c.Schedule_Z__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Energy_Usage_Update__c.Shared_Solar_System__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -27001,6 +27309,11 @@
         <editable>true</editable>
         <field>Lead.Utility_Bill_Attached__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.Utility_Name__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -34018,6 +34331,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>MPM4_BASE__Milestone1_Project__c.FFA_Sent_to_Landowner__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>MPM4_BASE__Milestone1_Project__c.Facility_ID__c</field>
         <readable>true</readable>
@@ -34236,6 +34554,11 @@
         <editable>true</editable>
         <field>MPM4_BASE__Milestone1_Project__c.IX_Application_Submitted__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>MPM4_BASE__Milestone1_Project__c.IX_Distance__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -36038,11 +36361,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__ImportID__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Index_Helper__c</field>
         <readable>true</readable>
@@ -36075,11 +36393,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Milestone_Kickoff__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__MyTask__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -36670,6 +36983,31 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Meter_Reading_Schedule__c.Year_Effective__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Milestone__c.Description__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Milestone__c.Milestone_Date__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Milestone__c.Percentage__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Milestone__c.Requirement_Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Milestone__c.Status__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -37600,6 +37938,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Electronic_Disbursal_Authorized__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Email_Template_Parent_Account_ID__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -39974,11 +40317,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Partner__c.CS_Referral_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Partner__c.City__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -40378,9 +40716,24 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Product2.Default_Business_Usage__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Product2.Default_Residential_Usage__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Product2.Description</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Product2.Disable_Multiple_UAL_CSAP__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -42114,11 +42467,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>SMART_Data__c.Location_Adder__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>SMART_Data__c.Location_Tranche__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -42718,14 +43066,19 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Actual_COD_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Actual_Credits_Flowing_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Actual_First_Bill_Date__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -42765,77 +43118,77 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Address__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Anchor_CS_Capacity_Committed__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Anchor_Capacity_Reserved__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Anchor_Tenant__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.App_ID_WO_Manual__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Assemblage_Count__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Assemblage__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Assignment_Order__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Auto_Payment_Form__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Availability__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Average_Subscription_Size__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.BWC_Project_Entity_Manual__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.BWC_Project_Entity__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Bill_Due_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Bill_Send_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -42843,14 +43196,14 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Billing_Cycle_Group_Number__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Billing_Cycle_Start_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -42858,39 +43211,44 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Billing_Period_End_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Billing_Period_Start_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.CDG_Host_Account__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Capacity_Available_to_be_Reserved__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Capacity_Committed_kW_DC__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.City__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Class__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Client_Account__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -42905,17 +43263,17 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Contracts_Needed_to_COD__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Conversion_Rate__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Count_of_Schedule_Zs__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -42925,27 +43283,27 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Credit_Score_Requirement__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Customer_Acquisition__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Days_until_NTP__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Description__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Energy_Analytics_del__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -42965,17 +43323,17 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Estimated_COD_Date_Manual__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Estimated_COD_Date_QC__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Estimated_COD_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -42983,9 +43341,9 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Estimated_Credits_Flowing_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -43030,12 +43388,17 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Expected_Yield_kWh_kW__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.First_Bill_Date__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Graph_Box__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -43043,9 +43406,14 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Host_Account_Name__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Host_Utility_Account_Number__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -43055,47 +43423,47 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Last_Sch_Z_Enacted_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Last_Schedule_Z__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Latitude_and_Longitude__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Maximum_Subscription_Assemblage__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Maximum_Subscription_Capacity_kW_DC__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Maximum_Subscription_Cost__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Meter_Installed_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Meter_Reading_Schedule__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Meter__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -43110,52 +43478,52 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.NMC_Value__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.NTP_Target_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.NTP_Target__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.NTP_Threshold__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Next_Schedule_Z_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Next_Schedule_Z_Label__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Open__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Partner_Assignment__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Partner__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Payment_Threshold__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -43163,24 +43531,24 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Product__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Project_Capacity_Available_kW_DC__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Shared_Solar_System__c.Project_Image__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Project_Image__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Shared_Solar_System__c.Project_Image__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -43195,32 +43563,32 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Project_Management__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Project_View__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Public__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Reserved_Capacity_Integer__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Reserved_Capacity_kW_DC__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.SSS_Update__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -43228,14 +43596,14 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Sales_Partners__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Sales_Target_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -43243,14 +43611,14 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Service_Territories__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Service_Territory__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -43265,7 +43633,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.State__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -43275,12 +43643,12 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.System_Type__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.System_Update__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -43290,47 +43658,47 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Total_CS_Capacity__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Total_CS_Capacity_kW_DC_Formula__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Total_Capacity_Committed_Reserved__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Total_System_Size_kW_AC_Project__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Total_System_Size_kW_AC_QC__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Total_System_Size_kW_AC__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Total_System_Size_kW_DC_QC__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Total_System_Size_kW_DC__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Total_System_Size_kWh_DC__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -43340,27 +43708,27 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Upcoming_Meter_Read_Date__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Update_Dummy__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.User__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Utility_NMC_Tariff__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Utility__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -43375,7 +43743,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.XXX_App_ID_WO__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -43385,12 +43753,27 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.kW_Needed_To_Hit_NTP_Threshold__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.kW_needed_to_hit_payment_threshold__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.sfxId__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Signature_Tracking_Setting__mdt.Customer_Signature_Number__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Signature_Tracking_Setting__mdt.Type__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -45083,6 +45466,11 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Transfer__c.Allocation_Schedule__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Transfer__c.Attempted_Transfer__c</field>
         <readable>false</readable>
@@ -45094,7 +45482,32 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Transfer__c.Bills_Generated__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Transfer__c.Date_of_Transfer__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Transfer__c.Default_Credit_Value__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Transfer__c.Production_Update__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Transfer__c.Total_Transferred__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Transfer__c.Transfer_Amount__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -45405,6 +45818,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>UASB__c.Tracking_Trigger_Value__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>UASB__c.Transfer__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -45855,7 +46273,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Log__c.Account__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -45883,9 +46301,9 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Utility_Account_Log__c.Comments_About_Sizings__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -45924,11 +46342,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Utility_Account_Log__c.Max_Capacity_of_System__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Utility_Account_Log__c.Max_Electricity_Cost_KW_DC__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -45940,17 +46353,17 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Log__c.Name_on_Account__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Log__c.Num_Cancelled_OR_Enacted_Removed_UAS__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Log__c.Number_of_Non_Cancelled_UASes__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -45963,9 +46376,9 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Utility_Account_Log__c.Opportunity__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -45978,9 +46391,9 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Utility_Account_Log__c.Premise_Number__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -46000,6 +46413,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Log__c.Rate_Class__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Log__c.Same_Address__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -46070,11 +46488,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Log__c.UAS_Count__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Log__c.Username__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Log__c.Utility_Acct_Number_no_dashes__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -46129,11 +46552,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Utility_Account_Subscription__c.BFG_Invoice_Number__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Utility_Account_Subscription__c.Calculated_Customer_Subscription_kW_DC__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -46145,17 +46563,17 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Commission_Structure_Description__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Conga_Current_Share__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Conga_Future_Share__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -46173,14 +46591,14 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Utility_Account_Subscription__c.Custom_Deduction_Order__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Customer_Group__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -46194,8 +46612,13 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Utility_Account_Subscription__c.Date_Removed_from_Project__c</field>
+        <field>Utility_Account_Subscription__c.Date_Client_Invoice_Sent__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Subscription__c.Date_Removed_from_Project__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -46225,7 +46648,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Future_Share_of_System__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -46270,12 +46693,12 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Next_Schedule_Z_Status__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Opportunity_Stage__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -46288,9 +46711,9 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Utility_Account_Subscription__c.Partner__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -46310,12 +46733,12 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.SSS_Id__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Sales_Person__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -46330,7 +46753,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Shared_Solar_System_Name__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -46378,9 +46801,9 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Utility_Account_Subscription__c.Transferring_Subsc_to_Another_UAS__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -46410,7 +46833,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Utility__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -47025,6 +47448,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Zuora__CustomerAccount__c.View_Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Zuora__CustomerAccount__c.Zuora__AccountNumber__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -48360,7 +48788,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Zuora__Payment__c.Zuora__Status__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -50019,6 +50447,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Zuora__ZInvoice__c.Legacy_Invoice_Id__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Zuora__ZInvoice__c.LetterStreamJob__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Zuora__ZInvoice__c.Ready_for_Email_Send__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -50849,7 +51287,47 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>agf__ADM_Cloud__c.agf__Cloud_Lead__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>agf__ADM_Cloud__c.agf__Cloud_Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Cloud__c.agf__Escalation_Security_Contact__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Cloud__c.agf__Primary_Security_Contact__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Cloud__c.agf__Secondary_Security_Contact__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Cloud__c.agf__Security_Approval_Group_Name__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Cloud__c.agf__Security_Guidance__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Cloud__c.agf__Security_Guidence__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Cloud__c.agf__Tertiary_Security_Contact__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -50869,6 +51347,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>agf__ADM_Column_History__c.agf__Column_Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>agf__ADM_Column_History__c.agf__Duration_By_Work_Days__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -50884,6 +51367,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>agf__ADM_Column_Status_Assignment__c.agf__Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>agf__ADM_Column__c.agf__Active__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -50895,6 +51383,21 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Column__c.agf__Parent_Column__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Column__c.agf__PreId__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Column__c.agf__Pre_ParentId__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Column__c.agf__Type__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -52519,6 +53022,46 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>agf__ADM_Parent_Cloud__c.agf__Alternate_Roster_Owner__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Parent_Cloud__c.agf__Cloud_Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Parent_Cloud__c.agf__Finance_Business_Partner__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Parent_Cloud__c.agf__Legal_Representative__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Parent_Cloud__c.agf__Parent_Cloud_Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Parent_Cloud__c.agf__Roster_Enabled__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Parent_Cloud__c.agf__Roster_Owner__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Parent_Cloud__c.agf__Senior_Engineering_Leader__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>agf__ADM_Parent_Work__c.agf__Child_Scheduled_Build__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -53819,6 +54362,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>agf__ADM_Scrum_Team__c.agf__Exclude_Capacity_Reports__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>agf__ADM_Scrum_Team__c.agf__External_ID__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -53834,12 +54382,22 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>agf__ADM_Scrum_Team__c.agf__Include_Lightning_Platform_Freeze__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>agf__ADM_Scrum_Team__c.agf__Kanban__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Scrum_Team__c.agf__Lock_Report__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Scrum_Team__c.agf__Number_of_new_org62_Cases__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -53860,6 +54418,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Scrum_Team__c.agf__Parent_Cloud__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Scrum_Team__c.agf__Prefer_Board_Column_Auto_Update__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -55245,6 +55808,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>agf__ADM_Work__c.agf__Backburner_Rank__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Work__c.agf__Board_Column_Rank__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>agf__ADM_Work__c.agf__Board_Column__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -67484,6 +68057,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>zqu__Quote__c.zqu__HasValidationErrors__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>zqu__Quote__c.zqu__Hidden_Subscription_Name__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -68621,6 +69199,10 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>CaseClose-Close Case Layout</layout>
+        <recordType>Case.Client_Services</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>CaseClose-Close Case Layout</layout>
         <recordType>Case.Customer_Care</recordType>
     </layoutAssignments>
     <layoutAssignments>
@@ -68634,10 +69216,6 @@
     <layoutAssignments>
         <layout>CaseClose-Close Case Layout</layout>
         <recordType>Case.Product_Support</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>CaseClose-Close Case Layout</layout>
-        <recordType>Case.Client_Services</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>CaseInteraction-Case Feed Layout</layout>
@@ -68725,10 +69303,21 @@
         <recordType>Contact.Project_Management_Contact</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>ContentAsset-Asset File Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>ContentVersion-Content Version Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Contract-Contract Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Contract-Contract Layout</layout>
+        <recordType>Contract.Client_Contract</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Contract-Contract Layout</layout>
+        <recordType>Contract.General_Contract</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Daily_Production_Update__c-Daily Production Update Layout</layout>
@@ -69085,6 +69674,9 @@
         <layout>Meter_Reading_Schedule__c-Meter Reading Schedule Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Milestone__c-Milestone Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Operations_Group_Assignment__c-Operations Group Assignment Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -69331,6 +69923,17 @@
         <layout>Service_Territory__c-Service Territory Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Shared_Solar_System__c-Customer Portal</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Shared_Solar_System__c-Customer Portal</layout>
+        <recordType>Shared_Solar_System__c.SSS_No_PM_Relationship</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Shared_Solar_System__c-Customer Portal</layout>
+        <recordType>Shared_Solar_System__c.SSS_PM_Relationship</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Shared_Solar_System__c-Shared Solar System - No PM Relationship</layout>
         <recordType>Shared_Solar_System__c.SSS_No_PM_Relationship</recordType>
     </layoutAssignments>
@@ -69340,6 +69943,9 @@
     <layoutAssignments>
         <layout>Shared_Solar_System__c-Shared Solar System Layout</layout>
         <recordType>Shared_Solar_System__c.SSS_PM_Relationship</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Signature_Tracking_Setting__mdt-Signature Tracking Setting Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Snapshot_Report_Object__c-Landowner Last Contact Object Layout</layout>
@@ -72619,6 +73225,15 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>MacroUsage</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>Management_Reporting__ChangeEvent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -72737,6 +73352,24 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Meter_Reading_Schedule__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Milestone__ChangeEvent</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Milestone__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -73375,6 +74008,15 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>QuickTextUsage</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>Quick_Sales_Sheet__ChangeEvent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -73631,9 +74273,9 @@
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
-        <allowCreate>true</allowCreate>
+        <allowCreate>false</allowCreate>
         <allowDelete>false</allowDelete>
-        <allowEdit>true</allowEdit>
+        <allowEdit>false</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Shared_Solar_System__c</object>
@@ -74036,9 +74678,9 @@
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
-        <allowCreate>true</allowCreate>
+        <allowCreate>false</allowCreate>
         <allowDelete>false</allowDelete>
-        <allowEdit>true</allowEdit>
+        <allowEdit>false</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Utility_Account_Log__c</object>
@@ -74054,9 +74696,9 @@
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
-        <allowCreate>true</allowCreate>
+        <allowCreate>false</allowCreate>
         <allowDelete>false</allowDelete>
-        <allowEdit>true</allowEdit>
+        <allowEdit>false</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Utility_Account_Subscription__c</object>
@@ -74123,6 +74765,15 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>VisibilityChangeNotification</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>VisibilityUpdateEvent</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -79986,6 +80637,22 @@
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
+        <apexPage>HubSpot_Inc__HubSpotAccountIntelligence</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>HubSpot_Inc__HubSpotContactIntelligence</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>HubSpot_Inc__HubSpotLeadIntel</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>HubSpot_Inc__HubSpotOpportunityIntelligence</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>IdeasHome</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
@@ -80844,6 +81511,10 @@
     <pageAccesses>
         <apexPage>agf__ADM_TeamCreation</apexPage>
         <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>agf__ADM_TeamEditLightningRedirector</apexPage>
+        <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
         <apexPage>agf__ADM_TeamLocator</apexPage>
@@ -82757,6 +83428,7 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>true</default>
+        <personAccountDefault>true</personAccountDefault>
         <recordType>Case.Customer_Care</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
@@ -82973,6 +83645,16 @@
     <recordTypeVisibilities>
         <default>false</default>
         <recordType>Contact.Project_Management_Contact</recordType>
+        <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Contract.Client_Contract</recordType>
+        <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Contract.General_Contract</recordType>
         <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
@@ -83302,6 +83984,11 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
+        <recordType>P   roduct_Profile__c.Solar_Loan</recordType>
+        <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
         <recordType>Partner_Task__c.BlueWave_Solar_Loan_Partner</recordType>
         <visible>false</visible>
     </recordTypeVisibilities>
@@ -83321,11 +84008,6 @@
         <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-        <default>false</default>
-        <recordType>Product_Profile__c.Solar_Loan</recordType>
-        <visible>false</visible>
-    </recordTypeVisibilities>
-    <recordTypeVisibilities>
         <default>true</default>
         <recordType>Residential_Equipment__c.BlueWave_Solar_Loan</recordType>
         <visible>true</visible>
@@ -83336,7 +84018,7 @@
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-        <default>false</default>
+        <default>true</default>
         <recordType>Shared_Solar_System__c.SSS_No_PM_Relationship</recordType>
         <visible>false</visible>
     </recordTypeVisibilities>
@@ -83392,6 +84074,7 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>true</default>
+        <personAccountDefault>true</personAccountDefault>
         <recordType>Utility_Account_Subscription__c.Utility_Account_Subscription_Editable</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
@@ -84292,7 +84975,7 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>Production__c</tab>
-        <visibility>Hidden</visibility>
+        <visibility>DefaultOff</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>Project_Assemblage__c</tab>
@@ -84388,6 +85071,10 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>Utility__c</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Zuora_Bill_Generation_Console</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
@@ -85180,328 +85867,32 @@
     </tabVisibilities>
     <userLicense>Customer Community Plus Login</userLicense>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>AccessCMC</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ActivateContract</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>ActivitiesAccess</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>AddAnalyticsRemoteConnections</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>AddDirectMessageMembers</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>AdminAnalyticsUser</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>AllowEmailIC</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>AllowLightningLogin</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
         <name>AllowUniversalSearch</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>AllowViewEditConvertedLeads</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>AllowViewKnowledge</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>ApexRestServices</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ApiEnabled</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ApiUserOnly</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ArchiveArticles</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>AssignPermissionSets</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
         <name>AssignTopics</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>AssignUserToSkill</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>AuthorApex</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>AutomaticActivityCapture</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>BulkApiHardDelete</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>BulkMacrosAllowed</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>BypassEmailApproval</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>CampaignInfluence2</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>CanApproveFeedPost</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>CanEditDataPrepRecipe</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>CanEditPrompts</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>CanInsertFeedSystemFields</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>CanManageMaps</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>CanUseNewDashboardBuilder</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>CanVerifyComment</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ChangeDashboardColors</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ChatterComposeUiCodesnippet</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ChatterEditOwnPost</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ChatterEditOwnRecordPost</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>ChatterEnabledForUser</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ChatterFileLink</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ChatterInternalUser</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ChatterInviteExternalUsers</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
         <name>ChatterOwnGroups</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>CloseConversations</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ConfigCustomRecs</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ConnectOrgToEnvironmentHub</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ContentAdministrator</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ContentHubUser</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ContentWorkspaces</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ConvertLeads</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>CreateAuditFields</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>CreateContentSpace</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>CreateCustomizeDashboards</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>CreateCustomizeFilters</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>CreateCustomizeReports</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>CreateDashboardFolders</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>CreateLtngTempFolder</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>CreateLtngTempInPub</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>CreateReportFolders</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>CreateReportInLightning</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>CreateTopics</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>CreateWorkBadgeDefinition</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>CreateWorkspaces</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>CustomMobileAppsAccess</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>CustomSidebarOnAllPages</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>CustomizeApplication</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>DataExport</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>DelegatedPortalUserAdmin</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>DelegatedTwoFactor</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>DeleteActivatedContract</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>DeleteTopics</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>DistributeFromPersWksp</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>EditBrandTemplates</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>EditCaseComments</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>EditEvent</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>EditHtmlTemplates</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>EditKnowledge</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>EditMyDashboards</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>EditMyReports</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>EditOppLineItemUnitPrice</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>EditPublicDocuments</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>EditPublicFilters</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>EditPublicTemplates</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>EditReadonlyFields</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -85512,647 +85903,23 @@
         <name>EditTopics</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>EditTranslation</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>EmailMass</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>EmailSingle</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>EnableCommunityAppLauncher</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>EnableNotifications</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ExportReport</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>FeedPinning</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ForceTwoFactor</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>GiveRecognitionBadge</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>GovernNetworks</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>HasUnlimitedNBAExecutions</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>HideReadByList</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>IdentityConnect</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>IdentityEnabled</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ImportCustomObjects</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ImportLeads</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ImportPersonal</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>InboundMigrationToolsUser</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>InsightsAppAdmin</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>InsightsAppDashboardEditor</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>InsightsAppEltEditor</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>InsightsAppUploadUser</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>InsightsAppUser</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>InsightsCreateApplication</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>LMOutboundMessagingUserPerm</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>LightningConsoleAllowedForUser</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>LightningExperienceUser</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ListEmailSend</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>LtngPromoReserved01UserPerm</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageAnalyticSnapshots</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageAuthProviders</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageBusinessHourHolidays</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageCallCenters</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageCases</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageCategories</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageCertificates</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageChatterMessages</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageContentPermissions</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageContentProperties</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageContentTypes</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageCssUsers</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageCustomPermissions</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageCustomReportTypes</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageDashbdsInPubFolders</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageDataCategories</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageDataIntegrations</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageEmailClientConfig</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageExchangeConfig</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageHealthCheck</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageInteraction</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageInternalUsers</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageIpAddresses</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageKnowledge</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageKnowledgeImportExport</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageLeads</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageLoginAccessPolicies</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageMobile</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageNetworks</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManagePartners</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManagePasswordPolicies</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageProfilesPermissionsets</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManagePropositions</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManagePvtRptsAndDashbds</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageQuotas</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageRecommendationStrategies</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageRemoteAccess</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageReportsInPubFolders</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageRoles</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageSearchPromotionRules</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageSessionPermissionSets</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageSharing</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageSolutions</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageSubscriptions</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageSurveys</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageSynonyms</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageTemplatedApp</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageTwoFactor</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageUnlistedGroups</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageUsers</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>MassInlineEdit</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>MergeTopics</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ModerateChatter</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ModerateNetworkFeeds</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ModerateNetworkFiles</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ModerateNetworkMessages</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ModerateNetworkUsers</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ModifyAllData</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ModifyDataClassification</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ModifyMetadata</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>NewReportBuilder</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>OutboundMigrationToolsUser</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>OverrideForecasts</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>Packaging2</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
         <name>PasswordNeverExpires</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>PortalSuperUser</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>PreventClassicExperience</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>PrivacyDataAccess</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>PublishArticles</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>PublishTranslation</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>QueryAllFiles</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>RecordVisibilityAPI</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>RemoveDirectMessageMembers</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ResetPasswords</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>RunFlow</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>RunReports</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>SalesConsole</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>SandboxTestingInCommunityApp</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ScheduleJob</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ScheduleReports</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>SelectFilesFromSalesforce</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>SendAnnouncementEmails</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>SendSitRequests</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ShareInternalArticles</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
         <name>ShowCompanyNameAsUserBadge</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>SocialInsightsLogoAdmin</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>SolutionImport</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>StdAutomaticActivityCapture</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>SubmitForTranslation</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>SubmitMacrosAllowed</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>SubscribeDashboardRolesGrps</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>SubscribeDashboardToOtherUsers</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>SubscribeReportRolesGrps</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>SubscribeReportToOtherUsers</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>SubscribeReportsRunAsUser</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>SubscribeToLightningDashboards</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>SubscribeToLightningReports</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>TransactionalEmailSend</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>TransferAnyCase</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>TransferAnyEntity</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>TransferAnyLead</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>TwoFactorApi</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>UpdateWithInactiveOwner</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>UseTeamReassignWizards</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>UseTemplatedApp</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>UseWebLink</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewAllActivities</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewAllData</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewAllForecasts</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewAllUsers</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewCaseInteraction</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewContent</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewCustomerSentiment</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewDataAssessment</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewDataCategories</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewEncryptedData</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewEventLogFiles</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewFlowUsageAndFlowEventData</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewGlobalHeader</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewHealthCheck</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewHelpLink</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewMyTeamsDashboards</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewOnlyEmbeddedAppUser</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewPrivateStaticResources</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewPublicDashboards</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewPublicReports</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewRoles</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewSetup</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewUserPII</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>WaveManagePrivateAssetsUser</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>WaveTabularDownload</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>WaveTrendReports</name>
     </userPermissions>
 </Profile>

@@ -251,6 +251,42 @@
                     <default>false</default>
                     <label>Vendor Agreement</label>
                 </value>
+                <value>
+                    <fullName>Lease Agreement</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Lease Agreement</label>
+                </value>
+                <value>
+                    <fullName>Loan Origination and Servicing Agreement</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Loan Origination and Servicing Agreement</label>
+                </value>
+                <value>
+                    <fullName>Membership Interest Purchase Agreement (MIPA)</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Membership Interest Purchase Agreement (MIPA)</label>
+                </value>
+                <value>
+                    <fullName>Partner MSA</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Partner MSA</label>
+                </value>
+                <value>
+                    <fullName>Partner SOW</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Partner SOW</label>
+                </value>
+                <value>
+                    <fullName>Partner SSA</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Partner SSA</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
@@ -661,17 +697,6 @@
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Other_Parties__c</fullName>
-        <externalId>false</externalId>
-        <label>Other Parties</label>
-        <length>150</length>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Other_Party__c</fullName>
         <externalId>false</externalId>
         <label>Other Party(s)</label>
@@ -741,6 +766,7 @@
     </fields>
     <fields>
         <fullName>Pricebook2Id</fullName>
+        <inlineHelpText>This financial field does not need to be populated.</inlineHelpText>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
@@ -759,13 +785,14 @@
     <fields>
         <fullName>Project_Value__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>Numerical value of a project - Please enter $0 if there&apos;s no value attached to the project yet.</inlineHelpText>
         <label>Contract/Project Value</label>
-        <length>200</length>
+        <precision>14</precision>
         <required>false</required>
+        <scale>4</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Ready_for_Approval__c</fullName>
@@ -1184,6 +1211,21 @@
             </values>
             <values>
                 <fullName>Upcoming Bill</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Customer_Payment_Methods__c</picklist>
+            <values>
+                <fullName>ACH</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Credit Card</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Paper Check</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -1678,6 +1720,21 @@
             </values>
             <values>
                 <fullName>Upcoming Bill</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Customer_Payment_Methods__c</picklist>
+            <values>
+                <fullName>ACH</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Credit Card</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Paper Check</fullName>
                 <default>false</default>
             </values>
         </picklistValues>

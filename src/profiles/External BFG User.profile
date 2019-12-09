@@ -139,14 +139,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>AutopayChecker</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>AutopayCheckerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>BatchCSBillEmailHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -259,14 +251,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ChargentOrderCreationhandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ChargentOrderCreationhandlertest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>CheckAddressFieldUpdate</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -328,14 +312,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>CreateUALController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>CreditCardFeeUpdateHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>CreditCardFeeUpdateHandlerTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -639,10 +615,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>PaymentGatewayAssignmentHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>PermissionsSelectorTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -688,14 +660,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>RecalculateUALCostControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>RecurringPaymentsHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>RecurringPaymentsHandlerTestClass</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -824,14 +788,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>SystemBillPaymentRollUpHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SystemBillQualityChecker</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SystemBillQualityCheckerTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -980,10 +936,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>opp4LZUTriggerTestClass</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>paymentGatewayAssignmentHandlerTestclass</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -21169,11 +21121,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__ImportID__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Index_Helper__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -28754,6 +28701,91 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Subscription_Order__c.Approval_Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Calculated_Change_in_Percent_Share_of_Sy__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Calculated_Change_in_Subscription_KW_DC__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Change_in_Annual_Cost__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Change_in_Annual_kWh__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Change_in_Percent_Share_of_System__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Change_in_Subscription_KW_DC__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Client_Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Comments__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Effective_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Expected_Yield_kWh_kW__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Product__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Total_System_Size_kW_DC__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Utility_NMC_Tariff__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Utility_Number_of_Decimal_Places__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Value_of_NMC__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>System_Bill__c.Account_Bill_Number__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -30659,6 +30691,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Utility_Account_Subscription__c.Annual_Cost_Future_Rollup__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Utility_Account_Subscription__c.Annual_Cost_of_Electricity_Current__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -30670,6 +30707,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Annual_kWh_Subscription_Current__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Subscription__c.Annual_kWh_Subscription_Future_Rollup__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -30765,6 +30807,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Full_Anticipated_NMC_Allocation_kWh__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Subscription__c.Future_Customer_Subscription_KWDC_Rollup__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Subscription__c.Future_Share_of_System_Rollup__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -30870,6 +30922,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Shared_Solar_System_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Subscription__c.Shared_Solar_System__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -47311,6 +47368,15 @@
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Subscription_Order__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
         <allowEdit>true</allowEdit>
@@ -50027,6 +50093,10 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>LightningConsoleAllowedForUser</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>LightningExperienceUser</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>

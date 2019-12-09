@@ -554,6 +554,7 @@ public with sharing class ZuoraAPI {
     }
     public class ZuoraQueryResultRecord {
         public String Id;
+        public String Name;
     }
 
     // https://www.zuora.com/developer/api-reference/#operation/GET_OrdersBySubscriptionOwner
@@ -672,6 +673,11 @@ public with sharing class ZuoraAPI {
         public String Project_Zcustom;
         public String ClientOwner_Zcustom;
         public String comment;
+        public String Gateway_Reference_Id_Zcustom;
+        public String Gateway_Zcustom;
+        public String Lockbox_Zcustom;
+        public String PaymentMethod_Zcustom;
+        public String ArchivedChargentData_Zcustom;
     }
 
     public class DebitMemoCharge {
@@ -690,6 +696,11 @@ public with sharing class ZuoraAPI {
         public String Project_Zcustom;
         public String ClientOwner_Zcustom;
         public String CRM_ID_Zcustom;
+        public String Gateway_Reference_Id_Zcustom;
+        public String Gateway_Zcustom;
+        public String Lockbox_Zcustom;
+        public String PaymentMethod_Zcustom;
+        public String ArchivedChargentData_Zcustom;
     }
 
     public class ZuoraDebitMemoItem {
@@ -702,7 +713,7 @@ public with sharing class ZuoraAPI {
         public List<ZuoraDebitMemoItem> items;
     }
 
-    // For historical payment load and return processing:
+    // For historical payment load, return processing, and payment case creation:
     // https://www.zuora.com/developer/api-reference/#operation/POST_CreatePayment
     public class Payment {
         public String id;
@@ -717,7 +728,19 @@ public with sharing class ZuoraAPI {
         public Date effectiveDate;
         public String TransactionId_Zcustom;
         public String ResponseStatus_Zcustom;
+        public String Lockbox_zcustom;
+        public String ArchivedChargentData_Zcustom;
         public Boolean success;
+        // Populated by a DataQuery result
+        public String CrmId;
+        public String GatewayResponse;
+    }
+
+    public class ArchivedChargentData {
+        public String PaymentMethod;
+        public String GatewayName;
+        public String ClientNumber;
+        public String GatewayRefId;
     }
 
     public class PaymentParts {

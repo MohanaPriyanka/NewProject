@@ -43,4 +43,11 @@ public with sharing class ZuoraAccountSelectorTest {
         System.assertEquals('Not Default Gateway', shouldNotBeDefault.name);
         System.assertNotEquals(shouldBeDefault.id, shouldNotBeDefault.id);
     }
+
+    @IsTest
+    private static void testGetAutopayAccountsWithBalance() {
+        ZuoraAccountSelector selector = new ZuoraAccountSelector();
+        List<ZuoraAPI.ZuoraAccount> accounts = selector.getAutopayAccountsWithBalance();
+        System.assert(accounts.size() > 0);
+    }
 }

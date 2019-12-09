@@ -1,6 +1,6 @@
 /**
  * Created by PeterYao on 3/12/2019.
- * Tested By: ScheduleZSubscriptionSelector, TestBilLCreationdandPayment, BillGenerationServiceTest
+ * Tested By: ScheduleZSubscriptionSelector, TestBilLCreationdandPayment, BillGenerationServiceTest, ScheduleZTriggerHandlerTest
  */
 
 public with sharing class ScheduleZSubscriptionSelector {
@@ -110,5 +110,17 @@ public with sharing class ScheduleZSubscriptionSelector {
             overdueSZSes.addAll(uas.Schedule_Z_Subscriptions__r);
         }
         return overdueSZSes;
+    }
+
+    public static List<Schedule_Z_Subscription__c> getALSSFromALS(List<Id> allocationScheduleIds){
+        List<Schedule_Z_Subscription__c> allocationSubscriptions = [
+            SELECT Id, Utility_Account_Subscription__c,
+                Schedule_Z__r.Date_Enacted_by_Utility__c,
+                Utility_Account_Subscription__r.Most_Recent_Enacted_ALSS__c,
+                Utility_Account_Subscription__r.Most_Recent_Enacted_ALSS__r.Schedule_Z__r.Date_Enacted_by_Utility__c
+            FROM Schedule_Z_Subscription__c
+            WHERE Schedule_Z__c IN : allocationScheduleIds
+        ];
+        return allocationSubscriptions;
     }
 }

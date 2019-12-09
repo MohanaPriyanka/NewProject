@@ -2038,7 +2038,7 @@ TEXT(DAY(Commencement_Date__c))
         <fullName>Confirmed_Subscription_Size_Correct__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <inlineHelpText>Review annual energy consumption and use it to calculate subscription size to confirm it is appropriate and accurate</inlineHelpText>
+        <inlineHelpText>Check kW DC sizing calculations in UAS</inlineHelpText>
         <label>Confirmed Subscription Size Correct</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
@@ -2133,14 +2133,7 @@ TEXT(DAY(Commencement_Date__c))
         <defaultValue>false</defaultValue>
         <description>Check this box after contract has been quality and data checked.</description>
         <externalId>false</externalId>
-        <inlineHelpText>Check For: 
--Guarantor name/addr for non-resi
--Cust name/addr
--Util Acct#/Service Addr
--Pmt Info - ACH/CC
--Subsc Size &lt;= Max kW
--# Years in Bus (non-resi)
--Email Address is not partner email</inlineHelpText>
+        <inlineHelpText>Verify contract is fully populated/signed with correct information</inlineHelpText>
         <label>Contract Fully Populated</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
@@ -2272,6 +2265,7 @@ IF( ISPICKVAL(Personal_Credit_Report2__r.Solar_Loan_Approval_Status__c, &quot;De
         <fullName>Current_Utility_Bill__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
+        <inlineHelpText>Verify the utility bill meets the underwriting criteria based on state/program</inlineHelpText>
         <label>Current Utility Bill</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -3588,6 +3582,7 @@ max(1250,0.05*(Requested_Loan_Amount__c)),
         <fullName>Green_Button_Data_Received__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
+        <inlineHelpText>Consumption data has been received for sizing</inlineHelpText>
         <label>Green Button Data/kWh Info Received</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -6118,6 +6113,7 @@ IF(INCLUDES(Customer_Type__c, &quot;Private Affordable&quot;),&quot;Error&quot;,
         <fullName>QC_Personal_Credit_Report__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
+        <inlineHelpText>Verify customer’s FICO meets UW criteria based on state/program/project</inlineHelpText>
         <label>QC Personal Credit Report</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -7083,7 +7079,12 @@ if(and( isnull(Disbursal_1_Contract_Signature_Checkbox__c )=False,isnull( Disbur
         <defaultValue>false</defaultValue>
         <description>Used in utility account QC for CS app</description>
         <externalId>false</externalId>
-        <inlineHelpText>Used in utility account QC for CS app</inlineHelpText>
+        <inlineHelpText>Ensure UAL details are accurate by comparing the following details using the utility bill:
+1) Name on Utility Account
+2) Utility Account Number
+3) Service Address
+4) Service State
+5) Service Zip Code</inlineHelpText>
         <label>Utility Account Information Verified</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -7809,7 +7810,7 @@ if(and( isnull(Disbursal_1_Contract_Signature_Checkbox__c )=False,isnull( Disbur
     <fields>
         <fullName>Subscription_Share__c</fullName>
         <externalId>false</externalId>
-        <formula>CS_Capacity_Allocated__c /   Shared_Solar_System__r.Total_System_Size_kW_DC_QC__c</formula>
+        <formula>CS_Capacity_Allocated__c /   Shared_Solar_System__r.Total_System_Size_kWh_DC__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Subscription Share</label>
         <precision>18</precision>
@@ -8087,7 +8088,7 @@ DOER_Solar_Loan__c ==TRUE,(( Monthly_Payment__c *   Product__r.Loan_Term__c )+( 
     <fields>
         <fullName>Total_System_Size__c</fullName>
         <externalId>false</externalId>
-        <formula>Shared_Solar_System__r.Total_System_Size_kW_DC_QC__c</formula>
+        <formula>Shared_Solar_System__r.Total_System_Size_kWh_DC__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Total System Size</label>
         <precision>18</precision>

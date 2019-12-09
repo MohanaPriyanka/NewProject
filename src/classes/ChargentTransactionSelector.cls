@@ -64,4 +64,17 @@ public with sharing class ChargentTransactionSelector {
             AND ChargentOrders__Gateway_ID__c IN :gatewayTransactionIds
         ];
     }
+
+    public Map<Id,ChargentOrders__Transaction__c> getTransactionsById(List<Id> transactionIds) {
+        Map<ID, ChargentOrders__Transaction__c> trxMap = new Map<ID, ChargentOrders__Transaction__c>([
+            SELECT Id,
+                ChargentOrders__Order__r.ChargentOrders__Payment_Method__c,
+                ChargentOrders__Gateway__r.Name,
+                ChargentOrders__Gateway_ID__c,
+                Client__r.Account_Number__c
+            FROM ChargentOrders__Transaction__c
+            WHERE Id IN : transactionIds
+        ]);
+        return trxMap;
+    }
 }

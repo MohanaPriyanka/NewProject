@@ -7,7 +7,8 @@
 public with sharing class ZuoraInvoiceSelector {
     public static List<Zuora__ZInvoice__c> getInvoicesToDownload() {
         return [
-            SELECT Id, Zuora__Zuora_Id__c
+            SELECT Id, Zuora__Zuora_Id__c,
+                Zuora__BillingAccount__r.Zuora__Account__r.Bill_Delivery_Preference__c
             FROM Zuora__ZInvoice__c
             WHERE Downloaded_Date__c = NULL
         ];

@@ -2162,7 +2162,7 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
     <fields>
         <fullName>Total_CS_Capacity_kW_DC_Formula__c</fullName>
         <externalId>false</externalId>
-        <formula>Total_System_Size_kW_DC_QC__c - Anchor_Capacity_Reserved__c</formula>
+        <formula>Total_System_Size_kWh_DC__c - Anchor_Capacity_Reserved__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Total CS Capacity (kW DC)</label>
         <precision>18</precision>
@@ -3563,6 +3563,21 @@ Credit_Score_Requirement__c = 0
     ISCHANGED(App_ID_WO_Manual__c)
     )</errorConditionFormula>
         <errorMessage>Due to their importance, certain fields on the Shared Solar System page are restricted so that only certain people can edit them. Please contact your System Administrator to edit.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Utility_Decimals_Requirement</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+ISCHANGED( Stage__c),/*if the stage is changed*/
+
+OR(
+ISPICKVAL(Stage__c,&quot;Management&quot;),
+ISPICKVAL(Stage__c,&quot;Acquisition&quot;)
+), /*and it&apos;s being change to either Management or Acquisition*/
+
+ ISBLANK(Utility__r.Number_of_Decimal_Places__c) /*and the number of decimals field on the related utility is null*/
+)</errorConditionFormula>
+        <errorMessage>The Number of Decimals field on the related Utility needs to be filled in before the stage can be set to Management or Acquisition.</errorMessage>
     </validationRules>
     <visibility>Public</visibility>
     <webLinks>

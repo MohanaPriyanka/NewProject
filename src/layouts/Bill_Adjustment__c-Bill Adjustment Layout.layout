@@ -11,23 +11,11 @@
                 <field>Name</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Adjustment_Amount__c</field>
-            </layoutItems>
-            <layoutItems>
                 <emptySpace>true</emptySpace>
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
                 <field>Utility_Account_Subscription__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>UASB__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Applied_to_Bill__c</field>
             </layoutItems>
             <layoutItems>
                 <emptySpace>true</emptySpace>
@@ -39,24 +27,15 @@
                 <field>Client__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
-                <field>Adjustment_Type__c</field>
+                <emptySpace>true</emptySpace>
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
                 <field>Approval_Status__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
-                <field>Reason_For_Adjustment__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Adjustment_Source__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Team__c</field>
+                <field>Effective__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
@@ -65,15 +44,11 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>Application to Bill</label>
+        <label>Amount</label>
         <layoutColumns>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Total_Adjustments_Distributed__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Outstanding__c</field>
+                <behavior>Edit</behavior>
+                <field>Adjustment_Amount__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -92,14 +67,27 @@
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
         <editHeading>true</editHeading>
-        <label>Production Adjustments</label>
+        <label>Detail</label>
         <layoutColumns>
             <layoutItems>
+                <behavior>Required</behavior>
+                <field>Adjustment_Type__c</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Production_Update__c</field>
+                <field>Adjustment_Source__c</field>
             </layoutItems>
         </layoutColumns>
-        <layoutColumns/>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>Reason_For_Adjustment__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Team__c</field>
+            </layoutItems>
+        </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
     <layoutSections>
@@ -143,7 +131,6 @@
     <miniLayout>
         <fields>Name</fields>
         <fields>Utility_Account_Subscription__c</fields>
-        <fields>UASB__c</fields>
     </miniLayout>
     <relatedLists>
         <fields>NAME</fields>
