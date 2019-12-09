@@ -3562,6 +3562,26 @@ ISCHANGED(App_ID_WO_Manual__c)
         <url>/00Oj0000000QGIY?pv2={!Shared_Solar_System__c.Name}</url>
     </webLinks>
     <webLinks>
+        <fullName>New_Shared_Solar_System_Order</fullName>
+        <availability>online</availability>
+        <description>Launches to SSSO creation flow</description>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>New Shared Solar System Order</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/flow/SSSO_Creation_Flow?var_SSSID={!Shared_Solar_System__c.Id}&amp;returl={!Shared_Solar_System__c.Id}</url>
+    </webLinks>
+    <webLinks>
         <fullName>Preview_Next_Schedule_Z</fullName>
         <availability>online</availability>
         <displayType>button</displayType>
