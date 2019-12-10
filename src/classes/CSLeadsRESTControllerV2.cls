@@ -33,7 +33,6 @@ global without sharing class CSLeadsRESTControllerV2 extends RESTController {
                     leadToUpdate.Soft_Pull_Credit_Report__c = true;
                     List<Account> propertyAccounts =  accountsSelector.selectPropertyAccountsByLeadIds(new Set<Id> {requestLead.Id});
                     ZuoraAccountService.createAccounts(propertyAccounts);
-//
                 }
                 requestLead.mergeFields(requestMap.keySet(), leadToUpdate);
 
