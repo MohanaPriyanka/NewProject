@@ -8,7 +8,7 @@ public without sharing class ZuoraAccountService {
     private static AccountsSelector accountSelector = new AccountsSelector();
 
     public static void createAccounts(List<Account> propertyAccounts) {
-        if (propertyAccounts.size() == 0) {
+        if (propertyAccounts == null) {
             return;
         }
         createAccounts(propertyAccounts, null);
@@ -42,10 +42,12 @@ public without sharing class ZuoraAccountService {
         Map<String, String> accountIdToZuoraContactIdMap =
             createContact(propertyAccounts, accountIdToZuoraIdMap);
 
-        List<Zuora_Contact__c> zuoraContacts =
-            finishAccountCreation(accountIdToLeadMap, accountIdToZuoraIdMap, accountIdToZuoraContactIdMap, propertyAccounts);
+        Map<Id, ZuoraAPI.ZuoraAccount> propertyAccountIdToZuoraAccountMap = setContactsOnAccount(accountIdToZuoraIdMap,  accountIdToZuoraContactIdMap, propertyAccounts);
 
-        insert zuoraContacts;
+        assignPaymentMethodToAccount(propertyAccountIdToZuoraAccountMap, propertyAccounts, accountIdToLeadMap);
+        updateZuoraAccounts(propertyAccountIdToZuoraAccountMap.values());
+        createZuoraContacts(propertyAccounts, accountIdToZuoraIdMap, accountIdToZuoraContactIdMap);
+
         for (Account account : propertyAccounts) {
             account.Zuora_Id__c = accountIdToZuoraIdMap.get(account.Id);
         }
@@ -81,24 +83,34 @@ public without sharing class ZuoraAccountService {
         return accountIdToZuoraIdMap;
     }
 
-    private static void assignPaymentMethodToAccount(Map<Id, Lead> accountIdToLeadMap, Account propertyAccount, ZuoraAPI.ZuoraAccount zuoraAccount) {
-        if (accountIdToLeadMap == null) {
-            return;
+    private static void assignPaymentMethodToAccount(Map<Id, ZuoraAPI.ZuoraAccount> accountToZuoraAccountMap, List<Account> propertyAccountList, Map<Id, Lead> accountIdToLeadMap) {
+        for (Account propertyAccount : propertyAccountList) {
+            ZuoraAPI.ZuoraAccount zuoraAccount = accountToZuoraAccountMap.get(propertyAccount.Id);
+            zuoraAccount.Status = 'Active';
+            if (accountIdToLeadMap != null) {
+                Lead convertedLead = accountIdToLeadMap.get(propertyAccount.Id);
+                if (convertedLead.Zuora_Payment_Ref_Id_Expiration_Date__c != null &&
+                    convertedLead.Zuora_Payment_Ref_Id_Expiration_Date__c.getTime() > Datetime.now().getTime()) {
+                    zuoraAccount.DefaultPaymentMethodId = convertedLead.Zuora_Payment_Ref_Id__c;
+                } else {
+                    Logger.logLater(
+                        'ZuoraAccountService',
+                        'createAccount',
+                        'Found an expired payment method for Lead Id ' + convertedLead.Id + ' at ' + Datetime.now().getTime(),
+                        Logger.ERROR
+                    );
+                }
+            } else if (accountIdToLeadMap == null && propertyAccount.Zuora_Payment_Ref_Id__c != null) {
+                zuoraAccount.DefaultPaymentMethodId = propertyAccount.Zuora_Payment_Ref_Id__c;
+            }
+
+            if (zuoraAccount.DefaultPaymentMethodId != null ) {
+                // As of June 2019, if a lead provides a payment method, it is for autopay, so we'll set autopay to true
+                zuoraAccount.AutoPay = true;
+            }
         }
-        Lead convertedLead = accountIdToLeadMap.get(propertyAccount.Id);
-        if (convertedLead.Zuora_Payment_Ref_Id_Expiration_Date__c != null &&
-            convertedLead.Zuora_Payment_Ref_Id_Expiration_Date__c.getTime() > Datetime.now().getTime()) {
-            zuoraAccount.DefaultPaymentMethodId = convertedLead.Zuora_Payment_Ref_Id__c;
-            // As of June 2019, if a lead provides a payment method, it is for autopay, so we'll set autopay to true
-            zuoraAccount.AutoPay = true;
-        } else {
-            Logger.logLater(
-                'ZuoraAccountService',
-                'createAccount',
-                'Found an expired payment method for Lead Id ' + convertedLead.Id + ' at ' + Datetime.now().getTime(),
-                Logger.ERROR
-            );
-        }
+
+
     }
 
     @TestVisible
@@ -151,32 +163,36 @@ public without sharing class ZuoraAccountService {
     }
 
     @SuppressWarnings('PMD.ExcessiveParameterList')
-    private static List<Zuora_Contact__c> finishAccountCreation(Map<Id, Lead> accountIdToLeadMap, Map<Id, String> accountIdToZuoraAccountIdMap,
+    private static Map<Id, ZuoraAPI.ZuoraAccount> setContactsOnAccount(Map<Id, String> accountIdToZuoraAccountIdMap,
         Map<String, String> zuoraAccountIdToZuoraContactIdMap,
         List<Account> propertyAccounts) {
 
-        List<Zuora_Contact__c> zuoraContacts = new List<Zuora_Contact__c>();
-        ZuoraAPI.ActionItems actionItems = new ZuoraAPI.ActionItems();
-        actionItems.type = 'Account';
+        Map<Id, ZuoraAPI.ZuoraAccount> accountToZuoraAccountMap = new Map<Id, ZuoraAPI.ZuoraAccount>();
+
         for (Account account : propertyAccounts) {
             ZuoraAPI.ZuoraAccount zuoraAccount = new ZuoraAPI.ZuoraAccount();
-            actionItems.objects.add(zuoraAccount);
+            accountToZuoraAccountMap.put(account.Id, zuoraAccount);
             String zuoraAccountId = accountIdToZuoraAccountIdMap.get(account.Id);
             zuoraAccount.Id = zuoraAccountId;
             zuoraAccount.BillToId = zuoraAccountIdToZuoraContactIdMap.get(zuoraAccountId);
             zuoraAccount.SoldToId = zuoraAccountIdToZuoraContactIdMap.get(zuoraAccountId);
-            if (accountIdToLeadMap != null) {
-                zuoraAccount.Status = 'Active';
-                assignPaymentMethodToAccount(accountIdToLeadMap, account, zuoraAccount);
-            }
+        }
+        return accountToZuoraAccountMap;
+    }
+
+    private static void createZuoraContacts(List<Account> propertyAccounts, Map<Id, String> accountIdToZuoraAccountIdMap, Map<String, String> zuoraAccountIdToZuoraContactIdMap ) {
+        List<Zuora_Contact__c> zuoraContacts = new List<Zuora_Contact__c>();
+        for (Account account : propertyAccounts) {
+            String zuoraAccountId = accountIdToZuoraAccountIdMap.get(account.Id);
             Zuora_Contact__c zuoraContact = new Zuora_Contact__c(
                 Contact__c = account.Send_Bills_Contact__c,
                 Zuora_Id__c = zuoraAccountIdToZuoraContactIdMap.get(zuoraAccountId)
             );
             zuoraContacts.add(zuoraContact);
         }
-        ZuoraAPIHelper.actionUpdate(actionItems);
-        return zuoraContacts;
+
+        insert zuoraContacts;
+
     }
 
     public void handleAccountUpdates(ZuoraAccountUpdate zuoraAccountUpdates) {
@@ -242,10 +258,10 @@ public without sharing class ZuoraAccountService {
             Map<String, String> accountIdToZuoraContactIdMap =
                 createContact(accounts, accountIdToZuoraIdMap);
 
-            List<Zuora_Contact__c> zuoraContacts =
-                finishAccountCreation(null, accountIdToZuoraIdMap, accountIdToZuoraContactIdMap, accounts);
+            Map<Id, ZuoraAPI.ZuoraAccount> propertyAccountIdToZuoraAccountMap = setContactsOnAccount(accountIdToZuoraIdMap,  accountIdToZuoraContactIdMap, accounts);
+            updateZuoraAccounts(propertyAccountIdToZuoraAccountMap.values());
+            createZuoraContacts(accounts, accountIdToZuoraIdMap, accountIdToZuoraContactIdMap);
 
-            insert zuoraContacts;
         } catch (Exception e) {
             Logger.logLater(
                 'ZuoraAccountService',
@@ -256,6 +272,17 @@ public without sharing class ZuoraAccountService {
         } finally {
             Logger.flushLogs();
         }
+    }
+
+    public static void updateZuoraAccounts(List<ZuoraAPI.ZuoraAccount> zuoraAccounts){
+        ZuoraAPI.ActionItems actionItems = new ZuoraAPI.ActionItems();
+        actionItems.type = 'Account';
+
+        for (ZuoraAPI.ZuoraAccount account : zuoraAccounts) {
+            actionItems.objects.add(account);
+        }
+
+        ZuoraAPIHelper.actionUpdate(actionItems);
     }
 
     public class ZuoraAccountUpdate {
