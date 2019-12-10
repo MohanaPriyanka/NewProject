@@ -135,7 +135,7 @@
         </recipients>
         <senderAddress>partnersupport@bluewavesolar.com</senderAddress>
         <senderType>OrgWideEmailAddress</senderType>
-        <template>CS_Application_Email_Notifications/CS_Partner_Approved_Application_Notification</template>
+        <template>CSPartnerEmails/CS_Partner_CS_Contract_Signed</template>
     </alerts>
     <alerts>
         <fullName>CS_Referral_Program</fullName>

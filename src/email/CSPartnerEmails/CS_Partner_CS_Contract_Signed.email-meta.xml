@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Notifies CS partner that a CS contract has been signed by a customer</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>CS Partner - CS Contract Signed</name>
+    <style>none</style>
+    <subject>{!Opportunity.Name}’s CS Contract Has Been Signed!</subject>
+    <textOnly>Dear {!Opportunity.Sales_tag__c},
+
+Good news – {!Opportunity.Name} has signed their community solar contract and a member of our BlueWave Partner Support Team is now reviewing it. We’ll keep you posted on the status of their application and notify you if any issues come up. In the meantime, we have sent them a copy of their signed agreement. 
+Since these emails occasionally end up in a Junk/Spam folder, please notify them if they’re having difficulty finding their contract. 
+ 
+Thanks for partnering with us to revolutionize energy.
+
+- All of us here at BlueWave 
+
+
+BlueWave Partner Support
+888.817.2703 | partnersupport@bluewavesolar.com</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>
