@@ -12,6 +12,7 @@ public without sharing class CaseFactory {
     public static Group customerCareQueue;
     public static Group productQueue;
     public static Group collectionsQueue;
+    public static Group dataOpsQueue;
     public static Case newCase;
 
     public CaseFactory() {
@@ -46,16 +47,17 @@ public without sharing class CaseFactory {
                 SELECT Id, DeveloperName
                 FROM Group
                 WHERE Type = 'Queue'
-                AND (DeveloperName = 'Product_Support' OR DeveloperName = 'Customer_Care' OR DeveloperName = 'Collections')
+                AND (DeveloperName = 'Product_Support' OR DeveloperName = 'Customer_Care' OR DeveloperName = 'Collections' OR DeveloperName = 'Data_Ops')
                 ORDER BY DeveloperName
             ];
 
-            if (assignmentGroups.size() != 3) {
+            if (assignmentGroups.size() != 4) {
                 Logger.logNow('CaseFactory', 'constructor', 'Missing Groups for assignment. Available Groups: ' + assignmentGroups);
             } else {
                 collectionsQueue = assignmentGroups[0];
                 customerCareQueue = assignmentGroups[1];
-                productQueue = assignmentGroups[2];
+                dataOpsQueue = assignmentGroups[2];
+                productQueue = assignmentGroups[3];
             }
         }
     }
@@ -75,6 +77,11 @@ public without sharing class CaseFactory {
             newCase.RecordTypeId = customerCare.Id;
             newCase.RecordType = customerCare;
             newCase.OwnerId = collectionsQueue.Id;
+        } else if (type == 'Data_Ops') {
+            // Data Ops uses the customer care record type
+            newCase.RecordTypeId = customerCare.Id;
+            newCase.RecordType = customerCare;
+            newCase.OwnerId = dataOpsQueue.Id;
         }
         return newCase;
     }

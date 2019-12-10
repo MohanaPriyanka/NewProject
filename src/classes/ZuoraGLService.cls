@@ -12,17 +12,17 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         if (daysToLookBack == null){
             daysToLookBack = 30;
         }
-        getAllDataFromZuora(today.addDays(daysToLookBack), today);
+        getAllDataFromZuora(today.addDays(-1*daysToLookBack), today);
     }
 
     public static void getAllDataFromZuora(Date startDate, Date endDate){
-        /* Starts with Invoice Items, then starts chain of Credit Memos, Debit Memos and Payment Parts:
-            Zuora does not perform well when multiple queries are running at the same time.
+        /*  Starts with Accounting Period, then then starts chain of Invoice Items, Credit Memos, Debit Memos
+            and Payment Parts: Zuora does not perform well when multiple queries are running at the same time.
         */
-        String queryString = ZuoraGLSelector.getInvoiceItems(startDate, endDate);
+        String queryString = 'SELECT Max(EndDate) as EndDate FROM AccountingPeriod WHERE Status = \'Closed\'';
         ZuoraDataQueryService.ProcessingParameter methodToRunAfter = new ZuoraDataQueryService.ProcessingParameter();
         methodToRunAfter.className = 'ZuoraGLService';
-        methodToRunAfter.methodName = 'GL_InvoiceItem';
+        methodToRunAfter.methodName = 'AccountingPeriod';
         methodToRunAfter.startDate = startDate;
         methodToRunAfter.endDate = endDate;
         ZuoraDataQueryService.callFromApex(queryString,methodToRunAfter);
@@ -47,39 +47,51 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
     public void executePostQueryJob(ZuoraDataQueryService.ProcessingParameter method, String response) {
         switch on method.methodName {
             // GL Methods: Insert one object's journal entries, then queue next object:
-            when 'GL_InvoiceItem' {
-                generalGLRecordInsert(response, 'InvoiceItem');
+            when 'AccountingPeriod' {
+                response = response.substring(1,response.length()-1); // Removes Brackets since only returning 1, not a list:
+                ZuoraAPI.AccountingPeriod lastAccountingPeriod = (ZuoraAPI.AccountingPeriod) System.JSON.deserialize(response, ZuoraAPI.AccountingPeriod.class);
+                String queryString = ZuoraGLSelector.getInvoiceItems(method.startDate, method.endDate);
+                method.methodName = 'InvoiceItem';
+                method.periodCloseDate = lastAccountingPeriod.EndDate;
+                ZuoraDataQueryService.callFromApex(queryString, method);
+            }
+            when 'InvoiceItem' {
+                generalGLRecordInsert(response, method);
                 String queryString = ZuoraGLSelector.getCreditMemos(method.startDate, method.endDate);
-                method.methodName = 'GL_CreditMemo';
+                method.methodName = 'CreditMemo';
                 ZuoraDataQueryService.callFromApex(queryString, method);
             }
-            when 'GL_CreditMemo' {
-                generalGLRecordInsert(response, 'CreditMemo');
+            when 'CreditMemo' {
+                generalGLRecordInsert(response, method);
                 String queryString = ZuoraGLSelector.getDebitMemos(method.startDate, method.endDate);
-                method.methodName = 'GL_DebitMemo';
+                method.methodName = 'DebitMemo';
                 ZuoraDataQueryService.callFromApex(queryString, method);
             }
-            when 'GL_DebitMemo' {
-                generalGLRecordInsert(response, 'DebitMemo');
+            when 'DebitMemo' {
+                generalGLRecordInsert(response, method);
                 String queryString = ZuoraGLSelector.getPaymentPartsDM(method.startDate, method.endDate);
-                method.methodName = 'GL_PaymentPartDM';
+                method.methodName = 'PaymentPart_DM';
                 ZuoraDataQueryService.callFromApex(queryString, method);
             }
-            when 'GL_PaymentPartDM' {
-                generalGLRecordInsert(response, 'PaymentPart');
+            when 'PaymentPart_DM' {
+                generalGLRecordInsert(response, method);
                 String queryString = ZuoraGLSelector.getPaymentPartsIV(method.startDate, method.endDate);
-                method.methodName = 'GL_PaymentPartIV';
+                method.methodName = 'PaymentPart_IV';
                 ZuoraDataQueryService.callFromApex(queryString, method);
             }
-            when 'GL_PaymentPartIV' {
-                generalGLRecordInsert(response, 'PaymentPart');
+            when 'PaymentPart_IV' {
+                generalGLRecordInsert(response, method);
             }
         }
     }
 
-    public void generalGLRecordInsert(String response, String objectType){
+    public void generalGLRecordInsert(String response, ZuoraDataQueryService.ProcessingParameter method){
         List<GeneralLedgerItem> ledgerItems = new List<GeneralLedgerItem>();
-        List<Journal_Entry__c> journalEntriesList = new List<Journal_Entry__c>();
+        Map<String, Journal_Entry__c> journalEntriesMap = new Map<String, Journal_Entry__c>();
+        String objectType = method.methodName;
+        if (objectType == 'PaymentPart_DM' || objectType == 'PaymentPart_IV'){
+            objectType = 'PaymentPart';
+        }
 
         ledgerItems = (List<GeneralLedgerItem>)JSON.deserialize(response, List<GeneralLedgerItem>.class);
         if (objectType == 'PaymentPart' || objectType == 'DebitMemo'){
@@ -113,14 +125,9 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
                     entry = setArchivedPaymentFields(ledger, entry);
                 }
             }
-            journalEntriesList.add(entry);
+            journalEntriesMap.put(entry.External_Id__c, entry);
         }
-        if (journalEntriesList.size() > 10000){
-            Database.executeBatch(new GenericBatchDMLOperation(journalEntriesList, 'Upsert'));
-        } else {
-            upsert journalEntriesList External_Id__c;
-        }
-        Logger.flushLogs();
+        upsertJournalEntries(journalEntriesMap, method);
     }
 
     public Map<String, String> getDepositAccountToClientMap(){
@@ -167,5 +174,81 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
             entry.Payment_Method__c = ledger.PaymentMethod;
         }
         return entry;
+    }
+
+    public void upsertJournalEntries(Map<String, Journal_Entry__c> zuoraEntriesToUpsert, ZuoraDataQueryService.ProcessingParameter method){
+        List<Journal_Entry__c> sfEntries = ZuoraGLSelector.getSFJournalEntries(method.startDate,method.endDate);
+        List<Journal_Entry__c> entriesSafeToDelete = new List<Journal_Entry__c>();
+        List<Journal_Entry__c> entriesToUpsert  = new List<Journal_Entry__c>();
+        List<Case> reconciliationItems = new List<Case>();
+
+        if (sfEntries.size() > 0) {
+            for (Journal_Entry__c sfEntry : sfEntries) {
+                Boolean inUpsertList = zuoraEntriesToUpsert.containsKey(sfEntry.External_Id__c);
+                Boolean inClosedPeriod = sfEntry.Date__c <= method.periodCloseDate;
+                if (inUpsertList && inClosedPeriod) {
+                    // Log error if data in a closed period is changing:
+                    Journal_Entry__c zuoraRecord = zuoraEntriesToUpsert.get(sfEntry.External_Id__c);
+                    if (!entriesMatch(sfEntry, zuoraRecord)) {
+                        reconciliationItems.add(createRecItem('Update', JSON.serialize(sfEntry) + JSON.serialize(zuoraRecord)));
+                    }
+                    // Don't update records in closed period:
+                    zuoraEntriesToUpsert.remove(sfEntry.External_Id__c);
+                } else if (inClosedPeriod) {
+                    // We expected to see closed period SF records in Zuora, but they were not:
+                    reconciliationItems.add(createRecItem('Delete', JSON.serialize(sfEntry)));
+                } else if (!inUpsertList) {
+                    // If SF record is still in an open period, but no longer exists in Zuora, delete it:
+                    entriesSafeToDelete.add(sfEntry);
+                }
+            }
+
+        }
+        for (Journal_Entry__c zuoraEntry : zuoraEntriesToUpsert.values()) {
+            // Final catch for records in Zuora that are not in SF, but are in a closed period:
+            if (zuoraEntry.Date__c > method.periodCloseDate) {
+                entriesToUpsert.add(zuoraEntry);
+            } else {
+                reconciliationItems.add(createRecItem('Insert', JSON.serialize(zuoraEntry)));
+            }
+        }
+        if (entriesSafeToDelete.size() > 0){
+            delete entriesSafeToDelete;
+        }
+        if (reconciliationItems.size() > 0){
+            insert reconciliationItems;
+        }
+        if (entriesToUpsert.size() > 10000){
+            Database.executeBatch(new GenericBatchDMLOperation(entriesToUpsert, 'Upsert'));
+        } else {
+            upsert entriesToUpsert External_Id__c;
+        }
+        Logger.flushLogs();
+    }
+
+    private static Case createRecItem(String actionType, String message){
+        CaseFactory caseFactory = new CaseFactory();
+        Case newCase = caseFactory.getCase('Data_Ops');
+        newCase.Subject = 'Attempted Journal Entry ' + actionType + ' in Closed Period';
+        newCase.Priority = 'High';
+        newCase.Description = message;
+        newCase.Origin = 'Other';
+        newCase.Case_Type__c = 'BlueWave';
+        newCase.Disable_Followup_Email__c = true;
+        return newCase;
+    }
+
+    private static Boolean entriesMatch(Journal_Entry__c sfEntry, Journal_Entry__c zuoraEntry){
+        Boolean isMatch = true;
+        if (sfEntry.Amount__c != zuoraEntry.Amount__c
+            || sfEntry.Date__c != zuoraEntry.Date__c
+            || sfEntry.Project__c != zuoraEntry.Project__c
+            || sfEntry.Client__c != zuoraEntry.Client__c
+            || sfEntry.Customer_Account__c != zuoraEntry.Customer_Account__c
+            || sfEntry.Paid_To_Client__c != zuoraEntry.Paid_To_Client__c
+            || sfEntry.Deposit_Account__c != zuoraEntry.Deposit_Account__c){
+            isMatch = false;
+        }
+        return isMatch;
     }
 }

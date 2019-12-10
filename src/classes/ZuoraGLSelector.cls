@@ -144,4 +144,15 @@ public with sharing class ZuoraGLSelector {
         }
         return payPartInvoiceQuery;
     }
+
+    public static List<Journal_Entry__c> getSFJournalEntries(Date startDate, Date endDate){
+        List<Journal_Entry__c> journalEntries = [
+            SELECT Id, External_Id__c, Date__c, Amount__c, Project__c, Client__c, Customer_Account__c,
+                Paid_To_Client__c, Deposit_Account__c
+            FROM Journal_Entry__c
+            WHERE Date__c > : startDate
+            AND Date__c < : endDate
+        ];
+        return journalEntries;
+    }
 }
