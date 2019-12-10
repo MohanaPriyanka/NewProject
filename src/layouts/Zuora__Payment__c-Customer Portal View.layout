@@ -28,8 +28,8 @@
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Zuora__Status__c</field>
+                <behavior>Readonly</behavior>
+                <field>Payment_Status__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
