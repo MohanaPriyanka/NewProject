@@ -102,6 +102,7 @@ public without sharing class AccountsSelector {
                 FROM Cases
                 WHERE IsClosed = FALSE
                 AND Zuora_Payment_Method__c != NULL
+
             )
             FROM Account
             WHERE Id = :accountIds
@@ -110,8 +111,9 @@ public without sharing class AccountsSelector {
 
     public List<Account> selectPropertyAccountsByLeadIds(Set<Id> leadIds) {
         return [
-            SELECT Id, Name, BillingStreet, BillingCity, BillingStateCode, BillingPostalCode,
-                Zuora_Payment_Ref_Id__c, Zuora_Payment_Ref_Id_Expiration_Date__c, Lead__c
+            SELECT Id, Name, BillingStreet, BillingCity, BillingStateCode, BillingPostalCode, BillingState, BillingCountry,
+                Zuora_Payment_Ref_Id__c, Zuora_Payment_Ref_Id_Expiration_Date__c, Lead__c, Account_Number__c, Additional_Contact__r.Id,
+                Client_Brand_Key__c, Address_Attn__c, Send_Bills_Contact__c
             FROM Account
             WHERE Lead__c = :leadIds
             AND RecordType.Name = 'Property'
