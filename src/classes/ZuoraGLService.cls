@@ -6,6 +6,9 @@ Tested By: ZuoraGLServiceTest
 public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryService.Processor {
     public Integer daysToLookBack;
     public Map<String, String> depositAccountToClientMap;
+    public List<Journal_Entry__c> entriesSafeToDelete;
+    public List<Case> reconciliationItems;
+    public List<Journal_Entry__c> entriesToUpsert;
 
     public void execute(SchedulableContext ctx){
         Date today = System.today();
@@ -87,48 +90,27 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
 
     public void generalGLRecordInsert(String response, ZuoraDataQueryService.ProcessingParameter method){
         List<GeneralLedgerItem> ledgerItems = new List<GeneralLedgerItem>();
-        Map<String, Journal_Entry__c> journalEntriesMap = new Map<String, Journal_Entry__c>();
-        String objectType = method.methodName;
-        if (objectType == 'PaymentPart_DM' || objectType == 'PaymentPart_IV'){
-            objectType = 'PaymentPart';
-        }
+        Map<String, Journal_Entry__c> zuoraJournalEntries = new Map<String, Journal_Entry__c>();
 
         ledgerItems = (List<GeneralLedgerItem>)JSON.deserialize(response, List<GeneralLedgerItem>.class);
-        if (objectType == 'PaymentPart' || objectType == 'DebitMemo'){
-            depositAccountToClientMap = getDepositAccountToClientMap();
+        zuoraJournalEntries = convertGeneralLedgerToJournalEntry(ledgerItems, method.methodName);
+
+        List<Journal_Entry__c> sfEntries = ZuoraGLSelector.getSFJournalEntries(method.startDate,method.endDate,method.methodName);
+        // Sets entriesSafeToDelete, reconciliationItems and entriesToUpsert:
+        checkForClosedPeriodUpdates(zuoraJournalEntries,sfEntries,method.periodCloseDate);
+
+        if (entriesSafeToDelete.size() > 0){
+            delete entriesSafeToDelete;
         }
-
-        for (GeneralLedgerItem ledger : ledgerItems){
-            Journal_Entry__c entry = new Journal_Entry__c();
-            entry.Object_Type__c = objectType;
-            entry.Query_Type__c = method.methodName;
-            entry.Project__c = ledger.Project;
-            entry.Client__c = ledger.Client;
-            entry.Amount__c = ledger.Amount;
-            entry.Reason_Code__c = ledger.reasonCode;
-            entry.External_Id__c = ledger.ExternalId;
-            entry.Customer_Account__c = ledger.CustomerAccount;
-
-            // Use CRMId as a switch for historical data v. new data in Zuora
-            if (objectType == 'PaymentPart' && ledger.CRMId == null) {
-                // Going forward, we will report on payments when they are applied:
-                entry.Date__c = Date.valueOf(ledger.GLDatetime);
-                entry = setZuoraPaymentFields(ledger, entry);
-            } else {
-                // Historical Migration, we reported on transactions when they were made.
-                entry.Date__c = ledger.GLDate;
-            }
-
-            if ((objectType == 'DebitMemo' && (ledger.reasonCode == 'Returned Payment' || ledger.reasonCode == 'Refund')) || objectType == 'PaymentPart') {
-                if (ledger.ArchivedChargentData == null){
-                    entry = setZuoraPaymentFields(ledger, entry);
-                } else {
-                    entry = setArchivedPaymentFields(ledger, entry);
-                }
-            }
-            journalEntriesMap.put(entry.External_Id__c, entry);
+        if (reconciliationItems.size() > 0){
+            insert reconciliationItems;
         }
-        upsertJournalEntries(journalEntriesMap, method);
+        if (entriesToUpsert.size() > 10000){
+            Database.executeBatch(new GenericBatchDMLOperation(entriesToUpsert, 'Upsert'));
+        } else {
+            upsert entriesToUpsert External_Id__c;
+        }
+        Logger.flushLogs();
     }
 
     public Map<String, String> getDepositAccountToClientMap(){
@@ -177,56 +159,97 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         return entry;
     }
 
-    public void upsertJournalEntries(Map<String, Journal_Entry__c> zuoraEntriesToUpsert, ZuoraDataQueryService.ProcessingParameter method){
-        List<Journal_Entry__c> sfEntries = ZuoraGLSelector.getSFJournalEntries(method.startDate,method.endDate,method.methodName);
-        List<Journal_Entry__c> entriesSafeToDelete = new List<Journal_Entry__c>();
-        List<Journal_Entry__c> entriesToUpsert  = new List<Journal_Entry__c>();
-        List<Case> reconciliationItems = new List<Case>();
+    private Map<String, Journal_Entry__c> convertGeneralLedgerToJournalEntry(List<GeneralLedgerItem> ledgerItems, String methodName) {
+        Map<String, Journal_Entry__c> journalEntriesMap = new Map<String, Journal_Entry__c>();
+
+        String objectType = methodName;
+        if (objectType == 'PaymentPart_DM' || objectType == 'PaymentPart_IV'){
+            objectType = 'PaymentPart';
+        }
+        if (objectType == 'PaymentPart' || objectType == 'DebitMemo'){
+            depositAccountToClientMap = getDepositAccountToClientMap();
+        }
+        for (GeneralLedgerItem ledger : ledgerItems){
+            Journal_Entry__c entry = new Journal_Entry__c();
+            entry.Object_Type__c = objectType;
+            entry.Query_Type__c = methodName;
+            entry.Project__c = ledger.Project;
+            entry.Client__c = ledger.Client;
+            entry.Amount__c = ledger.Amount;
+            entry.Reason_Code__c = ledger.reasonCode;
+            entry.External_Id__c = ledger.ExternalId;
+            entry.Customer_Account__c = ledger.CustomerAccount;
+
+            // Use CRMId as a switch for historical data v. new data in Zuora
+            if (objectType == 'PaymentPart' && ledger.CRMId == null) {
+                // Going forward, we will report on payments when they are applied:
+                entry.Date__c = Date.valueOf(ledger.GLDatetime);
+                entry = setZuoraPaymentFields(ledger, entry);
+            } else {
+                // Historical Migration, we reported on transactions when they were made.
+                entry.Date__c = ledger.GLDate;
+            }
+
+            if ((objectType == 'DebitMemo' && (ledger.reasonCode == 'Returned Payment' || ledger.reasonCode == 'Refund')) || objectType == 'PaymentPart') {
+                if (ledger.ArchivedChargentData == null){
+                    entry = setZuoraPaymentFields(ledger, entry);
+                } else {
+                    entry = setArchivedPaymentFields(ledger, entry);
+                }
+            }
+            journalEntriesMap.put(entry.External_Id__c, entry);
+        }
+        return journalEntriesMap;
+    }
+
+    private void checkForClosedPeriodUpdates(Map<String, Journal_Entry__c> zuoraEntriesToUpsert, List<Journal_Entry__c> sfEntries, Date periodCloseDate){
+        entriesSafeToDelete = new List<Journal_Entry__c>();
+        reconciliationItems = new List<Case>();
+        entriesToUpsert  = new List<Journal_Entry__c>();
 
         if (sfEntries.size() > 0) {
             for (Journal_Entry__c sfEntry : sfEntries) {
-                Boolean inUpsertList = zuoraEntriesToUpsert.containsKey(sfEntry.External_Id__c);
-                Boolean inClosedPeriod = sfEntry.Date__c <= method.periodCloseDate;
-                if (inUpsertList && inClosedPeriod) {
-                    // Log error if data in a closed period is changing:
-                    Journal_Entry__c zuoraRecord = zuoraEntriesToUpsert.get(sfEntry.External_Id__c);
-                    if (!entriesMatch(sfEntry, zuoraRecord)) {
-                        reconciliationItems.add(createRecItem('Update', JSON.serialize(sfEntry) + JSON.serialize(zuoraRecord)));
-                    }
-                    // Don't update records in closed period:
-                    zuoraEntriesToUpsert.remove(sfEntry.External_Id__c);
-                } else if (!inUpsertList && inClosedPeriod) {
-                    // We expected to see closed period SF records in Zuora, but they were not:
-                    reconciliationItems.add(createRecItem('Delete', JSON.serialize(sfEntry)));
-                } else if (!inUpsertList) {
-                    // If SF record is still in an open period, but no longer exists in Zuora, delete it:
-                    entriesSafeToDelete.add(sfEntry);
-                }
+                checkForUpdatesAndDeletions(zuoraEntriesToUpsert, sfEntry, periodCloseDate);
             }
         }
+        // Final catch for records in Zuora that are not in SF, but are in a closed period:
         for (Journal_Entry__c zuoraEntry : zuoraEntriesToUpsert.values()) {
-            // Final catch for records in Zuora that are not in SF, but are in a closed period:
-            if (zuoraEntry.Date__c > method.periodCloseDate) {
-                entriesToUpsert.add(zuoraEntry);
-            } else {
-                reconciliationItems.add(createRecItem('Insert', JSON.serialize(zuoraEntry)));
-            }
+            checkForInsertions(zuoraEntry, periodCloseDate);
         }
-        if (entriesSafeToDelete.size() > 0){
-            delete entriesSafeToDelete;
-        }
-        if (reconciliationItems.size() > 0){
-            insert reconciliationItems;
-        }
-        if (entriesToUpsert.size() > 10000){
-            Database.executeBatch(new GenericBatchDMLOperation(entriesToUpsert, 'Upsert'));
-        } else {
-            upsert entriesToUpsert External_Id__c;
-        }
-        Logger.flushLogs();
     }
 
-    private static Case createRecItem(String actionType, String message){
+    private void checkForUpdatesAndDeletions(Map<String, Journal_Entry__c> zuoraEntriesToUpsert, Journal_Entry__c sfEntry, Date periodCloseDate){
+        Boolean inUpsertList = zuoraEntriesToUpsert.containsKey(sfEntry.External_Id__c);
+        Boolean inClosedPeriod = sfEntry.Date__c <= periodCloseDate;
+
+        if (inUpsertList && inClosedPeriod) {
+            // Attempting to Update a SF Record in a Closed Period
+            // Only log error if data in a closed period would be changing
+            Journal_Entry__c zuoraRecord = zuoraEntriesToUpsert.get(sfEntry.External_Id__c);
+            if (!entriesMatch(sfEntry, zuoraRecord)) {
+                reconciliationItems.add(createRecItem('Update', JSON.serialize(sfEntry) + JSON.serialize(zuoraRecord)));
+            }
+            zuoraEntriesToUpsert.remove(sfEntry.External_Id__c);
+        } else if (!inUpsertList && inClosedPeriod) {
+            // We expected to see closed period SF records in Zuora, but they do not exist:
+            reconciliationItems.add(createRecItem('Delete', JSON.serialize(sfEntry)));
+        } else if (!inUpsertList) {
+            // If SF record is still in an open period, but no longer exists in Zuora, delete it:
+            entriesSafeToDelete.add(sfEntry);
+        } else {
+            // Records that are inUpsertList and !inClosedPeriod: safe to upsert, so continue
+        }
+    }
+
+    private void checkForInsertions(Journal_Entry__c zuoraEntry, Date periodCloseDate){
+        if (zuoraEntry.Date__c > periodCloseDate) {
+            entriesToUpsert.add(zuoraEntry);
+        } else {
+            reconciliationItems.add(createRecItem('Insert', JSON.serialize(zuoraEntry)));
+        }
+    }
+
+    private Case createRecItem(String actionType, String message){
         CaseFactory caseFactory = new CaseFactory();
         Case newCase = caseFactory.getCase('Data_Ops');
         newCase.Subject = 'Attempted Journal Entry ' + actionType + ' in Closed Period';
@@ -238,7 +261,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         return newCase;
     }
 
-    private static Boolean entriesMatch(Journal_Entry__c sfEntry, Journal_Entry__c zuoraEntry){
+    private Boolean entriesMatch(Journal_Entry__c sfEntry, Journal_Entry__c zuoraEntry){
         Boolean isMatch = true;
         if (sfEntry.Amount__c != zuoraEntry.Amount__c
             || sfEntry.Date__c != zuoraEntry.Date__c
