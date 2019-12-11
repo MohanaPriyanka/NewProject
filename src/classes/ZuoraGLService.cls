@@ -55,7 +55,9 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
                 ZuoraAPI.AccountingPeriod lastAccountingPeriod = (ZuoraAPI.AccountingPeriod) System.JSON.deserialize(response, ZuoraAPI.AccountingPeriod.class);
                 String queryString = ZuoraGLSelector.getInvoiceItems(method.startDate, method.endDate);
                 method.methodName = 'InvoiceItem';
-                method.periodCloseDate = lastAccountingPeriod.EndDate;
+                Map<String,Date> optionalDates = new Map<String,Date>();
+                optionalDates.put('PeriodCloseDate',lastAccountingPeriod.EndDate);
+                method.optionalDates = optionalDates;
                 ZuoraDataQueryService.callFromApex(queryString, method);
             }
             when 'InvoiceItem' {
@@ -97,7 +99,8 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
 
         List<Journal_Entry__c> sfEntries = ZuoraGLSelector.getSFJournalEntries(method.startDate,method.endDate,method.methodName);
         // Sets entriesSafeToDelete, reconciliationItems and entriesToUpsert:
-        checkForClosedPeriodUpdates(zuoraJournalEntries,sfEntries,method.periodCloseDate);
+        Date periodCloseDate = method.optionalDates.get('PeriodCloseDate');
+        checkForClosedPeriodUpdates(zuoraJournalEntries,sfEntries,periodCloseDate);
 
         if (entriesSafeToDelete.size() > 0){
             delete entriesSafeToDelete;

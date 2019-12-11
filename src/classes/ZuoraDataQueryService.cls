@@ -7,21 +7,21 @@ Tested By: ZuoraDataQueryServiceTest
 // ZuoraDataQueryService and ZuoraDataQueryAsyncService, its hard to mark many as private:
 @SuppressWarnings('PMD.ApexCRUDViolation, PMD.ExcessivePublicCount')
 public without sharing class ZuoraDataQueryService implements Schedulable{
-    public class DataQuery {
-        public String compression;
-        public DataQueryOutput output;
-        public String outputFormat;
-        public String query;
+    private class DataQuery {
+        private String compression;
+        private DataQueryOutput output;
+        private String outputFormat;
+        private String query;
     }
 
-    public class DataQueryOutput {
-        public String target;
+    private class DataQueryOutput {
+        private String target;
     }
 
     public class DataQueryResult {
         public DataQueryData data;
-        public String code;
-        public String message;
+        private String code;
+        private String message;
 
         public String getDataFromDataQuery(){
             HttpRequest request = new HttpRequest();
@@ -55,7 +55,7 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
         public String methodName;
         public Date startDate;
         public Date endDate;
-        public Date periodCloseDate;
+        public Map<String,Date> optionalDates;
         public Set<Id> recordIds;
     }
 

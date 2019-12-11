@@ -104,7 +104,9 @@ public class ZuoraGLServiceTest {
         ZuoraDataQueryService.ProcessingParameter methodToRunAfter = new ZuoraDataQueryService.ProcessingParameter();
         methodToRunAfter.className = 'ZuoraGLService';
         methodToRunAfter.methodName = 'InvoiceItem';
-        methodToRunAfter.periodCloseDate = Date.newInstance(2016,01,01);
+        Map<String,Date> optionalDates = new Map<String,Date>();
+        optionalDates.put('PeriodCloseDate',Date.newInstance(2016,01,01));
+        methodToRunAfter.optionalDates = optionalDates;
 
         ZuoraDataQueryService.DataQueryRequest queryRequest = new ZuoraDataQueryService.DataQueryRequest();
         queryRequest.queryString = null;
@@ -151,7 +153,9 @@ public class ZuoraGLServiceTest {
         ZuoraDataQueryService.ProcessingParameter methodToRunAfter = new ZuoraDataQueryService.ProcessingParameter();
         methodToRunAfter.className = 'ZuoraGLService';
         methodToRunAfter.methodName = 'DebitMemo';
-        methodToRunAfter.periodCloseDate = Date.newInstance(2016,01,01);
+        Map<String,Date> optionalDates = new Map<String,Date>();
+        optionalDates.put('PeriodCloseDate',Date.newInstance(2016,01,01));
+        methodToRunAfter.optionalDates = optionalDates;
 
         ZuoraDataQueryService.DataQueryRequest queryRequest = new ZuoraDataQueryService.DataQueryRequest();
         queryRequest.queryString = null;
@@ -189,7 +193,9 @@ public class ZuoraGLServiceTest {
         ZuoraDataQueryService.ProcessingParameter methodToRunAfter = new ZuoraDataQueryService.ProcessingParameter();
         methodToRunAfter.className = 'ZuoraGLService';
         methodToRunAfter.methodName = 'CreditMemo';
-        methodToRunAfter.periodCloseDate = Date.newInstance(2016,01,01);
+        Map<String,Date> optionalDates = new Map<String,Date>();
+        optionalDates.put('PeriodCloseDate',Date.newInstance(2016,01,01));
+        methodToRunAfter.optionalDates = optionalDates;
 
         ZuoraDataQueryService.DataQueryRequest queryRequest = new ZuoraDataQueryService.DataQueryRequest();
         queryRequest.queryString = null;
@@ -234,7 +240,9 @@ public class ZuoraGLServiceTest {
         ZuoraDataQueryService.ProcessingParameter methodToRunAfter = new ZuoraDataQueryService.ProcessingParameter();
         methodToRunAfter.className = 'ZuoraGLService';
         methodToRunAfter.methodName = 'PaymentPart_DM';
-        methodToRunAfter.periodCloseDate = Date.newInstance(2016,01,01);
+        Map<String,Date> optionalDates = new Map<String,Date>();
+        optionalDates.put('PeriodCloseDate',Date.newInstance(2016,01,01));
+        methodToRunAfter.optionalDates = optionalDates;
 
         ZuoraDataQueryService.DataQueryRequest queryRequest = new ZuoraDataQueryService.DataQueryRequest();
         queryRequest.queryString = null;
@@ -352,7 +360,9 @@ public class ZuoraGLServiceTest {
         // Get data from 10/1/19 to 11/30/19, but accounting period up to 10/31/2019 is closed
         methodToRunAfter.startDate = Date.newInstance(2019,10,01);
         methodToRunAfter.endDate = Date.newInstance(2019,11,30);
-        methodToRunAfter.periodCloseDate = Date.newInstance(2019,10,31);
+        Map<String,Date> optionalDates = new Map<String,Date>();
+        optionalDates.put('PeriodCloseDate',Date.newInstance(2019,10,31));
+        methodToRunAfter.optionalDates = optionalDates;
 
         // Data Query Returns 4 Records = 2 from closed period, 1 to insert, 1 to update:
         String dataQueryMock = '[' +
@@ -392,7 +402,6 @@ public class ZuoraGLServiceTest {
             if (entry.External_Id__c == '2c92c0fb6c8afb4e016c926615190873'
                 || entry.External_Id__c == '2c92c0fb6c8afb4e016c926615190811'){
                 // Period is closed, so customer account should NOT change:
-                system.debug(entry.External_Id__c);
                 System.assertEquals('BW-ValueAlreadyInSF',entry.Customer_Account__c);
                 countOfChecks += 1;
             } else if (entry.External_Id__c == '2c92c0fb6c8afb4e016c926615190874'){
