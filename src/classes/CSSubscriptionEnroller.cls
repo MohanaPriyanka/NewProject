@@ -259,7 +259,8 @@ public without sharing class CSSubscriptionEnroller {
                 oppContactRoleList.add(new OpportunityContactRole(
                         OpportunityId = opp.Id,
                         ContactId = c.Id,
-                        Role = 'Customer'
+                        Role = 'Customer',
+                        IsPrimary = true
                 ));
             }
         }
