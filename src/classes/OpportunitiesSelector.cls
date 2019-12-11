@@ -3,8 +3,8 @@
  * Description: Can extend fflib_SObjectSelector
  * Test: OpportunitiesSelectorTest
  *************************************************************************************/
-
-public class OpportunitiesSelector {
+@SuppressWarnings('PMD.ApexCRUDViolation')
+public without sharing class OpportunitiesSelector {
     // To be used when cancelling opportunities, so we also exclude Anchors and Public Offtake
     public static List<Opportunity> selectAllCompleteCSWithUASesAndSystemBills() {
         return [
@@ -26,5 +26,14 @@ public class OpportunitiesSelector {
             WHERE Id = : opportunityId
             LIMIT 1
         ];
+    }
+
+    public static Map<Id, Opportunity> selectOpportunityMap(Set<Id> oppIds) {
+        Map<Id, Opportunity> oppMap = new Map<Id, Opportunity>([
+            SELECT Id, Shared_Solar_System__c
+            FROM Opportunity
+            WHERE Id IN :oppIds
+        ]);
+        return oppMap;
     }
 }

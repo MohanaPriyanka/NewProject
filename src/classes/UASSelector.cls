@@ -3,8 +3,8 @@
  * Description: 
  * Tested By: UASSelectorTest
  *************************************************************************************/
-
-public class UASSelector {
+@SuppressWarnings('PMD.ApexCRUDViolation')
+public without sharing class UASSelector {
     public static List<Utility_Account_Subscription__c> selectByAccounts(Set<Id> accounts) {
         return [
             SELECT Id,
@@ -43,7 +43,8 @@ public class UASSelector {
                 Name,
                 Opportunity__c,
                 Opportunity__r.Id,
-                Opportunity__r.Shared_Solar_System__r.Id
+                Opportunity__r.Shared_Solar_System__r.Id,
+                Shared_Solar_System__c
             FROM Utility_Account_Subscription__c
             WHERE Id IN :uasIds
         ];

@@ -236,7 +236,7 @@
         <fields>NAME</fields>
         <fields>Zuora__PaymentMethod__c</fields>
         <fields>Zuora__Effective_Date__c</fields>
-        <fields>Zuora__Status__c</fields>
+        <fields>Payment_Status__c</fields>
         <fields>Zuora__Amount__c</fields>
         <fields>Zuora__SubmittedOn__c</fields>
         <fields>Zuora__GatewayStatus__c</fields>
