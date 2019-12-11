@@ -197,13 +197,12 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
                     zuoraEntriesToUpsert.remove(sfEntry.External_Id__c);
                 } else if (!inUpsertList && inClosedPeriod) {
                     // We expected to see closed period SF records in Zuora, but they were not:
-                    reconciliationItems.add(createRecItem('Delete', JSON.serialize(sfEntry) + JSON.serialize(inUpsertList)));
+                    reconciliationItems.add(createRecItem('Delete', JSON.serialize(sfEntry)));
                 } else if (!inUpsertList) {
                     // If SF record is still in an open period, but no longer exists in Zuora, delete it:
                     entriesSafeToDelete.add(sfEntry);
                 }
             }
-
         }
         for (Journal_Entry__c zuoraEntry : zuoraEntriesToUpsert.values()) {
             // Final catch for records in Zuora that are not in SF, but are in a closed period:

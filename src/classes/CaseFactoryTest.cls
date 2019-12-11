@@ -14,7 +14,7 @@ public with sharing class CaseFactoryTest {
             LIMIT 1
         ];
 
-        Group ProductQueueID = [
+        Group productQueueID = [
             SELECT Id, DeveloperName
             FROM Group
             WHERE Type = 'Queue'
@@ -26,7 +26,7 @@ public with sharing class CaseFactoryTest {
         Case testCase = caseFactory.getCase('Product_Support');
 
         System.assertEquals(productSupport.Id, testCase.RecordTypeId);
-        System.assertEquals(ProductQueueID.Id, testCase.OwnerId);
+        System.assertEquals(productQueueID.Id, testCase.OwnerId);
     }
 
     @IsTest
@@ -38,7 +38,7 @@ public with sharing class CaseFactoryTest {
             LIMIT 1
         ];
 
-        Group CustomerCareQueueID = [
+        Group customerCareQueueID = [
             SELECT Id, DeveloperName
             FROM Group
             WHERE Type = 'Queue'
@@ -51,7 +51,7 @@ public with sharing class CaseFactoryTest {
         Case testCase = caseFactory.getCase('Customer_Care');
 
         System.assertEquals(customerCare.Id, testCase.RecordTypeId);
-        System.assertEquals(CustomerCareQueueID.Id, testCase.OwnerId);
+        System.assertEquals(customerCareQueueID.Id, testCase.OwnerId);
     }
 
     @IsTest
@@ -63,7 +63,7 @@ public with sharing class CaseFactoryTest {
             LIMIT 1
         ];
 
-        Group CollectionsQueue = [
+        Group collectionsQueue = [
             SELECT Id, DeveloperName
             FROM Group
             WHERE Type = 'Queue'
@@ -75,7 +75,7 @@ public with sharing class CaseFactoryTest {
         Case testCase = caseFactory.getCase('Collections');
 
         System.assertEquals(customerCare.Id, testCase.RecordTypeId);
-        System.assertEquals(CollectionsQueue.Id, testCase.OwnerId);
+        System.assertEquals(collectionsQueue.Id, testCase.OwnerId);
     }
 
     @IsTest
@@ -87,7 +87,7 @@ public with sharing class CaseFactoryTest {
             LIMIT 1
         ];
 
-        Group CollectionsQueue = [
+        Group dataOpsQueue = [
             SELECT Id, DeveloperName
             FROM Group
             WHERE Type = 'Queue'
@@ -99,7 +99,7 @@ public with sharing class CaseFactoryTest {
         Case testCase = caseFactory.getCase('Data_Ops');
 
         System.assertEquals(customerCare.Id, testCase.RecordTypeId);
-        System.assertEquals(CollectionsQueue.Id, testCase.OwnerId);
+        System.assertEquals(dataOpsQueue.Id, testCase.OwnerId);
     }
 
     @IsTest

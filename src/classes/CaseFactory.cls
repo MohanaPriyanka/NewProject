@@ -15,7 +15,12 @@ public without sharing class CaseFactory {
     public static Group dataOpsQueue;
     public static Case newCase;
 
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     public CaseFactory() {
+        queryForRecordTypesAndQueues();
+    }
+
+    public void queryForRecordTypesAndQueues(){
         if (customerCare == null || productSupport == null) {
             List<RecordType> caseRecordTypes = [
                 SELECT Id, Name
