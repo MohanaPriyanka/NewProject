@@ -247,7 +247,6 @@ public without sharing class CSSubscriptionEnroller {
             accountIdToContactMap.put(opp.Parent_Account_ID__c, new List<Contact>());
         }
 
-        System.debug('Checking accountIdToContactMap.keySet()' + accountIdToContactMap.keySet());
         for (Contact con : [SELECT Id, AccountId FROM Contact WHERE AccountId IN :accountIdToContactMap.keySet()]) {
             List<Contact> contactList = accountIdToContactMap.get(con.AccountId);
             contactList.add(con);
