@@ -101,6 +101,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         for (GeneralLedgerItem ledger : ledgerItems){
             Journal_Entry__c entry = new Journal_Entry__c();
             entry.Object_Type__c = objectType;
+            entry.Query_Type__c = method.methodName;
             entry.Project__c = ledger.Project;
             entry.Client__c = ledger.Client;
             entry.Amount__c = ledger.Amount;
@@ -177,7 +178,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
     }
 
     public void upsertJournalEntries(Map<String, Journal_Entry__c> zuoraEntriesToUpsert, ZuoraDataQueryService.ProcessingParameter method){
-        List<Journal_Entry__c> sfEntries = ZuoraGLSelector.getSFJournalEntries(method.startDate,method.endDate);
+        List<Journal_Entry__c> sfEntries = ZuoraGLSelector.getSFJournalEntries(method.startDate,method.endDate,method.methodName);
         List<Journal_Entry__c> entriesSafeToDelete = new List<Journal_Entry__c>();
         List<Journal_Entry__c> entriesToUpsert  = new List<Journal_Entry__c>();
         List<Case> reconciliationItems = new List<Case>();
@@ -194,9 +195,9 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
                     }
                     // Don't update records in closed period:
                     zuoraEntriesToUpsert.remove(sfEntry.External_Id__c);
-                } else if (inClosedPeriod) {
+                } else if (!inUpsertList && inClosedPeriod) {
                     // We expected to see closed period SF records in Zuora, but they were not:
-                    reconciliationItems.add(createRecItem('Delete', JSON.serialize(sfEntry)));
+                    reconciliationItems.add(createRecItem('Delete', JSON.serialize(sfEntry) + JSON.serialize(inUpsertList)));
                 } else if (!inUpsertList) {
                     // If SF record is still in an open period, but no longer exists in Zuora, delete it:
                     entriesSafeToDelete.add(sfEntry);

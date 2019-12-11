@@ -304,6 +304,7 @@ public class ZuoraGLServiceTest {
         attemptedDelete.Paid_To_Client__c = 'BW-ValueAlreadyInSF';
         attemptedDelete.Deposit_Account__c = 'BW_Trust';
         attemptedDelete.Object_Type__c = 'CreditMemo';
+        attemptedDelete.Query_Type__c = 'CreditMemo';
         attemptedDelete.External_Id__c = '2c92c0fb6c8afb4e016c926615190811';
 
         Journal_Entry__c entryInClosedPeriod = new Journal_Entry__c();
@@ -315,6 +316,7 @@ public class ZuoraGLServiceTest {
         entryInClosedPeriod.Paid_To_Client__c = 'BW-ValueAlreadyInSF';
         entryInClosedPeriod.Deposit_Account__c = 'BW_Trust';
         entryInClosedPeriod.Object_Type__c = 'CreditMemo';
+        entryInClosedPeriod.Query_Type__c = 'CreditMemo';
         entryInClosedPeriod.External_Id__c = '2c92c0fb6c8afb4e016c926615190873';
 
         Journal_Entry__c entryInOpenPeriod = new Journal_Entry__c();
@@ -326,6 +328,7 @@ public class ZuoraGLServiceTest {
         entryInOpenPeriod.Paid_To_Client__c = 'BW-ValueAlreadyInSF';
         entryInOpenPeriod.Deposit_Account__c = 'BW_Trust';
         entryInOpenPeriod.Object_Type__c = 'CreditMemo';
+        entryInOpenPeriod.Query_Type__c = 'CreditMemo';
         entryInOpenPeriod.External_Id__c = '2c92c0fb6c8afb4e016c926615190874';
 
         insert new List<Journal_Entry__c>{attemptedDelete, entryInOpenPeriod, entryInClosedPeriod};

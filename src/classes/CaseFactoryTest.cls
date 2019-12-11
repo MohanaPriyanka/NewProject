@@ -83,7 +83,7 @@ public with sharing class CaseFactoryTest {
         RecordType customerCare = [
             SELECT Id, Name
             FROM RecordType
-            Where SobjectType = 'Case' and DeveloperName = 'Data_Ops'
+            Where SobjectType = 'Case' and DeveloperName = 'Customer_Care'
             LIMIT 1
         ];
 
