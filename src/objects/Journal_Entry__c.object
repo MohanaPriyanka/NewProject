@@ -356,6 +356,46 @@ Text(Object_Type__c),
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Query_Type__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>When we download data from Zuora, we use 5 different types of queries. Same as object type, but query for Payment Parts applied to Debit Memos and those applied to Invoices separately</inlineHelpText>
+        <label>Query Type</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>InvoiceItem</fullName>
+                    <default>false</default>
+                    <label>InvoiceItem</label>
+                </value>
+                <value>
+                    <fullName>CreditMemo</fullName>
+                    <default>false</default>
+                    <label>CreditMemo</label>
+                </value>
+                <value>
+                    <fullName>DebitMemo</fullName>
+                    <default>false</default>
+                    <label>DebitMemo</label>
+                </value>
+                <value>
+                    <fullName>PaymentPart_DM</fullName>
+                    <default>false</default>
+                    <label>PaymentPart_DM</label>
+                </value>
+                <value>
+                    <fullName>PaymentPart_IV</fullName>
+                    <default>false</default>
+                    <label>PaymentPart_IV</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Reason_Code__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Debit and Credit Memos Only, Equivalent to Adjustment Type in SF</inlineHelpText>
