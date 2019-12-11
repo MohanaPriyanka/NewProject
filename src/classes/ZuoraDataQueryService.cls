@@ -56,6 +56,7 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
         public Date startDate;
         public Date endDate;
         public Set<Id> recordIds;
+        public Map<String, Integer> optionalIntegers;
     }
 
     public interface Processor {
@@ -160,7 +161,7 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
         try {
             // Zuora's response isn't true JSON, so we have to modify to be able to deserialize:
             response = response.replace('}','},');
-            response = response.substring(0,response.length()-1);
+            response = response.removeEnd(',');
             response = '[' + response + ']';
             response = response.replace('__c','_Zcustom');
 

@@ -4,9 +4,10 @@
  */
 
 public with sharing class ZuoraPaymentSelector {
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     public List<Zuora__Payment__c> selectById(Set<Id> ids) {
-        if (!Schema.sObjectType.Zuora__Payment__c.isQueryable() ||
-            !Schema.sObjectType.Zuora__Payment__c.fields.Zuora__EXT_ID__c.isAccessible()) {
+        if (!Schema.SObjectType.Zuora__Payment__c.isQueryable() ||
+            !Schema.SObjectType.Zuora__Payment__c.fields.Zuora__EXT_ID__c.isAccessible()) {
             throw new Util.FatalBWException('Insufficient permissions');
         }
         return [
@@ -20,6 +21,7 @@ public with sharing class ZuoraPaymentSelector {
         ];
     }
 
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     public static List<Zuora__Payment__c> selectByAccount(List<Id> propertyAccountIds) {
         List<Zuora__Payment__c> zuoraPayments = [
             SELECT Id, Name,
@@ -49,5 +51,28 @@ public with sharing class ZuoraPaymentSelector {
             'AND p.Status != \'Processed\' ' +
             'AND pr.ExecutedDate > TIMESTAMP \'' + startDatetime.formatGmt('YYYY-MM-dd HH:mm:ss') + '\'' +
             'AND pr.ExecutedDate < TIMESTAMP \'' + endDatetime.formatGmt('YYYY-MM-dd HH:mm:ss') + '\'';
+    }
+
+    public static String selectPaymentsNotMarkedAsReturned(List<String> gatewayIds) {
+        String fields = 'Id, Amount, ResponseStatus__c, ReferenceId, ArchivedChargentData__c';
+        String tables = 'Payment';
+        String gatewayConditions = '';
+        for (Integer i = 0; i < gatewayIds.size(); i++) {
+            String gatewayId = gatewayIds[i];
+            gatewayConditions += 'ReferenceId = \''+gatewayId +'\' OR ArchivedChargentData__c LIKE \'%'+gatewayId+'%\'\n';
+            if (i < gatewayIds.size() - 1) {
+                gatewayConditions += ' OR ';
+            }
+        }
+        String conditions = '(ResponseStatus__c != \'Returned\' OR ResponseStatus__c IS NULL) \nAND (' + gatewayConditions + ')';
+
+        String result = 'SELECT ' + fields + ' \n' +
+            'FROM ' + tables + ' \n' +
+            'WHERE ' + conditions;
+        return result;
+    }
+
+    public static String selectElectronicPaymentsFromDate(Datetime startDate) {
+        return 'SELECT Id FROM Payment WHERE Type = \'Electronic\' AND EffectiveDate > ' + startDate.format('yyyy-MM-dd');
     }
 }
