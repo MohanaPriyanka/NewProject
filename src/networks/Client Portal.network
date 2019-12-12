@@ -68,6 +68,7 @@
         <permissionSet>Manage_External_Users</permissionSet>
         <profile>admin</profile>
         <profile>cs client partner login</profile>
+        <profile>cs client partner login_gsrp</profile>
     </networkMemberGroups>
     <networkPageOverrides>
         <changePasswordPageOverrideSetting>Standard</changePasswordPageOverrideSetting>
