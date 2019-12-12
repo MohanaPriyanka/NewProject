@@ -14203,14 +14203,14 @@
         <name>Underwriting_Permission</name>
     </customPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>API_Credential__c.Credential_Id__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>API_Credential__c.Credential_Secret__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -65255,13 +65255,13 @@
         <layout>Zuora_Setting__mdt-Zuora Setting Layout</layout>
     </layoutAssignments>
     <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
         <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>API_Credential__c</object>
-        <viewAllRecords>true</viewAllRecords>
+        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
@@ -76086,20 +76086,8 @@
         <name>ActivitiesAccess</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>AddAnalyticsRemoteConnections</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>AddDirectMessageMembers</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>AdminAnalyticsUser</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>AllowEmailIC</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -76126,20 +76114,12 @@
         <name>ApiEnabled</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>ApiUserOnly</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>ApproveContract</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
         <name>ArchiveArticles</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>AssignPermissionSets</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -76150,18 +76130,6 @@
         <name>AssignUserToSkill</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>AuthorApex</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>AutomaticActivityCapture</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>BulkApiHardDelete</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>BulkMacrosAllowed</name>
     </userPermissions>
@@ -76170,28 +76138,12 @@
         <name>BypassEmailApproval</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>CampaignInfluence2</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>CanApproveFeedPost</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>CanEditDataPrepRecipe</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>CanEditPrompts</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
         <name>CanInsertFeedSystemFields</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>CanManageMaps</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -76238,24 +76190,8 @@
         <name>ChatterOwnGroups</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>CloseConversations</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ConfigCustomRecs</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>ConnectOrgToEnvironmentHub</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ContentAdministrator</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ContentHubUser</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -76264,10 +76200,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ConvertLeads</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>CreateAuditFields</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -76318,24 +76250,8 @@
         <name>CreateWorkspaces</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>CustomMobileAppsAccess</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>CustomSidebarOnAllPages</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>CustomizeApplication</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>DataExport</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>DelegatedPortalUserAdmin</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -76434,14 +76350,6 @@
         <name>ExportReport</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>FeedPinning</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ForceTwoFactor</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>GiveRecognitionBadge</name>
     </userPermissions>
@@ -76450,64 +76358,12 @@
         <name>GovernNetworks</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>HasUnlimitedNBAExecutions</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>HideReadByList</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>IdentityConnect</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>IdentityEnabled</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ImportCustomObjects</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>ImportLeads</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
         <name>ImportPersonal</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>InboundMigrationToolsUser</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>InsightsAppAdmin</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>InsightsAppDashboardEditor</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>InsightsAppEltEditor</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>InsightsAppUploadUser</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>InsightsAppUser</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>InsightsCreateApplication</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>LMOutboundMessagingUserPerm</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -76522,16 +76378,8 @@
         <name>ListEmailSend</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>LtngPromoReserved01UserPerm</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>ManageAnalyticSnapshots</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageAuthProviders</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -76554,28 +76402,12 @@
         <name>ManageCertificates</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageChatterMessages</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>ManageContentPermissions</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageContentProperties</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageContentTypes</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>ManageCssUsers</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageCustomPermissions</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -76610,18 +76442,6 @@
         <name>ManageHealthCheck</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageInteraction</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageInternalUsers</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageIpAddresses</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>ManageKnowledge</name>
     </userPermissions>
@@ -76632,10 +76452,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ManageLeads</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageLoginAccessPolicies</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -76654,14 +76470,6 @@
         <name>ManagePartners</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>ManagePasswordPolicies</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageProfilesPermissionsets</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>ManagePropositions</name>
     </userPermissions>
@@ -76678,28 +76486,12 @@
         <name>ManageRecommendationStrategies</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageRemoteAccess</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>ManageReportsInPubFolders</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageRoles</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>ManageSearchPromotionRules</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageSessionPermissionSets</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageSharing</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -76710,28 +76502,12 @@
         <name>ManageSubscriptions</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageSurveys</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>ManageSynonyms</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageTemplatedApp</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageTwoFactor</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>ManageUnlistedGroups</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ManageUsers</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -76746,28 +76522,8 @@
         <name>ModerateChatter</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>ModerateNetworkFeeds</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ModerateNetworkFiles</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ModerateNetworkMessages</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>ModerateNetworkUsers</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ModifyAllData</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ModifyDataClassification</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -76786,22 +76542,6 @@
         <name>OverrideForecasts</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>Packaging2</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>PasswordNeverExpires</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>PortalSuperUser</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>PreventClassicExperience</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>PrivacyDataAccess</name>
     </userPermissions>
@@ -76812,14 +76552,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>PublishTranslation</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>QueryAllFiles</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>RecordVisibilityAPI</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -76836,14 +76568,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>RunReports</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>SalesConsole</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>SandboxTestingInCommunityApp</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -76880,10 +76604,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>SolutionImport</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>StdAutomaticActivityCapture</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -76938,36 +76658,16 @@
         <name>TransferAnyLead</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>TwoFactorApi</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>UpdateWithInactiveOwner</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>UseTeamReassignWizards</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>UseTemplatedApp</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
         <name>UseWebLink</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewAllActivities</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>ViewAllCustomSettings</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewAllData</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -76982,14 +76682,6 @@
         <name>ViewCaseInteraction</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewContent</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewCustomerSentiment</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>ViewDataAssessment</name>
     </userPermissions>
@@ -76998,20 +76690,8 @@
         <name>ViewDataCategories</name>
     </userPermissions>
     <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewEncryptedData</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewEventLogFiles</name>
-    </userPermissions>
-    <userPermissions>
         <enabled>true</enabled>
         <name>ViewFlowUsageAndFlowEventData</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewGlobalHeader</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -77024,14 +76704,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ViewMyTeamsDashboards</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewOnlyEmbeddedAppUser</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>ViewPrivateStaticResources</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
@@ -77052,17 +76724,5 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ViewUserPII</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>WaveManagePrivateAssetsUser</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>WaveTabularDownload</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>false</enabled>
-        <name>WaveTrendReports</name>
     </userPermissions>
 </Profile>
