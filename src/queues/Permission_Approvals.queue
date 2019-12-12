@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Queue xmlns="http://soap.sforce.com/2006/04/metadata">
-    <doesSendEmailToMembers>true</doesSendEmailToMembers>
-    <name>Biz Apps - Servicing</name>
+    <doesSendEmailToMembers>false</doesSendEmailToMembers>
+    <name>Permission Approvals</name>
     <queueMembers>
         <users>
+            <user>jbattles@bluewavesolar.com</user>
             <user>jpentaleri@bluewavesolar.com</user>
+            <user>lalexander@bluewavesolar.com</user>
             <user>nspeyer@bluewavesolar.com</user>
             <user>pyao@bluewavesolar.com</user>
+            <user>srenfro18@bluewavesolar.com</user>
         </users>
     </queueMembers>
     <queueSobject>
         <sobjectType>Case</sobjectType>
-    </queueSobject>
-    <queueSobject>
-        <sobjectType>copado__User_Story__c</sobjectType>
     </queueSobject>
 </Queue>

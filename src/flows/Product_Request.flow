@@ -62,8 +62,8 @@
     <assignments>
         <name>asgAssign_CS_Prod_Mgmt_variables</name>
         <label>Assign CS Prod Mgmt variables</label>
-        <locationX>364</locationX>
-        <locationY>653</locationY>
+        <locationX>649</locationX>
+        <locationY>693</locationY>
         <assignmentItems>
             <assignToReference>varSubject</assignToReference>
             <operator>Assign</operator>
@@ -83,45 +83,15 @@
         </connector>
     </assignments>
     <assignments>
-        <name>asgAssign_IT_variables</name>
-        <label>Assign IT variables</label>
-        <locationX>1007</locationX>
-        <locationY>788</locationY>
-        <assignmentItems>
-            <assignToReference>varDetails</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>inpDescription_IT</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varSubject</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>inpTitle_IT</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varProduct_tag</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>drcProductTag</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>rlRequestor_Email</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <name>asgAssign_Legal_variables</name>
         <label>Assign Legal variables</label>
-        <locationX>1797</locationX>
-        <locationY>760</locationY>
+        <locationX>1693</locationX>
+        <locationY>713</locationY>
         <assignmentItems>
             <assignToReference>varDueDateDescription</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>inpDelivery_Date_Reason_Legal</elementReference>
+                <elementReference>inp_Date_Reason_Legal</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -135,7 +105,7 @@
             <assignToReference>varDueDate</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>inpDelivery_Date_Legal</elementReference>
+                <elementReference>inp_Delivery_Date_Legal</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -254,57 +224,6 @@
         </connector>
     </assignments>
     <assignments>
-        <name>asgAssign_SW_variables</name>
-        <label>Assign SW variables</label>
-        <locationX>515</locationX>
-        <locationY>648</locationY>
-        <assignmentItems>
-            <assignToReference>varDueDateDescription</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>inpDue_Date_Desc_SW</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varDetails</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>inpReqDetail_SW</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varDueDate</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>inpReqDate_SW</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varStatus</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>New Submittal</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varSubject</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>inpTitle_SW</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varPriority</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>inpPriority_SW</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>rlRequestor_Email</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <name>asgAttachFiles</name>
         <label>asgAttachFiles</label>
         <locationX>892</locationX>
@@ -318,29 +237,6 @@
         </assignmentItems>
         <connector>
             <targetReference>scrAttachFiles</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>asgCivigEngagementWork</name>
-        <label>Assign CE variables</label>
-        <locationX>182</locationX>
-        <locationY>844</locationY>
-        <assignmentItems>
-            <assignToReference>varDetails</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>inpDescription_CE</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>varSubject</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>inpWork_Request_Title_CE</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>rlRequestor_Email</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -385,8 +281,8 @@
     <assignments>
         <name>asgOps_Variable_Assignments</name>
         <label>Assign Ops variables</label>
-        <locationX>751</locationX>
-        <locationY>713</locationY>
+        <locationX>988</locationX>
+        <locationY>772</locationY>
         <assignmentItems>
             <assignToReference>varDueDateDescription</assignToReference>
             <operator>Assign</operator>
@@ -436,8 +332,8 @@
     <assignments>
         <name>asgSet_Stage_to_Enter_Details</name>
         <label>Set Stage to Enter Details</label>
-        <locationX>1203</locationX>
-        <locationY>239</locationY>
+        <locationX>1148</locationX>
+        <locationY>175</locationY>
         <assignmentItems>
             <assignToReference>$Flow.CurrentStage</assignToReference>
             <operator>Assign</operator>
@@ -462,7 +358,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Is_this_a_Technology_team</targetReference>
+            <targetReference>scrWhat_team_is_this_request_for</targetReference>
         </connector>
     </assignments>
     <choices>
@@ -514,11 +410,27 @@
         </value>
     </choices>
     <choices>
+        <name>No_legal</name>
+        <choiceText>No</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>No</stringValue>
+        </value>
+    </choices>
+    <choices>
         <name>Urgent</name>
         <choiceText>Urgent</choiceText>
         <dataType>String</dataType>
         <value>
             <stringValue>Urgent</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Yes_legal</name>
+        <choiceText>Yes</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Yes</stringValue>
         </value>
     </choices>
     <decisions>
@@ -596,43 +508,6 @@
         </rules>
     </decisions>
     <decisions>
-        <name>decHardDelivDateLegal</name>
-        <label>decHardDelivDateLegal</label>
-        <locationX>1826</locationX>
-        <locationY>558</locationY>
-        <defaultConnectorLabel>[Default Outcome]</defaultConnectorLabel>
-        <rules>
-            <name>Hard_Date</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>varHardDelivDate_Legal</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>scrLegal_Work_Request_0</targetReference>
-            </connector>
-            <label>Yes, there is a hard date</label>
-        </rules>
-        <rules>
-            <name>No_there_is_not_a_hard_date</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>varHardDelivDate_Legal</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>asgAssign_Legal_variables</targetReference>
-            </connector>
-            <label>No, there is not a hard date</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>decWhat_team</name>
         <label>What team</label>
         <locationX>1163</locationX>
@@ -643,33 +518,12 @@
         <defaultConnectorLabel>[Default Outcome]</defaultConnectorLabel>
         <rules>
             <name>BizAppsTeam</name>
-            <conditionLogic>or</conditionLogic>
+            <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>inpWhat_team_is_this_request_for_tech</leftValueReference>
+                <leftValueReference>varFlowPath</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>BizApps</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>varTeamName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>UX Development</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>varTeamName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Technology - Originations</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>varTeamName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>IT</stringValue>
+                    <stringValue>Tech</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -681,10 +535,10 @@
             <name>decLegal_Work_Request</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>varTeamName</leftValueReference>
+                <leftValueReference>varFlowPath</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Legal &amp; Compliance</stringValue>
+                    <stringValue>Legal</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -696,7 +550,7 @@
             <name>decMarketing_Work_Request</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>varTeamName</leftValueReference>
+                <leftValueReference>varFlowPath</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Marketing</stringValue>
@@ -709,40 +563,12 @@
         </rules>
         <rules>
             <name>decOps_Work_Request</name>
-            <conditionLogic>or</conditionLogic>
+            <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>varTeamName</leftValueReference>
+                <leftValueReference>varFlowPath</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Support Operations</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>varTeamName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Client Operations</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>varTeamName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Business Operations</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>varTeamName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Data and Finance Operations</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>varTeamName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Accounting</stringValue>
+                    <stringValue>Ops</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -751,25 +577,10 @@
             <label>Ops Work Request</label>
         </rules>
         <rules>
-            <name>Civic_Engagement_Request</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>varTeamName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Civic Engagement</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>scrNotSetup</targetReference>
-            </connector>
-            <label>Civic Engagement Request</label>
-        </rules>
-        <rules>
             <name>Office_Management_Team</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>varTeamName</leftValueReference>
+                <leftValueReference>varFlowPath</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Office Management</stringValue>
@@ -781,35 +592,13 @@
             <label>Office Management Team</label>
         </rules>
         <rules>
-            <name>Skunkworks</name>
+            <name>outProduct_Management</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>varTeamName</leftValueReference>
+                <leftValueReference>varFlowPath</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Skunkworks</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Skunkworks_Work_Request</targetReference>
-            </connector>
-            <label>Skunkworks</label>
-        </rules>
-        <rules>
-            <name>outProduct_Management</name>
-            <conditionLogic>or</conditionLogic>
-            <conditions>
-                <leftValueReference>varTeamName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>CS Product Management</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>varTeamName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Client Product Management</stringValue>
+                    <stringValue>Product Management</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -818,68 +607,7 @@
             <label>Product Management</label>
         </rules>
     </decisions>
-    <decisions>
-        <description>Tech team decision is needed so that the BizApps teams can be combined into a single &quot;Business Applications&quot; choice.</description>
-        <name>Is_this_a_Technology_team</name>
-        <label>Is this a Technology team?</label>
-        <locationX>810</locationX>
-        <locationY>233</locationY>
-        <defaultConnector>
-            <targetReference>scrWhat_team_is_this_request_for</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Yes_it_s_a_tech_team</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>varCategory</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Technology</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>scrWhat_team_is_this_request_for_tech</targetReference>
-            </connector>
-            <label>Yes, it&apos;s a tech team</label>
-        </rules>
-    </decisions>
     <description>Flow used to create cases or work items for various BW teams</description>
-    <dynamicChoiceSets>
-        <name>drcBizAppsAcqAdmin</name>
-        <dataType>String</dataType>
-        <displayField>Name</displayField>
-        <filters>
-            <field>Team_Name__c</field>
-            <operator>StartsWith</operator>
-            <value>
-                <elementReference>inpWhat_team_is_this_request_for_tech</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>agf__Active__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </filters>
-        <object>agf__ADM_Product_Tag__c</object>
-        <outputAssignments>
-            <assignToReference>varProduct_tag</assignToReference>
-            <field>Id</field>
-        </outputAssignments>
-        <outputAssignments>
-            <assignToReference>varEmail_to_Case_Address</assignToReference>
-            <field>Team_Email_to_Case_Address__c</field>
-        </outputAssignments>
-        <outputAssignments>
-            <assignToReference>varTeamQueueID</assignToReference>
-            <field>Team_Queue_Id__c</field>
-        </outputAssignments>
-        <sortField>Name</sortField>
-        <sortOrder>Asc</sortOrder>
-        <valueField>Id</valueField>
-    </dynamicChoiceSets>
     <dynamicChoiceSets>
         <name>drcProductTag</name>
         <dataType>String</dataType>
@@ -960,6 +688,10 @@
             <field>Name</field>
         </outputAssignments>
         <outputAssignments>
+            <assignToReference>varFlowPath</assignToReference>
+            <field>WR_Flow_Path__c</field>
+        </outputAssignments>
+        <outputAssignments>
             <assignToReference>varTeamQueueID</assignToReference>
             <field>agf__Team_Queue_ID__c</field>
         </outputAssignments>
@@ -1031,7 +763,7 @@
             <targetReference>rlContentDocName</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>asgConfirmation</targetReference>
+            <targetReference>Get_Work_Details</targetReference>
         </noMoreValuesConnector>
     </loops>
     <processMetadataValues>
@@ -1045,8 +777,8 @@
         <description>Creates work for all request types</description>
         <name>rcCreate_Work</name>
         <label>Create Work - All request types</label>
-        <locationX>1485</locationX>
-        <locationY>1062</locationY>
+        <locationX>1414</locationX>
+        <locationY>992</locationY>
         <assignRecordIdToReference>varWorkId</assignRecordIdToReference>
         <connector>
             <targetReference>varFindChatterGroupId</targetReference>
@@ -1197,6 +929,50 @@
         <queriedFields>ContentDocumentId</queriedFields>
     </recordLookups>
     <recordLookups>
+        <name>Get_Product_Owner_Name</name>
+        <label>Get Product Owner Name</label>
+        <locationX>1140</locationX>
+        <locationY>1274</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>asgConfirmation</targetReference>
+        </connector>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varProductOwnerId</elementReference>
+            </value>
+        </filters>
+        <object>User</object>
+        <outputAssignments>
+            <assignToReference>varProductOwnerName</assignToReference>
+            <field>Name</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Work_Details</name>
+        <label>Get Work Details</label>
+        <locationX>922</locationX>
+        <locationY>1272</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Product_Owner_Name</targetReference>
+        </connector>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varWorkId</elementReference>
+            </value>
+        </filters>
+        <object>agf__ADM_Work__c</object>
+        <outputAssignments>
+            <assignToReference>varProductOwnerId</assignToReference>
+            <field>agf__Product_Owner__c</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
         <name>rlContentDocName</name>
         <label>Lookup Content Doc Name</label>
         <locationX>423</locationX>
@@ -1243,8 +1019,8 @@
     <recordLookups>
         <name>rlRequestor_Email</name>
         <label>rlRequestor_Email</label>
-        <locationX>1235</locationX>
-        <locationY>940</locationY>
+        <locationX>1196</locationX>
+        <locationY>941</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>rcCreate_Work</targetReference>
@@ -1414,68 +1190,10 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
-        <name>scrCE_Request</name>
-        <label>Civic Engagement Request</label>
-        <locationX>180</locationX>
-        <locationY>391</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <connector>
-            <targetReference>asgCivigEngagementWork</targetReference>
-        </connector>
-        <fields>
-            <name>ceStages</name>
-            <extensionName>c:BlueWaveFlowStagesField</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>currentStage</name>
-                <value>
-                    <elementReference>$Flow.CurrentStage</elementReference>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>stages</name>
-                <value>
-                    <elementReference>$Flow.ActiveStages</elementReference>
-                </value>
-            </inputParameters>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>dlRequest_Type_CE</name>
-            <choiceReferences>drcProductTag</choiceReferences>
-            <dataType>String</dataType>
-            <fieldText>Request Type</fieldText>
-            <fieldType>DropdownBox</fieldType>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>inpWork_Request_Title_CE</name>
-            <dataType>String</dataType>
-            <fieldText>Work Request Title</fieldText>
-            <fieldType>InputField</fieldType>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>inpDescription_CE</name>
-            <fieldText>Please describe your request in detail:</fieldText>
-            <fieldType>LargeTextArea</fieldType>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>Files_CE</name>
-            <fieldText>You&apos;ll be able to attach files in the next screen.</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
-    <screens>
         <name>scrCS_Product_Management</name>
         <label>Product Management</label>
-        <locationX>370</locationX>
-        <locationY>416</locationY>
+        <locationX>694</locationX>
+        <locationY>468</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1736,68 +1454,20 @@
             <fieldText>&lt;DIV ALIGN=&quot;LEFT&quot;&gt;Your {!forRequestType} has been created and can be viewed in Salesforce &lt;A HREF=&quot;/{!varWorkId}&quot; TARGET=&quot;_blank&quot;&gt;here.&lt;/A&gt;&lt;/DIV&gt;&lt;BR&gt;Attached Files: {!varFileNames}</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
-    <screens>
-        <name>scrIT_Work_Request</name>
-        <label>IT Suggestions</label>
-        <locationX>1007</locationX>
-        <locationY>612</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <connector>
-            <targetReference>asgAssign_IT_variables</targetReference>
-        </connector>
         <fields>
-            <name>itStages</name>
-            <extensionName>c:BlueWaveFlowStagesField</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>currentStage</name>
-                <value>
-                    <elementReference>$Flow.CurrentStage</elementReference>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>stages</name>
-                <value>
-                    <elementReference>$Flow.ActiveStages</elementReference>
-                </value>
-            </inputParameters>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>dispIT_Suggestion</name>
-            <fieldText>Please note this is for ideas/suggestions only. You should still contact GreenPages for any support requests.</fieldText>
+            <name>dispPrioritization</name>
+            <fieldText>&lt;p&gt;For questions about prioritization, please contact the Product Owner, {!varProductOwnerName}.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>inpTitle_IT</name>
-            <dataType>String</dataType>
-            <fieldText>Title</fieldText>
-            <fieldType>InputField</fieldType>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>inpDescription_IT</name>
-            <fieldText>Description</fieldText>
-            <fieldType>LargeTextArea</fieldType>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>inpType_IT</name>
-            <choiceReferences>drcProductTag</choiceReferences>
-            <dataType>String</dataType>
-            <fieldText>Type</fieldText>
-            <fieldType>DropdownBox</fieldType>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>Files_IT</name>
-            <fieldText>You&apos;ll be able to attach files in the next screen.</fieldText>
-            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>varTeamName</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <stringValue>BizApps</stringValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
@@ -1805,13 +1475,13 @@
     <screens>
         <name>scrLegal_Work_Request</name>
         <label>Legal &amp; Compliance Work Request</label>
-        <locationX>1525</locationX>
-        <locationY>546</locationY>
+        <locationX>1699</locationX>
+        <locationY>549</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>decHardDelivDateLegal</targetReference>
+            <targetReference>asgAssign_Legal_variables</targetReference>
         </connector>
         <fields>
             <name>lglStages</name>
@@ -1867,100 +1537,50 @@ P4 = Lowest Priority → P0 = Highest Priority</fieldText>
             <isRequired>true</isRequired>
         </fields>
         <fields>
-            <name>scrHardDeliveryDate</name>
-            <extensionName>flowruntime:toggle</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>label</name>
-                <value>
-                    <stringValue>Does this request have a hard delivery date? If so, we&apos;ll capture more details in the next screen.</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>messageToggleActive</name>
-                <value>
-                    <stringValue>Yes</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>messageToggleInactive</name>
-                <value>
-                    <stringValue>No</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>value</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </inputParameters>
+            <name>Does_this_request_have_a_hard_delivery_date</name>
+            <choiceReferences>Yes_legal</choiceReferences>
+            <choiceReferences>No_legal</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Does this request have a hard delivery date?</fieldText>
+            <fieldType>RadioButtons</fieldType>
             <isRequired>true</isRequired>
-            <outputParameters>
-                <assignToReference>varHardDelivDate_Legal</assignToReference>
-                <name>value</name>
-            </outputParameters>
+        </fields>
+        <fields>
+            <name>inp_Delivery_Date_Legal</name>
+            <dataType>Date</dataType>
+            <fieldText>What is the required/realistic delivery date for completing this work?</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>Does_this_request_have_a_hard_delivery_date</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <elementReference>Yes_legal</elementReference>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>inp_Date_Reason_Legal</name>
+            <fieldText>What is driving this delivery date?</fieldText>
+            <fieldType>LargeTextArea</fieldType>
+            <isRequired>true</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>Does_this_request_have_a_hard_delivery_date</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <elementReference>Yes_legal</elementReference>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
         </fields>
         <fields>
             <name>Files_Legal</name>
             <fieldText>You&apos;ll also be able to attach files in the next screen.</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
-    <screens>
-        <name>scrLegal_Work_Request_0</name>
-        <label>Legal &amp; Compliance Work Request</label>
-        <locationX>1586</locationX>
-        <locationY>671</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <connector>
-            <targetReference>asgAssign_Legal_variables</targetReference>
-        </connector>
-        <fields>
-            <name>lglStages_0</name>
-            <extensionName>c:BlueWaveFlowStagesField</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>currentStage</name>
-                <value>
-                    <elementReference>$Flow.CurrentStage</elementReference>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>stages</name>
-                <value>
-                    <elementReference>$Flow.ActiveStages</elementReference>
-                </value>
-            </inputParameters>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>inpDelivery_Date_Legal</name>
-            <dataType>Date</dataType>
-            <fieldText>What is the required/realistic delivery date for completing this work?</fieldText>
-            <fieldType>InputField</fieldType>
-            <isRequired>false</isRequired>
-            <validationRule>
-                <errorMessage>&lt;B&gt;Your requested delivery date must be in the future and a reason is required for the requested date.&lt;/B&gt;</errorMessage>
-                <formulaExpression>LEN({!inpDelivery_Date_Reason_Legal})&gt;1 &amp;&amp; {!inpDelivery_Date_Legal} &gt; TODAY()</formulaExpression>
-            </validationRule>
-        </fields>
-        <fields>
-            <name>inpDelivery_Date_Reason_Legal</name>
-            <fieldText>What is driving this delivery date?</fieldText>
-            <fieldType>LargeTextArea</fieldType>
-            <isRequired>false</isRequired>
-            <validationRule>
-                <errorMessage>Your text input must be less than 255 characters.</errorMessage>
-                <formulaExpression>LEN({!inpDelivery_Date_Reason_Legal}) &lt;255</formulaExpression>
-            </validationRule>
-        </fields>
-        <fields>
-            <name>Files_Legal_0</name>
-            <fieldText>You&apos;ll be able to attach files in the next screen.</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -2052,8 +1672,8 @@ You&apos;ll be able to attach files in the next screen.</fieldText>
     <screens>
         <name>scrNotSetup</name>
         <label>Team not setup</label>
-        <locationX>1481</locationX>
-        <locationY>229</locationY>
+        <locationX>1536</locationX>
+        <locationY>184</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -2068,8 +1688,8 @@ You&apos;ll be able to attach files in the next screen.</fieldText>
     <screens>
         <name>scrOffice_Request</name>
         <label>Office Management Work Request</label>
-        <locationX>1205</locationX>
-        <locationY>670</locationY>
+        <locationX>1158</locationX>
+        <locationY>601</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -2147,8 +1767,8 @@ You&apos;ll be able to attach files in the next screen.</fieldText>
     <screens>
         <name>scrOps_Work_Request</name>
         <label>Ops Work Request</label>
-        <locationX>738</locationX>
-        <locationY>499</locationY>
+        <locationX>974</locationX>
+        <locationY>531</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -2240,11 +1860,11 @@ P4 = This would be nice to have</helpText>
     <screens>
         <name>scrProduct_Team_Request</name>
         <label>Tech Team Request</label>
-        <locationX>1723</locationX>
-        <locationY>398</locationY>
+        <locationX>1726</locationX>
+        <locationY>382</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <connector>
             <targetReference>decBug_or_Improvement</targetReference>
         </connector>
@@ -2279,7 +1899,6 @@ P4 = This would be nice to have</helpText>
         <fields>
             <name>Product_selection</name>
             <choiceReferences>drcProductTag</choiceReferences>
-            <choiceReferences>drcBizAppsAcqAdmin</choiceReferences>
             <dataType>String</dataType>
             <fieldText>What&apos;s the best category for your request?</fieldText>
             <fieldType>DropdownBox</fieldType>
@@ -2291,8 +1910,8 @@ P4 = This would be nice to have</helpText>
     <screens>
         <name>scrWhat_team_is_this_request_for</name>
         <label>What team is this request for?</label>
-        <locationX>1049</locationX>
-        <locationY>293</locationY>
+        <locationX>811</locationX>
+        <locationY>213</locationY>
         <allowBack>true</allowBack>
         <allowFinish>false</allowFinish>
         <allowPause>false</allowPause>
@@ -2324,171 +1943,6 @@ P4 = This would be nice to have</helpText>
             <fieldText>What team is this work request for?</fieldText>
             <fieldType>DropdownBox</fieldType>
             <isRequired>true</isRequired>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
-    <screens>
-        <name>scrWhat_team_is_this_request_for_tech</name>
-        <label>What team is this request for?</label>
-        <locationX>1050</locationX>
-        <locationY>121</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>false</allowPause>
-        <connector>
-            <targetReference>asgSet_Stage_to_Enter_Details</targetReference>
-        </connector>
-        <fields>
-            <name>fsc_TechStage</name>
-            <extensionName>c:BlueWaveFlowStagesField</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>currentStage</name>
-                <value>
-                    <elementReference>$Flow.CurrentStage</elementReference>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>stages</name>
-                <value>
-                    <elementReference>$Flow.ActiveStages</elementReference>
-                </value>
-            </inputParameters>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>inpWhat_team_is_this_request_for_tech</name>
-            <choiceReferences>drcTeam</choiceReferences>
-            <choiceReferences>Business_Applications</choiceReferences>
-            <dataType>String</dataType>
-            <fieldText>What team is this request for?</fieldText>
-            <fieldType>DropdownBox</fieldType>
-            <isRequired>true</isRequired>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
-    <screens>
-        <name>Skunkworks_Work_Request</name>
-        <label>Skunkworks Work Request</label>
-        <locationX>536</locationX>
-        <locationY>432</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <connector>
-            <targetReference>asgAssign_SW_variables</targetReference>
-        </connector>
-        <fields>
-            <name>swStages</name>
-            <extensionName>c:BlueWaveFlowStagesField</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>currentStage</name>
-                <value>
-                    <elementReference>$Flow.CurrentStage</elementReference>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>stages</name>
-                <value>
-                    <elementReference>$Flow.ActiveStages</elementReference>
-                </value>
-            </inputParameters>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>inpTitle_SW</name>
-            <dataType>String</dataType>
-            <fieldText>Title</fieldText>
-            <fieldType>InputField</fieldType>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>dlTopic_SW</name>
-            <choiceReferences>drcProductTag</choiceReferences>
-            <dataType>String</dataType>
-            <fieldText>Topic</fieldText>
-            <fieldType>DropdownBox</fieldType>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>dispSWPriorities</name>
-            <fieldText>P4 = Lowest Priority → P0 = Highest Priority</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>inpPriority_SW</name>
-            <choiceReferences>pcPriority</choiceReferences>
-            <dataType>String</dataType>
-            <fieldText>Priority</fieldText>
-            <fieldType>DropdownBox</fieldType>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>inpReqDetail_SW</name>
-            <fieldText>Please describe your request in detail:</fieldText>
-            <fieldType>LargeTextArea</fieldType>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>inpRequestor_SW</name>
-            <extensionName>flowcomponents:lookupFSC</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>objectName</name>
-                <value>
-                    <stringValue>User</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>label</name>
-                <value>
-                    <stringValue>Requestor</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>required</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>whereClause</name>
-                <value>
-                    <stringValue>IsActive = TRUE AND License_Type__c = &apos;Standard&apos;</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>defaultValue</name>
-                <value>
-                    <elementReference>forCurrentUserName</elementReference>
-                </value>
-            </inputParameters>
-            <isRequired>true</isRequired>
-            <outputParameters>
-                <assignToReference>varRequestorId</assignToReference>
-                <name>selectedValue</name>
-            </outputParameters>
-        </fields>
-        <fields>
-            <name>inpReqDate_SW</name>
-            <dataType>Date</dataType>
-            <fieldText>When is the requested date?</fieldText>
-            <fieldType>InputField</fieldType>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>inpDue_Date_Desc_SW</name>
-            <fieldText>What is driving this due date?</fieldText>
-            <fieldType>LargeTextArea</fieldType>
-            <isRequired>false</isRequired>
-        </fields>
-        <fields>
-            <name>dispFiles_SW</name>
-            <fieldText>You&apos;ll be able to attach files in the next screen.</fieldText>
-            <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
@@ -2725,6 +2179,13 @@ Description: {!inpDescription_Legal}</text>
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>varFlowPath</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>varHardDelivDate_Legal</name>
         <dataType>Boolean</dataType>
         <isCollection>false</isCollection>
@@ -2740,6 +2201,20 @@ Description: {!inpDescription_Legal}</text>
     </variables>
     <variables>
         <name>varProduct_tag</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varProductOwnerId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varProductOwnerName</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
