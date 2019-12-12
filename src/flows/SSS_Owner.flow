@@ -469,7 +469,7 @@
             <label>Stage is Changed to Management</label>
         </rules>
     </decisions>
-    <interviewLabel>SSS_Owner-5_InterviewLabel</interviewLabel>
+    <interviewLabel>SSS_Owner-2_InterviewLabel</interviewLabel>
     <label>SSS: Create/Update</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -577,7 +577,7 @@
             </processMetadataValues>
             <field>OwnerId</field>
             <value>
-                <stringValue>00G21000002M5tjEAC</stringValue>
+                <stringValue>00G0a000003DYsxEAG</stringValue>
             </value>
         </inputAssignments>
         <object>Shared_Solar_System__c</object>
