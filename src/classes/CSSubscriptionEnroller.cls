@@ -33,28 +33,29 @@ public without sharing class CSSubscriptionEnroller {
             leadIds.add(lead.Id);
         }
         ualList = [
-            SELECT Id, Name, Annual_Cost_of_Electricity__c, Name_on_Account__c, Lead__c, Utility__c,
-                Annual_kWh__c, Proposed_kWh__c, Lead__r.Product__r.Customer_Subscription_Type__c,
-                Utility_NMC_Tariff__c
-            FROM Utility_Account_Log__c
-            WHERE Lead__c IN :leadIds
-            ORDER BY Annual_Cost_of_Electricity__c DESC
+                SELECT Id, Name, Annual_Cost_of_Electricity__c, Name_on_Account__c, Lead__c, Utility__c,
+                        Annual_kWh__c, Proposed_kWh__c, Lead__r.Product__r.Customer_Subscription_Type__c,
+                        Utility_NMC_Tariff__c
+                FROM Utility_Account_Log__c
+                WHERE Lead__c IN :leadIds
+                ORDER BY Annual_Cost_of_Electricity__c DESC
         ];
 
         propAccountList = [
-            SELECT Id, Lead__c
-            FROM Account
-            WHERE Lead__c IN :leadIds AND RecordType.Name = 'Property'];
+                SELECT Id, Lead__c
+                FROM Account
+                WHERE Lead__c IN :leadIds AND RecordType.Name = 'Property'
+        ];
 
         sssList = [
-            SELECT Id, Name, Sales_Partners__c, Maximum_Subscription_Cost__c, Maximum_Subscription_Capacity_kW_DC__c,
-                Product__c, Project_Capacity_Available_kW_DC__c, Estimated_COD_Date__c, Service_Territories__c,
-                Reserved_Capacity_kW_DC__c, Service_Territory__c, Utility__c, Expected_Yield_kWh_kW__c,
-                Utility_NMC_Tariff__c, Credit_Score_Requirement__c, Assignment_Order__c, Estimated_COD_Date_QC__c,
-                BWC_Project_Entity_Manual__c, BWC_Project_Entity_Manual__r.Gateway__c
-            FROM Shared_Solar_System__c
-            WHERE Open__c = TRUE
-            AND Capacity_Available_to_be_Reserved__c > 0
+                SELECT Id, Name, Sales_Partners__c, Maximum_Subscription_Cost__c, Maximum_Subscription_Capacity_kW_DC__c,
+                        Product__c, Project_Capacity_Available_kW_DC__c, Estimated_COD_Date__c, Service_Territories__c,
+                        Reserved_Capacity_kW_DC__c, Service_Territory__c, Utility__c, Expected_Yield_kWh_kW__c,
+                        Utility_NMC_Tariff__c, Credit_Score_Requirement__c, Assignment_Order__c, Estimated_COD_Date_QC__c,
+                        BWC_Project_Entity_Manual__c, BWC_Project_Entity_Manual__r.Gateway__c
+                FROM Shared_Solar_System__c
+                WHERE Open__c = TRUE
+                AND Capacity_Available_to_be_Reserved__c > 0
         ];
         sssByIds = new Map<Id, Shared_Solar_System__c>();
         for (Shared_Solar_System__c sss : sssList) {
@@ -63,17 +64,17 @@ public without sharing class CSSubscriptionEnroller {
         // Catching here to allow legacy leads & tests to work
         List<ChargentOrders__ChargentOrder__c> chOrders = new List<ChargentOrders__ChargentOrder__c>();
         chOrders = [
-            SELECT Id, Lead__c, ChargentOrders__Payment_Method__c, ChargentOrders__Bank_Name__c,
-                ChargentOrders__Bank_Routing_Number__c, ChargentOrders__Bank_Account_Type__c,
-                ChargentOrders__Bank_Account_Number__c, ChargentOrders__Bank_Account_Name__c,
-                ChargentOrders__Billing_Email__c, ChargentOrders__Card_Type__c,
-                ChargentOrders__Card_Number__c, ChargentOrders__Card_Expiration_Month__c,
-                ChargentOrders__Card_Expiration_Year__c, ChargentOrders__Billing_Address__c,
-                ChargentOrders__Billing_City__c, ChargentOrders__Billing_State__c,
-                ChargentOrders__Billing_Zip_Postal__c, ChargentOrders__Billing_First_Name__c,
-                ChargentOrders__Billing_Last_Name__c, Autopay_Only__c
-            FROM ChargentOrders__ChargentOrder__c
-            WHERE Lead__c IN : leadIds
+                SELECT Id, Lead__c, ChargentOrders__Payment_Method__c, ChargentOrders__Bank_Name__c,
+                        ChargentOrders__Bank_Routing_Number__c, ChargentOrders__Bank_Account_Type__c,
+                        ChargentOrders__Bank_Account_Number__c, ChargentOrders__Bank_Account_Name__c,
+                        ChargentOrders__Billing_Email__c, ChargentOrders__Card_Type__c,
+                        ChargentOrders__Card_Number__c, ChargentOrders__Card_Expiration_Month__c,
+                        ChargentOrders__Card_Expiration_Year__c, ChargentOrders__Billing_Address__c,
+                        ChargentOrders__Billing_City__c, ChargentOrders__Billing_State__c,
+                        ChargentOrders__Billing_Zip_Postal__c, ChargentOrders__Billing_First_Name__c,
+                        ChargentOrders__Billing_Last_Name__c, Autopay_Only__c
+                FROM ChargentOrders__ChargentOrder__c
+                WHERE Lead__c IN :leadIds
         ];
 
         chOrdersByLeadId = new Map<Id, ChargentOrders__ChargentOrder__c>();
@@ -82,13 +83,14 @@ public without sharing class CSSubscriptionEnroller {
         }
 
         List<Product2> products = [
-            SELECT Id, Program__c,
-                (SELECT Id, Name, Size_Ratio__c, Utility_NMC_Tariff__r.Customer_Type__c,
-                    Utility_NMC_Tariff__r.Minimum_kWh__c, Utility_NMC_Tariff__r.Maximum_kWh__c,
-                    Utility_NMC_Tariff__r.Utility_Relationship__c, Utility_NMC_Tariff__c
-                FROM Product_Tariffs__r)
-            FROM Product2
-            WHERE Product_Type__c = 'Community Solar'
+                SELECT Id, Program__c, (
+                        SELECT Id, Name, Size_Ratio__c, Utility_NMC_Tariff__r.Customer_Type__c,
+                                Utility_NMC_Tariff__r.Minimum_kWh__c, Utility_NMC_Tariff__r.Maximum_kWh__c,
+                                Utility_NMC_Tariff__r.Utility_Relationship__c, Utility_NMC_Tariff__c
+                        FROM Product_Tariffs__r
+                )
+                FROM Product2
+                WHERE Product_Type__c = 'Community Solar'
         ];
 
         productsMap = new Map<Id, Product2>();
@@ -122,6 +124,8 @@ public without sharing class CSSubscriptionEnroller {
             createOpportunity(lead);
         }
         insertOpps();
+        insertOppContactRoles();
+
         for (Lead lead : leads) {
             createUAS(lead);
             moveChOrderToAccount(lead);
@@ -132,6 +136,7 @@ public without sharing class CSSubscriptionEnroller {
         insertUASes();
         updateChargentOrders();
     }
+
 
     public List<Utility_Account_Log__c> getUALList(Lead lead) {
         List<Utility_Account_Log__c> ualListForLead = ualsByLeadId.get(lead.Id);
@@ -157,13 +162,13 @@ public without sharing class CSSubscriptionEnroller {
         List<Shared_Solar_System__c> sortedSharedSolarSystems = new List<Shared_Solar_System__c>();
         for (Shared_Solar_System__c sss : sssList) {
             if (sss.Utility__c == lead.Utility_Relationship__c &&
-                (sss.Service_Territories__c != null &&
-                    sss.Service_Territories__c.contains(lead.LoadZone__c)) &&
-                (sss.Sales_Partners__c != null &&
-                    (sss.Sales_Partners__c.contains('All') ||
-                        sss.Sales_Partners__c.contains(lead.Partner_Name__c))) &&
-                (lead.Product__c == null ||
-                    sss.Product__c == lead.Product__c)) {
+                    (sss.Service_Territories__c != null &&
+                            sss.Service_Territories__c.contains(lead.LoadZone__c)) &&
+                    (sss.Sales_Partners__c != null &&
+                            (sss.Sales_Partners__c.contains('All') ||
+                                    sss.Sales_Partners__c.contains(lead.Partner_Name__c))) &&
+                    (lead.Product__c == null ||
+                            sss.Product__c == lead.Product__c)) {
                 sssWrappers.add(new SSSWrapper(sss, lead.System_Assignment__c));
             }
         }
@@ -177,9 +182,9 @@ public without sharing class CSSubscriptionEnroller {
     public Id getPropertyAccount(Lead lead) {
         Id propAccountId;
         //If Switch lead, the property account will be in the list already. If CSAP Lead, will need to grab the Converted Account
-        if (propAccountList.size() > 0 ) {
-            for (Account propAcct : propAccountList){
-                if (propAcct.Lead__c == lead.Id){
+        if (propAccountList.size() > 0) {
+            for (Account propAcct : propAccountList) {
+                if (propAcct.Lead__c == lead.Id) {
                     propAccountId = propAcct.Id;
                     break;
                 }
@@ -225,12 +230,44 @@ public without sharing class CSSubscriptionEnroller {
         }
         try {
             insert oppsToInsert;
-        } catch(Exception e) {
+        } catch (Exception e) {
             Logger.logNow('CSSubscriptionEnroller', 'insertOpps', 'Failed to insert opportunities: ' + e.getMessage(), 'Error');
         }
 
         for (Opportunity opp : oppsToInsert) {
             oppIdList.add(opp.Id);
+        }
+    }
+    //Get all of the opportunities and then pull all of the contacts that are linked to the Opportunity.Account
+    public void insertOppContactRoles() {
+
+        Map<Id, List<Contact>> accountIdToContactMap = new Map<Id, List<Contact>>();
+        List<Opportunity> oppList = [SELECT Id, Parent_Account_ID__c FROM Opportunity WHERE ID IN :oppIdList];
+        for (Opportunity opp : oppList) {
+            accountIdToContactMap.put(opp.Parent_Account_ID__c, new List<Contact>());
+        }
+
+        for (Contact con : [SELECT Id, AccountId FROM Contact WHERE AccountId IN :accountIdToContactMap.keySet()]) {
+            List<Contact> contactList = accountIdToContactMap.get(con.AccountId);
+            contactList.add(con);
+            accountIdToContactMap.put(con.AccountId, contactList);
+        }
+        List<OpportunityContactRole> oppContactRoleList = new List<OpportunityContactRole>();
+        for (Opportunity opp : oppList) {
+            for (Contact c : accountIdToContactMap.get(opp.Parent_Account_ID__c)) {
+                oppContactRoleList.add(new OpportunityContactRole(
+                        OpportunityId = opp.Id,
+                        ContactId = c.Id,
+                        Role = 'Customer',
+                        IsPrimary = true
+                ));
+            }
+        }
+
+        try {
+            insert oppContactRoleList;
+        } catch (Exception e) {
+            Logger.logNow('CSSubscriptionEnroller', 'insertOppContactRoles', 'Failed to insert opportunity contact roles: ' + e.getMessage(), 'Error');
         }
     }
 
@@ -296,9 +333,9 @@ public without sharing class CSSubscriptionEnroller {
         }
         for (Product_Tariff__c tariff : tariffs) {
             if (lead.Customer_type__c == tariff.Utility_NMC_Tariff__r.Customer_type__c
-                && lead.Utility_relationship__c == tariff.Utility_NMC_Tariff__r.Utility_Relationship__c
-                && (tariff.Utility_NMC_Tariff__r.Maximum_kWh__c == null || ual.Annual_kWh__c < tariff.Utility_NMC_Tariff__r.Maximum_kWh__c)
-                && (tariff.Utility_NMC_Tariff__r.Minimum_kWh__c == null || ual.Annual_kWh__c >= tariff.Utility_NMC_Tariff__r.Minimum_kWh__c)) {
+                    && lead.Utility_relationship__c == tariff.Utility_NMC_Tariff__r.Utility_Relationship__c
+                    && (tariff.Utility_NMC_Tariff__r.Maximum_kWh__c == null || ual.Annual_kWh__c < tariff.Utility_NMC_Tariff__r.Maximum_kWh__c)
+                    && (tariff.Utility_NMC_Tariff__r.Minimum_kWh__c == null || ual.Annual_kWh__c >= tariff.Utility_NMC_Tariff__r.Minimum_kWh__c)) {
                 if (assignedTariff == null) {
                     assignedTariff = tariff;
                 } else {
