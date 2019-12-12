@@ -13,6 +13,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.Credit_Score_Integer_2__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>LASERCA__Personal_Credit_Report__c.Credit_Score_Integer__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>LASERCA__Personal_Credit_Report__c.Debt_to_Income_Approval__c</field>
         <readable>false</readable>
     </fieldPermissions>
