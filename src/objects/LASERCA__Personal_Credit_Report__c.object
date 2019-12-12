@@ -47,7 +47,6 @@
     <description>Experian Personal Credit Report, direct connect to Experian</description>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableEnhancedLookup>false</enableEnhancedLookup>
     <enableFeeds>false</enableFeeds>
     <enableHistory>true</enableHistory>
@@ -679,12 +678,14 @@ If you want the email to go out, this box must be unchecked, the preapproval for
     </fields>
     <fields>
         <fullName>Credit_Score_Integer_2__c</fullName>
+        <businessStatus>Active</businessStatus>
         <externalId>false</externalId>
         <formula>value( LASERCA__Credit_Score_TransUnion__c )</formula>
         <label>Credit Score (Integer 2)</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Confidential</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
@@ -692,12 +693,14 @@ If you want the email to go out, this box must be unchecked, the preapproval for
     </fields>
     <fields>
         <fullName>Credit_Score_Integer__c</fullName>
+        <businessStatus>Active</businessStatus>
         <externalId>false</externalId>
         <formula>value( LASERCA__Credit_Score__c )</formula>
         <label>Credit Score (Integer)</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <securityClassification>Confidential</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
@@ -3607,7 +3610,7 @@ IF(AND(Credit_Score_Integer_2__c &gt; 680, Debt_to_Income__c &lt;= 0.40), &quot;
             </values>
         </picklistValues>
     </recordTypes>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
     <webLinks>
