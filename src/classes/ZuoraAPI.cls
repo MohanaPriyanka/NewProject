@@ -813,4 +813,7 @@ public with sharing class ZuoraAPI {
         public String Batch;
     }
 
+    public class AccountingPeriod{
+        public Date EndDate;
+    }
 }
