@@ -171,6 +171,7 @@
     <fields>
         <fullName>Attempted_Transfer__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>Total Credits Generated from Production period used for calculating bills</inlineHelpText>
         <label>Attempted Credit Transfer</label>
         <precision>13</precision>
         <required>false</required>
@@ -182,6 +183,7 @@
     <fields>
         <fullName>Attempted_kWh_Transfer__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>Total Production from Production period used for calculating bills</inlineHelpText>
         <label>Attempted kWh Transfer</label>
         <precision>18</precision>
         <required>false</required>
