@@ -36942,6 +36942,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>agf__ADM_Scrum_Team__c.WR_Flow_Path__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>agf__ADM_Scrum_Team__c.Work_Expiration_Delay__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -48527,12 +48532,7 @@
         <layout>agf__ADM_Scrum_Team__c-agf__Scrum Team Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>agf__ADM_Scrum_Team__c-agf__Scrum Team Layout</layout>
-        <recordType>agf__ADM_Scrum_Team__c.agf__Program</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>agf__ADM_Scrum_Team__c-agf__Scrum Team Layout</layout>
-        <recordType>agf__ADM_Scrum_Team__c.agf__Scrum_Team</recordType>
+        <layout>agf__ADM_Work__c-agf__Bug Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>zqu__InvoiceTemplate__c-zqu__Invoice Template Layout</layout>
@@ -54330,10 +54330,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ManageHealthCheck</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>ManageHubConnections</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
