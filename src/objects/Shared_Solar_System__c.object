@@ -3451,6 +3451,21 @@ Client_Account__c != BWC_Project_Entity_Manual__r.Client_Account__c
         <errorMessage>The Client Account on the Shared Solar System and the Client Account on the Entity are not the same. If the Client Account on the Entity is not filled in, make sure that it is.</errorMessage>
     </validationRules>
     <validationRules>
+        <fullName>Lock_Utility</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+
+ISCHANGED( Utility__c ),/*utility is being changed*/
+
+
+OR(
+ISPICKVAL(Stage__c,&quot;Management&quot;),
+ISPICKVAL(Stage__c,&quot;Acquisition&quot;)
+) /*and it&apos;s being change to either Management or Acquisition*/
+)</errorConditionFormula>
+        <errorMessage>You cannot change the Utility on a shared solar system that is in the management or acquisition stage. Please contact the Business Applications if this is needed.</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>Management_Fully_Subscribed</fullName>
         <active>true</active>
         <errorConditionFormula>AND(
