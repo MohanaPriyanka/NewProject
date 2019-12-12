@@ -71,7 +71,6 @@
             <casePriority>Medium</casePriority>
             <createTask>false</createTask>
             <emailAddress>productsupport@bluewavesolar.com</emailAddress>
-            <emailServicesAddress>productsupport@h-34prahfppidlgicqw3qwu7lzk6ii8pteunogpghwnwr4b9fvj0.1d-9m1suaq.cs68.case.sandbox.salesforce.com</emailServicesAddress>
             <isVerified>true</isVerified>
             <routingName>Product Tickets</routingName>
             <saveEmailHeaders>false</saveEmailHeaders>
