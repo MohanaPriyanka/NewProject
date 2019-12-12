@@ -55,6 +55,7 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
         public String methodName;
         public Date startDate;
         public Date endDate;
+        public Map<String,Date> optionalDates;
         public Set<Id> recordIds;
     }
 
