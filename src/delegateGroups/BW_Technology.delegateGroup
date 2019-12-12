@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DelegateGroup xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>BW Technology</label>
+    <loginAccess>true</loginAccess>
+    <permissionSets>PM BlueWave Surveys</permissionSets>
+    <permissionSets>Modify Partner Account Owner</permissionSets>
+    <permissionSets>Manage Call Centers</permissionSets>
+    <permissionSets>Loan Servicing</permissionSets>
+    <permissionSets>UAL Recalculate</permissionSets>
+    <permissionSets>Edit Read Only Fields</permissionSets>
+    <permissionSets>Solar Loan Syndication</permissionSets>
+    <permissionSets>Manage Public Email Templates</permissionSets>
+    <permissionSets>Customize Application</permissionSets>
+    <permissionSets>Trailhead Admin</permissionSets>
+    <permissionSets>Trailhead Assigner</permissionSets>
+    <permissionSets>Trailhead User</permissionSets>
+    <permissionSets>Trailhead Tracker</permissionSets>
+    <permissionSets>Send Emails</permissionSets>
+    <permissionSets>Inline Editing</permissionSets>
+    <permissionSets>CS Billing</permissionSets>
+    <permissionSets>Loan Servicing Visibility</permissionSets>
+    <permissionSets>Loan Servicing Editing</permissionSets>
+    <permissionSets>SREC Management</permissionSets>
+    <permissionSets>Shared Solar System Management</permissionSets>
+    <permissionSets>CS Subscription Management</permissionSets>
+    <permissionSets>Disbursal Management for Sales</permissionSets>
+    <permissionSets>Waive Late Fees</permissionSets>
+    <permissionSets>Edit Loans</permissionSets>
+    <permissionSets>Edit Related SREC Field on Transactions</permissionSets>
+    <permissionSets>Edit Loan Disbursal Dates</permissionSets>
+    <permissionSets>Edit Sales Agent field on Loan object</permissionSets>
+    <permissionSets>Edit Financing Loan Fields</permissionSets>
+    <permissionSets>Branch Management Permissions Manage</permissionSets>
+    <permissionSets>Branch Management Permissions View</permissionSets>
+    <permissionSets>Commit Changes</permissionSets>
+    <permissionSets>Compliance Hub</permissionSets>
+    <permissionSets>Continuous Integration Manage</permissionSets>
+    <permissionSets>Continuous Integration View</permissionSets>
+    <permissionSets>Copado User</permissionSets>
+    <permissionSets>Create Environmental Variables</permissionSets>
+    <permissionSets>Deploy Commit</permissionSets>
+    <permissionSets>Deployment Flows Manage</permissionSets>
+    <permissionSets>Deployment Flows View</permissionSets>
+    <permissionSets>Deployments Manage</permissionSets>
+    <permissionSets>Deployments View</permissionSets>
+    <permissionSets>Epics Manage</permissionSets>
+    <permissionSets>Epics View</permissionSets>
+    <permissionSets>Git Repositories Manage</permissionSets>
+    <permissionSets>Git Repositories View</permissionSets>
+    <permissionSets>Git Snapshot Manage</permissionSets>
+    <permissionSets>Org Credentials Edit</permissionSets>
+    <permissionSets>Org Credentials Modify All</permissionSets>
+    <permissionSets>Org Credentials Read Only</permissionSets>
+    <permissionSets>Org Credentials View All</permissionSets>
+    <permissionSets>Org Differences Edit</permissionSets>
+    <permissionSets>Org Differences Modify All</permissionSets>
+    <permissionSets>Org Differences Read Only</permissionSets>
+    <permissionSets>Org Differences View All</permissionSets>
+    <permissionSets>Persona &amp; Permission Manager</permissionSets>
+    <permissionSets>Projects Manage</permissionSets>
+    <permissionSets>Projects View</permissionSets>
+    <permissionSets>Promotions Manage</permissionSets>
+    <permissionSets>Promotions View</permissionSets>
+    <permissionSets>Releases Manage</permissionSets>
+    <permissionSets>Releases View</permissionSets>
+    <permissionSets>Run Apex Test</permissionSets>
+    <permissionSets>Selenium Locators Manage</permissionSets>
+    <permissionSets>Selenium Locators View</permissionSets>
+    <permissionSets>Selenium Settings Manage</permissionSets>
+    <permissionSets>Selenium Settings View</permissionSets>
+    <permissionSets>Selenium Test Cases Manage</permissionSets>
+    <permissionSets>Selenium Test Cases View</permissionSets>
+    <permissionSets>Selenium Test Groups Manage</permissionSets>
+    <permissionSets>Selenium Test Groups View</permissionSets>
+    <permissionSets>Selenium Test Runs Manage</permissionSets>
+    <permissionSets>Selenium Test Runs View</permissionSets>
+    <permissionSets>Selenium Test Suites Manage</permissionSets>
+    <permissionSets>Selenium Test Suites View</permissionSets>
+    <permissionSets>Snapshot Differences Edit</permissionSets>
+    <permissionSets>Snapshot Differences Modify All</permissionSets>
+    <permissionSets>Snapshot Differences Read Only</permissionSets>
+    <permissionSets>Snapshot Differences View All</permissionSets>
+    <permissionSets>Sprints Manage</permissionSets>
+    <permissionSets>Sprints View</permissionSets>
+    <permissionSets>Static Code Analysis</permissionSets>
+    <permissionSets>Test Runs Edit</permissionSets>
+    <permissionSets>Test Runs Modify All</permissionSets>
+    <permissionSets>Test Runs Read Only</permissionSets>
+    <permissionSets>Test Runs View All</permissionSets>
+    <permissionSets>Test Scripts Edit</permissionSets>
+    <permissionSets>Test Scripts Modify All</permissionSets>
+    <permissionSets>Test Scripts Read Only</permissionSets>
+    <permissionSets>Test Scripts View All</permissionSets>
+    <permissionSets>User Stories Edit</permissionSets>
+    <permissionSets>User Stories Modify All</permissionSets>
+    <permissionSets>User Stories Read Only</permissionSets>
+    <permissionSets>User Stories View All</permissionSets>
+    <permissionSets>DMTracking</permissionSets>
+    <permissionSets>Read Error Logs</permissionSets>
+    <permissionSets>CS Cancellation</permissionSets>
+    <permissionSets>Chargent Admin (Base)</permissionSets>
+    <permissionSets>Chargent User (Base)</permissionSets>
+    <permissionSets>Chargent Admin (Orders)</permissionSets>
+    <permissionSets>Chargent User (Orders)</permissionSets>
+    <permissionSets>Bill Adjustment Creation</permissionSets>
+    <permissionSets>Partner Product Junction Management</permissionSets>
+    <permissionSets>Managing Loan Portfolios</permissionSets>
+    <permissionSets>Manage Gateways and Entites</permissionSets>
+    <permissionSets>Underwriting Permission</permissionSets>
+    <permissionSets>Send Mass Emails</permissionSets>
+    <permissionSets>Conga</permissionSets>
+    <permissionSets>View and Edit Converted Leads</permissionSets>
+    <permissionSets>SSN Field Access</permissionSets>
+    <permissionSets>Set Audit Fields on Record Creation</permissionSets>
+    <permissionSets>Disable Loan Originations &amp; Enable CS</permissionSets>
+    <permissionSets>AccessToModifyCSPortal</permissionSets>
+    <permissionSets>Partner QC Editing</permissionSets>
+    <permissionSets>Monthly SREC Invoice Generation</permissionSets>
+    <permissionSets>Marketing Cloud Connector</permissionSets>
+    <permissionSets>Marketing Cloud Connector Admin</permissionSets>
+    <permissionSets>Marketing Cloud Connector Partner Community User</permissionSets>
+    <permissionSets>Marketing Cloud System User</permissionSets>
+    <permissionSets>Marketing Cloud Connected App</permissionSets>
+    <permissionSets>Marketing Inventory</permissionSets>
+    <permissionSets>CRM User</permissionSets>
+    <permissionSets>Modify Chargent Order Read Only Fields</permissionSets>
+    <permissionSets>LiveMessage Admin</permissionSets>
+    <permissionSets>LiveMessage Agent</permissionSets>
+    <permissionSets>LiveMessage Manager</permissionSets>
+    <permissionSets>LiveMessage Send Text to List</permissionSets>
+    <permissionSets>LiveMessage Admin Standard Object Permissions</permissionSets>
+    <permissionSets>LiveMessage Agent Standard Object Permissions</permissionSets>
+    <permissionSets>LiveMessage Manager Standard Object Permissions</permissionSets>
+    <permissionSets>LiveMessage Send Text to List Standard Object Permissions</permissionSets>
+    <permissionSets>Edit UAS Schedule Z Status</permissionSets>
+    <permissionSets>Index Rate Update</permissionSets>
+    <permissionSets>Milestones PM+ Time Tracking Admin</permissionSets>
+    <permissionSets>Commission Structure Management</permissionSets>
+    <permissionSets>Commission Payment Management</permissionSets>
+    <permissionSets>Chargent Transactions and Orders</permissionSets>
+    <permissionSets>LASER Credit Access</permissionSets>
+    <permissionSets>Modify Cases and Tasks</permissionSets>
+    <permissionSets>View All</permissionSets>
+    <permissionSets>Mailchimp Admin</permissionSets>
+    <permissionSets>Mailchimp User</permissionSets>
+    <permissionSets>Manage External Users</permissionSets>
+    <permissionSets>Live Agent Manager</permissionSets>
+    <permissionSets>Flow Magic Picklists Admin</permissionSets>
+    <permissionSets>Flow Magic Picklists User</permissionSets>
+    <permissionSets>Legal Spend Fields on Work</permissionSets>
+    <permissionSets>Create and Edit Campaigns</permissionSets>
+    <permissionSets>Case Feed User</permissionSets>
+    <permissionSets>CS App Processing</permissionSets>
+    <permissionSets>Product Escalation Management</permissionSets>
+    <permissionSets>CS Lead Status Editing</permissionSets>
+    <permissionSets>LASERCA Lead field access for CS App Processing</permissionSets>
+    <permissionSets>Personal Credit Report - full visibility</permissionSets>
+    <permissionSets>Personal Credit Report visibility - CS</permissionSets>
+    <permissionSets>Zuora Quotes End User</permissionSets>
+    <permissionSets>Zuora Quotes Product Admin</permissionSets>
+    <permissionSets>Zuora Rules End User</permissionSets>
+    <permissionSets>Zuora Object Visibility</permissionSets>
+    <permissionSets>Event Monitoring Analytics User</permissionSets>
+    <permissionSets>Event Monitoring Analytics Admin</permissionSets>
+    <permissionSets>Manage Contracts</permissionSets>
+    <permissionSets>Work Request Change Management</permissionSets>
+    <permissionSets>Lightning Email Template Report Folder Creation</permissionSets>
+    <permissionSets>Access Community 360 Data</permissionSets>
+    <permissionSets>Full Macro Access</permissionSets>
+    <permissionSets>Personal Credit Report visibility - Loan</permissionSets>
+    <permissionSets>Loan Document Visibility</permissionSets>
+    <permissionSets>Client Subscription Reporting Object Access</permissionSets>
+    <permissionSets>Presence Status Access</permissionSets>
+    <permissionSets>Client Reporting General Ledger Modify</permissionSets>
+    <permissionSets>Client Reporting General Ledger View</permissionSets>
+    <permissionSets>Query Zuora Data</permissionSets>
+    <permissionSets>SSS Customer Facing Info Management</permissionSets>
+    <permissionSets>Edit Products</permissionSets>
+    <permissionSets>Import Custom Objects</permissionSets>
+    <permissionSets>Underwriting Screen Access</permissionSets>
+    <permissionSets>Paper Check Creation and Editing</permissionSets>
+    <permissionSets>Standard Einstein Activity Capture</permissionSets>
+    <permissionSets>Knowledge Manager</permissionSets>
+    <permissionSets>Permission to Run Batch SREC Payments</permissionSets>
+    <permissionSets>Manage Users</permissionSets>
+    <permissionSets>Do Not Send Bills Permission</permissionSets>
+    <permissionSets>View Contracts</permissionSets>
+    <permissionSets>Production &amp; Transfer Delete Access</permissionSets>
+    <permissionSets>HubSpot Integration Permissions</permissionSets>
+    <permissionSets>Manage Entities (Legal)</permissionSets>
+    <permissionSets>Update ALSS Date Enacted</permissionSets>
+    <permissionSets>Lightning</permissionSets>
+    <permissionSets>Shared Solar System Permission</permissionSets>
+    <permissionSets>Permission Set for Payment Request (Base)</permissionSets>
+    <permissionSets>Permission Set for Payment Request (Chargent Orders)</permissionSets>
+    <permissionSets>Milestones PM</permissionSets>
+    <permissionSets>DocuSign Administrator</permissionSets>
+    <permissionSets>DocuSign User</permissionSets>
+    <permissionSets>Milestones PM+ Full Access</permissionSets>
+    <permissionSets>Standard User permission_Enhanced</permissionSets>
+    <permissionSets>Standard User permission_FeedersPlus</permissionSets>
+    <permissionSets>DocuSign User (Partners)</permissionSets>
+    <permissionSets>radian_lens</permissionSets>
+    <permissionSets>Wave Analytics User 1</permissionSets>
+    <permissionSets>Wave Analytics</permissionSets>
+    <permissionSets>Wave Analytics Permission</permissionSets>
+    <permissionSets>Agile Accelerator Admin</permissionSets>
+    <permissionSets>Agile Accelerator User</permissionSets>
+    <permissionSets>Finance Developer</permissionSets>
+    <permissionSets>Salesforce Console User</permissionSets>
+    <permissionSets>CS Servicing Visibility</permissionSets>
+    <permissionSets>Report Access</permissionSets>
+    <permissionSets>Set Audit Fields upon Record Creation</permissionSets>
+    <profiles>BWC Executive</profiles>
+    <profiles>IT Support</profiles>
+    <profiles>PM Force.com user</profiles>
+    <profiles>CS Client Partner Login</profiles>
+    <profiles>BFG Marketing User</profiles>
+    <profiles>PM Standard User</profiles>
+    <profiles>HR Admin</profiles>
+    <profiles>BFG Standard User</profiles>
+    <profiles>Community Solar Community User</profiles>
+    <roles>Founders</roles>
+</DelegateGroup>

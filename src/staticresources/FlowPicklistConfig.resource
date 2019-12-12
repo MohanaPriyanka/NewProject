@@ -5,14 +5,14 @@
     "optionLabel" : "Technology",
     "imageUrl" : "https://www.lightningdesignsystem.com/assets/images/logo.svg",
     "iconName" : "standard:bot",
-    "description" : "IT · Originations · Business Applications · UX Development"
+    "description" : "IT · Originations · Business Applications"
   }, {
     "useIcon" : "true",
     "optionValue" : "Operations",
     "optionLabel" : "Operations",
     "imageUrl" : "https://www.lightningdesignsystem.com/assets/images/logo.svg",
     "iconName" : "standard:work_order_item",
-    "description" : "Customer Operations · Client Operations ·Business Operations · Data & Finance Operations"
+    "description" : "Customer Ops · Client Services ·Process Excellence · Finance Ops"
   }, {
     "useIcon" : "true",
     "optionValue" : "Corporate",
