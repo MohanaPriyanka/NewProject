@@ -50,7 +50,7 @@ public with sharing class ZuoraPaymentSelectorTest {
         System.assert(exceptionCaught);
     }
 
-    @isTest
+    @IsTest
     public static void testGetTransactions(){
         Account accountTwo = new Account(
             Name = 'TestTwo'
@@ -83,13 +83,19 @@ public with sharing class ZuoraPaymentSelectorTest {
         List<Account> accountList = new List<Account>{accountTwo};
         List<Id> accountIdList = new List<Id>{accountTwo.Id};
 
-        system.AssertEquals( 3, (ZuoraPaymentSelector.selectByAccount(accountIdList).size()));
+        System.assertEquals( 3, (ZuoraPaymentSelector.selectByAccount(accountIdList).size()));
 
         Zuora_Setting__mdt zuoraSetting = ZuoraAPIHelper.getZuoraSetting();
         if (zuoraSetting.Zuora_Is_Live__c){
-            system.AssertEquals( 3, (PreviewProductionUpdateResults.getTransactions(accountList)).size());
+            System.assertEquals( 3, (PreviewProductionUpdateResults.getTransactions(accountList)).size());
         } else {
-            system.AssertEquals( 0, (PreviewProductionUpdateResults.getTransactions(accountList)).size());
+            System.assertEquals( 0, (PreviewProductionUpdateResults.getTransactions(accountList)).size());
         }
+    }
+
+    @IsTest
+    private static void testSelectElectronicPaymentsFromDate() {
+        System.assertNotEquals(null, ZuoraPaymentSelector.selectElectronicPaymentsFromDate(System.now()));
+
     }
 }

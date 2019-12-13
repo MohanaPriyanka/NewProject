@@ -156,4 +156,11 @@ public class ZuoraDataQueryServiceTest {
 
         System.assertEquals(1,scheduledJobs.size());
     }
+
+    @IsTest
+    private static void testHandleZeroRows() {
+        ZuoraDataQueryService.handlePostQueryJob('',new ZuoraDataQueryService.ProcessingParameter());
+        List<Error_Log__c> errorLogs = [SELECT Id FROM Error_Log__c];
+        System.assertEquals(0, errorLogs.size(), 'Expected no errors from a zero result query');
+    }
 }
