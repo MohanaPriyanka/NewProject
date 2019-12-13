@@ -80554,10 +80554,6 @@
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>MPM4_BASE__Milestone1_Resource_Gantt</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>MPM4_BASE__Milestone1_Resource__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
