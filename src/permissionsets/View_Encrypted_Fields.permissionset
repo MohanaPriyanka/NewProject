@@ -1,8 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <description>Do NOT give this permission set to anyone without going through the approval process.</description>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>API_Credential__c.Credential_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>API_Credential__c.Credential_Secret__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>View Encrypted Fields</label>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>API_Credential__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
     <userPermissions>
         <enabled>true</enabled>
         <name>ViewEncryptedData</name>
