@@ -721,6 +721,11 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
                     <default>false</default>
                     <label>Feedback/Feature Request</label>
                 </value>
+                <value>
+                    <fullName>QC</fullName>
+                    <default>false</default>
+                    <label>QC</label>
+                </value>
             </valueSetDefinition>
             <valueSettings>
                 <controllingFieldValue>Community Solar</controllingFieldValue>
@@ -863,6 +868,10 @@ IF( ISBLANK(First_Response_Date_Time__c) &amp;&amp; CreatedDate &lt; NOW()-1, IM
                 <controllingFieldValue>Community Solar</controllingFieldValue>
                 <controllingFieldValue>Solar Loan</controllingFieldValue>
                 <valueName>Feedback/Feature Request</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Community Solar</controllingFieldValue>
+                <valueName>QC</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Solar Loan</controllingFieldValue>

@@ -32,18 +32,18 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <recordCreates>
-        <name>Create_Task</name>
-        <label>Create CS QC Task</label>
-        <locationX>543</locationX>
-        <locationY>50</locationY>
-        <assignRecordIdToReference>sovQCTask.Id</assignRecordIdToReference>
+        <name>Create_Case</name>
+        <label>Create CS QC Case</label>
+        <locationX>539</locationX>
+        <locationY>56</locationY>
+        <assignRecordIdToReference>sov_Case.Id</assignRecordIdToReference>
         <connector>
             <targetReference>Update_Opp_Status</targetReference>
         </connector>
         <inputAssignments>
-            <field>ActivityDate</field>
+            <field>AccountId</field>
             <value>
-                <elementReference>Due_Date</elementReference>
+                <elementReference>sovOpportunity.Parent_Account_ID__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -53,15 +53,15 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>Opportunity_Lookup__c</field>
+            <field>Disable_Followup_Email__c</field>
             <value>
-                <elementReference>varOppID</elementReference>
+                <booleanValue>true</booleanValue>
             </value>
         </inputAssignments>
         <inputAssignments>
             <field>OwnerId</field>
             <value>
-                <elementReference>varAssigneeID</elementReference>
+                <stringValue>00G0a000002fjb3</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -73,7 +73,25 @@
         <inputAssignments>
             <field>RecordTypeId</field>
             <value>
-                <stringValue>012j0000000ufwz</stringValue>
+                <stringValue>012j00000000HA8AAM</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Related_Opportunity__c</field>
+            <value>
+                <elementReference>sovOpportunity.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Sale_Status__c</field>
+            <value>
+                <stringValue>Pre-sale</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>New</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -82,19 +100,7 @@
                 <elementReference>Subject</elementReference>
             </value>
         </inputAssignments>
-        <inputAssignments>
-            <field>Task_Subject__c</field>
-            <value>
-                <elementReference>Task_Subject</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>WhatId</field>
-            <value>
-                <elementReference>sovOpportunity.AccountId</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Task</object>
+        <object>Case</object>
     </recordCreates>
     <recordLookups>
         <name>Lookup_Opportunity</name>
@@ -116,7 +122,7 @@
         <outputReference>sovOpportunity</outputReference>
         <queriedFields>Id</queriedFields>
         <queriedFields>StageName</queriedFields>
-        <queriedFields>AccountId</queriedFields>
+        <queriedFields>Parent_Account_ID__c</queriedFields>
     </recordLookups>
     <recordUpdates>
         <name>Update_Opp_Status</name>
@@ -147,7 +153,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Create_Task</targetReference>
+            <targetReference>Create_Case</targetReference>
         </connector>
         <fields>
             <name>textNewQCTask</name>
@@ -155,40 +161,6 @@
 
 The product line and Opportunity will automatically be filled in. Click Finish to create the task.</fieldText>
             <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>inpAssignee</name>
-            <extensionName>flowcomponents:lookupFSC</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>objectName</name>
-                <value>
-                    <stringValue>User</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>required</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>label</name>
-                <value>
-                    <stringValue>Assignee</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>whereClause</name>
-                <value>
-                    <stringValue>IsActive = TRUE AND License_Type__c = &apos;Standard&apos;</stringValue>
-                </value>
-            </inputParameters>
-            <isRequired>true</isRequired>
-            <outputParameters>
-                <assignToReference>varAssigneeID</assignToReference>
-                <name>selectedValue</name>
-            </outputParameters>
         </fields>
         <fields>
             <name>Task_Subject</name>
@@ -215,7 +187,7 @@ The product line and Opportunity will automatically be filled in. Click Finish t
         <fields>
             <name>Comments</name>
             <dataType>String</dataType>
-            <fieldText>Comments</fieldText>
+            <fieldText>Description</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
         </fields>
@@ -223,7 +195,15 @@ The product line and Opportunity will automatically be filled in. Click Finish t
         <showHeader>true</showHeader>
     </screens>
     <startElementReference>Lookup_Opportunity</startElementReference>
-    <status>Active</status>
+    <status>Draft</status>
+    <variables>
+        <name>sov_Case</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Case</objectType>
+    </variables>
     <variables>
         <name>sovOpportunity</name>
         <dataType>SObject</dataType>
