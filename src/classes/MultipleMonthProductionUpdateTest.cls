@@ -1,7 +1,6 @@
 @isTest
 public class MultipleMonthProductionUpdateTest {
     @testSetup public static void multipleMonthTest(){
-        Test.startTest();
         Utility__c eversource = new Utility__c(
             Name = 'Eversource',
             Number_of_Decimal_Places__c = 2
@@ -233,6 +232,7 @@ public class MultipleMonthProductionUpdateTest {
         System.assertEquals( 8, (PreviewProductionUpdateResults.getUASes(prodUpdateFourMonths.Id, true, scheduleZ1.Id)).size());
         System.assertEquals( 4, (PreviewProductionUpdateResults.getUASes(prodUpdateTwoMonths.Id, true, scheduleZ1.Id)).size());
 
+        Test.startTest();
         TestBillCreationandPayment.runProductionUpdate(new List<Id>{prodUpdateFourMonths.Id});
         TestBillCreationandPayment.setBillsToPublished();
         TestBillCreationandPayment.runProductionUpdate(new List<Id>{prodUpdateTwoMonths.Id});
