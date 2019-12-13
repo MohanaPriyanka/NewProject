@@ -1,6 +1,6 @@
-@isTest
+@IsTest
 public class GatewaySelectorTest {
-    @testSetup public static void testDataSetup() {
+    @TestSetup public static void testDataSetup() {
         Account bwAccount = new Account(Name = 'BlueWave');
         Account clientAccount = new Account(Name = 'Client');
         insert new List<Account>{bwAccount,clientAccount};
@@ -17,7 +17,7 @@ public class GatewaySelectorTest {
         insert new List<Zuora__PaymentGateway__c>{clientGateway,bwGateway};
     }
 
-    @isTest
+    @IsTest
     private static void testZuoraGatewayQuery() {
         GatewaySelector gatewaySelect = new GatewaySelector();
         List<Zuora__PaymentGateway__c> gateways = gatewaySelect.getAllZuoraGateways();

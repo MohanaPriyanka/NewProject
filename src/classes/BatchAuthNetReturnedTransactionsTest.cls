@@ -134,7 +134,7 @@ private class BatchAuthNetReturnedTransactionsTest {
 
     @IsTest
     public static void testSchedule() {
-        AuthNetScheduler.gatewaySelector = (GatewaySelector) Test.createStub(GatewaySelector.class, new MockGatewaySelector());
+        AuthNetScheduler.apiCredentialSelector = (APICredentialSelector) Test.createStub(APICredentialSelector.class, new MockAPICredentialSelector());
         AuthNetScheduler authNetScheduler = new AuthNetScheduler();
         Test.startTest();
         Test.setMock(System.HttpCalloutMock.class, new TransactionMock(1));
@@ -156,9 +156,60 @@ private class BatchAuthNetReturnedTransactionsTest {
     }
 
     @IsTest
-    public static void testGatewaySelector() {
-        GatewaySelector gatewaySelector = new GatewaySelector();
-        System.assertEquals(0, gatewaySelector.getGatewaysForAuthentication().size());
+    private static void testPostQueryJob() {
+        String returnedPaymentsJson = '[' +
+            '{"Id":"2c92a0aa6eb68ebb016ec19ef9c56e3e","Amount":61.060000,"EffectiveDate":"2019-12-01","ResponseStatus_Zcustom":null,"ReferenceId":"41714238397","ArchivedChargentData_Zcustom":null},' +
+            '{"Id":"2c92a0aa6eb68ebb016ec19f4d7d7039","Amount":58.110000,"EffectiveDate":"2019-12-01","ResponseStatus_Zcustom":null,"ReferenceId":"41714238658","ArchivedChargentData_Zcustom":null},' +
+            '{"Id":"2c92a0aa6eb68ebb016ec19fed2d73f2","Amount":830.470000,"EffectiveDate":"2019-12-01","ResponseStatus_Zcustom":null,"ReferenceId":"41714239217","ArchivedChargentData_Zcustom":null}]';
+        ZuoraDataQueryService.ProcessingParameter processingParameter = new ZuoraDataQueryService.ProcessingParameter();
+        processingParameter.className = 'BatchAuthNetReturnedTransactions';
+        processingParameter.optionalIntegers = new Map<String, Integer>();
+        processingParameter.optionalIntegers.put(BatchAuthNetReturnedTransactions.TOTAL_TRANSACTIONS_LABEL, 42);
+        BatchAuthNetReturnedTransactionsMock batchAuthNetReturnedTransactions = new BatchAuthNetReturnedTransactionsMock();
+        batchAuthNetReturnedTransactions.numToReturn = 42;
+        batchAuthNetReturnedTransactions.executePostQueryJob(processingParameter, returnedPaymentsJson);
+
+        List<Error_Log__c> errorLogs = [
+            SELECT Id, Class__c, Method__c, Message__c, Severity__c
+            FROM Error_Log__c
+            WHERE Method__c = 'Returned Transaction Results'
+        ];
+        System.assertEquals(1, errorLogs.size());
+        System.assert(errorLogs[0].Message__c.contains('2c92a0aa6eb68ebb016ec19ef9c56e3e'));
+    }
+
+    @IsTest
+    private static void testPostQueryJobNoReturns() {
+        String returnedPaymentsJson = '[]';
+        ZuoraDataQueryService.ProcessingParameter processingParameter = new ZuoraDataQueryService.ProcessingParameter();
+        processingParameter.className = 'BatchAuthNetReturnedTransactions';
+        processingParameter.optionalIntegers = new Map<String, Integer>();
+        processingParameter.optionalIntegers.put(BatchAuthNetReturnedTransactions.TOTAL_TRANSACTIONS_LABEL, 42);
+        BatchAuthNetReturnedTransactionsMock batchAuthNetReturnedTransactions = new BatchAuthNetReturnedTransactionsMock();
+        batchAuthNetReturnedTransactions.numToReturn = 4200;
+        batchAuthNetReturnedTransactions.executePostQueryJob(processingParameter, returnedPaymentsJson);
+
+        List<Error_Log__c> errorLogs = [
+            SELECT Id, Class__c, Method__c, Message__c, Severity__c
+            FROM Error_Log__c
+            WHERE Method__c = 'Returned Transaction Results'
+        ];
+        System.assertEquals(0, errorLogs.size());
+        errorLogs = [
+            SELECT Id, Class__c, Method__c, Message__c, Severity__c
+            FROM Error_Log__c
+            WHERE Method__c = 'Transaction Count Check'
+        ];
+        System.assertEquals(1, errorLogs.size());
+        System.assert(errorLogs[0].Message__c.contains('Found ' + batchAuthNetReturnedTransactions.numToReturn + ' electronic'));
+    }
+
+    private class BatchAuthNetReturnedTransactionsMock extends BatchAuthNetReturnedTransactions {
+        public Integer numToReturn = 0;
+        protected override String getElectronicPaymentsFromDate(Datetime startDate) {
+            return '{"records":[' +
+                '{"Id":"2c92c0f86e68bce2016e6be187634fa2"}],"size":'+numToReturn+',"done":true}';
+        }
     }
 
     /*************
@@ -238,19 +289,19 @@ private class BatchAuthNetReturnedTransactionsTest {
         }
     }
 
-    public class MockGatewaySelector extends MockProvider {
-        public MockGatewaySelector() {
+    public class MockAPICredentialSelector extends MockProvider {
+        public MockAPICredentialSelector() {
         }
 
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
-                when 'getGatewaysForAuthentication' {
-                    ChargentBase__Gateway__c gateway = new ChargentBase__Gateway__c(
-                        Id = Util.getFakeId(ChargentBase__Gateway__c.SObjectType),
-                        ChargentBase__Merchant_ID__c = 'foo',
-                        ChargentBase__Security_Key__c = 'bar'
+                when 'getApiCredentials' {
+                    API_Credential__c apiCredential = new API_Credential__c(
+                        Id = Util.getFakeId(API_Credential__c.SObjectType),
+                        Credential_Id__c = 'foo',
+                        Credential_Secret__c = 'bar'
                     );
-                    return new List<ChargentBase__Gateway__c>{gateway};
+                    return new List<API_Credential__c>{apiCredential};
                 }
             }
             return null;
