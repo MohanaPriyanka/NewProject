@@ -8,7 +8,7 @@
  * queue itself with the remaining batches to query.
  */
 
-public without sharing class BatchAuthNetReturnedTransactions implements Database.AllowsCallouts, Queueable {
+public without sharing virtual class BatchAuthNetReturnedTransactions implements Database.AllowsCallouts, Queueable, ZuoraDataQueryService.Processor {
     public List<String> batchIds;
     public List<AuthNetAPI.Transactions> allReturnedTransactionList;
     public Map<String, AuthNetAPI.MerchantAuthentication> batchIdToMerchantAuthMap;
@@ -17,15 +17,19 @@ public without sharing class BatchAuthNetReturnedTransactions implements Databas
     @TestVisible
     private BatchAuthNetReturnedTransactions nextAsyncJob;
     private ChargentTransactionSelector transactionSelector = new ChargentTransactionSelector();
+    private Integer totalTransactions;
+    public static final String TOTAL_TRANSACTIONS_LABEL = 'TotalTransactionsFromAuthorize';
 
-    public BatchAuthNetReturnedTransactions(List<String> batchIds, List<AuthNetAPI.Transactions> returnedTransactions, Map<String, AuthNetAPI.MerchantAuthentication> batchIdToMerchantAuthMap) {
+    public BatchAuthNetReturnedTransactions(List<String> batchIds, List<AuthNetAPI.Transactions> returnedTransactions,
+        Map<String, AuthNetAPI.MerchantAuthentication> batchIdToMerchantAuthMap, Integer totalTransactions) {
         this.batchIds = batchIds;
         this.allReturnedTransactionList = returnedTransactions;
         this.batchIdToMerchantAuthMap = batchIdToMerchantAuthMap;
+        this.totalTransactions = totalTransactions;
     }
 
     public BatchAuthNetReturnedTransactions() {
-        this(new List<String>(), new List<AuthNetAPI.Transactions>(), new Map<String, AuthNetAPI.MerchantAuthentication>());
+        this(new List<String>(), new List<AuthNetAPI.Transactions>(), new Map<String, AuthNetAPI.MerchantAuthentication>(), 0);
     }
 
     public void init(List<AuthNetAPI.MerchantAuthentication> merchantAuthList) {
@@ -70,7 +74,7 @@ public without sharing class BatchAuthNetReturnedTransactions implements Databas
             }
         } catch (Util.BWException bwe) {
             nextAsyncJob =
-                new BatchAuthNetReturnedTransactions(batchIds, allReturnedTransactionList, batchIdToMerchantAuthMap);
+                new BatchAuthNetReturnedTransactions(batchIds, allReturnedTransactionList, batchIdToMerchantAuthMap, totalTransactions);
             if (!Test.isRunningTest()) {
                 System.enqueueJob(nextAsyncJob);
             }
@@ -82,7 +86,7 @@ public without sharing class BatchAuthNetReturnedTransactions implements Databas
             Logger.flushLogs();
         }
         if (nextAsyncJob == null) {
-            logResults();
+            finishQueueableChain();
         }
     }
 
@@ -103,6 +107,8 @@ public without sharing class BatchAuthNetReturnedTransactions implements Databas
         if (transactionListResponse.totalNumInResultSet > 0) {
             if (transactionListResponse.transactions == null) {
                 throw new Util.BWException('Expected transactions for batch: ' + batchId + ' offset: ' + offset + ' paging: ' + pagingLimit);
+            } else {
+                totalTransactions += transactionListResponse.transactions.size();
             }
             this.allReturnedTransactionList.addAll(AuthNetService.getReturnedTransactions(transactionListResponse.transactions));
             if (transactionListResponse.totalNumInResultSet == pagingLimit) {
@@ -111,7 +117,7 @@ public without sharing class BatchAuthNetReturnedTransactions implements Databas
         }
     }
 
-    private void logResults() {
+    private void finishQueueableChain() {
         String returnedTransactions = '';
         List<String> gatewayTransactionIds = new List<String>();
         for (AuthNetAPI.Transactions trx : allReturnedTransactionList) {
@@ -127,16 +133,59 @@ public without sharing class BatchAuthNetReturnedTransactions implements Databas
             return;
         }
 
+        ZuoraDataQueryService.ProcessingParameter processingParameter = new ZuoraDataQueryService.ProcessingParameter();
+        processingParameter.className = 'BatchAuthNetReturnedTransactions';
+        processingParameter.optionalIntegers = new Map<String, Integer>();
+        processingParameter.optionalIntegers.put(TOTAL_TRANSACTIONS_LABEL, totalTransactions);
+
+        ZuoraDataQueryService.callFromApex(ZuoraPaymentSelector.selectPaymentsNotMarkedAsReturned(gatewayTransactionIds), processingParameter);
+
+    }
+
+    public void executePostQueryJob(ZuoraDataQueryService.ProcessingParameter processingParameter, String response) {
+        try {
+            logReturnedTransactionsNotRecorded(response);
+            checkTransactionCounts(processingParameter);
+        } catch (Exception e) {
+            Logger.logLater('BatchAuthNetReturnedTransactions', 'executePostQueryJob', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+        } finally {
+            Logger.flushLogs();
+        }
+    }
+
+    private void logReturnedTransactionsNotRecorded(String response) {
+        List<ZuoraAPI.Payment> returnedPayments = (List<ZuoraAPI.Payment>) JSON.deserialize(response, List<ZuoraAPI.Payment>.class);
         String returnedTransactionsNotRecorded = '';
-        for (ChargentOrders__Transaction__c trx : transactionSelector.selectTransactionsNotMarkedReturned(gatewayTransactionIds)) {
-            returnedTransactionsNotRecorded += trx.Id + '\n';
+        for (ZuoraAPI.Payment returnedPayment : returnedPayments) {
+            returnedTransactionsNotRecorded +=
+                returnedPayment.referenceId + ', ' + returnedPayment.id + ', ' + returnedPayment.amount + ', ' + returnedPayment.effectiveDate + '\n';
         }
         if (returnedTransactionsNotRecorded != '') {
-            Logger.logNow(
+            Logger.logLater(
                 'BatchAuthNetReturnedTransactions',
                 'Returned Transaction Results',
                 'These transactions were found to be returned but not marked as such:\n' + returnedTransactionsNotRecorded,
                 Logger.ERROR);
         }
+    }
+
+    private void checkTransactionCounts(ZuoraDataQueryService.ProcessingParameter param) {
+        Datetime lastFourMonths = System.now() - 120;
+        String queryResultJSON = getElectronicPaymentsFromDate(lastFourMonths);
+        ZuoraAPI.ZuoraQueryResult queryResult = (ZuoraAPI.ZuoraQueryResult) JSON.deserialize(queryResultJSON, ZuoraAPI.ZuoraQueryResult.class);
+        Integer totalTransactionsFromAuthorize = param.optionalIntegers.get(TOTAL_TRANSACTIONS_LABEL);
+        if (queryResult.size > totalTransactionsFromAuthorize) {
+            Logger.logLater(
+                'BatchAuthNetReturnedTransactions',
+                'Transaction Count Check',
+                'Found ' + queryResult.size + ' electronic transactions in Zuora and ' +
+                    totalTransactionsFromAuthorize + ' in the gateway. Make sure the AuthNetScheduler is ' +
+                    'checking all gateways',
+                Logger.WARN);
+        }
+    }
+
+    protected virtual String getElectronicPaymentsFromDate(Datetime startDate) {
+        return(ZuoraAPIHelper.query(ZuoraPaymentSelector.selectElectronicPaymentsFromDate(startDate), false));
     }
 }
