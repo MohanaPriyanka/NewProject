@@ -332,7 +332,7 @@ public class LeadServiceTestclass {
         ];
 
         List<Opportunity> oppList = [
-            SELECT Id, Shared_Solar_System__r.Name, StageName, Personal_Credit_Report2__c
+            SELECT Id, Shared_Solar_System__r.Name, StageName, Personal_Credit_Report2__c, (SELECT Id FROM OpportunityContactRoles)
             FROM Opportunity
             WHERE Lead__c = :convertedLead.Id
         ];
@@ -358,6 +358,7 @@ public class LeadServiceTestclass {
         System.assertEquals(1, oppList.size());
         System.assertEquals('Albany Post Rd Solar Farm', oppList[0].Shared_Solar_System__r.Name);
         System.assertEquals(convertedLead.Personal_Credit_Report__c, oppList[0].Personal_Credit_Report2__c);
+        System.assert(oppList[0].OpportunityContactRoles.size() > 0, 'Verify if the Opportunity Contact Roles got created.');
         System.assertEquals('QC In Process', oppList[0].StageName);
 
         //test uas creation
