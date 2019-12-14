@@ -133,4 +133,15 @@ public with sharing class ZuoraInvoiceSelector {
             WHERE Id = :invoiceIds
         ];
     }
+
+    public static String getLatestDueDateForAutopayAccounts() {
+        Date today = System.today();
+        String lastMonth = today.year() + '-' + (today.month() - 3) + '-' + today.day();
+        return 'SELECT MAX(inv.DueDate) DueDate ' +
+        'FROM Invoice inv ' +
+        'INNER JOIN Account a ON inv.accountid = a.Id ' +
+        'WHERE inv.Status = \'Posted\' ' +
+        'AND a.autopay = TRUE ' +
+        'AND inv.DueDate > DATE \''+ lastMonth + '\'';
+    }
 }
