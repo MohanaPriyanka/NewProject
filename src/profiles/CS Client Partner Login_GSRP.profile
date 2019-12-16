@@ -60105,11 +60105,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>copado__Snapshot_Difference__c.copado__Format__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>copado__Snapshot_Difference__c.copado__Last_Run__c</field>
         <readable>false</readable>
     </fieldPermissions>
