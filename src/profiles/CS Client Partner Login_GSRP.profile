@@ -75933,10 +75933,6 @@
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>MPM4_BASE__Milestone1_Home</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>MPM4_BASE__Milestone1_Import_Project_Template</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
