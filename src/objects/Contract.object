@@ -800,7 +800,6 @@
         <externalId>false</externalId>
         <formula>AND(
     NOT(ISBLANK(TEXT(Contract_Type__c))),
-    NOT(ISBLANK(Project_Description__c)),
     NOT(ISBLANK(Project_Value__c)),
     NOT(ISBLANK(Other_Party__c)),
     NOT(ISBLANK(State_Applications__c)),
@@ -902,11 +901,15 @@
     </fields>
     <fields>
         <fullName>SpecialTerms</fullName>
+        <description>Identify any special contract terms which are additional to terms set out in other contracts of this type or just anything that may be beyond the normal scope.</description>
+        <inlineHelpText>Identify any special contract terms which are additional to terms set out in other contracts of this type or just anything that may be beyond the normal scope.</inlineHelpText>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
     </fields>
     <fields>
         <fullName>StartDate</fullName>
+        <description>Effective date of contract</description>
+        <inlineHelpText>Effective date of contract</inlineHelpText>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
     </fields>
@@ -1176,102 +1179,6 @@
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Customer_Billing_Communications__c</picklist>
-            <values>
-                <fullName>Autopay Sign-Up</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Collections</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Monthly Statement</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other%2C see detail</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Payment Receipt</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Project Assignment</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Schedule Z Filing</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Termination</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Upcoming Bill</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Customer_Payment_Methods__c</picklist>
-            <values>
-                <fullName>ACH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Credit Card</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Paper Check</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Payment_Methods__c</picklist>
-            <values>
-                <fullName>ACH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Credit Card</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Paper Check</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Reporting_Requirements__c</picklist>
-            <values>
-                <fullName>Accounts Aging</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Accounts Receivable</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Terminations</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Days Sales Outstanding %28DSO%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other%2C see detail</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Project Attrition</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>State_Applications__c</picklist>
             <values>
                 <fullName>AK</fullName>
@@ -1502,6 +1409,161 @@
             </values>
         </picklistValues>
         <picklistValues>
+            <picklist>Team_Submitted_By__c</picklist>
+            <values>
+                <fullName>Business Applications</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Business Development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CS Product Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Client Operations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Client Product Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Operations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Data and Finance Operations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Information %26 Technology</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Legal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Marketing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Office Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Originations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>People</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>UX Development</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Customer_Billing_Communications__c</picklist>
+            <values>
+                <fullName>Autopay Sign-Up</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Collections</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Monthly Statement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other%2C see detail</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Payment Receipt</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project Assignment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Schedule Z Filing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Termination</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Upcoming Bill</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Customer_Payment_Methods__c</picklist>
+            <values>
+                <fullName>ACH</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Credit Card</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Paper Check</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Payment_Methods__c</picklist>
+            <values>
+                <fullName>ACH</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Credit Card</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Paper Check</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Reporting_Requirements__c</picklist>
+            <values>
+                <fullName>Accounts Aging</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Accounts Receivable</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Terminations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Days Sales Outstanding %28DSO%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other%2C see detail</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project Attrition</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Customer_Acquisition_Invoicing_Timing__c</picklist>
             <values>
                 <fullName>Annual</fullName>
@@ -1558,65 +1620,6 @@
             </values>
             <values>
                 <fullName>Quarterly</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Team_Submitted_By__c</picklist>
-            <values>
-                <fullName>Business Applications</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Business Development</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CS Product Management</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Client Operations</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Client Product Management</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Operations</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Data and Finance Operations</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Information %26 Technology</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Legal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Marketing</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Office Management</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Originations</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>People</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>UX Development</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -1685,102 +1688,6 @@
             </values>
         </picklistValues>
         <picklistValues>
-            <picklist>Customer_Billing_Communications__c</picklist>
-            <values>
-                <fullName>Autopay Sign-Up</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Collections</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Monthly Statement</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other%2C see detail</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Payment Receipt</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Project Assignment</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Schedule Z Filing</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Termination</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Upcoming Bill</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Customer_Payment_Methods__c</picklist>
-            <values>
-                <fullName>ACH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Credit Card</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Paper Check</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Payment_Methods__c</picklist>
-            <values>
-                <fullName>ACH</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Credit Card</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Paper Check</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Reporting_Requirements__c</picklist>
-            <values>
-                <fullName>Accounts Aging</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Accounts Receivable</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Terminations</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Days Sales Outstanding %28DSO%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other%2C see detail</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Project Attrition</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>State_Applications__c</picklist>
             <values>
                 <fullName>AK</fullName>
@@ -2011,6 +1918,161 @@
             </values>
         </picklistValues>
         <picklistValues>
+            <picklist>Team_Submitted_By__c</picklist>
+            <values>
+                <fullName>Business Applications</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Business Development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CS Product Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Client Operations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Client Product Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Operations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Data and Finance Operations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Information %26 Technology</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Legal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Marketing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Office Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Originations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>People</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>UX Development</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Customer_Billing_Communications__c</picklist>
+            <values>
+                <fullName>Autopay Sign-Up</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Collections</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Monthly Statement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other%2C see detail</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Payment Receipt</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project Assignment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Schedule Z Filing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Termination</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Upcoming Bill</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Customer_Payment_Methods__c</picklist>
+            <values>
+                <fullName>ACH</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Credit Card</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Paper Check</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Payment_Methods__c</picklist>
+            <values>
+                <fullName>ACH</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Credit Card</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Paper Check</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Reporting_Requirements__c</picklist>
+            <values>
+                <fullName>Accounts Aging</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Accounts Receivable</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Terminations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Days Sales Outstanding %28DSO%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other%2C see detail</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project Attrition</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Customer_Acquisition_Invoicing_Timing__c</picklist>
             <values>
                 <fullName>Annual</fullName>
@@ -2067,65 +2129,6 @@
             </values>
             <values>
                 <fullName>Quarterly</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Team_Submitted_By__c</picklist>
-            <values>
-                <fullName>Business Applications</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Business Development</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CS Product Management</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Client Operations</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Client Product Management</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer Operations</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Data and Finance Operations</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Information %26 Technology</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Legal</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Marketing</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Office Management</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Originations</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>People</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>UX Development</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
