@@ -61080,11 +61080,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>copado__User_Story__c.copado__Manual_Step_Required__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>copado__User_Story__c.copado__Manual_Tests_Passed__c</field>
         <readable>false</readable>
     </fieldPermissions>
