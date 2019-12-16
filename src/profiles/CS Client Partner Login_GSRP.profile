@@ -59240,11 +59240,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>copado__Git_Repository__c.copado__Source_Format__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>copado__Git_Repository__c.copado__Tag_Base_URL__c</field>
         <readable>false</readable>
     </fieldPermissions>
