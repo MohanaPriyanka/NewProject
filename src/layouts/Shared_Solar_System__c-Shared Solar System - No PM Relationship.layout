@@ -248,6 +248,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Reserved_Anchor_Capacity__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Reserved_Capacity_kW_DC__c</field>
             </layoutItems>
             <layoutItems>

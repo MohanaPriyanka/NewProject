@@ -53,42 +53,52 @@ public with sharing class SharedSolarSystemHandlerTest {
         );
         insert junction;
 
-        Shared_Solar_System__c sss1 = new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
+        Account clientAccount = new Account(name = 'Test Client');
+        insert clientAccount;
+
+        Shared_Solar_System__c sss1 = new Shared_Solar_System__c(Name = 'SSS 1',
             Service_Territory__c = 'SEMA',
             Service_Territories__c = 'SEMA',
             Open__c = true,
+            Stage__c = 'Onboarding',
+            Client_Account__c = clientAccount.Id,
             Reserved_Capacity_kW_DC__c = '10',
             Capacity_Committed_kW_DC__c = 0,
-            Total_System_Size_kWh_DC__c = 1445.86,
-            Total_System_Size_kW_AC__c = 1000,
+            Total_System_Size_kWh_DC__c = 48,
+            Total_System_Size_kW_AC__c = 80,
             Utility__c = eversource.Id,
             Credit_Score_Requirement__c = 300,
             Assignment_Order__c = '1',
-            Expected_Yield_kWh_kW__c = 1300,
+            Expected_Yield_kWh_kW__c = 100,
             Assemblage_Count__c = 1,
-            Sales_Partners__c = 'All',
-            Maximum_Subscription_Assemblage__c = 25);
+            Sales_Partners__c = 'All'
+
+        );
 
         Shared_Solar_System__c sss2 = new Shared_Solar_System__c(Name = 'SSS 2',
             Service_Territory__c = 'NEMA',
             Service_Territories__c = 'NEMA',
             Open__c = true,
+            Stage__c = 'Onboarding',
+            Client_Account__c = clientAccount.Id,
             Reserved_Capacity_kW_DC__c = '10',
             Capacity_Committed_kW_DC__c = 0,
-            Total_System_Size_kWh_DC__c = 1445.86,
+            Total_System_Size_kWh_DC__c = 32,
             Total_System_Size_kW_AC__c = 996,
             Utility__c = eversource.Id,
             Credit_Score_Requirement__c = 300,
             Assignment_Order__c = '2',
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Sales_Partners__c = 'All',
-            Maximum_Subscription_Assemblage__c = 25);
+            Sales_Partners__c = 'All'
+        );
 
-        Shared_Solar_System__c sss3 = new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
+
+        Shared_Solar_System__c sss3 = new Shared_Solar_System__c(Name = 'SSS 3',
             Service_Territory__c = 'NEMA',
             Service_Territories__c = 'NEMA',
             Open__c = true,
+            Client_Account__c = clientAccount.Id,
             Reserved_Capacity_kW_DC__c = '10',
             Capacity_Committed_kW_DC__c = 0,
             Total_System_Size_kWh_DC__c = 1445.86,
@@ -101,25 +111,8 @@ public with sharing class SharedSolarSystemHandlerTest {
             Sales_Partners__c = 'All',
             Maximum_Subscription_Assemblage__c = 25);
 
-        Shared_Solar_System__c sss4 = new Shared_Solar_System__c(Name = 'Oxford Barrett St. P1',
-            Service_Territory__c = 'NEMA',
-            Service_Territories__c = 'NEMA',
-            Open__c = true,
-            Reserved_Capacity_kW_DC__c = '10',
-            Capacity_Committed_kW_DC__c = 0,
-            Total_System_Size_kWh_DC__c = 1445.86,
-            Total_System_Size_kW_AC__c = 996,
-            Utility__c = nationalGrid.Id,
-            Credit_Score_Requirement__c = 300,
-            Assignment_Order__c = '2',
-            Expected_Yield_kWh_kW__c = 1300,
-            Assemblage_Count__c = 1,
-            Sales_Partners__c = 'All',
-            Maximum_Subscription_Assemblage__c = 25);
 
-        insert new List<Shared_Solar_System__c>{
-            sss1, sss2, sss3, sss4
-        };
+        insert new List<Shared_Solar_System__c>{sss1, sss2, sss3};
 
         List<Shared_Solar_System__c> noSharedSolarSystems =
             SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
@@ -177,17 +170,6 @@ public with sharing class SharedSolarSystemHandlerTest {
 
         System.assertEquals(3, eversourceSharedSolarSystems.size());
 
-        List<Shared_Solar_System__c> nationalGridSharedSolarSystems =
-            SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
-                new Set<Id>{
-                    nationalGrid.Id
-                },
-                new Set<String>{
-                    'SEMA', 'NEMA'
-                }
-            );
-
-        System.assertEquals(1, nationalGridSharedSolarSystems.size());
 
         List<Shared_Solar_System__c> ngAndEversourceSharedSolarSystems =
             SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
@@ -199,7 +181,7 @@ public with sharing class SharedSolarSystemHandlerTest {
                 }
             );
 
-        System.assertEquals(4, ngAndEversourceSharedSolarSystems.size());
+        System.assertEquals(3, ngAndEversourceSharedSolarSystems.size());
 
         Account accountParent1 = new Account(Name = 'Parent Account 1', Client_Brand_Key__c = 'BluewaveLogo');
         Account accountParent2 = new Account(Name = 'Parent Account 2', Client_Brand_Key__c = 'AmpRed');
@@ -468,13 +450,66 @@ public with sharing class SharedSolarSystemHandlerTest {
         List<Shared_Solar_System__c> testSSS = [
             SELECT Name, Capacity_Committed_kW_DC__c, Stage__c
             FROM Shared_Solar_System__c
-            WHERE Name = 'Oxford Barrett St. P1'
+            WHERE Name = 'SSS 1'
         ];
 
         String response = SharedSolarSystemHandler.updateStage(testSSS[0].Id,'Pending');
         System.assertEquals('Success',response);
 
-        String responseTwo = SharedSolarSystemHandler.updateStage(testSSS[0].Id,'Acquisition');
+        //Does not update because of validation rules
+        String responseTwo = SharedSolarSystemHandler.updateStage(testSSS[0].Id,'Management');
         System.assertNotEquals('Success',responseTwo);
+    }
+
+    @IsTest
+    public static void testReservedAnchorCapacity(){
+        List<Shared_Solar_System__c> sssList = [
+            SELECT Name, Capacity_Committed_kW_DC__c, Stage__c, Anchor_Capacity_Reserved__c
+            FROM Shared_Solar_System__c
+            ORDER BY Name
+            LIMIT 2
+        ];
+
+        sssList[0].Reserved_Anchor_Capacity__c = 7;
+        update sssList[0];
+
+        List<Shared_Solar_System__c> checkSSS = [
+            SELECT Name, Capacity_Committed_kW_DC__c, Stage__c, Anchor_Capacity_Reserved__c, Reserved_Anchor_Capacity__c,
+                Capacity_Available_to_be_Reserved__c, Total_Capacity_Committed_Reserved__c, Total_System_Size_kWh_DC__c
+            FROM Shared_Solar_System__c
+            ORDER BY Name
+            LIMIT 2
+        ];
+
+        //SSS1 does NOT have anchors but the Reserved Anchor Capacity field is populated
+        //SSS2 does have anchors --> Anchor Capacity should be sum of anchor opps
+        System.assertEquals(7, checkSSS[0].Reserved_Anchor_Capacity__c);
+        System.assertEquals(7, checkSSS[0].Anchor_Capacity_Reserved__c);
+        System.assertEquals(23.0769, checkSSS[1].Anchor_Capacity_Reserved__c);
+
+        checkSSS[0].Open__c = false;
+        checkSSS[1].Open__c = false;
+
+        update checkSSS;
+
+        //Move the SSS1 into management --> Anchor Capacity should be 0
+        //Move SSS2 into Management --> should be sum of anchor opps
+        String response = SharedSolarSystemHandler.updateStage(checkSSS[0].Id,'Management');
+        System.assertEquals('Success', response);
+        String responseTwo = SharedSolarSystemHandler.updateStage(checkSSS[1].Id,'Management');
+        System.assertEquals('Success', responseTwo);
+
+        checkSSS = [
+            SELECT Name, Capacity_Committed_kW_DC__c, Stage__c, Anchor_Capacity_Reserved__c
+            FROM Shared_Solar_System__c
+            ORDER BY Name
+            LIMIT 2
+        ];
+
+        System.assertEquals('Management', checkSSS[0].Stage__c);
+        System.assertEquals(0, checkSSS[0].Anchor_Capacity_Reserved__c);
+
+        System.assertEquals('Management', checkSSS[1].Stage__c);
+        System.assertEquals(23.0769, checkSSS[1].Anchor_Capacity_Reserved__c);
     }
 }
