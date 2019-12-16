@@ -58090,11 +58090,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>copado__AuxiliaryObject__c.copado__Static_Code_Analysis_Settings__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>copado__AuxiliaryObject__c.copado__User_Story__c</field>
         <readable>false</readable>
     </fieldPermissions>
