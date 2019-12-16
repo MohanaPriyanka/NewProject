@@ -332,6 +332,17 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Apex_Context__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>No profiles or permission sets should grant users edit access to this field. It is used to make sure record updates made in Apex aren&apos;t prevented by validation rules.</description>
+        <externalId>false</externalId>
+        <label>Apex Context</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>App_ID_WO_Manual__c</fullName>
         <externalId>false</externalId>
         <label>App ID#/ WO #</label>
@@ -3563,6 +3574,25 @@ Credit_Score_Requirement__c = 0
     ISCHANGED(App_ID_WO_Manual__c)
     )</errorConditionFormula>
         <errorMessage>Due to their importance, certain fields on the Shared Solar System page are restricted so that only certain people can edit them. Please contact your System Administrator to edit.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Prevent_System_Size_Changes</fullName>
+        <active>true</active>
+        <description>Prevents updates to yield or system size once project is in acq or management. Update should go through the SSSO approval process.</description>
+        <errorConditionFormula>AND(
+OR(
+ISCHANGED( Expected_Yield_kWh_kW__c ),
+ISCHANGED( Total_System_Size_kWh_DC__c)
+),/*either yield or system size dc are changed*/
+
+OR(
+ISPICKVAL(Stage__c,&quot;Management&quot;),
+ISPICKVAL(Stage__c,&quot;Acquisition&quot;)
+), /*and it&apos;s being change to either Management or Acquisition*/
+
+ Apex_Context__c=false /*and the update is not being done in apex*/
+)</errorConditionFormula>
+        <errorMessage>To change the system Yield or Size (kW DC), please submit a Shared Solar System Order with the &quot;New Shared Solar System Order&quot; button.</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>Utility_Decimals_Requirement</fullName>
