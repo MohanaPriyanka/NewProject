@@ -284,5 +284,14 @@
     <pluralLabel>Shared Solar System Orders</pluralLabel>
     <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>Lock_After_Approval</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+NOT(ISNEW()),/*excludes new records*/
+ISPICKVAL(PRIORVALUE( Approval_Status__c ),&quot;Approved&quot;)/*prevents records from being changed after approval*/
+)</errorConditionFormula>
+        <errorMessage>You cannot edit a SSSO after it has been approved. If you need to make an update, please log a new SSSO.</errorMessage>
+    </validationRules>
     <visibility>Public</visibility>
 </CustomObject>
