@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>Approval_Status__c</fullName>
+        <description>Subscription Orders will not be rolled up to the utility account subscription until they are marked as approved. Once approved, they cannot be changed.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Subscription Orders will not be rolled up to the utility account subscription until they are marked as approved. Once approved, they cannot be changed.</inlineHelpText>
+        <label>Approval Status</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Approved</fullName>
+                    <default>false</default>
+                    <label>Approved</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Calculated_Percent_Share_of_System__c</fullName>
+        <externalId>false</externalId>
+        <formula>ROUND(  Previous_kw_DC_Subscription__c / Total_System_Size_kW_DC__c , Utility_Number_of_Decimal_Places__c + 2)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Calculated Percent Share of System</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>5</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Calculated_kW_DC_Subscription__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+
+AND(TEXT( Product__r.Customer_Subscription_Type__c )=&apos;kWh&apos;,  Previous_kw_DC_Subscription__c &gt;0),
+
+ Previous_Annual_kwh__c / Expected_Yield_kWh_kW__c ,
+
+IF( Utility_Account_Subscription__r.UAS_Number__c &gt; 1 ,
+
+ Previous_Annual_Cost__c  / Value_of_NMC__c / Expected_Yield_kWh_kW__c,
+
+IF(
+
+OR( Utility_Account_Subscription__r.Auto_Unround__c = TRUE , Utility_Account_Subscription__r.UAS_Number__c = 1),
+
+Utility_Account_Subscription__r.UAS_Number__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c,
+
+
+IF(
+
+OR(Utility_Account_Subscription__r.UAS_Number__c=1, Utility_Account_Subscription__r.Shared_Solar_System__r.Name = &apos;Fairhaven Mill Rd&apos;,
+
+Utility_Account_Subscription__r.Shared_Solar_System__r.Name= &apos;Oxford Clara Barton&apos;),
+
+Round(( Previous_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4, 0)/4,0))))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Calculated kW DC Subscription</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Previous_Annual_Cost__c</fullName>
+        <description>This is the Annual Cost on the UAS at the time the subscription order was created</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the Annual Cost on the UAS at the time the subscription order was created</inlineHelpText>
+        <label>Previous Annual Cost</label>
+        <precision>16</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Previous_Annual_kwh__c</fullName>
+        <description>This is the Annual kwh on the related UAS when the Subscription Order was created.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the Annual kwh on the related UAS when the Subscription Order was created.</inlineHelpText>
+        <label>Previous Annual kwh</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Previous_Percent_Share_of_System__c</fullName>
+        <description>This is the Percent Share of System that was on the related UAS at the time the Subscription Order was created.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the Percent Share of System that was on the related UAS at the time the Subscription Order was created.</inlineHelpText>
+        <label>Previous Percent Share of System</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>5</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Previous_kw_DC_Subscription__c</fullName>
+        <description>This is the kw dc subscription on the related UAS at the time to subscription order was created.</description>
+        <externalId>false</externalId>
+        <label>Previous kw DC Subscription</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Shared_Solar_System_Order__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the related Shared Solar System Order that the Subscription Order was created from.</inlineHelpText>
+        <label>Shared Solar System Order</label>
+        <referenceTo>Shared_Solar_System_Order__c</referenceTo>
+        <relationshipLabel>Subscription Orders</relationshipLabel>
+        <relationshipName>Subscription_Orders</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <recordTypes>
+        <fullName>Subscription_Orders</fullName>
+        <active>true</active>
+        <label>Subscription Orders</label>
+        <picklistValues>
+            <picklist>Approval_Status__c</picklist>
+            <values>
+                <fullName>Approved</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>System_Change_Order</fullName>
+        <active>true</active>
+        <label>System Change Order</label>
+        <picklistValues>
+            <picklist>Approval_Status__c</picklist>
+            <values>
+                <fullName>Approved</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+</CustomObject>
