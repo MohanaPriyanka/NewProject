@@ -58030,11 +58030,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>copado__AuxiliaryObject__c.copado__Default_String__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>copado__AuxiliaryObject__c.copado__Default_Text__c</field>
         <readable>false</readable>
     </fieldPermissions>
