@@ -11,10 +11,6 @@
                 <field>OwnerId</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Name</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>ContractNumber</field>
             </layoutItems>
@@ -34,6 +30,10 @@
                 <behavior>Required</behavior>
                 <field>SpecialTerms</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>Status</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -47,10 +47,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>ContractTerm</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
-                <field>Status</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -80,10 +76,6 @@
             <layoutItems>
                 <behavior>Required</behavior>
                 <field>Contract_Type__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
-                <field>Project_Description__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
@@ -333,7 +325,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h3B000000rveb</masterLabel>
+        <masterLabel>00h0a00000Btk9t</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>
