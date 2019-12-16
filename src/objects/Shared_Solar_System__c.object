@@ -3463,7 +3463,7 @@ ISPICKVAL(Stage__c,&quot;Management&quot;),
 ISPICKVAL(Stage__c,&quot;Acquisition&quot;)
 ) /*and it&apos;s being change to either Management or Acquisition*/
 )</errorConditionFormula>
-        <errorMessage>You cannot change the Utility on a shared solar system that is in the management or acquisition stage. Please contact the Business Applications if this is needed.</errorMessage>
+        <errorMessage>You cannot change the Utility on this shared solar system at this time. Please contact the Business Applications if this is needed.</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>Management_Fully_Subscribed</fullName>
