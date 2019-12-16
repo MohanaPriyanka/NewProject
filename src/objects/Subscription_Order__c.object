@@ -85,6 +85,56 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Calculated_Percent_Share_of_System__c</fullName>
+        <externalId>false</externalId>
+        <formula>ROUND(  Previous_kw_DC_Subscription__c / Total_System_Size_kW_DC__c , Utility_Number_of_Decimal_Places__c + 2)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Calculated Percent Share of System</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>5</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Calculated_kW_DC_Subscription__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+
+AND(TEXT( Product__r.Customer_Subscription_Type__c )=&apos;kWh&apos;,  Previous_kw_DC_Subscription__c &gt;0),
+
+ Previous_Annual_kwh__c / Expected_Yield_kWh_kW__c ,
+
+IF( Utility_Account_Subscription__r.UAS_Number__c &gt; 1 ,
+
+ Previous_Annual_Cost__c  / Value_of_NMC__c / Expected_Yield_kWh_kW__c,
+
+IF(
+
+OR( Utility_Account_Subscription__r.Auto_Unround__c = TRUE , Utility_Account_Subscription__r.UAS_Number__c = 1),
+
+Utility_Account_Subscription__r.UAS_Number__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c,
+
+
+IF(
+
+OR(Utility_Account_Subscription__r.UAS_Number__c=1, Utility_Account_Subscription__r.Shared_Solar_System__r.Name = &apos;Fairhaven Mill Rd&apos;,
+
+Utility_Account_Subscription__r.Shared_Solar_System__r.Name= &apos;Oxford Clara Barton&apos;),
+
+Round(( Previous_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4, 0)/4,0))))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Calculated kW DC Subscription</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Change_in_Annual_Cost__c</fullName>
         <description>This is used for subscription orders where the related product is sized using dollars. It represents the net change from previously approved subscription orders.</description>
         <externalId>false</externalId>
@@ -154,15 +204,6 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Comments__c</fullName>
-        <externalId>false</externalId>
-        <label>Comments</label>
-        <required>false</required>
-        <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>TextArea</type>
-    </fields>
-    <fields>
         <fullName>Effective_Date__c</fullName>
         <description>This is the date that the Subscription Order was approved. It is populated automatically when the Status field is set to approved. Subscription Orders cannot be edited once they&apos;ve been approved.</description>
         <externalId>false</externalId>
@@ -188,6 +229,59 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Previous_Annual_Cost__c</fullName>
+        <description>This is the Annual Cost on the UAS at the time the subscription order was created</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the Annual Cost on the UAS at the time the subscription order was created</inlineHelpText>
+        <label>Previous Annual Cost</label>
+        <precision>16</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Previous_Annual_kwh__c</fullName>
+        <description>This is the Annual kwh on the related UAS when the Subscription Order was created.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the Annual kwh on the related UAS when the Subscription Order was created.</inlineHelpText>
+        <label>Previous Annual kwh</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Previous_Percent_Share_of_System__c</fullName>
+        <description>This is the Percent Share of System that was on the related UAS at the time the Subscription Order was created.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the Percent Share of System that was on the related UAS at the time the Subscription Order was created.</inlineHelpText>
+        <label>Previous Percent Share of System</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>5</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Previous_kw_DC_Subscription__c</fullName>
+        <description>This is the kw dc subscription on the related UAS at the time to subscription order was created.</description>
+        <externalId>false</externalId>
+        <label>Previous kw DC Subscription</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Product__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -201,18 +295,18 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>Total_System_Size_kW_DC__c</fullName>
-        <description>This is the Total System Size kW DC on the related shared solar system at the time the subscription order was created.</description>
+        <fullName>Shared_Solar_System_Order__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
         <externalId>false</externalId>
-        <inlineHelpText>This is the Total System Size kW DC on the related shared solar system at the time the subscription order was created.</inlineHelpText>
-        <label>Total System Size kW DC</label>
-        <precision>8</precision>
+        <inlineHelpText>This is the related Shared Solar System Order that the Subscription Order was created from.</inlineHelpText>
+        <label>Shared Solar System Order</label>
+        <referenceTo>Shared_Solar_System_Order__c</referenceTo>
+        <relationshipLabel>Subscription Orders</relationshipLabel>
+        <relationshipName>Subscription_Orders</relationshipName>
         <required>false</required>
-        <scale>2</scale>
-        <trackHistory>true</trackHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Type__c</fullName>
@@ -306,11 +400,6 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <type>Currency</type>
     </fields>
     <label>Subscription Order</label>
-    <listViews>
-        <fullName>All</fullName>
-        <filterScope>Everything</filterScope>
-        <label>All</label>
-    </listViews>
     <nameField>
         <displayFormat>SO-{00000}</displayFormat>
         <label>Subscription Order Name</label>
@@ -318,6 +407,30 @@ Round(( Change_in_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Subscription Orders</pluralLabel>
+    <recordTypes>
+        <fullName>Subscription_Orders</fullName>
+        <active>true</active>
+        <label>Subscription Orders</label>
+        <picklistValues>
+            <picklist>Approval_Status__c</picklist>
+            <values>
+                <fullName>Approved</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>System_Change_Order</fullName>
+        <active>true</active>
+        <label>System Change Order</label>
+        <picklistValues>
+            <picklist>Approval_Status__c</picklist>
+            <values>
+                <fullName>Approved</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
     <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
     <validationRules>

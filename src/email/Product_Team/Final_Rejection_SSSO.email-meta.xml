@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Final Rejection - SSSO</name>
+    <style>none</style>
+    <subject>Your Shared Solar System Order has been Rejected</subject>
+    <textOnly>Your Shared Solar System Order has been approved!
+Click here to view the SSSO:
+Shared Solar System: {!Shared_Solar_System_Order__c.Shared_Solar_System__c}
+Comments: {!Shared_Solar_System_Order__c.Comments__c}</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

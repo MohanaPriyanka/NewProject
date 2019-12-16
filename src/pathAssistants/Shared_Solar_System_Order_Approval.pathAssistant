@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PathAssistant xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <entityName>Shared_Solar_System_Order__c</entityName>
+    <fieldName>Approval_Status__c</fieldName>
+    <masterLabel>Shared Solar System Order Approval</masterLabel>
+    <pathAssistantSteps>
+        <info>&lt;p&gt;&lt;span style=&quot;font-size: 13px;&quot;&gt;This Order has been Approved! The related Shared Solar System and related subscriptions will be automatically updated.&lt;/span&gt;&lt;/p&gt;</info>
+        <picklistValueName>Approved</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>&lt;p&gt;This Order has not been submitted for Approval yet! Click the &amp;quot;Submit for Approval&amp;quot; button to kick of the approval process. Once an Order has been submitted for Approval, it can&amp;#39;t be updated. Once an Order is approved, the related Shared Solar System will be updated with the new values.&lt;/p&gt;</info>
+        <picklistValueName>New</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>&lt;p&gt;This Order has been submitted for Approval! Once it&amp;#39;s been approved, the related Shared Solar System and related subscriptions will be automatically updated. &lt;/p&gt;</info>
+        <picklistValueName>Pending Approval</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>&lt;p&gt;This Order was Rejected. See the &amp;quot;Approvals&amp;quot; related list to see the user that rejected it, along with any comments they left. If you&amp;#39;d like to submit this Order for approval again, click the &amp;quot;Submit for Approval&amp;quot; button.&lt;/p&gt;</info>
+        <picklistValueName>Rejected</picklistValueName>
+    </pathAssistantSteps>
+    <recordTypeName>__MASTER__</recordTypeName>
+</PathAssistant>
