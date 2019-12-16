@@ -58470,11 +58470,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>copado__Deployment_Flow_Step__c.copado__Connection_Behavior__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>copado__Deployment_Flow_Step__c.copado__Destination_Branch__c</field>
         <readable>false</readable>
     </fieldPermissions>
