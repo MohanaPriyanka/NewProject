@@ -58030,11 +58030,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>copado__AuxiliaryObject__c.copado__Data_Template__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>copado__AuxiliaryObject__c.copado__Date_Time__c</field>
         <readable>false</readable>
     </fieldPermissions>
