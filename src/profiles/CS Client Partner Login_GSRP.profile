@@ -25895,11 +25895,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Lead.Auto_Convert__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Lead.Automatic_Product_Assignment__c</field>
         <readable>false</readable>
     </fieldPermissions>
