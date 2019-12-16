@@ -47792,6 +47792,10 @@
         <layout>Contract-General Contract Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Contract-General Contract Layout</layout>
+        <recordType>Contract.General_Contract</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Daily_Production_Update__c-Daily Production Update Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
