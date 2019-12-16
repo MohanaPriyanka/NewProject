@@ -58915,11 +58915,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>copado__Environment__c.copado__Latest_Deployment_Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>copado__Environment__c.copado__Latest_Deployment__c</field>
         <readable>false</readable>
     </fieldPermissions>
