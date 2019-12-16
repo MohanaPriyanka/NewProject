@@ -58895,11 +58895,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>copado__Environment__c.copado__Connection_Behavior__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>copado__Environment__c.copado__Current_Code_Coverage__c</field>
         <readable>false</readable>
     </fieldPermissions>
