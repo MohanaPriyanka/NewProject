@@ -1,3 +1,4 @@
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class SharedSolarSystemHandler implements Schedulable {
 
     public void execute(SchedulableContext sch) {
@@ -34,8 +35,6 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
         summarizeCapacity(newSSSList);
 
         for (Shared_Solar_System__c newSSS : newSSSList){
-
-
             if (newSSS.Reserved_capacity_kW_DC__c != oldSSSMap.get(newSSS.Id).Reserved_capacity_kW_DC__c ||
                 newSSS.Capacity_committed_kW_DC__c != oldSSSMap.get(newSSS.Id).Capacity_committed_kW_DC__c ||
                 newSSS.Anchor_capacity_reserved__c != oldSSSMap.get(newSSS.Id).Anchor_capacity_reserved__c){
