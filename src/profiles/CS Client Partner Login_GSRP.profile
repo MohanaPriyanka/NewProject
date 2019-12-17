@@ -7078,10 +7078,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>copado__MetadataDeploymentService</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>copado__MetadataTypeService</apexClass>
         <enabled>true</enabled>
     </classAccesses>
