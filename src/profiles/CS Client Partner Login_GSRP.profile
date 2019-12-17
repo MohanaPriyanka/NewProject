@@ -8086,10 +8086,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>copado__Test_DataTemplateSetupExtension</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>copado__Test_DataTemplateTaskComponent</apexClass>
         <enabled>false</enabled>
     </classAccesses>
