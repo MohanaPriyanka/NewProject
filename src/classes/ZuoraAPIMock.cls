@@ -82,6 +82,8 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
             return getBillRun();
         } else if (endpoint.contains('/v1/object/rate-plan-charge/')) {
             return getRatePlanCharge(endpoint);
+        } else if (endpoint.contains('/v1/payment-runs')) {
+            return getPaymentRun();
         } else {
             return null;
         }
@@ -1369,6 +1371,31 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
     private static HttpResponse getBillRun() {
         HttpResponse res = getJSON();
         res.setBody('{"Success":true,"Id":"2c92c0f86d1fd442016d217fbaeb6278"}');
+        return res;
+    }
+
+    private static HttpResponse getPaymentRun() {
+        HttpResponse res = getJSON();
+        res.setBody('{' +
+            '"id" : "2c92c0fa6efefd09016f0411461e3bc4",' +
+            '"number" : "PR-00001316",' +
+            '"targetDate" : "2019-11-09",' +
+            '"runDate" : null,' +
+            '"status" : "Pending",' +
+            '"batch" : "Batch2",' +
+            '"executedOn" : null,' +
+            '"completedOn" : null,' +
+            '"autoApplyCreditMemo" : false,' +
+            '"autoApplyUnappliedPayment" : true,' +
+            '"consolidatedPayment" : true,' +
+            '"processPaymentWithClosedPM" : false,' +
+            '"collectPayment" : true,' +
+            '"createdDate" : "2019-12-14 06:00:38",' +
+            '"createdById" : "2c92c0f96a01b91f016a050fad50160a",' +
+            '"updatedDate" : "2019-12-14 06:00:38",' +
+            '"updatedById" : "2c92c0f96a01b91f016a050fad50160a",' +
+            '"success" : true' +
+            '}');
         return res;
     }
 }

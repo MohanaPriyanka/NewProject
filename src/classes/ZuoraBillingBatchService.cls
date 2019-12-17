@@ -6,6 +6,10 @@ public with sharing class ZuoraBillingBatchService {
     @TestVisible
     private ZuoraAccountSelector zuoraAcctSelector = new ZuoraAccountSelector();
 
+    public static final String PRE_BILLING_BATCH = 'Batch1';
+    public static final String BILLING_BATCH = 'Batch2';
+    public static final String FINISHED_BILLING_BATCH = 'Batch3';
+
     public ZuoraAPI.ActionItems updateAccountBatches(Date invoiceDate) {
         ZuoraAPI.ActionItems actionItem = new ZuoraAPI.ActionItems();
         actionItem.type = 'Account';
@@ -21,13 +25,13 @@ public with sharing class ZuoraBillingBatchService {
             for (Zuora__CustomerAccount__c account : allAccounts){
                 ZuoraAPI.ZuoraAccount zAccount = new ZuoraAPI.ZuoraAccount();
                 Boolean hasUsage = accountsWithUsage.containsKey(account.Zuora__Account__c);
-                if (account.Zuora__Batch__c != 'Batch2' && hasUsage){
+                if (account.Zuora__Batch__c != BILLING_BATCH && hasUsage){
                     zAccount.Id = account.Zuora__Zuora_Id__c;
-                    zAccount.Batch = 'Batch2';
+                    zAccount.Batch = BILLING_BATCH;
                     actionItem.objects.add(zAccount);
-                } else if (account.Zuora__Batch__c == 'Batch2' && !hasUsage) {
+                } else if (account.Zuora__Batch__c == BILLING_BATCH && !hasUsage) {
                     zAccount.Id = account.Zuora__Zuora_Id__c;
-                    zAccount.Batch = 'Batch3';
+                    zAccount.Batch = FINISHED_BILLING_BATCH;
                     actionItem.objects.add(zAccount);
                 }
             }

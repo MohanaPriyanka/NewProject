@@ -131,4 +131,9 @@ public with sharing class ZuoraInvoiceSelectorTest {
         system.assert(queryString.contains('2019-10-02'));
         system.assert(queryString.contains('2019-10-07'));
     }
+
+    @IsTest
+    private static void testGetLatestDueDateForAutopayAccounts() {
+        System.assertNotEquals(null, ZuoraInvoiceSelector.getLatestDueDateForAutopayAccounts());
+    }
 }
