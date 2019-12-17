@@ -6722,10 +6722,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>copado__DataTemplateTaskComponentController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>copado__DatabaseOperationType</apexClass>
         <enabled>true</enabled>
     </classAccesses>
