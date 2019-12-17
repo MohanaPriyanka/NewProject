@@ -6562,10 +6562,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>copado__CCD_BackPromotionBatch</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>copado__CCD_BackPromotionSchedule</apexClass>
         <enabled>false</enabled>
     </classAccesses>
