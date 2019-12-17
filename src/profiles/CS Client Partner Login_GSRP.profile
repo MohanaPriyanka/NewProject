@@ -6562,10 +6562,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>copado__CLIInterface</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>copado__CMTestMethodUtilities</apexClass>
         <enabled>false</enabled>
     </classAccesses>
