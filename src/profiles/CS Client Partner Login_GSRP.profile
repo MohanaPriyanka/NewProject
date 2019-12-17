@@ -7286,10 +7286,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>copado__ReleaseDetailService</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>copado__ReleaseExt</apexClass>
         <enabled>false</enabled>
     </classAccesses>
