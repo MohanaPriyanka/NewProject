@@ -8134,10 +8134,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>copado__Test_ScheduleCronExpressionController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>copado__Test_SetupWizardFinishController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
