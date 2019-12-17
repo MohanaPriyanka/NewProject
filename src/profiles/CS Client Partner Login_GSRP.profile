@@ -3214,10 +3214,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>MPM4_BASE__TH_Time_Entry_Sort_Behavior</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>MPM4_BASE__TH_Time_Helper_Controller</apexClass>
         <enabled>true</enabled>
     </classAccesses>
