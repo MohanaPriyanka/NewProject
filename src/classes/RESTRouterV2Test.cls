@@ -6,37 +6,52 @@
 public with sharing class RESTRouterV2Test {
 
     private static String validLead =
-        '"firstName": "System",' +
-        '"lastName": "Testcase",' +
-        '"email": "test@invalid.bluewavesolar.com",' +
-        '"mobilePhone": "555-555-5555",' +
-        '"applicationType": "Residential",' +
-        '"streetAddress": "1 Test Street",' +
-        '"city": "Suffern",' +
-        '"state": "NY",' +
-        '"zipCode": "10901",' +
-        '"eiaId": "1234",' +
-        '"continueApplicationLink": "http://switch.bluewavesolar.invalid",' +
-        '"productName": "CS Product",' +
-        '"referralName": "RefFirst RefLast",' +
-        '"referralEmail": "refemail@invalid.bluewavesolar.com"';
+        '"firstName": "System"' +
+            ',"lastName": "Testcase"' +
+            ',"email": "test@invalid.bluewavesolar.com"' +
+            ',"mobilePhone": "555-555-5555"' +
+            ',"streetAddress": "1 Test Street"' +
+            ',"city": "Suffern"' +
+            ',"state": "NY"' +
+            ',"zipCode": "10901"' +
+            ',"eiaId": "1234"' +
+            ',"continueApplicationLink": "http://switch.bluewavesolar.invalid"' +
+            ',"productName": "CS Product"' +
+            ',"referralName": "RefFirst RefLast"' +
+            ',"referralEmail": "refemail@invalid.bluewavesolar.com"';
+
+    private static String validResiLead = validLead + ',"applicationType": "Residential"';
+
+    private static String validNonResiLead = validLead +
+        ',"applicationType": "Non-Residential"' +
+        ',"businessName": "My Cool Company"' +
+        ',"businessTitle": "Janitor"' +
+        ',"businessPhone": "5551239876"';
 
     private static String validPropertyAccount =
-        '   "billingStreet": "Test billing street",' +
-        '   "billingCity": "Test billing city",' +
-        '   "billingState": "NY",' +
-        '   "billingPostalCode": "14472"';
+        '   "billingStreet": "Test billing street"' +
+        ',  "billingCity": "Test billing city"' +
+        ',  "billingState": "NY"' +
+        ',  "billingPostalCode": "14472"';
 
     private static String validUtilityAccountLog =
-        '       "nameOnAccount": "Test Accounts Payable",' +
-        '       "serviceStreet": "Test service street",' +
-        '       "serviceCity": "Test service city",' +
-        '       "serviceState": "NY",' +
-        '       "servicePostalCode": "14472",' +
-        '       "utilityAccountNumber": "555555"';
+        '       "nameOnAccount": "Test Accounts Payable"' +
+        ',      "serviceStreet": "Test service street"' +
+        ',      "serviceCity": "Test service city"' +
+        ',      "serviceState": "NY"' +
+        ',      "servicePostalCode": "14472"' +
+        ',      "utilityAccountNumber": "555555"';
 
-    private static String validJsonRequest = '{' +
-        validLead + ',' +
+    private static String validResiJsonRequest = '{' +
+        validResiLead + ',' +
+        '"propertyAccounts": [{' +
+        validPropertyAccount + ',' +
+        '"utilityAccountLogs": [{' +
+        validUtilityAccountLog +
+        '}]}]}';
+
+    private static String validNonResiJsonRequest = '{' +
+        validNonResiLead + ',' +
         '"propertyAccounts": [{' +
         validPropertyAccount + ',' +
         '"utilityAccountLogs": [{' +
@@ -70,12 +85,12 @@ public with sharing class RESTRouterV2Test {
     /** Leads **/
 
     @IsTest
-    public static void testPostLeadSuccess() {
+    public static void testPostResiLeadSuccess() {
         RestRequest req = new RestRequest();
         req.requestURI = '/services/apexrest/v2/leads';
         req.httpMethod = 'POST';
         req.addHeader('Content-Type', 'application/json');
-        req.requestBody = Blob.valueOf(validJsonRequest);
+        req.requestBody = Blob.valueOf(validResiJsonRequest);
 
         RestContext.request = req;
         RestContext.response = new RestResponse();
@@ -84,7 +99,7 @@ public with sharing class RESTRouterV2Test {
 
         RestResponse response = RestContext.response;
 
-        Map<String, Object> requestLead = (Map<String,Object>) JSON.deserializeUntyped(validJsonRequest);
+        Map<String, Object> requestLead = (Map<String,Object>) JSON.deserializeUntyped(validResiJsonRequest);
         List<Object> requestPropertyAccounts = (List<Object>) requestLead.get('propertyAccounts');
         Map<String, Object> requestPropertyAccount = (Map<String,Object>) requestPropertyAccounts[0];
         List<Object> requestUtilityAccountLogs = (List<Object>) requestPropertyAccount.get('utilityAccountLogs');
@@ -127,6 +142,63 @@ public with sharing class RESTRouterV2Test {
     }
 
     @IsTest
+    public static void testPostNonResiLeadSuccess() {
+        RestRequest req = new RestRequest();
+        req.requestURI = '/services/apexrest/v2/leads';
+        req.httpMethod = 'POST';
+        req.addHeader('Content-Type', 'application/json');
+        req.requestBody = Blob.valueOf(validNonResiJsonRequest);
+
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+
+        RESTRouterV2.postRequest();
+
+        RestResponse response = RestContext.response;
+
+        Map<String, Object> requestLead = (Map<String,Object>) JSON.deserializeUntyped(validNonResiJsonRequest);
+        List<Object> requestPropertyAccounts = (List<Object>) requestLead.get('propertyAccounts');
+        Map<String, Object> requestPropertyAccount = (Map<String,Object>) requestPropertyAccounts[0];
+        List<Object> requestUtilityAccountLogs = (List<Object>) requestPropertyAccount.get('utilityAccountLogs');
+        Map<String, Object> requestUtilityAccountLog = (Map<String,Object>) requestUtilityAccountLogs[0];
+
+        String jsonResponse = response.responseBody.toString();
+        Map<String, Object> responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
+        Map<String, Object> responseLead = (Map<String,Object>) responseEnvelope.get('data');
+
+        List<Object> responsePropertyAccounts = (List<Object>) responseLead.get('propertyAccounts');
+        Map<String, Object> responsePropertyAccount = (Map<String,Object>) responsePropertyAccounts[0];
+        List<Object> responseUtilityAccountLogs = (List<Object>) responsePropertyAccount.get('utilityAccountLogs');
+        Map<String, Object> responseUtilityAccountLog = (Map<String,Object>) responseUtilityAccountLogs[0];
+
+        System.assertEquals(201, response.statusCode, 'POST should create properly');
+
+        // verify lead request/response fields
+        System.assertNotEquals(responseLead.get('id'), null, 'id should be set on POST response');
+        for (String key : requestLead.keySet()) {
+            if (requestLead.get(key) instanceof String) {
+                System.assertEquals(requestLead.get(key), responseLead.get(key), 'The requested ' + key + ' is expected to match the actual response');
+            }
+        }
+
+        // verify propertyAccount request/response fields
+        System.assertEquals(requestLead.get('businessName'), responsePropertyAccount.get('name'), 'For non-resi customers, the name on the prop account should be the company name');
+        for (String key : requestPropertyAccount.keySet()) {
+            if (requestPropertyAccount.get(key) instanceof String) {
+                System.assertEquals(requestPropertyAccount.get(key), responsePropertyAccount.get(key), 'The requested ' + key + ' is expected to match the actual response');
+            }
+        }
+
+        // verify UALs request/response fields
+        for (String key : requestUtilityAccountLog.keySet()) {
+            if (requestUtilityAccountLog.get(key) instanceof String) {
+                System.assertEquals(requestUtilityAccountLog.get(key), responseUtilityAccountLog.get(key), 'The requested ' + key + ' is expected to match the actual response');
+            }
+        }
+
+    }
+
+    @IsTest
     public static void testPatchLeadSuccess() {
 
         // <setup>
@@ -134,7 +206,7 @@ public with sharing class RESTRouterV2Test {
         req.requestURI = '/services/apexrest/v2/leads';
         req.httpMethod = 'POST';
         req.addHeader('Content-Type', 'application/json');
-        req.requestBody = Blob.valueOf(validJsonRequest);
+        req.requestBody = Blob.valueOf(validResiJsonRequest);
 
         RestContext.request = req;
         RestContext.response = new RestResponse();
@@ -180,7 +252,7 @@ public with sharing class RESTRouterV2Test {
         req.requestURI = '/services/apexrest/v2/leads';
         req.httpMethod = 'POST';
         req.addHeader('Content-Type', 'application/json');
-        req.requestBody = Blob.valueOf('{' + validLead + '}');
+        req.requestBody = Blob.valueOf('{' + validResiLead + '}');
 
         RestContext.request = req;
         RestContext.response = new RestResponse();
@@ -245,7 +317,7 @@ public with sharing class RESTRouterV2Test {
         req.requestURI = '/services/apexrest/v2/leads';
         req.httpMethod = 'POST';
         req.addHeader('Content-Type', 'application/json');
-        req.requestBody = Blob.valueOf(validJsonRequest);
+        req.requestBody = Blob.valueOf(validResiJsonRequest);
 
         RestContext.request = req;
         RestContext.response = new RestResponse();
@@ -302,7 +374,7 @@ public with sharing class RESTRouterV2Test {
         req.addHeader('Content-Type', 'application/json');
 
         req.requestBody = Blob.valueOf('{' +
-            validLead + ',' +
+            validResiLead + ',' +
             '"propertyAccounts": [{' +
             validPropertyAccount +
             '}]}'
@@ -373,7 +445,7 @@ public with sharing class RESTRouterV2Test {
         req.requestURI = '/services/apexrest/v2/leads';
         req.httpMethod = 'POST';
         req.addHeader('Content-Type', 'application/json');
-        req.requestBody = Blob.valueOf(validJsonRequest);
+        req.requestBody = Blob.valueOf(validResiJsonRequest);
 
         RestContext.request = req;
         RestContext.response = new RestResponse();
