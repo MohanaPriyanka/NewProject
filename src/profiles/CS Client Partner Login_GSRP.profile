@@ -8034,10 +8034,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>copado__TestUserStoryReadyForPromotionExtension</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>copado__TestUserStorySelectCommits</apexClass>
         <enabled>true</enabled>
     </classAccesses>
