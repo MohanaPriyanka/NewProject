@@ -7346,10 +7346,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>copado__ScheduleCronExpressionController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>copado__ScheduledJobExtension</apexClass>
         <enabled>false</enabled>
     </classAccesses>
