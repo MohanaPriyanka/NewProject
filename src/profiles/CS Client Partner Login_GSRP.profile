@@ -73232,10 +73232,6 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>copado__UserStoryReadyForPromote</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
         <apexPage>copado__UserStorySelectCommits</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
