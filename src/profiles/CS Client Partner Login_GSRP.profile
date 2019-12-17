@@ -8142,10 +8142,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>copado__Test_WorkPushService</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>copado__Test_WorkSetService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
