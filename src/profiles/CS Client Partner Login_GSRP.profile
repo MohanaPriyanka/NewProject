@@ -76429,10 +76429,6 @@
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>copado__Metadata_Group__c</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>copado__OrgDiff__c</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
