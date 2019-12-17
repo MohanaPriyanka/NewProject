@@ -76389,10 +76389,6 @@
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>copado__Data_Template__c</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>copado__Deployment_Flow__c</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
