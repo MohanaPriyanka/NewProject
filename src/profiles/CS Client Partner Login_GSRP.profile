@@ -6694,10 +6694,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>copado__DW_TargetExtension</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>copado__DXExtensionStatusController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
