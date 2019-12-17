@@ -15,11 +15,11 @@ public with sharing class ZuoraBillingBatchServiceTest {
         for (Object obj : actionItem.objects){
             ZuoraAPI.ZuoraAccount account = (ZuoraAPI.ZuoraAccount) obj;
             if (account.Id == 'xxxxxxxxxx123'){
-                System.assertEquals('Batch2',account.Batch);
+                System.assertEquals(ZuoraBillingBatchService.BILLING_BATCH,account.Batch);
             } else if (account.Id == 'xxxxxxxxxx789'){
-                System.assertEquals('Batch2',account.Batch);
+                System.assertEquals(ZuoraBillingBatchService.BILLING_BATCH,account.Batch);
             } else if (account.Id == 'xxxxxxxxxx101'){
-                System.assertEquals('Batch3',account.Batch);
+                System.assertEquals(ZuoraBillingBatchService.FINISHED_BILLING_BATCH,account.Batch);
             } else {
                 // Expect to see one of the IDs above
                 System.assert(false);
@@ -62,25 +62,25 @@ public with sharing class ZuoraBillingBatchServiceTest {
                         Id = Util.getFakeId(Zuora__CustomerAccount__c.SObjectType),
                         Zuora__Account__c = '001j0000013wv8iAAA',
                         Zuora__Zuora_Id__c = 'xxxxxxxxxx123',
-                        Zuora__Batch__c = 'Batch1'
+                        Zuora__Batch__c = ZuoraBillingBatchService.PRE_BILLING_BATCH
                     );
                     Zuora__CustomerAccount__c acctTwo = new Zuora__CustomerAccount__c(
                         Id = Util.getFakeId(Zuora__CustomerAccount__c.SObjectType),
                         Zuora__Account__c = '001j0000013wv8jAAA',
                         Zuora__Zuora_Id__c = 'xxxxxxxxxx456',
-                        Zuora__Batch__c = 'Batch2'
+                        Zuora__Batch__c = ZuoraBillingBatchService.BILLING_BATCH
                     );
                     Zuora__CustomerAccount__c acctThree = new Zuora__CustomerAccount__c(
                         Id = Util.getFakeId(Zuora__CustomerAccount__c.SObjectType),
                         Zuora__Account__c = '001j0000013wv8kAAA',
                         Zuora__Zuora_Id__c = 'xxxxxxxxxx789',
-                        Zuora__Batch__c = 'Batch3'
+                        Zuora__Batch__c = ZuoraBillingBatchService.FINISHED_BILLING_BATCH
                     );
                     Zuora__CustomerAccount__c acctFour = new Zuora__CustomerAccount__c(
                         Id = Util.getFakeId(Zuora__CustomerAccount__c.SObjectType),
                         Zuora__Account__c = '001j0000013wv8lAAA',
                         Zuora__Zuora_Id__c = 'xxxxxxxxxx101',
-                        Zuora__Batch__c = 'Batch2'
+                        Zuora__Batch__c = ZuoraBillingBatchService.BILLING_BATCH
                     );
                     zuoraBillingAccounts.add(acctOne);
                     zuoraBillingAccounts.add(acctTwo);
