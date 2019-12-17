@@ -7786,10 +7786,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>copado__TestGlobalUtilities_US_Behind</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>copado__TestIndexMetadataJob</apexClass>
         <enabled>false</enabled>
     </classAccesses>
