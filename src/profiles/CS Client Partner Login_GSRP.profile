@@ -8086,10 +8086,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>copado__Test_DW_SelectDataTemplateExtension</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>copado__Test_DW_SourceExtension</apexClass>
         <enabled>false</enabled>
     </classAccesses>
