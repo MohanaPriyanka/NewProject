@@ -2982,10 +2982,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>MPM4_BASE__Milestone1_Project_Creation_Controller</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>MPM4_BASE__Milestone1_Project_Creation_Utility</apexClass>
         <enabled>false</enabled>
     </classAccesses>
