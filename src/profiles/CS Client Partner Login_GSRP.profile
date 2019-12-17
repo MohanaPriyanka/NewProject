@@ -8074,10 +8074,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>copado__Test_CCDFullCycle</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>copado__Test_CCD_CreateMetadataGroupItem</apexClass>
         <enabled>false</enabled>
     </classAccesses>
