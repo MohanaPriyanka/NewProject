@@ -65211,10 +65211,6 @@
         <recordType>Entity__c.BWC_Project_Entity</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Entity__c-BWC SE Project Entity Layout</layout>
-        <recordType>Entity__c.BWC_SE_Project_Entity</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Equipment_Log__c-EPC Equipment Log Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
