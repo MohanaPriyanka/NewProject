@@ -8086,10 +8086,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>copado__Test_DW_IntermediaryExtension</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>copado__Test_DW_OverviewExtension</apexClass>
         <enabled>false</enabled>
     </classAccesses>
