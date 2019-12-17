@@ -7250,10 +7250,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>copado__PromotionChangeEventTriggerHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>copado__PromotionEditExtension</apexClass>
         <enabled>false</enabled>
     </classAccesses>
