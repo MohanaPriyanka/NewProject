@@ -2810,10 +2810,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>MPM4_BASE__MPM4_Task_Sync_Disable_Behavior</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>MPM4_BASE__MPM4_Test_Util</apexClass>
         <enabled>true</enabled>
     </classAccesses>
