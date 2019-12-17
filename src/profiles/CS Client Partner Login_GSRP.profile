@@ -7346,10 +7346,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>copado__ScheduleConnectionBehaviorController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>copado__ScheduleCronExpressionController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
