@@ -8134,10 +8134,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>copado__Test_ReleaseDetailService</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>copado__Test_ReleaseStatusService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
