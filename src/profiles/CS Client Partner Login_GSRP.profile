@@ -618,10 +618,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>BatchShareSSS</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>BillGenerationAndDeliveryServiceTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
