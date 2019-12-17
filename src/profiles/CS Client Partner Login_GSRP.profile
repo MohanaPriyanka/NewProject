@@ -76373,10 +76373,6 @@
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
-        <tab>copado__Connection_Behavior__c</tab>
-        <visibility>Hidden</visibility>
-    </tabVisibilities>
-    <tabVisibilities>
         <tab>copado__Continuous_Integration__c</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
