@@ -124,41 +124,6 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordLookups>
-        <description>Finds the sobject variable for the Opportunity. If it doesn&apos;t find a CS one, ends the flow.</description>
-        <name>Find_CS_Opportunity</name>
-        <label>Find CS Opportunity</label>
-        <locationX>54</locationX>
-        <locationY>152</locationY>
-        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Found_Opportunities</targetReference>
-        </connector>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>varOppID</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>Product_Line__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Community Solar</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>StageName</field>
-            <operator>NotEqualTo</operator>
-            <value>
-                <stringValue>Complete</stringValue>
-            </value>
-        </filters>
-        <object>Opportunity</object>
-        <outputReference>sovOpportunity</outputReference>
-        <queriedFields>Id</queriedFields>
-    </recordLookups>
-    <recordLookups>
         <description>Looks up all of the QC Cases for the Opportunity passed through the Process Builders</description>
         <name>Lookup</name>
         <label>Lookup All QC Cases</label>
@@ -208,8 +173,8 @@
         <locationY>692</locationY>
         <inputReference>sovOpportunity</inputReference>
     </recordUpdates>
-    <startElementReference>Find_CS_Opportunity</startElementReference>
-    <status>Active</status>
+    <startElementReference>Found_Opportunities</startElementReference>
+    <status>Obsolete</status>
     <variables>
         <name>loopvar_QCCase</name>
         <dataType>SObject</dataType>

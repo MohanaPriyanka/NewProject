@@ -1457,6 +1457,117 @@ IF(IF(ISBLANK(First_Response_Date_Time__c),NOW(),First_Response_Date_Time__c)-Cr
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>QC_Case_Subject__c</fullName>
+        <description>Used in QC Case Creation Flow</description>
+        <externalId>false</externalId>
+        <label>QC Case Subject</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Adjust subscription, &gt;25kW</fullName>
+                    <default>false</default>
+                    <label>Adjust subscription, &gt;25kW</label>
+                </value>
+                <value>
+                    <fullName>Change account # on contract</fullName>
+                    <default>false</default>
+                    <label>Change account # on contract</label>
+                </value>
+                <value>
+                    <fullName>Change load zone</fullName>
+                    <default>false</default>
+                    <label>Change load zone</label>
+                </value>
+                <value>
+                    <fullName>Change to commercial</fullName>
+                    <default>false</default>
+                    <label>Change to commercial</label>
+                </value>
+                <value>
+                    <fullName>Check Comments About Sizing section</fullName>
+                    <default>false</default>
+                    <label>Check Comments About Sizing section</label>
+                </value>
+                <value>
+                    <fullName>Check contract, handwritten</fullName>
+                    <default>false</default>
+                    <label>Check contract, handwritten</label>
+                </value>
+                <value>
+                    <fullName>Credit report did not match customer&apos;s name, attach credit check for right customer</fullName>
+                    <default>false</default>
+                    <label>Credit report did not match customer&apos;s name, attach credit check for right customer</label>
+                </value>
+                <value>
+                    <fullName>Credit report is missing, Upload correct credit report</fullName>
+                    <default>false</default>
+                    <label>Credit report is missing, Upload correct credit report</label>
+                </value>
+                <value>
+                    <fullName>Custom&apos;s credit was denied , change stage to unqualified</fullName>
+                    <default>false</default>
+                    <label>Custom&apos;s credit was denied , change stage to unqualified</label>
+                </value>
+                <value>
+                    <fullName>Customer email missing</fullName>
+                    <default>false</default>
+                    <label>Customer email missing</label>
+                </value>
+                <value>
+                    <fullName>Load zone missing on utility bill</fullName>
+                    <default>false</default>
+                    <label>Load zone missing on utility bill</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <label>Other</label>
+                </value>
+                <value>
+                    <fullName>Subscription adjustment needed</fullName>
+                    <default>false</default>
+                    <label>Subscription adjustment needed</label>
+                </value>
+                <value>
+                    <fullName>Too few years at location</fullName>
+                    <default>false</default>
+                    <label>Too few years at location</label>
+                </value>
+                <value>
+                    <fullName>Too few years in business</fullName>
+                    <default>false</default>
+                    <label>Too few years in business</label>
+                </value>
+                <value>
+                    <fullName>Upload complete contract</fullName>
+                    <default>false</default>
+                    <label>Upload complete contract</label>
+                </value>
+                <value>
+                    <fullName>Upload complete utility bill to utility Account Log</fullName>
+                    <default>false</default>
+                    <label>Upload complete utility bill to utility Account Log</label>
+                </value>
+                <value>
+                    <fullName>Upload Green Button Data</fullName>
+                    <default>false</default>
+                    <label>Upload Green Button Data</label>
+                </value>
+                <value>
+                    <fullName>Upload utility bill without overdue payments</fullName>
+                    <default>false</default>
+                    <label>Upload utility bill without overdue payments</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Read_Email_Count__c</fullName>
         <defaultValue>0</defaultValue>
         <description>Created by OpFocus</description>

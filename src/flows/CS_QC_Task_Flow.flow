@@ -1,20 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <choices>
+        <name>QCCaseType</name>
+        <choiceText>Adjust subscription, &amp;gt;25kW</choiceText>
+        <dataType>String</dataType>
+    </choices>
+    <decisions>
+        <description>Check for null</description>
+        <name>Is_there_a_Sales_Rep</name>
+        <label>Is there a Sales Rep</label>
+        <locationX>445</locationX>
+        <locationY>51</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Rep_not_null_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sovOpportunity.BS_Sales_ID__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Contact_for_Partner</targetReference>
+            </connector>
+            <label>Rep != null</label>
+        </rules>
+        <rules>
+            <name>Rep_is_Null_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sovOpportunity.BS_Sales_ID__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_New_QC_Task</targetReference>
+            </connector>
+            <label>Rep = Null</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check for null</description>
+        <name>Is_there_Partner</name>
+        <label>Is there  Partner</label>
+        <locationX>284</locationX>
+        <locationY>56</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Partner_not_null</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sovOpportunity.Partner_tag_lookup__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetAccountforPartner</targetReference>
+            </connector>
+            <label>Partner != null</label>
+        </rules>
+        <rules>
+            <name>Partner_is_Null</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>sovOpportunity.Partner_tag_lookup__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Is_there_a_Sales_Rep</targetReference>
+            </connector>
+            <label>Partner = Null</label>
+        </rules>
+    </decisions>
     <dynamicChoiceSets>
-        <name>pickTaskSubject</name>
+        <name>picklist_QCType</name>
         <dataType>Picklist</dataType>
         <displayField xsi:nil="true"/>
         <object xsi:nil="true"/>
-        <picklistField>Task_Subject__c</picklistField>
-        <picklistObject>Task</picklistObject>
-    </dynamicChoiceSets>
-    <dynamicChoiceSets>
-        <description>The user the task is assigned to.</description>
-        <name>sovUser</name>
-        <dataType>String</dataType>
-        <displayField>Name</displayField>
-        <object>User</object>
-        <valueField>Id</valueField>
+        <picklistField>QC_Case_Subject__c</picklistField>
+        <picklistObject>Case</picklistObject>
     </dynamicChoiceSets>
     <interviewLabel>CS QC Task Flow {!$Flow.CurrentDateTime}</interviewLabel>
     <label>CS QC Task Flow</label>
@@ -34,8 +107,8 @@
     <recordCreates>
         <name>Create_Case</name>
         <label>Create CS QC Case</label>
-        <locationX>539</locationX>
-        <locationY>56</locationY>
+        <locationX>773</locationX>
+        <locationY>36</locationY>
         <assignRecordIdToReference>sov_Case.Id</assignRecordIdToReference>
         <connector>
             <targetReference>Update_Opp_Status</targetReference>
@@ -43,7 +116,19 @@
         <inputAssignments>
             <field>AccountId</field>
             <value>
-                <elementReference>sovOpportunity.Parent_Account_ID__c</elementReference>
+                <elementReference>GetAccountforPartner.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Category__c</field>
+            <value>
+                <stringValue>QC</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ContactId</field>
+            <value>
+                <elementReference>Get_Contact_for_Partner.Id</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -61,7 +146,7 @@
         <inputAssignments>
             <field>OwnerId</field>
             <value>
-                <stringValue>00G0a000002fjb3</stringValue>
+                <stringValue>00G6C000001X7mo</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -97,19 +182,57 @@
         <inputAssignments>
             <field>Subject</field>
             <value>
-                <elementReference>Subject</elementReference>
+                <elementReference>Case_Type</elementReference>
             </value>
         </inputAssignments>
         <object>Case</object>
     </recordCreates>
     <recordLookups>
-        <name>Lookup_Opportunity</name>
-        <label>Lookup Opportunity</label>
-        <locationX>203</locationX>
-        <locationY>50</locationY>
-        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <name>Get_Contact_for_Partner</name>
+        <label>Get Contact for Partner</label>
+        <locationX>608</locationX>
+        <locationY>312</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Create_New_QC_Task</targetReference>
+        </connector>
+        <filters>
+            <field>Sales_Representative__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>sovOpportunity.BS_Sales_ID__c</elementReference>
+            </value>
+        </filters>
+        <object>Contact</object>
+        <queriedFields>Id</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>GetAccountforPartner</name>
+        <label>Get Account for Partner</label>
+        <locationX>298</locationX>
+        <locationY>304</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Is_there_a_Sales_Rep</targetReference>
+        </connector>
+        <filters>
+            <field>Partner__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>sovOpportunity.Partner_tag_lookup__c</elementReference>
+            </value>
+        </filters>
+        <object>Account</object>
+        <queriedFields>Id</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>Lookup_Opportunity</name>
+        <label>Lookup Opportunity</label>
+        <locationX>140</locationX>
+        <locationY>53</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Is_there_Partner</targetReference>
         </connector>
         <filters>
             <field>Id</field>
@@ -122,13 +245,14 @@
         <outputReference>sovOpportunity</outputReference>
         <queriedFields>Id</queriedFields>
         <queriedFields>StageName</queriedFields>
-        <queriedFields>Parent_Account_ID__c</queriedFields>
+        <queriedFields>Partner_tag_lookup__c</queriedFields>
+        <queriedFields>BS_Sales_ID__c</queriedFields>
     </recordLookups>
     <recordUpdates>
         <name>Update_Opp_Status</name>
         <label>Update Opp Status</label>
-        <locationX>741</locationX>
-        <locationY>50</locationY>
+        <locationX>899</locationX>
+        <locationY>38</locationY>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -147,8 +271,8 @@
     <screens>
         <name>Create_New_QC_Task</name>
         <label>Create New QC Task</label>
-        <locationX>377</locationX>
-        <locationY>51</locationY>
+        <locationX>602</locationX>
+        <locationY>37</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -156,32 +280,16 @@
             <targetReference>Create_Case</targetReference>
         </connector>
         <fields>
-            <name>textNewQCTask</name>
-            <fieldText>Insert the information about the new QC Task. Creating a QC Task this way will set the Opportunity Status to Information Requested. If you do not want to change the Opportunity stage, create a task manually. 
-
-The product line and Opportunity will automatically be filled in. Click Finish to create the task.</fieldText>
+            <name>textNewQCCase</name>
+            <fieldText>&lt;p&gt;Insert the information about the new QC Case. Creating a QC Case this way will set the Opportunity Status to Information Requested. If you do not want to change the Opportunity stage, create a task manually. &lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;The product line, Opportunity, and other relevant information will automatically be filled in on the Case. Click Finish to create the Case&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>Task_Subject</name>
-            <choiceReferences>pickTaskSubject</choiceReferences>
+            <name>Case_Type</name>
+            <choiceReferences>picklist_QCType</choiceReferences>
             <dataType>String</dataType>
-            <fieldText>Task Subject</fieldText>
+            <fieldText>Case Type</fieldText>
             <fieldType>DropdownBox</fieldType>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>Subject</name>
-            <dataType>String</dataType>
-            <fieldText>Subject</fieldText>
-            <fieldType>InputField</fieldType>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>Due_Date</name>
-            <dataType>Date</dataType>
-            <fieldText>Due Date</fieldText>
-            <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -195,7 +303,7 @@ The product line and Opportunity will automatically be filled in. Click Finish t
         <showHeader>true</showHeader>
     </screens>
     <startElementReference>Lookup_Opportunity</startElementReference>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>sov_Case</name>
         <dataType>SObject</dataType>
@@ -211,21 +319,6 @@ The product line and Opportunity will automatically be filled in. Click Finish t
         <isInput>true</isInput>
         <isOutput>true</isOutput>
         <objectType>Opportunity</objectType>
-    </variables>
-    <variables>
-        <name>sovQCTask</name>
-        <dataType>SObject</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <objectType>Task</objectType>
-    </variables>
-    <variables>
-        <name>varAssigneeID</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
     </variables>
     <variables>
         <name>varOppID</name>
