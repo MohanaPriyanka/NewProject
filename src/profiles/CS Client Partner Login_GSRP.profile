@@ -72832,10 +72832,6 @@
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>copado__DataTemplateObjectResult</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
         <apexPage>copado__DataTemplateSetup</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
