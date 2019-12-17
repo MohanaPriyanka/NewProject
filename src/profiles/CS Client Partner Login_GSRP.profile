@@ -6482,10 +6482,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>copado__ArtifactVersionTriggerHelper</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>copado__AttachmentTriggerHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
