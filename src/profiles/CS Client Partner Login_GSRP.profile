@@ -8074,10 +8074,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>copado__Test_CCD_CreateQualityGate</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>copado__Test_CliProxy</apexClass>
         <enabled>false</enabled>
     </classAccesses>
