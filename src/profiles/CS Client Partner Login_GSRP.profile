@@ -8258,10 +8258,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>copado__WorkPushService</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>copado__WorkSetService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
