@@ -7550,10 +7550,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>copado__TestArtifactVersionTrigger</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>copado__TestAttachmentTrigger</apexClass>
         <enabled>false</enabled>
     </classAccesses>
