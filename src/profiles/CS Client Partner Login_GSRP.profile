@@ -3130,10 +3130,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>MPM4_BASE__Milestone2_MSProj_Import_Utility</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>MPM4_BASE__Milestone2_Project_Task_RL_Behavior</apexClass>
         <enabled>false</enabled>
     </classAccesses>
