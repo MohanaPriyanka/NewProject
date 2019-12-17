@@ -72820,10 +72820,6 @@
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>copado__CCD_CreateQualityGate</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
         <apexPage>copado__ClassicSessionId</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
