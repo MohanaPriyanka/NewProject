@@ -72844,10 +72844,6 @@
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>copado__DW_SelectChanges</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
         <apexPage>copado__DW_SelectDataTemplate</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
