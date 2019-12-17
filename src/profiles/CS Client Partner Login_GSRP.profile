@@ -72824,10 +72824,6 @@
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>copado__DW_Target</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
         <apexPage>copado__DXOperation</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
