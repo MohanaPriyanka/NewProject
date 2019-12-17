@@ -3138,10 +3138,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>MPM4_BASE__Milestone2_Resource_Gantt_Behavior</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>MPM4_BASE__PageTracker</apexClass>
         <enabled>true</enabled>
     </classAccesses>
