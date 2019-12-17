@@ -6582,10 +6582,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>copado__CliProxy</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>copado__CliSecurityService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
