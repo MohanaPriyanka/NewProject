@@ -6562,10 +6562,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>copado__CCD_CreateQualityGateExtension</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>copado__CCD_PromotionBatch</apexClass>
         <enabled>false</enabled>
     </classAccesses>
