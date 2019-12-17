@@ -72844,10 +72844,6 @@
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>copado__DW_Intermediary</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
         <apexPage>copado__DW_Overview</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
