@@ -6694,10 +6694,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>copado__DW_DeploymentExtension</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>copado__DW_IntermediaryExtension</apexClass>
         <enabled>false</enabled>
     </classAccesses>
