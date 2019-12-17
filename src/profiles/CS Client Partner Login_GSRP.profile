@@ -6722,10 +6722,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>copado__DataTemplateImportExtension</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>copado__DataTemplateObjectResultController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
