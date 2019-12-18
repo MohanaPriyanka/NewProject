@@ -804,7 +804,7 @@ public with sharing class ZuoraAPI {
         public Boolean isDefault;
     }
 
-    public class BillRun {
+    public class BillRun{
         public Boolean AutoEmail;
         public Boolean AutoPost;
         public Boolean AutoRenewal;
@@ -848,5 +848,4 @@ public with sharing class ZuoraAPI {
             this.targetDate = targetDate;
         }
     }
-
 }
