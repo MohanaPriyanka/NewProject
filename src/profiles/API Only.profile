@@ -783,6 +783,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>SharedSolarSystemHandlerTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>SiteLoginController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -28474,6 +28478,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Shared_Solar_System__c.Reserved_Anchor_Capacity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Reserved_Capacity_Integer__c</field>
         <readable>true</readable>
@@ -46766,10 +46775,6 @@
         <layout>Shared_Solar_System__c-Shared Solar System Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Shared_Solar_System__c-Shared Solar System Layout</layout>
-        <recordType>Shared_Solar_System__c.SSS_PM_Relationship</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Snapshot_Report_Object__c-Landowner Last Contact Object Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -52677,6 +52682,10 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
+        <name>ViewDataLeakageEvents</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
         <name>ViewEventLogFiles</name>
     </userPermissions>
     <userPermissions>
@@ -52690,6 +52699,10 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ViewMyTeamsDashboards</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>ViewPlatformEvents</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>

@@ -42508,6 +42508,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Shared_Solar_System__c.Reserved_Anchor_Capacity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Reserved_Capacity_Integer__c</field>
         <readable>true</readable>
@@ -65119,10 +65124,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Shared_Solar_System__c-Shared Solar System Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Shared_Solar_System__c-Shared Solar System Layout</layout>
-        <recordType>Shared_Solar_System__c.SSS_PM_Relationship</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Snapshot_Report_Object__c-Landowner Last Contact Object Layout</layout>
