@@ -133,4 +133,16 @@ public with sharing class ZuoraInvoiceSelector {
             WHERE Id = :invoiceIds
         ];
     }
+
+    public static String getLatestDueDateForAutopayAccounts() {
+        // We just want to add some criteria so that the number of invoices is constrained to less than the input limit
+        Date today = System.today();
+        String lastMonth = today.year() + '-' + (today.month() - 1) + '-' + today.day();
+        return 'SELECT MAX(inv.DueDate) DueDate ' +
+        'FROM Invoice inv ' +
+        'INNER JOIN Account a ON inv.accountid = a.Id ' +
+        'WHERE inv.Status = \'Posted\' ' +
+        'AND a.autopay = TRUE ' +
+        'AND inv.DueDate > DATE \''+ lastMonth + '\'';
+    }
 }

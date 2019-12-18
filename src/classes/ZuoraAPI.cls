@@ -134,7 +134,7 @@ public with sharing class ZuoraAPI {
         public ZuoraAccount(Account propertyAccount) {
             this.AccountNumber = propertyAccount.Account_Number__c;
             this.AutoPay = false;
-            this.Batch = 'Batch1';
+            this.Batch = ZuoraBillingBatchService.PRE_BILLING_BATCH;
             // Since we're setting the Usage End Date to be the first of the month, a Bill Cycle Day of 10 will include
             // it, and will also allow us to have invoice dates as early as the 13th (which we need to import history)
             this.BillCycleDay = 10;
@@ -815,5 +815,37 @@ public with sharing class ZuoraAPI {
 
     public class AccountingPeriod{
         public Date EndDate;
+    }
+
+    public class PaymentRun {
+        public String batch;
+        public Boolean applyCreditBalance;
+        public Boolean autoApplyCreditMemo;
+        public Boolean autoApplyUnappliedPayment;
+        public Boolean collectPayment;
+        public Boolean consolidatedPayment;
+        public Boolean processPaymentWithClosedPM;
+        public Date targetDate;
+        public Boolean success;
+        public String status;
+
+        public PaymentRun(Date targetDate) {
+            // We only want to run autopay for the customers currently billing (not pre or finished)
+            this.batch = ZuoraBillingBatchService.BILLING_BATCH;
+            // We don't want to apply credit balances, because credit memos are specific to a project/client
+            this.autoApplyCreditMemo = false;
+            // We do want to apply unapplied payments, because they aren't speciic to a project/client
+            this.autoApplyUnappliedPayment = true;
+            // We want to process electronic payments
+            this.collectPayment = true;
+            // We create a single electronic payment for multiple receivables to reduce transaction fees
+            this.consolidatedPayment = true;
+            // Someone shouldn't be on autopay if they have a closed default payment method, but if they are still on
+            // autopay, we don't want to charge them. In this case, the autopay case creation will log a case for an
+            // autopay account that didn't get charged
+            this.processPaymentWithClosedPM = false;
+            // The target date should be the latest due date for the autopay customers
+            this.targetDate = targetDate;
+        }
     }
 }
