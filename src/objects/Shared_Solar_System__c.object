@@ -307,8 +307,7 @@
     <fields>
         <fullName>Anchor_Capacity_Reserved__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Sum of Anchor Subscriptions when under Management
-Manual input from Reserved Anchor Capacity when no Anchor Subscriptions on SSS</inlineHelpText>
+        <inlineHelpText>Sum of Anchor&amp; Public Offtake Subscriptions when under Management OR Manual input from Reserved Anchor Capacity when no Anchor Subscriptions on SSS under Onboarding or Acquisition Stage</inlineHelpText>
         <label>Anchor Capacity</label>
         <precision>12</precision>
         <required>false</required>
@@ -1581,7 +1580,7 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
     <fields>
         <fullName>Reserved_Anchor_Capacity__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Manual input for reserved anchor capacity BEFORE Management</inlineHelpText>
+        <inlineHelpText>Manual input for reserved anchor and public offtake capacity when under Onboarding or Acquisition stage</inlineHelpText>
         <label>Reserved Anchor Capacity</label>
         <precision>18</precision>
         <required>false</required>
