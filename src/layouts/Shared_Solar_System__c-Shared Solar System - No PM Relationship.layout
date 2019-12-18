@@ -30,6 +30,10 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>OwnerId</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Open__c</field>
             </layoutItems>
             <layoutItems>
@@ -91,6 +95,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Host_Account_Name__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Unique_ID__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -245,6 +253,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Capacity_Committed_kW_DC__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Reserved_Anchor_Capacity__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>

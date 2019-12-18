@@ -1,3 +1,4 @@
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class SharedSolarSystemHandler implements Schedulable {
 
     public void execute(SchedulableContext sch) {
@@ -47,7 +48,8 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
         return [
             SELECT Id, Anchor_Capacity_Reserved__c, Capacity_Committed_kW_DC__c,
                 Reserved_Capacity_kW_DC__c, Total_CS_Capacity__c,
-                Total_Capacity_Committed_Reserved__c, Maximum_Subscription_Capacity_kW_DC__c
+                Total_Capacity_Committed_Reserved__c, Maximum_Subscription_Capacity_kW_DC__c,
+                Reserved_Anchor_Capacity__c, Name
             FROM Shared_Solar_System__c
         ];
     }
@@ -125,7 +127,10 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
                         summarizedAnchorCapacity = anchor.Customer_Subscription_KW_DC__c + summarizedAnchorCapacity;
                     }
                 }
-            }
+           } else if (sssSummary.Stage__c != 'Management') {
+               summarizedAnchorCapacity = sssSummary.Reserved_Anchor_Capacity__c;
+           }
+
             sssSummary.Reserved_capacity_kW_DC__c = String.valueOf(summarizedReservedCapacity);
             sssSummary.Capacity_committed_kW_DC__c = summarizedCommittedCapacity;
             sssSummary.Anchor_capacity_reserved__c = summarizedAnchorCapacity;
