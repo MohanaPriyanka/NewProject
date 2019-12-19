@@ -304,11 +304,23 @@ public class TransferSelectorTest {
     }
 
 
+    @IsTest
+    static void testGetTransferById() {
+        Shared_Solar_System__c sssC = [SELECT Id FROM Shared_Solar_System__c WHERE Name = 'Project C Other St' LIMIT 1];
+        List<Transfer__c> transfers = TransferSelector.getAllTransfersBySSS(new List<Id>{sssC.Id});
+
+        System.assertEquals(1, transfers.size());
+
+        Transfer__c checkTransfer = TransferSelector.getTransferById(transfers[0].Id);
+
+        System.assertNotEquals(null, checkTransfer);
+    }
+
 
     @IsTest
     static void testGetAllTransfersBySSS() {
         Shared_Solar_System__c sssC = [SELECT Id FROM Shared_Solar_System__c WHERE Name = 'Project C Other St' LIMIT 1];
-        List<Transfer__c> transfers = TransferSelector.getTransfersForBillPeriods(new Set<Id>{sssC.Id});
+        List<Transfer__c> transfers = TransferSelector.getAllTransfersBySSS(new List<Id>{sssC.Id});
 
         System.assertEquals(1, transfers.size());
     }
