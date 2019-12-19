@@ -194,6 +194,36 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Bill_By__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Credits are transferred and billed by UASB, Adjustment, or Not Billed</inlineHelpText>
+        <label>Bill By</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>UASB</fullName>
+                    <default>false</default>
+                    <label>UASB</label>
+                </value>
+                <value>
+                    <fullName>Adjustment</fullName>
+                    <default>false</default>
+                    <label>Adjustment</label>
+                </value>
+                <value>
+                    <fullName>Not Billed</fullName>
+                    <default>false</default>
+                    <label>Not Billed</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Bill_Period__c</fullName>
         <deleteConstraint>Restrict</deleteConstraint>
         <description>The Transfer object is looking up to the Bill Period object.</description>
@@ -347,6 +377,16 @@
                     <default>false</default>
                     <label>Error</label>
                 </value>
+                <value>
+                    <fullName>Main</fullName>
+                    <default>false</default>
+                    <label>Main</label>
+                </value>
+                <value>
+                    <fullName>One-Off</fullName>
+                    <default>false</default>
+                    <label>One-Off</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
@@ -362,6 +402,37 @@
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Transferred_To__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Credits are transferred/billed to this party</inlineHelpText>
+        <label>Transferred To</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Customer</fullName>
+                    <default>true</default>
+                    <label>Customer</label>
+                </value>
+                <value>
+                    <fullName>Client</fullName>
+                    <default>false</default>
+                    <label>Client</label>
+                </value>
+                <value>
+                    <fullName>BlueWave</fullName>
+                    <default>false</default>
+                    <label>BlueWave</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
     </fields>
     <label>Transfer</label>
     <listViews>

@@ -106,9 +106,9 @@ public without sharing class TransferPartService {
         for (Transfer__c transfer : transferList) {
             if (transfer.Transfer_Type__c == 'Excess Credit') {
                 excessTransfers.add(transfer);
-            } else if (transfer.Transfer_Type__c == 'On-Time') {
+            } else if (transfer.Transfer_Type__c == 'Main') {
                 onTimeTransfers.add(transfer);
-            } else if (transfer.Transfer_Type__c == 'Returned') {
+            } else if (transfer.Transfer_Type__c == 'One-Off') {
                 returnedTransfers.add(transfer);
             }
         }
@@ -117,7 +117,7 @@ public without sharing class TransferPartService {
             SELECT Id, Name, Shared_Solar_System__c, CreatedDate, Credits_Transferred__c, Untransferred_Credits__c,
                 Credits_Available_for_Allocation__c, Billing_Method__c, Untransferred_kWh__c, kWh_Transferred__c
             FROM Production__c
-            WHERE Credits_Transferred__c = 0 OR Untransferred_Credits__c != 0
+            WHERE (Credits_Transferred__c = 0 OR Untransferred_Credits__c != 0) AND Production_kWh__c != 0
             ORDER BY Start_Date__c ASC
         ];
 
@@ -159,7 +159,7 @@ public without sharing class TransferPartService {
         }
 
         if (returnedTransfers.size() > 0 ) {
-            //TODO: write code for returned transfers - do we know what we want to do with Returned Transfers yet?
+            //TODO: write code for returned transfers - do we know what we want to do with One-Off Transfers yet?
             // Waiting to create case until after historical data has been loaded (408 records)
         }
     }
@@ -178,17 +178,17 @@ public without sharing class TransferPartService {
                         Production__c production = prodCredit.production;
 
                         Transfer_Part__c part = new Transfer_Part__c (
-                            Name = 'On-Time Transfer - ' + production.Name,
+                            Name = 'Main Transfer - ' + production.Name,
                             Type__c = 'Transfer',
                             Production__c = production.Id,
-                            Transfer__c = transfer.Id
+                            Transfer__c = transfer.Id,
+                            Amount__c = transfer.Transfer_Amount__c,
+                            kWh_Amount__c = transfer.Transfer_kWh__c
                         );
 
                         if (prodCredit.type == 'kWh'){
-                            part.kWh_Amount__c = transfer.Transfer_kWh__c;
                             prodCredit.creditsTransferred += transfer.Transfer_kWh__c;
                         } else {
-                            part.Amount__c = transfer.Transfer_Amount__c;
                             prodCredit.creditsTransferred += transfer.Transfer_Amount__c;
                         }
 
@@ -196,7 +196,7 @@ public without sharing class TransferPartService {
                         partsToInsert.add(part);
                         break;
                     } else {
-                        //not a production record that qualifies for on-time transfers
+                        //not a production record that qualifies for Main transfers
                         continue;
                     }
                 }

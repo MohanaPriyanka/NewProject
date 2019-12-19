@@ -118,7 +118,6 @@ private class TransferPartServiceTest {
             Name = 'Eversource Utility Fee May 2019',
             Production__c = prod1.Id,
             Type__c = 'Fee',
-            Fee_Paid_To__c = 'Utility',
             Amount__c = 10
         );
 
@@ -126,9 +125,9 @@ private class TransferPartServiceTest {
 
         //40 to be paid by excess
         Transfer__c onTime1 = new Transfer__c(
-            Name = 'On-Time May Transfer',
+            Name = 'Main May Transfer',
             Allocation_Schedule__c = scheduleZ1.Id,
-            Transfer_Type__c = 'On-Time',
+            Transfer_Type__c = 'Main',
             Shared_Solar_System__c = sss1.Id,
             Attempted_Transfer__c = 9950,
             Attempted_kWh_Transfer__c = 19000,
@@ -138,9 +137,9 @@ private class TransferPartServiceTest {
 
         //100 to be paid by excess
         Transfer__c onTime2 = new Transfer__c(
-            Name = 'On-Time June Transfer',
+            Name = 'Main June Transfer',
             Allocation_Schedule__c = scheduleZ1.Id,
-            Transfer_Type__c = 'On-Time',
+            Transfer_Type__c = 'Main',
             Shared_Solar_System__c = sss1.Id,
             Attempted_Transfer__c = 7900,
             Attempted_kWh_Transfer__c = 14000,
@@ -150,7 +149,7 @@ private class TransferPartServiceTest {
 
         //20 to be paid by excess
         Transfer__c onTimeToUpdate = new Transfer__c(
-            Name = 'On-Time July Transfer',
+            Name = 'Main July Transfer',
             Allocation_Schedule__c = scheduleZ1.Id,
             Shared_Solar_System__c = sss1.Id,
             Attempted_Transfer__c = 4980,
@@ -160,9 +159,9 @@ private class TransferPartServiceTest {
         );
 
         Transfer__c onTimeB1 = new Transfer__c(
-            Name = 'On-Time sss2 May Transfer',
+            Name = 'Main sss2 May Transfer',
             Allocation_Schedule__c = scheduleZ2.Id,
-            Transfer_Type__c = 'On-Time',
+            Transfer_Type__c = 'Main',
             Shared_Solar_System__c = sss2.Id,
             Attempted_Transfer__c = 8500,
             Attempted_kWh_Transfer__c = 17000,
@@ -171,7 +170,7 @@ private class TransferPartServiceTest {
         );
 
         Transfer__c onTimeToUpdateB2 = new Transfer__c(
-            Name = 'On-Time sss2 June Transfer',
+            Name = 'Main sss2 June Transfer',
             Allocation_Schedule__c = scheduleZ2.Id,
             Shared_Solar_System__c = sss2.Id,
             Attempted_Transfer__c = 7000,
@@ -195,11 +194,11 @@ private class TransferPartServiceTest {
         Transfer__c onTime = [
             SELECT Id, Transfer_Amount__c, Shared_Solar_System__r.Name, Total_Transferred__c, Transfer_Type__c
             FROM Transfer__c
-            WHERE Name = 'On-Time July Transfer'
+            WHERE Name = 'Main July Transfer'
             LIMIT 1
         ];
 
-        onTime.Transfer_Type__c = 'On-Time';
+        onTime.Transfer_Type__c = 'Main';
         update onTime;
 
         List<Transfer_Part__c> onTimeParts = [
@@ -256,12 +255,12 @@ private class TransferPartServiceTest {
         Transfer__c onTimeTransfer = [
             SELECT Id, Total_kWh_Transferred__c
             FROM Transfer__c
-            WHERE Name = 'On-Time sss2 June Transfer'
+            WHERE Name = 'Main sss2 June Transfer'
             LIMIT 1
         ];
 
         System.assertEquals(null, onTimeTransfer.Total_kWh_Transferred__c);
-        onTimeTransfer.Transfer_Type__c = 'On-Time';
+        onTimeTransfer.Transfer_Type__c = 'Main';
         update onTimeTransfer;
 
         List<Production__c> checkKwhProductions = [
@@ -484,7 +483,6 @@ private class TransferPartServiceTest {
             Name = 'Eversource Utility Fee May 2019',
             Production__c = production.Id,
             Type__c = 'Fee',
-            Fee_Paid_To__c = 'Utility',
             Amount__c = 10
         );
 
