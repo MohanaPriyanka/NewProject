@@ -172,9 +172,19 @@
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
+                    <fullName>Host Account Bill Uploaded</fullName>
+                    <default>false</default>
+                    <label>Host Account Bill Uploaded</label>
+                </value>
+                <value>
                     <fullName>Host Account Bill QCed</fullName>
                     <default>false</default>
                     <label>Host Account Bill QCed</label>
+                </value>
+                <value>
+                    <fullName>Bill Period QCed</fullName>
+                    <default>false</default>
+                    <label>Bill Period QCed</label>
                 </value>
                 <value>
                     <fullName>Credit Transfers QCed</fullName>
@@ -185,6 +195,11 @@
                     <fullName>Ready to Generate</fullName>
                     <default>false</default>
                     <label>Ready to Generate</label>
+                </value>
+                <value>
+                    <fullName>Bill Run Complete</fullName>
+                    <default>false</default>
+                    <label>Bill Run Complete</label>
                 </value>
                 <value>
                     <fullName>Bills QCed</fullName>
@@ -211,11 +226,6 @@
                     <default>false</default>
                     <label>Not Billing this Month</label>
                 </value>
-                <value>
-                    <fullName>Host Account Bill Uploaded</fullName>
-                    <default>false</default>
-                    <label>Host Account Bill Uploaded</label>
-                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
@@ -232,6 +242,15 @@
         <fullName>Date_Autopay_QCed__c</fullName>
         <externalId>false</externalId>
         <label>Date: Autopay QCed</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Date_Bill_Period_QCed__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Date Bill Period&apos;s Transfer records were confirmed by Ops</inlineHelpText>
+        <label>Date Bill Period QCed</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Date</type>

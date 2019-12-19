@@ -20,7 +20,9 @@ public with sharing class AccountsSelectorTest {
         Test.loadData(Utility_Account_Subscription__c.SObjectType, 'TestCSUtilityAccountSubscription');
         Test.loadData(Schedule_Z__c.SObjectType, 'TestCSScheduleZ');
         Test.loadData(Schedule_Z_Subscription__c.SObjectType, 'TestCSScheduleZSubscription');
-        Test.loadData(Energy_Usage_Update__c.SObjectType, 'TestCSProdUpdate');
+        Test.loadData(Bill_Period__c.SObjectType, 'TestCSBillPeriod');
+        Test.loadData(Production__c.SObjectType, 'TestCSProduction');
+        Test.loadData(Transfer__c.SObjectType, 'TestCSTransfer');
         Test.loadData(Account_Bill__c.SObjectType, 'TestCSAccountBill');
         Test.loadData(System_Bill__c.SObjectType, 'TestCSSystemBill');
         Test.loadData(Utility_Account_Bill__c.SObjectType, 'TestCSUtilityAccountBill');

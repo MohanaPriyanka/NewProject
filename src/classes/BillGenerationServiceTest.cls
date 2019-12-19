@@ -6,13 +6,18 @@ public class BillGenerationServiceTest {
         setCollectionsWindow(90);
     }
 
-    public static void generateBills(List<Id> prodUpdateIdList) {
-        List<Energy_Usage_Update__c> trigProdUp = ProductionUpdateSelector.getAllProductionUpdatesById(prodUpdateIdList);
-        BillGenerationAsyncService ee = new BillGenerationAsyncService(trigProdUp);
+    public static void generateBills(List<Id> billPeriodIdList) {
+
+        List<Bill_Period__c> billPeriods = [
+            SELECT Id, Shared_Solar_System__c, Bill_Date__c
+            FROM Bill_Period__c
+            WHERE Id IN :billPeriodIdList
+        ];
+        BillGenerationAsyncService ee = new BillGenerationAsyncService(billPeriods);
         ee.executeBatchJob();
     }
 
-    public static List<Energy_Usage_Update__c> insertSecondMonthSZandPU() {
+    public static List<Transfer__c> insertSecondMonthProduction() {
         List<Shared_Solar_System__c> sssList = [
             SELECT Id, Name, BWC_Project_Entity_Manual__r.Id, Product__r.Id
             FROM Shared_Solar_System__c
@@ -36,34 +41,71 @@ public class BillGenerationServiceTest {
         Date oneMonthAgo = todaysDate.addMonths(-1);
         Date oneMonthInFuture = todaysDate.addMonths(1);
 
-        Energy_Usage_Update__c secondProdUpdateSSS1 = new Energy_Usage_Update__c (
-            Name = 'sssB - September 2016',
+        Bill_Period__c bpB1 = new Bill_Period__c(
+            Name = 'sssB - November 2016',
             Shared_Solar_System__c = sssList[0].Id,
-            Production__c = 73072.00,
-            Due_Date__c = oneMonthInFuture,
-            Billing_Period_Start_Date__c = oneMonthAgo,
-            Billing_Period_End_Date__c = todaysDate,
-            Total_System_NMCs__c = 12033.73,
-            Date__c = todaysDate,
-            Schedule_Z__c =  schZOne.Id
+            Bill_Date__c = oneMonthInFuture
         );
-        insert secondProdUpdateSSS1;
 
-        Energy_Usage_Update__c secondProdUpdateSSS2 = new Energy_Usage_Update__c (
-            Name = 'sssA - September 2016',
+        Bill_Period__c bpA1 = new Bill_Period__c(
+            Name = 'sssA - November 2016',
             Shared_Solar_System__c = sssList[1].Id,
-            Production__c = 73072.00,
-            Due_Date__c = oneMonthInFuture,
-            Billing_Period_Start_Date__c = oneMonthAgo,
-            Billing_Period_End_Date__c = todaysDate,
-            Total_System_NMCs__c = 12033.73,
-            Date__c = todaysDate,
-            Schedule_Z__c =  schZTwo.Id
+            Bill_Date__c = oneMonthInFuture
         );
 
-        insert secondProdUpdateSSS2;
+        insert new List<Bill_Period__c>{bpB1, bpA1};
 
-        return new List<Energy_Usage_Update__c>{secondProdUpdateSSS1, secondProdUpdateSSS2};
+        Production__c prodB1 = new Production__c(
+            Name = 'sssB September Production',
+            Shared_Solar_System__c = sssList[0].Id,
+            Start_Date__c = oneMonthAgo,
+            End_Date__c = todaysDate,
+            Production_kWh__c = 73072.00,
+            Credits_Generated__c = 12033.73
+        );
+
+        Production__c prodA1 = new Production__c(
+            Name = 'sssA September Production',
+            Shared_Solar_System__c = sssList[1].Id,
+            Start_Date__c = oneMonthAgo,
+            End_Date__c = todaysDate,
+            Production_kWh__c = 73072.00,
+            Credits_Generated__c = 12033.73
+        );
+
+        insert new List<Production__c>{prodB1, prodA1};
+
+        Transfer__c transferB1 = new Transfer__c(
+            Name = 'Main Transfer - sssB September',
+            Bill_Period__c = bpB1.Id,
+            Date_of_Transfer__c = oneMonthAgo,
+            Shared_Solar_System__c = sssList[0].Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = schZOne.Id,
+            Attempted_kWh_Transfer__c = 73072.00,
+            Attempted_Transfer__c =  12033.73,
+            Transfer_Amount__c =  12033.73,
+            Default_Credit_Value__c = 0.1848
+        );
+
+
+        Transfer__c transferA1 = new Transfer__c(
+            Name = 'Main Transfer - sssA September',
+            Bill_Period__c = bpA1.Id,
+            Date_of_Transfer__c = oneMonthAgo,
+            Shared_Solar_System__c = sssList[1].Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = schZTwo.Id,
+            Attempted_kWh_Transfer__c = 73072.00,
+            Attempted_Transfer__c =  12033.73,
+            Transfer_Amount__c =  12033.73,
+            Default_Credit_Value__c = 0.1848
+        );
+
+        insert new List<Transfer__c>{transferB1, transferA1};
+
+
+        return new List<Transfer__c>{transferA1, transferB1};
     }
 
     public static List<UASB__c> queryForBills() {
@@ -145,10 +187,11 @@ public class BillGenerationServiceTest {
 
         setCollectionsWindow(0);
 
-        List<Energy_Usage_Update__c> productionUpdate = insertSecondMonthSZandPU();
-        for (Energy_Usage_Update__c prodUpdate : productionUpdate){
-            secondScheduleZIds.add(prodUpdate.Schedule_Z__c);
+        List<Transfer__c> transfers = insertSecondMonthProduction();
+        for (Transfer__c transfer : transfers) {
+            secondScheduleZIds.add(transfer.Allocation_Schedule__c);
         }
+
         secondSZSList = BillGenerationService.getScheduleZSubscriptionList(secondScheduleZIds);
 
         setCollectionsWindow(90);
@@ -184,9 +227,9 @@ public class BillGenerationServiceTest {
         update oppsToUpdate;
 
         Set<Id> scheduleZIds = new Set<Id>();
-        List<Energy_Usage_Update__c> productionUpdate = insertSecondMonthSZandPU();
-        for (Energy_Usage_Update__c prodUpdate : productionUpdate){
-            scheduleZIds.add(prodUpdate.Schedule_Z__c);
+        List<Transfer__c> transfers = insertSecondMonthProduction();
+        for (Transfer__c transfer : transfers){
+            scheduleZIds.add(transfer.Allocation_Schedule__c);
         }
 
         List<Schedule_Z_Subscription__c> szsList = ScheduleZSubscriptionSelector.getListForBilling(scheduleZIds);
@@ -210,8 +253,8 @@ public class BillGenerationServiceTest {
         List<UASB__c> beforeUASBs = queryForBills();
 
         Test.startTest();
-            List<Energy_Usage_Update__c> productionUpdates = insertSecondMonthSZandPU();
-            generateBills(new List<Id>{productionUpdates[0].Id, productionUpdates[1].Id});
+            List<Transfer__c> transfers = insertSecondMonthProduction();
+            generateBills(new List<Id>{transfers[0].Bill_Period__c, transfers[1].Bill_Period__c});
         Test.stopTest();
 
         List<UASB__c> afterUASBs = queryForBills();

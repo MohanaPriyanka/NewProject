@@ -398,4 +398,19 @@ ISBLANK(Attempted_kWh_Transfer__c)
         <errorMessage>The Attempted Credit Transfer and Attempted kWh Transfer fields need to be populated before this record can be saved.</errorMessage>
     </validationRules>
     <visibility>Public</visibility>
+    <webLinks>
+        <fullName>Preview_Bills</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>Preview Bills</masterLabel>
+        <openType>noSidebar</openType>
+        <protected>false</protected>
+        <url>/apex/ShowUASes?
+transfer={!Transfer__c.Id}
+&amp;transferName={!Transfer__c.Name}
+&amp;totalNMCs={!TEXT(Transfer__c.Transfer_Amount__c)}</url>
+    </webLinks>
 </CustomObject>

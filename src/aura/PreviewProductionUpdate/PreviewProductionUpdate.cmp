@@ -1,6 +1,6 @@
 <aura:component controller="PreviewProductionUpdateResults" access="global">
  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
- <aura:attribute name="prodUpdate" type="String"/>
+  <aura:attribute name="transfer" type="String"/>
  <aura:attribute name="prodName" type="String"/>
  <aura:attribute name="totalNMCs" type="String"/>
  <aura:attribute name="scheduleZs" type="List"/>
@@ -30,19 +30,19 @@
           </aura:set>
         </aura:if>
         <lightning:radioGroup name="Active Schedule Zs"
-                              label="Active Schedule Zs"
+                              label="Active Allocation Schedules"
                               class="slds-text-color_default"
                               onchange="{!c.getBills}"
                               value="{! v.selectedScheduleZ }"
                               options="{! v.scheduleZs }"
                               type="radio"/>
         <br/>
-        <lightning:button label="Save Schedule Z to Production Update" onclick="{!c.saveToProdUpdate}"/>
+        <lightning:button label="Save Allocation Schedule to Transfer" onclick="{!c.saveToTransfer}"/>
       </div>
      <aura:if isTrue="{!v.selectedScheduleZ}">
        <c.PregeneratedBillsTable
-         parentId="{!v.prodUpdate}"
-         IsProdUpdate="TRUE"
+         parentId="{!v.transfer}"
+         IsTransfer="TRUE"
          SchZBillList="{!v.nonCancelledBills}"/>
      </aura:if>
     </div>

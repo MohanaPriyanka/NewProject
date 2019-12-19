@@ -331,7 +331,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
      - Insert a Product, Utility_NMC_Tariff, Entity, Utility, and Shared Solar Systems
      - Insert Gateways
      - Insert Parent Account, Contact, Property Account, Utility Account Log, Opportunity, and Utility Account Subscription
-     - Insert Schedule Z and Production Updates, then updating them to generate UASBs, System Bills, and Account Bills
+     - Insert Schedule Z, Bill Periods, Productions, and Transfers - then call EEUTH them to generate UASBs, System Bills, and Account Bills
      - Update Account Bills to publish them
      - Insert Chargent Orders to create transactions
      */
@@ -786,15 +786,15 @@ global class PostSandboxRefresher implements SandboxPostCopy {
                     System.enqueueJob(new PostSandboxRefresher.FirstAccountHelper(csDataSetting));
                 } else {
                     Util.enableAllTriggers();
-                    System.enqueueJob(new PostSandboxRefresher.ProductionUpdateHelper(csDataSetting));
+                    System.enqueueJob(new PostSandboxRefresher.TransferHelper(csDataSetting));
                 }
             }
         }
     }
 
-    global class ProductionUpdateHelper implements Queueable {
+    global class TransferHelper implements Queueable {
         global CSDataSetting csDataSetting;
-        global ProductionUpdateHelper(CSDataSetting csDataSetting) {
+        global TransferHelper(CSDataSetting csDataSetting) {
             this.csDataSetting = csDataSetting;
         }
 
@@ -829,37 +829,71 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             );
             insert scheduleZ2;
 
-            Energy_Usage_Update__c productionupdateA1 = new Energy_Usage_Update__c (
+            Bill_Period__c bpA = new Bill_Period__c(
                 Name = 'sssA - August 2016',
                 Shared_Solar_System__c = sssList[0].Id,
-                Production__c = 81869.00,
-                Due_Date__c = threeMonthsAgo,
-                Billing_Period_End_Date__c = twoMonthsAgo,
-                Total_System_NMCs__c = 13483.66,
-                Date__c = threeMonthsAgo,
-                Schedule_Z__c =  scheduleZ1.Id,
-                CreatedDate = csDataDate
+                Bill_Date__c = threeMonthsAgo
             );
 
-            insert productionupdateA1;
-
-            Energy_Usage_Update__c prodUpdateBB = new Energy_Usage_Update__c (
+            Bill_Period__c bpB = new Bill_Period__c(
                 Name = 'sssB - August 2016',
                 Shared_Solar_System__c = sssList[1].Id,
-                Production__c = 367918.00,
-                Due_Date__c = threeMonthsAgo,
-                Billing_Period_End_Date__c = twoMonthsAgo,
-                Total_System_NMCs__c = 40983.43,
-                Date__c = threeMonthsAgo,
-                Schedule_Z__c =  scheduleZ2.Id,
-                CreatedDate = csDataDate
+                Bill_Date__c = threeMonthsAgo
+            );
+            insert new List<Bill_Period__c>{bpB, bpA};
+
+            Production__c prodA = new Production__c(
+                Name = 'sssA August Production',
+                Shared_Solar_System__c = sssList[0].Id,
+                Start_Date__c = threeMonthsAgo,
+                End_Date__c = twoMonthsAgo,
+                Production_kWh__c = 81869,
+                Credits_Generated__c = 13483.66
             );
 
-            insert prodUpdateBB;
+            Production__c prodB = new Production__c(
+                Name = 'sssB August Production',
+                Shared_Solar_System__c = sssList[1].Id,
+                Start_Date__c = threeMonthsAgo,
+                End_Date__c = twoMonthsAgo,
+                Production_kWh__c = 367918,
+                Credits_Generated__c = 40983.43
+            );
 
-            List<Energy_Usage_Update__c> trigProdUp;
-            trigProdUp = ProductionUpdateSelector.getAllProductionUpdatesById(new List<Id>{productionupdateA1.Id, prodUpdateBB.Id});
-            EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(trigProdUp);
+            insert new List<Production__c>{prodB, prodA};
+
+            Transfer__c transferA = new Transfer__c(
+                Name = 'Main Transfer - sssA August',
+                Bill_Period__c = bpA.Id,
+                Date_of_Transfer__c = twoMonthsAgo,
+                Shared_Solar_System__c = sssList[0].Id,
+                Transfer_Type__c = 'Main',
+                Allocation_Schedule__c = scheduleZ1.Id,
+                Attempted_kWh_Transfer__c = 81869,
+                Attempted_Transfer__c = 13483.66,
+                Transfer_Amount__c = 13483.66,
+                Default_Credit_Value__c = 0.1848
+            );
+
+            Transfer__c transferB = new Transfer__c(
+                Name = 'Main Transfer - sssB August',
+                Bill_Period__c = bpB.Id,
+                Date_of_Transfer__c = twoMonthsAgo,
+                Shared_Solar_System__c = sssList[1].Id,
+                Transfer_Type__c = 'Main',
+                Allocation_Schedule__c = scheduleZ2.Id,
+                Attempted_kWh_Transfer__c = 367918,
+                Attempted_Transfer__c = 40983.43,
+                Transfer_Amount__c = 40983.43,
+                Default_Credit_Value__c = 0.1848
+            );
+
+            insert new List<Transfer__c>{transferB, transferA};
+
+            TransferPartService transferPartService = new TransferPartService();
+            transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferA, transferB});
+
+            EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(new List<Bill_Period__c>{bpA, bpB});
             // We want to skip running in a batch, so that we can set the Account Bills to published before starting
             // the next round of bills (so that the bill number is updated appropriately)
             ee.createBills(ScheduleZSubscriptionSelector.getListForBilling(ee.scheduleZs));
@@ -867,14 +901,14 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             setBillsToPublished();
 
             if (!Test.isRunningTest()) {
-                System.enqueueJob(new PostSandboxRefresher.ProductionUpdateHelper2(csDataSetting));
+                System.enqueueJob(new PostSandboxRefresher.TransferHelper2(csDataSetting));
             }
         }
     }
 
-    global class ProductionUpdateHelper2 implements Queueable {
+    global class TransferHelper2 implements Queueable {
         global CSDataSetting csDataSetting;
-        global ProductionUpdateHelper2(CSDataSetting csDataSetting) {
+        global TransferHelper2(CSDataSetting csDataSetting) {
             this.csDataSetting = csDataSetting;
         }
 
@@ -894,50 +928,86 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             Schedule_Z__c scheduleZ1 = [SELECT Id FROM Schedule_Z__c WHERE Name = '2016 - sssA'];
             Schedule_Z__c scheduleZ2 = [SELECT Id FROM Schedule_Z__c WHERE Name = '2016 - sssB'];
 
-            Energy_Usage_Update__c productionupdateB2 = new Energy_Usage_Update__c (
+
+
+            Bill_Period__c bpA = new Bill_Period__c(
                 Name = 'sssA - September 2016',
                 Shared_Solar_System__c = sssList[0].Id,
-                Production__c = 73072.00,
-                Due_Date__c = twoMonthsAgo,
-                Billing_Period_End_Date__c = oneMonthAgo,
-                Total_System_NMCs__c = 12033.73,
-                Date__c = twoMonthsAgo,
-                Schedule_Z__c =  scheduleZ1.Id,
-                CreatedDate = csDataDate
+                Bill_Date__c = twoMonthsAgo
             );
 
-            insert productionupdateB2;
-
-            Energy_Usage_Update__c prodUpdateCC = new Energy_Usage_Update__c (
+            Bill_Period__c bpB = new Bill_Period__c(
                 Name = 'sssB - September 2016',
                 Shared_Solar_System__c = sssList[1].Id,
-                Production__c = 81869.00,
-                Due_Date__c = twoMonthsAgo,
-                Billing_Period_End_Date__c = oneMonthAgo,
-                Total_System_NMCs__c = 13483.66,
-                Date__c = twoMonthsAgo,
-                Schedule_Z__c =  scheduleZ2.Id,
-                CreatedDate = csDataDate
+                Bill_Date__c = twoMonthsAgo
+            );
+            insert new List<Bill_Period__c>{bpB, bpA};
+
+            Production__c prodA = new Production__c(
+                Name = 'sssA September Production',
+                Shared_Solar_System__c = sssList[0].Id,
+                Start_Date__c = twoMonthsAgo,
+                End_Date__c = oneMonthAgo,
+                Production_kWh__c = 73072,
+                Credits_Generated__c = 12033.73
             );
 
-            insert prodUpdateCC;
+            Production__c prodB = new Production__c(
+                Name = 'sssB September Production',
+                Shared_Solar_System__c = sssList[1].Id,
+                Start_Date__c = twoMonthsAgo,
+                End_Date__c = oneMonthAgo,
+                Production_kWh__c = 81869,
+                Credits_Generated__c = 13483.66
+            );
 
-            List<Energy_Usage_Update__c> trigProdUp;
-            trigProdUp = ProductionUpdateSelector.getAllProductionUpdatesById(new List<Id>{productionupdateB2.Id, prodUpdateCC.Id});
-            EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(trigProdUp);
+            insert new List<Production__c>{prodB, prodA};
+
+            Transfer__c transferA = new Transfer__c(
+                Name = 'Main Transfer - sssA September',
+                Bill_Period__c = bpA.Id,
+                Date_of_Transfer__c = oneMonthAgo,
+                Shared_Solar_System__c = sssList[0].Id,
+                Transfer_Type__c = 'Main',
+                Allocation_Schedule__c = scheduleZ1.Id,
+                Attempted_kWh_Transfer__c = 73072,
+                Attempted_Transfer__c = 12033.73,
+                Transfer_Amount__c = 12033.73,
+                Default_Credit_Value__c = 0.1848
+            );
+
+            Transfer__c transferB = new Transfer__c(
+                Name = 'Main Transfer - sssB September',
+                Bill_Period__c = bpB.Id,
+                Date_of_Transfer__c = oneMonthAgo,
+                Shared_Solar_System__c = sssList[1].Id,
+                Transfer_Type__c = 'Main',
+                Allocation_Schedule__c = scheduleZ2.Id,
+                Attempted_kWh_Transfer__c = 81869,
+                Attempted_Transfer__c = 13483.66,
+                Transfer_Amount__c = 13483.66,
+                Default_Credit_Value__c = 0.1848
+            );
+
+            insert new List<Transfer__c>{transferB, transferA};
+
+            TransferPartService transferPartService = new TransferPartService();
+            transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferA, transferB});
+
+            EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(new List<Bill_Period__c>{bpA, bpB});
             ee.createBills(ScheduleZSubscriptionSelector.getListForBilling(ee.scheduleZs));
             ee.finish(null);
             setBillsToPublished();
 
             if (!Test.isRunningTest()) {
-                System.enqueueJob(new PostSandboxRefresher.ProductionUpdateHelper3(csDataSetting));
+                System.enqueueJob(new PostSandboxRefresher.TransferHelper3(csDataSetting));
             }
         }
     }
 
-    global class ProductionUpdateHelper3 implements Queueable {
+    global class TransferHelper3 implements Queueable {
         global CSDataSetting csDataSetting;
-        global ProductionUpdateHelper3(CSDataSetting csDataSetting) {
+        global TransferHelper3(CSDataSetting csDataSetting) {
             this.csDataSetting = csDataSetting;
         }
 
@@ -957,37 +1027,73 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             Schedule_Z__c scheduleZ1 = [SELECT Id FROM Schedule_Z__c WHERE Name = '2016 - sssA'];
             Schedule_Z__c scheduleZ2 = [SELECT Id FROM Schedule_Z__c WHERE Name = '2016 - sssB'];
 
-            Energy_Usage_Update__c productionupdateB3 = new Energy_Usage_Update__c (
+
+            Bill_Period__c bpA = new Bill_Period__c(
                 Name = 'sssA - October 2016',
                 Shared_Solar_System__c = sssList[0].Id,
-                Production__c = 327001.00,
-                Due_Date__c = oneMonthAgo,
-                Billing_Period_End_Date__c = today,
-                Total_System_NMCs__c = 36424.44,
-                Date__c = oneMonthAgo,
-                Schedule_Z__c =  scheduleZ1.Id,
-                CreatedDate = csDataDate
+                Bill_Date__c = oneMonthAgo
             );
 
-            insert productionupdateB3;
-
-            Energy_Usage_Update__c prodUpdateDD = new Energy_Usage_Update__c (
+            Bill_Period__c bpB = new Bill_Period__c(
                 Name = 'sssB - October 2016',
                 Shared_Solar_System__c = sssList[1].Id,
-                Production__c = 73072.00,
-                Due_Date__c = oneMonthAgo,
-                Billing_Period_End_Date__c = today,
-                Total_System_NMCs__c = 12033.73,
-                Date__c = oneMonthAgo,
-                Schedule_Z__c =  scheduleZ2.Id,
-                CreatedDate = csDataDate
+                Bill_Date__c = oneMonthAgo
+            );
+            insert new List<Bill_Period__c>{bpB, bpA};
+
+            Production__c prodA = new Production__c(
+                Name = 'sssA October Production',
+                Shared_Solar_System__c = sssList[0].Id,
+                Start_Date__c = oneMonthAgo,
+                End_Date__c = oneMonthAgo.addMonths(1),
+                Production_kWh__c = 327001,
+                Credits_Generated__c = 36424.44
             );
 
-            insert prodUpdateDD;
+            Production__c prodB = new Production__c(
+                Name = 'sssB October Production',
+                Shared_Solar_System__c = sssList[1].Id,
+                Start_Date__c = oneMonthAgo,
+                End_Date__c = oneMonthAgo.addMonths(1),
+                Production_kWh__c = 81869,
+                Credits_Generated__c = 12033.73
+            );
 
-            List<Energy_Usage_Update__c> trigProdUp;
-            trigProdUp = ProductionUpdateSelector.getAllProductionUpdatesById(new List<Id>{productionupdateB3.Id, prodUpdateDD.Id});
-            EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(trigProdUp);
+            insert new List<Production__c>{prodB, prodA};
+
+            Transfer__c transferA = new Transfer__c(
+                Name = 'Main Transfer - sssA October',
+                Bill_Period__c = bpA.Id,
+                Date_of_Transfer__c = oneMonthAgo.addMonths(1),
+                Shared_Solar_System__c = sssList[0].Id,
+                Transfer_Type__c = 'Main',
+                Allocation_Schedule__c = scheduleZ1.Id,
+                Attempted_kWh_Transfer__c = 327001,
+                Attempted_Transfer__c = 36424.44,
+                Transfer_Amount__c = 36424.44,
+                Default_Credit_Value__c = 0.1848
+            );
+
+            Transfer__c transferB = new Transfer__c(
+                Name = 'Main Transfer - sssB October',
+                Bill_Period__c = bpB.Id,
+                Date_of_Transfer__c = oneMonthAgo.addMonths(1),
+                Shared_Solar_System__c = sssList[1].Id,
+                Transfer_Type__c = 'Main',
+                Allocation_Schedule__c = scheduleZ2.Id,
+                Attempted_kWh_Transfer__c = 81869,
+                Attempted_Transfer__c = 12033.73,
+                Transfer_Amount__c = 12033.73,
+                Default_Credit_Value__c = 0.1848
+            );
+
+            insert new List<Transfer__c>{transferB, transferA};
+
+            TransferPartService transferPartService = new TransferPartService();
+            transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferA, transferB});
+
+            EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(new List<Bill_Period__c>{bpA, bpB});
+
             ee.createBills(ScheduleZSubscriptionSelector.getListForBilling(ee.scheduleZs));
             ee.finish(null);
             setBillsToPublished();
@@ -1248,7 +1354,9 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             delete [SELECT Id FROM Account_Bill__c];
             delete [SELECT Id FROM System_Bill__c];
             delete [SELECT Id FROM UASB__c];
-            delete [SELECT Id FROM Energy_Usage_Update__c];
+            delete [SELECT Id FROM Bill_Period__c];
+            delete [SELECT Id FROM Production__c];
+            delete [SELECT Id FROM Transfer__c];
             delete [SELECT Id FROM Schedule_Z__c];
             delete [SELECT Id FROM Schedule_Z_Subscription__c];
             delete [SELECT Id FROM Utility_Account_Subscription__c];

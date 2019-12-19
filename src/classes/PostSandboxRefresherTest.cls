@@ -225,7 +225,7 @@ private class PostSandboxRefresherTest {
     }
 
     @IsTest
-    static void testProductionUpdateHelper() {
+    static void testTransferHelper() {
         PostSandboxRefresher.CSDataSetting csDataSetting = new PostSandboxRefresher.CSDataSetting(24);
         PostSandboxRefresher.CSRecordLoader csRecordLoader = new PostSandboxRefresher.CSRecordLoader(csDataSetting);
         csRecordLoader.execute(null);
@@ -236,12 +236,12 @@ private class PostSandboxRefresherTest {
         Test.startTest();
         Boolean caughtException = false;
         try {
-            PostSandboxRefresher.ProductionUpdateHelper productionUpdateHelper = new PostSandboxRefresher.ProductionUpdateHelper(csDataSetting);
-            productionUpdateHelper.execute(null);
-            PostSandboxRefresher.ProductionUpdateHelper2 productionUpdateHelper2 = new PostSandboxRefresher.ProductionUpdateHelper2(csDataSetting);
-            productionUpdateHelper2.execute(null);
-            PostSandboxRefresher.ProductionUpdateHelper3 productionUpdateHelper3 = new PostSandboxRefresher.ProductionUpdateHelper3(csDataSetting);
-            productionUpdateHelper3.execute(null);
+        	PostSandboxRefresher.TransferHelper transferHelper = new PostSandboxRefresher.TransferHelper(csDataSetting);
+       		transferHelper.execute(null);
+        	PostSandboxRefresher.TransferHelper2 transferHelper2 = new PostSandboxRefresher.TransferHelper2(csDataSetting);
+        	transferHelper2.execute(null);
+        	PostSandboxRefresher.TransferHelper3 transferHelper3 = new PostSandboxRefresher.TransferHelper3(csDataSetting);
+        	transferHelper3.execute(null);  
         } catch (Exception e) {
             caughtException = true;
         }
@@ -264,8 +264,8 @@ private class PostSandboxRefresherTest {
         Test.startTest();
         Boolean caughtException = false;
         try {
-            PostSandboxRefresher.paymentHelper paymentHelper = new PostSandboxRefresher.paymentHelper(csDataSetting);
-            paymentHelper.execute(null);
+        PostSandboxRefresher.paymentHelper paymentHelper = new PostSandboxRefresher.paymentHelper(csDataSetting);
+        paymentHelper.execute(null);
         } catch (Exception e) {
             caughtException = true;
         }
