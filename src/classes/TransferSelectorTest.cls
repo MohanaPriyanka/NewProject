@@ -272,10 +272,10 @@ public class TransferSelectorTest {
 
         Transfer__c transferC2 = new Transfer__c(
             Name = 'Main Transfer - sssC Next Month',
-            Bill_Period__c = bpC2.Id,
             Date_of_Transfer__c = thisMonth,
             Shared_Solar_System__c = sss3.Id,
-            Transfer_Type__c = 'Main',
+            Transfer_Type__c = 'One-Off',
+            Bills_Generated__c = false,
             Allocation_Schedule__c = scheduleZ3.Id,
             Attempted_kWh_Transfer__c = 142300,
             Attempted_Transfer__c = 25872,
@@ -284,10 +284,9 @@ public class TransferSelectorTest {
         );
 
         insert new List<Transfer__c>{transferA, transferB, transferC, transferC2};
-
-
-
     }
+
+
     @IsTest
     static void testQueryTransfer() {
         Date todaysDate = Date.today();
@@ -302,6 +301,32 @@ public class TransferSelectorTest {
 
         System.assertEquals(2, transfersById.size());
 
+    }
+
+
+
+    @IsTest
+    static void testGetAllTransfersBySSS() {
+        Shared_Solar_System__c sssC = [SELECT Id FROM Shared_Solar_System__c WHERE Name = 'Project C Other St' LIMIT 1];
+        List<Transfer__c> transfers = TransferSelector.getTransfersForBillPeriods(new Set<Id>{sssC.Id});
+
+        System.assertEquals(1, transfers.size());
+    }
+
+    @IsTest
+    static void testGetTransfersForBillPeriods() {
+        Shared_Solar_System__c sssC = [SELECT Id FROM Shared_Solar_System__c WHERE Name = 'Project C Other St' LIMIT 1];
+        List<Transfer__c> transfers = TransferSelector.getTransfersForBillPeriods(new Set<Id>{sssC.Id});
+
+        System.assertEquals(1, transfers.size());
+    }
+
+    @IsTest
+    static void testGetAllTransferByBillPeriod() {
+        Bill_Period__c bp = [SELECT Id FROM Bill_Period__c WHERE Name = 'sssA - This Month' LIMIT 1];
+        List<Transfer__c> transfers = TransferSelector.getAllTransfersByBillPeriod(new Set<Id>{bp.Id});
+
+        System.assertEquals(1, transfers.size());
     }
 
 //    @IsTest
