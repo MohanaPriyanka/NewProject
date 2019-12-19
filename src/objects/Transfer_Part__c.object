@@ -264,13 +264,9 @@
         <active>true</active>
         <errorConditionFormula>AND( 
 ISPICKVAL(Type__c, &quot;Transfer&quot;), 
-OR( 
-NOT(ISBLANK(TEXT(Fee_Paid_To__c))), 
 (ISBLANK(Transfer__c)) 
-) 
 )</errorConditionFormula>
-        <errorMessage>Transfer field cannot be blank if your Type is selected as Transfer. 
-Fee Paid To field has to be blank if your Type is selected as Transfer.</errorMessage>
+        <errorMessage>Transfer field cannot be blank if your Type is selected as Transfer.</errorMessage>
     </validationRules>
     <visibility>Public</visibility>
 </CustomObject>
