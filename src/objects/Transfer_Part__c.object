@@ -174,40 +174,6 @@
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Fee_Paid_To__c</fullName>
-        <externalId>false</externalId>
-        <label>Fee Paid To</label>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>BlueWave</fullName>
-                    <default>false</default>
-                    <label>BlueWave</label>
-                </value>
-                <value>
-                    <fullName>Client</fullName>
-                    <default>false</default>
-                    <label>Client</label>
-                </value>
-                <value>
-                    <fullName>Customer</fullName>
-                    <default>false</default>
-                    <label>Customer</label>
-                </value>
-                <value>
-                    <fullName>Utility</fullName>
-                    <default>false</default>
-                    <label>Utility</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-    </fields>
-    <fields>
         <fullName>Production__c</fullName>
         <description>A master-detail relationship from Transfer Parts up to Production.</description>
         <externalId>false</externalId>
@@ -293,19 +259,6 @@
     <pluralLabel>Transfer Parts</pluralLabel>
     <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
-    <validationRules>
-        <fullName>Fee_Paid_To_field_required_for_Fee</fullName>
-        <active>true</active>
-        <errorConditionFormula>AND( 
-ISPICKVAL(Type__c, &quot;Fee&quot;), 
-OR( 
-ISBLANK(TEXT(Fee_Paid_To__c)), 
-NOT(ISBLANK(Transfer__c)) 
-) 
-)</errorConditionFormula>
-        <errorMessage>Fee Paid To field cannot be blank if your Type is selected as Fee. 
-Transfer field has to be blank if your Type is selected as Fee.</errorMessage>
-    </validationRules>
     <validationRules>
         <fullName>Transfer_field_required_for_Transfer</fullName>
         <active>true</active>
