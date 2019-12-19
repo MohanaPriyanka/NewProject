@@ -266,6 +266,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
 
     private Boolean entriesMatch(Journal_Entry__c sfEntry, Journal_Entry__c zuoraEntry){
         Boolean isMatch = true;
+        zuoraEntry.Amount__c = zuoraEntry.Amount__c.setScale(2);
         if (sfEntry.Amount__c != zuoraEntry.Amount__c
             || sfEntry.Date__c != zuoraEntry.Date__c
             || sfEntry.Project__c != zuoraEntry.Project__c
