@@ -90,12 +90,13 @@
         <externalId>false</externalId>
         <formula>IF(
 
-ISPICKVAL(Shared_Solar_System__r.Product__r.Program__c,&quot;SMART - Community Solar&quot;),&quot;{!Environment.VAR_CONGA_TEMPLATE_AOBC}&quot;,
+ISPICKVAL(Shared_Solar_System__r.Product__r.Program__c,&quot;SMART - Community Solar&quot;),&quot;a2F0a000000OHZeEAO&quot;,
 
 CASE(Utility__c,
 &quot;Eversource&quot;,&quot;a2F0a000001RC7W&quot;,
 &quot;National Grid&quot;,&quot;a2F0a000001RBod&quot;,
-&quot;NYS Electric and Gas&quot;,&quot;{!Environment.VAR_CONGA_TEMPLATE_ALS_NYSEG}&quot;,
+&quot;NYS Electric and Gas&quot;,&quot;a2F0a000000OY5fEAG&quot;,
+&quot;Orange and Rockland&quot;,&quot;{!Environment.VAR_CONGA_TEMPLATE_OANDRALS}&quot;,
 &quot;&quot;
 )
 )</formula>
