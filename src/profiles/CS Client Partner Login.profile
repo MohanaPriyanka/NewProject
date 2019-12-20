@@ -14764,11 +14764,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account.Parent_Account_Checkbox__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account.Parent_Account_ID__c</field>
         <readable>false</readable>
     </fieldPermissions>

@@ -2452,15 +2452,6 @@ TODAY()- BLANKVALUE(Postcard_2__c,DATE(1900,1,1))
         <type>Hierarchy</type>
     </fields>
     <fields>
-        <fullName>Parent_Account_Checkbox__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>CS Parent Account (Checkbox)</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Parent_Account_ID__c</fullName>
         <externalId>false</externalId>
         <formula>Parent_Account__r.Id</formula>
