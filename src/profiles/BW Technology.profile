@@ -64239,22 +64239,6 @@
         <layout>Account-Account Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Account-Account Layout</layout>
-        <recordType>Account.BWC_Founders</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Account Layout</layout>
-        <recordType>Account.BWC_Principals</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Account Layout</layout>
-        <recordType>Account.Client_Account</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Account Layout</layout>
-        <recordType>Account.Executive_Team</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Account-Account Layout %28Default%29</layout>
         <recordType>Account.Account_Default</recordType>
     </layoutAssignments>
@@ -64269,6 +64253,10 @@
     <layoutAssignments>
         <layout>Account-Competitor Account</layout>
         <recordType>Account.Competitor_Account</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Account-Landowner</layout>
+        <recordType>Account.Landowner</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Account-Parent Account</layout>
@@ -73584,6 +73572,11 @@
         <default>false</default>
         <recordType>Account.Executive_Team</recordType>
         <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Account.Landowner</recordType>
+        <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>true</default>

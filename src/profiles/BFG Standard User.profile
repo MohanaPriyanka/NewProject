@@ -55376,6 +55376,10 @@
         <recordType>Account.Competitor_Account</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Account-Landowner</layout>
+        <recordType>Account.Landowner</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Account-Parent Account</layout>
         <recordType>Account.Parent_Account</recordType>
     </layoutAssignments>
@@ -62819,6 +62823,11 @@
         <default>false</default>
         <recordType>Account.Executive_Team</recordType>
         <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Account.Landowner</recordType>
+        <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>false</default>
