@@ -189,6 +189,7 @@
     <permissionSets>HubSpot Integration Permissions</permissionSets>
     <permissionSets>Manage Entities (Legal)</permissionSets>
     <permissionSets>Update ALSS Date Enacted</permissionSets>
+    <permissionSets>Einstein Search</permissionSets>
     <permissionSets>Lightning</permissionSets>
     <permissionSets>Shared Solar System Permission</permissionSets>
     <permissionSets>Permission Set for Payment Request (Base)</permissionSets>
@@ -216,6 +217,7 @@
     <profiles>PM Force.com user</profiles>
     <profiles>CS Client Partner Login</profiles>
     <profiles>BFG Marketing User</profiles>
+    <profiles>CS Client Partner Login_GSRP</profiles>
     <profiles>PM Standard User</profiles>
     <profiles>HR Admin</profiles>
     <profiles>BFG Standard User</profiles>
