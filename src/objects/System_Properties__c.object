@@ -261,6 +261,14 @@ Production: BlueWave Inside Sales</inlineHelpText>
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Disable_ZInvoiceTrigger__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Disable ZInvoiceTrigger</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>DocuSign_API_Account_ID__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>DocuSign API Account ID (https://admindemo.docusign.com/api-integrator-key) e.g. 2255b4dd-7d4f-425a-bcc9-d53328055381</inlineHelpText>
