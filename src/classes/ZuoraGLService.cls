@@ -266,7 +266,6 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
 
     private Boolean entriesMatch(Journal_Entry__c sfEntry, Journal_Entry__c zuoraEntry){
         Boolean isMatch = true;
-        zuoraEntry.Amount__c = zuoraEntry.Amount__c.setScale(2);
         if (sfEntry.Amount__c != zuoraEntry.Amount__c
             || sfEntry.Date__c != zuoraEntry.Date__c
             || sfEntry.Project__c != zuoraEntry.Project__c
@@ -275,6 +274,14 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
             || sfEntry.Paid_To_Client__c != zuoraEntry.Paid_To_Client__c
             || sfEntry.Deposit_Account__c != zuoraEntry.Deposit_Account__c){
             isMatch = false;
+            String message = 'Amount:' + String.valueOf(sfEntry.Amount__c != zuoraEntry.Amount__c);
+            message += 'Date:' + String.valueOf(sfEntry.Date__c != zuoraEntry.Date__c);
+            message += 'Project:' +  String.valueOf(sfEntry.Project__c != zuoraEntry.Project__c);
+            message += 'Client:' +  String.valueOf(sfEntry.Client__c != zuoraEntry.Client__c);
+            message += 'Customer:' +  String.valueOf(sfEntry.Customer_Account__c != zuoraEntry.Customer_Account__c);
+            message += 'Paid to Client:' +  String.valueOf(sfEntry.Paid_To_Client__c != zuoraEntry.Paid_To_Client__c);
+            message += 'DepositAccount:' +  String.valueOf(sfEntry.Deposit_Account__c != zuoraEntry.Deposit_Account__c);
+            Logger.LogNow('ZuoraGLService', 'entriesMatch', message);
         }
         return isMatch;
     }
