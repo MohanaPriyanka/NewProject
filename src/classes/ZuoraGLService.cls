@@ -123,7 +123,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
 
         for (Zuora__PaymentGateway__c zuoraGateway : zuoraGateways){
             depositAccountToClientMap.put(
-                zuoraGateway.Name,
+                zuoraGateway.Zuora__External_Id__c,
                 zuoraGateway.Client_Owner__r.Account_Number__c
             );
         }
@@ -186,7 +186,8 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
             // Use CRMId as a switch for historical data v. new data in Zuora
             if (objectType == 'PaymentPart' && ledger.CRMId == null) {
                 // Going forward, we will report on payments when they are applied:
-                entry.Date__c = Date.valueOf(ledger.GLDatetime);
+                Datetime dateAsDateTime = ledger.GLDatetime;
+                entry.Date__c = Date.newInstance(dateAsDateTime.Year(), dateAsDateTime.Month(),dateAsDateTime.Day());
                 entry = setZuoraPaymentFields(ledger, entry);
             } else {
                 // Historical Migration, we reported on transactions when they were made.
@@ -281,7 +282,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
             message += 'Customer:' +  String.valueOf(sfEntry.Customer_Account__c != zuoraEntry.Customer_Account__c);
             message += 'Paid to Client:' +  String.valueOf(sfEntry.Paid_To_Client__c != zuoraEntry.Paid_To_Client__c);
             message += 'DepositAccount:' +  String.valueOf(sfEntry.Deposit_Account__c != zuoraEntry.Deposit_Account__c);
-            Logger.LogNow('ZuoraGLService', 'entriesMatch', message);
+            Logger.LogNow('ZuoraGLService', 'entriesMatch', message + ' __ ' + JSON.serialize(sfEntry) + ' __ ' + JSON.serialize(zuoraEntry));
         }
         return isMatch;
     }
