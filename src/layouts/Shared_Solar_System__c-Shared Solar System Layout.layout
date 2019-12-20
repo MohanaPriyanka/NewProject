@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
     <customButtons>Preview_Next_Schedule_Z</customButtons>
+    <customButtons>New_Shared_Solar_System_Order</customButtons>
     <excludeButtons>ChangeOwnerOne</excludeButtons>
     <excludeButtons>Clone</excludeButtons>
     <excludeButtons>Delete</excludeButtons>
@@ -207,6 +208,10 @@
                 <behavior>Edit</behavior>
                 <field>Host_Utility_Account_Number__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Project_Number__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -310,10 +315,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Reserved_Capacity_kW_DC__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Reserved_Anchor_Capacity__c</field>
             </layoutItems>
             <layoutItems>
                 <emptySpace>true</emptySpace>
@@ -605,6 +606,10 @@
         <relatedList>Milestone__c.Shared_Solar_System__c</relatedList>
         <sortField>Milestone_Date__c</sortField>
         <sortOrder>Asc</sortOrder>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>Shared_Solar_System_Order__c.Shared_Solar_System__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
