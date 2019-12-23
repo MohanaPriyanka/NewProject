@@ -3585,7 +3585,7 @@ ISCHANGED(App_ID_WO_Manual__c)
         <masterLabel>Preview Next Allocation Schedule</masterLabel>
         <openType>replace</openType>
         <protected>false</protected>
-        <url>/00Oj0000004i4Un?pv2={!Shared_Solar_System__c.Name}</url>
+        <url>/lightning/r/Report/00Oj0000004i4Un/view?fv2={!Shared_Solar_System__c.Name}</url>
     </webLinks>
     <webLinks>
         <fullName>Update_Capacity_Report</fullName>
