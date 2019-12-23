@@ -247,21 +247,6 @@
                 <emptySpace>true</emptySpace>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Total_System_Size_kW_DC_QC__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Total_System_Size_kW_AC_QC__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
-                <field>Conversion_Rate__c</field>
-            </layoutItems>
-            <layoutItems>
-                <emptySpace>true</emptySpace>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Anchor_Capacity_Reserved__c</field>
             </layoutItems>
@@ -275,6 +260,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Total_System_Size_kW_AC__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Serviced_Capacity__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
