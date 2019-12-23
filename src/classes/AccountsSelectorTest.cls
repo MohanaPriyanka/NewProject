@@ -16,6 +16,7 @@ public with sharing class AccountsSelectorTest {
         Test.loadData(Entity__c.SObjectType, 'TestCSEntity');
         Test.loadData(Shared_Solar_System__c.SObjectType, 'TestCSSharedSolarSystem');
         Test.loadData(Utility_Account_Log__c.SObjectType, 'TestCSUtilityAccountLog');
+        Test.startTest();
         Test.loadData(Opportunity.SObjectType, 'TestCSOpportunity');
         Test.loadData(Utility_Account_Subscription__c.SObjectType, 'TestCSUtilityAccountSubscription');
         Test.loadData(Schedule_Z__c.SObjectType, 'TestCSScheduleZ');
@@ -27,6 +28,7 @@ public with sharing class AccountsSelectorTest {
         Test.loadData(System_Bill__c.SObjectType, 'TestCSSystemBill');
         Test.loadData(Utility_Account_Bill__c.SObjectType, 'TestCSUtilityAccountBill');
         Test.loadData(UASB__c.SObjectType, 'TestCSUASB');
+        Test.stopTest();
         Util.enableAllTriggers();
     }
 

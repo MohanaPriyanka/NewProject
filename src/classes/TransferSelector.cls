@@ -45,7 +45,6 @@ public without sharing class TransferSelector {
         ];
     }
 
-    //Should this only be for on time or excess? Probably
     public static List<Transfer__c> getAllTransfersBySSS(List<Id> sssIds){
         return [
             SELECT Id, Name, Shared_Solar_System__c, Shared_Solar_System__r.Id, Shared_Solar_System__r.Name,
@@ -56,6 +55,8 @@ public without sharing class TransferSelector {
             FROM Transfer__c
             WHERE Shared_Solar_System__r.Id IN :sssIds
             AND (Attempted_kWh_Transfer__c != null OR Attempted_Transfer__c != null)
+            AND Transfer_Type__c != 'One-Off'
+            AND Transfer_Type__c !='Error'
             ORDER By Bill_Period__r.Bill_Date__c ASC
         ];
 
