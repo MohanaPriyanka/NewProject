@@ -186,7 +186,8 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
             // Use CRMId as a switch for historical data v. new data in Zuora
             if (objectType == 'PaymentPart' && ledger.CRMId == null) {
                 // Going forward, we will report on payments when they are applied:
-                entry.Date__c = Date.valueOf(ledger.GLDatetime);
+                Datetime dateAsDateTime = ledger.GLDatetime;
+                entry.Date__c = Date.newInstance(dateAsDateTime.Year(), dateAsDateTime.Month(),dateAsDateTime.Day());
                 entry = setZuoraPaymentFields(ledger, entry);
             } else {
                 // Historical Migration, we reported on transactions when they were made.
@@ -242,6 +243,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         } else {
             // Records that are inUpsertList and !inClosedPeriod: safe to upsert, so continue
         }
+        Logger.flushLogs();
     }
 
     private void checkForInsertions(Journal_Entry__c zuoraEntry, Date periodCloseDate){
@@ -275,13 +277,14 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
             || sfEntry.Deposit_Account__c != zuoraEntry.Deposit_Account__c){
             isMatch = false;
             String message = 'Amount:' + String.valueOf(sfEntry.Amount__c != zuoraEntry.Amount__c);
-            message += 'Date:' + String.valueOf(sfEntry.Date__c != zuoraEntry.Date__c);
-            message += 'Project:' +  String.valueOf(sfEntry.Project__c != zuoraEntry.Project__c);
-            message += 'Client:' +  String.valueOf(sfEntry.Client__c != zuoraEntry.Client__c);
-            message += 'Customer:' +  String.valueOf(sfEntry.Customer_Account__c != zuoraEntry.Customer_Account__c);
-            message += 'Paid to Client:' +  String.valueOf(sfEntry.Paid_To_Client__c != zuoraEntry.Paid_To_Client__c);
-            message += 'DepositAccount:' +  String.valueOf(sfEntry.Deposit_Account__c != zuoraEntry.Deposit_Account__c);
-            Logger.LogNow('ZuoraGLService', 'entriesMatch', message);
+            message += '_Date:' + String.valueOf(sfEntry.Date__c != zuoraEntry.Date__c);
+            message += '_Project:' +  String.valueOf(sfEntry.Project__c != zuoraEntry.Project__c);
+            message += '_Client:' +  String.valueOf(sfEntry.Client__c != zuoraEntry.Client__c);
+            message += '_Customer:' +  String.valueOf(sfEntry.Customer_Account__c != zuoraEntry.Customer_Account__c);
+            message += '_Paid to Client:' +  String.valueOf(sfEntry.Paid_To_Client__c != zuoraEntry.Paid_To_Client__c);
+            message += '_DepositAccount:' +  String.valueOf(sfEntry.Deposit_Account__c != zuoraEntry.Deposit_Account__c);
+            message += '_Date Debugging: ' +  String.valueOf(sfEntry.Date__c) + String.valueOf(zuoraEntry.Date__c);
+            Logger.LogLater('ZuoraGLService', 'entriesMatch', message + ' __ ' + JSON.serialize(sfEntry) + ' __ ' + JSON.serialize(zuoraEntry));
         }
         return isMatch;
     }

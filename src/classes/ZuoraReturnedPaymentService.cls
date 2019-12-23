@@ -78,6 +78,8 @@ public with sharing class ZuoraReturnedPaymentService {
     }
 
     private ZuoraAPI.DebitMemo getDebitMemoTemplateFromPayment(ZuoraAPI.PaymentPartItem paymentPartItem, String productRatePlanChargeId, ZuoraAPI.Payment payment) {
+        Map<String,String> gatewayNameFromIdMap = gatewayNameFromGatewayIdMap();
+
         ZuoraAPI.DebitMemoCharge debitCharge = new ZuoraAPI.DebitMemoCharge();
         debitCharge.amount = paymentPartItem.amount;
         debitCharge.chargeId = productRatePlanChargeId;
@@ -90,7 +92,7 @@ public with sharing class ZuoraReturnedPaymentService {
         debitMemo.comment = 'Original Payment ' + payment.id + ', PaymentPartItem ' + paymentPartItem.id;
         // Stamp payment values for later use in GL download:
         debitMemo.ArchivedChargentData_Zcustom = payment.ArchivedChargentData_Zcustom;
-        debitMemo.Gateway_Zcustom = payment.gatewayId;
+        debitMemo.Gateway_Zcustom = gatewayNameFromIdMap.get(payment.gatewayId);
         debitMemo.Lockbox_Zcustom = payment.Lockbox_Zcustom;
 
         List<Zuora__PaymentMethod__c> methods = ZuoraPaymentMethodSelector.getSFRecordFromZuoraId(new List<String>{payment.PaymentMethodId});
@@ -152,5 +154,19 @@ public with sharing class ZuoraReturnedPaymentService {
         }
 
         return newCase;
+    }
+
+    public Map<String, String> gatewayNameFromGatewayIdMap(){
+        Map<String, String> gatewayIdNameMap = new Map<String, String>();
+        GatewaySelector gatewaySelector = new GatewaySelector();
+        List<Zuora__PaymentGateway__c> zuoraGateways = gatewaySelector.getAllZuoraGateways();
+
+        for (Zuora__PaymentGateway__c zuoraGateway : zuoraGateways){
+            gatewayIdNameMap.put(
+                zuoraGateway.Zuora__External_Id__c,
+                zuoraGateway.Name
+            );
+        }
+        return gatewayIdNameMap;
     }
 }
