@@ -295,7 +295,8 @@
         <externalId>false</externalId>
         <formula>Capacity_Committed_kW_DC__c +  Anchor_Capacity_Reserved__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Anchor/CS Capacity Committed</label>
+        <inlineHelpText>Anchor Capacity + Committed Capacity</inlineHelpText>
+        <label>Anchor and CS Capacity Committed</label>
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
@@ -632,6 +633,7 @@
         <externalId>false</externalId>
         <formula>if( Anchor_Capacity_Reserved__c &gt;0,  Total_System_Size_kWh_DC__c - Anchor_Capacity_Reserved__c - Total_Capacity_Committed_Reserved__c, Total_CS_Capacity_kW_DC_Formula__c -  Total_Capacity_Committed_Reserved__c)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Total System Size - (Committed + Reserved Capacity) - (Anchor Capacity)</inlineHelpText>
         <label>Capacity Available to be Reserved(kW DC)</label>
         <precision>18</precision>
         <required>false</required>
@@ -644,6 +646,7 @@
     <fields>
         <fullName>Capacity_Committed_kW_DC__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>Sum of non-anchor customer subscriptions subscribed to this project. Customers are &quot;committed&quot; to project (Opportunity Stage = Complete and UAS Next Schedule Z Status = Active)</inlineHelpText>
         <label>Committed Capacity (kW DC)</label>
         <precision>8</precision>
         <required>false</required>
@@ -677,6 +680,8 @@ IF(AND(   Total_System_Size_kW_AC__c &gt; 60, Total_System_Size_kW_AC__c &lt;= 1
 
 IF ( Total_System_Size_kW_AC__c &gt; 1000, &quot;Class 3&quot;, null)))</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>MA Specific
+Based on size of project (1MW), if the SSS falls into Class II or Class III categories</inlineHelpText>
         <label>System Class</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
@@ -1053,6 +1058,7 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
     <fields>
         <fullName>Expected_Yield_kWh_kW__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>How much energy (kWh) is produced for every kW of project capacity. If yield increases, every kW of the project will produce more energy, and need more CS offtakers to use that capacity</inlineHelpText>
         <label>Expected Yield (kWh/kW)</label>
         <precision>12</precision>
         <required>false</required>
@@ -1494,6 +1500,8 @@ DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,
         <formula>if( Anchor_Capacity_Reserved__c &gt;0, Total_System_Size_kWh_DC__c - Anchor_Capacity_Reserved__c - Capacity_Committed_kW_DC__c, 
 Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Total System Size - (Committed Capacity) - (Anchor Capacity) 
+** Does not include reserved capacity</inlineHelpText>
         <label>Capacity not yet Committed (kW DC)</label>
         <precision>18</precision>
         <required>false</required>
@@ -1608,6 +1616,7 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
     <fields>
         <fullName>Reserved_Capacity_kW_DC__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>Sum of non-anchor customer subscriptions for which we are reserving capacity, but customers are not officially committed to the project. Opportunity is still in QC stages (Pending BW Signature, QC In Process or Pending QC Signature)</inlineHelpText>
         <label>Reserved Capacity (kW DC)</label>
         <length>10</length>
         <required>false</required>
@@ -2040,6 +2049,25 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
         </valueSet>
     </fields>
     <fields>
+        <fullName>Serviced_Capacity__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+ISPICKVAL(Billing_Anchors__c,&quot;RadianGen&quot;), 
+Total_System_Size_kWh_DC__c - Anchor_Capacity_Reserved__c,
+Total_System_Size_kWh_DC__c 
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>If BlueWave services the anchor, anchor capacity is included, if not, the total size of the project minus the anchor capacity</inlineHelpText>
+        <label>Serviced Capacity</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Special_Ledger_Account_Number__c</fullName>
         <externalId>false</externalId>
         <label>Special Ledger Account Number</label>
@@ -2175,6 +2203,7 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
         <externalId>false</externalId>
         <formula>Total_System_Size_kWh_DC__c - Anchor_Capacity_Reserved__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Capacity Available for small off-take subscriptions (Total System Size - Anchor Capacity)</inlineHelpText>
         <label>Total CS Capacity (kW DC)</label>
         <precision>18</precision>
         <required>false</required>
@@ -2189,6 +2218,7 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
         <externalId>false</externalId>
         <formula>Capacity_Committed_kW_DC__c +  Reserved_Capacity_Integer__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Committed Capacity + Reserved Capacity</inlineHelpText>
         <label>Total Capacity Committed/Reserved</label>
         <precision>18</precision>
         <required>false</required>

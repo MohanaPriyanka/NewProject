@@ -9,6 +9,7 @@ public with sharing class ZuoraReturnedPaymentServiceTest {
     @TestSetup public static void testDataSetup() {
         ZuoraCreditDebitMemoServiceTest.testDataSetup();
         ZuoraAPIHelperTest.testSetup();
+        GatewaySelectorTest.testDataSetup();
 
         Account property = new Account(name = 'Account Property');
         insert property;
