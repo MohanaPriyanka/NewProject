@@ -89,6 +89,11 @@
         <picklistField>QC_Case_Subject__c</picklistField>
         <picklistObject>Case</picklistObject>
     </dynamicChoiceSets>
+    <formulas>
+        <name>formula_CaseSubject</name>
+        <dataType>String</dataType>
+        <expression>{!sovOpportunity.Name}&amp;&quot; - &quot;&amp;{!Case_Type}</expression>
+    </formulas>
     <interviewLabel>CS QC Task Flow {!$Flow.CurrentDateTime}</interviewLabel>
     <label>CS QC Task Flow</label>
     <processMetadataValues>
@@ -117,6 +122,12 @@
             <field>AccountId</field>
             <value>
                 <elementReference>GetAccountforPartner.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Case_Type__c</field>
+            <value>
+                <stringValue>3rd Party</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -182,7 +193,7 @@
         <inputAssignments>
             <field>Subject</field>
             <value>
-                <elementReference>Case_Type</elementReference>
+                <elementReference>formula_CaseSubject</elementReference>
             </value>
         </inputAssignments>
         <object>Case</object>
@@ -247,6 +258,7 @@
         <queriedFields>StageName</queriedFields>
         <queriedFields>Partner_tag_lookup__c</queriedFields>
         <queriedFields>BS_Sales_ID__c</queriedFields>
+        <queriedFields>Name</queriedFields>
     </recordLookups>
     <recordUpdates>
         <name>Update_Opp_Status</name>
