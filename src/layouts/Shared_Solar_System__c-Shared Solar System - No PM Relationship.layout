@@ -231,6 +231,10 @@
                 <behavior>Readonly</behavior>
                 <field>Total_CS_Capacity_kW_DC_Formula__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Serviced_Capacity__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
