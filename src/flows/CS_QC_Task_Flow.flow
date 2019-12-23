@@ -139,7 +139,7 @@
         <inputAssignments>
             <field>ContactId</field>
             <value>
-                <elementReference>Get_Contact_for_Partner.Id</elementReference>
+                <elementReference>sov_partnercontact.Id</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -215,7 +215,9 @@
             </value>
         </filters>
         <object>Contact</object>
+        <outputReference>sov_partnercontact</outputReference>
         <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>GetAccountforPartner</name>
@@ -323,6 +325,14 @@
         <isInput>true</isInput>
         <isOutput>true</isOutput>
         <objectType>Case</objectType>
+    </variables>
+    <variables>
+        <name>sov_partnercontact</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Contact</objectType>
     </variables>
     <variables>
         <name>sovOpportunity</name>

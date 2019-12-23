@@ -284,7 +284,7 @@
         <formula>&quot;&amp;solmgr=1&quot; +
 &quot;&amp;Id=&quot; + Id +
 &quot;&amp;QueryId=[QC]{!Environment.VAR_CONGA_CSPARTER_QC},[Opps]{!Environment.VAR_CONGA_CSPARTNER_OPP}, [DQLead]{!Environment.VAR_CONGA_CSPARTNER_DQLEADS}, [Referrals]{!Environment.VAR_CONGA_CSPARTNER_REFERRALS}, [Expired]{!Environment.VAR_CONGA_CSPARTNER_EXPIRED}, [Complete]{!Environment.VAR_CONGA_CSPARNTER_COMPLETE}&quot; +
-&quot;&amp;TemplateId=a2F6C0000005WJo&quot; +
+&quot;&amp;TemplateId={!Environment.VAR_CONGA_TEMPLATE_DAILYCS}&quot; +
 &quot;&amp;CongaEmailTemplateId={!Environment.VAR_CONGA_EMAIL_TEMPLATE_CS_DAILY_REPORT}&quot; + 
 &quot;&amp;EmailAdditionalTo=&quot; + Email__c +
 &quot;&amp;ofn=&quot; + Name + &quot; &quot; + &quot;Community Solar Update Report&quot; + &quot; &quot; + TEXT(TODAY()) +
@@ -1153,7 +1153,7 @@
 &amp;ServerUrl={!API.Partner_Server_URL_290}
 &amp;Id={!Partner__c.Id}
 &amp;QueryId=[QC]{!Environment.VAR_CONGA_CSPARTER_QC},[Opps]{!Environment.VAR_CONGA_CSPARTNER_OPP}, [DQLead]{!Environment.VAR_CONGA_CSPARTNER_DQLEADS}, [Referrals]{!Environment.VAR_CONGA_CSPARTNER_REFERRALS}, [Expired]{!Environment.VAR_CONGA_CSPARTNER_EXPIRED}, [Complete]{!Environment.VAR_CONGA_CSPARNTER_COMPLETE}
-&amp;TemplateId=a2F6C0000005WJo
+&amp;TemplateId={!Environment.VAR_CONGA_TEMPLATE_DAILYCS}
 &amp;EmailCC={!Partner__c.Additional_CC_Email__c}
 &amp;emailfromid=0D20a000000PBPX</url>
     </webLinks>
