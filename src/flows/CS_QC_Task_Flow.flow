@@ -121,7 +121,7 @@
         <inputAssignments>
             <field>AccountId</field>
             <value>
-                <elementReference>GetAccountforPartner.Id</elementReference>
+                <elementReference>sov_PartnerAccount.Id</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -224,7 +224,7 @@
         <label>Get Account for Partner</label>
         <locationX>298</locationX>
         <locationY>304</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Is_there_a_Sales_Rep</targetReference>
         </connector>
@@ -236,6 +236,7 @@
             </value>
         </filters>
         <object>Account</object>
+        <outputReference>sov_PartnerAccount</outputReference>
         <queriedFields>Id</queriedFields>
     </recordLookups>
     <recordLookups>
@@ -325,6 +326,14 @@
         <isInput>true</isInput>
         <isOutput>true</isOutput>
         <objectType>Case</objectType>
+    </variables>
+    <variables>
+        <name>sov_PartnerAccount</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Account</objectType>
     </variables>
     <variables>
         <name>sov_partnercontact</name>
