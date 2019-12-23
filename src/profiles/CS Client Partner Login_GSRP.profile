@@ -44607,11 +44607,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Transfer_Part__c.Fee_Paid_To__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Transfer_Part__c.Transfer__c</field>
         <readable>false</readable>
     </fieldPermissions>

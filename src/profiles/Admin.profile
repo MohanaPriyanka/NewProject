@@ -1025,6 +1025,22 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>TransferPartService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TransferPartServiceTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TransferSelector</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TransferSelectorTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>UASBSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -31587,11 +31603,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Transfer_Part__c.Fee_Paid_To__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Transfer_Part__c.Transfer__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -31623,6 +31634,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Transfer__c.Attempted_kWh_Transfer__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Transfer__c.Bill_By__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -31678,6 +31694,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Transfer__c.Transfer_kWh__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Transfer__c.Transferred_To__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
