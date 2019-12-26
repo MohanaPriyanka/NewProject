@@ -1431,6 +1431,11 @@
         <field>MCEC_Report_Data__c.Unpaid_Principal_Balance__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Opportunity.Submitted_to_Concord_Servicing__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Loan Servicing Editing</label>
     <objectPermissions>
