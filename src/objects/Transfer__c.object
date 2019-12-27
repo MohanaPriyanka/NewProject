@@ -363,16 +363,6 @@
                     <label>Excess Credit</label>
                 </value>
                 <value>
-                    <fullName>On-Time</fullName>
-                    <default>false</default>
-                    <label>On-Time</label>
-                </value>
-                <value>
-                    <fullName>Returned</fullName>
-                    <default>false</default>
-                    <label>Returned</label>
-                </value>
-                <value>
                     <fullName>Error</fullName>
                     <default>false</default>
                     <label>Error</label>
