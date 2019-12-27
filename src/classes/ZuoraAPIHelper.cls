@@ -158,32 +158,35 @@ public with sharing class ZuoraAPIHelper {
     public static String deleteObjects(List<String> objectIds, String objectType) {
         ZuoraAPI.ActionItems item = new ZuoraAPI.ActionItems();
         item.type = objectType;
-        item.Ids = objectIds;
+        item.ids = objectIds;
         List<ZuoraAPI.SaveResult> results = genericAction(item, ActionDMLOperations.DMLDELETE);
         return JSON.serialize(results);
     }
 
     public static void actionUpdate(ZuoraAPI.ActionItems actionItems) {
         genericAction(actionItems, ActionDMLOperations.DMLUPDATE);
-        }
+    }
 
     // 'insert', 'update' and 'delete' are reserved so add _action to variable name:
     public enum ActionDMLOperations {
         DMLINSERT,
         DMLUPDATE,
         DMLDELETE
-        }
+    }
 
     public static final Integer maxActionUpdateRecords = 50;
-    public static List<ZuoraAPI.SaveResult> genericAction(Object item, ActionDMLOperations dmlOperation){
+    public static List<ZuoraAPI.SaveResult> genericAction(ZuoraAPI.ActionItems actionItem, ActionDMLOperations dmlOperation){
+        if (actionItem.isEmpty()) {
+            return new List<ZuoraAPI.SaveResult>();
+        }
+
         HttpResponse response;
         Integer countOfRecords;
 
-        ZuoraAPI.ActionItems actionItem = (ZuoraAPI.ActionItems)item;
         String objectAsString = JSON.serialize(actionItem);
 
         if (dmlOperation == ActionDMLOperations.DMLDELETE) {
-            countOfRecords = actionItem.Ids.size();
+            countOfRecords = actionItem.ids.size();
         } else {
             countOfRecords = actionItem.objects.size();
         }
