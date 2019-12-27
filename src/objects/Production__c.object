@@ -373,7 +373,7 @@
     </validationRules>
     <validationRules>
         <fullName>Require_Billing_Method_to_Create_Record</fullName>
-        <active>false</active>
+        <active>true</active>
         <description>The Billing Method field on SSS should be populated for a Production record to be created.</description>
         <errorConditionFormula>ISPICKVAL(Shared_Solar_System__r.Billing_Method__c, &quot;&quot;)</errorConditionFormula>
         <errorMessage>The Billing Method field on SSS needs to be populated for a Production record to be created.</errorMessage>
