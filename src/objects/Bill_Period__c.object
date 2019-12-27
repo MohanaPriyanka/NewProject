@@ -201,31 +201,6 @@
                     <default>false</default>
                     <label>Bill Run Complete</label>
                 </value>
-                <value>
-                    <fullName>Bills QCed</fullName>
-                    <default>false</default>
-                    <label>Bills QCed</label>
-                </value>
-                <value>
-                    <fullName>Email Bills Sent</fullName>
-                    <default>false</default>
-                    <label>Email Bills Sent</label>
-                </value>
-                <value>
-                    <fullName>Letter Bills Sent</fullName>
-                    <default>false</default>
-                    <label>Letter Bills Sent</label>
-                </value>
-                <value>
-                    <fullName>Autopay QCed</fullName>
-                    <default>false</default>
-                    <label>Autopay QCed</label>
-                </value>
-                <value>
-                    <fullName>Not Billing this Month</fullName>
-                    <default>false</default>
-                    <label>Not Billing this Month</label>
-                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
