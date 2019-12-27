@@ -214,33 +214,9 @@
         <visibleLines>3</visibleLines>
     </fields>
     <fields>
-        <fullName>Date_Autopay_QCed__c</fullName>
-        <externalId>false</externalId>
-        <label>Date: Autopay QCed</label>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Date_Bills_QCed__c</fullName>
-        <externalId>false</externalId>
-        <label>Date: Bills QCed</label>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
         <fullName>Date_Credit_Transfers_QCed__c</fullName>
         <externalId>false</externalId>
         <label>Date: Credit Transfers QCed</label>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Date_Email_Bills_Sent__c</fullName>
-        <externalId>false</externalId>
-        <label>Date: Email Bills Sent</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Date</type>
@@ -257,74 +233,6 @@
         <fullName>Date_Host_Bill_Uploaded__c</fullName>
         <externalId>false</externalId>
         <label>Date: Host Bill Uploaded</label>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Date_Letter_Bills_Sent__c</fullName>
-        <externalId>false</externalId>
-        <label>Date: Letter Bills Sent</label>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Due_Date_Autopay_QCed__c</fullName>
-        <externalId>false</externalId>
-        <formula>Bill_Date__c + 6</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Due Date: Autopay QCed</label>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Due_Date_Bills_QCed__c</fullName>
-        <externalId>false</externalId>
-        <formula>Bill_Date__c - 1</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Due Date: Bills QCed</label>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Due_Date_Credits_Transfer_QCed__c</fullName>
-        <externalId>false</externalId>
-        <formula>Bill_Date__c - 5</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Due Date: Credits Transfers QCed</label>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Due_Date_Email_Bills_Sent__c</fullName>
-        <externalId>false</externalId>
-        <formula>Bill_Date__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Due Date: Email Bills Sent</label>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Due_Date_Host_Bill_QCed__c</fullName>
-        <externalId>false</externalId>
-        <formula>Bill_Date__c - 30</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Due Date: Host Bill QCed</label>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Due_Date_Letter_Bills_Sent__c</fullName>
-        <externalId>false</externalId>
-        <formula>Bill_Date__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Due Date: Letter Bills Sent</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Date</type>
