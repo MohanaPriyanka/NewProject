@@ -84,11 +84,11 @@ public class ZuoraGenericBatchOperationTest {
     public static void testActionDelete(){
         ZuoraAPI.ActionItems actionItem = new ZuoraAPI.ActionItems();
         actionItem.type = 'Account';
-        actionItem.objects = new List<Object>();
-        actionItem.objects.add('123XXXXXXXXXXXXXXX');
+        actionItem.ids = new List<String>();
+        actionItem.ids.add('123XXXXXXXXXXXXXXX');
 
         Test.startTest();
-            ZuoraGenericBatchOperation batchUpdate = new ZuoraGenericBatchOperation(actionItem, ZuoraAPIHelper.actionDMLOperations.DMLDELETE);
+            ZuoraGenericBatchOperation batchUpdate = new ZuoraGenericBatchOperation(actionItem, ZuoraAPIHelper.ActionDMLOperations.DMLDELETE);
             Database.executeBatch(batchUpdate, 50);
         Test.stopTest();
 
