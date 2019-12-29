@@ -323,4 +323,12 @@ public without sharing class Util {
     private static String getFakeId(Schema.SObjectType type) {
         return type.getDescribe().getKeyPrefix() + '0'.repeat(12);
     }
+
+    public static Boolean isSandboxOrTest() {
+        Organization org = [SELECT Id, IsSandbox FROM Organization LIMIT 1];
+        if (org.IsSandbox || Test.isRunningTest()) {
+            return true;
+        }
+        return false;
+    }
 }
