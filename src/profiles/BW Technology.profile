@@ -42916,11 +42916,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Shared_Solar_System__c.Serviced_Capacity__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>SREC__c.Quarter_Begin_Date__c</field>
         <readable>true</readable>
@@ -43692,6 +43687,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Shared_Solar_System__c.Project_Number__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Shared_Solar_System__c.Project_View__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -43748,6 +43748,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Shared_Solar_System__c.Service_Territory__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Serviced_Capacity__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
