@@ -8,28 +8,21 @@
   Tested By: PostSandboxRefresherTest
                
  */
-global class PostSandboxRefresher implements SandboxPostCopy {
-    global static Date csDataDate = Date.newInstance(2000,1,1);
-    global void runApexClass(SandboxContext context) {
-        disableEmails();
-        deleteScheduledJob('Recurring Billing');
+@SuppressWarnings('PMD.ApexCRUDViolation,PMD.XSExcessiveParameterList')
+public without sharing class PostSandboxRefresher implements SandboxPostCopy {
+    public static Date csDataDate = Date.newInstance(2000,1,1);
+    public void runApexClass(SandboxContext context) {
+        // As of Dec 2019, disabling emails hits CPU limits, but we're also not copying customer data (Contact) into sandboxes.
+        // Leaving it here in case there are other objects that have email on them that we copy, and we need to change this
+        // to batch
+        // disableEmails();
         updateLetterStreamToTestConfig();
         updateDocusignToDemoConfig();
         switchChargentToTestMode();
         setupBWTestPartner();
         setupDataForReportTest();
+        schedulePostSandboxJob();
         System.enqueueJob(new PostSandboxRefresher.CSRecordLoader(new PostSandboxRefresher.CSDataSetting(24)));
-    }
-
-    global static void deleteScheduledJob(String jobname) {
-        List<CronTrigger> crons = [
-            SELECT Id, CronJobDetail.Name, CronExpression
-            FROM CronTrigger
-            WHERE CronJobDetail.Name = :jobname
-        ];
-        for (CronTrigger ct : crons) {
-            System.abortJob(ct.Id);
-        }
     }
 
     static Map<String, Map<String, Object>> objectConditionals =
@@ -39,12 +32,11 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             }
         };
 
-    global static void disableEmails() {
-        Organization o = [SELECT IsSandbox FROM Organization LIMIT 1];
-
-        if (o.IsSandbox || Test.isRunningTest()) {
+    @TestVisible
+    private static void disableEmails() {
+        if (Util.isSandboxOrTest()) {
             // Map from SObject to List of Email Fields
-            Map<String, List<String>> soEmailFieldMap = findEmaiLFields();
+            Map<String, List<String>> soEmailFieldMap = findEmailFields();
             // Invalidate Email fields found on SObjects
             processEmailFields(soEmailFieldMap);
         } else {
@@ -52,7 +44,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         }
     }
 
-    private static Map<String, List<String>> findEmaiLFields() {
+    private static Map<String, List<String>> findEmailFields() {
         Map<String, List<String>> soEmailFieldMap = new Map<String, List<String>>();
         // Iterate over all SObjects
         for (SObjectType soType : Schema.getGlobalDescribe().values()) {
@@ -106,18 +98,18 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         }
     }
 
-    global class RecordUpdater implements Queueable {
+    public class RecordUpdater implements Queueable {
         String soql;
         Map<String, Object> conditionals;
         List<String> emailFields;
 
-        global RecordUpdater(String soql, Map<String, Object> conditionals, List<String> emailFields) {
+        public RecordUpdater(String soql, Map<String, Object> conditionals, List<String> emailFields) {
             this.soql = soql;
             this.conditionals = conditionals;
             this.emailFields = emailFields;
         }
 
-        global void execute(QueueableContext context) {
+        public void execute(QueueableContext context) {
             List<SObject> records = new List<SObject>();
             // Iterate over queried SObject records
             for (SObject record : Database.query(soql)) {
@@ -152,7 +144,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         return true;
     }
 
-    global static String getSOQL(String objectTypeName, List<String> fieldList) {
+    private static String getSOQL(String objectTypeName, List<String> fieldList) {
         List<String> conditionals = new List<String>();
         for (String field : fieldList) {
             conditionals.add(field + ' != null');
@@ -164,9 +156,9 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             .replace('{!conditionals}', String.join(conditionals, ' OR '));
     }
 
-    global static void updateLetterStreamToTestConfig() {
-        Organization org = [SELECT Id, IsSandbox FROM Organization LIMIT 1];
-        if (!org.isSandbox && !Test.isRunningTest()) {
+    @TestVisible
+    private static void updateLetterStreamToTestConfig() {
+        if (!Util.isSandboxOrTest()) {
             throw new Util.BWException('Dont\'t update LetterStream config in production this way');
         }
 
@@ -186,10 +178,10 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         newLetterStreamSetting.API_Endpoint__c = 'https://secure.letterstream.com/apis/';
         upsert newLetterStreamSetting;
     }
-  
-    global static void updateDocusignToDemoConfig() {
-        Organization org = [SELECT Id, IsSandbox FROM Organization LIMIT 1];
-        if (!org.IsSandbox && !Test.isRunningTest()) {
+
+    @TestVisible
+    private static void updateDocusignToDemoConfig() {
+        if (!Util.isSandboxOrTest()) {
             throw new Util.BWException('Don\'t update DocuSign config in production this way');
         }
 
@@ -203,7 +195,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             // Not an empty sandbox, update the config
             docusignConfig.Id = docusignConfigs[0].Id;
         }
-        docusignConfig.dsfs__OrganizationId__c = org.Id;
+        docusignConfig.dsfs__OrganizationId__c = [SELECT Id FROM Organization LIMIT 1].Id;
         // The demo instance with pyao@bluewavesolar.com login
         docusignConfig.dsfs__AccountId__c = '2255b4dd-7d4f-425a-bcc9-d53328055381';
         docusignConfig.dsfs__DocuSignEnvironment__c = 'demo';
@@ -220,9 +212,9 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         }
     }
 
-    global static void switchChargentToTestMode() {
-        Organization org = [SELECT Id, IsSandbox FROM Organization LIMIT 1];
-        if (!org.IsSandbox && !Test.isRunningTest()) {
+    @TestVisible
+    private static void switchChargentToTestMode() {
+        if (!Util.isSandboxOrTest()) {
             throw new Util.BWException('Don\'t switch Chargent to Test Mode!');
         }
 
@@ -256,11 +248,12 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         }
     }
 
-    global static void setupBWTestPartner() {
+    @TestVisible
+    private static void setupBWTestPartner() {
         Loan_Data__c capitalPool = new Loan_Data__c(Name = 'Revolving Credit Line',
-        Total_Capital__c = 10000000,
-        Investor__c = 'The Bank',
-        Pool_Type__c = 'Revolving Credit Line');
+            Total_Capital__c = 10000000,
+            Investor__c = 'The Bank',
+            Pool_Type__c = 'Revolving Credit Line');
         insert capitalPool;
 
         Loan_Traunch__c loanTrancheMA = new Loan_Traunch__c(
@@ -335,13 +328,13 @@ global class PostSandboxRefresher implements SandboxPostCopy {
      - Update Account Bills to publish them
      - Insert Chargent Orders to create transactions
      */
-    global class CSRecordLoader implements Queueable {
-        global CSDataSetting csDataSetting;
-        global CSRecordLoader(CSDataSetting csDataSetting) {
+    public class CSRecordLoader implements Queueable {
+        public CSDataSetting csDataSetting;
+        public CSRecordLoader(CSDataSetting csDataSetting) {
             this.csDataSetting = csDataSetting;
         }
 
-        global void execute(QueueableContext context) {
+        public void execute(QueueableContext context) {
             Utility_NMC_Tariff__c everbillNMC = new Utility_NMC_Tariff__c(
                 Name = 'Eversource SEMA Class 2',
                 Utility__c = 'Eversource',
@@ -391,13 +384,13 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         }
     }
 
-    global class SolarSystemHelper implements Queueable {
-        global CSDataSetting csDataSetting;
-        global SolarSystemHelper(CSDataSetting csDataSetting) {
+    public class SolarSystemHelper implements Queueable {
+        public CSDataSetting csDataSetting;
+        public SolarSystemHelper(CSDataSetting csDataSetting) {
             this.csDataSetting = csDataSetting;
         }
 
-        global void execute(QueueableContext context) {
+        public void execute(QueueableContext context) {
             Product2 normalCSProduct = new Product2(
                 Name = 'BlueWave SMART',
                 Family = 'Community Solar',
@@ -659,13 +652,13 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         }
     }
 
-    global class GatewayHelper implements Queueable {
-        global CSDataSetting csDataSetting;
-        global GatewayHelper(CSDataSetting csDataSetting) {
+    public class GatewayHelper implements Queueable {
+        public CSDataSetting csDataSetting;
+        public GatewayHelper(CSDataSetting csDataSetting) {
             this.csDataSetting = csDataSetting;
         }
 
-        global void execute(QueueableContext context) {
+        public void execute(QueueableContext context) {
             List<Shared_Solar_System__c> sssList = [
                 SELECT Id, Name, BWC_Project_Entity_Manual__r.Id
                 FROM Shared_Solar_System__c
@@ -725,14 +718,15 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         }
     }
 
-    global class FirstAccountHelper implements Queueable {
-        global CSDataSetting csDataSetting;
-        global FirstAccountHelper(CSDataSetting csDataSetting) {
+    public class FirstAccountHelper implements Queueable {
+        public CSDataSetting csDataSetting;
+        public FirstAccountHelper(CSDataSetting csDataSetting) {
             this.csDataSetting = csDataSetting;
         }
 
-        global void execute(QueueableContext context) {
+        public void execute(QueueableContext context) {
             Util.disableAllTriggers();
+            Util.enableTrigger('Disable_Client_Objects_Trigger__c');
             // Can't do more than 12 because the Update SSS On Opportunity Complete PB fails with
             // "DUPLICATE_VALUE: Maximum number of duplicate updates in one batch (12 allowed)"
             Integer batchNumber = csDataSetting.numberOfAccountBatches;
@@ -757,13 +751,13 @@ global class PostSandboxRefresher implements SandboxPostCopy {
 
     }
 
-    global class SecondAccountHelper implements Queueable {
-        global CSDataSetting csDataSetting;
-        global SecondAccountHelper(CSDataSetting csDataSetting) {
+    public class SecondAccountHelper implements Queueable {
+        public CSDataSetting csDataSetting;
+        public SecondAccountHelper(CSDataSetting csDataSetting) {
             this.csDataSetting = csDataSetting;
         }
 
-        global void execute(QueueableContext context) {
+        public void execute(QueueableContext context) {
             Integer batchNumber = csDataSetting.numberOfAccountBatches;
             List<PostSandboxRefresher.Name> names = new List<PostSandboxRefresher.Name>();
             names.add(new Name('Joshua', 'Phillips', batchNumber));
@@ -792,13 +786,13 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         }
     }
 
-    global class ProductionUpdateHelper implements Queueable {
-        global CSDataSetting csDataSetting;
-        global ProductionUpdateHelper(CSDataSetting csDataSetting) {
+    public class ProductionUpdateHelper implements Queueable {
+        public CSDataSetting csDataSetting;
+        public ProductionUpdateHelper(CSDataSetting csDataSetting) {
             this.csDataSetting = csDataSetting;
         }
 
-        global void execute(QueueableContext context) {
+        public void execute(QueueableContext context) {
             List<Shared_Solar_System__c> sssList = [
                 SELECT Id, Name, BWC_Project_Entity_Manual__r.Id, Product__r.Id
                 FROM Shared_Solar_System__c
@@ -872,13 +866,13 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         }
     }
 
-    global class ProductionUpdateHelper2 implements Queueable {
-        global CSDataSetting csDataSetting;
-        global ProductionUpdateHelper2(CSDataSetting csDataSetting) {
+    public class ProductionUpdateHelper2 implements Queueable {
+        public CSDataSetting csDataSetting;
+        public ProductionUpdateHelper2(CSDataSetting csDataSetting) {
             this.csDataSetting = csDataSetting;
         }
 
-        global void execute(QueueableContext context) {
+        public void execute(QueueableContext context) {
             List<Shared_Solar_System__c> sssList = [
                 SELECT Id, Name, BWC_Project_Entity_Manual__r.Id, Product__r.Id
                 FROM Shared_Solar_System__c
@@ -935,13 +929,13 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         }
     }
 
-    global class ProductionUpdateHelper3 implements Queueable {
-        global CSDataSetting csDataSetting;
-        global ProductionUpdateHelper3(CSDataSetting csDataSetting) {
+    public class ProductionUpdateHelper3 implements Queueable {
+        public CSDataSetting csDataSetting;
+        public ProductionUpdateHelper3(CSDataSetting csDataSetting) {
             this.csDataSetting = csDataSetting;
         }
 
-        global void execute(QueueableContext context) {
+        public void execute(QueueableContext context) {
             List<Shared_Solar_System__c> sssList = [
                 SELECT Id, Name, BWC_Project_Entity_Manual__r.Id, Product__r.Id
                 FROM Shared_Solar_System__c
@@ -991,78 +985,10 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             ee.createBills(ScheduleZSubscriptionSelector.getListForBilling(ee.scheduleZs));
             ee.finish(null);
             setBillsToPublished();
-
-            if (!Test.isRunningTest()) {
-                System.enqueueJob(new PostSandboxRefresher.PaymentHelper(csDataSetting));
-            }
         }
     }
 
-    global class PaymentHelper implements Queueable {
-        global CSDataSetting csDataSetting;
-        global PaymentHelper(CSDataSetting csDataSetting) {
-            this.csDataSetting = csDataSetting;
-        }
-
-        global void execute(QueueableContext context) {
-            ChargentBase__Gateway__c gatewayOne = [
-                SELECT Id, Entity__r.Id
-                FROM ChargentBase__Gateway__c
-                WHERE Name = 'Chargent Gateway'
-                LIMIT 1
-            ];
-
-            List<Account_Bill__c> accountbilllist = [
-                SELECT Id, Name, Carry_Over_Balance__c, Bill_Number__c, Property_Account_ID__c, (
-                    SELECT Id, Shared_Solar_System__r.BWC_Project_Entity_Manual__c FROM System_Bills__r LIMIT 1
-                )
-                FROM Account_Bill__c
-                WHERE Total_Due__c > 0
-                ORDER BY Date__c DESC
-                LIMIT 3
-            ];
-
-            for (Account_Bill__c accountbill : accountbilllist) {
-                ChargentOrders__ChargentOrder__c orderA =
-                    new ChargentOrders__ChargentOrder__c(ChargentOrders__Gateway__c = gatewayOne.Id,
-                        ChargentOrders__Shipping_Name__c = gatewayOne.Entity__r.Id,
-                        ChargentOrders__Billing_First_Name__c = 'Jordan',
-                        ChargentOrders__Billing_Last_Name__c = 'Pentaleri',
-                        ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
-                        ChargentOrders__Billing_Zip_Postal__c = '02467',
-                        ChargentOrders__Subtotal__c = accountbill.Carry_Over_Balance__c,
-                        ChargentOrders__Payment_Method__c = 'Credit Card',
-                        Account_Bill__c = accountbill.Id,
-                        ChargentOrders__Card_Type__c = 'Visa',
-                        ChargentOrders__Card_Number__c = '411111111111',
-                        ChargentOrders__Card_Expiration_Month__c = '02',
-                        ChargentOrders__Card_Expiration_Year__c = '2018',
-                        ChargentOrders__Card_Last_4__c = '1111',
-                        Entity__c = accountbill.System_Bills__r[0].Shared_Solar_System__r.BWC_Project_Entity_Manual__c,
-                        CreatedDate = csDataDate
-                    );
-                insert orderA;
-
-                ChargentOrders__Transaction__c transA =
-                    new ChargentOrders__Transaction__c(ChargentOrders__Order__c = orderA.Id,
-                        ChargentOrders__Amount__c = accountbill.Carry_Over_Balance__c,
-                        ChargentOrders__Response_Status__c ='Approved',
-                        ChargentOrders__Gateway_ID__c = gatewayOne.Id,
-                        ChargentOrders__Gateway__c = gatewayOne.Id,
-                        Distributed_Among_System_Bills__c = false,
-                        ChargentOrders__Response_Message__c = 'OK',
-                        ChargentOrders__Type__c = 'Charge',
-                        ChargentOrders__Payment_Method__c = 'Credit Card',
-                        Activity_Type__c = 'Payment',
-                        CreatedDate = csDataDate);
-                insert transA;
-                transA.Distributed_Among_System_Bills__c = true;
-                update transA;
-            }
-        }
-    }
-
-    global class CSDataSetting {
+    public class CSDataSetting {
         public Integer numberOfAccountBatches;
         public CSDataSetting(Integer numberOfAccounts) {
             this.numberOfAccountBatches = (Integer) Math.rint(numberOfAccounts/24);
@@ -1165,6 +1091,16 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             FROM Shared_Solar_System__c
             ORDER BY Name DESC
         ];
+        List<Account> propertyAccounts = insertAccountsAndContacts(names);
+
+        List<Utility_Account_Log__c> uals = insertUtilityAccountLogs(names, propertyAccounts);
+
+        List<Opportunity> opportunities = insertOpportunities(names, propertyAccounts, sssList, sssIndex);
+
+        insertSubscriptions(names, uals, opportunities);
+    }
+
+    private static List<Account> insertAccountsAndContacts(List<Name> names) {
         User api = [SELECT Id FROM User WHERE Name = 'API' LIMIT 1];
 
         List<Account> parentAccounts = new List<Account>();
@@ -1189,7 +1125,10 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             propertyAccounts.add(getPropertyAccount(names[i].getFullName(), parentAccounts[i], contacts[i]));
         }
         insert propertyAccounts;
+        return propertyAccounts;
+    }
 
+    private static List<Utility_Account_Log__c> insertUtilityAccountLogs(List<Name> names, List<Account> propertyAccounts) {
         List<Utility_Account_Log__c> uals = new List<Utility_Account_Log__c>();
         for (Integer i = 0; i < names.size(); i++) {
             if (i == 0) {
@@ -1200,23 +1139,29 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             }
         }
         insert uals;
+        return uals;
+    }
 
+    private static List<Opportunity> insertOpportunities(List<Name> names, List<Account> propertyAccounts, List<Shared_Solar_System__c> sssList, Integer sssIndex) {
         List<Opportunity> opportunities = new List<Opportunity>();
         for (Integer i = 0; i < names.size(); i++) {
             if (i == names.size() - 1) {
                 opportunities.add(getOpportunity(names[i].getFullName(), propertyAccounts[i], sssList[sssIndex]));
-                opportunities.add(getOpportunity(names[i].getFullName(), propertyAccounts[i], sssList[sssIndex==0?1:0]));
+                opportunities.add(getOpportunity(names[i].getFullName(), propertyAccounts[i], sssList[sssIndex == 0 ? 1 : 0]));
             } else {
                 opportunities.add(getOpportunity(names[i].getFullName(), propertyAccounts[i], sssList[sssIndex]));
             }
         }
         insert opportunities;
+        return opportunities;
+    }
 
+    private static void insertSubscriptions(List<Name> names, List<Utility_Account_Log__c> uals, List<Opportunity> opportunities) {
         List<Utility_Account_Subscription__c> subscriptions = new List<Utility_Account_Subscription__c>();
         for (Integer i = 0; i < names.size(); i++) {
             if (i == names.size() - 1) {
                 subscriptions.add(getUtilityAccountSubscription('000234' + i, getRandom(10, 20), uals[i], opportunities[i]));
-                subscriptions.add(getUtilityAccountSubscription('000234' + i, getRandom(10, 20), uals[i+1], opportunities[i+1]));
+                subscriptions.add(getUtilityAccountSubscription('000234' + i, getRandom(10, 20), uals[i + 1], opportunities[i + 1]));
             } else {
                 subscriptions.add(getUtilityAccountSubscription('000234' + i, getRandom(10, 20), uals[i], opportunities[i]));
             }
@@ -1224,7 +1169,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
         insert subscriptions;
     }
 
-    public static void setBillsToPublished() {
+    private static void setBillsToPublished() {
         List <Account_Bill__c> listAccountBills = [
             SELECT Id, Published__c
             FROM Account_Bill__c
@@ -1237,9 +1182,7 @@ global class PostSandboxRefresher implements SandboxPostCopy {
     }
 
     public static void deleteCSRecords() {
-        Organization o = [SELECT IsSandbox FROM Organization LIMIT 1];
-
-        if (o.IsSandbox || Test.isRunningTest()) {
+        if (Util.isSandboxOrTest()) {
             Util.disableAllTriggers();
             delete [SELECT Id FROM CS_Bill_Setting__c];
             delete [SELECT Id FROM ChargentOrders__Transaction__c];
@@ -1250,7 +1193,9 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             delete [SELECT Id FROM UASB__c];
             delete [SELECT Id FROM Energy_Usage_Update__c];
             delete [SELECT Id FROM Schedule_Z__c];
+            delete [SELECT Id FROM Client_Allocation_Schedule_Subscription__c];
             delete [SELECT Id FROM Schedule_Z_Subscription__c];
+            delete [SELECT Id FROM Client_Utility_Account_Subscription__c];
             delete [SELECT Id FROM Utility_Account_Subscription__c];
             delete [SELECT Id FROM Utility_Account_Log__c];
             delete [SELECT Id FROM Opportunity];
@@ -1271,7 +1216,8 @@ global class PostSandboxRefresher implements SandboxPostCopy {
     // With Winter '19, the LightningReportsControllerTest.testSummaryReportReponse started failing.
     // It looks as if Reports.ReportManager methods in the test doesn't see the data created in the test method,
     // just the SeeAllData=true data. So we'll create that data here.
-    public static void setupDataForReportTest() {
+    @TestVisible
+    private static void setupDataForReportTest() {
         Account clientAccount = new Account(Name = 'Client Account');
         insert clientAccount;
 
@@ -1281,5 +1227,13 @@ global class PostSandboxRefresher implements SandboxPostCopy {
             Annual_Income_Currency__c = 100000,
             Parent_Account__c = clientAccount.Id);
         insert lead;
+    }
+
+    @TestVisible
+    private void schedulePostSandboxJob() {
+        Integer minute = Datetime.now().addMinutes(30).minute();
+        // Starting 30m from now to allow the queueable CS job to finish. Job will self-cancel once successful.
+        String cronString = '0 ' + minute + ' * * * ?';
+        System.schedule(PostSandboxSchedulable.POST_SANDBOX_SCHEDULED_JOB_NAME, cronString, new PostSandboxSchedulable());
     }
 }
