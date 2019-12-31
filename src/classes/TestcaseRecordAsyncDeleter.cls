@@ -25,8 +25,8 @@ public virtual with sharing class TestcaseRecordAsyncDeleter implements Queueabl
     }
 
     protected virtual List<ZuoraAPI.ZuoraAccount> getZuoraTestcaseAccounts() {
-        Date twoWeeksAgo = System.today() - 28;
-        String twoWeeksAgoFormatted = twoWeeksAgo.year() + '-' + twoWeeksAgo.month() + '-' + twoWeeksAgo.day()+'T00:00:00';
+        Datetime twoWeeksAgo = System.now() - 14;
+        String twoWeeksAgoFormatted = twoWeeksAgo.format('yyyy-MM-dd')+'T00:00:00';
         // ZOQL (unlike DataQuery) is case insensitive, so Testcase will match TeStCaSe, etc.
         String response =
             ZuoraAPIHelper.query('SELECT Id, CRMId FROM Account WHERE Name LIKE \'%Testcase%\' AND CreatedDate < \'' + twoWeeksAgoFormatted + '\'', false);
