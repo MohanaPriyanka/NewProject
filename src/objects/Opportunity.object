@@ -7774,6 +7774,18 @@ if(and( isnull(Disbursal_1_Contract_Signature_Checkbox__c )=False,isnull( Disbur
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Submitted_to_Concord_Servicing__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Used for loan opportunities to track onboarding to concord.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Used for loan opportunities to track if they&apos;ve been submitted to Concord as their loan servicer.</inlineHelpText>
+        <label>Submitted to Concord Servicing</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Submitted_to_First_Associates__c</fullName>
         <defaultValue>false</defaultValue>
         <description>Checkbox to indicate if a customer file has been submitted to first associates for boarding</description>
