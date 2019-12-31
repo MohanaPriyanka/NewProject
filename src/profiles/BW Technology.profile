@@ -39267,6 +39267,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Opportunity.Submitted_to_Concord_Servicing__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Opportunity.Submitted_to_First_Associates__c</field>
         <readable>true</readable>
     </fieldPermissions>
