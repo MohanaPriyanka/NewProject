@@ -207,6 +207,10 @@
                 <behavior>Edit</behavior>
                 <field>Host_Utility_Account_Number__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Project_Number__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

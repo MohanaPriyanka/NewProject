@@ -1565,6 +1565,19 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Project_Number__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>This field is used for ORU CDG Allocation Schedules.</inlineHelpText>
+        <label>Project Number</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Project_View__c</fullName>
         <externalId>false</externalId>
         <label>Project View</label>
