@@ -3,12 +3,14 @@
  * Tested by: ClientReportingServiceTest
  */
 
-trigger BillAdjustmentTrigger on Bill_Adjustment__c (before update) {
+trigger BillAdjustmentTrigger on Bill_Adjustment__c (before insert, before update) {
     if (Util.isDisabled('Disable_BillAdjustmentTrigger__c')) {
         return;
     }
+    if (Trigger.isInsert && Trigger.isBefore) {
+        ClientReportingService.stampClientOnAdjustments(Trigger.new);
+    }
     if (Trigger.isUpdate && Trigger.isBefore){
-        ClientReportingService.beforeAdjustmentUpdate(Trigger.new);
         ZuoraCreditDebitMemoService.beforeAdjustmentUpdate(Trigger.new);
     }
 }
