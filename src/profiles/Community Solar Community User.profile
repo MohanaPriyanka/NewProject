@@ -17272,22 +17272,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Bill_Period__c.Date_Autopay_QCed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Bill_Period__c.Date_Bills_QCed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Bill_Period__c.Date_Credit_Transfers_QCed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Bill_Period__c.Date_Email_Bills_Sent__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -17298,41 +17283,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Bill_Period__c.Date_Host_Bill_Uploaded__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Bill_Period__c.Date_Letter_Bills_Sent__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Bill_Period__c.Due_Date_Autopay_QCed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Bill_Period__c.Due_Date_Bills_QCed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Bill_Period__c.Due_Date_Credits_Transfer_QCed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Bill_Period__c.Due_Date_Email_Bills_Sent__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Bill_Period__c.Due_Date_Host_Bill_QCed__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Bill_Period__c.Due_Date_Letter_Bills_Sent__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
