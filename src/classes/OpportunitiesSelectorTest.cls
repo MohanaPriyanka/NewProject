@@ -32,4 +32,40 @@ public with sharing class OpportunitiesSelectorTest {
         Opportunity opp = [SELECT Id FROM Opportunity LIMIT 1];
         System.assertNotEquals(null, OpportunitiesSelector.selectForContractSend(opp.Id));
     }
+
+    @IsTest public static void testCommissionQueries() {
+        List<Opportunity> oppList = [
+            SELECT Id, AccountId
+            FROM Opportunity
+            LIMIT 3
+        ];
+
+        Commission_Structure__c onlyBill = new Commission_Structure__c(
+            Cents_kW_DC_First_Bill_Paid__c = 0.07,
+            Cents_kW_DC_First_Bill__c = 0
+        );
+        insert onlyBill;
+        Commission_Structure__c onlyPayment = new Commission_Structure__c(
+            Cents_kW_DC_First_Bill_Paid__c = 0,
+            Cents_kW_DC_First_Bill__c = 0.13
+        );
+        insert onlyPayment;
+        Commission_Structure__c both = new Commission_Structure__c(
+            Cents_kW_DC_First_Bill_Paid__c = 0.07,
+            Cents_kW_DC_First_Bill__c = 0.13
+        );
+        insert both;
+
+        oppList[0].Commission_Structure__c = onlyBill.Id;
+        oppList[1].Commission_Structure__c = both.Id;
+        oppList[2].Commission_Structure__c = onlyPayment.Id;
+
+        Account newAccount = new Account(Name = 'Test Acct');
+        insert newAccount;
+        Set<Id> accountIdSet = new Set<Id>{newAccount.Id};
+
+        OpportunitiesSelector selector;
+        System.assertEquals(null, selector.selectWithoutFirstInvoiceCommission(accountIdSet));
+        System.assertEquals(null, selector.selectWithoutFirstPaymentCommission(accountIdSet));
+    }
 }

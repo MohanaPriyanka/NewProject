@@ -1,6 +1,6 @@
 /*************************************************************************************
 Created By Jordan Pentaleri 08/2019
-Tested By: ZuoraGLServiceTest
+Tested By: ZuoraGLServiceTest, PartnerCommissionServiceTest
 *************************************************************************************/
 
 public with sharing class ZuoraGLSelector {
@@ -156,5 +156,19 @@ public with sharing class ZuoraGLSelector {
             AND Query_Type__c = : queryType
         ];
         return journalEntries;
+    }
+
+    @SuppressWarnings('PMD.ApexCRUDViolation')
+    public List<AggregateResult> getCommissionEntriesByAccount(Set<String> accountNumber){
+        List<AggregateResult> entries = [
+            SELECT Customer_Account__c,
+                Object_Type__c,
+                Project__c
+            FROM Journal_Entry__c
+            WHERE Customer_Account__c IN : accountNumber
+            AND (Object_Type__c = 'InvoiceItem' OR Object_Type__c = 'PaymentPart')
+            GROUP BY Customer_Account__c, Object_Type__c, Project__c
+        ];
+        return entries;
     }
 }
