@@ -4,8 +4,6 @@
  *************************************************************************************/
 @IsTest
 private class PostSandboxRefresherTest {
-    private static final String JOBNAME = 'Test Schedule';
-
     @TestSetup public static void setupTestData() {
         insert new BW_Address__c(
             Name = 'BlueWave', Address_Line_One__c = '137 Newbury Street 4th Floor',
@@ -52,10 +50,6 @@ private class PostSandboxRefresherTest {
         }
         insert contactList;
         insert leadList;
-
-        ChargentOrders.sheduledBatchProcessing sbp = new ChargentOrders.sheduledBatchProcessing();
-        String sch = '20 30 8 10 2 ?';
-        System.schedule(JOBNAME, sch, sbp);
     }
 
     @IsTest
@@ -103,7 +97,6 @@ private class PostSandboxRefresherTest {
 
         Test.startTest();
         PostSandboxRefresher.disableEmails();
-        PostSandboxRefresher.deleteScheduledJob(JOBNAME);
         PostSandboxRefresher.updateDocusignToDemoConfig();
         PostSandboxRefresher.switchChargentToTestMode();
         Test.stopTest();
@@ -116,11 +109,6 @@ private class PostSandboxRefresherTest {
                                FROM Lead
                                WHERE Email LIKE '%@email.com'];
         System.assertEquals(leadList.size(), 0);
-
-        List<CronTrigger> crons = [SELECT Id, CronJobDetail.Name, CronExpression 
-                                   FROM CronTrigger
-                                   WHERE CronJobDetail.Name = :JOBNAME];
-        System.assertEquals(crons.size(), 0);
 
         List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
         System.assertEquals('pyao@bluewavesolar.com', systemProperties[0].DocuSign_Customer_Care_User__c);
@@ -250,30 +238,6 @@ private class PostSandboxRefresherTest {
     }
 
     @IsTest
-    static void testPaymentHelper() {
-        PostSandboxRefresher.CSDataSetting csDataSetting = new PostSandboxRefresher.CSDataSetting(24);
-        PostSandboxRefresher.CSRecordLoader csRecordLoader = new PostSandboxRefresher.CSRecordLoader(csDataSetting);
-        csRecordLoader.execute(null);
-
-        PostSandboxRefresher.SolarSystemHelper solarSystemHelper = new PostSandboxRefresher.SolarSystemHelper(csDataSetting);
-        solarSystemHelper.execute(null);
-
-        PostSandboxRefresher.GatewayHelper gatewayHelper = new PostSandboxRefresher.GatewayHelper(csDataSetting);
-        gatewayHelper.execute(null);
-
-        Test.startTest();
-        Boolean caughtException = false;
-        try {
-        PostSandboxRefresher.paymentHelper paymentHelper = new PostSandboxRefresher.paymentHelper(csDataSetting);
-        paymentHelper.execute(null);
-        } catch (Exception e) {
-            caughtException = true;
-        }
-        Test.stopTest();
-        System.assert(!caughtException);
-    }
-
-    @IsTest
     static void testDeleteCSRecords() {
         PostSandboxRefresher.deleteCSRecords();
         List<Account> accounts = [SELECT Id FROM Account];
@@ -386,5 +350,109 @@ private class PostSandboxRefresherTest {
             AND Method__c = 'TriggerDisabled'
         ];
         System.assertEquals(1,updatedTriggerOffWarning.size());
+    }
+
+    @IsTest
+    private static void testSetSystemAdmins() {
+        Profile bfgStandardUserProfile = [
+            SELECT Id
+            FROM Profile
+            WHERE Name='BFG Standard User'
+        ];
+        Profile systemAdminProfile = [
+            SELECT Id
+            FROM Profile
+            WHERE Name='System Administrator'
+        ];
+        Profile bwTechnologyProfile = [
+            SELECT Id
+            FROM Profile
+            WHERE Name='BW Technology'
+        ];
+
+        List<User> users = new List<User>();
+        User bfgStandardUser = new User(
+            Alias = 'bfgsu',
+            Email='testUtil@test.test',
+            EmailEncodingKey='UTF-8',
+            LastName='testUtil',
+            LanguageLocaleKey='en_US',
+            LocaleSidKey='en_US',
+            ProfileId = bfgStandardUserProfile.Id,
+            Country='United States',
+            IsActive = true,
+            TimeZoneSidKey='America/New_York',
+            Username='bfgstandarduser@test.test'
+        );
+        users.add(bfgStandardUser);
+        User systemAdminUser = new User(
+            Alias = 'sysAdmin',
+            Email='testUtil@test.test',
+            EmailEncodingKey='UTF-8',
+            LastName='testUtil',
+            LanguageLocaleKey='en_US',
+            LocaleSidKey='en_US',
+            ProfileId = systemAdminProfile.Id,
+            Country='United States',
+            IsActive = true,
+            TimeZoneSidKey='America/New_York',
+            Username='systemadmin@test.test'
+        );
+        users.add(systemAdminUser);
+        User bwTechnologyUser= new User(
+            Alias = 'bwTech',
+            Email='testUtil@test.test',
+            EmailEncodingKey='UTF-8',
+            LastName='testUtil',
+            LanguageLocaleKey='en_US',
+            LocaleSidKey='en_US',
+            ProfileId = bwTechnologyProfile.Id,
+            Country='United States',
+            IsActive = true,
+            TimeZoneSidKey='America/New_York',
+            Username='bwTechnology@test.test'
+        );
+        users.add(bwTechnologyUser);
+        insert users;
+
+        // RunAs to get a new context to avoid
+        // MIXED_DML_OPERATION, DML operation on setup object is not permitted after you have updated a non-setup object
+        // (or vice versa): User, original object: MPM4_BASE__Milestone1_Resource__c
+        User currentUser = [SELECT Id FROM User WHERE Id = :UserInfo.getUserId()];
+        System.runAs(currentUser) {
+            Test.startTest();
+            PostSandboxRefresher psr = new PostSandboxRefresher();
+            psr.schedulePostSandboxJob();
+            Test.stopTest();
+        }
+
+        users = [
+            SELECT Id, Alias, ProfileId
+            FROM User
+            WHERE Id IN :users
+        ];
+        System.assertEquals(3, users.size(), 'Expected to find three users that the test inserted');
+
+        for (User user : users) {
+            switch on user.Alias {
+                when 'bfgsu' {
+                    System.assertEquals(bfgStandardUserProfile.Id, user.ProfileId, 'Should not have updated a non-BW Technology user');
+                } when 'sysAdmin' {
+                    System.assertEquals(systemAdminProfile.Id, user.ProfileId, 'Should not have updated a non-BW Technology user');
+                } when 'bwTech' {
+                    System.assertEquals(systemAdminProfile.Id, user.ProfileId, 'Should have updated BW Technology user to System Admin');
+                } when else {
+                    System.assert(false, 'Found an unexpected user: ' + user);
+                }
+            }
+        }
+
+        users = [
+            SELECT Id, Alias, ProfileId
+            FROM User
+            WHERE Profile.Name = 'BW Technology'
+            AND IsActive = TRUE
+        ];
+        System.assertEquals(0, users.size(), 'Expected to have updated all BW Technology users to System Admins');
     }
 }

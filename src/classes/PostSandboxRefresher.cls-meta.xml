@@ -18,7 +18,7 @@
     </packageVersions>
     <packageVersions>
         <majorNumber>9</majorNumber>
-        <minorNumber>17</minorNumber>
+        <minorNumber>20</minorNumber>
         <namespace>zqu</namespace>
     </packageVersions>
     <status>Active</status>
