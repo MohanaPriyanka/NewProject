@@ -1,6 +1,6 @@
 @isTest
 public class ZuoraHistoricalLateFeeServiceTest {
-    @testSetup public static void testDataSetup() {
+    @TestSetup public static void testDataSetup() {
         MultipleMonthProductionUpdateTest.multipleMonthTest();
     }
 
@@ -18,7 +18,7 @@ public class ZuoraHistoricalLateFeeServiceTest {
         update allAB;
 
         List<System_Bill__c> allSB = [
-            SELECT Id, Waive_Late_Fees__c
+            SELECT Id, Waive_Late_Fees__c, Due_This_Month__c, Outstanding_Balance_Rollup__c, Opportunity__r.Name
             FROM System_Bill__c
         ];
         for (System_Bill__c sb : allSB){
@@ -59,7 +59,8 @@ public class ZuoraHistoricalLateFeeServiceTest {
         System.assertEquals(1, sbWithLateFee.size());
         ZuoraAPI.DebitMemo debitMemo = ZuoraHistoricalLateFeeService.convertSFLateFeesToDebitMemos(sbWithLateFee[0]);
         System.assertEquals(debitMemo.Charges[0].Amount,sbWithLateFee[0].Late_Fees__c);
-        System.assertEquals(debitMemo.Charges[0].Amount,18.73);
+        //TODO: Where did you get 18.73? I have tracked it down and can only find 18.62
+        System.assertEquals(18.62, debitMemo.Charges[0].Amount);
 
         ZuoraAPI.GenericResponse response = ZuoraHistoricalLateFeeService.sendDebitMemoToZuoraAndPost(sbWithLateFee[0]);
         System.assertNotEquals(null,response.Id);

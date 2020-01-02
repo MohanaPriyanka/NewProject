@@ -1,7 +1,7 @@
 <aura:component implements="lightning:availableForFlowScreens" access="global" controller="BillGenerationConsoleController" extends="c:BlueWaveParent">
   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
-  <aura:attribute name="ProdUpdateList" type="Energy_Usage_Update__c[]"/>
-  <aura:attribute name="sssWithoutProdList" type="Shared_Solar_System__c[]"/>
+  <aura:attribute name="TransferList" type="Transfer__c[]"/>
+  <aura:attribute name="sssWithoutTransferList" type="Shared_Solar_System__c[]"/>
   <aura:attribute name="abSummary" type="String"/>
   <aura:attribute name="generating" type="Boolean" default="false"/>
   <aura:attribute name="doneGenerating" type="Boolean" default="false"/>
@@ -17,7 +17,7 @@
   <div class="slds-grid slds-gutters slds-p-top--large slds-p-bottom--medium">
     <div class="slds-col slds-size_2-of-4">
       <h1 class="slds-text-heading--small slds-p-bottom--x-small">
-        SSS without Production Updates (Check that these should actually not get bills this month)
+        SSS without Transfers (Check that these should actually not get bills this month)
       </h1>
       <table class="slds-table slds-table_cell-buffer slds-table_bordered">
         <thead>
@@ -28,7 +28,7 @@
         </tr>
         </thead>
         <tbody>
-        <aura:iteration items="{!v.sssWithoutProdList}" var="sss">
+        <aura:iteration items="{!v.sssWithoutTransferList}" var="sss">
           <tr class="slds-hint-parent">
             <td class="" scope="col">
               <a href="{!'/' + sss.Id}" target="_blank">
@@ -81,7 +81,7 @@
   </div>
 
   <div class="slds-p-top--large slds-p-bottom--large">
-    <h1 class="slds-text-heading--small slds-p-bottom--x-small">SSS with Production Update This Month (Will Generate Bills)</h1>
+    <h1 class="slds-text-heading--small slds-p-bottom--x-small">SSS with Transfers This Month (Will Generate Bills)</h1>
       <table class="slds-table slds-table_cell-buffer slds-table_bordered">
         <thead>
         <tr class="slds-line-height_reset">
@@ -89,19 +89,16 @@
             <div class="slds-truncate" title="Shared Solar System">Shared Solar System</div>
           </th>
           <th class="" scope="col">
-            <div class="slds-truncate" title="Production Update">Production Update</div>
+            <div class="slds-truncate" title="Transfer">Transfer</div>
           </th>
           <th class="" scope="col">
             <div class="slds-truncate" title="Bill Date">Bill Date</div>
           </th>
           <th class="" scope="col">
-            <div class="slds-truncate" title="Schedule Z">Schedule Z</div>
+            <div class="slds-truncate" title="Allocation Schedule">Allocation Schedule</div>
           </th>
           <th class="" scope="col">
-            <div class="slds-truncate" title="Start Date">Start Date</div>
-          </th>
-          <th class="" scope="col">
-            <div class="slds-truncate" title="End Date">End Date</div>
+            <div class="slds-truncate" title="Date of Transfer">Date of Transfer</div>
           </th>
           <th class="" scope="col">
             <div class="slds-truncate" title="Total System NMCs">Total System NMCs</div>
@@ -118,43 +115,40 @@
         </tr>
         </thead>
         <tbody>
-          <aura:iteration items="{!v.ProdUpdateList}" var="prodUp">
+          <aura:iteration items="{!v.TransferList}" var="transfer">
             <tr class="slds-hint-parent">
               <td class="" scope="col">
-                <a href="{!'/' + prodUp.Shared_Solar_System__r.Id}" target="_blank">
-                <div class="slds-truncate" title="Shared Solar System">{!prodUp.Shared_Solar_System__r.Name}</div>
+                <a href="{!'/' + transfer.Shared_Solar_System__r.Id}" target="_blank">
+                <div class="slds-truncate" title="Shared Solar System">{!transfer.Shared_Solar_System__r.Name}</div>
                 </a>
               </td>
               <td class="" scope="col">
-                <a href="{!'/' + prodUp.Id}" target="_blank">
-                <div class="slds-truncate" title="Production Update">{!prodUp.Name}</div>
+                <a href="{!'/' + transfer.Id}" target="_blank">
+                <div class="slds-truncate" title="Transfer">{!transfer.Name}</div>
                 </a>
               </td>
               <td class="" scope="col">
-                <div class="slds-truncate" title="Bill Date">{!prodUp.Date__c}</div>
+                <div class="slds-truncate" title="Bill Date">{!transfer.Bill_Period__r.Bill_Date__c}</div>
               </td>
               <td class="" scope="col">
-                <a href="{!'/' + prodUp.Schedule_Z__r.Id}" target="_blank">
-                <div class="slds-truncate" title="Schedule Z">{!prodUp.Schedule_Z__r.Name}</div>
+                <a href="{!'/' + transfer.Allocation_Schedule__r.Id}" target="_blank">
+                <div class="slds-truncate" title="Allocation Schedule">{!transfer.Allocation_Schedule__r.Name}</div>
                 </a>
               </td>
               <td class="" scope="col">
-                <div class="slds-truncate" title="Start Date">{!prodUp.Billing_Period_Start_Date__c}</div>
+                <div class="slds-truncate" title="Date of Transfer">{!transfer.Date_of_Transfer__c}</div>
               </td>
               <td class="" scope="col">
-                <div class="slds-truncate" title="End Date">{!prodUp.Billing_Period_End_Date__c}</div>
+                <div class="slds-truncate" title="Total System NMCs">{!transfer.Attempted_Transfer__c}</div>
               </td>
               <td class="" scope="col">
-                <div class="slds-truncate" title="Total System NMCs">{!prodUp.Total_System_NMCs__c}</div>
+                <div class="slds-truncate" title="Total kWh">{!transfer.Attempted_kWh_Transfer__c}</div>
               </td>
               <td class="" scope="col">
-                <div class="slds-truncate" title="Total kWh">{!prodUp.Production__c}</div>
+                <div class="slds-truncate" title="Bill Status">{!transfer.Bill_Period__r.Bill_Status__c}</div>
               </td>
               <td class="" scope="col">
-                <div class="slds-truncate" title="Bill Status">{!prodUp.Bill_Status__c}</div>
-              </td>
-              <td class="" scope="col">
-                <aura:if isTrue="{!prodUp.Generate_Bills__c}">
+                <aura:if isTrue="{!transfer.Bills_Generated__c}">
                   <lightning:icon iconName="utility:check" size="small" alternativeText="Generated"/>
                   <aura:set attribute="else">
                     <lightning:icon iconName="utility:event" size="small" alternativeText="Generated"/>

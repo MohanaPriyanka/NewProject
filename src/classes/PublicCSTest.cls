@@ -1,17 +1,19 @@
-@isTest
+@IsTest
 public class PublicCSTest {
-    @testSetup public static void CSPublicTest(){
+    @TestSetup
+    public static void csPublicTest(){
         Utility__c eversource = new Utility__c(
             Name = 'Eversource',
             Number_of_Decimal_Places__c = 4
         );
 
-        Utility__c national_grid = new Utility__c(
+        Utility__c nationalGrid = new Utility__c(
             Name = 'National Grid',
             Number_of_Decimal_Places__c = 4
         );
 
-        insert new List<Utility__c>{eversource, national_grid};
+        insert new List<Utility__c>{eversource, nationalGrid
+        };
 
         Utility_NMC_Tariff__c everbillNMC = new Utility_NMC_Tariff__c (Name = 'Eversource SEMA Class 2', 
                                                                        Utility__c = 'Eversource', 
@@ -161,41 +163,95 @@ public class PublicCSTest {
         Date myDateMar = Date.newInstance(2016, 3, 3);
         Date myDateApr = Date.newInstance(2016, 4, 4);
 
-        Energy_Usage_Update__c productionupdateA1 = new Energy_Usage_Update__c (
-                Name = 'sssA - January 2016',
-                Shared_Solar_System__c = sss1.id,
-                Schedule_Z__c = scheduleZ1.Id,
-                Production__c = 400000,
-                Net_Metering_Rate_Applied__c = 0.1125,
-                Billing_Period_End_Date__c = myDateFeb,
-                Total_System_NMCs__c = 45000,
-                Date__c = myDateJan 
-                );
-        // Effective NMC Rate of $0.11 
-        insert productionupdateA1;
+        Bill_Period__c bpA1 = new Bill_Period__c(
+            Name = 'sssA - January 2016',
+            Shared_Solar_System__c = sss1.Id,
+            Bill_Date__c = myDateJan
+        );
 
-        Energy_Usage_Update__c productionupdateB2 = new Energy_Usage_Update__c (
-                Name = 'sssA - February 2016',
-                Shared_Solar_System__c = sss1.id,
-                Schedule_Z__c = scheduleZ1.Id,
-                Production__c = 60000,
-                Net_Metering_Rate_Applied__c = 0.05, 
-                Billing_Period_End_Date__c = myDateMar,
-                Total_System_NMCs__c = 3000,
-                Date__c = myDateFeb
-                );
-        // Effective NMC Rate of $0.05        
-        insert productionupdateB2;
+        Bill_Period__c bpA2 = new Bill_Period__c(
+            Name = 'sssA - February 2016',
+            Shared_Solar_System__c = sss1.Id,
+            Bill_Date__c = myDateFeb
+        );
 
-        TestBillCreationandPayment.runProductionUpdate(new List<Id>{productionupdateA1.Id});
+        insert new List<Bill_Period__c>{bpA1, bpA2};
+
+        Production__c prodA1 = new Production__c(
+            Name = 'sssA January Production',
+            Shared_Solar_System__c = sss1.Id,
+            Start_Date__c = myDateJan,
+            End_Date__c = myDateFeb - 1,
+            Production_kWh__c = 400000,
+            Credits_Generated__c = 45000
+        );
+
+        Production__c prodA2 = new Production__c(
+            Name = 'sssA February Production',
+            Shared_Solar_System__c = sss1.Id,
+            Start_Date__c = myDateFeb,
+            End_Date__c = myDateMar - 1,
+            Production_kWh__c = 60000,
+            Credits_Generated__c = 3000
+        );
+
+        insert new List<Production__c>{prodA1, prodA2};
+
+        // Effective NMC Rate of $0.11
+        Transfer__c transferA1 = new Transfer__c(
+            Name = 'Main Transfer - sssA January',
+            Bill_Period__c = bpA1.Id,
+            Date_of_Transfer__c = myDateJan,
+            Shared_Solar_System__c = sss1.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = scheduleZ1.Id,
+            Attempted_Transfer__c = 45000,
+            Attempted_kWh_Transfer__c = 400000,
+            Transfer_Amount__c = 45000,
+            Default_Credit_Value__c = 0.1125
+        );
+
+        // Effective NMC Rate of $0.05
+        Transfer__c transferA2 = new Transfer__c(
+            Name = 'Main Transfer - sssA February',
+            Bill_Period__c = bpA2.Id,
+            Date_of_Transfer__c = myDateFeb,
+            Shared_Solar_System__c = sss1.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = scheduleZ1.Id,
+            Attempted_Transfer__c = 3000,
+            Attempted_kWh_Transfer__c = 60000,
+            Transfer_Amount__c = 3000,
+            Default_Credit_Value__c = 0.05
+        );
+        insert new List<Transfer__c>{transferA1, transferA2};
+
+        System.debug('1.Number of Queries used in this apex code so far: ' + Limits.getQueries());
+
+        TransferPartService transferPartService = new TransferPartService();
+        transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferA1, transferA2});
+        Test.startTest();
+        System.debug('2.Number of Queries used in this apex code so far: ' + Limits.getQueries());
+
+        TestBillCreationandPayment.runBillPeriod(new List<Id>{bpA1.Id});
+        //63
+        System.debug('3.Number of Queries used in this apex code so far: ' + Limits.getQueries());
+
         TestBillCreationandPayment.setBillsToPublished();
-        TestBillCreationandPayment.runProductionUpdate(new List<Id>{productionupdateB2.Id});
+        //68
+        System.debug('4.Number of Queries used in this apex code so far: ' + Limits.getQueries());
+
+        TestBillCreationandPayment.runBillPeriod(new List<Id>{bpA2.Id});
+        System.debug('5.Number of Queries used in this apex code so far: ' + Limits.getQueries());
+        Test.stopTest();
     }
 
-    @isTest public static void testBillCreation() {    
+    @IsTest
+    public static void testBillCreation() {
+        System.debug('Are we even getting to the testBill Creation method? '  );
         List<System_Bill__c> systemBillList = SystemBillsSelector.selectAllSystemBills();
 
-        List<UASB__c> uablist = 
+        List<UASB__c> uablist =
             [SELECT Id, Name, Bill_Date__c, System_Bill__r.Bill_Number__c, Above_NM_Rate_Floor__c, 
             Due_Date__c, Billing_Period_End_Date__c, NM_Rate_Floor__c,
             Subscription_Production_kWh__c, Utility_Account_Subscription__c, Bill_Value__c

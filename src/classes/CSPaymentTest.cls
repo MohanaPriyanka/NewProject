@@ -1,8 +1,8 @@
-@isTest
+@IsTest
 public class CSPaymentTest {
     private static Profile profileRecord = [SELECT Id FROM Profile WHERE Name = 'Community Solar Community User'];
 
-    @testSetup public static void CSPaymentSetupTestData() {
+    @testSetup public static void csPaymentSetupTestData() {
         Util.disableAllTriggers();
 
         TestFactory.insertBWAddress();
@@ -20,14 +20,15 @@ public class CSPaymentTest {
         Test.loadData(Utility_Account_Subscription__c.SObjectType, 'TestCSUtilityAccountSubscription');
         Test.loadData(Schedule_Z__c.SObjectType, 'TestCSScheduleZ');
         Test.loadData(Schedule_Z_Subscription__c.SObjectType, 'TestCSScheduleZSubscription');
-        Test.loadData(Energy_Usage_Update__c.SObjectType, 'TestCSProdUpdate');
+        Test.loadData(Bill_Period__c.SObjectType, 'TestCSBillPeriod');
+        Test.loadData(Production__c.SObjectType, 'TestCSProduction');
+        Test.loadData(Transfer__c.SObjectType, 'TestCSTransfer');
         Test.loadData(Account_Bill__c.SObjectType, 'TestCSAccountBill');
         Test.loadData(System_Bill__c.SObjectType, 'TestCSSystemBill');
         Test.loadData(Utility_Account_Bill__c.SObjectType, 'TestCSUtilityAccountBill');
-        Test.loadData(UASB__c.SObjectType, 'TestCSUASB');
         Test.stopTest();
+        Test.loadData(UASB__c.SObjectType, 'TestCSUASB');
         Test.loadData(ChargentOrders__ChargentOrder__c.SObjectType, 'TestCSChargentOrder');
-
         TestFactory.setCSBillSettings();
 
         // Because there's no way to populate self lookups:
@@ -74,7 +75,6 @@ public class CSPaymentTest {
             }
         }
         update abs;
-
     }
 
     // We get System.UnexpectedException: Salesforce System Error: 900955498-340097 (1185570226) (1185570226)
@@ -458,7 +458,6 @@ public class CSPaymentTest {
         System.assertEquals(0, updatedsystemBillListAfterReversal[2].Late_Payments__c);
         System.assertEquals(604.24, updatedsystemBillListAfterReversal[2].Carry_Over_Balance__c);
         System.assertEquals(0, updatedsystemBillListAfterReversal[2].Total_Payments_This_Month__c);
-
 
         System.assertEquals(2, bill2AdjustmentsAfterReversal.size());
         System.debug(bill2AdjustmentsAfterReversal);
