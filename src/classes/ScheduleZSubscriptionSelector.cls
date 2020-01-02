@@ -19,6 +19,7 @@ public with sharing class ScheduleZSubscriptionSelector {
         'Utility_Account_Subscription__r.UAS_Number__c,' +
         'Utility_Account_Subscription__r.Share_of_System__c,' +
         'Utility_Account_Subscription__r.Max_Account_Bill_Number__c,' +
+        'Utility_Account_Subscription__r.Externally_Serviced__c,' +
         'Utility_Account_Subscription__r.Opportunity__c,' +
         'Utility_Account_Subscription__r.Opportunity__r.Name,' +
         'Utility_Account_Subscription__r.Opportunity__r.AccountId,' +
@@ -47,10 +48,7 @@ public with sharing class ScheduleZSubscriptionSelector {
         ' ORDER BY Date__c DESC LIMIT 1) ';
 
     private static String whereClauseForBilling = 'Schedule_Z__c IN : scheduleZs ' +
-        ' AND Stop_Credit_Transfer__c = FALSE ' +
-        ' AND ( Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c!= \'RadianGen\' ' +
-        ' OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c= \'Residential\' ' +
-        ' OR Utility_Account_Subscription__r.Opportunity__r.Customer_Group__c= \'Non-Residential\' )';
+        ' AND Stop_Credit_Transfer__c = FALSE ';
 
     public static String getQueryString(String whereClause, String orderBy) {
         if (whereClause == null || whereClause == '') {
@@ -71,6 +69,7 @@ public with sharing class ScheduleZSubscriptionSelector {
         return Database.query(getQueryString(whereClauseForBilling, null));
     }
 
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     public static List<Schedule_Z_Subscription__c> getScheduleZSubscriptionsList(Set<Id> scheduleZSubscriptionIds) {
         return [
             SELECT Id, Name, Schedule_Z__c, Schedule_Z__r.Id, Utility_Account_Subscription__c
@@ -79,6 +78,8 @@ public with sharing class ScheduleZSubscriptionSelector {
         ];
     }
 
+
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     public static List<Schedule_Z_Subscription__c> getOverdueSZSubscriptions(Decimal minimumBalance, Date maxPastDueDate, Set<Id> uasIdsAlreadyBilling){
         Set<Id> overdueUASIds = new Set<Id>();
         List<Schedule_Z_Subscription__c> overdueSZSes = new List<Schedule_Z_Subscription__c>();

@@ -116,6 +116,52 @@ public class ZuoraUsageServiceTest {
     }
 
     @IsTest
+    private static void testRadianGenQueries() {
+        Test.startTest();
+        finishTestSetup();
+
+        UASB__c uasb = [
+            SELECT Id, Date__c, NMC_Rate__c, NMC_Discount__c, Utility_Account_Subscription__r.Id, Opportunity__r.Id,
+                System_Bill__r.Id, Shared_Solar_System__r.Id, Total_System_Size_kW_DC__c, CS_Billing_Log__r.Id
+            FROM UASB__c
+            LIMIT 1
+        ];
+
+        UASB__c uasbAnchor = new UASB__c(
+            Customer_Subscription_KW_DC__c = 25,
+            CS_Billing_Log__c = uasb.CS_Billing_Log__r.Id,
+            Date__c = uasb.Date__c,
+            NMC_Discount__c	= uasb.NMC_Discount__c,
+            Share_of_System__c = 2.5,
+            Total_System_Production_kWh__c = 150000,
+            Total_System_NMCs__c = 18000,
+            Utility_Account_Subscription__c = uasb.Utility_Account_Subscription__r.Id,
+            Opportunity__c = uasb.Opportunity__r.Id,
+            System_Bill__c = uasb.System_Bill__r.Id,
+            Shared_Solar_System__c = uasb.Shared_Solar_System__r.Id,
+            Total_System_Size_kw_DC__c = uasb.Total_System_Size_kw_DC__c,
+            NMC_Rate__c = uasb.NMC_Rate__c,
+            Credits_Allocated__c = 450,
+            Subscription_Production_kWh_Static__c = 3750,
+            Unique_ID__c = 'Anchor UASB',
+            Externally_Serviced__c = true
+        );
+        insert uasbAnchor;
+
+        Database.QueryLocator queryLocator = UASBSelector.uasbsNotYetInZuora();
+        Database.QueryLocatorIterator iterator = queryLocator.iterator();
+        Integer i = 0;
+        while (iterator.hasNext()) {
+            iterator.next();
+            i++;
+        }
+        //Only 12 UASBs returned even though there is an additional "Externally Serviced" UASB
+        System.assertEquals(12, i);
+
+        Test.stopTest();
+    }
+
+    @IsTest
     private static void testAPIUASBCallsWithMock() {
         // disableTrigger just sets a system property checkbox to true
         Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
@@ -155,6 +201,7 @@ public class ZuoraUsageServiceTest {
     private static void testAPIAdjustmentCallsWithMock() {
         // disableTrigger just sets a system property checkbox to true
         Util.disableTrigger('Update_Usage_Records_With_ZuoraId__c');
+
         Test.startTest();
         finishTestSetup();
         ZuoraUsageBatchSend zSend = new ZuoraUsageBatchSend(ZuoraUsageBatchSend.UsageType.ADJUSTMENTS, System.today());

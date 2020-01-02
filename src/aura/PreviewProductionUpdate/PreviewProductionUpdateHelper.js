@@ -1,7 +1,7 @@
 ({
     getCancelledBills: function (component, event, helper) {
         var actionGetCancelledBills = component.get("c.getCancelledBills");
-        var prodUpdateId = component.get("v.prodUpdate");
+        var transferId = component.get("v.transfer");
         var uasbList = component.get("v.nonCancelledBills");
         var uasIdlist = [];
         var i;
@@ -11,7 +11,7 @@
         }
 
         actionGetCancelledBills.setParams({
-            "productionUpdateId" : prodUpdateId,
+            "transferId" : transferId,
             "alreadyGeneratedList" : uasIdlist,
             "scheduleZId" : component.get("v.selectedScheduleZ")
         });

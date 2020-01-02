@@ -1,17 +1,17 @@
 ({
-    getSSSWithoutProdUpdate : function(component, event, helper, productionUpdates) {
-        var actionGetSharedSolarSystems = component.get("c.getSSSWithoutProductionUpdates");
+    getSSSWithoutTransfer : function(component, event, helper, transferList) {
+        var actionGetSharedSolarSystems = component.get("c.getSSSWithoutTransfer");
 
         actionGetSharedSolarSystems.setParams({
-            "prodUpdateList" : productionUpdates
+            "transferList" : transferList
         });
 
         actionGetSharedSolarSystems.setCallback(this,function(resp){
             if (resp.getState() === 'SUCCESS') {
-                component.set("v.sssWithoutProdList", resp.getReturnValue());
+                component.set("v.sssWithoutTransferList", resp.getReturnValue());
             } else {
                 helper.logError('BillGenerationConsoleController',
-                    'getSSSWithoutProductionUpdates',
+                    'getSSSWithoutTransfer',
                     'error refreshing sss table','');
             }
         });
@@ -19,33 +19,33 @@
     },
 
     refreshTable : function(component, event, helper, refreshSSSTable) {
-        var actionGetProdUpdates = component.get("c.getThisMonthsProductionUpdates");
-        if (actionGetProdUpdates) {
-            actionGetProdUpdates.setCallback(this, function (resp) {
+        var actionGetTransfers = component.get("c.getThisMonthsTransfers");
+        if (actionGetTransfers) {
+            actionGetTransfers.setCallback(this, function (resp) {
                 if (resp.getState() === 'SUCCESS') {
-                    var prodUpdateList = resp.getReturnValue();
-                    component.set("v.ProdUpdateList", prodUpdateList);
-                    var proUpStep;
+                    var transferList = resp.getReturnValue();
+                    component.set("v.TransferList", transferList);
+                    var transferStep;
                     var countGenerated = 0;
-                    for (proUpStep = 0; proUpStep < prodUpdateList.length; proUpStep++) {
-                        if (prodUpdateList[proUpStep].Generate_Bills__c){
+                    for (transferStep = 0; transferStep < transferList.length; transferStep++) {
+                        if (transferList[transferStep].Generate_Bills__c){
                             countGenerated += 1;
                         }
                     }
-                    if (countGenerated === prodUpdateList.length){
+                    if (countGenerated === transferList.length){
                         component.set("v.doneGenerating", true);
                         component.set("v.generating", false);
                     }
                     if (refreshSSSTable) {
-                        this.getSSSWithoutProdUpdate(component, event, helper, prodUpdateList);
+                        this.getSSSWithoutTransfer(component, event, helper, transferList);
                     }
                 } else {
                     helper.logError('BillGenerationConsoleController',
-                        'getThisMonthsProductionUpdates',
-                        'error refreshing prod update table','');
+                        'getThisMonthsTransfers',
+                        'error refreshing transfer table','');
                 }
             });
-            $A.enqueueAction(actionGetProdUpdates);
+            $A.enqueueAction(actionGetTransfers);
         }
     },
 })

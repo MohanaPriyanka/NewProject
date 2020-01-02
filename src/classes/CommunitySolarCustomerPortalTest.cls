@@ -205,12 +205,12 @@ public without sharing class CommunitySolarCustomerPortalTest {
         System.runAs(communityUser){
 
             //test the getContactInfo() method
-            Contact ContactfromUser = MyAccountController.getContactInfo();
-            System.assertEquals('First', ContactfromUser.FirstName);
+            Contact contactfromUser = MyAccountController.getContactInfo();
+            System.assertEquals('First', contactfromUser.FirstName);
 
             //test the updateContactInfo() method
-            ContactfromUser.Email = 'jpentaleri@bluewavesolar.com';
-            MyAccountController.updateContactInfo(ContactfromUser);
+            contactfromUser.Email = 'jpentaleri@bluewavesolar.com';
+            MyAccountController.updateContactInfo(contactfromUser);
 
             //test the getUser() method
             User userInfo = MyAccountController.getUser();
@@ -252,7 +252,7 @@ public without sharing class CommunitySolarCustomerPortalTest {
             Opportunity checkOpp = MyAccountController.getMostRecentOpportunityInfo();
             String checkPartnerId = checkOpp.Partner_tag_lookup__c;
             String checkSalesRepId = checkOpp.BS_Sales_ID__c;
-            String checkContactId = ContactfromUser.Id;
+            String checkContactId = contactfromUser.Id;
 
             System.assertEquals(opportunityNEW.Partner_tag_lookup__c, checkPartnerId);
             System.assertEquals(opportunityNEW.BS_Sales_ID__c, checkSalesRepId);
@@ -478,14 +478,14 @@ public without sharing class CommunitySolarCustomerPortalTest {
 
         insert newSub;
 
-        Energy_Usage_Update__c productionupdateB2 = [
-            SELECT Id, Generate_Bills__c, Month_Number__c, Shared_Solar_System__c
-            FROM Energy_Usage_Update__c
-            WHERE Name = 'sssB - February 2016'
+        Bill_Period__c billPeriod = [
+            SELECT Id
+            FROM Bill_Period__c
+            WHERE Name ='sssB - February 2016'
             LIMIT 1
         ];
-
-        TestBillCreationandPayment.runProductionUpdate(new List<Id>{productionupdateB2.Id});
+        
+        TestBillCreationandPayment.runBillPeriod(new List<Id>{billPeriod.Id});
 
         List<Account_Bill__c> accountBills = [
             SELECT Id, Published__c, Parent_Account__c

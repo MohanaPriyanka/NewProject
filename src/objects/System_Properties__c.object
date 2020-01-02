@@ -97,6 +97,14 @@ Production: BlueWave Inside Sales</inlineHelpText>
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Disable_BillPeriod_Trigger__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Disable BillPeriod Trigger</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Disable_Billing_Account_Trigger__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>

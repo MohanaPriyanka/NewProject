@@ -5,15 +5,14 @@
 
 public class BillGenerationAsyncService implements Database.Batchable<Schedule_Z_Subscription__c>, Database.Stateful {
     public EnergyUsageUpdateTriggerHandler handler;
-    public List<Energy_Usage_Update__c> productionUpdates;
+    public List<Bill_Period__c> billPeriods;
+    public List<Transfer__c> transfers;
     public List<Schedule_Z_Subscription__c> szsScope;
 
-    public BillGenerationAsyncService(List<Energy_Usage_Update__c> productionUpdatesPassed) {
-        // We will not need to instantiate EUUTH once we're ready to retire old architecture:
-        handler = new EnergyUsageUpdateTriggerHandler(productionUpdatesPassed);
-
-        // Should stay the same after we retire, will just need to create a list of Schedule Z Ids from PU.Schedule_Z__c
-        productionUpdates = productionUpdatesPassed;
+    public BillGenerationAsyncService(List<Bill_Period__c> billPeriodsPassed) {
+        handler = new EnergyUsageUpdateTriggerHandler(billPeriodsPassed);
+        billPeriods = billPeriodsPassed;
+        transfers = handler.transferList;
         szsScope = BillGenerationService.getScheduleZSubscriptionList(handler.scheduleZs);
     }
 
@@ -33,7 +32,7 @@ public class BillGenerationAsyncService implements Database.Batchable<Schedule_Z
             // Until we can stop creating account bills/system bills use EUUTH method:
             handler.createBills(scope);
 
-            //  When we are ready to retire old architecture, create new method:
+            //  When we are ready to retire old architecture, create new method:u
             //  BillGenerationService.onlyCreateUASBs();
         } catch (Exception excep){
             Logger.logNow('BillGenerationAsyncService', 'execute', JSON.serialize(scope) + '\n' + excep.getMessage() + '\n' + excep.getStackTraceString(), Logger.ERROR);
@@ -42,12 +41,12 @@ public class BillGenerationAsyncService implements Database.Batchable<Schedule_Z
 
     public void finish(Database.BatchableContext bc){
         try {
-            for (Energy_Usage_Update__c productionUpdate : productionUpdates){
-                productionUpdate.Generate_Bills__c = true;
+            for (Transfer__c transfer : transfers){
+               transfer.Bills_Generated__c = true;
             }
-            update productionUpdates;
+            update transfers;
         } catch (Exception excep){
-            Logger.logNow('BillGenerationAsyncService', 'finish', JSON.serialize(productionUpdates) + '\n' + excep.getMessage() + '\n' + excep.getStackTraceString(), Logger.ERROR);
+            Logger.logNow('BillGenerationAsyncService', 'finish', JSON.serialize(transfers) + '\n' + excep.getMessage() + '\n' + excep.getStackTraceString(), Logger.ERROR);
         }
     }
 }

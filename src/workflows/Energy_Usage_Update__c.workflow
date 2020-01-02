@@ -89,7 +89,7 @@
             <name>Date_Autpay_QCed</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <formula>AND(
 ISCHANGED ( Bill_Status__c  ) , 
 ISPICKVAL( Bill_Status__c, &quot;Autopay QCed&quot; )
@@ -102,7 +102,7 @@ ISPICKVAL( Bill_Status__c, &quot;Autopay QCed&quot; )
             <name>Date_Bills_QCed</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <formula>AND(
 ISCHANGED ( Bill_Status__c  ) , 
 ISPICKVAL( Bill_Status__c, &quot;Bills QCed&quot; )
@@ -115,7 +115,7 @@ ISPICKVAL( Bill_Status__c, &quot;Bills QCed&quot; )
             <name>Date_Bills_Generated</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <formula>AND( 
 ISCHANGED ( Bill_Status__c ) , 
 ISPICKVAL( Bill_Status__c, &quot;Credit Transfers QCed&quot; ) 
@@ -128,7 +128,7 @@ ISPICKVAL( Bill_Status__c, &quot;Credit Transfers QCed&quot; )
             <name>Date_Email_Bills_Sent</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <formula>AND(
 ISCHANGED ( Bill_Status__c  ) , 
 ISPICKVAL( Bill_Status__c, &quot;Email Bills Sent&quot; )
@@ -141,7 +141,7 @@ ISPICKVAL( Bill_Status__c, &quot;Email Bills Sent&quot; )
             <name>Host_Account_Bill_QCed</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <formula>AND(
 ISCHANGED ( Bill_Status__c  ) , 
 ISPICKVAL( Bill_Status__c, &quot;Host Account Bill QCed&quot; )
@@ -154,7 +154,7 @@ ISPICKVAL( Bill_Status__c, &quot;Host Account Bill QCed&quot; )
             <name>Update_Date_Host_Account_Bills_QCed</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <formula>AND(
 ISCHANGED ( Bill_Status__c  ) , 
 ISPICKVAL( Bill_Status__c, &quot;Host Account Bill Uploaded&quot; )
@@ -167,7 +167,7 @@ ISPICKVAL( Bill_Status__c, &quot;Host Account Bill Uploaded&quot; )
             <name>Date_Paper_Bills_Sent</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <formula>AND(
 ISCHANGED ( Bill_Status__c  ) , 
 ISPICKVAL( Bill_Status__c, &quot;Letter Bills Sent&quot; )
@@ -180,7 +180,7 @@ ISPICKVAL( Bill_Status__c, &quot;Letter Bills Sent&quot; )
             <name>Production_Update_Record_Type_CS</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <criteriaItems>
             <field>Energy_Usage_Update__c.Product_LIne__c</field>
             <operation>equals</operation>
@@ -194,7 +194,7 @@ ISPICKVAL( Bill_Status__c, &quot;Letter Bills Sent&quot; )
             <name>Production_Update_Record_Type_RL</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <criteriaItems>
             <field>Energy_Usage_Update__c.Product_LIne__c</field>
             <operation>equals</operation>
