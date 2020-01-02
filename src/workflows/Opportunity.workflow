@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
     <alerts>
-        <fullName>Avidia_Email_Reserve_MCEC_Funds</fullName>
-        <description>Avidia - Email - Reserve MCEC Funds</description>
-        <protected>false</protected>
-        <recipients>
-            <recipient>nspeyer@bluewavesolar.com</recipient>
-            <type>user</type>
-        </recipients>
-        <senderAddress>customercare@bluewavesolar.com</senderAddress>
-        <senderType>OrgWideEmailAddress</senderType>
-        <template>Emails_to_Delete/Avidia_MCEC_Fund_Reservation</template>
-    </alerts>
-    <alerts>
         <fullName>Avidia_MCEC_Loan_Ready_for_Review</fullName>
         <ccEmails>solarloans@avidiabank.com</ccEmails>
         <description>Avidia - MCEC Loan Ready for Review</description>
@@ -486,15 +474,6 @@ IF(MOD(YEAR(Commencement_Date__c) + FLOOR((MONTH(Commencement_Date__c) + Interes
         <field>StageName</field>
         <literalValue>Contract Pending</literalValue>
         <name>Opp Stage to Contract Pending</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Literal</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
-        <fullName>Opportunity_DOER_Reserve_MCEC_TRUE</fullName>
-        <field>Ready_to_Reserve_MCEC_Funds__c</field>
-        <literalValue>1</literalValue>
-        <name>Opportunity - DOER - Reserve MCEC(TRUE)</name>
         <notifyAssignee>false</notifyAssignee>
         <operation>Literal</operation>
         <protected>false</protected>
@@ -1726,45 +1705,6 @@ CONTAINS(Name,&apos;-&apos;),true,false
         <description>Used to send notification to partners that PTS submitted on their behalf to Sol Systems</description>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
-    <rules>
-        <fullName>Reserve MCEC Funds</fullName>
-        <actions>
-            <name>Avidia_Email_Reserve_MCEC_Funds</name>
-            <type>Alert</type>
-        </actions>
-        <actions>
-            <name>Opportunity_DOER_Reserve_MCEC_TRUE</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <actions>
-            <name>EMAIL_LOG_Reserve_MCEC_Funds</name>
-            <type>Task</type>
-        </actions>
-        <active>true</active>
-        <criteriaItems>
-            <field>Opportunity.DOER_Solar_Loan__c</field>
-            <operation>equals</operation>
-            <value>True</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.StageName</field>
-            <operation>equals</operation>
-            <value>Complete</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.Ready_to_Reserve_MCEC_Funds__c</field>
-            <operation>equals</operation>
-            <value>False</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Opportunity.Disable_Emails__c</field>
-            <operation>notEqual</operation>
-            <value>True</value>
-        </criteriaItems>
-        <description>Sets Field:MCEC Funds Requested  to value: TRUE
-Sends Email to Avidia to Reserve Funds</description>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
     <tasks>
         <fullName>EMAIL_LOG_60_Disbursal_for_Non_MA_States</fullName>
         <assignedTo>api@bluewavesolar.com</assignedTo>
@@ -2044,19 +1984,6 @@ EMAIL LOG: RS Partner - Contract Sent to Opp</description>
         <protected>false</protected>
         <status>Completed</status>
         <subject>EMAIL LOG: RS Partner PTS has been Submitted</subject>
-    </tasks>
-    <tasks>
-        <fullName>EMAIL_LOG_Reserve_MCEC_Funds</fullName>
-        <assignedTo>api@bluewavesolar.com</assignedTo>
-        <assignedToType>user</assignedToType>
-        <description>EMAIL LOG: Reserve MCEC Funds
-using TEMPLATE: Avidia - MCEC Fund Reservation</description>
-        <dueDateOffset>0</dueDateOffset>
-        <notifyAssignee>false</notifyAssignee>
-        <priority>Normal</priority>
-        <protected>false</protected>
-        <status>Completed</status>
-        <subject>EMAIL LOG: Reserve MCEC Funds</subject>
     </tasks>
     <tasks>
         <fullName>Email_Log_RS_Partner_10_Disbursal</fullName>
