@@ -2,39 +2,33 @@
 <Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
     <alerts>
         <fullName>Shared_Solar_System_is_Full</fullName>
-        <ccEmails>sales@bluewave-capital.com</ccEmails>
-        <ccEmails>communitysolar@bluewave-capital.com</ccEmails>
         <description>Shared Solar System is Full</description>
         <protected>false</protected>
         <recipients>
-            <recipient>jpentaleri@bluewavesolar.com</recipient>
-            <type>user</type>
+            <recipient>CS_Small_Offtake_Sales</recipient>
+            <type>group</type>
         </recipients>
         <senderType>DefaultWorkflowUser</senderType>
         <template>CS_Application_Email_Notifications/BW_Sales_Alert_No_Capacity_Left_in_System</template>
     </alerts>
     <alerts>
         <fullName>X100_kW_Left_in_System</fullName>
-        <ccEmails>sales@bluewave-capital.com</ccEmails>
-        <ccEmails>communitysolar@bluewave-capital.com</ccEmails>
         <description>100 kW Left in System</description>
         <protected>false</protected>
         <recipients>
-            <recipient>jpentaleri@bluewavesolar.com</recipient>
-            <type>user</type>
+            <recipient>CS_Small_Offtake_Sales</recipient>
+            <type>group</type>
         </recipients>
         <senderType>DefaultWorkflowUser</senderType>
         <template>CS_Application_Email_Notifications/BW_Sales_Alert_100_kw_Left_in_System</template>
     </alerts>
     <alerts>
         <fullName>X50_kW_Left_in_System</fullName>
-        <ccEmails>sales@bluewave-capital.com</ccEmails>
-        <ccEmails>communitysolar@bluewave-capital.com</ccEmails>
         <description>50 kW Left in System</description>
         <protected>false</protected>
         <recipients>
-            <recipient>jpentaleri@bluewavesolar.com</recipient>
-            <type>user</type>
+            <recipient>CS_Small_Offtake_Sales</recipient>
+            <type>group</type>
         </recipients>
         <senderType>DefaultWorkflowUser</senderType>
         <template>CS_Application_Email_Notifications/BW_Sales_Alert_50_kw_Left_in_System</template>
