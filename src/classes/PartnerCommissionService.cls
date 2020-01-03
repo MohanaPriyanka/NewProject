@@ -44,12 +44,12 @@ public class PartnerCommissionService{
 
             if (oppsToUpdate.FirstBillOpps != null) {
                 for (Opportunity invOpp : oppsToUpdate.FirstBillOpps) {
-                    service.launchFlowForOpp(invOpp, 'First Bill Sent');
+                    service.launchFlowForOpp(service.getFlowParams(invOpp, 'First Bill Sent'));
                 }
             }
             if (oppsToUpdate.FirstPaymentOpps != null) {
                 for (Opportunity payOpp : oppsToUpdate.FirstPaymentOpps) {
-                    service.launchFlowForOpp(payOpp, 'First Bill Paid');
+                    service.launchFlowForOpp(service.getFlowParams(payOpp, 'First Bill Paid'));
                 }
             }
         } catch (Exception excep){
@@ -62,7 +62,12 @@ public class PartnerCommissionService{
         }
     }
 
-    public void launchFlowForOpp(Opportunity opp, String type){
+    public void launchFlowForOpp(Map<String, Object> params){
+        Flow.Interview.CS_Partner_Invoice_Creation myFlow = new Flow.Interview.CS_Partner_Invoice_Creation(params);
+        myFlow.start();
+    }
+
+    public Map<String, Object> getFlowParams(Opportunity opp, String type){
         Map<String, Object> params = new Map<String, Object>();
         Decimal commissionAmount;
         if (type == 'First Bill Paid'){
@@ -78,8 +83,7 @@ public class PartnerCommissionService{
         params.put('PartnerID',opp.Partner_tag_lookup__r.Id);
         params.put('PartnerName',opp.Partner_tag_lookup__r.Name);
         params.put('varCommissionPaymentType',type);
-        Flow.Interview.CS_Partner_Invoice_Creation myFlow = new Flow.Interview.CS_Partner_Invoice_Creation(params);
-        myFlow.start();
+        return params;
     }
 
     public PendingCommission findUninvoicedCommission(Set<Id> accountIds) {

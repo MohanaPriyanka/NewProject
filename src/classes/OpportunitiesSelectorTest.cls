@@ -33,6 +33,16 @@ public with sharing class OpportunitiesSelectorTest {
         System.assertNotEquals(null, OpportunitiesSelector.selectForContractSend(opp.Id));
     }
 
+    @IsTest
+    public static void testSelectForMap() {
+        List<Opportunity> opps = [SElECT Id FROM Opportunity LIMIT 3];
+        Set<Id> oppIds = new Set<Id>();
+        for (Opportunity opp : opps) {
+            oppIds.add(opp.Id);
+        }
+        System.assertNotEquals(null, OpportunitiesSelector.selectOpportunityMap(oppIds));
+    }
+
     @IsTest public static void testCommissionQueries() {
         List<Opportunity> oppList = [
             SELECT Id, AccountId
@@ -63,9 +73,8 @@ public with sharing class OpportunitiesSelectorTest {
         Account newAccount = new Account(Name = 'Test Acct');
         insert newAccount;
         Set<Id> accountIdSet = new Set<Id>{newAccount.Id};
-
-        OpportunitiesSelector selector;
-        System.assertEquals(null, selector.selectWithoutFirstInvoiceCommission(accountIdSet));
-        System.assertEquals(null, selector.selectWithoutFirstPaymentCommission(accountIdSet));
+        OpportunitiesSelector selector = new OpportunitiesSelector();
+        System.assertEquals(0, selector.selectWithoutFirstInvoiceCommission(accountIdSet).size());
+        System.assertEquals(0, selector.selectWithoutFirstPaymentCommission(accountIdSet).size());
     }
 }

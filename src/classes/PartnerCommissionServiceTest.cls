@@ -106,6 +106,9 @@ public class PartnerCommissionServiceTest {
             }
         }
         System.assert(containsBW001);
+
+        Map<String, Object> params = commiss.getFlowParams(oppLists.FirstBillOpps[0], '');
+        System.assertEquals(oppLists.FirstBillOpps[0].Name,params.get('OpportunityName'));
     }
 
     @IsTest

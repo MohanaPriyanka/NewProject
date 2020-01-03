@@ -4,7 +4,7 @@
  * Test: OpportunitiesSelectorTest
  *************************************************************************************/
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public class OpportunitiesSelector {
+public without sharing class OpportunitiesSelector {
     // To be used when cancelling opportunities, so we also exclude Anchors and Public Offtake
     @SuppressWarnings('PMD.ApexCRUDViolation')
     public static List<Opportunity> selectAllCompleteCSWithUASesAndSystemBills() {
@@ -18,7 +18,6 @@ public class OpportunitiesSelector {
             AND Customer_Group__c NOT IN ('Anchor', 'Public Offtake')
         ];
     }
-
     @SuppressWarnings('PMD.ApexCRUDViolation')
     public static Opportunity selectForContractSend(Id opportunityId) {
         return [
@@ -28,6 +27,15 @@ public class OpportunitiesSelector {
             WHERE Id = : opportunityId
             LIMIT 1
         ];
+    }
+
+    public static Map<Id, Opportunity> selectOpportunityMap(Set<Id> oppIds) {
+        Map<Id, Opportunity> oppMap = new Map<Id, Opportunity>([
+            SELECT Id, Shared_Solar_System__c
+            FROM Opportunity
+            WHERE Id IN :oppIds
+        ]);
+        return oppMap;
     }
 
     @SuppressWarnings('PMD.ApexCRUDViolation')
@@ -46,7 +54,6 @@ public class OpportunitiesSelector {
             AND AccountId IN : accountIds
         ];
     }
-
     @SuppressWarnings('PMD.ApexCRUDViolation')
     public List<Opportunity> selectWithoutFirstPaymentCommission(Set<Id> accountIds){
         return [
