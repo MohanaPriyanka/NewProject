@@ -6,7 +6,7 @@
 
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ClientReportingService {
-    public static void stampClientOnAdjustments(List<Bill_Adjustment__c> adjustments) {
+    public static void stampClient(List<Bill_Adjustment__c> adjustments) {
         // Called from before insert trigger:
 
         Set<Id> uasIds = new Set<Id>();
@@ -30,7 +30,7 @@ public without sharing class ClientReportingService {
         }
     }
 
-    public static void stampClientOnUASBs(List<UASB__c> uasbs) {
+    public static void stampClient(List<UASB__c> uasbs) {
         // Called from before insert trigger:
         Set<Id> uasIds = new Set<Id>();
         for (UASB__c uasb : uasbs) {

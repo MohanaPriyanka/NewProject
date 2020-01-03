@@ -7,6 +7,6 @@ trigger UASBTrigger on UASB__c (before insert) {
         return;
     }
     if (Trigger.isInsert && Trigger.isBefore) {
-        ClientReportingService.stampClientOnUASBs(Trigger.new);
+        ClientReportingService.stampClient(Trigger.new);
     }
 }
