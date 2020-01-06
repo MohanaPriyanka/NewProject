@@ -1621,53 +1621,6 @@
         <description>Project Management tasks (Site Acq, Project Dev, Interconnect, Construction, Asset Mgmt, etc)</description>
         <label>Project Management</label>
         <picklistValues>
-            <picklist>Task_Category__c</picklist>
-            <values>
-                <fullName>Billing</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Cancellation</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Fairhaven and Clara Barton Call-a-thon</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Fairhaven and Clara Barton Fiasco</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>General CS</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>How much will I save</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>How to Pay Bill</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Payment Plan</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Portal Log In</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Subscription Size Change</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>When will I see credits on my account</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
             <picklist>Task_Performed__c</picklist>
             <values>
                 <fullName>25%25 ISA Payment</fullName>
@@ -1759,6 +1712,10 @@
             </values>
             <values>
                 <fullName>Exec Committee</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>FERC</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1863,6 +1820,10 @@
             </values>
             <values>
                 <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PV %2B ESS Applications</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -2002,11 +1963,19 @@
                 <default>false</default>
             </values>
             <values>
+                <fullName>Study Payments</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>System Operations</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Telcom Construction</fullName>
+                <fullName>Telecom Construction</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Telecom Payments</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -2021,110 +1990,12 @@
                 <fullName>Utility Design</fullName>
                 <default>false</default>
             </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Assignee_if_Different__c</picklist>
             <values>
-                <fullName>Alex Schulte</fullName>
+                <fullName>Utility Studies</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Aly Garvin</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Chris Gosline</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Dean Smithyman</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Jennifer Matchett</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Jordan Pentaleri</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lee-Anne Roodt</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Lucy Alexander</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Olivia Love</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Reg Schonborn</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Trevor Lennox</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Vanessa Coloma</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Wells Howe</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Category__c</picklist>
-            <values>
-                <fullName>Project Finance - 1603 Compliance %2F Loan Support</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Project Finance - Corporate Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Project Finance - Debt Capital Markets %2F Structured Transactions</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Project Finance - Equity Capital Markets %2F Strategic Partnerships</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Project Finance - Platform Finance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Project Management - Asset Management</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Project Management - Construction</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Project Management - Executive%2FCorporate</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Project Management - Interconnection</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Project Management - Project Development</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Project Management - Site Acquisition</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Project Management - Site Acquisition - Engagement</fullName>
+                <fullName>Wireless Test</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -2144,29 +2015,6 @@
             </values>
             <values>
                 <fullName>Urgent</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Product_Line__c</picklist>
-            <values>
-                <fullName>Both</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Community Solar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Large Offtake</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Solar Loan</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -2217,127 +2065,6 @@
             </values>
             <values>
                 <fullName>Send Quote</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Task_Size__c</picklist>
-            <values>
-                <fullName>1</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>13</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>5</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>8</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Task_Subject__c</picklist>
-            <values>
-                <fullName>Adjust subscription%2C %3E25kW</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Change account %23 on contract</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Change load zone</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Change to commercial</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Check Comments About Sizing section</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Check contract%2C handwritten</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Credit report did not match customer%27s name%2C attach credit check for right customer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Credit report is missing%2C Upload correct credit report</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Custom%27s credit was denied %2C change stage to unqualified</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Customer email missing</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Load zone missing on utility bill</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Subscription adjustment needed</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Too few years at location</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Too few years in business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Upload Green Button Data</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Upload complete contract</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Upload complete utility bill to utility Account Log</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Upload utility bill without overdue payments</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Tracking__c</picklist>
-            <values>
-                <fullName>Adjusted Schedule</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Behind Schedule</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>On Time</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -4304,7 +4031,7 @@
             </values>
         </picklistValues>
     </recordTypes>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>Private</sharingModel>
     <webLinks>
         <fullName>CONTACT_Create_Customer_Care_Case</fullName>
