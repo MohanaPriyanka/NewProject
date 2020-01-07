@@ -4,7 +4,5 @@ trigger CH_TransactionTrigger on ChargentOrders__Transaction__c(after insert, af
         SystemBillPaymentRollUpHandler.handleRecurringPayment(Trigger.new);
     } else if(Trigger.isUpdate && Trigger.isAfter){
         SystemBillPaymentRollUpHandler.handleOneTimePayment(Trigger.new, Trigger.oldMap);
-    } else if (Trigger.isInsert && Trigger.isBefore) {
-        ClientReportingService.beforeTransactionInsert(Trigger.new);
     }
 }

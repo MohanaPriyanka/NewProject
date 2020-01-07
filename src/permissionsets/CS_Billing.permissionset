@@ -31370,6 +31370,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>UASB__c.Client__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>UASB__c.Credits_Allocated__c</field>
         <readable>true</readable>
     </fieldPermissions>
