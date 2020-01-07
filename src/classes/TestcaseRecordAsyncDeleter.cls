@@ -32,7 +32,11 @@ public virtual with sharing class TestcaseRecordAsyncDeleter implements Queueabl
             ZuoraAPIHelper.query('SELECT Id, CRMId FROM Account WHERE Name LIKE \'%Testcase%\' AND CreatedDate < \'' + twoWeeksAgoFormatted + '\'', false);
         ZuoraAccountSelector.QueryResultAccount zuoraQueryResult =
             (ZuoraAccountSelector.QueryResultAccount) JSON.deserialize(response, ZuoraAccountSelector.QueryResultAccount.class);
-        Logger.logLater('DeleteTestcaseRecordsAsync', 'execute', 'Found ' + zuoraQueryResult.records.size() + ' accounts to delete in Zuora and Salesforce.', Logger.INFO);
+        If (zuoraQueryResult.records == null) {
+            Logger.logLater('DeleteTestcaseRecordsAsync', 'execute', 'Unexpected query response: ' + response, Logger.ERROR);
+        } else {
+            Logger.logLater('DeleteTestcaseRecordsAsync', 'execute', 'Found ' + zuoraQueryResult.records.size() + ' accounts to delete in Zuora and Salesforce.', Logger.INFO);
+        }
         return zuoraQueryResult.records;
     }
 
