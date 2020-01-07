@@ -1,13 +1,12 @@
 /*************************************************************************************
- * Created By: peteryao on 2019-03-03  
- * Description: 
- * Test: 
+ * Created By: peteryao on 2019-03-03
+ * Description:
+ * Test:
  *************************************************************************************/
 @IsTest
 public with sharing class ClientReportingServiceTest {
     @TestSetup
     public static void testSetup() {
-        Test.startTest();
         Test.loadData(Utility__c.SObjectType, 'TestCSUtility');
         Test.loadData(Utility_NMC_Tariff__c.SObjectType, 'TestCSUtilityNMCTariff');
         Test.loadData(Load_U__c.SObjectType, 'TestCSLoadU');
@@ -18,46 +17,14 @@ public with sharing class ClientReportingServiceTest {
         Test.loadData(Shared_Solar_System__c.SObjectType, 'TestCSSharedSolarSystem');
         Test.loadData(Utility_Account_Log__c.SObjectType, 'TestCSUtilityAccountLog');
         Test.loadData(Opportunity.SObjectType, 'TestCSOpportunity');
-        Test.stopTest();
         Test.loadData(Utility_Account_Subscription__c.SObjectType, 'TestCSUtilityAccountSubscription');
         Test.loadData(Schedule_Z__c.SObjectType, 'TestCSScheduleZ');
         Test.loadData(Schedule_Z_Subscription__c.SObjectType, 'TestCSScheduleZSubscription');
-        Test.loadData(Bill_Period__c.SObjectType, 'TestCSBillPeriod');
-        Test.loadData(Production__c.SObjectType, 'TestCSProduction');
-        Test.loadData(Transfer__c.SObjectType, 'TestCSTransfer');
-
-    }
-
-    @IsTest
-    public static void testSystemBillClientOwnerStamp() {
-        Util.enableTrigger('Disable_EnergyUsageUpdateTrigger__c');
-
-        Bill_Period__c billPeriod = [
-            SELECT Id, Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c
-            FROM Bill_Period__c
-            WHERE Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c != NULL
-            AND Name = 'sssA - March 2016'
-            LIMIT 1
-        ];
-
-        TestBillCreationandPayment.runBillPeriod(new List<Id>{billPeriod.Id});
-
-        List<System_Bill__c> systemBills = [
-            SELECT Id, Client__c
-            FROM System_Bill__c
-        ];
-        for (System_Bill__c systemBill : systemBills) {
-            System.assertNotEquals(null, systemBill.Client__c);
-            System.assertEquals(
-                billPeriod.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c,
-                systemBill.Client__c
-            );
-        }
+        Test.loadData(Energy_Usage_Update__c.SObjectType, 'TestCSProdUpdate');
     }
 
     @IsTest
     public static void testAdjustmentClientOwnerStamp() {
-        Util.enableTrigger('Disable_EnergyUsageUpdateTrigger__c');
         Utility_Account_Subscription__c uas = [
             SELECT Id, Opportunity__r.Shared_Solar_System__c,
                 Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c
@@ -76,81 +43,68 @@ public with sharing class ClientReportingServiceTest {
         );
         insert adjustment;
 
-        Bill_Period__c billPeriod = [
-            SELECT Id, Shared_Solar_System__c
-            FROM Bill_Period__c
-            WHERE Name = 'sssA - March 2016'
-        ];
-
-        Transfer__c transfer = [
-            SELECT Id, Name, Shared_Solar_System__c, Allocation_Schedule__c, Attempted_Transfer__c, Bill_Period__c,
-                Bill_Period__r.Bill_Date__c, Default_Credit_Value__c, Bills_Generated__c, Total_kWh_Transferred__c,
-                Total_Transferred__c, Transfer_Amount__c, Transfer_kWh__c, Transfer_Type__c, Date_of_Transfer__c
-            FROM Transfer__c
-            WHERE Bill_Period__c = :billPeriod.Id
-            LIMIT 1
-        ];
-        TransferPartService transferPartService = new TransferPartService();
-        transferPartService.createPartsFromTransfer(new List<Transfer__c>{transfer});
-
-        System.assertEquals(uas.Opportunity__r.Shared_Solar_System__c, billPeriod.Shared_Solar_System__c);
-        TestBillCreationandPayment.runBillPeriod(new List<Id>{billPeriod.Id});
-
         Bill_Adjustment__c billAdjustment = [
-            SELECT Id, UASB__r.System_Bill__r.Shared_Solar_System__c, Client__c, UASB__c
+            SELECT Id, Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c, Client__c
             FROM Bill_Adjustment__c
             WHERE Id = :adjustment.Id
         ];
-
         System.assertEquals(
             uas.Opportunity__r.Shared_Solar_System__c,
-            billAdjustment.UASB__r.System_Bill__r.Shared_Solar_System__c
+            billAdjustment.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c
         );
         System.assertNotEquals(null, billAdjustment.Client__c);
         System.assertEquals(
             uas.Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c,
             billAdjustment.Client__c
         );
+
+        Utility_Account_Subscription__c uasTwo = [
+            SELECT Id, Opportunity__r.Shared_Solar_System__c,
+                Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c
+            FROM Utility_Account_Subscription__c
+            WHERE Name = '0000244'
+        ];
+
+        adjustment.Utility_Account_Subscription__c = uasTwo.Id;
+        update adjustment;
+
+        Bill_Adjustment__c updatedBillAdjustment = [
+            SELECT Id, Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c, Client__c
+            FROM Bill_Adjustment__c
+            WHERE Id = :adjustment.Id
+        ];
+        System.assertEquals(
+            uasTwo.Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c,
+            updatedBillAdjustment.Client__c
+        );
     }
 
     @IsTest
-    public static void testTransactionClientOwner() {
-        List<Entity__c> entities = [
-            SELECT Id, Client_Account__c
-            FROM Entity__c
-            WHERE Client_Account__c != NULL
+    public static void testUASBClientOwnerStamp() {
+        Util.enableTrigger('Disable_EnergyUsageUpdateTrigger__c');
+        Energy_Usage_Update__c energyUsageUpdate = [
+            SELECT Id, Generate_Bills__c, Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c
+            FROM Energy_Usage_Update__c
+            WHERE Generate_Bills__c = FALSE
+            AND Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c != NULL
+            LIMIT 1
         ];
-        ChargentOrders__ChargentOrder__c order = new ChargentOrders__ChargentOrder__c(
-            Entity__c = entities[0].Id,
-            ChargentOrders__Billing_First_Name__c = 'Cole',
-            ChargentOrders__Billing_Last_Name__c = 'Swain',
-            ChargentOrders__Billing_Address__c = '108 Ridgeland Drive',
-            ChargentOrders__Billing_Zip_Postal__c = '02467',
-            ChargentOrders__Subtotal__c = 50,
-            ChargentOrders__Payment_Method__c = 'Credit Card',
-            ChargentOrders__Card_Type__c = 'Visa',
-            ChargentOrders__Card_Number__c = '411111111111',
-            ChargentOrders__Card_Expiration_Month__c = '02',
-            ChargentOrders__Card_Expiration_Year__c = '2018',
-            ChargentOrders__Card_Last_4__c = '1111'
-        );
-        insert order;
-        ChargentOrders__Transaction__c trx = new ChargentOrders__Transaction__c(
-            ChargentOrders__Order__c = order.Id,
-            ChargentOrders__Response_Status__c ='Approved',
-            ChargentOrders__Response_Message__c = 'OK',
-            ChargentOrders__Type__c = 'Charge',
-            ChargentOrders__Payment_Method__c = 'Credit Card',
-            Activity_Type__c = 'Payment'
-        );
-        insert trx;
-        List<ChargentOrders__Transaction__c> transactions = [
+        List<Energy_Usage_Update__c> trigProdUp = ProductionUpdateSelector.getAllProductionUpdatesById(new List<Id>{energyUsageUpdate.Id});
+     //   EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(trigProdUp);
+    //    ee.runBills();
+
+        List<UASB__c> uasbs = [
             SELECT Id, Client__c
-            FROM ChargentOrders__Transaction__c
-            WHERE Id = :trx.Id
+            FROM UASB__c
         ];
-        System.assertNotEquals(null, transactions[0].Client__c);
-        System.assertEquals(entities[0].Client_Account__c, transactions[0].Client__c);
+     //   System.assert(uasbs.size() > 0);
+        for (UASB__c uasb : uasbs) {
+            System.assertNotEquals(null, uasb.Client__c);
+            System.assertEquals(
+                energyUsageUpdate.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c,
+                uasb.Client__c
+            );
+        }
     }
 
     @isTest
@@ -239,33 +193,21 @@ public with sharing class ClientReportingServiceTest {
 
         Test.startTest();
 
-        Client_Utility_Account_Subscription__c clientUAS = [
-            SELECT Id, Customer__c, Annual_Cost_of_Electricity_Future__c, Annual_kWh_Subscription_Future__c, Shared_Solar_System__c
-            FROM Client_Utility_Account_Subscription__c
-            WHERE Utility_Account_Subscription__c = :uas.Id
-            LIMIT 1
-        ];
+        List<Client_Utility_Account_Subscription__c> clientUAS = ClientReportObjectSelector.getClientUASesByUASIds(new Set<Id>{uas.Id});
 
-
-        System.assertEquals(opp.Name, clientUAS.Customer__c);
-        System.assertEquals(300, clientUAS.Annual_Cost_of_Electricity_Future__c);
-        System.assertEquals(7000, clientUAS.Annual_kWh_Subscription_Future__c);
-        System.assertEquals(opp.Shared_Solar_System__c, clientUAS.Shared_Solar_System__c);
+        System.assertEquals(opp.Name, clientUAS[0].Customer__c);
+        System.assertEquals(300, clientUAS[0].Annual_Cost_of_Electricity_Future__c);
+        System.assertEquals(7000, clientUAS[0].Annual_kWh_Subscription_Future__c);
+        System.assertEquals(opp.Shared_Solar_System__c, clientUAS[0].Shared_Solar_System__c);
 
 
         //Test an update to parent UAS
         uas.Subscribed_Annual_Cost_of_Electricity__c = 500;
         update uas;
 
-        Client_Utility_Account_Subscription__c clientUASUpdate = [
-            SELECT Id, Annual_Cost_of_Electricity_Future__c, Annual_kWh_Subscription_Future__c, Shared_Solar_System__c
-            FROM Client_Utility_Account_Subscription__c
-            WHERE Utility_Account_Subscription__c = :uas.Id
-            LIMIT 1
-        ];
+        List<Client_Utility_Account_Subscription__c> clientUASUpdate = ClientReportObjectSelector.getClientUASesByUASIds(new Set<Id>{uas.Id});
 
-
-        System.assertEquals(500, clientUASUpdate.Annual_Cost_of_Electricity_Future__c);
+        System.assertEquals(500, clientUASUpdate[0].Annual_Cost_of_Electricity_Future__c);
 
         //Test update of Opp's SSS
         Shared_Solar_System__c sss2 = [
@@ -286,26 +228,17 @@ public with sharing class ClientReportingServiceTest {
             LIMIT 1
         ];
 
-        Client_Utility_Account_Subscription__c clientUASUpdate2 = [
-            SELECT Id, Annual_Cost_of_Electricity_Future__c, Annual_kWh_Subscription_Future__c, Shared_Solar_System__c
-            FROM Client_Utility_Account_Subscription__c
-            WHERE Utility_Account_Subscription__c = :uas.Id
-            LIMIT 1
-        ];
+        List<Client_Utility_Account_Subscription__c> clientUASUpdate2 = ClientReportObjectSelector.getClientUASesByUASIds(new Set<Id>{uas.Id});
 
         System.assertEquals(sss2.Name, uasUpdate.Shared_Solar_System_Name__c);
-        System.assertEquals(sss2.Id, clientUASUpdate2.Shared_Solar_System__c);
+        System.assertEquals(sss2.Id, clientUASUpdate2[0].Shared_Solar_System__c);
+
+        System.assertEquals(500, clientUASUpdate[0].Annual_Cost_of_Electricity_Future__c);
 
         //Test deletion of parent UAS
         delete uas;
 
-        List<Client_Utility_Account_Subscription__c> clientUASDelete = [
-            SELECT Id, Annual_Cost_of_Electricity_Future__c, Annual_kWh_Subscription_Future__c, Shared_Solar_System__c
-            FROM Client_Utility_Account_Subscription__c
-            WHERE Utility_Account_Subscription__c = :uas.Id
-            LIMIT 1
-        ];
-
+        List<Client_Utility_Account_Subscription__c> clientUASDelete = ClientReportObjectSelector.getClientUASesByUASIds(new Set<Id>{uas.Id});
 
         System.assertEquals(0, clientUASDelete.size());
 
@@ -329,12 +262,7 @@ public with sharing class ClientReportingServiceTest {
         );
         insert uas;
 
-        Client_Utility_Account_Subscription__c clientUAS = [
-            SELECT Id
-            FROM Client_Utility_Account_Subscription__c
-            WHERE Utility_Account_Subscription__c = :uas.Id
-            LIMIT 1
-        ];
+        List<Client_Utility_Account_Subscription__c> clientUAS = ClientReportObjectSelector.getClientUASesByUASIds(new Set<Id>{uas.Id});
 
         Schedule_Z__c sz = [SELECT Id FROM Schedule_Z__c LIMIT 1];
 
@@ -350,36 +278,24 @@ public with sharing class ClientReportingServiceTest {
 
         Test.startTest();
 
-        Client_Allocation_Schedule_Subscription__c clientALSS= [
-            SELECT Id, Client_Utility_Account_Subscription__c, Customer_Subscription_kW_DC__c, Allocation_Schedule__c
-            FROM Client_Allocation_Schedule_Subscription__c
-            WHERE Allocation_Schedule_Subscription__c = :alss.Id
-        ];
+        List<Client_Allocation_Schedule_Subscription__c> clientALSS = ClientReportObjectSelector.getClientALSSBySZSIds(new Set<Id>{alss.Id});
 
-        System.assertEquals(sz.Id, clientALSS.Allocation_Schedule__c );
-        System.assertEquals(clientUAS.Id, clientAlSS.Client_Utility_Account_Subscription__c);
-        System.assertEquals(alss.Customer_Subscription_kW_DC__c, clientALSS.Customer_Subscription_kW_DC__c);
+        System.assertEquals(sz.Id, clientALSS[0].Allocation_Schedule__c );
+        System.assertEquals(clientUAS[0].Id, clientAlSS[0].Client_Utility_Account_Subscription__c);
+        System.assertEquals(alss.Customer_Subscription_kW_DC__c, clientALSS[0].Customer_Subscription_kW_DC__c);
 
         //Test update of parent ALSS
         alss.Customer_Subscription_kW_DC__c = 7;
         update alss;
 
-        Client_Allocation_Schedule_Subscription__c clientALSSUpdate = [
-            SELECT Id, Client_Utility_Account_Subscription__c, Customer_Subscription_kW_DC__c, Allocation_Schedule__c
-            FROM Client_Allocation_Schedule_Subscription__c
-            WHERE Allocation_Schedule_Subscription__c = :alss.Id
-        ];
+        List<Client_Allocation_Schedule_Subscription__c> clientALSSUpdate = ClientReportObjectSelector.getClientALSSBySZSIds(new Set<Id>{alss.Id});
 
-        System.assertEquals(7, clientALSSUpdate.Customer_Subscription_kW_DC__c);
+        System.assertEquals(7, clientALSSUpdate[0].Customer_Subscription_kW_DC__c);
 
         //Test delete of parent ALSS
         delete alss;
 
-        List<Client_Allocation_Schedule_Subscription__c> clientALSSDelete = [
-            SELECT Id, Client_Utility_Account_Subscription__c, Customer_Subscription_kW_DC__c, Allocation_Schedule__c
-            FROM Client_Allocation_Schedule_Subscription__c
-            WHERE Allocation_Schedule_Subscription__c = :alss.Id
-        ];
+        List<Client_Allocation_Schedule_Subscription__c> clientALSSDelete = ClientReportObjectSelector.getClientALSSBySZSIds(new Set<Id>{alss.Id});
 
         System.assertEquals(0, clientALSSDelete.size());
 
