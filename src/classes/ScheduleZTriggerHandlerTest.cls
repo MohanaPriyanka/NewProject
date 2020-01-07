@@ -135,14 +135,21 @@ public class ScheduleZTriggerHandlerTest {
 
         Account accountA = new Account(Name = 'Account A',
             Parent_Account__c = accountParent.Id);
-        insert accountA;
+        Account accountB = new Account(Name = 'Account B',
+            Parent_Account__c = accountParent.Id);
+        insert new List<Account>{accountA, accountB};
 
         Utility_Account_Log__c ualog =
             new Utility_Account_Log__c(Name = '0000234',
                 Account__c = accountA.Id,
                 Annual_Cost_of_Electricity__c = 10000,
                 Name_on_Account__c = 'jordan jordan');
-        insert ualog;
+        Utility_Account_Log__c ualogB =
+            new Utility_Account_Log__c(Name = '0000567',
+                Account__c = accountB.Id,
+                Annual_Cost_of_Electricity__c = 10000,
+                Name_on_Account__c = 'jordan jordan');
+        insert new List<Utility_Account_Log__c>{ualog, ualogB};
 
         Product2 normalCSProduct = new Product2( Name = 'BlueWave Community Solar',
             Family = 'Community Solar',
@@ -166,6 +173,13 @@ public class ScheduleZTriggerHandlerTest {
                 StageName = 'Complete',
                 Product__c = normalCSProduct.Id,
                 CloseDate = System.today());
+        Opportunity opportunityoneB =
+            new Opportunity(Name = 'BOpp One',
+                AccountId = accountB.Id,
+                Shared_Solar_System__c = sss1.Id,
+                StageName = 'Complete',
+                Product__c = normalCSProduct.Id,
+                CloseDate = System.today());
 
         Opportunity opportunitytwo =
             new Opportunity(Name = 'BOpp Two',
@@ -183,12 +197,21 @@ public class ScheduleZTriggerHandlerTest {
                 Product__c = normalCSProduct.Id,
                 CloseDate = System.today());
 
-        insert new List<Opportunity>{opportunityone, opportunitytwo, opportunitythree};
+        insert new List<Opportunity>{opportunityone, opportunityoneB, opportunitytwo, opportunitythree};
 
         Utility_Account_Subscription__c uasone =
             new Utility_Account_Subscription__c(Name = '0000234',
                 Utility_Account_Log__c = ualog.Id,
                 Opportunity__c = opportunityone.Id,
+                Customer_Subscription_KW_DC_STATIC__c = 20.2312,
+                Next_Schedule_Z_Status__c = 'Active Subscription',
+                calculated_annual_cost_of_electricity__c = 4000,
+                Subscribed_Annual_Cost_of_Electricity__c = 4000);
+
+        Utility_Account_Subscription__c uasoneB =
+            new Utility_Account_Subscription__c(Name = '0000235',
+                Utility_Account_Log__c = ualogB.Id,
+                Opportunity__c = opportunityoneB.Id,
                 Customer_Subscription_KW_DC_STATIC__c = 20.2312,
                 Next_Schedule_Z_Status__c = 'Active Subscription',
                 calculated_annual_cost_of_electricity__c = 4000,
@@ -224,7 +247,7 @@ public class ScheduleZTriggerHandlerTest {
                 calculated_annual_cost_of_electricity__c = 8000,
                 Subscribed_Annual_Cost_of_Electricity__c = 8000);
 
-        insert new List<Utility_Account_Subscription__c>{uasone, uastwo, uasthree, uasfour};
+        insert new List<Utility_Account_Subscription__c>{uasone, uasoneB, uastwo, uasthree, uasfour};
 
         zqu__ZProduct__c zProduct = new zqu__ZProduct__c(
             Name = 'Community Solar'
@@ -323,7 +346,7 @@ public class ScheduleZTriggerHandlerTest {
             WHERE Schedule_Z__c = : sss1ScheduleZ.Id
         ];
 
-        System.assertEquals(1, sss1ScheduleZs.size());
+        System.assertEquals(2, sss1ScheduleZs.size());
         System.assertEquals(20.2312 , sss1ScheduleZs[0].Customer_Subscription_kW_DC__c);
 
         Test.stopTest();
@@ -436,6 +459,45 @@ public class ScheduleZTriggerHandlerTest {
         System.assert(logs[0].Message__c.contains('CreateSubscription'));
     }
 
+    @IsTest static void testZuoraSubscriptionsWarnWhenAccountMissingIdFound() {
+        Shared_Solar_System__c sss1 = [
+            SELECT Id
+            FROM Shared_Solar_System__c
+            WHERE Name = 'Oxford Barrett St. P1'
+            LIMIT 1
+        ];
+        List<Account> accounts = [
+            SELECT Id
+            FROM Account
+            WHERE Name = 'Account A'
+        ];
+        accounts[0].Zuora_Id__c = '12345';
+        update accounts[0];
+
+        Test.startTest();
+        Schedule_Z__c sss1ScheduleZ = new Schedule_Z__c(
+            Name = '18-0515 Oxford Barrett St. P1',
+            Shared_Solar_System__c = sss1.Id,
+            Status__c = 'Enacted by Utility'
+        );
+        insert sss1ScheduleZ;
+        // This should insert schedule z subscriptions, which should get Zuora accounts
+        List<Schedule_Z_Subscription__c> scheduleZSubscriptions = [
+            SELECT Id
+            FROM Schedule_Z_Subscription__c
+            WHERE Schedule_Z__c = :sss1ScheduleZ.Id
+        ];
+
+        Test.stopTest();
+
+        List<Error_Log__c> logs = [SELECT Message__c FROM Error_Log__c WHERE Severity__c = :Logger.ERROR];
+        System.assertEquals(1, logs.size());
+        System.assert(logs[0].Message__c.contains('Found an account that should have a Zuora Id but didn\'t'), 'Expected to find an account without a Zuora Id');
+        logs = [SELECT Message__c FROM Error_Log__c WHERE Severity__c != :Logger.ERROR];
+        System.assert(logs[0].Message__c.contains('zuora.com/v1/orders'), 'Expected a v1/orders callout');
+        System.assert(logs[0].Message__c.contains('CreateSubscription'), 'Expected CreateSubscription in the orders callout');
+    }
+
     @IsTest static void testMostRecentALSSUpdate() {
         List<Utility_Account_Subscription__c> initialUASList = [
             SELECT Id, Name, Most_Recent_Enacted_ALSS__c
@@ -444,10 +506,11 @@ public class ScheduleZTriggerHandlerTest {
             ORDER BY Opportunity__r.Shared_Solar_System_Name__c
         ];
 
-        System.assertEquals(3,initialUASList.size());
+        System.assertEquals(4,initialUASList.size());
         System.assertEquals(null,initialUASList[0].Most_Recent_Enacted_ALSS__c);
         System.assertEquals(null,initialUASList[1].Most_Recent_Enacted_ALSS__c);
         System.assertEquals(null,initialUASList[2].Most_Recent_Enacted_ALSS__c);
+        System.assertEquals(null,initialUASList[3].Most_Recent_Enacted_ALSS__c);
 
         for (Utility_Account_Subscription__c uas : initialUASList){
             uas.Next_Schedule_Z_Status__c = 'Active Subscription';
@@ -491,10 +554,11 @@ public class ScheduleZTriggerHandlerTest {
             ORDER BY Opportunity__r.Shared_Solar_System_Name__c
         ];
 
-        System.assertEquals(3,updatedUASListOne.size());
-        System.assertEquals(sss1FirstAllocationSchedule.Id,updatedUASListOne[0].Most_Recent_Enacted_ALSS__r.Schedule_Z__c);
-        System.assertEquals(sss1FirstAllocationSchedule.Id,updatedUASListOne[1].Most_Recent_Enacted_ALSS__r.Schedule_Z__c);
-        System.assertEquals(sss2FirstAllocationSchedule.Id,updatedUASListOne[2].Most_Recent_Enacted_ALSS__r.Schedule_Z__c);
+        System.assertEquals(4,updatedUASListOne.size());
+        System.assertEquals(sss1FirstAllocationSchedule.Id,updatedUASListOne[0].Most_Recent_Enacted_ALSS__r.Schedule_Z__c, 'Expected uasone to be on sss1');
+        System.assertEquals(sss1FirstAllocationSchedule.Id,updatedUASListOne[1].Most_Recent_Enacted_ALSS__r.Schedule_Z__c, 'Expected uasoneB to be on sss1');
+        System.assertEquals(sss1FirstAllocationSchedule.Id,updatedUASListOne[2].Most_Recent_Enacted_ALSS__r.Schedule_Z__c, 'Expected uastwo to be on sss1');
+        System.assertEquals(sss2FirstAllocationSchedule.Id,updatedUASListOne[3].Most_Recent_Enacted_ALSS__r.Schedule_Z__c, 'Expected uasthree to be on sss2');
 
         Schedule_Z__c sss1SecondAllocationSchedule = new Schedule_Z__c(
             Name = '18-0515 Oxford Barrett St. P1',
@@ -525,12 +589,13 @@ public class ScheduleZTriggerHandlerTest {
             ORDER BY Opportunity__r.Shared_Solar_System_Name__c
         ];
 
-        System.assertEquals(3,updatedUASListTwo.size());
+        System.assertEquals(4,updatedUASListTwo.size());
         // sss1 should still be linked to the first schedule z, since sss1SecondAllocationSchedule is dated before sss1FirstAllocationSchedule
         System.assertEquals(sss1FirstAllocationSchedule.Id,updatedUASListTwo[0].Most_Recent_Enacted_ALSS__r.Schedule_Z__c);
         System.assertEquals(sss1FirstAllocationSchedule.Id,updatedUASListTwo[1].Most_Recent_Enacted_ALSS__r.Schedule_Z__c);
+        System.assertEquals(sss1FirstAllocationSchedule.Id,updatedUASListTwo[2].Most_Recent_Enacted_ALSS__r.Schedule_Z__c);
 
         // but sss2 should be linked to the second schedule z, since sss2SecondAllocationSchedule is dated after sss2FirstAllocationSchedule
-        System.assertEquals(sss2SecondAllocationSchedule.Id,updatedUASListTwo[2].Most_Recent_Enacted_ALSS__r.Schedule_Z__c);
+        System.assertEquals(sss2SecondAllocationSchedule.Id,updatedUASListTwo[3].Most_Recent_Enacted_ALSS__r.Schedule_Z__c);
     }
 }

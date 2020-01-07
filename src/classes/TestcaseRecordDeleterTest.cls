@@ -183,27 +183,6 @@ public class TestcaseRecordDeleterTest {
             Name = 'Persist Residential Equipment 3',
             Loan__c = loanThree.Id);
         insert new List<Residential_Equipment__c>{resiEquipOne, resiEquipTwo, resiEquipThree};
-
-        Date mintDate = Date.newInstance(2018, 6, 6);
-
-        SREC__c srecOne = new SREC__c(  Name = 'SREC one',
-            Residential_Equipment__c = resiEquipOne.Id,
-            Minted_Date__c = mintDate);
-        SREC__c srecTwo = new SREC__c(  Name = 'SREC two',
-            Residential_Equipment__c = resiEquipTwo.Id,
-            Minted_Date__c = mintDate);
-        SREC__c srecThree = new SREC__c(  Name = 'SREC three',
-            Residential_Equipment__c = resiEquipThree.Id,
-            Minted_Date__c = mintDate);
-        insert new List<SREC__c>{srecOne, srecTwo, srecThree};
-
-        SREC_Invoice__c invoice = new SREC_Invoice__c(  Name = 'SREC Invoice #1',
-            SREC__c = srecThree.Id,
-            Residential_Equipment__c = resiEquipThree.Id);
-        insert invoice;
-
-        alreadyReady.SREC_Invoice__c = invoice.Id;
-        update alreadyReady;
     }
 
     @IsTest static void testLeadTestcaseDeletion() {

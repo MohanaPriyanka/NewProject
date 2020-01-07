@@ -6,7 +6,7 @@
  *
  * Tested by: ScheduleZTriggerHandlerTest, CSCancellationServiceTest
  */
-
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ScheduleZTriggerHandler {
     // For newly enacted Schedule Zs, we want to set the previous Schedule Z to retired, and update any UASes that
     // that aren't on the new Schedule Z.
@@ -73,6 +73,7 @@ public without sharing class ScheduleZTriggerHandler {
             asyncService.initForScheduleZEnactment(enactedScheduleZS);
             Database.executeBatch(asyncService, 100);
         }
+        Logger.flushLogs();
     }
 
     private static Map<Id, Set<Id>> getSZtoUASesMap(List<Shared_Solar_System__c> sssList) {
