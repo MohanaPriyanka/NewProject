@@ -177,12 +177,15 @@ public with sharing class ZuoraBillingAccountServiceTest {
 
         String expectedResponse =
             '{"MemoBalance":100.110000,"MemoDueDate":"2016-09-18",' +
+            '"LastBillSendDate":"2019-09-20",' +
             '"InvoiceBalance":196.220000,"InvoiceDueDate":"2019-10-20",' +
             '"AccountId":"' + oldAccounts[1].Zuora__Zuora_Id__c + '"}' +
             '{"MemoBalance":120.000000,"MemoDueDate":"2018-07-15",' +
+            '"LastBillSendDate":"2019-06-20",' +
             '"InvoiceBalance":100.000000,"InvoiceDueDate":"2018-07-14",' +
             '"AccountId":"' + oldAccounts[2].Zuora__Zuora_Id__c + '"}' +
             '{"MemoBalance":0.030000,"MemoDueDate":"2018-06-15",' +
+            '"LastBillSendDate":"2019-05-20",' +
             '"InvoiceBalance":313.250000,"InvoiceDueDate":"2018-06-15",' +
             '"AccountId":"' + oldAccounts[3].Zuora__Zuora_Id__c + '"}';
 
@@ -201,7 +204,8 @@ public with sharing class ZuoraBillingAccountServiceTest {
                 Zuora__Account__r.Id,
                 Zuora__Account__r.Recurring_Billing__c,
                 Zuora__Account__r.Total_Outstanding_Balance_Zuora__c,
-                Zuora__Account__r.Max_Overdue_Due_Date_Zuora__c
+                Zuora__Account__r.Max_Overdue_Due_Date_Zuora__c,
+                Zuora__Account__r.Last_Bill_Send_Date_New_Charges_Zuora__c
             FROM Zuora__CustomerAccount__c
             WHERE Id IN : accountIdSet
             ORDER BY Name
@@ -233,6 +237,11 @@ public with sharing class ZuoraBillingAccountServiceTest {
         System.assertEquals(Date.newInstance(2016,09,18), updatedAccounts[1].Zuora__Account__r.Max_Overdue_Due_Date_Zuora__c);
         System.assertEquals(Date.newInstance(2018,07,14), updatedAccounts[2].Zuora__Account__r.Max_Overdue_Due_Date_Zuora__c);
         System.assertEquals(Date.newInstance(2018,06,15), updatedAccounts[3].Zuora__Account__r.Max_Overdue_Due_Date_Zuora__c);
+
+        System.assertEquals(null, updatedAccounts[0].Zuora__Account__r.Last_Bill_Send_Date_New_Charges_Zuora__c);
+        System.assertEquals(Date.newInstance(2019,09,20), updatedAccounts[1].Zuora__Account__r.Last_Bill_Send_Date_New_Charges_Zuora__c);
+        System.assertEquals(Date.newInstance(2019,06,20), updatedAccounts[2].Zuora__Account__r.Last_Bill_Send_Date_New_Charges_Zuora__c);
+        System.assertEquals(Date.newInstance(2019,05,20), updatedAccounts[3].Zuora__Account__r.Last_Bill_Send_Date_New_Charges_Zuora__c);
     }
 
     @isTest public static void testSummarizeResultWithNullValues(){

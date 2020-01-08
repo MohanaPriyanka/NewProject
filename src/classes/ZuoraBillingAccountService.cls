@@ -79,15 +79,18 @@ public without sharing class ZuoraBillingAccountService implements Schedulable, 
                 if (zuoraIdToAccountSummary.containsKey(zuoraId)){
                     property.Total_Outstanding_Balance_Zuora__c = zuoraIdToAccountSummary.get(zuoraId).TotalBalance;
                     property.Max_Overdue_Due_Date_Zuora__c = zuoraIdToAccountSummary.get(zuoraId).MinDueDate;
+                    property.Last_Bill_Send_Date_New_Charges_Zuora__c = zuoraIdToAccountSummary.get(zuoraId).LastBillSendDate;
                 } else {
                     // No invoices or debit memos with a balance were returned for that account, so set to null:
                     property.Total_Outstanding_Balance_Zuora__c = 0;
                     property.Max_Overdue_Due_Date_Zuora__c = null;
+                    property.Last_Bill_Send_Date_New_Charges_Zuora__c = null;
                 }
                 if (property.Total_Outstanding_Balance_Zuora__c !=
                     zuoraAccount.Zuora__Account__r.Total_Outstanding_Balance_Zuora__c ||
                     property.Max_Overdue_Due_Date_Zuora__c !=
-                    zuoraAccount.Zuora__Account__r.Max_Overdue_Due_Date_Zuora__c){
+                    zuoraAccount.Zuora__Account__r.Max_Overdue_Due_Date_Zuora__c ||
+                    property.Last_Bill_Send_Date_New_Charges_Zuora__c != zuoraAccount.Zuora__Account__r.Last_Bill_Send_Date_New_Charges_Zuora__c){
                     accountsToUpdate.add(property);
                 }
             }
@@ -104,11 +107,13 @@ public without sharing class ZuoraBillingAccountService implements Schedulable, 
     public class AccountSummary{
         public Decimal TotalBalance;
         public Date MinDueDate;
+        public Date LastBillSendDate;
     }
 
     public class BalanceQueryResult {
         Decimal MemoBalance;
         Date MemoDueDate;
+        Date LastBillSendDate;
         Decimal InvoiceBalance;
         Date InvoiceDueDate;
         String AccountId;
@@ -123,6 +128,7 @@ public without sharing class ZuoraBillingAccountService implements Schedulable, 
             AccountSummary summary = new AccountSummary();
             summary.TotalBalance = Util.nullToZero(result.MemoBalance) + Util.nullToZero(result.InvoiceBalance);
             summary.MinDueDate = DateUtil.min(result.MemoDueDate, result.InvoiceDueDate);
+            summary.LastBillSendDate = result.LastBillSendDate;
             zuoraIdToAccountSummary.put(result.AccountId, summary);
         }
         return zuoraIdToAccountSummary;
