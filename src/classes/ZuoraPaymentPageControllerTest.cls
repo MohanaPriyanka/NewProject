@@ -119,91 +119,6 @@ public with sharing class ZuoraPaymentPageControllerTest {
     }
 
     @IsTest
-    public static void testPaymentApplicationDetail(){
-        ZuoraOutstandingItemsService.OutstandingItem itemOne = new ZuoraOutstandingItemsService.OutstandingItem();
-        itemOne.AmountOutstanding = 5;
-        itemOne.AmountToApply = 0;
-        itemOne.EffectiveDate = Datetime.newInstance(2019,02,20,0,0,0);
-        itemOne.IsInvoiceItem = true;
-
-        ZuoraOutstandingItemsService.OutstandingItem itemTwo = new ZuoraOutstandingItemsService.OutstandingItem();
-        itemTwo.AmountOutstanding = 50;
-        itemTwo.AmountToApply = 0;
-        itemTwo.EffectiveDate = Datetime.newInstance(2019,01,20,0,0,0);
-        itemTwo.IsInvoiceItem = false;
-
-        // Don't expect this to have more than 2 decimals,
-        // but just to double check that rounding issues won't be duplicated in Zuora:
-        ZuoraOutstandingItemsService.OutstandingItem itemThree = new ZuoraOutstandingItemsService.OutstandingItem();
-        itemThree.AmountOutstanding = 2.008;
-        itemThree.AmountToApply = 0;
-        itemThree.EffectiveDate = Datetime.newInstance(2019,03,20,0,0,0);
-        itemThree.IsInvoiceItem = true;
-
-        ZuoraOutstandingItemsService.OutstandingItem itemFour = new ZuoraOutstandingItemsService.OutstandingItem();
-        itemFour.AmountOutstanding = 10;
-        itemFour.AmountToApply = 0;
-        itemFour.EffectiveDate = Datetime.newInstance(2017,02,20,0,0,0);
-        itemFour.IsInvoiceItem = false;
-
-        List<ZuoraOutstandingItemsService.OutstandingItem> unsortedItemList = new List<ZuoraOutstandingItemsService.OutstandingItem>{
-            itemFour, itemOne, itemThree, itemTwo
-        };
-        unsortedItemList.sort();
-
-        ZuoraAPI.Payment payment = new ZuoraAPI.Payment();
-        payment.amount = 62.12;
-
-        // Test partial payment:
-        ZuoraAPI.ZuoraPaymentApplication application;
-        application = ZuoraPaymentPageController.applyPaymentToOutstandingItems(unsortedItemList, payment);
-        System.assertEquals(1,application.invoices.size());
-        System.assertEquals(2,application.debitMemos.size());
-        System.assertEquals(10,application.debitMemos[0].amount);
-        System.assertEquals(50,application.debitMemos[1].amount);
-        System.assertEquals(2.12,application.invoices[0].amount);
-
-        // Test full payment:
-        payment.amount = 67;
-        ZuoraAPI.ZuoraPaymentApplication secondApplication;
-        secondApplication = ZuoraPaymentPageController.applyPaymentToOutstandingItems(unsortedItemList, payment);
-        System.assertEquals(2,secondApplication.invoices.size());
-        System.assertEquals(2,secondApplication.debitMemos.size());
-        System.assertEquals(10,secondApplication.debitMemos[0].amount);
-        System.assertEquals(50,secondApplication.debitMemos[1].amount);
-        System.assertEquals(5,secondApplication.invoices[0].amount);
-        System.assertEquals(2,secondApplication.invoices[1].amount);
-    }
-
-    @IsTest
-    public static void testPaymentApplication(){
-        // Don't expect this to have more than 2 decimals,
-        // but just to double check that rounding issues won't be duplicated in Zuora:
-        ZuoraAPI.Payment payment = new ZuoraAPI.Payment();
-        payment.amount = 345.558;
-        payment.accountId = '2c92c0f86ae3a4ad016ae5e247886605';
-        payment.id = 'XXXXXX';
-
-        List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems;
-        outstandingItems = ZuoraOutstandingItemsService.getOutstandingItemParentsByDate(payment.accountId);
-
-        System.assertEquals(3,outstandingItems.size());
-        System.assertEquals(270,outstandingItems[0].AmountOutstanding);
-        System.assertEquals(810,outstandingItems[1].AmountOutstanding);
-        System.assertEquals(30,outstandingItems[2].AmountOutstanding);
-
-        System.assert(outstandingItems[0].EffectiveDate < outstandingItems[1].EffectiveDate);
-        System.assert(outstandingItems[1].EffectiveDate < outstandingItems[2].EffectiveDate);
-
-        ZuoraAPI.ZuoraPaymentApplication application;
-        application = ZuoraPaymentPageController.applyPaymentToOutstandingItems(outstandingItems, payment);
-
-        System.assertEquals(2,application.invoices.size());
-        System.assertEquals(270,application.invoices[0].amount);
-        System.assertEquals(75.56,application.invoices[1].amount);
-    }
-
-    @IsTest
     public static void testPaymentApplicationCall() {
         ZuoraAPI.Payment payment = new ZuoraAPI.Payment();
         payment.amount = 200;
@@ -222,5 +137,68 @@ public with sharing class ZuoraPaymentPageControllerTest {
         ];
         // Don't want any errors:
         System.assertEquals(0,logs.size());
+    }
+
+    @IsTest
+    public static void testPaymentApplicationWithOptimisticLocking() {
+        ZuoraAPI.Payment payment = new ZuoraAPI.Payment();
+        payment.amount = 200;
+        payment.accountId = '2c92c0f86ae3a4ad016ae5e247886605';
+        payment.id = 'OPTIMISTICLOCKING';
+
+        System_Properties__c property = new System_Properties__c(Name = 'System', Zuora_Payment_Application_Retries__c = 3);
+        insert property;
+
+        Test.startTest();
+        ZuoraPaymentPageController.applyPaymentInFuture(JSON.serialize(payment));
+        Test.stopTest();
+
+        System.assertNotEquals(null, ZuoraPaymentAsyncService.nextAsyncService, 'Expected to queue again');
+        System.assertEquals(1, ZuoraPaymentAsyncService.nextAsyncService.retryCounter, 'Expected the next to be the first retry');
+
+        List<Error_Log__c> logs = [
+            SELECT Message__c
+            FROM Error_Log__c
+            WHERE Severity__c = :Logger.WARN
+        ];
+        System.assertEquals(1, logs.size(), 'Expected one error log about optimistic locking');
+        logs = [
+            SELECT Message__c
+            FROM Error_Log__c
+            WHERE Severity__c = :Logger.ERROR
+        ];
+        System.assertEquals(0, logs.size(), 'Expected no error logs');
+    }
+
+    @IsTest
+    public static void stopRetryingOptimisticLockingAfterMaxAttempts() {
+        System_Properties__c property = new System_Properties__c(Name = 'System', Zuora_Payment_Application_Retries__c = 3);
+        insert property;
+
+        ZuoraAPI.Payment payment = new ZuoraAPI.Payment();
+        payment.amount = 200;
+        payment.accountId = '2c92c0f86ae3a4ad016ae5e247886605';
+        payment.id = 'OPTIMISTICLOCKING';
+
+        Test.startTest();
+        ZuoraPaymentAsyncService paymentAsyncService = new ZuoraPaymentAsyncService(3);
+        paymentAsyncService.setPaymentToApply(payment);
+        System.enqueueJob(paymentAsyncService);
+        Test.stopTest();
+
+        System.assertEquals(null, ZuoraPaymentAsyncService.nextAsyncService, 'Expected to not queue again');
+
+        List<Error_Log__c> logs = [
+            SELECT Message__c
+            FROM Error_Log__c
+            WHERE Severity__c = :Logger.WARN
+        ];
+        System.assertEquals(0, logs.size(), 'Expected no warnings');
+        logs = [
+            SELECT Message__c
+            FROM Error_Log__c
+            WHERE Severity__c = :Logger.ERROR
+        ];
+        System.assertEquals(1, logs.size(), 'Expected an error about max retries');
     }
 }
