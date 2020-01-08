@@ -1,7 +1,6 @@
 /*************************************************************************************
  * Created By: peteryao on 2019-04-11  
- * Description: 
- * Test: 
+  * Tested By: ZuoraPaymentPageControllerTest
  *************************************************************************************/
 
 public with sharing class ZuoraPaymentPageController {
@@ -192,64 +191,11 @@ public with sharing class ZuoraPaymentPageController {
         return handleGeneralUpdate('toggleAutopayAndPaymentMethod',item);
     }
 
-    @Future(callout=true)
+    @Future(Callout=true)
     public static void applyPaymentInFuture(String paymentAsString){
         ZuoraAPI.Payment successfulPayment = (ZuoraAPI.Payment) JSON.deserialize(paymentAsString, ZuoraAPI.Payment.class);
-        applyPaymentToBalance(successfulPayment);
+        ZuoraPaymentAsyncService paymentAsyncService = new ZuoraPaymentAsyncService();
+        paymentAsyncService.setPaymentToApply(successfulPayment);
+        System.enqueueJob(paymentAsyncService);
     }
-
-    @TestVisible
-    private static void applyPaymentToBalance(ZuoraAPI.Payment successfulPayment){
-        try {
-            List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems;
-            outstandingItems = ZuoraOutstandingItemsService.getOutstandingItemParentsByDate(successfulPayment.accountId);
-            ZuoraAPI.ZuoraPaymentApplication application = applyPaymentToOutstandingItems(outstandingItems, successfulPayment);
-            HttpResponse response = ZuoraAPIHelper.callJsonEndpoint('PUT', '/v1/payments/' + successfulPayment.id + '/apply', application);
-            PaymentResponse result = (PaymentResponse) System.JSON.deserialize(response.getBody(), PaymentResponse.class);
-            if (!result.success) {
-                Logger.logNow('ZuoraPaymentPageController', 'applyPaymentToBalance', 'Failure in Zuora:' + response.getBody() + String.valueOf(successfulPayment), Logger.ERROR);
-            }
-            Logger.flushLogs();
-        } catch (Exception applicationException) {
-            Logger.logNow('ZuoraPaymentPageController', 'applyPaymentToBalance', applicationException.getMessage() + applicationException.getStackTraceString(), 'ERROR');
-        }
-    }
-
-    @TestVisible
-    private static ZuoraAPI.ZuoraPaymentApplication applyPaymentToOutstandingItems(List<ZuoraOutstandingItemsService.OutstandingItem> outstandingItems,
-                                                                    ZuoraAPI.Payment payment){
-        ZuoraAPI.ZuoraPaymentApplication application = new ZuoraAPI.ZuoraPaymentApplication();
-        application.invoices = new List<ZuoraAPI.ZuoraInvoiceApplication>();
-        application.debitMemos = new List<ZuoraAPI.ZuoraDebitMemoApplication>();
-
-        Decimal paymentAmount = payment.amount;
-        Decimal applicationAmount;
-        for (ZuoraOutstandingItemsService.OutstandingItem item : outstandingItems){
-            if (paymentAmount == 0){
-                break;
-            }
-            // Don't expect anything in Zuora to have more than 2 decimals,
-            // but just to be safe, we never want to apply with more than 2 decimals:
-            paymentAmount = paymentAmount.setScale(2, RoundingMode.HALF_UP);
-            item.AmountOutstanding = item.AmountOutstanding.setScale(2, RoundingMode.HALF_UP);
-            applicationAmount = Math.min(paymentAmount,item.AmountOutstanding);
-            paymentAmount -= applicationAmount;
-            if (item.IsInvoiceItem){
-                ZuoraAPI.ZuoraInvoiceApplication invoice = new ZuoraAPI.ZuoraInvoiceApplication();
-                invoice.invoiceId = item.id;
-                invoice.amount = applicationAmount;
-                application.invoices.add(invoice);
-            } else {
-                ZuoraAPI.ZuoraDebitMemoApplication debitMemo = new ZuoraAPI.ZuoraDebitMemoApplication();
-                debitMemo.debitMemoId = item.id;
-                debitMemo.amount = applicationAmount;
-                application.debitMemos.add(debitMemo);
-            }
-        }
-        if (paymentAmount > 0){
-            Logger.logLater('ZuoraPaymentPageController','applyPaymentToOutstandingItems','Payment was not completely applied: ' + String.valueOf(payment));
-        }
-        return application;
-    }
-
 }
