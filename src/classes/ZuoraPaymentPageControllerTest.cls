@@ -146,6 +146,9 @@ public with sharing class ZuoraPaymentPageControllerTest {
         payment.accountId = '2c92c0f86ae3a4ad016ae5e247886605';
         payment.id = 'OPTIMISTICLOCKING';
 
+        System_Properties__c property = new System_Properties__c(Name = 'System', Zuora_Payment_Application_Retries__c = 3);
+        insert property;
+
         Test.startTest();
         ZuoraPaymentPageController.applyPaymentInFuture(JSON.serialize(payment));
         Test.stopTest();
