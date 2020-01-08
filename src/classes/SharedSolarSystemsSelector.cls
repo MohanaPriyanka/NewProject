@@ -6,6 +6,23 @@
 
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class SharedSolarSystemsSelector {
+
+    public Shared_Solar_System__c selectOne(Id sssId) {
+        List<Shared_Solar_System__c> sssList = this.selectAll(new Set<Id>{sssId});
+        if (sssList.isEmpty()) {
+            return null;
+        }
+        return sssList[0];
+    }
+
+    public List<Shared_Solar_System__c> selectAll(Set<Id> sssIds) {
+        return [
+            SELECT Id, Apex_Context__c, Expected_Yield_kWh_kW__c, Total_System_Size_kWh_DC__c
+            FROM Shared_Solar_System__c
+            WHERE Id IN :sssIds
+        ];
+    }
+
     public static List<Shared_Solar_System__c> selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
         Set<Id> utilityIds,
         Set<String> loadZones) {
@@ -54,22 +71,6 @@ public without sharing class SharedSolarSystemsSelector {
             LIMIT 1
         ];
         return myProject;
-    }
-
-    public Shared_Solar_System__c selectOne(Id sssId) {
-        List<Shared_Solar_System__c> sssList = this.selectAll(new Set<Id>{sssId});
-        if (sssList.isEmpty()) {
-            return null;
-        }
-        return sssList[0];
-    }
-
-    public List<Shared_Solar_System__c> selectAll(Set<Id> sssIds) {
-        return [
-            SELECT Id, Apex_Context__c, Expected_Yield_kWh_kW__c, Total_System_Size_kWh_DC__c
-            FROM Shared_Solar_System__c
-            WHERE Id IN :sssIds
-        ];
     }
 
 }

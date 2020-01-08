@@ -1,6 +1,8 @@
 /**
  * Created by SarahRenfro on 11/15/2019.
  *
+ * Description: Used to create/update/insert Subscription Orders and Shared Solar System Orders
+ *
  * Tested By: SubscriptionManagementServiceTest
  */
 
@@ -39,7 +41,7 @@ public without sharing class SubscriptionManagementService {
         }
     }
 
-    //TODO: called from SSSOTrigger - no logic because going to have DML
+    //TODO: ONLY GOING TO BE ONE SSSO APPROVED AT ONE TIME SO DO NOT NEED TO BE BULKED?
     public void handleSystemOrderChange(List<Shared_Solar_System_Order__c> sssoList, Map<Id, Shared_Solar_System_Order__c> oldMap) {
         //TODO: yeah i know this is not great
         if(sssoList.size() > 1 ) {
@@ -60,8 +62,7 @@ public without sharing class SubscriptionManagementService {
         }
     }
 
-    //TODO: going to have logic but NO DML
-    // ONLY GOING TO BE ONE SSSO APPROVED AT ONE TIME SO DO NOT NEED TO BE BULKED?
+    //TODO: ONLY GOING TO BE ONE SSSO APPROVED AT ONE TIME SO DO NOT NEED TO BE BULKED?
     public Shared_Solar_System__c updateSSSFromSSSO(Shared_Solar_System_Order__c ssso) {
         Shared_Solar_System__c sssToUpdate = sssSelector.selectOne(ssso.Shared_Solar_System__c);
         sssToUpdate.Apex_Context__c = true;
@@ -76,7 +77,6 @@ public without sharing class SubscriptionManagementService {
         return sssToUpdate;
     }
 
-    //TODO: going to have logic but NO DML
     public List<Subscription_Order__c> createSubscriptionOrdersFromSSSO(Shared_Solar_System_Order__c ssso) {
         List<Utility_Account_Subscription__c> uasList = uasSelector.selectBySharedSolarSystem(ssso.Shared_Solar_System__c);
         Id systemChangeOrder = Schema.SObjectType.Subscription_Order__c.getRecordTypeInfosByName().get('System Change Order').getRecordTypeId();

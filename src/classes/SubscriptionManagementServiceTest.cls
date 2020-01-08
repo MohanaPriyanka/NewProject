@@ -162,12 +162,6 @@ private class SubscriptionManagementServiceTest {
                 '}' +
                 '}]';
 
-
-
-            //'"Annual_Cost_Future_Rollup__c" : 0.000000,' +
-            //dont have utility number of decimal places and NMC Tariff value of nmc
-            //maybe i can just have the uases be mocked and then insert the subscription orders in the testSetup
-
             switch on methodCall.stubbedMethodName {
                 when 'selectBySharedSolarSystem' {
                     return (List<Utility_Account_Subscription__c>) JSON.deserialize(uasListAsJSON, List<Utility_Account_Subscription__c>.class);
