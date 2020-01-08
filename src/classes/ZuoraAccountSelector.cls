@@ -126,7 +126,8 @@ public without sharing class ZuoraAccountSelector {
                 Zuora__Account__r.Id,
                 Zuora__Account__r.Recurring_Billing__c,
                 Zuora__Account__r.Total_Outstanding_Balance_Zuora__c,
-                Zuora__Account__r.Max_Overdue_Due_Date_Zuora__c
+                Zuora__Account__r.Max_Overdue_Due_Date_Zuora__c,
+                Zuora__Account__r.Last_Bill_Send_Date_New_Charges_Zuora__c
             FROM Zuora__CustomerAccount__c
             WHERE Id IN : accountIds
         ];
@@ -141,6 +142,7 @@ public without sharing class ZuoraAccountSelector {
                 Zuora__Account__r.Recurring_Billing__c,
                 Zuora__Account__r.Total_Outstanding_Balance_Zuora__c,
                 Zuora__Account__r.Max_Overdue_Due_Date_Zuora__c,
+                Zuora__Account__r.Last_Bill_Send_Date_New_Charges_Zuora__c,
                 Zuora__Batch__c
             FROM Zuora__CustomerAccount__c
         ];
