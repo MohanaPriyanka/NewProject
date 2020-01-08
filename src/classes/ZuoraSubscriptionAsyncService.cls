@@ -145,7 +145,8 @@ public with sharing class ZuoraSubscriptionAsyncService implements Queueable, Da
         for (AggregateResult aggregateResult : aggregateResults) {
             Account propertyAccount = accountMap.get(aggregateResult.Id);
             if (propertyAccount.Zuora_Id__c == null) {
-                throw new Util.BWException('Found an account that should have a Zuora Id but didn\'t: ' + aggregateResult.Id);
+                Logger.logLater('ZuoraSubscriptionAsyncService', 'updateSubscriptionMap', 'Found an account that should have a Zuora Id but didn\'t: ' + aggregateResult.Id, Logger.ERROR);
+                continue;
             }
             ZuoraSubscriptionService.OrderActionParam orderActionParam = new ZuoraSubscriptionService.OrderActionParam();
             orderActionParam.accountNumber = propertyAccount.Account_Number__c;
