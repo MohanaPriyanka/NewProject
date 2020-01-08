@@ -308,6 +308,14 @@ public without sharing class Util {
         return '';
     }
 
+    public static Decimal getSystemPropertyDecimal(String propertyName) {
+        List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
+        if (systemProperties.size() > 0) {
+            return (Decimal) systemProperties[0].get(propertyName);
+        }
+        return 0;
+    }
+
     public static void validateStrings(Map<String, String> fields) {
         for (String field : fields.keySet()) {
             if (String.isBlank(fields.get(field))) {
