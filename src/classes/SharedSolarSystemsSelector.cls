@@ -4,8 +4,8 @@
  * Test: SharedSolarSystemSelectorTest, ProductionUpdateSelectorTest
  */
 
-
-public class SharedSolarSystemsSelector {
+@SuppressWarnings('PMD.ApexCRUDViolation')
+public without sharing class SharedSolarSystemsSelector {
     public static List<Shared_Solar_System__c> selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
         Set<Id> utilityIds,
         Set<String> loadZones) {
@@ -21,26 +21,26 @@ public class SharedSolarSystemsSelector {
         return Database.query(query);
     }
 
-    // Gets all SSS that have at least 1 production update
-    public static List<Shared_Solar_System__c> getAllSSSWithProductionUpdates() {
-        return getAllSSSWithProdUpdatesNotInList(null);
+    // Gets all SSS that have at least 1 transfer
+    public static List<Shared_Solar_System__c> getAllSSSWithTransfers() {
+        return getAllSSSWithTransfersNotInList(null);
     }
 
-    // Gets all SSS that have at least 1 production update, but that production update is not in list
-    public static List<Shared_Solar_System__c> getAllSSSWithProdUpdatesNotInList(List<Id> prodUpdatesToIgnore) {
+    // Gets all SSS that have at least 1 transfer, but that transfer is not in list
+    public static List<Shared_Solar_System__c> getAllSSSWithTransfersNotInList(List<Id> transfersToIgnore) {
         List<Shared_Solar_System__c> sssList;
-        if(prodUpdatesToIgnore != null) {
+        if(transfersToIgnore != null) {
             sssList = [
                 SELECT Id, Name
                 FROM Shared_Solar_System__c
-                WHERE Id NOT IN (SELECT Shared_Solar_System__c FROM Energy_Usage_Update__c WHERE Id IN :prodUpdatesToIgnore)
-                AND Id IN (SELECT Shared_Solar_System__c FROM Energy_Usage_Update__c)
+                WHERE Id NOT IN (SELECT Shared_Solar_System__c FROM Transfer__c WHERE Id IN :transfersToIgnore)
+                AND Id IN (SELECT Shared_Solar_System__c FROM Transfer__c)
             ];
         } else {
             sssList = [
                 SELECT Id, Name
                 FROM Shared_Solar_System__c
-                WHERE Id IN (SELECT Shared_Solar_System__c FROM Energy_Usage_Update__c)
+                WHERE Id IN (SELECT Shared_Solar_System__c FROM Transfer__c)
             ];
         }
         return sssList;
@@ -54,6 +54,22 @@ public class SharedSolarSystemsSelector {
             LIMIT 1
         ];
         return myProject;
+    }
+
+    public Shared_Solar_System__c selectOne(Id sssId) {
+        List<Shared_Solar_System__c> sssList = this.selectAll(new Set<Id>{sssId});
+        if (sssList.isEmpty()) {
+            return null;
+        }
+        return sssList[0];
+    }
+
+    public List<Shared_Solar_System__c> selectAll(Set<Id> sssIds) {
+        return [
+            SELECT Id, Apex_Context__c, Expected_Yield_kWh_kW__c, Total_System_Size_kWh_DC__c
+            FROM Shared_Solar_System__c
+            WHERE Id IN :sssIds
+        ];
     }
 
 }
