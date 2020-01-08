@@ -221,7 +221,7 @@
     <fields>
         <fullName>Client_Account_Number__c</fullName>
         <externalId>false</externalId>
-        <formula>Client__r.AccountNumber</formula>
+        <formula>Client__r.Account_Number__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>As we retire system bills, used as a switch between referencing System Bill Client v. UASB Client</inlineHelpText>
         <label>Client Account Number</label>
