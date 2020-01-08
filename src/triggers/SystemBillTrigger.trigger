@@ -7,7 +7,6 @@ trigger SystemBillTrigger on System_Bill__c (before insert, before update, after
         if ((Trigger.isInsert && Trigger.isBefore) ||
             (Trigger.isUpdate && Trigger.isBefore)) {
             SystemBillAccountingLogicHandler.accountingRefresh(Trigger.new, Trigger.oldMap);
-            ClientReportingService.beforeSystemBillInsert(Trigger.new);
         }
     }
 }

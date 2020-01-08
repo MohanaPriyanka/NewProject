@@ -3,8 +3,8 @@
  * Description: 
  * Tested By: UASSelectorTest
  *************************************************************************************/
-
-public class UASSelector {
+@SuppressWarnings('PMD.ApexCRUDViolation')
+public without sharing class UASSelector {
     public static List<Utility_Account_Subscription__c> selectByAccounts(Set<Id> accounts) {
         return [
             SELECT Id,
@@ -47,5 +47,14 @@ public class UASSelector {
             FROM Utility_Account_Subscription__c
             WHERE Id IN :uasIds
         ];
+    }
+
+    public static Map<Id, Utility_Account_Subscription__c> selectByIdsAsMap(Set<Id> uasIds){
+        Map<Id, Utility_Account_Subscription__c> uasWithClientMap = new Map<Id, Utility_Account_Subscription__c>([
+            SELECT Id, Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c
+            FROM Utility_Account_Subscription__c
+            WHERE Id IN : uasIds
+        ]);
+        return uasWithClientMap;
     }
 }
