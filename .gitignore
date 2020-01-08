@@ -373,3 +373,5 @@ src/components/trailheadapp__*
 #Until the above is achieved, you can ignore them as follows
 # sites/*
 # siteDotComSites/*
+/IlluminatedCloud/
+/.idea/encodings.xml

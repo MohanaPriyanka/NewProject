@@ -1354,6 +1354,15 @@ public with sharing class ZuoraAPIMock implements HttpCalloutMock {
                 '"ResponseStatus__c" : "Returned",' +
                 '"accountId":"2c92c0f96c8afb5d016c8c5b4d4c7b6e"' +
                 '}');
+        } else if (endpoint.contains('OPTIMISTICLOCKING')) {
+            res.setBody('{' +
+                '"success" : false,' +
+                '"processId" : "5F837BF50E746DE5",' +
+                '"reasons" : [ {' +
+                '"code" : 53800050,' +
+                '"message" : "Object of class [com.zuora.zbilling.payment.model.Payment] with identifier [2c92a00b6e881172016e89ed78f765d1]: optimistic locking failed; nested exception is org.hibernate.StaleObjectStateException: Row was updated or deleted by another transaction (or unsaved-value mapping was incorrect): [com.zuora.zbilling.payment.model.Payment#2c92a00b6e881172016e89ed78f765d1]"' +
+                '} ]' +
+                '}');
         } else {
             res.setBody('{' +
                 '"type":"External",' +

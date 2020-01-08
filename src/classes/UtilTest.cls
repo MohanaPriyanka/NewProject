@@ -288,6 +288,14 @@ public with sharing class UtilTest {
     }
 
     @IsTest
+    private static void testGetSystemPropertyDecimal() {
+        System.assertEquals(0, Util.getSystemPropertyDecimal('System_Bill_Generation_Grace_Period__c'));
+        System_Properties__c property = new System_Properties__c(Name = 'System', System_Bill_Generation_Grace_Period__c = 10);
+        insert property;
+        System.assertEquals(10, Util.getSystemPropertyDecimal('System_Bill_Generation_Grace_Period__c'));
+    }
+
+    @IsTest
     private static void testValidateStringsWithNullValue() {
         Map<String, String> requiredFields = new Map<String, String>{'nullField'=>null, 'validString'=>'hello world' };
         try {
