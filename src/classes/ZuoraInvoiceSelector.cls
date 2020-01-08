@@ -63,6 +63,9 @@ public with sharing class ZuoraInvoiceSelector {
             '(SELECT MIN(m.duedate) '+
                 'FROM DebitMemo m ' +
                 'WHERE m.accountid = acct.Id AND m.balance > 1) as MemoDueDate, ' +
+            '(SELECT MAX(iv.invoiceDate) ' +
+                'FROM Invoice iv ' +
+                'WHERE iv.accountid = acct.Id AND iv.amount > 0) as LastBillSendDate, ' +
             '(SELECT SUM(iv.balance) ' +
                 'FROM Invoice iv ' +
                 'WHERE iv.accountid = acct.Id AND iv.balance > 0) as InvoiceBalance, ' +
