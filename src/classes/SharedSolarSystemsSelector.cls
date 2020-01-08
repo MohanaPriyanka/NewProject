@@ -5,7 +5,7 @@
  */
 
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public without sharing class SharedSolarSystemsSelector {
+public with sharing class SharedSolarSystemsSelector {
 
     public Shared_Solar_System__c selectOne(Id sssId) {
         List<Shared_Solar_System__c> sssList = this.selectAll(new Set<Id>{sssId});
@@ -38,8 +38,9 @@ public without sharing class SharedSolarSystemsSelector {
         return Database.query(query);
     }
 
-    // Gets all SSS that have at least 1 transfer
-    public static List<Shared_Solar_System__c> getAllSSSWithTransfers() {
+    @TestVisible
+    private static List<Shared_Solar_System__c> getAllSSSWithTransfers() {
+        // Gets all SSS that have at least 1 transfer
         return getAllSSSWithTransfersNotInList(null);
     }
 

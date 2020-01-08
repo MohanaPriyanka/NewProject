@@ -107,7 +107,6 @@ private class SubscriptionManagementServiceTest {
                 '"Id" : "a1d29000001C3xuAAC",' +
                 '"Name" : "0001234",' +
                 '"Utility_Account_Log__c" : "a1b29000001CJyIAAW",' +
-                '"Next_Schedule_Z_Status__c" : "Active Subscription",' +
                 '"Future_Customer_Subscription_KWDC_Rollup__c" : 12.5,' +
                 '"Annual_kWh_Subscription_Future_Rollup__c" : 16240.38,' +
                 '"Opportunity__c" : "00629000008boK7AAI",' +
@@ -136,7 +135,6 @@ private class SubscriptionManagementServiceTest {
                 '"Id" : "a1d2900000222xuAAC",' +
                 '"Name" : "0005678",' +
                 '"Utility_Account_Log__c" : "a1b29000001CKyIAAW",' +
-                '"Next_Schedule_Z_Status__c" : "Active Subscription",' +
                 '"Future_Customer_Subscription_KWDC_Rollup__c" : 13.5,' +
                 '"Annual_kWh_Subscription_Future_Rollup__c" : 16260.38,' +
                 '"Opportunity__c" : "00629000008boJ7AAI",' +
