@@ -3994,14 +3994,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ZuoraHistoricalLateFeeService</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ZuoraHistoricalLateFeeServiceTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ZuoraInvoiceAsyncService</apexClass>
         <enabled>true</enabled>
     </classAccesses>
