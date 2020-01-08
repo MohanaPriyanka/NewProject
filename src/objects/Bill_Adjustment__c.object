@@ -283,7 +283,7 @@
         <fullName>Client__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <inlineHelpText>Stamped at adjustment application with the entity owner&apos;s account</inlineHelpText>
+        <inlineHelpText>Stamped with UAS.Opp.SSS.Entity.Client at creation</inlineHelpText>
         <label>Client</label>
         <referenceTo>Account</referenceTo>
         <relationshipLabel>Bill Adjustments</relationshipLabel>

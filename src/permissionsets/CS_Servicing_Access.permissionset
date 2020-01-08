@@ -2626,11 +2626,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Bill_Adjustment__c.Client__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Bill_Adjustment__c.Credits_Allocated__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -19486,11 +19481,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Milestone_Gant_Filter__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__New_Project_Kickoff_Date__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -19527,11 +19517,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Opportunity__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Project__c.MPM4_BASE__Percent_Complete__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -21002,11 +20987,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__Hours_Balance__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>MPM4_BASE__Milestone1_Task__c.MPM4_BASE__ImportID__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -30266,8 +30246,8 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>UASB__c.Client_Account_Number__c</field>
-        <readable>false</readable>
+        <field>UASB__c.Client__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
