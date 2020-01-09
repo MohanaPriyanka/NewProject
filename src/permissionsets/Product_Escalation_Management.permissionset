@@ -26,6 +26,11 @@
         <field>Product_Escalator__c.Starting_Credit_Transfer__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Count_of_Transfers__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Product Escalation Management</label>
     <license>Salesforce</license>
