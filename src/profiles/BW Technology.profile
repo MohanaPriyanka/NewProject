@@ -15513,11 +15513,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Account.Parent_Account_Checkbox__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>Account.Parent_Account_ID__c</field>
         <readable>true</readable>
@@ -69154,22 +69149,6 @@
         <layout>Account-Account Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Account-Account Layout</layout>
-        <recordType>Account.BWC_Founders</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Account Layout</layout>
-        <recordType>Account.BWC_Principals</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Account Layout</layout>
-        <recordType>Account.Client_Account</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Account-Account Layout</layout>
-        <recordType>Account.Executive_Team</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Account-Account Layout %28Default%29</layout>
         <recordType>Account.Account_Default</recordType>
     </layoutAssignments>
@@ -69184,6 +69163,10 @@
     <layoutAssignments>
         <layout>Account-Competitor Account</layout>
         <recordType>Account.Competitor_Account</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Account-Landowner</layout>
+        <recordType>Account.Landowner</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Account-Parent Account</layout>
@@ -78524,6 +78507,11 @@
         <visible>false</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Account.Landowner</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
         <default>true</default>
         <recordType>Account.Parent_Account</recordType>
         <visible>true</visible>
@@ -81175,10 +81163,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ConvertLeads</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>CreateContentSpace</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
