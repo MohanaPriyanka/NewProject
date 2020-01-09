@@ -489,13 +489,13 @@ private class TransferPartServiceTest {
         insert utilityFee;
 
         Production__c checkProd = [
-            SELECT Id, Utility_Fees__c, Credits_Available_for_Allocation__c
+            SELECT Id, Pre_Transfer_Reductions__c, Credits_Available_for_Allocation__c
             FROM Production__c
             WHERE Id =:production.Id
             LIMIT 1
         ];
 
-        System.assertEquals(10, checkProd.Utility_Fees__c);
+        System.assertEquals(10, checkProd.Pre_Transfer_Reductions__c);
         System.assertEquals(7990, checkProd.Credits_Available_for_Allocation__c);
 
     }

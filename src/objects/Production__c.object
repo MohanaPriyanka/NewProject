@@ -191,8 +191,9 @@
     <fields>
         <fullName>Credits_Available_for_Allocation__c</fullName>
         <externalId>false</externalId>
-        <formula>Credits_Generated__c  -  Utility_Fees__c</formula>
+        <formula>Credits_Generated__c  -   Pre_Transfer_Reductions__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Credits Generated - PreTransfer Reductions</inlineHelpText>
         <label>Credits Available for Allocation</label>
         <precision>18</precision>
         <required>false</required>
@@ -249,6 +250,22 @@
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Pre_Transfer_Reductions__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of Parts where &quot;Reduce Available for Allocation&quot; is TRUE (Incentive Payments and Fees)</inlineHelpText>
+        <label>Pre-Transfer Reductions</label>
+        <summarizedField>Transfer_Part__c.Amount__c</summarizedField>
+        <summaryFilterItems>
+            <field>Transfer_Part__c.Reduce_Available_for_Allocation__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Transfer_Part__c.Production__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
     </fields>
     <fields>
         <fullName>Production_Update__c</fullName>
@@ -324,7 +341,7 @@
         <fullName>Utility_Fees__c</fullName>
         <description>Rollup of Transfer Parts Amount field with Type = Fee</description>
         <externalId>false</externalId>
-        <label>Utility Fees</label>
+        <label>XXUtility Fees</label>
         <summarizedField>Transfer_Part__c.Amount__c</summarizedField>
         <summaryFilterItems>
             <field>Transfer_Part__c.Type__c</field>
