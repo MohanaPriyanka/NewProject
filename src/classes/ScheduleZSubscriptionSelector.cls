@@ -123,4 +123,40 @@ public with sharing class ScheduleZSubscriptionSelector {
         ];
         return allocationSubscriptions;
     }
+
+    public List<Schedule_Z_Subscription__c> getOnTimeListForBillingOffTransfer(Set<Id> scheduleZs) {
+        String queryString = getQueryString(whereClauseForBilling, null);
+        queryString.replaceAll('Last_Bill_Send_Date_New_Charges__c','Last_Bill_Send_Date_New_Charges_Zuora__c');
+        return Database.query(queryString);
+    }
+
+    public List<Schedule_Z_Subscription__c> getOverdueSZSForBillingOffTransfer(Set<Id> sssIdList, Set<Id> uasIdsAlreadyBilling){
+        List<Schedule_Z_Subscription__c> overdueSZSes = new List<Schedule_Z_Subscription__c>();
+
+        System_Properties__c sysProp = System_Properties__c.getAll().values()[0];
+        Decimal minimumBalance = Util.nullToZero(sysProp.Minimum_Balance_Bills_for_Cancelled__c);
+        Date maxPastDueDate = Date.today().addDays(-(Integer.valueOf(Util.nullToZero(sysProp.Days_Generate_Bills_For_Cancelled__c))));
+
+        List<Utility_Account_Subscription__c> overdueUASes = [
+            SELECT Id, (
+                // We want to get a SZS for this overdue UAS, with which we can generate a bill
+                SELECT Id, Utility_Account_Subscription__c, Schedule_Z__c,
+                    Utility_Account_Subscription__r.Id, Utility_Account_Subscription__r.Opportunity__c,
+                    Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c
+                FROM Schedule_Z_Subscriptions__r
+                ORDER BY CreatedDate DESC
+                LIMIT 1
+            )
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__r.Shared_Solar_System__c IN : sssIdList
+            AND Opportunity__r.Account.Last_Bill_Send_Date_New_Charges_Zuora__c != null
+            AND Opportunity__r.Account.Last_Bill_Send_Date_New_Charges_Zuora__c >= : maxPastDueDate
+            AND Opportunity__r.Account.Total_Outstanding_Balance_Merge__c > : minimumBalance
+            AND Id NOT IN : uasIdsAlreadyBilling
+        ];
+        for (Utility_Account_Subscription__c uas : overdueUASes) {
+            overdueSZSes.addAll(uas.Schedule_Z_Subscriptions__r);
+        }
+        return overdueSZSes;
+    }
 }
