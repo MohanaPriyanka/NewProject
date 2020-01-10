@@ -39,8 +39,8 @@ public without sharing class SubscriptionManagementService {
 
     public void handleSystemOrderChange(List<Shared_Solar_System_Order__c> sssoList, Map<Id, Shared_Solar_System_Order__c> oldMap) {
         List<Shared_Solar_System__c> sssToUpdate = new List<Shared_Solar_System__c>();
-        List<Subscription_Order__c> soListToInsert = new List<Subscription_Order__c>();
-        for(Shared_Solar_System_Order__c ssso : sssoList) {
+            List<Subscription_Order__c> soListToInsert = new List<Subscription_Order__c>();
+            for(Shared_Solar_System_Order__c ssso : sssoList) {
             if (ssso.Approval_Status__c == 'Approved' && oldMap.get(ssso.Id).Approval_Status__c != 'Approved') {
                 Shared_Solar_System__c sss = updateSSSFromSSSO(ssso);
                 sssToUpdate.add(sss);

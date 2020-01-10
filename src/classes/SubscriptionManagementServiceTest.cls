@@ -103,12 +103,27 @@ private class SubscriptionManagementServiceTest {
         }
 
         public override Object handleMethodCall(MethodCall methodCall) {
-            String uasListAsJSON = '[{"attributes" : {"type" : "Utility_Account_Subscription__c","url" : "/services/data/v47.0/sobjects/Utility_Account_Subscription__c/a1d29000001C3xuAAC"},' +
+            String uasBySSS = '[{"attributes" : {"type" : "Utility_Account_Subscription__c","url" : "/services/data/v47.0/sobjects/Utility_Account_Subscription__c/a1d29000001C3xuAAC"},' +
                 '"Id" : "a1d29000001C3xuAAC",' +
                 '"Name" : "0001234",' +
-                '"Utility_Account_Log__c" : "a1b29000001CJyIAAW",' +
                 '"Future_Customer_Subscription_KWDC_Rollup__c" : 12.5,' +
                 '"Annual_kWh_Subscription_Future_Rollup__c" : 16240.38,' +
+                '"Future_Share_of_System_Rollup__c" : 1.14,' +
+                '"Annual_Cost_Future_Rollup__c" : 2420.00,' +
+                '"Shared_Solar_System__c": "a1J29000000tjOkEAI"' +
+                '},' +
+                '{"attributes" : {"type" : "Utility_Account_Subscription__c","url" : "/services/data/v47.0/sobjects/Utility_Account_Subscription__c/a1d29000001C3xuAAC"},' +
+                '"Id" : "a1d2900000222xuAAC",' +
+                '"Name" : "0001234",' +
+                '"Future_Customer_Subscription_KWDC_Rollup__c" : 12.5,' +
+                '"Annual_kWh_Subscription_Future_Rollup__c" : 16240.38,' +
+                '"Future_Share_of_System_Rollup__c" : 1.14,' +
+                '"Annual_Cost_Future_Rollup__c" : 2420.00,' +
+                '"Shared_Solar_System__c": "a1J29000000tjOkEAI"' +
+                '}]';
+
+                String uasByMap = '[{"attributes" : {"type" : "Utility_Account_Subscription__c","url" : "/services/data/v47.0/sobjects/Utility_Account_Subscription__c/a1d29000001C3xuAAC"},' +
+                '"Id" : "a1d29000001C3xuAAC",' +
                 '"Opportunity__c" : "00629000008boK7AAI",' +
                 '"Opportunity__r":{"attributes" : {"type" : "Opportunity","url" : "/services/data/v47.0/sobjects/Opportunity/00629000009SnvfAAC"},' +
                 '"Id" : "00629000008boK7AAI",' +
@@ -116,8 +131,7 @@ private class SubscriptionManagementServiceTest {
                 '"NMC_Tariff__r":{ "attributes" : {"type" : "Utility_NMC_Tariff__c","url" : "/services/data/v47.0/sobjects/Utility_NMC_Tariff__c/a1D29000000cScGEAU"},' +
                 '"Id" : "a1D29000000cScGEAU",' +
                 '"Value_of_NMC__c" : 0.184800},' +
-                '"Product__c" : "01t29000003pkTBAAY",' +
-                '"Name" : "SubscriptionOrder Testcase"},' +
+                '"Product__c" : "01t29000003pkTBAAY"},' +
                 '"Shared_Solar_System__c": "a1J29000000tjOkEAI",' +
                 '"Shared_Solar_System__r": { "attributes" : {"type" : "Shared_Solar_System__c","url" : "/services/data/v47.0/sobjects/Shared_Solar_System__c/a1J29000000tjOkEAI"},' +
                 '"Id" : "a1J29000000tjOkEAI",' +
@@ -133,10 +147,6 @@ private class SubscriptionManagementServiceTest {
                 '}, ' +
                 '{ "attributes" : {"type" : "Utility_Account_Subscription__c","url" : "/services/data/v47.0/sobjects/Utility_Account_Subscription__c/a1d29000001C3xuAAC"},' +
                 '"Id" : "a1d2900000222xuAAC",' +
-                '"Name" : "0005678",' +
-                '"Utility_Account_Log__c" : "a1b29000001CKyIAAW",' +
-                '"Future_Customer_Subscription_KWDC_Rollup__c" : 13.5,' +
-                '"Annual_kWh_Subscription_Future_Rollup__c" : 16260.38,' +
                 '"Opportunity__c" : "00629000008boJ7AAI",' +
                 '"Opportunity__r":{"attributes" : {"type" : "Opportunity","url" : "/services/data/v47.0/sobjects/Opportunity/00629000009SnvfAAC"},' +
                 '"Id" : "00629000008boJ7AAI",' +
@@ -144,8 +154,7 @@ private class SubscriptionManagementServiceTest {
                 '"NMC_Tariff__r":{ "attributes" : {"type" : "Utility_NMC_Tariff__c","url" : "/services/data/v47.0/sobjects/Utility_NMC_Tariff__c/a1D29000000cScGEAU"},' +
                 '"Id" : "a1D29000000cScGEAU",' +
                 '"Value_of_NMC__c" : 0.184800},' +
-                '"Product__c" : "01t29000003pkTBAAY",' +
-                '"Name" : "SubscriptionOrderTWO Testcase"},' +
+                '"Product__c" : "01t29000003pkTBAAY"},' +
                 '"Shared_Solar_System__c": "a1J29000000tjOkEAI",' +
                 '"Shared_Solar_System__r": { "attributes" : {"type" : "Shared_Solar_System__c","url" : "/services/data/v47.0/sobjects/Shared_Solar_System__c/a1J29000000tjOkEAI"},' +
                 '"Id" : "a1J29000000tjOkEAI",' +
@@ -162,11 +171,11 @@ private class SubscriptionManagementServiceTest {
 
             switch on methodCall.stubbedMethodName {
                 when 'selectBySharedSolarSystem' {
-                    return (List<Utility_Account_Subscription__c>) JSON.deserialize(uasListAsJSON, List<Utility_Account_Subscription__c>.class);
+                    return (List<Utility_Account_Subscription__c>) JSON.deserialize(uasBySSS, List<Utility_Account_Subscription__c>.class);
                 }
                 when 'getUASMap' {
                     Map<Id, Utility_Account_Subscription__c> uasMap = new Map<Id, Utility_Account_Subscription__c>();
-                    List<Utility_Account_Subscription__c> uasList = (List<Utility_Account_Subscription__c>) JSON.deserialize(uasListAsJSON, List<Utility_Account_Subscription__c>.class);
+                    List<Utility_Account_Subscription__c> uasList = (List<Utility_Account_Subscription__c>) JSON.deserialize(uasByMap, List<Utility_Account_Subscription__c>.class);
                     for (Utility_Account_Subscription__c uas : uasList) {
                         uasMap.put(uas.Id, uas);
                     }

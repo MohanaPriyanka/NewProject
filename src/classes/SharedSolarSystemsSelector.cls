@@ -5,7 +5,7 @@
  */
 
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public with sharing class SharedSolarSystemsSelector {
+public inherited sharing class SharedSolarSystemsSelector {
 
     public Shared_Solar_System__c selectOne(Id sssId) {
         List<Shared_Solar_System__c> sssList = this.selectAll(new Set<Id>{sssId});
@@ -23,6 +23,15 @@ public with sharing class SharedSolarSystemsSelector {
         ];
     }
 
+    public Map<Id, Shared_Solar_System__c> getSSSMap(Set<Id> sssIds) {
+        Map<Id, Shared_Solar_System__c> sssMap = new Map<Id, Shared_Solar_System__c>([
+            SELECT Id, Client_Account__c
+            FROM Shared_Solar_System__c
+            WHERE Id IN :sssIds
+        ]);
+
+        return sssMap;
+    }
     public static List<Shared_Solar_System__c> selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
         Set<Id> utilityIds,
         Set<String> loadZones) {
@@ -37,6 +46,7 @@ public with sharing class SharedSolarSystemsSelector {
 
         return Database.query(query);
     }
+
 
     @TestVisible
     private static List<Shared_Solar_System__c> getAllSSSWithTransfers() {
