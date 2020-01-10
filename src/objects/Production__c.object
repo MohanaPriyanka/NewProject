@@ -338,22 +338,6 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Utility_Fees__c</fullName>
-        <description>Rollup of Transfer Parts Amount field with Type = Fee</description>
-        <externalId>false</externalId>
-        <label>XXUtility Fees</label>
-        <summarizedField>Transfer_Part__c.Amount__c</summarizedField>
-        <summaryFilterItems>
-            <field>Transfer_Part__c.Type__c</field>
-            <operation>equals</operation>
-            <value>Fee</value>
-        </summaryFilterItems>
-        <summaryForeignKey>Transfer_Part__c.Production__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
         <fullName>kWh_Transferred__c</fullName>
         <externalId>false</externalId>
         <label>kWh Transferred</label>
