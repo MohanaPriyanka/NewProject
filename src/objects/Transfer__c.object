@@ -171,7 +171,7 @@
     <fields>
         <fullName>Attempted_Transfer__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Total Credits Generated from Production period used for calculating bills</inlineHelpText>
+        <inlineHelpText>Credits Available for Allocation from Production period used for calculating bills</inlineHelpText>
         <label>Attempted Credit Transfer</label>
         <precision>13</precision>
         <required>false</required>
