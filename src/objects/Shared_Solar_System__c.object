@@ -1686,7 +1686,7 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
         <externalId>false</externalId>
         <label>Sales Partners</label>
         <required>false</required>
-        <trackFeedHistory>true</trackFeedHistory>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>MultiselectPicklist</type>
@@ -1968,6 +1968,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <fullName>Yeloha</fullName>
                     <default>false</default>
                     <label>Yeloha</label>
+                </value>
+                <value>
+                    <fullName>Global Energy Development LLC</fullName>
+                    <default>false</default>
+                    <label>Global Energy Development LLC</label>
                 </value>
                 <value>
                     <fullName>Other Test Partner</fullName>
@@ -2779,6 +2784,10 @@ null)</formula>
                 <default>false</default>
             </values>
             <values>
+                <fullName>Global Energy Development LLC</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Grace Episcopal Church</fullName>
                 <default>false</default>
             </values>
@@ -3137,6 +3146,10 @@ null)</formula>
             </values>
             <values>
                 <fullName>First Parish in Wayland</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Global Energy Development LLC</fullName>
                 <default>false</default>
             </values>
             <values>
