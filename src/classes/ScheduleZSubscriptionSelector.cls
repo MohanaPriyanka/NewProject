@@ -3,6 +3,7 @@
  * Tested By: ScheduleZSubscriptionSelector, TestBilLCreationdandPayment, BillGenerationServiceTest, ScheduleZTriggerHandlerTest
  */
 
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public with sharing class ScheduleZSubscriptionSelector {
 
     private static String fields = 'Id, Customer_Subscription_kW_DC__c, Percent_Share__c, System_Size_kW_DC__c,' +

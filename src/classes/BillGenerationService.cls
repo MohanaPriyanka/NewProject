@@ -1,4 +1,5 @@
-public class BillGenerationService {
+@SuppressWarnings('PMD.ApexCRUDViolation')
+public without sharing class BillGenerationService {
     public static Map<Id, List<Product_Escalator__c>> productEscalatorMap;
     public static ScheduleZSubscriptionSelector szsSelector = new ScheduleZSubscriptionSelector();
     public static ProductEscalatorSelector escalatorSelector = new ProductEscalatorSelector();
