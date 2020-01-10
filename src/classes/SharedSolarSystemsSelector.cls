@@ -47,13 +47,6 @@ public inherited sharing class SharedSolarSystemsSelector {
         return Database.query(query);
     }
 
-
-    @TestVisible
-    private static List<Shared_Solar_System__c> getAllSSSWithTransfers() {
-        // Gets all SSS that have at least 1 transfer
-        return getAllSSSWithTransfersNotInList(null);
-    }
-
     // Gets all SSS that have at least 1 transfer, but that transfer is not in list
     public static List<Shared_Solar_System__c> getAllSSSWithTransfersNotInList(List<Id> transfersToIgnore) {
         List<Shared_Solar_System__c> sssList;

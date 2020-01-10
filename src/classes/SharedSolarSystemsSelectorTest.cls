@@ -167,12 +167,8 @@ public with sharing class SharedSolarSystemsSelectorTest {
 
 
         List<Shared_Solar_System__c> sssList;
-        List<Shared_Solar_System__c> sss2List;
-        sssList = SharedSolarSystemsSelector.getAllSSSWithTransfers();
-        sss2List = SharedSolarSystemsSelector.getAllSSSWithTransfersNotInList(transferIds);
-
+        sssList = SharedSolarSystemsSelector.getAllSSSWithTransfersNotInList(transferIds);
         System.assertEquals(0,sssList.size());
-        System.assertEquals(0,sss2List.size());
     }
 
     @IsTest

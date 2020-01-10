@@ -37,6 +37,7 @@ public without sharing class SubscriptionManagementService {
         }
     }
 
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     public void handleSystemOrderChange(List<Shared_Solar_System_Order__c> sssoList, Map<Id, Shared_Solar_System_Order__c> oldMap) {
         List<Shared_Solar_System__c> sssToUpdate = new List<Shared_Solar_System__c>();
             List<Subscription_Order__c> soListToInsert = new List<Subscription_Order__c>();
