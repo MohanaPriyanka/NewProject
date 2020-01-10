@@ -56,7 +56,6 @@ public without sharing class TransferPartService {
 
 
     public void onAfterTransferParts(List<Transfer_Part__c> allTransferParts) {
-        System.debug('Is the onAfterTransferParts called? ');
         List<Transfer__c> transfersToUpdate = rollupTransferPartsToTransfer(allTransferParts);
 
         if (transfersToUpdate != null){
