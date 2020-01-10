@@ -40499,11 +40499,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Production__c.Utility_Fees__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Production__c.kWh_Transferred__c</field>
         <readable>false</readable>
     </fieldPermissions>

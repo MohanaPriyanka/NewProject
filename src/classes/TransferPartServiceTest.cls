@@ -181,10 +181,6 @@ private class TransferPartServiceTest {
 
 
         insert new List<Transfer__c> {onTime1, onTime2, onTimeToUpdate, onTimeB1, onTimeToUpdateB2};
-
-        TransferPartService transferPartService = new TransferPartService();
-        transferPartService.createPartsFromTransfer(new List<Transfer__c>{onTime1, onTime2, onTimeB1});
-
     }
 
 
@@ -229,7 +225,6 @@ private class TransferPartServiceTest {
         System.assertEquals('SSS 1 Production - July 2019', production.Name);
         System.assertEquals(4980, production.Credits_Transferred__c);
         System.assertEquals(20, production.Untransferred_Credits__c);
-
     }
 
     @IsTest
@@ -277,7 +272,6 @@ private class TransferPartServiceTest {
             LIMIT 1
         ];
 
-
         System.assertEquals(14500, checkKwhProductions[1].kWh_Transferred__c);
         System.assertEquals(500, checkKwhProductions[1].Untransferred_kWh__c);
         System.assertEquals(14500, transfer.Total_kWh_Transferred__c);
@@ -299,6 +293,7 @@ private class TransferPartServiceTest {
 
         Transfer__c excessTransfer = new Transfer__c(
             Name = 'Excess May Transfer',
+            Transfer_Type__c = 'Excess Credit',
             Allocation_Schedule__c = scheduleZ.Id,
             Shared_Solar_System__c = sss1.Id,
             Attempted_Transfer__c = 40,
@@ -308,9 +303,6 @@ private class TransferPartServiceTest {
         );
 
         insert excessTransfer;
-
-        excessTransfer.Transfer_Type__c = 'Excess Credit';
-        update excessTransfer;
 
         List<Transfer_Part__c> excessParts = [
             SELECT Id, Type__c, Amount__c, Transfer__c, Production__c
@@ -340,8 +332,6 @@ private class TransferPartServiceTest {
         System.assertEquals('SSS 1 Production - May 2019', productions[0].Name);
         System.assertEquals(9990, productions[0].Credits_Transferred__c);
         System.assertEquals(0, productions[0].Untransferred_Credits__c);
-
-
     }
 
     @IsTest
@@ -357,6 +347,7 @@ private class TransferPartServiceTest {
 
         Transfer__c excessTransfer = new Transfer__c(
             Name = 'Excess May Transfer',
+            Transfer_Type__c = 'Excess Credit',
             Allocation_Schedule__c = scheduleZ.Id,
             Shared_Solar_System__c = sss1.Id,
             Attempted_Transfer__c = 130,
@@ -366,9 +357,6 @@ private class TransferPartServiceTest {
         );
 
         insert excessTransfer;
-
-        excessTransfer.Transfer_Type__c = 'Excess Credit';
-        update excessTransfer;
 
         List<Transfer_Part__c> excessParts = [
             SELECT Id, Type__c, Amount__c, Transfer__c, Production__c, Production__r.Name, Production__r.Id
@@ -389,7 +377,6 @@ private class TransferPartServiceTest {
             WHERE Id = :excessTransfer.Id
             LIMIT 1
         ];
-
 
         System.assertEquals(2, excessParts.size());
         System.assertEquals(checkTransfer.Total_Transferred__c, excessTransfer.Transfer_Amount__c);
@@ -430,6 +417,7 @@ private class TransferPartServiceTest {
 
         Transfer__c excessTransfer = new Transfer__c(
             Name = 'Excess May Transfer',
+            Transfer_Type__c = 'Excess Credit',
             Allocation_Schedule__c = scheduleZ.Id,
             Shared_Solar_System__c = sss1.Id,
             Attempted_Transfer__c = 150,
@@ -439,9 +427,6 @@ private class TransferPartServiceTest {
         );
 
         insert excessTransfer;
-
-        excessTransfer.Transfer_Type__c = 'Excess Credit';
-        update excessTransfer;
 
         List<Transfer_Part__c> excessParts = [
             SELECT Id, Type__c, Amount__c, Transfer__c, Production__c, Production__r.Name, Production__r.Id
@@ -489,13 +474,13 @@ private class TransferPartServiceTest {
         insert utilityFee;
 
         Production__c checkProd = [
-            SELECT Id, Utility_Fees__c, Credits_Available_for_Allocation__c
+            SELECT Id, Pre_Transfer_Reductions__c, Credits_Available_for_Allocation__c
             FROM Production__c
             WHERE Id =:production.Id
             LIMIT 1
         ];
 
-        System.assertEquals(10, checkProd.Utility_Fees__c);
+        System.assertEquals(10, checkProd.Pre_Transfer_Reductions__c);
         System.assertEquals(7990, checkProd.Credits_Available_for_Allocation__c);
 
     }

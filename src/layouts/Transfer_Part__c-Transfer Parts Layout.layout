@@ -15,6 +15,10 @@
                 <behavior>Edit</behavior>
                 <field>Type__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Reduce_Available_for_Allocation__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -22,7 +26,7 @@
                 <field>Production__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Readonly</behavior>
+                <behavior>Edit</behavior>
                 <field>Transfer__c</field>
             </layoutItems>
             <layoutItems>
@@ -41,10 +45,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Amount__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Credits_Billed__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
