@@ -43105,7 +43105,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Address__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -43630,7 +43630,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.State__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -69921,14 +69921,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Shared_Solar_System__c-Customer Portal</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Shared_Solar_System__c-Customer Portal</layout>
-        <recordType>Shared_Solar_System__c.SSS_No_PM_Relationship</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Shared_Solar_System__c-Customer Portal</layout>
-        <recordType>Shared_Solar_System__c.SSS_PM_Relationship</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Shared_Solar_System__c-Shared Solar System - No PM Relationship</layout>
