@@ -170,8 +170,6 @@ public without sharing class BillGenerationService {
         Product_Escalator__c activeEscalator = null;
 
         String mapKeyScheduleId = szs.Utility_Account_Subscription__r.Opportunity__r.Product_Escalation_Schedule__c;
-        system.debug(mapKeyScheduleId);
-        system.debug(productEscalatorMap);
         if (productEscalatorMap.containsKey(mapKeyScheduleId)) {
             escalatorList = productEscalatorMap.get(mapKeyScheduleId);
             for (Product_Escalator__c escalator : escalatorList) {
