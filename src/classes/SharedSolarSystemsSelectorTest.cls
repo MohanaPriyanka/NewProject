@@ -153,24 +153,22 @@ public with sharing class SharedSolarSystemsSelectorTest {
     }
 
     @IsTest
-    static void testGetSSSWithoutProdUpdates(){
+    static void testGetSSSWithoutTransfers(){
+
         Date todaysDate = Date.today();
-        List<Id> prodIdList;
+        List<Id> transferIds;
 
-        List<Energy_Usage_Update__c> prodList;
-        prodList = ProductionUpdateSelector.getProductionUpdatesByMonth(todaysDate.month(),String.valueOf(todaysDate.year()));
+        List<Transfer__c> transferList;
+        transferList = TransferSelector.getTransfersByMonth(todaysDate.month(), todaysDate.year());
 
-        for (Energy_Usage_Update__c prod : prodList){
-            prodIdList.add(prod.Id);
+        for (Transfer__c transfer : transferList) {
+            transferIds.add(transfer.Id);
         }
 
-        List<Shared_Solar_System__c> sssList;
-        List<Shared_Solar_System__c> sss2List;
-        sssList = SharedSolarSystemsSelector.getAllSSSWithProductionUpdates();
-        sss2List = SharedSolarSystemsSelector.getAllSSSWithProdUpdatesNotInList(prodIdList);
 
+        List<Shared_Solar_System__c> sssList;
+        sssList = SharedSolarSystemsSelector.getAllSSSWithTransfersNotInList(transferIds);
         System.assertEquals(0,sssList.size());
-        System.assertEquals(0,sss2List.size());
     }
 
     @IsTest
