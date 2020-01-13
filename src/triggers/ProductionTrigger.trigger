@@ -13,7 +13,7 @@ trigger ProductionTrigger on Production__c (before insert) {
 
     switch on Trigger.operationType {
         when BEFORE_INSERT {
-            clientReportingService.stampClientAccountOnProduction(Trigger.new);
+            clientReportingService.stampClient(Trigger.new);
         }
     }
 }
