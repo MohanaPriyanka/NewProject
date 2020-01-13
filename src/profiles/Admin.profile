@@ -31942,6 +31942,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>UASB__c.Externally_Serviced__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>UASB__c.Floor_Price_Bill_Value__c</field>
         <readable>true</readable>
@@ -32964,6 +32969,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Estimated_Annual_Subscription_kWh__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Subscription__c.Externally_Serviced__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

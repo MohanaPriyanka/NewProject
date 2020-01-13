@@ -40588,11 +40588,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Production__c.Pre_Transfer_Reductions__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Partner__c.Total_Opportunities__c</field>
         <readable>true</readable>
@@ -41430,6 +41425,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Production__c.End_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Production__c.Pre_Transfer_Reductions__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -44733,11 +44733,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Transfer_Part__c.Reduce_Available_for_Allocation__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>System_Bill__c.Carry_Forward_Payments__c</field>
         <readable>true</readable>
@@ -45583,6 +45578,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Transfer_Part__c.Reduce_Available_for_Allocation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Transfer_Part__c.Transfer__c</field>
         <readable>true</readable>
@@ -45790,6 +45790,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>UASB__c.Effective_Net_Metering_Rate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>UASB__c.Externally_Serviced__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -46805,6 +46810,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Estimated_Annual_Subscription_kWh__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Subscription__c.Externally_Serviced__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -81346,10 +81356,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ManageBusinessHourHolidays</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>ManageCMS</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
