@@ -45,7 +45,6 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>false</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableReports>true</enableReports>
@@ -261,14 +260,15 @@
         <formula>&quot;&amp;solmgr=1&quot; + 
 &quot;&amp;Id=&quot; + Id + 
 &quot;&amp;QueryId=[QC]{!Environment.VAR_CONGA_NY_QC_TASK},[Opps]{!Environment.VAR_CONGA_NY_OPPS}, [DQLead]{!Environment.VAR_CONGA_QUERY_NY_CS_DQ_LEADS}, [Referrals]{!Environment.VAR_CONGA_QUERY_REFERRAL}, [Expired]{!Environment.VAR_CONGA_QUERY_NY_EXPIRED_OPPS}, [Complete]{!Environment.VAR_CONGA_QUERY_NY_COMPLETED_OPPS}&quot; + 
-&quot;&amp;TemplateId={!Environment.VAR_CONGA_TEMPLATE_NY_DAILY_CS}&quot; + 
+&quot;&amp;TemplateId=a2F0a000000OIoi&quot; + 
 &quot;&amp;CongaEmailTemplateId={!Environment.VAR_CONGA_EMAIL_TEMPLATE_CS_DAILY_REPORT}&quot; + 
 &quot;&amp;EmailAdditionalTo=&quot; + Email__c + 
 &quot;&amp;ofn=&quot; + Name + &quot; &quot; + &quot;NY Community Solar Update Report&quot; + &quot; &quot; + TEXT(TODAY()) + 
 &quot;&amp;qmode=SendEmail&quot; + 
 &quot;&amp;SC0=1&quot; + 
 &quot;&amp;SC1=Attachments&quot; + 
-&quot;&amp;emailcc=&quot; + Additional_CC_Email__c</formula>
+&quot;&amp;emailcc=&quot; + Additional_CC_Email__c +
+&quot;&amp;emailfromid=0D20a000000PBPX&quot;</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Conga_Conductor_CS_Partner_Update_NY</label>
         <required>false</required>
@@ -283,15 +283,16 @@
         <externalId>false</externalId>
         <formula>&quot;&amp;solmgr=1&quot; +
 &quot;&amp;Id=&quot; + Id +
-&quot;&amp;QueryId=[QC]a270a000001dI6z,[Opps]a270a000001EiFY, [DQLead]a270a000001EkT5, [Referrals]a270a000001EpbL, [Expired]a270a000000N74w, [Complete]a270a000000N75f&quot; +
-&quot;&amp;TemplateId=a2F0a000001ZXvg&quot; +
-&quot;&amp;CongaEmailTemplateId=a260a00000FhciJ&quot; + 
+&quot;&amp;QueryId=[QC]{!Environment.VAR_CONGA_CSPARTER_QC},[Opps]{!Environment.VAR_CONGA_CSPARTNER_OPP}, [DQLead]{!Environment.VAR_CONGA_CSPARTNER_DQLEADS}, [Referrals]{!Environment.VAR_CONGA_CSPARTNER_REFERRALS}, [Expired]{!Environment.VAR_CONGA_CSPARTNER_EXPIRED}, [Complete]{!Environment.VAR_CONGA_CSPARNTER_COMPLETE}&quot; +
+&quot;&amp;TemplateId={!Environment.VAR_CONGA_TEMPLATE_DAILYCS}&quot; +
+&quot;&amp;CongaEmailTemplateId={!Environment.VAR_CONGA_EMAIL_TEMPLATE_CS_DAILY_REPORT}&quot; + 
 &quot;&amp;EmailAdditionalTo=&quot; + Email__c +
 &quot;&amp;ofn=&quot; + Name + &quot; &quot; + &quot;Community Solar Update Report&quot; + &quot; &quot; + TEXT(TODAY()) +
 &quot;&amp;qmode=SendEmail&quot; +
 &quot;&amp;SC0=1&quot; +
 &quot;&amp;SC1=Attachments&quot; +
-&quot;&amp;emailcc=&quot; + Additional_CC_Email__c</formula>
+&quot;&amp;emailcc=&quot; + Additional_CC_Email__c +
+&quot;&amp;emailfromid=0D20a000000PBPX&quot;</formula>
         <inlineHelpText>for conga conductor</inlineHelpText>
         <label>Conga Conductor CS Partner Update</label>
         <required>false</required>
@@ -1115,7 +1116,7 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Partners</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>Private</sharingModel>
     <visibility>Public</visibility>
     <webLinks>
@@ -1151,8 +1152,9 @@
 &amp;sessionId={!API.Session_ID} 
 &amp;ServerUrl={!API.Partner_Server_URL_290}
 &amp;Id={!Partner__c.Id}
-&amp;QueryId=[QC]a270a000001dI6z,[Opps]a270a000001EiFY,[DQLead]a270a000001EkT5,[Referrals]a270a000001EpbL,[Expired]a270a000000N74w,[Complete]a270a000000N75f
-&amp;TemplateId=a2F0a000001ZXvg
-&amp;EmailCC={!Partner__c.Additional_CC_Email__c}</url>
+&amp;QueryId=[QC]{!Environment.VAR_CONGA_CSPARTER_QC},[Opps]{!Environment.VAR_CONGA_CSPARTNER_OPP}, [DQLead]{!Environment.VAR_CONGA_CSPARTNER_DQLEADS}, [Referrals]{!Environment.VAR_CONGA_CSPARTNER_REFERRALS}, [Expired]{!Environment.VAR_CONGA_CSPARTNER_EXPIRED}, [Complete]{!Environment.VAR_CONGA_CSPARNTER_COMPLETE}
+&amp;TemplateId={!Environment.VAR_CONGA_TEMPLATE_DAILYCS}
+&amp;EmailCC={!Partner__c.Additional_CC_Email__c}
+&amp;emailfromid=0D20a000000PBPX</url>
     </webLinks>
 </CustomObject>

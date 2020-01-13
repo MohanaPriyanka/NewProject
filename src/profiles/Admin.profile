@@ -5373,6 +5373,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.QC_Case_Subject__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.Read_Email_Count__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -48135,18 +48140,6 @@
         <layout>Lead-BFG - Community Solar %28Residential%29</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Lead-BFG - Community Solar %28Residential%29</layout>
-        <recordType>Lead.BFG_Community_Solar</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Lead-BFG - Community Solar %28Residential%29</layout>
-        <recordType>Lead.Lead</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Lead-BFG - Community Solar %28Residential%29</layout>
-        <recordType>Lead.Utility_Duke_Energy</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Lead-BFG - DOER Solar Loan</layout>
         <recordType>Lead.BFG_DOER_Solar_Loan</recordType>
     </layoutAssignments>
@@ -54517,10 +54510,6 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
-        <name>ManageCMS</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
         <name>ManageCallCenters</name>
     </userPermissions>
     <userPermissions>
@@ -54865,10 +54854,6 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
-        <name>ViewArchivedArticles</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
         <name>ViewDataAssessment</name>
     </userPermissions>
     <userPermissions>
@@ -54878,10 +54863,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ViewDataLeakageEvents</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>ViewDraftArticles</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
