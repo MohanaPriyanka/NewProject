@@ -67,28 +67,23 @@ public without sharing class BillGenerationService {
     private void checkRequiredTransferFields(Transfer__c transfer){
         String errorMessage = 'Cannot make UASBs from a Transfer ';
         if (transfer.Allocation_Schedule__c == null){
-            throw new Util.BWException(
-                errorMessage + 'because the Transfer does not have an Allocation Schedule populated'
-            );
+            throw new AuraHandledException(errorMessage + 'because the Transfer does not have an Allocation Schedule populated');
         } else if (transfer.Attempted_kWh_Transfer__c == null || transfer.Attempted_Transfer__c == null){
-            throw new Util.BWException(
-                errorMessage + 'without Attempted kWh Transfer & Attempted Transfer populated'
-            );
+            throw new AuraHandledException(errorMessage + 'without Attempted kWh Transfer & Attempted Transfer populated');
         } else if (transfer.Default_Credit_Value__c == null){
-            throw new Util.BWException(
-                errorMessage + 'without Default Credit Value populated'
-            );
+            throw new AuraHandledException(errorMessage + 'without Default Credit Value populated');
         } else if (transfer.Bill_Period__c == null || transfer.Bill_Period__r.Bill_Date__c == null || transfer.Date_of_Transfer__c == null){
-            throw new Util.BWException(
-                errorMessage + 'without Date of Transfer & Bill Period Date populated'
-            );
+            throw new AuraHandledException(errorMessage + 'without Date of Transfer & Bill Period Date populated');
         }
     }
 
     @TestVisible
     private UASB__c setUASBFields(Schedule_Z_Subscription__c szs, Transfer__c transfer){
-        Integer productionCount =  (Integer)szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Count_of_Transfers__c;
-        Product_Escalator__c escalatorProduct = getProductEscalator(szs, productionCount);
+        Product_Escalator__c escalatorProduct;
+        if (szs.Utility_Account_Subscription__r.Opportunity__r.Product_Escalation_Schedule__c != null){
+            Integer productionCount =  (Integer)szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Count_of_Transfers__c;
+            escalatorProduct = getProductEscalator(szs, productionCount);
+        }
         Decimal shareOfSystem = szs.Percent_Share__c;
         String creditsRoundingMethod = szs.Schedule_Z__r.Shared_Solar_System__r.Utility__r.Credits_Allocated_Rounding_Method__c;
 
@@ -130,8 +125,6 @@ public without sharing class BillGenerationService {
             Schedule_Z_Subscription__c = szs.Id
         );
 
-        generatedUASB.Unique_Id__c = szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c + ' - ' + szs.Utility_Account_Subscription__r.Id + ' - ' + transfer.Id;
-
         if (billingMethod == 'NMC'){
             generatedUASB.Size_off_NMCs__c = true;
         }
@@ -161,12 +154,7 @@ public without sharing class BillGenerationService {
             Subscription_Production_kWh_Static__c = 0,
             NMC_Rate__c = 0,
             Share_of_System__c = 0,
-            Credits_Allocated__c = 0,
-            Unique_Id__c = szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c +
-                ' - ' +
-                szs.Utility_Account_Subscription__r.Id +
-                ' - ' +
-                transfer.Id
+            Credits_Allocated__c = 0
         );
         return zeroDollarUASB;
     }
@@ -182,6 +170,8 @@ public without sharing class BillGenerationService {
         Product_Escalator__c activeEscalator = null;
 
         String mapKeyScheduleId = szs.Utility_Account_Subscription__r.Opportunity__r.Product_Escalation_Schedule__c;
+        system.debug(mapKeyScheduleId);
+        system.debug(productEscalatorMap);
         if (productEscalatorMap.containsKey(mapKeyScheduleId)) {
             escalatorList = productEscalatorMap.get(mapKeyScheduleId);
             for (Product_Escalator__c escalator : escalatorList) {

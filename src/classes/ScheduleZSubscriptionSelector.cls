@@ -134,9 +134,8 @@ public with sharing class ScheduleZSubscriptionSelector {
     public List<Schedule_Z_Subscription__c> getOverdueSZSForBillingOffTransfer(Set<Id> sssIdList, Set<Id> uasIdsAlreadyBilling){
         List<Schedule_Z_Subscription__c> overdueSZSes = new List<Schedule_Z_Subscription__c>();
 
-        System_Properties__c sysProp = System_Properties__c.getAll().values()[0];
-        Decimal minimumBalance = Util.nullToZero(sysProp.Minimum_Balance_Bills_for_Cancelled__c);
-        Date maxPastDueDate = Date.today().addDays(-(Integer.valueOf(Util.nullToZero(sysProp.Days_Generate_Bills_For_Cancelled__c))));
+        Decimal minimumBalance = Util.getSystemPropertyDecimal('Minimum_Balance_Bills_for_Cancelled__c');
+        Date maxPastDueDate = Date.today() - (Integer) Util.getSystemPropertyDecimal('Days_Generate_Bills_For_Cancelled__c');
 
         List<Utility_Account_Subscription__c> overdueUASes = [
             SELECT Id, (

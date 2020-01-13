@@ -1,3 +1,5 @@
+// JP 1/10/20 : Rename this "BillGenerationServiceTest" after migration away from SB / AB and delete existing
+
 @isTest
 public class TransferSheetBillingTest {
     // Like a test setup method, but don't actually insert records
@@ -13,11 +15,17 @@ public class TransferSheetBillingTest {
             Id = 'a3z190000009UUvAAM',
             Shared_Solar_System__r = sssOne
         );
+        Bill_Period__c billPeriod = new Bill_Period__c(
+            Id = 'a8x19000000DXkGAAW',
+            Bill_Date__c = todaysDate
+        );
         Transfer__c transfer = new Transfer__c(
             Allocation_Schedule__c = 'a3z190000009UUvAAM',
             Allocation_Schedule__r = allocationSchedule,
             Shared_Solar_System__c = 'a1J19000001MFvAEAW',
             Date_of_Transfer__c = oneMonthAgo,
+            Bill_Period__r = billPeriod,
+            Bill_Period__c = 'a8x19000000DXkGAAW',
             Transfer_Type__c = 'Main',
             Attempted_kWh_Transfer__c = 73072.00,
             Attempted_Transfer__c =  12033.73,
@@ -43,7 +51,6 @@ public class TransferSheetBillingTest {
         System.assertEquals(1.1758,szsList[2].Percent_Share__c);
         System.assertEquals(1.1758,szsList[3].Percent_Share__c);
         System.assertEquals(0.4841,szsList[4].Percent_Share__c);
-        System.assertEquals(0.7608,szsList[5].Percent_Share__c);
     }
 
     @isTest
@@ -149,7 +156,7 @@ public class TransferSheetBillingTest {
                 '"Opportunity__r" : {"Id":"0000000AAA","Name":"Oppty A",' +
                 '"Product__r" : {"NMC_Discount__c" : 12.00 ,"NM_Rate_Floor__c" : 0.0,"Solar_Electricity_Rate__c" : 0.13,' +
                 '"Pricing_Structure__c" : "Use Solar Electric Rate","Percent_Share_Decimal_Places__c" : 6.00},' +
-                '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Billing_Method__c" : "kWh"}, ' +
+                '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Count_of_Transfers__c" : 2, "Billing_Method__c" : "kWh"}, ' +
                 '"Account" : {"Name" : "Account One", "Account_Number__c" : "BW-00001"}}}}';
             String szsTwo = '{"Id":"szsTwo_ID","Customer_Subscription_kW_DC__c": 12.00,"Percent_Share__c" : 0.8300,' +
                 '"System_Size_kW_DC__c" : 1445.86,"Schedule_Z__c" : "a3z190000009UUvAAM",' +
@@ -157,7 +164,7 @@ public class TransferSheetBillingTest {
                 '"Opportunity__r" : {"Id":"0000000BBB","Name":"Oppty B", "Product_Escalation_Schedule__c" : "a6o19000000CsuGAAS",' +
                 '"Product__r" : {"NMC_Discount__c" : 10.00 ,"NM_Rate_Floor__c" : 0.0,"Solar_Electricity_Rate__c" : 0.13,' +
                 '"Pricing_Structure__c" : "Fixed % Discount","Percent_Share_Decimal_Places__c" : 6.00},' +
-                '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Billing_Method__c" : "NMC", "Count_of_Transfers__c": 2}, ' +
+                '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Count_of_Transfers__c" : 2, "Billing_Method__c" : "NMC"}, ' +
                 '"Account" : {"Name" : "Account One", "Account_Number__c" : "BW-00001"}}}}';
             String szsThree = '{"Id":"szsThree_ID","Customer_Subscription_kW_DC__c": 17.00,"Percent_Share__c" : 1.1758,' +
                 '"System_Size_kW_DC__c" : 1445.86,"Schedule_Z__c" : "a3z190000009UUvAAM",' +
@@ -165,7 +172,7 @@ public class TransferSheetBillingTest {
                 '"Opportunity__r" : {"Id":"0000000CCC","Name":"Oppty C",' +
                 '"Product__r" : {"NMC_Discount__c" : 10.00 ,"NM_Rate_Floor__c" : 0.0,"Solar_Electricity_Rate__c" : 0.13,' +
                 '"Pricing_Structure__c" : "Fixed % Discount","Percent_Share_Decimal_Places__c" : 6.00},' +
-                '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Billing_Method__c" : "NMC"}, ' +
+                '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Count_of_Transfers__c" : 2, "Billing_Method__c" : "NMC"}, ' +
                 '"Account" : {"Name" : "Account One", "Account_Number__c" : "BW-00001"}}}}';
             String szsFour = '{"Id":"szsFour_ID","Customer_Subscription_kW_DC__c": 17.00,"Percent_Share__c" : 1.1758,' +
                 '"System_Size_kW_DC__c" : 1445.86,"Schedule_Z__c" : "a3z190000009UUvAAM",' +
@@ -173,7 +180,7 @@ public class TransferSheetBillingTest {
                 '"Opportunity__r" : {"Id":"0000000DDD","Name":"Oppty D",' +
                 '"Product__r" : {"NMC_Discount__c" : 10.00 ,"NM_Rate_Floor__c" : 0.0,"Solar_Electricity_Rate__c" : 0.13,' +
                 '"Pricing_Structure__c" : "Use Solar Electric Rate","Percent_Share_Decimal_Places__c" : 6.00},' +
-                '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Billing_Method__c" : "kWh"}, ' +
+                '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Count_of_Transfers__c" : 2, "Billing_Method__c" : "kWh"}, ' +
                 '"Account" : {"Name" : "Account One", "Account_Number__c" : "BW-00001"}}}}';
             String szsFive = '{"Id":"szsFive_ID","Customer_Subscription_kW_DC__c": 7.00,"Percent_Share__c" : 0.4841,' +
                 '"System_Size_kW_DC__c" : 1445.86,"Schedule_Z__c" : "a3z190000009UUvAAM",' +
@@ -181,16 +188,12 @@ public class TransferSheetBillingTest {
                 '"Opportunity__r" : {"Id":"0000000EEE","Name":"Oppty E",' +
                 '"Product__r" : {"NMC_Discount__c" : 25.00 ,"NM_Rate_Floor__c" : 0.0,"Solar_Electricity_Rate__c" : 0.13,' +
                 '"Pricing_Structure__c" : "Fixed % Discount","Percent_Share_Decimal_Places__c" : 6.00},' +
-                '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Billing_Method__c" : "NMC"}, ' +
+                '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Count_of_Transfers__c" : 2, "Billing_Method__c" : "NMC"}, ' +
                 '"Account" : {"Name" : "Account One", "Account_Number__c" : "BW-00001"}}}}';
-            String szsSix = '{"Id":"szsSix_ID","Customer_Subscription_kW_DC__c": 11.00,"Percent_Share__c" : 0.7608,' +
-                '"System_Size_kW_DC__c" : 1445.86,"Schedule_Z__c" : "a3z190000009UUvCCC",' +
+            String szsSix = '{"Id":"szsSix_ID","Schedule_Z__c" : "a3z190000009UUvCCC",' +
                 '"Utility_Account_Subscription__r" : {"Name" : "UAS_Six", ' +
                 '"Opportunity__r" : {"Id":"0000000FFF","Name":"Oppty F",' +
-                '"Product__r" : {"NMC_Discount__c" : 10.00 ,"NM_Rate_Floor__c" : 0.0,"Solar_Electricity_Rate__c" : 0.13,' +
-                '"Pricing_Structure__c" : "Fixed % Discount","Percent_Share_Decimal_Places__c" : 6.00},' +
-                '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Billing_Method__c" : "NMC"}, ' +
-                '"Account" : {"Name" : "Account One", "Account_Number__c" : "BW-00001"}}}}';
+                '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Count_of_Transfers__c" : 2, "Billing_Method__c" : "NMC"}}}}';
             String onTimeSZS = '[' + szsOne + ',' + szsTwo + ',' + szsThree + ',' + szsFour + ',' + szsFive + ']';
             String cancelledSZS = '[' + szsSix + ']';
             switch on methodCall.stubbedMethodName {
@@ -246,7 +249,7 @@ public class TransferSheetBillingTest {
             escalatorMap.put('a6o19000000CsuGBBS', new List<Product_Escalator__c>{schedTwo});
 
             switch on methodCall.stubbedMethodName {
-                when 'getProductEscalationMap' {
+                when 'getProductEscalations' {
                     return escalatorMap;
                 }
             }
