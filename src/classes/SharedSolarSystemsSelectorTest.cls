@@ -180,4 +180,28 @@ public with sharing class SharedSolarSystemsSelectorTest {
         System.assertNotEquals(null, checkProject);
     }
 
+    //TODO: These are Test methods for queries required to go into Production BEFORE Production/Transfer Logic has been released
+    // WILL BE DEPRECATED AFTER RELEASE
+
+    @IsTest
+    static void testGetSSSWithoutProdUpdates(){
+        Date todaysDate = Date.today();
+        List<Id> prodIdList;
+
+        List<Energy_Usage_Update__c> prodList;
+        prodList = ProductionUpdateSelector.getProductionUpdatesByMonth(todaysDate.month(),String.valueOf(todaysDate.year()));
+
+        for (Energy_Usage_Update__c prod : prodList){
+            prodIdList.add(prod.Id);
+        }
+
+        List<Shared_Solar_System__c> sssList;
+        List<Shared_Solar_System__c> sss2List;
+        sssList = SharedSolarSystemsSelector.getAllSSSWithProductionUpdates();
+        sss2List = SharedSolarSystemsSelector.getAllSSSWithProdUpdatesNotInList(prodIdList);
+
+        System.assertEquals(0,sssList.size());
+        System.assertEquals(0,sss2List.size());
+    }
+
 }

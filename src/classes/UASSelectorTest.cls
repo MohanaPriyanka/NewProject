@@ -41,6 +41,7 @@ public with sharing class UASSelectorTest {
 
     @IsTest public static void testGetUASMap() {
         Set<Id> uasIds = (new Map<Id, Utility_Account_Subscription__c>([SELECT Id FROM Utility_Account_Subscription__c])).keySet();
-        System.assertNotEquals(null, UASSelector.getUASMap(uasIds));
+        UASSelector uasSelector = new UASSelector();
+        System.assertNotEquals(null, uasSelector.getUASMap(uasIds));
     }
 }
