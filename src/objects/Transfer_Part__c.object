@@ -187,6 +187,19 @@
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <fields>
+        <fullName>Reduce_Available_for_Allocation__c</fullName>
+        <description>Transfer Parts with Type = Fee or Incentive Payment set the checkbox to TRUE and are used to reduce Credits Available for Allocation on the Production</description>
+        <externalId>false</externalId>
+        <formula>IF( 
+OR (ISPICKVAL(Type__c, &quot;Fee&quot;), ISPICKVAL(Type__c, &quot;Incentive Payment&quot;)),
+TRUE,
+FALSE)</formula>
+        <inlineHelpText>Transfer Parts with Type = Fee or Incentive Payment set the checkbox to TRUE and are used to reduce Credits Available for Allocation on the Production</inlineHelpText>
+        <label>Reduce Available for Allocation</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Transfer__c</fullName>
         <deleteConstraint>Restrict</deleteConstraint>
         <description>A lookup relationship from Transfer Parts up to Transfer.</description>
@@ -218,6 +231,16 @@
                     <fullName>Fee</fullName>
                     <default>false</default>
                     <label>Fee</label>
+                </value>
+                <value>
+                    <fullName>Incentive Payment</fullName>
+                    <default>false</default>
+                    <label>Incentive Payment</label>
+                </value>
+                <value>
+                    <fullName>Unsubscribed Credits</fullName>
+                    <default>false</default>
+                    <label>Unsubscribed Credits</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
