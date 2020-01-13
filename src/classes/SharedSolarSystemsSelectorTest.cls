@@ -89,6 +89,27 @@ public with sharing class SharedSolarSystemsSelectorTest {
     }
 
     @IsTest
+    public static void testSelectOne() {
+        List<Shared_Solar_System__c> sssIds = (new List<Shared_Solar_System__c>([SELECT Id FROM Shared_Solar_System__c]));
+        SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
+        System.assert(sssSelector.selectOne(sssIds.get(0).Id) != null, 'Expected a single SSS');
+    }
+
+    @IsTest
+    public static void testSelectAll() {
+        Set<Id> sssIds = (new Map<Id, Shared_Solar_System__c>([SELECT Id FROM Shared_Solar_System__c])).keySet();
+        SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
+        System.assert(sssSelector.selectAll(sssIds) != null, 'Expected a list of SSS');
+    }
+
+    @IsTest
+    public static void testGetSSSMap() {
+        Set<Id> sssIds = (new Map<Id, Shared_Solar_System__c>([SELECT Id FROM Shared_Solar_System__c])).keySet();
+        SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
+        System.assert(sssSelector.getSSSMap(sssIds) != null, 'Expected a map of SSS');
+    }
+
+    @IsTest
     public static void testGetSharedSolarSystemsWithCapacityByUtilityAndLoadZone() {
         Map<String, Id> utilityMap = new Map<String, Id>();
         for(Utility__c utility : [SELECT Id, Name FROM Utility__c]){
