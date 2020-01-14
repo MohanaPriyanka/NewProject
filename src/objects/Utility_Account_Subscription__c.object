@@ -388,6 +388,27 @@ Round(( Subscribed_Annual_Cost_of_Electricity__c / 0.1933 / Opportunity__r.Share
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Externally_Serviced__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF (  
+ AND( 
+  OR (
+    ISPICKVAL(Opportunity__r.Customer_Group__c, &quot;Public Offtake&quot;),
+    ISPICKVAL(Opportunity__r.Customer_Group__c, &quot;Anchor&quot;)
+  ),
+   AND(
+    NOT(ISPICKVAL(Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c, &quot;&quot;)),
+    NOT(ISPICKVAL(Opportunity__r.Shared_Solar_System__r.Billing_Anchors__c, &quot;BlueWave&quot;))
+  )
+ ),
+TRUE, FALSE)</formula>
+        <inlineHelpText>Checked if subscription is billed by RadianGen</inlineHelpText>
+        <label>Externally Serviced</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Finaled__c</fullName>
         <externalId>false</externalId>
         <formula>NOT(ISBLANK( Utility_Account_Log__r.Date_Utility_Account_Cancelled__c ))</formula>
