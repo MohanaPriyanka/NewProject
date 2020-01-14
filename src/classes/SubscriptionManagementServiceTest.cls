@@ -6,14 +6,16 @@
 private class SubscriptionManagementServiceTest {
     @TestSetup
     public static void setupData() {
+        Shared_Solar_System__c sss = new Shared_Solar_System__c(
+            Id = 'a1J29000000tjOkEAI'
+        );
         Shared_Solar_System_Order__c sssoSize = new Shared_Solar_System_Order__c(
-            Shared_Solar_System__c = 'a1J29000000tjOkEAI',
+            Shared_Solar_System__c = sss.Id,
             Total_System_Size_kW_DC__c = 2891.72,
             Approval_Status__c = 'Approved'
         );
 
         insert sssoSize;
-
     }
 
 
