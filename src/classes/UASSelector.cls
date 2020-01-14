@@ -23,6 +23,7 @@ public without sharing class UASSelector {
             WHERE Utility_Account_Log__r.Account__c = :accounts
         ];
     }
+
     public static List<Utility_Account_Subscription__c> selectByUAL(Set<Id> ualIds) {
         return [
             SELECT Id,
@@ -35,6 +36,7 @@ public without sharing class UASSelector {
             WHERE Utility_Account_Log__c IN :ualIds
         ];
     }
+
     public static List<Utility_Account_Subscription__c> selectByIds(Set<Id> uasIds) {
         return [
             SELECT Id,
@@ -62,6 +64,7 @@ public without sharing class UASSelector {
         ]);
         return uasMap;
     }
+
     public static Map<Id, Utility_Account_Subscription__c> selectByIdsAsMap(Set<Id> uasIds){
         Map<Id, Utility_Account_Subscription__c> uasWithClientMap = new Map<Id, Utility_Account_Subscription__c>([
             SELECT Id, Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c
@@ -70,6 +73,7 @@ public without sharing class UASSelector {
         ]);
         return uasWithClientMap;
     }
+
     public List<Utility_Account_Subscription__c> selectBySharedSolarSystem(Id sssId) {
         return [
             SELECT Id, Name, Annual_Cost_Future_Rollup__c, Annual_kWh_Subscription_Future_Rollup__c,

@@ -30,7 +30,7 @@ public without sharing class SubscriptionManagementService {
             so.Value_of_NMC__c = uas.Opportunity__r.NMC_Tariff__r.Value_of_NMC__c;
             so.Product__c = uas.Opportunity__r.Product__c;
 
-            if (so.Type__c == 'System Change') {
+            if (so.Type__c == 'Shared Solar System Update') {
                 so.Change_in_Subscription_KW_DC__c = so.Calculated_kW_DC_Subscription__c - so.Previous_kw_DC_Subscription__c;
                 so.Change_in_Percent_Share_of_System__c = so.Calculated_Percent_Share_of_System__c - so.Previous_Percent_Share_of_System__c;
             }
