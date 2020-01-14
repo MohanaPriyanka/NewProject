@@ -344,35 +344,6 @@ Round(( Subscribed_Annual_Cost_of_Electricity__c / Opportunity__r.NMC_Value__c/ 
         <type>Date</type>
     </fields>
     <fields>
-        <fullName>Dover_Updated_NMC__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF( UAS_Number__c &gt; 1 , 
-
-Subscribed_Annual_Cost_of_Electricity__c / 0.1933 / Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c, 
-
-IF( 
-
-OR(Auto_Unround__c = TRUE , AND(UAS_Number__c = 1 , calculated_annual_cost_of_electricity__c != Subscribed_Annual_Cost_of_Electricity__c )), 
-
-Subscribed_Annual_Cost_of_Electricity__c / 0.1933 / Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c, 
-
-
-IF( 
-
-OR(AND(UAS_Number__c = 1 , calculated_annual_cost_of_electricity__c = Subscribed_Annual_Cost_of_Electricity__c ), Opportunity__r.Shared_Solar_System_Name__c = &apos;Fairhaven Mill Rd&apos;, Opportunity__r.Shared_Solar_System_Name__c = &apos;Oxford Clara Barton&apos;), 
-
-Round(( Subscribed_Annual_Cost_of_Electricity__c / 0.1933 / Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c) * 4, 0)/4,0)))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Dover - Updated NMC</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>4</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Entity_Assignment__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>

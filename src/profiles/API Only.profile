@@ -31394,11 +31394,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Utility_Account_Subscription__c.Dover_Updated_NMC__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Utility_Account_Subscription__c.Estimated_Annual_Subscription_kWh__c</field>
         <readable>true</readable>
     </fieldPermissions>
