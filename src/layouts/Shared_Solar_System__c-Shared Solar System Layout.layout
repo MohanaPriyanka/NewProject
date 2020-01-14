@@ -566,6 +566,17 @@
         <relatedList>Case.Shared_Solar_System__c</relatedList>
     </relatedLists>
     <relatedLists>
+        <excludeButtons>MassChangeOwner</excludeButtons>
+        <fields>NAME</fields>
+        <fields>Start_Date__c</fields>
+        <fields>End_Date__c</fields>
+        <fields>Production_kWh__c</fields>
+        <fields>Credits_Available_for_Allocation__c</fields>
+        <relatedList>Production__c.Shared_Solar_System__c</relatedList>
+        <sortField>Start_Date__c</sortField>
+        <sortOrder>Desc</sortOrder>
+    </relatedLists>
+    <relatedLists>
         <fields>NAME</fields>
         <fields>Total_System_NMCs__c</fields>
         <fields>Production__c</fields>

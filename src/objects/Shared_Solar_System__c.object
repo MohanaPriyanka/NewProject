@@ -334,6 +334,17 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Apex_Context__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>No profiles or permission sets should grant users edit access to this field. It is used to make sure record updates made in Apex aren&apos;t prevented by validation rules.</description>
+        <externalId>false</externalId>
+        <label>Apex Context</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>App_ID_WO_Manual__c</fullName>
         <externalId>false</externalId>
         <label>App ID#/ WO #</label>
