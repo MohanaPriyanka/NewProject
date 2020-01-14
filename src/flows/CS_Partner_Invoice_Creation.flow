@@ -250,8 +250,8 @@
     <decisions>
         <name>Commission_Payment_Type</name>
         <label>Commission Payment Type?</label>
-        <locationX>171</locationX>
-        <locationY>238</locationY>
+        <locationX>170</locationX>
+        <locationY>236</locationY>
         <defaultConnectorLabel>[Default Outcome]</defaultConnectorLabel>
         <rules>
             <name>Contract_Execution</name>
@@ -762,7 +762,7 @@ MONTH(TODAY())+1),
             <targetReference>Duplicate_Commission_Payment_Check</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <textTemplates>
         <name>casedescription</name>
         <text>Alert: There was an issue with the creation of the {!varCommissionPaymentType} commission payment record for this opportunity: ({!OpportunityName} {!OpportunityID} ). 
