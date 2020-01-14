@@ -3,8 +3,8 @@
     <actionCalls>
         <name>partner_support_case</name>
         <label>partner support case</label>
-        <locationX>975</locationX>
-        <locationY>209</locationY>
+        <locationX>1351</locationX>
+        <locationY>511</locationY>
         <actionName>Opportunity.Create_New_Case</actionName>
         <actionType>quickAction</actionType>
         <inputParameters>
@@ -41,8 +41,8 @@
     <assignments>
         <name>assign_CP_Values</name>
         <label>assign CP Values</label>
-        <locationX>348</locationX>
-        <locationY>693</locationY>
+        <locationX>183</locationX>
+        <locationY>1148</locationY>
         <assignmentItems>
             <assignToReference>sovaComPayments.Amount_Due__c</assignToReference>
             <operator>Assign</operator>
@@ -113,8 +113,8 @@
     <assignments>
         <name>assign_CPs_to_list</name>
         <label>assign CPs to list</label>
-        <locationX>503</locationX>
-        <locationY>694</locationY>
+        <locationX>181</locationX>
+        <locationY>1279</locationY>
         <assignmentItems>
             <assignToReference>updatelistCPs</assignToReference>
             <operator>Add</operator>
@@ -129,8 +129,8 @@
     <assignments>
         <name>assign_total_kw_dc_variable</name>
         <label>assign total kw dc variable</label>
-        <locationX>821</locationX>
-        <locationY>113</locationY>
+        <locationX>1211</locationX>
+        <locationY>360</locationY>
         <assignmentItems>
             <assignToReference>kWDCSubscriptionTotal</assignToReference>
             <operator>Assign</operator>
@@ -145,8 +145,8 @@
     <assignments>
         <name>NameAssignment</name>
         <label>NameAssignment</label>
-        <locationX>174</locationX>
-        <locationY>441</locationY>
+        <locationX>180</locationX>
+        <locationY>828</locationY>
         <assignmentItems>
             <assignToReference>varInvoiceName</assignToReference>
             <operator>Assign</operator>
@@ -168,13 +168,13 @@
     <assignments>
         <name>Subscription_Sum</name>
         <label>Subscription Sum</label>
-        <locationX>820</locationX>
-        <locationY>22</locationY>
+        <locationX>1208</locationX>
+        <locationY>218</locationY>
         <assignmentItems>
             <assignToReference>kWDCSubscriptionTotal</assignToReference>
             <operator>Add</operator>
             <value>
-                <elementReference>UASloopvar.Customer_Subscription_KW_DC__c</elementReference>
+                <elementReference>formula_KWDC_Value</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -184,8 +184,8 @@
     <decisions>
         <name>Active_Commission_Found</name>
         <label>Active Commission Found?</label>
-        <locationX>181</locationX>
-        <locationY>209</locationY>
+        <locationX>180</locationX>
+        <locationY>519</locationY>
         <defaultConnectorLabel>[Default Outcome]</defaultConnectorLabel>
         <rules>
             <name>Active_Commission_is_Found</name>
@@ -250,8 +250,8 @@
     <decisions>
         <name>Commission_Payment_Type</name>
         <label>Commission Payment Type?</label>
-        <locationX>181</locationX>
-        <locationY>91</locationY>
+        <locationX>171</locationX>
+        <locationY>238</locationY>
         <defaultConnectorLabel>[Default Outcome]</defaultConnectorLabel>
         <rules>
             <name>Contract_Execution</name>
@@ -348,8 +348,8 @@
     <decisions>
         <name>Invoice_Found</name>
         <label>Invoice Found?</label>
-        <locationX>355</locationX>
-        <locationY>445</locationY>
+        <locationX>170</locationX>
+        <locationY>965</locationY>
         <defaultConnectorLabel>[Default Outcome]</defaultConnectorLabel>
         <rules>
             <name>No_Invoice_Found_Create_New_Invoice</name>
@@ -396,6 +396,19 @@
         <name>CommissionPaymentName</name>
         <dataType>String</dataType>
         <expression>LEFT({!PartnerName}  &amp; &quot; &quot; &amp; {!OpportunityName} &amp; &quot; &quot; &amp; {!varCommissionPaymentType},80)</expression>
+    </formulas>
+    <formulas>
+        <description>Uses custom metadata feature flag to determine which UAS field to look to for the kw dc subscription amount.</description>
+        <name>formula_KWDC_Value</name>
+        <dataType>Number</dataType>
+        <expression>IF(
+{!Get_Custom_Metadata.Feature_is_Enabled__c}=true
+,
+{!UASloopvar.Future_Customer_Subscription_KWDC_Rollup__c}
+,
+{!UASloopvar.Customer_Subscription_KW_DC__c}
+)</expression>
+        <scale>4</scale>
     </formulas>
     <formulas>
         <name>InvoiceAccountingDueDate</name>
@@ -460,8 +473,8 @@ MONTH(TODAY())+1),
     <loops>
         <name>UASloop</name>
         <label>UASloop</label>
-        <locationX>598</locationX>
-        <locationY>22</locationY>
+        <locationX>823</locationX>
+        <locationY>228</locationY>
         <assignNextValueToReference>UASloopvar</assignNextValueToReference>
         <collectionReference>UASlist</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -482,8 +495,8 @@ MONTH(TODAY())+1),
     <recordCreates>
         <name>Create_New_Invoice</name>
         <label>Create New Invoice</label>
-        <locationX>763</locationX>
-        <locationY>437</locationY>
+        <locationX>1370</locationX>
+        <locationY>976</locationY>
         <assignRecordIdToReference>ActiveInvoiceID</assignRecordIdToReference>
         <connector>
             <targetReference>assign_CP_Values</targetReference>
@@ -535,15 +548,15 @@ MONTH(TODAY())+1),
     <recordCreates>
         <name>createCPs</name>
         <label>createCPs</label>
-        <locationX>656</locationX>
-        <locationY>696</locationY>
+        <locationX>178</locationX>
+        <locationY>1426</locationY>
         <inputReference>updatelistCPs</inputReference>
     </recordCreates>
     <recordLookups>
         <name>Duplicate_Commission_Payment_Check</name>
         <label>Duplicate Commission Payment Check</label>
-        <locationX>180</locationX>
-        <locationY>0</locationY>
+        <locationX>178</locationX>
+        <locationY>50</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Commission_Payment_Type</targetReference>
@@ -569,10 +582,32 @@ MONTH(TODAY())+1),
         </outputAssignments>
     </recordLookups>
     <recordLookups>
+        <name>Get_Custom_Metadata</name>
+        <label>Get Custom Metadata</label>
+        <locationX>684</locationX>
+        <locationY>229</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>UASloop</targetReference>
+        </connector>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Subscription_Orders</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Custom_Feature_Enablement__mdt</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Feature_is_Enabled__c</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Invoice_Lookup</name>
         <label>Invoice Lookup</label>
-        <locationX>182</locationX>
-        <locationY>325</locationY>
+        <locationX>189</locationX>
+        <locationY>713</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>NameAssignment</targetReference>
@@ -623,8 +658,8 @@ MONTH(TODAY())+1),
     <recordLookups>
         <name>Lookup_Active_Commission_Structure</name>
         <label>Lookup Active Commission Structure</label>
-        <locationX>415</locationX>
-        <locationY>125</locationY>
+        <locationX>828</locationX>
+        <locationY>403</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Active_Commission_Found</targetReference>
@@ -671,11 +706,11 @@ MONTH(TODAY())+1),
     <recordLookups>
         <name>UASLookup</name>
         <label>UASLookup</label>
-        <locationX>419</locationX>
-        <locationY>21</locationY>
+        <locationX>498</locationX>
+        <locationY>234</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>UASloop</targetReference>
+            <targetReference>Get_Custom_Metadata</targetReference>
         </connector>
         <filters>
             <field>Opportunity__c</field>
@@ -688,14 +723,14 @@ MONTH(TODAY())+1),
         <outputReference>UASlist</outputReference>
         <queriedFields>Customer_Subscription_KW_DC__c</queriedFields>
         <queriedFields>Opportunity__c</queriedFields>
-        <queriedFields>Customer_Subscription_KW_DC_STATIC__c</queriedFields>
+        <queriedFields>Future_Customer_Subscription_KWDC_Rollup__c</queriedFields>
     </recordLookups>
     <recordUpdates>
         <description>Updates Opportunity with total future kw dc subscribed from UAS and with the active commission structure</description>
         <name>Update_opp</name>
         <label>Update opp</label>
-        <locationX>979</locationX>
-        <locationY>325</locationY>
+        <locationX>1359</locationX>
+        <locationY>663</locationY>
         <connector>
             <targetReference>Invoice_Lookup</targetReference>
         </connector>
@@ -720,8 +755,14 @@ MONTH(TODAY())+1),
         </inputAssignments>
         <object>Opportunity</object>
     </recordUpdates>
-    <startElementReference>Duplicate_Commission_Payment_Check</startElementReference>
-    <status>Active</status>
+    <start>
+        <locationX>20</locationX>
+        <locationY>53</locationY>
+        <connector>
+            <targetReference>Duplicate_Commission_Payment_Check</targetReference>
+        </connector>
+    </start>
+    <status>Draft</status>
     <textTemplates>
         <name>casedescription</name>
         <text>Alert: There was an issue with the creation of the {!varCommissionPaymentType} commission payment record for this opportunity: ({!OpportunityName} {!OpportunityID} ). 

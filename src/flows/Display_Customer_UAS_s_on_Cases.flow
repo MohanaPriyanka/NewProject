@@ -1,5 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <decisions>
+        <name>Is_SO_Feature_Enabled</name>
+        <label>Is SO Feature Enabled?</label>
+        <locationX>300</locationX>
+        <locationY>210</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>SO_Feature_Enabled</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Custom_Metadata_Type.Feature_is_Enabled__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_UAS_s_0</targetReference>
+            </connector>
+            <label>SO Feature Enabled</label>
+        </rules>
+        <rules>
+            <name>SO_Feature_Not_Enabled</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Custom_Metadata_Type.Feature_is_Enabled__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_UAS_s</targetReference>
+            </connector>
+            <label>SO Feature Not Enabled</label>
+        </rules>
+    </decisions>
     <formulas>
         <name>for18to15digitAcctId</name>
         <dataType>String</dataType>
@@ -27,7 +64,7 @@
         <locationY>50</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_UAS_s</targetReference>
+            <targetReference>Get_Custom_Metadata_Type</targetReference>
         </connector>
         <filters>
             <field>Id</field>
@@ -43,10 +80,32 @@
         </outputAssignments>
     </recordLookups>
     <recordLookups>
+        <name>Get_Custom_Metadata_Type</name>
+        <label>Get Custom Metadata Type</label>
+        <locationX>309</locationX>
+        <locationY>50</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Is_SO_Feature_Enabled</targetReference>
+        </connector>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Subscription_Orders</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Custom_Feature_Enablement__mdt</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Feature_is_Enabled__c</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_UAS_s</name>
         <label>Get UAS&apos;s</label>
-        <locationX>428</locationX>
-        <locationY>50</locationY>
+        <locationX>575</locationX>
+        <locationY>58</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Utility_Account_Subscriptions</targetReference>
@@ -69,11 +128,38 @@
         <sortField>Name</sortField>
         <sortOrder>Asc</sortOrder>
     </recordLookups>
+    <recordLookups>
+        <name>Get_UAS_s_0</name>
+        <label>Get UAS&apos;s</label>
+        <locationX>633</locationX>
+        <locationY>223</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Utility_Account_Subscriptions_0</targetReference>
+        </connector>
+        <filters>
+            <field>Parent_Account_Id__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>for18to15digitAcctId</elementReference>
+            </value>
+        </filters>
+        <object>Utility_Account_Subscription__c</object>
+        <outputReference>rcUtilityAccountSubs</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Shared_Solar_System_Name__c</queriedFields>
+        <queriedFields>Utility_Account_Log_Name__c</queriedFields>
+        <queriedFields>Future_Customer_Subscription_KWDC_Rollup__c</queriedFields>
+        <queriedFields>Annual_kWh_Subscription_Future_Rollup__c</queriedFields>
+        <queriedFields>Annual_Cost_Future_Rollup__c</queriedFields>
+        <sortField>Name</sortField>
+        <sortOrder>Asc</sortOrder>
+    </recordLookups>
     <screens>
         <name>Utility_Account_Subscriptions</name>
         <label>Utility Accoudnt Subscriptions</label>
-        <locationX>642</locationX>
-        <locationY>50</locationY>
+        <locationX>790</locationX>
+        <locationY>58</locationY>
         <allowBack>true</allowBack>
         <allowFinish>false</allowFinish>
         <allowPause>false</allowPause>
@@ -212,7 +298,156 @@
         <showFooter>false</showFooter>
         <showHeader>false</showHeader>
     </screens>
-    <startElementReference>Get_Account_Id</startElementReference>
+    <screens>
+        <name>Utility_Account_Subscriptions_0</name>
+        <label>Utility Accoudnt Subscriptions</label>
+        <locationX>788</locationX>
+        <locationY>213</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>false</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>UAS_0</name>
+            <extensionName>c:datatableFSC</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>mydata_custom2</name>
+                <value>
+                    <elementReference>rcUtilityAccountSubs</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>column01_fieldName</name>
+                <value>
+                    <stringValue>Utility_Account_Log_Name__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>column01_label</name>
+                <value>
+                    <stringValue>UAL</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>column02_fieldName</name>
+                <value>
+                    <stringValue>Shared_Solar_System_Name__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>column02_label</name>
+                <value>
+                    <stringValue>SSS</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>column03_fieldName</name>
+                <value>
+                    <stringValue>Future_Customer_Subscription_KWDC_Rollup__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>column03_label</name>
+                <value>
+                    <stringValue>Cust. Size (KW DC)</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>column04_fieldName</name>
+                <value>
+                    <stringValue>Annual_kWh_Subscription_Future_Rollup__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>column04_label</name>
+                <value>
+                    <stringValue>kWh Sub</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>column03_type</name>
+                <value>
+                    <stringValue>number</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>column04_type</name>
+                <value>
+                    <stringValue>number</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>column02_align</name>
+                <value>
+                    <stringValue>center</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>column03_align</name>
+                <value>
+                    <stringValue>center</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>column04_align</name>
+                <value>
+                    <stringValue>center</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>column05_align</name>
+                <value>
+                    <stringValue>center</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>column05_label</name>
+                <value>
+                    <stringValue>Cost Sub</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>column05_fieldName</name>
+                <value>
+                    <stringValue>Annual_Cost_Future_Rollup__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>column05_type</name>
+                <value>
+                    <stringValue>number</stringValue>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Billing_Information_0</name>
+            <extensionName>c:PreviewAccountBilling</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>accountID</name>
+                <value>
+                    <elementReference>for18to15digitAcctId</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>isParentAcct</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Get_Account_Id</targetReference>
+        </connector>
+    </start>
     <status>Active</status>
     <variables>
         <name>rcUtilityAccountSubs</name>
