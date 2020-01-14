@@ -53,6 +53,20 @@ public without sharing class ClientReportingService {
         }
     }
 
+    public void stampClient(List<Production__c> productions) {
+        Set<Id> sssIds = new Set<Id>();
+        for (Production__c prod : productions) {
+            sssIds.add(prod.Shared_Solar_System__c);
+        }
+
+        SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
+        Map<Id, Shared_Solar_System__c> sssMap  = sssSelector.getSSSMap(sssIds);
+        for (Production__c prod : productions) {
+            Shared_Solar_System__c sss = sssMap.get(prod.Shared_Solar_System__c);
+            prod.Client_Account__c = sss.Client_Account__c;
+        }
+    }
+
     public static void updateClientReports( Map<ID, Client_Health_Report__c> oldReportMap,
                                             Map<ID, Client_Health_Report__c> newReportMap) {
         for (Client_Health_Report__c newReport : newReportMap.values()) {
