@@ -17,7 +17,7 @@ public without sharing class SubscriptionManagementService {
         for (Subscription_Order__c so : soList) {
             uasIds.add(so.Utility_Account_Subscription__c);
         }
-
+        
         Map<Id, Utility_Account_Subscription__c> uasMap = uasSelector.getUASMap(uasIds);
 
         for (Subscription_Order__c so : soList) {
@@ -29,11 +29,6 @@ public without sharing class SubscriptionManagementService {
             so.Utility_NMC_Tariff__c = uas.Opportunity__r.NMC_Tariff__c;
             so.Value_of_NMC__c = uas.Opportunity__r.NMC_Tariff__r.Value_of_NMC__c;
             so.Product__c = uas.Opportunity__r.Product__c;
-
-            if (so.Type__c == 'Shared Solar System Update') {
-                so.Change_in_Subscription_KW_DC__c = so.Calculated_kW_DC_Subscription__c - so.Previous_kw_DC_Subscription__c;
-                so.Change_in_Percent_Share_of_System__c = so.Calculated_Percent_Share_of_System__c - so.Previous_Percent_Share_of_System__c;
-            }
         }
     }
 

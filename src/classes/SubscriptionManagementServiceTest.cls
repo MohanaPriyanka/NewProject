@@ -12,13 +12,13 @@ private class SubscriptionManagementServiceTest {
         );
         insert eversource;
 
-        Shared_Solar_System__c sss = new Shared_Solar_System__c(   Name = 'Oxford Barrett St. P1',
+        Shared_Solar_System__c sss = new Shared_Solar_System__c(   Name = 'SSS Test',
             Service_Territory__c = 'SEMA',
             Service_Territories__c = 'SEMA',
             Open__c = true,
             Reserved_Capacity_kW_DC__c = '10',
             Capacity_Committed_kW_DC__c = 0,
-            Total_System_Size_kWh_DC__c = 1445.86,
+            Total_System_Size_kWh_DC__c = 1095.84,
             Total_System_Size_kW_AC__c  = 996,
             Utility__c = eversource.Id,
             Credit_Score_Requirement__c = 300,
@@ -42,28 +42,43 @@ private class SubscriptionManagementServiceTest {
     @IsTest
     static void testSubscriptionOrderInsert() {
         useMocks();
+
         Subscription_Order__c so = new Subscription_Order__c(
             Utility_Account_Subscription__c = 'a1d29000001C3xuAAC'
         );
 
-        insert so;
+        SubscriptionManagementService subscriptionManagementService = new SubscriptionManagementService();
+        subscriptionManagementService.populateSubscriptionOrder(new List<Subscription_Order__c> {so});
 
-        Subscription_Order__c checkSO = [
-            SELECT Id, Client_Account__c, Expected_Yield_kWh_kW__c, Total_System_Size_kW_DC__c, Utility_NMC_Tariff__c,
-                Utility_Number_of_Decimal_Places__c, Value_of_NMC__c, Product__c
-            FROM Subscription_Order__c
-            LIMIT 1
-        ];
-
-        System.assertNotEquals(null, checkSO);
-        System.assertEquals(1300, checkSO.Expected_Yield_kWh_kW__c);
-        System.assertEquals(1095.84, checkSO.Total_System_Size_kW_DC__c);
-        System.assertEquals(2, checkSO.Utility_Number_of_Decimal_Places__c );
-        System.assertEquals(0.1848, checkSO.Value_of_NMC__c);
-        System.assertNotEquals(null, checkSO.Product__c);
+        System.assertNotEquals(null, so);
+        System.assertEquals(1300, so.Expected_Yield_kWh_kW__c);
+        System.assertEquals(1095.84, so.Total_System_Size_kW_DC__c);
+        System.assertEquals(2, so.Utility_Number_of_Decimal_Places__c );
+        System.assertEquals(0.1848, so.Value_of_NMC__c);
+        System.assertNotEquals(null, so.Product__c);
 
     }
 
+    @IsTest
+    private static void testSubscriptionManagementTrigger() {
+        //Just doing this for code coverage :/
+        useMocks();
+        Shared_Solar_System__c sss = new Shared_Solar_System__c(
+            Id = 'a1J29000000tjOkEAI'
+        );
+
+
+        Shared_Solar_System_Order__c sssoSize = new Shared_Solar_System_Order__c(
+            Shared_Solar_System__c = sss.Id,
+            Total_System_Size_kW_DC__c = 2891.72,
+            Approval_Status__c = 'New'
+        );
+
+        insert sssoSize;
+
+        sssoSize.Total_System_Size_kW_DC__c = 3000;
+        update sssoSize;
+    }
 
     @IsTest
     private static void testUpdateSSS() {
@@ -75,6 +90,7 @@ private class SubscriptionManagementServiceTest {
             WHERE Total_System_Size_kW_DC__c != null
             LIMIT 1
         ];
+
 
         SubscriptionManagementService service = new SubscriptionManagementService();
         Shared_Solar_System__c checkSSS = service.updateSSSFromSSSO(ssso);
