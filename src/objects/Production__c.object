@@ -229,14 +229,15 @@
     </fields>
     <fields>
         <fullName>Credits_Transferred__c</fullName>
-        <description>Rollup of Transfer {arts Amount field with Type = Transfer</description>
+        <description>Rollup of Transfer Parts Amount field with &quot;Reduce for Allocation&quot; checkbox = false</description>
         <externalId>false</externalId>
+        <inlineHelpText>Rollup of Transfer Parts Amount field with &quot;Reduce for Allocation&quot; checkbox = false</inlineHelpText>
         <label>Credits Transferred</label>
         <summarizedField>Transfer_Part__c.Amount__c</summarizedField>
         <summaryFilterItems>
-            <field>Transfer_Part__c.Type__c</field>
+            <field>Transfer_Part__c.Reduce_Available_for_Allocation__c</field>
             <operation>equals</operation>
-            <value>Transfer</value>
+            <value>False</value>
         </summaryFilterItems>
         <summaryForeignKey>Transfer_Part__c.Production__c</summaryForeignKey>
         <summaryOperation>sum</summaryOperation>
