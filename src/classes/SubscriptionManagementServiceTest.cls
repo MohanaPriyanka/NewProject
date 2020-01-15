@@ -35,7 +35,13 @@ private class SubscriptionManagementServiceTest {
             Approval_Status__c = 'Approved'
         );
 
-        insert sssoSize;
+        Shared_Solar_System_Order__c sssoUpdate = new Shared_Solar_System_Order__c(
+            Shared_Solar_System__c = sss.Id,
+            Total_System_Size_kW_DC__c = 2891.72,
+            Approval_Status__c = 'New'
+        );
+
+        insert new List<Shared_Solar_System_Order__c>{sssoSize, sssoUpdate};
     }
 
 
@@ -63,21 +69,31 @@ private class SubscriptionManagementServiceTest {
     private static void testSubscriptionManagementTrigger() {
         //Just doing this for code coverage :/
         useMocks();
-        Shared_Solar_System__c sss = new Shared_Solar_System__c(
-            Id = 'a1J29000000tjOkEAI'
-        );
+        Shared_Solar_System_Order__c ssso = [
+            SELECT Id
+            FROM Shared_Solar_System_Order__c
+            WHERE Approval_Status__c = 'New'
+            LIMIT 1
+        ];
 
+        ssso.Total_System_Size_kW_DC__c = 3000;
+        update ssso;
 
-        Shared_Solar_System_Order__c sssoSize = new Shared_Solar_System_Order__c(
-            Shared_Solar_System__c = sss.Id,
-            Total_System_Size_kW_DC__c = 2891.72,
-            Approval_Status__c = 'New'
-        );
+        ssso = [
+            SELECT Id, Total_System_Size_kW_DC__c
+            FROM Shared_Solar_System_Order__c
+            WHERE Id = :ssso.Id
+            LIMIT 1
+        ];
 
-        insert sssoSize;
+        List<Subscription_Order__c> soList = [
+            SELECT Id
+            FROM Subscription_Order__c
+            WHERE Shared_Solar_System_Order__c = :ssso.Id
+        ];
 
-        sssoSize.Total_System_Size_kW_DC__c = 3000;
-        update sssoSize;
+        System.assertEquals(3000, ssso.Total_System_Size_kW_DC__c);
+        System.assertEquals(0, soList.size());
     }
 
     @IsTest
