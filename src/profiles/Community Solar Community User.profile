@@ -43475,11 +43475,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Project_Image__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Shared_Solar_System__c.Project_Image__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -43499,12 +43494,22 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Shared_Solar_System__c.Project_Number__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Project_View__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Public__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Reserved_Anchor_Capacity__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -43554,6 +43559,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Shared_Solar_System__c.Serviced_Capacity__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Shared_Solar_System__c.Special_Ledger_Account_Number__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -43585,7 +43595,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.System_Utility__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -69862,18 +69872,10 @@
         <recordType>Shared_Solar_System__c.SSS_No_PM_Relationship</recordType>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Shared_Solar_System__c-Shared Solar System Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Shared_Solar_System__c-Customer Portal</layout>
-        <recordType>Shared_Solar_System__c.SSS_PM_Relationship</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Shared_Solar_System__c-Shared Solar System - No PM Relationship</layout>
-        <recordType>Shared_Solar_System__c.SSS_No_PM_Relationship</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Shared_Solar_System__c-Shared Solar System Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Shared_Solar_System__c-Shared Solar System Layout</layout>
         <recordType>Shared_Solar_System__c.SSS_PM_Relationship</recordType>
     </layoutAssignments>
     <layoutAssignments>
@@ -83950,7 +83952,7 @@
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>
-        <default>true</default>
+        <default>false</default>
         <recordType>Shared_Solar_System__c.SSS_No_PM_Relationship</recordType>
         <visible>false</visible>
     </recordTypeVisibilities>
