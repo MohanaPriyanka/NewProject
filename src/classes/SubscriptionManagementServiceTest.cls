@@ -66,8 +66,29 @@ private class SubscriptionManagementServiceTest {
     }
 
     @IsTest
+    private static void testSubscriptionOrderTrigger(){
+        Util.disableTrigger('Disable_Client_Objects_Trigger__c');
+        useMocks();
+
+        Utility_Account_Log__c ual = new Utility_Account_Log__c(
+            Name = '000123'
+        );
+        insert ual;
+
+        Utility_Account_Subscription__c uas = new Utility_Account_Subscription__c(
+            Name = '000234',
+            Utility_Account_Log__c = ual.Id
+        );
+        insert uas;
+
+        Subscription_Order__c so = new Subscription_Order__c(
+            Utility_Account_Subscription__c = uas.Id
+        );
+        insert so;
+    }
+
+    @IsTest
     private static void testSubscriptionManagementTrigger() {
-        //Just doing this for code coverage :/
         useMocks();
         Shared_Solar_System_Order__c ssso = [
             SELECT Id
