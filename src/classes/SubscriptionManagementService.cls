@@ -17,7 +17,7 @@ public without sharing class SubscriptionManagementService {
         for (Subscription_Order__c so : soList) {
             uasIds.add(so.Utility_Account_Subscription__c);
         }
-        
+
         Map<Id, Utility_Account_Subscription__c> uasMap = uasSelector.getUASMap(uasIds);
 
         for (Subscription_Order__c so : soList) {
@@ -30,6 +30,16 @@ public without sharing class SubscriptionManagementService {
                 so.Utility_NMC_Tariff__c = uas.Opportunity__r.NMC_Tariff__c;
                 so.Value_of_NMC__c = uas.Opportunity__r.NMC_Tariff__r.Value_of_NMC__c;
                 so.Product__c = uas.Opportunity__r.Product__c;
+            }
+        }
+    }
+
+    public void stampApprovedValues(List<Subscription_Order__c> soList) {
+        for (Subscription_Order__c so : soList) {
+            if (so.Type__c == 'System Change') {
+
+            } else {
+                so.Change_in_Annual_kWh__c = so.Calculated_kW_DC_Subscription__c ;
             }
         }
     }
