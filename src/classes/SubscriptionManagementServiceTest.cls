@@ -85,6 +85,8 @@ private class SubscriptionManagementServiceTest {
             Utility_Account_Subscription__c = uas.Id
         );
         insert so;
+
+        System.assertNotEquals(null, so.Id);
     }
 
     @IsTest
