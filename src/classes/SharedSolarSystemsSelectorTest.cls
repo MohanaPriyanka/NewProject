@@ -99,6 +99,7 @@ public with sharing class SharedSolarSystemsSelectorTest {
         SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
         System.assert(sssSelector.getSSSMap(sssIds) != null, 'Expected a map of SSS');
     }
+    
     @IsTest
     public static void testGetSharedSolarSystemsWithCapacityByUtilityAndLoadZone() {
         Map<String, Id> utilityMap = new Map<String, Id>();
@@ -169,6 +170,7 @@ public with sharing class SharedSolarSystemsSelectorTest {
     }
     //TODO: These are Test methods for queries required to go into Production BEFORE Production/Transfer Logic has been released
     // WILL BE DEPRECATED AFTER RELEASE
+    
     @IsTest
     static void testGetSSSWithoutProdUpdates(){
         Date todaysDate = Date.today();

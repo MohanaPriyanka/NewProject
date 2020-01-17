@@ -9,5 +9,11 @@ public with sharing class ProductEscalatorSelectorTest {
 
         System.assertEquals(2,scheduleMap.size());
         System.assertEquals(21,scheduleMap.get(oldAmpSchedule.Id).size());
+
+        ProductEscalatorSelector selector = new ProductEscalatorSelector();
+        Map<Id, List<Product_Escalator__c>> scheduleMapTwo = selector.getProductEscalations();
+
+        System.assertEquals(2,scheduleMapTwo.size());
+        System.assertEquals(21,scheduleMapTwo.get(oldAmpSchedule.Id).size());
     }
 }
