@@ -1208,6 +1208,8 @@ IF(
         <active>true</active>
         <errorConditionFormula>AND(
 
+ $CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true,
+
 ISNEW()=false, /*does not apply to new records*/
 
 OR(
