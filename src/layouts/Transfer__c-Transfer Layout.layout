@@ -32,7 +32,7 @@
                 <emptySpace>true</emptySpace>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Readonly</behavior>
                 <field>Bills_Generated__c</field>
             </layoutItems>
             <layoutItems>
@@ -50,7 +50,7 @@
                 <field>Shared_Solar_System__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
+                <behavior>Edit</behavior>
                 <field>Bill_Period__c</field>
             </layoutItems>
             <layoutItems>
@@ -79,7 +79,7 @@
                 <field>Transfer_Amount__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Readonly</behavior>
                 <field>Total_Transferred__c</field>
             </layoutItems>
         </layoutColumns>
@@ -93,7 +93,7 @@
                 <field>Transfer_kWh__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
+                <behavior>Readonly</behavior>
                 <field>Total_kWh_Transferred__c</field>
             </layoutItems>
         </layoutColumns>
