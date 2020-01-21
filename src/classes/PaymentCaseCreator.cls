@@ -23,13 +23,18 @@ public without sharing class PaymentCaseCreator implements Schedulable, ZuoraDat
         };
 
     private static List<String> errorsWarrantingAnEmail =
-        new List<String>{'Credit Card Declined.',
+        new List<String>{
+            'Credit Card Declined.',
             'This transaction has been declined.',
             'Warning! Your credit card is expired',
             'The given name on the account and/or the account type does not match the actual account.',
             'The ABA code is invalid',
             'Invalid Credit Card',
-            'Invalid Route.'};
+            'Invalid Route.',
+            'The account number is invalid',
+            'The credit card has expired.',
+            'The transaction has been declined because of an AVS mismatch. The address provided does not match billing address of cardholder.'
+        };
 
     private static Map<String,String> friendlyGatewayResponseMap = new Map<String,String>{
         'Invalid Route.' =>
