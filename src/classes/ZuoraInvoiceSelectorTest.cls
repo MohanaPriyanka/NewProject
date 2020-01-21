@@ -134,6 +134,16 @@ public with sharing class ZuoraInvoiceSelectorTest {
 
     @IsTest
     private static void testGetLatestDueDateForAutopayAccounts() {
-        System.assertNotEquals(null, ZuoraInvoiceSelector.getLatestDueDateForAutopayAccounts());
+        String query = ZuoraInvoiceSelector.getLatestDueDateForAutopayAccounts();
+        String dateString = query.right(11).left(10);
+        Boolean caughtException = false;
+        try {
+            Date dt = Date.valueOf(dateString);
+            Date today = System.today();
+            System.assertEquals(dt, Date.newInstance(today.year(), today.month()-1, today.day()), 'Expected query to include due dates greater than today');
+        } catch (Exception e) {
+            caughtException = true;
+        }
+        System.assert(!caughtException, 'Expected to find a valid date string: ' + dateString);
     }
 }

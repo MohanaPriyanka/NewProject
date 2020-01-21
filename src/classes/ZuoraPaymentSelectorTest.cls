@@ -98,4 +98,13 @@ public with sharing class ZuoraPaymentSelectorTest {
         System.assertNotEquals(null, ZuoraPaymentSelector.selectElectronicPaymentsFromDate(System.now()));
 
     }
+
+    @IsTest
+    private static void testGetFailedPaymentRunPaymentsFromLastDay() {
+        Datetime dt = Datetime.newInstanceGmt(2019, 12, 31, 0, 0, 0);
+        String query = ZuoraPaymentSelector.getFailedPaymentRunPaymentsFromLastDay(dt);
+        String endDatetime = query.right(20).left(19);
+        Datetime parsedDatetime = Datetime.valueOfGmt(endDatetime);
+        System.assertEquals(dt, parsedDatetime, 'Expected to get find the end date');
+    }
 }
