@@ -4,7 +4,8 @@
  * Tested By: CSCancellationServiceTest
  *************************************************************************************/
 
-public class UtilityAccountSubscriptions {
+@SuppressWarnings('PMD.ApexCRUDViolation')
+public inherited sharing class UtilityAccountSubscriptions {
     public List<Utility_Account_Subscription__c> records;
 
     public UtilityAccountSubscriptions(List<Utility_Account_Subscription__c> sObjectList) {
@@ -18,10 +19,13 @@ public class UtilityAccountSubscriptions {
         update records;
     }
 
-    public void removeFromProject() {
+    public void handleFinaledAccounts() {
         for (Utility_Account_Subscription__c uas : records) {
             uas.Next_Schedule_Z_Status__c = 'Inactive Subscription';
             uas.Date_Removed_from_Project__c = Date.today();
+            // When we mark a utility account as finaled, we set it to transferring by default to pause the cancellation
+            // process. Otherwise, this may trigger the opportunity to go to Cancelled and the Account CS Status to go to Closed.
+            uas.Transferring_Subsc_to_Another_UAS__c = true;
         }
         update records;
     }

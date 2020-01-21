@@ -398,6 +398,15 @@ Production: BlueWave Inside Sales</inlineHelpText>
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Send_CS_Cancellation_Emails__c</fullName>
+        <defaultValue>true</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>If checked, the CS Cancellation Service/Scheduler will send emails for Accounts removed from project, Cancellation confirmations, and Accounts that have cancelled and fully off projects.</inlineHelpText>
+        <label>Send CS Cancellation Emails</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Send_Payment_Case_Emails__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>

@@ -144,6 +144,20 @@ public with sharing class UtilTest {
             errorCaught = true;
         }
         System.assert(!errorCaught);
+
+        try {
+            Util.printHeapLimit('Print Heap Limit');
+        } catch (Exception e) {
+            errorCaught = true;
+        }
+        System.assert(!errorCaught);
+
+        try {
+            Util.printRowLimit('Print Row Limit');
+        } catch (Exception e) {
+            errorCaught = true;
+        }
+        System.assert(!errorCaught);
     }
 
     @IsTest
