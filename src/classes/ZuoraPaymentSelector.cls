@@ -49,8 +49,8 @@ public with sharing class ZuoraPaymentSelector {
             'INNER JOIN Account a on p.AccountId = a.Id ' +
             'WHERE p.Source = \'PaymentRun\' ' +
             'AND p.Status != \'Processed\' ' +
-            'AND pr.ExecutedDate > TIMESTAMP \'' + startDatetime.formatGmt('YYYY-MM-dd HH:mm:ss') + '\'' +
-            'AND pr.ExecutedDate < TIMESTAMP \'' + endDatetime.formatGmt('YYYY-MM-dd HH:mm:ss') + '\'';
+            'AND pr.ExecutedDate > TIMESTAMP \'' + startDatetime.formatGmt('yyyy-MM-dd HH:mm:ss') + '\'' +
+            'AND pr.ExecutedDate < TIMESTAMP \'' + endDatetime.formatGmt('yyyy-MM-dd HH:mm:ss') + '\'';
     }
 
     public static String selectPaymentsNotMarkedAsReturned(List<String> gatewayIds) {
