@@ -444,6 +444,13 @@
     </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <validationRules>
+        <fullName>Default_Credit_Value_for_kWh_Projects</fullName>
+        <active>true</active>
+        <description>If Billing Method = kWh, Default Credit Value must be populated</description>
+        <errorConditionFormula>AND(CONTAINS( Billing_Method__c, &quot;kWh&quot;), ISBLANK( Default_Credit_Value__c ))</errorConditionFormula>
+        <errorMessage>The Default Credit Value must be filled out for kWh Transfers</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>Make_Attempted_Transfer_Field_Required</fullName>
         <active>true</active>
         <description>The Attempted Credit Transfer and Attempted kWh Transfer fields are made to be required for new records created on or after 11/25/19.</description>
