@@ -4769,6 +4769,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Case.QC_Case_Subject__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Case.Read_Email_Count__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -24871,6 +24876,11 @@
         <editable>false</editable>
         <field>Partner__c.Concatenated_Address__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Partner__c.Conga_Conductor_CS_Partner_Update_NY__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -45661,18 +45671,6 @@
         <layout>Lead-BFG - Community Solar %28Residential%29</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Lead-BFG - Community Solar %28Residential%29</layout>
-        <recordType>Lead.BFG_Community_Solar</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Lead-BFG - Community Solar %28Residential%29</layout>
-        <recordType>Lead.Lead</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Lead-BFG - Community Solar %28Residential%29</layout>
-        <recordType>Lead.Utility_Duke_Energy</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>Lead-BFG - DOER Solar Loan</layout>
         <recordType>Lead.BFG_DOER_Solar_Loan</recordType>
     </layoutAssignments>
@@ -50024,10 +50022,6 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>LightningConsoleAllowedForUser</name>
-    </userPermissions>
-    <userPermissions>
-        <enabled>true</enabled>
-        <name>LightningExperienceUser</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
