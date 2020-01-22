@@ -176,6 +176,7 @@ public class ZuoraUsageServiceTest {
         List<UASB__c> uasbList = [
             SELECT Id, Name, Zuora_Id__c, Client_Account_Number__c
             FROM UASB__c
+            WHERE Zuora_Id__c != null
         ];
         System.debug(uasbList);
         System.assertEquals(10, uasbList.size());
