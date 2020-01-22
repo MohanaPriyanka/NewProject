@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>At the time of creation, just provides access to the Create Zuora Account checkbox on Account</description>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Create_Zuora_Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>CS Customer Data Import</label>
+    <license>Salesforce</license>
+</PermissionSet>

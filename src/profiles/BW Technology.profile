@@ -15014,11 +15014,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Account.Non_Test_Zuora_Record__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Account.NumberOfEmployees</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -46165,11 +46160,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Zuora_Contact__c.Contact__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Zuora_Contact__c.Non_Test_Zuora_Record__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
