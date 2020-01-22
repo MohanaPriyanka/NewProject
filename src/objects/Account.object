@@ -1194,6 +1194,16 @@ CASE(Days_Past_Due__c,
         <type>Summary</type>
     </fields>
     <fields>
+        <fullName>Create_Zuora_Account__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>When checked on a Property Account without a Zuora Id, a process is started to create an account in Zuora with the related Send Bills Contact.</inlineHelpText>
+        <label>Create Zuora Account</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Credit_Adjustments__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Adjustments to Credits Allocated rolled up from Account Bills</inlineHelpText>

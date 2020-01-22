@@ -9,8 +9,12 @@ public without sharing class AccountTriggerHandler {
     public void onBeforeUpdate(List<Account> updatedAccounts) {
         customIdSwapAccount(updatedAccounts);
     }
-
+    public void onAfterInsert(Map<Id, Account> oldMap, Map<Id, Account> newMap) {
+        createZuoraAccounts(newMap.values(), oldMap);
+    }
     public void onAfterUpdate(Map<Id, Account> oldMap, Map<Id, Account> newMap) {
+        createZuoraAccounts(newMap.values(), oldMap);
+
         List<Utility_Account_Subscription__c> uasesToCancel =
             UtilityAccountSubscriptions.getUASesForManuallyCancelledAccounts(newMap, oldMap);
         if (!uasesToCancel.isEmpty()) {
@@ -51,6 +55,40 @@ public without sharing class AccountTriggerHandler {
                 account.addError('This account has a Zuora Id. Delete it from Zuora first if there is no activity, ' +
                     'remove the Zuora Id, and attempt the delete again');
             }
+        }
+    }
+
+    // Intended to be called from after insert or after update - can't be before insert since we need the account Id when
+    // starting the batch
+    private void createZuoraAccounts(List<Account> newAccounts, Map<Id, Account> oldMap) {
+        Id propertyRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Property').getRecordTypeId();
+        List<Account> accountsToUnsetCreateZuoraAccount = new List<Account>();
+        Set<Id> accountsNeedingZuoraAccounts = new Set<Id>();
+        for (Account accountInTrigger : newAccounts) {
+            // We always want to unset Create_Zuora_Account__c, since it shouldn't be left on for more than a transaction
+            if (accountInTrigger.Create_Zuora_Account__c) {
+                Account accountNotInTrigger = new Account(
+                    Id = accountInTrigger.Id,
+                    Create_Zuora_Account__c = false
+                );
+                accountsToUnsetCreateZuoraAccount.add(accountNotInTrigger);
+                // then, if it meets the conditions, we should create it.
+                if ((oldMap == null || !oldMap.get(accountInTrigger.Id).Create_Zuora_Account__c) &&
+                    accountInTrigger.RecordTypeId == propertyRecordTypeId &&
+                    accountInTrigger.Zuora_Id__c == null) {
+                    accountsNeedingZuoraAccounts.add(accountInTrigger.Id);
+                }
+            }
+        }
+
+        if (!accountsToUnsetCreateZuoraAccount.isEmpty()) {
+            update accountsToUnsetCreateZuoraAccount;
+        }
+
+        if (!accountsNeedingZuoraAccounts.isEmpty()) {
+            List<Account> propertyAccounts = AccountsSelector.selectWithSendBillsContact(accountsNeedingZuoraAccounts);
+            ZuoraAccountAsyncService accountAsyncService = new ZuoraAccountAsyncService(propertyAccounts);
+            Database.executeBatch(accountAsyncService, 50);
         }
     }
 }
