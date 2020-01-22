@@ -4,7 +4,7 @@
  * Test: CSOpportunitiesTest
  *************************************************************************************/
 
-public class Opportunities {
+public inherited sharing class Opportunities {
     public List<Opportunity> records;
     private static Integer systemBillGenerationGracePeriod;
 
@@ -71,6 +71,32 @@ public class Opportunities {
             }
         }
         return true;
+    }
+
+    // Depends on Most Recent Enacted ALSS to tell whether the UAS has ever been enacted
+    public static Boolean allEnactedUASesAreRemoved(Opportunity opp) {
+        if (opp.Utility_Account_Subscriptions__r.isEmpty()) {
+            return false;
+        }
+        for (Utility_Account_Subscription__c uas : opp.Utility_Account_Subscriptions__r) {
+            if ((uas.Most_Recent_Enacted_ALSS__c != null && uas.Date_Removed_from_Project__c == null) ||
+                (uas.Most_Recent_Enacted_ALSS__c == null && uas.Date_Removed_from_Project__c != null)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static Boolean anyEnactedUASes(Opportunity opp) {
+        if (opp.Utility_Account_Subscriptions__r.isEmpty()) {
+            return false;
+        }
+        for (Utility_Account_Subscription__c uas : opp.Utility_Account_Subscriptions__r) {
+            if (uas.Most_Recent_Enacted_ALSS__c != null) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void cancel() {

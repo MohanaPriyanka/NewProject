@@ -27,10 +27,12 @@ public without sharing class UASSelector {
         return [
             SELECT Id,
                 Utility_Account_Log__c,
+                Utility_Account_Log__r.Name,
                 Utility_Account_Log__r.Account__c,
                 Utility_Account_Log__r.Account__r.Id,
                 Utility_Account_Log__r.Account__r.Name,
-                Utility_Account_Log__r.Account__r.Send_Bills_Contact__c
+                Utility_Account_Log__r.Account__r.Send_Bills_Contact__c,
+                Utility_Account_Log__r.Account__r.Parent_Account__c
             FROM Utility_Account_Subscription__c
             WHERE Utility_Account_Log__c IN :ualIds
         ];
