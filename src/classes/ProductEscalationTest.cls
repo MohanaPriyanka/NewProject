@@ -76,9 +76,7 @@ public class ProductEscalationTest {
             NM_Rate_Floor__c = 0,
             Pricing_Structure__c = 'Use Solar Electric Rate',
             Monthly_Late_Fee__c = 1);
-        insert new List<Product2>{
-            normalCSProduct
-        };
+        insert new List<Product2>{normalCSProduct};
 
         Account clientAccount = new Account(name = 'Test Client');
         insert clientAccount;
@@ -357,38 +355,91 @@ public class ProductEscalationTest {
         Date oneMonthAgo = todaysDate.addMonths(-1);
         Date oneMonthInFuture = todaysDate.addMonths(1);
 
-        Energy_Usage_Update__c firstProdUpdateSSS1 = new Energy_Usage_Update__c (
+        Bill_Period__c bpA1 = new Bill_Period__c(
             Name = 'sssA - August 2016',
             Shared_Solar_System__c = sss1.Id,
-            Production__c = 81869.00,
-            Due_Date__c = todaysDate,
-            Net_Metering_Rate_Applied__c = 0.13,
-            Billing_Period_Start_Date__c = oneMonthInFuture,
-            Billing_Period_End_Date__c = todaysDate,
-            Total_System_NMCs__c = 13483.66,
-            Date__c = oneMonthAgo,
-            Schedule_Z__c = schZOne.Id
+            Bill_Date__c = oneMonthAgo
         );
 
-        insert firstProdUpdateSSS1;
-
-        Energy_Usage_Update__c firstProdUpdateSSS2 = new Energy_Usage_Update__c (
+        Bill_Period__c bpB1 = new Bill_Period__c(
             Name = 'sssB - August 2016',
             Shared_Solar_System__c = sss2.Id,
-            Production__c = 367918.00,
-            Due_Date__c = todaysDate,
-            Net_Metering_Rate_Applied__c = 0.13,
-            Billing_Period_Start_Date__c = oneMonthInFuture,
-            Billing_Period_End_Date__c = todaysDate,
-            Total_System_NMCs__c = 40983.43,
-            Total_System_NMCs_2_of_4__c = 20000,
-            Net_Metering_Rate_Applied_2_of_4__c = 0.13,
-            Production_kWh_2_of_4__c = 153846,
-            Date__c = oneMonthAgo,
-            Schedule_Z__c = schZTwo.Id
+            Bill_Date__c = oneMonthAgo
         );
 
-        insert firstProdUpdateSSS2;
+        insert new List<Bill_Period__c>{bpA1, bpB1};
+
+        Production__c prodA1 = new Production__c(
+            Name = 'sssA August Production',
+            Shared_Solar_System__c = sss1.Id,
+            Start_Date__c = oneMonthAgo,
+            End_Date__c = oneMonthAgo.addMonths(1),
+            Production_kWh__c = 81869,
+            Credits_Generated__c = 13483.66
+        );
+
+        Production__c prodB1 = new Production__c(
+            Name = 'sssB September Production',
+            Shared_Solar_System__c = sss2.Id,
+            Start_Date__c = oneMonthAgo,
+            End_Date__c = oneMonthAgo.addMonths(1),
+            Production_kWh__c = 367918,
+            Credits_Generated__c = 40983.43
+        );
+
+        Production__c prodB2 = new Production__c(
+            Name = 'sssB August Production',
+            Shared_Solar_System__c = sss2.Id,
+            Start_Date__c = oneMonthAgo.addMonths(1),
+            End_Date__c = oneMonthAgo.addMonths(2),
+            Production_kWh__c = 153846,
+            Credits_Generated__c = 20000
+        );
+        insert new List<Production__c>{prodA1, prodB1, prodB2};
+
+        Transfer__c transferA1 = new Transfer__c(
+            Name = 'Main Transfer - sssA August',
+            Bill_Period__c = bpA1.Id,
+            Date_of_Transfer__c = oneMonthAgo,
+            Shared_Solar_System__c = sss1.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = schZOne.Id,
+            Attempted_kWh_Transfer__c = 81869,
+            Attempted_Transfer__c = 13483.66,
+            Transfer_Amount__c = 13483.66,
+            Default_Credit_Value__c = 0.13
+        );
+
+        Transfer__c transferB1 = new Transfer__c(
+            Name = 'Main Transfer - sssB September',
+            Bill_Period__c = bpB1.Id,
+            Date_of_Transfer__c = oneMonthAgo,
+            Shared_Solar_System__c = sss2.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = schZTwo.Id,
+            Attempted_kWh_Transfer__c = 367918,
+            Attempted_Transfer__c = 40983.43,
+            Transfer_Amount__c = 40983.43,
+            Default_Credit_Value__c = 0.13
+        );
+
+        Transfer__c transferB2 = new Transfer__c(
+            Name = 'Main Transfer - sssB August',
+            Bill_Period__c = bpB1.Id,
+            Date_of_Transfer__c = oneMonthAgo.addMonths(1),
+            Shared_Solar_System__c = sss2.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = schZTwo.Id,
+            Attempted_kWh_Transfer__c = 153846,
+            Attempted_Transfer__c = 20000,
+            Transfer_Amount__c = 20000,
+            Default_Credit_Value__c = 0.13
+        );
+
+
+
+        insert new List<Transfer__c>{transferA1, transferB1, transferB2};
+
         Test.stopTest();
     }
 
@@ -415,102 +466,274 @@ public class ProductEscalationTest {
             ORDER BY Shared_Solar_System__r.Name
         ];
 
-        Energy_Usage_Update__c prodUpdateA1 = new Energy_Usage_Update__c (
+        Bill_Period__c bpA1 = new Bill_Period__c(
             Name = 'sssA - August 2016',
             Shared_Solar_System__c = schZList[0].Shared_Solar_System__r.Id,
-            Production__c = 81869.00,
-            Due_Date__c = todaysDate,
-            Net_Metering_Rate_Applied__c = 0.13,
-            Billing_Period_Start_Date__c = todaysDate.addMonths(-4),
-            Billing_Period_End_Date__c = todaysDate,
-            Total_System_NMCs__c = 13483.66,
-            Date__c = todaysDate.addMonths(-4),
-            Schedule_Z__c = schZList[0].Id,
-            Generate_Bills__c = true
+            Bill_Date__c =  todaysDate.addMonths(-4)
         );
 
-        Energy_Usage_Update__c prodUpdateB1 = new Energy_Usage_Update__c (
-            Name = 'sssB - August 2016',
-            Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
-            Production__c = 367918.00,
-            Due_Date__c = todaysDate,
-            Net_Metering_Rate_Applied__c = 0.13,
-            Billing_Period_Start_Date__c = todaysDate.addMonths(-4),
-            Billing_Period_End_Date__c = todaysDate,
-            Total_System_NMCs__c = 40983.43,
-            Total_System_NMCs_2_of_4__c = 20000,
-            Net_Metering_Rate_Applied_2_of_4__c = 0.13,
-            Production_kWh_2_of_4__c = 153846,
-            Date__c = todaysDate.addMonths(-4),
-            Schedule_Z__c = schZList[1].Id,
-            Generate_Bills__c = true
+        Production__c prodA1 = new Production__c(
+            Name = 'sssA August Production',
+            Shared_Solar_System__c = schZList[0].Shared_Solar_System__r.Id,
+            Start_Date__c =  todaysDate.addMonths(-4),
+            End_Date__c =  todaysDate.addMonths(-4).addMonths(1),
+            Production_kWh__c = 81869,
+            Credits_Generated__c = 13483.66
         );
 
-        Energy_Usage_Update__c prodUpdateA2 = new Energy_Usage_Update__c (
+        Transfer__c transferA1 = new Transfer__c(
+            Name = 'Main Transfer - sssA August',
+            Bill_Period__c = bpA1.Id,
+            Date_of_Transfer__c =  todaysDate.addMonths(-4),
+            Shared_Solar_System__c = schZList[0].Shared_Solar_System__r.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = schZList[0].Id,
+            Attempted_kWh_Transfer__c = 81869,
+            Attempted_Transfer__c = 13483.66,
+            Transfer_Amount__c = 13483.66,
+            Default_Credit_Value__c = 0.13,
+            Bills_Generated__c = true
+        );
+
+
+        Bill_Period__c bpA2 = new Bill_Period__c(
             Name = 'sssA - August 2016',
             Shared_Solar_System__c = schZList[0].Shared_Solar_System__r.Id,
-            Production__c = 81869.00,
-            Due_Date__c = todaysDate,
-            Net_Metering_Rate_Applied__c = 0.13,
-            Billing_Period_Start_Date__c = todaysDate.addMonths(-3),
-            Billing_Period_End_Date__c = todaysDate,
-            Total_System_NMCs__c = 13483.66,
-            Date__c =  todaysDate.addMonths(-3),
-            Schedule_Z__c = schZList[0].Id,
-            Generate_Bills__c = true
+            Bill_Date__c =  todaysDate.addMonths(-3)
         );
 
-        Energy_Usage_Update__c prodUpdateB2 = new Energy_Usage_Update__c (
-            Name = 'sssB - August 2016',
-            Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
-            Production__c = 367918.00,
-            Due_Date__c = todaysDate,
-            Net_Metering_Rate_Applied__c = 0.13,
-            Billing_Period_Start_Date__c = todaysDate.addMonths(-3),
-            Billing_Period_End_Date__c = todaysDate,
-            Total_System_NMCs__c = 40983.43,
-            Total_System_NMCs_2_of_4__c = 20000,
-            Net_Metering_Rate_Applied_2_of_4__c = 0.13,
-            Production_kWh_2_of_4__c = 153846,
-            Date__c = todaysDate.addMonths(-3),
-            Schedule_Z__c = schZList[1].Id,
-            Generate_Bills__c = true
+        Production__c prodA2 = new Production__c(
+            Name = 'sssA August Production',
+            Shared_Solar_System__c = schZList[0].Shared_Solar_System__r.Id,
+            Start_Date__c =  todaysDate.addMonths(-3),
+            End_Date__c =  todaysDate.addMonths(-3).addMonths(1),
+            Production_kWh__c = 81869,
+            Credits_Generated__c = 13483.66
         );
 
-        Energy_Usage_Update__c prodUpdateA3 = new Energy_Usage_Update__c (
+        Transfer__c transferA2 = new Transfer__c(
+            Name = 'Main Transfer - sssA August',
+            Bill_Period__c = bpA1.Id,
+            Date_of_Transfer__c =  todaysDate.addMonths(-3),
+            Shared_Solar_System__c = schZList[0].Shared_Solar_System__r.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = schZList[0].Id,
+            Attempted_kWh_Transfer__c = 81869,
+            Attempted_Transfer__c = 13483.66,
+            Transfer_Amount__c = 13483.66,
+            Default_Credit_Value__c = 0.13,
+            Bills_Generated__c = true
+        );
+
+        Bill_Period__c bpA3 = new Bill_Period__c(
             Name = 'sssA - August 2016',
             Shared_Solar_System__c = schZList[0].Shared_Solar_System__r.Id,
-            Production__c = 81869.00,
-            Due_Date__c = todaysDate,
-            Net_Metering_Rate_Applied__c = 0.13,
-            Billing_Period_Start_Date__c = todaysDate.addMonths(-2),
-            Billing_Period_End_Date__c = todaysDate,
-            Total_System_NMCs__c = 13483.66,
-            Date__c = todaysDate.addMonths(-2),
-            Schedule_Z__c = schZList[0].Id,
-            Generate_Bills__c = true
+            Bill_Date__c =  todaysDate.addMonths(-2)
         );
 
-        Energy_Usage_Update__c prodUpdateB3 = new Energy_Usage_Update__c (
+        Production__c prodA3 = new Production__c(
+            Name = 'sssA August Production',
+            Shared_Solar_System__c = schZList[0].Shared_Solar_System__r.Id,
+            Start_Date__c =  todaysDate.addMonths(-2),
+            End_Date__c =  todaysDate.addMonths(-2).addMonths(1),
+            Production_kWh__c = 81869,
+            Credits_Generated__c = 13483.66
+        );
+
+        Transfer__c transferA3 = new Transfer__c(
+            Name = 'Main Transfer - sssA August',
+            Bill_Period__c = bpA1.Id,
+            Date_of_Transfer__c =  todaysDate.addMonths(-2),
+            Shared_Solar_System__c = schZList[0].Shared_Solar_System__r.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = schZList[0].Id,
+            Attempted_kWh_Transfer__c = 81869,
+            Attempted_Transfer__c = 13483.66,
+            Transfer_Amount__c = 13483.66,
+            Default_Credit_Value__c = 0.13,
+            Bills_Generated__c = true
+        );
+
+
+        //SSS B
+
+        Bill_Period__c bpB1 = new Bill_Period__c(
             Name = 'sssB - August 2016',
             Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
-            Production__c = 367918.00,
-            Due_Date__c = todaysDate,
-            Net_Metering_Rate_Applied__c = 0.13,
-            Billing_Period_Start_Date__c = todaysDate.addMonths(-2),
-            Billing_Period_End_Date__c = todaysDate,
-            Total_System_NMCs__c = 40983.43,
-            Total_System_NMCs_2_of_4__c = 20000,
-            Net_Metering_Rate_Applied_2_of_4__c = 0.13,
-            Production_kWh_2_of_4__c = 153846,
-            Date__c = todaysDate.addMonths(-2),
-            Schedule_Z__c = schZList[1].Id,
-            Generate_Bills__c = true
+            Bill_Date__c =  todaysDate.addMonths(-4)
         );
 
-        insert new List<Energy_Usage_Update__c> {
-            prodUpdateA1, prodUpdateB1, prodUpdateA2, prodUpdateB2, prodUpdateA3, prodUpdateB3
-        };
+        Production__c prodB1 = new Production__c(
+            Name = 'sssA September Production',
+            Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
+            Start_Date__c =  todaysDate.addMonths(-5),
+            End_Date__c =  todaysDate.addMonths(-5).addMonths(1),
+            Production_kWh__c = 367918,
+            Credits_Generated__c = 40983.43
+        );
+
+        Production__c prodB2 = new Production__c(
+            Name = 'sssB August Production',
+            Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
+            Start_Date__c =  todaysDate.addMonths(-4),
+            End_Date__c =  todaysDate.addMonths(-4).addMonths(1),
+            Production_kWh__c = 153846,
+            Credits_Generated__c = 20000
+        );
+
+        Transfer__c transferB1 = new Transfer__c(
+            Name = 'Main Transfer - sssB September',
+            Bill_Period__c = bpB1.Id,
+            Date_of_Transfer__c =  todaysDate.addMonths(-5),
+            Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = schZList[1].Id,
+            Attempted_kWh_Transfer__c = 367918,
+            Attempted_Transfer__c = 40983.43,
+            Transfer_Amount__c = 40983.43,
+            Default_Credit_Value__c = 0.13,
+            Bills_Generated__c = true
+        );
+
+        Transfer__c transferB2 = new Transfer__c(
+            Name = 'Main Transfer - sssB August',
+            Bill_Period__c = bpB1.Id,
+            Date_of_Transfer__c =  todaysDate.addMonths(-4),
+            Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = schZList[1].Id,
+            Attempted_kWh_Transfer__c = 153846,
+            Attempted_Transfer__c = 20000,
+            Transfer_Amount__c = 20000,
+            Default_Credit_Value__c = 0.13,
+            Bills_Generated__c = true
+        );
+
+
+
+        Bill_Period__c bpB2 = new Bill_Period__c(
+            Name = 'sssB - August 2016',
+            Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
+            Bill_Date__c =  todaysDate.addMonths(-3)
+        );
+
+        Production__c prodB3 = new Production__c(
+            Name = 'sssA September Production',
+            Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
+            Start_Date__c =  todaysDate.addMonths(-3),
+            End_Date__c =  todaysDate.addMonths(-3).addMonths(1),
+            Production_kWh__c = 367918,
+            Credits_Generated__c = 40983.43
+        );
+
+        Production__c prodB4 = new Production__c(
+            Name = 'sssB August Production',
+            Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
+            Start_Date__c =  todaysDate.addMonths(-2),
+            End_Date__c =  todaysDate.addMonths(-2).addMonths(1),
+            Production_kWh__c = 153846,
+            Credits_Generated__c = 20000
+        );
+
+        Transfer__c transferB3 = new Transfer__c(
+            Name = 'Main Transfer - sssB September',
+            Bill_Period__c = bpB1.Id,
+            Date_of_Transfer__c =  todaysDate.addMonths(-3),
+            Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = schZList[1].Id,
+            Attempted_kWh_Transfer__c = 367918,
+            Attempted_Transfer__c = 40983.43,
+            Transfer_Amount__c = 40983.43,
+            Default_Credit_Value__c = 0.13,
+            Bills_Generated__c = true
+        );
+
+        Transfer__c transferB4 = new Transfer__c(
+            Name = 'Main Transfer - sssB August',
+            Bill_Period__c = bpB1.Id,
+            Date_of_Transfer__c =  todaysDate.addMonths(-2),
+            Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = schZList[1].Id,
+            Attempted_kWh_Transfer__c = 153846,
+            Attempted_Transfer__c = 20000,
+            Transfer_Amount__c = 20000,
+            Default_Credit_Value__c = 0.13,
+            Bills_Generated__c = true
+        );
+
+
+
+
+        Bill_Period__c bpB3 = new Bill_Period__c(
+            Name = 'sssB - August 2016',
+            Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
+            Bill_Date__c =  todaysDate.addMonths(-2)
+        );
+
+        Production__c prodB5 = new Production__c(
+            Name = 'sssA September Production',
+            Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
+            Start_Date__c =  todaysDate.addMonths(-1),
+            End_Date__c =  todaysDate.addMonths(-3).addMonths(1),
+            Production_kWh__c = 367918,
+            Credits_Generated__c = 40983.43
+        );
+
+        Production__c prodB6 = new Production__c(
+            Name = 'sssB August Production',
+            Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
+            Start_Date__c =  todaysDate,
+            End_Date__c =  todaysDate.addMonths(1),
+            Production_kWh__c = 153846,
+            Credits_Generated__c = 20000
+        );
+
+        Transfer__c transferB5 = new Transfer__c(
+            Name = 'Main Transfer - sssB September',
+            Bill_Period__c = bpB1.Id,
+            Date_of_Transfer__c =  todaysDate.addMonths(-1),
+            Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = schZList[1].Id,
+            Attempted_kWh_Transfer__c = 367918,
+            Attempted_Transfer__c = 40983.43,
+            Transfer_Amount__c = 40983.43,
+            Default_Credit_Value__c = 0.13,
+            Bills_Generated__c = true
+        );
+
+        Transfer__c transferB6 = new Transfer__c(
+            Name = 'Main Transfer - sssB August',
+            Bill_Period__c = bpB1.Id,
+            Date_of_Transfer__c =  todaysDate,
+            Shared_Solar_System__c = schZList[1].Shared_Solar_System__r.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = schZList[1].Id,
+            Attempted_kWh_Transfer__c = 153846,
+            Attempted_Transfer__c = 20000,
+            Transfer_Amount__c = 20000,
+            Default_Credit_Value__c = 0.13,
+            Bills_Generated__c = true
+        );
+
+
+        insert new List<Bill_Period__c>{bpA1, bpA2, bpA3, bpB1, bpB2, bpB3};
+        insert new List<Production__c>{prodA1, prodA2, prodA3, prodB1, prodB2, prodB3, prodB4, prodB5, prodb6};
+        insert new List<Transfer__c>{transferA1, transferA2, transferA3, transferB1, transferB2, transferB3, transferB4, transferB5, transferB6};
+
+
+        //Parts for multiple months of production in one Bill Period are created manually so that they can be ordered correctly
+        TransferPartService transferPartService = new TransferPartService();
+        transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferA1, transferB1});
+        transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferA2, transferB2});
+        transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferA3, transferB3});
+        transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferB4});
+        transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferB5});
+        transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferB6});
+
+
     }
 
     public static void switchProductToPercentDiscount(){
@@ -530,9 +753,15 @@ public class ProductEscalationTest {
         Date todaysDate = Date.today();
         Date oneMonthAgo = todaysDate.addMonths(-1);
 
-        List<Energy_Usage_Update__c> trigProdUp;
-        trigProdUp = ProductionUpdateSelector.getProductionUpdatesByMonth(oneMonthAgo.Month(), String.valueOf(oneMonthAgo.Year()));
-        EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(trigProdUp);
+        List<Transfer__c> transfers = TransferSelector.getTransfersByMonth(oneMonthAgo.month(), oneMonthAgo.year());
+        TransferPartService transferPartService = new TransferPartService();
+        transferPartService.createPartsFromTransfer(transfers);
+
+        List<Bill_Period__c> billPeriods;
+        billPeriods = BillPeriodSelector.getBillPeriodsByMonth(oneMonthAgo.month(), oneMonthAgo.year());
+
+
+        EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(billPeriods);
         ee.runBills();
         TestBillCreationandPayment.setBillsToPublished();
     }
@@ -542,6 +771,7 @@ public class ProductEscalationTest {
         insertOldProductionUpdates();
         runOneMonthsBills();
         Map<String, System_Bill__c> sbMap = TestBillCreationForCancelledCustomers.queryForBills();
+        List<System_Bill__c> allBills = [SELECT Id FROM System_Bill__c];
 
         /* All UASes are 10 kW for consistency:
             ~(sss1) NMCs = 93.26 Discount = 10% Bill = 83.93
@@ -552,6 +782,7 @@ public class ProductEscalationTest {
         System.assertEquals(6,sbMap.values().size());
         System.assertEquals(83.93,sbMap.get('acA A_SSS1_1').Due_This_Month__c);
         System.assertEquals(83.93,sbMap.get('acB B_SSS1_1').Due_This_Month__c);
+
         System.assertEquals(379.61,sbMap.get('acB B_SSS2_1').Due_This_Month__c);
         System.assertEquals(83.93,sbMap.get('acC C_SSS1_1').Due_This_Month__c);
         System.assertEquals(379.61,sbMap.get('acC C_SSS2_1').Due_This_Month__c);
@@ -564,6 +795,7 @@ public class ProductEscalationTest {
 
         List<Shared_Solar_System__c> sssList = [
             SELECT Id, Name, Count_of_Transfers__c
+
             FROM Shared_Solar_System__c
         ];
 
@@ -677,6 +909,7 @@ public class ProductEscalationTest {
 
         Product_Escalation_Schedule__c newSchedule = ProductService.createEscalationSchedule(0.03, 0.14, 20, 2);
 
+
         System.assertEquals(4,newSchedule.Product_Escalators__r[2].Starting_Credit_Transfer__c);
         System.assertEquals(6,newSchedule.Product_Escalators__r[3].Starting_Credit_Transfer__c);
         System.assertEquals(8,newSchedule.Product_Escalators__r[4].Starting_Credit_Transfer__c);
@@ -692,8 +925,8 @@ public class ProductEscalationTest {
 
         /* All UASes are 10 kW for consistency:
             (sss1) Kwh = 566.23, SEE = 0.1485, Bill = 84.09 (transfer #4)
-            (sss2) Kwh = 2544.63, SEE = 0.1576, Bill = 356.25 (transfer #7)
-            (sss2 2nd transfer) Kwh = 1064.05, SEE = 0.1530, Bill = 167.69 (transfer #8)
+            (sss2) Kwh = 2544.63, SEE = 0.1530 Bill = 389.33 (transfer #7)
+            (sss2 2nd transfer) Kwh = 1064.05, SEE = 0.1576, Bill = 167.69 (transfer #8)
         */
 
         for (UASB__c uasb : [

@@ -12,14 +12,14 @@
 </style>  
 <div class="slds-scope padded" id="lightning"/>
 <script>
-var prodUpdate = "{!$CurrentPage.parameters.prodUpdate}";
-var prodName = "{!$CurrentPage.parameters.prodName}";
+var transfer = "{!$CurrentPage.parameters.transfer}";
+var transferName = "{!$CurrentPage.parameters.transferName}";
 var totalNMCs = "{!$CurrentPage.parameters.totalNMCs}";
 	$Lightning.use("c:PregenerateBills", function() {
 	    $Lightning.createComponent(
 	    	"c:PreviewProductionUpdate", 
-        {"prodUpdate": prodUpdate,
-         "prodName": prodName, 
+        {"transfer": transfer,
+         "transferName": transferName,
          "totalNMCs": totalNMCs}, 
         "lightning",
 

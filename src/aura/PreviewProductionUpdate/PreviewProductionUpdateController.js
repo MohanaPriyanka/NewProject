@@ -1,11 +1,11 @@
 ({
     doInit : function(component, event, helper) {
-        var actionGetScheduleZs = component.get("c.getScheduleZs");
-        var compParentId = component.get("v.prodUpdate");
+       var actionGetScheduleZs = component.get("c.getScheduleZs");
+       var compParentId = component.get("v.transfer");
 
-        actionGetScheduleZs.setParams({
-            "productionUpdateId" : compParentId
-        });
+       actionGetScheduleZs.setParams({
+           "transferId" : compParentId
+       });
 
         actionGetScheduleZs.setCallback(this,function(resp){
             if (resp.getState() === 'SUCCESS') {
@@ -30,12 +30,12 @@
 
     getBills : function(component, event, helper) {
         var actionGetUASList = component.get("c.getUASes");
-        var compParentId = component.get("v.prodUpdate");
+        var compParentId = component.get("v.transfer");
         var selectedScheduleZ = component.get("v.selectedScheduleZ");
 
         actionGetUASList.setParams({
             "parentId" : compParentId,
-            "isProdUpdate" : true,
+            "isTransfer" : true,
             "scheduleZId" : selectedScheduleZ
         });
 
@@ -62,7 +62,7 @@
 
     switchToZeroBills : function (component, event, helper) {
         if (!component.get("v.selectedScheduleZ")){
-            alert('Select a Schedule Z before viewing $0 bills');
+            alert('Select an Allocation Schedule before viewing $0 bills');
             return;
         }
         helper.getCancelledBills(component);
@@ -72,14 +72,15 @@
         $A.util.removeClass(component.find("tab-default-2"), 'slds-hide');
     },
 
-    saveToProdUpdate : function (component, event, helper) {
-        var actionSaveProdUpdate = component.get("c.saveSchedZToProdUpdate");
-        var prodUpdate = component.get("v.prodUpdate");
+
+    saveToTransfer : function (component, event, helper) {
+        var actionSaveProdUpdate = component.get("c.saveAllocationScheduleToTransfer");
+        var transfer = component.get("v.transfer");
         var selectedScheduleZ = component.get("v.selectedScheduleZ");
 
         actionSaveProdUpdate.setParams({
            "scheduleZId" : selectedScheduleZ,
-           "prodUpdateId" : prodUpdate
+           "transferId" : transfer
         });
 
         actionSaveProdUpdate.setCallback(this,function(resp){
@@ -88,7 +89,7 @@
             } else {
                 var appEvent = $A.get("e.c:ApexCallbackError");
                 appEvent.setParams({"className" : "PreviewProductionUpdateResults",
-                    "methodName" : "saveSchedZToProdUpdate",
+                    "methodName" : "saveAllocationScheduleToTransfer",
                     "errors" : "Save Failed"});
                 appEvent.fire();
             }

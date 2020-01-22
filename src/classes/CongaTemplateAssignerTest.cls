@@ -193,34 +193,72 @@ public class CongaTemplateAssignerTest {
         Date oneMonthAgo = todaysDate.addMonths(-1);
         Date oneMonthInFuture = todaysDate.addMonths(1);
 
-        Energy_Usage_Update__c secondProdUpdateSSS1 = new Energy_Usage_Update__c (
+        Bill_Period__c bpB2 = new Bill_Period__c(
             Name = 'sssB - September 2016',
             Shared_Solar_System__c = sssList[0].Id,
-            Production__c = 73072.00,
-            Due_Date__c = oneMonthInFuture,
-            Billing_Period_Start_Date__c = oneMonthAgo,
-            Billing_Period_End_Date__c = todaysDate,
-            Total_System_NMCs__c = 12033.73,
-            Date__c = todaysDate,
-            Schedule_Z__c =  schZOne.Id
+            Bill_Date__c = todaysDate
         );
-        insert secondProdUpdateSSS1;
 
-        Energy_Usage_Update__c secondProdUpdateSSS2 = new Energy_Usage_Update__c (
+        Bill_Period__c bpA2 = new Bill_Period__c(
             Name = 'sssA - September 2016',
             Shared_Solar_System__c = sssList[1].Id,
-            Production__c = 73072.00,
-            Due_Date__c = oneMonthInFuture,
-            Billing_Period_Start_Date__c = oneMonthAgo,
-            Billing_Period_End_Date__c = todaysDate,
-            Total_System_NMCs__c = 12033.73,
-            Date__c = todaysDate,
-            Schedule_Z__c =  schZTwo.Id
+            Bill_Date__c = todaysDate
         );
 
-        insert secondProdUpdateSSS2;
+        insert new List<Bill_Period__c>{bpA2, bpB2};
 
-        TestBillCreationandPayment.runProductionUpdate(new List<Id>{secondProdUpdateSSS1.Id, secondProdUpdateSSS2.Id});
+        Production__c prodB3 = new Production__c(
+            Name = 'sssB September Production',
+            Shared_Solar_System__c = sssList[0].Id,
+            Start_Date__c = oneMonthAgo,
+            End_Date__c = todaysDate,
+            Production_kWh__c = 73072.00,
+            Credits_Generated__c = 12033.73
+        );
+
+        Production__c prodA2 = new Production__c(
+            Name = 'sssA September Production',
+            Shared_Solar_System__c = sssList[1].Id,
+            Start_Date__c = oneMonthAgo,
+            End_Date__c = todaysDate,
+            Production_kWh__c = 73072.00,
+            Credits_Generated__c = 12033.73
+        );
+
+        insert new List<Production__c>{prodB3, prodA2};
+
+        Transfer__c transferB3 = new Transfer__c(
+            Name = 'Main Transfer - sssB September',
+            Bill_Period__c = bpB2.Id,
+            Date_of_Transfer__c = todaysDate,
+            Shared_Solar_System__c = sssList[0].Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = schZOne.Id,
+            Attempted_Transfer__c =  12033.73,
+            Attempted_kWh_Transfer__c = 73072,
+            Transfer_Amount__c =  12033.73,
+            Default_Credit_Value__c = 0.13
+        );
+
+        Transfer__c transferA2 = new Transfer__c(
+            Name = 'Main Transfer - sssA September',
+            Bill_Period__c = bpA2.Id,
+            Date_of_Transfer__c = todaysDate,
+            Shared_Solar_System__c = sssList[1].Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = schZTwo.Id,
+            Attempted_Transfer__c =  12033.73,
+            Attempted_kWh_Transfer__c = 73072,
+            Transfer_Amount__c =  12033.73,
+            Default_Credit_Value__c = 0.13
+        );
+
+        insert new List<Transfer__c>{transferA2, transferB3};
+
+        TransferPartService transferPartService = new TransferPartService();
+        transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferA2, transferB3});
+
+        TestBillCreationandPayment.runBillPeriod(new List<Id>{bpA2.Id, bpB2.Id});
     }
 
     @isTest public static void testBasicTemplates(){

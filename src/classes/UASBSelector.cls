@@ -1,7 +1,7 @@
 /* Tested by: ZuoraUsageServiceTest
  */
 
-public class UASBSelector {
+public without sharing class UASBSelector {
     public static Database.QueryLocator uasbsNotYetInZuora() {
         String query =
             'SELECT Id, Name, Date__c, System_Bill__c,' +
@@ -18,6 +18,7 @@ public class UASBSelector {
             '    Client_Account_Number__c ' +
             'FROM UASB__c ' +
             'WHERE Zuora_Id__c = NULL ' +
+            'AND Externally_Serviced__c = FALSE ' +
             'ORDER BY Utility_Account_Subscription__r.Opportunity__r.AccountId, Date__c';
         return Database.getQueryLocator(query);
     }

@@ -1,6 +1,8 @@
 @isTest
 public class MultipleMonthProductionUpdateTest {
-    @testSetup public static void multipleMonthTest(){
+    @TestSetup
+    public static void multipleMonthTest(){
+        Test.startTest();
         Utility__c eversource = new Utility__c(
             Name = 'Eversource',
             Number_of_Decimal_Places__c = 2
@@ -179,64 +181,213 @@ public class MultipleMonthProductionUpdateTest {
 
         insert scheduleZ1;
 
+
+        Date myDateSep = Date.newInstance(2015, 9, 1);
+        Date myDateOct = Date.newInstance(2015, 10, 1);
+        Date myDateNov = Date.newInstance(2015, 11, 1);
+        Date myDateDec = Date.newInstance(2015, 12, 1);
+
         Date myDateJan = Date.newInstance(2016, 1, 1);
         Date myDateFeb = Date.newInstance(2016, 2, 2);
         Date myDateMar = Date.newInstance(2016, 3, 3);
         Date myDateApr = Date.newInstance(2016, 4, 4);
 
-        Energy_Usage_Update__c prodUpdateFourMonths = new Energy_Usage_Update__c (
-                Name = 'sssA - January 2016',
-                Shared_Solar_System__c = sss1.id,
-                Schedule_Z__c = scheduleZ1.id,
-                Billing_Period_End_Date__c = myDateFeb,
-                Date__c = myDateJan, 
-                Total_System_NMCs__c = 45000,
-                Net_Metering_Rate_Applied__c = 0.1234,
-                Production__c = 364667,
-                Total_System_NMCs_2_of_4__c = 20000, 
-                Net_Metering_Rate_Applied_2_of_4__c = 0.13,
-                Production_kWh_2_of_4__c = 153846,
-                Total_System_NMCs_3_of_4__c = 23000,
-                Net_Metering_Rate_Applied_3_of_4__c = 0.11,
-                Production_kWh_3_of_4__c = 209090,
-                Total_System_NMCs_4_of_4__c = 575,
-                Net_Metering_Rate_Applied_4_of_4__c = 0.10,
-                Production_kWh_4_of_4__c = 5750);
-        insert prodUpdateFourMonths;
 
-        Energy_Usage_Update__c prodUpdateTwoMonths = new Energy_Usage_Update__c (
-                Name = 'sssA - February 2016',
-                Shared_Solar_System__c = sss1.id,
-                Schedule_Z__c = scheduleZ1.id,
-                Billing_Period_End_Date__c = myDateMar,
-                Date__c = myDateFeb,
-                Total_System_NMCs__c = 13000,
-                Net_Metering_Rate_Applied__c = 0.1619,
-                Production__c = 80296,
-                Total_System_NMCs_2_of_4__c = 45000, 
-                Net_Metering_Rate_Applied_2_of_4__c = 0.1234,
-                Production_kWh_2_of_4__c = 364667);
-        insert prodUpdateTwoMonths;
+        Bill_Period__c bpA1 = new Bill_Period__c(
+            Name = 'sssA - January 2016',
+            Shared_Solar_System__c = sss1.Id,
+            Bill_Date__c = myDateJan
+        );
 
-        Energy_Usage_Update__c prodUpdateSizeoffKwh = new Energy_Usage_Update__c (
-                Name = 'sssA - March 2016',
-                Shared_Solar_System__c = sss1.id,
-                Schedule_Z__c = scheduleZ1.id,
-                Billing_Period_End_Date__c = myDateMar,
-                Date__c = myDateMar,
-                Total_System_NMCs__c = 13000,
-                Net_Metering_Rate_Applied__c = 0.1619,
-                Production__c = 80296);
-        insert prodUpdateSizeoffKwh;
+        Bill_Period__c bpA2 = new Bill_Period__c(
+            Name = 'sssA - February 2016',
+            Shared_Solar_System__c = sss1.Id,
+            Bill_Date__c = myDateFeb
+        );
 
-        System.assertEquals( 8, (PreviewProductionUpdateResults.getUASes(prodUpdateFourMonths.Id, true, scheduleZ1.Id)).size());
-        System.assertEquals( 4, (PreviewProductionUpdateResults.getUASes(prodUpdateTwoMonths.Id, true, scheduleZ1.Id)).size());
+        Bill_Period__c bpA3 = new Bill_Period__c(
+            Name = 'sssA - March 2016',
+            Shared_Solar_System__c = sss1.Id,
+            Bill_Date__c = myDateMar
+        );
 
-        Test.startTest();
-        TestBillCreationandPayment.runProductionUpdate(new List<Id>{prodUpdateFourMonths.Id});
-        TestBillCreationandPayment.setBillsToPublished();
-        TestBillCreationandPayment.runProductionUpdate(new List<Id>{prodUpdateTwoMonths.Id});
+        insert new List<Bill_Period__c>{bpA1, bpA2, bpA3};
+
+        Production__c prodA1 = new Production__c(
+            Name = 'sssA September Production',
+            Shared_Solar_System__c = sss1.Id,
+            Start_Date__c = myDateSep,
+            End_Date__c = myDateOct,
+            Production_kWh__c = 364667.00,
+            Credits_Generated__c = 45000
+        );
+
+        Production__c prodA2 = new Production__c(
+            Name = 'sssA October Production',
+            Shared_Solar_System__c = sss1.Id,
+            Start_Date__c = myDateOct,
+            End_Date__c = myDateNov,
+            Production_kWh__c = 153846.00,
+            Credits_Generated__c = 20000
+        );
+
+        Production__c prodA3 = new Production__c(
+            Name = 'sssA November Production',
+            Shared_Solar_System__c = sss1.Id,
+            Start_Date__c = myDateNov,
+            End_Date__c = myDateDec,
+            Production_kWh__c = 209090.00,
+            Credits_Generated__c = 23000
+        );
+
+        Production__c prodA4 = new Production__c(
+            Name = 'sssA December Production',
+            Shared_Solar_System__c = sss1.Id,
+            Start_Date__c = myDateDec,
+            End_Date__c = myDateJan,
+            Production_kWh__c = 575.00,
+            Credits_Generated__c = 575
+        );
+
+        Production__c prodA5 = new Production__c(
+            Name = 'sssA January Production',
+            Shared_Solar_System__c = sss1.Id,
+            Start_Date__c = myDateJan,
+            End_Date__c = myDateFeb,
+            Production_kWh__c = 80296.00,
+            Credits_Generated__c = 13000
+        );
+
+        Production__c prodA6 = new Production__c(
+            Name = 'sssA February Production',
+            Shared_Solar_System__c = sss1.Id,
+            Start_Date__c = myDateFeb,
+            End_Date__c = myDateMar,
+            Production_kWh__c = 364667.00,
+            Credits_Generated__c = 45000
+        );
+
+        Production__c prodA7 = new Production__c(
+            Name = 'sssA March Production',
+            Shared_Solar_System__c = sss1.Id,
+            Start_Date__c = myDateMar,
+            End_Date__c = myDateApr,
+            Production_kWh__c = 80296.00,
+            Credits_Generated__c = 13000
+        );
+
+        insert new List<Production__c>{prodA1, prodA2, prodA3, prodA4, prodA5, prodA6, prodA7};
+
+
+        Transfer__c transferA1 = new Transfer__c(
+            Name = 'Main Transfer - sssA September',
+            Bill_Period__c = bpA1.Id,
+            Date_of_Transfer__c = myDateJan,
+            Shared_Solar_System__c = sss1.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = scheduleZ1.Id,
+            Attempted_Transfer__c = 45000,
+            Attempted_kWh_Transfer__c = 364667,
+            Transfer_kWh__c = 364667,
+            Transfer_Amount__c = 45000,
+            Default_Credit_Value__c = 0.1234
+        );
+
+        Transfer__c transferA2 = new Transfer__c(
+            Name = 'Main Transfer - sssA October',
+            Bill_Period__c = bpA1.Id,
+            Date_of_Transfer__c = myDateJan,
+            Shared_Solar_System__c = sss1.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = scheduleZ1.Id,
+            Attempted_Transfer__c = 20000,
+            Attempted_kWh_Transfer__c = 153846,
+            Transfer_kWh__c = 153846,
+            Transfer_Amount__c = 20000,
+            Default_Credit_Value__c = 0.13
+        );
+
+        Transfer__c transferA3 = new Transfer__c(
+            Name = 'Main Transfer - sssA November',
+            Bill_Period__c = bpA1.Id,
+            Date_of_Transfer__c = myDateJan,
+            Shared_Solar_System__c = sss1.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = scheduleZ1.Id,
+            Attempted_Transfer__c = 23000,
+            Attempted_kWh_Transfer__c = 209090,
+            Transfer_kWh__c = 209090,
+            Transfer_Amount__c = 23000,
+            Default_Credit_Value__c = 0.11
+        );
+
+        Transfer__c transferA4 = new Transfer__c(
+            Name = 'Main Transfer - sssA December',
+            Bill_Period__c = bpA1.Id,
+            Date_of_Transfer__c = myDateJan,
+            Shared_Solar_System__c = sss1.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = scheduleZ1.Id,
+            Attempted_Transfer__c = 575,
+            Attempted_kWh_Transfer__c = 575,
+            Transfer_kWh__c = 575,
+            Transfer_Amount__c = 575,
+            Default_Credit_Value__c = 0.10
+        );
+
+        Transfer__c transferA5 = new Transfer__c(
+            Name = 'Main Transfer - sssA January',
+            Bill_Period__c = bpA2.Id,
+            Date_of_Transfer__c = myDateFeb,
+            Shared_Solar_System__c = sss1.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = scheduleZ1.Id,
+            Attempted_Transfer__c = 13000,
+            Attempted_kWh_Transfer__c = 80296,
+            Transfer_kWh__c = 80296,
+            Transfer_Amount__c = 13000,
+            Default_Credit_Value__c = 0.1619
+        );
+
+        Transfer__c transferA6 = new Transfer__c(
+            Name = 'Main Transfer - sssA February',
+            Bill_Period__c = bpA2.Id,
+            Date_of_Transfer__c = myDateFeb,
+            Shared_Solar_System__c = sss1.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = scheduleZ1.Id,
+            Attempted_Transfer__c = 45000,
+            Attempted_kWh_Transfer__c = 364667,
+            Transfer_kWh__c = 364667,
+            Transfer_Amount__c = 45000,
+            Default_Credit_Value__c = 0.1234
+        );
+
+        Transfer__c transferA7 = new Transfer__c(
+            Name = 'Main Transfer - sssA March',
+            Bill_Period__c = bpA3.Id,
+            Date_of_Transfer__c = myDateMar,
+            Shared_Solar_System__c = sss1.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = scheduleZ1.Id,
+            Attempted_Transfer__c = 13000,
+            Attempted_kWh_Transfer__c = 80296,
+            Transfer_kWh__c = 80296,
+            Transfer_Amount__c = 13000,
+            Default_Credit_Value__c = 0.1619
+        );
+
+        insert new List<Transfer__c>{transferA1, transferA2, transferA3, transferA4, transferA5, transferA6, transferA7};
+
+        TransferPartService transferPartService = new TransferPartService();
+        transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferA1, transferA2, transferA3, transferA4, transferA5, transferA6, transferA7});
         Test.stopTest();
+
+        System.assertEquals( 2, (PreviewProductionUpdateResults.getUASes(transferA1.Id, true, scheduleZ1.Id)).size());
+
+        TestBillCreationandPayment.runBillPeriod(new List<Id>{bpA1.Id});
+        TestBillCreationandPayment.setBillsToPublished();
+        TestBillCreationandPayment.runBillPeriod(new List<Id>{bpA2.Id});
     }
 
     @isTest public static void testBillCreation() {
@@ -277,15 +428,20 @@ public class MultipleMonthProductionUpdateTest {
 
     @isTest public static void testSizeOffkWH() {
         Test.startTest();
-        Energy_Usage_Update__c prodUpdateSizeoffKwh = [SELECT Id, Name, Schedule_Z__c
-                                                      FROM Energy_Usage_Update__c
-                                                      WHERE Name = 'sssA - March 2016'];
 
-        List<UASB__c> previewedUASBs = PreviewProductionUpdateResults.getUASes(prodUpdateSizeoffKwh.Id, true, prodUpdateSizeoffKwh.Schedule_Z__c);
+        Transfer__c transfer = [
+            SELECT Id, Name, Allocation_Schedule__c, Bill_Period__r.Id
+            FROM Transfer__c
+            WHERE Name = 'Main Transfer - sssA March'
+            LIMIT 1
+        ];
+
+
+        List<UASB__c> previewedUASBs = PreviewProductionUpdateResults.getUASes(transfer.Id, true, transfer.Allocation_Schedule__c);
 
         System.assertEquals( 2, previewedUASBs.size());
 
-        TestBillCreationandPayment.runProductionUpdate(new List<Id>{prodUpdateSizeoffKwh.Id});
+        TestBillCreationandPayment.runBillPeriod(new List<Id>{transfer.Bill_Period__r.Id});
 
         Test.stopTest();
 
@@ -294,7 +450,7 @@ public class MultipleMonthProductionUpdateTest {
             Credits_Allocated__c, Share_of_System__c, Subscription_Production_kWh_Static__c
             FROM UASB__c
             WHERE Utility_Account_Subscription__r.Name = : previewedUASBs[1].PreGen_Utility_Acct__c 
-            AND Production_Update__c = : prodUpdateSizeoffKwh.Id];
+            AND Transfer__c = : transfer.Id];
 
         System.assertEquals(126.10, generatedBill.Credits_Allocated__c);
         System.assertEquals(126.10, previewedUASBs[1].PreGen_NMCs_Allocated__c);
@@ -308,13 +464,33 @@ public class MultipleMonthProductionUpdateTest {
 
     @isTest public static void testMNRounding() {
         Test.startTest();
-        Energy_Usage_Update__c prodUpdateSizeoffKwh = [SELECT Id, Name, Schedule_Z__c, Production__c
-                                                        FROM Energy_Usage_Update__c
-                                                        WHERE Name = 'sssA - March 2016'];
+        Transfer__c transfer = [
+            SELECT Id, Name, Allocation_Schedule__c, Bill_Period__r.Id
+            FROM Transfer__c
+            WHERE Name = 'Main Transfer - sssA March'
+            LIMIT 1
+        ];
 
-        prodUpdateSizeoffKwh.Production__c = 159817;
-        prodUpdateSizeoffKwh.Net_Metering_Rate_Applied__c = 0.15539;
-        update prodUpdateSizeoffKwh;
+        Transfer_Part__c part = [
+          SELECT Id, Production__c
+          FROM Transfer_Part__c
+            WHERE Transfer__c = : transfer.Id
+            LIMIT 1
+        ];
+
+        Production__c production = [
+          SELECT Id, Production_kWh__c
+          FROM Production__c
+            WHERE Id = :part.Production__c
+        ];
+
+        production.Production_kWh__c = 159817;
+        update production;
+
+        transfer.Attempted_kWh_Transfer__c = 159817;
+        transfer.Transfer_kWh__c = 159817;
+        transfer.Default_Credit_Value__c = 0.15539;
+        update transfer;
 
         Schedule_Z_Subscription__c szs = [SELECT Id, Name, Customer_Subscription_kW_DC__c,
                                             Number_of_Decimal_Places__c
@@ -325,16 +501,16 @@ public class MultipleMonthProductionUpdateTest {
         szs.Number_of_Decimal_Places__c = 4;
         update szs;
 
-        TestBillCreationandPayment.runProductionUpdate(new List<Id>{prodUpdateSizeoffKwh.Id});
+        TestBillCreationandPayment.runBillPeriod(new List<Id>{transfer.Bill_Period__r.Id});
 
         Test.stopTest();
 
         UASB__c generatedBill =
         [SELECT Id, Name, Utility_Account_Subscription__r.Name,
-            Credits_Allocated__c, Share_of_System__c, Subscription_Production_kWh_Static__c
+            Credits_Allocated__c, Share_of_System__c, Subscription_Production_kWh_Static__c, Transfer__r.Id
         FROM UASB__c
         WHERE Schedule_Z_Subscription__r.Name = : szs.Name
-        AND Production_Update__r.Id = : prodUpdateSizeoffKwh.Id];
+        AND Transfer__r.Id = : transfer.Id];
 
         // 0.15539 (nmc Rate) & 159817 (total system kWh) & 0.4833 (share of system) should = $120.03 NOT $120.02
         System.assertEquals(120.03, generatedBill.Credits_Allocated__c);
@@ -345,10 +521,12 @@ public class MultipleMonthProductionUpdateTest {
 
     @isTest public static void testRoundingMethodSwitch() {
         Test.startTest();
-        Energy_Usage_Update__c prodUpdate = [
-            SELECT Id, Name, Schedule_Z__c, Production__c
-            FROM Energy_Usage_Update__c
-            WHERE Name = 'sssA - March 2016'];
+        Transfer__c transfer = [
+            SELECT Id, Name, Allocation_Schedule__c, Bill_Period__r.Id
+            FROM Transfer__c
+            WHERE Name = 'Main Transfer - sssA March'
+            LIMIT 1
+        ];
 
         Utility__c nGrid = [
             SELECT Id, Credits_Allocated_Rounding_Method__c
@@ -369,8 +547,10 @@ public class MultipleMonthProductionUpdateTest {
         szs.Number_of_Decimal_Places__c = 2;
         update szs;
 
-        prodUpdate.Total_System_NMCs__c = 28319.04;
-        update prodUpdate;
+        transfer.Attempted_Transfer__c = 28319;
+        transfer.Transfer_Amount__c = 28319;
+        update transfer;
+
 
         nGrid.Credits_Allocated_Rounding_Method__c = 'DOWN';
         update nGrid;
@@ -378,7 +558,7 @@ public class MultipleMonthProductionUpdateTest {
         sss1.Billing_Method__c = 'NMC';
         update sss1;
 
-        TestBillCreationandPayment.runProductionUpdate(new List<Id>{prodUpdate.Id});
+        TestBillCreationandPayment.runBillPeriod(new List<Id>{transfer.Bill_Period__r.Id});
         Test.stopTest();
 
         UASB__c generatedBill =
@@ -386,7 +566,7 @@ public class MultipleMonthProductionUpdateTest {
             Credits_Allocated__c, Share_of_System__c, Subscription_Production_kWh_Static__c
         FROM UASB__c
         WHERE Schedule_Z_Subscription__r.Name = : szs.Name
-        AND Production_Update__r.Id = : prodUpdate.Id];
+        AND Transfer__c = : transfer.Id];
 
         // Matches real data: (1.77% share with $28,319.04 NMCs = 501.247, round down to 501.24)
         System.assertEquals(501.24, generatedBill.Credits_Allocated__c);

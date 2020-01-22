@@ -209,33 +209,68 @@ public with sharing class BillNumberingTest {
 
         insert scheduleZ2;
 
-        Energy_Usage_Update__c productionupdateB1 = new Energy_Usage_Update__c (
+        Bill_Period__c bpB1 = new Bill_Period__c(
             Name = 'sssB - January 2016',
-            Shared_Solar_System__c = sss2.id,
-            Schedule_Z__c = scheduleZ2.id,
-            Production__c = 90000,
-            Net_Metering_Rate_Applied__c = 0.1848,
-            Billing_Period_End_Date__c = myDateFeb,
-            Total_System_NMCs__c = 16632,
-            Date__c = myDateJan
+            Shared_Solar_System__c = sss2.Id,
+            Bill_Date__c = myDateJan
         );
 
-        insert productionupdateB1;
-
-        Energy_Usage_Update__c productionupdateB2 = new Energy_Usage_Update__c (
+        Bill_Period__c bpB2 = new Bill_Period__c(
             Name = 'sssB - February 2016',
-            Shared_Solar_System__c = sss2.id,
-            Schedule_Z__c = scheduleZ2.id,
-            Production__c = 120000,
-            Net_Metering_Rate_Applied__c = 0.1848,
-            Billing_Period_End_Date__c = myDateMar,
-            Total_System_NMCs__c = 22176,
-            Date__c = myDateFeb
+            Shared_Solar_System__c = sss2.Id,
+            Bill_Date__c = myDateFeb
+        );
+        insert new List<Bill_Period__c>{bpB1, bpB2};
+
+        Production__c prodB1 = new Production__c(
+            Name = 'sssB January Production',
+            Shared_Solar_System__c = sss2.Id,
+            Start_Date__c = myDateJan,
+            End_Date__c = myDateFeb - 1,
+            Production_kWh__c = 90000,
+            Credits_Generated__c = 16632
         );
 
-        insert productionupdateB2;
 
-        TestBillCreationandPayment.runProductionUpdate(new List<Id>{productionupdateB1.Id});
+        Production__c prodB2 = new Production__c(
+            Name = 'sssB February Production',
+            Shared_Solar_System__c = sss2.Id,
+            Start_Date__c = myDateFeb,
+            End_Date__c = myDateMar - 1,
+            Production_kWh__c = 120000,
+            Credits_Generated__c = 22176
+        );
+
+        insert new List<Production__c>{prodB1, prodB2};
+
+        Transfer__c transferB1 = new Transfer__c(
+            Name = 'Main Transfer - sssB January',
+            Bill_Period__c = bpB1.Id,
+            Date_of_Transfer__c = myDateJan,
+            Shared_Solar_System__c = sss2.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = scheduleZ2.Id,
+            Attempted_Transfer__c = 16632,
+            Attempted_kWh_Transfer__c = 90000,
+            Transfer_Amount__c = 16632,
+            Default_Credit_Value__c = 0.1848
+        );
+
+        Transfer__c transferB2 = new Transfer__c(
+            Name = 'Main Transfer - sssB February',
+            Bill_Period__c = bpB2.Id,
+            Date_of_Transfer__c = myDateFeb,
+            Shared_Solar_System__c = sss2.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = scheduleZ2.Id,
+            Attempted_Transfer__c = 22176,
+            Attempted_kWh_Transfer__c = 120000,
+            Transfer_Amount__c = 22176,
+            Default_Credit_Value__c = 0.1848
+        );
+        insert new List<Transfer__c>{transferB1, transferB2};
+
+        TestBillCreationandPayment.runBillPeriod(new List<Id>{bpB1.Id});
 
 
         APXT_BPM__Conductor__c newConga = new APXT_BPM__Conductor__c (APXT_BPM__Title__c = 'Conga Record');
@@ -246,7 +281,9 @@ public with sharing class BillNumberingTest {
 
         TestBillCreationandPayment.setBillsToPublished();
 
-        TestBillCreationandPayment.simulateBatchBillCreation(new List<Energy_Usage_Update__c>{productionupdateB2});
+        TestBillCreationandPayment.simulateBatchBillCreation(new List<Transfer__c>{transferB2});
+
+
 
         Test.stopTest();
 
@@ -282,7 +319,7 @@ public with sharing class BillNumberingTest {
             SELECT Id, Bill_Number__c, Month__c
             FROM System_Bill__c
             WHERE Property_Account__c = : oppOne.AccountId
-            AND Shared_Solar_System__c = : productionupdateB2.Shared_Solar_System__c
+            AND Shared_Solar_System__c = : transferB2.Shared_Solar_System__c
             ORDER BY Bill_Number__c
         ];
 
