@@ -219,9 +219,7 @@
         <fields>ACCOUNT.ADDRESS2_STREET</fields>
         <fields>ACCOUNT.ADDRESS2_CITY</fields>
         <fields>ACCOUNT.ADDRESS2_STATE_CODE</fields>
-        <fields>Total_Amount_Billed__c</fields>
-        <fields>Total_Payments__c</fields>
-        <fields>Total_Outstanding_Balance__c</fields>
+        <fields>Total_Outstanding_Balance_Merge__c</fields>
         <relatedList>Account.Parent_Account__c</relatedList>
     </relatedLists>
     <relatedLists>
