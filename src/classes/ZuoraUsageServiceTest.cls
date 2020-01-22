@@ -174,10 +174,10 @@ public class ZuoraUsageServiceTest {
         // API Mock returns 14 rows, 3 errors, 11 successes:
         System.assertEquals(true, Util.getSystemPropertyCheckbox('Update_Usage_Records_With_ZuoraId__c'));
         List<UASB__c> uasbList = [
-            SELECT Id, Name, Zuora_Id__c
+            SELECT Id, Name, Zuora_Id__c, Client_Account_Number__c
             FROM UASB__c
-            WHERE Zuora_Id__c != NULL
         ];
+        System.debug(uasbList);
         System.assertEquals(10, uasbList.size());
 
         List<Error_Log__c> errors = [
