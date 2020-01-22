@@ -528,10 +528,4 @@ public class ProductionUpdateSelectorTest {
         System.assertEquals(2,prodListById.size());
     }
 
-    @isTest public static void testSSSWithoutProdUpdates() {
-        List<Shared_Solar_System__c> sssList;
-        sssList = SharedSolarSystemsSelector.getAllSSSWithProdUpdatesNotInList(null);
-
-        System.assertEquals(3,sssList.size());
-    }
 }

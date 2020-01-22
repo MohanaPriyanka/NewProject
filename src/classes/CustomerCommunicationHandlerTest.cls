@@ -292,18 +292,39 @@ public class CustomerCommunicationHandlerTest{
 
         insert scheduleZ1;
 
-        Energy_Usage_Update__c productionupdate = new Energy_Usage_Update__c (
-                Name = 'sssA - March 2016',
-                Shared_Solar_System__c = sssID,
-                Schedule_Z__c = scheduleZ1.Id,
-                Production__c = 160000,
-                Total_System_NMCs__c = 36000,
-                Net_Metering_Rate_Applied__c = 0.2429,
-                Date__c = billDate
+        Bill_Period__c bpA1 = new Bill_Period__c(
+            Name = 'sssA - March 2016',
+            Shared_Solar_System__c = sssID,
+            Bill_Date__c = billDate
         );
-        insert productionupdate;
-        TestBillCreationandPayment.runProductionUpdate(new List<Id>{productionUpdate.Id});
-        update productionUpdate;
+        insert bpA1;
+
+        Production__c prodA1 = new Production__c(
+            Name = 'sssA March Production',
+            Shared_Solar_System__c = sssID,
+            Start_Date__c = billDate.addMonths(-1),
+            End_Date__c = billDate,
+            Production_kWh__c = 160000,
+            Credits_Generated__c = 36000
+        );
+        insert prodA1;
+
+        Transfer__c transferA1 = new Transfer__c(
+            Name = 'Main Transfer - sssA March',
+            Bill_Period__c = bpA1.Id,
+            Date_of_Transfer__c = billDate,
+            Shared_Solar_System__c = sssID,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = scheduleZ1.Id,
+            Attempted_Transfer__c = 36000,
+            Attempted_kWh_Transfer__c = 160000,
+            Transfer_Amount__c = 36000,
+            Default_Credit_Value__c = 0.2429
+        );
+        insert transferA1;
+
+        TestBillCreationandPayment.runBillPeriod(new List<Id>{bpA1.Id});
+
     }
 
     public static void mockZuoraFields(){

@@ -1,13 +1,14 @@
 ({
     doInit : function(component, event, helper) {
+        //TODO
         var actionGetUASList = component.get("c.getUASes"); 
         var compParentId = component.get("v.parentId");
-        var isProductionUpdate = component.get("v.IsProdUpdate");
+        var isTransfer = component.get("v.IsTransfer");
 
-        if (!isProductionUpdate) {
+        if (!isTransfer) {
             actionGetUASList.setParams({
                 "parentId" : compParentId,
-                "isProdUpdate" : isProductionUpdate,
+                "isTransfer" : isTransfer,
                 "scheduleZName" : ''
             });
 

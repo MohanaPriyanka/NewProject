@@ -45,7 +45,6 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>false</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableReports>true</enableReports>
@@ -410,6 +409,18 @@
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Transfer__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Transfer</label>
+        <referenceTo>Transfer__c</referenceTo>
+        <relationshipLabel>Utility Account Bills</relationshipLabel>
+        <relationshipName>Utility_Account_Bills</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Unique_Id__c</fullName>
         <caseSensitive>false</caseSensitive>
         <externalId>true</externalId>
@@ -530,7 +541,7 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Utility Account Bills</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
     <validationRules>
         <fullName>UAB_Cannot_Be_Edited_After_Created_Date</fullName>

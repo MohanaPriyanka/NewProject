@@ -4,7 +4,7 @@
 @IsTest
 public with sharing class ScheduleZSubscriptionSelectorTest {
     @TestSetup public static void setupData() {
-        CSPaymentTest.CSPaymentSetupTestData();
+        CSPaymentTest.csPaymentSetupTestData();
     }
 
     @IsTest
@@ -45,7 +45,8 @@ public with sharing class ScheduleZSubscriptionSelectorTest {
         ];
 
         List<Schedule_Z_Subscription__c> szsList = ScheduleZSubscriptionSelector.getListForBilling(scheduleZMap.keySet());
-        System.assertEquals(13, szsList.size());
+        //2 are Externally Serviced
+        System.assertEquals(15, szsList.size());
     }
 
     @IsTest
