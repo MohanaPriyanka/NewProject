@@ -140,6 +140,218 @@ public class TransferSheetBillingTest {
         System.assertEquals(0,uasbs[5].Credits_Allocated__c);
     }
 
+    @isTest
+    private static void testConvertTransferSheetToUASB(){
+        // Wrong Column Headers:
+        String transferSheetWrongColumnHeaders = 'UtilityNumber,Credits,Production,XXX\n 123456789,12,2300,12\n';
+        Map<Integer, List<String>> dataMap = Util.readCSV(transferSheetWrongColumnHeaders);
+        Boolean errorThrown = false;
+        try {
+            TransferSheetService.convertTransferSheetToUASBs(dataMap);
+        } catch (AuraHandledException excep){
+            errorThrown = true;
+            System.assert(excep.getMessage().contains('Expected fourth column named CreditValue, found XXX'));
+        }
+        System.assert(errorThrown);
+
+        // Mix of spaces, dashes in Utility Number && Production and Credit Value are missing from some data
+        String transferSheetData = 'UtilityNumber,Credits,Production,CreditValue\n' +
+            ' 12345  6789,12,2300,\n' +
+            '123-678,13.45,2500,\n' +
+            '123678,10,2500,\n' +
+            '00123 - 45678,14.12,,0.1355\n' +
+            '223232,15,,0.1447\n' +
+            '2323224,16,,0.1355\n';
+
+        Map<Integer, List<String>> rowNumberToDataMap = Util.readCSV(transferSheetData);
+
+        List<String> dataStringList = rowNumberToDataMap.get(2);
+        System.assertEquals(4,dataStringList.size());
+        System.assertEquals('123-678',dataStringList[0]);
+
+        Map<String,UASB__c> utilNumberToUASB = TransferSheetService.convertTransferSheetToUASBs(rowNumberToDataMap);
+
+        UASB__c uasbOne = utilNumberToUASB.get('123456789');
+        UASB__c uasbTwo = utilNumberToUASB.get('123678');
+        UASB__c uasbThree = utilNumberToUASB.get('0012345678');
+        UASB__c uasbFour = utilNumberToUASB.get('223232');
+        UASB__c uasbFive = utilNumberToUASB.get('2323224');
+
+        System.assertEquals(12,uasbOne.Credits_Allocated__c);
+        System.assertEquals(23.45,uasbTwo.Credits_Allocated__c);
+        System.assertEquals(14.12,uasbThree.Credits_Allocated__c);
+        System.assertEquals(15,uasbFour.Credits_Allocated__c);
+        System.assertEquals(16,uasbFive.Credits_Allocated__c);
+
+        System.assertEquals(2300,uasbOne.Subscription_Production_kWh_Static__c);
+        System.assertEquals(5000,uasbTwo.Subscription_Production_kWh_Static__c);
+        System.assertEquals(0,uasbThree.Subscription_Production_kWh_Static__c);
+        System.assertEquals(0,uasbFour.Subscription_Production_kWh_Static__c);
+        System.assertEquals(0,uasbFive.Subscription_Production_kWh_Static__c);
+
+        System.assertEquals(0,uasbOne.NMC_Rate__c);
+        System.assertEquals(0,uasbTwo.NMC_Rate__c);
+        System.assertEquals(0.1355,uasbThree.NMC_Rate__c);
+        System.assertEquals(0.1447,uasbFour.NMC_Rate__c);
+        System.assertEquals(0.1355,uasbFive.NMC_Rate__c);
+    }
+
+    @isTest
+    private static void testCompareSFBillsToTransferMA(){
+        useMocks();
+
+        // MA: Transfer Sheet does NOT have Production (kWH) and NMC Rate ($/kWh)
+
+        // First, Get SF Generated Bills:
+        Transfer__c transfer = getTestTransfer();
+        List<UASB__c> sfUASBs = BillGenerationService.calculateUASBsFromTransfer(transfer);
+        System.assertEquals(6,sfUASBs.size());
+
+        // Second, Get Transfer Sheet Bills:
+        String transferSheetData = 'UtilityNumber,Credits,Production,CreditValue\n' +
+            '12345-6789,242.82,,\n' +
+            '123 678,99,,\n' +
+            '123678,10.88,,\n' +
+            '0012 3456789,99.88,,\n' +
+            '223232,141.40,,\n' +
+            '23232 24,99.88,,\n';
+        Map<Integer, List<String>> rowNumberToDataMap = Util.readCSV(transferSheetData);
+        Map<String,UASB__c> transferUASBs = TransferSheetService.convertTransferSheetToUASBs(rowNumberToDataMap);
+        // CSV has 6 rows, but 5 unique utility account numbers:
+        System.assertEquals(5,transferUASBs.values().size());
+
+        // Third, Compare SF to Transfer:
+        List<TransferSheetService.UASBWithStatus> matchList;
+        matchList = TransferSheetService.compareSFBillsToTransferSheet(sfUASBs, transferUASBs, transfer);
+        System.assertEquals(7,matchList.size());
+
+        Integer countOfLineItemsWithoutSZS = 0;
+
+        /*
+            Expect 2 matches (same between transfer sheet and SF)
+            2 credit mismatches (found utility number in both, but credits allocated are different)
+            2 missing transfers (record in SF is not on transfer sheet)
+            1 missing bill (transfer record is not in SF)
+        */
+
+        for (TransferSheetService.UASBWithStatus lineItem : matchList){
+            String utilityNumber = '';
+            if (lineItem.UASB.PreGen_Utility_Acct__c != null){
+                utilityNumber = lineItem.UASB.PreGen_Utility_Acct__c;
+            }
+            if (utilityNumber == '12-34-56-789'){
+                System.assertEquals(TransferSheetService.matchStatus.MATCH,lineItem.Status);
+            } else if (utilityNumber == '23 23 224'){
+                System.assertEquals(TransferSheetService.matchStatus.MATCH,lineItem.Status);
+            } else if (utilityNumber == '223232'){
+                System.assertEquals(141.49,lineItem.UASB.Credits_Allocated__c);
+                System.assertEquals('Credits Allocated Mismatch',lineItem.MatchMessage);
+                System.assertEquals(TransferSheetService.matchStatus.CREDIT_MISMATCH,lineItem.Status);
+            } else if (utilityNumber == ' 00 12 34 56789'){
+                System.assertEquals(158.77,lineItem.UASB.Credits_Allocated__c);
+                System.assertEquals('Credits Allocated Mismatch',lineItem.MatchMessage);
+                System.assertEquals(TransferSheetService.matchStatus.CREDIT_MISMATCH,lineItem.Status);
+            } else if (utilityNumber == '777888'){
+                System.assertEquals(TransferSheetService.matchStatus.MISSING_TRANSFER,lineItem.Status);
+            } else if (utilityNumber == '666333222'){
+                System.assertEquals(TransferSheetService.matchStatus.MISSING_TRANSFER,lineItem.Status);
+            } else {
+                countOfLineItemsWithoutSZS += 1;
+                System.assertEquals(TransferSheetService.matchStatus.MISSING_BILL,lineItem.Status);
+            }
+        }
+        System.assertEquals(1,countOfLineItemsWithoutSZS);
+
+    }
+
+    @isTest
+    private static void testCompareSFBillsToTransferMN(){
+        useMocks();
+
+        // MN: Transfer Sheet has Production (kWH) and NMC Rate ($/kWh)
+
+        // First, Get SF Generated Bills:
+        Transfer__c transfer = getTestTransfer();
+        List<UASB__c> sfUASBs = BillGenerationService.calculateUASBsFromTransfer(transfer);
+        System.assertEquals(6,sfUASBs.size());
+
+        // Second, Get Transfer Sheet Bills:
+        String transferSheetData = 'UtilityNumber,Credits,Production,CreditValue\n' +
+            '12345-6789,242.82,1300.98,0.1848\n' +
+            '123 678,99,2600,0.1848\n' +
+            '00123456789,10.00,,\n' +
+            '0012 3456789,148.77,859.18,0.1848\n' +
+            '223232,141.49,859.18,0.1848\n' +
+            '23232 24,99.88,606.50,0.1324\n';
+        Map<Integer, List<String>> rowNumberToDataMap = Util.readCSV(transferSheetData);
+        Map<String,UASB__c> transferUASBs = TransferSheetService.convertTransferSheetToUASBs(rowNumberToDataMap);
+        // CSV has 6 rows, but 5 unique utility account numbers:
+        System.assertEquals(5,transferUASBs.values().size());
+
+        // Third, Compare SF to Transfer:
+        List<TransferSheetService.UASBWithStatus> matchList;
+        matchList = TransferSheetService.compareSFBillsToTransferSheet(sfUASBs, transferUASBs, transfer);
+        System.assertEquals(7,matchList.size());
+
+        Integer countOfLineItemsWithoutSZS = 0;
+
+        /*
+            Expect 2 matches (same between transfer sheet and SF)
+            2 credit mismatches (found utility number in both, but credits allocated are different)
+            2 missing transfers (record in SF is not on transfer sheet)
+            1 missing bill (transfer record is not in SF)
+        */
+
+        for (TransferSheetService.UASBWithStatus lineItem : matchList){
+            String utilityNumber = '';
+            if (lineItem.UASB.PreGen_Utility_Acct__c != null){
+                utilityNumber = lineItem.UASB.PreGen_Utility_Acct__c;
+            }
+            if (utilityNumber == '12-34-56-789'){
+                System.assertEquals(TransferSheetService.matchStatus.CREDIT_MISMATCH,lineItem.Status);
+                System.assertEquals('Production kWh Mismatch',lineItem.MatchMessage);
+            } else if (utilityNumber == '23 23 224'){
+                System.assertEquals(TransferSheetService.matchStatus.CREDIT_MISMATCH,lineItem.Status);
+                System.assertEquals('NMC Rate mismatch',lineItem.MatchMessage);
+            } else if (utilityNumber == '223232'){
+                System.assertEquals(TransferSheetService.matchStatus.MATCH,lineItem.Status);
+            } else if (utilityNumber == ' 00 12 34 56789'){
+                System.assertEquals(TransferSheetService.matchStatus.MATCH,lineItem.Status);
+            } else if (utilityNumber == '777888'){
+                System.assertEquals(TransferSheetService.matchStatus.MISSING_TRANSFER,lineItem.Status);
+            } else if (utilityNumber == '666333222'){
+                System.assertEquals(TransferSheetService.matchStatus.MISSING_TRANSFER,lineItem.Status);
+            } else {
+                countOfLineItemsWithoutSZS += 1;
+                System.assertEquals(TransferSheetService.matchStatus.MISSING_BILL,lineItem.Status);
+            }
+        }
+        System.assertEquals(1,countOfLineItemsWithoutSZS);
+    }
+
+    @isTest
+    private static void testQueryContentDoc(){
+        ContentVersion transferSheet = new ContentVersion (
+            Title ='transferSheet.pdf',
+            PathOnClient='/transferSheet.pdf',
+            VersionData = Blob.valueOf('ColumnOne, ColumnTwo')
+        );
+        Util.insertSObj(transferSheet);
+
+        ContentDocument document = [
+            SELECT Id
+            FROM ContentDocument
+            ORDER BY CreatedDate DESC
+            LIMIT 1
+        ];
+
+        try {
+            TransferSheetService.getUASBListFromTransferSheet(document.Id, getTestTransfer());
+        } catch (AuraHandledException excep){
+            System.assert(excep.getMessage().contains('Expected 4 Columns in CSV data found 2'));
+        }
+    }
+
     private static void useMocks() {
         BillGenerationService.szsSelector = (ScheduleZSubscriptionSelector) Test.createStub(ScheduleZSubscriptionSelector.class, new MockSZSSelector());
         BillGenerationService.escalatorSelector = (ProductEscalatorSelector) Test.createStub(ProductEscalatorSelector.class, new MockPESelector());
@@ -153,6 +365,7 @@ public class TransferSheetBillingTest {
             String szsOne = '{"Id":"szsOne_ID","Customer_Subscription_kW_DC__c": 26.00,"Percent_Share__c" : 1.7982,' +
                 '"System_Size_kW_DC__c" : 1445.86,"Schedule_Z__c" : "a3z190000009UUvAAM",' +
                 '"Utility_Account_Subscription__r" : {"Name" : "UAS_One", ' +
+                '"Utility_Account_Log__r" : {"Name" : "12-34-56-789"},' +
                 '"Opportunity__r" : {"Id":"0000000AAA","Name":"Oppty A",' +
                 '"Product__r" : {"NMC_Discount__c" : 12.00 ,"NM_Rate_Floor__c" : 0.0,"Solar_Electricity_Rate__c" : 0.13,' +
                 '"Pricing_Structure__c" : "Use Solar Electric Rate","Percent_Share_Decimal_Places__c" : 6.00},' +
@@ -161,6 +374,7 @@ public class TransferSheetBillingTest {
             String szsTwo = '{"Id":"szsTwo_ID","Customer_Subscription_kW_DC__c": 12.00,"Percent_Share__c" : 0.8300,' +
                 '"System_Size_kW_DC__c" : 1445.86,"Schedule_Z__c" : "a3z190000009UUvAAM",' +
                 '"Utility_Account_Subscription__r" : {"Name" : "UAS_Two", ' +
+                '"Utility_Account_Log__r" : {"Name" : "23 23 224"},' +
                 '"Opportunity__r" : {"Id":"0000000BBB","Name":"Oppty B", "Product_Escalation_Schedule__c" : "a6o19000000CsuGAAS",' +
                 '"Product__r" : {"NMC_Discount__c" : 10.00 ,"NM_Rate_Floor__c" : 0.0,"Solar_Electricity_Rate__c" : 0.13,' +
                 '"Pricing_Structure__c" : "Fixed % Discount","Percent_Share_Decimal_Places__c" : 6.00},' +
@@ -169,6 +383,7 @@ public class TransferSheetBillingTest {
             String szsThree = '{"Id":"szsThree_ID","Customer_Subscription_kW_DC__c": 17.00,"Percent_Share__c" : 1.1758,' +
                 '"System_Size_kW_DC__c" : 1445.86,"Schedule_Z__c" : "a3z190000009UUvAAM",' +
                 '"Utility_Account_Subscription__r" : {"Name" : "UAS_Three", ' +
+                '"Utility_Account_Log__r" : {"Name" : "223232"},' +
                 '"Opportunity__r" : {"Id":"0000000CCC","Name":"Oppty C",' +
                 '"Product__r" : {"NMC_Discount__c" : 10.00 ,"NM_Rate_Floor__c" : 0.0,"Solar_Electricity_Rate__c" : 0.13,' +
                 '"Pricing_Structure__c" : "Fixed % Discount","Percent_Share_Decimal_Places__c" : 6.00},' +
@@ -177,6 +392,7 @@ public class TransferSheetBillingTest {
             String szsFour = '{"Id":"szsFour_ID","Customer_Subscription_kW_DC__c": 17.00,"Percent_Share__c" : 1.1758,' +
                 '"System_Size_kW_DC__c" : 1445.86,"Schedule_Z__c" : "a3z190000009UUvAAM",' +
                 '"Utility_Account_Subscription__r" : {"Name" : "UAS_Four", ' +
+                '"Utility_Account_Log__r" : {"Name" : " 00 12 34 56789"},' +
                 '"Opportunity__r" : {"Id":"0000000DDD","Name":"Oppty D",' +
                 '"Product__r" : {"NMC_Discount__c" : 10.00 ,"NM_Rate_Floor__c" : 0.0,"Solar_Electricity_Rate__c" : 0.13,' +
                 '"Pricing_Structure__c" : "Use Solar Electric Rate","Percent_Share_Decimal_Places__c" : 6.00},' +
@@ -185,6 +401,7 @@ public class TransferSheetBillingTest {
             String szsFive = '{"Id":"szsFive_ID","Customer_Subscription_kW_DC__c": 7.00,"Percent_Share__c" : 0.4841,' +
                 '"System_Size_kW_DC__c" : 1445.86,"Schedule_Z__c" : "a3z190000009UUvAAM",' +
                 '"Utility_Account_Subscription__r" : {"Name" : "UAS_Five", ' +
+                '"Utility_Account_Log__r" : {"Name" : "777888"},' +
                 '"Opportunity__r" : {"Id":"0000000EEE","Name":"Oppty E",' +
                 '"Product__r" : {"NMC_Discount__c" : 25.00 ,"NM_Rate_Floor__c" : 0.0,"Solar_Electricity_Rate__c" : 0.13,' +
                 '"Pricing_Structure__c" : "Fixed % Discount","Percent_Share_Decimal_Places__c" : 6.00},' +
@@ -192,6 +409,7 @@ public class TransferSheetBillingTest {
                 '"Account" : {"Name" : "Account One", "Account_Number__c" : "BW-00001"}}}}';
             String szsSix = '{"Id":"szsSix_ID","Schedule_Z__c" : "a3z190000009UUvCCC",' +
                 '"Utility_Account_Subscription__r" : {"Name" : "UAS_Six", ' +
+                '"Utility_Account_Log__r" : {"Name" : "666333222"},' +
                 '"Opportunity__r" : {"Id":"0000000FFF","Name":"Oppty F",' +
                 '"Shared_Solar_System__r" : {"Id": "a1J19000001MFvAEAW", "Count_of_Transfers__c" : 2, "Billing_Method__c" : "NMC"}}}}';
             String onTimeSZS = '[' + szsOne + ',' + szsTwo + ',' + szsThree + ',' + szsFour + ',' + szsFive + ']';

@@ -5,7 +5,7 @@ public without sharing class BillGenerationService {
     public static ProductEscalatorSelector escalatorSelector = new ProductEscalatorSelector();
 
     // Archive once we are creating only UASBs:
-    public static List<Schedule_Z_Subscription__c>  getScheduleZSubscriptionList(Set<Id> scheduleZIds){
+    public static List<Schedule_Z_Subscription__c> getScheduleZSubscriptionList(Set<Id> scheduleZIds){
         List<Schedule_Z_Subscription__c> onTimeSZSes;
         List<Schedule_Z_Subscription__c> overdueSZSes;
         Set<Id> uasIdsAlreadyBilling = new Set<Id>();
@@ -105,7 +105,8 @@ public without sharing class BillGenerationService {
             Customer_Subscription_KW_DC__c = szs.Customer_Subscription_kW_DC__c,
             Date__c = transfer.Bill_Period__r.Bill_Date__c,
             Transfer__c = transfer.Id,
-            Utility_Account_Subscription__c = szs.Utility_Account_Subscription__r.Id,
+            Utility_Account_Subscription__c = szs.Utility_Account_Subscription__c,
+            PreGen_Utility_Acct__c = szs.Utility_Account_Subscription__r.Utility_Account_Log__r.Name,
             Opportunity__c = szs.Utility_Account_Subscription__r.Opportunity__c,
             Shared_Solar_System__c = szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c,
             Billing_Period_Start_Date__c = transfer.Date_of_Transfer__c,
@@ -143,7 +144,8 @@ public without sharing class BillGenerationService {
         UASB__c zeroDollarUASB = new UASB__c(
             Date__c = transfer.Bill_Period__r.Bill_Date__c,
             Transfer__c = transfer.Id,
-            Utility_Account_Subscription__c = szs.Utility_Account_Subscription__r.Id,
+            Utility_Account_Subscription__c = szs.Utility_Account_Subscription__c,
+            PreGen_Utility_Acct__c = szs.Utility_Account_Subscription__r.Utility_Account_Log__r.Name,
             Opportunity__c = szs.Utility_Account_Subscription__r.Opportunity__c,
             Shared_Solar_System__c = szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c,
             Billing_Period_Start_Date__c = transfer.Date_of_Transfer__c,

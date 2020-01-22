@@ -222,6 +222,18 @@ public without sharing class Util {
         return removeNewLine(value);
     }
 
+    public static Map<Integer, List<String>> readCSV(String csvData){
+        CSVReader csvReader = new CSVReader(csvData);
+        List<String> line;
+        Map<Integer, List<String>> rowNumberToDataMap = new Map<Integer, List<String>>();
+        Integer i = 0;
+        while ((line = csvReader.readLine()) != null) {
+            rowNumberToDataMap.put(i, line);
+            i += 1;
+        }
+        return rowNumberToDataMap;
+    }
+
     public static Boolean isDisabled(String triggerType) {
         Boolean property = (Boolean) getSystemPropertyCheckbox(triggerType);
         return (property==null?false:property);
@@ -331,6 +343,13 @@ public without sharing class Util {
                 throw new BWException('Required field not provided: ' + field);
             }
         }
+    }
+
+    public static AuraHandledException createAuraExceptionWithMessage(String message){
+        // If you don't setMessage, you get back generic 'script-thrown exception' but no custom message
+        AuraHandledException excep = new AuraHandledException(message);
+        excep.setMessage(message);
+        return excep;
     }
 
     @TestVisible
