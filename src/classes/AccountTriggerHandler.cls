@@ -60,6 +60,7 @@ public without sharing class AccountTriggerHandler {
 
     // Intended to be called from after insert or after update - can't be before insert since we need the account Id when
     // starting the batch
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     private void createZuoraAccounts(List<Account> newAccounts, Map<Id, Account> oldMap) {
         Id propertyRecordTypeId = Schema.SObjectType.Account.getRecordTypeInfosByName().get('Property').getRecordTypeId();
         List<Account> accountsToUnsetCreateZuoraAccount = new List<Account>();
