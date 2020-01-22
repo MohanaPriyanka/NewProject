@@ -219,7 +219,13 @@ IF(Opportunity__r.Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c &gt; 0,
     <fields>
         <fullName>Conga_Future_Share__c</fullName>
         <externalId>false</externalId>
-        <formula>Future_Share_of_System__c</formula>
+        <formula>IF(
+$CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true
+,
+Future_Share_of_System_Rollup__c
+,
+Future_Share_of_System__c
+)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Conga Future Share (share/100)</label>
         <precision>18</precision>
@@ -315,7 +321,14 @@ IF(Opportunity__r.Commission_Structure__r.Cents_kW_DC_First_Bill_Paid__c &gt; 0,
         <fullName>Customer_Subscription_KW_DC__c</fullName>
         <description>Made the system name logic so that Allocation Schedule customers will not change to unrounded values</description>
         <externalId>false</externalId>
-        <formula>IF(AND(TEXT(Opportunity__r.Product__r.Customer_Subscription_Type__c)=&apos;kWh&apos;,Annual_kwh_subscription_future__c&gt;0),Annual_kwh_subscription_future__c/Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c, 
+        <formula>IF(
+
+$CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true
+,
+Future_Customer_Subscription_KWDC_Rollup__c
+,
+
+IF(AND(TEXT(Opportunity__r.Product__r.Customer_Subscription_Type__c)=&apos;kWh&apos;,Annual_kwh_subscription_future__c&gt;0),Annual_kwh_subscription_future__c/Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c, 
 IF( UAS_Number__c &gt; 1 , 
 
 Subscribed_Annual_Cost_of_Electricity__c / Opportunity__r.NMC_Value__c / Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c, 
@@ -331,7 +344,8 @@ IF(
 
 OR(AND(UAS_Number__c = 1 , calculated_annual_cost_of_electricity__c = Subscribed_Annual_Cost_of_Electricity__c ), Opportunity__r.Shared_Solar_System_Name__c = &apos;Fairhaven Mill Rd&apos;, Opportunity__r.Shared_Solar_System_Name__c = &apos;Oxford Clara Barton&apos;), 
 
-Round(( Subscribed_Annual_Cost_of_Electricity__c / Opportunity__r.NMC_Value__c/ Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c) * 4, 0)/4,0))))</formula>
+Round(( Subscribed_Annual_Cost_of_Electricity__c / Opportunity__r.NMC_Value__c/ Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c) * 4, 0)/4,0))))
+)</formula>
         <inlineHelpText>Dynamic Subscription</inlineHelpText>
         <label>Future Customer Subscription (KW DC)</label>
         <precision>18</precision>
@@ -364,35 +378,6 @@ Round(( Subscribed_Annual_Cost_of_Electricity__c / Opportunity__r.NMC_Value__c/ 
         <type>Date</type>
     </fields>
     <fields>
-        <fullName>Dover_Updated_NMC__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF( UAS_Number__c &gt; 1 , 
-
-Subscribed_Annual_Cost_of_Electricity__c / 0.1933 / Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c, 
-
-IF( 
-
-OR(Auto_Unround__c = TRUE , AND(UAS_Number__c = 1 , calculated_annual_cost_of_electricity__c != Subscribed_Annual_Cost_of_Electricity__c )), 
-
-Subscribed_Annual_Cost_of_Electricity__c / 0.1933 / Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c, 
-
-
-IF( 
-
-OR(AND(UAS_Number__c = 1 , calculated_annual_cost_of_electricity__c = Subscribed_Annual_Cost_of_Electricity__c ), Opportunity__r.Shared_Solar_System_Name__c = &apos;Fairhaven Mill Rd&apos;, Opportunity__r.Shared_Solar_System_Name__c = &apos;Oxford Clara Barton&apos;), 
-
-Round(( Subscribed_Annual_Cost_of_Electricity__c / 0.1933 / Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c) * 4, 0)/4,0)))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Dover - Updated NMC</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>4</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Entity_Assignment__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -409,7 +394,14 @@ Round(( Subscribed_Annual_Cost_of_Electricity__c / 0.1933 / Opportunity__r.Share
         <fullName>Estimated_Annual_Subscription_kWh__c</fullName>
         <description>This is displayed to customers in the customer portal.</description>
         <externalId>false</externalId>
-        <formula>Customer_Subscription_KW_DC__c *  Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c</formula>
+        <formula>IF(
+$CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true
+,
+Future_Customer_Subscription_KWDC_Rollup__c
+,
+Customer_Subscription_KW_DC__c
+)
+ *  Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>This is displayed to customers in the customer portal.</inlineHelpText>
         <label>Estimated Annual Subscription (kWh)</label>
@@ -504,7 +496,14 @@ TRUE, FALSE)</formula>
     <fields>
         <fullName>Future_Share_of_System__c</fullName>
         <externalId>false</externalId>
-        <formula>ROUND(Customer_Subscription_KW_DC__c/ Opportunity__r.Shared_Solar_System__r.Total_System_Size_kWh_DC__c, Opportunity__r.Shared_Solar_System__r.Utility__r.Number_of_Decimal_Places__c + 2)</formula>
+        <formula>IF(
+ $CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true
+,
+ Future_Share_of_System_Rollup__c
+,
+ROUND(Customer_Subscription_KW_DC__c/ Opportunity__r.Shared_Solar_System__r.Total_System_Size_kWh_DC__c, Opportunity__r.Shared_Solar_System__r.Utility__r.Number_of_Decimal_Places__c + 2)
+
+)</formula>
         <label>Future Share of System</label>
         <precision>18</precision>
         <required>false</required>
@@ -941,7 +940,14 @@ IF(
     <fields>
         <fullName>Subscribed_NMC_Allocation_kWh__c</fullName>
         <externalId>false</externalId>
-        <formula>Customer_Subscription_KW_DC__c *  Opportunity__r.Shared_System_Yield_kWh_kW__c</formula>
+        <formula>IF(
+$CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true
+,
+Future_Customer_Subscription_KWDC_Rollup__c
+,
+Customer_Subscription_KW_DC__c
+)
+ *  Opportunity__r.Shared_Solar_System__r.Expected_Yield_kWh_kW__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>NMC Allocation (kWh)</label>
         <precision>18</precision>
@@ -1140,7 +1146,14 @@ IF(
         <fullName>kW_Allocation__c</fullName>
         <description>This field multiplies the ROUNDED Future Shared of System by the System Size in kW DC.</description>
         <externalId>false</externalId>
-        <formula>Future_Share_of_System__c * Opportunity__r.Shared_Solar_System__r.Total_System_Size_kWh_DC__c</formula>
+        <formula>IF(
+$CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true
+,
+ Future_Share_of_System_Rollup__c
+,
+ Future_Share_of_System__c)
+* 
+ Opportunity__r.Shared_Solar_System__r.Total_System_Size_kWh_DC__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>kW size based on % subscription on allocation schedule</inlineHelpText>
         <label>kW Allocation</label>
@@ -1359,7 +1372,24 @@ OR(
         <fullName>Sizing_Control</fullName>
         <active>true</active>
         <description>This validation rule prevents a user from filling in the wrong sizing fields (kWh or Cost) on the UAS.</description>
-        <errorConditionFormula>OR(
+        <errorConditionFormula>IF( $CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true,
+/*use SO rollup fields if SO feature is on*/
+
+OR(
+AND(
+Subscription_Type__c=&quot;kWh&quot;,
+ISCHANGED(Annual_Cost_Future_Rollup__c)=true,
+ISBLANK(Annual_Cost_Future_Rollup__c)=false)
+,
+AND(
+Subscription_Type__c=&quot;Electricity Cost ($)&quot;,
+ISCHANGED(Annual_kWh_Subscription_Future_Rollup__c)=true,
+ISBLANK(Annual_kWh_Subscription_Future_Rollup__c)=false)
+) 
+,
+
+/*use non rollup fields if SO feature is not on*/
+OR(
 AND(
 Subscription_Type__c=&quot;kWh&quot;,
 ISCHANGED(Subscribed_Annual_Cost_of_Electricity__c)=true,
@@ -1369,6 +1399,7 @@ AND(
 Subscription_Type__c=&quot;Electricity Cost ($)&quot;,
 ISCHANGED(Annual_kwh_subscription_future__c)=true,
 ISBLANK(Annual_kwh_subscription_future__c)=false)
+)
 )</errorConditionFormula>
         <errorMessage>You&apos;re using the wrong sizing fields. Look at the Subscription Type field. If it&apos;s kWh, use the Annual kWh sizing fields. If it&apos;s Electricity Cost ($), use the Annual Cost sizing fields. The subscription type is set by the Product on the Opportunity.</errorMessage>
     </validationRules>

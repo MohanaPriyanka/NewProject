@@ -177,7 +177,13 @@
     <fields>
         <fullName>Annual_Cost_of_Electricity_Future__c</fullName>
         <externalId>false</externalId>
-        <formula>Utility_Account_Subscription__r.Subscribed_Annual_Cost_of_Electricity__c</formula>
+        <formula>IF(
+$CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true
+,
+Utility_Account_Subscription__r.Annual_Cost_Future_Rollup__c
+,
+Utility_Account_Subscription__r.Subscribed_Annual_Cost_of_Electricity__c
+)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Annual Cost of Electricity (Future)</label>
         <precision>18</precision>
@@ -191,7 +197,13 @@
     <fields>
         <fullName>Annual_kWh_Subscription_Future__c</fullName>
         <externalId>false</externalId>
-        <formula>Utility_Account_Subscription__r.Annual_kwh_subscription_future__c</formula>
+        <formula>IF(
+$CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true
+,
+ Utility_Account_Subscription__r.Annual_kWh_Subscription_Future_Rollup__c
+,
+Utility_Account_Subscription__r.Annual_kwh_subscription_future__c
+)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Annual kWh Subscription (Future)</label>
         <precision>18</precision>
@@ -333,7 +345,13 @@
     <fields>
         <fullName>Future_Customer_Subscription_KW_DC__c</fullName>
         <externalId>false</externalId>
-        <formula>Utility_Account_Subscription__r.Customer_Subscription_KW_DC__c</formula>
+        <formula>IF(
+ $CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true
+,
+ Utility_Account_Subscription__r.Future_Customer_Subscription_KWDC_Rollup__c 
+,
+ Utility_Account_Subscription__r.Customer_Subscription_KW_DC__c
+)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>Customer&apos;s kW subscription for next allocation schedule</inlineHelpText>
         <label>Future Customer Subscription (KW DC)</label>
@@ -348,7 +366,13 @@
     <fields>
         <fullName>Future_Share_of_System__c</fullName>
         <externalId>false</externalId>
-        <formula>Utility_Account_Subscription__r.Future_Share_of_System__c</formula>
+        <formula>IF(
+ $CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true
+,
+ Utility_Account_Subscription__r.Future_Share_of_System_Rollup__c
+,
+ Utility_Account_Subscription__r.Future_Share_of_System__c
+)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>Customer&apos;s subscription % for next allocation schedule</inlineHelpText>
         <label>Future Share of System</label>

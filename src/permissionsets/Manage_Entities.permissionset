@@ -32408,11 +32408,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Utility_Account_Subscription__c.Dover_Updated_NMC__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Utility_Account_Subscription__c.Entity_Assignment__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -32639,11 +32634,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.calculated_annual_cost_of_electricity__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Subscription__c.kW_Allocation__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
