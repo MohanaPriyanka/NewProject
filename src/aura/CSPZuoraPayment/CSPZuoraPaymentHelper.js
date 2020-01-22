@@ -16,8 +16,7 @@
                 component.set("v.paymentAmount", accountBalance);
 
                 let ButtonOptions = component.get("v.RadioOptions");
-                let fullBalanceLabel = ButtonOptions[0].label.replace('$$', '$' + accountBalance);
-                ButtonOptions[0].label = fullBalanceLabel;
+                ButtonOptions[0].label = 'Full Balance $' + accountBalance;
                 component.set("v.RadioOptions", ButtonOptions);
 
                 this.pickCardToOpenOn(component, event, helper, zuoraAcct.account.AutoPay);
