@@ -2229,16 +2229,6 @@ TODAY()- BLANKVALUE(Postcard_2__c,DATE(1900,1,1))
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Non_Test_Zuora_Record__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <inlineHelpText>During Zuora onboarding and testing, we will be deleting test Zuora data in production. We do not want to clear the Zuora ID from accounts from real Switch leads, so this checkbox differentiates them</inlineHelpText>
-        <label>Non-Test Zuora Record</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>NumberOfEmployees</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
