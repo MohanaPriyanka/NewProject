@@ -10,9 +10,10 @@ private class PaymentCaseTest {
     private static void testExecute() {
         Boolean caughtException = false;
         try {
-            Test.startTest();
-            System.schedule('PaymentCaseCreator Apex Test','0 0 0 ? * * *',pcc);
-            Test.stopTest();
+        Test.startTest();
+        System.schedule('PaymentCaseCreator Apex Test','0 0 0 ? * * *',pcc);
+        
+        Test.stopTest();
         } catch (Exception e) {
             caughtException = true;
         }
@@ -204,40 +205,40 @@ private class PaymentCaseTest {
 
     public class AccountsSelectorMockImpl extends MockProvider {
         public AccountsSelectorMockImpl() {
-        }
+    }
 
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
                 when 'selectAll' {
-                     String json = '[{"attributes":{"type":"Account","url":"/services/data/v47.0/sobjects/Account/001S000000yKIZjIAO"},' +
-                         '"Id":"001S000000yKIZjIAO","Name":"Denise Corcoran","BillingStreet":"90 Main","BillingCity":"Boston",' +
-                         '"BillingState":"Massachusetts","BillingStateCode":"MA","BillingPostalCode":"12312","BillingCountry":"United States",' +
-                         '"Send_Bills_Contact__c":"003S0000016Y24OIAS","Client_Brand_Key__c":"BluewaveLogo","Count_of_Large_Offtake_Opps__c":0,' +
-                         '"Zuora_Id__c":"2c92c0f86e5e38b0016e5fc9f3da1612",' +
+                    String json = '[{"attributes":{"type":"Account","url":"/services/data/v47.0/sobjects/Account/001S000000yKIZjIAO"},' +
+                        '"Id":"001S000000yKIZjIAO","Name":"Denise Corcoran","BillingStreet":"90 Main","BillingCity":"Boston",' +
+                        '"BillingState":"Massachusetts","BillingStateCode":"MA","BillingPostalCode":"12312","BillingCountry":"United States",' +
+                        '"Send_Bills_Contact__c":"003S0000016Y24OIAS","Client_Brand_Key__c":"BluewaveLogo","Count_of_Large_Offtake_Opps__c":0,' +
+                        '"Zuora_Id__c":"2c92c0f86e5e38b0016e5fc9f3da1612",' +
                          '"Cases":{"totalSize":1,"done":true,"records":[{"attributes":{"type":"Case","url":"/services/data/v47.0/sobjects/Case/500S000000BJ9ZOIA2"},' +
                          '"AccountId":"001S000000yKIZjIAO","Id":"500S000000BJ9ZOIA1","Zuora_Payment_Method__c":"a70S0000000E6KCIA1"}]},' +
-                         '"Zuora__Invoices__r":{"totalSize":1,"done":true,"records":[' +
-                         '{"attributes":{"type":"Zuora__ZInvoice__c","url":"/services/data/v47.0/sobjects/Zuora__ZInvoice__c/a7KS0000000ELWfMAO"},' +
-                         '"Zuora__Account__c":"001S000000yKIZjIAO","Id":"a7KS0000000ELXKMA4","Zuora__DueDate__c":"2019-11-09"}]},' +
-                         '"Opportunities":{"totalSize":1,"done":true,"records":[' +
-                         '{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/006S000000CwOjyIAF"},' +
-                         '"AccountId":"001S000000yKIZjIAO","Id":"006S000000CwOjyIAF","Shared_Solar_System__c":"a1JS0000003BMvJMAW",' +
-                         '"Shared_Solar_System__r":{"attributes":{"type":"Shared_Solar_System__c","url":"/services/data/v47.0/sobjects/Shared_Solar_System__c/a1JS0000003BMvJMAW"},' +
-                         '"Id":"a1JS0000003BMvJMAW","Product__c":"01tS0000005j7AWIAY","Utility__c":"a1MS0000008BldqMAC",' +
-                         '"Product__r":{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AWIAY"},' +
-                         '"Id":"01tS0000005j7AWIAY","Program__c":"SREC - Community Solar"}}}]},' +
-                         '"Send_Bills_Contact__r":{"attributes":{"type":"Contact","url":"/services/data/v47.0/sobjects/Contact/003S0000016Y24OIAS"},' +
-                         '"Id":"003S0000016Y24OIAS","Email":"pyao@bluewavesolar.com","FirstName":"Albert","LastName":"Price 10"}}]';
+                        '"Zuora__Invoices__r":{"totalSize":1,"done":true,"records":[' +
+                        '{"attributes":{"type":"Zuora__ZInvoice__c","url":"/services/data/v47.0/sobjects/Zuora__ZInvoice__c/a7KS0000000ELWfMAO"},' +
+                        '"Zuora__Account__c":"001S000000yKIZjIAO","Id":"a7KS0000000ELXKMA4","Zuora__DueDate__c":"2019-11-09"}]},' +
+                        '"Opportunities":{"totalSize":1,"done":true,"records":[' +
+                        '{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/006S000000CwOjyIAF"},' +
+                        '"AccountId":"001S000000yKIZjIAO","Id":"006S000000CwOjyIAF","Shared_Solar_System__c":"a1JS0000003BMvJMAW",' +
+                        '"Shared_Solar_System__r":{"attributes":{"type":"Shared_Solar_System__c","url":"/services/data/v47.0/sobjects/Shared_Solar_System__c/a1JS0000003BMvJMAW"},' +
+                        '"Id":"a1JS0000003BMvJMAW","Product__c":"01tS0000005j7AWIAY","Utility__c":"a1MS0000008BldqMAC",' +
+                        '"Product__r":{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AWIAY"},' +
+                        '"Id":"01tS0000005j7AWIAY","Program__c":"SREC - Community Solar"}}}]},' +
+                        '"Send_Bills_Contact__r":{"attributes":{"type":"Contact","url":"/services/data/v47.0/sobjects/Contact/003S0000016Y24OIAS"},' +
+                        '"Id":"003S0000016Y24OIAS","Email":"pyao@bluewavesolar.com","FirstName":"Albert","LastName":"Price 10"}}]';
                     List<Account> accounts = (List<Account>) System.JSON.deserialize(json, List<Account>.class);
                     return accounts;
-                }
-            }
+        }
+        }
             return null;
         }
-    }
+        }
     public class ZuoraAccountSelectorMockImpl extends MockProvider {
         public ZuoraAccountSelectorMockImpl() {
-        }
+    }
 
         public override Object handleMethodCall(MethodCall methodCall) {
             switch on methodCall.stubbedMethodName {
@@ -248,8 +249,8 @@ private class PaymentCaseTest {
                         ']';
                     List<ZuoraAPI.ZuoraAccount> accounts = (List<ZuoraAPI.ZuoraAccount>) System.JSON.deserialize(json, List<ZuoraAPI.ZuoraAccount>.class);
                     return accounts;
-                }
             }
+        }
             return null;
         }
     }

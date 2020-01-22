@@ -1,6 +1,7 @@
-@isTest
+@IsTest
 public class TestBillCreationandPayment {
-    @TestSetup public static void csTestRecordWarehouse() {
+    @TestSetup
+    public static void csTestRecordWarehouse() {
         csTestRecordWarehouse(false);
     }
 
@@ -146,6 +147,7 @@ public class TestBillCreationandPayment {
                 Service_Territory__c = 'SEMA',
                 Service_Territories__c = 'SEMA',
                 Open__c = true,
+                Billing_Method__c = 'kWh',
                 Reserved_Capacity_kW_DC__c = '0',
                 Capacity_Committed_kW_DC__c = 0,
                 Total_System_Size_kWh_DC__c = 1445.86,
@@ -157,7 +159,6 @@ public class TestBillCreationandPayment {
                 Assemblage_Count__c = 1,
                 Client_Account__c = clientAccount2.Id,
                 Sales_Partners__c = 'All',
-                Billing_Method__c = 'NMC',
                 Billing_Anchors__c = 'Bluewave',
                 BWC_Project_Entity_Manual__c = entity2.Id,
                 Maximum_Subscription_Assemblage__c = 25,
@@ -242,7 +243,7 @@ public class TestBillCreationandPayment {
                     CloseDate = System.today());
             insert new List<Opportunity>{opportunityone, opportunitytwo, opportunitythree, opportunityFour};
         } else {
-            insert new List<Opportunity>{opportunityone, opportunitytwo, opportunitythree};
+        insert new List<Opportunity>{opportunityone, opportunitytwo, opportunitythree};
         }
 
         Utility_Account_Subscription__c uasone =
@@ -293,7 +294,7 @@ public class TestBillCreationandPayment {
                     Subscribed_Annual_Cost_of_Electricity__c = 6000);
             insert new List<Utility_Account_Subscription__c>{uasone, uastwo, uasthree, uasfour, uasFive};
         } else {
-            insert new List<Utility_Account_Subscription__c>{uasone, uastwo, uasthree, uasfour};
+        insert new List<Utility_Account_Subscription__c>{uasone, uastwo, uasthree, uasfour};
         }
 
         //Changed something (not sure if it was billing number fix) and it now applies this Bill adjustment to every system bill
@@ -322,7 +323,7 @@ public class TestBillCreationandPayment {
             uasFive.Customer_Subscription_KW_DC_STATIC__c = 25;
             update new List<Utility_Account_Subscription__c>{uasone, uastwo, uasthree, uasfour, uasFive};
         } else {
-            update new List<Utility_Account_Subscription__c>{uasone, uastwo, uasthree, uasfour};
+        update new List<Utility_Account_Subscription__c>{uasone, uastwo, uasthree, uasfour};
         }
 
         // We want to make these dates current, so that generated bills are current
@@ -345,85 +346,196 @@ public class TestBillCreationandPayment {
 
         insert new List<Schedule_Z__c>{scheduleZ1, scheduleZ2};
 
-        Energy_Usage_Update__c productionupdateA1 = new Energy_Usage_Update__c (
+        Bill_Period__c bpA1 = new Bill_Period__c(
             Name = 'sssA - January 2016',
-            Shared_Solar_System__c = sss1.id,
-            Schedule_Z__c = scheduleZ1.id,
-            Production__c = 90000,
-            Net_Metering_Rate_Applied__c = 0.1848,
-            Billing_Period_End_Date__c = myDateFeb,
-            Total_System_NMCs__c = 16632,
-            Date__c = myDateJan
+            Shared_Solar_System__c = sss1.Id,
+            Bill_Date__c = myDateJan
         );
 
-        Energy_Usage_Update__c productionupdateA2 = new Energy_Usage_Update__c (
+        Bill_Period__c bpA2 = new Bill_Period__c(
             Name = 'sssA - February 2016',
-            Shared_Solar_System__c = sss1.id,
-            Schedule_Z__c = scheduleZ1.id,
-            Production__c = 120000,
-            Net_Metering_Rate_Applied__c = 0.1848,
-            Billing_Period_End_Date__c = myDateMar,
-            Total_System_NMCs__c = 22176,
-            Date__c = myDateFeb
+            Shared_Solar_System__c = sss1.Id,
+            Bill_Date__c = myDateFeb
         );
 
-        Energy_Usage_Update__c productionupdateA3 = new Energy_Usage_Update__c (
+        Bill_Period__c bpA3 = new Bill_Period__c(
             Name = 'sssA - March 2016',
-            Shared_Solar_System__c = sss1.id,
-            Schedule_Z__c = scheduleZ1.id,
-            Production__c = 140000,
-            Net_Metering_Rate_Applied__c = 0.1848,
-            Billing_Period_End_Date__c = myDateApr,
-            Total_System_NMCs__c = 25872,
-            Date__c = myDateMar
+            Shared_Solar_System__c = sss1.Id,
+            Bill_Date__c = myDateMar
         );
 
-        Energy_Usage_Update__c productionupdateB1 = new Energy_Usage_Update__c (
+        Bill_Period__c bpB1 = new Bill_Period__c(
             Name = 'sssB - January 2016',
-            Shared_Solar_System__c = sss2.id,
-            Schedule_Z__c = scheduleZ2.id,
-            Production__c = 90000,
-            Net_Metering_Rate_Applied__c = 0.1848,
-            Billing_Period_End_Date__c = myDateFeb,
-            Total_System_NMCs__c = 16632,
-            Date__c = myDateJan
+            Shared_Solar_System__c = sss2.Id,
+            Bill_Date__c = myDateJan
         );
 
-        Energy_Usage_Update__c productionupdateB2 = new Energy_Usage_Update__c (
+        Bill_Period__c bpB2 = new Bill_Period__c(
             Name = 'sssB - February 2016',
-            Shared_Solar_System__c = sss2.id,
-            Schedule_Z__c = scheduleZ2.id,
-            Production__c = 120000,
-            Net_Metering_Rate_Applied__c = 0.1848,
-            Billing_Period_End_Date__c = myDateMar,
-            Total_System_NMCs__c = 22176,
-            Date__c = myDateFeb
+            Shared_Solar_System__c = sss2.Id,
+            Bill_Date__c = myDateFeb
         );
 
-        Energy_Usage_Update__c productionupdateB3 = new Energy_Usage_Update__c (
+        Bill_Period__c bpB3 = new Bill_Period__c(
             Name = 'sssB - March 2016',
-            Shared_Solar_System__c = sss2.id,
-            Schedule_Z__c = scheduleZ2.id,
-            Production__c = 102000,
-            Net_Metering_Rate_Applied__c = 0.1848,
-            Billing_Period_End_Date__c = myDateApr,
-            Total_System_NMCs__c = 21872,
-            Date__c = myDateMar
+            Shared_Solar_System__c = sss2.Id,
+            Bill_Date__c = myDateMar
         );
-        insert new List<Energy_Usage_Update__c>{
-            productionupdateA1, productionupdateA2, productionupdateA3, productionupdateB1, productionupdateB2, productionupdateB3
-        };
 
-        runProductionUpdate(new List<Id>{productionupdateA1.Id});
+        insert new List<Bill_Period__c>{bpA1, bpA2, bpA3, bpB1, bpB2, bpB3};
+
+
+        Production__c prodA1 = new Production__c(
+            Name = 'sssA January Production',
+            Shared_Solar_System__c = sss1.Id,
+            Start_Date__c = myDateJan,
+            End_Date__c = myDateFeb - 1,
+            Production_kWh__c = 90000,
+            Credits_Generated__c = 16632
+        );
+
+
+        Production__c prodA2 = new Production__c(
+            Name = 'sssA February Production',
+            Shared_Solar_System__c = sss1.Id,
+            Start_Date__c = myDateFeb,
+            End_Date__c = myDateMar - 1,
+            Production_kWh__c = 120000,
+            Credits_Generated__c = 22176
+        );
+
+
+        Production__c prodA3 = new Production__c(
+            Name = 'sssA March Production',
+            Shared_Solar_System__c = sss1.Id,
+            Start_Date__c = myDateMar,
+            End_Date__c = myDateApr - 1,
+            Production_kWh__c = 140000,
+            Credits_Generated__c = 25872
+        );
+
+        Production__c prodB1 = new Production__c(
+            Name = 'sssB January Production',
+            Shared_Solar_System__c = sss2.Id,
+            Start_Date__c = myDateJan,
+            End_Date__c = myDateFeb - 1,
+            Production_kWh__c = 90000
+        );
+
+        Production__c prodB2 = new Production__c(
+            Name = 'sssB February Production',
+            Shared_Solar_System__c = sss2.Id,
+            Start_Date__c = myDateFeb,
+            End_Date__c = myDateMar - 1,
+            Production_kWh__c = 120000
+        );
+
+        Production__c prodB3 = new Production__c(
+            Name = 'sssB March Production',
+            Shared_Solar_System__c = sss2.Id,
+            Start_Date__c = myDateMar,
+            End_Date__c = myDateApr - 1,
+            Production_kWh__c = 102000
+        );
+
+        insert new List<Production__c>{prodA1, prodA2, prodA3, prodB1, prodB2, prodB3};
+
+
+        Transfer__c transferA1 = new Transfer__c(
+            Name = 'Main Transfer - sssA January',
+            Bill_Period__c = bpA1.Id,
+            Date_of_Transfer__c = myDateJan,
+            Shared_Solar_System__c = sss1.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = scheduleZ1.Id,
+            Attempted_kWh_Transfer__c = 90000,
+            Attempted_Transfer__c = 16632,
+            Transfer_Amount__c = 16632,
+            Default_Credit_Value__c = 0.1848
+        );
+
+        Transfer__c transferA2 = new Transfer__c(
+            Name = 'Main Transfer - sssA February',
+            Bill_Period__c = bpA2.Id,
+            Date_of_Transfer__c = myDateFeb,
+            Shared_Solar_System__c = sss1.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = scheduleZ1.Id,
+            Attempted_Transfer__c = 22176,
+            Attempted_kWh_Transfer__c = 120000,
+            Transfer_Amount__c = 22176,
+            Default_Credit_Value__c = 0.1848
+        );
+
+        Transfer__c transferA3 = new Transfer__c(
+            Name = 'Main Transfer - sssA March',
+            Bill_Period__c = bpA3.Id,
+            Date_of_Transfer__c = myDateMar,
+            Shared_Solar_System__c = sss1.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = scheduleZ1.Id,
+            Attempted_Transfer__c = 25872,
+            Attempted_kWh_Transfer__c = 140000,
+            Transfer_Amount__c = 25872,
+            Default_Credit_Value__c = 0.1848
+        );
+
+        Transfer__c transferB1 = new Transfer__c(
+            Name = 'Main Transfer - sssB January',
+            Bill_Period__c = bpB1.Id,
+            Date_of_Transfer__c = myDateJan,
+            Shared_Solar_System__c = sss2.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = scheduleZ2.Id,
+            Attempted_Transfer__c= 16632,
+            Attempted_kWh_Transfer__c = 90000,
+            Transfer_kWh__c = 90000,
+            Default_Credit_Value__c = 0.1848
+        );
+
+
+        Transfer__c transferB2 = new Transfer__c(
+            Name = 'Main Transfer - sssB February',
+            Bill_Period__c = bpB2.Id,
+            Date_of_Transfer__c = myDateFeb,
+            Shared_Solar_System__c = sss2.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = scheduleZ2.Id,
+            Attempted_Transfer__c = 22176,
+            Attempted_kWh_Transfer__c = 120000,
+            Transfer_kWh__c = 120000,
+            Default_Credit_Value__c = 0.1848
+        );
+
+        Transfer__c transferB3 = new Transfer__c(
+            Name = 'Main Transfer - sssB March',
+            Bill_Period__c = bpB3.Id,
+            Date_of_Transfer__c = myDateMar,
+            Shared_Solar_System__c = sss2.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = scheduleZ2.Id,
+            Attempted_Transfer__c = 21872,
+            Attempted_kWh_Transfer__c = 102000,
+            Transfer_kWh__c = 102000,
+            Default_Credit_Value__c = 0.1848
+        );
+
+        insert new List<Transfer__c>{transferA1, transferA2, transferA3, transferB1, transferB2, transferB3};
+
+
+        TransferPartService transferPartService = new TransferPartService();
+        transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferA1, transferA2, transferA3, transferB1, transferB2, transferB3});
+
+        runBillPeriod(new List<Id>{bpA1.Id});
 
         InvocableCSBillOverpaymentApplication.applyOverpayments();
 
         setBillsToPublished();
 
-        // As of Jan 2019, 65 of 100 queries used. Generating bills consumes 35 queries
+        // As of Oct 2019, 75 of 100 queries used.
         Test.stopTest();
 
-        runProductionUpdate(new List<Id>{productionupdateA2.Id});
+        runBillPeriod(new List<Id>{bpA2.Id});
     }
     
     @IsTest
@@ -458,19 +570,61 @@ public class TestBillCreationandPayment {
         insert newAdjustment;
 
         Test.startTest();
-        // We need to create a new production update, generate bills, and publish it to get new adjustments reflected
-        List<Energy_Usage_Update__c> energyUsageUpdates = [
-            SELECT Id, Name, Shared_Solar_System__c, Schedule_Z__c, Production__c, Net_Metering_Rate_Applied__c,
-                Billing_Period_End_Date__c, Total_System_NMCs__c, Date__c
-            FROM Energy_Usage_Update__c
-            WHERE Name = 'sssA - March 2016'
+        // We need to create a new transfer, generate bills, and publish it to get new adjustments reflected
+
+        List<Transfer__c> transfer = [
+            SELECT Id, Shared_Solar_System__c, Allocation_Schedule__c, Bill_Period__c, Date_of_Transfer__c,
+                Transfer_Type__c, Transfer_Amount__c, Total_kWh_Transferred__c, Total_Transferred__c, Attempted_Transfer__c,
+                Default_Credit_Value__c, Bill_Period__r.Bill_Date__c, Allocation_Schedule__r.Id
+            FROM Transfer__c
+            WHERE Name = 'Main Transfer - sssA March'
         ];
-        System.assertEquals(1, energyUsageUpdates.size());
-        Energy_Usage_Update__c aprilEUU = energyUsageUpdates[0].clone(false);
-        aprilEUU.Date__c = aprilEUU.Date__c.addMonths(1);
-        insert aprilEUU;
                
-        runProductionUpdate(new List<Id>{aprilEUU.Id});
+        System.assertEquals(1, transfer.size());
+
+        Shared_Solar_System__c sss1 = [
+            SELECT Id
+            FROM Shared_Solar_System__c
+            WHERE Name = 'Oxford Barrett Street. Part1 With Long Name To Test Unique Id Lengths'
+            LIMIT 1
+        ];
+
+        Bill_Period__c bp = new Bill_Period__c(
+            Name = 'sssA - April 2016',
+            Shared_Solar_System__c = sss1.Id,
+            Bill_Date__c = transfer[0].Date_of_Transfer__c.addMonths(1)
+        );
+        insert bp;
+
+        Production__c production = new Production__c(
+            Name = 'sssA April Production',
+            Shared_Solar_System__c = sss1.Id,
+            Production_kWh__c = 140000,
+            Credits_Generated__c = 25872,
+            Start_Date__c = transfer[0].Date_of_Transfer__c.addMonths(1)
+        );
+        insert production;
+
+        Transfer__c transferA4 = new Transfer__c(
+            Name = 'Main Transfer - sssA April',
+            Bill_Period__c = bp.Id,
+            Date_of_Transfer__c = transfer[0].Date_of_Transfer__c.addMonths(1),
+            Shared_Solar_System__c = sss1.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = transfer[0].Allocation_Schedule__r.Id,
+            Attempted_Transfer__c = 25872,
+            Attempted_kWh_Transfer__c = 140000,
+            Transfer_Amount__c = 25872,
+            Default_Credit_Value__c = 0.1848
+        );
+        insert transferA4;
+
+
+        TransferPartService transferPartService = new TransferPartService();
+        transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferA4});
+
+
+        runBillPeriod(new List<Id>{bp.Id});
         setBillsToPublished();
 
         billAdjustments = [
@@ -482,6 +636,7 @@ public class TestBillCreationandPayment {
         assertAccountTotalRollupsEqualToCalculatedTotals();
         Test.stopTest();
     }
+
 
     private static void assertAccountTotalRollupsEqualToCalculatedTotals() {
         Map<Id, Account> accountMap = new Map<Id, Account>([
@@ -559,42 +714,51 @@ public class TestBillCreationandPayment {
         update listAccountBills;
     }
 
-    public static void runProductionUpdate(List<Id> prodUpdateIdList) {
-        List<Energy_Usage_Update__c> trigProdUp = ProductionUpdateSelector.getAllProductionUpdatesById(prodUpdateIdList);
-        EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(trigProdUp);
+    public static void runBillPeriod(List<Id> billPeriodIdList) {
+        List<Bill_Period__c> billPeriods = [
+            SELECT Id, Name, Bill_Date__c, Shared_Solar_System__c
+            FROM Bill_Period__c
+            WHERE Id IN :billPeriodIdList
+        ];
+        EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(billPeriods);
         ee.runBills();
     }
 
-    @isTest public static void testPreviewBills(){
+    @IsTest
+    public static void testPreviewBills(){
         Test.startTest();
-        List<Energy_Usage_Update__c> productionUpdateList = [
-            SELECT Id, Name, Schedule_Z__r.Name
-            FROM Energy_Usage_Update__c
-            ORDER BY Date__c
+        List<Transfer__c> transferList = [
+            SELECT Id, Name, Allocation_Schedule__c, Allocation_Schedule__r.Name
+            FROM Transfer__c
+            ORDER BY Date_of_Transfer__c
         ];
+
         Account accountA = [SELECT Id, Name, Parent_Account__r.Id
         FROM Account
         WHERE Name = 'Account A'];
 
         String parId = accountA.Parent_Account__r.Id;
         String acctId = accountA.Id;
-        System.assertEquals( 1, (PreviewProductionUpdateResults.getUASes(productionUpdateList[0].Id, true, productionUpdateList[0].Schedule_Z__r.Id)).size());
-        System.assertEquals( 2, (PreviewProductionUpdateResults.getUASes(productionUpdateList[1].Id, true, productionUpdateList[1].Schedule_Z__r.Id)).size());
+
+        System.assertEquals( 1, (PreviewProductionUpdateResults.getUASes(transferList[0].Id, true, transferList[0].Allocation_Schedule__r.Id)).size());
+        System.assertEquals( 2, (PreviewProductionUpdateResults.getUASes(transferList[1].Id, true, transferList[1].Allocation_Schedule__r.Id)).size());
         System.assertEquals( 1, (PreviewProductionUpdateResults.getProperties(parId.substring(0,15), true)).size());
         System.assertEquals( 6, (PreviewProductionUpdateResults.getUASes(acctId.substring(0,15), false, null)).size());
-        Energy_Usage_Update__c productionUpdate = [
-            SELECT Id, Name,  Schedule_Z__r.Id, Schedule_Z__r.Name
-            FROM Energy_Usage_Update__c
-            WHERE Name = 'sssA - February 2016'
+
+        Transfer__c transfer = [
+            SELECT Id, Name, Allocation_Schedule__r.Id, Allocation_Schedule__r.Name
+            FROM Transfer__c
+            WHERE Name = 'Main Transfer - sssA February'
         ];
 
-        List<UASB__c> uasbList = PreviewProductionUpdateResults.getUASes(productionUpdate.Id, true, productionUpdate.Schedule_Z__r.Id);
+        List<UASB__c> uasbList = PreviewProductionUpdateResults.getUASes(transfer.Id, true, transfer.Allocation_Schedule__r.Id);
         System.assertEquals(345.28, uasbList[0].PreGen_Discounted_Bill__c);
         System.assertEquals(383.64, uasbList[0].PreGen_NMCs_Allocated__c);
         Test.stopTest();
     }
 
-    @IsTest public static void testRadianGenAnchorBills(){
+    @IsTest
+    public static void testRadianGenAnchorBills(){
         Test.startTest();
 
         Shared_Solar_System__c sssRadianGen = [
@@ -625,8 +789,12 @@ public class TestBillCreationandPayment {
         ];
         Account accountParent = [SELECT Id FROM Account WHERE Name = 'Account Parent' LIMIT 1];
 
-        Account accountC = new Account(name = 'Account C',
-            Parent_Account__c = accountParent.Id);
+        Account accountC = new Account(
+            name = 'Account C',
+            Parent_Account__c = accountParent.Id
+        );
+        insert accountC;
+
 
         Opportunity opp4 = new Opportunity(
             Name = 'Opp Four',
@@ -688,6 +856,7 @@ public class TestBillCreationandPayment {
                 Subscribed_Annual_Cost_of_Electricity__c = 4000);
 
         insert new List<Utility_Account_Subscription__c> {uas4, uas5, uas6};
+        Set<Id> uasIds = new Set<Id> { uas4.Id, uas5.Id, uas6.Id};
 
         Schedule_Z__c schedZ3 = new Schedule_Z__c(
             Name = 'Z3 Oxford Barrett St. P1',
@@ -696,108 +865,148 @@ public class TestBillCreationandPayment {
         );
         insert schedZ3;
 
+        List<Schedule_Z_Subscription__c> szs = [
+            SELECT Id
+            FROM Schedule_Z_Subscription__c
+            WHERE Schedule_Z__c = :schedZ3.Id
+        ];
+
         Date myDateMay = Date.newInstance(2016, 5, 5);
         Date myDateApr = Date.newInstance(2016, 4, 4);
 
-        Energy_Usage_Update__c prodUpdateA = new Energy_Usage_Update__c (
-            Name = 'sssA RadianGen - April 2016',
+        Production__c productionA = new Production__c(
+            Name = 'sssA RadianGen April Production',
             Shared_Solar_System__c = sssRadianGen.Id,
-            Schedule_Z__c = schedZ3.Id,
-            Production__c = 90000,
-            Net_Metering_Rate_Applied__c = 0.1848,
-            Billing_Period_End_Date__c = myDateMay,
-            Total_System_NMCs__c = 16632,
-            Date__c = myDateApr
+            Production_kWh__c = 90000,
+            Start_Date__c = myDateApr,
+            End_Date__c = mydateMay,
+            Credits_Generated__c = 16632
+        );
+        insert productionA;
+
+        Bill_Period__c bpA = new Bill_Period__c(
+            Name = 'sssA - RadianGen Aprl 2016',
+            Shared_Solar_System__c = sssRadianGen.Id,
+            Bill_Date__c = myDateApr
         );
 
-        insert prodUpdateA;
+        insert bpA;
 
-        //Query to have Month_Number for bill generation
-        Energy_Usage_Update__c prodUpdate = [
-            SELECT Id, Generate_Bills__c, Month_Number__c, Date__c
-            FROM Energy_Usage_Update__c
-            WHERE Name = 'sssA RadianGen - April 2016'
+        Transfer__c transferA = new Transfer__c(
+            Name = 'Main Transfer - sssA RadianGen April 2016',
+            Bill_Period__c = bpA.Id,
+            Shared_Solar_System__c = sssRadianGen.Id,
+            Allocation_Schedule__c = schedZ3.Id,
+            Attempted_Transfer__c = 16632,
+            Attempted_kWh_Transfer__c = 90000,
+            Transfer_Amount__c = 16632,
+            Default_Credit_Value__c = 0.1848,
+            Date_of_Transfer__c = myDateApr
+        );
+        insert transferA;
+        transferA.Transfer_Type__c = 'Main';
+        update transferA;
+
+
+        Transfer__c transfer = [
+            SELECT Id, Bill_Period__r.Bill_Date__c, Shared_Solar_System__c
+            FROM Transfer__c
+            WHERE Name = 'Main Transfer - sssA RadianGen April 2016'
+            LIMIT 1
         ];
 
         //4 Opps total: 1 Complete, 1 PPA/NMCPA, 1 Anchor, 1 Public Offtake
         //The PPA/NMCPA Signed Opp should not be showing up in Previews
-        System.assertEquals(3, (PreviewProductionUpdateResults.getUASes(prodUpdate.Id, TRUE, schedZ3.Id)).size());
+
+        List<Utility_Account_Subscription__c> uases = [
+            SELECT Id, Externally_Serviced__c
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__r.Shared_Solar_System__c = :sssRadianGen.Id
+            AND  Next_Schedule_Z_Status__c = 'Active Subscription'
+        ];
+
+        for (Utility_Account_Subscription__c uas : uases) {
+            System.assertEquals(false, uas.Externally_Serviced__c);
+        }
+
+        System.assertEquals(3, (PreviewProductionUpdateResults.getUASes(transfer.Id, TRUE, schedZ3.Id)).size());
 
         sssRadianGen.Billing_Anchors__c = 'RadianGen';
         update sssRadianGen;
-        System.assertEquals(1,(PreviewProductionUpdateResults.getUASes(prodUpdate.Id, TRUE, schedZ3.Id)).size());
 
-        //Test whether bills have been generated for anchor bills
-        runProductionUpdate(new List<Id>{prodUpdate.Id});
-
-        List<System_Bill__c> systemBills1 = [
-            SELECT Id, Opportunity__c, Name
-            FROM System_Bill__c
-            WHERE Opportunity__c = : opp1.Id
-            AND Month__c = :prodUpdate.Month_Number__c
-            AND CALENDAR_YEAR(Date__c) = :prodUpdate.Date__c.year()
+        List<Utility_Account_Subscription__c> uasesRG = [
+            SELECT Id, Externally_Serviced__c, Opportunity__c
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__r.Shared_Solar_System__c = :sssRadianGen.Id
+            AND  Next_Schedule_Z_Status__c = 'Active Subscription'
         ];
 
-        List<Account_Bill__c> accountBills1 = [
-            SELECT Id
-            FROM Account_Bill__c
-            WHERE Parent_Account__c = : opp1.AccountId
-            AND Month__c = :prodUpdate.Month_Number__c
-            AND CALENDAR_YEAR(Date__c) = :prodUpdate.Date__c.year()
+        System.assertEquals(4, uasesRG.size());
+
+        for (Utility_Account_Subscription__c uasRG : uasesRG) {
+            if ( uasRG.Opportunity__c == opp6.Id || uasRG.Opportunity__c == opp1.Id) {
+                System.assertEquals(false, uasRG.Externally_Serviced__c);
+            } else  {
+                System.assertEquals(true, uasRG.Externally_Serviced__c);
+            }
+        }
+
+        //RadianGen UASBs will show up in Preview Bills but will be tagged with "Externally Serviced"
+        List<UASB__c> previewUASBs = PreviewProductionUpdateResults.getUASes(transfer.Id, TRUE, schedZ3.Id);
+        System.assertEquals(3, previewUASBs.size());
+
+        runBillPeriod(new List<Id>{bpA.Id});
+
+        List<UASB__c> uasbs = [
+            SELECT Id, Opportunity__c, Externally_Serviced__c, Opportunity__r.Name
+            FROM UASB__c
+            WHERE Shared_Solar_System__c = :sssRadianGen.Id
         ];
 
-        List<System_Bill__c> systemBills4 = [
-            SELECT Id, Opportunity__c
-            FROM System_Bill__c
-            WHERE Opportunity__c = : opp4.Id
-            AND Month__c = :prodUpdate.Month_Number__c
-            AND CALENDAR_YEAR(Date__c) = :prodUpdate.Date__c.year()
-        ];
 
-        List<Account_Bill__c> accountBills4 = [
-            SELECT Id
-            FROM Account_Bill__c
-            WHERE Parent_Account__c = : opp4.AccountId
-            AND Month__c = :prodUpdate.Month_Number__c
-            AND CALENDAR_YEAR(Date__c) = :prodUpdate.Date__c.year()
-        ];
-
-        //Check that bills are generated for Complete Opp
-        System.assertEquals(1, systemBills1.size());
-        System.assertEquals(1, accountBills1.size());
-
-        //No bills generated for Anchor Opp
-        System.assertEquals(0, systemBills4.size());
-        System.assertEquals(0, accountBills4.size());
+        for (UASB__c uasb : uasbs) {
+            if (uasb.Opportunity__c == opp4.Id) {
+                // Anchor
+                System.assertEquals(true, uasb.Externally_Serviced__c);
+            } else if (uasb.Opportunity__c == opp5.Id){
+                // Public Offtake
+                System.assertEquals(true, uasb.Externally_Serviced__c);
+            } else {
+                // Residential
+                System.assertEquals(false, uasb.Externally_Serviced__c);
+            }
+        }
 
         Test.stopTest();
     }
 
-    @isTest public static void testGetScheduleZs() {
+    @IsTest
+    public static void testGetScheduleZs() {
         Test.startTest();
-        Energy_Usage_Update__c productionUpdate = [
+        Transfer__c transfer = [
             SELECT Id, Name, Shared_Solar_System__c
-            FROM Energy_Usage_Update__c
-            ORDER BY Date__c
+            FROM Transfer__c
+            ORDER BY Date_of_Transfer__c
             LIMIT 1
         ];
 
         Schedule_Z__c scheduleZ = new Schedule_Z__c(
             Name = '18-0515 Oxford Barrett St. P1',
-            Shared_Solar_System__c = productionUpdate.Shared_Solar_System__c,
+            Shared_Solar_System__c = transfer.Shared_Solar_System__c,
             Status__c = 'Enacted by Utility',
             Date_Enacted_by_Utility__c = Date.today()
         );
 
         insert scheduleZ;
 
-        List<Schedule_Z__c> scheduleZS = PreviewProductionUpdateResults.getScheduleZs(productionUpdate.id);
+        List<Schedule_Z__c> scheduleZS = PreviewProductionUpdateResults.getScheduleZs(transfer.Id);
 
         System.assertEquals(2, scheduleZS.size());
         Test.stopTest();
     }
 
-    @isTest public static void testPaymentPlan() {
+    @IsTest
+    public static void testPaymentPlan() {
         Test.startTest();
         List<System_Bill__c> systemBillList = SystemBillsSelector.selectAllSystemBills();
 
@@ -888,7 +1097,8 @@ public class TestBillCreationandPayment {
         Test.stopTest();
     }
 
-    @isTest public static void testSystemBills() {
+    @IsTest
+    public static void testSystemBills() {
         Test.startTest();
         List<System_Bill__c> systemBillList = SystemBillsSelector.selectAllSystemBills();
 
@@ -911,7 +1121,8 @@ public class TestBillCreationandPayment {
         Test.stopTest();
     }
 
-    @isTest public static void publishedBillsUnEditable() {
+    @IsTest
+    public static void publishedBillsUnEditable() {
         Test.startTest();
         setBillsToPublished();
 
@@ -958,6 +1169,7 @@ public class TestBillCreationandPayment {
             TimeZoneSidKey='America/Los_Angeles',
             Username=uniqueName+'@'+ uniqueName +'.com');
 
+
         System.runAs(userRecord) {
             Boolean hitError = false;
             try {
@@ -1002,7 +1214,8 @@ public class TestBillCreationandPayment {
         Test.stopTest();
     }
 
-    @isTest public static void overpaymentMultipleSBSameEntity(){
+    @IsTest
+    public static void overpaymentMultipleSBSameEntity(){
         Entity__c entity = [
             SELECT Id, Gateway__c, Client_Account__r.Id
             FROM Entity__c
@@ -1023,18 +1236,18 @@ public class TestBillCreationandPayment {
 
         Util.disableTrigger('Disable_AccountBillTrigger__c'); // TO Avoid SOQL Limits in data setup
 
-        List<Energy_Usage_Update__c> productionUpdates = [
-            SELECT Id, Generate_Bills__c
-            FROM Energy_Usage_Update__c
-            WHERE Name = 'sssA - March 2016'
-            OR Name = 'sssB - February 2016'
-            OR Name = 'sssB - January 2016'
-            OR Name = 'sssB - March 2016'
+        List<Transfer__c> transfers = [
+            SELECT Id, Bills_Generated__c, Bill_Period__r.Id
+            FROM Transfer__c
+            WHERE Name = 'Main Transfer - sssA March'
+            OR Name = 'Main Transfer - sssB February'
+            OR Name = 'Main Transfer - sssB January'
+            OR Name = 'Main Transfer - sssB March'
             ORDER BY Name
         ];
 
-        // Second project comes on in second month:
-        runProductionUpdate(new List<Id>{productionUpdates[1].Id});
+
+        runBillPeriod(new List<Id>{transfers[1].Bill_Period__r.Id});
         setBillsToPublished();
 
         List<System_Bill__c> systemBillList = SystemBillsSelector.selectAllSystemBills(null, 'Opportunity__r.Name, Bill_Number__c');
@@ -1105,8 +1318,9 @@ public class TestBillCreationandPayment {
         System.assertEquals(120.00, overpayList[0].Overpayment_Amount__c);
 
         // New Bills are generated for SSS1 & SSS2:
-        runProductionUpdate(new List<Id>{productionUpdates[0].Id});
-        runProductionUpdate(new List<Id>{productionUpdates[3].Id});
+        runBillPeriod(new List<Id>{transfers[0].Bill_Period__r.Id});
+        runBillPeriod(new List<Id>{transfers[3].Bill_Period__r.Id});
+
 
         Util.enableTrigger('Disable_AccountBillTrigger__c');
 
@@ -1125,7 +1339,8 @@ public class TestBillCreationandPayment {
         Test.stopTest();
     }
 
-    @isTest public static void testAdjustments() {
+    @IsTest
+    public static void testAdjustments() {
         List<Account_Bill__c> accountbilllist = [SELECT Id, Name,
             Bill_Number__c, Property_Account_ID__c
         FROM Account_Bill__c];
@@ -1211,7 +1426,7 @@ public class TestBillCreationandPayment {
         if (zuoraSetting.Zuora_Is_Live__c){
             system.AssertEquals( 0, (PreviewProductionUpdateResults.getTransactions(acctList)).size());
         } else {
-            system.AssertEquals( 2, (PreviewProductionUpdateResults.getTransactions(acctList)).size());
+        system.AssertEquals( 2, (PreviewProductionUpdateResults.getTransactions(acctList)).size());
         }
 
         List<Overpayment__c> overpayList = [  SELECT Id, Name,
@@ -1251,7 +1466,8 @@ public class TestBillCreationandPayment {
         Test.stopTest();
     }
 
-    @isTest public static void testAdjustments2() {
+    @IsTest
+    public static void testAdjustments2() {
         Test.startTest();
 
         List<Account_Bill__c> accountbilllist = [SELECT Id, Name,
@@ -1325,8 +1541,12 @@ public class TestBillCreationandPayment {
         update chargentOrdersTransactionsToUpdate;
         insert chargentOrdersTransactionsToNotUpdate;
 
-        Energy_Usage_Update__c prodUpdate = [SELECT Id, Name, Generate_Bills__c FROM Energy_Usage_Update__c WHERE Name = 'sssA - March 2016'];
-        runProductionUpdate(new List<Id>{prodUpdate.Id});
+        Transfer__c transfer = [
+            SELECT Id, Name, Bills_Generated__c, Bill_Period__r.Id
+            FROM Transfer__c
+            WHERE Name = 'Main Transfer - sssA March'
+        ];
+        runBillPeriod(new List<Id>{transfer.Bill_Period__r.Id});
 
         InvocableCSBillOverpaymentApplication.applyOverpayments();
 
@@ -1347,7 +1567,8 @@ public class TestBillCreationandPayment {
         System.assertEquals(0, updatedsystemBillList[2].Adjustments_UASB__c );
     }
 
-    @isTest public static void testMultipleEntities() {
+    @IsTest
+    public static void testMultipleEntities() {
         Test.startTest();
         List<Opportunity> oppSSS2 = [SELECT Id, Name, Shared_Solar_System__c, AccountId FROM Opportunity ORDER BY Name];
 
@@ -1391,7 +1612,8 @@ public class TestBillCreationandPayment {
 
     }
 
-    @isTest public static void testOnlinePayment(){
+    @IsTest
+    public static void testOnlinePayment(){
         List<SObject> chOrderList = new List<SObject>();
         User userA = [  SELECT Id
         FROM User
@@ -1505,7 +1727,8 @@ public class TestBillCreationandPayment {
 
     }
 
-    @IsTest public static void testCreditCardFailures(){
+    @IsTest
+    public static void testCreditCardFailures(){
         List<SObject> chOrderList = new List<SObject>();
         User userA = [SELECT Id FROM User WHERE Username='testBillCreationandPay@bluewavesolar.com'];
         Account accountA = [SELECT Id, Name FROM Account WHERE Name = 'Account A'];
@@ -1574,7 +1797,8 @@ public class TestBillCreationandPayment {
         Test.stopTest();
     }
 
-    @isTest public static void testMultipleAdjustments() {
+    @IsTest
+    public static void testMultipleAdjustments() {
         Test.startTest();
         Account accountA = [
             SELECT Id, Name
@@ -1661,13 +1885,14 @@ public class TestBillCreationandPayment {
             System.assertNotEquals(0, billAdjustment.Outstanding__c);
         }
 
-        Energy_Usage_Update__c prodUpdate = [
-            SELECT Id, Name, Generate_Bills__c
-            FROM Energy_Usage_Update__c
-            WHERE Name = 'sssA - March 2016'
+        Transfer__c transfer = [
+            SELECT Id, Name, Bills_Generated__c, Bill_Period__r.Id
+            FROM Transfer__c
+            WHERE Name = 'Main Transfer - sssA March'
         ];
 
-        runProductionUpdate(new List<Id>{prodUpdate.Id});
+
+        runBillPeriod(new List<Id>{transfer.Bill_Period__r.Id});
 
         List<System_Bill__c> originalSystemBillList = SystemBillsSelector.selectAllSystemBills();
 
@@ -1836,51 +2061,55 @@ public class TestBillCreationandPayment {
         Test.stopTest();
     }
 
-    @isTest public static void testScheduleZStatusIsSaved() {
+    @IsTest
+    public static void testScheduleZStatusIsSaved() {
         Test.startTest();
 
-        List<Energy_Usage_Update__c> productionUpdates = [
-            SELECT Id, Schedule_Z__c, Shared_Solar_System__c
-            FROM Energy_Usage_Update__c
+        List<Transfer__c> transfers = [
+            SELECT Id, Allocation_Schedule__c, Shared_Solar_System__c
+            FROM Transfer__c
         ];
 
-        for (Energy_Usage_Update__c prodUpdate : productionUpdates) {
-            prodUpdate.Schedule_Z__c = null;
+
+        for (Transfer__c transfer : transfers) {
+            transfer.Allocation_Schedule__c = null;
         }
 
-        update productionUpdates;
+        update transfers;
 
         Schedule_Z__c scheduleZ = new Schedule_Z__c(
             Name = '18-0615 Oxford Barrett St. P1',
-            Shared_Solar_System__c = productionUpdates[0].Shared_Solar_System__c,
+            Shared_Solar_System__c = transfers[0].Shared_Solar_System__c,
             Status__c = 'Enacted by Utility',
             Date_Enacted_by_Utility__c = Date.today()
         );
 
         insert scheduleZ;
 
-        List<Schedule_Z__c> scheduleZS = PreviewProductionUpdateResults.getScheduleZs(productionUpdates[0].Id);
+        List<Schedule_Z__c> scheduleZS = PreviewProductionUpdateResults.getScheduleZs(transfers[0].Id);
         System.assertEquals(2, scheduleZS.size());
         System.assertEquals('Billing', scheduleZS[0].Status__c);
         System.assertEquals('Enacted by Utility', scheduleZS[1].Status__c);
         Schedule_Z__c previousScheduleZ = scheduleZS[1];
-        PreviewProductionUpdateResults.saveSchedZToProdUpdate(scheduleZS[1].Id, productionUpdates[0].Id);
+
+        PreviewProductionUpdateResults.saveAllocationScheduleToTransfer(scheduleZS[1].Id, transfers[0].Id);
         /*
-        After a schedule Z is saved to a production update, if that schedule Z's status is 'Enacted by Utility'
+        After a schedule Z is saved to a transfer, if that schedule Z's status is 'Enacted by Utility'
         then update the status to 'Billing' and change other Schedule Z statuses to 'Replaced with newly Enacted Schedule Z'
          */
 
-        Energy_Usage_Update__c productionUpdate = [
-            SELECT Id, Schedule_Z__c, Shared_Solar_System__c
-            FROM Energy_Usage_Update__c
-            WHERE Id = : productionUpdates[0].Id
+        Transfer__c transfer = [
+            SELECT Id, Allocation_Schedule__c, Shared_Solar_System__c
+            FROM Transfer__c
+            WHERE Id = :transfers[0].Id
             LIMIT 1
         ];
 
-        System.assertEquals(scheduleZS[1].Id, productionUpdate.Schedule_Z__c);
+
+        System.assertEquals(scheduleZS[1].Id, transfer.Allocation_Schedule__c);
 
         // Only getsSchedule Zs with status of 'Billing' or 'Enacted by Utility'
-        List<Schedule_Z__c> scheduleZS2 = PreviewProductionUpdateResults.getScheduleZs(productionUpdate.Id);
+        List<Schedule_Z__c> scheduleZS2 = PreviewProductionUpdateResults.getScheduleZs(transfer.Id);
 
         System.assertEquals(1, scheduleZS2.size());
         System.assertEquals('Billing', scheduleZS2[0].Status__c);
@@ -1888,18 +2117,18 @@ public class TestBillCreationandPayment {
 
         // Make sure nothing changes if schedule Z status is already 'Billing'
         Schedule_Z__c previousScheduleZ2 = scheduleZS2[0];
-        PreviewProductionUpdateResults.saveSchedZToProdUpdate(scheduleZS2[0].Id, productionUpdates[1].Id);
 
-        Energy_Usage_Update__c productionUpdate2 = [
-            SELECT Id, Schedule_Z__c, Shared_Solar_System__c
-            FROM Energy_Usage_Update__c
-            WHERE Id = : productionUpdates[0].Id
-            LIMIT 1
+        PreviewProductionUpdateResults.saveAllocationScheduleToTransfer(scheduleZS2[0].Id, transfers[1].Id);
+
+        Transfer__c transfer2 = [
+            SELECT Id, Allocation_Schedule__c, Shared_Solar_System__c
+            FROM Transfer__c
+            WHERE Id = :transfers[0].Id
         ];
 
-        System.assertEquals(scheduleZS[1].Id, productionUpdate2.Schedule_Z__c);
+        System.assertEquals(scheduleZS[1].Id, transfer2.Allocation_Schedule__c);
 
-        List<Schedule_Z__c> scheduleZS3 = PreviewProductionUpdateResults.getScheduleZs(productionUpdate2.Id);
+        List<Schedule_Z__c> scheduleZS3 = PreviewProductionUpdateResults.getScheduleZs(transfer2.Id);
 
         System.assertEquals(1, scheduleZS3.size());
         System.assertEquals('Billing', scheduleZS3[0].Status__c);
@@ -1908,14 +2137,16 @@ public class TestBillCreationandPayment {
         Test.stopTest();
     }
 
-    @isTest public static void testMultipleUALs() {
+    @IsTest
+    public static void testMultipleUALs() {
         Test.startTest();
-        Energy_Usage_Update__c productionupdateA3 = [
-            SELECT Id, Generate_Bills__c, Month_Number__c, Schedule_Z__c, Shared_Solar_System__c, YearDate__c, Date__c,
-                MonthDate__c, Net_Metering_Rate_Applied__c, Production__c, Total_System_NMCs__c, Total_System_NMCs_2_of_4__c,
-                Billing_Method__c, Billing_Period_Start_Date__c, Billing_Period_End_Date__c
-            FROM Energy_Usage_Update__c
-            WHERE Name = 'sssA - March 2016'
+
+        Transfer__c transferA3 = [
+            SELECT Id, Name, Date_of_Transfer__c, Transfer_Amount__c, Total_kWh_Transferred__c, Total_Transferred__c,
+                Bill_Period__r.Bill_Date__c, Attempted_Transfer__c, Bills_Generated__c, Allocation_Schedule__c,
+                Allocation_Schedule__r.Name, Allocation_Schedule__r.Id, Shared_Solar_System__c, Default_Credit_Value__c
+            FROM Transfer__c
+            WHERE Name = 'Main Transfer - sssA March'
             LIMIT 1
         ];
 
@@ -1965,7 +2196,14 @@ public class TestBillCreationandPayment {
 
         insert newSZS;
 
-        simulateBatchBillCreation(new List<Energy_Usage_Update__c>{productionupdateA3});
+        List<UASB__c> uasbList1 = [
+            SELECT Id, Opportunity__c, Utility_Account_Subscription__c, Production_Update__c
+            FROM UASB__c
+            WHERE Opportunity__c = : opportunity.Id
+        ];
+
+        simulateBatchBillCreation(new List<Transfer__c>{transferA3});
+
         Test.stopTest();
 
         List<UASB__c> uasbList = [
@@ -1978,11 +2216,20 @@ public class TestBillCreationandPayment {
     }
 
 
-    public static void simulateBatchBillCreation(List<Energy_Usage_Update__c> productionUpdates) {
+    public static void simulateBatchBillCreation(List<Transfer__c> transfers) {
         Set<Id> scheduleZs = new Set<Id>();
-        for (Energy_Usage_Update__c productionUpdate : productionUpdates) {
-            scheduleZs.add(productionUpdate.Schedule_Z__c);
+        Set<Id> bpIds = new Set<Id>();
+
+        for (Transfer__c transfer : transfers) {
+            scheduleZs.add(transfer.Allocation_Schedule__c);
+            bpIds.add(transfer.Bill_Period__c);
         }
+
+        List<Bill_Period__c> billPeriods = [
+            SELECT Id, Name, Bill_Date__c, Shared_Solar_System__c
+            FROM Bill_Period__c
+            WHERE Id IN :bpIds
+        ];
 
         List<Schedule_Z_Subscription__c> scheduleZSubs = [
             SELECT Id, Utility_Account_Subscription__c, Utility_Account_Subscription__r.Opportunity__c
@@ -2003,7 +2250,8 @@ public class TestBillCreationandPayment {
             counter += 1;
         }
 
-        EnergyUsageUpdateTriggerHandler handler = new EnergyUsageUpdateTriggerHandler(productionUpdates);
+        EnergyUsageUpdateTriggerHandler handler = new EnergyUsageUpdateTriggerHandler(billPeriods);
+
         //simulate batching in production
         handler.createBills(batch1);
         handler.createBills(batch2);
@@ -2018,10 +2266,10 @@ public class TestBillCreationandPayment {
         System.assertEquals(282.96, systemBillBefore[0].Total_Due__c);
         System.assertEquals(24, systemBillBefore[0].Adjustments__c);
 
-        Energy_Usage_Update__c prodUpdate = [
-            SELECT Id, Name
-            FROM Energy_Usage_Update__c
-            WHERE Name = 'sssA - January 2016'
+        Transfer__c transfer = [
+            SELECT Id, Name, Bill_Period__r.Id
+            FROM Transfer__c
+            WHERE Name = 'Main Transfer - sssA January'
         ];
 
         List<Account_Bill__c> abs = [
@@ -2040,7 +2288,7 @@ public class TestBillCreationandPayment {
         unapprovedAdjustment.Approval_Status__c = 'Approved';
         update unapprovedAdjustment;
 
-        runProductionUpdate(new List<Id>{prodUpdate.Id});
+        runBillPeriod(new List<Id>{transfer.Bill_Period__r.Id});
 
         OverpaymentApplication.triggerApplication();
 
@@ -2125,22 +2373,61 @@ public class TestBillCreationandPayment {
         uas.Schedule_Z_Subscriptions__r[0].Stop_Credit_Transfer__c = true;
         update uas.Schedule_Z_Subscriptions__r[0];
 
-        // Now, a new production update and bill run shouldn't create a bill for this customer, even though they have a
-        // uas
-        Energy_Usage_Update__c prodUpdate = [
-            SELECT Id, Shared_Solar_System__c, Schedule_Z__c, Production__c, Net_Metering_Rate_Applied__c, Billing_Period_End_Date__c,
-                Total_System_NMCs__c, Date__c
-            FROM Energy_Usage_Update__c
-            WHERE Name = 'sssA - March 2016'
+        // Now, a new transfer and bill run shouldn't create a bill for this customer, even though they have a uas
+
+        Transfer__c transfer = [
+            SELECT Id, Shared_Solar_System__c, Allocation_Schedule__c, Bill_Period__c, Date_of_Transfer__c,
+                Transfer_Type__c, Transfer_Amount__c, Total_kWh_Transferred__c, Total_Transferred__c, Attempted_Transfer__c,
+                Default_Credit_Value__c, Bill_Period__r.Bill_Date__c
+            FROM Transfer__c
+            WHERE Name = 'Main Transfer - sssA March'
             LIMIT 1
         ];
-        prodUpdate = prodUpdate.clone(false,false,false,false);
-        prodUpdate.Name = 'sssA - April 2016';
-        prodUpdate.Billing_Period_End_Date__c = prodUpdate.Billing_Period_End_Date__c.addMonths(1);
-        prodUpdate.Date__c = prodUpdate.Date__c.addMonths(1);
-        insert prodUpdate;
+
+        Shared_Solar_System__c sss1 = [
+            SELECT Id
+            FROM Shared_Solar_System__c
+            WHERE Name = 'Oxford Barrett Street. Part1 With Long Name To Test Unique Id Lengths'
+            LIMIT 1
+        ];
+
+        Bill_Period__c bp = new Bill_Period__c(
+            Name = 'sssA - April 2016',
+            Shared_Solar_System__c = sss1.Id,
+            Bill_Date__c = transfer.Date_of_Transfer__c.addMonths(1)
+        );
+        insert bp;
+
+        Production__c production = new Production__c(
+            Name = 'sssA April Production',
+            Shared_Solar_System__c = sss1.Id,
+            Production_kWh__c = 140000,
+            Credits_Generated__c = 25872,
+            Start_Date__c = transfer.Date_of_Transfer__c.addMonths(1)
+        );
+        insert production;
+
+        Transfer__c transferA4 = new Transfer__c(
+            Name = 'Main Transfer - sssA April',
+            Bill_Period__c = bp.Id,
+            Date_of_Transfer__c = transfer.Date_of_Transfer__c.addMonths(1),
+            Shared_Solar_System__c = sss1.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = scheduleZ.Id,
+            Transfer_Amount__c = 25872,
+            Attempted_Transfer__c = 25872,
+            Attempted_kWh_Transfer__c = 140000,
+            Default_Credit_Value__c = 0.1848
+        );
+        insert transferA4;
+
+
+        TransferPartService transferPartService = new TransferPartService();
+        transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferA4});
+
         Test.startTest();
-        runProductionUpdate(new List<Id>{prodUpdate.Id});
+        runBillPeriod(new List<Id>{bp.Id});
+
         InvocableCSBillOverpaymentApplication.applyOverpayments();
         Test.stopTest();
 
@@ -2150,18 +2437,19 @@ public class TestBillCreationandPayment {
             WHERE Property_Account__c = :uas.Utility_Account_Log__r.Account__c
             ORDER BY Date__c DESC
         ];
-        // There should still be two account bills, one for each production update created in testSetup
+        // There should still be two account bills, one for each transfer created in testSetup
         System.assertEquals(2, systemBills.size());
         System.assertEquals(Date.newInstance(Date.today().year(), Date.today().month()-2,15), systemBills[0].Date__c);
 
-        // The preview bills screen shouldn't show the anything for the new prod update, since there wasn't a bill created
-        List<UASB__c> uasbs = PreviewProductionUpdateResults.getUASes(prodUpdate.Id, true, prodUpdate.Schedule_Z__c);
+
+        // The preview bills screen shouldn't show the anything for the new transfer, since there wasn't a bill created
+        List<UASB__c> uasbs = PreviewProductionUpdateResults.getUASes(transferA4.Id, true, transferA4.Allocation_Schedule__c);
         System.assertEquals(0, uasbs.size());
         // But the cancelled screen should
-        List<UASB__c> cancelledBillListA = PreviewProductionUpdateResults.getCancelledBills(prodUpdate.Id, new List<String>(), prodUpdate.Schedule_Z__c);
+        List<UASB__c> cancelledBillListA = PreviewProductionUpdateResults.getCancelledBills(transferA4.Id, new List<String>(), transferA4.Allocation_Schedule__c);
         System.assertEquals(1, cancelledBillListA.size());
         // And previewing bills with the new schedule z (which didn't get Stop Credit Transfer) shouldn't show any cancelled bills
-        cancelledBillListA = PreviewProductionUpdateResults.getCancelledBills(prodUpdate.Id, new List<String>(), newSZ.Id);
+        cancelledBillListA = PreviewProductionUpdateResults.getCancelledBills(transferA4.Id, new List<String>(), newSZ.Id);
         System.assertEquals(0, cancelledBillListA.size());
     }
 
@@ -2181,7 +2469,7 @@ public class TestBillCreationandPayment {
             FROM System_Bill__c
             WHERE Property_Account__c = :uas.Utility_Account_Log__r.Account__c
         ];
-        // There should be two account bills, one for each production update created in testSetup
+        // There should be two account bills, one for each transfer created in testSetup
         System.assertEquals(2, systemBills.size());
 
         // Next we'll mark the UAL as Finaled, the UAS as removed, and the SZS as Stopped for Credit Transfer
@@ -2198,21 +2486,60 @@ public class TestBillCreationandPayment {
         uas.Schedule_Z_Subscriptions__r[0].Stop_Credit_Transfer__c = true;
         update uas.Schedule_Z_Subscriptions__r[0];
 
-        // Now, a new production update and bill run shouldn't create a bill for this customer, even though the
-        Energy_Usage_Update__c prodUpdate = [
-            SELECT Id, Shared_Solar_System__c, Schedule_Z__c, Production__c, Net_Metering_Rate_Applied__c, Billing_Period_End_Date__c,
-                Total_System_NMCs__c, Date__c
-            FROM Energy_Usage_Update__c
-            WHERE Name = 'sssA - March 2016'
+        // Now, a new transfer and bill run shouldn't create a bill for this customer, even though the
+        Transfer__c transfer = [
+            SELECT Id, Shared_Solar_System__c, Allocation_Schedule__c, Allocation_Schedule__r.Id, Bill_Period__c, Date_of_Transfer__c,
+                Transfer_Type__c, Transfer_Amount__c, Total_kWh_Transferred__c, Total_Transferred__c, Attempted_Transfer__c,
+                Default_Credit_Value__c, Bill_Period__r.Bill_Date__c
+            FROM Transfer__c
+            WHERE Name = 'Main Transfer - sssA March'
             LIMIT 1
         ];
-        prodUpdate = prodUpdate.clone(false,false,false,false);
-        prodUpdate.Name = 'sssA - April 2016';
-        prodUpdate.Billing_Period_End_Date__c = prodUpdate.Billing_Period_End_Date__c.addMonths(1);
-        prodUpdate.Date__c = prodUpdate.Date__c.addMonths(1);
-        insert prodUpdate;
+
+        Shared_Solar_System__c sss1 = [
+            SELECT Id
+            FROM Shared_Solar_System__c
+            WHERE Name = 'Oxford Barrett Street. Part1 With Long Name To Test Unique Id Lengths'
+            LIMIT 1
+        ];
+
+        Bill_Period__c bp = new Bill_Period__c(
+            Name = 'sssA - April 2016',
+            Shared_Solar_System__c = sss1.Id,
+            Bill_Date__c = transfer.Date_of_Transfer__c.addMonths(1)
+        );
+        insert bp;
+
+        Production__c production = new Production__c(
+            Name = 'sssA April Production',
+            Shared_Solar_System__c = sss1.Id,
+            Production_kWh__c = 140000,
+            Credits_Generated__c = 25872,
+            Start_Date__c = transfer.Date_of_Transfer__c.addMonths(1)
+        );
+        insert production;
+
+        Transfer__c transferA4 = new Transfer__c(
+            Name = 'Main Transfer - sssA April',
+            Bill_Period__c = bp.Id,
+            Date_of_Transfer__c = transfer.Date_of_Transfer__c.addMonths(1),
+            Shared_Solar_System__c = sss1.Id,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = transfer.Allocation_Schedule__r.Id,
+            Transfer_Amount__c = 25872,
+            Attempted_Transfer__c = 25872,
+            Attempted_kWh_Transfer__c = 140000,
+            Default_Credit_Value__c = 0.1848
+        );
+        insert transferA4;
+
+
+        TransferPartService transferPartService = new TransferPartService();
+        transferPartService.createPartsFromTransfer(new List<Transfer__c>{transferA4});
+
         Test.startTest();
-        runProductionUpdate(new List<Id>{prodUpdate.Id});
+        runBillPeriod(new List<Id>{bp.Id});
+
         InvocableCSBillOverpaymentApplication.applyOverpayments();
         Test.stopTest();
 
@@ -2227,10 +2554,12 @@ public class TestBillCreationandPayment {
         System.assertEquals(3, systemBills.size());
         System.assertEquals(systemBills[1].Total_Due__c, systemBills[2].Total_Due__c);
 
+
         // The stopped subscription should still show up on the cancelled list, not the new credits list
-        List<UASB__c> uasbs = PreviewProductionUpdateResults.getUASes(prodUpdate.Id, true, prodUpdate.Schedule_Z__c);
+        List<UASB__c> uasbs = PreviewProductionUpdateResults.getUASes(transferA4.Id, true, transferA4.Allocation_Schedule__c);
         System.assertEquals(0, uasbs.size());
-        List<UASB__c> cancelledBillListA = PreviewProductionUpdateResults.getCancelledBills(prodUpdate.Id, new List<String>());
+
+        List<UASB__c> cancelledBillListA = PreviewProductionUpdateResults.getCancelledBills(transferA4.Id, new List<String>());
         System.assertEquals(1, cancelledBillListA.size());
     }
 }

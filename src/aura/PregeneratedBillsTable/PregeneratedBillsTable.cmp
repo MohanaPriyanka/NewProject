@@ -2,7 +2,7 @@
  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
  <aura:attribute name="SchZBillList" type="UASB__c[]"/>
  <aura:attribute name="parentId" type="String"/>    
- <aura:attribute name="IsProdUpdate" type="Boolean"/>
+ <aura:attribute name="IsTransfer" type="Boolean"/>
   <table class="slds-table slds-table_bordered slds-table_cell-buffer">
   <thead>
     <tr class="slds-text-title_caps">
@@ -14,9 +14,6 @@
       </th>
       <th scope="col">
         <div class="slds-truncate" title="Utility Account Number">Utility Account Number</div>
-      </th>
-      <th scope="col">
-        <div class="slds-truncate" title="Credits on Bill Period">Credits on Bill Period</div>
       </th>
       <th scope="col">
         <div class="slds-truncate" title="Name on Account">Name on Account</div>
@@ -34,7 +31,7 @@
         <div class="slds-truncate" title="NMCs Allocated">System Share</div>
       </th>
       <th scope="col">
-        <div class="slds-truncate" title="Discounted Bill">Sch. Z Status</div>
+        <div class="slds-truncate" title="Discounted Bill">Allocation Sch. Status</div>
       </th>
     </tr>
   </thead>
@@ -58,9 +55,6 @@
             <div class="slds-truncate"><a href="{!'/' + uasbs.Schedule_Z_Subscription__c}"
                                           target="_blank"><ui:outputText
                                           value="{!uasbs.PreGen_Additional_Id__c != null ? uasbs.PreGen_Additional_Id__c : uasbs.PreGen_Utility_Acct__c}"/></a></div>
-          </td>
-          <td>
-            <div class="slds-truncate" ><ui:outputText value="{!uasbs.PreGen_CreditOnBillPeriod__c}"/></div>
           </td>
           <td>
             <div class="slds-truncate" ><ui:outputText value="{!uasbs.PreGen_Name_on_Account__c}"/></div>
@@ -88,7 +82,7 @@
 <div>
    <div class="slds-grid">
     <div class="slds-col">
-      <aura:if isTrue="{!v.IsProdUpdate}">
+      <aura:if isTrue="{!v.IsTransfer}">
         <span class="slds-text-heading--small">Download Transfer Sheet CSV </span>&nbsp;
         <lightning:buttonIcon iconName="utility:download" variant="bare" size="large" onclick="{!c.downloadTransferSheet}" alternativeText="Download"/>
         <aura:set attribute="else">

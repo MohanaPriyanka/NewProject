@@ -1,41 +1,39 @@
 /* Created by Jordan Pentaleri on 2/11/19
 Description: controller for BillGenerationConsole
-Tests: BillGenerationAndDeliveryServiceTest
+Tests: BillGenerationAndDeliveryServiceTest, TransferSelectorTest
 */
 
 public class BillGenerationConsoleController {
 
     @AuraEnabled
-    public static List<Energy_Usage_Update__c> getThisMonthsProductionUpdates() {
+    public static List<Transfer__c> getThisMonthsTransfers() {
         Date today = System.Today();
-        return ProductionUpdateSelector.getProductionUpdatesByMonth(today.month(),String.valueOf(today.year()));
+        return TransferSelector.getTransfersByMonth(today.month(),today.year());
     }
 
     @AuraEnabled
-    public static List<Shared_Solar_System__c> getSSSWithoutProductionUpdates(List<Energy_Usage_Update__c> prodUpdateList) {
-        List<Id> productionUpdateIdList = new List<Id>();
-        for (Energy_Usage_Update__c euu : prodUpdateList){
-            productionUpdateIdList.add(euu.Id);
+    public static List<Shared_Solar_System__c> getSSSWithoutTransfer(List<Transfer__c> transferList) {
+        List<Id> transferIdList = new List<Id>();
+        for (Transfer__c transfer : transferList) {
+            transferIdList.add(transfer.Id);
         }
 
-        return SharedSolarSystemsSelector.getAllSSSWithProdUpdatesNotInList(productionUpdateIdList);
+        return SharedSolarSystemsSelector.getAllSSSWithTransfersNotInList(transferIdList);
     }
 
     @AuraEnabled
     public static void runThisMonthsBills() {
         Zuora_Setting__mdt zuoraSetting = ZuoraAPIHelper.getZuoraSetting();
         Date today = System.Today();
-        List<Energy_Usage_Update__c> prodUpdateList;
-        prodUpdateList = ProductionUpdateSelector.getProductionUpdatesByMonth(today.month(),String.valueOf(today.year()));
+        List<Bill_Period__c> billPeriods = BillPeriodSelector.getBillPeriodsByMonth(today.month(), today.year());
 
         if (zuoraSetting.Zuora_Is_Live__c){
-            BillGenerationAsyncService billGen = new BillGenerationAsyncService(prodUpdateList);
+            BillGenerationAsyncService billGen = new BillGenerationAsyncService(billPeriods);
             billGen.executeBatchJob();
         } else {
-            EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(prodUpdateList);
+            EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(billPeriods);
             ee.runBills();
         }
-
     }
 
     @AuraEnabled
@@ -46,7 +44,7 @@ public class BillGenerationConsoleController {
             List<AggregateResult> aggregateInvoices = ZuoraInvoiceSelector.getInvoiceSummary(System.Today().addDays(-3));
             return handleAggregateResult(aggregateInvoices);
         } else {
-            List<AggregateResult> aggregateAccountBills = AccountBillSelector.getAccountBillSummary(today.month(), String.valueOf(today.year()));
+        List<AggregateResult> aggregateAccountBills = AccountBillSelector.getAccountBillSummary(today.month(),String.valueOf(today.year()));
             return handleAggregateResult(aggregateAccountBills);
         }
     }

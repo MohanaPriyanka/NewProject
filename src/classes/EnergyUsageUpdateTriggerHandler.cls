@@ -9,20 +9,38 @@
  */
 
 public without sharing class EnergyUsageUpdateTriggerHandler implements Database.Batchable<Schedule_Z_Subscription__c> {
-    public Map<Id, Energy_Usage_Update__c> sssIdToEUUMap = new Map<Id,Energy_Usage_Update__c>();
+    public Map<Id, Bill_Period__c> sssToBillPeriod = new Map<Id, Bill_Period__c>();
+    public List<Transfer__c> transferList = new List<Transfer__c>();
+    public Map<Id, List<Transfer__c>> sssToTransfersMap = new Map<Id, List<Transfer__c>>();
+    public Set<Id> bpIds = new Set<Id>();
     public Set<Id> scheduleZs = new Set<Id>();
-    public Set<Integer> euuMonths = new Set<Integer>();
-    public Set<String> euuYears = new Set<String>();
+    public Set<Integer> bpMonths = new Set<Integer>();
+    public Set<String> bpYears = new Set<String>();
     public Map<String, Account_Bill__c> abKeyToAccountBillMap = new Map<String, Account_Bill__c>();
     public Map<Id, List<Product_Escalator__c>> productScheduleToEscalationMap = new Map<Id, List<Product_Escalator__c>>();
 
     // Prep for batch, set list of Schedule Z Ids and Shared Solar System Map:
-    public EnergyUsageUpdateTriggerHandler(List<Energy_Usage_Update__c> euuList) {
-        for (Energy_Usage_Update__c euu : euuList) {
-            sssIdToEUUMap.put(euu.Shared_Solar_System__c, euu);
-            scheduleZs.add(euu.Schedule_Z__c);
-            euuMonths.add((Integer) euu.Month_Number__c);
-            euuYears.add(euu.YearDate__c);
+    public EnergyUsageUpdateTriggerHandler(List<Bill_Period__c> billPeriodsList) {
+        for (Bill_Period__c bp : billPeriodsList) {
+            bpIds.add(bp.Id);
+            sssToBillPeriod.put(bp.Shared_Solar_System__c, bp);
+            bpMonths.add(bp.Bill_Date__c.month());
+            bpYears.add(String.valueOf(bp.Bill_Date__c.year()));
+        }
+
+        //Get all the Transfers from BP Ids:
+        transferList = TransferSelector.getAllTransfersByBillPeriod(bpIds);
+
+        // Get schedule Zs from Transfers
+        for (Transfer__c transfer : transferList) {
+            scheduleZs.add(transfer.Allocation_Schedule__c);
+            if (sssToTransfersMap.containsKey(transfer.Shared_Solar_System__c)) {
+                List<Transfer__c> transferList = sssToTransfersMap.get(transfer.Shared_Solar_System__c);
+                transferList.add(transfer);
+                sssToTransfersMap.put(transfer.Shared_Solar_System__c, transferList);
+            } else {
+                sssToTransfersMap.put(transfer.Shared_Solar_System__c, new List<Transfer__c>{transfer});
+            }
         }
 
         productScheduleToEscalationMap = ProductEscalatorSelector.getProductEscalationMap();
@@ -30,8 +48,8 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         for (Account_Bill__c accountBill : [
             SELECT Id, Unique_ID__c
             FROM Account_Bill__c
-            WHERE Month__c IN : euuMonths
-            AND Year__c IN : euuYears
+            WHERE Month__c IN : bpMonths
+            AND Year__c IN : bpYears
         ]) {
             abKeyToAccountBillMap.put(accountBill.Unique_ID__c, accountBill);
         }
@@ -56,14 +74,12 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         Decimal minimumBalance = Util.nullToZero(sysProp.Minimum_Balance_Bills_for_Cancelled__c);
         Date today = Date.today();
         Date maxPastDueDate = today.addDays(-(Integer.valueOf(Util.nullToZero(sysProp.Days_Generate_Bills_For_Cancelled__c))));
-
         Set<Id> overdueUASIds = new Set<Id>();
-
         List<UASB__c> overdueUASBs = [
             SELECT Id, System_Bill__r.Unique_ID__c, System_Bill__r.Opportunity__r.Id, Utility_Account_Subscription__c,
                 System_Bill__r.Account_Bill__r.Parent_Account__r.Last_Bill_Send_Date_New_Charges__c
             FROM UASB__c
-            WHERE System_Bill__r.Shared_Solar_System__c IN : sssIdToEUUMap.keySet()
+            WHERE System_Bill__r.Shared_Solar_System__c IN : sssToBillPeriod.keySet()
             AND System_Bill__r.Balance_Net_Late_Payments__c > : minimumBalance
             AND System_Bill__r.Account_Bill__r.Parent_Account__r.Last_Bill_Send_Date_New_Charges__c >= : maxPastDueDate
             AND System_Bill__r.Account_Bill__r.Parent_Account__r.Last_Bill_Send_Date_New_Charges__c <= :today
@@ -94,8 +110,8 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         return szsList;
     }
 
-    private static String getDate(Energy_Usage_Update__c euu) {
-        return Datetime.newInstance(euu.Date__c.year(), euu.Date__c.month(),euu.Date__c.day()).format('yyyy-MM');
+    private static String getDate(Bill_Period__c bp) {
+        return Datetime.newInstance(bp.Bill_Date__c.year(), bp.Bill_Date__c.month(), bp.Bill_Date__c.day()).format('yyyy-MM');
     }
 
     // Batch into groups of Schedule Z Subscriptions:
@@ -130,40 +146,39 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
                 scheduleZUASIds.add(scheduleZSub.Utility_Account_Subscription__c);
                 oppIds.add(scheduleZSub.Utility_Account_Subscription__r.Opportunity__c);
             }
-
             uasMap = getUASFromSZS(scheduleZUASIds, oppIds);
         }
-        //select the Opportunities that are related to the shared solar systems that have production updates being logged.
+        //select the Opportunities that are related to the shared solar systems that have transfers being logged.
         List<Opportunity> oppList = [
             SELECT Id, Name, Account.Name, Shared_Solar_System__r.Name, Shared_Solar_System__r.Billing_Anchors__c,
                 Shared_Solar_System__c, AccountId, Account.Id,  Account.Account_Number__c, Account.Recurring_Billing__c, Product__r.Monthly_Late_Fee__c,
                 Product__r.Days_in_Bill_Period__c, Account.Max_Account_Bill_Number__c, StageName
             FROM Opportunity
-            WHERE Shared_Solar_System__c IN : sssIdToEUUMap.keySet()
+            WHERE Shared_Solar_System__c IN : sssToBillPeriod.keySet()
             AND Id IN : oppIds
             ORDER BY Name
         ];
 
         //Generate a list of all System Bill Numbers for each opportunity
-        Map<String, Integer> maxSysBillByOppId = maxSysBillByOppId(sssIdToEUUMap.keySet(), oppIds);
+        Map<String, Integer> maxSysBillByOppId = maxSysBillByOppId(sssToBillPeriod.keySet(), oppIds);
 
         Map<String, System_Bill__c> previousBillsSet = new Map<String, System_Bill__c>();
         for (System_Bill__c systemBill : [
             SELECT Id, Unique_ID__c
             FROM System_Bill__c
-            WHERE Month__c IN : euuMonths
-            AND Shared_Solar_System__c IN : sssIdToEUUMap.keySet()
+            WHERE Month__c IN : bpMonths
+            AND Shared_Solar_System__c IN : sssToBillPeriod.keySet()
         ]) {
             previousBillsSet.put(systemBill.Unique_ID__c, systemBill);
         }
 
         for (Opportunity opp : oppList) {
-            if (sssIdToEUUMap.containsKey(opp.Shared_Solar_System__c)) {
-                Energy_Usage_Update__c euu = sssIdToEUUMap.get(opp.Shared_Solar_System__c);
-                String abUniqueID = opp.Account.Id + ' ' + getDate(euu);
+            if (sssToBillPeriod.containsKey(opp.Shared_Solar_System__c)) {
+                Bill_Period__c bp = sssToBillPeriod.get(opp.Shared_Solar_System__c);
+                String abUniqueID = opp.Account.Id + ' ' + getDate(bp);
                 if (!abKeyToAccountBillMap.containsKey(abUniqueID)) {
                     try {
-                        Account_Bill__c ab = generateAccountBill(opp, abUniqueID, euu);
+                        Account_Bill__c ab = generateAccountBill(opp, abUniqueID, bp);
                         abKeyToAccountBillMap.put(ab.Unique_ID__c, ab);
                         abToUpsertMap.put(ab.Unique_ID__c, ab);
                     } catch (Exception e){
@@ -181,14 +196,14 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
 
         Map<String, System_Bill__c > systemBillMap = new Map<String, System_Bill__c >();
         for (Opportunity opp : oppList) {
-            Energy_Usage_Update__c euu = sssIdToEUUMap.get(opp.Shared_Solar_System__c);
-            String parentKey = opp.Account.Id + ' ' + getDate(euu);
-            String sysBillUniqueId = opp.Id + ' ' + opp.Shared_Solar_System__r.Name + ' ' + getDate(euu);
+            Bill_Period__c bp = sssToBillPeriod.get(opp.Shared_Solar_System__c);
+            String parentKey = opp.Account.Id + ' ' + getDate(bp);
+            String sysBillUniqueId = opp.Id + ' ' + opp.Shared_Solar_System__r.Name + ' ' + getDate(bp);
             if (abKeyToAccountBillMap.containsKey(parentKey) && !previousBillsSet.containsKey(sysBillUniqueId)) {
                 Integer maxSysBill = maxSysBillByOppId.get(opp.Id);
                 Account_Bill__c ab = abKeyToAccountBillMap.get(parentKey);
                 try {
-                    System_Bill__c sb = generateSystemBill(opp, euu, ab, maxSysBill, sysBillUniqueId);
+                    System_Bill__c sb = generateSystemBill(opp, bp, ab, maxSysBill, sysBillUniqueId);
                     systemBillMap.put(sb.Unique_ID__c, sb);
                 } catch (Exception e) {
                     String message = 'System Bill Creation Failed for Parent Id ' + parentKey  + 'Error: ' + String.valueOf(e);
@@ -206,12 +221,12 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
 
         Map<Id, Utility_Account_Bill__c> utilityAccountLogIdToUABMap = new Map<Id, Utility_Account_Bill__c>();
         for (Utility_Account_Subscription__c uas : uasMap.values()) {
-            Energy_Usage_Update__c euu = sssIdToEUUMap.get(uas.Opportunity__r.Shared_Solar_System__c);
-            String parentKey = uas.Opportunity__r.Account.Id + ' ' + getDate(euu);
+            Bill_Period__c bp = sssToBillPeriod.get(uas.Opportunity__r.Shared_Solar_System__c);
+            String parentKey = uas.Opportunity__r.Account.Id + ' ' + getDate(bp);
             if (abKeyToAccountBillMap.containsKey(parentKey)) {
                 Account_Bill__c ab = abKeyToAccountBillMap.get(parentKey);
                 try {
-                    Utility_Account_Bill__c uab = generateUtilityAccountBill(uas, euu, ab);
+                    Utility_Account_Bill__c uab = generateUtilityAccountBill(uas, bp, ab);
                     utilityAccountLogIdToUABMap.put(uab.Utility_Account_Log__c, uab);
                 } catch (Exception e) {
                     String message = 'Utility Account Bill Creation Failed for Account Id ' + ab.Unique_ID__c  + 'Error: ' + String.valueOf(e);
@@ -224,19 +239,18 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         }
 
         Logger.flushLogs();
-
         UtilityAccountBillTriggerHandler handler = new UtilityAccountBillTriggerHandler();
-        handler.createUASB(sssIdToEUUMap, systemBillMap, utilityAccountLogIdToUABMap, uasMap.values(), productScheduleToEscalationMap);
+        handler.createUASB(sssToTransfersMap, systemBillMap, utilityAccountLogIdToUABMap, uasMap.values(), productScheduleToEscalationMap);
     }
 
     public void finish(Database.BatchableContext bc){
-        for (Energy_Usage_Update__c productionUpdate : sssIdToEUUMap.values()){
-            productionUpdate.Generate_Bills__c = true;
+        for (Transfer__c transfer : transferList){
+            transfer.Bills_Generated__c = true;
         }
-        update sssIdToEUUMap.values();
+        update transferList;
     }
 
-    private Account_Bill__c generateAccountBill(Opportunity opp, String abUniqueID, Energy_Usage_Update__c euu) {
+    private Account_Bill__c generateAccountBill(Opportunity opp, String abUniqueID, Bill_Period__c bp) {
         Integer abCounter;
         if(opp.Account.Max_Account_Bill_Number__c == null) {
             abCounter = 1;
@@ -244,8 +258,8 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
             abCounter = (opp.Account.Max_Account_Bill_Number__c).intValue() + 1;
         }
         Account_Bill__c ab = new Account_Bill__c(
-            Name = opp.Account.Account_Number__c + ' ' + euu.MonthDate__c + ' ' + euu.YearDate__c,
-            Date__c =  euu.Date__c,
+            Name = opp.Account.Account_Number__c + ' ' + bp.Bill_Date__c.month() + ' ' + String.valueOf(bp.Bill_Date__c.year()),
+            Date__c =  bp.Bill_Date__c,
             Parent_Account__c = opp.Account.Id,
             Bill_Number__c = abCounter,
             Last_Shared_Solar_System_ID__c = opp.Shared_Solar_System__r.Id
@@ -277,14 +291,15 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
                 Utility_Account_Log__c,
                 Opportunity__r.Name,
                 Opportunity__r.Account.Name,
+                Opportunity__r.Shared_Solar_System__r.Count_of_Transfers__c,
                 Opportunity__r.Shared_Solar_System__r.Name,
                 Opportunity__r.Shared_Solar_System__c,
                 Opportunity__r.Shared_Solar_System__r.Id,
                 Opportunity__r.AccountId,
                 Opportunity__r.Account.Account_Number__c,
                 Opportunity__r.StageName,
-                Opportunity__r.Shared_Solar_System__r.Count_of_Transfers__c,
                 Opportunity__r.Product_Escalation_Schedule__c,
+                Externally_Serviced__c,
                 Max_Account_Bill_Number__c
             FROM Utility_Account_Subscription__c
             WHERE Id IN : scheduleZUASIds
@@ -299,9 +314,9 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         return uasMap;
     }
 
-    private System_Bill__c generateSystemBill(Opportunity opp, Energy_Usage_Update__c euu, Account_Bill__c ab, Integer maxSysBill, String uniqueId ) {
+    @SuppressWarnings('PMD.ExcessiveParameterList')
+    private System_Bill__c generateSystemBill(Opportunity opp, Bill_Period__c bp, Account_Bill__c ab, Integer maxSysBill, String uniqueId ) {
         integer sbCounter;
-
         // Set Bill Number for each opportunity, if opportunity has previous bills increment by one, otherwise set to 1
         if(maxSysBill != null){
             sbCounter = maxSysBill + 1;
@@ -310,11 +325,11 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         }
 
         System_Bill__c sb = new System_Bill__c(
-            Name = opp.Account.Account_Number__c + ' ' + (opp.Shared_Solar_System__r.Name).abbreviate(40) + ' ' + euu.MonthDate__c + ' ' + euu.YearDate__c,
+            Name = opp.Account.Account_Number__c + ' ' + (opp.Shared_Solar_System__r.Name).abbreviate(40) + ' ' + bp.Bill_Date__c.month() + ' ' + String.valueOf(bp.Bill_Date__c.year()),
             Shared_Solar_System_ID2__c = opp.Shared_Solar_System__r.Id,
             Account_Bill__c = ab.Id,
             Recurring_Billing__c = opp.Account.Recurring_Billing__c,
-            Date__c =  euu.Date__c,
+            Date__c =  bp.Bill_Date__c,
             Bill_Number__c = sbCounter,
             Shared_Solar_System__c = opp.Shared_Solar_System__r.Id,
             Monthly_Late_Fee_Interest__c = opp.Product__r.Monthly_Late_Fee__c,
@@ -326,18 +341,15 @@ public without sharing class EnergyUsageUpdateTriggerHandler implements Database
         return sb;
     }
 
-    private Utility_Account_Bill__c generateUtilityAccountBill(Utility_Account_Subscription__c uas, Energy_Usage_Update__c euu, Account_Bill__c ab) {
-
+    private Utility_Account_Bill__c generateUtilityAccountBill(Utility_Account_Subscription__c uas, Bill_Period__c bp, Account_Bill__c ab) {
         Utility_Account_Bill__c uab = new Utility_Account_Bill__c(
-            Name = uas.Opportunity__r.Account.Account_Number__c + ' ' + euu.MonthDate__c + ' ' + euu.YearDate__c + ' ' + uas.Name,
-            Production_Update__c = euu.Id,
-            Shared_Solar_System__c = euu.Shared_Solar_System__c,
-            Date__c =  euu.Date__c,
+            Name = uas.Opportunity__r.Account.Account_Number__c + ' ' + bp.Bill_Date__c.month() + ' ' + String.valueOf(bp.Bill_Date__c.year()) + ' ' + uas.Name,
+            Shared_Solar_System__c = bp.Shared_Solar_System__c,
+            Date__c =  bp.Bill_Date__c,
             Utility_Account_Log__c = uas.Utility_Account_Log__c,
             Account_Bill__c = ab.Id
         );
-        uab.Unique_Id__c = uas.Utility_Account_Log__c + ' - ' + getDate(euu);
+        uab.Unique_Id__c = uas.Utility_Account_Log__c + ' - ' + getDate(bp);
         return uab;
     }
-
 }
