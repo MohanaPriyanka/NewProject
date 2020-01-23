@@ -10247,7 +10247,7 @@ newwindow.focus();</url>
         <height>600</height>
         <isResizable>true</isResizable>
         <linkType>url</linkType>
-        <masterLabel>New QC Task</masterLabel>
+        <masterLabel>New QC Case</masterLabel>
         <openType>newWindow</openType>
         <position>none</position>
         <protected>false</protected>
