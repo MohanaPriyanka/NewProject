@@ -329,29 +329,6 @@ public class TransferSheetBillingTest {
         System.assertEquals(1,countOfLineItemsWithoutSZS);
     }
 
-    @isTest
-    private static void testQueryContentDoc(){
-        ContentVersion transferSheet = new ContentVersion (
-            Title ='transferSheet.pdf',
-            PathOnClient='/transferSheet.pdf',
-            VersionData = Blob.valueOf('ColumnOne, ColumnTwo')
-        );
-        Util.insertSObj(transferSheet);
-
-        ContentDocument document = [
-            SELECT Id
-            FROM ContentDocument
-            ORDER BY CreatedDate DESC
-            LIMIT 1
-        ];
-
-        try {
-            TransferSheetService.getUASBListFromTransferSheet(document.Id, getTestTransfer());
-        } catch (AuraHandledException excep){
-            System.assert(excep.getMessage().contains('Expected 4 Columns in CSV data found 2'));
-        }
-    }
-
     private static void useMocks() {
         BillGenerationService.szsSelector = (ScheduleZSubscriptionSelector) Test.createStub(ScheduleZSubscriptionSelector.class, new MockSZSSelector());
         BillGenerationService.escalatorSelector = (ProductEscalatorSelector) Test.createStub(ProductEscalatorSelector.class, new MockPESelector());
