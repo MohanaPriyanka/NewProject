@@ -145,36 +145,6 @@
     <permissionSets>Mailchimp User</permissionSets>
     <permissionSets>Manage External Users</permissionSets>
     <permissionSets>Live Agent Manager</permissionSets>
-    <permissionSets>Flow Magic Picklists Admin</permissionSets>
-    <permissionSets>Flow Magic Picklists User</permissionSets>
-    <permissionSets>Legal Spend Fields on Work</permissionSets>
-    <permissionSets>Create and Edit Campaigns</permissionSets>
-    <permissionSets>Case Feed User</permissionSets>
-    <permissionSets>CS App Processing</permissionSets>
-    <permissionSets>Product Escalation Management</permissionSets>
-    <permissionSets>CS Lead Status Editing</permissionSets>
-    <permissionSets>LASERCA Lead field access for CS App Processing</permissionSets>
-    <permissionSets>Personal Credit Report - full visibility</permissionSets>
-    <permissionSets>Personal Credit Report visibility - CS</permissionSets>
-    <permissionSets>Zuora Quotes End User</permissionSets>
-    <permissionSets>Zuora Quotes Product Admin</permissionSets>
-    <permissionSets>Zuora Rules End User</permissionSets>
-    <permissionSets>Zuora Object Visibility</permissionSets>
-    <permissionSets>Event Monitoring Analytics User</permissionSets>
-    <permissionSets>Event Monitoring Analytics Admin</permissionSets>
-    <permissionSets>Manage Contracts</permissionSets>
-    <permissionSets>Work Request Change Management</permissionSets>
-    <permissionSets>Lightning Email Template Report Folder Creation</permissionSets>
-    <permissionSets>Access Community 360 Data</permissionSets>
-    <permissionSets>Full Macro Access</permissionSets>
-    <permissionSets>Personal Credit Report visibility - Loan</permissionSets>
-    <permissionSets>Loan Document Visibility</permissionSets>
-    <permissionSets>Client Subscription Reporting Object Access</permissionSets>
-    <permissionSets>Presence Status Access</permissionSets>
-    <permissionSets>Client Reporting General Ledger Modify</permissionSets>
-    <permissionSets>Client Reporting General Ledger View</permissionSets>
-    <permissionSets>Query Zuora Data</permissionSets>
-    <permissionSets>SSS Customer Facing Info Management</permissionSets>
     <permissionSets>Edit Products</permissionSets>
     <permissionSets>Import Custom Objects</permissionSets>
     <permissionSets>Underwriting Screen Access</permissionSets>
@@ -184,12 +154,43 @@
     <permissionSets>Permission to Run Batch SREC Payments</permissionSets>
     <permissionSets>Manage Users</permissionSets>
     <permissionSets>Do Not Send Bills Permission</permissionSets>
+    <permissionSets>CS Lead Status Editing</permissionSets>
+    <permissionSets>Flow Magic Picklists Admin</permissionSets>
+    <permissionSets>Flow Magic Picklists User</permissionSets>
+    <permissionSets>Legal Spend Fields on Work</permissionSets>
+    <permissionSets>Case Feed User</permissionSets>
+    <permissionSets>Create and Edit Campaigns</permissionSets>
+    <permissionSets>CS App Processing</permissionSets>
+    <permissionSets>Product Escalation Management</permissionSets>
+    <permissionSets>Lightning Email Template Report Folder Creation</permissionSets>
+    <permissionSets>Access Community 360 Data</permissionSets>
+    <permissionSets>Full Macro Access</permissionSets>
+    <permissionSets>Personal Credit Report visibility - Loan</permissionSets>
+    <permissionSets>Loan Document Visibility</permissionSets>
+    <permissionSets>Client Subscription Reporting Object Access</permissionSets>
+    <permissionSets>Client Reporting General Ledger Modify</permissionSets>
+    <permissionSets>Client Reporting General Ledger View</permissionSets>
+    <permissionSets>Query Zuora Data</permissionSets>
+    <permissionSets>Presence Status Access</permissionSets>
     <permissionSets>View Contracts</permissionSets>
+    <permissionSets>SSS Customer Facing Info Management</permissionSets>
+    <permissionSets>Event Monitoring Analytics Admin</permissionSets>
+    <permissionSets>Event Monitoring Analytics User</permissionSets>
+    <permissionSets>LASERCA Lead field access for CS App Processing</permissionSets>
+    <permissionSets>Zuora Quotes End User</permissionSets>
+    <permissionSets>Zuora Quotes Product Admin</permissionSets>
+    <permissionSets>Zuora Rules End User</permissionSets>
+    <permissionSets>Personal Credit Report - full visibility</permissionSets>
+    <permissionSets>Personal Credit Report visibility - CS</permissionSets>
+    <permissionSets>Zuora Object Visibility</permissionSets>
+    <permissionSets>Manage Contracts</permissionSets>
+    <permissionSets>Work Request Change Management</permissionSets>
     <permissionSets>Production &amp; Transfer Delete Access</permissionSets>
     <permissionSets>HubSpot Integration Permissions</permissionSets>
     <permissionSets>Manage Entities (Legal)</permissionSets>
     <permissionSets>Update ALSS Date Enacted</permissionSets>
     <permissionSets>Einstein Search</permissionSets>
+    <permissionSets>CS Customer Data Import</permissionSets>
     <permissionSets>Lightning</permissionSets>
     <permissionSets>Shared Solar System Permission</permissionSets>
     <permissionSets>Permission Set for Payment Request (Base)</permissionSets>
@@ -214,9 +215,9 @@
     <permissionSets>Set Audit Fields upon Record Creation</permissionSets>
     <profiles>BWC Executive</profiles>
     <profiles>IT Support</profiles>
-    <profiles>PM Force.com user</profiles>
-    <profiles>CS Client Partner Login</profiles>
     <profiles>BFG Marketing User</profiles>
+    <profiles>CS Client Partner Login</profiles>
+    <profiles>PM Force.com user</profiles>
     <profiles>CS Client Partner Login_GSRP</profiles>
     <profiles>PM Standard User</profiles>
     <profiles>HR Admin</profiles>
