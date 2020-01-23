@@ -2,7 +2,7 @@
 Created By: Jordan Pentaleri 1/23/20
 Service for ContentDocument, ContentVersion and ContentDocumentLink actions
 */
-
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public with sharing class ContentService {
     public static ContentDocumentSelector documentSelector = new ContentDocumentSelector();
 
