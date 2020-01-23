@@ -175,6 +175,12 @@
     <permissionSets>Client Reporting General Ledger View</permissionSets>
     <permissionSets>Query Zuora Data</permissionSets>
     <permissionSets>SSS Customer Facing Info Management</permissionSets>
+    <permissionSets>View Contracts</permissionSets>
+    <permissionSets>Production &amp; Transfer Delete Access</permissionSets>
+    <permissionSets>HubSpot Integration Permissions</permissionSets>
+    <permissionSets>Manage Entities (Legal)</permissionSets>
+    <permissionSets>Update ALSS Date Enacted</permissionSets>
+    <permissionSets>Einstein Search</permissionSets>
     <permissionSets>Edit Products</permissionSets>
     <permissionSets>Import Custom Objects</permissionSets>
     <permissionSets>Underwriting Screen Access</permissionSets>
@@ -184,12 +190,7 @@
     <permissionSets>Permission to Run Batch SREC Payments</permissionSets>
     <permissionSets>Manage Users</permissionSets>
     <permissionSets>Do Not Send Bills Permission</permissionSets>
-    <permissionSets>View Contracts</permissionSets>
-    <permissionSets>Production &amp; Transfer Delete Access</permissionSets>
-    <permissionSets>HubSpot Integration Permissions</permissionSets>
-    <permissionSets>Manage Entities (Legal)</permissionSets>
-    <permissionSets>Update ALSS Date Enacted</permissionSets>
-    <permissionSets>Einstein Search</permissionSets>
+    <permissionSets>Portfolio Management</permissionSets>
     <permissionSets>Lightning</permissionSets>
     <permissionSets>Shared Solar System Permission</permissionSets>
     <permissionSets>Permission Set for Payment Request (Base)</permissionSets>
@@ -216,8 +217,8 @@
     <profiles>IT Support</profiles>
     <profiles>PM Force.com user</profiles>
     <profiles>CS Client Partner Login</profiles>
-    <profiles>BFG Marketing User</profiles>
     <profiles>CS Client Partner Login_GSRP</profiles>
+    <profiles>BFG Marketing User</profiles>
     <profiles>PM Standard User</profiles>
     <profiles>HR Admin</profiles>
     <profiles>BFG Standard User</profiles>

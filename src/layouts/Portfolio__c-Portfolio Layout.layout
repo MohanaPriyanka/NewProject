@@ -55,6 +55,8 @@
     </layoutSections>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>Entity_Owner__c</fields>
+        <fields>Client_Account__c</fields>
         <relatedList>Entity__c.Portfolio__c</relatedList>
     </relatedLists>
     <relatedLists>
