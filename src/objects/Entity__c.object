@@ -734,6 +734,21 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Portfolio__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>This is the lookup to the portfolio object.</description>
+        <externalId>false</externalId>
+        <label>Portfolio</label>
+        <referenceTo>Portfolio__c</referenceTo>
+        <relationshipLabel>Entities</relationshipLabel>
+        <relationshipName>Entities</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>RI_Annual_Report__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Annual Reports must be filed between 9/1 and 11/1 or else late fees</inlineHelpText>
