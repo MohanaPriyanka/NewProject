@@ -15,7 +15,7 @@
 *
 * Tested By: CSCancellationServiceTest
 */
-
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class CSCancellationService {
     private static String AUTOMATED_CANCELLATION_COMMENT = 'Automated Cancellation';
     @TestVisible
@@ -79,7 +79,7 @@ public without sharing class CSCancellationService {
                 Logger.logLater('CSCancellationService', 'sendCancellationConfirmationEmails', bwe.getMessage());
             }
         }
-        MessagingService.sendEmail(cancellationEmails);
+        sendCancellationEmails(cancellationEmails);
         Logger.flushLogs();
     }
 
@@ -103,32 +103,39 @@ public without sharing class CSCancellationService {
             }
 
             Account account = uas.Utility_Account_Log__r.Account__r;
-            if (!accountIdToReplacementMap.containsKey(account)) {
-                accountIdToReplacementMap.put(
-                    account,
-                    new Map<String, String> {
-                        CANCELLATION_PARAGRAPH_TWO_LABEL => '',
-                        CANCELLATION_PARAGRAPH_THREE_LABEL => '',
-                        '{!Contact.FirstName}' => account.Send_Bills_Contact__r.FirstName
-                    }
-                );
-            }
-            Map<String, String> replacementMap = accountIdToReplacementMap.get(account);
-            // If two opportunities have products with conflicting cancellation information, we should show a default
-            // cancellation message
-            if (replacementMap.get(CANCELLATION_PARAGRAPH_TWO_LABEL) == '') {
-                replacementMap.put(CANCELLATION_PARAGRAPH_TWO_LABEL, uas.Opportunity__r.Product__r.Cancellation_Paragraph_Two__c);
-            } else if (replacementMap.get(CANCELLATION_PARAGRAPH_TWO_LABEL) != uas.Opportunity__r.Product__r.Cancellation_Paragraph_Two__c) {
-                replacementMap.put(CANCELLATION_PARAGRAPH_TWO_LABEL, DEFAULT_CANCELLATION_PARAGRAPH_TWO);
-            }
-            if (replacementMap.get(CANCELLATION_PARAGRAPH_THREE_LABEL) == '') {
-                replacementMap.put(CANCELLATION_PARAGRAPH_THREE_LABEL, uas.Opportunity__r.Product__r.Cancellation_Paragraph_Three__c);
-            } else if (replacementMap.get(CANCELLATION_PARAGRAPH_THREE_LABEL) != uas.Opportunity__r.Product__r.Cancellation_Paragraph_Three__c) {
-                replacementMap.put(CANCELLATION_PARAGRAPH_THREE_LABEL, DEFAULT_CANCELLATION_PARAGRAPH_THREE);
-            }
+            addAccountToReplacementMap(accountIdToReplacementMap, account);
+            resolveConflictingCancellationMessages(accountIdToReplacementMap, account, uas);
         }
 
         return accountIdToReplacementMap;
+    }
+
+    private static void addAccountToReplacementMap(Map<Account, Map<String, String>> accountIdToReplacementMap, Account account) {
+        if (!accountIdToReplacementMap.containsKey(account)) {
+            accountIdToReplacementMap.put(
+                account,
+                new Map<String, String>{
+                    CANCELLATION_PARAGRAPH_TWO_LABEL => '',
+                    CANCELLATION_PARAGRAPH_THREE_LABEL => '',
+                    '{!Contact.FirstName}' => account.Send_Bills_Contact__r.FirstName
+                }
+            );
+        }
+    }
+
+    // If two opportunities have products with conflicting cancellation information, we should show a default cancellation message
+    private static void resolveConflictingCancellationMessages(Map<Account, Map<String, String>> accountIdToReplacementMap, Account account, Utility_Account_Subscription__c uas) {
+        Map<String, String> replacementMap = accountIdToReplacementMap.get(account);
+        if (replacementMap.get(CANCELLATION_PARAGRAPH_TWO_LABEL) == '') {
+            replacementMap.put(CANCELLATION_PARAGRAPH_TWO_LABEL, uas.Opportunity__r.Product__r.Cancellation_Paragraph_Two__c);
+        } else if (replacementMap.get(CANCELLATION_PARAGRAPH_TWO_LABEL) != uas.Opportunity__r.Product__r.Cancellation_Paragraph_Two__c) {
+            replacementMap.put(CANCELLATION_PARAGRAPH_TWO_LABEL, DEFAULT_CANCELLATION_PARAGRAPH_TWO);
+        }
+        if (replacementMap.get(CANCELLATION_PARAGRAPH_THREE_LABEL) == '') {
+            replacementMap.put(CANCELLATION_PARAGRAPH_THREE_LABEL, uas.Opportunity__r.Product__r.Cancellation_Paragraph_Three__c);
+        } else if (replacementMap.get(CANCELLATION_PARAGRAPH_THREE_LABEL) != uas.Opportunity__r.Product__r.Cancellation_Paragraph_Three__c) {
+            replacementMap.put(CANCELLATION_PARAGRAPH_THREE_LABEL, DEFAULT_CANCELLATION_PARAGRAPH_THREE);
+        }
     }
 
     private static Messaging.SingleEmailMessage createCSEmail(Account account, String template, String subject) {
@@ -157,10 +164,11 @@ public without sharing class CSCancellationService {
     }
 
     // W-008411: Called by the UtilityAccountLog trigger when Ops receives an email from the Utility that an account has been
-    // finaled. Updates the "Date Utility Account Cancelled" date on the Utility Account Log and creates a Partner Support case
+    // finaled. Updates the "Date Utility Account Cancelled" date on the Utility Account Log and creates a case specified
+    // by System_Property__c.Finaled_Case_Owner__c
     public static void processFinaledUtilityAccounts(List<Utility_Account_Subscription__c> uasesToMarkInactive) {
         UtilityAccountSubscriptions subscriptions = new UtilityAccountSubscriptions(uasesToMarkInactive);
-        subscriptions.removeFromProject();
+        subscriptions.handleFinaledAccounts();
         createCaseToTransferOrTerminate(subscriptions);
     }
 
@@ -197,11 +205,15 @@ public without sharing class CSCancellationService {
                 transferCase.Product_Line__c = 'Community Solar';
                 transferCase.Origin = 'Other';
                 transferCase.Category__c = 'Cancellation';
-                transferCase.Description = uas.Utility_Account_Log__r.Account__r.Name +
-                        ' (' + uas.Utility_Account_Log__r.Account__c + ') has recently had a Utility Account ' +
-                        'moved to Cancelled status. Please follow up with the customer to see if they want to transfer ' +
-                        'the subscription or pay an early termination fee.';
-                transferCase.AccountId = uas.Utility_Account_Log__r.Account__c;
+                transferCase.Disable_Followup_Email__c = true;
+                transferCase.Sale_Status__c = 'Post-sale';
+                transferCase.Subject = 'Determine handling of finaled UAL';
+                transferCase.Description = uas.Utility_Account_Log__r.Account__r.Name + ' has recently had Utility Account ' +
+                    uas.Utility_Account_Log__r.Name + ' ('+uas.Utility_Account_Log__c+') finaled and had ' +
+                    'Transferring Subsc. to Another UAS automatically checked to pause the cancellation process.\n\n' +
+                    'Please follow up with the customer to see if they want to transfer the subscription or pay an early termination fee.\n\n' +
+                    'If they choose not to transfer, uncheck the transferring checkbox and add a cancellation reason on the account.';
+                transferCase.AccountId = uas.Utility_Account_Log__r.Account__r.Parent_Account__c;
                 transferCase.ContactId = uas.Utility_Account_Log__r.Account__r.Send_Bills_Contact__c;
                 accountToCaseMap.put(uas.Utility_Account_Log__r.Account__c, transferCase);
             }
@@ -243,6 +255,39 @@ public without sharing class CSCancellationService {
     // W-008424: When ALL UASes with a Schedule Z Subscription have a "Date Removed from Project" (which is set when
     // Ops marks a Utility Account Log as Finaled or a customer has cancelled), we want to update the latest
     // Date Removed from Project on the Account and confirm with the removal with the customer.
+    // W-013146: Keep track of Opportunities removed from projects, since we may have Inactive UASes that are just waiting
+    // to be put on a project that should prevent an account from being marked as removed.
+    public static void handleOpportunitiesRemovedFromProject(Map<Id, Utility_Account_Subscription__c> oldMap, Map<Id, Utility_Account_Subscription__c> newMap) {
+        Set<Id> oppIdsToCheckForRemoval = new Set<Id>();
+        for (Utility_Account_Subscription__c uas : newMap.values()) {
+            if (oldMap.get(uas.Id).Date_Removed_from_Project__c == null && uas.Date_Removed_from_Project__c != null ||
+                oldMap.get(uas.Id).Next_Schedule_Z_Status__c != uas.Next_Schedule_Z_Status__c ||
+                oldMap.get(uas.Id).Transferring_Subsc_to_Another_UAS__c != uas.Transferring_Subsc_to_Another_UAS__c) {
+                oppIdsToCheckForRemoval.add(uas.Opportunity__c);
+            }
+        }
+        List<Opportunity> oppsWithRemovedUASes = OpportunitiesSelector.selectAllCompleteCSWithUASes(oppIdsToCheckForRemoval);
+        List<Opportunity> oppsToUpdate = new List<Opportunity>();
+        for (Opportunity opp : oppsWithRemovedUASes) {
+            Date dateRemovedFromLastProject = null;
+            if (!Opportunities.anyEnactedUASes(opp) ||
+                Opportunities.hasActiveUASes(opp) ||
+                !Opportunities.allEnactedUASesAreRemoved(opp) ||
+                Opportunities.allUASesTransferring(opp)) {
+                continue;
+            }
+            for (Utility_Account_Subscription__c uas : opp.Utility_Account_Subscriptions__r) {
+                dateRemovedFromLastProject = DateUtil.max(dateRemovedFromLastProject, uas.Date_Removed_from_Project__c);
+            }
+            if (opp.Date_Removed_from_Project__c != dateRemovedFromLastProject) {
+                opp.Date_Removed_from_Project__c = dateRemovedFromLastProject;
+                oppsToUpdate.add(opp);
+            }
+        }
+        update oppsToUpdate;
+    }
+
+
     public static List<Account> processAccountsRemovedFromAllProjects(List<Account> acctsReadyForCancellation) {
         Map<Id, Messaging.SingleEmailMessage> confirmationEmailMap = new Map<Id, Messaging.SingleEmailMessage>();
 
@@ -254,7 +299,7 @@ public without sharing class CSCancellationService {
                     acct.Date_Removed_from_Project__c.month(),
                     acct.Date_Removed_from_Project__c.day()
                 );
-                String dateRemoved = dateRemovedDT.format('MM/dd/YYYY');
+                String dateRemoved = dateRemovedDT.format('MM/dd/yyyy');
                 try {
                     confirmationEmailMap.put(
                         acct.Id,
@@ -277,7 +322,7 @@ public without sharing class CSCancellationService {
 
         if (!acctsReadyForCancellation.isEmpty()){
             update acctsReadyForCancellation;
-            MessagingService.sendEmail(confirmationEmailMap.values());
+            sendCancellationEmails(confirmationEmailMap.values());
             Logger.flushLogs();
         }
         return acctsReadyForCancellation;
@@ -305,29 +350,33 @@ public without sharing class CSCancellationService {
         return utilityAccountNumbers;
     }
 
-    public static List<Account> getAccountsRemovedFromAllProjects() {
+    public static List<Account> getAccountsRemovedFromAllProjectsWithUpdatedDate() {
         List<Account> csAccounts = AccountsSelector.selectCSNotRemoved();
         List<Account> accountsToCancel = new List<Account>();
         for (Account account : csAccounts) {
-            Integer numberOfRemovedUASes = 0;
-            Integer numberOfSubscribedUASes = 0;
+            Boolean isRemoved = true;
             Date latestDateRemoved = null;
-            // For each UAL, include the account for cancellation if all subscribed UASes are removed.
-            for (Utility_Account_Log__c ual : account.Utility_Account_Logs__r) {
-                numberOfRemovedUASes += (Integer) ual.Number_of_Removed_UASes__c;
-                numberOfSubscribedUASes += (Integer) ual.Number_of_Subscribed_UASes__c;
-                if (latestDateRemoved == null ||
-                    ual.Last_Date_UAS_Removed_From_Project__c > latestDateRemoved) {
-                    latestDateRemoved = ual.Last_Date_UAS_Removed_From_Project__c;
+            for (Opportunity opp : account.Opportunities) {
+                if (isActive(opp) && opp.Date_Removed_from_Project__c == null) {
+                    isRemoved = false;
+                    break;
+                } else {
+                    latestDateRemoved = DateUtil.max(latestDateRemoved, opp.Date_Removed_from_Project__c);
                 }
             }
-            if (numberOfRemovedUASes == numberOfSubscribedUASes &&
-                numberOfSubscribedUASes > 0) {
+            if (isRemoved) {
                 account.Date_Removed_from_Project__c = latestDateRemoved;
                 accountsToCancel.add(account);
             }
         }
         return accountsToCancel;
+    }
+
+    private static Boolean isActive(Opportunity opp) {
+        return (opp.StageName != 'Cancelled' &&
+            opp.StageName != 'DUPLICATE' &&
+            opp.StageName != 'Expired' &&
+            opp.StageName != 'Dead');
     }
 
     // W-008426: Called by the OpportunityTrigger to check to see if all CS opportunities are Cancelled, Expired, Duplicate,
@@ -351,10 +400,7 @@ public without sharing class CSCancellationService {
             for (Account acct : acctsToCheck) {
                 Boolean readyForClose = true;
                 for (Opportunity opp : acct.Opportunities) {
-                    if (opp.StageName != 'Cancelled' &&
-                        opp.StageName != 'DUPLICATE' &&
-                        opp.StageName != 'Expired' &&
-                        opp.StageName != 'Dead') {
+                    if (isActive(opp)) {
                         readyForClose = false;
                         break;
                     }
@@ -397,8 +443,21 @@ public without sharing class CSCancellationService {
         }
 
         if (!terminationEmailMap.values().isEmpty()) {
-            MessagingService.sendEmail(terminationEmailMap.values());
+            sendCancellationEmails(terminationEmailMap.values());
             Logger.flushLogs();
+        }
+    }
+
+    private static void sendCancellationEmails(List<Messaging.SingleEmailMessage> emails) {
+        if (Util.getSystemPropertyCheckbox('Send_CS_Cancellation_Emails__c')) {
+            MessagingService.sendEmail(emails);
+        } else {
+            Logger.logLater(
+                'CSCancellationService',
+                'sendCancellationEmail',
+                'Not sending ' + emails.size() + ' emails because CS Cancellation Emails is turned off via custom setting',
+                Logger.WARN
+            );
         }
     }
 }

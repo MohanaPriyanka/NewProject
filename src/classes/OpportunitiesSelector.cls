@@ -16,8 +16,27 @@ public without sharing class OpportunitiesSelector {
             WHERE StageName = 'Complete'
             AND Product_Line__c = 'Community Solar'
             AND Customer_Group__c NOT IN ('Anchor', 'Public Offtake')
+            ORDER BY Name
         ];
     }
+
+    @SuppressWarnings('PMD.ApexCRUDViolation')
+    public static List<Opportunity> selectAllCompleteCSWithUASes(Set<Id> oppIds) {
+        return [
+            SELECT Id, Name, Date_Removed_from_Project__c,
+            (
+                SELECT Id, Name, Most_Recent_Enacted_ALSS__c, Next_Schedule_Z_Status__c, Total_Count_of_Schedule_Zs__c,
+                    Transferring_Subsc_to_Another_UAS__c, Date_Removed_from_Project__c
+                FROM Utility_Account_Subscriptions__r
+            )
+            FROM Opportunity
+            WHERE StageName = 'Complete'
+            AND Product_Line__c = 'Community Solar'
+            AND Customer_Group__c NOT IN ('Anchor', 'Public Offtake')
+            AND Id = :oppIds
+        ];
+    }
+
     @SuppressWarnings('PMD.ApexCRUDViolation')
     public static Opportunity selectForContractSend(Id opportunityId) {
         return [

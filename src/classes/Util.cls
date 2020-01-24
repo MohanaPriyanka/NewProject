@@ -102,6 +102,7 @@ public without sharing class Util {
 
     // Used to show the installer a list of products to apply for (SLPAddCustomer, SLPSendEmailApplication)
     // or to generate a quick sales sheet (SLPQuickSalesSheet).
+    @SuppressWarnings('PMD.ExcessiveParameterList')
     private static List<Product2> getActiveProductsInternal(List<String> states, Id partnerId, String productType, Boolean showHidden) {
         List<Product2> productList = [SELECT Id, Name, Program__c, External_Name__c, Require_Junctions_to_Enable__c, Hide_in_Requested_Product__c,
                                       (SELECT Id FROM Partner_Product_Junctions__r
@@ -183,17 +184,25 @@ public without sharing class Util {
         System.debug(LoggingLevel.ERROR, getHeapLimit(prefix));
     }
 
+    public static void printRowLimit(String prefix) {
+        System.debug(LoggingLevel.ERROR, getRowLimit(prefix));
+    }
+
     public static String getCPULimit(String prefix) {
         return 'Limits: ' + prefix + ': ' + Limits.getCpuTime() + 'ms of '
             + Limits.getLimitCpuTime() + 'ms used';
     }
     public static String getSOQLLimit(String prefix) {
-        return 'Limits: ' + prefix + ': ' + Limits.getQueries() + ' of '
+        return 'Limits: ' + prefix + ': ' + Limits.getQueries() + ' queries of '
             + Limits.getLimitQueries() + ' used';
     }
     public static String getHeapLimit(String prefix) {
-        return 'Limits: ' + prefix + ': ' + Limits.getHeapSize() + ' of '
-            + Limits.getLimitHeapSize() + ' used';
+        return 'Limits: ' + prefix + ': ' + Limits.getHeapSize()/1000000 + ' of '
+            + Limits.getLimitHeapSize()/1000000 + ' used';
+    }
+    public static String getRowLimit(String prefix) {
+        return 'Limits: ' + prefix + ': ' + Limits.getQueryRows() + ' rows of '
+            + Limits.getLimitQueryRows() + ' used';
     }
 
 
