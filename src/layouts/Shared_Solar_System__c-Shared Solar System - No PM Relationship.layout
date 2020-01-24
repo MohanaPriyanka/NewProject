@@ -538,6 +538,8 @@
         <fields>Bill_Status__c</fields>
         <fields>Bill_Date__c</fields>
         <relatedList>Bill_Period__c.Shared_Solar_System__c</relatedList>
+        <sortField>Bill_Date__c</sortField>
+        <sortOrder>Desc</sortOrder>
     </relatedLists>
     <relatedLists>
         <excludeButtons>MassChangeOwner</excludeButtons>
