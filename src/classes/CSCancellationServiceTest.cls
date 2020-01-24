@@ -1570,4 +1570,102 @@ public with sharing class CSCancellationServiceTest {
         System.assertEquals(false, exceptionCaught);
 
     }
+
+    @IsTest
+    private static void testGetAccountsWithDateRemovedSet() {
+        List<Account> accounts;
+        String accountWithOneExpiredOppNotRemoved =
+            '[{"attributes":{"type":"Account","url":"/services/data/v47.0/sobjects/Account/0010a00001RmBuQAAV"},' +
+            '"Id":"0010a00001RmBuQAAV",' +
+            '"Name":"12313",' +
+            '"RecordTypeId":"012j00000010HeQAAU",' +
+            '"Utility_Account_Logs__r":{"totalSize":1,"done":true,"records":[{"attributes":{"type":"Utility_Account_Log__c","url":"/services/data/v47.0/sobjects/Utility_Account_Log__c/a1b0a000003hRhlAAE"},"Account__c":"0010a00001RmBuQAAV","Id":"a1b0a000003hRhlAAE","Name":"12314214","Number_of_Removed_UASes__c":0,"Number_of_Subscribed_UASes__c":0}]},' +
+            '"Opportunities":{"totalSize":1,"done":true,"records":[{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/0060a00000gYhdrAAC"},"AccountId":"0010a00001RmBuQAAV","Id":"0060a00000gYhdrAAC","StageName":"Expired"}]}}]';
+        accounts = (List<Account>) JSON.deserialize(accountWithOneExpiredOppNotRemoved, List<Account>.class);
+        System.assertEquals(0, CSCancellationService.getAccountsWithDateRemovedSet(accounts).size(), 'Expected no accounts to set a Date Removed From Project');
+
+        String accountWithTwoCancelledButNotRemovedOpps =
+            '[{"attributes":{"type":"Account","url":"/services/data/v47.0/sobjects/Account/0010a00001Tf2j2AAB"},' +
+            '"Id":"0010a00001Tf2j2AAB",' +
+            '"Name":"127 Main Street Realty",' +
+            '"Send_Bills_Contact__c":"0030a000026UGX6AAO",' +
+            '"RecordTypeId":"012j00000010HeQAAU",' +
+            '"Utility_Account_Logs__r":{"totalSize":3,"done":true,"records":[{"attributes":{"type":"Utility_Account_Log__c","url":"/services/data/v47.0/sobjects/Utility_Account_Log__c/a1b0a000004DDJMAA4"},"Account__c":"0010a00001Tf2j2AAB","Id":"a1b0a000004DDJMAA4","Name":"88148-888","Number_of_Removed_UASes__c":0,"Number_of_Subscribed_UASes__c":0},{"attributes":{"type":"Utility_Account_Log__c","url":"/services/data/v47.0/sobjects/Utility_Account_Log__c/a1b0a000004DDJWAA4"},"Account__c":"0010a00001Tf2j2AAB","Id":"a1b0a000004DDJWAA4","Name":"00885-8888","Number_of_Removed_UASes__c":0,"Number_of_Subscribed_UASes__c":0},{"attributes":{"type":"Utility_Account_Log__c","url":"/services/data/v47.0/sobjects/Utility_Account_Log__c/a1b0a000004DDJbAAO"},"Account__c":"0010a00001Tf2j2AAB","Id":"a1b0a000004DDJbAAO","Name":"88148-88888","Number_of_Removed_UASes__c":0,"Number_of_Subscribed_UASes__c":0}]},' +
+            '"Opportunities":{"totalSize":2,"done":true,"records":[{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/0060a00000ge0sGAAQ"},"AccountId":"0010a00001Tf2j2AAB","Id":"0060a00000ge0sGAAQ","StageName":"Cancelled"},{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/0060a00000ge0sHAAQ"},"AccountId":"0010a00001Tf2j2AAB","Id":"0060a00000ge0sHAAQ","StageName":"Cancelled"}]},"Send_Bills_Contact__r":{"attributes":{"type":"Contact","url":"/services/data/v47.0/sobjects/Contact/0030a000026UGX6AAO"},"Id":"0030a000026UGX6AAO","FirstName":"James","Email":"foo@bar.com"}}]';
+        accounts = (List<Account>) JSON.deserialize(accountWithTwoCancelledButNotRemovedOpps, List<Account>.class);
+        System.assertEquals(0, CSCancellationService.getAccountsWithDateRemovedSet(accounts).size(), 'Expected no accounts to set a Date Removed From Project');
+
+        String accountWithDuplicateAndNotRemovedOpps =
+            '[{"attributes":{"type":"Account","url":"/services/data/v47.0/sobjects/Account/0010a00001ZKcEvAAL"},' +
+            '"Id":"0010a00001ZKcEvAAL",' +
+            '"Name":"NY DUPLICATE ACCT",' +
+            '"Send_Bills_Contact__c":"0030a00002F2vZrAAJ",' +
+            '"RecordTypeId":"012j00000010HeQAAU",' +
+            '"Utility_Account_Logs__r":{"totalSize":1,"done":true,"records":[{"attributes":{"type":"Utility_Account_Log__c","url":"/services/data/v47.0/sobjects/Utility_Account_Log__c/a1b0a000002b9ZQAAY"},"Account__c":"0010a00001ZKcEvAAL","Id":"a1b0a000002b9ZQAAY","Name":"100188888","Number_of_Removed_UASes__c":0,"Number_of_Subscribed_UASes__c":0}]},' +
+            '"Opportunities":{"totalSize":1,"done":true,"records":[{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/0060a00000jF7lzAAC"},"AccountId":"0010a00001ZKcEvAAL","Id":"0060a00000jF7lzAAC","StageName":"DUPLICATE"}]},"Send_Bills_Contact__r":{"attributes":{"type":"Contact","url":"/services/data/v47.0/sobjects/Contact/0030a00002F2vZrAAJ"},"Id":"0030a00002F2vZrAAJ","FirstName":"Guy","Email":"foo@bar.com"}}]';
+
+        accounts = (List<Account>) JSON.deserialize(accountWithDuplicateAndNotRemovedOpps, List<Account>.class);
+        System.assertEquals(0, CSCancellationService.getAccountsWithDateRemovedSet(accounts).size(), 'Expected no accounts to set a Date Removed From Project');
+
+        Datetime removedDate = Datetime.newInstance(2019,3,25);
+        String accountWithCancelledAndRemovedOpp =
+            '[{"attributes":{"type":"Account","url":"/services/data/v47.0/sobjects/Account/001j0000011mR6LAAU"},' +
+            '"Id":"001j0000011mR6LAAU",' +
+            '"Name":"128 Main Street Realty - Cancelled",' +
+            '"Send_Bills_Contact__c":"003j000001LJTYKAA5",' +
+            '"RecordTypeId":"012j00000010HeQAAU",' +
+            '"Utility_Account_Logs__r":{"totalSize":1,"done":true,"records":[{"attributes":{"type":"Utility_Account_Log__c","url":"/services/data/v47.0/sobjects/Utility_Account_Log__c/a1bj0000001hmg0AAA"},"Account__c":"001j0000011mR6LAAU","Id":"a1bj0000001hmg0AAA","Name":"1665-","Number_of_Removed_UASes__c":1,"Number_of_Subscribed_UASes__c":1,"Last_Date_UAS_Removed_From_Project__c":"2019-03-25"}]},' +
+            '"Opportunities":{"totalSize":1,"done":true,"records":[{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/006j000000VVn3EAAT"},"AccountId":"001j0000011mR6LAAU","Id":"006j000000VVn3EAAT","Date_Removed_from_Project__c":"'+removedDate.format('yyyy-MM-dd')+'","StageName":"Cancelled"}]},"Send_Bills_Contact__r":{"attributes":{"type":"Contact","url":"/services/data/v47.0/sobjects/Contact/003j000001LJTYKAA5"},"Id":"003j000001LJTYKAA5","FirstName":"James","Email":"foo@bar.com","Additional_Email__c":"foo@bar.com"}}]';
+
+        accounts = (List<Account>) JSON.deserialize(accountWithCancelledAndRemovedOpp, List<Account>.class);
+        System.assertEquals(1, CSCancellationService.getAccountsWithDateRemovedSet(accounts).size(), 'Expected an account to get Date Removed set');
+        System.assertEquals(
+            removedDate.date(),
+            CSCancellationService.getAccountsWithDateRemovedSet(accounts)[0].Date_Removed_from_Project__c,
+            'Expected Date Removed From Project to get set with the latest Opp Date Removed From Project');
+
+        Datetime laterRemovedDate = Datetime.newInstance(2020,1,13);
+        String accountWithTwoCompleteAndRemovedOpps =
+            '[{"attributes":{"type":"Account","url":"/services/data/v47.0/sobjects/Account/0010a00001Pw94HAAR"},' +
+            '"Id":"0010a00001Pw94HAAR",' +
+            '"Name":"Complete LLC",' +
+            '"Send_Bills_Contact__c":"0030a0000203IjxAAE",' +
+            '"RecordTypeId":"012j00000010HeQAAU",' +
+            '"Utility_Account_Logs__r":{"totalSize":1,"done":true,"records":[{"attributes":{"type":"Utility_Account_Log__c","url":"/services/data/v47.0/sobjects/Utility_Account_Log__c/a1b0a000003hJn2AAE"},"Account__c":"0010a00001Pw94HAAR","Id":"a1b0a000003hJn2AAE","Name":"89259-7777","Number_of_Removed_UASes__c":2,"Number_of_Subscribed_UASes__c":2,"Last_Date_UAS_Removed_From_Project__c":"2020-01-13"}]},' +
+            '"Opportunities":{"totalSize":2,"done":true,"records":[{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/0060a00000fRdh7AAC"},"AccountId":"0010a00001Pw94HAAR","Id":"0060a00000fRdh7AAC","Date_Removed_from_Project__c":"'+laterRemovedDate.format('yyyy-MM-dd')+'","StageName":"Complete"},{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/0060a00000fRdh8AAC"},"AccountId":"0010a00001Pw94HAAR","Id":"0060a00000fRdh8AAC","Date_Removed_from_Project__c":"2019-07-26","StageName":"Complete"}]},"Send_Bills_Contact__r":{"attributes":{"type":"Contact","url":"/services/data/v47.0/sobjects/Contact/0030a0000203IjxAAE"},"Id":"0030a0000203IjxAAE","FirstName":"Ronald","Email":"foo@bar.com"}}]';
+        accounts = (List<Account>) JSON.deserialize(accountWithTwoCompleteAndRemovedOpps, List<Account>.class);
+        System.assertEquals(0, CSCancellationService.getAccountsWithDateRemovedSet(accounts).size(), 'Expected to not get a Date Removed From Project until the opps are cancelled');
+
+        String accountWithTwoCancelledAndRemovedOpps =
+            '[{"attributes":{"type":"Account","url":"/services/data/v47.0/sobjects/Account/0010a00001Pw94HAAR"},' +
+                '"Id":"0010a00001Pw94HAAR",' +
+                '"Name":"Complete LLC",' +
+                '"Send_Bills_Contact__c":"0030a0000203IjxAAE",' +
+                '"RecordTypeId":"012j00000010HeQAAU",' +
+                '"Utility_Account_Logs__r":{"totalSize":1,"done":true,"records":[{"attributes":{"type":"Utility_Account_Log__c","url":"/services/data/v47.0/sobjects/Utility_Account_Log__c/a1b0a000003hJn2AAE"},"Account__c":"0010a00001Pw94HAAR","Id":"a1b0a000003hJn2AAE","Name":"89259-7777","Number_of_Removed_UASes__c":2,"Number_of_Subscribed_UASes__c":2,"Last_Date_UAS_Removed_From_Project__c":"2020-01-13"}]},' +
+                '"Opportunities":{"totalSize":2,"done":true,"records":[{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/0060a00000fRdh7AAC"},"AccountId":"0010a00001Pw94HAAR","Id":"0060a00000fRdh7AAC","Date_Removed_from_Project__c":"'+laterRemovedDate.format('yyyy-MM-dd')+'","StageName":"Cancelled"},{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/0060a00000fRdh8AAC"},"AccountId":"0010a00001Pw94HAAR","Id":"0060a00000fRdh8AAC","Date_Removed_from_Project__c":"2019-07-26","StageName":"Cancelled"}]},"Send_Bills_Contact__r":{"attributes":{"type":"Contact","url":"/services/data/v47.0/sobjects/Contact/0030a0000203IjxAAE"},"Id":"0030a0000203IjxAAE","FirstName":"Ronald","Email":"foo@bar.com"}}]';
+        accounts = (List<Account>) JSON.deserialize(accountWithTwoCancelledAndRemovedOpps, List<Account>.class);
+        System.assertEquals(1, CSCancellationService.getAccountsWithDateRemovedSet(accounts).size(), 'Expected to not get a Date Removed From Project until the opps are cancelled');
+        System.assertEquals(
+            laterRemovedDate.date(),
+            CSCancellationService.getAccountsWithDateRemovedSet(accounts)[0].Date_Removed_from_Project__c,
+            'Expected Date Removed From Project to get set with the latest Opp Date Removed From Project');
+
+        String accountWithOneRemovedOneDuplicateOpp =
+            '[{"attributes":{"type":"Account","url":"/services/data/v47.0/sobjects/Account/0010a00001Pw94HAAR"},' +
+            '"Id":"0010a00001Pw94HAAR",' +
+            '"Name":"Complete LLC",' +
+            '"Send_Bills_Contact__c":"0030a0000203IjxAAE",' +
+            '"RecordTypeId":"012j00000010HeQAAU",' +
+            '"Utility_Account_Logs__r":{"totalSize":1,"done":true,"records":[{"attributes":{"type":"Utility_Account_Log__c","url":"/services/data/v47.0/sobjects/Utility_Account_Log__c/a1b0a000003hJn2AAE"},"Account__c":"0010a00001Pw94HAAR","Id":"a1b0a000003hJn2AAE","Name":"89259-7777","Number_of_Removed_UASes__c":2,"Number_of_Subscribed_UASes__c":2,"Last_Date_UAS_Removed_From_Project__c":"2020-01-13"}]},' +
+            '"Opportunities":{"totalSize":2,"done":true,"records":[{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/0060a00000fRdh7AAC"},"AccountId":"0010a00001Pw94HAAR","Id":"0060a00000fRdh7AAC","Date_Removed_from_Project__c":"'+laterRemovedDate.format('yyyy-MM-dd')+'","StageName":"Cancelled"},{"attributes":{"type":"Opportunity","url":"/services/data/v47.0/sobjects/Opportunity/0060a00000fRdh8AAC"},"AccountId":"0010a00001Pw94HAAR","Id":"0060a00000fRdh8AAC","StageName":"DUPLICATE"}]},"Send_Bills_Contact__r":{"attributes":{"type":"Contact","url":"/services/data/v47.0/sobjects/Contact/0030a0000203IjxAAE"},"Id":"0030a0000203IjxAAE","FirstName":"Ronald","Email":"foo@bar.com"}}]';
+        accounts = (List<Account>) JSON.deserialize(accountWithOneRemovedOneDuplicateOpp, List<Account>.class);
+        System.assertEquals(1, CSCancellationService.getAccountsWithDateRemovedSet(accounts).size(), 'Expected an account to get Date Removed set');
+        System.assertEquals(
+            laterRemovedDate.date(),
+            CSCancellationService.getAccountsWithDateRemovedSet(accounts)[0].Date_Removed_from_Project__c,
+            'Expected Date Removed From Project to get set with the latest Opp Date Removed From Project, ignoring non-active opps');
+
+
+    }
 }
