@@ -14,6 +14,12 @@
     </accessMappings>
     <accessMappings>
         <accessLevel>Read</accessLevel>
+        <object>Portfolio__c</object>
+        <objectField>Client_Account__c</objectField>
+        <userField>Contact.Account</userField>
+    </accessMappings>
+    <accessMappings>
+        <accessLevel>Read</accessLevel>
         <object>Shared_Solar_System__c</object>
         <objectField>Client_Account__c</objectField>
         <userField>Contact.Account</userField>
@@ -21,4 +27,5 @@
     <description>Grants read access to SSS (and read access to detail objects in master details relationships where SSS is the master) and Opportunity based off of client lookup.</description>
     <name>Client Portal User visibility</name>
     <profiles>cs client partner login</profiles>
+    <profiles>cs client partner login_gsrp</profiles>
 </SharingSet>
