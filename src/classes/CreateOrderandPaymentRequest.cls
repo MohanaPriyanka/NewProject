@@ -66,20 +66,13 @@ public without sharing class CreateOrderandPaymentRequest {
                     chargentOrder.ChargentOrders__Bank_Account_Name__c
                 );
                 htmlValue = htmlValue.replace(
-                    '{!ChargentOrders__ChargentOrder__c.ChargentOrders__Bank_Name__c}',
-                    chargentOrder.ChargentOrders__Bank_Name__c
+                    '{!ChargentOrders__ChargentOrder__c.ChargentOrders__Bank_Name__c}', chargentOrder.ChargentOrders__Bank_Name__c
                 );
                 htmlValue = htmlValue.replace(
                     '{!ChargentOrders__ChargentOrder__c.ChargentOrders__Bank_Account_Number__c}',
                     '***' + chargentOrder.ChargentOrders__Bank_Account_Number__c.right(4)
                 );
-                MessagingService.createAndSendEmail(
-                    htmlValue,
-                    'customercare@bluewavesolar.com',
-                    'Receiving SREC Payments Via Automatic Deposit',
-                    new List<String>{emailInput},
-                    null
-                );
+                MessagingService.createAndSendEmail(htmlValue, 'customercare@bluewavesolar.com','Receiving SREC Payments Via Automatic Deposit', new List<String>{emailInput}, null);
             } catch (Exception e){
                 Logger.logNow('CreateOrderandPaymentRequest', 'submitDDInfoWithoutCharge', 'Did not send email receipt: ' + chargentOrder.Id + String.valueOf(e));
             }
