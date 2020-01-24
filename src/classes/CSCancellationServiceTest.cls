@@ -811,7 +811,7 @@ public with sharing class CSCancellationServiceTest {
 
     @IsTest static void testNoAccountIsUpdated() {
         Test.startTest();
-        CSCancellationService.processAccountsRemovedFromAllProjects(CSCancellationService.getAccountsRemovedFromAllProjects());
+        CSCancellationService.processAccountsRemovedFromAllProjects(CSCancellationService.getAccountsRemovedFromAllProjectsWithUpdatedDate());
         Test.stopTest();
 
         List<Account> propAccts = [
@@ -876,7 +876,7 @@ public with sharing class CSCancellationServiceTest {
         insert newSubscription;
 
         List<Utility_Account_Subscription__c> uasToUpdate = [
-            SELECT Id, Date_Removed_from_Project__c, (SELECT Id FROM Schedule_Z_Subscriptions__r)
+            SELECT Id, Opportunity__c, Date_Removed_from_Project__c, Most_Recent_Enacted_ALSS__c, (SELECT Id FROM Schedule_Z_Subscriptions__r)
             FROM Utility_Account_Subscription__c
             WHERE Utility_Account_Log__r.Account__r.Name = 'Prop Account 1'
         ];
@@ -885,12 +885,19 @@ public with sharing class CSCancellationServiceTest {
             System.assertEquals(1, utilityAccountSubscription.Schedule_Z_Subscriptions__r.size());
         }
 
-        Date dateRemoved = Date.today() - 20;
+        Date twentyDaysAgo = Date.today() - 20;
 
-        uasToUpdate[0].Date_Removed_from_Project__c = dateRemoved;
+        // Should be set when the UAL is marked finalled
+        uasToUpdate[0].Date_Removed_from_Project__c = twentyDaysAgo;
+        uasToUpdate[0].Next_Schedule_Z_Status__c = 'Inactive Subscription';
+        // Should be set when an Allocation Schedule is Enacted
+        uasToUpdate[0].Most_Recent_Enacted_ALSS__c = uasToUpdate[0].Schedule_Z_Subscriptions__r[0].Id;
         update uasToUpdate[0];
 
-        CSCancellationService.processAccountsRemovedFromAllProjects(CSCancellationService.getAccountsRemovedFromAllProjects());
+        List<Opportunity> opportunities = [SELECT Id, Date_Removed_from_Project__c, (SELECT Id, Next_Schedule_Z_Status__c FROM Utility_Account_Subscriptions__r) FROM Opportunity WHERE Id = :uasToUpdate[0].Opportunity__c];
+        System.assertNotEquals(null, opportunities[0].Date_Removed_from_Project__c);
+
+        CSCancellationService.processAccountsRemovedFromAllProjects(CSCancellationService.getAccountsRemovedFromAllProjectsWithUpdatedDate());
 
         // We shouldn't have marked Prop Account 1 as Removed from Project, since it has one of two UASes marked as Removed
         List<Account> propAccts = [
@@ -901,8 +908,7 @@ public with sharing class CSCancellationServiceTest {
             ORDER BY Name
         ];
 
-        // Prop Account 1 should be updated since all Date_Removed_from_Project__c on its associated UASs were populated.
-        // Prop Account 2 and 3 should be unaffected.
+        // None of the accounts should be marked as removed (Account 1 will get removed when we remove both of it's UASes)
         System.assertEquals('Prop Account 1', propAccts[0].Name);
         System.assertEquals('Prop Account 2', propAccts[1].Name);
         System.assertEquals('Prop Account 3', propAccts[2].Name);
@@ -911,10 +917,12 @@ public with sharing class CSCancellationServiceTest {
         System.assertEquals(null, propAccts[2].Date_Removed_from_Project__c);
 
         // We'll mark the other UAS as removed
-        uasToUpdate[1].Date_Removed_from_Project__c = dateRemoved - 20;
+        uasToUpdate[1].Date_Removed_from_Project__c = twentyDaysAgo - 20;
+        uasToUpdate[1].Next_Schedule_Z_Status__c = 'Inactive Subscription';
+        uasToUpdate[1].Most_Recent_Enacted_ALSS__c = uasToUpdate[1].Schedule_Z_Subscriptions__r[0].Id;
         update uasToUpdate[1];
 
-        CSCancellationService.processAccountsRemovedFromAllProjects(CSCancellationService.getAccountsRemovedFromAllProjects());
+        CSCancellationService.processAccountsRemovedFromAllProjects(CSCancellationService.getAccountsRemovedFromAllProjectsWithUpdatedDate());
 
         propAccts = [
             SELECT Id, Name, Date_Removed_from_Project__c,
@@ -928,7 +936,7 @@ public with sharing class CSCancellationServiceTest {
         System.assertEquals('Prop Account 1', propAccts[0].Name);
         System.assertEquals('Prop Account 2', propAccts[1].Name);
         System.assertEquals('Prop Account 3', propAccts[2].Name);
-        System.assertEquals(dateRemoved, propAccts[0].Date_Removed_from_Project__c);
+        System.assertEquals(twentyDaysAgo, propAccts[0].Date_Removed_from_Project__c);
         System.assertEquals(null, propAccts[1].Date_Removed_from_Project__c);
         System.assertEquals(null, propAccts[2].Date_Removed_from_Project__c);
     }
@@ -956,7 +964,7 @@ public with sharing class CSCancellationServiceTest {
         update uasToUpdate;
 
         Test.startTest();
-        CSCancellationService.processAccountsRemovedFromAllProjects(CSCancellationService.getAccountsRemovedFromAllProjects());
+        CSCancellationService.processAccountsRemovedFromAllProjects(CSCancellationService.getAccountsRemovedFromAllProjectsWithUpdatedDate());
         Test.stopTest();
 
         List<Account> propAccts = [
@@ -979,22 +987,24 @@ public with sharing class CSCancellationServiceTest {
 
     @IsTest static void testAllAccountsDateRemovedAreUpdated() {
         List<Utility_Account_Subscription__c> uasToUpdate = [
-            SELECT Id, Date_Removed_from_Project__c
+            SELECT Id, Date_Removed_from_Project__c, (SELECT Id FROM Schedule_Z_Subscriptions__r)
             FROM Utility_Account_Subscription__c
         ];
 
         Date dateRemoved = Date.today() - 20;
         Datetime dateRemovedDT = Datetime.newInstance(dateRemoved.year(), dateRemoved.month(), dateRemoved.day());
-        String dateRemovedString = dateRemovedDT.format('MM/dd/YYYY');
+        String dateRemovedString = dateRemovedDT.format('MM/dd/yyyy');
 
         for (Utility_Account_Subscription__c uas : uasToUpdate) {
             uas.Date_Removed_from_Project__c = dateRemoved;
+            uas.Next_Schedule_Z_Status__c = 'Inactive Subscription';
+            uas.Most_Recent_Enacted_ALSS__c = uas.Schedule_Z_Subscriptions__r[0].Id;
         }
 
         update uasToUpdate;
 
         Test.startTest();
-        CSCancellationService.processAccountsRemovedFromAllProjects(CSCancellationService.getAccountsRemovedFromAllProjects());
+        CSCancellationService.processAccountsRemovedFromAllProjects(CSCancellationService.getAccountsRemovedFromAllProjectsWithUpdatedDate());
         Test.stopTest();
 
         List<Account> propAccts = [
@@ -1407,7 +1417,7 @@ public with sharing class CSCancellationServiceTest {
         // the action above should set next schedule z status to Inactive
 
         Utility_Account_Log__c ual = [
-            SELECT Id
+            SELECT Id, (SELECT Id FROM Utility_Account_Subscriptions__r)
             FROM Utility_Account_Log__c
             WHERE Account__r.Id = :acct.Id
         ];
@@ -1415,6 +1425,9 @@ public with sharing class CSCancellationServiceTest {
         ual.Date_Utility_Account_Cancelled__c = today;
 
         update ual;
+
+        ual.Utility_Account_Subscriptions__r[0].Transferring_Subsc_to_Another_UAS__c = false;
+        update ual.Utility_Account_Subscriptions__r[0];
 
         CSCancellationScheduler cscs = new CSCancellationScheduler();
         cscs.execute(null);

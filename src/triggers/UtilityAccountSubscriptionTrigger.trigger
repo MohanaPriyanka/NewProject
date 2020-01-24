@@ -7,11 +7,15 @@ trigger UtilityAccountSubscriptionTrigger on Utility_Account_Subscription__c (af
         return;
     }
 
-    if (Trigger.isInsert && Trigger.isAfter) {
-        ClientReportingService.insertClientUAS(Trigger.new);
-    }
-
-    if (Trigger.isDelete && Trigger.isBefore) {
-        ClientReportingService.deleteClientUAS(Trigger.old);
+    switch on Trigger.operationType {
+        when AFTER_INSERT {
+            ClientReportingService.insertClientUAS(Trigger.new);
+        }
+        when BEFORE_DELETE {
+            ClientReportingService.deleteClientUAS(Trigger.old);
+        }
+        when AFTER_UPDATE {
+            CSCancellationService.handleOpportunitiesRemovedFromProject(Trigger.oldMap, Trigger.newMap);
+        }
     }
 }
