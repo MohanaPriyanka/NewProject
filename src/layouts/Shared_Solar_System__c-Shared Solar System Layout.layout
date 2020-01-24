@@ -566,6 +566,12 @@
         <relatedList>Case.Shared_Solar_System__c</relatedList>
     </relatedLists>
     <relatedLists>
+        <fields>NAME</fields>
+        <fields>Bill_Status__c</fields>
+        <fields>Bill_Date__c</fields>
+        <relatedList>Bill_Period__c.Shared_Solar_System__c</relatedList>
+    </relatedLists>
+    <relatedLists>
         <excludeButtons>MassChangeOwner</excludeButtons>
         <fields>NAME</fields>
         <fields>Start_Date__c</fields>
