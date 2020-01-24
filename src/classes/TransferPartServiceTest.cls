@@ -165,6 +165,7 @@ private class TransferPartServiceTest {
             Shared_Solar_System__c = sss2.Id,
             Attempted_Transfer__c = 8500,
             Attempted_kWh_Transfer__c = 17000,
+            Default_Credit_Value__c = 0.1848,
             Transfer_kWh__c = 17000,
             Date_of_Transfer__c = Date.newInstance(2019, 6, 4)
         );
@@ -175,6 +176,7 @@ private class TransferPartServiceTest {
             Shared_Solar_System__c = sss2.Id,
             Attempted_Transfer__c = 7000,
             Attempted_kWh_Transfer__c = 14500,
+            Default_Credit_Value__c = 0.1848,
             Transfer_kWh__c = 14500,
             Date_of_Transfer__c = Date.newInstance(2019, 7, 4)
         );
