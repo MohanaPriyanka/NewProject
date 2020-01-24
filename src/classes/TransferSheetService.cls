@@ -13,16 +13,6 @@ public without sharing class TransferSheetService {
     }
 
     @AuraEnabled
-    public static void setCategoryOnContentVersion(Id contentDocumentId, String category){
-        List<ContentDocument> contentDocuments = docSelector.selectById(new Set<Id>{contentDocumentId});
-        ContentVersion versionToUpdate = new ContentVersion(
-            Id = contentDocuments[0].LatestPublishedVersionId,
-            File_Category__c = category
-        );
-        update versionToUpdate;
-    }
-
-    @AuraEnabled
     public static List<UASBWithStatus> getUASBListFromTransferSheet(Transfer__c transfer) {
         try {
             Map<Integer, List<String>> csvData = getDataFromMostRecentDocumentUpload(transfer);

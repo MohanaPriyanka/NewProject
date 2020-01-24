@@ -16,9 +16,6 @@ export default class bwFileUpload extends LightningElement {
             contentDocumentId: uploadedFiles[0].documentId,
             category: this.categoryType
         })
-        .then(() => {
-            alert("Uploaded!");
-        })
         .catch((error) => {
             alert('Could not update Category on File: error' + error.errorCode + ', ' + error.body.message);
         });
