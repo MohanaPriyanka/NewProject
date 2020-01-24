@@ -20,6 +20,7 @@ public without sharing class AdjustmentSelector {
                 'FROM Bill_Adjustment__c ' +
                 'WHERE Zuora_Id__c = null ' +
                 'AND Approval_Status__c = \'Approved\' ' +
+                'AND Externally_Serviced__c = false ' +
                 // Ignore Returns, because we'll always create a debit memo for returned payments in Zuora
                 'AND Adjustment_Type__c != \'Returned Payment\' ' +
                 'AND Adjustment_Type__c != \'Returned Check Payment\' ' +
