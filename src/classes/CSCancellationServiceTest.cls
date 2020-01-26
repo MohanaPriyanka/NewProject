@@ -894,8 +894,19 @@ public with sharing class CSCancellationServiceTest {
         uasToUpdate[0].Most_Recent_Enacted_ALSS__c = uasToUpdate[0].Schedule_Z_Subscriptions__r[0].Id;
         update uasToUpdate[0];
 
-        List<Opportunity> opportunities = [SELECT Id, Date_Removed_from_Project__c, (SELECT Id, Next_Schedule_Z_Status__c FROM Utility_Account_Subscriptions__r) FROM Opportunity WHERE Id = :uasToUpdate[0].Opportunity__c];
+        List<Opportunity> opportunities = [
+            SELECT Id, StageName, Date_Removed_from_Project__c,
+            (SELECT Id, Next_Schedule_Z_Status__c FROM Utility_Account_Subscriptions__r)
+            FROM Opportunity
+            WHERE Id = :uasToUpdate[0].Opportunity__c
+        ];
         System.assertNotEquals(null, opportunities[0].Date_Removed_from_Project__c);
+        System.assertEquals('Complete', opportunities[0].StageName);
+        // This would be performed when the CSCancellationScheduler runs if the Opp was done billing. We're not setting
+        // up system bills here (that's tested in testOppCancellationOnBillingCompletion* tests), so we'll force the
+        // opp to go to Cancelled.
+        opportunities[0].StageName = 'Cancelled';
+        update opportunities[0];
 
         CSCancellationService.processAccountsRemovedFromAllProjects(CSCancellationService.getAccountsRemovedFromAllProjectsWithUpdatedDate());
 
@@ -922,6 +933,20 @@ public with sharing class CSCancellationServiceTest {
         uasToUpdate[1].Most_Recent_Enacted_ALSS__c = uasToUpdate[1].Schedule_Z_Subscriptions__r[0].Id;
         update uasToUpdate[1];
 
+        opportunities = [
+            SELECT Id, StageName, Date_Removed_from_Project__c,
+            (SELECT Id, Next_Schedule_Z_Status__c FROM Utility_Account_Subscriptions__r)
+            FROM Opportunity
+            WHERE Id = :uasToUpdate[1].Opportunity__c
+        ];
+        System.assertNotEquals(null, opportunities[0].Date_Removed_from_Project__c);
+        System.assertEquals('Complete', opportunities[0].StageName);
+        // This would be performed when the CSCancellationScheduler runs if the Opp was done billing. We're not setting
+        // up system bills here (that's tested in testOppCancellationOnBillingCompletion* tests), so we'll force the
+        // opp to go to Cancelled.
+        opportunities[0].StageName = 'Cancelled';
+        update opportunities[0];
+
         CSCancellationService.processAccountsRemovedFromAllProjects(CSCancellationService.getAccountsRemovedFromAllProjectsWithUpdatedDate());
 
         propAccts = [
@@ -939,6 +964,8 @@ public with sharing class CSCancellationServiceTest {
         System.assertEquals(twentyDaysAgo, propAccts[0].Date_Removed_from_Project__c);
         System.assertEquals(null, propAccts[1].Date_Removed_from_Project__c);
         System.assertEquals(null, propAccts[2].Date_Removed_from_Project__c);
+        Util.printSOQLLimit('a');
+        Util.printCPULimit('b');
     }
 
     @IsTest static void testAccountMissingScheduleZsNotUpdated() {
@@ -987,7 +1014,7 @@ public with sharing class CSCancellationServiceTest {
 
     @IsTest static void testAllAccountsDateRemovedAreUpdated() {
         List<Utility_Account_Subscription__c> uasToUpdate = [
-            SELECT Id, Date_Removed_from_Project__c, (SELECT Id FROM Schedule_Z_Subscriptions__r)
+            SELECT Id, Opportunity__c, Date_Removed_from_Project__c, (SELECT Id FROM Schedule_Z_Subscriptions__r)
             FROM Utility_Account_Subscription__c
         ];
 
@@ -995,13 +1022,23 @@ public with sharing class CSCancellationServiceTest {
         Datetime dateRemovedDT = Datetime.newInstance(dateRemoved.year(), dateRemoved.month(), dateRemoved.day());
         String dateRemovedString = dateRemovedDT.format('MM/dd/yyyy');
 
+        // We'll also mark opportunities as cancelled, which the CSCancellationScheduler would do if the opportunities
+        // were done billing. We haven't set up system bills here, and that's tested in testOppCancellationOnBillingCompletion*
+        // tests, so we'll force the opp to be Cancelled.
+        List<Opportunity> opportunitiesToMarkCancelled = new List<Opportunity>();
         for (Utility_Account_Subscription__c uas : uasToUpdate) {
             uas.Date_Removed_from_Project__c = dateRemoved;
             uas.Next_Schedule_Z_Status__c = 'Inactive Subscription';
             uas.Most_Recent_Enacted_ALSS__c = uas.Schedule_Z_Subscriptions__r[0].Id;
+            opportunitiesToMarkCancelled.add(
+                new Opportunity(
+                    Id = uas.Opportunity__c,
+                    StageName = 'Cancelled'
+                )
+            );
         }
-
         update uasToUpdate;
+        update opportunitiesToMarkCancelled;
 
         Test.startTest();
         CSCancellationService.processAccountsRemovedFromAllProjects(CSCancellationService.getAccountsRemovedFromAllProjectsWithUpdatedDate());
