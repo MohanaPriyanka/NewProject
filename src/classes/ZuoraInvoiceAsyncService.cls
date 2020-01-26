@@ -79,13 +79,15 @@ public with sharing class ZuoraInvoiceAsyncService implements Queueable, Databas
     }
 
     @Future
-    public static void findFirstInvoiceAndSetInsertsFuture(Set<Id> invoiceIds) {
+    public static void handleFirstInvoices(Set<Id> invoiceIds) {
         try {
-            invoiceService.setFirstBillInsert(getDecoratedFirstInvoices(invoiceIds));
+            List<DecoratedInvoice> firstInvoices = getDecoratedFirstInvoices(invoiceIds);
+            invoiceService.setFirstBillInsert(firstInvoices);
+            invoiceService.setFirstBillDateOnAccount(firstInvoices);
         } catch (Exception e) {
             Logger.logLater(
                 'ZuoraInvoiceAsyncService',
-                'findFirstInvoiceAndSetInsertsFuture',
+                'handleFirstInvoices',
                 'Exception caught: ' + e.getMessage() + '\n' + e.getStackTraceString(),
                 Logger.ERROR
             );

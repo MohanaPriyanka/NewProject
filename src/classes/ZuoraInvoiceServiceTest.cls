@@ -481,7 +481,7 @@ public with sharing class ZuoraInvoiceServiceTest {
     private static void testFindFirstInvoiceAndSetInsertsFuture() {
         useMocks();
 
-        ZuoraInvoiceAsyncService.findFirstInvoiceAndSetInsertsFuture(new Set<Id>());
+        ZuoraInvoiceAsyncService.handleFirstInvoices(new Set<Id>());
         List<Error_Log__c> errorLogs = [
             SELECT Message__c
             FROM Error_Log__c

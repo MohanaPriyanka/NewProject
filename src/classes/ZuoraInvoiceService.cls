@@ -230,6 +230,19 @@ public with sharing class ZuoraInvoiceService {
         return newCase;
     }
 
+    @SuppressWarnings('PMD.ApexCRUDViolation')
+    public void setFirstBillDateOnAccount(List<ZuoraInvoiceAsyncService.DecoratedInvoice> decoratedFirstInvoices) {
+        List<Account> accountsWithFirstBillDate = new List<Account>();
+        for (ZuoraInvoiceAsyncService.DecoratedInvoice decoratedInvoice : decoratedFirstInvoices) {
+            Account account = new Account(
+                Id = decoratedInvoice.invoice.Zuora__Account__c,
+                First_CS_Bill_Date__c = decoratedInvoice.invoice.Zuora__InvoiceDate__c
+            );
+            accountsWithFirstBillDate.add(account);
+        }
+        update accountsWithFirstBillDate;
+    }
+
     // Can be used to set the insert on an invoice that isn't the first bill
     @SuppressWarnings('PMD.ApexCRUDViolation')
     public void setFirstBillInsert(List<ZuoraInvoiceAsyncService.DecoratedInvoice> decoratedInvoices) {
