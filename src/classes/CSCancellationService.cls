@@ -352,19 +352,26 @@ public without sharing class CSCancellationService {
 
     public static List<Account> getAccountsRemovedFromAllProjectsWithUpdatedDate() {
         List<Account> csAccounts = AccountsSelector.selectCSNotRemoved();
+        return getAccountsWithDateRemovedSet(csAccounts);
+    }
+
+    @TestVisible
+    private static List<Account> getAccountsWithDateRemovedSet(List<Account> csAccounts) {
         List<Account> accountsToCancel = new List<Account>();
         for (Account account : csAccounts) {
             Boolean isRemoved = true;
             Date latestDateRemoved = null;
             for (Opportunity opp : account.Opportunities) {
-                if (isActive(opp) && opp.Date_Removed_from_Project__c == null) {
+                if (isActive(opp)) {
                     isRemoved = false;
                     break;
                 } else {
                     latestDateRemoved = DateUtil.max(latestDateRemoved, opp.Date_Removed_from_Project__c);
                 }
             }
-            if (isRemoved) {
+            // latestDateRemoved can be null if there aren't any active opps (e.g. DUPLICATE) and none of them have
+            // been removed. In this case, we don't want to cancel the account - it was never on a project.
+            if (isRemoved && latestDateRemoved != null) {
                 account.Date_Removed_from_Project__c = latestDateRemoved;
                 accountsToCancel.add(account);
             }
