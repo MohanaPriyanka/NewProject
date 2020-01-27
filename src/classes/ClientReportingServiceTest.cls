@@ -32,7 +32,7 @@ public with sharing class ClientReportingServiceTest {
         Util.enableTrigger('Disable_EnergyUsageUpdateTrigger__c');
         Utility_Account_Subscription__c uas = [
             SELECT Id, Opportunity__r.Shared_Solar_System__c,
-                Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c
+                Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c, Externally_Serviced__c
             FROM Utility_Account_Subscription__c
             WHERE Name = '0000239'
         ];
