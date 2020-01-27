@@ -8,15 +8,9 @@ public with sharing class ContentService {
 
     @AuraEnabled
     public static void setCategoryOnContentVersion(List<Id> documentIdList, String category){
-        system.debug(documentIdList);
         Set<Id> documentIdSet = new Set<Id>(documentIdList);
-        system.debug(documentIdSet);
-
         List<ContentVersion> versionsToUpdate = new List<ContentVersion>();
         List<ContentDocument> contentDocuments = documentSelector.selectById(documentIdSet);
-        system.debug(contentDocuments);
-
-
         for (ContentDocument document : contentDocuments){
             ContentVersion versionToUpdate = new ContentVersion(
                 Id = document.LatestPublishedVersionId,
