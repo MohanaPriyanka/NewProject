@@ -2651,6 +2651,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Bill_Adjustment__c.Externally_Serviced__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Bill_Adjustment__c.Intermediate_Outstanding__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2697,6 +2702,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Bill_Adjustment__c.Transaction_ID__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Bill_Adjustment__c.Transfer__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -30427,11 +30437,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>UASB__c.Tracking_Trigger_Value__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>UASB__c.Transfer__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
