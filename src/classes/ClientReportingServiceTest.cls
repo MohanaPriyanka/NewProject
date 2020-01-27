@@ -32,7 +32,7 @@ public with sharing class ClientReportingServiceTest {
         Util.enableTrigger('Disable_EnergyUsageUpdateTrigger__c');
         Utility_Account_Subscription__c uas = [
             SELECT Id, Opportunity__r.Shared_Solar_System__c,
-                Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c
+                Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c, Externally_Serviced__c
             FROM Utility_Account_Subscription__c
             WHERE Name = '0000239'
         ];
@@ -144,7 +144,69 @@ public with sharing class ClientReportingServiceTest {
         }
     }
 
-    @isTest
+    @IsTest
+    public static void testExternallyServicedAdjustment() {
+        Util.enableTrigger('Disable_EnergyUsageUpdateTrigger__c');
+        Transfer__c transfer = [
+            SELECT Id, Name, Shared_Solar_System__c, Allocation_Schedule__c, Attempted_Transfer__c, Bill_Period__c,
+                Bill_Period__r.Bill_Date__c, Default_Credit_Value__c, Bills_Generated__c, Total_kWh_Transferred__c,
+                Total_Transferred__c, Transfer_Amount__c, Transfer_kWh__c, Transfer_Type__c, Date_of_Transfer__c
+            FROM Transfer__c
+            WHERE Bill_Period__r.Name = 'sssA - March 2016'
+            LIMIT 1
+        ];
+
+        Utility_Account_Subscription__c uas = [
+            SELECT Id, Opportunity__r.Shared_Solar_System__c,
+                Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c
+            FROM Utility_Account_Subscription__c
+            WHERE Name = '0000239'
+        ];
+        Opportunity opp = [
+            SELECT Id, Customer_Group__c
+            FROM Opportunity
+            WHERE Id = :uas.Opportunity__c
+            LIMIT 1
+        ];
+
+        Shared_Solar_System__c sss = [
+            SELECT Id, Billing_Anchors__c
+            FROM Shared_Solar_System__c
+            WHERE Id = :uas.Opportunity__r.Shared_Solar_System__c
+            LIMIT 1
+        ];
+
+        sss.Billing_Anchors__c = 'RadianGen';
+        update sss;
+
+        opp.Customer_Group__c = 'Anchor';
+        update opp;
+
+        Bill_Adjustment__c adjustment = new Bill_Adjustment__c(
+            Name = 'UASoneAdjustment',
+            Utility_Account_Subscription__c = uas.Id,
+            Transfer__c = transfer.Id,
+            Adjustment_Type__c = 'Production',
+            Adjustment_Amount__c = 24,
+            Credits_Allocated__c = 24,
+            Approval_Status__c = 'Approved',
+            Reason_For_Adjustment__c = 'Client Owner Test'
+        );
+        insert adjustment;
+
+        Bill_Adjustment__c billAdjustment = [
+            SELECT Id, Externally_Serviced__c
+            FROM Bill_Adjustment__c
+            WHERE Id = :adjustment.Id
+        ];
+
+        System.assertEquals(true, billAdjustment.Externally_Serviced__c);
+    }
+
+
+
+
+        @isTest
     public static void testClientHealthScore(){
         Account acct = [SELECT Id FROM Account LIMIT 1];
 
