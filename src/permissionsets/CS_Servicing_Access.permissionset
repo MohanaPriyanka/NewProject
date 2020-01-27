@@ -30441,11 +30441,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>UASB__c.Transfer__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>UASB__c.UASB_Overpayments__c</field>
         <readable>false</readable>
     </fieldPermissions>
