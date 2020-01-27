@@ -269,14 +269,6 @@ Production: BlueWave Inside Sales</inlineHelpText>
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Disable_UserTrigger__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Disable UserTrigger</label>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Disable_UtilityAccountLogTrigger__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>

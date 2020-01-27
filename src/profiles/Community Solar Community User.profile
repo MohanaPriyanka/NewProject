@@ -3216,10 +3216,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ManagedPackageLicenseHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>MapPCRtoLeadHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
