@@ -99,12 +99,6 @@ public without sharing class CreateOrderandPaymentRequest {
         }
     }
 
-    @TestVisible private enum ChargentTestResult {
-        CHARGENT_TEST_RESULT_APPROVED,
-        CHARGENT_TEST_RESULT_TIMEOUT
-    }
-    @TestVisible private static ChargentTestResult testResult = ChargentTestResult.CHARGENT_TEST_RESULT_APPROVED;
-
     public static Id testAPICall(ChargentOrders__ChargentOrder__c orderTest, Boolean isCredit) {
         ChargentOrders__Transaction__c transA = new ChargentOrders__Transaction__c(
             ChargentOrders__Order__c = orderTest.Id,
@@ -114,13 +108,6 @@ public without sharing class CreateOrderandPaymentRequest {
             ChargentOrders__Type__c = 'Charge',
             Activity_Type__c = 'Payment'
         );
-        if (testResult == ChargentTestResult.CHARGENT_TEST_RESULT_TIMEOUT) {
-            transA.ChargentOrders__Response_Status__c = 'Error';
-            transA.ChargentOrders__Response_Message__c =
-                'System.JSONException! Unexpected character (\'S\' (code 83)): expected a valid value (number, String, ' +
-                    'array, object, \'true\', \'fal';
-            transA.ChargentOrders__Gateway_Response__c = 'System.CalloutException! Read timed out';
-        }
         if (isCredit) {
             transA.ChargentOrders__Amount__c = -1 * orderTest.ChargentOrders__Credit_Amount__c;
         }
