@@ -135,6 +135,13 @@
         <fields>Amount__c</fields>
         <relatedList>Transfer_Part__c.Transfer__c</relatedList>
     </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>Credits_Allocated__c</fields>
+        <fields>Approval_Status__c</fields>
+        <fields>CREATED_DATE</fields>
+        <relatedList>Bill_Adjustment__c.Transfer__c</relatedList>
+    </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
     <showInteractionLogPanel>false</showInteractionLogPanel>
