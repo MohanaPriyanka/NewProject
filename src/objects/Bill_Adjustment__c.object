@@ -363,6 +363,17 @@
         </valueSet>
     </fields>
     <fields>
+        <fullName>Externally_Serviced__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Stamped by UAS Externally Serviced upon creation</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Stamped by UAS Externally Serviced upon creation</inlineHelpText>
+        <label>Externally Serviced</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Intermediate_Outstanding__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Used in OverpaymentApplication, even though it isn&apos;t populated</inlineHelpText>
@@ -527,6 +538,20 @@
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Transfer__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Required for Production Adjustments</inlineHelpText>
+        <label>Transfer</label>
+        <referenceTo>Transfer__c</referenceTo>
+        <relationshipLabel>Adjustments</relationshipLabel>
+        <relationshipName>Bill_Adjustments</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>UASB__c</fullName>

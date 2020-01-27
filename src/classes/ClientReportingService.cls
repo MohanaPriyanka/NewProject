@@ -21,11 +21,15 @@ public without sharing class ClientReportingService {
 
         for (Bill_Adjustment__c billAdjustment : adjustments) {
             Utility_Account_Subscription__c uasWithClient = uasWithClientMap.get(billAdjustment.Utility_Account_Subscription__c);
-            if (billAdjustment.Client__c == null &&
-                billAdjustment.Utility_Account_Subscription__c != null &&
-                uasWithClient != null) {
-                billAdjustment.Client__c =
-                    uasWithClient.Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c;
+            if (uasWithClient != null) {
+                if (billAdjustment.Client__c == null &&
+                    billAdjustment.Utility_Account_Subscription__c != null) {
+                    billAdjustment.Client__c =
+                        uasWithClient.Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c;
+                }
+                if (uasWithClient.Externally_Serviced__c == true) {
+                    billAdjustment.Externally_Serviced__c = uasWithClient.Externally_Serviced__c;
+                }
             }
         }
     }
