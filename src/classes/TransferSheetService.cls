@@ -13,9 +13,9 @@ public without sharing class TransferSheetService {
     }
 
     @AuraEnabled
-    public static List<UASBWithStatus> getUASBListFromTransferSheet(Id contentDocumentId, Transfer__c transfer) {
+    public static List<UASBWithStatus> getUASBListFromTransferSheet(Transfer__c transfer) {
         try {
-            Map<Integer, List<String>> csvData = getDataFromContentDoc(contentDocumentId);
+            Map<Integer, List<String>> csvData = getDataFromMostRecentDocumentUpload(transfer);
             Map<String,UASB__c> transferUASBs = convertTransferSheetToUASBs(csvData);
             List<UASB__c> pregeneratedSFBills = BillGenerationService.calculateUASBsFromTransfer(transfer);
             return compareSFBillsToTransferSheet(pregeneratedSFBills, transferUASBs, transfer);
@@ -24,9 +24,9 @@ public without sharing class TransferSheetService {
         }
     }
 
-    private static Map<Integer, List<String>> getDataFromContentDoc(Id contentDocumentId){
-        List<ContentDocument> contentDocuments = docSelector.selectById(new Set<Id>{contentDocumentId});
-        return Util.readCSV(contentDocuments[0].LatestPublishedVersion.VersionData.toString());
+    private static Map<Integer, List<String>> getDataFromMostRecentDocumentUpload(Transfer__c transfer){
+        ContentDocument document = docSelector.getMostRecentTransferSheet(transfer);
+        return Util.readCSV(document.LatestPublishedVersion.VersionData.toString());
     }
 
     @TestVisible
