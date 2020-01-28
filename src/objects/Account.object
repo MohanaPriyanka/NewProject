@@ -1596,16 +1596,6 @@ IF(
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>First_Bill_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>First Bill Date</label>
-        <summarizedField>Account_Bill__c.Date__c</summarizedField>
-        <summaryForeignKey>Account_Bill__c.Parent_Account__c</summaryForeignKey>
-        <summaryOperation>min</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <type>Summary</type>
-    </fields>
-    <fields>
         <fullName>First_Login_Date__c</fullName>
         <externalId>false</externalId>
         <label>First Login Date</label>
