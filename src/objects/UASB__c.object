@@ -112,45 +112,6 @@
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Allocated_Late_Fees__c</fullName>
-        <externalId>false</externalId>
-        <formula>round(UASB_Percentage__c * (System_Bill__r.Late_Fee_Payments__c),2)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Allocated Late Fee Payments</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Allocated_Late_Feess__c</fullName>
-        <externalId>false</externalId>
-        <formula>round(UASB_Percentage__c * (System_Bill__r.Late_Fees__c),2)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Allocated Late Fees</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Allocated_Payments__c</fullName>
-        <externalId>false</externalId>
-        <formula>round(UASB_Percentage__c * (System_Bill__r.Late_Payments__c + System_Bill__r.Payments_Net_Previous_Balances__c),2)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Allocated Payments</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Bill_Credit_Value__c</fullName>
         <externalId>false</externalId>
         <formula>ROUND((NMC_Rate__c - 0.02) * Subscription_Production_kWh__c,2)+ROUND(0.02 * Subscription_Production_kWh__c,2)</formula>
@@ -453,19 +414,6 @@ MONTH(Billing_Period_End_Date__c),
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Payments_Made_This_Month__c</fullName>
-        <externalId>false</externalId>
-        <formula>round(UASB_Percentage__c *  System_Bill__r.Total_Payments_This_Month__c,2)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Payments Made This Month</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Percent_of_Total_Account_Bill__c</fullName>
@@ -899,59 +847,6 @@ MONTH(Billing_Period_End_Date__c),
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>UASB_Overpayments__c</fullName>
-        <externalId>false</externalId>
-        <formula>round(UASB_Percentage__c * ( System_Bill__r.Previous_Overpayment__c ),2)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>UASB Overpayments</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>UASB_Percentage__c</fullName>
-        <externalId>false</externalId>
-        <formula>round(Discounted_Bill__c/System_Bill__r.Discounted_Bill__c,4)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Used for reporting</inlineHelpText>
-        <label>UASB Percentage</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>10</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Percent</type>
-    </fields>
-    <fields>
-        <fullName>UASB_Previous_Month_Overdue_Balance__c</fullName>
-        <externalId>false</externalId>
-        <formula>round((UASB_Percentage__c) * ( System_Bill__r.Previous_Month_Overdue_Balance__c ),2)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>UASB Previous Month Overdue Balance</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>UASB_Total_Due__c</fullName>
-        <externalId>false</externalId>
-        <formula>round(( UASB_Percentage__c ) * ( System_Bill__r.Total_Due__c ),2)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>UASB Total Due</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Unique_ID__c</fullName>
