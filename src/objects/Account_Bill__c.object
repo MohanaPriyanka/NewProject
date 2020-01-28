@@ -258,17 +258,6 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Bill_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Bill Date</label>
-        <summarizedField>System_Bill__c.Bill_Date__c</summarizedField>
-        <summaryForeignKey>System_Bill__c.Account_Bill__c</summaryForeignKey>
-        <summaryOperation>min</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
         <fullName>Bill_Message__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>For use with PrintSF cover letter</inlineHelpText>
@@ -343,28 +332,6 @@
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Billing_Period_End_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Billing Period End Date</label>
-        <summarizedField>System_Bill__c.Billing_Period_End_DateRollup__c</summarizedField>
-        <summaryForeignKey>System_Bill__c.Account_Bill__c</summaryForeignKey>
-        <summaryOperation>max</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
-        <fullName>Billing_Period_Start_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Billing Period Start Date</label>
-        <summarizedField>System_Bill__c.Billing_Period_Start_Date_Rollup__c</summarizedField>
-        <summaryForeignKey>System_Bill__c.Account_Bill__c</summaryForeignKey>
-        <summaryOperation>min</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
     </fields>
     <fields>
         <fullName>Calendar_Month__c</fullName>
@@ -532,77 +499,6 @@
         <formula>Product_Profile__r.Contact__r.Id</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Contact ID (conga)</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Credit_Adjustments__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Adjusted Savings from Production type Bill Adjustments</inlineHelpText>
-        <label>Credit Adjustments</label>
-        <summarizedField>System_Bill__c.Credit_Adjustments__c</summarizedField>
-        <summaryForeignKey>System_Bill__c.Account_Bill__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
-        <fullName>Credits_on_Bill_Period__c</fullName>
-        <externalId>false</externalId>
-        <formula>CASE(
-  MONTH(Billing_Period_Start_Date__c),
-  1, &quot;February&quot;,
-  2, &quot;March&quot;,
-  3, &quot;April&quot;,
-  4, &quot;May&quot;,
-  5, &quot;June&quot;,
-  6, &quot;July&quot;,
-  7, &quot;August&quot;,
-  8, &quot;September&quot;,
-  9, &quot;October&quot;,
-  10, &quot;November&quot;,
-  11, &quot;December&quot;,
-  12, &quot;January&quot;,&quot;&quot;
-)&amp;&quot; - &quot;&amp;
-CASE(
-  MONTH(Billing_Period_End_Date__c),
-  1, &quot;February&quot;,
-  2, &quot;March&quot;,
-  3, &quot;April&quot;,
-  4, &quot;May&quot;,
-  5, &quot;June&quot;,
-  6, &quot;July&quot;,
-  7, &quot;August&quot;,
-  8, &quot;September&quot;,
-  9, &quot;October&quot;,
-  10, &quot;November&quot;,
-  11, &quot;December&quot;,
-  12, &quot;January&quot;, &quot;&quot;
-)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Credits on Bill Period</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Customer_Billing_Period__c</fullName>
-        <externalId>false</externalId>
-        <formula>TEXT(Month(Billing_Period_End_Date__c))&amp;&quot;/&quot;
-&amp;TEXT(Day(Billing_Period_End_Date__c))&amp;&quot;/&quot;
-&amp;TEXT(Year(Billing_Period_End_Date__c))
-&amp;&quot; - &quot;
-&amp;TEXT(Month(Billing_Period_End_Date__c+30))&amp;&quot;/&quot;
-&amp;TEXT(Day(Billing_Period_End_Date__c+30))&amp;&quot;/&quot;
-&amp;TEXT(Year(Billing_Period_End_Date__c+30))</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Customer Billing Period</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -881,18 +777,6 @@ IF(Parent_Account__r.Recurring_Billing__c = TRUE, &quot;You are currently on aut
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Net_Metering_Credits_Generated__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Rollup of System Bills</inlineHelpText>
-        <label>Net Metering Credits Generated</label>
-        <summarizedField>System_Bill__c.Net_Metering_Credits_Allocated__c</summarizedField>
-        <summaryForeignKey>System_Bill__c.Account_Bill__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
     </fields>
     <fields>
         <fullName>New_Account_Balance__c</fullName>
@@ -1249,41 +1133,6 @@ New Charges...</inlineHelpText>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Savings_Adjustments__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Adjusted Savings from Production type Bill Adjustments</inlineHelpText>
-        <label>Savings Adjustments</label>
-        <summarizedField>System_Bill__c.Savings_Adjustments__c</summarizedField>
-        <summaryForeignKey>System_Bill__c.Account_Bill__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
-        <fullName>Savings_Rollup__c</fullName>
-        <externalId>false</externalId>
-        <label>Savings</label>
-        <summarizedField>System_Bill__c.Savings__c</summarizedField>
-        <summaryForeignKey>System_Bill__c.Account_Bill__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
-        <fullName>Savings__c</fullName>
-        <externalId>false</externalId>
-        <label>Savings</label>
-        <precision>12</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Second_Additional_Bill_Line_Title__c</fullName>
         <externalId>false</externalId>
         <label>Second Additional Billl Line Title</label>
@@ -1537,7 +1386,7 @@ New Charges...</inlineHelpText>
         <type>Text</type>
     </nameField>
     <pluralLabel>Account Bills</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
     <startsWith>Vowel</startsWith>
     <validationRules>

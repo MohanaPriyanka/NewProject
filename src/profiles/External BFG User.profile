@@ -2729,11 +2729,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Account_Bill__c.Bill_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Account_Bill__c.Bill_Message__c</field>
         <readable>true</readable>
@@ -2762,16 +2757,6 @@
         <editable>false</editable>
         <field>Account_Bill__c.Bill_Template__c</field>
         <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account_Bill__c.Billing_Period_End_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account_Bill__c.Billing_Period_Start_Date__c</field>
-        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -2816,16 +2801,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account_Bill__c.Contact_ID_conga__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account_Bill__c.Credits_on_Bill_Period__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account_Bill__c.Customer_Billing_Period__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2941,11 +2916,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account_Bill__c.Month__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account_Bill__c.Net_Metering_Credits_Generated__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -3082,16 +3052,6 @@
         <editable>false</editable>
         <field>Account_Bill__c.Reason_For_Unpublish__c</field>
         <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account_Bill__c.Savings_Rollup__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Account_Bill__c.Savings__c</field>
-        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
