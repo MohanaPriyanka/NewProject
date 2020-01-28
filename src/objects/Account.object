@@ -1606,6 +1606,16 @@ IF(
         <type>Summary</type>
     </fields>
     <fields>
+        <fullName>First_CS_Bill_Date__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Set when new invoices are downloaded from Zuora for attrition tracking and subscription length analysis</inlineHelpText>
+        <label>First Bill Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>First_Login_Date__c</fullName>
         <externalId>false</externalId>
         <label>First Login Date</label>
