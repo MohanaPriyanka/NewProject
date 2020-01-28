@@ -28,10 +28,6 @@
                 <field>Subscription_Type__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Shared_Solar_System__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Future_Customer_Subscription_KWDC_Rollup__c</field>
             </layoutItems>
