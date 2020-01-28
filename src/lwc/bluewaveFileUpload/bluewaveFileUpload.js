@@ -1,4 +1,4 @@
-import { LightningElement, track, api, wire} from 'lwc';
+import { LightningElement, api} from 'lwc';
 import updateFileCategory from '@salesforce/apex/ContentService.setCategoryOnContentVersion';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent'
 
