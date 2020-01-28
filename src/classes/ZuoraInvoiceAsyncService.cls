@@ -7,10 +7,12 @@
 
 public with sharing class ZuoraInvoiceAsyncService implements Queueable, Database.AllowsCallouts, Database.Batchable<Zuora__ZInvoice__c> {
     public enum OperationType {DOWNLOAD, MAIL}
-    public OperationType mode;
-    public List<Zuora__ZInvoice__c> allInvoicesToDownload;
+    private OperationType mode;
+    @TestVisible
+    private List<Zuora__ZInvoice__c> allInvoicesToDownload;
     public List<Zuora__ZInvoice__c> allInvoicesToMail;
-    public List<Zuora__ZInvoice__c> invoicesAlreadySent;
+    @TestVisible
+    private List<Zuora__ZInvoice__c> invoicesAlreadySent;
     @TestVisible
     private static ZuoraInvoiceSelector invoiceSelector = new ZuoraInvoiceSelector();
     @TestVisible
