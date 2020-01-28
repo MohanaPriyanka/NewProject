@@ -12,6 +12,9 @@ public without sharing class Util {
     // Granular Locking is already turned on, so instead, we'll re-try 10 times if we get this error
     @TestVisible
     private static Integer MAX_TRIES = 10;
+    @TestVisible
+    private static Boolean mockDML = false;
+
     public static void insertSObj(SObject sobj) {
         insertSObjs(new List<SObject>{sobj}, 0, null, null);
     }
@@ -36,18 +39,20 @@ public without sharing class Util {
     }
 
     public static void updateSObjs(List<SObject> sobjs) {
-        updateSObjs(sobjs, 0, null, null);
+        updateSObjs(sobjs, 0);
     }
-    @SuppressWarnings('PMD.ExcessiveParameterList')
-    private static void updateSObjs(List<SObject> sobjs, Integer count, String message, String stack) {
-        if (count >= MAX_TRIES) {
-            throw new BWException(message + '\n' + stack);
+
+    private static void updateSObjs(List<SObject> sobjs, Integer count) {
+        if (mockDML) {
+            return;
         }
+
         try {
             update sobjs;
         } catch (System.DmlException de) {
-            if (de.getMessage().contains('UNABLE_TO_LOCK_ROW') || de.getStackTraceString().contains('UNABLE_TO_LOCK_ROW')) {
-                updateSObjs(sobjs, count++, de.getMessage(), de.getStackTraceString());
+            if (count < MAX_TRIES &&
+                (de.getMessage().contains('UNABLE_TO_LOCK_ROW') || de.getStackTraceString().contains('UNABLE_TO_LOCK_ROW'))) {
+                updateSObjs(sobjs, count++);
             } else {
                 throw new BWException(de.getMessage());
             }
