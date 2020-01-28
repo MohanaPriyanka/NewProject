@@ -76,6 +76,19 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Utility Account Subscription Bills (Account)</relationshipLabel>
+        <relationshipName>Utility_Account_Subscription_Bills1</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Adjusted_Credits__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Sum of Adjusted Credits Allocated to this UASB from Production Bill Adjustments, used to summarize total savings and total credits on the property account.</inlineHelpText>
