@@ -747,32 +747,6 @@ MONTH(Billing_Period_End_Date__c),
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Total_Allocated_Payments__c</fullName>
-        <externalId>false</externalId>
-        <formula>Allocated_Payments__c + Allocated_Late_Fees__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Total Allocated Payments</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Total_Due_This_Month__c</fullName>
-        <externalId>false</externalId>
-        <formula>Allocated_Late_Feess__c + Discounted_Bill__c + Adjustment_Amount__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Total Due This Month</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Total_System_NMCs__c</fullName>
         <externalId>false</externalId>
         <label>Total System NMCs</label>
