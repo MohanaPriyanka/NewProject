@@ -137,6 +137,13 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>Net_Metering_Credits_Allocated__c</fields>
+        <fields>Share_of_System__c</fields>
+        <fields>Utility_Account_Subscription__c</fields>
+        <relatedList>UASB__c.Transfer__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
         <fields>Credits_Allocated__c</fields>
         <fields>Approval_Status__c</fields>
         <fields>CREATED_DATE</fields>
