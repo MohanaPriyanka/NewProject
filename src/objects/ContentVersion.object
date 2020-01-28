@@ -61,6 +61,11 @@
                     <label>Customer Utility Bill</label>
                 </value>
                 <value>
+                    <fullName>Transfer Sheet</fullName>
+                    <default>false</default>
+                    <label>Transfer Sheet</label>
+                </value>
+                <value>
                     <fullName>Customer Bill</fullName>
                     <default>false</default>
                     <isActive>false</isActive>
