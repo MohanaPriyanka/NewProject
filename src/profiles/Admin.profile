@@ -32286,18 +32286,8 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Bill__c.Customer_Subscription_KW_DC__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Account_Bill__c.Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Bill__c.Discounted_Bill__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -32308,11 +32298,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Bill__c.Month__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Bill__c.Net_Metering_Credits_Allocated__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -32371,11 +32356,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Bill__c.Savings__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>Utility_Account_Bill__c.Shared_Solar_System__c</field>
         <readable>true</readable>
@@ -32383,11 +32363,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Bill__c.Size_off_NMCs__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Utility_Account_Bill__c.Subscription_Production__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

@@ -130,32 +130,12 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Customer_Subscription_KW_DC__c</fullName>
-        <externalId>false</externalId>
-        <label>Customer Subscription (KW DC)</label>
-        <summarizedField>UASB__c.Customer_Subscription_KW_DC__c</summarizedField>
-        <summaryForeignKey>UASB__c.CS_Billing_Log__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
         <fullName>Date__c</fullName>
         <externalId>false</externalId>
         <label>Date</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Discounted_Bill__c</fullName>
-        <externalId>false</externalId>
-        <label>Discounted Bill</label>
-        <summarizedField>UASB__c.Discounted_Bill__c</summarizedField>
-        <summaryForeignKey>UASB__c.CS_Billing_Log__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
     </fields>
     <fields>
         <fullName>Due_Date__c</fullName>
@@ -177,16 +157,6 @@
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Net_Metering_Credits_Allocated__c</fullName>
-        <externalId>false</externalId>
-        <label>Net Metering Credits Allocated</label>
-        <summarizedField>UASB__c.Net_Metering_Credits_Allocated__c</summarizedField>
-        <summaryForeignKey>UASB__c.CS_Billing_Log__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
     </fields>
     <fields>
         <fullName>Net_Metering_Rate_Applied_2_of_4__c</fullName>
@@ -321,16 +291,6 @@
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Savings__c</fullName>
-        <externalId>false</externalId>
-        <label>Savings</label>
-        <summarizedField>UASB__c.Savings__c</summarizedField>
-        <summaryForeignKey>UASB__c.CS_Billing_Log__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
         <fullName>Shared_Solar_System__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -349,16 +309,6 @@
         <label>Size off NMCs</label>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Subscription_Production__c</fullName>
-        <externalId>false</externalId>
-        <label>Subscription Production</label>
-        <summarizedField>UASB__c.Subscription_Production_kWh__c</summarizedField>
-        <summaryForeignKey>UASB__c.CS_Billing_Log__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
     </fields>
     <fields>
         <fullName>Total_System_NMCs_2_of_4__c</fullName>
