@@ -838,6 +838,81 @@
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
+                    <fullName>01. Payment Schedule</fullName>
+                    <default>false</default>
+                    <label>01. Payment Schedule</label>
+                </value>
+                <value>
+                    <fullName>02. Interconnection Application</fullName>
+                    <default>false</default>
+                    <label>02. Interconnection Application</label>
+                </value>
+                <value>
+                    <fullName>03. Utility Application Review (Screening/Feasibility/Preliminary)</fullName>
+                    <default>false</default>
+                    <label>03. Utility Application Review (Screening/Feasibility/Preliminary)</label>
+                </value>
+                <value>
+                    <fullName>04. Legal Form</fullName>
+                    <default>false</default>
+                    <label>04. Legal Form</label>
+                </value>
+                <value>
+                    <fullName>05. Technical Study (ASO, SIS, ESS, Restudy)</fullName>
+                    <default>false</default>
+                    <label>05. Technical Study (ASO, SIS, ESS, Restudy)</label>
+                </value>
+                <value>
+                    <fullName>06. 20BD Study Review</fullName>
+                    <default>false</default>
+                    <label>06. 20BD Study Review</label>
+                </value>
+                <value>
+                    <fullName>07. ISA &amp; Amendments</fullName>
+                    <default>false</default>
+                    <label>07. ISA &amp; Amendments</label>
+                </value>
+                <value>
+                    <fullName>08. Federal &amp; State Incentives</fullName>
+                    <default>false</default>
+                    <label>08. Federal &amp; State Incentives</label>
+                </value>
+                <value>
+                    <fullName>09. Utility Design and Easements</fullName>
+                    <default>false</default>
+                    <label>09. Utility Design and Easements</label>
+                </value>
+                <value>
+                    <fullName>10. Wireless Tests</fullName>
+                    <default>false</default>
+                    <label>10. Wireless Tests</label>
+                </value>
+                <value>
+                    <fullName>11. Utility Construction</fullName>
+                    <default>false</default>
+                    <label>11. Utility Construction</label>
+                </value>
+                <value>
+                    <fullName>12. Telecommunication</fullName>
+                    <default>false</default>
+                    <label>12. Telecommunication</label>
+                </value>
+                <value>
+                    <fullName>13. Witness Tests</fullName>
+                    <default>false</default>
+                    <label>13. Witness Tests</label>
+                </value>
+                <value>
+                    <fullName>14. Consent to Assignments</fullName>
+                    <default>false</default>
+                    <label>14. Consent to Assignments</label>
+                </value>
+                <value>
+                    <fullName>15. Transfer of Ownership</fullName>
+                    <default>false</default>
+                    <label>15. Transfer of Ownership</label>
+                </value>
+                <value>
                     <fullName>25% ISA Payment</fullName>
                     <default>false</default>
                     <label>25% ISA Payment</label>
@@ -1439,71 +1514,63 @@
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>25% ISA Payment</valueName>
+                <valueName>01. Payment Schedule</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>75% ISA Payment</valueName>
+                <valueName>02. Interconnection Application</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>ESS Application</valueName>
+                <valueName>03. Utility Application Review (Screening/Feasibility/Preliminary)</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>FERC</valueName>
+                <valueName>04. Legal Form</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>ISA</valueName>
+                <valueName>05. Technical Study (ASO, SIS, ESS, Restudy)</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>ISO NE</valueName>
+                <valueName>06. 20BD Study Review</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>IX Applications</valueName>
+                <valueName>07. ISA &amp; Amendments</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>MassACA</valueName>
+                <valueName>08. Federal &amp; State Incentives</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>PV + ESS Applications</valueName>
+                <valueName>09. Utility Design and Easements</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>SMART</valueName>
+                <valueName>10. Wireless Tests</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>Study Payments</valueName>
+                <valueName>11. Utility Construction</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>Telecom Construction</valueName>
+                <valueName>12. Telecommunication</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>Telecom Payments</valueName>
+                <valueName>13. Witness Tests</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>Utility Construction</valueName>
+                <valueName>14. Consent to Assignments</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>Utility Design</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>Utility Studies</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>Wireless Test</valueName>
+                <valueName>15. Transfer of Ownership</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Construction</controllingFieldValue>
