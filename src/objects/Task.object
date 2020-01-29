@@ -1621,7 +1621,118 @@
         <description>Project Management tasks (Site Acq, Project Dev, Interconnect, Construction, Asset Mgmt, etc)</description>
         <label>Project Management</label>
         <picklistValues>
+            <picklist>Category__c</picklist>
+            <values>
+                <fullName>Project Finance - 1603 Compliance %2F Loan Support</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project Finance - Corporate Finance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project Finance - Debt Capital Markets %2F Structured Transactions</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project Finance - Equity Capital Markets %2F Strategic Partnerships</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project Finance - Platform Finance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project Management - Asset Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project Management - Construction</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project Management - Executive%2FCorporate</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project Management - Interconnection</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project Management - Project Development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project Management - Site Acquisition</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project Management - Site Acquisition - Engagement</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Task_Performed__c</picklist>
+            <values>
+                <fullName>01%2E Payment Schedule</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>02%2E Interconnection Application</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>03%2E Utility Application Review %28Screening%2FFeasibility%2FPreliminary%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>04%2E Legal Form</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>05%2E Technical Study %28ASO%2C SIS%2C ESS%2C Restudy%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>06%2E 20BD Study Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>07%2E ISA %26 Amendments</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>08%2E Federal %26 State Incentives</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>09%2E Utility Design and Easements</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>10%2E Wireless Tests</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>11%2E Utility Construction</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>12%2E Telecommunication</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>13%2E Witness Tests</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>14%2E Consent to Assignments</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>15%2E Transfer of Ownership</fullName>
+                <default>false</default>
+            </values>
             <values>
                 <fullName>25%25 ISA Payment</fullName>
                 <default>false</default>
