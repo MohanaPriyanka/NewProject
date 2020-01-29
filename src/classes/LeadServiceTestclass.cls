@@ -269,6 +269,7 @@ public class LeadServiceTestclass {
 
     @IsTest
     static void testCompleteLeadConversion() {
+       useMocks(true);
         Lead switchLead = [
             SELECT Id, Status, Company, Product_line__c, Utility_relationship__r.Id, LASERCA__Home_Address__c,
                 LASERCA__Home_City__c, LASERCA__Home_State__c, LASERCA__Home_Zip__c
@@ -341,7 +342,12 @@ public class LeadServiceTestclass {
             SELECT Id, Utility_Account_Log__c
             FROM Utility_Account_Subscription__c
             WHERE Opportunity__c IN :oppList
-            LIMIT 1
+        ];
+
+        List<Subscription_Order__c> subscriptionOrders = [
+            SELECT Id, Utility_Account_Subscription__c
+            FROM Subscription_Order__c
+            WHERE Utility_Account_Subscription__c IN :uasList
         ];
 
 
@@ -365,6 +371,11 @@ public class LeadServiceTestclass {
         System.assertNotEquals(null, uasList);
         System.assertEquals(1, uasList.size());
         System.assertEquals(ual.Id, uasList[0].Utility_Account_Log__c);
+
+        //test susbscription order creation
+        System.assertNotEquals(null, subscriptionOrders);
+        System.assertEquals(1, subscriptionOrders.size());
+        System.assertEquals(uasList[0].Id, subscriptionOrders[0].Utility_Account_Subscription__c);
 
     }
 
@@ -453,4 +464,10 @@ public class LeadServiceTestclass {
         );
         insert crLog;
     }
+
+    private static void useMocks(Boolean featureOn) {
+        FeatureService.featureSelector = (CustomFeatureSelector) Test.createStub(CustomFeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(featureOn));
+    }
+
+
 }

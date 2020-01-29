@@ -33,7 +33,15 @@ public with sharing class UASSelectorTest {
         Set<Id> ualIds = (new Map<Id, Utility_Account_Log__c>([SELECT Id FROM Utility_Account_Log__c])).keySet();
         System.assert(UASSelector.selectByUAL(ualIds).size() > 0, 'Expected UALs for accounts');
     }
-
+    @IsTest public static void testSelectByIds() {
+        Set<Id> uasIds = (new Map<Id, Utility_Account_Subscription__c>([SELECT Id FROM Utility_Account_Subscription__c])).keySet();
+        System.assert(UASSelector.selectByIds(uasIds).size() > 0, 'Expected UASes');
+    }
+    @IsTest public static void testGetUASMap() {
+        Set<Id> uasIds = (new Map<Id, Utility_Account_Subscription__c>([SELECT Id FROM Utility_Account_Subscription__c])).keySet();
+        UASSelector uasSelector = new UASSelector();
+        System.assertNotEquals(null, uasSelector.getUASMap(uasIds));
+    }
     @IsTest public static void testSelectClientMap() {
         Set<Id> idList = new Set<Id>();
         List<Utility_Account_Subscription__c> uasList = [
