@@ -2948,7 +2948,7 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <fullName>Recurring_Billing__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <inlineHelpText>An indicator to tell whether the Property Account is on autopay. Only used to update the message on the bill. To take a customer off of autopay, update their Recurring Chargent Order</inlineHelpText>
+        <inlineHelpText>An indicator to tell whether the Property Account is on autopay. Only used to update the message on the bill. To take a customer off of autopay, payment component on the Billing Account</inlineHelpText>
         <label>Autopay</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
