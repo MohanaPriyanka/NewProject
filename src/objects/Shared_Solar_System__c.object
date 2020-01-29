@@ -1985,6 +1985,11 @@ Total_CS_Capacity_kW_DC_Formula__c - Capacity_Committed_kW_DC__c)</formula>
                     <label>Global Energy Development LLC</label>
                 </value>
                 <value>
+                    <fullName>Energy Partner Consultants</fullName>
+                    <default>false</default>
+                    <label>Energy Partner Consultants</label>
+                </value>
+                <value>
                     <fullName>Other Test Partner</fullName>
                     <default>false</default>
                     <isActive>false</isActive>
@@ -2786,6 +2791,10 @@ null)</formula>
                 <default>false</default>
             </values>
             <values>
+                <fullName>Energy Partner Consultants</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>EnergySage</fullName>
                 <default>false</default>
             </values>
@@ -3148,6 +3157,10 @@ null)</formula>
             </values>
             <values>
                 <fullName>Energy Consulting Associates</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Energy Partner Consultants</fullName>
                 <default>false</default>
             </values>
             <values>
