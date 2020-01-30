@@ -122,6 +122,7 @@ public without sharing class SubscriptionManagementService {
                 Previous_kw_DC_Subscription__c = uas.Future_Customer_Subscription_KWDC_Rollup__c,
                 Previous_Percent_Share_of_System__c = uas.Future_Share_of_System_Rollup__c
             );
+            
             if (ssso != null) {
                so.Shared_Solar_System_Order__c = ssso.Id;
             }
