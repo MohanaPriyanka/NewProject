@@ -1012,7 +1012,8 @@ MONTH(Billing_Period_End_Date__c),
         <fullName>UASB_Cannot_Be_Edited_After_Published</fullName>
         <active>true</active>
         <errorConditionFormula>AND(System_Bill__r.Account_Bill__r.Published__c,
-NOT(ISCHANGED(Zuora_Id__c))
+NOT(ISCHANGED(Zuora_Id__c)), 
+NOT(ISCHANGED(Transfer__c))
 )</errorConditionFormula>
         <errorMessage>UASB Cannot Be Edited after Bill is Published</errorMessage>
     </validationRules>
