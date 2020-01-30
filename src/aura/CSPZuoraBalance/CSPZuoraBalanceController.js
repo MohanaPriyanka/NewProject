@@ -14,10 +14,12 @@
                 component.set("v.myBill", zuoraAcct.account.Balance);
                 component.set("v.autopay", zuoraAcct.account.AutoPay);
 
-                if (zuoraAcct.paymentMethod.Type == 'CreditCard'){
-                    component.set("v.autopayMethod", zuoraAcct.paymentMethod.CreditCardMaskNumber);
-                } else {
-                    component.set("v.autopayMethod", zuoraAcct.paymentMethod.AchAccountNumberMask);
+                if (zuoraAcct.paymentMethod) {
+                    if (zuoraAcct.paymentMethod.Type === 'CreditCard') {
+                        component.set("v.autopayMethod", zuoraAcct.paymentMethod.CreditCardMaskNumber);
+                    } else {
+                        component.set("v.autopayMethod", zuoraAcct.paymentMethod.AchAccountNumberMask);
+                    }
                 }
             } else {
                 component.set("v.errorMessage", 'An error has occurred. BlueWave has been notified. Please check back later');
