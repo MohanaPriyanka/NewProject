@@ -366,9 +366,6 @@
         <locationY>400</locationY>
         <actionName>Opportunity.CS_Partner_Notification_Application_Approval</actionName>
         <actionType>emailAlert</actionType>
-        <connector>
-            <targetReference>myDecision6</targetReference>
-        </connector>
         <inputParameters>
             <name>SObjectRowId</name>
             <value>
@@ -726,9 +723,6 @@
         <label>myDecision4</label>
         <locationX>50</locationX>
         <locationY>0</locationY>
-        <defaultConnector>
-            <targetReference>myDecision6</targetReference>
-        </defaultConnector>
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
             <name>myRule_5</name>
@@ -829,35 +823,7 @@
             <connector>
                 <targetReference>myRule_5_pmetdec</targetReference>
             </connector>
-            <label>Customer Sig. Status = Sent</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <processMetadataValues>
-            <name>index</name>
-            <value>
-                <numberValue>3.0</numberValue>
-            </value>
-        </processMetadataValues>
-        <name>myDecision6</name>
-        <label>myDecision6</label>
-        <locationX>50</locationX>
-        <locationY>0</locationY>
-        <defaultConnectorLabel>default</defaultConnectorLabel>
-        <rules>
-            <name>myRule_7</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>formula_myRule_7</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>myRule_7_pmetdec</targetReference>
-            </connector>
-            <label>Share SSS?</label>
+            <label>Customer Sig. Status = Complete</label>
         </rules>
     </decisions>
     <decisions>
@@ -1205,133 +1171,11 @@
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
-            <connector>
-                <targetReference>myDecision6</targetReference>
-            </connector>
             <label>Previously Met - Prev</label>
         </rules>
     </decisions>
-    <decisions>
-        <name>myRule_7_pmetdec</name>
-        <label>Previously Met Decision</label>
-        <locationX>700</locationX>
-        <locationY>100</locationY>
-        <defaultConnector>
-            <targetReference>myRule_7_A1</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Not Previously Met</defaultConnectorLabel>
-        <rules>
-            <name>myRule_7_pmetnullrule</name>
-            <conditionLogic>or</conditionLogic>
-            <conditions>
-                <leftValueReference>myVariable_old</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>myRule_7_A1</targetReference>
-            </connector>
-            <label>Previously Met - Null</label>
-        </rules>
-        <rules>
-            <name>myRule_7_pmetrule</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>formula_myRule_7_pmetrule</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <label>Previously Met - Prev</label>
-        </rules>
-    </decisions>
-    <description>This is another Opportunity Edit/Create PB that should eventually be consolidated into a single Opp create/edit</description>
-    <formulas>
-        <processMetadataValues>
-            <name>originalFormula</name>
-            <value>
-                <stringValue>ISPICKVAL([Opportunity].StageName, &apos;Complete&apos;)
-||
-ISPICKVAL([Opportunity].StageName, &apos;Cancelled&apos; ) 
-|| 
-ISPICKVAL([Opportunity].StageName, &apos;Expired&apos; ) 
-||
-ISPICKVAL([Opportunity].StageName, &apos;Unqualified&apos; ) 
-|| 
-ISPICKVAL([Opportunity].StageName, &apos;Voided&apos; ) 
-|| 
-ISPICKVAL([Opportunity].StageName, &apos;DUPLICATE&apos; )
-||
-TEXT(PRIORVALUE([Opportunity].StageName)) != TEXT([Opportunity].StageName )
-||
-PRIORVALUE([Opportunity].Shared_Solar_System__c) != [Opportunity].Shared_Solar_System__c
-
-</stringValue>
-            </value>
-        </processMetadataValues>
-        <name>formula_myRule_7</name>
-        <dataType>Boolean</dataType>
-        <expression>ISPICKVAL({!myVariable_current.StageName}, &apos;Complete&apos;)
-||
-ISPICKVAL({!myVariable_current.StageName}, &apos;Cancelled&apos; ) 
-|| 
-ISPICKVAL({!myVariable_current.StageName}, &apos;Expired&apos; ) 
-||
-ISPICKVAL({!myVariable_current.StageName}, &apos;Unqualified&apos; ) 
-|| 
-ISPICKVAL({!myVariable_current.StageName}, &apos;Voided&apos; ) 
-|| 
-ISPICKVAL({!myVariable_current.StageName}, &apos;DUPLICATE&apos; )
-||
-TEXT(PRIORVALUE({!myVariable_current.StageName})) != TEXT({!myVariable_current.StageName} )
-||
-PRIORVALUE({!myVariable_current.Shared_Solar_System__c}) != {!myVariable_current.Shared_Solar_System__c}</expression>
-    </formulas>
-    <formulas>
-        <processMetadataValues>
-            <name>originalFormula</name>
-            <value>
-                <stringValue>ISPICKVAL([Opportunity].StageName, &apos;Complete&apos;)
-||
-ISPICKVAL([Opportunity].StageName, &apos;Cancelled&apos; ) 
-|| 
-ISPICKVAL([Opportunity].StageName, &apos;Expired&apos; ) 
-||
-ISPICKVAL([Opportunity].StageName, &apos;Unqualified&apos; ) 
-|| 
-ISPICKVAL([Opportunity].StageName, &apos;Voided&apos; ) 
-|| 
-ISPICKVAL([Opportunity].StageName, &apos;DUPLICATE&apos; )
-||
-TEXT(PRIORVALUE([Opportunity].StageName)) != TEXT([Opportunity].StageName )
-||
-PRIORVALUE([Opportunity].Shared_Solar_System__c) != [Opportunity].Shared_Solar_System__c
-
-</stringValue>
-            </value>
-        </processMetadataValues>
-        <name>formula_myRule_7_pmetrule</name>
-        <dataType>Boolean</dataType>
-        <expression>ISPICKVAL({!myVariable_old.StageName}, &apos;Complete&apos;)
-||
-ISPICKVAL({!myVariable_old.StageName}, &apos;Cancelled&apos; ) 
-|| 
-ISPICKVAL({!myVariable_old.StageName}, &apos;Expired&apos; ) 
-||
-ISPICKVAL({!myVariable_old.StageName}, &apos;Unqualified&apos; ) 
-|| 
-ISPICKVAL({!myVariable_old.StageName}, &apos;Voided&apos; ) 
-|| 
-ISPICKVAL({!myVariable_old.StageName}, &apos;DUPLICATE&apos; )
-||
-TEXT(PRIORVALUE({!myVariable_old.StageName})) != TEXT({!myVariable_old.StageName} )
-||
-PRIORVALUE({!myVariable_old.Shared_Solar_System__c}) != {!myVariable_old.Shared_Solar_System__c}</expression>
-    </formulas>
-    <interviewLabel>Create_Case_for_Closed_CS_Customer_Follow_Up-36_InterviewLabel</interviewLabel>
+    <description>This is a second Opportunity Create/Edit PB that should eventually be consolidated into a single Opp Create/Edit</description>
+    <interviewLabel>Create_Case_for_Closed_CS_Customer_Follow_Up-37_InterviewLabel</interviewLabel>
     <label>Opportunity Create/Edit 2</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -1733,7 +1577,7 @@ PRIORVALUE({!myVariable_old.Shared_Solar_System__c}) != {!myVariable_old.Shared_
             </processMetadataValues>
             <field>Subject</field>
             <value>
-                <stringValue>EMAIL LOG: CS Partner: App Approved &amp; Contract Sent</stringValue>
+                <stringValue>EMAIL LOG: CS Partner: App Approved &amp; Contract Signed</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -1961,86 +1805,6 @@ PRIORVALUE({!myVariable_old.Shared_Solar_System__c}) != {!myVariable_old.Shared_
             <field>Salesperson_Email_2__c</field>
             <value>
                 <elementReference>myVariable_current.Salesperson_Email__c</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Opportunity</object>
-    </recordUpdates>
-    <recordUpdates>
-        <processMetadataValues>
-            <name>evaluationType</name>
-            <value>
-                <stringValue>always</stringValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>extraTypeInfo</name>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>isChildRelationship</name>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>reference</name>
-            <value>
-                <stringValue>[Opportunity]</stringValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>referenceTargetField</name>
-        </processMetadataValues>
-        <name>myRule_7_A1</name>
-        <label>Evaluate SSS Sharing</label>
-        <locationX>700</locationX>
-        <locationY>200</locationY>
-        <filters>
-            <processMetadataValues>
-                <name>implicit</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </processMetadataValues>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>myVariable_current.Id</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Boolean</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Evaluate Apex Sharing</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue></stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Boolean</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Evaluate_Apex_Sharing__c</field>
-            <value>
-                <booleanValue>true</booleanValue>
             </value>
         </inputAssignments>
         <object>Opportunity</object>
