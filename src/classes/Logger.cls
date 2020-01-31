@@ -78,12 +78,8 @@ public with sharing class Logger {
         }
     }
 
-    public static void log(String className, String methodName, String message, Datetime timestamp) {
-        log(className, methodName, message, timestamp, ERROR);
-    }
-
     // timestamp is expected to be in GMT (e.g. System.now()), and this will convert and log it as local time
-    public static void log(String className, String methodName, String message, Datetime timestamp, String severity) {
+    private static void log(String className, String methodName, String message, Datetime timestamp, String severity) {
         Error_Log__c errorLog =
             new Error_Log__c(
                 User__c = UserInfo.getUserID(),

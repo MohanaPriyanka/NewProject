@@ -58,6 +58,7 @@
             cmp.set('v.obj', 'standard2');
             cmp.set('v.preSelection', cmp.get('v.selectedRows_standard2'));
         }
+        /*
         if(cmp.get('v.mydata_standard3') && cmp.get('v.mydata_standard3').length > 0){
             cmp.set('v.mydata', cmp.get('v.mydata_standard3'));
             cmp.set('v.obj', 'standard3');
@@ -78,6 +79,7 @@
             cmp.set('v.obj', 'standard6');
             cmp.set('v.preSelection', cmp.get('v.selectedRows_standard6'));
         }
+         */
         if(cmp.get('v.mydata_custom1') && cmp.get('v.mydata_custom1').length > 0){
             cmp.set('v.mydata', cmp.get('v.mydata_custom1'));
             cmp.set('v.obj', 'custom1');
