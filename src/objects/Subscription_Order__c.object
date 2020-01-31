@@ -93,4 +93,24 @@
             </valueSetDefinition>
         </valueSet>
     </fields>
+    <validationRules>
+        <fullName>Lock_Approved_SOs</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+OR(
+ISPICKVAL(Approval_Status__c,&quot;Approved&quot;),
+ISPICKVAL(Approval_Status__c,&quot;&quot;)
+),
+/* Prevents changing the approval status once it&apos;s been set to approved, but still allowing it to be set to approved.*/
+
+PRIORVALUE(Approval_Status__c)!=&quot;&quot;,
+ISNEW()=false, 
+/* Allows APEX to stamp the Approved values.*/
+ISBLANK(Approved_Change_in_Subscription__c), 
+ISBLANK(Approved_Change_in_Percent_Share__c)
+)
+/* Prevents changing the approval status once it&apos;s been set to approved.*/</errorConditionFormula>
+        <errorDisplayField>Approval_Status__c</errorDisplayField>
+        <errorMessage>Once a Subscription Order is Approved, it cannot be edited. To update a customers subscription, please log a new Subscription Order.</errorMessage>
+    </validationRules>
 </CustomObject>

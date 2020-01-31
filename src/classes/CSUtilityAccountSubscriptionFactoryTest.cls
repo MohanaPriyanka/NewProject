@@ -393,7 +393,7 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
     }
 
     private static void useMocks(Boolean featureOn) {
-        FeatureService.featureSelector = (CustomFeatureSelector) Test.createStub(CustomFeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(featureOn));
+        FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(featureOn));
     }
 
 

@@ -35,20 +35,20 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
             sssRemainingSubscriptionCapacityMap.put(sss.Id, maximumSubscriptionkWh);
         }
 
-        List<Utility_Account_Subscription__c> UASes = new List<Utility_Account_Subscription__c>();
+        List<Utility_Account_Subscription__c> uases = new List<Utility_Account_Subscription__c>();
 
         for (Utility_Account_Log__c ual : uals) {
             if (ual.Lead__r.Product__r.Customer_Subscription_Type__c == 'kWh') {
                 // we need to make copies of the map for each UAL, otherwise we don't create enough UASes
                 Map<Id, Decimal> copyOfSSSRemainingSubscriptionCapacityMap = new Map<Id, Decimal>(sssRemainingSubscriptionCapacityMap);
-                UASes.addAll(createUASbyCapacity(ual, copyOfSSSRemainingSubscriptionCapacityMap, opportunities, uasOrders));
+                uases.addAll(createUASbyCapacity(ual, copyOfSSSRemainingSubscriptionCapacityMap, opportunities, uasOrders));
             } else if (ual.Lead__r.Product__r.Customer_Subscription_Type__c == 'Electricity Cost ($)') {
                 // we need to make copies of the map for each UAL, otherwise we don't create enough UASes
                 Map<Id, Decimal> copyOfSSSRemainingSubscriptionCostMap = new Map<Id, Decimal>(sssRemainingSubscriptionCostMap);
-                UASes.addAll(createUASbyCost(ual, copyOfSSSRemainingSubscriptionCostMap, opportunities, uasOrders));
+                uases.addAll(createUASbyCost(ual, copyOfSSSRemainingSubscriptionCostMap, opportunities, uasOrders));
             }
         }
-        return UASes;
+        return uases;
     }
 
 

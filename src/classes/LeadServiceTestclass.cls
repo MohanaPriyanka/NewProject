@@ -299,6 +299,9 @@ public class LeadServiceTestclass {
         lc.setDoNotCreateOpportunity(true);
 
         Database.LeadConvertResult lcr = Database.convertLead(lc, false);
+        if (!lcr.isSuccess()) {
+            System.debug(lcr.getErrors());
+        }
         System.assert(lcr.isSuccess());
 
         Lead convertedLead = [
@@ -345,7 +348,7 @@ public class LeadServiceTestclass {
         ];
 
         List<Subscription_Order__c> subscriptionOrders = [
-            SELECT Id, Utility_Account_Subscription__c
+            SELECT Id, Utility_Account_Subscription__c, Approved_Change_in_Subscription__c
             FROM Subscription_Order__c
             WHERE Utility_Account_Subscription__c IN :uasList
         ];
@@ -376,6 +379,7 @@ public class LeadServiceTestclass {
         System.assertNotEquals(null, subscriptionOrders);
         System.assertEquals(1, subscriptionOrders.size());
         System.assertEquals(uasList[0].Id, subscriptionOrders[0].Utility_Account_Subscription__c);
+        System.assertNotEquals(null, subscriptionOrders[0].Approved_Change_in_Subscription__c);
 
     }
 
@@ -466,7 +470,7 @@ public class LeadServiceTestclass {
     }
 
     private static void useMocks(Boolean featureOn) {
-        FeatureService.featureSelector = (CustomFeatureSelector) Test.createStub(CustomFeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(featureOn));
+        FeatureService.featureSelector = (FeatureSelector) Test.createStub(FeatureSelector.class, new FeatureServiceTest.MockCustomFeatureSelector(featureOn));
     }
 
 

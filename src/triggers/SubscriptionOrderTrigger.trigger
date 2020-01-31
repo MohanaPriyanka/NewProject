@@ -3,7 +3,7 @@
  *
  * Tested By: SubscriptionManagementServiceTest
  */
-trigger SubscriptionOrderTrigger on Subscription_Order__c (before insert, before update) {
+trigger SubscriptionOrderTrigger on Subscription_Order__c (before insert, after update, after insert) {
     if (Util.isDisabled('Disable_SubscriptionOrder_Trigger__c')) {
         return;
     }
@@ -12,7 +12,9 @@ trigger SubscriptionOrderTrigger on Subscription_Order__c (before insert, before
     switch on Trigger.operationType {
         when BEFORE_INSERT {
             subscriptionManagementService.populateSubscriptionOrder(Trigger.new);
-        } when BEFORE_UPDATE {
+        } when AFTER_INSERT {
+            subscriptionManagementService.checkSOApproval(Trigger.new, Trigger.oldMap);
+        } when AFTER_UPDATE {
             subscriptionManagementService.checkSOApproval(Trigger.new, Trigger.oldMap);
         }
     }
