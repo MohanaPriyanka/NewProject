@@ -786,7 +786,7 @@
                 <leftValueReference>myVariable_current.Contract_Status__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Complete</stringValue>
+                    <stringValue>Completed</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -1137,7 +1137,7 @@
                 <leftValueReference>myVariable_old.Contract_Status__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Complete</stringValue>
+                    <stringValue>Completed</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -1175,7 +1175,7 @@
         </rules>
     </decisions>
     <description>This is a second Opportunity Create/Edit PB that should eventually be consolidated into a single Opp Create/Edit</description>
-    <interviewLabel>Create_Case_for_Closed_CS_Customer_Follow_Up-32_InterviewLabel</interviewLabel>
+    <interviewLabel>Create_Case_for_Closed_CS_Customer_Follow_Up-37_InterviewLabel</interviewLabel>
     <label>Opportunity Create/Edit 2</label>
     <processMetadataValues>
         <name>ObjectType</name>
