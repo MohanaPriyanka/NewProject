@@ -359,18 +359,6 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Credit_Adjustments__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Adjusted Credits from Production type Bill Adjustments</inlineHelpText>
-        <label>Credit Adjustments</label>
-        <summarizedField>UASB__c.Adjusted_Credits__c</summarizedField>
-        <summaryForeignKey>UASB__c.System_Bill__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
         <fullName>Date_Refunded__c</fullName>
         <externalId>false</externalId>
         <label>Date Refunded</label>

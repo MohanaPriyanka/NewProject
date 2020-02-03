@@ -43700,11 +43700,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>System_Bill__c.Credit_Adjustments__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>System_Bill__c.Date_Refunded__c</field>
         <readable>false</readable>
     </fieldPermissions>
