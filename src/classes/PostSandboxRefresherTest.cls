@@ -391,4 +391,20 @@ private class PostSandboxRefresherTest {
         ];
         System.assertEquals(0, users.size(), 'Expected to have updated all BW Technology users to System Admins');
     }
+    @IsTest
+    private static void testBatchLeadConvert() {
+        // Limiting to one lead because InvocableBatchLeadConverter converts one lead
+        // at a time, and no more than one executeBatch can be called from within a
+        // test method.
+        List<Lead> leads = [SELECT Id FROM Lead WHERE IsConverted = FALSE LIMIT 1];
+        leads[0].Status = 'Qualified';
+        update leads[0];
+
+        Test.startTest();
+        InvocableBatchLeadConverter.startLeadConversionBatch(new List<List<Lead>>{leads});
+        Test.stopTest();
+
+        leads = [SELECT Id FROM Lead WHERE Id IN :leads AND IsConverted = TRUE];
+        System.assertEquals(1, leads.size());
+    }
 }
