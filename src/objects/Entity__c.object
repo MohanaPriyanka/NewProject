@@ -738,6 +738,7 @@
         <deleteConstraint>SetNull</deleteConstraint>
         <description>This is the lookup to the portfolio object.</description>
         <externalId>false</externalId>
+        <inlineHelpText>Client Portfolio that this Entity is assigned to.</inlineHelpText>
         <label>Portfolio</label>
         <referenceTo>Portfolio__c</referenceTo>
         <relationshipLabel>Entities</relationshipLabel>
