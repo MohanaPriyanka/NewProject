@@ -806,6 +806,7 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
         <externalId>false</externalId>
         <label>Business Email</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Email</type>
@@ -1317,6 +1318,7 @@ This field can be changed to a formula consistent with the other factors if LASE
         <label>Co-Applicant Address</label>
         <length>100</length>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
@@ -1337,6 +1339,7 @@ This field can be changed to a formula consistent with the other factors if LASE
         <externalId>false</externalId>
         <label>Co-Applicant Email</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Email</type>
@@ -1494,6 +1497,7 @@ This field can be changed to a formula consistent with the other factors if LASE
         <label>Service Street Address</label>
         <length>30</length>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
@@ -1510,6 +1514,7 @@ This field can be changed to a formula consistent with the other factors if LASE
         <label>Service City</label>
         <length>20</length>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
@@ -1999,6 +2004,7 @@ This field can be changed to a formula consistent with the other factors if LASE
         <label>Electric Account #</label>
         <length>25</length>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
@@ -2070,6 +2076,7 @@ This field can be changed to a formula consistent with the other factors if LASE
         <externalId>false</externalId>
         <label>Email Re-Enter</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Email</type>
@@ -3921,6 +3928,7 @@ Monthly_Payment__c)</formula>
         <label>Parcel City</label>
         <length>25</length>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
@@ -3943,6 +3951,7 @@ Monthly_Payment__c)</formula>
         <externalId>false</externalId>
         <label>Parcel Street (If Different)</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>TextArea</type>
@@ -3992,6 +4001,7 @@ Monthly_Payment__c)</formula>
         <externalId>false</externalId>
         <label>Partner Email</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Email</type>
@@ -4552,6 +4562,7 @@ IF(AND(Risk_Level_Business_Type__c = &quot;Not Risky&quot;, VALUE(Number_of_Year
         <externalId>false</externalId>
         <label>Referral Email</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Email</type>

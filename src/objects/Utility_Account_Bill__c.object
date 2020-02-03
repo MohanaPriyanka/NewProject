@@ -457,6 +457,7 @@
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Utility Account Number</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
