@@ -1223,17 +1223,6 @@ New Charges...</inlineHelpText>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Subscription_Production_kWh__c</fullName>
-        <externalId>false</externalId>
-        <label>Subscription Production (kWh)</label>
-        <summarizedField>Utility_Account_Bill__c.Subscription_Production__c</summarizedField>
-        <summaryForeignKey>Utility_Account_Bill__c.Account_Bill__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
         <fullName>Test_Conga__c</fullName>
         <externalId>false</externalId>
         <formula>HYPERLINK(&quot;https://composer.congamerge.com/composer8/index.html?SessionId=&quot;
