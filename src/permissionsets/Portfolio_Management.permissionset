@@ -3,6 +3,11 @@
     <description>Provides ability to edit the Portfolio object.</description>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Entity__c.Portfolio__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Portfolio__c.Client_Account__c</field>
         <readable>true</readable>
     </fieldPermissions>
