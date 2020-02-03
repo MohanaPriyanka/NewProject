@@ -41,10 +41,10 @@ https://github.com/alexed1/LightningFlowComponents/tree/master/flow_screen_compo
         <aura:attribute name="mydata_standard1" type="Account[]"/>
         <aura:attribute name="selectedRows_standard1" type="Account[]"/>
 
-<!--    <aura:attribute name="mydata_standard2" type="Asset[]"/>
-        <aura:attribute name="selectedRows_standard2" type="Asset[]"/>
+        <aura:attribute name="mydata_standard2" type="Lead[]"/>
+        <aura:attribute name="selectedRows_standard2" type="Lead[]"/>
 
-        <aura:attribute name="mydata_standard3" type="Case[]"/>
+<!--    <aura:attribute name="mydata_standard3" type="Case[]"/>
         <aura:attribute name="selectedRows_standard3" type="Case[]"/>
 
         <aura:attribute name="mydata_standard4" type="Contact[]"/>
