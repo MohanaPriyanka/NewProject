@@ -839,6 +839,7 @@ ROUND(Customer_Subscription_KW_DC__c/ Opportunity__r.Shared_Solar_System__r.Tota
         <inlineHelpText>Equals Utility Account Log Service Address</inlineHelpText>
         <label>Service Address (From Log)</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
