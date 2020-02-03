@@ -206,17 +206,16 @@
     </fields>
     <fields>
         <fullName>CS_Billing_Log__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>CS Billing Log</label>
         <referenceTo>Utility_Account_Bill__c</referenceTo>
         <relationshipLabel>Utility Account Subscription Bills</relationshipLabel>
         <relationshipName>Utility_Account_Subscription_Bills</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>true</reparentableMasterDetail>
+        <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Client_Account_Number__c</fullName>
@@ -760,17 +759,16 @@ MONTH(Billing_Period_End_Date__c),
     </fields>
     <fields>
         <fullName>System_Bill__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>System Bill</label>
         <referenceTo>System_Bill__c</referenceTo>
         <relationshipLabel>Utility Account Subscription Bills</relationshipLabel>
         <relationshipName>Utility_Account_Subscription_Bills</relationshipName>
-        <relationshipOrder>1</relationshipOrder>
-        <reparentableMasterDetail>true</reparentableMasterDetail>
+        <required>false</required>
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>System_Production_kWh__c</fullName>
