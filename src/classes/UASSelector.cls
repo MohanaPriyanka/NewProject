@@ -86,7 +86,6 @@ public without sharing class UASSelector {
         ];
     }
 
-    //Wont all UASes associated with an Opp (that have a kwDC rollup != 0 )  have the same SSS as the Opp?
     public List<Utility_Account_Subscription__c> selectByOpportunity(Set<Id> oppIds) {
         return [
             SELECT Id, Name, Annual_kWh_Subscription_Future_Rollup__c, Annual_Cost_Future_Rollup__c,
