@@ -1024,10 +1024,13 @@ MONTH(Billing_Period_End_Date__c),
     <validationRules>
         <fullName>UASB_Cannot_Be_Edited_After_Published</fullName>
         <active>true</active>
-        <errorConditionFormula>AND(System_Bill__r.Account_Bill__r.Published__c,
-NOT(ISCHANGED(Zuora_Id__c))
+        <description>UASB Cannot Be Edited after Bill is Pushed to Zuora</description>
+        <errorConditionFormula>AND(
+NOT(ISBLANK(Zuora_Id__c)),
+NOT(ISCHANGED(Account__c)),
+NOT(ISCHANGED(Transfer__c))
 )</errorConditionFormula>
-        <errorMessage>UASB Cannot Be Edited after Bill is Published</errorMessage>
+        <errorMessage>UASB Cannot Be Edited after Bill is Pushed to Zuora</errorMessage>
     </validationRules>
     <visibility>Public</visibility>
 </CustomObject>
