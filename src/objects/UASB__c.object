@@ -78,6 +78,19 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Utility Account Subscription Bills (Account)</relationshipLabel>
+        <relationshipName>Utility_Account_Subscription_Bills1</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Adjusted_Credits__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Sum of Adjusted Credits Allocated to this UASB from Production Bill Adjustments, used to summarize total savings and total credits on the property account.</inlineHelpText>
@@ -1009,16 +1022,18 @@ MONTH(Billing_Period_End_Date__c),
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Utility Account Subscription Bills</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
     <validationRules>
         <fullName>UASB_Cannot_Be_Edited_After_Published</fullName>
         <active>true</active>
-        <errorConditionFormula>AND(System_Bill__r.Account_Bill__r.Published__c,
-NOT(ISCHANGED(Zuora_Id__c)), 
+        <description>UASB Cannot Be Edited after Bill is Pushed to Zuora</description>
+        <errorConditionFormula>AND(
+NOT(ISBLANK(Zuora_Id__c)),
+NOT(ISCHANGED(Account__c)),
 NOT(ISCHANGED(Transfer__c))
 )</errorConditionFormula>
-        <errorMessage>UASB Cannot Be Edited after Bill is Published</errorMessage>
+        <errorMessage>UASB Cannot Be Edited after Bill is Pushed to Zuora</errorMessage>
     </validationRules>
     <visibility>Public</visibility>
 </CustomObject>
