@@ -97,13 +97,13 @@ public without sharing class SubscriptionManagementService{
 
 
     public List<Subscription_Order__c> createSystemChangeOrders(List<Utility_Account_Subscription__c> uasList, Shared_Solar_System_Order__c ssso) {
-        Id systemChangeOrder = Schema.SObjectType.Subscription_Order__c.getRecordTypeInfosByName().get('System Change Order').getRecordTypeId();
+
+        Id systemChangeOrderRecordTypeId = Schema.SObjectType.Subscription_Order__c.getRecordTypeInfosByName().get('System Change Order').getRecordTypeId();
         List<Subscription_Order__c> soList = new List<Subscription_Order__c>();
 
         for (Utility_Account_Subscription__c uas : uasList) {
             Subscription_Order__c so = new Subscription_Order__c(
-                RecordTypeId = systemChangeOrder,
-                Type__c = 'Shared Solar System Update',
+                RecordTypeId = systemChangeOrderRecordTypeId,
                 Utility_Account_Subscription__c = uas.Id,
                 Approval_Status__c = 'Approved',
                 Effective_Date__c = System.now(),
@@ -114,7 +114,8 @@ public without sharing class SubscriptionManagementService{
             );
 
             if (ssso != null) {
-               so.Shared_Solar_System_Order__c = ssso.Id;
+                so.Shared_Solar_System_Order__c = ssso.Id;
+                so.Type__c = 'Shared Solar System Update';
             }
 
             soList.add(so);

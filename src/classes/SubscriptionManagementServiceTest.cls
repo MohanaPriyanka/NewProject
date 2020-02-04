@@ -135,7 +135,7 @@ private class SubscriptionManagementServiceTest {
         Shared_Solar_System__c checkSSS = service.updateSSSFromSSSO(ssso);
 
         System.assertEquals('Test SSS', checkSSS.Name);
-        System.assertEquals(2891.72, checkSSS.Total_System_Size_kWh_DC__c);
+        System.assertEquals(ssso.Total_System_Size_kW_DC__c, checkSSS.Total_System_Size_kWh_DC__c);
 
     }
 

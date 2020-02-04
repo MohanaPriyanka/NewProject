@@ -242,12 +242,20 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
 
         System.assertEquals(2, opportunities.size());
 
-
         List<Utility_Account_Subscription__c> generatedUASes;
         generatedUASes = CSUtilityAccountSubscriptionFactory.generateSubscriptions(uals, sharedSolarSystems, opportunities, uasOrders);
 
         // 2 opps & 2 uals each = 4 subscriptions
         System.assertEquals(4, generatedUASes.size());
+        System.assertEquals(4, uasOrders.size());
+
+        for (Integer i = 0; i < generatedUASes.size(); i++ ) {
+            System.assertNotEquals(null, uasOrders[i].uas);
+            System.assertNotEquals(null, uasOrders[i].sOrder);
+            System.assertEquals(generatedUASes[i].Id, uasOrders[i].uas.Id);
+        }
+
+
     }
 
     @IsTest
@@ -284,16 +292,21 @@ public with sharing class CSUtilityAccountSubscriptionFactoryTest {
 
         List<Utility_Account_Subscription__c> single = new List<Utility_Account_Subscription__c>();
         List<Utility_Account_Subscription__c> multiple = new List<Utility_Account_Subscription__c>();
+
         single.addAll(CSUtilityAccountSubscriptionFactory.createUASbyCost(ual, sssForSingleSubscription, opportunities, uasOrders));
         multiple.addAll(CSUtilityAccountSubscriptionFactory.createUASbyCost(ual, sssForMultipleSubscription, opportunities, uasOrders));
 
         System.assertEquals(1, single.size());
         System.assertEquals(2, multiple.size());
+        //1 uasOrder for single and 2 for multiple
+        System.assertEquals(3, uasOrders.size());
+        System.assertNotEquals(null, uasOrders[0].sOrder);
+        System.assertNotEquals(null, uasOrders[0].uas);
     }
+
     @IsTest
     public static void testCreateUASforUALbyCapacity() {
         useMocks(false);
-        List<Utility_Account_Log__c> uals = new List<Utility_Account_Log__c>();
         Utility_Account_Log__c ual = new Utility_Account_Log__c(
             Proposed_kWh__c = 15000,
             Name_on_Account__c = 'Joey Chan',

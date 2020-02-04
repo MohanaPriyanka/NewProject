@@ -85,13 +85,4 @@ public without sharing class UASSelector {
             AND Future_Customer_Subscription_KWDC_Rollup__c != 0
         ];
     }
-
-    public List<Utility_Account_Subscription__c> selectByOpportunity(Set<Id> oppIds) {
-        return [
-            SELECT Id, Name, Annual_kWh_Subscription_Future_Rollup__c, Annual_Cost_Future_Rollup__c,
-                Future_Customer_Subscription_KWDC_Rollup__c, Future_Share_of_System_Rollup__c
-            FROM Utility_Account_Subscription__c
-            WHERE Future_Customer_Subscription_KWDC_Rollup__c != 0
-        ];
-    }
 }

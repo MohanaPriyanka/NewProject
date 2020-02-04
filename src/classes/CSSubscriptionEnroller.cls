@@ -293,7 +293,7 @@ public without sharing class CSSubscriptionEnroller {
 
     }
 
-    public void insertSubscriptionOrders() {
+    private void insertSubscriptionOrders() {
         List<Subscription_Order__c> soList = new List<Subscription_Order__c>();
         for (CSUtilityAccountSubscriptionFactory.UASOrder uasOrder : uasOrders){
             uasOrder.sOrder.Utility_Account_Subscription__c = uasOrder.uas.Id;
@@ -303,7 +303,7 @@ public without sharing class CSSubscriptionEnroller {
         insert soList;
     }
 
-    public void insertUASes() {
+    private void insertUASes() {
         insert uasList;
     }
 

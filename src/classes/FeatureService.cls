@@ -10,7 +10,11 @@ public with sharing class FeatureService {
 
     public Boolean isEnabled(String developerName) {
         Custom_Feature_Enablement__mdt feature = featureSelector.getCustomFeature(developerName);
-        return feature.Feature_is_Enabled__c;
+        if (feature == null) {
+            return false;
+        } else {
+            return feature.Feature_is_Enabled__c;
+        }
     }
 
 }

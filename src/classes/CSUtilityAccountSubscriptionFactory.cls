@@ -68,7 +68,7 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
     ) {
         Integer uasNumberCounter = 1;
         Decimal remainingUALCapacityToAllocate = ual.Proposed_kWh__c;
-        List<Utility_Account_Subscription__c> UASes = new List<Utility_Account_Subscription__c>();
+        List<Utility_Account_Subscription__c> uases = new List<Utility_Account_Subscription__c>();
 
         for (Opportunity opp : opportunities) {
             if (sssRemainingSubscriptionCapacityMap.containsKey(opp.Shared_Solar_System__c)){
@@ -91,26 +91,14 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
                         Annual_kwh_subscription_future__c = annualElectricityCapacityAssigned
                     );
                     uasNumberCounter++;
-                    UASes.add(uas);
-
-                    if (uasOrders != null) {
-                        UASOrder order = new UASOrder();
-                        order.uas = uas;
-
-                        Subscription_Order__c so = new Subscription_Order__c(
-                            Type__c = 'Initial',
-                            Change_in_Annual_kWh__c = annualElectricityCapacityAssigned,
-                            Effective_Date__c = Date.today(),
-                            Approval_Status__c = 'Approved'
-                        );
-                        order.sOrder = so;
-                        uasOrders.add(order);
-                    }
+                    uases.add(uas);
+                    createSOByCapacity(uasOrders, uas, annualElectricityCapacityAssigned);
                 }
             }
         }
-        return UASes;
+        return uases;
     }
+
 
     public static List<Utility_Account_Subscription__c> createUASbyCost(
         Utility_Account_Log__c ual,
@@ -128,7 +116,7 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
     ) {
         Integer uasNumberCounter = 1;
         Decimal remainingUALCostToAllocate = ual.Annual_Cost_of_Electricity__c;
-        List<Utility_Account_Subscription__c> UASes = new List<Utility_Account_Subscription__c>();
+        List<Utility_Account_Subscription__c> uases = new List<Utility_Account_Subscription__c>();
 
         for (Opportunity opp : opportunities) {
             if (sssRemainingSubscriptionCostMap.containsKey(opp.Shared_Solar_System__c)){
@@ -152,25 +140,45 @@ public with sharing class CSUtilityAccountSubscriptionFactory {
                         Subscribed_Annual_Cost_of_Electricity__c = annualElectricityCostAssigned
                     );
                     uasNumberCounter++;
-                    UASes.add(uas);
-
-                    if(uasOrders != null) {
-                        UASOrder order = new UASOrder();
-                        Subscription_Order__c so = new Subscription_Order__c(
-                            Type__c = 'Initial',
-                            Change_in_Annual_Cost__c = annualElectricityCostAssigned,
-                            Effective_Date__c = Date.today(),
-                            Approval_Status__c = 'Approved'
-                        );
-                        order.sOrder = so;
-                        order.uas = uas;
-                        uasOrders.add(order);
-                    }
+                    uases.add(uas);
+                    createSOByCost(uasOrders, uas, annualElectricityCostAssigned);
                 }
             }
         }
-        return UASes;
+        return uases;
     }
+
+    private static void createSOByCapacity(List<UASOrder> uasOrders, Utility_Account_Subscription__c uas, Decimal annualElectricityCapacityAssigned ) {
+        if (uasOrders != null) {
+            UASOrder order = new UASOrder();
+            order.uas = uas;
+
+            Subscription_Order__c so = new Subscription_Order__c(
+                Type__c = 'Initial',
+                Change_in_Annual_kWh__c = annualElectricityCapacityAssigned,
+                Effective_Date__c = Date.today(),
+                Approval_Status__c = 'Approved'
+            );
+            order.sOrder = so;
+            uasOrders.add(order);
+        }
+    }
+
+    private static void createSOByCost(List<UASOrder> uasOrders, Utility_Account_Subscription__c uas, Decimal annualElectricityCostAssigned) {
+        if(uasOrders != null) {
+            UASOrder order = new UASOrder();
+            Subscription_Order__c so = new Subscription_Order__c(
+                Type__c = 'Initial',
+                Change_in_Annual_Cost__c = annualElectricityCostAssigned,
+                Effective_Date__c = Date.today(),
+                Approval_Status__c = 'Approved'
+            );
+            order.sOrder = so;
+            order.uas = uas;
+            uasOrders.add(order);
+        }
+    }
+
 
     public static Decimal calculateMaximumkWh(Shared_Solar_System__c sss) {
         return sss.Maximum_Subscription_Capacity_kW_DC__c * sss.Expected_Yield_kWh_kW__c;
