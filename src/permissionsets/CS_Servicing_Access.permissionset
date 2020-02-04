@@ -31306,6 +31306,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>UASB__c.Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>UASB__c.Adjusted_Credits__c</field>
         <readable>false</readable>
     </fieldPermissions>
