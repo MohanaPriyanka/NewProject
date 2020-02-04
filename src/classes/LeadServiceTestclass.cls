@@ -299,9 +299,6 @@ public class LeadServiceTestclass {
         lc.setDoNotCreateOpportunity(true);
 
         Database.LeadConvertResult lcr = Database.convertLead(lc, false);
-        if (!lcr.isSuccess()) {
-            System.debug(lcr.getErrors());
-        }
         System.assert(lcr.isSuccess());
 
         Lead convertedLead = [
