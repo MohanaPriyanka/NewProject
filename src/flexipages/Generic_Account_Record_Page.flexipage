@@ -226,13 +226,6 @@
             <componentName>force:relatedListQuickLinksContainer</componentName>
         </componentInstances>
         <componentInstances>
-            <componentInstanceProperties>
-                <name>surveyName</name>
-                <value>net_promoter_score</value>
-            </componentInstanceProperties>
-            <componentName>survey:survey</componentName>
-        </componentInstances>
-        <componentInstances>
             <componentName>forceChatter:recordFeedContainer</componentName>
         </componentInstances>
         <name>sidebar</name>
