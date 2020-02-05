@@ -532,30 +532,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>AccountBillController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>AccountBillHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>AccountBillLetterStreamImpl</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>AccountBillSelector</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>AccountBillSelectorTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>AccountBillService</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>AccountService</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -628,14 +604,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>BatchCSBillEmailHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>BatchCSBillEmailHandlerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>BatchCreditSRECHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -645,10 +613,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>BillGenerationConsoleController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>BillNumberingTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -685,14 +649,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>CSCLPTestclass</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>CSCPChartHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>CSCPChartHandlerTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -1236,14 +1192,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>CongaTemplateAssigner</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>CongaTemplateAssignerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ContentDocumentSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -1457,22 +1405,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ImageScrollerControllerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>InvocableCSBillEmailBatchSend</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>InvocableCSBillLetterStreamSend</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>InvocableCSBillOverpaymentApplication</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>InvocableCSBillTemplateAssigner</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -3264,10 +3196,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>MultipleOppsForSingleSystemTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>MyAccountController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3309,10 +3237,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>OpportunityTriggerTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>OverpaymentApplication</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -3440,14 +3364,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>PublicCSTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>QueueAccountBillLetterStreamMailer</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>QueueableApplicationReview</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3505,14 +3421,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>RestLeadTest</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ReturnedTransactionController</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ReturnedTransactionHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -3644,14 +3552,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>SystemBillAccountingLogicHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SystemBillPaymentRollUpHandler</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>SystemBillsSelector</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -3733,10 +3633,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>UASTestClass</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>UsageChartController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
