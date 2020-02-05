@@ -1,9 +1,13 @@
+// JP 1/19/20 : Once we've transitioned fully over to billing off transfers and only creating UASBs, delete this
+// everything is covered by TransferSheetBillingTest
+
 @isTest
 public class BillGenerationServiceTest {
     @TestSetup
     public static void testSetup() {
         TestBillCreationForCancelledCustomers.testSetupBillRecords();
         setCollectionsWindow(90);
+        CustomerCommunicationHandlerTest.setDaysPastDue(System.today().addDays(-30),3);
     }
 
     public static void generateBills(List<Id> billPeriodIdList) {

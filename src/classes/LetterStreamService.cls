@@ -314,17 +314,6 @@ public without sharing class LetterStreamService {
                 return extraInserts;
             }
         }
-
-        public void generateFromAccountBill(Account_Bill__c accountBill, ContentDocument document) {
-            fileId = accountBill.Id;
-            fileName = document.LatestPublishedVersion.Title.replace(' ', '_') + '.pdf';
-            recipientName = accountBill.Parent_Account__r.Name;
-            recipientStreet = accountBill.Parent_Account__r.BillingStreet ;
-            recipientCity = accountBill.Parent_Account__r.BillingCity;
-            recipientState = accountBill.Parent_Account__r.BillingState;
-            recipientPostalCode = accountBill.Parent_Account__r.BillingPostalCode;
-            pages = String.valueOf(accountBill.Bill_PDF_Page_Count__c);
-        }
     }
 
     public Map<String, String> letterStreamHeaders(String uniqueId, String apiId, String apiKey) {

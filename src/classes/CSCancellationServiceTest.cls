@@ -8,37 +8,67 @@ public with sharing class CSCancellationServiceTest {
         CustomerCommunicationHandlerTest.setupData();
     }
 
+    public static void createBills(Date billDate, Id sssID){
+        Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
+            Name = '18-0515 Oxford Barrett St. P1',
+            Shared_Solar_System__c = sssID,
+            Status__c = 'Billing'
+        );
+
+        insert scheduleZ1;
+
+        Bill_Period__c bpA1 = new Bill_Period__c(
+            Name = 'sssA - March 2016',
+            Shared_Solar_System__c = sssID,
+            Bill_Date__c = billDate
+        );
+        insert bpA1;
+
+        Production__c prodA1 = new Production__c(
+            Name = 'sssA March Production',
+            Shared_Solar_System__c = sssID,
+            Start_Date__c = billDate.addMonths(-1),
+            End_Date__c = billDate,
+            Production_kWh__c = 160000,
+            Credits_Generated__c = 36000
+        );
+        insert prodA1;
+
+        Transfer__c transferA1 = new Transfer__c(
+            Name = 'Main Transfer - sssA March',
+            Bill_Period__c = bpA1.Id,
+            Date_of_Transfer__c = billDate,
+            Shared_Solar_System__c = sssID,
+            Transfer_Type__c = 'Main',
+            Allocation_Schedule__c = scheduleZ1.Id,
+            Attempted_Transfer__c = 36000,
+            Attempted_kWh_Transfer__c = 160000,
+            Transfer_Amount__c = 36000,
+            Default_Credit_Value__c = 0.2429
+        );
+        insert transferA1;
+
+        TestBillCreationandPayment.runBillPeriod(new List<Id>{bpA1.Id});
+    }
+
     @IsTest static void testOverdueAccounts() {
         //Set up delinquent customers
-        Shared_Solar_System__c sss = [SELECT Id FROM Shared_Solar_System__c WHERE Name = 'SSS1' LIMIT 1];
-        CustomerCommunicationHandlerTest.createBills(System.today() - 88, sss.Id); // 68 days late
-        List <Account_Bill__c> accountBillList = [
-            SELECT Id, Parent_Account__r.Id, Parent_Account__r.Cancellation_Request_Date__c,
-                Parent_Account__r.Cancellation_Comments__c, Parent_Account__r.Cancellation_Reason__c
-            FROM Account_Bill__c
-        ];
-
-        for (Account_Bill__c acctBill : accountBillList) {
-            acctBill.Published__c = true;
-        }
-        update accountBillList;
-        CustomerCommunicationHandlerTest.mockZuoraFields();
+        CustomerCommunicationHandlerTest.setDaysPastDue(System.Today().addDays(-68), 10);
 
         Test.startTest();
         CSCancellationService.handleOverdueAccounts();
         Test.stopTest();
 
-        accountBillList = [
-            SELECT Id, Parent_Account__r.Id, Parent_Account__r.Cancellation_Request_Date__c,
-                Parent_Account__r.Cancellation_Comments__c, Parent_Account__r.Cancellation_Reason__c
-            FROM Account_Bill__c
-            WHERE Published__c = TRUE
+        List<Account> propertyAccounts = [
+            SELECT Id, Cancellation_Request_Date__c, Cancellation_Comments__c, Cancellation_Reason__c
+            FROM Account
+            WHERE Parent_Account__c != null
         ];
 
-        for (Account_Bill__c accountBill : accountBillList) {
-            System.assertNotEquals(null, accountBill.Parent_Account__r.Cancellation_Request_Date__c);
-            System.assertEquals('Automated Cancellation', accountBill.Parent_Account__r.Cancellation_Comments__c);
-            System.assertEquals('Lack of Payment', accountBill.Parent_Account__r.Cancellation_Reason__c);
+        for (Account acct : propertyAccounts) {
+            System.assertNotEquals(null, acct.Cancellation_Request_Date__c);
+            System.assertEquals('Automated Cancellation', acct.Cancellation_Comments__c);
+            System.assertEquals('Lack of Payment', acct.Cancellation_Reason__c);
         }
     }
 
@@ -51,22 +81,23 @@ public with sharing class CSCancellationServiceTest {
         update opps;
         Util.enableTrigger('Disable_OpportunityTrigger__c');
 
+        CustomerCommunicationHandlerTest.setDaysPastDue(System.Today().addDays(-68), 10);
+
         Test.startTest();
         CSCancellationService.handleOverdueAccounts();
         Test.stopTest();
 
-        List <Account_Bill__c> accountBills = [
-            SELECT Id, Published__c, Parent_Account__r.Id, Parent_Account__r.Cancellation_Request_Date__c,
-                Parent_Account__r.Cancellation_Comments__c, Parent_Account__r.Cancellation_Reason__c
-            FROM Account_Bill__c
-            WHERE Published__c = TRUE
+        List<Account> propertyAccounts = [
+            SELECT Id, Cancellation_Request_Date__c, Cancellation_Comments__c, Cancellation_Reason__c
+            FROM Account
+            WHERE Parent_Account__c != null
         ];
 
         Set<Id> accountIds = new Set<Id>();
-        for (Account_Bill__c accountBill : accountBills) {
-            System.assertEquals(null, accountBill.Parent_Account__r.Cancellation_Request_Date__c);
-            System.assertEquals(null, accountBill.Parent_Account__r.Cancellation_Reason__c);
-            accountIds.add(accountBill.Parent_Account__r.Id);
+        for (Account acct : propertyAccounts) {
+            System.assertEquals(null, acct.Cancellation_Request_Date__c);
+            System.assertEquals(null, acct.Cancellation_Reason__c);
+            accountIds.add(acct.Id);
         }
 
         List<Account> allAccounts = [SELECT Id, Cancellation_Request_Date__c FROM Account WHERE Id != :accountIds];
@@ -78,19 +109,7 @@ public with sharing class CSCancellationServiceTest {
 
     @IsTest static void testUASToInactive() {
         //Set up delinquent customers
-        Shared_Solar_System__c sss = [SELECT Id FROM Shared_Solar_System__c WHERE Name = 'SSS1' LIMIT 1];
-        CustomerCommunicationHandlerTest.createBills(System.today() - 88, sss.Id); // 68 days late
-        List <Account_Bill__c> accountBillList = [
-            SELECT Id, Parent_Account__r.Id, Parent_Account__r.Cancellation_Request_Date__c,
-                Parent_Account__r.Cancellation_Comments__c, Parent_Account__r.Cancellation_Reason__c
-            FROM Account_Bill__c
-        ];
-
-        for (Account_Bill__c acctBill : accountBillList) {
-            acctBill.Published__c = true;
-        }
-        update accountBillList;
-        CustomerCommunicationHandlerTest.mockZuoraFields();
+        CustomerCommunicationHandlerTest.setDaysPastDue(System.Today().addDays(-68), 10);
 
         Test.startTest();
         MessagingService.onlyUseActiveTemplates = false;
@@ -528,7 +547,7 @@ public with sharing class CSCancellationServiceTest {
 
         // Creates bills for accounts that are dated 1/1/2018, implying all of these accounts are done billing.
         List<Shared_Solar_System__c> sss = [SELECT Id FROM Shared_Solar_System__c ORDER BY Name LIMIT 1];
-        CustomerCommunicationHandlerTest.createBills(Date.newInstance(2018, 1, 1), sss[0].Id);
+        createBills(Date.newInstance(2018, 1, 1), sss[0].Id);
 
         // Set one of the uases to Inactive, so there's one Active and one Inactive
         newUASes[0].Next_Schedule_Z_Status__c = 'Inactive Subscription';
@@ -581,7 +600,7 @@ public with sharing class CSCancellationServiceTest {
     @IsTest static void testOppCancellationOnBillingCompletion() {
         // Creates bills for accounts that are dated 1/1/2018, implying all of these accounts are done billing.
         List<Shared_Solar_System__c> sss = [SELECT Id FROM Shared_Solar_System__c ORDER BY Name LIMIT 1];
-        CustomerCommunicationHandlerTest.createBills(Date.newInstance(2018, 1, 1), sss[0].Id);
+        createBills(Date.newInstance(2018, 1, 1), sss[0].Id);
 
         List<Utility_Account_Subscription__c> uases = [SELECT Id FROM Utility_Account_Subscription__c];
         for (Utility_Account_Subscription__c utilityAccountSubscription : uases) {
@@ -641,7 +660,7 @@ public with sharing class CSCancellationServiceTest {
 
         // Creates bills for accounts that are dated 1/1/2018, implying all of these accounts are done billing.
         List<Shared_Solar_System__c> sss = [SELECT Id FROM Shared_Solar_System__c ORDER BY Name LIMIT 1];
-        CustomerCommunicationHandlerTest.createBills(Date.newInstance(2018, 1, 1), sss[0].Id);
+        createBills(Date.newInstance(2018, 1, 1), sss[0].Id);
 
         List<Utility_Account_Subscription__c> uases = [SELECT Id FROM Utility_Account_Subscription__c];
         for (Utility_Account_Subscription__c utilityAccountSubscription : uases) {
@@ -693,9 +712,9 @@ public with sharing class CSCancellationServiceTest {
 
         // Creates bills for accounts that are dated 1/1/2018, implying all of these accounts are done billing.
         List<Shared_Solar_System__c> sss = [SELECT Id FROM Shared_Solar_System__c ORDER BY Name DESC];
-        CustomerCommunicationHandlerTest.createBills(Date.newInstance(2018, 1, 1), sss[0].Id);
+        createBills(Date.newInstance(2018, 1, 1), sss[0].Id);
         Test.startTest();
-        CustomerCommunicationHandlerTest.createBills(Date.newInstance(2018, 1, 1), sss[1].Id);
+        createBills(Date.newInstance(2018, 1, 1), sss[1].Id);
 
         // Update UASes to match test scenarios in
         // https://www.lucidchart.com/documents/edit/28ddde15-529b-4b09-b858-35bba5e77e37/5
@@ -1437,7 +1456,7 @@ public with sharing class CSCancellationServiceTest {
 
         // Create a bill they haven't paid
         Shared_Solar_System__c sss1 = [SELECT Id FROM Shared_Solar_System__c WHERE Name = 'SSS1'];
-        CustomerCommunicationHandlerTest.createBills(today - 46, sss1.Id);
+        createBills(today - 46, sss1.Id);
 
         Test.startTest();
         Account acct = [
