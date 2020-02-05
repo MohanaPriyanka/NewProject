@@ -66,7 +66,6 @@ public without sharing class SubscriptionManagementService{
             return;
         }
 
-        //TODO: Yes i know this loop has queries in it but SSSOs be approved in Bulk
         for(Shared_Solar_System_Order__c ssso : sssoList) {
             if (ssso.Approval_Status__c == 'Approved' && oldMap.get(ssso.Id).Approval_Status__c != 'Approved') {
                 Shared_Solar_System__c sss = updateSSSFromSSSO(ssso);
@@ -110,13 +109,10 @@ public without sharing class SubscriptionManagementService{
                 Previous_Annual_Cost__c = uas.Annual_Cost_Future_Rollup__c,
                 Previous_Annual_kwh__c = uas.Annual_kWh_Subscription_Future_Rollup__c,
                 Previous_kw_DC_Subscription__c = uas.Future_Customer_Subscription_KWDC_Rollup__c,
-                Previous_Percent_Share_of_System__c = uas.Future_Share_of_System_Rollup__c
+                Previous_Percent_Share_of_System__c = uas.Future_Share_of_System_Rollup__c,
+                Type__c = 'Shared Solar System Update',
+                Shared_Solar_System_Order__c = ssso.Id
             );
-
-            if (ssso != null) {
-                so.Shared_Solar_System_Order__c = ssso.Id;
-                so.Type__c = 'Shared Solar System Update';
-            }
 
             soList.add(so);
         }
