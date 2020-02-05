@@ -159,4 +159,12 @@ public without sharing class AccountsSelector {
         }
         return accountIdsWithUASBs;
     }
+
+    public List<Account> getAccountsById(Set<Id> accountIds){
+        return [
+            SELECT Id, Parent_Account__c, Client_Brand_Key__c
+            FROM Account
+            WHERE Id IN : accountIds
+        ];
+    }
 }

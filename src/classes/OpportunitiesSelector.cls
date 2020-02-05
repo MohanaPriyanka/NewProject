@@ -88,4 +88,14 @@ public without sharing class OpportunitiesSelector {
             AND AccountId IN : accountIds
         ];
     }
+
+    public List<Opportunity> getOppsFromSSS(Set<Id> sssIds) {
+        return [
+            SELECT Id, Name,
+                Account.Parent_Account__c,
+                Shared_Solar_System__r.Id
+            FROM Opportunity
+            WHERE Shared_Solar_System__r.Id IN : sssIds
+        ];
+    }
 }
