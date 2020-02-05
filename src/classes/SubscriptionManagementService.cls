@@ -62,7 +62,7 @@ public without sharing class SubscriptionManagementService{
         List<Subscription_Order__c> soListToInsert = new List<Subscription_Order__c>();
         FeatureService featureService = new FeatureService();
 
-        if (featureService.isEnabled('Subscription_Orders')) {
+        if (!featureService.isEnabled('Subscription_Orders')) {
             return;
         }
 

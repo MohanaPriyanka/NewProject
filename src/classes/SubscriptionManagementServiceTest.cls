@@ -90,7 +90,7 @@ private class SubscriptionManagementServiceTest {
     }
 
     @IsTest
-    private static void testSubscriptionManagementTrigger() {
+    private static void testSharedSolarSystemOrderTrigger() {
         useMocks();
         Shared_Solar_System_Order__c ssso = [
             SELECT Id
