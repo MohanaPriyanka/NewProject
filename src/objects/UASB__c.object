@@ -895,7 +895,7 @@ MONTH(Billing_Period_End_Date__c),
     <sharingModel>ControlledByParent</sharingModel>
     <validationRules>
         <fullName>UASB_Cannot_Be_Edited_After_Published</fullName>
-        <active>true</active>
+        <active>false</active>
         <description>UASB Cannot Be Edited after Bill is Pushed to Zuora</description>
         <errorConditionFormula>AND(
 NOT(ISBLANK(Zuora_Id__c)),
