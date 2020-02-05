@@ -45,7 +45,6 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableReports>true</enableReports>
@@ -71,6 +70,7 @@
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Address (From Account)</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
@@ -82,6 +82,7 @@
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Address Line Two</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
@@ -229,6 +230,7 @@ Static_SREC_Product__r.Fixed_Payment__c))</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Conga Formula (EMAIL)</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
@@ -303,6 +305,7 @@ IF(ISPICKVAL(Transaction_Type__c,&quot;Market Value&quot;),&quot;a2F0a000001R8u9
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Email</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
@@ -737,7 +740,7 @@ IF(  MONTH(Quarter_End_Date__c) = 12 , &quot;Q4&quot; , &quot;&quot;))))</formul
         <type>Text</type>
     </nameField>
     <pluralLabel>SRECs</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>
     <webLinks>
