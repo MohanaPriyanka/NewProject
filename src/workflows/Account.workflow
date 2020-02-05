@@ -88,26 +88,6 @@
         <protected>false</protected>
     </fieldUpdates>
     <fieldUpdates>
-        <fullName>CS_Account_Record_Type_Parent_Accoun</fullName>
-        <field>RecordTypeId</field>
-        <lookupValue>Parent_Account</lookupValue>
-        <lookupValueType>RecordType</lookupValueType>
-        <name>CS - Account Record Type - Parent Accoun</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>LookupValue</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
-        <fullName>CS_Account_Record_Type_Property</fullName>
-        <field>RecordTypeId</field>
-        <lookupValue>Property</lookupValue>
-        <lookupValueType>RecordType</lookupValueType>
-        <name>CS - Account Record Type - Property</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>LookupValue</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
         <fullName>Date_Email_Sent</fullName>
         <field>Date_Cancellation_Email_Sent__c</field>
         <formula>TODAY()</formula>
@@ -151,39 +131,6 @@
         <active>false</active>
         <formula>AND(ISCHANGED(Recurring_Billing__c), Recurring_Billing__c=TRUE, RecordTypeId!=&apos;012j00000010Ha3&apos;,  Total_Billed__c &gt; 0)</formula>
         <triggerType>onAllChanges</triggerType>
-    </rules>
-    <rules>
-        <fullName>CS - Account Record Type - Parent Account</fullName>
-        <actions>
-            <name>CS_Account_Record_Type_Parent_Accoun</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>true</active>
-        <criteriaItems>
-            <field>Account.Parent_Account_Checkbox__c</field>
-            <operation>equals</operation>
-            <value>True</value>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
-        <fullName>CS - Account Record Type - Property</fullName>
-        <actions>
-            <name>CS_Account_Record_Type_Property</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>true</active>
-        <criteriaItems>
-            <field>Account.Product_Line__c</field>
-            <operation>equals</operation>
-            <value>Community Solar</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Account.Parent_Account_Checkbox__c</field>
-            <operation>equals</operation>
-            <value>False</value>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <rules>
         <fullName>Cancellation Date Email Sent</fullName>
