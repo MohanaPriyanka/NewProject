@@ -11,7 +11,7 @@ public without sharing class OpportunitiesSelector {
         return [
             SELECT Id, Name,
             (SELECT Id, Name, Next_Schedule_Z_Status__c, Total_Count_of_Schedule_Zs__c, Transferring_Subsc_to_Another_UAS__c FROM Utility_Account_Subscriptions__r),
-            (SELECT Id, Name, Date__c FROM System_Bills__r ORDER BY Date__c DESC LIMIT 1)
+            (SELECT Id, Name, Date__c FROM Utility_Account_Subscription_Bills__r ORDER BY Date__c DESC LIMIT 1)
             FROM Opportunity
             WHERE StageName = 'Complete'
             AND Product_Line__c = 'Community Solar'
@@ -87,6 +87,16 @@ public without sharing class OpportunitiesSelector {
             AND Account.Zuora_Id__c != null
             AND Shared_Solar_System__r.Count_of_Transfers__c > 0
             AND AccountId IN : accountIds
+        ];
+    }
+
+    public List<Opportunity> getOppsFromSSS(Set<Id> sssIds) {
+        return [
+            SELECT Id, Name,
+                Account.Parent_Account__c,
+                Shared_Solar_System__r.Id
+            FROM Opportunity
+            WHERE Shared_Solar_System__r.Id IN : sssIds
         ];
     }
 }
