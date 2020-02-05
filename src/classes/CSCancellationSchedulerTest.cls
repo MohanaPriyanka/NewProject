@@ -12,18 +12,27 @@ private class CSCancellationSchedulerTest {
     static void testExecute() {
         List<Shared_Solar_System__c> sss = [SELECT Id FROM Shared_Solar_System__c ORDER BY Name ASC ];
 
-        CustomerCommunicationHandlerTest.createBills(System.today() - 88, sss[0].Id); // 67 days late
+        CSCancellationServiceTest.createBills(System.today() - 88, sss[0].Id);
 
-        List <Account_Bill__c> accountBills = [
-            SELECT Id, Published__c, Parent_Account__r.Id
-            FROM Account_Bill__c
+        UASB__c uasb = [
+            SELECT Id, Opportunity__r.AccountId
+            FROM UASB__c
+            LIMIT 1
         ];
 
-        for (Account_Bill__c acctBill : accountBills) {
-            acctBill.Published__c = true;
-        }
-        update accountBills;
-        CustomerCommunicationHandlerTest.mockZuoraFields();
+        Account acct = [
+            SELECT Id,
+                Max_Overdue_Due_Date_Zuora__c,
+                Total_Outstanding_Balance_Zuora__c,
+                Max_Overdue_Due_Date__c,
+                Total_Outstanding_Balance__c
+            FROM Account
+            WHERE Id = : uasb.Opportunity__r.AccountId
+            LIMIT 1
+        ];
+        acct.Max_Overdue_Due_Date_Zuora__c = System.Today().addDays(-68);
+        acct.Total_Outstanding_Balance_Zuora__c = 12.00;
+        update acct;
 
         Test.startTest();
         CSCancellationScheduler cancellationScheduler = new CSCancellationScheduler();
@@ -46,20 +55,7 @@ private class CSCancellationSchedulerTest {
 
     @IsTest
     static void testPreview() {
-        List<Shared_Solar_System__c> sss = [SELECT Id FROM Shared_Solar_System__c ORDER BY Name ASC ];
-
-        CustomerCommunicationHandlerTest.createBills(System.today() - 88, sss[0].Id); // 67 days late
-
-        List <Account_Bill__c> accountBills = [
-            SELECT Id, Published__c, Parent_Account__r.Id
-            FROM Account_Bill__c
-        ];
-
-        for (Account_Bill__c acctBill : accountBills) {
-            acctBill.Published__c = true;
-        }
-        update accountBills;
-        CustomerCommunicationHandlerTest.mockZuoraFields();
+        CustomerCommunicationHandlerTest.setDaysPastDue(System.Today().addDays(-68), 10);
 
         List<Error_Log__c> errorLogs = [SELECT Id FROM Error_Log__c];
         System.assertEquals(0, errorLogs.size(), 'Expected no error logs');
