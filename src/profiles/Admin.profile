@@ -137,10 +137,6 @@
         <visible>false</visible>
     </applicationVisibilities>
     <classAccesses>
-        <apexClass>AccountBillHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>AccountTriggerHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -169,19 +165,7 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>BatchCSBillEmailHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>BatchCSBillEmailHandlerTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>BatchCreditSRECHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>BillNumberingTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -218,14 +202,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>CSCLPTestclass</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>CSCPChartHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>CSCPChartHandlerTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -358,14 +334,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>CommunitySolarCustomerPortalTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>CongaTemplateAssigner</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>CongaTemplateAssignerTest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -538,10 +506,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ImageScrollerControllerTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>InvocableCSBillLetterStreamSend</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -733,10 +697,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>OverpaymentApplication</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>PCRApprovalHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -805,14 +765,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>PublicCSTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>QueueAccountBillLetterStreamMailer</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>QueueableApplicationReview</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -846,10 +798,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>ReportSenderTest</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>ReturnedTransactionHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
@@ -965,14 +913,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>SystemBillAccountingLogicHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>SystemBillPaymentRollUpHandler</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>SystemBillsSelector</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -1058,10 +998,6 @@
     </classAccesses>
     <classAccesses>
         <apexClass>UASTestClass</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>UsageChartController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
