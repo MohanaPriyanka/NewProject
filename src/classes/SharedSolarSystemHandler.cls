@@ -1,3 +1,5 @@
+// Tested By : ClientBrandingServiceTest, SharedSolarSystemHandlerTest
+
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class SharedSolarSystemHandler implements Schedulable {
 
@@ -134,6 +136,22 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
             sssSummary.Reserved_capacity_kW_DC__c = String.valueOf(summarizedReservedCapacity);
             sssSummary.Capacity_committed_kW_DC__c = summarizedCommittedCapacity;
             sssSummary.Anchor_capacity_reserved__c = summarizedAnchorCapacity;
+        }
+    }
+
+    public void queueClientBrandKeyUpdate(Map<Id, Shared_Solar_System__c> oldSSSMap, List<Shared_Solar_System__c> newSSSes){
+        Set<Id> sssWithChangedBrandKey = new Set<Id>();
+        for (Shared_Solar_System__c newSSS : newSSSes){
+            Shared_Solar_System__c oldSSS = oldSSSMap.get(newSSS.Id);
+            if (newSSS.Client_Brand_Key__c != oldSSS.Client_Brand_Key__c
+                || newSSS.BWC_Project_Entity__c != oldSSS.BWC_Project_Entity__c){
+                sssWithChangedBrandKey.add(newSSS.Id);
+            }
+        }
+        if (sssWithChangedBrandKey.size() > 0){
+            ClientBrandingService brandService = new ClientBrandingService();
+            brandService.sssIdWithChangedClientBrandKey = sssWithChangedBrandKey;
+            System.enqueueJob(brandService);
         }
     }
 }
