@@ -29332,11 +29332,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>System_Bill__c.Adjustments_UASB__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>System_Bill__c.Adjustments__c</field>
         <readable>true</readable>
@@ -29398,37 +29393,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>System_Bill__c.Bill_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>System_Bill__c.Bill_Due_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>System_Bill__c.Bill_Number__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>System_Bill__c.Billing_Period_End_DateRollup__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>System_Bill__c.Billing_Period_End_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>System_Bill__c.Billing_Period_Start_Date_Rollup__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>System_Bill__c.Billing_Period_Start_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -29493,22 +29463,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>System_Bill__c.Discounted_Bill__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>System_Bill__c.Distribute_This_Balance_12mo__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>System_Bill__c.Distribute_This_Balance_as_Payment_Plan__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>System_Bill__c.Due_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -29570,16 +29530,6 @@
         <editable>false</editable>
         <field>System_Bill__c.Monthly_Late_Fee_Interest__c</field>
         <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>System_Bill__c.NMC_Rate__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>System_Bill__c.Net_Metering_Credits_Allocated__c</field>
-        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -29648,11 +29598,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>System_Bill__c.Production_kWH__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>System_Bill__c.Project_Entity__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -29689,11 +29634,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>System_Bill__c.Refund_this_Balance__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>System_Bill__c.Savings__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -29754,11 +29694,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>System_Bill__c.Total_Payments_This_Month__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>System_Bill__c.UASB_Count__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
