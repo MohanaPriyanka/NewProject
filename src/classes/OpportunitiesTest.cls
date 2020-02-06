@@ -81,33 +81,33 @@ public class OpportunitiesTest {
     @IsTest
     public static void testFinishedBilling() {
         List<Opportunity> opps = [
-            SELECT Id, (SELECT Id, Name FROM System_Bills__r)
+            SELECT Id, (SELECT Id, Name FROM Utility_Account_Subscription_Bills__r)
             FROM Opportunity
             WHERE Name = 'PaymentTestOpp6'
             AND StageName = 'Complete'
         ];
         System.assertEquals(1, opps.size());
-        System.assertEquals(0, opps[0].System_Bills__r.size());
+        System.assertEquals(0, opps[0].Utility_Account_Subscription_Bills__r.size());
         // This opportunity doesn't have any system bills, so we can't be finished billing
         System.assertEquals(false, Opportunities.finishedBilling(opps[0]));
 
         opps = [
-            SELECT Id, (SELECT Id, Date__c, Name FROM System_Bills__r ORDER BY Date__c DESC LIMIT 1)
+            SELECT Id, (SELECT Id, Date__c, Name FROM Utility_Account_Subscription_Bills__r ORDER BY Date__c DESC LIMIT 1)
             FROM Opportunity
             WHERE Name = 'PaymentTestOpp1'
             AND StageName = 'Complete'
         ];
         System.assertEquals(1, opps.size());
-        System.assertEquals(1, opps[0].System_Bills__r.size());
-        System.assertEquals(Date.newInstance(2018, 1, 1), opps[0].System_Bills__r[0].Date__c);
+        System.assertEquals(1, opps[0].Utility_Account_Subscription_Bills__r.size());
+        System.assertEquals(Date.newInstance(2018, 1, 1), opps[0].Utility_Account_Subscription_Bills__r[0].Date__c);
 
         // This opp has an old system bill, it should be ready to be cancelled
         System.assertEquals(true, Opportunities.finishedBilling(opps[0]));
 
-        opps[0].System_Bills__r[0].Date__c = Date.today()-30;
-        update opps[0].System_Bills__r[0];
+        opps[0].Utility_Account_Subscription_Bills__r[0].Date__c = Date.today()-30;
+        update opps[0].Utility_Account_Subscription_Bills__r[0];
         opps = [
-            SELECT Id, (SELECT Id, Date__c, Name FROM System_Bills__r ORDER BY Date__c DESC LIMIT 1)
+            SELECT Id, (SELECT Id, Date__c, Name FROM Utility_Account_Subscription_Bills__r ORDER BY Date__c DESC LIMIT 1)
             FROM Opportunity
             WHERE Name = 'PaymentTestOpp1'
             AND StageName = 'Complete'
