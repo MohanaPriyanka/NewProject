@@ -15773,11 +15773,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account_Bill__c.Bill_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account_Bill__c.Bill_Message__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -15804,16 +15799,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account_Bill__c.Bill_Template__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account_Bill__c.Billing_Period_End_Date__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account_Bill__c.Billing_Period_Start_Date__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -15859,21 +15844,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account_Bill__c.Contact_ID_conga__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account_Bill__c.Credit_Adjustments__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account_Bill__c.Credits_on_Bill_Period__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account_Bill__c.Customer_Billing_Period__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -15989,11 +15959,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account_Bill__c.Month__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account_Bill__c.Net_Metering_Credits_Generated__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -16133,21 +16098,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Account_Bill__c.Savings_Adjustments__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account_Bill__c.Savings_Rollup__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account_Bill__c.Savings__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Account_Bill__c.Second_Additional_Bill_Line_Title__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -16174,11 +16124,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account_Bill__c.Shared_Solar_System__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Account_Bill__c.Subscription_Production_kWh__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
