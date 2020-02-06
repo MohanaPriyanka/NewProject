@@ -181,7 +181,7 @@
     <permissionSets>Manage Entities (Legal)</permissionSets>
     <permissionSets>Update ALSS Date Enacted</permissionSets>
     <permissionSets>Einstein Search</permissionSets>
-    <permissionSets>CS Customer Data Import</permissionSets>
+    <permissionSets>Portfolio Management</permissionSets>
     <permissionSets>Edit Products</permissionSets>
     <permissionSets>Import Custom Objects</permissionSets>
     <permissionSets>Underwriting Screen Access</permissionSets>
@@ -191,7 +191,6 @@
     <permissionSets>Permission to Run Batch SREC Payments</permissionSets>
     <permissionSets>Manage Users</permissionSets>
     <permissionSets>Do Not Send Bills Permission</permissionSets>
-    <permissionSets>Data Mask</permissionSets>
     <permissionSets>Lightning</permissionSets>
     <permissionSets>Shared Solar System Permission</permissionSets>
     <permissionSets>Permission Set for Payment Request (Base)</permissionSets>
@@ -223,6 +222,7 @@
     <profiles>PM Standard User</profiles>
     <profiles>HR Admin</profiles>
     <profiles>BFG Standard User</profiles>
+    <profiles>External BFG User</profiles>
     <profiles>Community Solar Community User</profiles>
     <roles>Founders</roles>
 </DelegateGroup>
