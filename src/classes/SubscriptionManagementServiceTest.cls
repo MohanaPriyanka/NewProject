@@ -4,6 +4,8 @@
 
 @IsTest
 private class SubscriptionManagementServiceTest {
+    private static String sssId = 'a1J29000000tjOkEAI';
+
     @TestSetup
     public static void setupData() {
         Utility__c eversource = new Utility__c(
@@ -120,6 +122,29 @@ private class SubscriptionManagementServiceTest {
     }
 
     @IsTest
+    private static void testApprovedSSSO() {
+        useMocks();
+        Shared_Solar_System_Order__c sssoApproved = new Shared_Solar_System_Order__c(
+            Shared_Solar_System__c = sssId,
+            Total_System_Size_kW_DC__c = 2891.72,
+            Approval_Status__c = 'Approved'
+        );
+
+        Shared_Solar_System_Order__c sssoOld = new Shared_Solar_System_Order__c(
+            Shared_Solar_System__c = sssId,
+            Total_System_Size_kW_DC__c = 2891.72,
+            Approval_Status__c = 'New'
+        );
+
+        SubscriptionManagementService service = new SubscriptionManagementService();
+        Map<Id, Shared_Solar_System_Order__c> oldMap = new Map<Id, Shared_Solar_System_Order__c>();
+        oldMap.put(sssoOld.Id, sssoOld);
+        List<Shared_Solar_System_Order__c> checkSSSO = service.checkSSSOApproval(new List<Shared_Solar_System_Order__c>{sssoApproved}, oldMap);
+        System.assertEquals(1, checkSSSO.size());
+    }
+
+
+    @IsTest
     private static void testUpdateSSS() {
         useMocks();
 
@@ -129,7 +154,6 @@ private class SubscriptionManagementServiceTest {
             WHERE Total_System_Size_kW_DC__c != null
             LIMIT 1
         ];
-
 
         SubscriptionManagementService service = new SubscriptionManagementService();
         Shared_Solar_System__c checkSSS = service.updateSSSFromSSSO(ssso);

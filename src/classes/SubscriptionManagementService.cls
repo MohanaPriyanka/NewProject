@@ -40,7 +40,6 @@ public without sharing class SubscriptionManagementService{
         for (Subscription_Order__c so : soList) {
             Subscription_Order__c clone = new Subscription_Order__c(Id = so.Id);
             if (so.RecordType.Name == 'System Change Order') {
-
                 clone.Approved_Change_in_Percent_Share__c = so.System_Change_Percent_Share_of_System__c - so.Previous_Percent_Share_of_System__c;
                 clone.Approved_Change_in_Subscription__c = so.System_Change_kW_DC_Subscription__c - so.Previous_kw_DC_Subscription__c;
             } else {
@@ -57,7 +56,7 @@ public without sharing class SubscriptionManagementService{
 
 
     @SuppressWarnings('PMD.ApexCRUDViolation')
-    public void handleSystemOrderChange(List<Shared_Solar_System_Order__c> sssoList, Map<Id, Shared_Solar_System_Order__c> oldMap) {
+    public void handleSharedSolarSystemOrders(List<Shared_Solar_System_Order__c> sssoList, Map<Id, Shared_Solar_System_Order__c> oldMap) {
         List<Shared_Solar_System__c> sssToUpdate = new List<Shared_Solar_System__c>();
         List<Subscription_Order__c> soListToInsert = new List<Subscription_Order__c>();
         FeatureService featureService = new FeatureService();
@@ -66,19 +65,20 @@ public without sharing class SubscriptionManagementService{
             return;
         }
 
-        for(Shared_Solar_System_Order__c ssso : sssoList) {
-            if (ssso.Approval_Status__c == 'Approved' && oldMap.get(ssso.Id).Approval_Status__c != 'Approved') {
+        List<Shared_Solar_System_Order__c> approvedSSSOs = checkSSSOApproval(sssoList, oldMap);
+
+        for(Shared_Solar_System_Order__c ssso : approvedSSSOs) {
                 Shared_Solar_System__c sss = updateSSSFromSSSO(ssso);
                 sssToUpdate.add(sss);
                 List<Utility_Account_Subscription__c> uasList = uasSelector.selectBySharedSolarSystem(ssso.Shared_Solar_System__c);
                 List<Subscription_Order__c> soList = createSystemChangeOrders(uasList, ssso);
                 soListToInsert.addAll(soList);
-            }
         }
 
         update sssToUpdate;
         insert soListToInsert;
     }
+
 
     public Shared_Solar_System__c updateSSSFromSSSO(Shared_Solar_System_Order__c ssso) {
         Shared_Solar_System__c sssToUpdate = sssSelector.selectOne(ssso.Shared_Solar_System__c);
@@ -96,7 +96,6 @@ public without sharing class SubscriptionManagementService{
 
 
     public List<Subscription_Order__c> createSystemChangeOrders(List<Utility_Account_Subscription__c> uasList, Shared_Solar_System_Order__c ssso) {
-
         Id systemChangeOrderRecordTypeId = Schema.SObjectType.Subscription_Order__c.getRecordTypeInfosByName().get('System Change Order').getRecordTypeId();
         List<Subscription_Order__c> soList = new List<Subscription_Order__c>();
 
@@ -133,4 +132,14 @@ public without sharing class SubscriptionManagementService{
         }
     }
 
+    public List<Shared_Solar_System_Order__c> checkSSSOApproval(List<Shared_Solar_System_Order__c> sssoList, Map<Id, Shared_Solar_System_Order__c> oldMap) {
+        List<Shared_Solar_System_Order__c> approvedSSSOs = new List<Shared_Solar_System_Order__c>();
+        for (Shared_Solar_System_Order__c ssso : sssoList) {
+            if (ssso.Approval_Status__c == 'Approved' && oldMap.get(ssso.Id).Approval_Status__c != 'Approved') {
+                approvedSSSOs.add(ssso);
+            }
+        }
+
+        return approvedSSSOs;
+    }
 }
