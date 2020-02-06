@@ -78,7 +78,7 @@ public class OpportunitiesTest {
         System.assertEquals(true, Opportunities.isCancelledWaitlist(opps[0]));
     }
 
-    @IsTest
+ /*   @IsTest
     public static void testFinishedBilling() {
         List<Opportunity> opps = [
             SELECT Id, (SELECT Id, Name FROM Utility_Account_Subscription_Bills__r)
@@ -116,4 +116,5 @@ public class OpportunitiesTest {
         // bills
         System.assertEquals(false, Opportunities.finishedBilling(opps[0]));
     }
+*/
 }
