@@ -68,16 +68,17 @@
     </fields>
     <fields>
         <fullName>Account__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Account</label>
         <referenceTo>Account</referenceTo>
         <relationshipLabel>Bill Adjustments (Account)</relationshipLabel>
         <relationshipName>Bill_Adjustments1</relationshipName>
-        <required>false</required>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Lookup</type>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <fields>
         <fullName>Adjustment_Amount__c</fullName>
