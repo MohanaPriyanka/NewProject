@@ -283,51 +283,7 @@ public class CustomerCommunicationHandlerTest{
         Test.stopTest();
     }
 
-    public static void createBills(Date billDate, Id sssID){
-        Schedule_Z__c scheduleZ1 = new Schedule_Z__c(
-            Name = '18-0515 Oxford Barrett St. P1',
-            Shared_Solar_System__c = sssID,
-            Status__c = 'Billing'
-        );
-
-        insert scheduleZ1;
-
-        Bill_Period__c bpA1 = new Bill_Period__c(
-            Name = 'sssA - March 2016',
-            Shared_Solar_System__c = sssID,
-            Bill_Date__c = billDate
-        );
-        insert bpA1;
-
-        Production__c prodA1 = new Production__c(
-            Name = 'sssA March Production',
-            Shared_Solar_System__c = sssID,
-            Start_Date__c = billDate.addMonths(-1),
-            End_Date__c = billDate,
-            Production_kWh__c = 160000,
-            Credits_Generated__c = 36000
-        );
-        insert prodA1;
-
-        Transfer__c transferA1 = new Transfer__c(
-            Name = 'Main Transfer - sssA March',
-            Bill_Period__c = bpA1.Id,
-            Date_of_Transfer__c = billDate,
-            Shared_Solar_System__c = sssID,
-            Transfer_Type__c = 'Main',
-            Allocation_Schedule__c = scheduleZ1.Id,
-            Attempted_Transfer__c = 36000,
-            Attempted_kWh_Transfer__c = 160000,
-            Transfer_Amount__c = 36000,
-            Default_Credit_Value__c = 0.2429
-        );
-        insert transferA1;
-
-        TestBillCreationandPayment.runBillPeriod(new List<Id>{bpA1.Id});
-
-    }
-
-    public static void mockZuoraFields(){
+    public static void setDaysPastDue(Date overdueDate, Integer numberOfAccounts){
         List<Account> accounts = [
             SELECT Id,
                 Max_Overdue_Due_Date_Zuora__c,
@@ -335,203 +291,150 @@ public class CustomerCommunicationHandlerTest{
                 Max_Overdue_Due_Date__c,
                 Total_Outstanding_Balance__c
             FROM Account
+            WHERE Parent_Account__c != null
+            ORDER BY Account.Name
         ];
-
+        Integer count = 0;
         for (Account acct : accounts){
-            acct.Max_Overdue_Due_Date_Zuora__c = acct.Max_Overdue_Due_Date__c;
-            acct.Total_Outstanding_Balance_Zuora__c = acct.Total_Outstanding_Balance__c;
+            if (count < numberOfAccounts) {
+                acct.Max_Overdue_Due_Date_Zuora__c = overdueDate;
+                acct.Total_Outstanding_Balance_Zuora__c = 12.00;
+                count += 1;
+            } else {
+                acct.Max_Overdue_Due_Date_Zuora__c = System.today().addDays(15);
+                acct.Total_Outstanding_Balance_Zuora__c = 100;
+            }
         }
         update accounts;
     }
 
     public static testmethod void testThreeDayWarning(){
+        setDaysPastDue(System.Today().addDays(3), 2);
+
         Test.startTest();
-
-        List<Shared_Solar_System__c> sss = [SELECT Id FROM Shared_Solar_System__c ORDER BY Name ASC ];
-
-        createBills(System.Today() - 17, sss[2].Id); // 3 day warning
-
-        List <Account_Bill__c> listaccountBills = [ SELECT Id, Published__c
-        FROM Account_Bill__c];
-
-        for (Account_Bill__c acctBill : listaccountBills) {
-            acctBill.Published__c = True;
-        }
-        update listaccountBills;
-        mockZuoraFields();
-
-        Datetime dt = Datetime.now();
-        // Test both the scheduling of the class and the execution of the batch
-        CustomerCommunicationHandler m = new CustomerCommunicationHandler();
-        Database.executeBatch(m, 10);
-        String cronExpress = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
-        String jobId = System.schedule('CustomerCommunicationHandler', cronExpress, m );
+            Datetime dt = Datetime.now();
+            // Test both the scheduling of the class and the execution of the batch
+            CustomerCommunicationHandler m = new CustomerCommunicationHandler();
+            Database.executeBatch(m, 10);
+            String cronExpress = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
+            String jobId = System.schedule('CustomerCommunicationHandler', cronExpress, m );
         Test.stopTest();
 
-        List<Account> accountlist = [SELECT Id, Name, RecordTypeId, Max_Overdue_Due_Date_Merge__c,
-                                    Total_Outstanding_Balance_Merge__c, Total_Billed__c,
-                                    Send_Bills_Contact__c, Days_Past_Due__c
-                                    FROM Account];
-        System.assertNotEquals(0, accountlist.size());
-
-        CronTrigger ct = [SELECT Id, CronExpression, TimesTriggered,
-                            NextFireTime
-                          FROM CronTrigger WHERE id = :jobId];
+        CronTrigger ct = [
+            SELECT Id, CronExpression, TimesTriggered, NextFireTime
+            FROM CronTrigger
+            WHERE id = : jobId
+        ];
 
         System.assertEquals(dt.minute(), ct.NextFireTime.minute());
         System.assertEquals(dt.hour(), ct.NextFireTime.hour());
         System.assertEquals(dt.day(), ct.NextFireTime.day());
         System.assertEquals(dt.month(), ct.NextFireTime.month());
 
-        List<Error_Log__c> errorList = [SELECT Id, Class__c, Method__c, User__c
-                                        FROM Error_Log__c];
+        List<Error_Log__c> errorList = [
+            SELECT Id, Class__c, Method__c, User__c
+            FROM Error_Log__c
+        ];
         System.assertEquals(0, errorList.size());
-
-        System.assertNotEquals(MessagingService.emailsSent.size(), 0);
+        System.assertEquals(MessagingService.emailsSent.size(), 2);
     }
 
     public static testmethod void testThirtyDaysLate(){
+        setDaysPastDue(System.Today().addDays(-30), 1);
+
         Test.startTest();
-
-        List<Shared_Solar_System__c> sss = [SELECT Id FROM Shared_Solar_System__c ORDER BY Name ASC ];
-
-        createBills(System.Today() - 50, sss[1].Id); // 30 days late
-
-        List <Account_Bill__c> listaccountBills = [ SELECT Id, Published__c
-        FROM Account_Bill__c];
-
-        for (Account_Bill__c acctBill : listaccountBills) {
-            acctBill.Published__c = True;
-        }
-        update listaccountBills;
-        mockZuoraFields();
-
-        Datetime dt = Datetime.now();
-        // Test both the scheduling of the class and the batch execution
-        CustomerCommunicationHandler m = new CustomerCommunicationHandler();
-        Database.executeBatch(m, 10);
-        String cronExpress = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
-        String jobId = System.schedule('CustomerCommunicationHandler', cronExpress, m );
+            Datetime dt = Datetime.now();
+            // Test both the scheduling of the class and the execution of the batch
+            CustomerCommunicationHandler m = new CustomerCommunicationHandler();
+            Database.executeBatch(m, 10);
+            String cronExpress = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
+            String jobId = System.schedule('CustomerCommunicationHandler', cronExpress, m );
         Test.stopTest();
 
-        List<Account> accountlist = [SELECT Id, Name, RecordTypeId, Max_Overdue_Due_Date_Merge__c,
-            Total_Outstanding_Balance_Merge__c, Total_Billed__c,
-            Send_Bills_Contact__c, Days_Past_Due__c
-        FROM Account];
-        System.assertNotEquals(0, accountlist.size());
-
-        CronTrigger ct = [SELECT Id, CronExpression, TimesTriggered,
-            NextFireTime
-        FROM CronTrigger WHERE id = :jobId];
+        CronTrigger ct = [
+            SELECT Id, CronExpression, TimesTriggered, NextFireTime
+            FROM CronTrigger
+            WHERE id = : jobId
+        ];
 
         System.assertEquals(dt.minute(), ct.NextFireTime.minute());
         System.assertEquals(dt.hour(), ct.NextFireTime.hour());
         System.assertEquals(dt.day(), ct.NextFireTime.day());
         System.assertEquals(dt.month(), ct.NextFireTime.month());
 
-        List<Error_Log__c> errorList = [SELECT Id, Class__c, Method__c, User__c
-        FROM Error_Log__c];
+        List<Error_Log__c> errorList = [
+            SELECT Id, Class__c, Method__c, User__c
+            FROM Error_Log__c
+        ];
         System.assertEquals(0, errorList.size());
-
-        System.assertNotEquals(MessagingService.emailsSent.size(), 0);
+        System.assertEquals(MessagingService.emailsSent.size(), 1);
     }
 
     public static testmethod void testNintyDaysLate(){
+        setDaysPastDue(System.Today().addDays(-90), 3);
+
         Test.startTest();
-
-        List<Shared_Solar_System__c> sss = [SELECT Id FROM Shared_Solar_System__c ORDER BY Name ASC ];
-
-        createBills(System.Today() - 110, sss[0].Id); // 90 days late
-
-        List <Account_Bill__c> listaccountBills = [ SELECT Id, Published__c
-        FROM Account_Bill__c];
-
-        for (Account_Bill__c acctBill : listaccountBills) {
-            acctBill.Published__c = True;
-        }
-        update listaccountBills;
-        mockZuoraFields();
-
-        Datetime dt = Datetime.now();
-        // Test both the scheduling of the class and the execution of the batch
-        CustomerCommunicationHandler m = new CustomerCommunicationHandler();
-        Database.executeBatch(m, 10);
-        String cronExpress = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
-        String jobId = System.schedule('CustomerCommunicationHandler', cronExpress, m );
+            Datetime dt = Datetime.now();
+            // Test both the scheduling of the class and the execution of the batch
+            CustomerCommunicationHandler m = new CustomerCommunicationHandler();
+            Database.executeBatch(m, 10);
+            String cronExpress = '0 '+ dt.minute() + ' ' + dt.hour() + ' ' + dt.day() + ' ' + dt.month() + ' ?';
+            String jobId = System.schedule('CustomerCommunicationHandler', cronExpress, m );
         Test.stopTest();
 
-        List<Account> accountlist = [SELECT Id, Name, RecordTypeId, Max_Overdue_Due_Date_Merge__c,
-            Total_Outstanding_Balance_Merge__c, Total_Billed__c,
-            Send_Bills_Contact__c, Days_Past_Due__c
-        FROM Account];
-        System.assertNotEquals(0, accountlist.size());
-
-        CronTrigger ct = [SELECT Id, CronExpression, TimesTriggered,
-            NextFireTime
-        FROM CronTrigger WHERE id = :jobId];
+        CronTrigger ct = [
+            SELECT Id, CronExpression, TimesTriggered, NextFireTime
+            FROM CronTrigger
+            WHERE id = : jobId
+        ];
 
         System.assertEquals(dt.minute(), ct.NextFireTime.minute());
         System.assertEquals(dt.hour(), ct.NextFireTime.hour());
         System.assertEquals(dt.day(), ct.NextFireTime.day());
         System.assertEquals(dt.month(), ct.NextFireTime.month());
 
-        List<Error_Log__c> errorList = [SELECT Id, Class__c, Method__c, User__c
-        FROM Error_Log__c];
+        List<Error_Log__c> errorList = [
+            SELECT Id, Class__c, Method__c, User__c
+            FROM Error_Log__c
+        ];
         System.assertEquals(0, errorList.size());
-
-        System.assertNotEquals(MessagingService.emailsSent.size(), 0);
+        System.assertEquals(MessagingService.emailsSent.size(), 3);
     }
 
     public static testmethod void testCaseCreation(){
+        // Thirty days late should create a case
+        setDaysPastDue(System.Today().addDays(-30), 3);
+
         Test.startTest();
-
-        List<Shared_Solar_System__c> sss = [SELECT Id FROM Shared_Solar_System__c ORDER BY Name ASC ];
-
-        createBills(System.Today() - 50, sss[1].Id); // 30 days late, should create case
-
-        List <Account_Bill__c> listaccountBills = [ SELECT Id, Published__c
-        FROM Account_Bill__c];
-
-        for (Account_Bill__c acctBill : listaccountBills) {
-            acctBill.Published__c = True;
-        }
-        update listaccountBills;
-        mockZuoraFields();
-
-        CustomerCommunicationHandler m = new CustomerCommunicationHandler();
-        Database.executeBatch(m, 10);
+            Datetime dt = Datetime.now();
+            CustomerCommunicationHandler m = new CustomerCommunicationHandler();
+            Database.executeBatch(m, 10);
         Test.stopTest();
 
-        List<Case> caseList = [SELECT Id, Subject
-                                FROM Case
-                                WHERE Subject LIKE '%Collections Call:%'];
+        List<Case> caseList = [
+            SELECT Id, Subject
+            FROM Case
+            WHERE Subject LIKE '%Collections Call:%'
+        ];
 
-        System.assertNotEquals(0, caseList.size());
+        System.assertEquals(3, caseList.size());
     }
 
     public static testmethod void testCaseNotCreated(){
+        // Seven days late should not create a case
+        setDaysPastDue(System.Today().addDays(-7), 3);
+
         Test.startTest();
-
-        List<Shared_Solar_System__c> sss = [SELECT Id FROM Shared_Solar_System__c ORDER BY Name ASC ];
-
-        createBills(System.Today() - 27, sss[1].Id); // 7 days late, should not create case
-
-        List <Account_Bill__c> listaccountBills = [ SELECT Id, Published__c
-        FROM Account_Bill__c];
-
-        for (Account_Bill__c acctBill : listaccountBills) {
-            acctBill.Published__c = True;
-        }
-        update listaccountBills;
-        mockZuoraFields();
-
-        CustomerCommunicationHandler m = new CustomerCommunicationHandler();
-        Database.executeBatch(m, 10);
+            Datetime dt = Datetime.now();
+            CustomerCommunicationHandler m = new CustomerCommunicationHandler();
+            Database.executeBatch(m, 10);
         Test.stopTest();
 
-        List<Case> caseList = [SELECT Id, Subject
-        FROM Case
-        WHERE Subject LIKE '%Collections Call:%'];
+        List<Case> caseList = [
+            SELECT Id, Subject
+            FROM Case
+            WHERE Subject LIKE '%Collections Call:%'
+        ];
 
         System.assertEquals(0, caseList.size());
     }
