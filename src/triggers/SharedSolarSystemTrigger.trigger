@@ -5,5 +5,6 @@ trigger SharedSolarSystemTrigger on Shared_Solar_System__c (before insert, after
     SharedSolarSystemHandler sharedSolarSystemHandler = new SharedSolarSystemHandler();
     if(Trigger.isUpdate && Trigger.isBefore){
         sharedSolarSystemHandler.summarizeCapacity(Trigger.new);
+        sharedSolarSystemHandler.queueClientBrandKeyUpdate(Trigger.oldMap, Trigger.new);
     }
 }

@@ -98,17 +98,6 @@
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Adjustments_UASB__c</fullName>
-        <externalId>false</externalId>
-        <label>Adjustments UASB</label>
-        <summarizedField>UASB__c.Adjustment_Amount__c</summarizedField>
-        <summaryForeignKey>UASB__c.System_Bill__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
         <fullName>Adjustments__c</fullName>
         <externalId>false</externalId>
         <label>Adjustments</label>
@@ -269,20 +258,6 @@
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Bill_Date__c</fullName>
-        <description>Billing Dates on SB: 
-Used in Conga: Bill_Date__c and Due_Date__c are set by roll up fields
-Date__c and Bill_Due_Date__c are set on creation by the PU. Can be used in formulas for days past due</description>
-        <externalId>false</externalId>
-        <label>Bill Date</label>
-        <summarizedField>UASB__c.Bill_Date__c</summarizedField>
-        <summaryForeignKey>UASB__c.System_Bill__c</summaryForeignKey>
-        <summaryOperation>min</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
         <fullName>Bill_Due_Date__c</fullName>
         <externalId>false</externalId>
         <formula>IF(Days_in_Bill_Period__c = 0, Date__c + 20, Date__c +  Days_in_Bill_Period__c)</formula>
@@ -305,50 +280,6 @@ Date__c and Bill_Due_Date__c are set on creation by the PU. Can be used in formu
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Billing_Period_End_DateRollup__c</fullName>
-        <externalId>false</externalId>
-        <label>Billing Period End Date</label>
-        <summarizedField>UASB__c.Billing_Period_End_Date__c</summarizedField>
-        <summaryForeignKey>UASB__c.System_Bill__c</summaryForeignKey>
-        <summaryOperation>max</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
-        <fullName>Billing_Period_End_Date__c</fullName>
-        <externalId>false</externalId>
-        <formula>Shared_Solar_System__r.Billing_Period_End_Date__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Billing Period End Date</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Billing_Period_Start_Date_Rollup__c</fullName>
-        <externalId>false</externalId>
-        <label>Billing Period Start Date</label>
-        <summarizedField>UASB__c.Billing_Period_Start_Date__c</summarizedField>
-        <summaryForeignKey>UASB__c.System_Bill__c</summaryForeignKey>
-        <summaryOperation>min</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
-        <fullName>Billing_Period_Start_Date__c</fullName>
-        <externalId>false</externalId>
-        <formula>Shared_Solar_System__r.Billing_Period_Start_Date__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Billing Period Start Date</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Date</type>
     </fields>
     <fields>
         <fullName>Carry_Forward_Adjustments__c</fullName>
@@ -428,18 +359,6 @@ Date__c and Bill_Due_Date__c are set on creation by the PU. Can be used in formu
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Credit_Adjustments__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Adjusted Credits from Production type Bill Adjustments</inlineHelpText>
-        <label>Credit Adjustments</label>
-        <summarizedField>UASB__c.Adjusted_Credits__c</summarizedField>
-        <summaryForeignKey>UASB__c.System_Bill__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
         <fullName>Date_Refunded__c</fullName>
         <externalId>false</externalId>
         <label>Date Refunded</label>
@@ -512,17 +431,6 @@ IF( Balance_Net_Late_Payments__c &gt; 1, (TODAY() - Bill_Due_Date__c), 0))</form
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Discounted_Bill__c</fullName>
-        <externalId>false</externalId>
-        <label>Discounted Bill</label>
-        <summarizedField>UASB__c.Discounted_Bill__c</summarizedField>
-        <summaryForeignKey>UASB__c.System_Bill__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
         <fullName>Distribute_This_Balance_12mo__c</fullName>
         <defaultValue>false</defaultValue>
         <description>As of Jan 2019, if we initiate new payment plans with late fees, we&apos;ll likely not handle them correctly (see Richard Ruff)</description>
@@ -545,17 +453,6 @@ IF( Balance_Net_Late_Payments__c &gt; 1, (TODAY() - Bill_Due_Date__c), 0))</form
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Due_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>XXDue Date</label>
-        <summarizedField>UASB__c.Due_Date__c</summarizedField>
-        <summaryForeignKey>UASB__c.System_Bill__c</summaryForeignKey>
-        <summaryOperation>min</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
     </fields>
     <fields>
         <fullName>Due_This_Month__c</fullName>
@@ -712,28 +609,6 @@ IF (YTD_kWh_Production__c/Opportunity__r.Product__r.Annual_kWh_Maximum__c &gt; 0
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Percent</type>
-    </fields>
-    <fields>
-        <fullName>NMC_Rate__c</fullName>
-        <externalId>false</externalId>
-        <label>NMC Rate</label>
-        <summarizedField>UASB__c.NMC_Rate__c</summarizedField>
-        <summaryForeignKey>UASB__c.System_Bill__c</summaryForeignKey>
-        <summaryOperation>min</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
-        <fullName>Net_Metering_Credits_Allocated__c</fullName>
-        <externalId>false</externalId>
-        <label>Net Metering Credits Allocated</label>
-        <summarizedField>UASB__c.Net_Metering_Credits_Allocated__c</summarizedField>
-        <summaryForeignKey>UASB__c.System_Bill__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
     </fields>
     <fields>
         <fullName>Opportunity_Id__c</fullName>
@@ -898,17 +773,6 @@ IF (YTD_kWh_Production__c/Opportunity__r.Product__r.Annual_kWh_Maximum__c &gt; 0
         <type>Summary</type>
     </fields>
     <fields>
-        <fullName>Production_kWH__c</fullName>
-        <externalId>false</externalId>
-        <label>Production (kWH)</label>
-        <summarizedField>UASB__c.Subscription_Production_kWh__c</summarizedField>
-        <summaryForeignKey>UASB__c.System_Bill__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
         <fullName>Project_Entity__c</fullName>
         <externalId>false</externalId>
         <formula>Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Name</formula>
@@ -998,29 +862,6 @@ IF (YTD_kWh_Production__c/Opportunity__r.Product__r.Annual_kWh_Maximum__c &gt; 0
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Savings_Adjustments__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Adjusted Savings from Production type Bill Adjustments</inlineHelpText>
-        <label>Savings Adjustments</label>
-        <summarizedField>UASB__c.Adjusted_Discount__c</summarizedField>
-        <summaryForeignKey>UASB__c.System_Bill__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
-        <fullName>Savings__c</fullName>
-        <externalId>false</externalId>
-        <label>Savings</label>
-        <summarizedField>UASB__c.Savings__c</summarizedField>
-        <summaryForeignKey>UASB__c.System_Bill__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
     </fields>
     <fields>
         <fullName>Servicing_on_Behalf_of__c</fullName>
@@ -1177,16 +1018,6 @@ IF (YTD_kWh_Production__c/Opportunity__r.Product__r.Annual_kWh_Maximum__c &gt; 0
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>UASB_Count__c</fullName>
-        <externalId>false</externalId>
-        <label>UASB Count</label>
-        <summaryForeignKey>UASB__c.System_Bill__c</summaryForeignKey>
-        <summaryOperation>count</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Summary</type>
-    </fields>
-    <fields>
         <fullName>Unique_ID__c</fullName>
         <externalId>true</externalId>
         <label>Unique ID</label>
@@ -1261,7 +1092,6 @@ IF (YTD_kWh_Production__c/Opportunity__r.Product__r.Annual_kWh_Maximum__c &gt; 0
         <columns>NAME</columns>
         <columns>Due_This_Month__c</columns>
         <columns>Carry_Over_Balance__c</columns>
-        <columns>Bill_Date__c</columns>
         <columns>Bill_Due_Date__c</columns>
         <columns>Shared_Solar_System__c</columns>
         <columns>CREATED_DATE</columns>
@@ -1275,7 +1105,7 @@ IF (YTD_kWh_Production__c/Opportunity__r.Product__r.Annual_kWh_Maximum__c &gt; 0
         <type>Text</type>
     </nameField>
     <pluralLabel>System Bills</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
     <validationRules>
         <fullName>Published_Bill_Adjustments</fullName>
