@@ -263,40 +263,6 @@ public with sharing class ZuoraInvoiceServiceTest {
         System.assert(errorLogs[0].Message__c.contains('Call downloadPDFs with fewer'));
     }
 
-    /*
-     * Upload to Letterstream tests
-     */
-    @IsTest
-    private static void testBatchAndQueue() {
-        List<Zuora__ZInvoice__c> invoices = ZuoraInvoiceSelector.getInvoicesToMail();
-        Set<Account> accounts = new Set<Account>();
-        for (Zuora__ZInvoice__c zInvoice : invoices) {
-            Account account = new Account(
-                Id = zInvoice.Zuora__BillingAccount__r.Zuora__Account__c,
-                Name = 'Test',
-                BillingStreet = 'Street',
-                BillingCity = 'City',
-                BillingState = 'Massachusetts',
-                BillingPostalCode = 'PostalCode'
-            );
-            accounts.add(account);
-        }
-        update new List<Account>(accounts);
-
-        ZuoraAPIHelper.setZuoraLive(true);
-        Test.startTest();
-        InvocableCSBillLetterStreamSend.sendLetters();
-        Test.stopTest();
-
-        List<Error_Log__c> errorLogs = [
-            SELECT Message__c
-            FROM Error_Log__c
-            WHERE Severity__c = 'Error'
-        ];
-        System.assertEquals(0, errorLogs.size());
-        System.assertEquals(1, ContentMailerService.calloutsMade);
-    }
-
     @IsTest
     private static void testGetAllContentParamsToQueueValidAddresses() {
         List<Zuora__ZInvoice__c> invoices = ZuoraInvoiceSelector.getInvoicesToMail();
