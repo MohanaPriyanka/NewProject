@@ -1224,6 +1224,28 @@ CASE(Days_Past_Due__c,
         </valueSet>
     </fields>
     <fields>
+        <fullName>Credits_Allocated_Adjustments__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Rollup of Credits Allocated from Adjustments</inlineHelpText>
+        <label>Credits Allocated Adjustments</label>
+        <summarizedField>Bill_Adjustment__c.Credits_Allocated__c</summarizedField>
+        <summaryForeignKey>Bill_Adjustment__c.Account__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Credits_Allocated_UASB__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Rollup of credits allocated from UASBs</inlineHelpText>
+        <label>Credits Allocated UASB</label>
+        <summarizedField>UASB__c.Credits_Allocated__c</summarizedField>
+        <summaryForeignKey>UASB__c.Account__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <type>Summary</type>
+    </fields>
+    <fields>
         <fullName>Custom_ID__c</fullName>
         <externalId>false</externalId>
         <label>Partner Custom ID</label>
@@ -2976,6 +2998,28 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Savings_Adjustments__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Rollup summary of savings from adjustments linked to this account</inlineHelpText>
+        <label>Savings Adjustments</label>
+        <summarizedField>Bill_Adjustment__c.Discount__c</summarizedField>
+        <summaryForeignKey>Bill_Adjustment__c.Account__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Savings_UASB__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Rollup summary of Savings on UASBs linked to the Account</inlineHelpText>
+        <label>Savings UASB</label>
+        <summarizedField>UASB__c.Savings__c</summarizedField>
+        <summaryForeignKey>UASB__c.Account__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <type>Summary</type>
+    </fields>
+    <fields>
         <fullName>Scout_Contact__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -3736,6 +3780,18 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <type>Summary</type>
     </fields>
     <fields>
+        <fullName>Total_Credits_Allocated__c</fullName>
+        <externalId>false</externalId>
+        <formula>Credits_Allocated_Adjustments__c + Credits_Allocated_UASB__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Total Credits Allocated</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>Total_Late_Fees__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Sum of all Late Fees on Account</inlineHelpText>
@@ -3797,6 +3853,18 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <summaryOperation>sum</summaryOperation>
         <trackHistory>false</trackHistory>
         <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Total_Savings__c</fullName>
+        <externalId>false</externalId>
+        <formula>Savings_Adjustments__c + Savings_UASB__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Total Savings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Tracking_Trigger_Report__c</fullName>
