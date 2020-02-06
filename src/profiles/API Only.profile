@@ -46061,6 +46061,7 @@
     </fieldPermissions>
     <layoutAssignments>
         <layout>Account-Account Layout</layout>
+        <recordType>Account.BWC_Principals</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Account-Account Layout</layout>
@@ -46072,7 +46073,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Account-Account Layout</layout>
-        <recordType>Account.BWC_Principals</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Account-Account Layout</layout>
@@ -46153,10 +46153,10 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>BlueWave_Surveys__c-Net Promoter Score</layout>
+        <recordType>BlueWave_Surveys__c.Net_Promoter_Score</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>BlueWave_Surveys__c-Net Promoter Score</layout>
-        <recordType>BlueWave_Surveys__c.Net_Promoter_Score</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>BlueWave_Surveys__c-Net Promoter Score - Partner</layout>
@@ -46201,10 +46201,10 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Case-Case Layout</layout>
-        <recordType>Case.Case</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Case-Case Layout</layout>
+        <recordType>Case.Case</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Case-Client Services</layout>
@@ -46348,10 +46348,10 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Entity__c-BWC Project Entity Layout</layout>
+        <recordType>Entity__c.BWC_Project_Entity</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Entity__c-BWC Project Entity Layout</layout>
-        <recordType>Entity__c.BWC_Project_Entity</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Entity__c-BWC SE Project Entity Layout</layout>
@@ -46366,14 +46366,14 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Equipment__c-EPC Equipment Layout</layout>
-        <recordType>Equipment__c.Neutral_Ground_Reactor</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Equipment__c-EPC Equipment Layout</layout>
         <recordType>Equipment__c.Equipment_Default</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Equipment__c-EPC Equipment Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Equipment__c-EPC Equipment Layout</layout>
+        <recordType>Equipment__c.Neutral_Ground_Reactor</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Equipment__c-EPC Equipment Layout</layout>
@@ -46412,10 +46412,10 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Feeder__c-Feeder</layout>
-        <recordType>Feeder__c.Feeder</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Feeder__c-Feeder</layout>
+        <recordType>Feeder__c.Feeder</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Financial_Relationship__c-Financing Relationship Layout</layout>
@@ -46444,18 +46444,18 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Knowledge__kav-Article Layout</layout>
-        <recordType>Knowledge__kav.Solution</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Knowledge__kav-Article Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Knowledge__kav-Article Layout</layout>
         <recordType>Knowledge__kav.How_To</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Knowledge__kav-Article Layout</layout>
+        <recordType>Knowledge__kav.Solution</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Knowledge__kav-Article Layout</layout>
         <recordType>Knowledge__kav.Q_A</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Knowledge__kav-Article Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-BFG - Community Solar %28Commercial%29</layout>
@@ -46478,6 +46478,10 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-BFG - Standard Solar Loan</layout>
+        <recordType>Lead.BFG_SC_Solar_Loan</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Lead-BFG - Standard Solar Loan</layout>
         <recordType>Lead.BFG_Solar_Loan</recordType>
     </layoutAssignments>
     <layoutAssignments>
@@ -46486,11 +46490,11 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-BFG - Standard Solar Loan</layout>
-        <recordType>Lead.BFG_SC_Solar_Loan</recordType>
+        <recordType>Lead.BFG_NC_Solar_Loan</recordType>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Lead-BFG - Standard Solar Loan</layout>
-        <recordType>Lead.BFG_NC_Solar_Loan</recordType>
+        <layout>Lead-BFG - Standard Solar Loan %28Co-Applicant%29</layout>
+        <recordType>Lead.BFG_MA_Solar_Loan_Co_Applicant</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-BFG - Standard Solar Loan %28Co-Applicant%29</layout>
@@ -46499,10 +46503,6 @@
     <layoutAssignments>
         <layout>Lead-BFG - Standard Solar Loan %28Co-Applicant%29</layout>
         <recordType>Lead.BFG_SC_Solar_Loan_Co_Applicant</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Lead-BFG - Standard Solar Loan %28Co-Applicant%29</layout>
-        <recordType>Lead.BFG_MA_Solar_Loan_Co_Applicant</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-C%26I</layout>
@@ -46648,11 +46648,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-BFG</layout>
-        <recordType>Opportunity.BW_Community_Solar_BCS</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Opportunity-BFG</layout>
-        <recordType>Opportunity.Finance</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-BFG</layout>
@@ -46660,6 +46655,11 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-BFG</layout>
+        <recordType>Opportunity.BW_Community_Solar_BCS</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Opportunity-BFG</layout>
+        <recordType>Opportunity.Finance</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-BFG - Community Solar %28Anchor%29</layout>
@@ -46687,11 +46687,11 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-Solar Loan</layout>
-        <recordType>Opportunity.BFG_NC_Solar_Loan_Co_Applicant</recordType>
+        <recordType>Opportunity.BFG_MA_Solar_Loan_Co_Applicant</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-Solar Loan</layout>
-        <recordType>Opportunity.BFG_SC_Solar_Loan_Co_Applicant</recordType>
+        <recordType>Opportunity.BFG_SC_Solar_Loan</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-Solar Loan</layout>
@@ -46699,11 +46699,7 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-Solar Loan</layout>
-        <recordType>Opportunity.BFG_MA_Solar_Loan_Co_Applicant</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Opportunity-Solar Loan</layout>
-        <recordType>Opportunity.BFG_DOER_Solar_Loan_Co_Applicant</recordType>
+        <recordType>Opportunity.BFG_NC_Solar_Loan_Co_Applicant</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-Solar Loan</layout>
@@ -46711,11 +46707,15 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-Solar Loan</layout>
-        <recordType>Opportunity.BFG_Solar_Loan</recordType>
+        <recordType>Opportunity.BFG_DOER_Solar_Loan_Co_Applicant</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-Solar Loan</layout>
-        <recordType>Opportunity.BFG_SC_Solar_Loan</recordType>
+        <recordType>Opportunity.BFG_SC_Solar_Loan_Co_Applicant</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Opportunity-Solar Loan</layout>
+        <recordType>Opportunity.BFG_Solar_Loan</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>OpportunityLineItem-Opportunity Product Layout</layout>
@@ -46765,7 +46765,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Partner_Task__c-Child Partner Task</layout>
-        <recordType>Partner_Task__c.Child_Partner_Task</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Partner_Task__c-Child Partner Task</layout>
@@ -46773,6 +46772,7 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Partner_Task__c-Child Partner Task</layout>
+        <recordType>Partner_Task__c.Child_Partner_Task</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Partner__c-Partner Layout</layout>
@@ -46791,10 +46791,10 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Product_Profile__c-Community Solar Layout</layout>
-        <recordType>Product_Profile__c.Community_Solar</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Product_Profile__c-Community Solar Layout</layout>
+        <recordType>Product_Profile__c.Community_Solar</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Product_Profile__c-Solar Loan Layout</layout>
@@ -46848,10 +46848,10 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Residential_Equipment__c-MSLP Residential Equipment</layout>
+        <recordType>Residential_Equipment__c.MSLP</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Residential_Equipment__c-MSLP Residential Equipment</layout>
-        <recordType>Residential_Equipment__c.MSLP</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>SMART_Data__c-SMART Data Layout</layout>
@@ -46922,14 +46922,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Task-Task Layout</layout>
-        <recordType>Task.Founder_Tasks</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Task-Task Layout</layout>
-        <recordType>Task.Trevor_Hardy_Task</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Task-Task Layout</layout>
         <recordType>Task.Solar_Loan_Partner</recordType>
     </layoutAssignments>
     <layoutAssignments>
@@ -46938,6 +46930,14 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Task-Task Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Task-Task Layout</layout>
+        <recordType>Task.Founder_Tasks</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Task-Task Layout</layout>
+        <recordType>Task.Trevor_Hardy_Task</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Task-Task Layout</layout>

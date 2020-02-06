@@ -13,7 +13,7 @@ trigger SharedSolarSystemOrderTrigger on Shared_Solar_System_Order__c (after ins
     SubscriptionManagementService subscriptionManagementService = new SubscriptionManagementService();
     switch on Trigger.operationType {
         when AFTER_UPDATE {
-            subscriptionManagementService.handleSystemOrderChange(Trigger.new, Trigger.oldMap);
+            subscriptionManagementService.handleSharedSolarSystemOrders(Trigger.new, Trigger.oldMap);
         }
     }
 
