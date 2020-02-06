@@ -2867,6 +2867,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Bill_Adjustment__c.Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Bill_Adjustment__c.Adjustment_Amount__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -31128,11 +31133,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>UASB__c.Account_Bill_ID__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>UASB__c.Account__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
