@@ -1012,26 +1012,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>System_Bill__c.Billing_Period_End_DateRollup__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>System_Bill__c.Billing_Period_End_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>System_Bill__c.Billing_Period_Start_Date_Rollup__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>System_Bill__c.Billing_Period_Start_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>System_Bill__c.Carry_Forward_Adjustments__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1063,11 +1043,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>System_Bill__c.Days_Past_Due__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>System_Bill__c.Discounted_Bill__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1118,16 +1093,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>System_Bill__c.Month__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>System_Bill__c.NMC_Rate__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>System_Bill__c.Net_Metering_Credits_Allocated__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1213,11 +1178,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>System_Bill__c.Refund_this_Balance__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>System_Bill__c.Savings__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
