@@ -214,7 +214,7 @@ private class SubscriptionManagementServiceTest {
                 '"Annual_kWh_Subscription_Future_Rollup__c" : 16240.38,' +
                 '"Future_Share_of_System_Rollup__c" : 1.14,' +
                 '"Annual_Cost_Future_Rollup__c" : 2420.00,' +
-                '"Shared_Solar_System__c": "a1J29000000tjOkEAI"' +
+                '"Shared_Solar_System__c" : "' + sssId + '"' +
                 '},' +
                 '{"attributes" : {"type" : "Utility_Account_Subscription__c","url" : "/services/data/v47.0/sobjects/Utility_Account_Subscription__c/a1d29000001C3xuAAC"},' +
                 '"Id" : "a1d2900000222xuAAC",' +
@@ -223,7 +223,7 @@ private class SubscriptionManagementServiceTest {
                 '"Annual_kWh_Subscription_Future_Rollup__c" : 16240.38,' +
                 '"Future_Share_of_System_Rollup__c" : 1.14,' +
                 '"Annual_Cost_Future_Rollup__c" : 2420.00,' +
-                '"Shared_Solar_System__c": "a1J29000000tjOkEAI"' +
+                '"Shared_Solar_System__c" : "' + sssId + '"' +
                 '}]';
 
             String uasByMap = '[{"attributes" : {"type" : "Utility_Account_Subscription__c","url" : "/services/data/v47.0/sobjects/Utility_Account_Subscription__c/a1d29000001C3xuAAC"},' +
@@ -236,9 +236,9 @@ private class SubscriptionManagementServiceTest {
                 '"Id" : "a1D29000000cScGEAU",' +
                 '"Value_of_NMC__c" : 0.184800},' +
                 '"Product__c" : "01t29000003pkTBAAY"},' +
-                '"Shared_Solar_System__c": "a1J29000000tjOkEAI",' +
+                '"Shared_Solar_System__c" : "' + sssId + '",' +
                 '"Shared_Solar_System__r": { "attributes" : {"type" : "Shared_Solar_System__c","url" : "/services/data/v47.0/sobjects/Shared_Solar_System__c/a1J29000000tjOkEAI"},' +
-                '"Id" : "a1J29000000tjOkEAI",' +
+                '"Id" : "' + sssId + '",' +
                 '"Name" : "SSS Test",' +
                 '"Client_Account__c" : "0012900000WKlZoAAL",' +
                 '"Expected_Yield_kWh_kW__c" : 1300.0000,' +
@@ -259,9 +259,9 @@ private class SubscriptionManagementServiceTest {
                 '"Id" : "a1D29000000cScGEAU",' +
                 '"Value_of_NMC__c" : 0.184800},' +
                 '"Product__c" : "01t29000003pkTBAAY"},' +
-                '"Shared_Solar_System__c": "a1J29000000tjOkEAI",' +
+                '"Shared_Solar_System__c" : "' + sssId + '",' +
                 '"Shared_Solar_System__r": { "attributes" : {"type" : "Shared_Solar_System__c","url" : "/services/data/v47.0/sobjects/Shared_Solar_System__c/a1J29000000tjOkEAI"},' +
-                '"Id" : "a1J29000000tjOkEAI",' +
+                '"Id" : "' + sssId + '",' +
                 '"Name" : "SSS Test",' +
                 '"Client_Account__c" : "0012900000WKlZoAAL",' +
                 '"Expected_Yield_kWh_kW__c" : 1300.0000,' +
