@@ -35,7 +35,7 @@ public without sharing class SubscriptionManagementService{
     }
 
     @SuppressWarnings('PMD.ApexCRUDViolation')
-    private void stampApprovedValues(List<Subscription_Order__c> soList) {
+    private List<Subscription_Order__c> stampApprovedValues(List<Subscription_Order__c> soList) {
         List<Subscription_Order__c> stampedSOs = new List<Subscription_Order__c>();
         for (Subscription_Order__c so : soList) {
             Subscription_Order__c clone = new Subscription_Order__c(Id = so.Id);
@@ -49,9 +49,7 @@ public without sharing class SubscriptionManagementService{
             stampedSOs.add(clone);
         }
 
-        if (stampedSOs.size() > 0 ) {
-            update stampedSOs;
-        }
+        return stampedSOs;
     }
 
 
@@ -127,9 +125,9 @@ public without sharing class SubscriptionManagementService{
             }
         }
 
-        if (approvedSOs.size() > 0 ) {
-            stampApprovedValues(approvedSOs);
-        }
+        List<Subscription_Order__c> updateSOs = stampApprovedValues(approvedSOs);
+        update updateSOs;
+
     }
 
     public List<Shared_Solar_System_Order__c> checkSSSOApproval(List<Shared_Solar_System_Order__c> sssoList, Map<Id, Shared_Solar_System_Order__c> oldMap) {

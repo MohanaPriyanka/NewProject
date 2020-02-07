@@ -23,7 +23,6 @@ public without sharing class UASSelector {
             WHERE Utility_Account_Log__r.Account__c = :accounts
         ];
     }
-
     public static List<Utility_Account_Subscription__c> selectByUAL(Set<Id> ualIds) {
         return [
             SELECT Id,
@@ -38,7 +37,6 @@ public without sharing class UASSelector {
             WHERE Utility_Account_Log__c IN :ualIds
         ];
     }
-
     public static List<Utility_Account_Subscription__c> selectByIds(Set<Id> uasIds) {
         return [
             SELECT Id,
@@ -76,7 +74,6 @@ public without sharing class UASSelector {
         ]);
         return uasWithClientMap;
     }
-
     public List<AggregateResult> getBrandKeySummary(Set<Id> parentAccountIds) {
         List<AggregateResult> uasSummary = [
             SELECT COUNT(Id) numberOfRecords,
@@ -93,7 +90,6 @@ public without sharing class UASSelector {
         ];
         return uasSummary;
     }
-
     public List<Utility_Account_Subscription__c> selectBySharedSolarSystem(Id sssId) {
         return [
             SELECT Id, Name, Annual_Cost_Future_Rollup__c, Annual_kWh_Subscription_Future_Rollup__c,

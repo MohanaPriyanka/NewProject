@@ -89,6 +89,18 @@ private class SubscriptionManagementServiceTest {
         insert so;
 
         System.assertNotEquals(null, so.Id);
+
+        so.Effective_Date__c = System.today();
+        update so;
+
+        Subscription_Order__c checkSO = [
+            SELECT Id, Approved_Change_in_Subscription__c, Effective_Date__c
+            FROM Subscription_Order__c
+            WHERE Id = :so.Id
+            LIMIT 1
+        ];
+        System.assertNotEquals(null, checkSO.Effective_Date__c);
+        System.assertEquals(null, checkSO.Approved_Change_in_Subscription__c);
     }
 
     @IsTest
