@@ -31,7 +31,7 @@ public with sharing class ClientReportingServiceTest {
     public static void testAdjustmentClientOwnerStamp() {
         Util.enableTrigger('Disable_EnergyUsageUpdateTrigger__c');
         Utility_Account_Subscription__c uas = [
-            SELECT Id, Opportunity__r.Shared_Solar_System__c,
+            SELECT Id, Opportunity__r.Shared_Solar_System__c, Opportunity__r.AccountId,
                 Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c, Externally_Serviced__c
             FROM Utility_Account_Subscription__c
             WHERE Name = '0000239'
@@ -40,6 +40,7 @@ public with sharing class ClientReportingServiceTest {
         Bill_Adjustment__c adjustment = new Bill_Adjustment__c(
             Name = 'UASoneAdjustment',
             Utility_Account_Subscription__c = uas.Id,
+            Account__c = uas.Opportunity__r.AccountId,
             Adjustment_Type__c = 'Production',
             Adjustment_Amount__c = 24,
             Credits_Allocated__c = 24,
@@ -157,7 +158,7 @@ public with sharing class ClientReportingServiceTest {
         ];
 
         Utility_Account_Subscription__c uas = [
-            SELECT Id, Opportunity__r.Shared_Solar_System__c,
+            SELECT Id, Opportunity__r.Shared_Solar_System__c, Opportunity__r.AccountId,
                 Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c
             FROM Utility_Account_Subscription__c
             WHERE Name = '0000239'
@@ -185,6 +186,7 @@ public with sharing class ClientReportingServiceTest {
         Bill_Adjustment__c adjustment = new Bill_Adjustment__c(
             Name = 'UASoneAdjustment',
             Utility_Account_Subscription__c = uas.Id,
+            Account__c = uas.Opportunity__r.AccountId,
             Transfer__c = transfer.Id,
             Adjustment_Type__c = 'Production',
             Adjustment_Amount__c = 24,
