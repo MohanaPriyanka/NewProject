@@ -3,12 +3,18 @@
  *
  * Tested By: SubscriptionManagementServiceTest
  */
-trigger SubscriptionOrderTrigger on Subscription_Order__c (before insert) {
+trigger SubscriptionOrderTrigger on Subscription_Order__c (before insert, after update, after insert) {
     if (Util.isDisabled('Disable_SubscriptionOrder_Trigger__c')) {
         return;
     }
     SubscriptionManagementService subscriptionManagementService = new SubscriptionManagementService();
-    if (Trigger.isBefore && Trigger.isInsert) {
-        subscriptionManagementService.populateSubscriptionOrder(Trigger.new);
+    switch on Trigger.operationType {
+        when BEFORE_INSERT {
+            subscriptionManagementService.populateSubscriptionOrder(Trigger.new);
+        } when AFTER_INSERT {
+            subscriptionManagementService.checkSOApproval(Trigger.new, Trigger.oldMap);
+        } when AFTER_UPDATE {
+            subscriptionManagementService.checkSOApproval(Trigger.new, Trigger.oldMap);
+        }
     }
 }
