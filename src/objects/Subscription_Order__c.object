@@ -36,6 +36,33 @@
         </valueSet>
     </fields>
     <fields>
+        <fullName>Approved_Change_in_Percent_Share__c</fullName>
+        <description>Stamped with &apos;Calculated Change in % Share&apos; when Approved. If type = &apos;SSS Update,&apos; stamped with value of &apos;System Change Percent Share&apos; - &apos;Previous % Share.&apos; We need a static field for tracking purposes and to use in Rollup summary fields .</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Stamped with &apos;Calculated Change in % Share&apos; when Approved. If type = &apos;SSS Update,&apos; stamped with value of &apos;System Change Percent Share&apos; - &apos;Previous % Share.&apos; We need a static field for tracking purposes and to use in Rollup summary fields .</inlineHelpText>
+        <label>Approved Change in Percent Share</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>5</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Approved_Change_in_Subscription__c</fullName>
+        <description>This is the net change in kW DC. When SO is approved, field is stamped with &apos;Calculated Change in Subscription kW DC.&apos; If Type = &apos;SSS Update,&apos; field is stamped with value of &apos;System Change in kW Subscription&apos; - &apos;Previous kW Subscription. It&apos;s important to have a static value for tracking purposes, and to use in rollup summary fields.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the net change in kW DC. When SO is approved, field is stamped with &apos;Calculated Change in Subscription kW DC.&apos; If Type = &apos;SSS Update,&apos; field is stamped with value of &apos;System Change in kW Subscription&apos; - &apos;Previous kW Subscription. It&apos;s important to</inlineHelpText>
+        <label>Approved Change in Subscription (KW DC)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>4</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Calculated_Change_in_Percent_Share_of_Sy__c</fullName>
         <externalId>false</externalId>
         <formula>ROUND( Calculated_Change_in_Subscription_KW_DC__c / Total_System_Size_kW_DC__c ,  Utility_Number_of_Decimal_Places__c  + 2)</formula>
@@ -309,6 +336,32 @@ Round(( Previous_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4,
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>System_Change_Percent_Share_of_System__c</fullName>
+        <externalId>false</externalId>
+        <formula>ROUND( Previous_kw_DC_Subscription__c / Total_System_Size_kW_DC__c , Utility_Number_of_Decimal_Places__c + 2)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>System Change Percent Share of System</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>5</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>System_Change_kW_DC_Subscription__c</fullName>
+        <externalId>false</externalId>
+        <formula>ROUND(  Previous_kw_DC_Subscription__c / Total_System_Size_kW_DC__c , Utility_Number_of_Decimal_Places__c + 2)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>System Change kW DC Subscription</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>5</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
         <fullName>Type__c</fullName>
         <externalId>false</externalId>
         <label>Type</label>
@@ -339,6 +392,11 @@ Round(( Previous_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4,
                     <fullName>Resize</fullName>
                     <default>false</default>
                     <label>Resize</label>
+                </value>
+                <value>
+                    <fullName>Initial</fullName>
+                    <default>false</default>
+                    <label>Initial</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -435,7 +493,7 @@ Round(( Previous_Annual_Cost__c / Value_of_NMC__c/Expected_Yield_kWh_kW__c) * 4,
     <sharingModel>ControlledByParent</sharingModel>
     <validationRules>
         <fullName>Lock_Approved_SOs</fullName>
-        <active>true</active>
+        <active>false</active>
         <errorConditionFormula>AND(
 OR(
 ISPICKVAL(Approval_Status__c,&quot;Approved&quot;),
