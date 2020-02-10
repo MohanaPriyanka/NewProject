@@ -10267,6 +10267,27 @@ newwindow.focus();</url>
         <url>/flow/CS_QC_Task_Flow?varOppID={!Opportunity.Id}&amp;retURL=home/home.jsp</url>
     </webLinks>
     <webLinks>
+        <fullName>Send_Contract_Click_to_Sign</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Send Contract (Click to Sign NY)</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <url>{!URLFOR(&apos;/apex/dsfs__DocuSign_CreateEnvelope&apos;, null, [
+SourceID = Opportunity.Id,
+CCRM = &apos;R3~CustomerCC;R4~PartnerCC&apos;,
+CCTM = &apos;R3~CarbonCopy;R4~CarbonCopy&apos;,
+CRL = &apos;Email~&apos;+ Opportunity.Email__c +&apos;;LastName~&apos;+ Opportunity.Parent_Account_Name__c +&apos;;Role~R3;,Email~&apos;+ Opportunity.Partner_Email__c +&apos;;LastName~&apos;+ Opportunity.Partner_tag2__c +&apos;;Role~R4&apos;,
+DST =  &apos;{!Environment.VAR_DSENVELOPE_CPP}&apos;,
+LA = &apos;0&apos;,
+LF = &apos;0&apos;,
+OCO = &apos;Tag&apos;
+]
+)}</url>
+    </webLinks>
+    <webLinks>
         <fullName>Send_DOER_Contract</fullName>
         <availability>online</availability>
         <displayType>button</displayType>
