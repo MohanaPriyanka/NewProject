@@ -88,6 +88,10 @@
                 <behavior>Edit</behavior>
                 <field>Anticipated_First_Billing_Date__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>ContractId</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
     </layoutSections>
