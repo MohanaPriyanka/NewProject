@@ -93,6 +93,62 @@
             </valueSetDefinition>
         </valueSet>
     </fields>
+    <recordTypes>
+        <fullName>Subscription_Orders</fullName>
+        <active>true</active>
+        <label>Subscription Orders</label>
+        <picklistValues>
+            <picklist>Type__c</picklist>
+            <values>
+                <fullName>Cancellation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Initial</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Resize</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Shared Solar System Update</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Transfer</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>System_Change_Order</fullName>
+        <active>true</active>
+        <label>System Change Order</label>
+        <picklistValues>
+            <picklist>Type__c</picklist>
+            <values>
+                <fullName>Cancellation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Initial</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Resize</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Shared Solar System Update</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Transfer</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
     <validationRules>
         <fullName>Lock_Approved_SOs</fullName>
         <active>false</active>
