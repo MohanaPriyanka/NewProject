@@ -3452,6 +3452,10 @@ null)</formula>
     </recordTypes>
     <searchLayouts />
     <sharingModel>Private</sharingModel>
+    <sharingReasons>
+        <fullName>Customer_Portal_Access__c</fullName>
+        <label>Customer Portal Access</label>
+    </sharingReasons>
     <startsWith n1:nil="true" />
     <validationRules>
         <fullName>Acquisition_Credit_Score_Requir_Required</fullName>
