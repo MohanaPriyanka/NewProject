@@ -3545,6 +3545,22 @@ Client_Account__c != BWC_Project_Entity_Manual__r.Client_Account__c
         <errorMessage>The Client Account on the Shared Solar System and the Client Account on the Entity are not the same. If the Client Account on the Entity is not filled in, make sure that it is.</errorMessage>
     </validationRules>
     <validationRules>
+        <fullName>Lock_Utility</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+
+ $CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true,
+
+ISCHANGED( Utility__c ),/*utility is being changed*/
+
+OR(
+ISPICKVAL(Stage__c,&quot;Management&quot;),
+ISPICKVAL(Stage__c,&quot;Acquisition&quot;)
+) /*and it&apos;s being change to either Management or Acquisition*/
+)</errorConditionFormula>
+        <errorMessage>You cannot change the Utility on this shared solar system at this time. Please contact the Business Applications if this is needed.</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>Management_Fully_Subscribed</fullName>
         <active>true</active>
         <errorConditionFormula>AND(
@@ -3641,6 +3657,44 @@ ISCHANGED(App_ID_WO_Manual__c)
 )</errorConditionFormula>
         <errorMessage>Due to their importance, certain fields on the Shared Solar System page are restricted so that only certain people can edit them. Please contact your System Administrator to edit.</errorMessage>
     </validationRules>
+    <validationRules>
+        <fullName>Prevent_System_Size_Changes</fullName>
+        <active>true</active>
+        <description>Prevents updates to yield or system size once project is in acq or management. Update should go through the SSSO approval process.</description>
+        <errorConditionFormula>AND(
+ $CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true,
+
+OR(
+ISCHANGED( Expected_Yield_kWh_kW__c ),
+ISCHANGED( Total_System_Size_kWh_DC__c)
+),/*either yield or system size dc are changed*/
+
+OR(
+ISPICKVAL(Stage__c,&quot;Management&quot;),
+ISPICKVAL(Stage__c,&quot;Acquisition&quot;)
+), /*and it&apos;s being change to either Management or Acquisition*/
+
+ Apex_Context__c=false /*and the update is not being done in apex*/
+)</errorConditionFormula>
+        <errorMessage>To change the system Yield or Size (kW DC), please submit a Shared Solar System Order with the &quot;New Shared Solar System Order&quot; button.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Utility_Decimals_Requirement</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+ $CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true,
+
+ISCHANGED( Stage__c),/*if the stage is changed*/
+
+OR(
+ISPICKVAL(Stage__c,&quot;Management&quot;),
+ISPICKVAL(Stage__c,&quot;Acquisition&quot;)
+), /*and it&apos;s being change to either Management or Acquisition*/
+
+ ISBLANK(Utility__r.Number_of_Decimal_Places__c) /*and the number of decimals field on the related utility is null*/
+)</errorConditionFormula>
+        <errorMessage>The Number of Decimals field on the related Utility needs to be filled in before the stage can be set to Management or Acquisition.</errorMessage>
+    </validationRules>
     <visibility>Public</visibility>
     <webLinks>
         <fullName>Customer_Info_Report</fullName>
@@ -3654,6 +3708,26 @@ ISCHANGED(App_ID_WO_Manual__c)
         <openType>sidebar</openType>
         <protected>false</protected>
         <url>/00Oj0000000QGIY?pv2={!Shared_Solar_System__c.Name}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>New_Shared_Solar_System_Order</fullName>
+        <availability>online</availability>
+        <description>Launches to SSSO creation flow</description>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>New Shared Solar System Order</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/flow/SSSO_Creation_Flow?var_SSSID={!Shared_Solar_System__c.Id}&amp;returl={!Shared_Solar_System__c.Id}</url>
     </webLinks>
     <webLinks>
         <fullName>Preview_Next_Schedule_Z</fullName>

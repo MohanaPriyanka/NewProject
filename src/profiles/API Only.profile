@@ -27917,6 +27917,31 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System_Order__c.Approval_Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System_Order__c.Comments__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System_Order__c.Date_Approved__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System_Order__c.Total_System_Size_kW_DC__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System_Order__c.Yield__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Shared_Solar_System__c.Actual_COD_Date__c</field>
         <readable>true</readable>
@@ -27979,6 +28004,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Shared_Solar_System__c.Anchor_Tenant__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Apex_Context__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -29274,6 +29304,126 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Submittals__c.Submittal_No__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Approval_Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Calculated_Change_in_Percent_Share_of_Sy__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Calculated_Change_in_Subscription_KW_DC__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Calculated_Percent_Share_of_System__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Calculated_kW_DC_Subscription__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Change_in_Annual_Cost__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Change_in_Annual_kWh__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Change_in_Percent_Share_of_System__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Change_in_Subscription_KW_DC__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Client_Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Comments__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Effective_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Expected_Yield_kWh_kW__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Previous_Annual_Cost__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Previous_Annual_kwh__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Previous_Percent_Share_of_System__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Previous_kw_DC_Subscription__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Product__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Shared_Solar_System_Order__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Total_System_Size_kW_DC__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Subscription_Order__c.Utility_NMC_Tariff__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Utility_Number_of_Decimal_Places__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Subscription_Order__c.Value_of_NMC__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -31068,6 +31218,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Utility_Account_Subscription__c.Annual_Cost_Future_Rollup__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Utility_Account_Subscription__c.Annual_Cost_of_Electricity_Current__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -31079,6 +31234,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Annual_kWh_Subscription_Current__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Subscription__c.Annual_kWh_Subscription_Future_Rollup__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -31174,6 +31334,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Full_Anticipated_NMC_Allocation_kWh__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Subscription__c.Future_Customer_Subscription_KWDC_Rollup__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility_Account_Subscription__c.Future_Share_of_System_Rollup__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -31279,6 +31449,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Utility_Account_Subscription__c.Shared_Solar_System_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Utility_Account_Subscription__c.Shared_Solar_System__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -45731,11 +45906,11 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Account-Account Layout</layout>
-        <recordType>Account.BWC_Principals</recordType>
+        <recordType>Account.Executive_Team</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Account-Account Layout</layout>
-        <recordType>Account.BWC_Founders</recordType>
+        <recordType>Account.BWC_Principals</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Account-Account Layout</layout>
@@ -45743,7 +45918,7 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Account-Account Layout</layout>
-        <recordType>Account.Executive_Team</recordType>
+        <recordType>Account.BWC_Founders</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Account-Account Layout %28Default%29</layout>
@@ -45827,11 +46002,11 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>BlueWave_Surveys__c-Net Promoter Score - Partner</layout>
-        <recordType>BlueWave_Surveys__c.Partner_Feedback_Survey</recordType>
+        <recordType>BlueWave_Surveys__c.Net_Promoter_Score_Partner</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>BlueWave_Surveys__c-Net Promoter Score - Partner</layout>
-        <recordType>BlueWave_Surveys__c.Net_Promoter_Score_Partner</recordType>
+        <recordType>BlueWave_Surveys__c.Partner_Feedback_Survey</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>BlueWave_Surveys__c-Net Promoter Score - Partner</layout>
@@ -45967,11 +46142,11 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Contact-Contact Layout</layout>
-        <recordType>Contact.Contact</recordType>
+        <recordType>Contact.Partner_Contact</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Contact-Contact Layout</layout>
-        <recordType>Contact.Partner_Contact</recordType>
+        <recordType>Contact.Contact</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Contact-Project Management Layout</layout>
@@ -45982,6 +46157,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Contract-Contract Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Custom_Feature_Enablement__mdt-Custom Feature Enablement Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Daily_Production_Update__c-Daily Production Update Layout</layout>
@@ -46033,18 +46211,18 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Equipment__c-EPC Equipment Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Equipment__c-EPC Equipment Layout</layout>
         <recordType>Equipment__c.Equipment_Default</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Equipment__c-EPC Equipment Layout</layout>
+        <recordType>Equipment__c.Transformer</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Equipment__c-EPC Equipment Layout</layout>
         <recordType>Equipment__c.Neutral_Ground_Reactor</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Equipment__c-EPC Equipment Layout</layout>
-        <recordType>Equipment__c.Transformer</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Equipment__c-Inverter Layout</layout>
@@ -46079,10 +46257,10 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Feeder__c-Feeder</layout>
-        <recordType>Feeder__c.Feeder</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Feeder__c-Feeder</layout>
+        <recordType>Feeder__c.Feeder</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Financial_Relationship__c-Financing Relationship Layout</layout>
@@ -46098,10 +46276,10 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Idea-Idea Layout</layout>
+        <recordType>Idea.Record_type_for_community_09aj0000000VvbjAAC_entity_Idea</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Idea-Idea Layout</layout>
-        <recordType>Idea.Record_type_for_community_09aj0000000VvbjAAC_entity_Idea</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Index_Rate__c-Index Rate Layout</layout>
@@ -46111,14 +46289,14 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Knowledge__kav-Article Layout</layout>
-        <recordType>Knowledge__kav.How_To</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Knowledge__kav-Article Layout</layout>
         <recordType>Knowledge__kav.Q_A</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Knowledge__kav-Article Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Knowledge__kav-Article Layout</layout>
+        <recordType>Knowledge__kav.How_To</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Knowledge__kav-Article Layout</layout>
@@ -46145,6 +46323,10 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-BFG - Standard Solar Loan</layout>
+        <recordType>Lead.BFG_SC_Solar_Loan</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Lead-BFG - Standard Solar Loan</layout>
         <recordType>Lead.BFG_Solar_Loan</recordType>
     </layoutAssignments>
     <layoutAssignments>
@@ -46153,15 +46335,11 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-BFG - Standard Solar Loan</layout>
-        <recordType>Lead.BFG_SC_Solar_Loan</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Lead-BFG - Standard Solar Loan</layout>
         <recordType>Lead.BFG_NC_Solar_Loan</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-BFG - Standard Solar Loan %28Co-Applicant%29</layout>
-        <recordType>Lead.BFG_MA_Solar_Loan_Co_Applicant</recordType>
+        <recordType>Lead.BFG_SC_Solar_Loan_Co_Applicant</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-BFG - Standard Solar Loan %28Co-Applicant%29</layout>
@@ -46169,7 +46347,7 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-BFG - Standard Solar Loan %28Co-Applicant%29</layout>
-        <recordType>Lead.BFG_SC_Solar_Loan_Co_Applicant</recordType>
+        <recordType>Lead.BFG_MA_Solar_Loan_Co_Applicant</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Lead-C%26I</layout>
@@ -46261,7 +46439,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>MPM4_BASE__Milestone1_Milestone__c-Project Task List</layout>
-        <recordType>MPM4_BASE__Milestone1_Milestone__c.Project_Task_List</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>MPM4_BASE__Milestone1_Milestone__c-Project Task List</layout>
@@ -46269,6 +46446,7 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>MPM4_BASE__Milestone1_Milestone__c-Project Task List</layout>
+        <recordType>MPM4_BASE__Milestone1_Milestone__c.Project_Task_List</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>MPM4_BASE__Milestone1_Project__c-C%26I Project</layout>
@@ -46284,10 +46462,10 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>MPM4_BASE__Milestone1_Project__c-Projects</layout>
-        <recordType>MPM4_BASE__Milestone1_Project__c.PM</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>MPM4_BASE__Milestone1_Project__c-Projects</layout>
+        <recordType>MPM4_BASE__Milestone1_Project__c.PM</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Macro-Macro Layout</layout>
@@ -46315,15 +46493,15 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-BFG</layout>
+        <recordType>Opportunity.BFG</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Opportunity-BFG</layout>
         <recordType>Opportunity.Finance</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-BFG</layout>
         <recordType>Opportunity.BW_Community_Solar_BCS</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Opportunity-BFG</layout>
-        <recordType>Opportunity.BFG</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-BFG</layout>
@@ -46354,15 +46532,7 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-Solar Loan</layout>
-        <recordType>Opportunity.BFG_SC_Solar_Loan</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Opportunity-Solar Loan</layout>
-        <recordType>Opportunity.BFG_MA_Solar_Loan_Co_Applicant</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Opportunity-Solar Loan</layout>
-        <recordType>Opportunity.BFG_DOER_Solar_Loan</recordType>
+        <recordType>Opportunity.BFG_SC_Solar_Loan_Co_Applicant</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-Solar Loan</layout>
@@ -46370,7 +46540,11 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-Solar Loan</layout>
-        <recordType>Opportunity.BFG_SC_Solar_Loan_Co_Applicant</recordType>
+        <recordType>Opportunity.BFG_DOER_Solar_Loan</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Opportunity-Solar Loan</layout>
+        <recordType>Opportunity.BFG_NC_Solar_Loan</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-Solar Loan</layout>
@@ -46378,11 +46552,15 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-Solar Loan</layout>
+        <recordType>Opportunity.BFG_MA_Solar_Loan_Co_Applicant</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Opportunity-Solar Loan</layout>
         <recordType>Opportunity.BFG_DOER_Solar_Loan_Co_Applicant</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-Solar Loan</layout>
-        <recordType>Opportunity.BFG_NC_Solar_Loan</recordType>
+        <recordType>Opportunity.BFG_SC_Solar_Loan</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>OpportunityLineItem-Opportunity Product Layout</layout>
@@ -46432,14 +46610,14 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Partner_Task__c-Child Partner Task</layout>
-        <recordType>Partner_Task__c.BlueWave_Solar_Loan_Partner</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Partner_Task__c-Child Partner Task</layout>
         <recordType>Partner_Task__c.Child_Partner_Task</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Partner_Task__c-Child Partner Task</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Partner_Task__c-Child Partner Task</layout>
+        <recordType>Partner_Task__c.BlueWave_Solar_Loan_Partner</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Partner__c-Partner Layout</layout>
@@ -46458,10 +46636,10 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Product_Profile__c-Community Solar Layout</layout>
+        <recordType>Product_Profile__c.Community_Solar</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Product_Profile__c-Community Solar Layout</layout>
-        <recordType>Product_Profile__c.Community_Solar</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Product_Profile__c-Solar Loan Layout</layout>
@@ -46515,10 +46693,10 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Residential_Equipment__c-MSLP Residential Equipment</layout>
-        <recordType>Residential_Equipment__c.MSLP</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Residential_Equipment__c-MSLP Residential Equipment</layout>
+        <recordType>Residential_Equipment__c.MSLP</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>SMART_Data__c-SMART Data Layout</layout>
@@ -46573,6 +46751,17 @@
         <layout>Submittals__c-Submittal Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Subscription_Order__c-Subscription Order Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Subscription_Order__c-Subscription Order Layout</layout>
+        <recordType>Subscription_Order__c.Subscription_Orders</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Subscription_Order__c-System Change Order</layout>
+        <recordType>Subscription_Order__c.System_Change_Order</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>System_Bill__c-System Bill Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -46589,14 +46778,7 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Task-Task Layout</layout>
-        <recordType>Task.Founder_Tasks</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Task-Task Layout</layout>
-        <recordType>Task.Solar_Loan_Partner</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Task-Task Layout</layout>
+        <recordType>Task.Trevor_Hardy_Task</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Task-Task Layout</layout>
@@ -46604,11 +46786,18 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Task-Task Layout</layout>
-        <recordType>Task.Standard_Tasks</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Task-Task Layout</layout>
-        <recordType>Task.Trevor_Hardy_Task</recordType>
+        <recordType>Task.Solar_Loan_Partner</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Task-Task Layout</layout>
+        <recordType>Task.Founder_Tasks</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Task-Task Layout</layout>
+        <recordType>Task.Standard_Tasks</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Town__c-Town Layout</layout>
@@ -48309,6 +48498,15 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
+        <object>Shared_Solar_System_Order__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
         <object>Shared_Solar_System__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
@@ -48373,6 +48571,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>Submittals__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>Subscription_Order__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -51189,6 +51396,16 @@
     </recordTypeVisibilities>
     <recordTypeVisibilities>
         <default>true</default>
+        <recordType>Subscription_Order__c.Subscription_Orders</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Subscription_Order__c.System_Change_Order</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>true</default>
         <personAccountDefault>true</personAccountDefault>
         <recordType>Task.Customer_Care_Task</recordType>
         <visible>true</visible>
@@ -51751,12 +51968,20 @@
         <visibility>DefaultOff</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>Shared_Solar_System_Order__c</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>Shared_Solar_System__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>Solar_Loan_Syndication__c</tab>
         <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Subscription_Order__c</tab>
+        <visibility>DefaultOff</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>System_Bill__c</tab>
