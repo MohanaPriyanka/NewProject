@@ -848,19 +848,19 @@
                     <label>01. Pre-Application Report</label>
                 </value>
                 <value>
-                    <fullName>02. Diligence report</fullName>
+                    <fullName>02. Diligence Report</fullName>
                     <default>false</default>
-                    <label>02. Diligence report</label>
+                    <label>02. Diligence Report</label>
                 </value>
                 <value>
-                    <fullName>03. Interconnection Application Packet</fullName>
+                    <fullName>03. Interconnection Application Packet (Original/Revised)</fullName>
                     <default>false</default>
-                    <label>03. Interconnection Application Packet</label>
+                    <label>03. Interconnection Application Packet (Original/Revised)</label>
                 </value>
                 <value>
-                    <fullName>04. Utility Application Review (Screening/Feasibility/Preliminary)</fullName>
+                    <fullName>04. Technical Pre-Study (Screening/Preliminary/Feasibility)</fullName>
                     <default>false</default>
-                    <label>04. Utility Application Review (Screening/Feasibility/Preliminary)</label>
+                    <label>04. Technical Pre-Study (Screening/Preliminary/Feasibility)</label>
                 </value>
                 <value>
                     <fullName>05. Legal Form</fullName>
@@ -878,24 +878,24 @@
                     <label>07. 20-50BD Technical Study Review</label>
                 </value>
                 <value>
-                    <fullName>08. ISA &amp; Amendments</fullName>
+                    <fullName>08. ISA &amp; Amendment</fullName>
                     <default>false</default>
-                    <label>08. ISA &amp; Amendments</label>
+                    <label>08. ISA &amp; Amendment</label>
                 </value>
                 <value>
-                    <fullName>09. Federal &amp; State Incentives</fullName>
+                    <fullName>09. Federal &amp; State Incentive</fullName>
                     <default>false</default>
-                    <label>09. Federal &amp; State Incentives</label>
+                    <label>09. Federal &amp; State Incentive</label>
                 </value>
                 <value>
-                    <fullName>10. Utility Design and Easements</fullName>
+                    <fullName>10. Utility Design and Easement</fullName>
                     <default>false</default>
-                    <label>10. Utility Design and Easements</label>
+                    <label>10. Utility Design and Easement</label>
                 </value>
                 <value>
-                    <fullName>11. Wireless Tests</fullName>
+                    <fullName>11. Wireless Test</fullName>
                     <default>false</default>
-                    <label>11. Wireless Tests</label>
+                    <label>11. Wireless Test</label>
                 </value>
                 <value>
                     <fullName>12. Utility Construction</fullName>
@@ -908,14 +908,14 @@
                     <label>13. Telecommunication</label>
                 </value>
                 <value>
-                    <fullName>14. Witness Tests</fullName>
+                    <fullName>14. Witness Test</fullName>
                     <default>false</default>
-                    <label>14. Witness Tests</label>
+                    <label>14. Witness Test</label>
                 </value>
                 <value>
-                    <fullName>15. Consent to Assignments</fullName>
+                    <fullName>15. Consent to Assignment</fullName>
                     <default>false</default>
-                    <label>15. Consent to Assignments</label>
+                    <label>15. Consent to Assignment</label>
                 </value>
                 <value>
                     <fullName>16. Transfer of Ownership</fullName>
@@ -1532,15 +1532,15 @@
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>02. Diligence report</valueName>
+                <valueName>02. Diligence Report</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>03. Interconnection Application Packet</valueName>
+                <valueName>03. Interconnection Application Packet (Original/Revised)</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>04. Utility Application Review (Screening/Feasibility/Preliminary)</valueName>
+                <valueName>04. Technical Pre-Study (Screening/Preliminary/Feasibility)</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
@@ -1556,19 +1556,19 @@
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>08. ISA &amp; Amendments</valueName>
+                <valueName>08. ISA &amp; Amendment</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>09. Federal &amp; State Incentives</valueName>
+                <valueName>09. Federal &amp; State Incentive</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>10. Utility Design and Easements</valueName>
+                <valueName>10. Utility Design and Easement</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>11. Wireless Tests</valueName>
+                <valueName>11. Wireless Test</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
@@ -1580,11 +1580,11 @@
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>14. Witness Tests</valueName>
+                <valueName>14. Witness Test</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>
-                <valueName>15. Consent to Assignments</valueName>
+                <valueName>15. Consent to Assignment</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Project Management - Interconnection</controllingFieldValue>

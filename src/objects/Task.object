@@ -1682,15 +1682,15 @@
                 <default>false</default>
             </values>
             <values>
-                <fullName>02%2E Diligence report</fullName>
+                <fullName>02%2E Diligence Report</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>03%2E Interconnection Application Packet</fullName>
+                <fullName>03%2E Interconnection Application Packet %28Original%2FRevised%29</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>04%2E Utility Application Review %28Screening%2FFeasibility%2FPreliminary%29</fullName>
+                <fullName>04%2E Technical Pre-Study %28Screening%2FPreliminary%2FFeasibility%29</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1706,19 +1706,19 @@
                 <default>false</default>
             </values>
             <values>
-                <fullName>08%2E ISA %26 Amendments</fullName>
+                <fullName>08%2E ISA %26 Amendment</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>09%2E Federal %26 State Incentives</fullName>
+                <fullName>09%2E Federal %26 State Incentive</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>10%2E Utility Design and Easements</fullName>
+                <fullName>10%2E Utility Design and Easement</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>11%2E Wireless Tests</fullName>
+                <fullName>11%2E Wireless Test</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1730,11 +1730,11 @@
                 <default>false</default>
             </values>
             <values>
-                <fullName>14%2E Witness Tests</fullName>
+                <fullName>14%2E Witness Test</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>15%2E Consent to Assignments</fullName>
+                <fullName>15%2E Consent to Assignment</fullName>
                 <default>false</default>
             </values>
             <values>
