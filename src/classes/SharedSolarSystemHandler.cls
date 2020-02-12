@@ -2,6 +2,8 @@
 
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class SharedSolarSystemHandler implements Schedulable {
+    @TestVisible
+    private static SharedSolarSystemsSelector sssSelector = new SharedSolarSystemsSelector();
 
     public void execute(SchedulableContext sch) {
         updateSSS();
@@ -43,6 +45,20 @@ public without sharing class SharedSolarSystemHandler implements Schedulable {
                     sssToUpdateList.add(newSSS);
             }
         }
+        update sssToUpdateList;
+    }
+
+    public void uncheckApexContext(List<Shared_Solar_System__c> sssList) {
+        List<Shared_Solar_System__c> sssToUpdateList = new List<Shared_Solar_System__c>();
+        for (Shared_Solar_System__c sss : sssList) {
+            if (sss.Apex_Context__c) {
+                Shared_Solar_System__c sssToUpdate = new Shared_Solar_System__c();
+                sssToUpdate.Id = sss.Id;
+                sssToUpdate.Apex_Context__c = false;
+                sssToUpdateList.add(sssToUpdate);
+            }
+        }
+
         update sssToUpdateList;
     }
 
