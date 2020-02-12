@@ -3,8 +3,12 @@ trigger SharedSolarSystemTrigger on Shared_Solar_System__c (before insert, after
         return;
     }
     SharedSolarSystemHandler sharedSolarSystemHandler = new SharedSolarSystemHandler();
-    if(Trigger.isUpdate && Trigger.isBefore){
+    switch on Trigger.operationType {
+        when BEFORE_UPDATE {
         sharedSolarSystemHandler.summarizeCapacity(Trigger.new);
         sharedSolarSystemHandler.queueClientBrandKeyUpdate(Trigger.oldMap, Trigger.new);
+        } when AFTER_UPDATE {
+            sharedSolarSystemHandler.uncheckApexContext(Trigger.new);
+        }
     }
 }
