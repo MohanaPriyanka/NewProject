@@ -971,18 +971,18 @@ Actual_PTO_Date__c +14)))</formula>
     </fields>
     <fields>
         <fullName>Estimated_First_Bill_Date__c</fullName>
-        <description>This is the 15th of the month after the Actual Credit Flow to Customer Date (or the Estimated Credit Flow to Customer Date if former is blank). If the Estimated first BW Bill Date Override field is filled in, it override this formula and show that date instead.</description>
+        <description>This is the 20th of the month after the Actual Credit Flow to Customer Date (or the Estimated Credit Flow to Customer Date if former is blank). If the Estimated first BW Bill Date Override field is filled in, it override this formula and show that date instead.</description>
         <externalId>false</externalId>
         <formula>BLANKVALUE(Estimated_First_BW_Bill_Override__c,
 BLANKVALUE(
-IF(MONTH(Actual_Credits_Flowing_Date__c)=12, DATE(YEAR(Actual_Credits_Flowing_Date__c)+1,1,15), 
-DATE(YEAR(Actual_Credits_Flowing_Date__c),MONTH(Actual_Credits_Flowing_Date__c)+1,15)), 
+IF(MONTH(Actual_Credits_Flowing_Date__c)=12, DATE(YEAR(Actual_Credits_Flowing_Date__c)+1,1,20), 
+DATE(YEAR(Actual_Credits_Flowing_Date__c),MONTH(Actual_Credits_Flowing_Date__c)+1,20)), 
 
 IF(MONTH(Estimated_Credit_Flow_Date__c)=12,
-DATE(YEAR(Estimated_Credit_Flow_Date__c)+1,1,15),
-DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,15))))</formula>
+DATE(YEAR(Estimated_Credit_Flow_Date__c)+1,1,20),
+DATE(YEAR(Estimated_Credit_Flow_Date__c),MONTH(Estimated_Credit_Flow_Date__c)+1,20))))</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>This is the 15th of the month after the Actual Credit Flow to Customer Date (or the Estimated Credit Flow to Customer Date if former is blank). If the Estimated first BW Bill Date Override field is filled in, it override this formula and show that instead</inlineHelpText>
+        <inlineHelpText>This is the 20th of the month after the Actual Credit Flow to Customer Date (or the Estimated Credit Flow to Customer Date if former is blank). If the Estimated first BW Bill Date Override field is filled in, it override this formula and show that instead</inlineHelpText>
         <label>Estimated First BW Bill Date</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
