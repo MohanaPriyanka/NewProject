@@ -18,7 +18,8 @@ public with sharing class ContactService {
             Logger.logLater(
                 'ContactService',
                 'handleUpdatesToZuora',
-                e.getMessage() + '\n' + e.getStackTraceString(),
+                e.getMessage() + '\n' + e.getStackTraceString() + '\n' + JSON.serialize(newContacts),
+
                 Logger.ERROR
             );
         } finally {
