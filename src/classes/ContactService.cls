@@ -18,7 +18,7 @@ public with sharing class ContactService {
             Logger.logLater(
                 'ContactService',
                 'handleUpdatesToZuora',
-                'Caught Exception',
+                e.getMessage() + '\n' + e.getStackTraceString(),
                 Logger.ERROR
             );
         } finally {
