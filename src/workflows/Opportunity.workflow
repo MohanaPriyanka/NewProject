@@ -1203,7 +1203,7 @@ CONTAINS(Name,&apos;-&apos;),true,false
             <name>Set_Contract_Close_Date</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <criteriaItems>
             <field>Opportunity.BlueWave_Signature_Status__c</field>
             <operation>equals</operation>
