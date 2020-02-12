@@ -65,12 +65,6 @@ export default class Switch extends NavigationMixin(LightningElement) {
         }
     }
 
-    checkForTab(event) {
-        if (event.which === 9) {
-
-        }
-    }
-
     submitZip() {
         this.showSpinner = true;
         let partnerId;
@@ -141,12 +135,7 @@ export default class Switch extends NavigationMixin(LightningElement) {
     handleUtilityAccountMenu(event) {
         const selectedItemValue = event.detail.value;
         const utilityAccountIndex = event.target.name;
-        if (selectedItemValue === 'copy') {
-            this.utilityAccounts[utilityAccountIndex].street = this.billingStreet;
-            this.utilityAccounts[utilityAccountIndex].city = this.billingCity;
-            this.utilityAccounts[utilityAccountIndex].state = this.billingState;
-            this.utilityAccounts[utilityAccountIndex].zip = this.billingZip;
-        } else if (selectedItemValue === 'remove') {
+        if (selectedItemValue === 'remove') {
             this.utilityAccounts.splice(utilityAccountIndex, 1);
         }
     }
