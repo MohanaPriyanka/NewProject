@@ -190,6 +190,7 @@
     <permissionSets>Permission to Run Batch SREC Payments</permissionSets>
     <permissionSets>Manage Users</permissionSets>
     <permissionSets>Do Not Send Bills Permission</permissionSets>
+    <permissionSets>Data Mask</permissionSets>
     <permissionSets>Portfolio Management</permissionSets>
     <permissionSets>Lightning</permissionSets>
     <permissionSets>Shared Solar System Permission</permissionSets>
