@@ -159,4 +159,13 @@ public without sharing class AccountsSelector {
         }
         return accountIdsWithUASBs;
     }
+
+    public Map<Id,Account> selectById(Set<Id> acctIds){
+        Map<Id, Account> accountMap = new Map<Id, Account>([
+            SELECT Id, Last_Bill_Send_Date_New_Charges_Zuora__c, Total_Outstanding_Balance_Zuora__c
+            FROM Account
+            WHERE Id IN : acctIds
+        ]);
+        return accountMap;
+    }
 }
