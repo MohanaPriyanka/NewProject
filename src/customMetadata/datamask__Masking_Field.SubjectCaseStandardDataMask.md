@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <label>Service_City__c</label>
+    <label>Subject</label>
     <protected>false</protected>
     <values>
         <field>datamask__API_Name__c</field>
-        <value xsi:type="xsd:string">Service_City__c</value>
+        <value xsi:type="xsd:string">Subject</value>
     </values>
     <values>
         <field>datamask__Active__c</field>
-        <value xsi:type="xsd:boolean">true</value>
+        <value xsi:type="xsd:boolean">false</value>
     </values>
     <values>
         <field>datamask__Custom__c</field>
-        <value xsi:type="xsd:boolean">true</value>
+        <value xsi:type="xsd:boolean">false</value>
     </values>
     <values>
         <field>datamask__Date_Max__c</field>
@@ -32,11 +32,11 @@
     </values>
     <values>
         <field>datamask__Masking_Category__c</field>
-        <value xsi:type="xsd:string">City</value>
+        <value xsi:nil="true"/>
     </values>
     <values>
         <field>datamask__Masking_Object__c</field>
-        <value xsi:type="xsd:string">Utility_Account_LogcStandardDataMask</value>
+        <value xsi:type="xsd:string">CaseStandardDataMask</value>
     </values>
     <values>
         <field>datamask__Masking_Type__c</field>
@@ -52,7 +52,7 @@
     </values>
     <values>
         <field>datamask__Required__c</field>
-        <value xsi:type="xsd:boolean">false</value>
+        <value xsi:type="xsd:boolean">true</value>
     </values>
     <values>
         <field>datamask__Unique__c</field>
