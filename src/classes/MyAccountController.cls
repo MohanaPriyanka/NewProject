@@ -5,7 +5,7 @@
  *
  * Tested By: CommunitySolarCustomerPortalTest
  *************************************************************************************/
-
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class MyAccountController {
     @AuraEnabled
     public static Contact getContactInfo() {

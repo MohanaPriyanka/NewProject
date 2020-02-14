@@ -52,8 +52,6 @@
     goPaperless : function(component, event, helper) {
         var setPropertiesToPaperless = component.get("c.setToPaperless");
         let contact = component.get("v.userContact");
-        console.log(contact.AccountId);
-        console.log('goPaperless');
 
         setPropertiesToPaperless.setParams({
             "parentAccountId": contact.AccountId
