@@ -163,4 +163,11 @@ public class ZuoraDataQueryServiceTest {
         List<Error_Log__c> errorLogs = [SELECT Id FROM Error_Log__c];
         System.assertEquals(0, errorLogs.size(), 'Expected no errors from a zero result query');
     }
+
+    @IsTest
+    private static void testHandleNoProcessingParameter() {
+        ZuoraDataQueryService.handlePostQueryJob('',null);
+        List<Error_Log__c> errorLogs = [SELECT Id FROM Error_Log__c];
+        System.assertEquals(0, errorLogs.size(), 'Expected no errors from a zero result query with no processing parameter');
+    }
 }

@@ -166,7 +166,7 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
             response = '[' + response + ']';
             response = response.replace('__c','_Zcustom');
 
-            if (method.className != null) {
+            if (method != null && method.className != null) {
                 Processor jobToProcess = (Processor) Type.forName(method.className).newInstance();
                 jobToProcess.executePostQueryJob(method, response);
             }

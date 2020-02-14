@@ -32,6 +32,8 @@ public class ZuoraDataQueryAsyncService implements Queueable, Database.AllowsCal
             dataQuery.Status__c = zuoraQueryResult.data.queryStatus;
             if (attemptedQuery.recordId != null) {
                 dataQuery.Id = attemptedQuery.recordId;
+            } else {
+                dataQuery.Query__c = attemptedQuery.queryString;
             }
 
             // If job is complete, save data to record
