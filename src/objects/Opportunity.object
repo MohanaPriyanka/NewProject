@@ -1388,6 +1388,7 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Service City</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -1424,6 +1425,7 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Service Street Address</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -1597,6 +1599,7 @@ Null)))</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Billing City</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -1649,6 +1652,7 @@ IF( Month(CloseDate) = 12, &apos;December&apos;, null))))))))))))</formula>
         <label>Co-Applicant Address</label>
         <length>100</length>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -1684,6 +1688,7 @@ IF( Month(CloseDate) = 12, &apos;December&apos;, null))))))))))))</formula>
         <externalId>false</externalId>
         <label>Co-Applicant Email</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -1696,6 +1701,7 @@ IF( Month(CloseDate) = 12, &apos;December&apos;, null))))))))))))</formula>
         <label>Co-Applicant First Name</label>
         <length>20</length>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -1735,6 +1741,7 @@ IF( Month(CloseDate) = 12, &apos;December&apos;, null))))))))))))</formula>
         <label>Co-Applicant Last Name</label>
         <length>20</length>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -1971,6 +1978,7 @@ TEXT(DAY(Commencement_Date__c))
         <label>Street Address</label>
         <length>255</length>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -2016,6 +2024,7 @@ TEXT(DAY(Commencement_Date__c))
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Concatenated Billing Address</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -2029,6 +2038,7 @@ TEXT(DAY(Commencement_Date__c))
         <inlineHelpText>Used in RL docusign packages</inlineHelpText>
         <label>Concatenated Install Address</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -2082,6 +2092,7 @@ TEXT(DAY(Commencement_Date__c))
         <externalId>false</externalId>
         <label>Contact Email</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -2094,6 +2105,7 @@ TEXT(DAY(Commencement_Date__c))
         <label>Contact Name</label>
         <length>25</length>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -2289,6 +2301,7 @@ IF( ISPICKVAL(Personal_Credit_Report2__r.Solar_Loan_Approval_Status__c, &quot;De
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <label>Customer Address Verified</label>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -3225,7 +3238,7 @@ IF(AND(Application_Type__c=&quot;Joint&quot;,TEXT(Joint_Applicant_Type__c)=&quot
         <label>Email</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Email</type>
         <unique>false</unique>
@@ -5396,6 +5409,7 @@ MAX(Personal_Credit_Report2__r.Credit_Score_Integer_2__c, Personal_Credit_Report
         <externalId>false</externalId>
         <label>Opportunity Address</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -5559,6 +5573,7 @@ MAX(Personal_Credit_Report2__r.Credit_Score_Integer_2__c, Personal_Credit_Report
         <externalId>false</externalId>
         <label>Partner Additional Email (2 of 2)</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -5582,6 +5597,7 @@ MAX(Personal_Credit_Report2__r.Credit_Score_Integer_2__c, Personal_Credit_Report
         <externalId>false</externalId>
         <label>Partner Additional Email</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -5609,6 +5625,7 @@ MAX(Personal_Credit_Report2__r.Credit_Score_Integer_2__c, Personal_Credit_Report
         <inlineHelpText>Formula field that updates the email field via workflow</inlineHelpText>
         <label>Partner Email 2</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -5631,6 +5648,7 @@ MAX(Personal_Credit_Report2__r.Credit_Score_Integer_2__c, Personal_Credit_Report
         <externalId>false</externalId>
         <label>Partner Email</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -6368,6 +6386,7 @@ IF((Partner_tag_lookup__r.RL_Commission_Structure__c*System_Size__c)&gt;=Partner
         <externalId>false</externalId>
         <label>Referral Email</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -6915,6 +6934,7 @@ if(and( isnull(Disbursal_1_Contract_Signature_Checkbox__c )=False,isnull( Disbur
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Sales Representative Email</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -6950,6 +6970,7 @@ if(and( isnull(Disbursal_1_Contract_Signature_Checkbox__c )=False,isnull( Disbur
         <inlineHelpText>updates via workflow with salesperons email, or if that is blank then the partner email.</inlineHelpText>
         <label>Salesperson Email 2</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -6966,6 +6987,7 @@ if(and( isnull(Disbursal_1_Contract_Signature_Checkbox__c )=False,isnull( Disbur
 )</formula>
         <label>Salesperson Email</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -7097,6 +7119,7 @@ if(and( isnull(Disbursal_1_Contract_Signature_Checkbox__c )=False,isnull( Disbur
 4) Service State
 5) Service Zip Code</inlineHelpText>
         <label>Utility Account Information Verified</label>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -7779,6 +7802,7 @@ if(and( isnull(Disbursal_1_Contract_Signature_Checkbox__c )=False,isnull( Disbur
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Billing Street Address</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>

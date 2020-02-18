@@ -45,7 +45,6 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>true</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableReports>true</enableReports>
@@ -289,6 +288,7 @@
         <inlineHelpText>populated via process builder</inlineHelpText>
         <label>Opportunity Email</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -314,6 +314,7 @@
         <inlineHelpText>populated via process builder</inlineHelpText>
         <label>Partner Additional Email (2 of 2)</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -326,6 +327,7 @@
         <inlineHelpText>populated via process builder</inlineHelpText>
         <label>Partner Additional Email</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -348,6 +350,7 @@
         <inlineHelpText>populated via process builder</inlineHelpText>
         <label>Partner Email</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -417,6 +420,7 @@
         <inlineHelpText>populated via workflow when IX form reminder email is sent</inlineHelpText>
         <label>Salesperson Email</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -534,7 +538,7 @@
         <type>Text</type>
     </nameField>
     <pluralLabel>Disbursals</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

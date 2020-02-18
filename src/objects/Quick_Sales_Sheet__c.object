@@ -45,7 +45,6 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableFeeds>false</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableReports>true</enableReports>
@@ -642,6 +641,7 @@ IF ( Product__r.State_Incentive_Second_Reamort__c, &quot;Months &quot; + TEXT(Pr
         <externalId>false</externalId>
         <label>Send to Email</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Email</type>
@@ -770,7 +770,7 @@ MIN(System_Cost__c * Product__r.State_Tax_Incentive__c, Product__r.State_Tax_Inc
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Presentation Documents</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
     <webLinks>
