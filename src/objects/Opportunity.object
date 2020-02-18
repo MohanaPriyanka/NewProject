@@ -10378,51 +10378,6 @@ objCase.stageName = &apos;Contract Pending&apos; ;
 var result = sforce.connection.update([objCase]);</url>
     </webLinks>
     <webLinks>
-        <fullName>Send_NMC_Contract_Business_Copy_to_Partner</fullName>
-        <availability>online</availability>
-        <description>Same Button as Standard NMC Contrac, but puts the partner up front in the signing order.</description>
-        <displayType>button</displayType>
-        <linkType>javascript</linkType>
-        <masterLabel>Send NMC Contract - Business - Copy to Partner</masterLabel>
-        <openType>onClickJavaScript</openType>
-        <protected>false</protected>
-        <url>{!REQUIRESCRIPT(&quot;/apex/dsfs__DocuSign_JavaScript&quot;)} 
-
-//********* Option Declarations (Do not modify )*********// 
-var RC = &apos;&apos;;var RSL=&apos;&apos;;var RSRO=&apos;&apos;;var RROS=&apos;&apos;;var CCRM=&apos;&apos;;var CCTM=&apos;&apos;;var CCNM=&apos;&apos;;var CRCL=&apos;&apos;;var CRL=&apos;&apos;;var OCO=&apos;&apos;;var DST=&apos;&apos;;var LA=&apos;&apos;;var CEM=&apos;&apos;;var CES=&apos;&apos;;var STB=&apos;&apos;;var SSB=&apos;&apos;;var SES=&apos;&apos;;var SEM=&apos;&apos;;var SRS=&apos;&apos;;var SCS =&apos;&apos;;var RES=&apos;&apos;; 
-//*************************************************// 
-
-CES=&apos;{!HTMLENCODE(Opportunity.Name)} Community Solar Contract&apos;; //Custom Email Subject 
-CEM=&apos;Please Review and Sign this Contract&apos;; //Custom Email Message 
-
-DST=&apos;{!Opportunity.Docusign_Template__c}&apos;; //Default Standard Template ID 
-
-LA=&apos;0&apos;; //List Attachments from within Notes and Attachments 
-
-
-CRL= &apos;Email~{!Opportunity.Email__c};Role~R1;LastName~{!HTMLENCODE(Opportunity.Parent_Account_Name__c)};,Role~R2;SigningGroup~BW CS;,Email~{!Opportunity.Salesperson_Email__c};Role~R3;LastName~{!Opportunity.Sales_tag__c};,Email~{!Opportunity.Email__c};Role~R4;LastName~{!HTMLENCODE(Opportunity.Parent_Account_Name__c)};&apos;; 
-
-
-
-
-CCRM=&apos;R1~Signer 1;R2~Signer 2;R3~Recipient 1;R4~Recipient 3;&apos;; //Custom Role Map 
-
-CCTM=&apos;R1~Signer; R2~Signer; R3~CC; R4~CC;&apos;; 
-
-OCO=&apos;Tag&apos;; //On Click Options 
-
-//********* Page Callout (Do not modify) *********// 
-window.location.href =&quot;/apex/dsfs__DocuSign_CreateEnvelope?DSEID=0&amp;SourceID={!Opportunity.Id}&amp;RC=&quot;+RC+&quot;&amp;RSL=&quot;+RSL+&quot;&amp;RSRO=&quot;+RSRO+&quot;&amp;RROS=&quot;+RROS+&quot;&amp;CCRM=&quot;+CCRM+&quot;&amp;CCTM=&quot;+CCTM+&quot;&amp;CRCL=&quot;+CRCL+&quot;&amp;CRL=&quot;+CRL+&quot;&amp;OCO=&quot;+OCO+&quot;&amp;DST=&quot;+DST+&quot;&amp;CCNM=&quot;+CCNM+&quot;&amp;LA=&quot;+LA+&quot;&amp;CEM=&quot;+CEM+&quot;&amp;CES=&quot;+CES+&quot;&amp;SRS=&quot;+SRS+&quot;&amp;STB=&quot;+STB+&quot;&amp;SSB=&quot;+SSB+&quot;&amp;SES=&quot;+SES+&quot;&amp;SEM=&quot;+SEM+&quot;&amp;SRS=&quot;+SRS+&quot;&amp;SCS=&quot;+SCS+&quot;&amp;RES=&quot;+RES;
-//*******************************************// 
-
-{!REQUIRESCRIPT(&quot;/soap/ajax/27.0/connection.js&quot;)} 
-var objCase = new sforce.SObject(&apos;opportunity&apos;); 
-
-objCase.Id = &apos;{!Opportunity.Id}&apos;; 
-
-var result = sforce.connection.update([objCase]);</url>
-    </webLinks>
-    <webLinks>
         <fullName>Send_NMC_Contract_Residential_Copy_to_Partner</fullName>
         <availability>online</availability>
         <displayType>button</displayType>
