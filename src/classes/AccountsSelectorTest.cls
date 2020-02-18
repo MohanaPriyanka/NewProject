@@ -63,7 +63,7 @@ public with sharing class AccountsSelectorTest {
         System.assert(accountsSelector.selectAll(accountIds) != null, 'Expected a list of accounts');
     }
 
-    @IsTest public static void testSelectById() {
+    @IsTest public static void testSelectByIds() {
         Set<Id> accountIds = (new Map<Id, Account>([SELECT Id FROM Account])).keySet();
         AccountsSelector accountsSelector = new AccountsSelector();
         System.assert(accountsSelector.selectAll(accountIds) != null, 'Expected a list of accounts');
