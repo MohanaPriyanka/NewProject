@@ -10450,45 +10450,28 @@ var result = sforce.connection.update([objCase]);</url>
         <fullName>Send_NMC_Contract_Residential_Copy_to_Partner</fullName>
         <availability>online</availability>
         <displayType>button</displayType>
-        <linkType>javascript</linkType>
-        <masterLabel>Send NMC Contract - Residential (Copy to Partner)</masterLabel>
-        <openType>onClickJavaScript</openType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Send CS Contract</masterLabel>
+        <openType>replace</openType>
         <protected>false</protected>
-        <url>{!REQUIRESCRIPT(&quot;/apex/dsfs__DocuSign_JavaScript&quot;)} 
+        <url>{!URLFOR(&apos;/apex/dsfs__DocuSign_CreateEnvelope&apos;, null, [
+SourceID = Opportunity.Id,
+CES = Opportunity.Name + &apos;Community Solar Contract&apos;,
+CEM = &apos;Please Review and Sign this Contract&apos;,
+DST = Opportunity.Docusign_Template__c,
+LA = &apos;0&apos;,
 
-//********* Option Declarations (Do not modify )*********// 
-var RC = &apos;&apos;;var RSL=&apos;&apos;;var RSRO=&apos;&apos;;var RROS=&apos;&apos;;var CCRM=&apos;&apos;;var CCTM=&apos;&apos;;var CCNM=&apos;&apos;;var CRCL=&apos;&apos;;var CRL=&apos;&apos;;var OCO=&apos;&apos;;var DST=&apos;&apos;;var LA=&apos;&apos;;var CEM=&apos;&apos;;var CES=&apos;&apos;;var STB=&apos;&apos;;var SSB=&apos;&apos;;var SES=&apos;&apos;;var SEM=&apos;&apos;;var SRS=&apos;&apos;;var SCS =&apos;&apos;;var RES=&apos;&apos;; 
-//*************************************************// 
+CRL = &apos;Email~&apos;+ Opportunity.Email__c +&apos;;Role~R1;LastName~&apos;+ URLENCODE(Opportunity.Parent_Account_Name__c) +&apos;;,Role~R2;SigningGroup~BW QC Signature;,Role~R3;SigningGroup~BW CS;,Email~&apos;+ Opportunity.Email__c +&apos;;Role~R4;LastName~&apos;+ URLENCODE(Opportunity.Parent_Account_Name__c) +&apos;&apos;,
 
-CES=&apos;{!HTMLENCODE(Opportunity.Name)} Community Solar Contract&apos;; //Custom Email Subject 
-CEM=&apos;Please Review and Sign this Contract&apos;; //Custom Email Message 
+CCRM = &apos;R1~Signer 1;R2~QC Approver;R3~Signer 2;R4~Recipient 3&apos;,
 
-DST=&apos;{!Opportunity.Docusign_Template__c}&apos;; //Default Standard Template ID 
+CCTM = &apos;R1~Signer;R2~CarbonCopy;R2~Signer;R3~Signer;R4~CarbonCopy&apos;,
 
-LA=&apos;0&apos;; //List Attachments from within Notes and Attachments 
+OCO = &apos;Tag&apos;
 
-CRL= &apos;Email~{!Opportunity.Email__c};Role~R1;LastName~{!HTMLENCODE(Opportunity.Parent_Account_Name__c)};,Role~R2;SigningGroup~BW CS;,Email~{!Opportunity.Salesperson_Email__c};Role~R3;LastName~{!Opportunity.Sales_tag__c};,Email~{!Opportunity.Email__c};Role~R4;LastName~{!HTMLENCODE(Opportunity.Parent_Account_Name__c)};&apos;; 
-
-
-
-
-CCRM=&apos;R1~Signer 1;R2~Signer 2;R3~Recipient 1;R4~Recipient 3;&apos;; //Custom Role Map 
-
-CCTM=&apos;R1~Signer; R2~Signer; R3~CC; R4~CC;&apos;; 
-
-
-OCO=&apos;Tag&apos;; //On Click Options 
-
-//********* Page Callout (Do not modify) *********// 
-window.location.href =&quot;/apex/dsfs__DocuSign_CreateEnvelope?DSEID=0&amp;SourceID={!Opportunity.Id}&amp;RC=&quot;+RC+&quot;&amp;RSL=&quot;+RSL+&quot;&amp;RSRO=&quot;+RSRO+&quot;&amp;RROS=&quot;+RROS+&quot;&amp;CCRM=&quot;+CCRM+&quot;&amp;CCTM=&quot;+CCTM+&quot;&amp;CRCL=&quot;+CRCL+&quot;&amp;CRL=&quot;+CRL+&quot;&amp;OCO=&quot;+OCO+&quot;&amp;DST=&quot;+DST+&quot;&amp;CCNM=&quot;+CCNM+&quot;&amp;LA=&quot;+LA+&quot;&amp;CEM=&quot;+CEM+&quot;&amp;CES=&quot;+CES+&quot;&amp;SRS=&quot;+SRS+&quot;&amp;STB=&quot;+STB+&quot;&amp;SSB=&quot;+SSB+&quot;&amp;SES=&quot;+SES+&quot;&amp;SEM=&quot;+SEM+&quot;&amp;SRS=&quot;+SRS+&quot;&amp;SCS=&quot;+SCS+&quot;&amp;RES=&quot;+RES;
-//*******************************************// 
-
-{!REQUIRESCRIPT(&quot;/soap/ajax/27.0/connection.js&quot;)} 
-var objCase = new sforce.SObject(&apos;opportunity&apos;); 
-
-objCase.Id = &apos;{!Opportunity.Id}&apos;; 
-
-var result = sforce.connection.update([objCase]);</url>
+]
+)}</url>
     </webLinks>
     <webLinks>
         <fullName>Send_Partner_Documents</fullName>
