@@ -67,8 +67,7 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
     public class DataQueryRequest{
         public String queryString;
         public Integer numberOfRetries;
-        public Id recordId; // only populated for queries from UI (insert trigger)
-        public ProcessingParameter method; // only populated for apex/scheduled queries
+        public Id recordId;
     }
 
     public DataQueryRequest scheduledQuery;
@@ -81,52 +80,54 @@ public without sharing class ZuoraDataQueryService implements Schedulable{
             if (record.Query__c != null){
                 DataQueryRequest query = new DataQueryRequest();
                 query.queryString = record.Query__c;
-                query.numberOfRetries = 0;
+                query.numberOfRetries = (Integer) record.Number_of_Retries__c;
                 query.recordId = record.Id;
-                query.method = null;
                 String queryToExecuteAsString = JSON.serialize(query);
-                callDataQueryinFuture(queryToExecuteAsString);
+                callDataQueryInFuture(queryToExecuteAsString);
             }
         }
     }
 
-    public static void callFromApex(String queryString, ProcessingParameter methodToRunWhenComplete) {
-        DataQueryRequest query = new DataQueryRequest();
-        query.queryString = queryString;
-        query.numberOfRetries = 2;
-        query.recordId = null;
-        query.method = methodToRunWhenComplete;
-        String queryToExecuteAsString = JSON.serialize(query);
-        callDataQueryinFuture(queryToExecuteAsString);
+    public static void callFromApex(String queryString, ProcessingParameter processingParameter) {
+        Zuora_Data_Query__c zuoraDataQuery = new Zuora_Data_Query__c(
+            Query__c = queryString,
+            Processing_Parameter__c = JSON.serialize(processingParameter),
+            Number_of_Retries__c = 2
+        );
+        insert zuoraDataQuery;
     }
 
     public void execute(SchedulableContext ctx){
         String queryToExecuteAsString = JSON.serialize(scheduledQuery);
-        callDataQueryinFuture(queryToExecuteAsString);
+        callDataQueryInFuture(queryToExecuteAsString);
     }
 
-    @Future(callout=true)
+    @Future(Callout=true)
     @TestVisible
-    private static void callDataQueryinFuture(String queryToExecuteAsString) {
-        // To avoid 'Future Methods do not support parameter type error':
-        DataQueryRequest request = new DataQueryRequest();
-        if (queryToExecuteAsString != null) {
-            request = (DataQueryRequest) JSON.deserialize(queryToExecuteAsString, DataQueryRequest.class);
-        }
-        DataQueryResult result = submitDataQuery(request.queryString);
-        // If response comes back with errors, save messages to the Data Query record (ex. malformed query failures)
-        if (result.code != null){
-            Zuora_Data_Query__c dataQuery = new Zuora_Data_Query__c(
-                Data_From_Zuora__c = String.valueOf(result),
-                Status__c = 'failed'
-            );
-            if (request.recordId != null) {
-                dataQuery.Id = request.recordId;
+    private static void callDataQueryInFuture(String queryToExecuteAsString) {
+        try {
+            // To avoid 'Future Methods do not support parameter type error':
+            DataQueryRequest request = new DataQueryRequest();
+            if (queryToExecuteAsString != null) {
+                request = (DataQueryRequest) JSON.deserialize(queryToExecuteAsString, DataQueryRequest.class);
             }
-            upsert dataQuery;
-        // If successful, queue calls to check on the query status (in progress -> to complete)
-        } else {
-            ZuoraDataQueryAsyncService.queueCheckDataQueryStatus(result, request);
+            DataQueryResult result = submitDataQuery(request.queryString);
+            // If response comes back with errors, save messages to the Data Query record (ex. malformed query failures)
+            if (result.code != null){
+                Zuora_Data_Query__c dataQuery = new Zuora_Data_Query__c(
+                    Id = request.recordId,
+                    Data_From_Zuora__c = String.valueOf(result),
+                    Status__c = 'failed'
+                );
+                update dataQuery;
+                // If successful, queue calls to check on the query status (in progress -> to complete)
+            } else {
+                ZuoraDataQueryAsyncService.queueCheckDataQueryStatus(result, request);
+            }
+        } catch (Exception e) {
+            Logger.logLater('ZuoraDataQueryService', 'callDataQueryInFuture', e.getMessage() + '\n' + e.getStackTraceString(), Logger.ERROR);
+        } finally {
+            Logger.flushLogs();
         }
     }
 
