@@ -1,0 +1,161 @@
+<p></p>
+<p></p>
+<!-- [if mso]>
+      <style type="text/css">
+          /* Begin Outlook Font Fix */
+              body, table, td {
+                 font-family : Arial, helvetica, sans-serif;
+                 line-height : 150%;
+                 font-size : 15px;
+                 color : #333434;
+              }
+          /* End Outlook Font Fix */
+      </style>
+    <![endif]-->
+<div style="font-size: 0; line-height: 0;"><custom name="opencounter" type="tracking"><custom name="usermatch" type="tracking"></custom></custom></div>
+<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
+<tbody>
+<tr>
+<td align="center" valign="top"><custom type="header"></custom></td>
+</tr>
+<tr>
+<td align="center">
+<table cellspacing="0" cellpadding="0" border="0" width="600" class="container" align="center">
+<tbody>
+<tr>
+<td><!-- added the border style here -->
+<table style="background-color: #ffffff; border: 0px; font-size: 15px; font-family: Arial, helvetica, sans-serif; line-height: 150%; color: #333434;" class="tb_properties border_style" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF" width="100%"><!-- end of comment -->
+<tbody>
+<tr>
+<td align="center" valign="top">
+<table align="left" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tbody>
+<tr><!-- added padding here -->
+<td class="content_padding" style="border: 0px; padding: 0px;"><!-- end of comment -->
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tbody>
+<tr>
+<td align="left" class="header" valign="top">
+<table cellpadding="0" cellspacing="0" width="100%" style="background-color: transparent; min-width: 100%; border-top: 0px; border-right: 0px; border-bottom: 1px solid transparent; border-left: 0px;" class="slot-styling">
+<tbody>
+<tr>
+<td style="padding: 0px;" class="slot-styling camarker-inner">
+<table cellpadding="0" cellspacing="0" width="100%" class="stylingblock-content-wrapper" style="min-width: 100%;">
+<tbody>
+<tr>
+<td class="stylingblock-content-margin-cell" style="padding: 28px;">
+<table cellpadding="0" cellspacing="0" width="100%" style="background-color: transparent; min-width: 100%;" class="stylingblock-content-wrapper">
+<tbody>
+<tr>
+<td style="padding: 0px;" class="stylingblock-content-wrapper camarker-inner">
+<table width="100%" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td align="center"><a href="https://bluewavesolar.com/" title="" alias="Website Link" conversion="true" data-linkto="https://"><img data-assetid="38376" src="http://image.bluewavesolar-email.com/lib/fe3015707564047b7c1279/m/1/e9dd3d83-d085-44dd-9d93-694ab0d48935.png" height="36" width="250" style="display: block; padding: 0px; text-align: center; height: 36px; width: 250px; border: 0px;" /></a></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td align="left" class="" valign="top">
+<table cellpadding="0" cellspacing="0" width="100%" style="background-color: transparent; min-width: 100%; border-top: 0px; border-right: 0px; border-bottom: 1px solid transparent; border-left: 0px;" class="slot-styling">
+<tbody>
+<tr>
+<td style="padding: 0px 10px; width: 741px;" class="slot-styling camarker-inner"><span>Your approval is&nbsp;</span><span data-markjs="true" class="markhzdlfapyt" data-ogac="" data-ogab="" data-ogsc="" data-ogsb="">request</span><span>ed for the following Shared Solar System Order:</span><br>
+<div></div>
+<div></div>
+<div>Shared Solar System: {!Shared_Solar_System_Order__c.Shared_Solar_System__c}</div>
+<div>Comments:&nbsp;{!Shared_Solar_System_Order__c.Comments__c}</div>
+<div></div><br>
+<div></div>
+<div>To see the full request, click the link below:</div>
+<div></div><br>
+<div></div>
+<div><a href="{!ApprovalRequest.Internal_URL}" target="_blank" rel="noopener noreferrer" data-auth="NotApplicable">Click here to review the approval request</a></div>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td align="left" class="" valign="top">
+<table cellpadding="0" cellspacing="0" width="100%" class="slot-styling" style="min-width: 100%;">
+<tbody>
+<tr>
+<td class="stylingblock-content-margin-cell" style="padding: 14px 14px 14px 3px;">
+<table cellpadding="0" cellspacing="0" width="100%" style="background-color: transparent; min-width: 100%; border-top: 0px; border-right: 0px; border-bottom: 1px solid transparent; border-left: 0px;" class="slot-styling">
+<tbody>
+<tr>
+<td style="padding: 4px 5px 10px;" class="slot-styling camarker-inner"></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td align="left" class="" valign="top">
+<table cellpadding="0" cellspacing="0" width="100%" style="background-color: transparent; min-width: 100%;" class="slot-styling">
+<tbody>
+<tr>
+<td style="padding: 0px;" class="slot-styling camarker-inner">
+<table cellpadding="0" cellspacing="0" width="100%" style="background-color: transparent; min-width: 100%; border-top: 1px solid #E4E4E4; border-right: 0px; border-bottom: 1px solid #E4E4E4; border-left: 0px;" class="stylingblock-content-wrapper">
+<tbody>
+<tr>
+<td style="padding: 14px 2px 14px 10px;" class="stylingblock-content-wrapper camarker-inner">
+<table cellspacing="0" cellpadding="0" style="width: 100%;">
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td valign="top"><custom type="footer"></custom></td>
+</tr>
+</tbody>
+</table>
+<p></p>

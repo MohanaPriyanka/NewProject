@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Approval Request - SSSO</name>
+    <style>none</style>
+    <subject>Shared Solar System Order Approval Request</subject>
+    <textOnly>Your approval is requested for the following Shared Solar System Order:
+Shared Solar System: {!Shared_Solar_System_Order__c.Shared_Solar_System__c}
+Comments: {!Shared_Solar_System_Order__c.Comments__c}
+To see the full request, click the link below:
+Click here to review the approval request</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>
