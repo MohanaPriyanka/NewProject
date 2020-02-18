@@ -31,7 +31,6 @@ public without sharing class TransferSheetService {
         return getUASBListFromTransferSheet(transfer);
     }
 
-    @AuraEnabled
     public static List<UASBWithStatus> getUASBListFromTransferSheet(Transfer__c transfer) {
         try {
             Map<Integer, List<String>> csvData = getDataFromMostRecentDocumentUpload(transfer);
@@ -47,12 +46,13 @@ public without sharing class TransferSheetService {
         ContentDocument document;
         try {
             document = docSelector.getMostRecentTransferSheet(transfer);
+            return Util.readCSV(document.LatestPublishedVersion.VersionData.toString());
         } catch (Exception docExcep) {
-            throw Util.createAuraExceptionWithMessage(
-                'NoTransferSheet'
-            );
+            // If no transfer sheet is uploaded, treat the same as if there is a transfer sheet with no rows:
+            Map<Integer, List<String>> blankMap = new Map<Integer, List<String>>();
+            blankMap.put(0,new List<String>{'UtilityNumber', 'Credits', 'Production', 'CreditValue'});
+            return blankMap;
         }
-        return Util.readCSV(document.LatestPublishedVersion.VersionData.toString());
     }
 
     @TestVisible
@@ -101,7 +101,7 @@ public without sharing class TransferSheetService {
         if (columnTitles.size() < 4) {
             message += 'Expected 4 Columns in CSV data found ' + String.valueOf(columnTitles.size());
         } else {
-            if (!columnTitles[0].contains('UtilityNumber') && message == null){
+            if (!columnTitles[0].contains('UtilityNumber')){
                 message += 'Expected first column named UtilityNumber, found ' + columnTitles[0];
             }
             if (!columnTitles[1].contains('Credits')) {

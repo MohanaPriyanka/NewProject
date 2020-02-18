@@ -168,4 +168,13 @@ public without sharing class AccountsSelector {
         ]);
         return accountMap;
     }
+
+    public List<Account> getPropertiesFromParent(Set<Id> acctIds){
+        List<Account> properties = new List<Account>([
+            SELECT Id, Bill_Delivery_Preference__c
+            FROM Account
+            WHERE Parent_Account__c IN : acctIds
+        ]);
+        return properties;
+    }
 }

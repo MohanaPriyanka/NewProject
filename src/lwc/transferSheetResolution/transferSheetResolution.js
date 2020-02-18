@@ -1,6 +1,6 @@
 import { LightningElement, api} from 'lwc';
 
-export default class bwPicklist extends LightningElement {
+export default class transferSheetResolution extends LightningElement {
     @api recordNumber;
     @api picklistOptions;
 
