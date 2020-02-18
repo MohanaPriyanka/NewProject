@@ -53,6 +53,23 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ControlledByParent</externalSharingModel>
     <fields>
+        <fullName>Annual_Cost_Future_Rollup__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>This is a rollup of all approved subscription orders</inlineHelpText>
+        <label>Annual Cost (Future)</label>
+        <summarizedField>Subscription_Order__c.Change_in_Annual_Cost__c</summarizedField>
+        <summaryFilterItems>
+            <field>Subscription_Order__c.Approval_Status__c</field>
+            <operation>equals</operation>
+            <value>Approved</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Subscription_Order__c.Utility_Account_Subscription__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
         <fullName>Annual_Cost_of_Electricity_Current__c</fullName>
         <description>Used in SREC contracts. This is based off of the NMC value on the Opportunity. It shows how many dollars are included in the Current Customer Subscription kW DC.</description>
         <externalId>false</externalId>
@@ -93,6 +110,23 @@
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Annual_kWh_Subscription_Future_Rollup__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>This is a rollup of all approved subscription orders.</inlineHelpText>
+        <label>Annual kWh Subscription (Future)</label>
+        <summarizedField>Subscription_Order__c.Change_in_Annual_kWh__c</summarizedField>
+        <summaryFilterItems>
+            <field>Subscription_Order__c.Approval_Status__c</field>
+            <operation>equals</operation>
+            <value>Approved</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Subscription_Order__c.Utility_Account_Subscription__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
     </fields>
     <fields>
         <fullName>Annual_kwh_subscription_future__c</fullName>
@@ -432,6 +466,40 @@ TRUE, FALSE)</formula>
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Future_Customer_Subscription_KWDC_Rollup__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>This is a rollup of all approved subscription orders.</inlineHelpText>
+        <label>Future Customer Subscription (KW DC)</label>
+        <summarizedField>Subscription_Order__c.Change_in_Subscription_KW_DC__c</summarizedField>
+        <summaryFilterItems>
+            <field>Subscription_Order__c.Approval_Status__c</field>
+            <operation>equals</operation>
+            <value>Approved</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Subscription_Order__c.Utility_Account_Subscription__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Future_Share_of_System_Rollup__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>This is a rollup of all approved subscription orders</inlineHelpText>
+        <label>Future Share of System</label>
+        <summarizedField>Subscription_Order__c.Change_in_Percent_Share_of_System__c</summarizedField>
+        <summaryFilterItems>
+            <field>Subscription_Order__c.Approval_Status__c</field>
+            <operation>equals</operation>
+            <value>Approved</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Subscription_Order__c.Utility_Account_Subscription__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
     </fields>
     <fields>
         <fullName>Future_Share_of_System__c</fullName>
@@ -802,6 +870,21 @@ TRUE, FALSE)</formula>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Shared_Solar_System__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>This is the SSS on the Opportunity when the UAS was created. The SSS on an existing UAS should never be changed.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the SSS on the Opportunity when the UAS was created. The SSS on an existing UAS should never be changed.</inlineHelpText>
+        <label>Shared Solar System</label>
+        <referenceTo>Shared_Solar_System__c</referenceTo>
+        <relationshipLabel>Utility Account Subscriptions</relationshipLabel>
+        <relationshipName>Utility_Account_Subscriptions</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Status__c</fullName>
@@ -1256,6 +1339,26 @@ IF(
         <errorMessage>The Project Company field cannot be changed by this user. Please contact your System Administrator or a BlueWave Executive if you need to change the assignment of a contract to a Project Company.</errorMessage>
     </validationRules>
     <validationRules>
+        <fullName>Opportunity_and_SSS_Lock</fullName>
+        <active>false</active>
+        <errorConditionFormula>AND(
+
+ $CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true,
+
+ISNEW()=false, /*does not apply to new records*/
+
+OR(
+   AND( ISCHANGED(Shared_Solar_System__c)=true,
+        NOT(PRIORVALUE(Shared_Solar_System__c)=&quot;&quot;) /*prevent SSS changes once populated*/
+),
+   AND( ISCHANGED( Opportunity__c )=true,
+        NOT(PRIORVALUE(Opportunity__c)=&quot;&quot;) /*prevent opp changes once populated*/
+)
+)
+)</errorConditionFormula>
+        <errorMessage>The Shared Solar System and Opportunity on a Utility Account Subscription cannot be changed. If you are trying to change the Shared Solar System, do so on the Opportunity.</errorMessage>
+    </validationRules>
+    <validationRules>
         <fullName>Sizing_Control</fullName>
         <active>true</active>
         <description>This validation rule prevents a user from filling in the wrong sizing fields (kWh or Cost) on the UAS.</description>
@@ -1291,5 +1394,24 @@ ISBLANK(Annual_kwh_subscription_future__c)=false)
         <showsLocation>false</showsLocation>
         <showsStatus>false</showsStatus>
         <url>/500/e?&amp;RecordType=012j00000000HA8&amp;ent=Case&amp;cas14=Customer Care Case&amp;CF00Nj000000BVHR9_lkid={!Utility_Account_Subscription__c.Utility_Account_LogId__c}&amp;CF00Nj000000BVHR9={!Utility_Account_Subscription__c.Utility_Account_Log__c}&amp;CF00Nj000000ARyea_lktp={!Utility_Account_Subscription__c.OpportunityId__c}&amp;CF00Nj000000ARyea={!Utility_Account_Subscription__c.Opportunity__c}&amp;00Nj000000BVAYr=Utility Account Data Inaccurate or Missing&amp;cas11=Web</url>
+    </webLinks>
+    <webLinks>
+        <fullName>New_Subscription_Order</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>New Subscription Order</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/flow/User_Subscription_Order_Creation?var_UASID={!Utility_Account_Subscription__c.Id}&amp;retURL=home/home.jsp</url>
     </webLinks>
 </CustomObject>
