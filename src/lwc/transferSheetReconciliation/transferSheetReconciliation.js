@@ -30,9 +30,9 @@ export default class BasicDatatable extends LightningElement {
             this.readApexData(result);
         })
         .catch(error => {
-            if (error.body.message.includes('NoTransferSheet')){
+            if (error.body.message.includes('Bills Already Generated')){
                 const event = new ShowToastEvent({
-                    title: 'Please upload a Transfer Sheet File To Continue',
+                    title: 'Bills Already Generated for this Transfer',
                 });
                 this.dispatchEvent(event);
             } else {
