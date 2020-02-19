@@ -770,8 +770,7 @@ public class ProductEscalationTest {
         switchProductToPercentDiscount();
         insertOldProductionUpdates();
         runOneMonthsBills();
-        Map<String, System_Bill__c> sbMap = TestBillCreationForCancelledCustomers.queryForBills();
-        List<System_Bill__c> allBills = [SELECT Id FROM System_Bill__c];
+        Map<String, List<UASB__c>> uasbMap = TestBillCreationForCancelledCustomers.queryForBills();
 
         /* All UASes are 10 kW for consistency:
             ~(sss1) NMCs = 93.26 Discount = 10% Bill = 83.93
@@ -779,14 +778,14 @@ public class ProductEscalationTest {
             ~(sss2 2nd transfer) NMCs = 138.33 Discount = 10% Bill = 124.49
         */
 
-        System.assertEquals(6,sbMap.values().size());
-        System.assertEquals(83.93,sbMap.get('acA A_SSS1_1').Due_This_Month__c);
-        System.assertEquals(83.93,sbMap.get('acB B_SSS1_1').Due_This_Month__c);
-
-        System.assertEquals(379.61,sbMap.get('acB B_SSS2_1').Due_This_Month__c);
-        System.assertEquals(83.93,sbMap.get('acC C_SSS1_1').Due_This_Month__c);
-        System.assertEquals(379.61,sbMap.get('acC C_SSS2_1').Due_This_Month__c);
-        System.assertEquals(83.93,sbMap.get('acC C_B_SSS1_1').Due_This_Month__c);
+        System.assertEquals(6,uasbMap.size());
+        System.assertEquals(83.93,uasbMap.get('acA A_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(83.93,uasbMap.get('acB B_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(255.11,uasbMap.get('acB B_SSS2')[0].Discounted_Bill__c);
+        System.assertEquals(83.93,uasbMap.get('acC C_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(255.11,uasbMap.get('acC C_SSS2')[0].Discounted_Bill__c);
+        System.assertEquals(124.50,uasbMap.get('acC C_SSS2')[1].Discounted_Bill__c);
+        System.assertEquals(83.93,uasbMap.get('acC C_B_SSS1')[0].Discounted_Bill__c);
     }
 
     @IsTest public static void percentDiscountWithEscalator() {
@@ -795,7 +794,6 @@ public class ProductEscalationTest {
 
         List<Shared_Solar_System__c> sssList = [
             SELECT Id, Name, Count_of_Transfers__c
-
             FROM Shared_Solar_System__c
         ];
 
@@ -825,12 +823,6 @@ public class ProductEscalationTest {
         Test.startTest();
         runOneMonthsBills();
         Test.stopTest();
-
-        /* All UASes are 10 kW for consistency:
-            ~(sss1) NMCs = 93.26 Discount = 10% Bill = 83.93 (transfer #4)
-            ~(sss2 ) NMCs = 283.45 Discount = 10% Bill = 255.11 (transfer #7)
-            ~(sss2 2nd transfer) NMCs = 138.33 Discount = 10% Bill = 124.50 (transfer #8)
-        */
 
         for (UASB__c uasb : [
             SELECT Utility_Account_Subscription__r.Name, Shared_Solar_System__c,
@@ -864,35 +856,33 @@ public class ProductEscalationTest {
             }
         }
 
-        Map<String, System_Bill__c> sbMap = TestBillCreationForCancelledCustomers.queryForBills();
+        Map<String, List<UASB__c>> uasbMap = TestBillCreationForCancelledCustomers.queryForBills();
 
-        System.assertEquals(6,sbMap.values().size());
-        System.assertEquals(0,sbMap.get('acA A_SSS1_1').Due_This_Month__c);
-        System.assertEquals(0,sbMap.get('acB B_SSS1_1').Due_This_Month__c);
-        System.assertEquals(379.61,sbMap.get('acB B_SSS2_1').Due_This_Month__c);
-        System.assertEquals(0,sbMap.get('acC C_SSS1_1').Due_This_Month__c);
-        System.assertEquals(379.61,sbMap.get('acC C_SSS2_1').Due_This_Month__c);
-        System.assertEquals(0,sbMap.get('acC C_B_SSS1_1').Due_This_Month__c);
+        System.assertEquals(6,uasbMap.size());
+        System.assertEquals(0,uasbMap.get('acA A_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(0,uasbMap.get('acB B_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(255.11,uasbMap.get('acB B_SSS2')[0].Discounted_Bill__c);
+        System.assertEquals(124.50,uasbMap.get('acB B_SSS2')[1].Discounted_Bill__c);
+        System.assertEquals(0,uasbMap.get('acC C_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(255.11,uasbMap.get('acC C_SSS2')[0].Discounted_Bill__c);
+        System.assertEquals(124.50,uasbMap.get('acC C_SSS2')[1].Discounted_Bill__c);
+        System.assertEquals(0,uasbMap.get('acC C_B_SSS1')[0].Discounted_Bill__c);
     }
 
     @IsTest public static void solarElectricRateNoEscalator() {
         insertOldProductionUpdates();
         runOneMonthsBills();
-        Map<String, System_Bill__c> sbMap = TestBillCreationForCancelledCustomers.queryForBills();
+        Map<String, List<UASB__c>> uasbMap = TestBillCreationForCancelledCustomers.queryForBills();
 
-        /* All UASes are 10 kW for consistency:
-            (sss1) Kwh = 566.23, SEE = 0.14, Bill = 79.27
-            (sss2 ) Kwh = 1064.05, SEE = 0.14, Bill = 148.97
-            (sss2 2nd transfer) Kwh = 2544.63, SEE = 0.14, Bill = 356.25
-        */
-
-        System.assertEquals(6,sbMap.values().size());
-        System.assertEquals(79.27,sbMap.get('acA A_SSS1_1').Due_This_Month__c);
-        System.assertEquals(79.27,sbMap.get('acB B_SSS1_1').Due_This_Month__c);
-        System.assertEquals(505.22,sbMap.get('acB B_SSS2_1').Due_This_Month__c);
-        System.assertEquals(79.27,sbMap.get('acC C_SSS1_1').Due_This_Month__c);
-        System.assertEquals(505.22,sbMap.get('acC C_SSS2_1').Due_This_Month__c);
-        System.assertEquals(79.27,sbMap.get('acC C_B_SSS1_1').Due_This_Month__c);
+        System.assertEquals(6,uasbMap.size());
+        System.assertEquals(79.27,uasbMap.get('acA A_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(79.27,uasbMap.get('acB B_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(356.25,uasbMap.get('acB B_SSS2')[0].Discounted_Bill__c);
+        System.assertEquals(148.97,uasbMap.get('acB B_SSS2')[1].Discounted_Bill__c);
+        System.assertEquals(79.27,uasbMap.get('acC C_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(356.25,uasbMap.get('acC C_SSS2')[0].Discounted_Bill__c);
+        System.assertEquals(148.97,uasbMap.get('acC C_SSS2')[1].Discounted_Bill__c);
+        System.assertEquals(79.27,uasbMap.get('acC C_B_SSS1')[0].Discounted_Bill__c);
     }
 
     @IsTest public static void solarElectricRateWithEscalator() {
@@ -960,14 +950,16 @@ public class ProductEscalationTest {
                 }
         }
 
-        Map<String, System_Bill__c> sbMap = TestBillCreationForCancelledCustomers.queryForBills();
+        Map<String, List<UASB__c>> uasbMap = TestBillCreationForCancelledCustomers.queryForBills();
 
-        System.assertEquals(6,sbMap.values().size());
-        System.assertEquals(84.09,sbMap.get('acA A_SSS1_1').Due_This_Month__c);
-        System.assertEquals(84.09,sbMap.get('acB B_SSS1_1').Due_This_Month__c);
-        System.assertEquals(557.02,sbMap.get('acB B_SSS2_1').Due_This_Month__c);
-        System.assertEquals(84.09,sbMap.get('acC C_SSS1_1').Due_This_Month__c);
-        System.assertEquals(557.02,sbMap.get('acC C_SSS2_1').Due_This_Month__c);
-        System.assertEquals(84.09,sbMap.get('acC C_B_SSS1_1').Due_This_Month__c);
+        System.assertEquals(6,uasbMap.size());
+        System.assertEquals(84.09,uasbMap.get('acA A_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(84.09,uasbMap.get('acB B_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(389.33,uasbMap.get('acB B_SSS2')[0].Discounted_Bill__c);
+        System.assertEquals(167.69,uasbMap.get('acB B_SSS2')[1].Discounted_Bill__c);
+        System.assertEquals(84.09,uasbMap.get('acC C_SSS1')[0].Discounted_Bill__c);
+        System.assertEquals(389.33,uasbMap.get('acC C_SSS2')[0].Discounted_Bill__c);
+        System.assertEquals(167.69,uasbMap.get('acC C_SSS2')[1].Discounted_Bill__c);
+        System.assertEquals(84.09,uasbMap.get('acC C_B_SSS1')[0].Discounted_Bill__c);
     }
 }

@@ -3,8 +3,7 @@
     <customButtons>Send_Installer_Application</customButtons>
     <customButtons>Send_Storage_Application</customButtons>
     <customButtons>Manage_Access_to_Products</customButtons>
-    <excludeButtons>DataDotComAccountInsights</excludeButtons>
-    <excludeButtons>DataDotComClean</excludeButtons>
+    <excludeButtons>DataDotComCompanyHierarchy</excludeButtons>
     <excludeButtons>DisableCustomerPortalAccount</excludeButtons>
     <excludeButtons>DisablePartnerPortalAccount</excludeButtons>
     <excludeButtons>IncludeOffline</excludeButtons>
@@ -89,7 +88,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Parent_Account__c</field>
+                <field>ParentId</field>
             </layoutItems>
             <layoutItems>
                 <emptySpace>true</emptySpace>
@@ -133,10 +132,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>CS_Sales_Approach__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>ParentId</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>

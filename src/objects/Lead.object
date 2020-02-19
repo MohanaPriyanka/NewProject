@@ -5003,6 +5003,21 @@ if( or(text(Status) = &quot;Cancelled&quot;, text(Status) = &quot;Not Interested
         <visibleLines>3</visibleLines>
     </fields>
     <fields>
+        <fullName>Terms_and_Conditions_Date_Formatted__c</fullName>
+        <description>Applies text formatting to the terms and conditions date/time field so that it can be presented correctly in Docusign.</description>
+        <externalId>false</externalId>
+        <formula>LEFT( 
+      TEXT( Terms_Conditions_Acknowledged__c ), 
+      LEN ( TEXT ( Terms_Conditions_Acknowledged__c ) ) -4
+    )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Terms and Conditions Date Formatted</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Test_Field__c</fullName>
         <externalId>false</externalId>
         <formula>PCR_Relationship__r.Name</formula>

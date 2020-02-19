@@ -17,36 +17,22 @@ public class BillGenerationConsoleController {
         for (Transfer__c transfer : transferList) {
             transferIdList.add(transfer.Id);
         }
-
         return SharedSolarSystemsSelector.getAllSSSWithTransfersNotInList(transferIdList);
     }
 
     @AuraEnabled
     public static void runThisMonthsBills() {
-        Zuora_Setting__mdt zuoraSetting = ZuoraAPIHelper.getZuoraSetting();
         Date today = System.Today();
         List<Bill_Period__c> billPeriods = BillPeriodSelector.getBillPeriodsByMonth(today.month(), today.year());
-
-        if (zuoraSetting.Zuora_Is_Live__c){
-            BillGenerationAsyncService billGen = new BillGenerationAsyncService(billPeriods);
-            billGen.executeBatchJob();
-        } else {
-            EnergyUsageUpdateTriggerHandler ee = new EnergyUsageUpdateTriggerHandler(billPeriods);
-            ee.runBills();
-        }
+        BillGenerationAsyncService billGen = new BillGenerationAsyncService(billPeriods);
+        billGen.executeBatchJob();
     }
 
     @AuraEnabled
     public static String getBillSummary() {
         Date today = System.Today();
-        Zuora_Setting__mdt zuoraSetting = ZuoraAPIHelper.getZuoraSetting();
-        if (zuoraSetting.Zuora_Is_Live__c) {
-            List<AggregateResult> aggregateInvoices = ZuoraInvoiceSelector.getInvoiceSummary(System.Today().addDays(-3));
-            return handleAggregateResult(aggregateInvoices);
-        } else {
-        List<AggregateResult> aggregateAccountBills = AccountBillSelector.getAccountBillSummary(today.month(),String.valueOf(today.year()));
-            return handleAggregateResult(aggregateAccountBills);
-        }
+        List<AggregateResult> aggregateInvoices = ZuoraInvoiceSelector.getInvoiceSummary(System.Today().addDays(-3));
+        return handleAggregateResult(aggregateInvoices);
     }
 
     @AuraEnabled

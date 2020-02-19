@@ -80,6 +80,10 @@
                 <behavior>Edit</behavior>
                 <field>Product_Escalation_Schedule__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>ContractId</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>

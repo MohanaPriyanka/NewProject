@@ -5,7 +5,7 @@ public class ZuoraCreditDebitMemoServiceTest {
         setBillsToUnPublished();
 
         List<Utility_Account_Subscription__c> uasList = [
-            SELECT Id, Opportunity__r.Shared_Solar_System__r.Unique_ID__c
+            SELECT Id, Opportunity__r.Shared_Solar_System__r.Unique_ID__c, Opportunity__r.AccountId
             FROM Utility_Account_Subscription__c
             LIMIT 2
         ];
@@ -20,6 +20,7 @@ public class ZuoraCreditDebitMemoServiceTest {
         Bill_Adjustment__c adjustOne = new Bill_Adjustment__c(
             Name = 'UASoneAdjustment',
             Utility_Account_Subscription__c = uasList[0].Id,
+            Account__c = uasList[0].Opportunity__r.AccountId,
             Adjustment_Type__c = 'BW Credit',
             Client__c = clientAccount.Id,
             Adjustment_Amount__c = -90,
@@ -29,6 +30,7 @@ public class ZuoraCreditDebitMemoServiceTest {
         Bill_Adjustment__c adjustTwo = new Bill_Adjustment__c(
             Name = 'UASoneAdjustment2',
             Utility_Account_Subscription__c = uasList[0].Id,
+            Account__c = uasList[0].Opportunity__r.AccountId,
             Adjustment_Type__c = 'Client Credit',
             Client__c = clientAccount.Id,
             Adjustment_Amount__c = -45,
@@ -38,6 +40,7 @@ public class ZuoraCreditDebitMemoServiceTest {
         Bill_Adjustment__c adjustThree = new Bill_Adjustment__c(
             Name = 'UASoneAdjustment3',
             Utility_Account_Subscription__c = uasList[1].Id,
+            Account__c = uasList[1].Opportunity__r.AccountId,
             Adjustment_Type__c = 'BW Credit',
             Client__c = clientAccount.Id,
             Adjustment_Amount__c = -15,
@@ -47,6 +50,7 @@ public class ZuoraCreditDebitMemoServiceTest {
         Bill_Adjustment__c adjustFour = new Bill_Adjustment__c(
             Name = 'UASoneAdjustment4',
             Utility_Account_Subscription__c = uasList[1].Id,
+            Account__c = uasList[1].Opportunity__r.AccountId,
             Adjustment_Type__c = 'BW Credit',
             Client__c = clientAccount.Id,
             Adjustment_Amount__c = -99,
@@ -57,6 +61,7 @@ public class ZuoraCreditDebitMemoServiceTest {
         Bill_Adjustment__c adjustFive = new Bill_Adjustment__c(
             Name = 'UASoneAdjustment5',
             Utility_Account_Subscription__c = uasList[1].Id,
+            Account__c = uasList[1].Opportunity__r.AccountId,
             Adjustment_Type__c = 'BW Credit',
             Client__c = clientAccount.Id,
             Adjustment_Amount__c = 12,
@@ -66,6 +71,7 @@ public class ZuoraCreditDebitMemoServiceTest {
         Bill_Adjustment__c adjustSix = new Bill_Adjustment__c(
             Name = 'UASoneAdjustment6',
             Utility_Account_Subscription__c = uasList[1].Id,
+            Account__c = uasList[1].Opportunity__r.AccountId,
             Adjustment_Type__c = 'BW Credit',
             Client__c = clientAccount.Id,
             Adjustment_Amount__c = 18,
@@ -75,6 +81,7 @@ public class ZuoraCreditDebitMemoServiceTest {
         Bill_Adjustment__c adjustSeven = new Bill_Adjustment__c(
             Name = 'UASoneAdjustment7',
             Utility_Account_Subscription__c = uasList[1].Id,
+            Account__c = uasList[1].Opportunity__r.AccountId,
             Adjustment_Type__c = 'BW Credit',
             Client__c = clientAccount.Id,
             Adjustment_Amount__c = 22,
@@ -85,6 +92,7 @@ public class ZuoraCreditDebitMemoServiceTest {
         Bill_Adjustment__c adjustEight = new Bill_Adjustment__c(
             Name = 'UASoneAdjustment8',
             Utility_Account_Subscription__c = uasList[1].Id,
+            Account__c = uasList[1].Opportunity__r.AccountId,
             Adjustment_Type__c = 'BW Credit',
             Client__c = clientAccount.Id,
             Adjustment_Amount__c = 23,

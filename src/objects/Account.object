@@ -393,18 +393,6 @@ IMAGE(&quot;/resource/1553274837000/Crown_Icon&quot;, &quot;crown&quot;),
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Adjusted_Total_Billed__c</fullName>
-        <externalId>false</externalId>
-        <formula>Total_Billed__c +  Total_Adjustments__c +  Total_Late_Fees__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Adjusted Total Billed</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>AnnualRevenue</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
@@ -1204,17 +1192,6 @@ CASE(Days_Past_Due__c,
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Credit_Adjustments__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Adjustments to Credits Allocated rolled up from Account Bills</inlineHelpText>
-        <label>Credit Adjustments</label>
-        <summarizedField>Account_Bill__c.Credit_Adjustments__c</summarizedField>
-        <summaryForeignKey>Account_Bill__c.Parent_Account__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <type>Summary</type>
-    </fields>
-    <fields>
         <fullName>Credit_Bureau__c</fullName>
         <externalId>false</externalId>
         <label>Credit Bureau</label>
@@ -1242,6 +1219,28 @@ CASE(Days_Past_Due__c,
                 </value>
             </valueSetDefinition>
         </valueSet>
+    </fields>
+    <fields>
+        <fullName>Credits_Allocated_Adjustments__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Rollup of Credits Allocated from Adjustments</inlineHelpText>
+        <label>Credits Allocated Adjustments</label>
+        <summarizedField>Bill_Adjustment__c.Credits_Allocated__c</summarizedField>
+        <summaryForeignKey>Bill_Adjustment__c.Account__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Credits_Allocated_UASB__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Rollup of credits allocated from UASBs</inlineHelpText>
+        <label>Credits Allocated UASB</label>
+        <summarizedField>UASB__c.Credits_Allocated__c</summarizedField>
+        <summaryForeignKey>UASB__c.Account__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <type>Summary</type>
     </fields>
     <fields>
         <fullName>Custom_ID__c</fullName>
@@ -2134,26 +2133,6 @@ IF(
         <type>Summary</type>
     </fields>
     <fields>
-        <fullName>Most_Recent_Billing_Period_End_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Most Recent Billing Period End Date</label>
-        <summarizedField>Account_Bill__c.Billing_Period_End_Date__c</summarizedField>
-        <summaryForeignKey>Account_Bill__c.Parent_Account__c</summaryForeignKey>
-        <summaryOperation>max</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <type>Summary</type>
-    </fields>
-    <fields>
-        <fullName>Most_Recent_Billing_Period_Start_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Most Recent Billing Period Start Date</label>
-        <summarizedField>Account_Bill__c.Billing_Period_Start_Date__c</summarizedField>
-        <summaryForeignKey>Account_Bill__c.Parent_Account__c</summaryForeignKey>
-        <summaryOperation>max</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <type>Summary</type>
-    </fields>
-    <fields>
         <fullName>Most_Recent_Engagement_Attempt__c</fullName>
         <externalId>false</externalId>
         <formula>IF(
@@ -2214,19 +2193,6 @@ TODAY()- BLANKVALUE(Postcard_2__c,DATE(1900,1,1))
         <fullName>Name</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
-    </fields>
-    <fields>
-        <fullName>Net_Metering_Credits_Allocated__c</fullName>
-        <externalId>false</externalId>
-        <formula>Total_Net_Metering_Credits_Allocated__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Unadjusted Credits Allocated, rolled up from Account Bills</inlineHelpText>
-        <label>Unadjusted Credits Allocated ($)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>NumberOfEmployees</fullName>
@@ -2462,20 +2428,11 @@ TODAY()- BLANKVALUE(Postcard_2__c,DATE(1900,1,1))
         <type>Hierarchy</type>
     </fields>
     <fields>
-        <fullName>Parent_Account_Checkbox__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Parent Account (Checkbox)</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Parent_Account_ID__c</fullName>
         <externalId>false</externalId>
         <formula>Parent_Account__r.Id</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Parent Account ID</label>
+        <label>CS Parent Account ID</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <type>Text</type>
@@ -2486,7 +2443,7 @@ TODAY()- BLANKVALUE(Postcard_2__c,DATE(1900,1,1))
         <externalId>false</externalId>
         <formula>Parent_Account__r.Name</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Parent Account Name</label>
+        <label>CS Parent Account Name</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <type>Text</type>
@@ -2635,7 +2592,7 @@ IMAGE(&quot;/servlet/servlet.FileDownload?file=&quot; &amp; Partner__r.Logo__c, 
         <externalId>false</externalId>
         <formula>Parent_Account__r.Partner_Name__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Partner from Parent Account</label>
+        <label>Partner from CS Parent Account</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <type>Text</type>
@@ -3040,10 +2997,21 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
     <fields>
         <fullName>Savings_Adjustments__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Adjustments to Savings rolled up from Account Bills</inlineHelpText>
+        <inlineHelpText>Rollup summary of savings from adjustments linked to this account</inlineHelpText>
         <label>Savings Adjustments</label>
-        <summarizedField>Account_Bill__c.Savings_Adjustments__c</summarizedField>
-        <summaryForeignKey>Account_Bill__c.Parent_Account__c</summaryForeignKey>
+        <summarizedField>Bill_Adjustment__c.Discount__c</summarizedField>
+        <summaryForeignKey>Bill_Adjustment__c.Account__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Savings_UASB__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Rollup summary of Savings on UASBs linked to the Account</inlineHelpText>
+        <label>Savings UASB</label>
+        <summarizedField>UASB__c.Savings__c</summarizedField>
+        <summaryForeignKey>UASB__c.Account__c</summaryForeignKey>
         <summaryOperation>sum</summaryOperation>
         <trackHistory>false</trackHistory>
         <type>Summary</type>
@@ -3765,17 +3733,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Total_Adjustments__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Sum of all adjustments on this account</inlineHelpText>
-        <label>Total Adjustments</label>
-        <summarizedField>Account_Bill__c.Adjustments__c</summarizedField>
-        <summaryForeignKey>Account_Bill__c.Parent_Account__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <type>Summary</type>
-    </fields>
-    <fields>
         <fullName>Total_Amount_Billed__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Total Billed + Late Fees + Adjustments</inlineHelpText>
@@ -3819,48 +3776,23 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <type>Summary</type>
     </fields>
     <fields>
+        <fullName>Total_Credits_Allocated__c</fullName>
+        <externalId>false</externalId>
+        <formula>Credits_Allocated_Adjustments__c + Credits_Allocated_UASB__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Total Credits Allocated</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>Total_Late_Fees__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Sum of all Late Fees on Account</inlineHelpText>
         <label>Total Late Fees</label>
         <summarizedField>Account_Bill__c.Late_Fees__c</summarizedField>
-        <summaryForeignKey>Account_Bill__c.Parent_Account__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <type>Summary</type>
-    </fields>
-    <fields>
-        <fullName>Total_Lifetime_Credits_Allocated__c</fullName>
-        <externalId>false</externalId>
-        <formula>Total_Net_Metering_Credits_Allocated__c + Credit_Adjustments__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Total Credits Allocated from Account Bills + Total Credit Adjustments from related Production type Bill Adjustments</inlineHelpText>
-        <label>Total Lifetime Credits Allocated</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Total_Lifetime_Savings__c</fullName>
-        <externalId>false</externalId>
-        <formula>Total_Savings__c + Savings_Adjustments__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Rollup of Savings from related UASBs and Savings from related Production type Bill Adjustments</inlineHelpText>
-        <label>Total Lifetime Savings</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Total_Net_Metering_Credits_Allocated__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Unadjusted Total NMCs from Account Bills</inlineHelpText>
-        <label>Unadjusted Credits Allocated</label>
-        <summarizedField>Account_Bill__c.Net_Metering_Credits_Generated__c</summarizedField>
         <summaryForeignKey>Account_Bill__c.Parent_Account__c</summaryForeignKey>
         <summaryOperation>sum</summaryOperation>
         <trackHistory>false</trackHistory>
@@ -3921,13 +3853,14 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
     <fields>
         <fullName>Total_Savings__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Unadjusted Savings from Account Bills</inlineHelpText>
-        <label>Unadjusted Savings</label>
-        <summarizedField>Account_Bill__c.Savings_Rollup__c</summarizedField>
-        <summaryForeignKey>Account_Bill__c.Parent_Account__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
+        <formula>Savings_Adjustments__c + Savings_UASB__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Total Savings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
         <trackHistory>false</trackHistory>
-        <type>Summary</type>
+        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Tracking_Trigger_Report__c</fullName>
@@ -11603,6 +11536,231 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
             </values>
             <values>
                 <fullName>WMECO</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Landowner</fullName>
+        <active>true</active>
+        <description>Landowner record type used by Site Acquisition</description>
+        <label>Landowner</label>
+        <picklistValues>
+            <picklist>AccountSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Industry</picklist>
+            <values>
+                <fullName>Agriculture</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Apparel</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Banking</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Biotechnology</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Chemicals</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Communications</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Construction</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Consulting</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Education</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Electronics</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Energy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Engineering</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Entertainment</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Environmental</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Finance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Food %26 Beverage</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Government</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Healthcare</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Hospitality</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Insurance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Landowner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Machinery</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Manufacturing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Media</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not For Profit</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Recreation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Retail</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Shipping</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Technology</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Telecommunications</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Transportation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Utilities</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Ownership</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Private</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Public</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Subsidiary</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Rating</picklist>
+            <values>
+                <fullName>Cold</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Hot</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Warm</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Type</picklist>
+            <values>
+                <fullName>EPC Account</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Engineers of Record</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Financial Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Government Entity</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Landowner</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>QA%2FQC Consultants</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Scout</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Service Provider</fullName>
                 <default>false</default>
             </values>
         </picklistValues>

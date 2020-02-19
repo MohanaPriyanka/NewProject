@@ -50,7 +50,7 @@ public class ZuoraUsageServiceTest {
         update propertyAccounts;
 
         List<UASB__c> uasbList = [
-            SELECT Id, Name, Utility_Account_Subscription__r.Id
+            SELECT Id, Name, Utility_Account_Subscription__r.Id, Utility_Account_Subscription__r.Opportunity__r.AccountId
             FROM UASB__c
             ORDER BY Date__c
             LIMIT 2
@@ -59,6 +59,7 @@ public class ZuoraUsageServiceTest {
         Bill_Adjustment__c adjustOne = new Bill_Adjustment__c(
             Name = 'UASoneAdjustment',
             Utility_Account_Subscription__c = uasbList[0].Utility_Account_Subscription__r.Id,
+            Account__c = uasbList[0].Utility_Account_Subscription__r.Opportunity__r.AccountId,
             UASB__c = uasbList[0].Id,
             Adjustment_Type__c = 'Production',
             Adjustment_Amount__c = 90,
@@ -70,6 +71,7 @@ public class ZuoraUsageServiceTest {
         Bill_Adjustment__c adjustTwo = new Bill_Adjustment__c(
             Name = 'UASoneAdjustment2',
             Utility_Account_Subscription__c = uasbList[0].Utility_Account_Subscription__r.Id,
+            Account__c = uasbList[0].Utility_Account_Subscription__r.Opportunity__r.AccountId,
             UASB__c = uasbList[0].Id,
             Adjustment_Type__c = 'Production',
             Adjustment_Amount__c = 45,
@@ -81,6 +83,7 @@ public class ZuoraUsageServiceTest {
         Bill_Adjustment__c adjustThree = new Bill_Adjustment__c(
             Name = 'UASoneAdjustment2',
             Utility_Account_Subscription__c = uasbList[1].Utility_Account_Subscription__r.Id,
+            Account__c = uasbList[1].Utility_Account_Subscription__r.Opportunity__r.AccountId,
             UASB__c = uasbList[1].Id,
             Adjustment_Type__c = 'BW Credit',
             Adjustment_Amount__c = 15,
@@ -122,7 +125,8 @@ public class ZuoraUsageServiceTest {
 
         UASB__c uasb = [
             SELECT Id, Date__c, NMC_Rate__c, NMC_Discount__c, Utility_Account_Subscription__r.Id, Opportunity__r.Id,
-                System_Bill__r.Id, Shared_Solar_System__r.Id, Total_System_Size_kW_DC__c, CS_Billing_Log__r.Id
+                System_Bill__r.Id, Shared_Solar_System__r.Id, Total_System_Size_kW_DC__c, CS_Billing_Log__r.Id,
+                Opportunity__r.AccountId
             FROM UASB__c
             LIMIT 1
         ];
@@ -137,6 +141,7 @@ public class ZuoraUsageServiceTest {
             Total_System_NMCs__c = 18000,
             Utility_Account_Subscription__c = uasb.Utility_Account_Subscription__r.Id,
             Opportunity__c = uasb.Opportunity__r.Id,
+            Account__c = uasb.Opportunity__r.AccountId,
             System_Bill__c = uasb.System_Bill__r.Id,
             Shared_Solar_System__c = uasb.Shared_Solar_System__r.Id,
             Total_System_Size_kw_DC__c = uasb.Total_System_Size_kw_DC__c,
