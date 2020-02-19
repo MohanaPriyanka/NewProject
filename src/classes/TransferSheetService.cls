@@ -28,6 +28,9 @@ public without sharing class TransferSheetService {
     @AuraEnabled
     public static List<UASBWithStatus> getTransferFromId(Id transferRecordId) {
         Transfer__c transfer = TransferSelector.getTransferById(transferRecordId);
+        if (transfer.Bills_Generated__c){
+            throw Util.createAuraExceptionWithMessage('Bills Already Generated for this Transfer');
+        }
         return getUASBListFromTransferSheet(transfer);
     }
 

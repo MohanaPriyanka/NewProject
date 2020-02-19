@@ -117,6 +117,7 @@ export default class BasicDatatable extends LightningElement {
     }
 
     insertBills(){
+        this.allResolved = false;
         let dataList = [];
         for (let lineItem of this.uasbMap.values()) {
             dataList.push(JSON.stringify(lineItem));
