@@ -18,21 +18,17 @@ public class ZuoraDataQueryAsyncService implements Queueable, Database.AllowsCal
 
     private void checkZuoraQueryStatus(){
         zuoraQueryResult = ZuoraDataQueryService.checkDataQueryStatus(zuoraQueryResult);
-        Integer minutesToRetry = 120;
-        List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
-        if (systemProperties.size() > 0 && systemProperties[0].get('Zuora_Data_Query_Minutes_To_Retry__c') != null) {
-            minutesToRetry = (Integer)systemProperties[0].get('Zuora_Data_Query_Minutes_To_Retry__c');
-        }
+        Integer minutesToRetry = (Integer) Util.getSystemPropertyDecimal('Zuora_Data_Query_Minutes_To_Retry__c');
+        minutesToRetry = minutesToRetry==0 ? 120 : minutesToRetry;
+
         if (zuoraQueryResult.data.queryStatus != null && zuoraQueryResult.data.id != null) {
-            // Query can be fired from UI or from Apex
-            // If made from UI, update existing record
-            // If made from Apex, insert new record
-            Zuora_Data_Query__c dataQuery = new Zuora_Data_Query__c();
+            Zuora_Data_Query__c dataQuery = [
+                SELECT Id, Processing_Parameter__c
+                FROM Zuora_Data_Query__c
+                WHERE Id = :attemptedQuery.recordId
+            ];
             dataQuery.Zuora_Id__c = zuoraQueryResult.data.id;
             dataQuery.Status__c = zuoraQueryResult.data.queryStatus;
-            if (attemptedQuery.recordId != null) {
-                dataQuery.Id = attemptedQuery.recordId;
-            }
 
             // If job is complete, save data to record
             // If job failed, save errors to record
@@ -58,7 +54,7 @@ public class ZuoraDataQueryAsyncService implements Queueable, Database.AllowsCal
             } else if (zuoraQueryResult.data.queryStatus == 'failed'){
                 dataQuery.Data_From_Zuora__c = 'Will not retry, hit error: ' + String.valueOf(zuoraQueryResult);
             }
-            upsert dataQuery Id;
+            update dataQuery;
             if (zuoraQueryResult.data.queryStatus == 'in_progress' || zuoraQueryResult.data.queryStatus == 'accepted') {
                 attemptedQuery.recordId = dataQuery.Id;
                 queueCheckDataQueryStatus(zuoraQueryResult, attemptedQuery);
@@ -81,10 +77,12 @@ public class ZuoraDataQueryAsyncService implements Queueable, Database.AllowsCal
             dataQueryToUpdate.Link_To_File__c = zuoraQueryResult.data.dataFile;
             // Truncate because Link_To_File__c contains the actual data, Data_From_Zuora__c should really only
             // be used for small data sets or as a preview:
-            dataQueryToUpdate.Data_From_Zuora__c = dataAsString.subString(0, math.min(dataAsString.length(), 131000));
+            dataQueryToUpdate.Data_From_Zuora__c = dataAsString.substring(0, Math.min(dataAsString.length(), 131000));
             dataQueryToUpdate.Output_Rows__c = zuoraQueryResult.data.outputRows;
             if (dataAsString != '{}') {
-                ZuoraDataQueryService.handlePostQueryJob(dataAsString, attemptedQuery.method);
+                ZuoraDataQueryService.ProcessingParameter processingParameter =
+                    (ZuoraDataQueryService.ProcessingParameter) JSON.deserialize(dataQueryToUpdate.Processing_Parameter__c, ZuoraDataQueryService.ProcessingParameter.class);
+                ZuoraDataQueryService.handlePostQueryJob(dataAsString, processingParameter);
             }
         } catch(Exception excep) {
             String errorMessage = String.valueOf(zuoraQueryResult) + '\n' + excep.getMessage() + '\n' + excep.getStackTraceString();

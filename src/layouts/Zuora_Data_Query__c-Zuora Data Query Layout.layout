@@ -23,6 +23,10 @@
                 <behavior>Edit</behavior>
                 <field>Query__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Number_of_Retries__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -45,6 +49,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Data_From_Zuora__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Processing_Parameter__c</field>
             </layoutItems>
         </layoutColumns>
         <style>OneColumn</style>
