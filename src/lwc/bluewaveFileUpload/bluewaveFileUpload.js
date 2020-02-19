@@ -22,6 +22,10 @@ export default class bwFileUpload extends LightningElement {
             documentIdList : idList,
             category : this.categoryType
         })
+        .then(result => {
+            const fileDoneEvent = new CustomEvent('fileuploaded');
+            this.dispatchEvent(fileDoneEvent);
+        })
         .catch((error) => {
             const event = new ShowToastEvent({
                 title: 'Could not update Category on File: error',

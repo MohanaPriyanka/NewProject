@@ -159,4 +159,30 @@ public without sharing class AccountsSelector {
         }
         return accountIdsWithUASBs;
     }
+
+    public List<Account> getAccountsById(Set<Id> accountIds){
+        return [
+            SELECT Id, Parent_Account__c, Client_Brand_Key__c
+            FROM Account
+            WHERE Id IN : accountIds
+        ];
+    }
+
+    public Map<Id,Account> selectById(Set<Id> acctIds){
+        Map<Id, Account> accountMap = new Map<Id, Account>([
+            SELECT Id, Last_Bill_Send_Date_New_Charges_Zuora__c, Total_Outstanding_Balance_Zuora__c
+            FROM Account
+            WHERE Id IN : acctIds
+        ]);
+        return accountMap;
+    }
+
+    public List<Account> getPropertiesFromParent(Set<Id> acctIds){
+        List<Account> properties = new List<Account>([
+            SELECT Id, Bill_Delivery_Preference__c
+            FROM Account
+            WHERE Parent_Account__c IN : acctIds
+        ]);
+        return properties;
+    }
 }
