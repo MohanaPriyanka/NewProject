@@ -173,6 +173,19 @@
         <visibleLines>2</visibleLines>
     </fields>
     <fields>
+        <fullName>Number_of_Retries__c</fullName>
+        <defaultValue>0</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Because we sometimes see system issues in Zuora (due to the volume of requests at certain times), we will retry the query this number of times, waiting between each try (set by custom setting)</inlineHelpText>
+        <label>Number of Retries</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Output_Rows__c</fullName>
         <externalId>false</externalId>
         <label>Output Rows</label>
@@ -182,6 +195,16 @@
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Processing_Parameter__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>JSON for ZuoraDataQueryService.ProcessingParameter that indicates what should be executed after this data query successfully runs</inlineHelpText>
+        <label>Processing Parameter</label>
+        <length>131072</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
     </fields>
     <fields>
         <fullName>Query__c</fullName>
@@ -261,7 +284,7 @@ https://www.zuora.com/developer/api-reference/#operation/GET_DataQueryJob</inlin
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Zuora Data Queries</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>
