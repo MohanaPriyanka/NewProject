@@ -42032,6 +42032,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Shared_Solar_System__c.Client_Opportunity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Shared_Solar_System__c.Comments__c</field>
         <readable>true</readable>
     </fieldPermissions>

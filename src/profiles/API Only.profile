@@ -28133,6 +28133,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Shared_Solar_System__c.Client_Opportunity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Shared_Solar_System__c.Comments__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -46497,18 +46502,6 @@
     <layoutAssignments>
         <layout>Opportunity-BFG - Community Solar %28Anchor%29</layout>
         <recordType>Opportunity.BFG_Community_Solar_Anchor</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Opportunity-BFG</layout>
-        <recordType>Opportunity.BFG</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Opportunity-BFG</layout>
-        <recordType>Opportunity.BW_Community_Solar_BCS</recordType>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Opportunity-BFG</layout>
-        <recordType>Opportunity.Finance</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Opportunity-Business Development</layout>

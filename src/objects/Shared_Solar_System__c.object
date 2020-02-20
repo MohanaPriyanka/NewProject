@@ -732,6 +732,21 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
         </valueSet>
     </fields>
     <fields>
+        <fullName>Client_Opportunity__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Client Opportunity that is responsible for this Shared Solar System. Note that this is applicable to the sales process, not post-sale.</inlineHelpText>
+        <label>Client Opportunity</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipLabel>Shared Solar Systems</relationshipLabel>
+        <relationshipName>Shared_Solar_Systems1</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Comments__c</fullName>
         <externalId>false</externalId>
         <label>Comments</label>
