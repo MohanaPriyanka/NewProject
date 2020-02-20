@@ -179,8 +179,8 @@
         <externalId>false</externalId>
         <label>Journal Entry</label>
         <referenceTo>Journal_Entry__c</referenceTo>
-        <relationshipLabel>Production Details</relationshipLabel>
-        <relationshipName>Production_Details</relationshipName>
+        <relationshipLabel>Transfer Parts</relationshipLabel>
+        <relationshipName>Transfer_Parts</relationshipName>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
@@ -301,17 +301,17 @@ FALSE)</formula>
         <type>Number</type>
         <unique>false</unique>
     </fields>
-    <label>Production Detail</label>
+    <label>Transfer Part</label>
     <listViews>
         <fullName>All</fullName>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
     <nameField>
-        <label>Production Detail Name</label>
+        <label>Transfer Parts Name</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>Production Details</pluralLabel>
+    <pluralLabel>Transfer Parts</pluralLabel>
     <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
     <validationRules>

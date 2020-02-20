@@ -44268,7 +44268,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Transfer_Part__c.Journal_Entry__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
