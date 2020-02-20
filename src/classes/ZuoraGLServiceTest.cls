@@ -58,12 +58,17 @@ public class ZuoraGLServiceTest {
         Test.stopTest();
 
         List<Zuora_Data_Query__c> dataQueriesQueued = [
-            SELECT Id
+            SELECT Id, Query__c, Processing_Parameter__c, Data_From_Zuora__c, Status__c
             FROM Zuora_Data_Query__c
         ];
 
         System.assertEquals(0,originalDataQueries.size());
-        System.assertEquals(1,dataQueriesQueued.size());
+        System.assertEquals(2,dataQueriesQueued.size(), 'Expected a two data queries, one complete and the other queued');
+        System.assert(dataQueriesQueued[0].Query__c.contains('FROM AccountingPeriod'), 'Expected the first query to be FROM AccountingPeriod');
+        System.assertEquals('completed', dataQueriesQueued[0].Status__c, 'Expected the first query to be finished');
+        System.assertEquals(null, dataQueriesQueued[1].Status__c, 'And the next query to be incomplete');
+        System.assertEquals(ZuoraGLSelector.getInvoiceItems(startDate, endDate), dataQueriesQueued[1].Query__c);
+
     }
 
     @IsTest
@@ -108,11 +113,14 @@ public class ZuoraGLServiceTest {
         optionalDates.put('PeriodCloseDate',Date.newInstance(2016,01,01));
         methodToRunAfter.optionalDates = optionalDates;
 
+        Zuora_Data_Query__c zuoraDataQuery = new Zuora_Data_Query__c(
+            Query__c = '',
+            Processing_Parameter__c = JSON.serialize(methodToRunAfter)
+        );
+        insert zuoraDataQuery;
+
         ZuoraDataQueryService.DataQueryRequest queryRequest = new ZuoraDataQueryService.DataQueryRequest();
-        queryRequest.queryString = null;
-        queryRequest.numberOfRetries = 0;
-        queryRequest.recordId = null;
-        queryRequest.method = methodToRunAfter;
+        queryRequest.recordId = zuoraDataQuery.Id;
 
         Test.startTest();
         ZuoraDataQueryAsyncService.queueCheckDataQueryStatus(result, queryRequest);
@@ -157,11 +165,14 @@ public class ZuoraGLServiceTest {
         optionalDates.put('PeriodCloseDate',Date.newInstance(2016,01,01));
         methodToRunAfter.optionalDates = optionalDates;
 
+        Zuora_Data_Query__c zuoraDataQuery = new Zuora_Data_Query__c(
+            Query__c = '',
+            Processing_Parameter__c = JSON.serialize(methodToRunAfter)
+        );
+        insert zuoraDataQuery;
+
         ZuoraDataQueryService.DataQueryRequest queryRequest = new ZuoraDataQueryService.DataQueryRequest();
-        queryRequest.queryString = null;
-        queryRequest.numberOfRetries = 0;
-        queryRequest.recordId = null;
-        queryRequest.method = methodToRunAfter;
+        queryRequest.recordId = zuoraDataQuery.Id;
 
         Test.startTest();
         ZuoraDataQueryAsyncService.queueCheckDataQueryStatus(result, queryRequest);
@@ -197,11 +208,14 @@ public class ZuoraGLServiceTest {
         optionalDates.put('PeriodCloseDate',Date.newInstance(2016,01,01));
         methodToRunAfter.optionalDates = optionalDates;
 
+        Zuora_Data_Query__c zuoraDataQuery = new Zuora_Data_Query__c(
+            Query__c = '',
+            Processing_Parameter__c = JSON.serialize(methodToRunAfter)
+        );
+        insert zuoraDataQuery;
+
         ZuoraDataQueryService.DataQueryRequest queryRequest = new ZuoraDataQueryService.DataQueryRequest();
-        queryRequest.queryString = null;
-        queryRequest.numberOfRetries = 0;
-        queryRequest.recordId = null;
-        queryRequest.method = methodToRunAfter;
+        queryRequest.recordId = zuoraDataQuery.Id;
 
         Test.startTest();
         ZuoraDataQueryAsyncService.queueCheckDataQueryStatus(result, queryRequest);
@@ -244,11 +258,14 @@ public class ZuoraGLServiceTest {
         optionalDates.put('PeriodCloseDate',Date.newInstance(2016,01,01));
         methodToRunAfter.optionalDates = optionalDates;
 
+        Zuora_Data_Query__c zuoraDataQuery = new Zuora_Data_Query__c(
+            Query__c = '',
+            Processing_Parameter__c = JSON.serialize(methodToRunAfter)
+        );
+        insert zuoraDataQuery;
+
         ZuoraDataQueryService.DataQueryRequest queryRequest = new ZuoraDataQueryService.DataQueryRequest();
-        queryRequest.queryString = null;
-        queryRequest.numberOfRetries = 0;
-        queryRequest.recordId = null;
-        queryRequest.method = methodToRunAfter;
+        queryRequest.recordId = zuoraDataQuery.Id;
 
         Test.startTest();
         ZuoraDataQueryAsyncService.queueCheckDataQueryStatus(result, queryRequest);
