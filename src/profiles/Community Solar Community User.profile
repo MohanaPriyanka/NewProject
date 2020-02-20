@@ -42828,11 +42828,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Shared_Solar_System__c.Anchor_Tenant__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Shared_Solar_System__c.App_ID_WO_Manual__c</field>
         <readable>false</readable>
     </fieldPermissions>

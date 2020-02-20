@@ -320,20 +320,6 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Anchor_Tenant__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Anchor Tenant</label>
-        <referenceTo>Opportunity</referenceTo>
-        <relationshipLabel>Shared Solar Systems</relationshipLabel>
-        <relationshipName>Shared_Solar_Systems</relationshipName>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>Apex_Context__c</fullName>
         <defaultValue>false</defaultValue>
         <description>No profiles or permission sets should grant users edit access to this field. It is used to make sure record updates made in Apex aren&apos;t prevented by validation rules.</description>
