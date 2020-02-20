@@ -13,6 +13,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.leadService = (LeadService) Test.createStub(LeadService.class, mockLeadService);
         controller.accountService = (AccountService) Test.createStub(AccountService.class, new MockAccountService());
         controller.ualService = (UALService) Test.createStub(UALService.class, new MockUALService());
+        controller.capacityService = (CapacityService) Test.createStub(CapacityService.class, new MockCapacityService());
 
         controller.leadSelector = (LeadSelector) Test.createStub(LeadSelector.class, new MockLeadSelector());
         controller.accountsSelector = (AccountsSelector) Test.createStub(AccountsSelector.class, new MockAccountsSelector());
@@ -22,7 +23,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
 
     @TestSetup
-    public static void testSetup() {
+    private static void testSetup() {
         Utility__c utility = new Utility__c(
             Name = 'Utility'
         );
@@ -46,7 +47,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
      *******************/
 
     @IsTest
-    public static void testPatchLeadSuccess() {
+    private static void testPatchLeadSuccess() {
         useMocks();
         String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Lead.SObjectType) + '", "applicationCompleteDate": "2019-01-01T01:00" }';
         controller.patchLead(jsonRequest);
@@ -56,7 +57,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
 
     @IsTest
-    public static void testPatchLeadStreetAddress() {
+    private static void testPatchLeadStreetAddress() {
         useMocks();
         String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Lead.SObjectType) + '", "streetAddress": "123 Patched Street" }';
         controller.patchLead(jsonRequest);
@@ -68,7 +69,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
 
     @IsTest
-    public static void testPatchLeadCreditPullOnce() {
+    private static void testPatchLeadCreditPullOnce() {
         useMocks();
         // ID of ...999 is an ID with an existing app date of Jan 1 2017 in the mock svc
         String jsonRequest = '{ "id": "00Q000000000999", "applicationCompleteDate": "2019-11-18T01:00" }';
@@ -80,7 +81,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
 
     @IsTest
-    public static void testPatchLeadNoFields() {
+    private static void testPatchLeadNoFields() {
         useMocks();
         String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Lead.SObjectType) + '"}';
         controller.patchLead(jsonRequest);
@@ -89,7 +90,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
 
     @IsTest
-    public static void testPatchLeadInvalidId() {
+    private static void testPatchLeadInvalidId() {
         useMocks();
         String jsonRequest = '{ "id": "00Q000000000111"}'; // ID of ...111 is set as an non-existent ID in the mock svc
         controller.patchLead(jsonRequest);
@@ -102,7 +103,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
      ******************************/
 
     @IsTest
-    public static void testPatchPropertyAccountSuccess() {
+    private static void testPatchPropertyAccountSuccess() {
         useMocks();
         String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Account.SObjectType) + '", "zuoraPaymentRefId": "mockId", "zuoraPaymentRefIdExpirationDate": "2019-01-01T01:00" }';
         controller.patchPropertyAccount(jsonRequest);
@@ -111,7 +112,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
 
     @IsTest
-    public static void testPatchPropertyAccountNoFields() {
+    private static void testPatchPropertyAccountNoFields() {
         useMocks();
         String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Account.SObjectType) + '"}';
         controller.patchPropertyAccount(jsonRequest);
@@ -120,7 +121,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
 
     @IsTest
-    public static void testPatchPropertyAccountInvalidId() {
+    private static void testPatchPropertyAccountInvalidId() {
         useMocks();
         String jsonRequest = '{ "id": "001000000000111"}'; // ID of ...111 is set as an non-existent ID in the mock svc
         controller.patchPropertyAccount(jsonRequest);
@@ -134,7 +135,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
      ********************************/
 
     @IsTest
-    public static void testPatchUtilityAccountLogSuccess() {
+    private static void testPatchUtilityAccountLogSuccess() {
         useMocks();
         String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Account.SObjectType) + '", "annualKWh": 500 }';
         controller.patchUtilityAccountLog(jsonRequest);
@@ -143,7 +144,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
 
     @IsTest
-    public static void testPatchUtilityAccountLogNoFields() {
+    private static void testPatchUtilityAccountLogNoFields() {
         useMocks();
         String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Account.SObjectType) + '"}';
         controller.patchUtilityAccountLog(jsonRequest);
@@ -152,7 +153,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
 
     @IsTest
-    public static void testPatchUtilityAccountLogInvalidId() {
+    private static void testPatchUtilityAccountLogInvalidId() {
         useMocks();
         String jsonRequest = '{ "id": "a1b000000000111"}'; // ID of ...111 is set as an non-existent ID in the mock svc
         controller.patchUtilityAccountLog(jsonRequest);
@@ -166,7 +167,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
      ******************/
 
     @IsTest
-    public static void testPostLeadNoFields() {
+    private static void testPostLeadNoFields() {
         useMocks();
         String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Lead.SObjectType) + '" }';
         controller.postLead(jsonRequest);
@@ -175,7 +176,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
 
     @IsTest
-    public static void testPostLeadWithMinimalFields() {
+    private static void testPostLeadWithMinimalFields() {
         useMocks();
 
         String jsonRequest = '{' +
@@ -192,7 +193,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
 
     @IsTest
-    public static void testPostLeadWithTooManyAccounts() {
+    private static void testPostLeadWithTooManyAccounts() {
         useMocks();
         // We only support one property account today.  If you try to pass multiple it, you should get an error
 
@@ -245,7 +246,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
 
 
     @IsTest
-    public static void testPostLeadSuccess() {
+    private static void testPostLeadSuccess() {
         useMocks();
 
         String jsonRequest = '{' +
@@ -289,7 +290,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
      *****************************/
 
     @IsTest
-    public static void testPostPropertyAccountNoFields() {
+    private static void testPostPropertyAccountNoFields() {
         useMocks();
         String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Account.SObjectType) + '" }';
         controller.postPropertyAccount(jsonRequest);
@@ -298,7 +299,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
 
     @IsTest
-    public static void testPostPropertyAccountWhenOneAlreadyExists() {
+    private static void testPostPropertyAccountWhenOneAlreadyExists() {
         useMocks();
         // We only support one property account today.  If you try to pass another in after one exists, you should get an error
 
@@ -322,7 +323,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
 
     @IsTest
-    public static void testPostPropertyAccountWithInvalidLead() {
+    private static void testPostPropertyAccountWithInvalidLead() {
         useMocks();
 
         String jsonRequest = '{' +
@@ -339,7 +340,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
 
     @IsTest
-    public static void testPostPropertyAccountWithMinimalFields() {
+    private static void testPostPropertyAccountWithMinimalFields() {
         useMocks();
 
         String jsonRequest = '{' +
@@ -361,7 +362,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
      *******************************/
 
     @IsTest
-    public static void testPostUtilityAccountLogNoFields() {
+    private static void testPostUtilityAccountLogNoFields() {
         useMocks();
         String jsonRequest = '{ "id": "' + Util.getFakeId(Schema.Utility_Account_Log__c.SObjectType) + '" }';
         controller.postUtilityAccountLog(jsonRequest);
@@ -370,7 +371,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
 
     @IsTest
-    public static void testPostUtilityAccountLogWithInvalidAccount() {
+    private static void testPostUtilityAccountLogWithInvalidAccount() {
         useMocks();
 
         String jsonRequest = '{' +
@@ -388,7 +389,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
 
     @IsTest
-    public static void testPostUtilityAccountLogWithMinimalFields() {
+    private static void testPostUtilityAccountLogWithMinimalFields() {
         useMocks();
 
         String jsonRequest = '{' +
@@ -405,13 +406,29 @@ public with sharing class CSLeadsRESTControllerV2Test {
         System.assertEquals(201, RestContext.response.statusCode, 'A UAL POST with minimal fields should succeed');
     }
 
+    @IsTest
+    private static void testPerformZipCheck() {
+        useMocks();
+        RestContext.response = new RestResponse();
+        controller.performZipCheck('12345', '');
+        Boolean caughtException = false;
+        try {
+            RESTController.ResponseEnvelope envelope =
+                (RESTController.ResponseEnvelope) JSON.deserialize(RestContext.response.responseBody.toString(), RESTController.ResponseEnvelope.class);
+            System.assertEquals(true, ((RestZipCode) envelope.data).hasCapacity, 'Expected mock to return a response with capacity');
+        } catch (Exception e) {
+            System.assert(!caughtException, e.getMessage() + '\n' + e.getStackTraceString());
+        }
+        System.assertEquals(false, caughtException, 'Did not expect to catch an exception');
+    }
+
 
     /********************
      *** SYSTEM TESTS ***
      ********************/
 
     @IsTest
-    public static void testPostLeadSuccessSystem() {
+    private static void testPostLeadSuccessSystem() {
         String jsonRequest = '{' +
             '"firstName": "System",' +
             '"lastName": "Testcase",' +
@@ -501,7 +518,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
      *** MOCKS ***
      *************/
 
-    public class MockLeadService extends MockProvider {
+    private class MockLeadService extends MockProvider {
         public MockLeadService(){}
 
         public override Object handleMethodCall(MethodCall methodCall) {
@@ -523,7 +540,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
 
     }
 
-    public class MockLeadSelector implements StubProvider {
+    private class MockLeadSelector implements StubProvider {
         public MockLeadSelector(){}
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
             List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
@@ -539,7 +556,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         }
     }
 
-    public class MockAccountService implements StubProvider {
+    private class MockAccountService implements StubProvider {
         public MockAccountService(){}
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
             List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
@@ -555,7 +572,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         }
     }
 
-    public class MockAccountsSelector implements StubProvider {
+    private class MockAccountsSelector implements StubProvider {
         public MockAccountsSelector(){}
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
             List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
@@ -583,7 +600,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         }
     }
 
-    public class MockUALService implements StubProvider {
+    private class MockUALService implements StubProvider {
         public MockUALService(){}
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
             List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
@@ -602,7 +619,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         }
     }
 
-    public class MockUALSelector implements StubProvider {
+    private class MockUALSelector implements StubProvider {
         public MockUALSelector(){}
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
             List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
@@ -610,6 +627,17 @@ public with sharing class CSLeadsRESTControllerV2Test {
                 return null;
             }
             return new Utility_Account_Log__c();
+        }
+    }
+
+    private class MockCapacityService implements StubProvider {
+        public MockCapacityService() {}
+        public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
+            List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
+            String zipResponseWithCapacity = '{"zipcode":"02633","utilityIds":["a1MS0000008BldpMAC"],"utilities":[{"attributes":{"type":"Utility__c","url":"/services/data/v47.0/sobjects/Utility__c/a1MS0000008BldpMAC"},"Id":"a1MS0000008BldpMAC","Name":"Eversource"}],"sharedSolarSystems":[{"attributes":{"type":"Shared_Solar_System__c","url":"/services/data/v47.0/sobjects/Shared_Solar_System__c/a1JS0000003BMvGMAW"},"Id":"a1JS0000003BMvGMAW","Name":"Project A Oak Road","Capacity_Available_to_be_Reserved__c":144499.98,"Product__c":"01tS0000005j7AVIAY","Sales_Partners__c":"BlueWave Test Partner","Product__r":{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AVIAY"},"Id":"01tS0000005j7AVIAY","Name":"BlueWave SMART","Customer_Subscription_Type__c":"kWh"}},{"attributes":{"type":"Shared_Solar_System__c","url":"/services/data/v47.0/sobjects/Shared_Solar_System__c/a1JS0000003BMvHMAW"},"Id":"a1JS0000003BMvHMAW","Name":"Project B Main St","Capacity_Available_to_be_Reserved__c":1445.86,"Product__c":"01tS0000005j7AVIAY","Sales_Partners__c":"BlueWave Test Partner","Product__r":{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AVIAY"},"Id":"01tS0000005j7AVIAY","Name":"BlueWave SMART","Customer_Subscription_Type__c":"kWh"}},{"attributes":{"type":"Shared_Solar_System__c","url":"/services/data/v47.0/sobjects/Shared_Solar_System__c/a1JS0000003BMvIMAW"},"Id":"a1JS0000003BMvIMAW","Name":"Project C Second St","Capacity_Available_to_be_Reserved__c":1445.86,"Product__c":"01tS0000005j7AWIAY","Sales_Partners__c":"BlueWave Test Partner","Product__r":{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AWIAY"},"Id":"01tS0000005j7AWIAY","Name":"BlueWave SREC","Customer_Subscription_Type__c":"Electricity Cost ($)"}}],"products":[{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AVIAY"},"Id":"01tS0000005j7AVIAY","Name":"BlueWave SMART","Customer_Subscription_Type__c":"kWh"},{"attributes":{"type":"Product2","url":"/services/data/v47.0/sobjects/Product2/01tS0000005j7AWIAY"},"Id":"01tS0000005j7AWIAY","Name":"BlueWave SREC","Customer_Subscription_Type__c":"Electricity Cost ($)"}],"loadZones":[{"attributes":{"type":"Load_U__c","url":"/services/data/v47.0/sobjects/Load_U__c/a0ZS0000007rJ3mMAE"},"Id":"a0ZS0000007rJ3mMAE","LZ__c":"SEMA","Town__c":"Medfield","Name":"02633"}],"loadZoneNames":["SEMA"]}';
+            CapacityService.ZipcodeResponse response =
+                (CapacityService.ZipcodeResponse) JSON.deserialize(zipResponseWithCapacity, CapacityService.ZipcodeResponse.class);
+            return response;
         }
     }
 
