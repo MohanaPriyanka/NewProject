@@ -44267,6 +44267,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Transfer_Part__c.Journal_Entry__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Transfer_Part__c.Reduce_Available_for_Allocation__c</field>
         <readable>true</readable>
     </fieldPermissions>
