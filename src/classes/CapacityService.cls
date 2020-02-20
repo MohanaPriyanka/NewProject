@@ -9,7 +9,12 @@
 
 public without sharing class CapacityService {
 
+    // To support CSAP, which ignores Sales Partners when querying for systems
     public ZipcodeResponse findCapacityByZipcode(String zipcode) {
+        return findCapacityByZipcode(zipcode, null);
+    }
+
+    public ZipcodeResponse findCapacityByZipcode(String zipcode, String partnerId) {
         ZipcodeResponse zipcodeResponse = new ZipcodeResponse();
         // get first 5 characters incase a Zip+4 was sent
         zipcode = zipcode.left(5);
@@ -18,9 +23,29 @@ public without sharing class CapacityService {
         }
         zipcodeResponse.zipcode = zipcode;
         setUtilitiesAndLoadZones(zipcodeResponse);
-        setProductsAndSharedSolarSystems(zipcodeResponse);
+        setProductsAndSharedSolarSystems(zipcodeResponse, getPartnerName(partnerId));
 
         return zipcodeResponse;
+
+    }
+
+    // A null partner name should find all systems to support CSAP, blank should get the default partner
+    private String getPartnerName(String partnerId) {
+        if (partnerId == null) {
+            return null;
+        } else if (partnerId != '') {
+            try {
+                return PartnerSelector.selectPartnerByPartnerId(partnerId).Name;
+            } catch (QueryException qe) {
+                Logger.logNow(
+                    'CapacityService',
+                    'findCapacityByZipcode',
+                    'Did not find a partner for id ' + partnerId + ', but proceeding with the default partner\n' + qe.getStackTraceString(),
+                    Logger.ERROR
+                );
+            }
+        }
+        return PartnerSelector.selectDefaultCSPartner().Name;
     }
 
     public void setUtilitiesAndLoadZones(ZipcodeResponse zipcodeResponse) {
@@ -38,16 +63,20 @@ public without sharing class CapacityService {
         }
     }
 
-    public void setProductsAndSharedSolarSystems(ZipcodeResponse zipcodeResponse) {
+    public void setProductsAndSharedSolarSystems(ZipcodeResponse zipcodeResponse, String partnerName) {
         List<Shared_Solar_System__c> sharedSolarSystems =
             SharedSolarSystemsSelector.selectSharedSolarSystemsWithCapacityByUtilityAndLoadZone(
                 zipcodeResponse.utilityIds,
                 zipcodeResponse.loadZoneNames
             );
-
+        // Allowing null partnerNames to match to all systems, to support CSAP behavior
         for (Shared_Solar_System__c sharedSolarSystem: sharedSolarSystems) {
-            zipcodeResponse.sharedSolarSystems.add(sharedSolarSystem);
-            zipcodeResponse.products.add(sharedSolarSystem.Product__r);
+            if (partnerName == null ||
+                sharedSolarSystem.Sales_Partners__c.split(';').contains(partnerName) ||
+                sharedSolarSystem.Sales_Partners__c.split(';').contains('All')) {
+                zipcodeResponse.sharedSolarSystems.add(sharedSolarSystem);
+                zipcodeResponse.products.add(sharedSolarSystem.Product__r);
+            }
         }
     }
 
