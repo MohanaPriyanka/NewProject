@@ -19,6 +19,10 @@
                 <behavior>Readonly</behavior>
                 <field>Reduce_Available_for_Allocation__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Journal_Entry__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
