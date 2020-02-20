@@ -254,6 +254,26 @@ FALSE)</formula>
                     <default>false</default>
                     <label>Unsubscribed Credits</label>
                 </value>
+                <value>
+                    <fullName>Customer Savings</fullName>
+                    <default>false</default>
+                    <label>Customer Savings</label>
+                </value>
+                <value>
+                    <fullName>Payment</fullName>
+                    <default>false</default>
+                    <label>Payment</label>
+                </value>
+                <value>
+                    <fullName>Unserviced</fullName>
+                    <default>false</default>
+                    <label>Unserviced</label>
+                </value>
+                <value>
+                    <fullName>Bill</fullName>
+                    <default>false</default>
+                    <label>Bill</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
