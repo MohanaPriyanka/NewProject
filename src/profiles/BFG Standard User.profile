@@ -41008,6 +41008,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Utility__c.Account__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Utility__c.Credits_Allocated_Rounding_Method__c</field>
         <readable>true</readable>
