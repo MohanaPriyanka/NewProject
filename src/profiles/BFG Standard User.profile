@@ -39449,6 +39449,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Transfer_Part__c.Journal_Entry__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Transfer_Part__c.Reduce_Available_for_Allocation__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -55567,6 +55572,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Invoice__c-Invoice Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Journal_Entry__c-Journal Entry Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Knowledge__kav-How To</layout>
