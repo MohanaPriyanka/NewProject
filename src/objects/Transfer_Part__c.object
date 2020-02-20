@@ -174,6 +174,18 @@
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Journal_Entry__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Journal Entry</label>
+        <referenceTo>Journal_Entry__c</referenceTo>
+        <relationshipLabel>Transfer Parts</relationshipLabel>
+        <relationshipName>Transfer_Parts</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Production__c</fullName>
         <description>A master-detail relationship from Transfer Parts up to Production.</description>
         <externalId>false</externalId>
