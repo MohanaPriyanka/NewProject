@@ -105,10 +105,10 @@
         <description># of Business Days spent in &quot;New Stage&quot;</description>
         <externalId>false</externalId>
         <formula>(ROUND( 9 * (
-   ( 5 * FLOOR( ( DATEVALUE(  Closed_On__c  ) - DATE( 1900, 1, 8) ) / 7) +
+   ( 5 * FLOOR( ( BLANKVALUE(DATEVALUE(Closed_On__c), TODAY()) - DATE( 1900, 1, 8) ) / 7) +
     MIN(5, 
-     MOD( DATEVALUE(  Closed_On__c  ) - DATE( 1900, 1, 8), 7) +
-     MIN( 1, 24 / 8 * ( MOD( Closed_On__c - DATETIMEVALUE( &apos;1900-01-08 13:00:00&apos; ), 1 ) ) )
+     MOD( BLANKVALUE(DATEVALUE(Closed_On__c), TODAY()) - DATE( 1900, 1, 8), 7) +
+     MIN( 1, 24 / 8 * ( MOD(  BLANKVALUE(Closed_On__c, NOW()) - DATETIMEVALUE( &apos;1900-01-08 13:00:00&apos; ), 1 ) ) )
     ) 
    )
  -
@@ -119,7 +119,7 @@
     )
    ) 
   ), 
-0 ))/9</formula>
+2 ))/9</formula>
         <inlineHelpText># of Business Days spent in &quot;New Stage&quot;</inlineHelpText>
         <label>Stage Duration</label>
         <precision>18</precision>
@@ -136,7 +136,7 @@
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Opportunity Change History</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
     <startsWith>Vowel</startsWith>
     <visibility>Public</visibility>
