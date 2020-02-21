@@ -23,7 +23,8 @@ public without sharing class TransferSelector {
     }
 
     public static Transfer__c getTransferById(String transferId) {
-        List<Transfer__c> transfers = getAllTransfersById(new List<Id>{transferId});
+        TransferSelector selector = new TransferSelector();
+        List<Transfer__c> transfers = selector.getAllTransfersById(new List<Id>{transferId});
         if (transfers.isEmpty()) {
             return null;
         } else {
@@ -31,13 +32,14 @@ public without sharing class TransferSelector {
         }
     }
 
-    public static List<Transfer__c> getAllTransfersById(List<Id> transferIdList) {
+    public List<Transfer__c> getAllTransfersById(List<Id> transferIdList) {
         return [
             SELECT Id, Name, Shared_Solar_System__c, Shared_Solar_System__r.Id, Shared_Solar_System__r.Name,
                 Shared_Solar_System__r.Billing_Method__c, Allocation_Schedule__c, Attempted_Transfer__c, Bill_Period__c,
                 Bill_Period__r.Bill_Date__c, Default_Credit_Value__c, Bills_Generated__c, Attempted_kWh_Transfer__c,
                 Total_Transferred__c, Transfer_Amount__c, Transfer_Type__c, Date_of_Transfer__c, Bill_Period__r.Name,
-                Bill_Period__r.Bill_Status__c, Allocation_Schedule__r.Name, Allocation_Schedule__r.Id
+                Bill_Period__r.Bill_Status__c, Allocation_Schedule__r.Name, Allocation_Schedule__r.Id,
+                Allocation_Schedule__r.Date_Enacted_by_Utility__c
             FROM Transfer__c
             WHERE Id IN : transferIdList
             AND Transfer_Type__c != 'One-Off'
