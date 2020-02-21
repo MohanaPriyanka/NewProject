@@ -1,7 +1,7 @@
 /**
  * Created by SarahRenfro on 9/5/2019.
  *
- * TestedBy: TransferPartServiceTest
+ * TestedBy: TransferPartServiceTest, AllocationScheduleServiceTest
  */
 
 trigger TransferTrigger on Transfer__c (before update, before insert, after update, after insert) {

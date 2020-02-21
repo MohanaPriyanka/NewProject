@@ -1,6 +1,6 @@
-// Tested By:
+// Tested By: AllocationScheduleSelectorTest
 
-public without sharing class AllocationScheduleSelector {
+public inherited sharing class AllocationScheduleSelector {
 
     @SuppressWarnings('PMD.ApexCRUDViolation')
     public Map<Id,List<Schedule_Z__c>> getEnactedAndBillingALSFromSSS(Set<Id> sssIds) {

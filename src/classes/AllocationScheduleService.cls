@@ -1,4 +1,4 @@
-// Tested By:
+// Tested By: AllocationScheduleServiceTest
 
 public without sharing class AllocationScheduleService implements Queueable {
     public static AllocationScheduleSelector alsSelector = new AllocationScheduleSelector();
@@ -15,13 +15,14 @@ public without sharing class AllocationScheduleService implements Queueable {
             }
         }
 
-        if (sssIds.size() > 0) {
-            sssMap = alsSelector.getEnactedAndBillingALSFromSSS(sssIds);
-            for (Transfer__c transferToUpdate : transfers) {
-                Id sssKey = transferToUpdate.Shared_Solar_System__c;
-                if (requiresALSUpdate(transferToUpdate) && sssMap.containsKey(sssKey)) {
-                    transferToUpdate.Allocation_Schedule__c = getBillingALS(transferToUpdate, sssMap.get(sssKey));
-                }
+        if (sssIds.size() == 0) {
+            return;
+        }
+        sssMap = alsSelector.getEnactedAndBillingALSFromSSS(sssIds);
+        for (Transfer__c transferToUpdate : transfers) {
+            Id sssKey = transferToUpdate.Shared_Solar_System__c;
+            if (requiresALSUpdate(transferToUpdate) && sssMap.containsKey(sssKey)) {
+                transferToUpdate.Allocation_Schedule__c = getBillingALS(transferToUpdate, sssMap.get(sssKey));
             }
         }
     }
@@ -62,9 +63,7 @@ public without sharing class AllocationScheduleService implements Queueable {
         try {
             List<Transfer__c> transfers = transferSelector.getAllTransfersById(transfersWithNewBills);
             List<Schedule_Z__c> alsToUpdate = updateALSStatuses(transfers);
-            if (alsToUpdate.size() > 0){
-                update alsToUpdate;
-            }
+            update alsToUpdate;
         } catch (Exception excep){
             Logger.logNow('AllocationScheduleService','markALSAsBilling',excep.getMessage() + excep.getStackTraceString());
         }
@@ -77,9 +76,9 @@ public without sharing class AllocationScheduleService implements Queueable {
         Map<Id,Date> sssToLatestALSMap = getLatestALSBySSSMap(transfers);
         List<Schedule_Z__c> allALSToUpdate = new List<Schedule_Z__c>();
 
-        Map<Id, List<Schedule_Z__c>> szsMap = alsSelector.getEnactedAndBillingALSFromSSS(sssToLatestALSMap.keySet());
-        for (Id sssId : szsMap.keySet()){
-            List<Schedule_Z__c> alsToUpdate = updateStatuses(szsMap.get(sssId),sssToLatestALSMap.get(sssId));
+        Map<Id, List<Schedule_Z__c>> enactedBillingSZMap = alsSelector.getEnactedAndBillingALSFromSSS(sssToLatestALSMap.keySet());
+        for (Id sssId : enactedBillingSZMap.keySet()){
+            List<Schedule_Z__c> alsToUpdate = updateStatuses(enactedBillingSZMap.get(sssId),sssToLatestALSMap.get(sssId));
             allALSToUpdate.addAll(alsToUpdate);
         }
         return allALSToUpdate;
@@ -99,9 +98,9 @@ public without sharing class AllocationScheduleService implements Queueable {
         return sssToLatestALSMap;
     }
 
-    private List<Schedule_Z__c> updateStatuses(List<Schedule_Z__c> szList, Date cutoffDate){
+    private List<Schedule_Z__c> updateStatuses(List<Schedule_Z__c> billingAndEnactedSZList, Date cutoffDate){
         List<Schedule_Z__c> szToUpdate = new List<Schedule_Z__c>();
-        for (Schedule_Z__c schedule : szList){
+        for (Schedule_Z__c schedule : billingAndEnactedSZList){
             if (schedule.Date_Enacted_by_Utility__c < cutoffDate && schedule.Status__c != 'Replaced'){
                 schedule.Status__c = 'Replaced';
                 szToUpdate.add(schedule);
