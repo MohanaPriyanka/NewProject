@@ -50412,6 +50412,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>agf__ADM_Epic__c.Forecasted_Story_Points__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>agf__ADM_Epic__c.Status_Notes__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -65104,6 +65109,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Zuora_Setting__mdt-Zuora Setting Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>agf__ADM_Epic__c-agf__Epic Layout Feed Based</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>agf__ADM_Scrum_Team__c-agf__Scrum Team Layout</layout>
