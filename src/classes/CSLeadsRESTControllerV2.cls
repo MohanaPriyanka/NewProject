@@ -128,7 +128,18 @@ public without sharing class CSLeadsRESTControllerV2 extends RESTController {
     private void insertLeadAccountAndUALs(RestLead requestLead, RestResponse response) {
         Lead newLead = requestLead.asLead();
 
+        //TODO: This is where the lead is being inserted --> should make the call from here for de-duplication
+        // i wonder if this will affect timing or performance --> maybe it can be queued?
         newLead = leadService.insertLead(newLead);
+
+        //CHECK FOR DUPLICATES - MERGE
+        CSLeadsDuplicateService duplicateService = new CSLeadsDuplicateService();
+        List<Lead> duplicateLeads = duplicateService.findDuplicateLeads(newLead);
+
+        if (duplicateLeads.size() > 0 ) {
+            duplicateService.mergeDuplicateAPILeads(newLead, duplicateLeads);
+        }
+
 
         RestLead responseLead = new RestLead(newLead);
 
