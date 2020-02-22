@@ -41901,11 +41901,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
-        <field>Shared_Solar_System__c.Anchor_Tenant__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Apex_Context__c</field>
         <readable>true</readable>
@@ -42028,6 +42023,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Shared_Solar_System__c.Client_Brand_Key__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Shared_Solar_System__c.Client_Opportunity__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
