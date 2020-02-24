@@ -67,13 +67,13 @@ public without sharing class BillGenerationService {
     private void checkRequiredTransferFields(Transfer__c transfer){
         String errorMessage = 'Cannot make UASBs from a Transfer ';
         if (transfer.Allocation_Schedule__c == null){
-            throw new AuraHandledException(errorMessage + 'because the Transfer does not have an Allocation Schedule populated');
+            throw Util.createAuraExceptionWithMessage(errorMessage + 'because the Transfer does not have an Allocation Schedule populated');
         } else if (transfer.Attempted_kWh_Transfer__c == null || transfer.Attempted_Transfer__c == null){
-            throw new AuraHandledException(errorMessage + 'without Attempted kWh Transfer & Attempted Transfer populated');
+            throw Util.createAuraExceptionWithMessage(errorMessage + 'without Attempted kWh Transfer & Attempted Transfer populated');
         } else if (transfer.Default_Credit_Value__c == null){
-            throw new AuraHandledException(errorMessage + 'without Default Credit Value populated');
+            throw Util.createAuraExceptionWithMessage(errorMessage + 'without Default Credit Value populated');
         } else if (transfer.Bill_Period__c == null || transfer.Bill_Period__r.Bill_Date__c == null || transfer.Date_of_Transfer__c == null){
-            throw new AuraHandledException(errorMessage + 'without Date of Transfer & Bill Period Date populated');
+            throw Util.createAuraExceptionWithMessage(errorMessage + 'without Date of Transfer & Bill Period Date populated');
         }
     }
 
