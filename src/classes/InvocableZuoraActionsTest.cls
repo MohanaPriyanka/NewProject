@@ -1,6 +1,7 @@
 @IsTest
 public with sharing class InvocableZuoraActionsTest {
     @TestSetup public static void testData() {
+        Util.disableTrigger('Disable_TransferTrigger__c');
         ZuoraBillEmailHandlerTest.setupTestData();
         ZuoraCreditDebitMemoServiceTest.testDataSetup();
         InvoiceTemplateAssignerTest.setupTestData();
