@@ -482,7 +482,7 @@
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
             <name>myRule_5</name>
-            <conditionLogic>1 AND (2 OR 4) AND 3 AND 5 AND 6 AND 7 AND 8</conditionLogic>
+            <conditionLogic>1 AND (2 OR 4) AND 3 AND 5 AND 6 AND 7 AND 8 AND 9</conditionLogic>
             <conditions>
                 <processMetadataValues>
                     <name>inputDataType</name>
@@ -737,6 +737,37 @@
                     <stringValue>Voided</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.dsfs__Recipient_Status__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>myRule_5_A1</targetReference>
             </connector>
@@ -888,7 +919,7 @@
                 <leftValueReference>myVariable_current.dsfs__Recipient_Status__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Complete</stringValue>
+                    <stringValue>Completed</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -1173,7 +1204,7 @@
         </rules>
     </decisions>
     <description>Update incase opportunity is missing</description>
-    <interviewLabel>Opportunity_Map_DocuSign_Recipient_Status-37_InterviewLabel</interviewLabel>
+    <interviewLabel>Opportunity_Map_DocuSign_Recipient_Status-38_InterviewLabel</interviewLabel>
     <label>Map Recipient Status to Opportunity Layout (CS)</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -1806,7 +1837,7 @@
             </processMetadataValues>
             <field>StageName</field>
             <value>
-                <stringValue>Completed</stringValue>
+                <stringValue>Complete</stringValue>
             </value>
         </inputAssignments>
         <object>Opportunity</object>
