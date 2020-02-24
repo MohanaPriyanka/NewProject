@@ -637,23 +637,6 @@
         <sortOrder>Desc</sortOrder>
     </relatedLists>
     <relatedLists>
-        <fields>NAME</fields>
-        <fields>Total_System_NMCs__c</fields>
-        <fields>Production__c</fields>
-        <fields>Billing_Period_End_Date__c</fields>
-        <relatedList>Energy_Usage_Update__c.Shared_Solar_System__c</relatedList>
-        <sortField>Billing_Period_End_Date__c</sortField>
-        <sortOrder>Desc</sortOrder>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <fields>Date__c</fields>
-        <fields>Production_kW_DC__c</fields>
-        <relatedList>Daily_Production_Update__c.Shared_Solar_System__c</relatedList>
-        <sortField>Date__c</sortField>
-        <sortOrder>Desc</sortOrder>
-    </relatedLists>
-    <relatedLists>
         <relatedList>RelatedEntityHistoryList</relatedList>
     </relatedLists>
     <relatedLists>
