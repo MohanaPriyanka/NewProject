@@ -28399,7 +28399,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Project_Image__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -28585,6 +28585,11 @@
         <editable>false</editable>
         <field>Shared_Solar_System__c.Waitlist_Yes_No__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Shared_Solar_System__c.Waitlist__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
