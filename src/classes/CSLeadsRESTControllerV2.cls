@@ -9,11 +9,12 @@ public without sharing class CSLeadsRESTControllerV2 extends RESTController {
     @TestVisible private LeadService leadService = new LeadService();
     @TestVisible private AccountService accountService = new AccountService();
     @TestVisible private UALService ualService = new UALService();
+    @TestVisible private CSLeadsDuplicateService duplicateService = new CSLeadsDuplicateService();
+    @TestVisible private CapacityService capacityService = new CapacityService();
 
     @TestVisible private LeadSelector leadSelector = new LeadSelector();
     @TestVisible private AccountsSelector accountsSelector = new AccountsSelector();
     @TestVisible private UALSelector ualSelector = new UALSelector();
-    @TestVisible private CapacityService capacityService = new CapacityService();
 
     public void patchLead(String jsonRequest) {
         RestLead requestLead = (RestLead) JSON.deserialize(jsonRequest, RestLead.class);
@@ -128,17 +129,9 @@ public without sharing class CSLeadsRESTControllerV2 extends RESTController {
     private void insertLeadAccountAndUALs(RestLead requestLead, RestResponse response) {
         Lead newLead = requestLead.asLead();
 
-        //TODO: This is where the lead is being inserted --> should make the call from here for de-duplication
-        // i wonder if this will affect timing or performance --> maybe it can be queued?
         newLead = leadService.insertLead(newLead);
 
-        //CHECK FOR DUPLICATES - MERGE
-        CSLeadsDuplicateService duplicateService = new CSLeadsDuplicateService();
-        List<Lead> duplicateLeads = duplicateService.findDuplicateLeads(newLead);
-
-        if (duplicateLeads.size() > 0 ) {
-            duplicateService.mergeDuplicateAPILeads(newLead, duplicateLeads);
-        }
+        newLead = handleDuplicates(newLead);
 
 
         RestLead responseLead = new RestLead(newLead);
@@ -269,6 +262,48 @@ public without sharing class CSLeadsRESTControllerV2 extends RESTController {
         RestZipCode zipCodeResponse = new RestZipCode(capacityService.findCapacityByZipcode(zipCode, partnerId));
         envelope.setData(zipCodeResponse);
         envelope.setJSONResponse(response);
+    }
+
+    public Lead handleDuplicates(Lead restLead) {
+        Map<Id, Lead> duplicateMap = duplicateService.findDuplicateLeads(restLead);
+
+        if (duplicateMap.size() == 0 ) {
+            return restLead;
+        }
+
+        //Get ordered list of duplicate leads to find oldest for master
+        List<Lead> duplicateList = leadSelector.selectForMerge(duplicateMap.keySet());
+
+        //Grab oldest lead - need to requery for merging
+        Lead masterLead = leadSelector.selectForMerge(new Set<Id>{duplicateList[0].Id})[0];
+
+        //Remove the master lead from the duplicate list and add the API Lead to front of map so it doesnt get removed
+        duplicateList.remove(0);
+        duplicateList.add(0, restLead);
+
+        //Log message if there are more than 2 leads
+        if (duplicateList.size() > 2) {
+            Logger.logNow('CSLeadDuplicateService', 'mergeDuplicateAPILeads',
+                'CSLeadDuplicateService found more than 2 matching Leads for ' + masterLead.Id + '; ' +
+                    'We are automatically merging the first two records - Check out the master lead for more duplicates.');
+        }
+
+
+        //Database.merge can only handle 2 duplicate records. Remove all other leads
+        for (Integer i = 2; i < duplicateList.size(); i++) {
+            duplicateList.remove(i);
+        }
+
+        try {
+            masterLead = duplicateService.mapDataToMasterLead(masterLead, restLead);
+            duplicateService.mergeDuplicateAPILeads(masterLead, duplicateList);
+            return masterLead;
+        } catch (Exception e) {
+            Logger.logNow('CSLeadsDuplicateService', 'mergeDuplicateAPILeads',
+                'Failed to merge duplicate leads for lead: ' + masterLead.Id + '; ' + e.getMessage());
+            return restLead;
+        }
+
     }
 
 }

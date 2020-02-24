@@ -258,6 +258,7 @@
         <fields>Email</fields>
         <fields>MobilePhone</fields>
         <fields>Flag__c</fields>
+        <fields>LeadSource</fields>
         <label>CS BD Compact</label>
     </compactLayouts>
     <enableFeeds>true</enableFeeds>
@@ -7500,6 +7501,29 @@ SEMA = 13 -14</inlineHelpText>
         <description>Community Solar Lead</description>
         <label>BFG - Community Solar (Residential)</label>
         <picklistValues>
+            <picklist>Name</picklist>
+            <values>
+                <fullName>Dr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mrs%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ms%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>LeadSource</picklist>
             <values>
                 <fullName>CSAP</fullName>
@@ -7523,29 +7547,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Website</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Name</picklist>
-            <values>
-                <fullName>Dr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mrs%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ms%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Prof%2E</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -8241,7 +8242,31 @@ SEMA = 13 -14</inlineHelpText>
         <fullName>BFG_Community_Solar_Anchor</fullName>
         <active>true</active>
         <businessProcess>CS</businessProcess>
+        <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
         <label>BFG - Community Solar (Anchor)</label>
+        <picklistValues>
+            <picklist>Name</picklist>
+            <values>
+                <fullName>Dr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mrs%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ms%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>LeadSource</picklist>
             <values>
@@ -8266,29 +8291,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Website</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Name</picklist>
-            <values>
-                <fullName>Dr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mrs%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ms%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Prof%2E</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -8983,6 +8985,29 @@ SEMA = 13 -14</inlineHelpText>
         <compactLayoutAssignment>CS_BD_Compact</compactLayoutAssignment>
         <label>BFG - Community Solar (Business)</label>
         <picklistValues>
+            <picklist>Name</picklist>
+            <values>
+                <fullName>Dr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mrs%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ms%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>LeadSource</picklist>
             <values>
                 <fullName>CSAP</fullName>
@@ -9006,29 +9031,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Website</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Name</picklist>
-            <values>
-                <fullName>Dr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mrs%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ms%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Prof%2E</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -9724,22 +9726,8 @@ SEMA = 13 -14</inlineHelpText>
         <fullName>BFG_DOER_Solar_Loan</fullName>
         <active>true</active>
         <businessProcess>Residential Loan</businessProcess>
+        <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
         <label>BFG - DOER Solar Loan</label>
-        <picklistValues>
-            <picklist>LeadSource</picklist>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
         <picklistValues>
             <picklist>Name</picklist>
             <values>
@@ -9760,6 +9748,21 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -10490,22 +10493,8 @@ SEMA = 13 -14</inlineHelpText>
         <fullName>BFG_DOER_Solar_Loan_Co_Applicant</fullName>
         <active>true</active>
         <businessProcess>Residential Loan</businessProcess>
+        <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
         <label>BFG - DOER Solar Loan (Co-Applicant)</label>
-        <picklistValues>
-            <picklist>LeadSource</picklist>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
         <picklistValues>
             <picklist>Name</picklist>
             <values>
@@ -10526,6 +10515,21 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -11256,22 +11260,8 @@ SEMA = 13 -14</inlineHelpText>
         <fullName>BFG_MA_Solar_Loan_Co_Applicant</fullName>
         <active>true</active>
         <businessProcess>Residential Loan</businessProcess>
+        <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
         <label>BFG - MA Solar Loan (Co-Applicant)</label>
-        <picklistValues>
-            <picklist>LeadSource</picklist>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
         <picklistValues>
             <picklist>Name</picklist>
             <values>
@@ -11292,6 +11282,21 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -12014,23 +12019,9 @@ SEMA = 13 -14</inlineHelpText>
         <fullName>BFG_NC_Solar_Loan</fullName>
         <active>true</active>
         <businessProcess>Residential Loan</businessProcess>
+        <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
         <description>Record Type for All NC Residential Solar Loans</description>
         <label>BFG - NC Solar Loan</label>
-        <picklistValues>
-            <picklist>LeadSource</picklist>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
         <picklistValues>
             <picklist>Name</picklist>
             <values>
@@ -12051,6 +12042,21 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -12773,22 +12779,8 @@ SEMA = 13 -14</inlineHelpText>
         <fullName>BFG_NC_Solar_Loan_Co_Applicant</fullName>
         <active>true</active>
         <businessProcess>Residential Loan</businessProcess>
+        <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
         <label>BFG - NC Solar Loan (Co-Applicant)</label>
-        <picklistValues>
-            <picklist>LeadSource</picklist>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
         <picklistValues>
             <picklist>Name</picklist>
             <values>
@@ -12809,6 +12801,21 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -13531,23 +13538,9 @@ SEMA = 13 -14</inlineHelpText>
         <fullName>BFG_SC_Solar_Loan</fullName>
         <active>true</active>
         <businessProcess>Residential Loan</businessProcess>
+        <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
         <description>Record Type for All SC Residential Solar Loans</description>
         <label>BFG - SC Solar Loan</label>
-        <picklistValues>
-            <picklist>LeadSource</picklist>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
         <picklistValues>
             <picklist>Name</picklist>
             <values>
@@ -13568,6 +13561,21 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -14290,22 +14298,8 @@ SEMA = 13 -14</inlineHelpText>
         <fullName>BFG_SC_Solar_Loan_Co_Applicant</fullName>
         <active>true</active>
         <businessProcess>Residential Loan</businessProcess>
+        <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
         <label>BFG - SC Solar Loan (Co-Applicant)</label>
-        <picklistValues>
-            <picklist>LeadSource</picklist>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
         <picklistValues>
             <picklist>Name</picklist>
             <values>
@@ -14326,6 +14320,21 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -15048,22 +15057,8 @@ SEMA = 13 -14</inlineHelpText>
         <fullName>BFG_Solar_Loan</fullName>
         <active>true</active>
         <businessProcess>Residential Loan</businessProcess>
+        <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
         <label>BFG - MA Solar Loan</label>
-        <picklistValues>
-            <picklist>LeadSource</picklist>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
         <picklistValues>
             <picklist>Name</picklist>
             <values>
@@ -15084,6 +15079,21 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -15806,22 +15816,8 @@ SEMA = 13 -14</inlineHelpText>
         <fullName>BlueWave_Solar_Loan</fullName>
         <active>true</active>
         <businessProcess>Residential Loan</businessProcess>
+        <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
         <label>BlueWave Solar Loan</label>
-        <picklistValues>
-            <picklist>LeadSource</picklist>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
         <picklistValues>
             <picklist>Name</picklist>
             <values>
@@ -15842,6 +15838,21 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -16572,22 +16583,8 @@ SEMA = 13 -14</inlineHelpText>
         <fullName>C_I</fullName>
         <active>true</active>
         <businessProcess>C %26 I</businessProcess>
+        <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
         <label>C&amp;I</label>
-        <picklistValues>
-            <picklist>LeadSource</picklist>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
         <picklistValues>
             <picklist>Name</picklist>
             <values>
@@ -16608,6 +16605,21 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -16805,22 +16817,8 @@ SEMA = 13 -14</inlineHelpText>
         <fullName>Lead</fullName>
         <active>true</active>
         <businessProcess>CS</businessProcess>
+        <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
         <label>Lead</label>
-        <picklistValues>
-            <picklist>LeadSource</picklist>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
         <picklistValues>
             <picklist>Name</picklist>
             <values>
@@ -16841,6 +16839,21 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -17536,7 +17549,31 @@ SEMA = 13 -14</inlineHelpText>
         <fullName>Lead_General</fullName>
         <active>true</active>
         <businessProcess>General</businessProcess>
+        <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
         <label>Lead (General)</label>
+        <picklistValues>
+            <picklist>Name</picklist>
+            <values>
+                <fullName>Dr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mrs%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ms%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>LeadSource</picklist>
             <values>
@@ -17561,29 +17598,6 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Website</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Name</picklist>
-            <values>
-                <fullName>Dr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mr%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mrs%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ms%2E</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Prof%2E</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -19313,23 +19327,9 @@ SEMA = 13 -14</inlineHelpText>
         <fullName>Utility_Duke_Energy</fullName>
         <active>true</active>
         <businessProcess>CS</businessProcess>
+        <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
         <description>Utility - Duke Energy Lead Type</description>
         <label>Utility - Duke Energy</label>
-        <picklistValues>
-            <picklist>LeadSource</picklist>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Partner</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Website</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
         <picklistValues>
             <picklist>Name</picklist>
             <values>
@@ -19350,6 +19350,21 @@ SEMA = 13 -14</inlineHelpText>
             </values>
             <values>
                 <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Website</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
