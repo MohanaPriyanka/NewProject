@@ -146,7 +146,8 @@ public with sharing class ScheduleZSubscriptionSelector {
                     Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c,
                     Utility_Account_Subscription__r.Opportunity__r.AccountId,
                     Utility_Account_Subscription__r.Utility_Account_Log__r.Name,
-                    Utility_Account_Subscription__r.Name_on_Account_From_Log__c
+                    Utility_Account_Subscription__r.Name_on_Account_From_Log__c,
+                    Utility_Account_Subscription__r.Externally_Serviced__c
                 FROM Schedule_Z_Subscriptions__r
                 ORDER BY CreatedDate DESC
                 LIMIT 1
