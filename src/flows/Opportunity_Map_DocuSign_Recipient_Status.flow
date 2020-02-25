@@ -482,7 +482,7 @@
         <defaultConnectorLabel>default</defaultConnectorLabel>
         <rules>
             <name>myRule_5</name>
-            <conditionLogic>1 AND (2 OR 4) AND 3 AND 5 AND 6 AND 7 AND 8</conditionLogic>
+            <conditionLogic>1 AND (2 OR 4) AND 3 AND 5 AND 6 AND 7 AND 8 AND 9</conditionLogic>
             <conditions>
                 <processMetadataValues>
                     <name>inputDataType</name>
@@ -737,6 +737,37 @@
                     <stringValue>Voided</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.dsfs__Recipient_Status__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>myRule_5_A1</targetReference>
             </connector>
@@ -888,7 +919,7 @@
                 <leftValueReference>myVariable_current.dsfs__Recipient_Status__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Complete</stringValue>
+                    <stringValue>Completed</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -1173,7 +1204,7 @@
         </rules>
     </decisions>
     <description>Update incase opportunity is missing</description>
-    <interviewLabel>Opportunity_Map_DocuSign_Recipient_Status-37_InterviewLabel</interviewLabel>
+    <interviewLabel>Opportunity_Map_DocuSign_Recipient_Status-38_InterviewLabel</interviewLabel>
     <label>Map Recipient Status to Opportunity Layout (CS)</label>
     <processMetadataValues>
         <name>ObjectType</name>
@@ -1614,9 +1645,6 @@
         <label>Update BlueWave Status</label>
         <locationX>500</locationX>
         <locationY>200</locationY>
-        <connector>
-            <targetReference>myRule_5_A2</targetReference>
-        </connector>
         <filters>
             <processMetadataValues>
                 <name>implicit</name>
@@ -1687,122 +1715,6 @@
         <processMetadataValues>
             <name>referenceTargetField</name>
         </processMetadataValues>
-        <name>myRule_5_A2</name>
-        <label>Opportunity Update</label>
-        <locationX>500</locationX>
-        <locationY>300</locationY>
-        <filters>
-            <processMetadataValues>
-                <name>implicit</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </processMetadataValues>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>myVariable_current.Opportunity__c</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Date</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Contract Close Date</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue></stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Reference</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>Contract_Close_Date__c</field>
-            <value>
-                <elementReference>myVariable_current.dsfs__Date_Signed__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <processMetadataValues>
-                <name>dataType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>isRequired</name>
-                <value>
-                    <booleanValue>false</booleanValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideLabel</name>
-                <value>
-                    <stringValue>Stage</stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>leftHandSideReferenceTo</name>
-                <value>
-                    <stringValue></stringValue>
-                </value>
-            </processMetadataValues>
-            <processMetadataValues>
-                <name>rightHandSideType</name>
-                <value>
-                    <stringValue>Picklist</stringValue>
-                </value>
-            </processMetadataValues>
-            <field>StageName</field>
-            <value>
-                <stringValue>Complete</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Opportunity</object>
-    </recordUpdates>
-    <recordUpdates>
-        <processMetadataValues>
-            <name>evaluationType</name>
-            <value>
-                <stringValue>always</stringValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>extraTypeInfo</name>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>isChildRelationship</name>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>reference</name>
-            <value>
-                <stringValue>[dsfs__DocuSign_Recipient_Status__c].Opportunity</stringValue>
-            </value>
-        </processMetadataValues>
-        <processMetadataValues>
-            <name>referenceTargetField</name>
-        </processMetadataValues>
         <name>myRule_8_A1</name>
         <label>Update Stage and Contract Close Date</label>
         <locationX>800</locationX>
@@ -1820,6 +1732,42 @@
                 <elementReference>myVariable_current.Opportunity__c</elementReference>
             </value>
         </filters>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>BlueWave Signature Status</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Reference</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>BlueWave_Signature_Status__c</field>
+            <value>
+                <elementReference>myVariable_current.dsfs__Recipient_Status__c</elementReference>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <processMetadataValues>
                 <name>dataType</name>
