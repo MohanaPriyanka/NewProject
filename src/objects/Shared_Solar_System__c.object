@@ -2460,7 +2460,7 @@ null)</formula>
         <fullName>Waitlist__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <inlineHelpText>If checked, this project is a waitlist</inlineHelpText>
+        <inlineHelpText>If checked, this project is a waitlist. This will cause &quot;More info to come soon!&quot; to display in the Customer Portal.</inlineHelpText>
         <label>Waitlist</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
