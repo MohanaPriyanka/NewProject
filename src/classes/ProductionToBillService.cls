@@ -80,7 +80,7 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
 
     public void createProductionDetailFromInvoiceItems(List<Journal_Entry__c> invoiceItems) {
         Set<String> invoiceItemIds = new Set<String>();
-        List<String> accountNumbers = new List<String>();
+        Set<String> accountNumbers = new Set<String>();
         Date minDate;
         Date maxDate;
 

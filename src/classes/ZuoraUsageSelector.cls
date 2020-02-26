@@ -16,7 +16,7 @@ public inherited sharing class ZuoraUsageSelector {
     public String joinStatements = 'INNER JOIN RatePlanCharge rp ON us.rateplanchargeid = rp.Id ';
     public String orderByDate = 'ORDER BY us.startdatetime ';
 
-    public String getUsageQueryStringFilterByAccountAndDate(List<String> accountIds, Date startDate, Date endDate) {
+    public String getUsageQueryStringFilterByAccountAndDate(Set<String> accountIds, Date startDate, Date endDate) {
         String queryString = selectStatement + joinStatements + 'WHERE ';
         queryString += getAccountFilter(accountIds);
         queryString += 'AND ';
@@ -25,7 +25,7 @@ public inherited sharing class ZuoraUsageSelector {
         return queryString;
     }
 
-    public String getAccountFilter(List<String> accountIds) {
+    public String getAccountFilter(Set<String> accountIds) {
         String accountFilter = '(';
         Integer count = 0;
         for (String accountId : accountIds){
