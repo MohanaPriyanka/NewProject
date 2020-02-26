@@ -1,0 +1,40 @@
+<!--
+ - Created by PeterYao on 2/24/2020.
+ -->
+
+<!-- SimpleSignupForm -->
+<template>
+  <div style="width:100%;justify-content: center;display:flex;align-self:center">
+    <div style="max-width:788px">
+      <template if:true={getZip}>
+        <div class="slds-grid slds-wrap">
+          <div class="slds-size--1-of-1">
+            <div onkeyup={checkForSubmit}>
+              <lightning-input name="zipCodeInput" class="slds-m-around--small" label="Zip Code" value={zipCodeInput} onchange={genericOnChange} type="text" pattern="[0-9]{5}"></lightning-input>
+            </div>
+            <lightning-button label="Submit" class="slds-m-left--small slds-m-right--small" onclick={submitZip}></lightning-button>
+          </div>
+        </div>
+      </template>
+      <template if:true={getBasicInfo}>
+        <c-ssf-basic-info utility-options={utilityOptions} zipinput={zipCodeInput} selected-product={selectedProduct} onleadcreated={handleLeadCreation}></c-ssf-basic-info>
+      </template>
+      <template if:true={getAgreements}>
+        <c-ssf-agreements lead-json={leadJSON}></c-ssf-agreements>
+      </template>
+      <template if:true={showSpinner}>
+        <div>
+          <div class="slds-spinner_container">
+            <div role="status" class="slds-spinner slds-spinner_medium">
+              <span class="slds-assistive-text">Loading</span>
+              <div class="slds-spinner__dot-a"></div>
+              <div class="slds-spinner__dot-b"></div>
+              <div style="transform: rotate(-90deg);position:absolute;top:-1.5rem;left:-1rem;white-space:nowrap">
+                {spinnerMessage}
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div></template>

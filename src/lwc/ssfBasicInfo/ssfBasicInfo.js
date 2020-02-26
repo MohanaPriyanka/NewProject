@@ -1,0 +1,227 @@
+/**
+ * Created by PeterYao on 2/24/2020.
+ */
+
+import {LightningElement, track, api} from 'lwc';
+import { getUSStateOptions } from 'c/util';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+
+export default class SsfBasicInfo extends LightningElement {
+    @api zipinput;
+    @track showSpinner;
+    @track spinnerMessage;
+    @track firstName;
+    @track lastName;
+    @track email;
+    @track phone;
+    @track billingStreet;
+    @track billingCity;
+    @track billingState;
+    @track billingZip;
+    @track zipCodeResponse = false;
+    @track selectedUtility;
+    @api utilityOptions;
+    @track utilityAccounts;
+    @track utilityAccountSection;
+    @track stateOptions;
+    @track referralName;
+    @track applicationType;
+    utilityAccountCount = 1;
+    @api selectedProduct;
+
+    connectedCallback() {
+        if (!this.utilityAccounts) {
+            this.utilityAccounts = [{
+                id: 1,
+                utilityAccountNumber: '',
+                street: '',
+                state: '',
+                city: '',
+                zip: this.zipinput
+            }];
+            this.utilityAccountSection = 1;
+        }
+        if (!this.billingZip) {
+            this.billingZip = this.zipinput;
+        }
+        if (!this.stateOptions) {
+            this.stateOptions = getUSStateOptions();
+        }
+        if (!this.utilityOptions) {
+            this.utilityOptions = [];
+        } else if (this.utilityOptions.length === 1) {
+            this.selectedUtility = this.utilityOptions[0].value;
+        }
+        if (!this.applicationType) {
+            this.applicationType = 'Residential';
+        }
+    }
+
+    mockData() {
+        this.firstName = 'Peter';
+        this.lastName = 'Testcase';
+        this.email = 'pyao@bluewavesolar.com';
+        this.phone = 1231231234;
+        this.billingStreet = '1 Main';
+        this.billingCity = 'Boston';
+        this.billingState = 'MA';
+        this.billingZip = '02144';
+        this.utilityAccounts[0].utilityAccountNumber = '123';
+        this.utilityAccounts[0].nameOnAccount = 'Peter testcase';
+        this.utilityAccounts[0].street = '123 Main';
+        this.utilityAccounts[0].state = 'MA';
+        this.utilityAccounts[0].city = 'Boston';
+        this.utilityAccounts[0].zip = '02144';
+    }
+
+    genericOnChange(event) {
+        this[event.target.name] = event.target.value;
+    }
+
+    utilityAccountOnChange(event) {
+        this.utilityAccounts[event.target.dataset.rowIndex][event.target.name] = event.target.value;
+        if (event.target.dataset.rowIndex === '0') {
+            switch(event.target.name) {
+                case 'street':
+                    this['billingStreet'] = event.target.value;
+                    break;
+                case 'city':
+                    this['billingCity'] = event.target.value;
+                    break;
+                case 'state':
+                    this['billingState'] = event.target.value;
+                    break;
+                case 'zip':
+                    this['billingZip'] = event.target.value;
+                    break;
+            }
+        }
+    }
+    addAnotherUtilityAccount() {
+        this.utilityAccountCount++;
+        this.utilityAccounts.push({
+            id:this.utilityAccountCount,
+            utilityAccountNumber: '',
+            street: '',
+            state: '',
+            city: '',
+            zip: ''
+        });
+        setTimeout(() => this.utilityAccountSection = this.utilityAccountCount);
+    }
+
+    handleUtilityAccountMenu(event) {
+        const selectedItemValue = event.detail.value;
+        const utilityAccountIndex = event.target.name;
+        if (selectedItemValue === 'remove') {
+            this.utilityAccounts.splice(utilityAccountIndex, 1);
+        }
+    }
+
+    applicationValid() {
+        const allValid = [...this.template.querySelectorAll('lightning-input')]
+        .reduce((validSoFar, inputCmp) => {
+            inputCmp.reportValidity();
+            return validSoFar && inputCmp.checkValidity();
+        }, true);
+        if (!allValid) {
+            this.showWarningToast('Warning!', 'Please verify your application before submitting');
+            return false;
+        }
+        return true;
+    }
+
+    submitApplication() {
+        if (!this.applicationValid()) {
+            return;
+        }
+        let restLead = {};
+        restLead.applicationType = this.applicationType;
+        restLead.firstName = this.firstName;
+        restLead.lastName = this.lastName;
+        restLead.email = this.email;
+        restLead.mobilePhone = this.phone;
+        restLead.streetAddress = this.billingStreet;
+        restLead.city = this.billingCity;
+        restLead.state = this.billingState;
+        restLead.zipCode = this.billingZip;
+        restLead.productName = this.selectedProduct;
+        restLead.referralName = this.referralName;
+        restLead.propertyAccounts = [];
+        restLead.propertyAccounts[0] = {};
+        restLead.propertyAccounts[0].name = this.firstName + ' ' + this.lastName;
+        restLead.propertyAccounts[0].billingStreet = this.billingStreet;
+        restLead.propertyAccounts[0].billingCity = this.billingCity;
+        restLead.propertyAccounts[0].billingState = this.billingState;
+        restLead.propertyAccounts[0].billingPostalCode = this.billingZip;
+        restLead.propertyAccounts[0].utilityAccountLogs = [];
+        for (let i in this.utilityAccounts) {
+            let ual = {};
+            ual.utilityAccountNumber = this.utilityAccounts[i].utilityAccountNumber;
+            ual.nameOnAccount = this.utilityAccounts[i].nameOnAccount;
+            ual.serviceStreet = this.utilityAccounts[i].street;
+            ual.serviceCity = this.utilityAccounts[i].city;
+            ual.serviceState = this.utilityAccounts[i].state;
+            ual.servicePostalCode = this.utilityAccounts[i].zip;
+            restLead.propertyAccounts[0].utilityAccountLogs.push(ual);
+        }
+
+        this.showSpinner = true;
+        this.createLead(restLead).then(
+            (resolveResult) => {
+                this.dispatchEvent(new CustomEvent('leadcreated', {detail: resolveResult}));
+                this.showSpinner = false;
+            },
+            (rejectResult) => {
+                this.showSpinner = false;
+                let errors = JSON.parse(rejectResult).errors;
+                let message = '';
+                if (errors && errors[0]) {
+                    message += errors[0];
+                } else {
+                    message += rejectResult;
+                }
+                this.showWarningToast('Sorry, we ran into a technical problem!', message);
+            }
+        );
+        window.setTimeout(() => {
+            this.spinnerMessage = 'Saving your application...';
+        }, 3000);
+        window.setTimeout(() => {
+            this.spinnerMessage = 'We\'ll generate contracts next';
+        }, 6000);
+    }
+
+    createLead = (restLead) => {
+        return new Promise(function(resolve, reject) {
+            let calloutURI = '/apply/services/apexrest/v3/leads';
+            const xmlHttpRequest = new XMLHttpRequest();
+            xmlHttpRequest.onreadystatechange = function() {
+                if (this.readyState === 4) {
+                    const response = JSON.parse(this.responseText);
+                    if (this.status === 200 || this.status === 201) {
+                        if (response.data) {
+                            resolve(response.data);
+                        } else {
+                            reject(this.responseText);
+                        }
+                    } else {
+                        reject(this.responseText);
+                    }
+                }
+            };
+            xmlHttpRequest.open('POST', calloutURI, true);
+            xmlHttpRequest.setRequestHeader('Content-Type', 'application/json');
+            xmlHttpRequest.send(JSON.stringify(restLead));
+        });
+    };
+
+    showWarningToast(title, message) {
+        const evt = new ShowToastEvent({
+            title: title,
+            message: message,
+            variant: 'warning'
+        });
+        this.dispatchEvent(evt);
+    }
+}
