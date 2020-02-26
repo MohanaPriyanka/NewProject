@@ -77,7 +77,6 @@ private class CSLeadsDuplicateServiceTest {
         );
         insert partner1;
 
-        //TODO: do i need to build out an entire switch lead?
         Lead newLead = new Lead(
             FirstName = 'Duplicate',
             LastName = 'Testcase',
@@ -106,6 +105,8 @@ private class CSLeadsDuplicateServiceTest {
         insert ual;
 
         Lead checkMasterLead = service.checkLeadDuplicates(newLead);
+        update checkMasterLead;
+
         masterLead = [
             SELECT Id, LeadSource, CreatedDate, Partner_Lookup__r.Id
             FROM Lead

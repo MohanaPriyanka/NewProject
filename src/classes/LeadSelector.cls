@@ -3,7 +3,7 @@
  * Description:
  * Test: LeadSelectorTest
  *************************************************************************************/
-
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class LeadSelector {
     public static List<Lead> selectConvertedByIds(List<Id> leadIds) {
         return [

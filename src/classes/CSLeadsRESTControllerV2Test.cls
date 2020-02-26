@@ -181,10 +181,6 @@ public with sharing class CSLeadsRESTControllerV2Test {
         useMocks();
         controller.duplicateService = (CSLeadsDuplicateService) Test.createStub(CSLeadsDuplicateService.class , new MockDuplicateService(true));
 
-
-        //TODO: This is not actually testing the duplicate
-
-        //Lead Id with --222 has a duplicate in Mocks below
         String jsonRequest = '{' +
             '"leadId": "' + Util.getFakeId(Schema.Lead.SObjectType) + '",' +
             '"firstName": "Unit",' +

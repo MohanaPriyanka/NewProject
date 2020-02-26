@@ -11,7 +11,6 @@ public with sharing class DuplicateHelper {
     }
 
     public Database.MergeResult[] mergeRecords(SObject master, List<SObject> duplicateSObjects, Boolean allOrNothing) {
-        //TODO: not catching the error - should we do it in this method or let it bubble up to be handled later?
         return Database.merge(master, duplicateSObjects, allOrNothing);
     }
 }
