@@ -22,6 +22,7 @@ public without sharing class LeadSelector {
         return leads[0];
     }
 
+
     public List<Lead> selectAll(Set<Id> leadIds) {
         return [
             SELECT Id, Privacy_Policy_Acknowledged__c, Terms_Conditions__c, Zuora_Payment_Ref_Id__c,
@@ -36,4 +37,53 @@ public without sharing class LeadSelector {
             WHERE Id = :leadIds
         ];
     }
+
+    //Can't have lookup references when merging leads
+    public List<Lead> selectForMerge(Set<Id> leadIds) {
+        return [
+            SELECT Id,
+                FirstName,
+                LastName,
+                Email,
+                Application_Complete_Date__c,
+                Application_Type__c,
+                Business_Phone__c,
+                Business_Title__c,
+                bs_Sales_ID__c,
+                City,
+                Company,
+                Continue_Application_Link__c,
+                Customer_Referral__c,
+                Customer_type__c,
+                LASERCA__Home_Address__c,
+                LASERCA__Home_City__c,
+                LASERCA__Home_State__c,
+                LASERCA__Home_Zip__c,
+                LeadSource,
+                LoadZone__c,
+                Manual_Campaign_ID__c,
+                MobilePhone,
+                Parcel_Zip__c,
+                Partner_Lookup__c,
+                Partner_Email__c,
+                Phone,
+                PostalCode,
+                Privacy_Policy_Acknowledged__c,
+                Product__c,
+                Product_line__c,
+                Referral_Name__c,
+                Referral_Email__c,
+                Status,
+                State,
+                Street,
+                Utility_relationship__c,
+                Terms_Conditions__c,
+                Zuora_Payment_Ref_Id__c,
+                Zuora_Payment_Ref_Id_Expiration_Date__c
+            FROM Lead
+            WHERE Id = :leadIds
+            ORDER BY CreatedDate ASC
+        ];
+    }
+
 }
