@@ -98,6 +98,9 @@ export default class SsfBasicInfo extends LightningElement {
         }
     }
     addAnotherUtilityAccount() {
+        if (!this.lastUtilityAccountValid()) {
+            return;
+        }
         this.utilityAccountCount++;
         this.utilityAccounts.push({
             id:this.utilityAccountCount,
@@ -105,9 +108,23 @@ export default class SsfBasicInfo extends LightningElement {
             street: '',
             state: '',
             city: '',
-            zip: ''
+            zip: this.zipinput
         });
         setTimeout(() => this.utilityAccountSection = this.utilityAccountCount);
+    }
+
+    lastUtilityAccountValid() {
+        let index = this.utilityAccountCount - 1;
+        if (this.utilityAccounts[index] &&
+            this.utilityAccounts[index].utilityAccountNumber &&
+            this.utilityAccounts[index].street &&
+            this.utilityAccounts[index].state &&
+            this.utilityAccounts[index].city &&
+            this.utilityAccounts[index].zip) {
+            return true;
+        }
+        this.showWarningToast('Warning', 'Please complete this utility account before adding another');
+        return false;
     }
 
     handleUtilityAccountMenu(event) {
