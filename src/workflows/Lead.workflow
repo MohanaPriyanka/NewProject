@@ -786,6 +786,19 @@ IF(Number_of_Periods__c&gt;120, max(1250,0.07*Loan_Amount__c), max(1250,0.05*Loa
         <operation>Formula</operation>
         <protected>false</protected>
     </fieldUpdates>
+    <outboundMessages>
+        <fullName>Conga_Trigger_Review_Contract_Generae</fullName>
+        <apiVersion>48.0</apiVersion>
+        <description>Generates the Review version of the contract and attaches it to the lead.</description>
+        <endpointUrl>https://workflow.congamerge.com/OBMListener.ashx</endpointUrl>
+        <fields>Conga_Contract__c</fields>
+        <fields>Id</fields>
+        <includeSessionId>true</includeSessionId>
+        <integrationUser>lalexander@bluewavesolar.com</integrationUser>
+        <name>Conga Trigger_Review Contract_Generae</name>
+        <protected>false</protected>
+        <useDeadLetterQueue>false</useDeadLetterQueue>
+    </outboundMessages>
     <rules>
         <fullName>Additional File Upload Form Email</fullName>
         <actions>
@@ -1266,6 +1279,60 @@ IF(Number_of_Periods__c&gt;120, max(1250,0.07*Loan_Amount__c), max(1250,0.05*Loa
             <value>True</value>
         </criteriaItems>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>Generate SSF Documents %28Review Version%29</fullName>
+        <actions>
+            <name>Conga_Trigger_Review_Contract_Generae</name>
+            <type>OutboundMessage</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Lead.Product_line__c</field>
+            <operation>equals</operation>
+            <value>Community Solar</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Lead.LeadSource</field>
+            <operation>equals</operation>
+            <value>Switch</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Lead.Product_XXX__c</field>
+            <operation>notEqual</operation>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Lead.Application_Complete_Date__c</field>
+            <operation>equals</operation>
+        </criteriaItems>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>Generate and Send SSF Documents %28Signed Version%29</fullName>
+        <actions>
+            <name>Conga_Trigger_Review_Contract_Generae</name>
+            <type>OutboundMessage</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Lead.Product_line__c</field>
+            <operation>equals</operation>
+            <value>Community Solar</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Lead.LeadSource</field>
+            <operation>equals</operation>
+            <value>Switch</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Lead.Application_Complete_Date__c</field>
+            <operation>notEqual</operation>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Lead.Product_XXX__c</field>
+            <operation>notEqual</operation>
+        </criteriaItems>
+        <triggerType>onAllChanges</triggerType>
     </rules>
     <rules>
         <fullName>Internal Notification%3A CS%2FCL Duplicate Account</fullName>
