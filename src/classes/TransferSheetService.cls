@@ -72,6 +72,8 @@ public without sharing class TransferSheetService {
             String creditsAsString = rowData[1].stripHtmlTags();
             String productionAsString = rowData[2].stripHtmlTags();
             String nmcRateAsString = rowData[3].stripHtmlTags();
+            creditsAsString = creditsAsString.replace('$','');
+            nmcRateAsString = nmcRateAsString.replace('$','');
             Decimal credits = Decimal.valueOf(Util.nullToZero(creditsAsString));
             Decimal production = Decimal.valueOf(Util.nullToZero(productionAsString));
             Decimal nmcRate =  Decimal.valueOf(Util.nullToZero(nmcRateAsString));
@@ -81,10 +83,14 @@ public without sharing class TransferSheetService {
 
             if (uasbsFromTransfer.containsKey(utilityNumKey)) {
                 // If the transfer sheet has 2 rows for the same utility account, take the SUM of the rows
+                // Except for production (kWh), because it is used to calculate credits allocated.
+                // For ex. in some programs, a 100 kWh transfer is multiplied by two separate Credit Rates,
+                // (say, $0.02/kWh and $0.13/kWh) to get a total credits allocated = $2 + $13 = $15
+                // but production is only 100kWh not 200kWh, even though it is listed twice
                 UASB__c uasbToUpdate = uasbsFromTransfer.get(utilityNumKey);
                 uasbToUpdate.Credits_Allocated__c += credits;
-                uasbToUpdate.Subscription_Production_kWh_Static__c += production;
                 uasbToUpdate.NMC_Rate__c += nmcRate;
+                uasbToUpdate.Subscription_Production_kWh_Static__c = Math.max(production,uasbToUpdate.Subscription_Production_kWh_Static__c);
                 uasbsFromTransfer.put(utilityNumKey,uasbToUpdate);
             } else {
                 UASB__c transferSheetUASB = new UASB__c(
@@ -221,11 +227,7 @@ public without sharing class TransferSheetService {
         Map<Id,String> resolutionMap = readDataFromLWC(overrideValues);
         List<UASB__c> uasbsToInsert = resolveUASBs(uasbWithStatusList, resolutionMap);
         insert uasbsToInsert;
-        Transfer__c transferToUpdate = new Transfer__c(
-            Id = uasbsToInsert[0].Transfer__c,
-            Bills_Generated__c = true
-        );
-        update transferToUpdate;
+        postUASBInsertProcessing(uasbsToInsert[0].Transfer__c,overrideValues);
     }
 
     @TestVisible
@@ -245,6 +247,7 @@ public without sharing class TransferSheetService {
         List<UASB__c> uasbsToInsert = new List<UASB__c>();
         for (UASBWithStatus uasbStatus : uasbWithStatusList){
             uasbStatus.Resolution = resolutionMap.get(uasbStatus.SfUASB.Schedule_Z_Subscription__c);
+            uasbStatus.SfUASB.Transfer_Sheet_Resolution__c = uasbStatus.Resolution;
             switch on uasbStatus.Status {
                 when 'MATCH' {
                     uasbsToInsert.add(uasbStatus.SfUASB);
@@ -296,5 +299,27 @@ public without sharing class TransferSheetService {
             uasbToModify = uasbWithStatus.SfUASB;
         }
         return uasbToModify;
+    }
+
+    @TestVisible
+    private static void postUASBInsertProcessing(Id transferId, List<String> overrideValues){
+        try {
+            Transfer__c transferToUpdate = new Transfer__c(
+                Id = transferId,
+                Bills_Generated__c = true
+            );
+            update transferToUpdate;
+
+            String csvString = '';
+            for (String lineItem : overrideValues){
+                lineItem = lineItem.replace('{','');
+                lineItem = lineItem.replace('}','\n');
+                csvString += lineItem;
+            }
+            String fileName = 'TransferSheetResolution_' + transferToUpdate.Id + '.csv';
+            ContentService.uploadFileToRecord(csvString,transferToUpdate.Id,fileName);
+        } catch (Exception excep){
+            Logger.logNow('TransferSheetService','PostUASBInsertProcessing',excep.getMessage() + '_' + excep.getStackTraceString());
+        }
     }
 }

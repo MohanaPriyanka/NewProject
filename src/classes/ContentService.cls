@@ -20,4 +20,25 @@ public with sharing class ContentService {
         }
         update versionsToUpdate;
     }
+
+    public static ContentDocumentLink uploadFileToRecord(String fileBody, Id recordId, String fileName){
+        ContentVersion cv = new ContentVersion(
+            ContentLocation = 'S',
+            VersionData = Blob.valueOf(fileBody),
+            Title = fileName,
+            PathOnClient = '/' + fileName
+        );
+        insert cv;
+
+        Id contentDocId = documentSelector.getDocumentIdFromVersionId(cv.Id);
+
+        ContentDocumentLink cdl = new ContentDocumentLink();
+        cdl.LinkedEntityId = recordId;
+        cdl.Visibility = 'AllUsers';
+        cdl.ShareType = 'V';
+        cdl.ContentDocumentId = contentDocId;
+        insert cdl;
+
+        return cdl;
+    }
 }

@@ -43,4 +43,21 @@ public with sharing class ContentServiceTest {
         System.assertEquals('Transfer Sheet',cvAfterUpdate[0].File_Category__c);
         System.assertEquals('Transfer Sheet',cvAfterUpdate[1].File_Category__c);
     }
+
+    @IsTest
+    public static void testUploadFileToRecord(){
+        Account accountOne = new Account(Name = 'Acct');
+        insert accountOne;
+
+        ContentDocumentLink link = ContentService.uploadFileToRecord('FileBody',accountOne.Id,'Filename.txt');
+
+        ContentDocumentLink docLink = [
+            SELECT Id, LinkedEntityId
+            FROM ContentDocumentLink
+            WHERE Id = : link.Id
+            LIMIT 1
+        ];
+
+        System.assertEquals(accountOne.Id,docLink.LinkedEntityId);
+    }
 }

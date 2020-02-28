@@ -184,7 +184,7 @@ public class TransferSheetBillingTest {
         System.assertEquals(16,uasbFive.Credits_Allocated__c);
 
         System.assertEquals(2300,uasbOne.Subscription_Production_kWh_Static__c);
-        System.assertEquals(5000,uasbTwo.Subscription_Production_kWh_Static__c);
+        System.assertEquals(2500,uasbTwo.Subscription_Production_kWh_Static__c);
         System.assertEquals(0,uasbThree.Subscription_Production_kWh_Static__c);
         System.assertEquals(0,uasbFour.Subscription_Production_kWh_Static__c);
         System.assertEquals(0,uasbFive.Subscription_Production_kWh_Static__c);
@@ -211,9 +211,9 @@ public class TransferSheetBillingTest {
         String transferSheetData = 'UtilityNumber,Credits,Production,CreditValue\n' +
             '12345-6789,242.82,,\n' +
             '123 678,99,,\n' +
-            '123678,10.88,,\n' +
+            '123678,$10.88,,\n' +
             '0012 3456789,99.88,,\n' +
-            '223232,141.40,,\n' +
+            '223232,$141.40,,\n' +
             '23232 24,99.88,,\n';
         Map<Integer, List<String>> rowNumberToDataMap = Util.readCSV(transferSheetData);
         Map<String,UASB__c> transferUASBs = TransferSheetService.convertTransferSheetToUASBs(rowNumberToDataMap);
@@ -223,6 +223,7 @@ public class TransferSheetBillingTest {
         // Third, Compare SF to Transfer:
         List<TransferSheetService.UASBWithStatus> matchList;
         matchList = TransferSheetService.compareSFBillsToTransferSheet(sfUASBs, transferUASBs);
+        system.debug(sfUASBs);
         System.assertEquals(7,matchList.size());
         return matchList;
     }
@@ -366,6 +367,9 @@ public class TransferSheetBillingTest {
 
         List<UASB__c> secondUASBList = TransferSheetService.resolveUASBs(uasbWithStatusList, resolutionMap);
         System.assertEquals(3,secondUASBList.size());
+        System.assertNotEquals(null,secondUASBList[0].Transfer_Sheet_Resolution__c);
+        System.assertNotEquals(null,secondUASBList[1].Transfer_Sheet_Resolution__c);
+        System.assertNotEquals(null,secondUASBList[2].Transfer_Sheet_Resolution__c);
     }
 
     @isTest
@@ -471,6 +475,54 @@ public class TransferSheetBillingTest {
         System.assertEquals(3,secondUASBList.size());
     }
 
+    @isTest
+    private static void testPostUASBInsertProcessing(){
+        Util.DisableTrigger('Disable_TransferTrigger__c');
+        Shared_Solar_System__c sss1 = new Shared_Solar_System__c(
+            Name = 'Test Project',
+            Billing_Method__c = 'NMC'
+        );
+        insert sss1;
+
+        Transfer__c transferOne = new Transfer__c(
+            Name = 'TransferA',
+            Transfer_Type__c = 'Main',
+            Bills_Generated__c = false,
+            Shared_Solar_System__c = sss1.Id,
+            Attempted_Transfer__c = 1000,
+            Attempted_kWh_Transfer__c = 19000,
+            Transfer_Amount__c = 1000,
+            Date_of_Transfer__c = Date.newInstance(2019, 6, 4)
+        );
+        insert TransferOne;
+
+        List<String> mockTransferSheetScreenData = new List<String>();
+        mockTransferSheetScreenData.add('{"Uniqueid":"a548A0000009d1iQAA","customername":"Viaan Faulkner",' +
+            '"sfutilityaccount":"000023410","sfproduction":504.2,"sfcredits":83.03,"sfcreditvalue":0.1848,' +
+            '"trutilityaccount":"000023410","trproduction":0,"trcredits":116.73,"trcreditvalue":0,' +
+            '"isCreditMismatch":true,"Resolution":"UseSalesforce"}');
+        mockTransferSheetScreenData.add('Conner","sfutilityaccount":"00002346","sfproduction":657.65,' +
+            '"sfcredits":108.3,"sfcreditvalue":0.1848,"trutilityaccount":"00002346","trproduction":0,' +
+            '"trcredits":116.73,"trcreditvalue":0,"isCreditMismatch":true,"Resolution":"UseSalesforce"}');
+
+        TransferSheetService.postUASBInsertProcessing(transferOne.Id, mockTransferSheetScreenData);
+
+        Transfer__c transfer = [
+            SELECT Id, Bills_Generated__c
+            FROM Transfer__c
+            WHERE Id = : transferOne.Id
+            LIMIT 1
+        ];
+        System.assert(transfer.Bills_Generated__c);
+
+        List<ContentDocumentLink> filesUploaded = [
+            SELECT Id
+            FROM ContentDocumentLink
+            WHERE LinkedEntityId = : transferOne.Id
+        ];
+        System.assertEquals(1,filesUploaded.size());
+    }
+
     private static void useMocks() {
         BillGenerationService.szsSelector = (ScheduleZSubscriptionSelector) Test.createStub(ScheduleZSubscriptionSelector.class, new MockSZSSelector());
         BillGenerationService.escalatorSelector = (ProductEscalatorSelector) Test.createStub(ProductEscalatorSelector.class, new MockPESelector());
@@ -485,7 +537,7 @@ public class TransferSheetBillingTest {
             String szsOne = '{"Id":"szsOne_ID","Customer_Subscription_kW_DC__c": 26.00,"Percent_Share__c" : 1.7982,' +
                 '"System_Size_kW_DC__c" : 1445.86,"Schedule_Z__c" : "a3z190000009UUvAAM",' +
                 '"Utility_Account_Subscription__r" : {"Name" : "UAS_One", ' +
-                '"Utility_Account_Log__r" : {"Name" : "12-34-56-789"},' +
+                '"Utility_Account_Log__r" : {"Name" : "07777", "Premise_Number__c" : "12-34-56-789"},' +
                 '"Opportunity__r" : {"Id":"0000000AAA","Name":"Oppty A",' +
                 '"Product__r" : {"NMC_Discount__c" : 12.00 ,"NM_Rate_Floor__c" : 0.0,"Solar_Electricity_Rate__c" : 0.13,' +
                 '"Pricing_Structure__c" : "Use Solar Electric Rate","Percent_Share_Decimal_Places__c" : 6.00},' +
@@ -505,7 +557,7 @@ public class TransferSheetBillingTest {
             String szsThree = '{"Id":"szsThree_ID","Customer_Subscription_kW_DC__c": 17.00,"Percent_Share__c" : 1.1758,' +
                 '"System_Size_kW_DC__c" : 1445.86,"Schedule_Z__c" : "a3z190000009UUvAAM",' +
                 '"Utility_Account_Subscription__r" : {"Name" : "UAS_Three", ' +
-                '"Utility_Account_Log__r" : {"Name" : "223232"},' +
+                '"Utility_Account_Log__r" : {"Name" : "777222", "Premise_Number__c" : "223232"},' +
                 '"Opportunity__r" : {"Id":"0000000CCC","Name":"Oppty C",' +
                 '"Product__r" : {"NMC_Discount__c" : 10.00 ,"NM_Rate_Floor__c" : 0.0,"Solar_Electricity_Rate__c" : 0.13,' +
                 '"Pricing_Structure__c" : "Fixed % Discount","Percent_Share_Decimal_Places__c" : 6.00},' +
