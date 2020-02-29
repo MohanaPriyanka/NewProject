@@ -1547,7 +1547,7 @@ This field can be changed to a formula consistent with the other factors if LASE
         <externalId>false</externalId>
         <formula>&quot;&amp;id=&quot; + Id +
 &quot;&amp;templateid=&quot; + Product__r.Conga_Template_Id_s__c +
-&quot;&amp;queryid=[UAL]a278A000001wviB,[Biz]a278A000001wviG,[BizSig]a278A000001x3VU,[CustSig]a278A000001x3VZ&quot; + 
+&quot;&amp;queryid=[UAL]{!Environment.Conga_Query_SSF_UAL},[Biz]{!Environment.Conga_Query_SSF_Guarantor},[BizSig]{!Environment.conga_query_ssf_guarantor_sig},[CustSig]{!Environment.conga_query_ssf_customer_sig}&quot; + 
 &quot;&amp;ofn={Template.Label}&quot; + IF(ISBLANK(Application_Complete_Date__c),&apos; (Review)&apos;,&apos; (Signed)&apos;) +
 &quot;&amp;sc1=SalesforceFile&quot; + 
 &quot;&amp;APDF=0&quot; +
