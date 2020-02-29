@@ -794,7 +794,7 @@ IF(Number_of_Periods__c&gt;120, max(1250,0.07*Loan_Amount__c), max(1250,0.05*Loa
         <fields>Conga_Contract__c</fields>
         <fields>Id</fields>
         <includeSessionId>true</includeSessionId>
-        <integrationUser>lalexander@bluewavesolar.com</integrationUser>
+        <integrationUser>api@bluewavesolar.com</integrationUser>
         <name>Conga Trigger_Review Contract_Generae</name>
         <protected>false</protected>
         <useDeadLetterQueue>false</useDeadLetterQueue>
@@ -1287,6 +1287,7 @@ IF(Number_of_Periods__c&gt;120, max(1250,0.07*Loan_Amount__c), max(1250,0.05*Loa
             <type>OutboundMessage</type>
         </actions>
         <active>true</active>
+        <booleanFilter>1 AND 2 AND 3 AND 4 AND 5 AND 6</booleanFilter>
         <criteriaItems>
             <field>Lead.Product_line__c</field>
             <operation>equals</operation>
@@ -1304,6 +1305,16 @@ IF(Number_of_Periods__c&gt;120, max(1250,0.07*Loan_Amount__c), max(1250,0.05*Loa
         <criteriaItems>
             <field>Lead.Application_Complete_Date__c</field>
             <operation>equals</operation>
+        </criteriaItems>
+        <criteriaItems>
+            <field>User.FirstName</field>
+            <operation>equals</operation>
+            <value>Apply</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>User.LastName</field>
+            <operation>equals</operation>
+            <value>Site Guest User</value>
         </criteriaItems>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
@@ -1314,6 +1325,7 @@ IF(Number_of_Periods__c&gt;120, max(1250,0.07*Loan_Amount__c), max(1250,0.05*Loa
             <type>OutboundMessage</type>
         </actions>
         <active>true</active>
+        <booleanFilter>1 AND 2 AND 3 AND 4 AND 5 AND 6</booleanFilter>
         <criteriaItems>
             <field>Lead.Product_line__c</field>
             <operation>equals</operation>
@@ -1331,6 +1343,16 @@ IF(Number_of_Periods__c&gt;120, max(1250,0.07*Loan_Amount__c), max(1250,0.05*Loa
         <criteriaItems>
             <field>Lead.Product_XXX__c</field>
             <operation>notEqual</operation>
+        </criteriaItems>
+        <criteriaItems>
+            <field>User.FirstName</field>
+            <operation>equals</operation>
+            <value>Apply</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>User.LastName</field>
+            <operation>equals</operation>
+            <value>Site Guest User</value>
         </criteriaItems>
         <triggerType>onAllChanges</triggerType>
     </rules>
