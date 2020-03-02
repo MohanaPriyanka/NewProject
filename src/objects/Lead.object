@@ -1556,7 +1556,7 @@ This field can be changed to a formula consistent with the other factors if LASE
 &quot;&amp;contentvisibility=AllUsers&quot; +
 &quot;&amp;defaultpdf=1&quot; +
 IF(ISBLANK(Application_Complete_Date__c),&quot;&amp;qmode=SalesforceFile&quot;,
-&quot;&amp;EmailTemplateId=00X8A000000q2Kj&quot; + 
+&quot;&amp;EmailTemplateId={!Environment.VAR_Conga_SSF_SignedEmailTemplateID}&quot; + 
 &quot;&amp;EmailToId=&quot; +  Id +
 &quot;&amp;EmailFromId=0D20a0000004K0P&quot; + 
 &quot;&amp;qmode=SendEmail&quot;
