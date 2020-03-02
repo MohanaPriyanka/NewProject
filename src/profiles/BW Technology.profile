@@ -25383,6 +25383,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.Conga_Contract__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Lead.Construction_Period_DOER__c</field>
         <readable>true</readable>
@@ -26375,6 +26380,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Lead.Phone2__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Lead.Phone_Number_Contract__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -39365,6 +39375,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Product2.Ceiling_Rate__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Product2.Conga_Template_Id_s__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
