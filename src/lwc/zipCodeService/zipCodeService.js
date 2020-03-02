@@ -3,7 +3,7 @@
  */
 const getZipCodeCapacity = (zipCode, partnerId) => {
     return new Promise(function(resolve, reject) {
-        let calloutURI = '/apply/services/apexrest/v2/zip-check?zipCode='+zipCode;
+        let calloutURI = '/apply/services/apexrest/v3/zip-check?zipCode='+zipCode;
         if (partnerId) {
             calloutURI += '&partnerId=' + partnerId;
         }

@@ -5,7 +5,6 @@
   <targets>
     <target>lightningCommunity__Page</target>
   </targets>
-  <description>Switch</description>
-  <isExposed>false</isExposed>
-  <masterLabel>Switch</masterLabel>
+  <description>Simple Signup Form</description>
+  <masterLabel>SimpleSignupForm</masterLabel>
 </LightningComponentBundle>
