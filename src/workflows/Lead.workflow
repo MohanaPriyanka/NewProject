@@ -1287,30 +1287,13 @@ IF(Number_of_Periods__c&gt;120, max(1250,0.07*Loan_Amount__c), max(1250,0.05*Loa
             <type>OutboundMessage</type>
         </actions>
         <active>true</active>
-        <booleanFilter>1 AND 2 AND 3 AND 4 AND 5</booleanFilter>
-        <criteriaItems>
-            <field>Lead.Product_line__c</field>
-            <operation>equals</operation>
-            <value>Community Solar</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Lead.LeadSource</field>
-            <operation>equals</operation>
-            <value>Switch</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Lead.Product_XXX__c</field>
-            <operation>notEqual</operation>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Lead.Application_Complete_Date__c</field>
-            <operation>equals</operation>
-        </criteriaItems>
-        <criteriaItems>
-            <field>User.LastName</field>
-            <operation>notEqual</operation>
-            <value>Originations</value>
-        </criteriaItems>
+        <formula>AND(
+Product_line__c=&quot;Community Solar&quot;,
+ISPICKVAL(LeadSource,&quot;Switch&quot;),
+ISBLANK(Application_Complete_Date__c),
+NOT(ISBLANK(Product__c)),
+$User.LastName!=&quot;Originations&quot;
+)</formula>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <rules>
