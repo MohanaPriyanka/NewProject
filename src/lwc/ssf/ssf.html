@@ -22,19 +22,6 @@
       <template if:true={getAgreements}>
         <c-ssf-agreements lead-json={leadJSON}></c-ssf-agreements>
       </template>
-      <template if:true={showSpinner}>
-        <div>
-          <div class="slds-spinner_container">
-            <div role="status" class="slds-spinner slds-spinner_medium">
-              <span class="slds-assistive-text">Loading</span>
-              <div class="slds-spinner__dot-a"></div>
-              <div class="slds-spinner__dot-b"></div>
-              <div style="transform: rotate(-90deg);position:absolute;top:-1.5rem;left:-1rem;white-space:nowrap">
-                {spinnerMessage}
-              </div>
-            </div>
-          </div>
-        </div>
-      </template>
+      <c-bluewave-spinner spinner-message={spinnerMessage} show={showSpinner}></c-bluewave-spinner>
     </div>
   </div></template>

@@ -184,6 +184,12 @@ export default class SsfBasicInfo extends LightningElement {
         }
 
         this.showSpinner = true;
+        window.setTimeout(() => {
+            this.spinnerMessage = 'Saving your application';
+        }, 3000);
+        window.setTimeout(() => {
+            this.spinnerMessage = 'We\'ll generate documents next';
+        }, 6000);
         this.createLead(restLead).then(
             (resolveResult) => {
                 this.dispatchEvent(new CustomEvent('leadcreated', {detail: resolveResult}));
@@ -201,12 +207,6 @@ export default class SsfBasicInfo extends LightningElement {
                 this.showWarningToast('Sorry, we ran into a technical problem!', message);
             }
         );
-        window.setTimeout(() => {
-            this.spinnerMessage = 'Saving your application...';
-        }, 3000);
-        window.setTimeout(() => {
-            this.spinnerMessage = 'We\'ll generate contracts next';
-        }, 6000);
     }
 
     createLead = (restLead) => {

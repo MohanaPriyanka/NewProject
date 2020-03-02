@@ -30,6 +30,8 @@ export default class SsfAgreements extends LightningElement {
     @track showContractDocument;
     @track showSpinner;
     @track spinnerMessage;
+    documentPollerId;
+    documentPollerTimeoutId;
 
     connectedCallback() {
         if (!this.lead && this.leadJson) {
@@ -38,7 +40,7 @@ export default class SsfAgreements extends LightningElement {
     }
 
     renderedCallback() {
-        if (!this.contractDocuments) {
+        if (!this.contractDocuments && !this.documentPollerId) {
             this.getContractDocuments();
         }
     }
@@ -217,35 +219,45 @@ export default class SsfAgreements extends LightningElement {
         }
         this.showSpinner = true;
         window.setTimeout(() => {
-            this.spinnerMessage = 'Generating your contracts';
-        }, 1000);
+            this.spinnerMessage = 'Generating your documents';
+        }, 4000);
         window.setTimeout(() => {
-            this.spinnerMessage = 'This can take a while...';
+            this.spinnerMessage = 'This can take a minute';
         }, 8000);
-        getContentDocumentLinksByLead({leadId: this.lead.id, email: this.lead.email})
-        .then(result => {
-            if (result.length === 0) {
-                window.setTimeout(() => {
-                    this.getContractDocuments()
-                },2000);
-            } else {
-                this.postProcessContractDocs(result);
-            }
-        })
-        .catch(error => {
-            this.showWarningToast('Error', 'Sorry, we ran into a technical issue: ' + error);
-        });
+        this.documentPollerId = window.setInterval(() => {
+            getContentDocumentLinksByLead({leadId: this.lead.id, email: this.lead.email})
+            .then(result => {
+                if (result.length !== 0) {
+                    this.postProcessContractDocs(result);
+                }
+            })
+            .catch(error => {
+                this.showWarningToast('Error', 'Sorry, we ran into a technical issue: ' + error);
+                window.clearInterval(this.documentPollerId);
+                window.clearTimeout(this.documentPollerTimeoutId);
+                this.showSpinner = false;
+            });
+        }, 2000);
+        this.documentPollerTimeoutId = window.setTimeout(() => {
+            window.clearInterval(this.documentPollerId);
+            this.showSpinner = false;
+            this.showWarningToast('Error', 'Sorry, documents should not take this long to generate. Please contact customer care');
+        }, 60000);
     }
 
     postProcessContractDocs(contracts) {
+        window.clearInterval(this.documentPollerId);
+        window.clearTimeout(this.documentPollerTimeoutId);
         this.showSpinner = false;
         this.contractDocuments = contracts;
         for (let c in contracts) {
-            if (contracts[c].ContentDocument.LatestPublishedVersion.Title === 'Loan Summary Sheet' ) {
+            if (contracts[c].ContentDocument.LatestPublishedVersion.Title === 'Community Solar Agreement.pdf' ) {
                 this.csAgreementDocumentId = contracts[c].ContentDocumentId;
+                contracts[c].ContentDocument.LatestPublishedVersion.Title = 'Community Solar Agreement';
             }
-            if (contracts[c].ContentDocument.LatestPublishedVersion.Title === 'Solar Disclosure Form') {
+            if (contracts[c].ContentDocument.LatestPublishedVersion.Title === 'Solar Disclosure Form.pdf') {
                 this.disclosureDocumentId = contracts[c].ContentDocumentId;
+                contracts[c].ContentDocument.LatestPublishedVersion.Title = 'Solar Disclosure Form';
             }
         }
     }

@@ -10,9 +10,11 @@
   </div>
   <div class="slds-m-around--medium">
     <template iterator:it={contractDocuments}>
-      <a key={it.value.ContentDocumentId} href="javascript:void(0);">
-        <span style="color:blue" key={it.value.ContentDocumentId} data-id={it.value.ContentDocumentId} onclick={filePreview}>{it.value.ContentDocument.LatestPublishedVersion.Title}</span>
-      </a>
+      <p key={it.value.ContentDocumentId}>
+        <a key={it.value.ContentDocumentId} href="javascript:void(0);">
+          <span style="color:blue" key={it.value.ContentDocumentId} data-id={it.value.ContentDocumentId} onclick={filePreview}>{it.value.ContentDocument.LatestPublishedVersion.Title}</span>
+        </a>
+      </p>
     </template>
   </div>
   <template if:true={showContractDocument}>
@@ -32,7 +34,7 @@
         <lightning-input name="disclosures" type="checkbox" checked={disclosures} label="Check to Consent to Electronic Disclosures" onchange={disclosureChecked}></lightning-input>
       </p>
       <p class="slds-m-around--small">
-        By checking this box, entering my email address in the Email field below, and clicking the "Continue" button, I acknowledge that I have reviewed and agree to the BlueWave <b><a target="_blank" rel="noopener noreferrer" style="color:blue" href="https://bluewavesolar--peter.my.salesforce.com/sfc/p/8A0000005XBc/a/8A00000008YX/CGscNxuSfJzD3fanMxm02SaUervDPqd7joS8gcJVaJ4">ESIGN Consent Disclosure</a></b> and consent to receive electronic disclosures. The device I will use to receive and access electronic disclosures meets the hardware and software requirements described in the ESIGN Consent Disclosure.
+        By checking this box, entering my email address in the Email field below, and clicking the "Continue" button, I acknowledge that I have reviewed and agree to the BlueWave <b><a target="_blank" rel="noopener noreferrer" style="color:blue" href="https://bluewavesolar.my.salesforce.com/sfc/p/j0000001q7GO/a/0a000000MkFk/pvivOEszT68vNzlruWfakqXulDdStUlPcwN5oAm70aA">ESIGN Consent Disclosure</a></b> and consent to receive electronic disclosures. The device I will use to receive and access electronic disclosures meets the hardware and software requirements described in the ESIGN Consent Disclosure.
       </p>
 
     </template>
@@ -95,18 +97,5 @@
     <lightning-button label="Continue" onclick={continueAgreement}></lightning-button>
   </p>
 
-  <template if:true={showSpinner}>
-    <div>
-      <div class="slds-spinner_container">
-        <div role="status" class="slds-spinner slds-spinner_medium">
-          <span class="slds-assistive-text">Loading</span>
-          <div class="slds-spinner__dot-a"></div>
-          <div class="slds-spinner__dot-b"></div>
-          <div style="transform: rotate(-90deg);position:absolute;top:-1.5rem;left:-1rem;white-space:nowrap">
-            {spinnerMessage}
-          </div>
-        </div>
-      </div>
-    </div>
-  </template>
+  <c-bluewave-spinner spinner-message={spinnerMessage} show={showSpinner}></c-bluewave-spinner>
 </template>
