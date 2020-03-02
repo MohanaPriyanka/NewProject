@@ -130,7 +130,6 @@ public without sharing class CSLeadsRESTControllerV2 extends RESTController {
         Lead newLead = requestLead.asLead();
         newLead = leadService.insertLead(newLead);
         newLead = duplicateService.checkLeadDuplicates(newLead);
-
         RestLead responseLead = new RestLead(newLead);
 
         if (requestLead.propertyAccounts != null && !requestLead.propertyAccounts.isEmpty()) {

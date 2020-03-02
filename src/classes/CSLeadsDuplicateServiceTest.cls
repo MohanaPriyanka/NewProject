@@ -105,7 +105,6 @@ private class CSLeadsDuplicateServiceTest {
         insert ual;
 
         Lead checkMasterLead = service.checkLeadDuplicates(newLead);
-        update checkMasterLead;
 
         masterLead = [
             SELECT Id, LeadSource, CreatedDate, Partner_Lookup__r.Id

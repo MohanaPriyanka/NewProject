@@ -30,10 +30,12 @@ public without sharing class CSLeadsDuplicateService {
         try {
             mapDataToMasterLead(newLead);
             mergeDuplicateAPILeads(duplicateLeads);
+            masterLead = leadSelector.selectOne(masterLead.Id);
             return masterLead;
         } catch (Exception e) {
             Logger.logNow('CSLeadsDuplicateService', 'checkLeadDuplicates',
-                'Failed to merge duplicate leads for lead: ' + masterLead.Id + '; ' + e.getMessage());
+                'Failed to merge duplicate leads for lead: ' + masterLead.Id + '; ' + e.getMessage() + '\n'
+                + e.getStackTraceString());
             Database.rollback(sp);
             return newLead;
         }
@@ -94,7 +96,7 @@ public without sharing class CSLeadsDuplicateService {
     }
 
     public void mapDataToMasterLead(Lead newLead) {
-        for (String field : leadFields) {
+        for (String field : leadSelector.apiLeadFields) {
             if (masterLead.get(field) != newLead.get(field) && newLead.get(field) != null) {
                 masterLead.put(field, newLead.get(field));
             }
@@ -122,41 +124,4 @@ public without sharing class CSLeadsDuplicateService {
             }
         }
     }
-
-    //These are all the fields that we get from the API -- Want to update existing leads with any new data from API
-    public List<String> leadFields = new List<String>{
-        'FirstName',
-        'LastName',
-        'Email',
-        'MobilePhone',
-        'Phone',
-        'Company',
-        'Application_Type__c',
-        'LASERCA__Home_Address__c',
-        'LASERCA__Home_City__c',
-        'LASERCA__Home_State__c',
-        'LASERCA__Home_Zip__c',
-        'Street',
-        'City',
-        'State',
-        'PostalCode',
-        'Parcel_Zip__c',
-        'LeadSource',
-        'LoadZone__c',
-        'Product_Line__c',
-        'Business_Phone__c',
-        'Business_Title__c',
-        'Customer_type__c',
-        'Application_Complete_Date__c',
-        'Status',
-        'Partner_Email__c',
-        'Partner_lookup__c',
-        'bs_Sales_ID__c',
-        'Product__c',
-        'Utility_relationship__c',
-        'Continue_Application_Link__c',
-        'Manual_Campaign_ID__c',
-        'Referral_Name__c',
-        'Referral_Email__c'
-    };
 }

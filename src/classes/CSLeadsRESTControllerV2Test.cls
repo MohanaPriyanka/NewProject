@@ -449,6 +449,20 @@ public with sharing class CSLeadsRESTControllerV2Test {
 
     @IsTest
     private static void testPostLeadSuccessSystem() {
+        //Insert website lead to test duplicate
+
+        Lead websiteLead = new Lead(
+            FirstName = 'System',
+            LastName = 'Testcase',
+            Email = 'test@invalid.bluewavesolar.com',
+            Company = 'System Testcase',
+            LeadSource = 'Website',
+            Phone = '4444444444',
+            CreatedDate = System.today().addMonths(-3)
+        );
+
+        insert websiteLead;
+
         String jsonRequest = '{' +
             '"firstName": "System",' +
             '"lastName": "Testcase",' +
@@ -510,6 +524,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
 
         // verify lead request/response fields
         System.assertNotEquals(responseLead.get('id'), null, 'id should be set on POST response');
+        System.assertEquals(websiteLead.Id, responseLead.get('id'));
         for (String key : requestLead.keySet()) {
             if (requestLead.get(key) instanceof String) {
                 System.assertEquals(requestLead.get(key), responseLead.get(key), 'The requested ' + key + ' is expected to match the actual response');
@@ -532,7 +547,6 @@ public with sharing class CSLeadsRESTControllerV2Test {
         }
 
     }
-
 
 
     /*************
