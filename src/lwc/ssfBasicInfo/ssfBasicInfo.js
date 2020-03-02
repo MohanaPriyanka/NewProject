@@ -152,37 +152,40 @@ export default class SsfBasicInfo extends LightningElement {
         if (!this.applicationValid()) {
             return;
         }
-        let restLead = {};
-        restLead.applicationType = this.applicationType;
-        restLead.firstName = this.firstName;
-        restLead.lastName = this.lastName;
-        restLead.email = this.email;
-        restLead.mobilePhone = this.phone;
-        restLead.streetAddress = this.billingStreet;
-        restLead.city = this.billingCity;
-        restLead.state = this.billingState;
-        restLead.zipCode = this.billingZip;
-        restLead.productName = this.selectedProduct;
-        restLead.referralName = this.referralName;
-        restLead.propertyAccounts = [];
-        restLead.propertyAccounts[0] = {};
-        restLead.propertyAccounts[0].name = this.firstName + ' ' + this.lastName;
-        restLead.propertyAccounts[0].billingStreet = this.billingStreet;
-        restLead.propertyAccounts[0].billingCity = this.billingCity;
-        restLead.propertyAccounts[0].billingState = this.billingState;
-        restLead.propertyAccounts[0].billingPostalCode = this.billingZip;
-        restLead.propertyAccounts[0].utilityAccountLogs = [];
-        for (let i in this.utilityAccounts) {
-            let ual = {};
-            ual.utilityAccountNumber = this.utilityAccounts[i].utilityAccountNumber;
-            ual.nameOnAccount = this.utilityAccounts[i].nameOnAccount;
-            ual.serviceStreet = this.utilityAccounts[i].street;
-            ual.serviceCity = this.utilityAccounts[i].city;
-            ual.serviceState = this.utilityAccounts[i].state;
-            ual.servicePostalCode = this.utilityAccounts[i].zip;
-            restLead.propertyAccounts[0].utilityAccountLogs.push(ual);
-        }
-
+        let restLead = {
+            applicationType: this.applicationType,
+            firstName: this.firstName,
+            lastName: this.lastName,
+            email : this.email,
+            mobilePhone : this.phone,
+            streetAddress: this.billingStreet,
+            city: this.billingCity,
+            state: this.billingState,
+            zipCode: this.billingZip,
+            productName: this.selectedProduct,
+            referralName: this.referralName,
+            propertyAccounts: [
+                {
+                    name: `${this.firstName} ${this.lastName}`,
+                    billingStreet: this.billingStreet,
+                    billingCity: this.billingCity,
+                    billingState: this.billingState,
+                    billingPostalCode: this.billingZip,
+                }
+            ]
+        };
+        restLead.propertyAccounts[0].utilityAccountLogs = this.utilityAccounts.map(
+            ({utilityAccountNumber, nameOnAccount, street, city, state, zip}) => {
+                return {
+                    utilityAccountNumber,
+                    nameOnAccount,
+                    serviceStreet: street,
+                    serviceCity: city,
+                    serviceState: state,
+                    servicePostalCode: zip
+                };
+            }
+        );
         this.showSpinner = true;
         window.setTimeout(() => {
             this.spinnerMessage = 'Saving your application';
