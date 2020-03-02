@@ -93,11 +93,12 @@
 ISPICKVAL(Shared_Solar_System__r.Product__r.Program__c,&quot;SMART - Community Solar&quot;),&quot;a2F0a000000OHZeEAO&quot;,
 
 CASE(Utility__c,
-&quot;Eversource&quot;,&quot;a2F0a000001RC7W,{!Environment.VAR_CONGA_TEMPLATE_EVERSOURCE_MA_SREC_EXCEL}&quot;,
-&quot;National Grid&quot;,&quot;a2F0a000001RBod,{!Environment.VAR_CONGA_TEMPLATE_NG_MA_SREC_EXCEL}&quot;,
+&quot;Eversource&quot;,&quot;a2F0a000001RC7W,a2F0a000000OaV5EAK&quot;,
+&quot;National Grid&quot;,&quot;a2F0a000001RBod,a2F0a000000OaVAEA0&quot;,
 &quot;NYS Electric and Gas&quot;,&quot;a2F0a000000OY5fEAG&quot;,
 &quot;Orange and Rockland&quot;,&quot;a2F0a000000OYv9EAG&quot;,
 &quot;National Grid (NY)&quot;,&quot;a2F0a000000OYzBEAW,a2F0a000000OYzGEAW&quot;,
+&quot;Central Hudson&quot;, &quot;{!Environment.VAR_CONGA_TEMPLATE_CHGE_NY_EXCEL}&quot;,
 &quot;&quot;
 )
 )</formula>
