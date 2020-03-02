@@ -5,12 +5,19 @@
     <alertText xsi:nil="true"/>
     <description xsi:nil="true"/>
     <duplicateRuleFilter>
-        <booleanFilter xsi:nil="true"/>
+        <booleanFilter>1 OR 2</booleanFilter>
         <duplicateRuleFilterItems>
             <field>LeadSource</field>
             <operation>equals</operation>
             <value>CSAP</value>
             <sortOrder>1</sortOrder>
+            <table>Lead</table>
+        </duplicateRuleFilterItems>
+        <duplicateRuleFilterItems>
+            <field>LeadSource</field>
+            <operation>equals</operation>
+            <value>Switch</value>
+            <sortOrder>2</sortOrder>
             <table>Lead</table>
         </duplicateRuleFilterItems>
     </duplicateRuleFilter>
