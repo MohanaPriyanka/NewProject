@@ -1,6 +1,6 @@
 // Tested by ProductionDetailSelectorTest
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public without sharing class ProductionDetailSelector {
+public inherited sharing class ProductionDetailSelector {
     public Map<Id, List<Transfer_Part__c>> getTransferPartMap(Set<Id> transferIds) {
         Map<Id, List<Transfer_Part__c>> partsMap = new Map<Id, List<Transfer_Part__c>>();
         List<Transfer_Part__c> parts = [

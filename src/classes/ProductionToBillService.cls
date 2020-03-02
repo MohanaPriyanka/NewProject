@@ -1,11 +1,16 @@
 // Tested By: ProductionToBillServiceTest
 @SuppressWarnings('PMD.ApexCRUDViolation')
 public without sharing class ProductionToBillService implements ZuoraDataQueryService.Processor{
-    public static ZuoraUsageSelector usageSelector = new ZuoraUsageSelector();
-    public static JournalEntrySelector glSelector = new JournalEntrySelector();
-    public static ProductionDetailSelector transferPartsSelector = new ProductionDetailSelector();
-    public static UASBSelector uasbSelector = new UASBSelector();
-    public static AdjustmentSelector adjustmentSelector = new AdjustmentSelector();
+    @TestVisible
+    private static ZuoraUsageSelector usageSelector = new ZuoraUsageSelector();
+    @TestVisible
+    private static JournalEntrySelector glSelector = new JournalEntrySelector();
+    @TestVisible
+    private static ProductionDetailSelector transferPartsSelector = new ProductionDetailSelector();
+    @TestVisible
+    private static UASBSelector uasbSelector = new UASBSelector();
+    @TestVisible
+    private static AdjustmentSelector adjustmentSelector = new AdjustmentSelector();
 
     private Set<Id> transferIds = new Set<Id>();
     private Set<Id> uasbIds = new Set<Id>();
@@ -58,24 +63,21 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
             this.Amount = entry.Amount__c;
         }
 
-        private Boolean matches(UsageRecord keyToCheck) {
-            Boolean isMatch = false;
-            Date billDate = this.BillDatetime.date();
-            if (keyToCheck.CustomerNumber == this.CustomerNumber
-                && keyToCheck.BillMonth == billDate.month()
-                && keyToCheck.BillYear == billDate.year()
-                && keyToCheck.Project == this.Project
-                && keyToCheck.Client == this.Client) {
-                isMatch = true;
+        private String generateKey() {
+            if (this.BillMonth == null
+                && this.BillYear == null
+                && this.BillDatetime.date() != null){
+                Date billDate = this.BillDatetime.date();
+                this.BillMonth = billDate.month();
+                this.BillYear = billDate.year();
             }
-            return isMatch;
+            String key = this.CustomerNumber
+                + this.Project
+                + this.Client
+                + String.valueOf(this.BillMonth)
+                + String.valueOf(this.BillYear);
+            return key;
         }
-    }
-
-    // Need to figure out if we want to fire this on a schedule or trigger, etc:
-    public void queueCreateProductionDetailFromInvoiceItems() {
-        List<Journal_Entry__c> invoiceItems = glSelector.getInvoiceItemWithoutProductionDetail();
-        createProductionDetailFromInvoiceItems(invoiceItems);
     }
 
     public void createProductionDetailFromInvoiceItems(List<Journal_Entry__c> invoiceItems) {
@@ -85,12 +87,8 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
         Date maxDate;
 
         for (Journal_Entry__c entry : invoiceItems){
-            if (minDate == null || entry.Date__c < minDate){
-                minDate = entry.Date__c;
-            }
-            if (maxDate == null || entry.Date__c > maxDate){
-                maxDate = entry.Date__c;
-            }
+            minDate = DateUtil.min(minDate, entry.Date__c);
+            maxDate = DateUtil.max(maxDate, entry.Date__c);
             invoiceItemIds.add(entry.External_Id__c);
             accountNumbers.add(entry.Customer_Account__c);
         }
@@ -133,7 +131,7 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
                     bill.Adjustment = adjustMap.get(bill.InternalId);
                     transferIds.add(bill.Adjustment.Transfer__c);
                 } else {
-                    Logger.logLater(
+                    Logger.logNow(
                         'ProductionToBillService',
                         'fromUsageGetUASBsAndProductionAdjustments',
                         'Could not find UASB or Adjustment for: ' + JSON.serialize(bill)
@@ -203,14 +201,18 @@ public without sharing class ProductionToBillService implements ZuoraDataQuerySe
     @TestVisible
     private Map<String, GLInvoiceItem> groupUsageByInvoice(List<UsageRecord> allUsage, List<Journal_Entry__c> invoiceItems) {
         Map<String, GLInvoiceItem> invoiceToUsageMap = new Map<String, GLInvoiceItem>();
+        Map<String,UsageRecord> keyToJournalEntryMap = new Map<String,UsageRecord>();
+
+        for (Journal_Entry__c invoiceItem : invoiceItems){
+            UsageRecord invoiceKey = new UsageRecord(invoiceItem);
+            keyToJournalEntryMap.put(invoiceKey.generateKey(), invoiceKey);
+        }
         for (UsageRecord usageKey : allUsage){
-            for (Journal_Entry__c invoiceItem : invoiceItems){
-                UsageRecord invoiceKey = new UsageRecord(invoiceItem);
-                if (usageKey.matches(invoiceKey)){
-                    invoiceToUsageMap = addToUsageMap(invoiceToUsageMap, invoiceKey, usageKey);
-                    addToUASBOrAdjustList(usageKey.InternalId);
-                    break;
-                }
+            String matchKey = usageKey.generateKey();
+            if (keyToJournalEntryMap.containsKey(matchKey)){
+                UsageRecord record = keyToJournalEntryMap.get(matchKey);
+                invoiceToUsageMap = addToUsageMap(invoiceToUsageMap, record, usageKey);
+                addToUASBOrAdjustList(usageKey.InternalId);
             }
         }
         return invoiceToUsageMap;

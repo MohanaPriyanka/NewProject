@@ -106,10 +106,4 @@ public class JournalEntrySelectorTest {
         List<Journal_Entry__c> entries = selector.getSFJournalEntriesFromExternalId(externalIds);
         System.assertEquals(2,entries.size());
     }
-
-    @isTest public static void testGetInvoiceItemWithoutProductionDetail() {
-         JournalEntrySelector selector = new JournalEntrySelector();
-         List<Journal_Entry__c> entries = selector.getInvoiceItemWithoutProductionDetail();
-         system.assertEquals(6,entries.size());
-    }
 }

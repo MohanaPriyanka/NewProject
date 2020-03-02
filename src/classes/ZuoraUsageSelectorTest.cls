@@ -9,7 +9,6 @@ public with sharing class ZuoraUsageSelectorTest {
         accountIds.add('BW-0006666');
         ZuoraUsageSelector selector = new ZuoraUsageSelector();
         String queryString = selector.getUsageQueryStringFilterByAccountAndDate(accountIds,startDate,endDate);
-        System.debug(queryString);
 
         System.assert(queryString.contains('us.quantity as Amount FROM USAGE us'));
         System.assert(queryString.contains('WHERE (us.accountnumber = \'BW-0001234\' OR us.accountnumber = \'BW-0006666\' )'));

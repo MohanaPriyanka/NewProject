@@ -351,7 +351,6 @@ public with sharing class ProductionToBillServiceTest {
             partToTransferMap.put(projectA.Id, new List<Transfer_Part__c>{projectAOne});
             partToTransferMap.put(projectB.Id, new List<Transfer_Part__c>{projectBOne, projectBTwo, projectBThree});
             partToTransferMap.put(projectC.Id, new List<Transfer_Part__c>{projectCOne, projectCTwo});
-            system.debug(partToTransferMap);
             switch on methodCall.stubbedMethodName {
                 when 'getTransferPartMap' {
                     return partToTransferMap;

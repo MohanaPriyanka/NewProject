@@ -1,7 +1,7 @@
 // Tested By: JournalEntrySelectorTest, PartnerCommissionServiceTest, ZuoraGLServiceTest
 
 @SuppressWarnings('PMD.ApexCRUDViolation')
-public with sharing class JournalEntrySelector {
+public inherited sharing class JournalEntrySelector {
     public List<Journal_Entry__c> getSFJournalEntries(Date startDate, Date endDate, String queryType){
         List<Journal_Entry__c> journalEntries = [
             SELECT Id, External_Id__c, Date__c, Amount__c, Project__c, Client__c, Customer_Account__c,
@@ -33,16 +33,6 @@ public with sharing class JournalEntrySelector {
                 Paid_To_Client__c, Deposit_Account__c, Object_Type__c, Query_Type__c
             FROM Journal_Entry__c
             WHERE External_Id__c IN : externalIds
-        ];
-        return journalEntries;
-    }
-
-    public List<Journal_Entry__c> getInvoiceItemWithoutProductionDetail(){
-        List<Journal_Entry__c> journalEntries = [
-            SELECT Id, External_Id__c, Date__c, Amount__c, Project__c, Client__c, Customer_Account__c,
-                Paid_To_Client__c, Deposit_Account__c, Object_Type__c, Query_Type__c
-            FROM Journal_Entry__c
-            WHERE Object_Type__c = 'InvoiceItem'
         ];
         return journalEntries;
     }
