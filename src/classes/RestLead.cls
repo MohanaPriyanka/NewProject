@@ -2,7 +2,7 @@
  * Created by jlugo on 2019-07-03.
  * Tested by RestLeadTest
  */
-
+@SuppressWarnings('PMD.StdCyclomaticComplexity,PMD.ExcessivePublicCount,PMD.TooManyFields')
 public without sharing class RestLead {
     public Id id;
     public String firstName;
@@ -110,6 +110,7 @@ public without sharing class RestLead {
      *
      * @return
      */
+    @SuppressWarnings('PMD')
     public Lead mergeFields(Set<String> fieldNames, Lead baseLead) {
         if (fieldNames.contains('firstName')) baseLead.FirstName = this.firstName;
         if (fieldNames.contains('lastName')) baseLead.LastName = this.lastName;
@@ -187,6 +188,7 @@ public without sharing class RestLead {
         return newLead;
     }
 
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     private void updateDerivedFields(RestLead restLead, Lead newLead) {
 
         if (restLead.partnerId != null) {
@@ -231,6 +233,7 @@ public without sharing class RestLead {
 
     }
 
+    @SuppressWarnings('PMD.ApexCRUDViolation')
     private void updateUtility(String eiaId, Lead newLead) {
         List<Utility__c> utilityList = [
             SELECT Id, Name, EIA_ID__c
@@ -249,6 +252,7 @@ public without sharing class RestLead {
     public class RestPropertyAccount {
         public Id id;
         public Id leadId;
+        public String email;
         public String name;
         public String billingStreet;
         public String billingCity;
@@ -316,7 +320,9 @@ public without sharing class RestLead {
 
     public class RestUtilityAccountLog {
         public Id id;
+        public Id leadId;
         public Id propertyAccountId;
+        public String email;
         public String utilityAccountNumber;
         public String nameOnAccount;
         public String serviceStreet;
