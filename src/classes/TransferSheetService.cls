@@ -248,7 +248,6 @@ public without sharing class TransferSheetService {
         for (UASBWithStatus uasbStatus : uasbWithStatusList){
             uasbStatus.Resolution = resolutionMap.get(uasbStatus.SfUASB.Schedule_Z_Subscription__c);
             uasbStatus.SfUASB.Transfer_Sheet_Resolution__c = uasbStatus.Resolution;
-            Logger.logNow('check','check',JSON.serialize(uasbStatus));
             switch on uasbStatus.Status {
                 when 'MATCH' {
                     uasbsToInsert.add(uasbStatus.SfUASB);
@@ -318,7 +317,8 @@ public without sharing class TransferSheetService {
                 csvString += lineItem;
             }
             String fileName = 'TransferSheetResolution_' + transferToUpdate.Id + '.csv';
-            ContentService.uploadFileToRecord(csvString,transferToUpdate.Id,fileName);
+            ContentService service = new ContentService();
+            service.uploadFileToRecordAndShareInternally(csvString,transferToUpdate.Id,fileName);
         } catch (Exception excep){
             Logger.logNow('TransferSheetService','PostUASBInsertProcessing',excep.getMessage() + '_' + excep.getStackTraceString());
         }

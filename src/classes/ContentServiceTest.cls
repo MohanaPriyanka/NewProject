@@ -49,7 +49,8 @@ public with sharing class ContentServiceTest {
         Account accountOne = new Account(Name = 'Acct');
         insert accountOne;
 
-        ContentDocumentLink link = ContentService.uploadFileToRecord('FileBody',accountOne.Id,'Filename.txt');
+        ContentService service = new ContentService();
+        ContentDocumentLink link = service.uploadFileToRecordAndShareInternally('FileBody',accountOne.Id,'Filename.txt');
 
         ContentDocumentLink docLink = [
             SELECT Id, LinkedEntityId

@@ -21,7 +21,7 @@ public with sharing class ContentService {
         update versionsToUpdate;
     }
 
-    public static ContentDocumentLink uploadFileToRecord(String fileBody, Id recordId, String fileName){
+    public ContentDocumentLink uploadFileToRecordAndShareInternally(String fileBody, Id recordId, String fileName){
         ContentVersion cv = new ContentVersion(
             ContentLocation = 'S',
             VersionData = Blob.valueOf(fileBody),
@@ -34,7 +34,7 @@ public with sharing class ContentService {
 
         ContentDocumentLink cdl = new ContentDocumentLink();
         cdl.LinkedEntityId = recordId;
-        cdl.Visibility = 'AllUsers';
+        cdl.Visibility = 'InternalUsers';
         cdl.ShareType = 'V';
         cdl.ContentDocumentId = contentDocId;
         insert cdl;
