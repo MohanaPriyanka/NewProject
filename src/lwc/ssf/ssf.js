@@ -18,6 +18,7 @@ export default class Ssf extends NavigationMixin(LightningElement) {
     @track utilityOptions;
     @track zipCodeInput;
     @track leadJSON;
+    @track selectedProduct;
     @wire(CurrentPageReference) pageRef;
 
     connectedCallback() {
@@ -56,15 +57,11 @@ export default class Ssf extends NavigationMixin(LightningElement) {
                 this.showSpinner = false;
                 this.zipCodeResponse = resolveResult;
                 if (this.zipCodeResponse.hasCapacity && this.zipCodeResponse.products.length >= 1) {
-                    for (let u in this.zipCodeResponse.utilities) {
-                        this.utilityOptions.push({
-                            value: this.zipCodeResponse.utilities[u].name,
-                            label: this.zipCodeResponse.utilities[u].name
-                        });
-                    }
-                    if (this.zipCodeResponse.utilities.length === 1) {
-                        this.selectedUtility = this.zipCodeResponse.utilities[0].name;
-                    }
+                    this.utilityOptions = this.zipCodeResponse.utilities.map(
+                        ({name}) => {
+                            return {value: name, label: name};
+                        }
+                    );
                     // Just picking the first one - could be a picklist if we found multiple products (SREC/SMART)
                     this.selectedProduct = this.zipCodeResponse.products[0];
                     const evt = new ShowToastEvent({

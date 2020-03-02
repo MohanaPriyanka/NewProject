@@ -109,10 +109,11 @@ export default class SsfAgreements extends LightningElement {
 
     continueAgreement(event) {
         if (this.validCSAgreement() && this.validDisclosureConsent() && this.validCreditCheckReview() && this.validConsentEmail()) {
-            let restLead = {};
-            restLead.id = this.lead.id;
-            restLead.email = this.lead.email;
-            restLead.applicationCompleteDate = new Date();
+            let restLead = {
+                id: this.lead.id,
+                email: this.lead.email,
+                applicationCompleteDate: new Date()
+            };
             this.showSpinner = true;
             this.spinnerMessage = 'Completing your application';
             this.finishApplication(restLead).then(
@@ -220,14 +221,14 @@ export default class SsfAgreements extends LightningElement {
         this.showSpinner = true;
         window.setTimeout(() => {
             this.spinnerMessage = 'Generating your documents';
-        }, 4000);
+        }, 5000);
         window.setTimeout(() => {
             this.spinnerMessage = 'This can take a minute';
-        }, 8000);
+        }, 1000);
         this.documentPollerId = window.setInterval(() => {
             getContentDocumentLinksByLead({leadId: this.lead.id, email: this.lead.email})
             .then(result => {
-                if (result.length !== 0) {
+                if (result.length >= 2) {
                     this.postProcessContractDocs(result);
                 }
             })
