@@ -49,10 +49,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Transfer_Sheet_Resolution__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>System_Bill__c</field>
             </layoutItems>
             <layoutItems>
