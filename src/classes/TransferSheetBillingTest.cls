@@ -223,7 +223,6 @@ public class TransferSheetBillingTest {
         // Third, Compare SF to Transfer:
         List<TransferSheetService.UASBWithStatus> matchList;
         matchList = TransferSheetService.compareSFBillsToTransferSheet(sfUASBs, transferUASBs);
-        system.debug(sfUASBs);
         System.assertEquals(7,matchList.size());
         return matchList;
     }

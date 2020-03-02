@@ -248,6 +248,7 @@ public without sharing class TransferSheetService {
         for (UASBWithStatus uasbStatus : uasbWithStatusList){
             uasbStatus.Resolution = resolutionMap.get(uasbStatus.SfUASB.Schedule_Z_Subscription__c);
             uasbStatus.SfUASB.Transfer_Sheet_Resolution__c = uasbStatus.Resolution;
+            Logger.logNow('check','check',JSON.serialize(uasbStatus));
             switch on uasbStatus.Status {
                 when 'MATCH' {
                     uasbsToInsert.add(uasbStatus.SfUASB);
@@ -257,7 +258,7 @@ public without sharing class TransferSheetService {
                     // No bill to insert, do nothing
                 } when 'MISSING_TRANSFER' {
                     UASB__c bill = resolveMissingTransfer(uasbStatus);
-                    if (bill != null){
+                    if (uasbStatus.Resolution == 'UseSalesforce' || uasbStatus.Overdue){
                         uasbsToInsert.add(bill);
                     }
                 }
@@ -287,7 +288,7 @@ public without sharing class TransferSheetService {
         // we can either not insert a bill at all or insert a $0 bill. For overdue customers, we want a $0 bill
 
         UASB__c uasbToModify;
-        if (uasbWithStatus.Resolution == 'UseUtility' && uasbWithStatus.Overdue){
+        if (uasbWithStatus.Resolution == 'UseUtility'){
             uasbToModify = uasbWithStatus.SfUASB;
             uasbToModify.Total_System_NMCs__c = 0;
             uasbToModify.Total_System_Production_kWh__c = 0;
