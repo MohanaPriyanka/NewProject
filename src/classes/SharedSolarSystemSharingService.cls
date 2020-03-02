@@ -13,15 +13,21 @@
 public with sharing class SharedSolarSystemSharingService {
 
     //Evaluates the Apex based SSS Sharing for the Subscription Change Event
-//    public void evaluateSharingViaSubscriptionChange(List<Subscription_Change_Event__e> subscriptionChangeEventList) {
-//        List<Id> propertyIdList = new List<Id>();
-//        for(Subscription_Change_Event__e subscriptionChangeEvent : subscriptionChangeEventList){
-//            if(subscriptionChangeEvent.Property_Account_Id__c != null){
-//                propertyIdList.add(subscriptionChangeEvent.Property_Account_Id__c);
-//            }
-//        }
-//        evaluateSharingViaProperties(propertyIdList);
-//    }
+    public void evaluateSharingViaSubscriptionChange(List<Subscription_Change_Event__e> subscriptionChangeEventList) {
+        List<Id> propertyIdList = new List<Id>();
+        for(Subscription_Change_Event__e subscriptionChangeEvent : subscriptionChangeEventList){
+            if(subscriptionChangeEvent.Property_Account_Id__c != null){
+                propertyIdList.add(subscriptionChangeEvent.Property_Account_Id__c);
+            }
+        }
+        try {
+            evaluateSharingViaProperties(propertyIdList);
+        } catch (Exception excep){
+            Logger.logNow('SharedSolarSystemSharingService',
+                'evaluateSharingViaSubscriptionChange',
+                JSON.serialize(subscriptionChangeEventList) + excep.getMessage() + '_' + excep.getStackTraceString());
+        }
+    }
     //Evaluates the Apex based SSS Sharing for the property list
     public void evaluateSharingViaProperties(List<Id> propertyIdList) {
         Set<Id> parentAccountIdSet = new Set<Id>();
