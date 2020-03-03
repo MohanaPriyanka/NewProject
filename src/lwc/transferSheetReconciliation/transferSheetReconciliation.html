@@ -83,7 +83,7 @@
                             <lightning-helptext icon-name="utility:forward" class= "slds-p-around--xx-small" content="Do you want to bill off transfer sheet or salesforce value?"></lightning-helptext>
                         </td>
                         <td>
-                            <c-transfer-sheet-resolution record-number={item.Uniqueid} onuseutility={utilityResolution} onusesalesforce={salesforceResolution}></c-transfer-sheet-resolution>
+                            <c-transfer-sheet-resolution default-value="UseUtility" record-number={item.Uniqueid} onuseutility={utilityResolution} onusesalesforce={salesforceResolution}></c-transfer-sheet-resolution>
                         </td>
                         <td class="slds-p-around--xx-small">{item.trutilityaccount}</td>
                         <td class="slds-p-around--xx-small">{item.trproduction}</td>
@@ -93,16 +93,16 @@
                 </template>
                 <template if:true={item.isMissingBill}>
                     <tr key={item.Uniqueid} class="slds-theme_shade">
-                        <td class="slds-p-around--xx-small slds-theme_warning">{item.customername}</td>
-                        <td class="slds-p-around--xx-small slds-theme_warning">{item.sfutilityaccount}</td>
-                        <td class="slds-p-around--xx-small slds-theme_warning">{item.sfproduction}</td>
-                        <td class="slds-p-around--xx-small slds-theme_warning">{item.sfcredits}</td>
-                        <td class="slds-p-around--xx-small slds-theme_warning">{item.sfcreditvalue}</td>
-                        <td class="slds-p-around--xx-small slds-align--absolute-center slds-theme_warning">
-                            <lightning-helptext icon-name="utility:back" class= "slds-p-around--xx-small slds-theme_warning" content="Will not send bill because there is not a SF account to link to"></lightning-helptext>
+                        <td class="slds-p-around--xx-small slds-theme_error">{item.customername}</td>
+                        <td class="slds-p-around--xx-small slds-theme_error">{item.sfutilityaccount}</td>
+                        <td class="slds-p-around--xx-small slds-theme_error">{item.sfproduction}</td>
+                        <td class="slds-p-around--xx-small slds-theme_error">{item.sfcredits}</td>
+                        <td class="slds-p-around--xx-small slds-theme_error">{item.sfcreditvalue}</td>
+                        <td class="slds-p-around--xx-small slds-align--absolute-center slds-theme_error">
+                            <lightning-helptext icon-name="utility:back" class= "slds-p-around--xx-small slds-theme_error" content="Will not send bill because there is not a SF account to link to"></lightning-helptext>
                             MISSING_BILL
                         </td>
-                        <td class="slds-p-around--xx-small slds-theme_warning">
+                        <td class="slds-p-around--xx-small slds-theme_error">
                             Use Salesforce
                         </td>
                         <td class="slds-p-around--xx-small">{item.trutilityaccount}</td>
@@ -118,17 +118,17 @@
                         <td class="slds-p-around--xx-small">{item.sfproduction}</td>
                         <td class="slds-p-around--xx-small">{item.sfcredits}</td>
                         <td class="slds-p-around--xx-small">{item.sfcreditvalue}</td>
-                        <td class="slds-p-around--xx-small slds-align--absolute-center slds-theme_warning">
+                        <td class="slds-p-around--xx-small slds-align--absolute-center slds-theme_error">
                             MISSING_TRANSFER
-                            <lightning-helptext icon-name="utility:forward" class= "slds-p-around--xx-small slds-theme_warning" content="If you don't want to send bill, choose Use Utility, if you want to send bill as we calculated it, choose Use Salesforce"></lightning-helptext>
+                            <lightning-helptext icon-name="utility:forward" class= "slds-p-around--xx-small slds-theme_error" content="If you don't want to send bill, choose Use Utility, if you want to send bill as we calculated it, choose Use Salesforce"></lightning-helptext>
                         </td>
                         <td>
                             <c-transfer-sheet-resolution record-number={item.Uniqueid} onuseutility={utilityResolution} onusesalesforce={salesforceResolution}></c-transfer-sheet-resolution>
                         </td>
-                        <td class="slds-p-around--xx-small slds-theme_warning">{item.trutilityaccount}</td>
-                        <td class="slds-p-around--xx-small slds-theme_warning">{item.trproduction}</td>
-                        <td class="slds-p-around--xx-small slds-theme_warning">{item.trcredits}</td>
-                        <td class="slds-p-around--xx-small slds-theme_warning">{item.trcreditvalue}</td>
+                        <td class="slds-p-around--xx-small slds-theme_error">{item.trutilityaccount}</td>
+                        <td class="slds-p-around--xx-small slds-theme_error">{item.trproduction}</td>
+                        <td class="slds-p-around--xx-small slds-theme_error">{item.trcredits}</td>
+                        <td class="slds-p-around--xx-small slds-theme_error">{item.trcreditvalue}</td>
                     </tr>
                 </template>
             </template>
