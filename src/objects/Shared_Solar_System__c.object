@@ -937,9 +937,9 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
 IF(
 ISBLANK(Actual_PTO_Date__c),
 Estimated_PTO_Date__c + 90,
-BLANKVALUE(Last_Sch_Z_Enacted_Date__c+14,
-Actual_PTO_Date__c +14)))</formula>
-        <inlineHelpText>Adds 14 days to the Last Allocation Schedule Enacted Date if populated. Otherwise, adds 14 days to Actual PTO Date or 3 months to the Estimated PTO Date.</inlineHelpText>
+BLANKVALUE(Last_Sch_Z_Enacted_Date__c+30,
+Actual_PTO_Date__c +30)))</formula>
+        <inlineHelpText>Adds 30 days to the Last Allocation Schedule Enacted Date if populated. Otherwise, adds 30 days to Actual PTO Date or 3 months to the Estimated PTO Date.</inlineHelpText>
         <label>Est Utility NMC to Customer Date</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
