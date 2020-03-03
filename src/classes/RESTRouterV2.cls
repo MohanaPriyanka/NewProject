@@ -7,8 +7,7 @@
 @RestResource(UrlMapping='/v2/*')
 
 global without sharing class RESTRouterV2 {
-    @TestVisible
-    private static CSLeadsRESTControllerV2 controller = new CSLeadsRESTControllerV2();
+    public static CSLeadsRESTControllerV2 controller = new CSLeadsRESTControllerV2();
 
     @HttpPatch
     global static void patchRequest() {
@@ -30,13 +29,10 @@ global without sharing class RESTRouterV2 {
                     RestContext.response.statusCode = 404;
                 }
             }
+        } catch (Util.AuthorizationBWException abwe) {
+            handleException(envelope, 401, 'patchRequest', abwe);
         } catch (Exception e) {
-            envelope.addError(e.getMessage());
-            envelope.setJSONResponse(RestContext.response);
-            RestContext.response.statusCode = 500;
-            String errorMessage = 'Error: ' + e.getMessage();
-            errorMessage += '. Request: ' + RestContext.request;
-            Logger.logNow('RESTRouterV2', 'patchRequest', errorMessage, 'Error');
+            handleException(envelope, 500, 'patchRequest', e);
         }
     }
 
@@ -60,13 +56,10 @@ global without sharing class RESTRouterV2 {
                     RestContext.response.statusCode = 404;
                 }
             }
+        } catch (Util.AuthorizationBWException abwe) {
+            handleException(envelope, 401, 'postRequest', abwe);
         } catch (Exception e) {
-            envelope.addError(e.getMessage());
-            envelope.setJSONResponse(RestContext.response);
-            RestContext.response.statusCode = 500;
-            String errorMessage = 'Error: ' + e.getMessage();
-            errorMessage += '. Request: ' + RestContext.request;
-            Logger.logNow('RESTRouterV2', 'postRequest', errorMessage, 'Error');
+            handleException(envelope, 500, 'postRequest', e);
         }
     }
 
@@ -85,14 +78,20 @@ global without sharing class RESTRouterV2 {
                     RestContext.response.statusCode = 404;
                 }
             }
+        } catch (Util.AuthorizationBWException abwe) {
+            handleException(envelope, 401, 'getRequest', abwe);
         } catch (Exception e) {
-            envelope.addError(e.getMessage());
-            envelope.setJSONResponse(RestContext.response);
-            RestContext.response.statusCode = 500;
-            String errorMessage = 'Error: ' + e.getMessage() + '\n' + e.getStackTraceString();
-            errorMessage += '. Request: ' + RestContext.request;
-            Logger.logNow('RESTRouterV2', 'getRequest', errorMessage, 'Error');
+            handleException(envelope, 500, 'getRequest', e);
         }
+    }
+
+    private static void handleException(RESTController.ResponseEnvelope envelope, Integer statusCode, String methodName, Exception e) {
+        envelope.addError(e.getMessage());
+        envelope.setJSONResponse(RestContext.response);
+        RestContext.response.statusCode = statusCode;
+        String errorMessage = 'Error: ' + e.getMessage() + '\n' + e.getStackTraceString();
+        errorMessage += '. Request: ' + RestContext.request;
+        Logger.logNow('RESTRouterV2', methodName, errorMessage, 'Error');
     }
 
 }

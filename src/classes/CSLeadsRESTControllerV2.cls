@@ -4,19 +4,18 @@
  * Test: CSLeadsRESTControllerV2Test
  */
 
-public without sharing class CSLeadsRESTControllerV2 extends RESTController {
-
+public virtual without sharing class CSLeadsRESTControllerV2 extends RESTController {
     @TestVisible private LeadService leadService = new LeadService();
     @TestVisible private AccountService accountService = new AccountService();
     @TestVisible private UALService ualService = new UALService();
     @TestVisible private CSLeadsDuplicateService duplicateService = new CSLeadsDuplicateService();
     @TestVisible private CapacityService capacityService = new CapacityService();
 
-    @TestVisible private LeadSelector leadSelector = new LeadSelector();
+    @TestVisible protected LeadSelector leadSelector = new LeadSelector();
     @TestVisible private AccountsSelector accountsSelector = new AccountsSelector();
     @TestVisible private UALSelector ualSelector = new UALSelector();
 
-    public void patchLead(String jsonRequest) {
+    public virtual void patchLead(String jsonRequest) {
         RestLead requestLead = (RestLead) JSON.deserialize(jsonRequest, RestLead.class);
         RestResponse response = RestContext.response;
 
@@ -48,7 +47,7 @@ public without sharing class CSLeadsRESTControllerV2 extends RESTController {
         envelope.setJSONResponse(response);
     }
 
-    public void patchPropertyAccount(String jsonRequest) {
+    public virtual void patchPropertyAccount(String jsonRequest) {
         RestLead.RestPropertyAccount requestAccount = (RestLead.RestPropertyAccount) JSON.deserialize(jsonRequest, RestLead.RestPropertyAccount.class);
         RestResponse response = RestContext.response;
 
@@ -74,7 +73,7 @@ public without sharing class CSLeadsRESTControllerV2 extends RESTController {
         envelope.setJSONResponse(response);
     }
 
-    public void patchUtilityAccountLog(String jsonRequest) {
+    public virtual void patchUtilityAccountLog(String jsonRequest) {
         RestLead.RestUtilityAccountLog requestUAL = (RestLead.RestUtilityAccountLog) JSON.deserialize(jsonRequest, RestLead.RestUtilityAccountLog.class);
         RestResponse response = RestContext.response;
 
@@ -98,7 +97,7 @@ public without sharing class CSLeadsRESTControllerV2 extends RESTController {
         envelope.setJSONResponse(response);
     }
 
-    public void postLead(String jsonRequest) {
+    public virtual void postLead(String jsonRequest) {
         RestLead requestLead = (RestLead) JSON.deserialize(jsonRequest, RestLead.class);
         RestResponse response = RestContext.response;
 
@@ -162,7 +161,7 @@ public without sharing class CSLeadsRESTControllerV2 extends RESTController {
         response.statusCode = statusCode.created;
     }
 
-    public void postPropertyAccount(String jsonRequest) {
+    public virtual void postPropertyAccount(String jsonRequest) {
         RestLead.RestPropertyAccount requestPropertyAccount = (RestLead.RestPropertyAccount) JSON.deserialize(jsonRequest, RestLead.RestPropertyAccount.class);
         RestResponse response = RestContext.response;
 
@@ -218,7 +217,7 @@ public without sharing class CSLeadsRESTControllerV2 extends RESTController {
 
     }
 
-    public void postUtilityAccountLog(String jsonRequest) {
+    public virtual void postUtilityAccountLog(String jsonRequest) {
         RestLead.RestUtilityAccountLog restUtilityAccountLog = (RestLead.RestUtilityAccountLog) JSON.deserialize(jsonRequest, RestLead.RestUtilityAccountLog.class);
         RestResponse response = RestContext.response;
 
@@ -253,7 +252,7 @@ public without sharing class CSLeadsRESTControllerV2 extends RESTController {
 
     }
 
-    public void performZipCheck(String zipCode, String partnerId) {
+    public virtual void performZipCheck(String zipCode, String partnerId) {
         RestResponse response = RestContext.response;
         RestZipCode zipCodeResponse = new RestZipCode(capacityService.findCapacityByZipcode(zipCode, partnerId));
         envelope.setData(zipCodeResponse);
