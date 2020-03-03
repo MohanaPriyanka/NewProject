@@ -43,4 +43,14 @@ public inherited sharing class ContentDocumentSelector {
         ];
         return latestTransferSheet;
     }
+
+    public Id getDocumentIdFromVersionId(Id versionId) {
+        List<ContentVersion> versionList = [
+            SELECT ContentDocumentId
+            FROM ContentVersion
+            WHERE Id = : versionId
+            LIMIT 1
+        ];
+        return versionList[0].ContentDocumentId;
+    }
 }

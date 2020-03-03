@@ -30151,6 +30151,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>UASB__c.Transfer_Sheet_Resolution__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>UASB__c.Transfer__c</field>
         <readable>true</readable>
