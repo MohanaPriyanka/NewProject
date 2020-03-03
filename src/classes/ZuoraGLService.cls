@@ -98,7 +98,8 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         ledgerItems = (List<GeneralLedgerItem>)JSON.deserialize(response, List<GeneralLedgerItem>.class);
         zuoraJournalEntries = convertGeneralLedgerToJournalEntry(ledgerItems, method.methodName);
 
-        List<Journal_Entry__c> sfEntries = ZuoraGLSelector.getSFJournalEntries(method.startDate,method.endDate,method.methodName);
+        JournalEntrySelector selector = new JournalEntrySelector();
+        List<Journal_Entry__c> sfEntries = selector.getSFJournalEntries(method.startDate,method.endDate,method.methodName);
         // Sets entriesSafeToDelete, reconciliationItems and entriesToUpsert:
         Date periodCloseDate = method.optionalDates.get('PeriodCloseDate');
         checkForClosedPeriodUpdates(zuoraJournalEntries,sfEntries,periodCloseDate);

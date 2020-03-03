@@ -1,8 +1,8 @@
 /*************************************************************************************
 Created By Jordan Pentaleri 08/2019
-Tested By: ZuoraGLServiceTest, PartnerCommissionServiceTest
+Tested By: ZuoraGLServiceTest
 *************************************************************************************/
-
+@SuppressWarnings('PMD.ApexCRUDViolation')
 public with sharing class ZuoraGLSelector {
     public static String getInvoiceItems(Date startDate, Date endDate){
         String invoiceItemQuery =
@@ -145,32 +145,5 @@ public with sharing class ZuoraGLSelector {
             payPartInvoiceQuery += ' WHERE py.Status = \'Processed\' ';
         }
         return payPartInvoiceQuery;
-    }
-
-    @SuppressWarnings('PMD.ApexCRUDViolation')
-    public static List<Journal_Entry__c> getSFJournalEntries(Date startDate, Date endDate, String queryType){
-        List<Journal_Entry__c> journalEntries = [
-            SELECT Id, External_Id__c, Date__c, Amount__c, Project__c, Client__c, Customer_Account__c,
-                Paid_To_Client__c, Deposit_Account__c
-            FROM Journal_Entry__c
-            WHERE Date__c > : startDate
-            AND Date__c < : endDate
-            AND Query_Type__c = : queryType
-        ];
-        return journalEntries;
-    }
-
-    @SuppressWarnings('PMD.ApexCRUDViolation')
-    public List<AggregateResult> getCommissionEntriesByAccount(Set<String> accountNumber){
-        List<AggregateResult> entries = [
-            SELECT Customer_Account__c,
-                Object_Type__c,
-                Project__c
-            FROM Journal_Entry__c
-            WHERE Customer_Account__c IN : accountNumber
-            AND (Object_Type__c = 'InvoiceItem' OR Object_Type__c = 'PaymentPart')
-            GROUP BY Customer_Account__c, Object_Type__c, Project__c
-        ];
-        return entries;
     }
 }

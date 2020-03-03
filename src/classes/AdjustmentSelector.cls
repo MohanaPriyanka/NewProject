@@ -1,4 +1,4 @@
-/* Tested by ZuoraUsageServiceTest, ZuoraCreditDebitMemoServiceTest
+/* Tested by ZuoraUsageServiceTest, ZuoraCreditDebitMemoServiceTest, AdjustmentSelectorTest
  */
 
 public without sharing class AdjustmentSelector {
@@ -41,5 +41,13 @@ public without sharing class AdjustmentSelector {
         queryString += ' ORDER BY Utility_Account_Subscription__r.Opportunity__r.AccountId';
 
         return Database.getQueryLocator(queryString);
+    }
+
+    public Map<Id, Bill_Adjustment__c> getAdjustmentsFromIds(Set<Id> adjustmentIds){
+        return new Map<Id, Bill_Adjustment__c>([
+            SELECT Id, Transfer__c, Discount__c
+            FROM Bill_Adjustment__c
+            WHERE Id IN : adjustmentIds
+        ]);
     }
 }
