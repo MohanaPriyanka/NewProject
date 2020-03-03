@@ -931,7 +931,7 @@ Based on size of project (1MW), if the SSS falls into Class II or Class III cate
     </fields>
     <fields>
         <fullName>Estimated_Credit_Flow_Date__c</fullName>
-        <description>Adds 14 days to the Last Allocation Schedule Enacted Date if populated. Otherwise, adds 14 days to Actual PTO Date or 3 months to the Estimated PTO Date.</description>
+        <description>Adds 30 days to the Last Allocation Schedule Enacted Date if populated. Otherwise, adds 30 days to Actual PTO Date or 3 months to the Estimated PTO Date.</description>
         <externalId>false</externalId>
         <formula>BLANKVALUE(Est_Utility_NMC_to_Customer_Override__c,
 IF(
