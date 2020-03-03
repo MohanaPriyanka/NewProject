@@ -100,7 +100,7 @@ export default class SsfAgreements extends LightningElement {
 
     validConsentEmail() {
         if (this.lead.email !== this.consentEmail) {
-            this.showWarningToast('Sorry', 'Please enter the email address that you previously provided (' + this.lead.email + ') to acknowledge consents');
+            this.showWarningToast('Sorry', 'Please enter the email address that you previously provided to acknowledge consents');
             return false;
         } else {
             return true;
