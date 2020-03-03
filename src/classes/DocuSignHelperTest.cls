@@ -421,6 +421,9 @@ public with sharing class DocuSignHelperTest {
         );
         insert ual2;
 
+        // We don't want other Async jobs to run when we call Test.startTest and Test.stopTest
+        // (otherwise, DocuSign will fail with mixed DML and callouts)
+        Util.disableTrigger('Disable_SharedSolarSystemSharingTrigger__c');
 
         Database.leadConvert lc = new Database.leadConvert();
         lc.setLeadId(lead.id);
@@ -501,6 +504,7 @@ public with sharing class DocuSignHelperTest {
         List<Error_Log__c> errorLogs = [
                 SELECT Id, Class__c, Method__c, Message__c
                 FROM Error_Log__c
+                WHERE Class__c = 'DocuSignHelper'
         ];
 
         System.assert(errorLogs.size() == 1, 'We should have 1 message that logs that the Opp is sending, plus AutoRetry messages');
