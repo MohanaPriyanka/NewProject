@@ -24,7 +24,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     }
 
     @TestSetup
-    private static void testSetup() {
+    public static void testSetup() {
         Utility__c utility = new Utility__c(
             Name = 'Utility'
         );
@@ -552,7 +552,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
     /*************
      *** MOCKS ***
      *************/
-
+    @TestVisible
     private class MockLeadService extends MockProvider {
         public MockLeadService(){}
 
@@ -575,11 +575,15 @@ public with sharing class CSLeadsRESTControllerV2Test {
 
     }
 
+    @TestVisible
+    private static String SAMPLE_EMAIL = 'email@invalid.com';
+    @TestVisible
     private class MockLeadSelector implements StubProvider {
         public MockLeadSelector(){}
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
             List<System.Type> listOfParamTypes, List<String> listOfParamNames, List<Object> listOfArgs) {
             Lead newLead = new Lead();
+            newLead.Email = SAMPLE_EMAIL;
             if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000111') {
                 return null;
             } else if (String.valueOf(listOfArgs.get(0)).substring(0,15) == '00Q000000000999') {
@@ -591,6 +595,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         }
     }
 
+    @TestVisible
     private class MockAccountService implements StubProvider {
         public MockAccountService(){}
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
@@ -607,6 +612,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         }
     }
 
+    @TestVisible
     private class MockAccountsSelector implements StubProvider {
         public MockAccountsSelector(){}
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
@@ -635,6 +641,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         }
     }
 
+    @TestVisible
     private class MockUALService implements StubProvider {
         public MockUALService(){}
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
@@ -654,6 +661,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         }
     }
 
+    @TestVisible
     private class MockUALSelector implements StubProvider {
         public MockUALSelector(){}
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
@@ -665,6 +673,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         }
     }
 
+    @TestVisible
     private class MockCapacityService implements StubProvider {
         public MockCapacityService() {}
         public Object handleMethodCall(Object stubbedObject, String stubbedMethodName, System.Type returnType,
