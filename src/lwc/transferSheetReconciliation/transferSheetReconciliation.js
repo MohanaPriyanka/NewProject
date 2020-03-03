@@ -33,11 +33,13 @@ export default class BasicDatatable extends LightningElement {
             if (error.body.message.includes('Bills Already Generated')){
                 const event = new ShowToastEvent({
                     title: 'Bills Already Generated for this Transfer',
+                    mode: 'sticky'
                 });
                 this.dispatchEvent(event);
             } else {
                 const event = new ShowToastEvent({
                     title: 'Could not load UASB list',
+                    mode: 'sticky',
                     message: error.errorCode + ', ' + error.body.message,
                 });
                 this.dispatchEvent(event);
@@ -51,7 +53,13 @@ export default class BasicDatatable extends LightningElement {
         for (i = 0; i < dataFromApex.length; i++) {
             let uasbData = new Object();
             uasbData.Uniqueid = dataFromApex[i].SfUASB.Schedule_Z_Subscription__c;
-            uasbData.customername = dataFromApex[i].SfUASB.PreGen_Name_on_Account__c;
+            let customername = dataFromApex[i].SfUASB.PreGen_Name_on_Account__c;
+            let cutoff = Math.min(customername.length,15);
+            uasbData.customername = dataFromApex[i].SfUASB.PreGen_Name_on_Account__c.substring(0,cutoff);
+            if (dataFromApex[i].SfUASB.Externally_Serviced__c){
+                cutoff = Math.min(customername.length,5);
+                uasbData.customername = dataFromApex[i].SfUASB.PreGen_Name_on_Account__c.substring(0,cutoff) + '**EXTERNAL';
+            }
             uasbData.sfutilityaccount = dataFromApex[i].SfUASB.PreGen_Utility_Acct__c;
             uasbData.sfproduction = dataFromApex[i].SfUASB.Subscription_Production_kWh_Static__c;
             uasbData.sfcredits = dataFromApex[i].SfUASB.Credits_Allocated__c;
@@ -65,6 +73,7 @@ export default class BasicDatatable extends LightningElement {
                 uasbData.Resolution = 'UseSalesforce';
             } else if (dataFromApex[i].Status === 'CREDIT_MISMATCH') {
                 uasbData.isCreditMismatch = true;
+                uasbData.Resolution = 'UseUtility';
             } else if (dataFromApex[i].Status === 'MISSING_BILL') {
                 uasbData.Uniqueid = 'missingBill' + i;
                 uasbData.isMissingBill = true;
@@ -126,12 +135,14 @@ export default class BasicDatatable extends LightningElement {
         .then(result => {
             const event = new ShowToastEvent({
                 title: 'Success! UASBs Inserted',
+                mode: 'sticky'
             });
             this.dispatchEvent(event);
         })
         .catch(error => {
             const event = new ShowToastEvent({
                 title: 'Could not load UASB list',
+                mode: 'sticky',
                 message: error.errorCode + ', ' + error.body.message,
             });
             this.dispatchEvent(event);

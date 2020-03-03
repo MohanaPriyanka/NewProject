@@ -3,6 +3,7 @@ import { LightningElement, api} from 'lwc';
 export default class transferSheetResolution extends LightningElement {
     @api recordNumber;
     @api picklistOptions;
+    @api defaultValue;
 
     get picklistOptions() {
         return [

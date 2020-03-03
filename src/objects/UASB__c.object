@@ -823,6 +823,32 @@ MONTH(Billing_Period_End_Date__c),
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Transfer_Sheet_Resolution__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>On the transfer sheet QC screen, the value that was selected for &quot;Resolution&quot;</inlineHelpText>
+        <label>Transfer Sheet Resolution</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>UseUtility</fullName>
+                    <default>false</default>
+                    <label>UseUtility</label>
+                </value>
+                <value>
+                    <fullName>UseSalesforce</fullName>
+                    <default>false</default>
+                    <label>UseSalesforce</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Transfer__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
