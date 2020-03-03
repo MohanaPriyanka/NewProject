@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>This is the email that is sent to the customer that includes their signed (not countersigned) docs from SSF</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>SSF Signed Contract</name>
+    <style>none</style>
+    <subject>Your BlueWave Community Solar Docs</subject>
+    <textOnly>Hi {!Lead.Name},  Here is a copy of your BlueWave Solar Docs.</textOnly>
+    <type>custom</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

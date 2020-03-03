@@ -2467,11 +2467,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Bill_Adjustment__c.Account__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Bill_Adjustment__c.Adjustment_Amount__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -30153,6 +30148,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>UASB__c.Tracking_Trigger_Value__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>UASB__c.Transfer_Sheet_Resolution__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

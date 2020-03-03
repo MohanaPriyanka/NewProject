@@ -1545,6 +1545,31 @@ This field can be changed to a formula consistent with the other factors if LASE
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Conga_Contract__c</fullName>
+        <externalId>false</externalId>
+        <formula>&quot;&amp;id=&quot; + Id +
+&quot;&amp;templateid=&quot; + Product__r.Conga_Template_Id_s__c +
+&quot;&amp;queryid=[UAL]{!Environment.Conga_Query_SSF_UAL},[Biz]{!Environment.Conga_Query_SSF_Guarantor},[BizSig]{!Environment.conga_query_ssf_guarantor_sig},[CustSig]{!Environment.conga_query_ssf_customer_sig}&quot; + 
+&quot;&amp;sc0=1&quot; + 
+&quot;&amp;sc1=SalesforceFile&quot; +
+&quot;&amp;APDF=0&quot; +
+&quot;&amp;contentnetworkid=0DB0a000000L0ryGAC&quot; + 
+&quot;&amp;contentsharetype=V&quot; + 
+&quot;&amp;contentvisibility=AllUsers&quot; +
+&quot;&amp;defaultpdf=1&quot; +
+IF(ISBLANK(Application_Complete_Date__c),&quot;&amp;qmode=SalesforceFile&quot;,
+&quot;&amp;EmailTemplateId={!Environment.VAR_Conga_SSF_SignedEmailTemplateID}&quot; + 
+&quot;&amp;EmailToId=&quot; +  Id +
+&quot;&amp;EmailFromId=0D20a0000004K0P&quot; + 
+&quot;&amp;qmode=SendEmail&quot;
+)</formula>
+        <label>Conga Contract</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Construction_Period_DOER__c</fullName>
         <externalId>false</externalId>
         <label>Construction Period (DOER)</label>
@@ -4092,6 +4117,22 @@ Monthly_Payment__c)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>Used to map the Lead&apos;s phone number to Opportunity.Customer Phone (since standard fields can&apos;t be mapped)</inlineHelpText>
         <label>Phone2</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Phone_Number_Contract__c</fullName>
+        <description>This field is used in the SSF Conga template. It returns the business phone if they are non resi, and mobile phone if resi.</description>
+        <externalId>false</externalId>
+        <formula>CASE(Customer_type__c,
+&quot;Residential&quot;,MobilePhone, 
+&quot;Non-Residential&quot;,Business_Phone__c,
+MobilePhone
+)</formula>
+        <inlineHelpText>This field is used in the SSF Conga template. It returns the business phone if they are non resi, and mobile phone if resi.</inlineHelpText>
+        <label>Phone Number (Contract)</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <type>Text</type>
