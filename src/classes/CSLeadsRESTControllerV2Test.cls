@@ -14,6 +14,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
         controller.accountService = (AccountService) Test.createStub(AccountService.class, new MockAccountService());
         controller.ualService = (UALService) Test.createStub(UALService.class, new MockUALService());
         controller.capacityService = (CapacityService) Test.createStub(CapacityService.class, new MockCapacityService());
+        controller.duplicateService = (CSLeadsDuplicateService) Test.createStub(CSLeadsDuplicateService.class , new MockDuplicateService(false));
 
         controller.leadSelector = (LeadSelector) Test.createStub(LeadSelector.class, new MockLeadSelector());
         controller.accountsSelector = (AccountsSelector) Test.createStub(AccountsSelector.class, new MockAccountsSelector());
@@ -174,6 +175,25 @@ public with sharing class CSLeadsRESTControllerV2Test {
 
         System.assertEquals(400, RestContext.response.statusCode, 'POST should throw an error when required fields are not provided');
     }
+
+    @IsTest
+    private static void testPostLeadWithDuplicate() {
+        useMocks();
+        controller.duplicateService = (CSLeadsDuplicateService) Test.createStub(CSLeadsDuplicateService.class , new MockDuplicateService(true));
+
+        String jsonRequest = '{' +
+            '"leadId": "' + Util.getFakeId(Schema.Lead.SObjectType) + '",' +
+            '"firstName": "Unit",' +
+            '"lastName": "Testcase",' +
+            '"email": "test@invalid.bluewavesolar.com",' +
+            '"applicationType": "Residential",' +
+            '"productName": "CS Product"' +
+            '}';
+
+        controller.postLead(jsonRequest);
+        System.assertEquals(201, RestContext.response.statusCode, 'A lead Post with a duplicate lead should succeed');
+    }
+
 
     @IsTest
     private static void testPostLeadWithMinimalFields() {
@@ -429,6 +449,20 @@ public with sharing class CSLeadsRESTControllerV2Test {
 
     @IsTest
     private static void testPostLeadSuccessSystem() {
+        //Insert website lead to test duplicate
+
+        Lead websiteLead = new Lead(
+            FirstName = 'System',
+            LastName = 'Testcase',
+            Email = 'test@invalid.bluewavesolar.com',
+            Company = 'System Testcase',
+            LeadSource = 'Website',
+            Phone = '4444444444',
+            CreatedDate = System.today().addMonths(-3)
+        );
+
+        insert websiteLead;
+
         String jsonRequest = '{' +
             '"firstName": "System",' +
             '"lastName": "Testcase",' +
@@ -490,6 +524,7 @@ public with sharing class CSLeadsRESTControllerV2Test {
 
         // verify lead request/response fields
         System.assertNotEquals(responseLead.get('id'), null, 'id should be set on POST response');
+        System.assertEquals(websiteLead.Id, responseLead.get('id'));
         for (String key : requestLead.keySet()) {
             if (requestLead.get(key) instanceof String) {
                 System.assertEquals(requestLead.get(key), responseLead.get(key), 'The requested ' + key + ' is expected to match the actual response');
@@ -638,6 +673,36 @@ public with sharing class CSLeadsRESTControllerV2Test {
             CapacityService.ZipcodeResponse response =
                 (CapacityService.ZipcodeResponse) JSON.deserialize(zipResponseWithCapacity, CapacityService.ZipcodeResponse.class);
             return response;
+        }
+    }
+
+    private class MockDuplicateService extends MockProvider {
+        private Boolean hasDuplicates;
+
+        public MockDuplicateService(Boolean hasDuplicates) {
+            this.hasDuplicates = hasDuplicates;
+        }
+        public override Object handleMethodCall(MethodCall methodCall) {
+            //If there are duplicates, will return a lead with an Id that has been merged with api Lead
+            String duplicateLead = '{"attributes":{"type":"Lead","url":"/services/data/v47.0/sobjects/Lead/001000000000111EEA"},' +
+                '"Id": "001000000000111EEA",' +
+                '"FirstName": "Unit",' +
+                '"LastName": "Testcase",' +
+                '"Email": "test@invalid.bluewavesolar.com",' +
+                '"LeadSource": "Switch"' +
+                '}';
+
+            String jsonLead = '{"attributes":{"type":"Lead","url":"/services/data/v47.0/sobjects/Lead/001000000000111EEA"},' +
+                '"FirstName": "Unit",' +
+                '"LastName": "Testcase",' +
+                '"Email": "test@invalid.bluewavesolar.com",' +
+                '"LeadSource": "Switch"' +
+                '}';
+            if (hasDuplicates) {
+                return (Lead) JSON.deserialize(duplicateLead, Lead.class);
+            } else {
+                return (Lead) JSON.deserialize(jsonLead, Lead.class);
+            }
         }
     }
 
