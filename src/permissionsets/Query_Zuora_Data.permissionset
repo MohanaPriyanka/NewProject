@@ -13,7 +13,17 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Zuora_Data_Query__c.Number_of_Retries__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Zuora_Data_Query__c.Output_Rows__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Zuora_Data_Query__c.Processing_Parameter__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>

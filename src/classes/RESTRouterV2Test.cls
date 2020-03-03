@@ -4,7 +4,7 @@
 
 @IsTest
 public with sharing class RESTRouterV2Test {
-
+    @TestVisible
     private static String validLead =
         '"firstName": "System"' +
             ',"lastName": "Testcase"' +
@@ -20,20 +20,24 @@ public with sharing class RESTRouterV2Test {
             ',"referralName": "RefFirst RefLast"' +
             ',"referralEmail": "refemail@invalid.bluewavesolar.com"';
 
+    @TestVisible
     private static String validResiLead = validLead + ',"applicationType": "Residential"';
 
+    @TestVisible
     private static String validNonResiLead = validLead +
         ',"applicationType": "Non-Residential"' +
         ',"businessName": "My Cool Company"' +
         ',"businessTitle": "Janitor"' +
         ',"businessPhone": "5551239876"';
 
+    @TestVisible
     private static String validPropertyAccount =
         '   "billingStreet": "Test billing street"' +
         ',  "billingCity": "Test billing city"' +
         ',  "billingState": "NY"' +
         ',  "billingPostalCode": "14472"';
 
+    @TestVisible
     private static String validUtilityAccountLog =
         '       "nameOnAccount": "Test Accounts Payable"' +
         ',      "serviceStreet": "Test service street"' +
@@ -42,6 +46,7 @@ public with sharing class RESTRouterV2Test {
         ',      "servicePostalCode": "14472"' +
         ',      "utilityAccountNumber": "555555"';
 
+    @TestVisible
     private static String validResiJsonRequest = '{' +
         validResiLead + ',' +
         '"propertyAccounts": [{' +
@@ -50,6 +55,7 @@ public with sharing class RESTRouterV2Test {
         validUtilityAccountLog +
         '}]}]}';
 
+    @TestVisible
     private static String validNonResiJsonRequest = '{' +
         validNonResiLead + ',' +
         '"propertyAccounts": [{' +
@@ -280,8 +286,6 @@ public with sharing class RESTRouterV2Test {
             validUtilityAccountLog +
             '}]}';
 
-        System.debug(propertyAccountJson);
-
         req.requestBody = Blob.valueOf(propertyAccountJson);
 
         RestContext.request = req;
@@ -358,7 +362,6 @@ public with sharing class RESTRouterV2Test {
         System.assertEquals(200, response.statusCode, 'Properly formed PATCH should succeed');
 
         System.assertEquals('mock-zuoraId', responsePropertyAccount.get('zuoraPaymentRefId'));
-        System.debug(responsePropertyAccount.get('zuoraPaymentRefIdExpirationDate'));
         System.assertEquals('2019-01-05T19:00:00.000Z', responsePropertyAccount.get('zuoraPaymentRefIdExpirationDate'));
 
     }
@@ -391,7 +394,6 @@ public with sharing class RESTRouterV2Test {
         Map<String, Object> responseEnvelope = (Map<String,Object>) JSON.deserializeUntyped(jsonResponse);
         Map<String, Object> responseLead = (Map<String,Object>) responseEnvelope.get('data');
 
-        System.debug(jsonResponse);
         List<Object> responsePropertyAccounts = (List<Object>) responseLead.get('propertyAccounts');
         Map<String, Object> responsePropertyAccount = (Map<String,Object>) responsePropertyAccounts[0];
 
@@ -489,6 +491,80 @@ public with sharing class RESTRouterV2Test {
 
     }
 
+    @IsTest
+    public static void testZipCheck() {
+        RESTRouterV2.controller = (CSLeadsRESTControllerV2) Test.createStub(CSLeadsRESTControllerV2.class, new MockCSLeadsRESTControllerV2());
+
+        String zipCode = '12345';
+        RestRequest req = new RestRequest();
+        req.requestURI = '/services/apexrest/v2/zip-check';
+        req.addParameter('zipCode', zipCode);
+        req.httpMethod = 'GET';
+
+        RestContext.request = req;
+        RESTRouterV2.getRequest();
+
+        Boolean caughtException = false;
+        try {
+            RestZipCode restZipCode =
+                (RestZipCode) JSON.deserialize(RestContext.response.responseBody.toString(), RestZipCode.class);
+            System.assertEquals(zipCode, restZipCode.zipCode, 'Expected to get the requested zipCode in the response, got: ' + restZipCode.zipCode);
+            System.assertEquals(true, restZipCode.hasCapacity, 'Expected the mock to find capacity');
+        } catch (Exception e) {
+            caughtException = true;
+            System.assert(!caughtException, e.getMessage() + '\n' + e.getStackTraceString());
+        }
+        System.assertEquals(false, caughtException, 'Did not expect to catch an exception');
+    }
+
+    @IsTest
+    public static void testGetInvalidPath() {
+        RESTRouterV2.controller = (CSLeadsRESTControllerV2) Test.createStub(CSLeadsRESTControllerV2.class, new MockCSLeadsRESTControllerV2());
+
+        String zipCode = '12345';
+        RestRequest req = new RestRequest();
+        req.requestURI = '/services/apexrest/v2/invalidpath';
+        req.addParameter('zipCode', zipCode);
+        req.httpMethod = 'GET';
+
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+        RESTRouterV2.getRequest();
+
+        Boolean caughtException = false;
+        try {
+            System.assertEquals(404, RestContext.response.statusCode, 'Expected a 404 for an invalid path');
+        } catch (Exception e) {
+            caughtException = true;
+            System.assert(!caughtException, e.getMessage() + '\n' + e.getStackTraceString());
+        }
+        System.assertEquals(false, caughtException, 'Did not expect to catch an exception');
+    }
+
+    @IsTest
+    public static void testGetWithException() {
+        RESTRouterV2.controller = (CSLeadsRESTControllerV2) Test.createStub(CSLeadsRESTControllerV2.class, new MockCSLeadsRESTControllerV2());
+
+        String zipCode = '12345';
+        RestRequest req = new RestRequest();
+        req.requestURI = '/services/apexrest/v2/zip-check';
+        req.addParameter('zipCode', 'exception');
+        req.httpMethod = 'GET';
+
+        RestContext.request = req;
+        RestContext.response = new RestResponse();
+        RESTRouterV2.getRequest();
+
+        Boolean caughtException = false;
+        try {
+            System.assertEquals(500, RestContext.response.statusCode, 'Expected a 500 for a system error');
+        } catch (Exception e) {
+            caughtException = true;
+            System.assert(!caughtException, e.getMessage() + '\n' + e.getStackTraceString());
+        }
+        System.assertEquals(false, caughtException, 'Did not expect to catch an exception');
+    }
+
     /** General Verb **/
 
     @IsTest
@@ -561,6 +637,29 @@ public with sharing class RESTRouterV2Test {
         RESTRouterV2.postRequest();
 
         System.assertEquals(500, RestContext.response.statusCode, 'PATCHing with invalid JSON should yield a 500');
+    }
+
+    public class MockCSLeadsRESTControllerV2 extends MockProvider {
+        public MockCSLeadsRESTControllerV2() {
+        }
+
+        public override Object handleMethodCall(MethodCall methodCall) {
+            switch on methodCall.stubbedMethodName {
+                when 'performZipCheck' {
+                    String zipCode = RestContext.request.params.get('zipCode');
+                    if (zipCode == 'exception') {
+                        throw new Util.BWException('system exception');
+                    }
+                    RestContext.response = new RestResponse();
+                    CapacityService.ZipcodeResponse zipcodeResponse = new CapacityService.ZipcodeResponse();
+                    zipcodeResponse.zipcode = zipCode;
+                    RestZipCode restZipCode = new RestZipCode(zipcodeResponse);
+                    restZipCode.hasCapacity = true;
+                    RestContext.response.responseBody = Blob.valueOf(JSON.serialize(restZipCode));
+                }
+            }
+            return null;
+        }
     }
 
 }

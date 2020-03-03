@@ -28,7 +28,7 @@
                     var transferStep;
                     var countGenerated = 0;
                     for (transferStep = 0; transferStep < transferList.length; transferStep++) {
-                        if (transferList[transferStep].Generate_Bills__c){
+                        if (transferList[transferStep].Bills_Generated__c){
                             countGenerated += 1;
                         }
                     }

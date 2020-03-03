@@ -88,6 +88,10 @@
                 <behavior>Edit</behavior>
                 <field>Anticipated_First_Billing_Date__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>ContractId</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
     </layoutSections>
@@ -160,6 +164,16 @@
         <fields>ContactEmail</fields>
         <fields>ContactAccountName</fields>
         <relatedList>RelatedContactRoleList</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <excludeButtons>MassChangeOwner</excludeButtons>
+        <fields>NAME</fields>
+        <fields>Estimated_COD_Date__c</fields>
+        <fields>Estimated_Mechanical_Completion__c</fields>
+        <fields>Credit_Score_Requirement__c</fields>
+        <fields>Total_System_Size_kWh_DC__c</fields>
+        <fields>Capacity_Available_to_be_Reserved__c</fields>
+        <relatedList>Shared_Solar_System__c.Client_Opportunity__c</relatedList>
     </relatedLists>
     <relatedLists>
         <relatedList>RelatedNoteList</relatedList>

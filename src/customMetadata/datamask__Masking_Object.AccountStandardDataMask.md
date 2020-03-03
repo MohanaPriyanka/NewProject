@@ -24,7 +24,7 @@
     </values>
     <values>
         <field>datamask__Last_Prepped_Date__c</field>
-        <value xsi:type="xsd:date">2020-02-03</value>
+        <value xsi:type="xsd:date">2020-02-04</value>
     </values>
     <values>
         <field>datamask__Record_Count__c</field>

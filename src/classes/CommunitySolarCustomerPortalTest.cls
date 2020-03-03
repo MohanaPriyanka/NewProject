@@ -44,4 +44,50 @@ public without sharing class CommunitySolarCustomerPortalTest {
             MyAccountController.updateContactInfo(userContact);
         }
     }
+
+    @isTest static void testPaperlessBilling(){
+        Account parentAccount = new Account(
+            Name = 'Parent'
+        );
+        insert parentAccount;
+
+        Account accountA = new Account(
+            Name = 'Account A',
+            Bill_Delivery_Preference__c = 'Email Only',
+            Parent_Account__c = parentAccount.Id
+        );
+        Account accountB = new Account(
+            Name = 'Account B',
+            Bill_Delivery_Preference__c = 'Email only',
+            Parent_Account__c = parentAccount.Id
+        );
+        Account accountC = new Account(
+            Name = 'Account B',
+            Bill_Delivery_Preference__c = 'Email only',
+            Parent_Account__c = parentAccount.Id
+        );
+        insert new List<Account>{accountA, accountB, accountC};
+
+        Boolean isPaperless = false;
+        isPaperless = MyAccountController.isPaperless(parentAccount.Id);
+        System.assert(isPaperless);
+
+        accountB.Bill_Delivery_Preference__c = 'Email and Paper';
+        accountC.Bill_Delivery_Preference__c = 'Paper Only';
+
+        update accountB;
+        update accountC;
+
+        isPaperless = MyAccountController.isPaperless(parentAccount.Id);
+        System.assert(!isPaperless);
+
+        MyAccountController.setToPaperless(parentAccount.Id);
+
+        AccountsSelector selector = new AccountsSelector();
+        List<Account> properties = selector.getPropertiesFromParent(new Set<Id>{parentAccount.Id});
+        System.assertEquals(3,properties.size());
+        System.assertEquals('Email only',properties[0].Bill_Delivery_Preference__c);
+        System.assertEquals('Email only',properties[1].Bill_Delivery_Preference__c);
+        System.assertEquals('Email only',properties[2].Bill_Delivery_Preference__c);
+    }
 }

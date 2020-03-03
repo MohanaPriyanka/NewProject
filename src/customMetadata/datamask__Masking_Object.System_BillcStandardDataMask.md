@@ -12,7 +12,7 @@
     </values>
     <values>
         <field>datamask__Batch_Data__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:string">{&quot;78&quot;:{&quot;firstId&quot;:&quot;a2G0r0000005D6TEAU&quot;,&quot;lastId&quot;:&quot;a2G0r0000005D7iEAE&quot;,&quot;recordCount&quot;:78}}</value>
     </values>
     <values>
         <field>datamask__Custom__c</field>
@@ -24,10 +24,10 @@
     </values>
     <values>
         <field>datamask__Last_Prepped_Date__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:date">2020-02-04</value>
     </values>
     <values>
         <field>datamask__Record_Count__c</field>
-        <value xsi:nil="true"/>
+        <value xsi:type="xsd:double">78.0</value>
     </values>
 </CustomMetadata>

@@ -646,14 +646,6 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>CSLeadsRESTControllerV1</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
-        <apexClass>CSLeadsRESTControllerV1Test</apexClass>
-        <enabled>false</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>CSLeadsRESTControllerV2</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -40851,11 +40843,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Shared_Solar_System__c.Anchor_Capacity_Reserved__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Shared_Solar_System__c.Anchor_Tenant__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>

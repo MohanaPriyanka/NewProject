@@ -176,6 +176,17 @@
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Applied_Record_Id__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>For payment part items, either an InvoiceItemId or a DebitMemoId to show what record the payment is applied to</inlineHelpText>
+        <label>Applied Record Id</label>
+        <length>200</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Billing_Or_Collection__c</fullName>
         <externalId>false</externalId>
         <formula>CASE( 

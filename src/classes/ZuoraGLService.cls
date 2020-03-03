@@ -45,6 +45,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         String Lockbox;
         String PaymentMethod;
         String ArchivedChargentData;
+        String AppliedRecordId;
     }
 
     public void executePostQueryJob(ZuoraDataQueryService.ProcessingParameter method, String response) {
@@ -97,7 +98,8 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         ledgerItems = (List<GeneralLedgerItem>)JSON.deserialize(response, List<GeneralLedgerItem>.class);
         zuoraJournalEntries = convertGeneralLedgerToJournalEntry(ledgerItems, method.methodName);
 
-        List<Journal_Entry__c> sfEntries = ZuoraGLSelector.getSFJournalEntries(method.startDate,method.endDate,method.methodName);
+        JournalEntrySelector selector = new JournalEntrySelector();
+        List<Journal_Entry__c> sfEntries = selector.getSFJournalEntries(method.startDate,method.endDate,method.methodName);
         // Sets entriesSafeToDelete, reconciliationItems and entriesToUpsert:
         Date periodCloseDate = method.optionalDates.get('PeriodCloseDate');
         checkForClosedPeriodUpdates(zuoraJournalEntries,sfEntries,periodCloseDate);
@@ -182,6 +184,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
             entry.Reason_Code__c = ledger.reasonCode;
             entry.External_Id__c = ledger.ExternalId;
             entry.Customer_Account__c = ledger.CustomerAccount;
+            entry.Applied_Record_Id__c = ledger.AppliedRecordId;
 
             // Use CRMId as a switch for historical data v. new data in Zuora
             if (objectType == 'PaymentPart' && ledger.CRMId == null) {
@@ -284,7 +287,6 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
             message += '_Paid to Client:' +  String.valueOf(sfEntry.Paid_To_Client__c != zuoraEntry.Paid_To_Client__c);
             message += '_DepositAccount:' +  String.valueOf(sfEntry.Deposit_Account__c != zuoraEntry.Deposit_Account__c);
             message += '_Date Debugging: ' +  String.valueOf(sfEntry.Date__c) + String.valueOf(zuoraEntry.Date__c);
-            Logger.LogLater('ZuoraGLService', 'entriesMatch', message + ' __ ' + JSON.serialize(sfEntry) + ' __ ' + JSON.serialize(zuoraEntry));
         }
         return isMatch;
     }

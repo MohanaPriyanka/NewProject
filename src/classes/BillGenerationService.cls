@@ -67,13 +67,13 @@ public without sharing class BillGenerationService {
     private void checkRequiredTransferFields(Transfer__c transfer){
         String errorMessage = 'Cannot make UASBs from a Transfer ';
         if (transfer.Allocation_Schedule__c == null){
-            throw new AuraHandledException(errorMessage + 'because the Transfer does not have an Allocation Schedule populated');
+            throw Util.createAuraExceptionWithMessage(errorMessage + 'because the Transfer does not have an Allocation Schedule populated');
         } else if (transfer.Attempted_kWh_Transfer__c == null || transfer.Attempted_Transfer__c == null){
-            throw new AuraHandledException(errorMessage + 'without Attempted kWh Transfer & Attempted Transfer populated');
+            throw Util.createAuraExceptionWithMessage(errorMessage + 'without Attempted kWh Transfer & Attempted Transfer populated');
         } else if (transfer.Default_Credit_Value__c == null){
-            throw new AuraHandledException(errorMessage + 'without Default Credit Value populated');
+            throw Util.createAuraExceptionWithMessage(errorMessage + 'without Default Credit Value populated');
         } else if (transfer.Bill_Period__c == null || transfer.Bill_Period__r.Bill_Date__c == null || transfer.Date_of_Transfer__c == null){
-            throw new AuraHandledException(errorMessage + 'without Date of Transfer & Bill Period Date populated');
+            throw Util.createAuraExceptionWithMessage(errorMessage + 'without Date of Transfer & Bill Period Date populated');
         }
     }
 
@@ -107,11 +107,13 @@ public without sharing class BillGenerationService {
             Transfer__c = transfer.Id,
             Utility_Account_Subscription__c = szs.Utility_Account_Subscription__c,
             PreGen_Utility_Acct__c = szs.Utility_Account_Subscription__r.Utility_Account_Log__r.Name,
+            PreGen_Name_on_Account__c = szs.Utility_Account_Subscription__r.Name_on_Account_From_Log__c,
+            Account__c =  szs.Utility_Account_Subscription__r.Opportunity__r.AccountId,
             Opportunity__c = szs.Utility_Account_Subscription__r.Opportunity__c,
             Shared_Solar_System__c = szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c,
             Billing_Period_Start_Date__c = transfer.Date_of_Transfer__c,
             Billing_Period_End_Date__c = transfer.Date_of_Transfer__c.addMonths(1),
-            //Externally_Serviced__c = szs.Utility_Account_Subscription__r.Externally_Serviced__c,
+            Externally_Serviced__c = szs.Utility_Account_Subscription__r.Externally_Serviced__c,
             NMC_Discount__c = szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.NMC_Discount__c,
             Total_System_Size_kW_DC__c = szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__r.Total_System_Size_kWh_DC__c,
             NM_Rate_Floor__c = szs.Utility_Account_Subscription__r.Opportunity__r.Product__r.NM_Rate_Floor__c,
@@ -146,11 +148,13 @@ public without sharing class BillGenerationService {
             Transfer__c = transfer.Id,
             Utility_Account_Subscription__c = szs.Utility_Account_Subscription__c,
             PreGen_Utility_Acct__c = szs.Utility_Account_Subscription__r.Utility_Account_Log__r.Name,
+            PreGen_Name_on_Account__c = szs.Utility_Account_Subscription__r.Name_on_Account_From_Log__c,
+            Account__c =  szs.Utility_Account_Subscription__r.Opportunity__r.AccountId,
             Opportunity__c = szs.Utility_Account_Subscription__r.Opportunity__c,
             Shared_Solar_System__c = szs.Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c,
             Billing_Period_Start_Date__c = transfer.Date_of_Transfer__c,
             Billing_Period_End_Date__c = transfer.Date_of_Transfer__c.addMonths(1),
-           // Externally_Serviced__c = szs.Utility_Account_Subscription__r.Externally_Serviced__c,
+            Externally_Serviced__c = szs.Utility_Account_Subscription__r.Externally_Serviced__c,
             Total_System_NMCs__c = 0,
             Total_System_Production_kWh__c = 0,
             Subscription_Production_kWh_Static__c = 0,

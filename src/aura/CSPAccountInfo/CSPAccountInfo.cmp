@@ -2,6 +2,7 @@
   <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
   <aura:attribute name="userContact" type="Contact"/>
   <aura:attribute name="isEditable" type="Boolean" default="false"/>
+  <aura:attribute name="paperlessBill" type="Boolean"/>
 
   <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
     <div class="slds-col slds-size_1-of-6"/>
@@ -98,6 +99,26 @@
         </lightning:button>
       </aura:if>
       </div>
+    </div>
+    <div class="slds-col slds-size_1-of-6"/>
+  </div>
+  <div class="slds-grid slds-gutters slds-grid_vertical-align-start">
+    <div class="slds-col slds-size_1-of-6"/>
+    <div class="slds-col slds-size_4-of-6">
+      <aura:if isTrue="{!v.paperlessBill}">
+        <div class="slds-align--absolute-center"><b>Thanks for signing up for Paperless Billing!</b></div>
+        <div class="slds-align--absolute-center">Your community solar statement will be sent </div>
+        <div class="slds-align--absolute-center slds-p-bottom--medium">via email monthly and will be accessible here in your portal</div>
+        <aura:set attribute="else">
+          <div class="slds-align--absolute-center"><b>Do you want to sign up for paperless billing?</b></div>
+          <div class="slds-align--absolute-center">Your community solar statement will be sent </div>
+          <div class="slds-align--absolute-center slds-p-bottom--medium">via email monthly and will be accessible here in your portal</div>
+          <lightning:button class="slds-align--absolute-center slds-p-left_large slds-p-right_large slds-button--brand"
+                            onclick="{!c.goPaperless}" >
+            <div class="slds-text-body_regular">Go Paperless!</div>
+          </lightning:button>
+        </aura:set>
+      </aura:if>
     </div>
     <div class="slds-col slds-size_1-of-6"/>
   </div>
