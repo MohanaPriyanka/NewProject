@@ -68,12 +68,11 @@ public with sharing class TaskHandlerTest {
         Lead converted = [SELECT Id, ConvertedContactId, (SELECT Id FROM Tasks) FROM Lead WHERE LastName = 'Converted'];
         System.assertEquals(0, converted.Tasks.size());
         Contact convertedContact = [SELECT Id, (SELECT Id, Subject FROM Tasks) FROM Contact WHERE Id =: converted.ConvertedContactId];
-        // EMAIL LOG: RL - Email - Application Receipt W/O Avidia Bank Account}
         // EMAIL LOG: RL - Installer - Notification Lead has been Created
-        System.assertEquals(2, convertedContact.Tasks.size());
+        System.assertEquals(1, convertedContact.Tasks.size());
 
         Lead unconverted = [SELECT Id, (SELECT Id FROM Tasks) FROM Lead WHERE LastName = 'Unconverted'];
-        System.assertEquals(2, unconverted.Tasks.size());
+        System.assertEquals(1, unconverted.Tasks.size());
 
         converted.Manual_Credit_Decline__c = true;
         unconverted.Manual_Credit_Decline__c = true;
@@ -82,14 +81,13 @@ public with sharing class TaskHandlerTest {
         converted = [SELECT Id, ConvertedContactId, (SELECT Id FROM Tasks) FROM Lead WHERE LastName = 'Converted'];
         System.assertEquals(0, converted.Tasks.size());
         convertedContact = [SELECT Id, (SELECT Id, Subject FROM Tasks) FROM Contact WHERE Id =: converted.ConvertedContactId];
-        // EMAIL LOG: RL - Email - Application Receipt W/O Avidia Bank Account}
         // EMAIL LOG: RL - Installer - Notification Lead has been Created
         // EMAIL LOG: Lead - DOER - Credit Denial Email
         // EMAIL LOG: Lead - DOER - CoApplicant Form Linik
         // EMAIL LOG: RL - Installer - Notification - Lead Unqualified
-        System.assertEquals(5, convertedContact.Tasks.size());
+        System.assertEquals(4, convertedContact.Tasks.size());
 
         unconverted = [SELECT Id, (SELECT Id FROM Tasks) FROM Lead WHERE LastName = 'Unconverted'];
-        System.assertEquals(5, unconverted.Tasks.size());
+        System.assertEquals(4, unconverted.Tasks.size());
     }
 }

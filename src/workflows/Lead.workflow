@@ -843,7 +843,7 @@ IF(Number_of_Periods__c&gt;120, max(1250,0.07*Loan_Amount__c), max(1250,0.05*Loa
             <name>BWOC_Alert_non_partner_preapproval_lead</name>
             <type>Alert</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <criteriaItems>
             <field>Lead.Custom_ID__c</field>
             <operation>equals</operation>
@@ -1466,7 +1466,7 @@ $User.LastName!=&quot;Originations&quot;
             <name>EMAIL_LOG_RL_Email_Application_Receipt_W_Avidia_Bank_Account</name>
             <type>Task</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <booleanFilter>1 AND 2 AND 3</booleanFilter>
         <criteriaItems>
             <field>Lead.Unfinished_Lead__c</field>
@@ -1496,7 +1496,7 @@ $User.LastName!=&quot;Originations&quot;
             <name>EMAIL_LOG_RL_Email_Application_Receipt_W_O_Avidia_Bank_Account</name>
             <type>Task</type>
         </actions>
-        <active>true</active>
+        <active>false</active>
         <booleanFilter>1 AND 2 AND 3</booleanFilter>
         <criteriaItems>
             <field>Lead.Unfinished_Lead__c</field>
