@@ -211,6 +211,14 @@ Production: BlueWave Inside Sales</inlineHelpText>
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Disable_SharedSolarSystemSharingTrigger__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Disable SharedSolarSystemSharingTrigger</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Disable_SharedSolarSystemTrigger__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
