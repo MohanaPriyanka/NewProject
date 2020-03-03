@@ -4,7 +4,7 @@
  * TestedBy: CSLeadsDuplicateServiceTest
  */
 
-public with sharing class DuplicateHelper {
+public without sharing class DuplicateHelper {
 
     public List<Datacloud.FindDuplicatesResult> findDuplicatesResults(List<SObject> sObjects) {
         return Datacloud.FindDuplicates.findDuplicates(sObjects);
