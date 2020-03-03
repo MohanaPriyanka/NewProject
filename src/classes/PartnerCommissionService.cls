@@ -6,7 +6,7 @@ public class PartnerCommissionService{
     @TestVisible
     private static OpportunitiesSelector oppSelector = new OpportunitiesSelector();
     @TestVisible
-    private static ZuoraGLSelector glSelector = new ZuoraGLSelector();
+    private static JournalEntrySelector glSelector = new JournalEntrySelector();
     @TestVisible
     private Set<Opportunity> allOpsToCheck = new Set<Opportunity>();
     @TestVisible
