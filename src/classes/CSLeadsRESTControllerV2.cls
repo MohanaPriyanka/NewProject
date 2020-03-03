@@ -9,11 +9,12 @@ public without sharing class CSLeadsRESTControllerV2 extends RESTController {
     @TestVisible private LeadService leadService = new LeadService();
     @TestVisible private AccountService accountService = new AccountService();
     @TestVisible private UALService ualService = new UALService();
+    @TestVisible private CSLeadsDuplicateService duplicateService = new CSLeadsDuplicateService();
+    @TestVisible private CapacityService capacityService = new CapacityService();
 
     @TestVisible private LeadSelector leadSelector = new LeadSelector();
     @TestVisible private AccountsSelector accountsSelector = new AccountsSelector();
     @TestVisible private UALSelector ualSelector = new UALSelector();
-    @TestVisible private CapacityService capacityService = new CapacityService();
 
     public void patchLead(String jsonRequest) {
         RestLead requestLead = (RestLead) JSON.deserialize(jsonRequest, RestLead.class);
@@ -127,9 +128,8 @@ public without sharing class CSLeadsRESTControllerV2 extends RESTController {
 
     private void insertLeadAccountAndUALs(RestLead requestLead, RestResponse response) {
         Lead newLead = requestLead.asLead();
-
         newLead = leadService.insertLead(newLead);
-
+        newLead = duplicateService.checkLeadDuplicates(newLead);
         RestLead responseLead = new RestLead(newLead);
 
         if (requestLead.propertyAccounts != null && !requestLead.propertyAccounts.isEmpty()) {
@@ -259,5 +259,4 @@ public without sharing class CSLeadsRESTControllerV2 extends RESTController {
         envelope.setData(zipCodeResponse);
         envelope.setJSONResponse(response);
     }
-
 }
