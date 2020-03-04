@@ -60,4 +60,9 @@ public without sharing class MyAccountController {
         update contactToUpdate;
         return contactToUpdate;
     }
+    
+    @AuraEnabled
+    public static Shared_Solar_System__c getProject(String projectId) {
+        return SharedSolarSystemsSelector.getMyProject(projectId);
+    }
 }
