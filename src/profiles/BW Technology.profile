@@ -116,6 +116,11 @@
         <visible>false</visible>
     </applicationVisibilities>
     <applicationVisibilities>
+        <application>MyApp</application>
+        <default>false</default>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <applicationVisibilities>
         <application>NM_Extension_for_a_Fee_Deadline</application>
         <default>false</default>
         <visible>false</visible>
