@@ -5,7 +5,7 @@
     <changePasswordTemplate>CS_Application_Email_Notifications/CommunityChangePasswordEmailTemplate</changePasswordTemplate>
     <communityRoles/>
     <disableReputationRecordConversations>false</disableReputationRecordConversations>
-    <emailSenderAddress>cswain@bluewave-capital.com</emailSenderAddress>
+    <emailSenderAddress>product@bluewavesolar.com</emailSenderAddress>
     <emailSenderName>Community Solar Public Web</emailSenderName>
     <enableCustomVFErrorPageOverrides>false</enableCustomVFErrorPageOverrides>
     <enableDirectMessages>false</enableDirectMessages>
