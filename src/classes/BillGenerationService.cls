@@ -131,6 +131,10 @@ public without sharing class BillGenerationService {
         if (billingMethod == 'NMC'){
             generatedUASB.Size_off_NMCs__c = true;
         }
+        
+        if (szs.Utility_Account_Subscription__r.Utility_Account_Log__r.Premise_Number__c != null) {
+            generatedUASB.PreGen_Utility_Acct__c = szs.Utility_Account_Subscription__r.Utility_Account_Log__r.Premise_Number__c;
+        }
 
         if (escalatorProduct != null){
             generatedUASB.NMC_Discount__c = escalatorProduct.New_NMC_Discount__c;
@@ -162,6 +166,9 @@ public without sharing class BillGenerationService {
             Share_of_System__c = 0,
             Credits_Allocated__c = 0
         );
+        if (szs.Utility_Account_Subscription__r.Utility_Account_Log__r.Premise_Number__c != null) {
+            zeroDollarUASB.PreGen_Utility_Acct__c = szs.Utility_Account_Subscription__r.Utility_Account_Log__r.Premise_Number__c;
+        }
         return zeroDollarUASB;
     }
 
