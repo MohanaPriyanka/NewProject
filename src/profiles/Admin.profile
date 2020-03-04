@@ -54471,6 +54471,10 @@
         <visibility>DefaultOff</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>Client_Utility_Account_Subscription__c</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>Commission_Structure__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
