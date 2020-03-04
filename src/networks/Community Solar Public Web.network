@@ -4,13 +4,13 @@
     <allowMembersToFlag>false</allowMembersToFlag>
     <changePasswordTemplate>CS_Application_Email_Notifications/CommunityChangePasswordEmailTemplate</changePasswordTemplate>
     <communityRoles/>
-    <disableReputationRecordConversations>true</disableReputationRecordConversations>
-    <emailSenderAddress>customercare@bluewavesolar.com</emailSenderAddress>
-    <emailSenderName>BlueWave</emailSenderName>
+    <disableReputationRecordConversations>false</disableReputationRecordConversations>
+    <emailSenderAddress>cswain@bluewave-capital.com</emailSenderAddress>
+    <emailSenderName>Community Solar Public Web</emailSenderName>
     <enableCustomVFErrorPageOverrides>false</enableCustomVFErrorPageOverrides>
-    <enableDirectMessages>true</enableDirectMessages>
-    <enableGuestChatter>true</enableGuestChatter>
-    <enableGuestFileAccess>true</enableGuestFileAccess>
+    <enableDirectMessages>false</enableDirectMessages>
+    <enableGuestChatter>false</enableGuestChatter>
+    <enableGuestFileAccess>false</enableGuestFileAccess>
     <enableGuestMemberVisibility>true</enableGuestMemberVisibility>
     <enableInvitation>false</enableInvitation>
     <enableKnowledgeable>false</enableKnowledgeable>
@@ -21,15 +21,14 @@
     <enableShowAllNetworkSettings>false</enableShowAllNetworkSettings>
     <enableSiteAsContainer>true</enableSiteAsContainer>
     <enableTalkingAboutStats>true</enableTalkingAboutStats>
-    <enableTopicAssignmentRules>true</enableTopicAssignmentRules>
-    <enableTopicSuggestions>false</enableTopicSuggestions>
+    <enableTopicAssignmentRules>false</enableTopicAssignmentRules>
+    <enableTopicSuggestions>true</enableTopicSuggestions>
     <enableUpDownVote>false</enableUpDownVote>
     <forgotPasswordTemplate>Emails_to_Delete/CommunityForgotPasswordEmailTemplate</forgotPasswordTemplate>
     <gatherCustomerSentimentData>false</gatherCustomerSentimentData>
     <networkMemberGroups>
         <permissionSet>System_Administrator</permissionSet>
         <profile>admin</profile>
-        <profile>api only</profile>
     </networkMemberGroups>
     <networkPageOverrides>
         <changePasswordPageOverrideSetting>Standard</changePasswordPageOverrideSetting>
@@ -38,15 +37,15 @@
         <loginPageOverrideSetting>Designer</loginPageOverrideSetting>
         <selfRegProfilePageOverrideSetting>Designer</selfRegProfilePageOverrideSetting>
     </networkPageOverrides>
-    <picassoSite>FAQ1</picassoSite>
+    <picassoSite>Community_Solar_Public_Web1</picassoSite>
     <selfRegistration>false</selfRegistration>
-    <sendWelcomeEmail>false</sendWelcomeEmail>
-    <site>FAQ</site>
-    <status>Live</status>
+    <sendWelcomeEmail>true</sendWelcomeEmail>
+    <site>Community_Solar_Public_Web</site>
+    <status>UnderConstruction</status>
     <tabs>
         <defaultTab>home</defaultTab>
         <standardTab>Chatter</standardTab>
     </tabs>
-    <urlPathPrefix>Support</urlPathPrefix>
+    <urlPathPrefix>communitysolardata</urlPathPrefix>
     <welcomeTemplate>CS_Application_Email_Notifications/CommunityWelcomeEmailTemplate</welcomeTemplate>
 </Network>

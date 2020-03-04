@@ -11,8 +11,10 @@
     <enableDirectMessages>false</enableDirectMessages>
     <enableGuestChatter>false</enableGuestChatter>
     <enableGuestFileAccess>false</enableGuestFileAccess>
+    <enableGuestMemberVisibility>true</enableGuestMemberVisibility>
     <enableInvitation>false</enableInvitation>
     <enableKnowledgeable>false</enableKnowledgeable>
+    <enableMemberVisibility>true</enableMemberVisibility>
     <enableNicknameDisplay>false</enableNicknameDisplay>
     <enablePrivateMessages>false</enablePrivateMessages>
     <enableReputation>false</enableReputation>
@@ -25,19 +27,11 @@
     <forgotPasswordTemplate>Emails_to_Delete/CommunityForgotPasswordEmailTemplate</forgotPasswordTemplate>
     <gatherCustomerSentimentData>false</gatherCustomerSentimentData>
     <logoutUrl>https://bluewavememberportal.force.com/slportal/s/login</logoutUrl>
-    <navigationLinkSet>
-        <navigationMenuItem>
-            <label>Topics</label>
-            <position>1</position>
-            <publiclyAvailable>true</publiclyAvailable>
-            <target>ShowMoreTopics</target>
-            <type>NavigationalTopic</type>
-        </navigationMenuItem>
-    </navigationLinkSet>
     <networkMemberGroups>
+        <permissionSet>System_Administrator</permissionSet>
         <profile>admin</profile>
-        <profile>partner community user (custom)</profile>
         <profile>partner community user</profile>
+        <profile>partner community user (custom)</profile>
         <profile>partner community login user</profile>
         <profile>partner community login user (custom)</profile>
     </networkMemberGroups>

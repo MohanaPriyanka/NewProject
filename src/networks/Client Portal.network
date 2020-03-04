@@ -28,6 +28,7 @@
     <gatherCustomerSentimentData>false</gatherCustomerSentimentData>
     <networkMemberGroups>
         <permissionSet>Manage_External_Users</permissionSet>
+        <permissionSet>System_Administrator</permissionSet>
         <profile>admin</profile>
         <profile>cs client partner login</profile>
         <profile>cs client partner login_gsrp</profile>
