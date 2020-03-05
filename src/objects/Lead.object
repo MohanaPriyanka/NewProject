@@ -27201,17 +27201,6 @@ SEMA = 13,14</description>
         <url>https://forms.bluewaverenewables.com/381478?tfa_541={!Lead.Lead_ID__c}&amp;tfa_3={!Lead.FirstName}&amp;tfa_92={!Lead.LastName}&amp;tfa_529={!Lead.Email}&amp;tfa_531={!Lead.Custom_ID__c}&amp;tfa_542=&quot;Yes&quot;&amp;tfa_545={!Lead.Street}&amp;tfa_546={!Lead.City}&amp;tfa_547={!Lead.State}&amp;tfa_548={!Lead.PostalCode}&amp;tfa_549={!Lead.CoApplicant_ContactId__c}&amp;tfa_551={!Lead.Co_Applicant_Last_Name__c}&amp;tfa_550={!Lead.Co_Applicant_First_Name__c}&amp;tfa_553</url>
     </webLinks>
     <webLinks>
-        <fullName>Convert</fullName>
-        <availability>online</availability>
-        <displayType>button</displayType>
-        <encodingKey>UTF-8</encodingKey>
-        <linkType>url</linkType>
-        <masterLabel>Convert</masterLabel>
-        <openType>replace</openType>
-        <protected>false</protected>
-        <url>/lead/leadconvert.jsp?retURL=%2F{!Lead.Id}&amp;id={!Lead.Id}&amp;common.udd.actions.ActionsUtilORIG_URI=%2Flead%2Fleadconvert.jsp&amp;nooppti=1</url>
-    </webLinks>
-    <webLinks>
         <fullName>Disable_Enable_Emails</fullName>
         <availability>online</availability>
         <displayType>button</displayType>
