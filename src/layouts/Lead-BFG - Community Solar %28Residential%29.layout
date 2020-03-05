@@ -5,7 +5,6 @@
     <customButtons>Check_Loadzone</customButtons>
     <excludeButtons>ChangeOwnerOne</excludeButtons>
     <excludeButtons>ChangeRecordType</excludeButtons>
-    <excludeButtons>DataDotComClean</excludeButtons>
     <excludeButtons>Share</excludeButtons>
     <excludeButtons>Submit</excludeButtons>
     <excludeButtons>XClean</excludeButtons>
@@ -53,10 +52,6 @@
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Product__c</field>
-            </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Application_Complete_Date__c</field>
@@ -315,14 +310,19 @@
     <platformActionList>
         <actionListContext>Record</actionListContext>
         <platformActionListItems>
-            <actionName>Lead.Event</actionName>
-            <actionType>QuickAction</actionType>
-            <sortOrder>1</sortOrder>
+            <actionName>Convert</actionName>
+            <actionType>StandardButton</actionType>
+            <sortOrder>10</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
             <actionName>Lead.Log_a_Call</actionName>
             <actionType>QuickAction</actionType>
             <sortOrder>0</sortOrder>
+        </platformActionListItems>
+        <platformActionListItems>
+            <actionName>Lead.Event</actionName>
+            <actionType>QuickAction</actionType>
+            <sortOrder>1</sortOrder>
         </platformActionListItems>
         <platformActionListItems>
             <actionName>NewTask</actionName>
@@ -363,11 +363,6 @@
             <actionName>EmailHighlightAction</actionName>
             <actionType>ProductivityAction</actionType>
             <sortOrder>9</sortOrder>
-        </platformActionListItems>
-        <platformActionListItems>
-            <actionName>Convert</actionName>
-            <actionType>StandardButton</actionType>
-            <sortOrder>10</sortOrder>
         </platformActionListItems>
     </platformActionList>
     <quickActionList>
