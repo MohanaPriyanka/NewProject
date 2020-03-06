@@ -11,7 +11,6 @@
             if (resp.getState() === 'SUCCESS') {
                 let zuoraAcct = resp.getReturnValue();
                 component.set("v.zuoraAccountAndPayMethod", zuoraAcct);
-                component.set("v.zuoraAccountId", zuoraAcct.account.Id);
                 let accountBalance = Math.max(zuoraAcct.account.Balance,0);
                 component.set("v.paymentAmount", accountBalance);
 
