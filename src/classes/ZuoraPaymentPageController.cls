@@ -163,19 +163,6 @@ public with sharing class ZuoraPaymentPageController {
     }
 
     @AuraEnabled
-    public static Boolean linkPaymentMethodToAccount(String zuoraAccountId, String paymentMethodId) {
-        ZuoraAPI.PaymentMethod payMethodToUpdate = new ZuoraAPI.PaymentMethod();
-        payMethodToUpdate.Id = paymentMethodId;
-        payMethodToUpdate.AccountId = zuoraAccountId;
-
-        ZuoraAPI.ActionItems item = new ZuoraAPI.ActionItems();
-        item.type = 'PaymentMethod';
-        item.objects = new List<Object>{payMethodToUpdate};
-
-        return handleGeneralUpdate('linkPaymentMethodToAccount',item);
-    }
-
-    @AuraEnabled
     public static Boolean toggleAutopayAndPaymentMethod(String zuoraAccountId, Boolean autopaySelection, String paymentMethodId) {
         ZuoraAPI.ZuoraAccount accountToUpdate = new ZuoraAPI.ZuoraAccount();
         accountToUpdate.Id = zuoraAccountId;
