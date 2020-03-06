@@ -11,7 +11,6 @@
             if (resp.getState() === 'SUCCESS') {
                 let zuoraAcct = resp.getReturnValue();
                 component.set("v.zuoraAccountAndPayMethod", zuoraAcct);
-
                 let accountBalance = Math.max(zuoraAcct.account.Balance,0);
                 component.set("v.paymentAmount", accountBalance);
 
@@ -208,31 +207,6 @@
             this.finishAndShowMessage(component, event, helper, responseMessage);
         });
         $A.enqueueAction(actionMakePayment);
-    },
-
-    linkPayMethodToAccount : function(component, event, helper) {
-        let actionLinkMethod = component.get("c.linkPaymentMethodToAccount");
-
-        actionLinkMethod.setParams({
-            "zuoraAccountId" : component.get("v.zuoraAccountAndPayMethod.account.Id"),
-            "paymentMethodId" : component.get("v.newPaymentMethodId")
-        });
-
-        actionLinkMethod.setCallback(this,function(resp) {
-            let errorMessage;
-            if (resp.getState() === 'SUCCESS') {
-                let booleanSuccess = resp.getReturnValue();
-                if (booleanSuccess === false) {
-                    errorMessage = 'A system error occurred while submitting your payment method. We have been notified and will contact you with further instructions.';
-                    this.finishAndShowMessage(component, event, helper, errorMessage);
-                }
-            } else {
-                errorMessage = 'A system error occurred while submitting your payment method. We have been notified and will contact you with further instructions.';
-                this.finishAndShowMessage(component, event, helper, errorMessage);
-            }
-        });
-
-        $A.enqueueAction(actionLinkMethod);
     },
 
     closeMethodEnableButton : function(component, event, helper) {
