@@ -315,6 +315,8 @@ public without sharing class LetterStreamService {
             }
         }
 
+        //added
+
         public void generateFromAccountBill(Account_Bill__c accountBill, ContentDocument document) {
             fileId = accountBill.Id;
             fileName = document.LatestPublishedVersion.Title.replace(' ', '_') + '.pdf';

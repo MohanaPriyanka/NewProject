@@ -17,6 +17,13 @@ public with sharing class Logger {
     private static Map<String, Integer> severityToInt =
         new Map<String, Integer>{FINE => 1, INFO => 2, DEBUG => 3, WARN => 4, ERROR => 5};
 
+    // Unfortunately, LWC doesn't see the overloaded logNow method we get this error and need to add this method
+    // Error:(1, 1) Apex action method 'Logger.logNow' must be static and annotated with AuraEnabled
+    @AuraEnabled
+    public static void insertLog(String className, String methodName, String message, String severity) {
+        logNow(className, methodName, message, severity);
+    }
+    
     // Apparently Lightning was getting confused if there were two log methods, even if only
     // one of them were AuraEnabled. And calling a future method from Lightning didn't seem
     // to work either.
@@ -78,12 +85,8 @@ public with sharing class Logger {
         }
     }
 
-    public static void log(String className, String methodName, String message, Datetime timestamp) {
-        log(className, methodName, message, timestamp, ERROR);
-    }
-
     // timestamp is expected to be in GMT (e.g. System.now()), and this will convert and log it as local time
-    public static void log(String className, String methodName, String message, Datetime timestamp, String severity) {
+    private static void log(String className, String methodName, String message, Datetime timestamp, String severity) {
         Error_Log__c errorLog =
             new Error_Log__c(
                 User__c = UserInfo.getUserID(),

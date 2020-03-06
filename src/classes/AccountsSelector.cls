@@ -8,7 +8,7 @@
 public without sharing class AccountsSelector {
     public static List<Account> selectCS67DaysPastDueWithAnchorOpps() {
         return [
-            SELECT Id, Days_Past_Due__c, Cancellation_Request_Date__c, Cancellation_Reason__c, Cancellation_Comments__c,
+            SELECT Id, Name, Days_Past_Due__c, Cancellation_Request_Date__c, Cancellation_Reason__c, Cancellation_Comments__c,
             (SELECT Id
             FROM Opportunities
             WHERE Customer_Group__c IN ('Anchor', 'Public Offtake')
@@ -18,22 +18,25 @@ public without sharing class AccountsSelector {
             AND Days_Past_Due__c > 67
             AND Override_Delinquency_Removal__c = FALSE
             AND Cancellation_Request_Date__c = NULL
+            ORDER BY Name
         ];
     }
 
     public static List<Account> selectCSNotRemoved() {
         return [
-            SELECT Id,
+            SELECT Id, Name,
                 Send_Bills_Contact__c, Send_Bills_Contact__r.FirstName,
                 Send_Bills_Contact__r.Email, Send_Bills_Contact__r.Additional_Email__c,
                 Additional_Contact__r.Email, Additional_Contact__r.Additional_Email__c,
                 Date_Removed_from_Project__c,
+            (SELECT Id, Date_Removed_from_Project__c, StageName FROM Opportunities),
             (SELECT Id, Name, Number_of_Removed_UASes__c, Number_of_Subscribed_UASes__c, Last_Date_UAS_Removed_From_Project__c
             FROM Utility_Account_Logs__r)
             FROM Account
             WHERE Count_of_CS_Opportunities__c > 0
             AND Date_Removed_from_Project__c = NULL
             AND RecordType.Name = 'Property'
+            ORDER BY Name
         ];
     }
 
@@ -155,5 +158,31 @@ public without sharing class AccountsSelector {
             accountIdsWithUASBs.put((String)result.get('acctId'),(Integer)result.get('uasb'));
         }
         return accountIdsWithUASBs;
+    }
+
+    public List<Account> getAccountsById(Set<Id> accountIds){
+        return [
+            SELECT Id, Parent_Account__c, Client_Brand_Key__c
+            FROM Account
+            WHERE Id IN : accountIds
+        ];
+    }
+
+    public Map<Id,Account> selectById(Set<Id> acctIds){
+        Map<Id, Account> accountMap = new Map<Id, Account>([
+            SELECT Id, Last_Bill_Send_Date_New_Charges_Zuora__c, Total_Outstanding_Balance_Zuora__c
+            FROM Account
+            WHERE Id IN : acctIds
+        ]);
+        return accountMap;
+    }
+
+    public List<Account> getPropertiesFromParent(Set<Id> acctIds){
+        List<Account> properties = new List<Account>([
+            SELECT Id, Bill_Delivery_Preference__c
+            FROM Account
+            WHERE Parent_Account__c IN : acctIds
+        ]);
+        return properties;
     }
 }

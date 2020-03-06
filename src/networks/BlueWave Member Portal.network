@@ -11,6 +11,7 @@
     <enableDirectMessages>false</enableDirectMessages>
     <enableGuestChatter>true</enableGuestChatter>
     <enableGuestFileAccess>true</enableGuestFileAccess>
+    <enableGuestMemberVisibility>true</enableGuestMemberVisibility>
     <enableInvitation>false</enableInvitation>
     <enableKnowledgeable>false</enableKnowledgeable>
     <enableMemberVisibility>true</enableMemberVisibility>
@@ -25,64 +26,12 @@
     <enableUpDownVote>false</enableUpDownVote>
     <forgotPasswordTemplate>Emails_to_Delete/CommunityForgotPasswordEmailTemplate</forgotPasswordTemplate>
     <gatherCustomerSentimentData>false</gatherCustomerSentimentData>
-    <navigationLinkSet>
-        <navigationMenuItem>
-            <label>My Solar</label>
-            <position>1</position>
-            <publiclyAvailable>false</publiclyAvailable>
-            <target>/my-solar-subscription</target>
-            <type>InternalLink</type>
-        </navigationMenuItem>
-        <navigationMenuItem>
-            <label>Support</label>
-            <position>2</position>
-            <publiclyAvailable>true</publiclyAvailable>
-            <subMenu>
-                <navigationMenuItem>
-                    <label>Support Topics</label>
-                    <position>0</position>
-                    <publiclyAvailable>false</publiclyAvailable>
-                    <target>/SupportTopicsHome</target>
-                    <type>InternalLink</type>
-                </navigationMenuItem>
-                <navigationMenuItem>
-                    <label>My Support Cases</label>
-                    <position>1</position>
-                    <publiclyAvailable>true</publiclyAvailable>
-                    <target>/manage-cases</target>
-                    <type>InternalLink</type>
-                </navigationMenuItem>
-                <navigationMenuItem>
-                    <label>Request Support</label>
-                    <position>2</position>
-                    <publiclyAvailable>true</publiclyAvailable>
-                    <target>/contactsupport</target>
-                    <type>InternalLink</type>
-                </navigationMenuItem>
-            </subMenu>
-            <type>MenuLabel</type>
-        </navigationMenuItem>
-        <navigationMenuItem>
-            <label>Settings</label>
-            <position>3</position>
-            <publiclyAvailable>false</publiclyAvailable>
-            <target>/accountinfo</target>
-            <type>InternalLink</type>
-        </navigationMenuItem>
-        <navigationMenuItem>
-            <label>Logout</label>
-            <position>4</position>
-            <publiclyAvailable>true</publiclyAvailable>
-            <target>https://bluewavememberportal.force.com/secur/logout.jsp</target>
-            <targetPreference>OpenExternalLinkInSameTab</targetPreference>
-            <type>ExternalLink</type>
-        </navigationMenuItem>
-    </navigationLinkSet>
     <networkMemberGroups>
         <permissionSet>AccessToModifyCSPortal</permissionSet>
-        <profile>Admin</profile>
+        <permissionSet>System_Administrator</permissionSet>
+        <profile>admin</profile>
         <profile>customer community plus login user</profile>
-        <profile>Community Solar Community User</profile>
+        <profile>community solar community user</profile>
     </networkMemberGroups>
     <networkPageOverrides>
         <changePasswordPageOverrideSetting>Standard</changePasswordPageOverrideSetting>

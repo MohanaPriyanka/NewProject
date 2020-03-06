@@ -1388,6 +1388,7 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Service City</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -1424,6 +1425,7 @@ Personal_Credit_Report_Co_Applicant__r.LASERCA__Sum_of_monthly_Personal_Debt__c)
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Service Street Address</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -1597,6 +1599,7 @@ Null)))</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Billing City</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -1649,6 +1652,7 @@ IF( Month(CloseDate) = 12, &apos;December&apos;, null))))))))))))</formula>
         <label>Co-Applicant Address</label>
         <length>100</length>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -1684,6 +1688,7 @@ IF( Month(CloseDate) = 12, &apos;December&apos;, null))))))))))))</formula>
         <externalId>false</externalId>
         <label>Co-Applicant Email</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -1696,6 +1701,7 @@ IF( Month(CloseDate) = 12, &apos;December&apos;, null))))))))))))</formula>
         <label>Co-Applicant First Name</label>
         <length>20</length>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -1735,6 +1741,7 @@ IF( Month(CloseDate) = 12, &apos;December&apos;, null))))))))))))</formula>
         <label>Co-Applicant Last Name</label>
         <length>20</length>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -1971,6 +1978,7 @@ TEXT(DAY(Commencement_Date__c))
         <label>Street Address</label>
         <length>255</length>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -2016,6 +2024,7 @@ TEXT(DAY(Commencement_Date__c))
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Concatenated Billing Address</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -2029,6 +2038,7 @@ TEXT(DAY(Commencement_Date__c))
         <inlineHelpText>Used in RL docusign packages</inlineHelpText>
         <label>Concatenated Install Address</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -2082,6 +2092,7 @@ TEXT(DAY(Commencement_Date__c))
         <externalId>false</externalId>
         <label>Contact Email</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -2094,6 +2105,7 @@ TEXT(DAY(Commencement_Date__c))
         <label>Contact Name</label>
         <length>25</length>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -2289,6 +2301,7 @@ IF( ISPICKVAL(Personal_Credit_Report2__r.Solar_Loan_Approval_Status__c, &quot;De
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <label>Customer Address Verified</label>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -2560,6 +2573,17 @@ IF( ISPICKVAL(Personal_Credit_Report2__r.Solar_Loan_Approval_Status__c, &quot;De
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Date_Removed_from_Project__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Automatically set when all UASes related to this Opportunity are inactive, with a Date Removed From project, with at least one Allocation Schedule Subscription that was enacted, (unless all UASes related to the Opp are transferring).</inlineHelpText>
+        <label>Date Removed from Project</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
     </fields>
     <fields>
         <fullName>Date_of_Application__c</fullName>
@@ -3213,8 +3237,9 @@ IF(AND(Application_Type__c=&quot;Joint&quot;,TEXT(Joint_Applicant_Type__c)=&quot
         <externalId>false</externalId>
         <label>Email</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>true</trackHistory>
+        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Email</type>
         <unique>false</unique>
@@ -5385,6 +5410,7 @@ MAX(Personal_Credit_Report2__r.Credit_Score_Integer_2__c, Personal_Credit_Report
         <externalId>false</externalId>
         <label>Opportunity Address</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -5548,6 +5574,7 @@ MAX(Personal_Credit_Report2__r.Credit_Score_Integer_2__c, Personal_Credit_Report
         <externalId>false</externalId>
         <label>Partner Additional Email (2 of 2)</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -5571,6 +5598,7 @@ MAX(Personal_Credit_Report2__r.Credit_Score_Integer_2__c, Personal_Credit_Report
         <externalId>false</externalId>
         <label>Partner Additional Email</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -5598,6 +5626,7 @@ MAX(Personal_Credit_Report2__r.Credit_Score_Integer_2__c, Personal_Credit_Report
         <inlineHelpText>Formula field that updates the email field via workflow</inlineHelpText>
         <label>Partner Email 2</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -5620,6 +5649,7 @@ MAX(Personal_Credit_Report2__r.Credit_Score_Integer_2__c, Personal_Credit_Report
         <externalId>false</externalId>
         <label>Partner Email</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -6357,6 +6387,7 @@ IF((Partner_tag_lookup__r.RL_Commission_Structure__c*System_Size__c)&gt;=Partner
         <externalId>false</externalId>
         <label>Referral Email</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -6904,6 +6935,7 @@ if(and( isnull(Disbursal_1_Contract_Signature_Checkbox__c )=False,isnull( Disbur
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Sales Representative Email</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -6939,6 +6971,7 @@ if(and( isnull(Disbursal_1_Contract_Signature_Checkbox__c )=False,isnull( Disbur
         <inlineHelpText>updates via workflow with salesperons email, or if that is blank then the partner email.</inlineHelpText>
         <label>Salesperson Email 2</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -6955,6 +6988,7 @@ if(and( isnull(Disbursal_1_Contract_Signature_Checkbox__c )=False,isnull( Disbur
 )</formula>
         <label>Salesperson Email</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -7086,6 +7120,7 @@ if(and( isnull(Disbursal_1_Contract_Signature_Checkbox__c )=False,isnull( Disbur
 4) Service State
 5) Service Zip Code</inlineHelpText>
         <label>Utility Account Information Verified</label>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -7768,6 +7803,7 @@ if(and( isnull(Disbursal_1_Contract_Signature_Checkbox__c )=False,isnull( Disbur
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Billing Street Address</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -10247,13 +10283,34 @@ newwindow.focus();</url>
         <height>600</height>
         <isResizable>true</isResizable>
         <linkType>url</linkType>
-        <masterLabel>New QC Task</masterLabel>
+        <masterLabel>New QC Case</masterLabel>
         <openType>newWindow</openType>
         <position>none</position>
         <protected>false</protected>
         <showsLocation>false</showsLocation>
         <showsStatus>false</showsStatus>
         <url>/flow/CS_QC_Task_Flow?varOppID={!Opportunity.Id}&amp;retURL=home/home.jsp</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Send_Contract_Click_to_Sign</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Send Contract (Click to Sign NY)</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <url>{!URLFOR(&apos;/apex/dsfs__DocuSign_CreateEnvelope&apos;, null, [
+SourceID = Opportunity.Id,
+CCRM = &apos;R3~CustomerCC&apos;,
+CCTM = &apos;R3~CarbonCopy&apos;,
+CRL = &apos;Email~&apos;+ Opportunity.Email__c +&apos;;LastName~&apos;+ Opportunity.Parent_Account_Name__c +&apos;;Role~R3&apos;,
+DST =  &apos;{!Environment.VAR_DSENVELOPE_CPP}&apos;,
+LA = &apos;0&apos;,
+LF = &apos;0&apos;,
+OCO = &apos;Tag&apos;
+]
+)}</url>
     </webLinks>
     <webLinks>
         <fullName>Send_DOER_Contract</fullName>
@@ -10346,93 +10403,31 @@ objCase.stageName = &apos;Contract Pending&apos; ;
 var result = sforce.connection.update([objCase]);</url>
     </webLinks>
     <webLinks>
-        <fullName>Send_NMC_Contract_Business_Copy_to_Partner</fullName>
-        <availability>online</availability>
-        <description>Same Button as Standard NMC Contrac, but puts the partner up front in the signing order.</description>
-        <displayType>button</displayType>
-        <linkType>javascript</linkType>
-        <masterLabel>Send NMC Contract - Business - Copy to Partner</masterLabel>
-        <openType>onClickJavaScript</openType>
-        <protected>false</protected>
-        <url>{!REQUIRESCRIPT(&quot;/apex/dsfs__DocuSign_JavaScript&quot;)} 
-
-//********* Option Declarations (Do not modify )*********// 
-var RC = &apos;&apos;;var RSL=&apos;&apos;;var RSRO=&apos;&apos;;var RROS=&apos;&apos;;var CCRM=&apos;&apos;;var CCTM=&apos;&apos;;var CCNM=&apos;&apos;;var CRCL=&apos;&apos;;var CRL=&apos;&apos;;var OCO=&apos;&apos;;var DST=&apos;&apos;;var LA=&apos;&apos;;var CEM=&apos;&apos;;var CES=&apos;&apos;;var STB=&apos;&apos;;var SSB=&apos;&apos;;var SES=&apos;&apos;;var SEM=&apos;&apos;;var SRS=&apos;&apos;;var SCS =&apos;&apos;;var RES=&apos;&apos;; 
-//*************************************************// 
-
-CES=&apos;{!HTMLENCODE(Opportunity.Name)} Community Solar Contract&apos;; //Custom Email Subject 
-CEM=&apos;Please Review and Sign this Contract&apos;; //Custom Email Message 
-
-DST=&apos;{!Opportunity.Docusign_Template__c}&apos;; //Default Standard Template ID 
-
-LA=&apos;0&apos;; //List Attachments from within Notes and Attachments 
-
-
-CRL= &apos;Email~{!Opportunity.Email__c};Role~R1;LastName~{!HTMLENCODE(Opportunity.Parent_Account_Name__c)};,Role~R2;SigningGroup~BW CS;,Email~{!Opportunity.Salesperson_Email__c};Role~R3;LastName~{!Opportunity.Sales_tag__c};,Email~{!Opportunity.Email__c};Role~R4;LastName~{!HTMLENCODE(Opportunity.Parent_Account_Name__c)};&apos;; 
-
-
-
-
-CCRM=&apos;R1~Signer 1;R2~Signer 2;R3~Recipient 1;R4~Recipient 3;&apos;; //Custom Role Map 
-
-CCTM=&apos;R1~Signer; R2~Signer; R3~CC; R4~CC;&apos;; 
-
-OCO=&apos;Tag&apos;; //On Click Options 
-
-//********* Page Callout (Do not modify) *********// 
-window.location.href =&quot;/apex/dsfs__DocuSign_CreateEnvelope?DSEID=0&amp;SourceID={!Opportunity.Id}&amp;RC=&quot;+RC+&quot;&amp;RSL=&quot;+RSL+&quot;&amp;RSRO=&quot;+RSRO+&quot;&amp;RROS=&quot;+RROS+&quot;&amp;CCRM=&quot;+CCRM+&quot;&amp;CCTM=&quot;+CCTM+&quot;&amp;CRCL=&quot;+CRCL+&quot;&amp;CRL=&quot;+CRL+&quot;&amp;OCO=&quot;+OCO+&quot;&amp;DST=&quot;+DST+&quot;&amp;CCNM=&quot;+CCNM+&quot;&amp;LA=&quot;+LA+&quot;&amp;CEM=&quot;+CEM+&quot;&amp;CES=&quot;+CES+&quot;&amp;SRS=&quot;+SRS+&quot;&amp;STB=&quot;+STB+&quot;&amp;SSB=&quot;+SSB+&quot;&amp;SES=&quot;+SES+&quot;&amp;SEM=&quot;+SEM+&quot;&amp;SRS=&quot;+SRS+&quot;&amp;SCS=&quot;+SCS+&quot;&amp;RES=&quot;+RES;
-//*******************************************// 
-
-{!REQUIRESCRIPT(&quot;/soap/ajax/27.0/connection.js&quot;)} 
-var objCase = new sforce.SObject(&apos;opportunity&apos;); 
-
-objCase.Id = &apos;{!Opportunity.Id}&apos;; 
-
-var result = sforce.connection.update([objCase]);</url>
-    </webLinks>
-    <webLinks>
         <fullName>Send_NMC_Contract_Residential_Copy_to_Partner</fullName>
         <availability>online</availability>
         <displayType>button</displayType>
-        <linkType>javascript</linkType>
-        <masterLabel>Send NMC Contract - Residential (Copy to Partner)</masterLabel>
-        <openType>onClickJavaScript</openType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Send CS Contract</masterLabel>
+        <openType>replace</openType>
         <protected>false</protected>
-        <url>{!REQUIRESCRIPT(&quot;/apex/dsfs__DocuSign_JavaScript&quot;)} 
+        <url>{!URLFOR(&apos;/apex/dsfs__DocuSign_CreateEnvelope&apos;, null, [
+SourceID = Opportunity.Id,
+CES = Opportunity.Name + &apos;Community Solar Contract&apos;,
+CEM = &apos;Please Review and Sign this Contract&apos;,
+DST = Opportunity.Docusign_Template__c,
+LA = &apos;0&apos;,
 
-//********* Option Declarations (Do not modify )*********// 
-var RC = &apos;&apos;;var RSL=&apos;&apos;;var RSRO=&apos;&apos;;var RROS=&apos;&apos;;var CCRM=&apos;&apos;;var CCTM=&apos;&apos;;var CCNM=&apos;&apos;;var CRCL=&apos;&apos;;var CRL=&apos;&apos;;var OCO=&apos;&apos;;var DST=&apos;&apos;;var LA=&apos;&apos;;var CEM=&apos;&apos;;var CES=&apos;&apos;;var STB=&apos;&apos;;var SSB=&apos;&apos;;var SES=&apos;&apos;;var SEM=&apos;&apos;;var SRS=&apos;&apos;;var SCS =&apos;&apos;;var RES=&apos;&apos;; 
-//*************************************************// 
+CRL = &apos;Email~&apos;+ Opportunity.Email__c +&apos;;Role~R1;LastName~&apos;+ URLENCODE(Opportunity.Parent_Account_Name__c) +&apos;;,Role~R2;SigningGroup~BW QC Signature;,Role~R3;SigningGroup~BW CS;,Email~&apos;+ Opportunity.Email__c +&apos;;Role~R4;LastName~&apos;+ URLENCODE(Opportunity.Parent_Account_Name__c) +&apos;&apos;,
 
-CES=&apos;{!HTMLENCODE(Opportunity.Name)} Community Solar Contract&apos;; //Custom Email Subject 
-CEM=&apos;Please Review and Sign this Contract&apos;; //Custom Email Message 
+CCRM = &apos;R1~Signer 1;R2~QC Approver;R3~Signer 2;R4~Recipient 3&apos;,
 
-DST=&apos;{!Opportunity.Docusign_Template__c}&apos;; //Default Standard Template ID 
+CCTM = &apos;R1~Signer;R2~CarbonCopy;R2~Signer;R3~Signer;R4~CarbonCopy&apos;,
 
-LA=&apos;0&apos;; //List Attachments from within Notes and Attachments 
+OCO = &apos;Tag&apos;
 
-CRL= &apos;Email~{!Opportunity.Email__c};Role~R1;LastName~{!HTMLENCODE(Opportunity.Parent_Account_Name__c)};,Role~R2;SigningGroup~BW CS;,Email~{!Opportunity.Salesperson_Email__c};Role~R3;LastName~{!Opportunity.Sales_tag__c};,Email~{!Opportunity.Email__c};Role~R4;LastName~{!HTMLENCODE(Opportunity.Parent_Account_Name__c)};&apos;; 
-
-
-
-
-CCRM=&apos;R1~Signer 1;R2~Signer 2;R3~Recipient 1;R4~Recipient 3;&apos;; //Custom Role Map 
-
-CCTM=&apos;R1~Signer; R2~Signer; R3~CC; R4~CC;&apos;; 
-
-
-OCO=&apos;Tag&apos;; //On Click Options 
-
-//********* Page Callout (Do not modify) *********// 
-window.location.href =&quot;/apex/dsfs__DocuSign_CreateEnvelope?DSEID=0&amp;SourceID={!Opportunity.Id}&amp;RC=&quot;+RC+&quot;&amp;RSL=&quot;+RSL+&quot;&amp;RSRO=&quot;+RSRO+&quot;&amp;RROS=&quot;+RROS+&quot;&amp;CCRM=&quot;+CCRM+&quot;&amp;CCTM=&quot;+CCTM+&quot;&amp;CRCL=&quot;+CRCL+&quot;&amp;CRL=&quot;+CRL+&quot;&amp;OCO=&quot;+OCO+&quot;&amp;DST=&quot;+DST+&quot;&amp;CCNM=&quot;+CCNM+&quot;&amp;LA=&quot;+LA+&quot;&amp;CEM=&quot;+CEM+&quot;&amp;CES=&quot;+CES+&quot;&amp;SRS=&quot;+SRS+&quot;&amp;STB=&quot;+STB+&quot;&amp;SSB=&quot;+SSB+&quot;&amp;SES=&quot;+SES+&quot;&amp;SEM=&quot;+SEM+&quot;&amp;SRS=&quot;+SRS+&quot;&amp;SCS=&quot;+SCS+&quot;&amp;RES=&quot;+RES;
-//*******************************************// 
-
-{!REQUIRESCRIPT(&quot;/soap/ajax/27.0/connection.js&quot;)} 
-var objCase = new sforce.SObject(&apos;opportunity&apos;); 
-
-objCase.Id = &apos;{!Opportunity.Id}&apos;; 
-
-var result = sforce.connection.update([objCase]);</url>
+]
+)}</url>
     </webLinks>
     <webLinks>
         <fullName>Send_Partner_Documents</fullName>

@@ -27,10 +27,12 @@ public without sharing class UASSelector {
         return [
             SELECT Id,
                 Utility_Account_Log__c,
+                Utility_Account_Log__r.Name,
                 Utility_Account_Log__r.Account__c,
                 Utility_Account_Log__r.Account__r.Id,
                 Utility_Account_Log__r.Account__r.Name,
-                Utility_Account_Log__r.Account__r.Send_Bills_Contact__c
+                Utility_Account_Log__r.Account__r.Send_Bills_Contact__c,
+                Utility_Account_Log__r.Account__r.Parent_Account__c
             FROM Utility_Account_Subscription__c
             WHERE Utility_Account_Log__c IN :ualIds
         ];
@@ -64,12 +66,32 @@ public without sharing class UASSelector {
 	}
     public static Map<Id, Utility_Account_Subscription__c> selectByIdsAsMap(Set<Id> uasIds){
         Map<Id, Utility_Account_Subscription__c> uasWithClientMap = new Map<Id, Utility_Account_Subscription__c>([
-            SELECT Id, Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c
+            SELECT Id,
+                Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__c,
+                Externally_Serviced__c
             FROM Utility_Account_Subscription__c
             WHERE Id IN : uasIds
         ]);
         return uasWithClientMap;
     }
+    
+    public List<AggregateResult> getBrandKeySummary(Set<Id> parentAccountIds) {
+        List<AggregateResult> uasSummary = [
+            SELECT COUNT(Id) numberOfRecords,
+                Opportunity__r.AccountId propertyAccount,
+                Opportunity__r.Account.Parent_Account__c parentAccount,
+                Opportunity__r.Shared_Solar_System__r.Client_Brand_Key__c sssBrandKey,
+                Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__r.Client_Brand_Key__c entityBrandKey
+            FROM Utility_Account_Subscription__c
+            WHERE Opportunity__r.Account.Parent_Account__c IN : parentAccountIds
+            GROUP BY Opportunity__r.AccountId,
+                Opportunity__r.Account.Parent_Account__c,
+                Opportunity__r.Shared_Solar_System__r.Client_Brand_Key__c,
+                Opportunity__r.Shared_Solar_System__r.BWC_Project_Entity_Manual__r.Client_Account__r.Client_Brand_Key__c
+        ];
+        return uasSummary;
+    }
+      
     public List<Utility_Account_Subscription__c> selectBySharedSolarSystem(Id sssId) {
         return [
             SELECT Id, Name, Annual_Cost_Future_Rollup__c, Annual_kWh_Subscription_Future_Rollup__c,

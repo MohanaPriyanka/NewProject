@@ -12,6 +12,9 @@ public without sharing class Util {
     // Granular Locking is already turned on, so instead, we'll re-try 10 times if we get this error
     @TestVisible
     private static Integer MAX_TRIES = 10;
+    @TestVisible
+    private static Boolean mockDML = false;
+
     public static void insertSObj(SObject sobj) {
         insertSObjs(new List<SObject>{sobj}, 0, null, null);
     }
@@ -36,18 +39,20 @@ public without sharing class Util {
     }
 
     public static void updateSObjs(List<SObject> sobjs) {
-        updateSObjs(sobjs, 0, null, null);
+        updateSObjs(sobjs, 0);
     }
-    @SuppressWarnings('PMD.ExcessiveParameterList')
-    private static void updateSObjs(List<SObject> sobjs, Integer count, String message, String stack) {
-        if (count >= MAX_TRIES) {
-            throw new BWException(message + '\n' + stack);
+
+    private static void updateSObjs(List<SObject> sobjs, Integer count) {
+        if (mockDML) {
+            return;
         }
+
         try {
             update sobjs;
         } catch (System.DmlException de) {
-            if (de.getMessage().contains('UNABLE_TO_LOCK_ROW') || de.getStackTraceString().contains('UNABLE_TO_LOCK_ROW')) {
-                updateSObjs(sobjs, count++, de.getMessage(), de.getStackTraceString());
+            if (count < MAX_TRIES &&
+                (de.getMessage().contains('UNABLE_TO_LOCK_ROW') || de.getStackTraceString().contains('UNABLE_TO_LOCK_ROW'))) {
+                updateSObjs(sobjs, count++);
             } else {
                 throw new BWException(de.getMessage());
             }
@@ -102,6 +107,7 @@ public without sharing class Util {
 
     // Used to show the installer a list of products to apply for (SLPAddCustomer, SLPSendEmailApplication)
     // or to generate a quick sales sheet (SLPQuickSalesSheet).
+    @SuppressWarnings('PMD.ExcessiveParameterList')
     private static List<Product2> getActiveProductsInternal(List<String> states, Id partnerId, String productType, Boolean showHidden) {
         List<Product2> productList = [SELECT Id, Name, Program__c, External_Name__c, Require_Junctions_to_Enable__c, Hide_in_Requested_Product__c,
                                       (SELECT Id FROM Partner_Product_Junctions__r
@@ -183,22 +189,31 @@ public without sharing class Util {
         System.debug(LoggingLevel.ERROR, getHeapLimit(prefix));
     }
 
+    public static void printRowLimit(String prefix) {
+        System.debug(LoggingLevel.ERROR, getRowLimit(prefix));
+    }
+
     public static String getCPULimit(String prefix) {
         return 'Limits: ' + prefix + ': ' + Limits.getCpuTime() + 'ms of '
             + Limits.getLimitCpuTime() + 'ms used';
     }
     public static String getSOQLLimit(String prefix) {
-        return 'Limits: ' + prefix + ': ' + Limits.getQueries() + ' of '
+        return 'Limits: ' + prefix + ': ' + Limits.getQueries() + ' queries of '
             + Limits.getLimitQueries() + ' used';
     }
     public static String getHeapLimit(String prefix) {
-        return 'Limits: ' + prefix + ': ' + Limits.getHeapSize() + ' of '
-            + Limits.getLimitHeapSize() + ' used';
+        return 'Limits: ' + prefix + ': ' + Limits.getHeapSize()/1000000 + ' of '
+            + Limits.getLimitHeapSize()/1000000 + ' used';
+    }
+    public static String getRowLimit(String prefix) {
+        return 'Limits: ' + prefix + ': ' + Limits.getQueryRows() + ' rows of '
+            + Limits.getLimitQueryRows() + ' used';
     }
 
 
     public class BWException extends Exception {}
     public class FatalBWException extends Exception {}
+    public class AuthorizationBWException extends Exception {}
 
     public static String removeSpecialCharacters(String value) {
         return value.replaceAll('(?i)[^a-z0-9 ._]', '');
@@ -211,6 +226,18 @@ public without sharing class Util {
     public static String prepForCSV(String value) {
         value = removeSpecialCharacters(value);
         return removeNewLine(value);
+    }
+
+    public static Map<Integer, List<String>> readCSV(String csvData){
+        CSVReader csvReader = new CSVReader(csvData);
+        List<String> line;
+        Map<Integer, List<String>> rowNumberToDataMap = new Map<Integer, List<String>>();
+        Integer i = 0;
+        while ((line = csvReader.readLine()) != null) {
+            rowNumberToDataMap.put(i, line);
+            i += 1;
+        }
+        return rowNumberToDataMap;
     }
 
     public static Boolean isDisabled(String triggerType) {
@@ -322,6 +349,13 @@ public without sharing class Util {
                 throw new BWException('Required field not provided: ' + field);
             }
         }
+    }
+
+    public static AuraHandledException createAuraExceptionWithMessage(String message){
+        // If you don't setMessage, you get back generic 'script-thrown exception' but no custom message
+        AuraHandledException excep = new AuraHandledException(message);
+        excep.setMessage(message);
+        return excep;
     }
 
     @TestVisible

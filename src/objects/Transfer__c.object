@@ -146,14 +146,14 @@
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
     <enableEnhancedLookup>false</enableEnhancedLookup>
-    <enableFeeds>false</enableFeeds>
+    <enableFeeds>true</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <externalSharingModel>Private</externalSharingModel>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
     <fields>
         <fullName>Allocation_Schedule__c</fullName>
         <deleteConstraint>Restrict</deleteConstraint>
@@ -274,7 +274,7 @@
         <label>Default Credit Value</label>
         <precision>18</precision>
         <required>false</required>
-        <scale>2</scale>
+        <scale>5</scale>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
@@ -303,6 +303,7 @@
         <relationshipName>Transfers</relationshipName>
         <relationshipOrder>0</relationshipOrder>
         <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>MasterDetail</type>
@@ -432,6 +433,7 @@
     </listViews>
     <nameField>
         <label>Transfer Name</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
     </nameField>
@@ -442,7 +444,7 @@
         <searchResultsAdditionalFields>Transfer_Amount__c</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>Total_Transferred__c</searchResultsAdditionalFields>
     </searchLayouts>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>ControlledByParent</sharingModel>
     <validationRules>
         <fullName>Default_Credit_Value_for_kWh_Projects</fullName>
         <active>true</active>

@@ -112,8 +112,8 @@
     <recordCreates>
         <name>Create_Case</name>
         <label>Create CS QC Case</label>
-        <locationX>773</locationX>
-        <locationY>36</locationY>
+        <locationX>915</locationX>
+        <locationY>39</locationY>
         <assignRecordIdToReference>sov_Case.Id</assignRecordIdToReference>
         <connector>
             <targetReference>Update_Opp_Status</targetReference>
@@ -157,7 +157,7 @@
         <inputAssignments>
             <field>OwnerId</field>
             <value>
-                <stringValue>00G6C000001X7mo</stringValue>
+                <elementReference>Lookup_Queue_Id.Id</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -263,11 +263,32 @@
         <queriedFields>BS_Sales_ID__c</queriedFields>
         <queriedFields>Name</queriedFields>
     </recordLookups>
+    <recordLookups>
+        <name>Lookup_Queue_Id</name>
+        <label>Lookup Queue Id</label>
+        <locationX>760</locationX>
+        <locationY>40</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Create_Case</targetReference>
+        </connector>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Customer_QC</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Group</object>
+        <queriedFields>Id</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordUpdates>
         <name>Update_Opp_Status</name>
         <label>Update Opp Status</label>
-        <locationX>899</locationX>
-        <locationY>38</locationY>
+        <locationX>1095</locationX>
+        <locationY>36</locationY>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
@@ -286,13 +307,13 @@
     <screens>
         <name>Create_New_QC_Task</name>
         <label>Create New QC Task</label>
-        <locationX>602</locationX>
-        <locationY>37</locationY>
+        <locationX>603</locationX>
+        <locationY>38</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Create_Case</targetReference>
+            <targetReference>Lookup_Queue_Id</targetReference>
         </connector>
         <fields>
             <name>textNewQCCase</name>
@@ -315,9 +336,15 @@
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
-    <startElementReference>Lookup_Opportunity</startElementReference>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Lookup_Opportunity</targetReference>
+        </connector>
+    </start>
     <status>Active</status>
     <variables>
         <name>sov_Case</name>

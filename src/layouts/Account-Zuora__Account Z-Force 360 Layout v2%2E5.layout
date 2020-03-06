@@ -236,7 +236,7 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
-        <relatedList>Related_Contract_Parties__c.Account__c</relatedList>
+        <relatedList>Portfolio__c.Client_Account__c</relatedList>
     </relatedLists>
     <relatedObjects>ParentId</relatedObjects>
     <showEmailCheckbox>false</showEmailCheckbox>

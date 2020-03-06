@@ -39,11 +39,6 @@ public with sharing class CapacityServiceTest {
             LZ__c = 'SEMA/NEMA',
             Town__c= 'Medfield'
         );
-//        Load_U__c everLZU5 = new Load_U__c (
-//            Name = '65432',
-//            LZ__c = 'NEMA',
-//            Town__c= 'Medfield'
-//        );
         insert new List<Load_U__c>{everLZU, everLZU2, everLZU3, everLZU4};
 
         ZipCode_Utility_Junction__c junction = new ZipCode_Utility_Junction__c(
@@ -111,7 +106,7 @@ public with sharing class CapacityServiceTest {
             Assignment_Order__c = '1',
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Sales_Partners__c = 'All',
+            Sales_Partners__c = 'ACE Solar',
             Product__c = srecProduct.Id,
             Maximum_Subscription_Assemblage__c = 25);
 
@@ -128,7 +123,7 @@ public with sharing class CapacityServiceTest {
             Assignment_Order__c = '1',
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Sales_Partners__c = 'All',
+            Sales_Partners__c = 'BlueWave Inside Sales',
             Product__c = srecProduct.Id,
             Maximum_Subscription_Assemblage__c = 25);
 
@@ -145,7 +140,7 @@ public with sharing class CapacityServiceTest {
             Assignment_Order__c = '1',
             Expected_Yield_kWh_kW__c = 1300,
             Assemblage_Count__c = 1,
-            Sales_Partners__c = 'All',
+            Sales_Partners__c = 'BlueWave Inside Sales',
             Product__c = smartProduct.Id,
             Maximum_Subscription_Assemblage__c = 25);
 
@@ -167,6 +162,17 @@ public with sharing class CapacityServiceTest {
             Maximum_Subscription_Assemblage__c = 25);
 
         insert new List<Shared_Solar_System__c>{sss1, sss2, sss3, sss4};
+
+        Partner__c partner = new Partner__c(
+            Name = 'ACE Solar'
+        );
+        Partner__c defaultPartner = new Partner__c(
+            Name = 'BlueWave Inside Sales'
+        );
+        insert new List<Partner__c>{partner, defaultPartner};
+
+        System_Properties__c property = new System_Properties__c(Name = 'System', Default_CS_Partner__c = defaultPartner.Id);
+        insert property;
     }
 
     @IsTest
@@ -282,6 +288,50 @@ public with sharing class CapacityServiceTest {
         System.assertEquals(2, response.products.size());
         System.assertEquals(4, response.sharedSolarSystems.size());
         System.assertEquals(true, response.hasCapacity());
+    }
+
+    @IsTest
+    public static void testFindCapacityByZipCodeWithPartner() {
+        CapacityService service = new CapacityService();
+        CapacityService.ZipcodeResponse response = service.findCapacityByZipcode('12345');
+        System.assertEquals(1, response.sharedSolarSystems.size());
+        List<Shared_Solar_System__c> sharedSolarSystems = new List<Shared_Solar_System__c>(response.sharedSolarSystems);
+        System.assertEquals('ACE Solar', sharedSolarSystems[0].Sales_Partners__c,
+            'Expected the system for 12345 to only be available for ACE Solar');
+        System.assertEquals(true, response.hasCapacity(), 'Expected to find capacity if not looking by partner (for CSAP)');
+
+        List<Error_Log__c> errorLogs = [SELECT Message__c FROM Error_Log__c WHERE Class__c = 'CapacityService'];
+        System.assertEquals(0, errorLogs.size(), 'Expected to start with no error logs');
+        response = service.findCapacityByZipcode('12345', Util.getFakeId(Partner__c.SObjectType));
+        System.assertEquals(0, response.sharedSolarSystems.size());
+        System.assertEquals(false, response.hasCapacity(), 'Expected no capacity for an unknown partner');
+        errorLogs = [SELECT Message__c FROM Error_Log__c WHERE Class__c = 'CapacityService'];
+        System.assertEquals(1, errorLogs.size(), 'Expected to find an error log for an unknown partner');
+        System.assert(errorLogs[0].Message__c.contains('but proceeding with the default partner'), 'Expected to proceed with the default partner');
+        delete errorLogs;
+
+        Partner__c ace = [SELECT Id FROM Partner__c WHERE Name = 'ACE Solar' LIMIT 1];
+        response = service.findCapacityByZipcode('12345', ace.Id);
+        System.assertEquals(1, response.sharedSolarSystems.size());
+        System.assertEquals(true, response.hasCapacity(), 'Expected capacity for ACE Solar');
+
+        response = service.findCapacityByZipcode('23456');
+        System.assertEquals(2, response.sharedSolarSystems.size());
+        sharedSolarSystems = new List<Shared_Solar_System__c>(response.sharedSolarSystems);
+        System.assertEquals('BlueWave Inside Sales', sharedSolarSystems[0].Sales_Partners__c,
+            'Expected the systems for 23456 to only be available for BlueWave Inside Sales, the default partner');
+        System.assertEquals('BlueWave Inside Sales', sharedSolarSystems[1].Sales_Partners__c,
+            'Expected the systems for 23456 to only be available for BlueWave Inside Sales, the default partner');
+        System.assertEquals(true, response.hasCapacity(), 'Expected to find capacity if not looking by partner (for CSAP)');
+
+        errorLogs = [SELECT Message__c FROM Error_Log__c WHERE Class__c = 'CapacityService'];
+        System.assertEquals(0, errorLogs.size(), 'Expected to start with no error logs');
+        response = service.findCapacityByZipcode('23456', Util.getFakeId(Partner__c.SObjectType));
+        System.assertEquals(2, response.sharedSolarSystems.size());
+        System.assertEquals(true, response.hasCapacity(), 'Expected capacity for an unknown partner since there is a system for the default partner');
+        errorLogs = [SELECT Message__c FROM Error_Log__c WHERE Class__c = 'CapacityService'];
+        System.assertEquals(1, errorLogs.size(), 'Expected to find an error log for an unknown partner');
+        System.assert(errorLogs[0].Message__c.contains('but proceeding with the default partner'), 'Expected to proceed with the default partner');
     }
 
     @IsTest

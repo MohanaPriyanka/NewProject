@@ -78,6 +78,20 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Account__c</fullName>
+        <externalId>false</externalId>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Utility Account Subscription Bills (Account)</relationshipLabel>
+        <relationshipName>Utility_Account_Subscription_Bills1</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
         <fullName>Adjusted_Credits__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Sum of Adjusted Credits Allocated to this UASB from Production Bill Adjustments, used to summarize total savings and total credits on the property account.</inlineHelpText>
@@ -110,45 +124,6 @@
         <required>false</required>
         <scale>2</scale>
         <trackHistory>true</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Allocated_Late_Fees__c</fullName>
-        <externalId>false</externalId>
-        <formula>round(UASB_Percentage__c * (System_Bill__r.Late_Fee_Payments__c),2)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Allocated Late Fee Payments</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Allocated_Late_Feess__c</fullName>
-        <externalId>false</externalId>
-        <formula>round(UASB_Percentage__c * (System_Bill__r.Late_Fees__c),2)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Allocated Late Fees</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Allocated_Payments__c</fullName>
-        <externalId>false</externalId>
-        <formula>round(UASB_Percentage__c * (System_Bill__r.Late_Payments__c + System_Bill__r.Payments_Net_Previous_Balances__c),2)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Allocated Payments</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
     </fields>
@@ -208,17 +183,16 @@
     </fields>
     <fields>
         <fullName>CS_Billing_Log__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>CS Billing Log</label>
         <referenceTo>Utility_Account_Bill__c</referenceTo>
         <relationshipLabel>Utility Account Subscription Bills</relationshipLabel>
         <relationshipName>Utility_Account_Subscription_Bills</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>true</reparentableMasterDetail>
+        <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Client_Account_Number__c</fullName>
@@ -228,6 +202,7 @@
         <inlineHelpText>As we retire system bills, used as a switch between referencing System Bill Client v. UASB Client</inlineHelpText>
         <label>Client Account Number</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -455,19 +430,6 @@ MONTH(Billing_Period_End_Date__c),
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Payments_Made_This_Month__c</fullName>
-        <externalId>false</externalId>
-        <formula>round(UASB_Percentage__c *  System_Bill__r.Total_Payments_This_Month__c,2)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Payments Made This Month</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Percent_of_Total_Account_Bill__c</fullName>
@@ -762,17 +724,16 @@ MONTH(Billing_Period_End_Date__c),
     </fields>
     <fields>
         <fullName>System_Bill__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>System Bill</label>
         <referenceTo>System_Bill__c</referenceTo>
         <relationshipLabel>Utility Account Subscription Bills</relationshipLabel>
         <relationshipName>Utility_Account_Subscription_Bills</relationshipName>
-        <relationshipOrder>1</relationshipOrder>
-        <reparentableMasterDetail>true</reparentableMasterDetail>
+        <required>false</required>
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>System_Production_kWh__c</fullName>
@@ -799,32 +760,6 @@ MONTH(Billing_Period_End_Date__c),
         <trackTrending>false</trackTrending>
         <type>Number</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Total_Allocated_Payments__c</fullName>
-        <externalId>false</externalId>
-        <formula>Allocated_Payments__c + Allocated_Late_Fees__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Total Allocated Payments</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Total_Due_This_Month__c</fullName>
-        <externalId>false</externalId>
-        <formula>Allocated_Late_Feess__c + Discounted_Bill__c + Adjustment_Amount__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Total Due This Month</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Total_System_NMCs__c</fullName>
@@ -890,6 +825,32 @@ MONTH(Billing_Period_End_Date__c),
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Transfer_Sheet_Resolution__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>On the transfer sheet QC screen, the value that was selected for &quot;Resolution&quot;</inlineHelpText>
+        <label>Transfer Sheet Resolution</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>UseUtility</fullName>
+                    <default>false</default>
+                    <label>UseUtility</label>
+                </value>
+                <value>
+                    <fullName>UseSalesforce</fullName>
+                    <default>false</default>
+                    <label>UseSalesforce</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Transfer__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -901,59 +862,6 @@ MONTH(Billing_Period_End_Date__c),
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>UASB_Overpayments__c</fullName>
-        <externalId>false</externalId>
-        <formula>round(UASB_Percentage__c * ( System_Bill__r.Previous_Overpayment__c ),2)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>UASB Overpayments</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>UASB_Percentage__c</fullName>
-        <externalId>false</externalId>
-        <formula>round(Discounted_Bill__c/System_Bill__r.Discounted_Bill__c,4)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Used for reporting</inlineHelpText>
-        <label>UASB Percentage</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>10</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Percent</type>
-    </fields>
-    <fields>
-        <fullName>UASB_Previous_Month_Overdue_Balance__c</fullName>
-        <externalId>false</externalId>
-        <formula>round((UASB_Percentage__c) * ( System_Bill__r.Previous_Month_Overdue_Balance__c ),2)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>UASB Previous Month Overdue Balance</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>UASB_Total_Due__c</fullName>
-        <externalId>false</externalId>
-        <formula>round(( UASB_Percentage__c ) * ( System_Bill__r.Total_Due__c ),2)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>UASB Total Due</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Unique_ID__c</fullName>
@@ -1008,15 +916,18 @@ MONTH(Billing_Period_End_Date__c),
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Utility Account Subscription Bills</pluralLabel>
-    <searchLayouts/>
+    <searchLayouts />
     <sharingModel>ControlledByParent</sharingModel>
     <validationRules>
         <fullName>UASB_Cannot_Be_Edited_After_Published</fullName>
-        <active>true</active>
-        <errorConditionFormula>AND(System_Bill__r.Account_Bill__r.Published__c,
-NOT(ISCHANGED(Zuora_Id__c))
+        <active>false</active>
+        <description>UASB Cannot Be Edited after Bill is Pushed to Zuora</description>
+        <errorConditionFormula>AND(
+NOT(ISBLANK(Zuora_Id__c)),
+NOT(ISCHANGED(Account__c)),
+NOT(ISCHANGED(Transfer__c))
 )</errorConditionFormula>
-        <errorMessage>UASB Cannot Be Edited after Bill is Published</errorMessage>
+        <errorMessage>UASB Cannot Be Edited after Bill is Pushed to Zuora</errorMessage>
     </validationRules>
     <visibility>Public</visibility>
 </CustomObject>

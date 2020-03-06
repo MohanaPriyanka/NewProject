@@ -260,20 +260,6 @@
         <unique>false</unique>
     </fields>
     <label>Shared Solar System Order</label>
-    <listViews>
-        <fullName>All</fullName>
-        <filterScope>Everything</filterScope>
-        <label>All</label>
-    </listViews>
-    <listViews>
-        <fullName>Shared_Solar_System_Approvers_Shared_Solar_System_Order</fullName>
-        <filterScope>Queue</filterScope>
-        <label>Shared Solar System Approvers</label>
-        <queue>Shared_Solar_System_Approvers</queue>
-        <sharedTo>
-            <allInternalUsers></allInternalUsers>
-        </sharedTo>
-    </listViews>
     <nameField>
         <displayFormat>SSSO-{00000}</displayFormat>
         <label>Shared Solar System Order Name</label>

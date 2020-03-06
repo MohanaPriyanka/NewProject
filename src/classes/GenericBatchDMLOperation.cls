@@ -13,20 +13,27 @@
  * Tested By: PostSandboxRefresherTest
  *************************************************************************************/
 
-public without sharing class GenericBatchDMLOperation implements Database.Batchable<sObject>,Database.Stateful {
+public without sharing class GenericBatchDMLOperation implements Database.Batchable<SObject>,Database.Stateful {
     
-    public Set<String> possibleDmlOperation = new Set<String>{'Insert','Update','Upsert','Delete'};
+    public Set<String> possibleDmlOperation = new Set<String>{'Insert','Update','Upsert','Delete','Convert'};
     public String dmlOperation;
     public List<SObject> sobjList = new List<SObject>();
     public String log = '';
     public List<String> triggersToDisable;
+    public LeadConvertOption leadConvertOption;
 
     public GenericBatchDMLOperation(List<SObject> sobjListPassed,
                                     String dmlOperationPassed) {
         sobjList = sobjListPassed;
         if (possibleDmlOperation.contains(dmlOperationPassed)) {
             dmlOperation = dmlOperationPassed;
+        } else {
+            throw new Util.BWException('Unexpected dmlOperation: ' + dmlOperationPassed);
         }
+    }
+
+    public void setLeadConvertOption(LeadConvertOption leadConvertOption) {
+        this.leadConvertOption = leadConvertOption;
     }
 
     public List<SObject> start(Database.BatchableContext bc) {
@@ -49,18 +56,16 @@ public without sharing class GenericBatchDMLOperation implements Database.Batcha
             // so this isn't quite Generic.
             // https://success.salesforce.com/ideaView?id=08730000000aNhVAAU
             // Added upsert with externalID for EnergyUsageUpdateTriggerHandler
-            if (scope.getSObjectType().getDescribe().getName() == 'Utility_Account_Bill__c') {
-                Schema.SObjectField externalId = Utility_Account_Bill__c.Unique_Id__c;
-                resultList = upsertResult2GR(Database.upsert((List<Utility_Account_Bill__c>) scope, externalId, false));
-            }  else if (scope.getSObjectType().getDescribe().getName() == 'Journal_Entry__c') {
-                Schema.SObjectField externalId = Journal_Entry__c.External_Id__c;
-                resultList = upsertResult2GR(Database.upsert((List<Journal_Entry__c>) scope, externalId, false));
-            } else {
-                resultList = upsertResult2GR(Database.upsert(scope, false));
-            }
+            resultList = handleUpsertWithExternalIds(scope);
         } else if (dmlOperation == 'Delete') {
             resultList = deleteResult2GR(Database.delete(scope, false));
+        } else if (dmlOperation == 'Convert') {
+            resultList = handleLeadConversion(scope);
         }
+        updateErrorLog(resultList, scope);
+    }
+
+    private void updateErrorLog(GenericResult[] resultList, List<SObject> scope) {
         for (Integer i = 0; i < resultList.size(); i++) {
             if (!resultList[i].isSuccess()) {
                 this.log += '\nError in Batch DML ' + dmlOperation + ' Execution for object: ' +
@@ -70,10 +75,39 @@ public without sharing class GenericBatchDMLOperation implements Database.Batcha
             }
         }
     }
-    
+
+    private List<GenericResult> handleLeadConversion(List<SObject> scope) {
+        List<GenericResult> resultList = new List<GenericResult>();
+        if (!(scope instanceof List<Lead>)) {
+            throw new Util.FatalBWException('Expected a list of Lead but got list of ' + scope.getSObjectType());
+        }
+        List<Database.LeadConvert> leadConverts = new List<Database.LeadConvert>();
+        for (Lead lead : (List<Lead>) scope) {
+            Database.LeadConvert leadConvert = leadConvertOption.getNewLeadConvert();
+            leadConvert.setLeadId(lead.Id);
+            leadConverts.add(leadConvert);
+        }
+        resultList = leadConvertResult2GR(Database.convertLead(leadConverts, false));
+        return resultList;
+    }
+
+    private List<GenericResult> handleUpsertWithExternalIds(List<SObject> scope) {
+        List<GenericResult> resultList = new List<GenericResult>();
+        if (scope.getSObjectType().getDescribe().getName() == 'Utility_Account_Bill__c') {
+            Schema.SObjectField externalId = Utility_Account_Bill__c.Unique_Id__c;
+            resultList = upsertResult2GR(Database.upsert((List<Utility_Account_Bill__c>) scope, externalId, false));
+        } else if (scope.getSObjectType().getDescribe().getName() == 'Journal_Entry__c') {
+            Schema.SObjectField externalId = Journal_Entry__c.External_Id__c;
+            resultList = upsertResult2GR(Database.upsert((List<Journal_Entry__c>) scope, externalId, false));
+        } else {
+            resultList = upsertResult2GR(Database.upsert(scope, false));
+        }
+        return resultList;
+    }
+
     public void finish(Database.BatchableContext batchableContext) {
         String emailErrorsTo;
-        List<System_Properties__c> systemProperties = System_Properties__c.getall().values();
+        List<System_Properties__c> systemProperties = System_Properties__c.getAll().values();
         if (systemProperties.isEmpty() ||
             systemProperties[0].Error_Email__c == null) {
             emailErrorsTo = 'product@bluewavesolar.com';
@@ -82,8 +116,7 @@ public without sharing class GenericBatchDMLOperation implements Database.Batcha
         }            
 
         if (!String.isEmpty(this.log)) {
-            System.debug(LoggingLevel.ERROR, 'Batch DML Error: ' + this.log);
-            Logger.log('GenericBatchDMLOperation', 'finish', this.log, System.now());
+            Logger.logNow('GenericBatchDMLOperation', 'finish', this.log);
             Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
             email.setToAddresses(new List<String> {emailErrorsTo});
             email.setSubject('Error in Batch DML process!');
@@ -112,12 +145,41 @@ public without sharing class GenericBatchDMLOperation implements Database.Batcha
         }
         return genericResultList;
     }
-    public List<GenericResult> deleteresult2GR(List<Database.DeleteResult> resultList) {
+    public List<GenericResult> deleteResult2GR(List<Database.DeleteResult> resultList) {
         List<GenericResult> genericResultList = new List<GenericResult>();
         for (Database.DeleteResult result : resultList) {
             genericResultList.add(new GenericResult(result));
         }
         return genericResultList;
+    }
+    public List<GenericResult> leadConvertResult2GR(List<Database.LeadConvertResult> resultList) {
+        List<GenericResult> genericResultList = new List<GenericResult>();
+        for (Database.LeadConvertResult result : resultList) {
+            genericResultList.add(new GenericResult(result));
+        }
+        return genericResultList;
+    }
+
+    public class LeadConvertOption {
+        public String convertedStatus;
+        public Boolean doNotCreateOpportunity = false;
+        public Boolean overwriteLeadSource = false;
+        public String ownerId = null;
+        public Boolean sendNotificationEmail = false;
+
+        public LeadConvertOption(String convertedStatus) {
+            this.convertedStatus = convertedStatus;
+        }
+
+        public Database.LeadConvert getNewLeadConvert() {
+            Database.LeadConvert leadConvert = new Database.LeadConvert();
+            leadConvert.setConvertedStatus(convertedStatus);
+            leadConvert.setDoNotCreateOpportunity(doNotCreateOpportunity);
+            leadConvert.setOverwriteLeadSource(overwriteLeadSource);
+            leadConvert.setOwnerId(ownerId);
+            leadConvert.setSendNotificationEmail(sendNotificationEmail);
+            return leadConvert;
+        }
     }
 
     public class GenericResult
@@ -147,5 +209,10 @@ public without sharing class GenericBatchDMLOperation implements Database.Batcha
         {
             this(result.getId(), result.getErrors(), result.isSuccess());
         }
+        public GenericResult(Database.LeadConvertResult result)
+        {
+            this(result.getLeadId(), result.getErrors(), result.isSuccess());
+        }
+
     }
 }

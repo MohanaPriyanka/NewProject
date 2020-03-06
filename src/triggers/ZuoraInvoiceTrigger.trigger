@@ -10,7 +10,7 @@ trigger ZuoraInvoiceTrigger on Zuora__ZInvoice__c (after insert) {
 
     switch on Trigger.operationType {
         when AFTER_INSERT {
-            ZuoraInvoiceAsyncService.findFirstInvoiceAndSetInsertsFuture(Trigger.newMap.keySet());
+            ZuoraInvoiceAsyncService.handleFirstInvoices(Trigger.newMap.keySet());
             PartnerCommissionService.onAfterInvoiceInsert(Trigger.new);
         }
     }

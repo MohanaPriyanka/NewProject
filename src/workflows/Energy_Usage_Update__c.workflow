@@ -90,10 +90,7 @@
             <type>FieldUpdate</type>
         </actions>
         <active>false</active>
-        <formula>AND(
-ISCHANGED ( Bill_Status__c  ) , 
-ISPICKVAL( Bill_Status__c, &quot;Autopay QCed&quot; )
-)</formula>
+        <formula>AND( ISCHANGED ( Bill_Status__c  ) ,  ISPICKVAL( Bill_Status__c, &quot;Autopay QCed&quot; ) )</formula>
         <triggerType>onAllChanges</triggerType>
     </rules>
     <rules>
@@ -103,10 +100,7 @@ ISPICKVAL( Bill_Status__c, &quot;Autopay QCed&quot; )
             <type>FieldUpdate</type>
         </actions>
         <active>false</active>
-        <formula>AND(
-ISCHANGED ( Bill_Status__c  ) , 
-ISPICKVAL( Bill_Status__c, &quot;Bills QCed&quot; )
-)</formula>
+        <formula>AND( ISCHANGED ( Bill_Status__c  ) ,  ISPICKVAL( Bill_Status__c, &quot;Bills QCed&quot; ) )</formula>
         <triggerType>onAllChanges</triggerType>
     </rules>
     <rules>
@@ -116,10 +110,7 @@ ISPICKVAL( Bill_Status__c, &quot;Bills QCed&quot; )
             <type>FieldUpdate</type>
         </actions>
         <active>false</active>
-        <formula>AND( 
-ISCHANGED ( Bill_Status__c ) , 
-ISPICKVAL( Bill_Status__c, &quot;Credit Transfers QCed&quot; ) 
-)</formula>
+        <formula>AND(  ISCHANGED ( Bill_Status__c ) ,  ISPICKVAL( Bill_Status__c, &quot;Credit Transfers QCed&quot; )  )</formula>
         <triggerType>onAllChanges</triggerType>
     </rules>
     <rules>
@@ -129,10 +120,7 @@ ISPICKVAL( Bill_Status__c, &quot;Credit Transfers QCed&quot; )
             <type>FieldUpdate</type>
         </actions>
         <active>false</active>
-        <formula>AND(
-ISCHANGED ( Bill_Status__c  ) , 
-ISPICKVAL( Bill_Status__c, &quot;Email Bills Sent&quot; )
-)</formula>
+        <formula>AND( ISCHANGED ( Bill_Status__c  ) ,  ISPICKVAL( Bill_Status__c, &quot;Email Bills Sent&quot; ) )</formula>
         <triggerType>onAllChanges</triggerType>
     </rules>
     <rules>
@@ -142,10 +130,7 @@ ISPICKVAL( Bill_Status__c, &quot;Email Bills Sent&quot; )
             <type>FieldUpdate</type>
         </actions>
         <active>false</active>
-        <formula>AND(
-ISCHANGED ( Bill_Status__c  ) , 
-ISPICKVAL( Bill_Status__c, &quot;Host Account Bill QCed&quot; )
-)</formula>
+        <formula>AND( ISCHANGED ( Bill_Status__c  ) ,  ISPICKVAL( Bill_Status__c, &quot;Host Account Bill QCed&quot; ) )</formula>
         <triggerType>onAllChanges</triggerType>
     </rules>
     <rules>
@@ -155,10 +140,7 @@ ISPICKVAL( Bill_Status__c, &quot;Host Account Bill QCed&quot; )
             <type>FieldUpdate</type>
         </actions>
         <active>false</active>
-        <formula>AND(
-ISCHANGED ( Bill_Status__c  ) , 
-ISPICKVAL( Bill_Status__c, &quot;Host Account Bill Uploaded&quot; )
-)</formula>
+        <formula>AND( ISCHANGED ( Bill_Status__c  ) ,  ISPICKVAL( Bill_Status__c, &quot;Host Account Bill Uploaded&quot; ) )</formula>
         <triggerType>onAllChanges</triggerType>
     </rules>
     <rules>
@@ -168,10 +150,7 @@ ISPICKVAL( Bill_Status__c, &quot;Host Account Bill Uploaded&quot; )
             <type>FieldUpdate</type>
         </actions>
         <active>false</active>
-        <formula>AND(
-ISCHANGED ( Bill_Status__c  ) , 
-ISPICKVAL( Bill_Status__c, &quot;Letter Bills Sent&quot; )
-)</formula>
+        <formula>AND( ISCHANGED ( Bill_Status__c  ) ,  ISPICKVAL( Bill_Status__c, &quot;Letter Bills Sent&quot; ) )</formula>
         <triggerType>onAllChanges</triggerType>
     </rules>
     <rules>

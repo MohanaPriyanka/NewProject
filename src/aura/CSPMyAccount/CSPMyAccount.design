@@ -1,4 +1,0 @@
-<design:component>
-  <design:attribute name="prepopulatedAcctId" label="Id from URL" description="Should be {!actId}"/>
-  <design:attribute name="selectedAccount" label="Name from URL" description="Should be {!actName}"/>
-</design:component>

@@ -63,6 +63,12 @@ public with sharing class AccountsSelectorTest {
         System.assert(accountsSelector.selectAll(accountIds) != null, 'Expected a list of accounts');
     }
 
+    @IsTest public static void testSelectByIds() {
+        Set<Id> accountIds = (new Map<Id, Account>([SELECT Id FROM Account])).keySet();
+        AccountsSelector accountsSelector = new AccountsSelector();
+        System.assert(accountsSelector.selectAll(accountIds) != null, 'Expected a list of accounts');
+    }
+
     @IsTest public static void testSelectPropertyAccountsByLeadIds() {
         Lead newLead = new Lead(
             FirstName = 'test',
@@ -136,5 +142,17 @@ public with sharing class AccountsSelectorTest {
         AccountsSelector selector = new AccountsSelector();
         Map<Id,Integer> acctIdToUASBMap = selector.selectAccountsWithUASBs(Date.newInstance(2016,01,01));
         System.assertEquals(12,acctIdToUASBMap.get(newAccount.Id));
+    }
+
+    @IsTest
+    public static void testSelectById() {
+        List<Account> accounts = [
+            SELECT Id
+            FROM Account
+            LIMIT 2
+        ];
+        AccountsSelector selector = new AccountsSelector();
+        List<Account> queriedAccounts = selector.getAccountsById(new Set<Id>{accounts[0].Id, accounts[1].Id});
+        System.assertEquals(2,queriedAccounts.size());
     }
 }

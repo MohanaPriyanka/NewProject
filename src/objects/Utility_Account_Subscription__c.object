@@ -839,6 +839,7 @@ ROUND(Customer_Subscription_KW_DC__c/ Opportunity__r.Shared_Solar_System__r.Tota
         <inlineHelpText>Equals Utility Account Log Service Address</inlineHelpText>
         <label>Service Address (From Log)</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Text</type>
@@ -1352,8 +1353,10 @@ $CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_En
     </validationRules>
     <validationRules>
         <fullName>Opportunity_and_SSS_Lock</fullName>
-        <active>true</active>
+        <active>false</active>
         <errorConditionFormula>AND(
+
+ $CustomMetadata.Custom_Feature_Enablement__mdt.Subscription_Orders.Feature_is_Enabled__c=true,
 
 ISNEW()=false, /*does not apply to new records*/
 

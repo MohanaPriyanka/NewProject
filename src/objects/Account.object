@@ -366,6 +366,7 @@ IMAGE(&quot;/resource/1553274837000/Crown_Icon&quot;, &quot;crown&quot;),
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Additional Email</label>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -376,6 +377,7 @@ IMAGE(&quot;/resource/1553274837000/Crown_Icon&quot;, &quot;crown&quot;),
         <label>Address Attn:</label>
         <length>50</length>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
@@ -391,18 +393,6 @@ IMAGE(&quot;/resource/1553274837000/Crown_Icon&quot;, &quot;crown&quot;),
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Adjusted_Total_Billed__c</fullName>
-        <externalId>false</externalId>
-        <formula>Total_Billed__c +  Total_Adjustments__c +  Total_Late_Fees__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Adjusted Total Billed</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>AnnualRevenue</fullName>
@@ -867,6 +857,7 @@ CASE(TEXT(Cancellation_Reason__c),
         <label>Service City</label>
         <length>25</length>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
@@ -1194,15 +1185,14 @@ CASE(Days_Past_Due__c,
         <type>Summary</type>
     </fields>
     <fields>
-        <fullName>Credit_Adjustments__c</fullName>
+        <fullName>Create_Zuora_Account__c</fullName>
+        <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <inlineHelpText>Adjustments to Credits Allocated rolled up from Account Bills</inlineHelpText>
-        <label>Credit Adjustments</label>
-        <summarizedField>Account_Bill__c.Credit_Adjustments__c</summarizedField>
-        <summaryForeignKey>Account_Bill__c.Parent_Account__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
+        <inlineHelpText>When checked on a Property Account without a Zuora Id, a process is started to create an account in Zuora with the related Send Bills Contact.</inlineHelpText>
+        <label>Create Zuora Account</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <type>Summary</type>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Credit_Bureau__c</fullName>
@@ -1232,6 +1222,28 @@ CASE(Days_Past_Due__c,
                 </value>
             </valueSetDefinition>
         </valueSet>
+    </fields>
+    <fields>
+        <fullName>Credits_Allocated_Adjustments__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Rollup of Credits Allocated from Adjustments</inlineHelpText>
+        <label>Credits Allocated Adjustments</label>
+        <summarizedField>Bill_Adjustment__c.Credits_Allocated__c</summarizedField>
+        <summaryForeignKey>Bill_Adjustment__c.Account__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Credits_Allocated_UASB__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Rollup of credits allocated from UASBs</inlineHelpText>
+        <label>Credits Allocated UASB</label>
+        <summarizedField>UASB__c.Credits_Allocated__c</summarizedField>
+        <summaryForeignKey>UASB__c.Account__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <type>Summary</type>
     </fields>
     <fields>
         <fullName>Custom_ID__c</fullName>
@@ -1586,14 +1598,14 @@ IF(
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>First_Bill_Date__c</fullName>
+        <fullName>First_CS_Bill_Date__c</fullName>
         <externalId>false</externalId>
+        <inlineHelpText>Set when new invoices are downloaded from Zuora for attrition tracking and subscription length analysis</inlineHelpText>
         <label>First Bill Date</label>
-        <summarizedField>Account_Bill__c.Date__c</summarizedField>
-        <summaryForeignKey>Account_Bill__c.Parent_Account__c</summaryForeignKey>
-        <summaryOperation>min</summaryOperation>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <type>Summary</type>
+        <type>Date</type>
     </fields>
     <fields>
         <fullName>First_Login_Date__c</fullName>
@@ -2124,26 +2136,6 @@ IF(
         <type>Summary</type>
     </fields>
     <fields>
-        <fullName>Most_Recent_Billing_Period_End_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Most Recent Billing Period End Date</label>
-        <summarizedField>Account_Bill__c.Billing_Period_End_Date__c</summarizedField>
-        <summaryForeignKey>Account_Bill__c.Parent_Account__c</summaryForeignKey>
-        <summaryOperation>max</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <type>Summary</type>
-    </fields>
-    <fields>
-        <fullName>Most_Recent_Billing_Period_Start_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Most Recent Billing Period Start Date</label>
-        <summarizedField>Account_Bill__c.Billing_Period_Start_Date__c</summarizedField>
-        <summaryForeignKey>Account_Bill__c.Parent_Account__c</summaryForeignKey>
-        <summaryOperation>max</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <type>Summary</type>
-    </fields>
-    <fields>
         <fullName>Most_Recent_Engagement_Attempt__c</fullName>
         <externalId>false</externalId>
         <formula>IF(
@@ -2204,29 +2196,6 @@ TODAY()- BLANKVALUE(Postcard_2__c,DATE(1900,1,1))
         <fullName>Name</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
-    </fields>
-    <fields>
-        <fullName>Net_Metering_Credits_Allocated__c</fullName>
-        <externalId>false</externalId>
-        <formula>Total_Net_Metering_Credits_Allocated__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Unadjusted Credits Allocated, rolled up from Account Bills</inlineHelpText>
-        <label>Unadjusted Credits Allocated ($)</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Non_Test_Zuora_Record__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <inlineHelpText>During Zuora onboarding and testing, we will be deleting test Zuora data in production. We do not want to clear the Zuora ID from accounts from real Switch leads, so this checkbox differentiates them</inlineHelpText>
-        <label>Non-Test Zuora Record</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>NumberOfEmployees</fullName>
@@ -2949,7 +2918,7 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
         <fullName>Recurring_Billing__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <inlineHelpText>An indicator to tell whether the Property Account is on autopay. Only used to update the message on the bill. To take a customer off of autopay, update their Recurring Chargent Order</inlineHelpText>
+        <inlineHelpText>An indicator to tell whether the Property Account is on autopay. Only used to update the message on the bill. To take a customer off of autopay, use the payment component on the Billing Account to Manage Autopay</inlineHelpText>
         <label>Autopay</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
@@ -3031,10 +3000,21 @@ IF (OR( Count_of_CS_Opportunities__c &gt; 0, AND (RecordType.Name = &quot;Partne
     <fields>
         <fullName>Savings_Adjustments__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Adjustments to Savings rolled up from Account Bills</inlineHelpText>
+        <inlineHelpText>Rollup summary of savings from adjustments linked to this account</inlineHelpText>
         <label>Savings Adjustments</label>
-        <summarizedField>Account_Bill__c.Savings_Adjustments__c</summarizedField>
-        <summaryForeignKey>Account_Bill__c.Parent_Account__c</summaryForeignKey>
+        <summarizedField>Bill_Adjustment__c.Discount__c</summarizedField>
+        <summaryForeignKey>Bill_Adjustment__c.Account__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Savings_UASB__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Rollup summary of Savings on UASBs linked to the Account</inlineHelpText>
+        <label>Savings UASB</label>
+        <summarizedField>UASB__c.Savings__c</summarizedField>
+        <summaryForeignKey>UASB__c.Account__c</summaryForeignKey>
         <summaryOperation>sum</summaryOperation>
         <trackHistory>false</trackHistory>
         <type>Summary</type>
@@ -3575,6 +3555,7 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <label>Service Street Address</label>
         <length>40</length>
         <required>false</required>
+        <securityClassification>Restricted</securityClassification>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
@@ -3756,17 +3737,6 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Total_Adjustments__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Sum of all adjustments on this account</inlineHelpText>
-        <label>Total Adjustments</label>
-        <summarizedField>Account_Bill__c.Adjustments__c</summarizedField>
-        <summaryForeignKey>Account_Bill__c.Parent_Account__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <type>Summary</type>
-    </fields>
-    <fields>
         <fullName>Total_Amount_Billed__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Total Billed + Late Fees + Adjustments</inlineHelpText>
@@ -3810,48 +3780,23 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
         <type>Summary</type>
     </fields>
     <fields>
+        <fullName>Total_Credits_Allocated__c</fullName>
+        <externalId>false</externalId>
+        <formula>Credits_Allocated_Adjustments__c + Credits_Allocated_UASB__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Total Credits Allocated</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>Total_Late_Fees__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Sum of all Late Fees on Account</inlineHelpText>
         <label>Total Late Fees</label>
         <summarizedField>Account_Bill__c.Late_Fees__c</summarizedField>
-        <summaryForeignKey>Account_Bill__c.Parent_Account__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
-        <trackHistory>false</trackHistory>
-        <type>Summary</type>
-    </fields>
-    <fields>
-        <fullName>Total_Lifetime_Credits_Allocated__c</fullName>
-        <externalId>false</externalId>
-        <formula>Total_Net_Metering_Credits_Allocated__c + Credit_Adjustments__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Total Credits Allocated from Account Bills + Total Credit Adjustments from related Production type Bill Adjustments</inlineHelpText>
-        <label>Total Lifetime Credits Allocated</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Total_Lifetime_Savings__c</fullName>
-        <externalId>false</externalId>
-        <formula>Total_Savings__c + Savings_Adjustments__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <inlineHelpText>Rollup of Savings from related UASBs and Savings from related Production type Bill Adjustments</inlineHelpText>
-        <label>Total Lifetime Savings</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Total_Net_Metering_Credits_Allocated__c</fullName>
-        <externalId>false</externalId>
-        <inlineHelpText>Unadjusted Total NMCs from Account Bills</inlineHelpText>
-        <label>Unadjusted Credits Allocated</label>
-        <summarizedField>Account_Bill__c.Net_Metering_Credits_Generated__c</summarizedField>
         <summaryForeignKey>Account_Bill__c.Parent_Account__c</summaryForeignKey>
         <summaryOperation>sum</summaryOperation>
         <trackHistory>false</trackHistory>
@@ -3912,13 +3857,14 @@ IF ( ISPICKVAL( Cancellation_Notice_Type__c , &quot;Email WITH Fee&quot;) ,&quot
     <fields>
         <fullName>Total_Savings__c</fullName>
         <externalId>false</externalId>
-        <inlineHelpText>Unadjusted Savings from Account Bills</inlineHelpText>
-        <label>Unadjusted Savings</label>
-        <summarizedField>Account_Bill__c.Savings_Rollup__c</summarizedField>
-        <summaryForeignKey>Account_Bill__c.Parent_Account__c</summaryForeignKey>
-        <summaryOperation>sum</summaryOperation>
+        <formula>Savings_Adjustments__c + Savings_UASB__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Total Savings</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
         <trackHistory>false</trackHistory>
-        <type>Summary</type>
+        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Tracking_Trigger_Report__c</fullName>

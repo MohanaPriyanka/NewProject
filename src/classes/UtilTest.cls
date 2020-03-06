@@ -144,6 +144,20 @@ public with sharing class UtilTest {
             errorCaught = true;
         }
         System.assert(!errorCaught);
+
+        try {
+            Util.printHeapLimit('Print Heap Limit');
+        } catch (Exception e) {
+            errorCaught = true;
+        }
+        System.assert(!errorCaught);
+
+        try {
+            Util.printRowLimit('Print Row Limit');
+        } catch (Exception e) {
+            errorCaught = true;
+        }
+        System.assert(!errorCaught);
     }
 
     @IsTest
@@ -326,5 +340,21 @@ public with sharing class UtilTest {
     @IsTest
     private static void testIsSandboxOrTest() {
         System.assert(Util.isSandboxOrTest(), 'Expected isSandboxOrTest to be true for a test!');
+    }
+
+    @IsTest
+    private static void testCreateAuraExceptionWithMessage(){
+        AuraHandledException except = Util.createAuraExceptionWithMessage('This is the message');
+        System.assertEquals('This is the message',except.getMessage());
+    }
+
+    @IsTest
+    private static void testReadCSV(){
+        String csvData = 'ColumnOne,ColumnTwo\nDataOne,DataTwo\nDataThree,DataFour';
+        Map<Integer, List<String>> mapOfData = Util.readCSV(csvData);
+        System.assertEquals('DataOne',mapOfData.get(1)[0]);
+        System.assertEquals('DataTwo',mapOfData.get(1)[1]);
+        System.assertEquals('DataThree',mapOfData.get(2)[0]);
+        System.assertEquals('DataFour',mapOfData.get(2)[1]);
     }
 }

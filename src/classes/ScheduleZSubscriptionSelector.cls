@@ -140,10 +140,15 @@ public with sharing class ScheduleZSubscriptionSelector {
 
         List<Utility_Account_Subscription__c> overdueUASes = [
             SELECT Id, (
-                // We want to get a SZS for this overdue UAS, with which we can generate a bill
+                // We want to get a SZS for this overdue UAS, with which we can generate a bill: 
                 SELECT Id, Utility_Account_Subscription__c, Schedule_Z__c,
                     Utility_Account_Subscription__r.Id, Utility_Account_Subscription__r.Opportunity__c,
-                    Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c
+                    Utility_Account_Subscription__r.Opportunity__r.Shared_Solar_System__c,
+                    Utility_Account_Subscription__r.Opportunity__r.AccountId,
+                    Utility_Account_Subscription__r.Utility_Account_Log__r.Name,
+                    Utility_Account_Subscription__r.Name_on_Account_From_Log__c,
+                    Utility_Account_Subscription__r.Externally_Serviced__c,
+                    Utility_Account_Subscription__r.Utility_Account_Log__r.Premise_Number__c
                 FROM Schedule_Z_Subscriptions__r
                 ORDER BY CreatedDate DESC
                 LIMIT 1

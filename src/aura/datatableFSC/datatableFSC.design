@@ -4,10 +4,10 @@
         <design:attribute name="mydata_standard1" label="Collection - Accounts"/>
         <design:attribute name="selectedRows_standard1" label="Output Selected Accounts"/>
 
-<!--    <design:attribute name="mydata_standard2" label="Collection - Assets"/>
-        <design:attribute name="selectedRows_standard2" label="Output Selected Assets"/>
+        <design:attribute name="mydata_standard2" label="Collection - Leads"/>
+        <design:attribute name="selectedRows_standard2" label="Output Selected Leads"/>
 
-        <design:attribute name="mydata_standard3" label="Collection - Cases"/>
+<!--    <design:attribute name="mydata_standard3" label="Collection - Cases"/>
         <design:attribute name="selectedRows_standard3" label="Output Selected Cases"/>
 
         <design:attribute name="mydata_standard4" label="Collection - Contacts"/>

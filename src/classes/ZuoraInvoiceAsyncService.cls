@@ -7,10 +7,12 @@
 
 public with sharing class ZuoraInvoiceAsyncService implements Queueable, Database.AllowsCallouts, Database.Batchable<Zuora__ZInvoice__c> {
     public enum OperationType {DOWNLOAD, MAIL}
-    public OperationType mode;
-    public List<Zuora__ZInvoice__c> allInvoicesToDownload;
+    private OperationType mode;
+    @TestVisible
+    private List<Zuora__ZInvoice__c> allInvoicesToDownload;
     public List<Zuora__ZInvoice__c> allInvoicesToMail;
-    public List<Zuora__ZInvoice__c> invoicesAlreadySent;
+    @TestVisible
+    private List<Zuora__ZInvoice__c> invoicesAlreadySent;
     @TestVisible
     private static ZuoraInvoiceSelector invoiceSelector = new ZuoraInvoiceSelector();
     @TestVisible
@@ -79,13 +81,15 @@ public with sharing class ZuoraInvoiceAsyncService implements Queueable, Databas
     }
 
     @Future
-    public static void findFirstInvoiceAndSetInsertsFuture(Set<Id> invoiceIds) {
+    public static void handleFirstInvoices(Set<Id> invoiceIds) {
         try {
-            invoiceService.setFirstBillInsert(getDecoratedFirstInvoices(invoiceIds));
+            List<DecoratedInvoice> firstInvoices = getDecoratedFirstInvoices(invoiceIds);
+            invoiceService.setFirstBillInsert(firstInvoices);
+            invoiceService.setFirstBillDateOnAccount(firstInvoices);
         } catch (Exception e) {
             Logger.logLater(
                 'ZuoraInvoiceAsyncService',
-                'findFirstInvoiceAndSetInsertsFuture',
+                'handleFirstInvoices',
                 'Exception caught: ' + e.getMessage() + '\n' + e.getStackTraceString(),
                 Logger.ERROR
             );

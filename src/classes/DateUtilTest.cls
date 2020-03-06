@@ -5,9 +5,9 @@
 public with sharing class DateUtilTest {
     @IsTest
     private static void testConvertGmtToDate() {
-        Datetime effectiveDate = Datetime.newInstanceGmt(2014,02,03);
-        System.assertEquals(Date.newInstance(2014,2,2), Date.newInstance(effectiveDate.year(), effectiveDate.month(), effectiveDate.day()));
-        System.assertEquals(Date.newInstance(2014,2,3), DateUtil.convertGmtToDate(effectiveDate));
+        Datetime effectiveDate = Datetime.newInstanceGmt(2014,12,28);
+        System.assertEquals(Date.newInstance(2014,12,27), Date.newInstance(effectiveDate.year(), effectiveDate.month(), effectiveDate.day()));
+        System.assertEquals(Date.newInstance(2014,12,28), DateUtil.convertGmtToDate(effectiveDate));
     }
 
     @IsTest
