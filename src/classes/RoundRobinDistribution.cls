@@ -1,3 +1,4 @@
+@SuppressWarnings('PMD')
 global class RoundRobinDistribution {
 	
 	webService static void loadDistributionButton(String objType, Id rrqId){

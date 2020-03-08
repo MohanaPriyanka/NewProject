@@ -9,6 +9,7 @@
 //
 //ZipperPuff.clsff.cls based on Mark Adler's puff.c
 //
+@SuppressWarnings('PMD')
 public class ZipperPuff {
     private final Integer MAXBITS = 15;             /* maximum bits in a code */
     private final Integer MAXLCODES = 286;           /* maximum number of literal/length codes */
