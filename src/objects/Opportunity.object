@@ -8612,20 +8612,6 @@ NULL
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>delete_TEST__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(ISPICKVAL(Interest_Rate_Picklist__c,&quot;&quot;), 
- 0.0599, VALUE(TEXT(Interest_Rate_Picklist__c))/100)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>delete TEST</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Percent</type>
-    </fields>
-    <fields>
         <fullName>dummy_2__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>

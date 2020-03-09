@@ -418,19 +418,6 @@ IF( Balance_Net_Late_Payments__c &gt; 1, (TODAY() - Bill_Due_Date__c), 0))</form
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Delete_this_del__c</fullName>
-        <externalId>false</externalId>
-        <formula>Carry_Over_Balance__c * 10000000</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Delete this</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>16</scale>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Distribute_This_Balance_12mo__c</fullName>
         <defaultValue>false</defaultValue>
         <description>As of Jan 2019, if we initiate new payment plans with late fees, we&apos;ll likely not handle them correctly (see Richard Ruff)</description>
