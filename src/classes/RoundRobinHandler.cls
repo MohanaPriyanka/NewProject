@@ -1,3 +1,4 @@
+@SuppressWarnings('PMD')
 public class RoundRobinHandler {
 	
     public String objType;

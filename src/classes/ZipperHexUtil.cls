@@ -8,6 +8,7 @@
 //
 //Copyright (c) 2015 Pedro Dal Col, Pliny Smith
 //
+@SuppressWarnings('PMD')
 public class ZipperHexUtil {
 
     private static final Integer[] table = new List<Integer> {
