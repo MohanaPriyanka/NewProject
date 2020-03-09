@@ -1,3 +1,4 @@
+@SuppressWarnings('PMD')
 public without sharing class roundRobinAssigner {
 
     @InvocableMethod(label='Assign objects')
