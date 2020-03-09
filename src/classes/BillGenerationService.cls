@@ -150,6 +150,7 @@ public without sharing class BillGenerationService {
         UASB__c zeroDollarUASB = new UASB__c(
             Date__c = transfer.Bill_Period__r.Bill_Date__c,
             Transfer__c = transfer.Id,
+            Schedule_Z_Subscription__c = szs.Id,
             Utility_Account_Subscription__c = szs.Utility_Account_Subscription__c,
             PreGen_Utility_Acct__c = szs.Utility_Account_Subscription__r.Utility_Account_Log__r.Name,
             PreGen_Name_on_Account__c = szs.Utility_Account_Subscription__r.Name_on_Account_From_Log__c,
