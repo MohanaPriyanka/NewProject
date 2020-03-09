@@ -6,6 +6,7 @@
 //
 //Copyright (c) 2015 Pedro Dal Col, Pliny Smith
 //
+@SuppressWarnings('PMD')
 @isTest
 private class ZippexTests
 {
