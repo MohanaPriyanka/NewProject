@@ -23,8 +23,18 @@
                 <behavior>Edit</behavior>
                 <field>Number_of_Decimal_Places__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Comments__c</field>
+            </layoutItems>
         </layoutColumns>
-        <style>OneColumn</style>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Account__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <style>TwoColumnsTopToBottom</style>
     </layoutSections>
     <layoutSections>
         <customLabel>false</customLabel>
@@ -59,6 +69,8 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>Load_U__c.LZ__c</fields>
+        <fields>Load_U__c.NAME</fields>
         <relatedList>ZipCode_Utility_Junction__c.Utility__c</relatedList>
     </relatedLists>
     <relatedLists>
