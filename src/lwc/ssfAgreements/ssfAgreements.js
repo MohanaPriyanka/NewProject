@@ -112,14 +112,17 @@ export default class SsfAgreements extends LightningElement {
             let restLead = {
                 id: this.lead.id,
                 email: this.lead.email,
-                applicationCompleteDate: new Date()
+                customerSignedDate: new Date()
             };
             this.showSpinner = true;
-            this.spinnerMessage = 'Completing your application';
-            this.finishApplication(restLead).then(
+            this.spinnerMessage = 'Saving your consents';
+            this.consentToDocs(restLead).then(
                 (resolveResult) => {
                     this.showSpinner = false;
-                    this.showWarningToast('Success', resolveResult);
+                    const consentsCompleteEvent = new CustomEvent('consentscomplete', {
+                        detail: this.lead,
+                    });
+                    this.dispatchEvent(consentsCompleteEvent);
                 },
                 (rejectResult) => {
                     this.showSpinner = false;
@@ -129,13 +132,13 @@ export default class SsfAgreements extends LightningElement {
                         message: JSON.stringify(rejectResult),
                         severity: 'Error'
                     });
-                    this.showWarningToast('Failed', rejectResult);
+                    this.showWarningToast('Oops', 'We ran into a technical issue, please contact customer care\n' + rejectResult);
                 }
             );
         }
     }
 
-    finishApplication(restLead) {
+    consentToDocs(restLead) {
         return new Promise(function(resolve, reject) {
             let calloutURI = '/apply/services/apexrest/v3/leads';
             const xmlHttpRequest = new XMLHttpRequest();

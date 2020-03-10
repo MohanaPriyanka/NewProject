@@ -11,11 +11,8 @@ export default class BluewaveSpinner extends LightningElement {
     renderedCallback() {
         const span = this.template.querySelector('span');
         if (span) {
-            if (!this.spinnerMessage) {
-                span.style.position = null;
-            } else {
-                span.style.position = 'absolute';
-            }
+            span.classList.remove("spinner-message");
+            span.classList.add("spinner-message");
         }
     }
 }

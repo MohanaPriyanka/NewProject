@@ -17,11 +17,12 @@
         </div>
       </template>
       <template if:true={getBasicInfo}>
-        <c-ssf-basic-info utility-options={utilityOptions} zipinput={zipCodeInput} selected-product={selectedProduct} onleadcreated={handleLeadCreation}></c-ssf-basic-info>
+        <c-ssf-basic-info utility-options={utilityOptions} zipinput={zipCodeInput} zip-code-response={zipCodeResponse} selected-product={selectedProduct} onleadcreated={handleLeadCreation}></c-ssf-basic-info>
       </template>
       <template if:true={getAgreements}>
-        <c-ssf-agreements lead-json={leadJSON}></c-ssf-agreements>
+        <c-ssf-agreements lead-json={leadJSON} onconsentscomplete={handleConsentsComplete}></c-ssf-agreements>
       </template>
       <c-bluewave-spinner spinner-message={spinnerMessage} show={showSpinner}></c-bluewave-spinner>
     </div>
-  </div></template>
+  </div>
+</template>

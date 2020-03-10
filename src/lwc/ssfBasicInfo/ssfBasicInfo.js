@@ -2,11 +2,12 @@
  * Created by PeterYao on 2/24/2020.
  */
 
-import {LightningElement, track, api} from 'lwc';
+import {LightningElement, track, api, wire} from 'lwc';
+import { NavigationMixin, CurrentPageReference } from 'lightning/navigation';
 import { getUSStateOptions } from 'c/util';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
-export default class SsfBasicInfo extends LightningElement {
+export default class SsfBasicInfo extends NavigationMixin(LightningElement) {
     @api zipinput;
     @track showSpinner;
     @track spinnerMessage;
@@ -18,7 +19,7 @@ export default class SsfBasicInfo extends LightningElement {
     @track billingCity;
     @track billingState;
     @track billingZip;
-    @track zipCodeResponse = false;
+    @api zipCodeResponse;
     @track selectedUtility;
     @api utilityOptions;
     @track utilityAccounts;
@@ -28,6 +29,7 @@ export default class SsfBasicInfo extends LightningElement {
     @track applicationType;
     utilityAccountCount = 1;
     @api selectedProduct;
+    @wire(CurrentPageReference) pageRef;
 
     connectedCallback() {
         if (!this.utilityAccounts) {
@@ -54,6 +56,9 @@ export default class SsfBasicInfo extends LightningElement {
         }
         if (!this.applicationType) {
             this.applicationType = 'Residential';
+        }
+        if (this.pageRef && this.pageRef.state && this.pageRef.state.mock) {
+            this.mockData();
         }
     }
 
@@ -152,6 +157,16 @@ export default class SsfBasicInfo extends LightningElement {
         if (!this.applicationValid()) {
             return;
         }
+        if (this.pageRef && this.pageRef.state && this.pageRef.state.partnerId) {
+            this.partnerId = this.pageRef.state.partnerId;
+        }
+        if (this.pageRef && this.pageRef.state && this.pageRef.state.salesRepId) {
+            this.salesRepId = this.pageRef.state.salesRepId;
+        }
+        if (this.zipCodeResponse.loadZones) {
+            // TODO: W-015322 Handle multiple load zones in SSF
+            this.loadZone = this.zipCodeResponse.loadZones[0];
+        }
         let restLead = {
             applicationType: this.applicationType,
             firstName: this.firstName,
@@ -164,6 +179,10 @@ export default class SsfBasicInfo extends LightningElement {
             zipCode: this.billingZip,
             productName: this.selectedProduct,
             referralName: this.referralName,
+            eiaId: this.selectedUtility,
+            loadZone: this.loadZone?this.loadZone:'',
+            partnerId: this.partnerId?this.partnerId:'',
+            salesRepId: this.salesRepId?this.salesRepId:'',
             propertyAccounts: [
                 {
                     name: `${this.firstName} ${this.lastName}`,
