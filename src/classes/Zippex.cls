@@ -6,6 +6,7 @@
 //
 //Copyright (c) 2015 Pedro Dal Col, Pliny Smith
 //
+@SuppressWarnings('PMD')
 public class Zippex
 {
     private Map<String, FileObject> zipFileMap = new Map<String, FileObject>{};

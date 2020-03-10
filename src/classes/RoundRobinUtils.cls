@@ -1,3 +1,4 @@
+@SuppressWarnings('PMD')
 public class RoundRobinUtils {
 	
     public static List<SObject> getEligibleQueues(String objType, Set<Id> queueIds){

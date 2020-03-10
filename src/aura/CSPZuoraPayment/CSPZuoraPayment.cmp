@@ -267,7 +267,7 @@
                       Loading...
                     </aura:if>
                     <div class="slds-p-top_medium slds-p-bottom_medium">
-                      <c:ZuoraPaymentPage paymentType="{!v.newPaymentMethodType}"/>
+                      <c:ZuoraPaymentPage paymentType="{!v.newPaymentMethodType}" zuoraAccountId="{!v.zuoraAccountAndPayMethod.account.Id}"/>
                     </div>
                   </div>
                 </div>
@@ -564,7 +564,7 @@
                           Loading...
                         </aura:if>
                         <div class="slds-p-top_medium slds-p-bottom_medium">
-                          <c:ZuoraPaymentPage paymentType="{!v.newPaymentMethodType}"/>
+                          <c:ZuoraPaymentPage paymentType="{!v.newPaymentMethodType}" zuoraAccountId="{!v.zuoraAccountAndPayMethod.account.Id}"/>
                         </div>
                       </div>
                     </div>
