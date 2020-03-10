@@ -187,4 +187,29 @@ public with sharing class SharedSolarSystemsSelectorTest {
         System.assertEquals(0,sssList.size());
         System.assertEquals(0,sss2List.size());
     }
+
+    @IsTest public static void testGetSSSByUniqueId() {
+        Shared_Solar_System__c sssOne = new Shared_Solar_System__c(
+            Name = 'Test SSS'
+        );
+        insert sssOne;
+
+        Shared_Solar_System__c sss = [
+            SELECT Id, Unique_Id__c
+            FROM Shared_Solar_System__c
+            WHERE Id = : sssOne.Id
+            LIMIT 1
+        ];
+
+        SharedSolarSystemsSelector selector = new SharedSolarSystemsSelector();
+        Map<String,Shared_Solar_System__c> sssMap = selector.getSSSByUniqueId(new Set<String>{sss.Unique_Id__c});
+
+        System.assertEquals(sssOne.Id,sssMap.get(sss.Unique_Id__c).Id);
+    }
+
+    @IsTest public static void testGetAllSSSes(){
+        SharedSolarSystemsSelector selector = new SharedSolarSystemsSelector();
+        List<Shared_Solar_System__c> sssList = selector.getAllSSSes();
+        System.assert(sssList.size() > 0);
+    }
 }
