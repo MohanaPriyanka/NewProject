@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Submit_Bill_Adjustment_for_Approval</name>
         <label>Submit Bill Adjustment for Approval</label>
-        <locationX>210</locationX>
-        <locationY>527</locationY>
+        <locationX>213</locationX>
+        <locationY>698</locationY>
         <actionName>submit</actionName>
         <actionType>submit</actionType>
         <connector>
@@ -20,8 +20,8 @@
     <assignments>
         <name>AsgConfirmation</name>
         <label>AsgConfirmation</label>
-        <locationX>422</locationX>
-        <locationY>626</locationY>
+        <locationX>409</locationX>
+        <locationY>870</locationY>
         <assignmentItems>
             <assignToReference>$Flow.CurrentStage</assignToReference>
             <operator>Assign</operator>
@@ -176,12 +176,18 @@
     <recordCreates>
         <name>Create_Bill_Adjustment</name>
         <label>Create Bill Adjustment</label>
-        <locationX>209</locationX>
-        <locationY>428</locationY>
+        <locationX>213</locationX>
+        <locationY>571</locationY>
         <assignRecordIdToReference>vBillAdjustment</assignRecordIdToReference>
         <connector>
             <targetReference>Submit_Bill_Adjustment_for_Approval</targetReference>
         </connector>
+        <inputAssignments>
+            <field>Account__c</field>
+            <value>
+                <elementReference>UAS_Lookup.Opportunity__r.Account.Id</elementReference>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>Adjustment_Amount__c</field>
             <value>
@@ -232,6 +238,28 @@
         </inputAssignments>
         <object>Bill_Adjustment__c</object>
     </recordCreates>
+    <recordLookups>
+        <name>UAS_Lookup</name>
+        <label>UAS Lookup</label>
+        <locationX>213</locationX>
+        <locationY>454</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Create_Bill_Adjustment</targetReference>
+        </connector>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>drcUAS</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Utility_Account_Subscription__c</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Opportunity__c</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <screens>
         <name>Choose_Subscription</name>
         <label>Choose Subscription</label>
@@ -375,8 +403,8 @@
     <screens>
         <name>screEnd</name>
         <label>screEnd</label>
-        <locationX>213</locationX>
-        <locationY>713</locationY>
+        <locationX>215</locationX>
+        <locationY>916</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -415,7 +443,7 @@
         <allowFinish>false</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Create_Bill_Adjustment</targetReference>
+            <targetReference>UAS_Lookup</targetReference>
         </connector>
         <fields>
             <name>stgExplanation</name>
@@ -544,8 +572,8 @@
     <screens>
         <name>sFile_Attachment</name>
         <label>File Attachment</label>
-        <locationX>210</locationX>
-        <locationY>625</locationY>
+        <locationX>216</locationX>
+        <locationY>805</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -627,7 +655,13 @@
         <label>Subscription Selection</label>
         <stageOrder>0</stageOrder>
     </stages>
-    <startElementReference>scrChoose_System</startElementReference>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>scrChoose_System</targetReference>
+        </connector>
+    </start>
     <status>Active</status>
     <variables>
         <name>OpportunityID</name>
@@ -643,6 +677,14 @@
         <isInput>true</isInput>
         <isOutput>true</isOutput>
         <objectType>System_Bill__c</objectType>
+    </variables>
+    <variables>
+        <name>sovAccount</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Account</objectType>
     </variables>
     <variables>
         <name>varPropertyAccountID</name>
