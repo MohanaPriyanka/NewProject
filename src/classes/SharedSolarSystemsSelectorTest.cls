@@ -206,4 +206,10 @@ public with sharing class SharedSolarSystemsSelectorTest {
 
         System.assertEquals(sssOne.Id,sssMap.get(sss.Unique_Id__c).Id);
     }
+
+    @IsTest public static void testGetAllSSSes(){
+        SharedSolarSystemsSelector selector = new SharedSolarSystemsSelector();
+        List<Shared_Solar_System__c> sssList = selector.getAllSSSes();
+        System.assert(sssList.size() > 0);
+    }
 }
