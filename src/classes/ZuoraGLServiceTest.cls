@@ -446,4 +446,20 @@ public class ZuoraGLServiceTest {
         System.assert(recItems[2].Description.contains('2c92c0fb6c8afb4e016c926615190811'));
         System.assertEquals('Attempted Journal Entry Delete in Closed Period',recItems[2].Subject);
     }
+
+    @IsTest
+    private static void testSaveAccountingPeriodCloseDate(){
+        Date testDate = Date.newInstance(2016,05,12);
+
+        Zuora_Custom_Setting__c zuoraSetting = Zuora_Custom_Setting__c.getOrgDefaults();
+        System.assertNotEquals(testDate,zuoraSetting.Last_Accounting_Period_Close_Date__c);
+
+        Test.startTest();
+            ZuoraGLService service = new ZuoraGLService();
+            service.saveAccountingPeriodCloseDate(testDate);
+        Test.stopTest();
+
+        Zuora_Custom_Setting__c updatedSetting = Zuora_Custom_Setting__c.getOrgDefaults();
+        System.assertEquals(testDate,updatedSetting.Last_Accounting_Period_Close_Date__c);
+    }
 }

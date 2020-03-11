@@ -54,6 +54,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
             when 'AccountingPeriod' {
                 response = response.substring(1,response.length()-1); // Removes Brackets since only returning 1, not a list:
                 ZuoraAPI.AccountingPeriod lastAccountingPeriod = (ZuoraAPI.AccountingPeriod) System.JSON.deserialize(response, ZuoraAPI.AccountingPeriod.class);
+                saveAccountingPeriodCloseDate(lastAccountingPeriod.EndDate);
                 String queryString = ZuoraGLSelector.getInvoiceItems(method.startDate, method.endDate);
                 method.methodName = 'InvoiceItem';
                 Map<String,Date> optionalDates = new Map<String,Date>();
@@ -88,6 +89,21 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
             when 'PaymentPart_IV' {
                 generalGLRecordInsert(response, method);
             }
+        }
+    }
+
+    @TestVisible
+    public void saveAccountingPeriodCloseDate(Date periodCloseDate) {
+        try {
+            Zuora_Custom_Setting__c zuoraSetting = Zuora_Custom_Setting__c.getOrgDefaults();
+            zuoraSetting.Last_Accounting_Period_Close_Date__c = periodCloseDate;
+            if (zuoraSetting == null || zuoraSetting.Id == null){
+                insert zuoraSetting;
+            } else {
+                update zuoraSetting;
+            }
+        } catch (Exception excep){
+            Logger.logNow('ZuoraGLService','saveAccountingPeriodCloseDate',excep.getMessage() + excep.getStackTraceString());
         }
     }
 

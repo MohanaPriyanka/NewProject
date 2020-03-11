@@ -229,6 +229,15 @@ Credit Memos and Payments = Collection</inlineHelpText>
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Closed_Accounting_Period__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( Date__c &lt;= $Setup.Zuora_Custom_Setting__c.Last_Accounting_Period_Close_Date__c,true,false)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Closed Period</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Customer_Account__c</fullName>
         <externalId>false</externalId>
         <label>Customer Unique Id</label>
