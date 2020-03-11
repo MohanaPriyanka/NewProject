@@ -110,7 +110,7 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         if (reconciliationItems.size() > 0){
             insert reconciliationItems;
         }
-        if (entriesToUpsert.size() > 10000){
+        if (entriesToUpsert.size() > 200){
             Database.executeBatch(new GenericBatchDMLOperation(entriesToUpsert, 'Upsert'));
         } else {
             upsert entriesToUpsert External_Id__c;
