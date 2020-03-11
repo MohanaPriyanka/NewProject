@@ -112,14 +112,4 @@ public inherited sharing class SharedSolarSystemsSelector {
         }
         return bwIdToSSSMap;
     }
-
-    public List<Shared_Solar_System__c> getAllSSSes() {
-        return [
-            SELECT Id, Anchor_Capacity_Reserved__c, Capacity_Committed_kW_DC__c,
-                Reserved_Capacity_kW_DC__c, Total_CS_Capacity__c,
-                Total_Capacity_Committed_Reserved__c, Maximum_Subscription_Capacity_kW_DC__c,
-                Reserved_Anchor_Capacity__c, Name, Stage__c
-            FROM Shared_Solar_System__c
-        ];
-    }
 }

@@ -54,7 +54,6 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
             when 'AccountingPeriod' {
                 response = response.substring(1,response.length()-1); // Removes Brackets since only returning 1, not a list:
                 ZuoraAPI.AccountingPeriod lastAccountingPeriod = (ZuoraAPI.AccountingPeriod) System.JSON.deserialize(response, ZuoraAPI.AccountingPeriod.class);
-                saveAccountingPeriodCloseDate(lastAccountingPeriod.EndDate);
                 String queryString = ZuoraGLSelector.getInvoiceItems(method.startDate, method.endDate);
                 method.methodName = 'InvoiceItem';
                 Map<String,Date> optionalDates = new Map<String,Date>();
@@ -140,23 +139,6 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         entry.Deposit_Account__c = chargentData.GatewayName;
         entry.Payment_Method__c = chargentData.PaymentMethod;
         return entry;
-    }
-
-    @TestVisible
-    private void saveAccountingPeriodCloseDate(Date periodCloseDate) {
-        List<Profile> profileList = [
-            SELECT Id
-            FROM Profile
-        ];
-        List<Zuora_Custom_Setting__c> settingsToUpdate = new List<Zuora_Custom_Setting__c>();
-        for (Profile prof : profileList){
-            Zuora_Custom_Setting__c zuoraSetting = Zuora_Custom_Setting__c.getInstance(prof.Id);
-            if (zuoraSetting.Id != null){
-                zuoraSetting.Last_Accounting_Period_Close_Date__c = periodCloseDate;
-                settingsToUpdate.add(zuoraSetting);
-            }
-        }
-        update settingsToUpdate;
     }
 
     public Journal_Entry__c setZuoraPaymentFields(GeneralLedgerItem ledger, Journal_Entry__c entry){
