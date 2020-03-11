@@ -92,6 +92,21 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         }
     }
 
+    @TestVisible
+    public void saveAccountingPeriodCloseDate(Date periodCloseDate) {
+        try {
+            Zuora_Custom_Setting__c zuoraSetting = Zuora_Custom_Setting__c.getOrgDefaults();
+            zuoraSetting.Last_Accounting_Period_Close_Date__c = periodCloseDate;
+            if (zuoraSetting == null || zuoraSetting.Id == null){
+                insert zuoraSetting;
+            } else {
+                update zuoraSetting;
+            }
+        } catch (Exception excep){
+            Logger.logNow('ZuoraGLService','saveAccountingPeriodCloseDate',excep.getMessage() + excep.getStackTraceString());
+        }
+    }
+
     public void generalGLRecordInsert(String response, ZuoraDataQueryService.ProcessingParameter method){
         List<GeneralLedgerItem> ledgerItems = new List<GeneralLedgerItem>();
         Map<String, Journal_Entry__c> zuoraJournalEntries = new Map<String, Journal_Entry__c>();
@@ -140,22 +155,6 @@ public with sharing class ZuoraGLService implements Schedulable, ZuoraDataQueryS
         entry.Deposit_Account__c = chargentData.GatewayName;
         entry.Payment_Method__c = chargentData.PaymentMethod;
         return entry;
-    }
-
-    private void saveAccountingPeriodCloseDate(Date periodCloseDate) {
-        List<Profile> profileList = [
-            SELECT Id
-            FROM Profile
-        ];
-        List<Zuora_Custom_Setting__c> settingsToUpdate = new List<Zuora_Custom_Setting__c>();
-        for (Profile prof : profileList){
-            Zuora_Custom_Setting__c zuoraSetting = Zuora_Custom_Setting__c.getInstance(prof.Id);
-            if (zuoraSetting.Id != null){
-                zuoraSetting.Last_Accounting_Period_Close_Date__c = periodCloseDate;
-                settingsToUpdate.add(zuoraSetting);
-            }
-        }
-        update settingsToUpdate;
     }
 
     public Journal_Entry__c setZuoraPaymentFields(GeneralLedgerItem ledger, Journal_Entry__c entry){
