@@ -37,7 +37,7 @@ public class JournalEntryServiceTest {
 
     @isTest
     public static void testDisabledTrigger() {
-        Util.disableTrigger('Disable_Journal_Entry__c');
+        Util.disableTrigger('Disable_Journal_Entry_Trigger__c');
         List<Error_Log__c> beforeLogs = [
             SELECT Id
             FROM Error_Log__c
