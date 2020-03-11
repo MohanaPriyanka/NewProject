@@ -207,9 +207,21 @@ Credit Memos and Payments = Collection</inlineHelpText>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Client__c</fullName>
+        <fullName>Client_Lookup__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Client</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Journal Entries</relationshipLabel>
+        <relationshipName>Journal_Entries</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Client__c</fullName>
+        <externalId>false</externalId>
+        <label>Client Unique Id</label>
         <length>200</length>
         <required>false</required>
         <trackTrending>false</trackTrending>
@@ -219,12 +231,24 @@ Credit Memos and Payments = Collection</inlineHelpText>
     <fields>
         <fullName>Customer_Account__c</fullName>
         <externalId>false</externalId>
-        <label>Customer Account</label>
+        <label>Customer Unique Id</label>
         <length>200</length>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Customer_Lookup__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Customer</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Journal Entries (Customer Account)</relationshipLabel>
+        <relationshipName>Journal_Entries1</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Customer_Sign__c</fullName>
@@ -357,9 +381,21 @@ Text(Object_Type__c),
         </valueSet>
     </fields>
     <fields>
-        <fullName>Project__c</fullName>
+        <fullName>Project_Lookup__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Project</label>
+        <referenceTo>Shared_Solar_System__c</referenceTo>
+        <relationshipLabel>Journal Entries</relationshipLabel>
+        <relationshipName>Journal_Entries</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Project__c</fullName>
+        <externalId>false</externalId>
+        <label>Project Unique Id</label>
         <length>200</length>
         <required>false</required>
         <trackTrending>false</trackTrending>
