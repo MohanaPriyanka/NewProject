@@ -143,4 +143,23 @@ public with sharing class AccountsSelectorTest {
         Map<Id,Integer> acctIdToUASBMap = selector.selectAccountsWithUASBs(Date.newInstance(2016,01,01));
         System.assertEquals(12,acctIdToUASBMap.get(newAccount.Id));
     }
+
+    @IsTest public static void testSelectByBlueWaveId() {
+        Account accountOne = new Account(
+            Name = 'Test Account'
+        );
+        insert accountOne;
+
+        Account acct = [
+            SELECT Id, Account_Number__c
+            FROM Account
+            WHERE Id = : accountOne.Id
+            LIMIT 1
+        ];
+
+        AccountsSelector selector = new AccountsSelector();
+        Map<String,Account> acctMap = selector.selectByBlueWaveId(new Set<String>{acct.Account_Number__c});
+
+        System.assertEquals(accountOne.Id,acctMap.get(acct.Account_Number__c).Id);
+    }
 }

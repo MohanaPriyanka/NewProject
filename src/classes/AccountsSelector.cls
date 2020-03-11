@@ -185,4 +185,14 @@ public without sharing class AccountsSelector {
         ]);
         return properties;
     }
+
+    public Map<String,Account> selectByBlueWaveId(Set<String> blueWaveIds){
+        Map<String,Account> bwIdToAccountMap = new Map<String,Account>();
+        for (Account acct : [   SELECT Id, Account_Number__c
+                                FROM Account
+                                WHERE Account_Number__c IN : blueWaveIds]){
+            bwIdToAccountMap.put(acct.Account_Number__c, acct);
+        }
+        return bwIdToAccountMap;
+    }
 }
